@@ -37,9 +37,9 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
 use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
+use Galette\GaletteTestCase;
 
 /**
  * PDF model tests
@@ -53,20 +53,10 @@ use Galette\DynamicFields\DynamicField;
  * @link      http://galette.tuxfamily.org
  * @since     2020-11-21
  */
-class PdfModel extends atoum
+class PdfModel extends GaletteTestCase
 {
-    private $zdb;
-    private $preferences;
-    private $login;
     private $remove = [];
-    private $i18n;
-    private $container;
-    private $seed = 95842354;
-    private $history;
-
-    private $adh;
-    private $contrib;
-    private $members_fields;
+    protected $seed = 95842354;
 
     /**
      * Set up tests
@@ -77,50 +67,11 @@ class PdfModel extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
+        parent::beforeTestMethod($testMethod);
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
         $this->boolean($res)->isTrue();
-
-        $container = new class {
-            /**
-             * Get (only router)
-             *
-             * @param string $name Param name
-             *
-             * @return mixed
-             */
-            public function get($name)
-            {
-                $router = new class {
-                    /**
-                     * Get path ('')
-                     *
-                     * @param sttring $name Route name
-                     *
-                     * @return string
-                     */
-                    public function pathFor($name)
-                    {
-                        return '';
-                    }
-                };
-                return $router;
-            }
-        };
-        $_SERVER['HTTP_HOST'] = '';
-        $this->container = $container;
-
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
@@ -128,10 +79,7 @@ class PdfModel extends atoum
             $this->members_fields,
             $this->history
         );
-
-        global $container, $zdb;
-        $zdb = $this->zdb; //globals '(
-        $container = $this->container; //globals '(
+        $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
     }
 
     /**
@@ -162,10 +110,6 @@ class PdfModel extends atoum
             ]
         ]);
         $this->zdb->execute($delete);
-
-        /*if ($this->contents_table !== null) {
-            $this->zdb->drop($this->contents_table);
-        }*/
     }
 
     /**
@@ -188,10 +132,10 @@ class PdfModel extends atoum
             'date_now'           => '/{DATE_NOW}/',
             'login_uri'          => '/{LOGIN_URI}/'
         ];
-        $this->array($model->patterns)->isIdenticalTo($main_expected);
+        $this->array($model->getPatterns())->isIdenticalTo($main_expected);
 
         $model = new \Galette\Entity\PdfMain($this->zdb, $this->preferences);
-        $this->array($model->patterns)->isIdenticalTo($main_expected);
+        $this->array($model->getPatterns())->isIdenticalTo($main_expected);
 
         $expected = $main_expected + [
             'adh_title'         => '/{TITLE_ADH}/',
@@ -225,7 +169,7 @@ class PdfModel extends atoum
             '_adh_email'        => '/{MAIL_ADH}/',
         ];
         $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences);
-        $this->array($model->patterns)->isIdenticalTo($expected);
+        $this->array($model->getPatterns())->isIdenticalTo($expected);
 
         $expected += [
             'contrib_label'     => '/{CONTRIB_LABEL}/',
@@ -252,10 +196,10 @@ class PdfModel extends atoum
             '_contrib_info'       => '/{CONTRIBUTION_INFO}/',
         ];
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
-        $this->array($model->patterns)->isIdenticalTo($expected);
+        $this->array($model->getPatterns())->isIdenticalTo($expected);
 
         $model = new \Galette\Entity\PdfReceipt($this->zdb, $this->preferences);
-        $this->array($model->patterns)->isIdenticalTo($expected);
+        $this->array($model->getPatterns())->isIdenticalTo($expected);
     }
 
     /**
@@ -410,7 +354,7 @@ class PdfModel extends atoum
         $this->string($model->hheader)->isIdenticalTo("<table>
     <tr>
         <td id=\"pdf_assoname\"><strong id=\"asso_name\">Galette</strong><br/></td>
-        <td id=\"pdf_logo\"><img src=\"http://\" width=\"129\" height=\"60\"/></td>
+        <td id=\"pdf_logo\"><img src=\"http://logo\" width=\"129\" height=\"60\"/></td>
     </tr>
 </table>");
 
@@ -494,27 +438,6 @@ Au milieu
             'info_field_' . $cdf->getId() . '_1' => $dyndate->format('Y-m-d')
         ];
         $this->createContrib($data);
-    }
-
-    /**
-     * Create contribution from data
-     *
-     * @param array $data Data to use to create contribution
-     *
-     * @return \Galette\Entity\Contribution
-     */
-    public function createContrib(array $data)
-    {
-        $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
-        $contrib = $this->contrib;
-        $check = $contrib->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->boolean($check)->isTrue();
-
-        $store = $contrib->store();
-        $this->boolean($store)->isTrue();
     }
 
     /**

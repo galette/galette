@@ -38,6 +38,7 @@
 namespace Galette\Entity\test\units;
 
 use atoum;
+use Galette\GaletteTestCase;
 use Zend\Db\Adapter\Adapter;
 
 /**
@@ -52,65 +53,9 @@ use Zend\Db\Adapter\Adapter;
  * @link      http://galette.tuxfamily.org
  * @since     2020-01-18
  */
-class Texts extends atoum
+class Texts extends GaletteTestCase
 {
-    private $zdb;
     private $remove = [];
-    private $i18n;
-    private $preferences;
-    private $container;
-
-    /**
-     * Set up tests
-     *
-     * @param string $testMethod Calling method
-     *
-     * @return void
-     */
-    public function beforeTestMethod($testMethod)
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-
-        $container = new class {
-            /**
-             * Get (only router)
-             *
-             * @param string $name Param name
-             *
-             * @return mixed
-             */
-            public function get($name)
-            {
-                $router = new class {
-                    /**
-                     * Get path ('')
-                     *
-                     * @param string $name Route name
-                     *
-                     * @return string
-                     */
-                    public function pathFor($name)
-                    {
-                        return '';
-                    }
-                };
-                return $router;
-            }
-        };
-        $_SERVER['HTTP_HOST'] = '';
-        $this->container = $container;
-
-        global $zdb, $i18n, $container; // globals :(
-        $zdb = $this->zdb;
-        $i18n = $this->i18n;
-        $container = $this->container;
-    }
 
     /**
      * Test getList

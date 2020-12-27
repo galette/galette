@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * Contribution tests class
@@ -51,35 +51,9 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2017-06-11
  */
-class Contribution extends atoum
+class Contribution extends GaletteTestCase
 {
-    private $zdb;
-    private $i18n;
-    private $preferences;
-    private $login;
-    private $history;
-    private $seed = 95842354;
-    private $default_deps;
-    private $adh;
-    private $contrib;
-    private $ids = [];
-    private $members_fields;
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $ct = new \Galette\Entity\ContributionsTypes($this->zdb);
-        if (count($ct->getCompleteList()) === 0) {
-            //status are not yet instanciated.
-            $res = $ct->installInit();
-            $this->boolean($res)->isTrue();
-        }
-    }
+    protected $seed = 95842354;
 
     /**
      * Cleanup after testeach test method
@@ -108,77 +82,17 @@ class Contribution extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-
-        global $zdb, $login, $hist, $i18n; // globals :(
-        $zdb = $this->zdb;
-        $login = $this->login;
-        $hist = $this->history;
-        $i18n = $this->i18n;
+        parent::beforeTestMethod($testMethod);
+        $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
             $this->preferences,
             $this->members_fields,
             $this->history
         );
-    }
-
-    /**
-     * Create test user in database
-     *
-     * @return void
-     */
-    private function createAdherent()
-    {
-        $bdate = new \DateTime(date('Y') . '-12-26');
-        //member is expected to be 82 years old
-        $bdate->sub(new \DateInterval('P82Y'));
-
-        $data = [
-            'nom_adh' => 'Durand',
-            'prenom_adh' => 'René',
-            'ville_adh' => 'Martel',
-            'cp_adh' => '39 069',
-            'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine@ledoux.com',
-            'login_adh' => 'arthur.hamon',
-            'mdp_adh' => 'J^B-()f',
-            'mdp_adh2' => 'J^B-()f',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => true,
-            'sexe_adh' => 0,
-            'prof_adh' => 'Chef de fabrication',
-            'titre_adh' => null,
-            'ddn_adh' => $bdate->format('Y-m-d'),
-            'lieu_naissance' => 'Gonzalez-sur-Meunier',
-            'pseudo_adh' => 'ubertrand',
-            'pays_adh' => 'Antarctique',
-            'tel_adh' => '0439153432',
-            'url_adh' => 'http://bouchet.com/',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'date_crea_adh' => '2020-06-10',
-            'pref_lang' => 'en_US',
-            'fingerprint' => 'FAKER' . $this->seed,
-        ];
-        $this->createMember($data);
-        $this->checkMemberExpected();
     }
 
     /**
@@ -210,18 +124,6 @@ class Contribution extends atoum
     }
 
     /**
-     * Loads member from a resultset
-     *
-     * @param ResultSet $rs ResultSet
-     *
-     * @return void
-     */
-    private function loadAdherent($rs)
-    {
-        $this->adh = new \Galette\Entity\Adherent($this->zdb, $rs);
-    }
-
-    /**
      * Loads contribution from a resultset
      *
      * @param ResultSet $rs ResultSet
@@ -232,7 +134,6 @@ class Contribution extends atoum
     {
         $this->adh = new \Galette\Entity\Contribution($this->zdb, $this->login, $rs);
     }
-
 
     /**
      * Test empty contribution
@@ -359,154 +260,6 @@ class Contribution extends atoum
     }
 
     /**
-     * Create member from data
-     *
-     * @param array $data Data to use to create member
-     *
-     * @return \Galette\Entity\Adherent
-     */
-    public function createMember(array $data)
-    {
-        $adh = $this->adh;
-        $check = $adh->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->boolean($check)->isTrue();
-
-        $store = $adh->store();
-        $this->boolean($store)->isTrue();
-
-        $this->ids[] = $adh->id;
-    }
-
-    /**
-     * Create contribution from data
-     *
-     * @param array $data Data to use to create contribution
-     *
-     * @return \Galette\Entity\Contribution
-     */
-    public function createContrib(array $data)
-    {
-        $contrib = $this->contrib;
-        $check = $contrib->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->boolean($check)->isTrue();
-
-        $store = $contrib->store();
-        $this->boolean($store)->isTrue();
-
-        $this->ids[] = $contrib->id;
-    }
-
-
-    /**
-     * Check members expecteds
-     *
-     * @param Adherent $adh           Member instance, if any
-     * @param array    $new_expecteds Changes on expected values
-     *
-     * @return void
-     */
-    private function checkMemberExpected($adh = null, $new_expecteds = [])
-    {
-        if ($adh === null) {
-            $adh = $this->adh;
-        }
-
-        $expecteds = [
-            'nom_adh' => 'Durand',
-            'prenom_adh' => 'René',
-            'ville_adh' => 'Martel',
-            'cp_adh' => '07 926',
-            'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine@ledoux.com',
-            'login_adh' => 'arthur.hamon',
-            'mdp_adh' => 'J^B-()f',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => true,
-            'sexe_adh' => 0,
-            'prof_adh' => 'Chef de fabrication',
-            'titre_adh' => null,
-            'ddn_adh' => 'NOT USED',
-            'lieu_naissance' => 'Gonzalez-sur-Meunier',
-            'pseudo_adh' => 'ubertrand',
-            'cp_adh' => '39 069',
-            'pays_adh' => 'Antarctique',
-            'tel_adh' => '0439153432',
-            'url_adh' => 'http://bouchet.com/',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'pref_lang' => 'en_US',
-            'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => ''
-        ];
-        $expecteds = array_merge($expecteds, $new_expecteds);
-
-        foreach ($expecteds as $key => $value) {
-            $property = $this->members_fields[$key]['propname'];
-            switch ($key) {
-                case 'bool_admin_adh':
-                    $this->boolean($adh->isAdmin())->isIdenticalTo($value);
-                    break;
-                case 'bool_exempt_adh':
-                    $this->boolean($adh->isDueFree())->isIdenticalTo($value);
-                    break;
-                case 'bool_display_info':
-                    $this->boolean($adh->appearsInMembersList())->isIdenticalTo($value);
-                    break;
-                case 'activite_adh':
-                    $this->boolean($adh->isActive())->isIdenticalTo($value);
-                    break;
-                case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
-                    $this->boolean($pw_checked)->isTrue();
-                    break;
-                case 'ddn_adh':
-                    //rely on age, not on birthdate
-                    $this->variable($adh->$property)->isNotNull();
-                    $this->string($adh->getAge())->isIdenticalTo(' (82 years old)');
-                    break;
-                default:
-                    $this->variable($adh->$property)->isIdenticalTo($value, $property);
-                    break;
-            }
-        }
-
-        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
-
-        $expected_str = ' (82 years old)';
-        $this->string($adh->getAge())->isIdenticalTo($expected_str);
-        $this->boolean($adh->hasChildren())->isFalse();
-        $this->boolean($adh->hasParent())->isFalse();
-        $this->boolean($adh->hasPicture())->isFalse();
-
-        $this->string($adh->sadmin)->isIdenticalTo('No');
-        $this->string($adh->sdue_free)->isIdenticalTo('No');
-        $this->string($adh->sappears_in_list)->isIdenticalTo('Yes');
-        $this->string($adh->sstaff)->isIdenticalTo('No');
-        $this->string($adh->sactive)->isIdenticalTo('Active');
-        $this->variable($adh->stitle)->isNull();
-        $this->string($adh->sstatus)->isIdenticalTo('Non-member');
-        $this->string($adh->sfullname)->isIdenticalTo('DURAND René');
-        $this->string($adh->saddress)->isIdenticalTo('66, boulevard De Oliveira');
-        $this->string($adh->sname)->isIdenticalTo('DURAND René');
-
-        $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isEmpty();
-        $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
-        $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
-        $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
-
-        $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('DURAND René');
-        $this->string($adh->getRowClass())->isIdenticalTo('active cotis-never');
-    }
-
-    /**
      * Check contributions expecteds
      *
      * @param Contribution $contrib       Contribution instance, if any
@@ -572,7 +325,7 @@ class Contribution extends atoum
      */
     public function testCreation()
     {
-        $this->createAdherent();
+        $this->getMemberOne();
         //create contribution for member
         $this->createContribution();
     }
@@ -794,7 +547,7 @@ class Contribution extends atoum
         $this->calling($this->login)->isStaff = true;
         $this->calling($this->login)->isAdmin = true;
 
-        $this->createAdherent();
+        $this->getMemberOne();
 
         //create contribution for member
         $this->createContribution();
@@ -815,7 +568,7 @@ class Contribution extends atoum
      */
     public function testRemove()
     {
-        $this->createAdherent();
+        $this->getMemberOne();
         $this->createContribution();
 
         $id = (int)$this->contrib->id;

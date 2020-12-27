@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * History tests class
@@ -51,32 +51,8 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2016-11-26
  */
-class History extends atoum
+class History extends GaletteTestCase
 {
-    private $history = null;
-    private $login;
-    private $zdb;
-    private $i18n;
-    private $preferences;
-
-    /**
-     * Set up tests
-     *
-     * @param string $testMethod Method name
-     *
-     * @return void
-     */
-    public function beforeTestMethod($testMethod)
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-    }
-
     /**
      * Test class constants
      *

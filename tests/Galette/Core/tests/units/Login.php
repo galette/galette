@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * Login tests class
@@ -51,19 +51,11 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2016-12-05
  */
-class Login extends atoum
+class Login extends GaletteTestCase
 {
-    private $zdb;
-    private $i18n;
-    private $login;
-    private $preferences;
-    private $seed = 320112365;
+    protected $seed = 320112365;
     private $login_adh = 'dumas.roger';
     private $mdp_adh = 'sd8)AvtE|*';
-
-    private $members_fields;
-    private $history;
-    private $adh;
 
     /**
      * Cleanup after tests
@@ -76,27 +68,6 @@ class Login extends atoum
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
-    }
-
-    /**
-     * Set up tests
-     *
-     * @param string $testMethod Method name
-     *
-     * @return void
-     */
-    public function beforeTestMethod($testMethod)
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
     }
 
     /**
@@ -309,7 +280,7 @@ class Login extends atoum
                 'sexe_adh' => 1,
                 'prof_adh' => 'Pédologue',
                 'titre_adh' => null,
-                'ddn_adh' => '23/10/1948',
+                'ddn_adh' => '1948-10-23',
                 'lieu_naissance' => 'Lagarde',
                 'pseudo_adh' => 'elisabeth50',
                 'pays_adh' => 'Géorgie',
@@ -317,7 +288,7 @@ class Login extends atoum
                 'url_adh' => 'http://www.gay.com/tempora-nemo-quidem-laudantium-dolores',
                 'activite_adh' => true,
                 'id_statut' => 6,
-                'date_crea_adh' => '02/09/2019',
+                'date_crea_adh' => '2019-09-02',
                 'pref_lang' => 'nb_NO',
                 'fingerprint' => 'FAKER' . $this->seed,
             ];

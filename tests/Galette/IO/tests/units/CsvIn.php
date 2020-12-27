@@ -40,6 +40,7 @@ namespace Galette\IO\test\units;
 use atoum;
 use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
+use Galette\GaletteTestCase;
 
 /**
  * CsvIn tests class
@@ -53,20 +54,8 @@ use Galette\DynamicFields\DynamicField;
  * @link      http://galette.tuxfamily.org
  * @since     2020-05-11
  */
-class CsvIn extends atoum
+class CsvIn extends GaletteTestCase
 {
-    private $zdb;
-    private $i18n;
-    private $preferences;
-    private $session;
-    private $login;
-    private $history;
-    private $flash;
-    private $flash_data;
-    private $container;
-    private $request;
-    private $response;
-    private $mocked_router;
     private $contents_table = null;
 
     /**
@@ -78,59 +67,8 @@ class CsvIn extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
+        parent::beforeTestMethod($testMethod);
         $this->contents_table = null;
-        $this->mocked_router = new \mock\Slim\Router();
-        $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
-            return $name;
-        };
-        $flash_data = [];
-        $this->flash_data = &$flash_data;
-        $this->flash = new \Slim\Flash\Messages($flash_data);
-
-        $app =  new \Galette\Core\SlimApp();
-        $plugins = new \Galette\Core\Plugins();
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
-        $container = $app->getContainer();
-
-        $container->set('flash', $this->flash);
-        $container->set(Slim\Flash\Messages::class, $this->flash);
-        $container->set('router', $this->mocked_router);
-        $container->set(Slim\Router::class, $this->mocked_router);
-
-        /*$this->view = new \mock\Slim\Views\Smarty(
-            rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
-            [
-                'cacheDir' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
-                'compileDir' => rtrim(GALETTE_COMPILE_DIR, DIRECTORY_SEPARATOR),
-                'pluginsDir' => [
-                    GALETTE_ROOT . 'includes/smarty_plugins'
-                ]
-            ]
-        );
-        $this->calling($this->view)->render = function ($response) {
-            $response->getBody()->write('Atoum view rendered');
-            return $response;
-        };
-
-        $this->view->addSlimPlugins($container->get('router'), '/');
-        $container->set('view', $this->view);*/
-
-        $this->zdb = $container->get('zdb');
-        $this->i18n = $container->get('i18n');
-        $this->preferences = $container->get('preferences');
-        $this->session = $container->get('session');
-        $this->login = $container->get('login');
-        $this->history = $container->get('history');
-
-        global $zdb, $i18n, $login, $hist;
-        $zdb = $this->zdb;
-        $i18n = $this->i18n;
-        $login = $this->login;
-        $hist = $this->history;
-
-        $this->container = $container;
-        $this->request = $container->get('request');
-        $this->response = $container->get('response');
     }
 
     /**
@@ -169,8 +107,8 @@ class CsvIn extends atoum
      *
      * @param array   $fields         Fields name to use at import
      * @param string  $file_name      File name
-     * @param array   $flash_messages Excpeted flash messages from doImport route
-     * @param airay   $members_list   List of faked members data
+     * @param array   $flash_messages Expected flash messages from doImport route
+     * @param array   $members_list   List of faked members data
      * @param integer $count_before   Count before insertions. Defaults to 0 if null.
      * @param integer $count_after    Count after insertions. Default to $count_before + count $members_list
      * @param array   $values         Textual values for dynamic choices fields

@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * Payment types repository tests
@@ -51,13 +51,9 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2019-12-17
  */
-class PaymentTypes extends atoum
+class PaymentTypes extends GaletteTestCase
 {
-    private $zdb;
-    private $preferences;
-    private $login;
     private $remove = [];
-    private $i18n;
 
     /**
      * Set up tests
@@ -68,12 +64,7 @@ class PaymentTypes extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
+        parent::beforeTestMethod($testMethod);
 
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         $res = $types->installInit(false);

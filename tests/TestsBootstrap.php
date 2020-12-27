@@ -98,3 +98,5 @@ if (!defined('_CURRENT_THEME_PATH')) {
         GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
     );
 }
+
+require_once __DIR__ . '/GaletteTestCase.php';

@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * Members repository tests
@@ -51,15 +51,9 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2017-04-15
  */
-class Members extends atoum
+class Members extends GaletteTestCase
 {
-    private $zdb;
-    private $i18n;
-    private $preferences;
-    private $login;
-    private $history;
-    private $members_fields;
-    private $seed = 335689;
+    protected $seed = 335689;
     private $mids;
 
     /**
@@ -71,18 +65,7 @@ class Members extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
+        parent::beforeTestMethod($testMethod);
         $this->createMembers();
     }
 

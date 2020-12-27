@@ -38,6 +38,7 @@
 namespace Galette\Repository\test\units;
 
 use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * Reminders repository tests
@@ -51,36 +52,11 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2020-09-14
  */
-class Reminders extends atoum
+class Reminders extends GaletteTestCase
 {
-    private $zdb;
-    private $seed = 95842355;
-    private $preferences;
-    private $login;
-    private $history;
-    //private $remove = [];
-    private $i18n;
-    private $contrib;
-    private $members_fields;
-    private $adh;
+    protected $seed = 95842355;
     private $ids = [];
-    private $contribs_ids = [];
 
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $ct = new \Galette\Entity\ContributionsTypes($this->zdb);
-        if (count($ct->getCompleteList()) === 0) {
-            //status are not yet instanciated.
-            $res = $ct->installInit();
-            $this->boolean($res)->isTrue();
-        }
-    }
     /**
      * Set up tests
      *
@@ -90,34 +66,12 @@ class Reminders extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-
-        global $zdb, $login, $hist, $i18n; // globals :(
-        $zdb = $this->zdb;
-        $login = $this->login;
-        $hist = $this->history;
-        $i18n = $this->i18n;
-
-        $status = new \Galette\Entity\Status($this->zdb);
-        if (count($status->getList()) === 0) {
-            $res = $status->installInit();
-            $this->boolean($res)->isTrue();
-        }
+        parent::beforeTestMethod($testMethod);
+        $this->initStatus();
+        $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
             $this->preferences,
@@ -135,15 +89,25 @@ class Reminders extends atoum
      */
     public function afterTestMethod($testMethod)
     {
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
+        $this->cleanContributions();
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
 
         $delete = $this->zdb->delete(\Galette\Entity\Reminder::TABLE);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Clean created contributions
+     *
+     * @return void
+     */
+    private function cleanContributions(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
     }
 
@@ -167,8 +131,8 @@ class Reminders extends atoum
         $this->array($reminders->getList($this->zdb))->isIdenticalTo([]);
 
         //create member
-        $this->createAdherent();
-        $id = current($this->ids);
+        $this->getMemberTwo();
+        $id = $this->adh->id;
 
         //create contribution, just about to be impending
         $now = new \DateTime();
@@ -188,7 +152,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -205,6 +168,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -215,7 +179,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -233,6 +196,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -243,7 +207,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -307,6 +270,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -317,7 +281,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -334,6 +297,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -344,7 +308,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -374,7 +337,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -393,6 +355,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -403,7 +366,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -422,6 +384,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -432,7 +395,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -474,6 +436,7 @@ class Reminders extends atoum
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -484,7 +447,6 @@ class Reminders extends atoum
             'date_enreg'            => $now->format('Y-m-d'),
             'date_debut_cotis'      => $now->format('Y-m-d')
         ]);
-        $cid = current($this->contribs_ids);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
@@ -494,199 +456,5 @@ class Reminders extends atoum
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(1);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
-    }
-
-    /**
-     * Create test user in database
-     *
-     * @return void
-     */
-    private function createAdherent()
-    {
-        $bdate = new \DateTime(date('Y') . '-09-13');
-        //member is expected to be 28 years old
-        $bdate->sub(new \DateInterval('P28Y'));
-
-        $data = [
-            'nom_adh' => 'Hoarau',
-            'prenom_adh' => 'Lucas',
-            'ville_adh' => 'Reynaudnec',
-            'cp_adh' => '63077',
-            'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau@tele2.fr',
-            'login_adh' => 'nathalie51',
-            'mdp_adh' => 'T.u!IbKOi|06',
-            'mdp_adh2' => 'T.u!IbKOi|06',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => false,
-            'sexe_adh' => 1,
-            'prof_adh' => 'Extraction',
-            'titre_adh' => null,
-            'ddn_adh' => $bdate->format('Y-m-d'),
-            'lieu_naissance' => 'Fischer',
-            'pseudo_adh' => 'vallet.camille',
-            'pays_adh' => null,
-            'tel_adh' => '05 59 53 59 43',
-            'url_adh' => 'http://bodin.net/omnis-ratione-sint-dolorem-architecto',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'date_crea_adh' => '2019-05-20',
-            'pref_lang' => 'ca',
-            'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => 'Philippe',
-            'is_company' => true,
-        ];
-        $this->createMember($data);
-        $this->checkMemberExpected();
-    }
-
-    /**
-     * Create member from data
-     *
-     * @param array $data Data to use to create member
-     *
-     * @return \Galette\Entity\Adherent
-     */
-    public function createMember(array $data)
-    {
-        $adh = $this->adh;
-        $check = $adh->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->boolean($check)->isTrue();
-
-        $store = $adh->store();
-        $this->boolean($store)->isTrue();
-
-        $this->ids[] = $adh->id;
-    }
-
-    /**
-     * Check members expecteds
-     *
-     * @param Adherent $adh           Member instance, if any
-     * @param array    $new_expecteds Changes on expected values
-     *
-     * @return void
-     */
-    private function checkMemberExpected($adh = null, $new_expecteds = [])
-    {
-        if ($adh === null) {
-            $adh = $this->adh;
-        }
-
-        $expecteds = [
-            'nom_adh' => 'Hoarau',
-            'prenom_adh' => 'Lucas',
-            'ville_adh' => 'Reynaudnec',
-            'cp_adh' => '63077',
-            'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau@tele2.fr',
-            'login_adh' => 'nathalie51',
-            'mdp_adh' => 'T.u!IbKOi|06',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => false,
-            'sexe_adh' => 1,
-            'prof_adh' => 'Extraction',
-            'titre_adh' => null,
-            'ddn_adh' => 'NOT USED',
-            'lieu_naissance' => 'Fischer',
-            'pseudo_adh' => 'vallet.camille',
-            'pays_adh' => '',
-            'tel_adh' => '05 59 53 59 43',
-            'url_adh' => 'http://bodin.net/omnis-ratione-sint-dolorem-architecto',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'pref_lang' => 'ca',
-            'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => 'Philippe'
-        ];
-        $expecteds = array_merge($expecteds, $new_expecteds);
-
-        foreach ($expecteds as $key => $value) {
-            $property = $this->members_fields[$key]['propname'];
-            switch ($key) {
-                case 'bool_admin_adh':
-                    $this->boolean($adh->isAdmin())->isIdenticalTo($value);
-                    break;
-                case 'bool_exempt_adh':
-                    $this->boolean($adh->isDueFree())->isIdenticalTo($value);
-                    break;
-                case 'bool_display_info':
-                    $this->boolean($adh->appearsInMembersList())->isIdenticalTo($value);
-                    break;
-                case 'activite_adh':
-                    $this->boolean($adh->isActive())->isIdenticalTo($value);
-                    break;
-                case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
-                    $this->boolean($pw_checked)->isTrue();
-                    break;
-                case 'ddn_adh':
-                    //rely on age, not on birthdate
-                    $this->variable($adh->$property)->isNotNull();
-                    $this->string($adh->getAge())->isIdenticalTo(' (28 years old)');
-                    break;
-                default:
-                    $this->variable($adh->$property)->isIdenticalTo(
-                        $value,
-                        "$property expected {$value} got {$adh->$property}"
-                    );
-                    break;
-            }
-        }
-
-        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
-
-        $expected_str = ' (28 years old)';
-        $this->string($adh->getAge())->isIdenticalTo($expected_str);
-        $this->boolean($adh->hasChildren())->isFalse();
-        $this->boolean($adh->hasParent())->isFalse();
-        $this->boolean($adh->hasPicture())->isFalse();
-
-        $this->string($adh->sadmin)->isIdenticalTo('No');
-        $this->string($adh->sdue_free)->isIdenticalTo('No');
-        $this->string($adh->sappears_in_list)->isIdenticalTo('No');
-        $this->string($adh->sstaff)->isIdenticalTo('No');
-        $this->string($adh->sactive)->isIdenticalTo('Active');
-        $this->variable($adh->stitle)->isNull();
-        $this->string($adh->sstatus)->isIdenticalTo('Non-member');
-        $this->string($adh->sfullname)->isIdenticalTo('HOARAU Lucas');
-        $this->string($adh->saddress)->isIdenticalTo('2, boulevard Legros');
-        $this->string($adh->sname)->isIdenticalTo('HOARAU Lucas');
-
-        $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isEmpty();
-        $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
-        $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
-        $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
-
-        $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('HOARAU Lucas');
-        $this->string($adh->getRowClass())->isIdenticalTo('active cotis-never');
-    }
-
-    /**
-     * Create contribution from data
-     *
-     * @param array $data Data to use to create contribution
-     *
-     * @return \Galette\Entity\Contribution
-     */
-    public function createContrib(array $data)
-    {
-        $contrib = $this->contrib;
-        $check = $contrib->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->boolean($check)->isTrue();
-
-        $store = $contrib->store();
-        $this->boolean($store)->isTrue($store);
-
-        $this->contribs_ids[] = (int)$contrib->id;
     }
 }

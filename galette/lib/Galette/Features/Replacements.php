@@ -470,6 +470,7 @@ trait Replacements
 
         return $this;
     }
+
     /**
      * Set contribution and proceed related replacements
      *
@@ -874,5 +875,15 @@ trait Replacements
         );
 
         return $replaced;
+    }
+
+    /**
+     * Get patterns
+     *
+     * @return array
+     */
+    public function getPatterns(): array
+    {
+        return $this->patterns;
     }
 }
