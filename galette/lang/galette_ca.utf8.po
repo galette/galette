@@ -2,13 +2,14 @@
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 # Joan Montané <joan@montane.cat>, 2020.
+# Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-24 06:25+0000\n"
-"Last-Translator: Joan Montané <joan@montane.cat>\n"
+"PO-Revision-Date: 2020-12-30 17:29+0000\n"
+"Last-Translator: Pol Casares Civit <pol.casares@e-campus.uab.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -2941,7 +2942,6 @@ msgid "Contribution year"
 msgstr "Any de contribució"
 
 #: ../lib/Galette/Entity/PdfContribution.php:110
-#, fuzzy
 msgid "Comment"
 msgstr "Comentari"
 
