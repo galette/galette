@@ -1112,6 +1112,9 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 $members_fields_cats,
                 true
             );
+
+            global $login;
+            $login = new \Galette\Core\Login($zdb, $i18n);
             //$fc = new \Galette\Entity\FieldsCategories();
             $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles();

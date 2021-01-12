@@ -95,9 +95,11 @@ class Texts
             + $this->getContributionPatterns()
         );
 
-        $this
-            ->setMain()
-            ->setMail();
+        if (GALETTE_MODE !== 'INSTALL') {
+            $this
+                ->setMain()
+                ->setMail();
+        }
     }
 
     /**
