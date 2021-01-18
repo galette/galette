@@ -11,13 +11,14 @@
 # Luz Maria Cerqueda <lux8324@gmail.com>, 2020.
 # Saul Henriquez <saul_henriquez@hotmail.com>, 2020.
 # iDu^32*M!hvC&8 <tinakus.nav@gmail.com>, 2020.
+# Johana <jarajoha517@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-17 07:31+0000\n"
-"Last-Translator: iDu^32*M!hvC&8 <tinakus.nav@gmail.com>\n"
+"PO-Revision-Date: 2021-01-19 16:26+0000\n"
+"Last-Translator: Johana <jarajoha517@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -25,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -460,7 +461,7 @@ msgstr "Se almacenó la contribución correctamente"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:586
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "Se produjo un error al almacenar la contribución."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:684
 #, php-format
@@ -469,7 +470,7 @@ msgstr "Eliminar %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
 msgid "contributions"
-msgstr ""
+msgstr "contribuciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
 msgid "transactions"
@@ -478,12 +479,12 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "Eliminar %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
-msgstr ""
+msgstr "contribución"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
 msgid "transaction"
@@ -491,15 +492,15 @@ msgstr "transacción"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:124
 msgid "An SQL error has occurred while storing search."
-msgstr ""
+msgstr "Se ha producido un error de SQL al almacenar la búsqueda."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:129
 msgid "This search is already saved."
-msgstr ""
+msgstr "Esta búsqueda ya está guardada."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:135
 msgid "Search has been saved."
-msgstr ""
+msgstr "La búsqueda se ha guardado."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
 msgid "Saved searches"
