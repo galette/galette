@@ -33,7 +33,7 @@
                 <select name="parent_id" id="parent_id" class="nochosen">
                     <option value="">{_T string="-- select a name --"}</option>
                     {foreach $members.list as $k=>$v}
-                        <option value="{$k}"{if $member->isDuplicate() && $member->parent->id eq $k} selected="selected"{/if}>{$v}</option>
+                        <option value="{$k}"{if $member->isDuplicate() && isset($member->parent) && $member->parent->id eq $k} selected="selected"{/if}>{$v}</option>
                     {/foreach}
                 </select>
             </span>
