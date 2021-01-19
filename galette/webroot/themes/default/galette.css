@@ -743,7 +743,8 @@ legend .tab-button {
 
 .bigbutton {
     padding-top:30px!important;
-    padding-left: 0!important;
+    padding-left: .5em!important;
+    padding-right: .5em!important;
     display: block;
     text-align: center;
 }
@@ -753,6 +754,7 @@ legend .tab-button {
     position:absolute;
     top: .2em;
     left: 0;
+    padding-right: 0;
 }
 
 .left {
