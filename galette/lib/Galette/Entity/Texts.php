@@ -60,7 +60,9 @@ use Slim\Router;
  */
 class Texts
 {
-    use Replacements;
+    use Replacements {
+        getLegend as protected trait_getLegend;
+    }
 
     private $all_texts;
     public const TABLE = "texts";
@@ -68,6 +70,7 @@ class Texts
     public const DEFAULT_REF = 'sub';
 
     private $defaults;
+    private $current;
 
     /**
      * Main constructor
@@ -122,21 +125,37 @@ class Texts
             ],
             'link_validity'     => [
                 'title'     => _T('Link validity'),
-                'pattern'   => '/{LINK_VALIDITY}/'
+                'pattern'   => '/{LINK_VALIDITY}/',
+                'onlyfor'   => ['sub', 'pwd']
             ],
             'link_membercard'   => [
                 'title'     => _T('Direct link for member card download'),
                 'pattern'   => '/{LINK_MEMBERCARD}/',
+                'onlyfor'   => ['contrib', 'donation']
             ],
             'link_contribpdf'   => [
                 'title'     => _T('Direct link for invoice/receipt download'),
-                'pattern'   => '/{LINK_CONTRIBPDF}/'
+                'pattern'   => '/{LINK_CONTRIBPDF}/',
+                'onlyfor'   => ['contrib', 'donation']
             ],
             'change_pass_uri'       => [
                 'title'     => _T("Galette's change password URI"),
-                'pattern'   => '/{CHG_PWD_URI}/'
+                'pattern'   => '/{CHG_PWD_URI}/',
+                'onlyfor'   => ['sub', 'pwd']
             ],
         ];
+
+        //clean based on current ref and onlyfor
+        if ($this->current !== null) {
+            foreach ($m_patterns as $key => $m_pattern) {
+                if (
+                    isset($m_pattern['onlyfor'])
+                    && !in_array($this->current, $m_pattern['onlyfor'])
+                ) {
+                    unset($m_patterns[$key]);
+                }
+            }
+        }
 
         return $m_patterns;
     }
@@ -589,5 +608,45 @@ class Texts
         //reset to current lang
         $i18n->changeLanguage($current_lang);
         return $texts;
+    }
+
+    /**
+     * Build legend array
+     *
+     * @return array
+     */
+    public function getLegend(): array
+    {
+        $legend = $this->trait_getLegend();
+
+        $contribs = ['contrib', 'newcont', 'donation', 'newdonation'];
+        if ($this->current !== null && in_array($this->current, $contribs)) {
+            $patterns = $this->getContributionPatterns(false);
+            $legend['contribution'] = [
+                'title' => _T('Contribution information'),
+                'patterns' => $patterns
+            ];
+        }
+
+        $patterns = $this->getMailPatterns(false);
+        $legend['mail'] = [
+            'title'     => _T('Mail specific'),
+            'patterns'  => $patterns
+        ];
+
+        return $legend;
+    }
+
+    /**
+     * Set current text reference
+     *
+     * @param string $ref Reference
+     *
+     * @return Texts
+     */
+    public function setCurrent(string $ref): self
+    {
+        $this->current = $ref;
+        return $this;
     }
 }

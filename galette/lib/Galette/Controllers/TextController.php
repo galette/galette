@@ -81,6 +81,7 @@ class TextController extends AbstractController
             $this->router
         );
 
+        $texts->setCurrent($ref);
         $mtxt = $texts->getTexts($ref, $lang);
 
         // display page
@@ -89,6 +90,7 @@ class TextController extends AbstractController
             'gestion_textes.tpl',
             [
                 'page_title'        => _T("Automatic emails texts edition"),
+                'texts'             => $texts,
                 'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
                 'cur_lang'          => $lang,
