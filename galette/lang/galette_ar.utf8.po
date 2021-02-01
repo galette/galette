@@ -6,12 +6,13 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 # Woodyx <shiposhouyou@gmail.com>, 2020.
+# Mustafa Wahhudi <mustafawahhudi@gmail.com>, 2021.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-12 18:26+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-02-02 15:00+0000\n"
+"Last-Translator: Mustafa Wahhudi <mustafawahhudi@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2386,7 +2387,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
-msgstr ""
+msgstr "بايبال"
 
 #: ../lib/Galette/Entity/Status.php:119
 msgid "status"
