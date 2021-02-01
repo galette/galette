@@ -13,13 +13,14 @@
 # iDu^32*M!hvC&8 <tinakus.nav@gmail.com>, 2020.
 # Johana <jarajoha517@gmail.com>, 2021.
 # Nicolás S. Gómez <nicogomfor@gmail.com>, 2021.
+# Berto Te <Bertote@3fpj.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-01-24 22:32+0000\n"
-"Last-Translator: Nicolás S. Gómez <nicogomfor@gmail.com>\n"
+"PO-Revision-Date: 2021-02-01 07:30+0000\n"
+"Last-Translator: Berto Te <Bertote@3fpj.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -1833,7 +1834,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:499
 msgid "Mime-Type not allowed"
-msgstr "No se permite el tipo MIME"
+msgstr "Mime-Type no permitido"
 
 #: ../lib/Galette/IO/FileTrait.php:502
 msgid "A file with that name already exists!"
@@ -5446,7 +5447,7 @@ msgstr ""
 
 #: ../templates/default/desktop.tpl:26
 msgid "Activities"
-msgstr ""
+msgstr "Actividades"
 
 #: ../templates/default/desktop.tpl:56
 msgid "News"
