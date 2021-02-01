@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-01 07:30+0000\n"
+"PO-Revision-Date: 2021-02-02 15:00+0000\n"
 "Last-Translator: Berto Te <Bertote@3fpj.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -135,7 +135,7 @@ msgstr "Quitar grupo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:486
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
-msgstr "El grupo no está vacío, no puede ser borrado. Use borrado en cascada."
+msgstr "Grupo no es vacillo, no se puede borrar. Usa borar en cacascada."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:102
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:106
@@ -522,10 +522,8 @@ msgid "Saved search loaded"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:357
-#, fuzzy
-#| msgid "An error occurred while storing the member."
 msgid "An SQL error has occurred while loading search."
-msgstr "Se produjo un error al almacenar al miembro."
+msgstr "Se ha producido un error de SQL al cargar la búsqueda."
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
 msgid "System information"
@@ -616,20 +614,16 @@ msgid "An error occurred while storing fields configuration :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:587
-#, fuzzy
-#| msgid "Fields configuration"
 msgid "Lists configuration"
-msgstr "Configuración de campos"
+msgstr "Configuración de listas"
 
 #: ../lib/Galette/Controllers/GaletteController.php:625
 msgid "List configuration has been successfully stored"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:630
-#, fuzzy
-#| msgid "An error occurred displaying contributions :("
 msgid "An error occurred while storing list configuration :("
-msgstr "Se produjo un error al mostrar las contribuciones :("
+msgstr "Se produjo un error al almacenar la configuración de la lista :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:664
 msgid "Reminders"
@@ -848,17 +842,12 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:111
-#, fuzzy
-#| msgid ""
-#| "Some PHP modules are missing. Please install them or contact your support."
-#| "<br/>More informations on required modules may be found in the "
-#| "documentation."
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
 "Faltan algunos módulos de PHP. Instálelos o póngase en contacto con el "
-"personal de asistencia.<br/>Encontrará en la documentación más información "
+"personal de asistencia.<br>Encontrará en la documentación más información "
 "sobre los módulos requeridos."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
@@ -1054,7 +1043,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:290
 msgid "Checks"
-msgstr ""
+msgstr "Verificaciones"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:291
 #: ../install/steps/type.php:39
@@ -1064,7 +1053,7 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:292
 #: ../install/steps/db.php:40 ../install/steps/db.php:66
 msgid "Database"
-msgstr ""
+msgstr "Base de datos"
 
 #: ../lib/Galette/Core/Install.php:131
 msgid "Database access and permissions"
@@ -1129,11 +1118,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1129
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: ../lib/Galette/Core/Install.php:1133
 msgid "Contributions types"
-msgstr ""
+msgstr "Tipos de contribución"
 
 #: ../lib/Galette/Core/Install.php:1137
 msgid "Status"
@@ -1522,11 +1511,11 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 msgid "Contributions"
-msgstr ""
+msgstr "Contribuciones"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
 msgid "Transactions"
-msgstr ""
+msgstr "Transacciones"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:597
 msgid "Missing required field name!"
@@ -1810,7 +1799,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersCards.php:106
 msgid "Cards"
-msgstr ""
+msgstr "Naipes"
 
 #: ../lib/Galette/IO/FileTrait.php:477
 msgid "An error occurred."
@@ -1896,9 +1885,8 @@ msgid "invoice"
 msgstr "factura"
 
 #: ../lib/Galette/Entity/ListsConfig.php:215
-#, fuzzy
 msgid "Is admin"
-msgstr "[admin]"
+msgstr "Es administrador"
 
 #: ../lib/Galette/Entity/ListsConfig.php:218
 msgid "Modified"
@@ -1980,10 +1968,8 @@ msgid "Late of %days days (since %date)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:802
-#, fuzzy
-#| msgid "Manage members"
 msgid "No longer member"
-msgstr "Gestionar miembros"
+msgstr "Ya no es miembro"
 
 #: ../lib/Galette/Entity/Adherent.php:814
 #, php-format
@@ -2202,8 +2188,6 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1047
 #: ../lib/Galette/Entity/PdfContribution.php:198
-#, fuzzy
-#| msgid "Contribution informations"
 msgid "Contribution information"
 msgstr "Información sobre la contribución"
 
@@ -2242,14 +2226,12 @@ msgid "%field should not be empty!"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Etiqueta para el campo dinámico \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Input for dynamic field \"%s\""
 msgstr "Entrada para el campo dinámico \"%s\""
 
@@ -2308,10 +2290,8 @@ msgid "Member's ID"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:664
-#, fuzzy
-#| msgid "First name"
 msgid "Last name"
-msgstr "Nombre"
+msgstr "Apellido"
 
 #: ../lib/Galette/Entity/PdfModel.php:668 ../includes/i18n.inc.php:330
 msgid "First name"
@@ -2322,10 +2302,8 @@ msgid "Nickname"
 msgstr "Apodo"
 
 #: ../lib/Galette/Entity/PdfModel.php:676
-#, fuzzy
-#| msgid "Reminders"
 msgid "Gender"
-msgstr "Recordatorios"
+msgstr "Género"
 
 #: ../lib/Galette/Entity/PdfModel.php:680
 msgid "Birth date"
@@ -2376,15 +2354,12 @@ msgid "None"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:925
-#, fuzzy
 msgid "Main information"
-msgstr "Información de contacto"
+msgstr "Informacion principal"
 
 #: ../lib/Galette/Entity/PdfModel.php:930
-#, fuzzy
-#| msgid "Other informations:"
 msgid "Member information"
-msgstr "Información del miembro :"
+msgstr "Información del miembro"
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 msgid "You cannot delete system payment types!"
@@ -2506,8 +2481,6 @@ msgid "Route '%name' is not registered in ACLs!"
 msgstr "¡La ruta «%name» no está registrada con los ACL!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:136
-#, fuzzy
-#| msgid "Route '%name' is not registered in ACLs!"
 msgid "Routes '%names' are not registered in ACLs!"
 msgstr "¡Las rutas «%names» no estan registrada con los ACL!"
 
@@ -2615,10 +2588,8 @@ msgid "New account email sent to admin for '%s'."
 msgstr "Se envió un mensaje de cuenta nueva al administrador de «%s»."
 
 #: ../lib/Galette/Events/MemberListener.php:358
-#, fuzzy
-#| msgid "Account modification mail sent to admin."
 msgid "Account modification email sent to admin."
-msgstr "Se envió un mensaje para modificar la cuenta al administrador."
+msgstr "Se envió un mensaje al administrador para modificar la cuenta."
 
 #: ../lib/Galette/Events/MemberListener.php:370
 #, php-format
@@ -2778,8 +2749,6 @@ msgid "Member photo has been changed."
 msgstr ""
 
 #: ../includes/routes/ajax.routes.php:217
-#, fuzzy
-#| msgid "Telemetry informations has been sent. Thank you!"
 msgid "Telemetry information has been sent. Thank you!"
 msgstr "Se envió la información de telemetría. ¡Gracias!"
 
@@ -3112,14 +3081,10 @@ msgid "Jabber:"
 msgstr "Jabber:"
 
 #: ../includes/fields_defs/members_fields.php:217
-#, fuzzy
-#| msgid "Other informations:"
 msgid "Other information (admin):"
-msgstr "Otra información:"
+msgstr "Otra información (admin):"
 
 #: ../includes/fields_defs/members_fields.php:225
-#, fuzzy
-#| msgid "Other informations:"
 msgid "Other information:"
 msgstr "Otra información:"
 
@@ -3235,10 +3200,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:59
-#, fuzzy
-#| msgid "List of contributions"
 msgid "Receipt send for new contribution"
-msgstr "Lista de contribuciones"
+msgstr "Recibo enviado para nueva contribución"
 
 #: ../includes/fields_defs/texts_fields.php:64
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
@@ -3267,10 +3230,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:75
-#, fuzzy
-#| msgid "No contribution selected"
 msgid "New contribution (sent to admin)"
-msgstr "No se seleccionó ninguna contribución"
+msgstr "Nueva contribución enviada al administrador"
 
 #: ../includes/fields_defs/texts_fields.php:80
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
@@ -3372,9 +3333,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:131
-#, fuzzy
 msgid "Informs admin a member edit his information"
-msgstr "Información de contacto"
+msgstr "Informa al administrador que un miembro edita su información"
 
 #: ../includes/fields_defs/texts_fields.php:136
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
@@ -4212,7 +4172,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:6
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: ../templates/default/preferences.tpl:7
 #: ../templates/default/preferences.tpl:118
@@ -4222,22 +4182,22 @@ msgstr ""
 #: ../templates/default/preferences.tpl:8
 #: ../templates/default/saved_searches.tpl:11
 msgid "Parameters"
-msgstr ""
+msgstr "Parámetros"
 
 #: ../templates/default/preferences.tpl:9
 msgid "E-Mail"
-msgstr ""
+msgstr "Correo electrónico"
 
 #: ../templates/default/preferences.tpl:13
 msgid "Security"
-msgstr ""
+msgstr "Seguridad"
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:213
 #: ../templates/default/gestion_adherents.tpl:418
 #: ../templates/default/gestion_adherents.tpl:419
 msgid "Admin"
-msgstr ""
+msgstr "Administrador"
 
 #: ../templates/default/preferences.tpl:20
 msgid "General information"
@@ -4342,9 +4302,8 @@ msgid "Date on which you registered your Galette instance."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:105
-#, fuzzy
 msgid "Update your information"
-msgstr "Actualizar sus datos"
+msgstr "Actualiza tus datos"
 
 #: ../templates/default/preferences.tpl:108 ../templates/default/desktop.tpl:16
 msgid "Register"
@@ -4628,10 +4587,8 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:327
 #: ../templates/default/preferences.tpl:634
-#, fuzzy
-#| msgid "Reset emails contents"
 msgid "Test email settings"
-msgstr "Restablecer contenido de mensajes de correo"
+msgstr "Prueba de la configuración del correo electrónico"
 
 #: ../templates/default/preferences.tpl:332
 msgid "SMTP server:"
@@ -4858,10 +4815,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/preferences.tpl:530
-#, fuzzy
-#| msgid "Search parameters"
 msgid "Security parameters"
-msgstr "Parámetros de búsqueda"
+msgstr "Parámetros de seguridad"
 
 #: ../templates/default/preferences.tpl:532
 #: ../templates/default/preferences.tpl:533
@@ -4869,10 +4824,8 @@ msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:532
-#, fuzzy
-#| msgid "Password:"
 msgid "Password length:"
-msgstr "Contraseña:"
+msgstr "Longitud de la contraseña:"
 
 #: ../templates/default/preferences.tpl:537
 msgid "Enable password blacklists"
@@ -4893,10 +4846,8 @@ msgid "Enforce password strength"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:542
-#, fuzzy
-#| msgid "Password:"
 msgid "Password strength:"
-msgstr "Contraseña:"
+msgstr "Complejidad de la contraseña:"
 
 #: ../templates/default/preferences.tpl:544
 msgid "Enforce minimal password strength for all password."
@@ -4971,10 +4922,8 @@ msgid "Test a password with current selected values."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:563
-#, fuzzy
-#| msgid "New password:"
 msgid "Test a password:"
-msgstr "Contraseña nueva:"
+msgstr "Pruebe una contraseña:"
 
 #: ../templates/default/preferences.tpl:564
 msgid ""
@@ -5096,8 +5045,7 @@ msgid "See member profile"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:52
-#, fuzzy, php-format
-#| msgid "List of contributions"
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
 msgstr[0] "%count contribucion"
@@ -5398,20 +5346,16 @@ msgid "Access permissions to database"
 msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:30
-#, fuzzy
-#| msgid "Password:"
 msgid "Password is valid :)"
-msgstr "Contraseña es válido :)"
+msgstr "Contraseña válida :)"
 
 #: ../templates/default/js_pwdcheck.tpl:33
 msgid "Password is not valid!"
 msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:60
-#, fuzzy
-#| msgid "An error occurred reinitializing texts :("
 msgid "An error occured checking password :("
-msgstr "Se produjo un error al reinicializar los textos :("
+msgstr "Ocurrió un error al verificar la contraseña :("
 
 #: ../templates/default/desktop.tpl:6
 msgid "Help us know about you!"
@@ -5863,8 +5807,7 @@ msgstr "Mostrar/ocultar consulta"
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-#, fuzzy, php-format
-#| msgid "%membercount members"
+#, php-format
 msgid "%count member"
 msgid_plural "%count members"
 msgstr[0] "%count miembro"
@@ -6106,10 +6049,8 @@ msgid "Read/Write"
 msgstr "Lectura/escritura"
 
 #: ../templates/default/config_lists.tpl:31
-#, fuzzy
-#| msgid "Available only for reminders"
 msgid "Available fields"
-msgstr "Disponible únicamente para los recordatorios"
+msgstr "Campos disponibles"
 
 #: ../templates/default/export.tpl:5
 msgid ""
@@ -6531,9 +6472,8 @@ msgid "Load previous members..."
 msgstr "Cargar miembros anteriores…"
 
 #: ../templates/default/mailing_adherents.tpl:12
-#, fuzzy
 msgid "Mailing information"
-msgstr "Información de contacto"
+msgstr "Información de envío"
 
 #: ../templates/default/mailing_adherents.tpl:17
 msgid "Go back to members list"
@@ -6738,10 +6678,8 @@ msgid "Remove"
 msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:10
-#, fuzzy
-#| msgid "Contribution informations"
 msgid "Related transaction information"
-msgstr "Información sobre la contribución"
+msgstr "Información relacionada con la transacción"
 
 #: ../templates/default/ajouter_contribution.tpl:15
 msgid "View transaction"
@@ -6989,32 +6927,24 @@ msgid "Statuts"
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:97
-#, fuzzy
-#| msgid "Advanced search"
 msgid "Advanced groups search"
-msgstr "Búsqueda avanzada"
+msgstr "Búsqueda avanzada de grupos"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
 msgstr "Experimental"
 
 #: ../templates/default/advanced_search.tpl:104
-#, fuzzy
-#| msgid "Change search criteria"
 msgid "Add new group search criteria"
-msgstr "Cambiar criterios de búsqueda"
+msgstr "Agregar nuevos criterios de búsqueda de grupos"
 
 #: ../templates/default/advanced_search.tpl:108
-#, fuzzy
-#| msgid "Selected groups"
 msgid "In all selected groups"
-msgstr "Grupos seleccionados"
+msgstr "En todos los grupos seleccionados"
 
 #: ../templates/default/advanced_search.tpl:109
-#, fuzzy
-#| msgid "Selected groups"
 msgid "In any of selected groups"
-msgstr "Grupos seleccionados"
+msgstr "En cualquiera de los grupos seleccionados"
 
 #: ../templates/default/advanced_search.tpl:125
 #: ../templates/default/advanced_search.tpl:297
@@ -7198,8 +7128,6 @@ msgid "New group"
 msgstr "Grupo nuevo"
 
 #: ../templates/default/gestion_groupes.tpl:26
-#, fuzzy
-#| msgid "Group informations"
 msgid "Group information"
 msgstr "Información del grupo"
 
@@ -7354,8 +7282,7 @@ msgid "Show all members transactions"
 msgstr "Mostrar transacciones de todos los miembros"
 
 #: ../templates/default/gestion_transactions.tpl:32
-#, fuzzy, php-format
-#| msgid "transaction"
+#, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
 msgstr[0] "%count transacción"
@@ -7472,10 +7399,8 @@ msgid "Send telemetry information"
 msgstr ""
 
 #: ../templates/default/telemetry.tpl:39
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred sending telemetry information :("
-msgstr "Se produjo un error al intentar eliminar el campo :("
+msgstr "Se produjo un error al enviar información de telemetría :("
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
@@ -7537,9 +7462,8 @@ msgid "No ACLs!"
 msgstr ""
 
 #: ../templates/default/plugin_info.tpl:44
-#, fuzzy
 msgid "Raw information"
-msgstr "Información de contacto"
+msgstr "Información en bruto"
 
 #: ../templates/default/public_page.tpl:36
 msgid "View your member card"
