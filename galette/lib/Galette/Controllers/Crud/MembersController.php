@@ -1590,7 +1590,7 @@ class MembersController extends CrudController
 
         // Validation
         $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
-        if (isset($post[array_shift($real_requireds)])) {
+        if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
             // regular fields
             $valid = $member->check($post, $required, $disabled);
             if ($valid !== true) {
