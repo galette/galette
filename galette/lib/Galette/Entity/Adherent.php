@@ -1657,7 +1657,7 @@ class Adherent
                         return (($this->$real) ? _T("Active") : _T("Inactive"));
                         break;
                     case 'stitle':
-                        if (isset($this->_title)) {
+                        if (isset($this->_title) && $this->_title instanceof Title) {
                             return $this->_title->tshort;
                         } else {
                             return null;
