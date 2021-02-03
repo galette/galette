@@ -2019,7 +2019,7 @@ msgstr "En retard de %days jours (depuis le %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:802
 msgid "No longer member"
-msgstr "N'est plus adéhrent"
+msgstr "N'est plus adhérent"
 
 #: ../lib/Galette/Entity/Adherent.php:814
 #, php-format
