@@ -15,13 +15,14 @@
 # Nicolás S. Gómez <nicogomfor@gmail.com>, 2021.
 # Berto Te <Bertote@3fpj.com>, 2021.
 # Eunice Soria <eunice.soria.es@gmail.com>, 2021.
+# Gabriel Ortiz Severino <gabrielortizseverino@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
 "PO-Revision-Date: 2021-02-06 00:42+0000\n"
-"Last-Translator: Eunice Soria <eunice.soria.es@gmail.com>\n"
+"Last-Translator: Gabriel Ortiz Severino <gabrielortizseverino@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -397,7 +398,7 @@ msgstr "Remover título %1$s"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:120
 msgid "User statuses"
-msgstr ""
+msgstr "Estado del Usuario"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:126
 msgid "Contribution types"
@@ -477,7 +478,7 @@ msgstr "contribuciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
 msgid "transactions"
-msgstr ""
+msgstr "Transacciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
 #, php-format
@@ -507,11 +508,11 @@ msgstr "La búsqueda se ha guardado."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
 msgid "Saved searches"
-msgstr ""
+msgstr "Búsquedas guardadas"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:296
 msgid "Remove saved search"
-msgstr ""
+msgstr "Borrar búsquedas guardadas"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:303
 #, php-format
@@ -520,7 +521,7 @@ msgstr "Vas a remover %count busquedas."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:352
 msgid "Saved search loaded"
-msgstr ""
+msgstr "Búsqueda guardada cargada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:357
 msgid "An SQL error has occurred while loading search."
@@ -528,25 +529,25 @@ msgstr "Se ha producido un error de SQL al cargar la búsqueda."
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
 msgid "System information"
-msgstr ""
+msgstr "Información del sistema"
 
 #: ../lib/Galette/Controllers/GaletteController.php:128
 msgid "Dashboard"
-msgstr ""
+msgstr "Tablero"
 
 #: ../lib/Galette/Controllers/GaletteController.php:233
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
 #: ../lib/Galette/Controllers/GaletteController.php:248
 #: ../lib/Galette/Filters/MembersList.php:306
 msgid "All accounts"
-msgstr ""
+msgstr "Todas las cuentas"
 
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:307
 msgid "Active accounts"
-msgstr ""
+msgstr "Activar cuentas"
 
 #: ../lib/Galette/Controllers/GaletteController.php:250
 #: ../lib/Galette/Filters/MembersList.php:308
@@ -564,25 +565,27 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:279
 msgid "Preferences has been saved."
-msgstr ""
+msgstr "Las preferencias han sido guardadas."
 
 #: ../lib/Galette/Controllers/GaletteController.php:392
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 msgstr ""
+"Has pedido que Galette enviará un email de prueba, pero los emails han sido "
+"deshabilitados en las preferencias."
 
 #: ../lib/Galette/Controllers/GaletteController.php:399
 msgid "Test message"
-msgstr ""
+msgstr "Mensaje de prueba"
 
 #: ../lib/Galette/Controllers/GaletteController.php:402
 msgid "Galette admin"
-msgstr ""
+msgstr "Administrador de Galette"
 
 #: ../lib/Galette/Controllers/GaletteController.php:405
 msgid "Test message."
-msgstr ""
+msgstr "Mensaje de prueba."
 
 #: ../lib/Galette/Controllers/GaletteController.php:414
 #, php-format
@@ -596,11 +599,11 @@ msgstr "Ningún correo enviado a %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:430
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Correo electrónico invalido!"
 
 #: ../lib/Galette/Controllers/GaletteController.php:473
 msgid "Charts"
-msgstr ""
+msgstr "Gráficos"
 
 #: ../lib/Galette/Controllers/GaletteController.php:494
 msgid "Fields configuration"
