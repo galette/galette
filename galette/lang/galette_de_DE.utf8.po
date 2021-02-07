@@ -20,9 +20,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-01-06 16:29+0000\n"
+"PO-Revision-Date: 2021-02-08 06:50+0000\n"
 "Last-Translator: Manuel Zeschko <moebyus@pm.me>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4.1-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1187,7 +1187,7 @@ msgstr "Wie viel ist %1$s plus %2$s?"
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr "Wie viel wird %1$s zu %2$s hinzugefügt?"
+msgstr "Wie viel ist %1$s mit %2$s hinzugefügt?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, php-format
