@@ -170,6 +170,7 @@ class DynamicTranslationsController extends AbstractController
     public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
+        $post['text_orig'] = htmlspecialchars($post['text_orig'], ENT_QUOTES);
         $error_detected = [];
 
         if (isset($post['trans']) && isset($post['text_orig'])) {

@@ -203,8 +203,8 @@ class PluginsController extends AbstractController
             $install->atPreviousStep();
         } elseif (isset($post['install_prefs_ok'])) {
             $install->atEndStep();
-        } elseif (isset($_POST['previous_version'])) {
-            $install->setInstalledVersion($_POST['previous_version']);
+        } elseif (isset($post['previous_version'])) {
+            $install->setInstalledVersion($post['previous_version']);
             $install->atDbUpgradeStep();
         } elseif (isset($post['install_dbperms_ok'])) {
             if ($install->isInstall()) {
@@ -286,7 +286,7 @@ class PluginsController extends AbstractController
                     $update_scripts = Install::getUpdateScripts(
                         $plugin['root'],
                         TYPE_DB,
-                        $_POST['previous_version']
+                        $post['previous_version']
                     );
                 } else {
                     $update_scripts['current'] = TYPE_DB . '.sql';

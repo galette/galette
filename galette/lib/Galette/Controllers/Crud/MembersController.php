@@ -397,7 +397,7 @@ class MembersController extends CrudController
         } else {
             //number of rows to show
             if (isset($post['nbshow'])) {
-                $filters->show = $post['nbshow'];
+                $filters->show = (int)$post['nbshow'];
             }
         }
 
@@ -654,7 +654,7 @@ class MembersController extends CrudController
             }
             //number of rows to show
             if (isset($post['nbshow'])) {
-                $filters->show = $post['nbshow'];
+                $filters->show = (int)$post['nbshow'];
             }
 
             if (isset($post['advanced_filtering'])) {
@@ -674,7 +674,7 @@ class MembersController extends CrudController
                                     trim($f) !== ''
                                     && trim($post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = $post['free_text'][$i];
+                                    $fs_search = htmlspecialchars($post['free_text'][$i], ENT_QUOTES);
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
@@ -871,7 +871,7 @@ class MembersController extends CrudController
 
         //numbers of rows to display
         if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
-            $filters->show = $post['nbshow'];
+            $filters->show = (int)$post['nbshow'];
         }
 
         $members = new Members($filters);
@@ -966,11 +966,11 @@ class MembersController extends CrudController
         }
 
         if (isset($post['gid'])) {
-            $params['the_id'] = $post['gid'];
+            $params['the_id'] = (int)$post['gid'];
         }
 
         if (isset($post['id_adh'])) {
-            $params['excluded'] = $post['id_adh'];
+            $params['excluded'] = (int)$post['id_adh'];
         }
 
         // display page

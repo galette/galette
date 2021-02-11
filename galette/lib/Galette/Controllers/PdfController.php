@@ -580,7 +580,7 @@ class PdfController extends AbstractController
             $type = (int)$post['model_type'];
             $class = PdfModel::getTypeClass($type);
             if (isset($post[PdfModel::PK])) {
-                $model = new $class($this->zdb, $this->preferences, (int)$_POST[PdfModel::PK]);
+                $model = new $class($this->zdb, $this->preferences, (int)$post[PdfModel::PK]);
             } else {
                 $model = new $class($this->zdb, $this->preferences);
             }

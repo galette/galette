@@ -305,7 +305,7 @@ class AuthController extends AbstractController
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
-            $login_adh = $post['login'];
+            $login_adh = htmlspecialchars($post['login'], ENT_QUOTES);
             $adh = new Adherent($this->zdb, $login_adh);
         }
 

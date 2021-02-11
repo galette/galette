@@ -221,16 +221,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
             {/if}
                         {assign var="mid" value=$member->id}
-                        <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
+                        <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name|escape}){/if}</a>
                     </td>
         {else}
             {assign var="lrclass" value=$rclass}
             {assign var="propname" value=$column->propname}
-            {assign var=value value=$member->$propname}
+            {assign var=value value=$member->$propname|escape}
 
-            {if $column->field_id eq 'pseudo_adh'}
+            {if $column->field_id eq 'nom_adh'}
+                {assign var="value" value=$member->sfullname}
+            {elseif $column->field_id eq 'pseudo_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
-                {assign var=value value=$member->$propname|htmlspecialchars}
+                {assign var=value value=$member->$propname|escape}
             {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
             {elseif $column->field_id eq 'id_statut'}

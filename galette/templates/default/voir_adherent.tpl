@@ -93,7 +93,7 @@
             <li>
                 <a
                     href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
-                    title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sname}"
+                    title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sfullname}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-clone fa-fw fa-2x" aria-hidden="true"></i>
@@ -143,7 +143,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {assign var="value" value=$member->$propname|escape}
 
         {if $element->field_id eq 'nom_adh'}
-            {assign var="value" value=$member->sfullname|escape}
+            {assign var="value" value=$member->sfullname}
         {elseif $element->field_id eq 'pref_lang'}
             {assign var="value" value=$pref_lang}
         {elseif $element->field_id eq 'adresse_adh'}

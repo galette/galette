@@ -889,7 +889,7 @@ class Adherent
         if ($id !== false || $nick !== false) {
             $str .= ')';
         }
-        return $str;
+        return strip_tags($str);
     }
 
     /**
@@ -1679,7 +1679,7 @@ class Adherent
                         if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
                             $address .= "\n" . $this->_address_continuation;
                         }
-                        return $address;
+                        return htmlspecialchars($address, ENT_QUOTES);
                         break;
                     case 'sname':
                         return $this->getNameWithCase($this->_name, $this->_surname);

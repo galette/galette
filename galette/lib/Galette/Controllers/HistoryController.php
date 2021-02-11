@@ -141,7 +141,7 @@ class HistoryController extends AbstractController
             if (
                 (isset($post['nbshow']) && is_numeric($post['nbshow']))
             ) {
-                $filters->show = $post['nbshow'];
+                $filters->show = (int)$post['nbshow'];
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
