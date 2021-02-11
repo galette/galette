@@ -40,7 +40,6 @@ if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
 
-$smarty->muteExpectedErrors();
 $smarty->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
 
 /**
