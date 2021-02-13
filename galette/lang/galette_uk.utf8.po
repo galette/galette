@@ -1,12 +1,12 @@
-# Tymofij Lytvynenko <till.svit@gmail.com>, 2020.
+# Tymofij Lytvynenko <till.svit@gmail.com>, 2020, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-16 19:32+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-02-14 19:50+0000\n"
+"Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -15,31 +15,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
-msgstr ""
+msgstr "Помилка Galette"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
-msgstr ""
+msgstr "Сторінку не знайдено"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
-msgstr ""
+msgstr "Переказ"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1148
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 msgid "modification"
-msgstr ""
+msgstr "модифікація"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1150
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "creation"
-msgstr ""
+msgstr "створення"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:266
 msgid "An error occurred while storing the transaction."
@@ -47,7 +47,7 @@ msgstr "Під час зберігання транзакції сталася �
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:294
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "Переказ успішно збережено"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:350
 msgid "Unable to attach contribution to transaction"
