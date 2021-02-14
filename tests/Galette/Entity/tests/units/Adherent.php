@@ -432,4 +432,24 @@ class Adherent extends GaletteTestCase
         $this->boolean($child->store())->isTrue();
         $this->variable($child->parent)->isNull();
     }
+
+    /**
+     * Test XSS/SQL injection
+     *
+     * @return void
+     */
+    public function testInjection()
+    {
+        $data = [
+            'nom_adh'           => 'Doe',
+            'prenom_adh'        => 'Johny <script>console.log("anything");</script>',
+            'email_adh'         => 'jdoe@doe.com',
+            'login_adh'         => 'jdoe',
+            'info_public_adh'   => 'Any <script>console.log("useful");</script> information'
+        ] + $this->dataAdherentOne();
+        $member = $this->createMember($data);
+
+        $this->string($member->sfullname)->isIdenticalTo('DOE Johny Console.log("anything");');
+        $this->string($member->others_infos)->isIdenticalTo('Any console.log("useful"); information');
+    }
 }
