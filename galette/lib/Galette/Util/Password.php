@@ -252,7 +252,7 @@ class Password
         $infos = [
             $adh->name,
             $adh->surname,
-            $adh->birthdate, //locale formatted
+            $adh->birthdate ?? '', //locale formatted
             $adh->rbirthdate, //raw
             $adh->nickname,
             $adh->town,

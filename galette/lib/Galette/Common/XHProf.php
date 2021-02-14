@@ -143,7 +143,7 @@ class XHProf
             $id   = $runs->save_run($data, 'galette-' . GALETTE_VERSION);
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
-            $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST']);
+            $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST'] ?? 'localhost');
             $link = 'http://' . $host . $url . '/index.php?run=' .
                 $id . '&source=galette-' . GALETTE_VERSION;
             Analog::log(
