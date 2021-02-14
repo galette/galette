@@ -329,7 +329,11 @@ abstract class GaletteTestCase extends atoum
                     $this->string($adh->getAge())->isIdenticalTo(' (82 years old)');
                     break;
                 default:
-                    $this->variable($adh->$property)->isIdenticalTo($value, $property);
+                    $this->variable($adh->$property)->isIdenticalTo(
+                        $value,
+                        "$property expected {$value} got {$adh->$property}"
+                    );
+
                     break;
             }
         }

@@ -1030,6 +1030,13 @@ class Adherent
     {
         $this->errors = array();
 
+        //Sanitize
+        foreach ($values as &$value) {
+            if (is_string($value)) {
+                $value = strip_tags($value);
+            }
+        }
+
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needeed
