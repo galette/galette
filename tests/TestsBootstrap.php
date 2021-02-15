@@ -25,9 +25,13 @@ if (file_exists('../galette/index.php')) {
     die('Unable to define GALETTE_BASE_PATH :\'(');
 }
 
-$db = getenv('DB');
-if ($db === false || $db !== 'pgsql') {
-    $db = 'mysql';
+$db = 'mysql';
+$dbenv = getenv('DB');
+if (
+    $dbenv === 'pgsql'
+    || substr($dbenv, 0, strlen('postgres')) === 'postgres'
+) {
+    $db = 'pgsql';
 }
 
 define('GALETTE_CONFIG_PATH', __DIR__ . '/config/' . $db . '/');
