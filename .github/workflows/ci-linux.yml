@@ -16,55 +16,44 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '7.3', '8.0', '8.1' ]
-        coverage: [none]
+        php-versions: [ '7.3', '7.4', '8.0', '8.1' ]
+        coverage: ['none']
+        db-image: ['mysql:8.0', 'mariadb:10.5', 'postgres:9.6']
         include:
           - php-versions: '7.4'
-            db-engines: pgsql
-          - php-versions: '7.4'
-            coverage: xdebug
-            db-engines: mysql
-        db-engines: ['mysql', 'pgsql']
+            coverage: 'xdebug'
+            db-image: 'mysql:8.0'
       fail-fast: false
 
     env:
-      DB: ${{ matrix.db-engines }}
+      DB: ${{ matrix.db-image }}
 
     services:
       # Label used to access the service container
-      pgsql:
+      db:
         # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
+        image: ${{ matrix.db-image }}
+        # Provide env variables for both mysql and pgsql
         env:
           POSTGRES_USER: galette_tests
           POSTGRES_PASSWORD: g@l3tte
           POSTGRES_DB: galette_tests
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      mysql:
-        image: mariadb
-        env:
           MYSQL_USER: galette_tests
           MYSQL_PASSWORD: g@l3tte
           MYSQL_ROOT_PASSWORD: g@l3tte
           MYSQL_DATABASE: galette_tests
+        # Open network ports for both mysql and pgsql
         ports:
           - 3306:3306
+          - 5432:5432
+        # Set health checks to wait until postgres has started
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else mysqladmin ping; fi'"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
 
-    name: PHP ${{ matrix.php-versions }} ${{ matrix.db-engines }}
+    name: PHP ${{ matrix.php-versions }} ${{ matrix.db-image }}
 
     steps:
       - name: PHP
@@ -77,14 +66,12 @@ jobs:
           ini-values: apc.enable_cli=1
 
       - name: "Show versions"
-        if: env.skip != 'true'
         run: |
           php --version
           composer --version
           echo "node $(node --version)"
           echo "npm $(npm --version)"
-          mysql --version
-          psql --version
+          docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else mysql --version; fi"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -111,12 +98,12 @@ jobs:
       - name: Install checker
         working-directory: galette
         run: composer require maglnet/composer-require-checker
-        if: ${{ matrix.php-versions == '7.4' }}
+        if: matrix.php-versions == '7.4'
 
       - name: Check missing symbols
         run: |
           galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
-        if: ${{ matrix.php-versions == '7.4' }}
+        if: matrix.php-versions == '7.4'
 
       - name: Init for PostgreSQL
         env:
@@ -124,30 +111,30 @@ jobs:
           POSTGRES_PORT: 5432
         run: |
           PGPASSWORD=g@l3tte psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
-        if: ${{ matrix.db-engines == 'pgsql' }}
+        if: startsWith(matrix.db-image, 'postgres')
 
       - name: Init for MariaDB
         run: |
           mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
           mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
-        if: ${{ matrix.db-engines == 'mysql' }}
+        if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
 
       - name: Unit tests
         run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/
-        if: ${{ matrix.coverage != 'xdebug' }}
+        if: matrix.coverage != 'xdebug'
 
       - name: Unit tests (with coverage)
         run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/
-        if: ${{ matrix.coverage == 'xdebug' }}
+        if: matrix.coverage == 'xdebug'
 
       - name: Upload code coverage (scrutinizer)
         run: |
           wget https://scrutinizer-ci.com/ocular.phar
           php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml
-        if: ${{ matrix.coverage == 'xdebug' }}
+        if: matrix.coverage == 'xdebug'
 
       - name: Upload code coverage (codecov)
         uses: codecov/codecov-action@v1
         with:
           file: tests/clover.xml
-        if: ${{ matrix.coverage == 'xdebug' }}
+        if: matrix.coverage == 'xdebug'
