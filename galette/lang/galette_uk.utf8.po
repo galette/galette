@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-14 19:50+0000\n"
+"PO-Revision-Date: 2021-02-19 16:50+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.5-dev\n"
+"X-Generator: Weblate 4.5\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -51,115 +51,115 @@ msgstr "Переказ успішно збережено"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:350
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "Не вдається приєднати внесок до переказу"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:355
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "Внесок успішно приєднано до поточного переказу"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:382
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "Не вдається від’єднати внесок від переказу"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:387
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "Внесок успішно від'єднано від поточного переказу"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:116
 msgid "Payment types management"
-msgstr ""
+msgstr "Управління видами оплати"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:157
 msgid "Edit payment type"
-msgstr ""
+msgstr "Змінити вид оплати"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:209
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "Вид оплати \"%s\" не додано!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:218
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr ""
+msgstr "Вид оплати \"%s\" не змінено!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:231
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "Вид оплати \"%s\" успішно додано."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:240
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "Вид оплати \"%s\" успішно змінено."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:303
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Вилучити вид оплати %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:122
 msgid "Group name is missing!"
-msgstr ""
+msgstr "Назва групи відсутня!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:185
 msgid "Groups"
-msgstr "Гурти"
+msgstr "Групи"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:365
 msgid "Group `%groupname` has been successfully saved."
-msgstr ""
+msgstr "Групу `%groupname` успішно збережено."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:372
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Під час зберігання групи сталася помилка."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:463
 #, php-format
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "Вилучити групу %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:486
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr ""
+"Група не порожня, її не можна видалити. Замість цього використовуйте "
+"каскадне видалення."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:102
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:106
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:258
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:260
-#, fuzzy
-#| msgid "Trying to load mailing while mail is disabled in preferences."
 msgid "Trying to load mailing while email is disabled in preferences."
-msgstr "Спроба завантажити розсилку, коли пошту вимкнено в налаштуваннях."
+msgstr "Пробуємо завантажити розсилку, поки е-пошта вимкнена в налаштуваннях."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:150
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:283
 msgid "No member selected for mailing!"
-msgstr ""
+msgstr "Жодного члена не вибрано для розсилки!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:205
 msgid "Mailing"
-msgstr ""
+msgstr "Розсилка"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:302
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "Уведіть об’єкт для повідомлення."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:308
 msgid "Please enter a message."
-msgstr ""
+msgstr "Уведіть повідомлення."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:405
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "Пошта успішно надіслана!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:428
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "Поштову розсилку успішно збережено."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:510
 msgid "Mailings"
-msgstr ""
+msgstr "Розсилки"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:658
 #, php-format
@@ -168,59 +168,57 @@ msgstr "Видалити поштову розсилку #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
 msgid "Mailing preview"
-msgstr ""
+msgstr "Попередній перегляд розсилки"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:75
 msgid "Add field"
-msgstr ""
+msgstr "Додати поле"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:130
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Сталася помилка додавання динамічного поля :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:144
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:367
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "Динамічне поле успішно збережено!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:229
 msgid "Dynamic fields configuration"
-msgstr ""
+msgstr "Налаштування динамічних полів"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:292
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "Не вдалося отримати відомості про поле."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:301
 msgid "Edit field"
-msgstr ""
+msgstr "Правити поле"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:353
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred editing dynamic field :("
-msgstr "Під час видалення поля виникла помилка :("
+msgstr "Під час правки динамічного поля сталася помилка :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:452
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "Запитане поле не існує!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:463
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "Вилучити динамічне поле %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:508
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "Поле успішно переміщено"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:513
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "Сталася помилка переміщення поля :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:156
 msgid "Subscription"
-msgstr ""
+msgstr "Підписка"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:250
 #: ../lib/Galette/Controllers/Crud/MembersController.php:456
@@ -229,11 +227,11 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:288
 #: ../lib/Galette/Middleware/Authenticate.php:166
 msgid "You do not have permission for requested URL."
-msgstr ""
+msgstr "У Вас нема дозволу на запитувану URL-адресу."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:265
 msgid "No member #%id."
-msgstr ""
+msgstr "Нема члена з ID #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:285
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1146
@@ -242,110 +240,110 @@ msgstr "Профіль члена"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Members list"
-msgstr ""
+msgstr "Список членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Дошка членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:510
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "Файл не існує або його неможливо прочитати :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:574
 msgid "Members management"
-msgstr ""
+msgstr "Управління членами"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:795
 msgid "Status label"
-msgstr ""
+msgstr "Підпис стану"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:835
 msgid "Advanced search"
-msgstr ""
+msgstr "Розширений пошук"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1054
 #: ../lib/Galette/Controllers/PdfController.php:154
 #: ../lib/Galette/Controllers/PdfController.php:235
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "Жодного члена не вибрано. Будь ласка, перевірте принаймні одне ім’я."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1265
 #, php-format
 msgid "Mass change %count members"
-msgstr ""
+msgstr "Масова зміна %count членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1295
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1366
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "Масові зміни не підтверджено!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1336
 #, php-format
 msgid "Review mass change %count members"
-msgstr ""
+msgstr "Перегляньте масові зміни %count членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1395
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Нічого немає!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1423
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1660
 msgid "An error occurred while storing the member."
-msgstr ""
+msgstr "Під час зберігання члена сталася помилка."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1435
 msgid "Something went wront during mass edition!"
-msgstr ""
+msgstr "Щось пішло не так під час масової правки!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1442
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr ""
+msgstr "%count членів успішно змінено!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1512
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Тест на ботоподібність не пройдено"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1619
 msgid "Your account has been created!"
-msgstr ""
+msgstr "Ваш обліковий запис створено!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1624
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
+msgstr "Вам надіслано повідомлення на е-пошту, перевірте \"Вхідні\"."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1627
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Нового члена успішно додано."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1630
 msgid "Member account has been modified."
-msgstr ""
+msgstr "Обліковий запис члена змінено."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1644
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Не вдалося додати члена до своїх груп."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1656
 msgid "An error occurred adding member to its groups as manager."
-msgstr ""
+msgstr "Не вдалося додати члена до своїх груп як управника."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1672
 #: ../lib/Galette/Controllers/GaletteController.php:310
 #: ../lib/Galette/Controllers/GaletteController.php:342
 msgid "Delete failed"
-msgstr ""
+msgstr "Не вдалося видалити"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1841
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "Видалити члена %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1850
 #, php-format
 msgid "You are about to remove %count members."
-msgstr ""
+msgstr "Ви збираєтеся видалити %count членів."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:111
 msgid "Titles management"
@@ -353,27 +351,27 @@ msgstr "Керування заголовками"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:152
 msgid "Edit title"
-msgstr ""
+msgstr "Правити заголовок"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:205
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "Заголовок \"%s\" не додано!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "Заголовок \"%s\" не змінено!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "Заголовок \"%s\" успішно додано."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:236
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "Заголовок \"%s\" успішно змінено."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:287
 #, php-format
@@ -382,15 +380,15 @@ msgstr "Вилучити заголовок %1$s"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:120
 msgid "User statuses"
-msgstr ""
+msgstr "Стани користувачів"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:126
 msgid "Contribution types"
-msgstr ""
+msgstr "Види внесків"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:191
 msgid "Edit status"
-msgstr ""
+msgstr "Правити стан"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:197
 msgid "Edit contribution type"
@@ -398,7 +396,7 @@ msgstr "Редагувати вид внеску"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type has not been added :("
-msgstr ""
+msgstr "%type не додано :("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type #%id has not been updated"
@@ -406,98 +404,97 @@ msgstr "%type #%id не оновлювався"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type has been successfully added!"
-msgstr ""
+msgstr "%type успішно додано!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type #%id has been successfully updated!"
-msgstr ""
+msgstr "%type #%id успішно оновлено!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:353
 msgid "Remove %type '%label'"
-msgstr ""
+msgstr "Вилучити вид %type заголовка '%label'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:106
 msgid "Membership fee"
-msgstr ""
+msgstr "Членський внесок"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:108
 #: ../lib/Galette/Entity/Contribution.php:1079
 msgid "Donation"
-msgstr ""
+msgstr "Пожертва"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:334
 msgid "Contributions management"
-msgstr ""
+msgstr "Управління внесками"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:334
 msgid "Transactions management"
-msgstr ""
+msgstr "Управління переказами"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:428
 msgid "- Unknown payment type!"
-msgstr ""
+msgstr "- Невідомий вид оплати!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:477
 #: ../lib/Galette/Controllers/PdfController.php:449
 #: ../lib/Galette/Controllers/PdfController.php:713
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "Не вдається завантажити внесок #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:582
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "Внесок успішно збережено"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:586
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "Під час зберігання внеску сталася помилка."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:684
-#, fuzzy, php-format
-#| msgid "Remove %1$s file %2$s"
+#, php-format
 msgid "Remove %1$s %2$s"
-msgstr "Видалити %1$s файл %2$s"
+msgstr "Вилучити %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
 msgid "contributions"
-msgstr ""
+msgstr "внески"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
 msgid "transactions"
-msgstr ""
+msgstr "перекази"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "Вилучити %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
-msgstr ""
+msgstr "внесок"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
 msgid "transaction"
-msgstr ""
+msgstr "переказ"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:124
 msgid "An SQL error has occurred while storing search."
-msgstr ""
+msgstr "Під час зберігання пошуку сталася помилка SQL."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:129
 msgid "This search is already saved."
-msgstr ""
+msgstr "Цей пошук уже збережено."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:135
 msgid "Search has been saved."
-msgstr ""
+msgstr "Пошук збережено."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
 msgid "Saved searches"
-msgstr ""
+msgstr "Збережені пошукові запити"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:296
 msgid "Remove saved search"
-msgstr ""
+msgstr "Видалити збережений пошук"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:303
 #, php-format
@@ -2226,14 +2223,12 @@ msgid "%field should not be empty!"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
-#| msgid "Dynamic fields"
+#, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Мітка для динамічного поля \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
-#, fuzzy, php-format
-#| msgid "Dynamic fields"
+#, php-format
 msgid "Input for dynamic field \"%s\""
 msgstr "Вхід для динамічного поля \"%s\""
 
@@ -2356,10 +2351,8 @@ msgid "None"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:925
-#, fuzzy
-#| msgid "Contact information:"
 msgid "Main information"
-msgstr "Контактні відомості:"
+msgstr "Контактні відомості"
 
 #: ../lib/Galette/Entity/PdfModel.php:930
 #, fuzzy
@@ -5062,13 +5055,12 @@ msgid "See member profile"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:52
-#, fuzzy, php-format
-#| msgid "List of contributions"
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "Список унесків"
-msgstr[1] "Список унесків"
-msgstr[2] "Список унесків"
+msgstr[0] "%count внесок"
+msgstr[1] "%count внески"
+msgstr[2] "%count внесків"
 
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
@@ -6417,7 +6409,6 @@ msgid "Edit field %field"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:18
-#, fuzzy
 msgid "Permissions:"
 msgstr "Права:"
 
@@ -7309,13 +7300,12 @@ msgid "Show all members transactions"
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:32
-#, fuzzy, php-format
-#| msgid "%count transactions created"
+#, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
-msgstr[0] "%count транзакцій створено"
-msgstr[1] "%count транзакцій створено"
-msgstr[2] "%count транзакцій створено"
+msgstr[0] "%count переказ"
+msgstr[1] "%count перекази"
+msgstr[2] "%count переказів"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109
