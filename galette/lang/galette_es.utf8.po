@@ -23,8 +23,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-16 17:50+0000\n"
-"Last-Translator: Toni Martínez <yagstyle@gmail.com>\n"
+"PO-Revision-Date: 2021-02-19 16:50+0000\n"
+"Last-Translator: Nicolás S. Gómez <nicogomfor@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -1696,7 +1696,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:168
 msgid "%A, %B %#d%O %Y"
-msgstr ""
+msgstr "%A, %B %#d%O %Y"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
 msgid "Signature"
@@ -1712,7 +1712,7 @@ msgstr "Cotización gratis"
 
 #: ../lib/Galette/IO/Charts.php:192
 msgid "Never contribute"
-msgstr ""
+msgstr "Nunca contribuir"
 
 #: ../lib/Galette/IO/Charts.php:214
 msgid "Impending due dates"
@@ -1720,11 +1720,11 @@ msgstr ""
 
 #: ../lib/Galette/IO/Charts.php:229
 msgid "Up to date"
-msgstr ""
+msgstr "Actualizado"
 
 #: ../lib/Galette/IO/Charts.php:244
 msgid "Late"
-msgstr ""
+msgstr "Tarde"
 
 #: ../lib/Galette/IO/Charts.php:300
 msgid "Individuals"
@@ -1736,7 +1736,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:73
 msgid "labels_print_filename"
-msgstr ""
+msgstr "labels_print_filename"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:85
 msgid "Member's Labels"
@@ -1774,11 +1774,11 @@ msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:360
 msgid "from another member in import"
-msgstr ""
+msgstr "de otro miembro en la importación"
 
 #: ../lib/Galette/IO/CsvIn.php:360
 msgid "from member %id_adh"
-msgstr ""
+msgstr "del miembro %id_adh"
 
 #: ../lib/Galette/IO/CsvIn.php:366
 msgid "Email address %address is already used! (%extra)"
@@ -1811,7 +1811,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/Pdf.php:212
 msgid "Not a GIF file "
-msgstr ""
+msgstr "No es un archivo GIF "
 
 #: ../lib/Galette/IO/Pdf.php:221
 msgid "Error loading "
@@ -1819,7 +1819,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/Pdf.php:226
 msgid "Error creating temporary png file from "
-msgstr ""
+msgstr "Error al crear un archivo png temporal a partir de "
 
 #: ../lib/Galette/IO/Pdf.php:229
 msgid "Unable to convert GIF file "
@@ -1902,7 +1902,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:550
 msgid "File upload stopped by extension"
-msgstr ""
+msgstr "La subida del archivo fue detenida por extensión"
 
 #: ../lib/Galette/IO/FileTrait.php:552
 msgid "Unknown upload error"
@@ -1910,11 +1910,11 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:86
 msgid "adherent_form"
-msgstr ""
+msgstr "adherent_form"
 
 #: ../lib/Galette/IO/PdfContribution.php:88
 msgid "receipt"
-msgstr ""
+msgstr "recibo"
 
 #: ../lib/Galette/IO/PdfContribution.php:90
 msgid "invoice"
