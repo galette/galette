@@ -18,13 +18,14 @@
 # Gabriel Ortiz Severino <gabrielortizseverino@gmail.com>, 2021.
 # Miguel Angel Osorio Quintero <miguel.angel25x@gmail.com>, 2021.
 # Toni Martínez <yagstyle@gmail.com>, 2021.
+# dgarmal <danielagarmal25@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
 "PO-Revision-Date: 2021-02-19 16:50+0000\n"
-"Last-Translator: Nicolás S. Gómez <nicogomfor@gmail.com>\n"
+"Last-Translator: dgarmal <danielagarmal25@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -1360,9 +1361,10 @@ msgstr ""
 "página!"
 
 #: ../lib/Galette/Core/Preferences.php:1086
-#, fuzzy
 msgid "Current cards configuration may exceed page height!"
-msgstr "¡Es posible que las tarjetas actuales excedan la altura de página!"
+msgstr ""
+"¡Es posible que la configuración de las tarjetas actuales excedan la altura "
+"de página!"
 
 #: ../lib/Galette/Core/I18n.php:221
 msgid "Unknown lang (%lang)"
@@ -1523,7 +1525,7 @@ msgstr "No se copió la foto!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:505
 msgid "User, read/write"
-msgstr ""
+msgstr "Usuario, leer/escribir"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:506
 msgid "Staff member"
@@ -1535,15 +1537,15 @@ msgstr "Administrador"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:508
 msgid "Group manager"
-msgstr ""
+msgstr "Gerente de grupo"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:509
 msgid "User, read only"
-msgstr ""
+msgstr "Usuario, solo lectura"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Members"
-msgstr ""
+msgstr "Miembros"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 msgid "Contributions"
@@ -1559,19 +1561,19 @@ msgstr "Falta campo obligatorio!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:606
 msgid "Missing required field permissions!"
-msgstr ""
+msgstr "¡Faltan los campos de permisos requeridos!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:611
 msgid "Unknown permission!"
-msgstr ""
+msgstr "¡Credenciales desconocidas!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:617
 msgid "Missing required form!"
-msgstr ""
+msgstr "¡Falta formulario requerido!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:622
 msgid "Unknown form!"
-msgstr ""
+msgstr "¡Formulario desconocido!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:630
 msgid "- Field name already used."
@@ -1583,15 +1585,15 @@ msgstr "Ha ocurrido un error al guardar el campo."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:761
 msgid "An error occurred creating field values table"
-msgstr ""
+msgstr "Hubo un error al crear el campo en la tabla de valores"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:795
 msgid "An error occurred storing dynamic field values :("
-msgstr ""
+msgstr "Hubo un error al almacenar los campos dinámicos de valores"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1000
 msgid "separator"
-msgstr ""
+msgstr "separador"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1001
 msgid "free text"
@@ -1619,7 +1621,7 @@ msgstr "archivo"
 
 #: ../lib/Galette/IO/PdfGroups.php:72
 msgid "groups_list"
-msgstr ""
+msgstr "lista_de_grupos"
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
@@ -1666,7 +1668,7 @@ msgstr "Lista filtrada de miembros"
 #: ../lib/Galette/IO/MembersCsv.php:228 ../lib/Galette/Entity/Adherent.php:1693
 #: ../lib/Galette/Entity/PdfModel.php:764
 msgid "Man"
-msgstr ""
+msgstr "Hombre"
 
 #: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/Entity/Adherent.php:1695
 #: ../lib/Galette/Entity/PdfModel.php:766
@@ -1732,7 +1734,7 @@ msgstr "Particulares"
 
 #: ../lib/Galette/IO/Charts.php:304
 msgid "Companies"
-msgstr ""
+msgstr "Compañías"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:73
 msgid "labels_print_filename"
@@ -1740,7 +1742,7 @@ msgstr "labels_print_filename"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:85
 msgid "Member's Labels"
-msgstr ""
+msgstr "Etiquetas de los miembros"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:87
 msgid "Labels"
@@ -1749,7 +1751,7 @@ msgstr "Etiquetas"
 #: ../lib/Galette/IO/CsvIn.php:233
 #, php-format
 msgid "File %filename cannot be open!"
-msgstr ""
+msgstr "¡El documento %filename no se puede abrir!"
 
 #: ../lib/Galette/IO/CsvIn.php:281
 msgid ""
@@ -1761,7 +1763,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:303
 msgid "Field %field is required, but missing in row %row"
-msgstr ""
+msgstr "Se requiere el campo %field , pero no se encuentra en la fila %row"
 
 #: ../lib/Galette/IO/CsvIn.php:325
 #, php-format
@@ -1770,7 +1772,7 @@ msgstr "¡El estado %status no existe!"
 
 #: ../lib/Galette/IO/CsvIn.php:344
 msgid "Title %title does not exists!"
-msgstr ""
+msgstr "¡El título %title no existe!"
 
 #: ../lib/Galette/IO/CsvIn.php:360
 msgid "from another member in import"
@@ -1782,11 +1784,11 @@ msgstr "del miembro %id_adh"
 
 #: ../lib/Galette/IO/CsvIn.php:366
 msgid "Email address %address is already used! (%extra)"
-msgstr ""
+msgstr "¡La dirección de correo electrónico %address ya está ocupada! {%extra}"
 
 #: ../lib/Galette/IO/CsvIn.php:391
 msgid "Lang %lang does not exists!"
-msgstr ""
+msgstr "¡El lang %lang no existe!"
 
 #: ../lib/Galette/IO/CsvIn.php:443
 msgid "File is empty!"
@@ -1794,20 +1796,20 @@ msgstr "¡El archivo está vacío!"
 
 #: ../lib/Galette/IO/CsvIn.php:530 ../lib/Galette/IO/CsvIn.php:541
 msgid "An error occurred storing member at row %row (%name):"
-msgstr ""
+msgstr "Hubo un error al guardar el miembro en la fila %row {%name}:"
 
 #: ../lib/Galette/IO/CsvIn.php:576
 msgid "An error occurred while importing members"
-msgstr ""
+msgstr "Hubo un error al importar los miembros"
 
 #: ../lib/Galette/IO/Pdf.php:101 ../lib/Galette/IO/Pdf.php:265
 #, php-format
 msgid "Association %s"
-msgstr ""
+msgstr "Asociación %s"
 
 #: ../lib/Galette/IO/Pdf.php:209
 msgid "Missing or incorrect image file "
-msgstr ""
+msgstr "Falta el archivo de la imagen o es incorrecto "
 
 #: ../lib/Galette/IO/Pdf.php:212
 msgid "Not a GIF file "
@@ -1815,7 +1817,7 @@ msgstr "No es un archivo GIF "
 
 #: ../lib/Galette/IO/Pdf.php:221
 msgid "Error loading "
-msgstr ""
+msgstr "Error al cargar "
 
 #: ../lib/Galette/IO/Pdf.php:226
 msgid "Error creating temporary png file from "
@@ -1823,19 +1825,19 @@ msgstr "Error al crear un archivo png temporal a partir de "
 
 #: ../lib/Galette/IO/Pdf.php:229
 msgid "Unable to convert GIF file "
-msgstr ""
+msgstr "El archivo GIF no se pudo convertir "
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
 msgid "cards"
-msgstr ""
+msgstr "tarjetas"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
-msgstr ""
+msgstr "Tarjetas de los miembros"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:106
 msgid "Cards"
-msgstr "Naipes"
+msgstr "Tarjetas"
 
 #: ../lib/Galette/IO/FileTrait.php:477
 msgid "An error occurred."
@@ -1845,6 +1847,8 @@ msgstr "Se produjo un error."
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
+"El nombre del archivo no es válido, no debe contener caracteres especiales "
+"ni espacios."
 
 #: ../lib/Galette/IO/FileTrait.php:487
 #, php-format
@@ -1855,7 +1859,7 @@ msgstr "No se permite la extensión de archivo, pero sí los archivos %s."
 #: ../lib/Galette/Entity/DynamicsTrait.php:306
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
-msgstr ""
+msgstr "El archivo es demasiado grande. El tamaño máximo permitido es de %dKo"
 
 #: ../lib/Galette/IO/FileTrait.php:499
 msgid "Mime-Type not allowed"
@@ -1863,15 +1867,15 @@ msgstr "Mime-Type no permitido"
 
 #: ../lib/Galette/IO/FileTrait.php:502
 msgid "A file with that name already exists!"
-msgstr ""
+msgstr "¡Ya existe un archivo con ese nombre!"
 
 #: ../lib/Galette/IO/FileTrait.php:505
 msgid "File does not comply with requirements."
-msgstr ""
+msgstr "El archivo no cumple con los requisitos."
 
 #: ../lib/Galette/IO/FileTrait.php:508
 msgid "Unable to write file or temporary file"
-msgstr ""
+msgstr "No se puede grabar el fichero o fichero temporal"
 
 #: ../lib/Galette/IO/FileTrait.php:538
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
@@ -1883,22 +1887,24 @@ msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
+"El archivo cargado excede el directivo MAX_FILE_SIZE que se especificó en el "
+"formulario HTML"
 
 #: ../lib/Galette/IO/FileTrait.php:542
 msgid "The uploaded file was only partially uploaded"
-msgstr ""
+msgstr "El archivo no se cargó completamente"
 
 #: ../lib/Galette/IO/FileTrait.php:544
 msgid "No file was uploaded"
-msgstr ""
+msgstr "No se subió ningún archivo"
 
 #: ../lib/Galette/IO/FileTrait.php:546
 msgid "Missing a temporary folder"
-msgstr ""
+msgstr "Falta una carpeta temporal"
 
 #: ../lib/Galette/IO/FileTrait.php:548
 msgid "Failed to write file to disk"
-msgstr ""
+msgstr "No se pudo grabar el archivo en el disco"
 
 #: ../lib/Galette/IO/FileTrait.php:550
 msgid "File upload stopped by extension"
@@ -1906,7 +1912,7 @@ msgstr "La subida del archivo fue detenida por extensión"
 
 #: ../lib/Galette/IO/FileTrait.php:552
 msgid "Unknown upload error"
-msgstr ""
+msgstr "Ocurrió un error desconocido al cargar el archivo"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:86
 msgid "adherent_form"
@@ -1926,7 +1932,7 @@ msgstr "Es administrador"
 
 #: ../lib/Galette/Entity/ListsConfig.php:218
 msgid "Modified"
-msgstr ""
+msgstr "Modificado"
 
 #. TRANS: see https://www.urbandictionary.com/define.php?term=b-day
 #: ../lib/Galette/Entity/ListsConfig.php:222
@@ -1935,19 +1941,22 @@ msgstr ""
 
 #: ../lib/Galette/Entity/ListsConfig.php:228
 msgid "Public"
-msgstr ""
+msgstr "Público"
 
 #: ../lib/Galette/Entity/Reminder.php:269
 msgid "%name <%mail> (%days days)"
-msgstr ""
+msgstr "%name &lt;%mail&gt; {%days días}"
 
 #: ../lib/Galette/Entity/Reminder.php:276
 msgid "Sent reminder email for late membership"
-msgstr ""
+msgstr "Mandarme un recordatorio por correo del pago de la membresía"
 
 #: ../lib/Galette/Entity/Reminder.php:278
+#, fuzzy
 msgid "Sent reminder email for impending membership"
 msgstr ""
+"Mandarme un recordatorio por correo antes de la fecha de vencimiento de la "
+"membresía"
 
 #: ../lib/Galette/Entity/Reminder.php:284
 msgid "A problem happened while sending late membership email"
@@ -1960,6 +1969,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Reminder.php:296
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
+"No se pudo enviar el recordario de la %membership {falta correo electrónico}."
 
 #: ../lib/Galette/Entity/Reminder.php:309
 msgid "%name (#%id - %days days)"
@@ -2010,7 +2020,7 @@ msgstr "Ya no es miembro"
 #: ../lib/Galette/Entity/Adherent.php:814
 #, php-format
 msgid "%days days remaining (ending on %date)"
-msgstr ""
+msgstr "Faltan %days días {se termina el %date}"
 
 #: ../lib/Galette/Entity/Adherent.php:1212
 msgid "- Birthdate must be set in the past!"
