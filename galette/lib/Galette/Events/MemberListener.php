@@ -207,7 +207,7 @@ class MemberListener implements ListenerProviderInterface
             $this->router
         );
 
-        $texts->setMember($member);
+        $texts->setMember($member)->setNoContribution();
 
         if ($new) {
             $password = new Password($this->zdb);

@@ -106,7 +106,7 @@ class Texts
     }
 
     /**
-     * Get patterns for a contribution
+     * Get patterns for mails
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
