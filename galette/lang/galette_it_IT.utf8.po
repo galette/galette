@@ -16,19 +16,20 @@
 # Sstirban <razvansebastian.stirban001@studenti.uniparthenope.it>, 2020.
 # x <hardwired1.0@protonmail.com>, 2020.
 # Luca De Filippo <luca.defilippo@translationcommons.org>, 2020.
+# Lory ~ <dury.lorenzo@gmail.com>, 2021.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-16 19:32+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-02-21 23:50+0000\n"
+"Last-Translator: Lory ~ <dury.lorenzo@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.5\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -781,8 +782,8 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"Ti è stata inviata un’e-mail all'indirizzo <br>, controlla la tua casella di "
-"posta elettronica e segui le istruzioni."
+"Ti è stata inviata un’e-mail all'indirizzo. <br>, controlla la tua casella "
+"di posta elettronica e segui le istruzioni."
 
 #: ../lib/Galette/Controllers/AuthController.php:374
 msgid "An email has been sent to the member."
@@ -860,9 +861,9 @@ msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
-"Mancano alcuni moduli PHP. Per favore installali o contatta il supporto.<br> "
-"Maggiori informazioni sui moduli richiesti sono disponibili nella "
-"documentazione."
+"Mancano alcuni moduli PHP. Per favore installali o contatta il "
+"supporto.<br>Maggiori informazioni sui moduli richiesti sono disponibili "
+"nella documentazione."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
 msgid "Texts has been successfully reinitialized."
@@ -952,7 +953,7 @@ msgstr "Traduci etichette"
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
-"Nessuna traduzione per '%s'!<br> Per favore compila ed invia il form qui "
+"Nessuna traduzione per '%s'!<br>Per favore compila ed invia il form qui "
 "sopra per crearla."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:191
