@@ -17,13 +17,14 @@
 # Stefanie Schreiner <stefanie-schreiner@hotmail.de>, 2020.
 # Patrick Ehlers <speddye@gmail.com>, 2020.
 # Manuel Zeschko <moebyus@pm.me>, 2021.
+# Translator <weblate.gledy@aleeas.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-08 06:50+0000\n"
-"Last-Translator: Manuel Zeschko <moebyus@pm.me>\n"
+"PO-Revision-Date: 2021-02-23 18:50+0000\n"
+"Last-Translator: Translator <weblate.gledy@aleeas.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -31,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5-dev\n"
+"X-Generator: Weblate 4.5\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2319,7 +2320,7 @@ msgstr "Adresse ihrer Firma"
 
 #: ../lib/Galette/Entity/PdfModel.php:622
 msgid "with break lines"
-msgstr ""
+msgstr "mit Bruchlinien"
 
 #: ../lib/Galette/Entity/PdfModel.php:626
 msgid "Your organisation website"
@@ -3468,8 +3469,6 @@ msgstr ""
 "ändern.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:139
-#, fuzzy
-#| msgid "Lost password email"
 msgid "Lost password email (disabled)"
 msgstr "E-Mail bei vergessenem Passwort (deaktiviert)"
 
