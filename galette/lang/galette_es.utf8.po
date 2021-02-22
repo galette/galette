@@ -19,13 +19,14 @@
 # Miguel Angel Osorio Quintero <miguel.angel25x@gmail.com>, 2021.
 # Toni Martínez <yagstyle@gmail.com>, 2021.
 # dgarmal <danielagarmal25@gmail.com>, 2021.
+# Cristhian Aguirre <cristhian.aguirre.v@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-19 16:50+0000\n"
-"Last-Translator: dgarmal <danielagarmal25@gmail.com>\n"
+"PO-Revision-Date: 2021-02-23 18:50+0000\n"
+"Last-Translator: Cristhian Aguirre <cristhian.aguirre.v@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -454,7 +455,7 @@ msgstr "Gestión de transacciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:428
 msgid "- Unknown payment type!"
-msgstr "- Tipo de pago desconocido"
+msgstr "- ¡Tipo de pago desconocido!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:477
 #: ../lib/Galette/Controllers/PdfController.php:449
@@ -715,7 +716,7 @@ msgstr "No se ha almacenado el modelo :("
 
 #: ../lib/Galette/Controllers/PdfController.php:654
 msgid "Invalid link!"
-msgstr "El enlace no es válido."
+msgstr "¡El enlace no es válido!"
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
@@ -839,7 +840,7 @@ msgstr "- ¡Las contraseñas no coinciden!"
 
 #: ../lib/Galette/Controllers/AuthController.php:517
 msgid "Your password is too weak!"
-msgstr "Su contraseña es demasiado débil."
+msgstr "¡Su contraseña es demasiado débil!"
 
 #: ../lib/Galette/Controllers/AuthController.php:526
 msgid "An error occurred while updating your password."
@@ -1601,7 +1602,7 @@ msgstr "texto libre"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1002
 msgid "single line"
-msgstr ""
+msgstr "una linea"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1003
 msgid "choice"
@@ -1718,7 +1719,7 @@ msgstr "Nunca contribuir"
 
 #: ../lib/Galette/IO/Charts.php:214
 msgid "Impending due dates"
-msgstr ""
+msgstr "Fechas de vencimiento próximas"
 
 #: ../lib/Galette/IO/Charts.php:229
 msgid "Up to date"
@@ -1788,7 +1789,7 @@ msgstr "¡La dirección de correo electrónico %address ya está ocupada! {%extr
 
 #: ../lib/Galette/IO/CsvIn.php:391
 msgid "Lang %lang does not exists!"
-msgstr "¡El lang %lang no existe!"
+msgstr "¡El lenguaje %lang no existe!"
 
 #: ../lib/Galette/IO/CsvIn.php:443
 msgid "File is empty!"
@@ -1937,7 +1938,7 @@ msgstr "Modificado"
 #. TRANS: see https://www.urbandictionary.com/define.php?term=b-day
 #: ../lib/Galette/Entity/ListsConfig.php:222
 msgid "b-day"
-msgstr ""
+msgstr "Fecha de Nacimiento"
 
 #: ../lib/Galette/Entity/ListsConfig.php:228
 msgid "Public"
@@ -1978,7 +1979,7 @@ msgstr ""
 #: ../lib/Galette/Entity/I18nTrait.php:136
 #, php-format
 msgid "Unable to add dynamic translation for %field :("
-msgstr ""
+msgstr "No es posible agregar traducción dinámica para %field :("
 
 #: ../lib/Galette/Entity/I18nTrait.php:202
 #, php-format
@@ -1992,7 +1993,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:769
 msgid "Freed of dues"
-msgstr ""
+msgstr "Libre de cuotas"
 
 #: ../lib/Galette/Entity/Adherent.php:781
 #, php-format
@@ -2024,7 +2025,7 @@ msgstr "Faltan %days días {se termina el %date}"
 
 #: ../lib/Galette/Entity/Adherent.php:1212
 msgid "- Birthdate must be set in the past!"
-msgstr ""
+msgstr "- ¡Fecha de cumpleaños debe estar en el pasado!"
 
 #: ../lib/Galette/Entity/Adherent.php:1220
 msgid "- Members must be less than 200 years old (currently %years)!"
@@ -2037,7 +2038,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1276
 #, php-format
 msgid "- Wrong date format (%date_format) for %field!"
-msgstr ""
+msgstr "- ¡Formato de fecha incorrecto (%date_format) para %field!"
 
 #: ../lib/Galette/Entity/Adherent.php:1259
 msgid "- Non-valid E-Mail address!"
@@ -2045,7 +2046,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1276
 msgid "- This E-Mail address is already used by another member!"
-msgstr ""
+msgstr "- ¡Este correo electrónico ya está siendo usado por otro miembro!"
 
 #: ../lib/Galette/Entity/Adherent.php:1283
 #: ../lib/Galette/Entity/Adherent.php:1331
@@ -7664,7 +7665,7 @@ msgstr ""
 
 #: ../templates/default/forms_types.tpl:56
 msgid "This comment is reserved to the member."
-msgstr ""
+msgstr "Este comentario está reservado para los miembros."
 
 #: ../templates/default/forms_types.tpl:80
 msgid "Do member want to appear publically?"
@@ -7687,13 +7688,13 @@ msgstr "(por lo menos %i caracteres)"
 #: ../templates/default/gestion_titres.tpl:21
 #: ../templates/default/gestion_titres.tpl:51
 msgid "Short form"
-msgstr ""
+msgstr "Formulario corto"
 
 #: ../templates/default/gestion_titres.tpl:10
 #: ../templates/default/gestion_titres.tpl:24
 #: ../templates/default/gestion_titres.tpl:52
 msgid "Long form"
-msgstr ""
+msgstr "Formulario Largo"
 
 #: ../templates/default/gestion_titres.tpl:18
 msgid "Add title"
