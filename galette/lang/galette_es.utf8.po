@@ -20,13 +20,14 @@
 # Toni Martínez <yagstyle@gmail.com>, 2021.
 # dgarmal <danielagarmal25@gmail.com>, 2021.
 # Cristhian Aguirre <cristhian.aguirre.v@gmail.com>, 2021.
+# Alonso Arteaga <alon.arte.r@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-23 18:50+0000\n"
-"Last-Translator: Cristhian Aguirre <cristhian.aguirre.v@gmail.com>\n"
+"PO-Revision-Date: 2021-02-27 00:50+0000\n"
+"Last-Translator: Alonso Arteaga <alon.arte.r@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -1695,7 +1696,7 @@ msgstr "No"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:104
 msgid "attendance_sheet"
-msgstr ""
+msgstr "hoja_de_asistencia"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:168
 msgid "%A, %B %#d%O %Y"
@@ -1953,7 +1954,6 @@ msgid "Sent reminder email for late membership"
 msgstr "Mandarme un recordatorio por correo del pago de la membresía"
 
 #: ../lib/Galette/Entity/Reminder.php:278
-#, fuzzy
 msgid "Sent reminder email for impending membership"
 msgstr ""
 "Mandarme un recordatorio por correo antes de la fecha de vencimiento de la "
@@ -2003,7 +2003,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:784
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Never contributed"
-msgstr ""
+msgstr "Nunca Contribuido"
 
 #: ../lib/Galette/Entity/Adherent.php:787
 msgid "Last day!"
@@ -2051,11 +2051,12 @@ msgstr "- ¡Este correo electrónico ya está siendo usado por otro miembro!"
 #: ../lib/Galette/Entity/Adherent.php:1283
 #: ../lib/Galette/Entity/Adherent.php:1331
 msgid "An error has occurred while looking if login already exists."
-msgstr ""
+msgstr "Ha ocurrido un error al buscar si el inicio de sesión ya existe."
 
 #: ../lib/Galette/Entity/Adherent.php:1291
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr ""
+"¡Dirección de Sitio Web no válida! ¿Quizás te haz saltado el \"http://\"?"
 
 #: ../lib/Galette/Entity/Adherent.php:1300
 msgid "- The username must be composed of at least %i characters!"
@@ -2063,7 +2064,7 @@ msgstr "- ¡El nombre de usuario debe tener por lo menos %i caracteres!"
 
 #: ../lib/Galette/Entity/Adherent.php:1305
 msgid "- The username cannot contain the @ character"
-msgstr ""
+msgstr "- El usuario no puede contener @ como carácter"
 
 #: ../lib/Galette/Entity/Adherent.php:1324
 msgid "- This username is already in use, please choose another one!"
@@ -2079,7 +2080,7 @@ msgstr "El estado n.º %id no existe en la base de datos."
 
 #: ../lib/Galette/Entity/Adherent.php:1390
 msgid "An error has occurred while looking if status does exists."
-msgstr ""
+msgstr "Ha ocurrido un error al buscar si el estado existe."
 
 #: ../lib/Galette/Entity/Adherent.php:1397
 msgid "Gender %gender does not exists!"
@@ -2091,15 +2092,15 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1508
 msgid "Member card added"
-msgstr ""
+msgstr "Tarjeta de miembro agregada"
 
 #: ../lib/Galette/Entity/Adherent.php:1516
 msgid "Fail to add new member."
-msgstr ""
+msgstr "Error al agregar nuevo miembro."
 
 #: ../lib/Galette/Entity/Adherent.php:1548
 msgid "Member card updated"
-msgstr ""
+msgstr "Tarjeta de miembro actualizada"
 
 #: ../lib/Galette/Entity/Adherent.php:1657
 msgid "Active"
@@ -2119,12 +2120,12 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:110
 msgid "Date:"
-msgstr ""
+msgstr "Fecha:"
 
 #: ../lib/Galette/Entity/Transaction.php:114
 #: ../lib/Galette/Entity/Contribution.php:129
 msgid "Amount:"
-msgstr ""
+msgstr "Monto:"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 msgid "Description:"
@@ -2146,11 +2147,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Transaction.php:321
 msgid "- Transaction description must be 150 characters long maximum."
 msgstr ""
+"- La descripción de transacción solamente puede tener un máximo de 150 "
+"caracteres."
 
 #: ../lib/Galette/Entity/Transaction.php:346
 #: ../lib/Galette/Entity/Contribution.php:474
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
+"- La suma de todas las contribuciones excede el monto de la transacción "
+"correspondiente."
 
 #: ../lib/Galette/Entity/Transaction.php:403
 msgid "Transaction added"
@@ -2158,11 +2163,11 @@ msgstr "Se ha añadido la transacción"
 
 #: ../lib/Galette/Entity/Transaction.php:409
 msgid "Fail to add new transaction."
-msgstr ""
+msgstr "Error al agregar una nueva transacción."
 
 #: ../lib/Galette/Entity/Transaction.php:425
 msgid "Transaction updated"
-msgstr ""
+msgstr "Transacción actualizada"
 
 #: ../lib/Galette/Entity/ContributionsTypes.php:117
 msgid "contribution type"
@@ -2175,27 +2180,27 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:121
 msgid "Contributor:"
-msgstr ""
+msgstr "Contribuidor:"
 
 #: ../lib/Galette/Entity/Contribution.php:125
 msgid "Contribution type:"
-msgstr ""
+msgstr "Tipo de Contribuidor:"
 
 #: ../lib/Galette/Entity/Contribution.php:133
 msgid "Payment type:"
-msgstr ""
+msgstr "Tipo de pago:"
 
 #: ../lib/Galette/Entity/Contribution.php:137
 msgid "Comments:"
-msgstr ""
+msgstr "Comentarios:"
 
 #: ../lib/Galette/Entity/Contribution.php:145
 msgid "Date of contribution:"
-msgstr ""
+msgstr "Fecha de Contribución:"
 
 #: ../lib/Galette/Entity/Contribution.php:146
 msgid "Start date of membership:"
-msgstr ""
+msgstr "Fecha inicio de membresía:"
 
 #: ../lib/Galette/Entity/Contribution.php:150
 msgid "End date of membership:"
@@ -2207,7 +2212,7 @@ msgstr "Extensión de membresía:"
 
 #: ../lib/Galette/Entity/Contribution.php:426
 msgid "- Unknown payment type"
-msgstr ""
+msgstr "- Tipo de pago desconocido"
 
 #: ../lib/Galette/Entity/Contribution.php:440
 msgid "- The duration must be a positive integer!"
