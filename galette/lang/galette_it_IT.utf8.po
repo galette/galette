@@ -17,19 +17,20 @@
 # x <hardwired1.0@protonmail.com>, 2020.
 # Luca De Filippo <luca.defilippo@translationcommons.org>, 2020.
 # Lory ~ <dury.lorenzo@gmail.com>, 2021.
+# Takeçi <polygoat@magamo.ovh>, 2021.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-21 23:50+0000\n"
-"Last-Translator: Lory ~ <dury.lorenzo@gmail.com>\n"
+"PO-Revision-Date: 2021-03-06 05:50+0000\n"
+"Last-Translator: Takeçi <polygoat@magamo.ovh>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5\n"
+"X-Generator: Weblate 4.5.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -566,10 +567,6 @@ msgid "Preferences has been saved."
 msgstr "Le impostazioni sono state salvate."
 
 #: ../lib/Galette/Controllers/GaletteController.php:392
-#, fuzzy
-#| msgid ""
-#| "You asked Galette to send a test email, but mail has been disabled in the "
-#| "preferences."
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
@@ -677,8 +674,9 @@ msgid "Unable to get members list."
 msgstr "Lista dei membri non ottenuta."
 
 #: ../lib/Galette/Controllers/PdfController.php:346
+#, fuzzy
 msgid "Attendance sheet configuration"
-msgstr ""
+msgstr "Configurazione del registro di presenza"
 
 #: ../lib/Galette/Controllers/PdfController.php:382
 #: ../lib/Galette/Controllers/PdfController.php:401
@@ -687,8 +685,9 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:409
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
+#, fuzzy
 msgid "Attendance sheet"
-msgstr ""
+msgstr "Registro di presenza"
 
 #: ../lib/Galette/Controllers/PdfController.php:492
 msgid "Unable to get groups list."
@@ -782,8 +781,8 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"Ti è stata inviata un’e-mail all'indirizzo. <br>, controlla la tua casella "
-"di posta elettronica e segui le istruzioni."
+"Ti è stata inviata un’e-mail all'indirizzo.<br>, controlla la tua casella di "
+"posta elettronica e segui le istruzioni."
 
 #: ../lib/Galette/Controllers/AuthController.php:374
 msgid "An email has been sent to the member."
@@ -1039,8 +1038,9 @@ msgid "CSV import model"
 msgstr "Importare modello CSV"
 
 #: ../lib/Galette/Controllers/CsvController.php:636
+#, fuzzy
 msgid "galette_import_model.csv"
-msgstr ""
+msgstr "galette_import_model.csv"
 
 #: ../lib/Galette/Controllers/CsvController.php:672
 msgid "Import model has been successfully stored :)"
@@ -1214,7 +1214,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:262
 msgid "First page"
-msgstr ""
+msgstr "Prima pagina"
 
 #: ../lib/Galette/Core/Pagination.php:268
 msgid "Previous page (%i)"
