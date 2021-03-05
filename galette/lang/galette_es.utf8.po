@@ -21,13 +21,14 @@
 # dgarmal <danielagarmal25@gmail.com>, 2021.
 # Cristhian Aguirre <cristhian.aguirre.v@gmail.com>, 2021.
 # Alonso Arteaga <alon.arte.r@gmail.com>, 2021.
+# Flynn Hadford <fghadford@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-02-27 00:50+0000\n"
-"Last-Translator: Alonso Arteaga <alon.arte.r@gmail.com>\n"
+"PO-Revision-Date: 2021-03-06 05:50+0000\n"
+"Last-Translator: Flynn Hadford <fghadford@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -35,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5\n"
+"X-Generator: Weblate 4.5.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2133,7 +2134,7 @@ msgstr "Descripción:"
 
 #: ../lib/Galette/Entity/Transaction.php:122
 msgid "Originator:"
-msgstr ""
+msgstr "Creador inicial:"
 
 #: ../lib/Galette/Entity/Transaction.php:312
 #: ../lib/Galette/Entity/Contribution.php:413
@@ -2216,7 +2217,7 @@ msgstr "- Tipo de pago desconocido"
 
 #: ../lib/Galette/Entity/Contribution.php:440
 msgid "- The duration must be a positive integer!"
-msgstr ""
+msgstr "- ¡el duracion nesesitan ser un integro positivo!"
 
 #: ../lib/Galette/Entity/Contribution.php:482
 msgid "An error occurred checking overlaping fees :("
