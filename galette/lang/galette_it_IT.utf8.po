@@ -18,12 +18,13 @@
 # Luca De Filippo <luca.defilippo@translationcommons.org>, 2020.
 # Lory ~ <dury.lorenzo@gmail.com>, 2021.
 # Takeçi <polygoat@magamo.ovh>, 2021.
+# dwe sds <radiancenot@tutanota.com>, 2021.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-03-06 05:50+0000\n"
-"Last-Translator: Takeçi <polygoat@magamo.ovh>\n"
+"PO-Revision-Date: 2021-03-08 21:02+0000\n"
+"Last-Translator: dwe sds <radiancenot@tutanota.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -184,7 +185,7 @@ msgstr "Rimuovi mailing #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
 msgid "Mailing preview"
-msgstr ""
+msgstr "Anteprima spedizione"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:75
 msgid "Add field"
@@ -260,7 +261,7 @@ msgstr "Lista dei membri"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Registro"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:510
 msgid "The file does not exists or cannot be read :("
@@ -674,24 +675,22 @@ msgid "Unable to get members list."
 msgstr "Lista dei membri non ottenuta."
 
 #: ../lib/Galette/Controllers/PdfController.php:346
-#, fuzzy
 msgid "Attendance sheet configuration"
 msgstr "Configurazione del registro di presenza"
 
 #: ../lib/Galette/Controllers/PdfController.php:382
 #: ../lib/Galette/Controllers/PdfController.php:401
 msgid "No member selected to generate attendance sheet"
-msgstr ""
+msgstr "Nessun membro selezionato per generare il registro di presenza"
 
 #: ../lib/Galette/Controllers/PdfController.php:409
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
-#, fuzzy
 msgid "Attendance sheet"
 msgstr "Registro di presenza"
 
 #: ../lib/Galette/Controllers/PdfController.php:492
 msgid "Unable to get groups list."
-msgstr ""
+msgstr "Impossibile ottenere la lista dei gruppi."
 
 #: ../lib/Galette/Controllers/PdfController.php:550
 msgid "PDF models"
@@ -751,8 +750,9 @@ msgstr "Impossibile accedere come %id"
 
 #: ../lib/Galette/Controllers/AuthController.php:233
 #: ../lib/Galette/Controllers/AuthController.php:238
+#, fuzzy
 msgid "Impersonating ended"
-msgstr ""
+msgstr "Imitazione conclusa"
 
 #: ../lib/Galette/Controllers/AuthController.php:263
 #: ../lib/Galette/Controllers/AuthController.php:478
@@ -889,10 +889,8 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr "Si è verificato un errore nel riavvio dei PDF :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-#, fuzzy
-#| msgid "Logins and passwords has been successfully filled (%i processed)."
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr "Login e password sono stati compilati (%i processati)."
+msgstr "Login e password sono stati compilati con successo (%i processati)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
@@ -1038,7 +1036,6 @@ msgid "CSV import model"
 msgstr "Importare modello CSV"
 
 #: ../lib/Galette/Controllers/CsvController.php:636
-#, fuzzy
 msgid "galette_import_model.csv"
 msgstr "galette_import_model.csv"
 
