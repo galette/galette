@@ -19,19 +19,20 @@
 # Lory ~ <dury.lorenzo@gmail.com>, 2021.
 # Takeçi <polygoat@magamo.ovh>, 2021.
 # dwe sds <radiancenot@tutanota.com>, 2021.
+# Alessandro Mandelli <mandelli.alessandro@ngi.it>, 2021.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-03-08 21:02+0000\n"
-"Last-Translator: dwe sds <radiancenot@tutanota.com>\n"
+"PO-Revision-Date: 2021-03-13 12:02+0000\n"
+"Last-Translator: Alessandro Mandelli <mandelli.alessandro@ngi.it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.1\n"
+"X-Generator: Weblate 4.5.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -750,7 +751,6 @@ msgstr "Impossibile accedere come %id"
 
 #: ../lib/Galette/Controllers/AuthController.php:233
 #: ../lib/Galette/Controllers/AuthController.php:238
-#, fuzzy
 msgid "Impersonating ended"
 msgstr "Imitazione conclusa"
 
@@ -781,7 +781,7 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"Ti è stata inviata un’e-mail all'indirizzo.<br>, controlla la tua casella di "
+"Ti è stata inviata un’e-mail all'indirizzo.<br> Controlla la tua casella di "
 "posta elettronica e segui le istruzioni."
 
 #: ../lib/Galette/Controllers/AuthController.php:374
@@ -950,7 +950,7 @@ msgstr "Traduci etichette"
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
-"Nessuna traduzione per '%s'!<br>Per favore compila ed invia il form qui "
+"Nessuna traduzione per '%s'!<br>Per favore compila ed invia il modulo qui "
 "sopra per crearla."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:191
@@ -1215,11 +1215,11 @@ msgstr "Prima pagina"
 
 #: ../lib/Galette/Core/Pagination.php:268
 msgid "Previous page (%i)"
-msgstr ""
+msgstr "Pagina precedente (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:280
 msgid "Current page (%i)"
-msgstr ""
+msgstr "Pagina attuale (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:288
 msgid "Page %i"
@@ -1244,7 +1244,7 @@ msgstr "Accesso eseguito come: <br/>%login"
 
 #: ../lib/Galette/Core/MailingHistory.php:198
 msgid "Superadmin"
-msgstr "Superadmin"
+msgstr "Superamministratore"
 
 #: ../lib/Galette/Core/MailingHistory.php:555
 msgid "Delete mailing entries"
@@ -1997,10 +1997,8 @@ msgid "Late of %days days (since %date)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:802
-#, fuzzy
-#| msgid "Manage members"
 msgid "No longer member"
-msgstr "Gestisci membri"
+msgstr "Non più membro"
 
 #: ../lib/Galette/Entity/Adherent.php:814
 #, php-format
@@ -2257,14 +2255,12 @@ msgid "%field should not be empty!"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Etichetta per il campo dinamico \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Input for dynamic field \"%s\""
 msgstr "Input per il campo dinamico \"%s\""
 
@@ -2391,10 +2387,8 @@ msgid "Main information"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:930
-#, fuzzy
-#| msgid "Members list"
 msgid "Member information"
-msgstr "Lista dei membri"
+msgstr "Informazione membro"
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 msgid "You cannot delete system payment types!"
@@ -2483,10 +2477,8 @@ msgid "Amount (in letters)"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfContribution.php:102
-#, fuzzy
-#| msgid "date"
 msgid "Full date"
-msgstr "data"
+msgstr "Data completa"
 
 #: ../lib/Galette/Entity/PdfContribution.php:106
 msgid "Contribution year"
@@ -2554,16 +2546,12 @@ msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:206
 #: ../lib/Galette/Events/MemberListener.php:217
-#, fuzzy
-#| msgid ""
-#| "You asked Galette to send a test email, but mail has been disabled in the "
-#| "preferences."
 msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
-"Hai chiesto a Galette di inviare un’e-mail di prova, ma le e-mail sono state "
-"disabilitate nelle preferenze."
+"Hai chiesto a Galette di inviare un’e-mail di conferma al membro, ma le e-"
+"mail sono state disabilitate nelle preferenze."
 
 #: ../lib/Galette/Events/ContribListener.php:221
 #: ../lib/Galette/Events/MemberListener.php:228
@@ -2574,8 +2562,6 @@ msgstr ""
 "indirizzo!"
 
 #: ../lib/Galette/Events/ContribListener.php:281
-#, fuzzy
-#| msgid "Mail sent to user %name (%email)"
 msgid "Email sent to user %name (%email)"
 msgstr "Messaggio inviato all’utente %name (%email)"
 
@@ -2587,8 +2573,6 @@ msgstr ""
 "all’utente %name (% email)"
 
 #: ../lib/Galette/Events/ContribListener.php:351
-#, fuzzy
-#| msgid "Mail sent to admin for user %name (%email)"
 msgid "Email sent to admin for user %name (%email)"
 msgstr "Messaggio inviato all’amministratore per l’utente %name (%email)"
 
@@ -4872,10 +4856,8 @@ msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:532
-#, fuzzy
-#| msgid "Password:"
 msgid "Password length:"
-msgstr "Password:"
+msgstr "Lunghezza password:"
 
 #: ../templates/default/preferences.tpl:537
 msgid "Enable password blacklists"
@@ -4896,10 +4878,8 @@ msgid "Enforce password strength"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:542
-#, fuzzy
-#| msgid "Password:"
 msgid "Password strength:"
-msgstr "Password:"
+msgstr "Robustezza password:"
 
 #: ../templates/default/preferences.tpl:544
 msgid "Enforce minimal password strength for all password."
@@ -5404,10 +5384,8 @@ msgid "Password is not valid!"
 msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:60
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An error occured checking password :("
-msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
+msgstr "Si è verificato un errore durante la verifica della password :("
 
 #: ../templates/default/desktop.tpl:6
 msgid "Help us know about you!"
@@ -6974,10 +6952,8 @@ msgid "Statuts"
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:97
-#, fuzzy
-#| msgid "Advanced search"
 msgid "Advanced groups search"
-msgstr "Ricerca Avanzata"
+msgstr "Ricerca Avanzata Gruppi"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
@@ -7448,10 +7424,8 @@ msgid "Send telemetry information"
 msgstr ""
 
 #: ../templates/default/telemetry.tpl:39
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An error occurred sending telemetry information :("
-msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
+msgstr "Si è verificato un errore durante l’invio della telemetria :("
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
@@ -7643,10 +7617,10 @@ msgid "Notify member his account has been created"
 msgstr ""
 
 #: ../templates/default/member.tpl:83
-#, fuzzy
-#| msgid "Member will receive a notification by email, if he has an address."
 msgid "Member will be notified by email his account has been modified."
-msgstr "Il membro riceverà una notifica via e-mail, se ha un indirizzo."
+msgstr ""
+"Il membro riceverà una notifica via e-mail che il suo account è stato "
+"modificato."
 
 #: ../templates/default/member.tpl:85
 msgid ""
