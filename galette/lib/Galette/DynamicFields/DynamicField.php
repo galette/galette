@@ -698,7 +698,7 @@ abstract class DynamicField
 
         try {
             $values = array(
-                'field_name'        => $this->name,
+                'field_name'        => strip_tags($this->name),
                 'field_perm'        => $this->perm,
                 'field_required'    => $this->required,
                 'field_width'       => ($this->width === null ? new Expression('NULL') : $this->width),
