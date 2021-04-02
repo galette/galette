@@ -22,13 +22,14 @@
 # Cristhian Aguirre <cristhian.aguirre.v@gmail.com>, 2021.
 # Alonso Arteaga <alon.arte.r@gmail.com>, 2021.
 # Flynn Hadford <fghadford@gmail.com>, 2021.
+# Lusuho <jevpsychox@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-03-06 05:50+0000\n"
-"Last-Translator: Flynn Hadford <fghadford@gmail.com>\n"
+"PO-Revision-Date: 2021-04-03 19:26+0000\n"
+"Last-Translator: Lusuho <jevpsychox@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.1\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -787,7 +788,7 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"Un correo ha sido enviado a tu dirección.<br>Por favor revisa tu bandeja de "
+"Se ha enviado un correo a tu dirección.<br>Por favor revisa tu bandeja de "
 "entrada y sigue las instrucciones."
 
 #: ../lib/Galette/Controllers/AuthController.php:374
@@ -868,8 +869,8 @@ msgid ""
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
 "Faltan algunos módulos de PHP. Instálelos o póngase en contacto con el "
-"personal de asistencia.<br>Encontrará en la documentación más información "
-"sobre los módulos requeridos."
+"soporte.<br>Encontrará en la documentación más información sobre los módulos "
+"requeridos."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
 msgid "Texts has been successfully reinitialized."
@@ -961,7 +962,7 @@ msgstr "Traducir etiquetas"
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
-"No hay traducción para '%s'!<br>Por favor, llene y envíe el formulario de "
+"No hay traducción para «%s».<br>Por favor, llene y envíe el formulario de "
 "arriba para crearlo."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:191
