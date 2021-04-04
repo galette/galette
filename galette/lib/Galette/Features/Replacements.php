@@ -421,7 +421,7 @@ trait Replacements
                 $c_patterns[$nkey] = $pattern;
             }
 
-            $c_patterns['_contrib_label'] = [
+            $c_patterns['__contrib_label'] = [
                 'title'     => $c_patterns['contrib_label'],
                 'pattern'   => '/{CONTRIB_TYPE}/'
             ];
@@ -498,6 +498,7 @@ trait Replacements
             $nkey = '_' . $key;
             $c_replacements[$nkey] = $replacement;
         }
+        $c_replacements['__contrib_label'] = $c_replacements['contrib_label'];
 
         //handle DEADLINE alias
 
@@ -542,6 +543,7 @@ trait Replacements
             $nkey = '_' . $key;
             $c_replacements[$nkey] = $replacement;
         }
+        $c_replacements['__contrib_label'] = $c_replacements['contrib_label'];
 
         //handle DEADLINE alias
 
