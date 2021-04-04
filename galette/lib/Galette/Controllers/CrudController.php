@@ -141,6 +141,24 @@ abstract class CrudController extends AbstractController
      */
     public function confirmDelete(Request $request, Response $response): Response
     {
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            $this->getconfirmDeleteParams($request)
+        );
+        return $response;
+    }
+
+    /**
+     * Removal confirmation parameters, can be overriden
+     *
+     * @param Request $request PSR Request
+     *
+     * @return array
+     */
+    protected function getconfirmDeleteParams(Request $request): array
+    {
         $args = $this->getArgs($request);
         $post = $request->getParsedBody();
         $data = [
@@ -148,19 +166,13 @@ abstract class CrudController extends AbstractController
             'redirect_uri'  => $this->redirectUri($args)
         ];
 
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => $this->confirmRemoveTitle($args),
-                'form_url'      => $this->formUri($args),
-                'cancel_uri'    => $this->cancelUri($args),
-                'data'          => $data
-            )
-        );
-        return $response;
+        return [
+            'mode'          => $request->isXhr() ? 'ajax' : '',
+            'page_title'    => $this->confirmRemoveTitle($args),
+            'form_url'      => $this->formUri($args),
+            'cancel_uri'    => $this->cancelUri($args),
+            'data'          => $data
+        ];
     }
 
     /**

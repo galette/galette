@@ -490,5 +490,17 @@ class GroupsController extends CrudController
         return $is_deleted;
     }
 
+    /**
+     * Removal confirmation parameters, can be overriden
+     *
+     * @param Request $request PSR Request
+     *
+     * @return array
+     */
+    protected function getconfirmDeleteParams(Request $request): array
+    {
+        return parent::getconfirmDeleteParams($request) + ['with_cascade' => true];
+    }
+
     // CRUD - Delete
 }
