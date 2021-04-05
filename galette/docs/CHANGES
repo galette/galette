@@ -1,20 +1,32 @@
 Changes
 -------
 
+0.9.4.2 -> 0.9.5
+
+- Fix CVE-2021-21319
+- PHP8 compatibility
+- Cannot create new members
+- Inactive accounts can renew their password
+- Error on removing contribution type
+- Cannot cascade remove groups
+- Variables available in emails and PDF are now the same, dynamic fields has been added, ...
+- Third party dependencies has been updated and cleaned, some for security reasons
+- Improve self subscription captcha
+- dependency management system has been changed
+
 0.9.4.1 -> 0.9.4.2
 - Issues on mailing instantiation, in core and plugins
-- Fix issues on mailings attachmments
+- Fix issues on mailings attachments
 - Post contribution script was called too early
 - Fix cards colors on new installations
 - First and last name were inverted in core PDF member card
 - Print logo was the one used, but not the one displayed in preferences
 
-
 0.9.4 -> 0.9.4.1
 
 - Many improvements on string translations (add support for plurals, contexts and comments
 - Use events to send administrative emails (account creation, edition, contribution added)
-- Many locales updates thantks to Weblate translators!
+- Many locales updates thanks to Weblate translators!
 - Fix displayed version number
 - Missing “Next” button in members dynamic dropdown
 - Error creating dynamic field with empty name
@@ -28,14 +40,14 @@ Changes
 - Fix search on dates in contributions list
 - Unable to unset booleans on mass change
 - Unable to unset booleans on dynamic fields
-- Captcha issue on self subscritpion page
+- Captcha issue on self subscription page
 - Wrong JS action in mailings
 - SQL error on invoices/receipt direct download
 - Issues with images in dynamic files
 - Fix several issues sending reminders
 - Change log in URL
 - Do not display inactive members as late
-- Fix several issues in distribued archive (remove symlinks, fix tar format, …)
+- Fix several issues in distributed archive (remove symlinks, fix tar format, …)
 
 0.9.3.1 -> 0.9.4
 
@@ -191,7 +203,7 @@ News
 - Define a default status for new members in preferences
 - Add footer text
 - Add German language (many thanks to Arnold W.)
-- Sender can now be choosed when sending an email
+- Sender can now be chosen when sending an email
 
 Bugfixes
 ^^^^^^^^
@@ -200,7 +212,7 @@ Bugfixes
 - Take care of history preferences
 - Update of dynamic fields now set member modification date
 - GPG field was too short
-- Fix schema differences beetween MySQL and PostgreSQL
+- Fix schema differences between MySQL and PostgreSQL
 - Clean extra data from 0.9rc
 - Change mail field size to be compliant with standards
 - Fix upgrade issues
@@ -224,11 +236,11 @@ News
 - Superadmin can impersonate without know identifiers
 - "Responsive" design
 - Manage logout delay
-- Tets emails parameters from preferences
+- Tests emails parameters from preferences
 - Check duplicate emails importing with dry-run mode
 - Check status importing with dry-run mode
 - Preview attached files from mailing preview
-- Select all and invert selection on both begining and end of lists
+- Select all and invert selection on both beginning and end of lists
 - Status are no longer uniques
 - Login with email address
 - Handle reverse proxies for logs (thanks to Georges R.)
@@ -239,7 +251,7 @@ News
 - Set 5.6 as minimal PHP version
 - Possibility to only expose "webroot" directory
 - Type free search fields (thanks to Guillaume R.)
-- Improve fields acces control adding new roles (thanks to Guillaume R.)
+- Improve fields access control adding new roles (thanks to Guillaume R.)
 - Merge admintools plugins features
 - Free search on statuses labels
 - Better management of fields in free advanced search (thanks to Guillaume R.)
@@ -306,10 +318,10 @@ News
 
 - Add ASSO_ADDRESS_MULTI pattern on PDF models
 - Add patterns for dynamic fields on PDF models
-- Add basic adhesion form PDF based on models, which can be overriden using the fullcard plugin
+- Add basic adhesion form PDF based on models, which can be overridden using the fullcard plugin
 - Add RSS support on news feeds
 - Add simple str_replace capability on PDF models
-- Retrieve adress from parent if member does not have one
+- Retrieve address from parent if member does not have one
 - Retrieve email from parent if member does not have one (extended)
 - Simple members can now change their own name, gender and title
 
@@ -342,7 +354,7 @@ Bugfixes
 - Store members images missing in database
 - Fix quoting in pgsql upgrade script
 - Remove extra characters on fields translations for csv export
-- Exclude donations froms due date calculation
+- Exclude donations from due date calculation
 - Properly import companies from CSV
 - Do not submit advanced search form on group selection
 
@@ -402,7 +414,7 @@ News
 - Relocate data in a common directory
 - Combined actions on memberlist from plugins
 - Use Logo in PDF models (thanks to Guillaume R.)
-- Maximize satus and contributions types labels size
+- Maximize status and contributions types labels size
 - Choose date when filtering contributions
 - Filter transactions per date
 - IPV6 compatible
@@ -450,7 +462,7 @@ Under the hood
 - no longer show days remaining for disabled accounts
 - staff members cannot change thor own information
 - no error was shown when removing a member failed
-- pdf memberd card was looking for loggged in user membership
+- pdf member card was looking for logged in user membership
 
 0.7.5.4 -> 0.7.5.5 (2013-10-12)
 - Super admin was not able to change some members fields
@@ -463,7 +475,7 @@ Under the hood
 - remove new group button and add group member/manager for non admins/staff
 - fix a filtering issue on groups on some cases
 - do not try to remove a constraint that does not exists in postgres databases
-- restrict tempimages and tamplates_c directories access from web
+- restrict tempimages and templates_c directories access from web
 
 0.7.5.2 -> 0.7.5.3 (2013-09-18)
 - add group member or manager had disappear
@@ -480,7 +492,7 @@ Under the hood
 - fix groups PDF blank page
 - fis MySQL upgrade script issues
 - fix wrong interpreter path in post contribution test script
-- mails subejcts were too short
+- mails subjects were too short
 - avoid undefined index when running from cron
 - improve post contribution JSON data
 - fix SQLite install script
@@ -493,7 +505,7 @@ Under the hood
 - automate reminders sending
 - send reminders via cron jobs
 - add receipt and invoices for contributions, with customizable models
-- post contribution script call (file, get or post), for accouting storage
+- post contribution script call (file, get or post), for accounting storage
 - mailing now always contains a 'To' field to avoid mail blocking
 - amounts and contributions types now available on mail texts
 - new date and boolean dynamic fields
@@ -579,7 +591,7 @@ Under the hood
 0.7.3.1 -> 0.7.3.2 (2013-01-19)
 
 - managed but non member groups were not displayed
-- password were reseted on member edition
+- password were reset on member edition
 - add payment type on contribution initialization
 
 0.7.3 -> 0.7.3.1 (2013-01-05)
@@ -666,8 +678,8 @@ Changes and additions
 - fix entered dates i18n
 - improve IE8 display
 - fix transparent logo, and with unsupported format
-- fix plugins menu incorect path
-- fix plugins activation/desactivation refresh issue
+- fix plugins menu incorrect path
+- fix plugins activation/deactivation refresh issue
 - now really uses mail() function
 - improve password reminder page
 - fix members list cotisations status ordering
@@ -688,21 +700,21 @@ Under the hood
 Changes and additions
 ^^^^^^^^^^^^^^^^^^^^^
 
-- full redisgn
+- full redesign
 - interface written with HTML5 / CSS3
-- new history managment
-- mailings history and managment
-- groups managment
-- add a dashboard (which displays latests news from the project
+- new history management
+- mailings history and management
+- groups management
+- add a dashboard (which displays latest news from the project
 - public pages (members list en trombinoscope)
 - handle plugins (see available plugins at http://galette.tuxfamily.org/documentation/fr/plugins/index.html#plugins)
 - CSV export of selected tables and/or parameted requests (https://mail.gna.org/public/galette-devel/2009-02/msg00006.html)
-- required fields managment for members add/edition
-- multinlingual managment for subjects and messages automatically send from Galette (subscription, password lots, ...)
-- members statuses managment
-- contributions types managment
-- rewrite of transactions managment
-- rewrite maling interface
+- required fields management for members add/edition
+- multilingual management for subjects and messages automatically send from Galette (subscription, password lots, ...)
+- members statuses management
+- contributions types management
+- rewrite of transactions management
+- rewrite mailing interface
 - JQuery UI integration to enhance user experience (menus, tabs, date/color pickers, ...)
 - print membership cards
 - ...
@@ -721,7 +733,7 @@ Under the hood
 - use of PEAR::LOG
 - use of Zend_Db to manage database access instead of AdoDB
 - phpMailer for emails sending (https, gmail, etc. support)
-- make database relationnal
+- make database relational
 
 0.63.3 -> 0.64rc1 (2010-02-22)
 - Handle 'stripos' missing function to keep 0.63.x php4 compliant
@@ -730,18 +742,18 @@ Under the hood
 - Replace phppdflib with tcpdf
 - Symlink to adodb has been removed, we now use a php file defining the versions for the libraries
 - Improved pagination: only 20 pages will appear now, instead of all pages
-- Remove spanish language which has not been maintaned for ages
+- Remove spanish language which has not been maintained for ages
 - Use UTF-8 for translation files
-- Fix a bug calculating end membership date when using begining date for membership in the preferences
-- Remove not functionnal and not used "public" pages
+- Fix a bug calculating end membership date when using beginning date for membership in the preferences
+- Remove not functional and not used "public" pages
 - Remove unused files
 - Handle 'mb_strtoupper' to avoid error on labels generation when mb extension is not present
-- Move config file from includes to config directory. Wrtie access on includes directory will no longer be required at install
+- Move config file from includes to config directory. Write access on includes directory will no longer be required at install
 - Only super-admin can change its login/password now. Standard admins can no longer do that
 
 0.63.2 -> 0.63.3 (2009-11-09)
 - fix a security flaw that allowed attacker to send arbitrary PHP files on some servers
-- when sendind invalid member form, line dynamic fields were repeated (bug #10187)
+- when sending invalid member form, line dynamic fields were repeated (bug #10187)
 - some encoding issues has been noticed on UFT-8 MySQL servers. Connection is now forced to LATIN1 (thanks to Cédric)
 - unbreakable spaces appears on non html email (thanks to Cédric OLIVIER)
 - using XML characters in mailing subjects causes XML analysis errors on preview (bug #14571)
@@ -771,8 +783,8 @@ Under the hood
 
 0.62 -> 0.63
 - Project leader change :-)
-- Added transactions managment
-- Added dynamic field managment, to add some extra fields; also added the ability to translate such fields labels
+- Added transactions management
+- Added dynamic field management, to add some extra fields; also added the ability to translate such fields labels
 - Members can now self-subscribe
 - Use of Smarty template engine for pages generation. This causes complete xhtml compliant rewrite of html pages
 - Upgrade from ADODB 4.7.1 to 4.9.2
@@ -806,7 +818,7 @@ http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-0410
 - Font size defined for form labels
 - Bugfix concerning a call to imagegif when the function wasn't available (reported by Vincent Bossuet)
 - Fixed a bug reported by Lois Taulelle. Membership ending date wasn't updated when removing the "Freed of dues" attribute
-- Added the possibility to be visible or not in the members list (if you wan't to list members outside from Galette). Courtesy of Stephane Sales
+- Added the possibility to be visible or not in the members list (if you want to list members outside from Galette). Courtesy of Stephane Sales
 - Removed many PHP warnings (Galette should be running fine when error_reporting = E_ALL)
 - The log can now be sorted
 
@@ -824,7 +836,7 @@ O.60 -> 0.61
 - Correction of a few spelling mistake
 - Navigation links when on a member's contributions list added
 - Clicking on a member's name in the contributions list shows his
-  contributions intead of his profile
+  contributions instead of his profile
 - Lost password recovery added
 - Removed the Galette acronym meaning
 - Header corrections
@@ -832,27 +844,3 @@ O.60 -> 0.61
 - Bugfix in thumbnail display
 - DROP permission wasn't checked during install process
 - English translation
-
-
-O.60 -> 0.61
-
-- Correction du formulaire d'édition d'adhérent (admin)
-- Fusion des fichiers ajouter_adherent.php et gestion_contributions.php
-  (edition de membre)
-- Les prefixes de tables sont maintenant autorisés
-- Réduction des photos si GD est disponible
-- Les équivalents HTML dans les noms d'adhérents étaient parfois
-  mal affichés
-- Retour aux contributions d'un membre après l'ajout d'un contribution
-- Filtre sur les dates dans le listing des cotisations
-- Correction de fautes d'orthographe
-- Liens de navigation sur la fiche de cotisations d'un membre
-- Cliquer sur le nom d'un adhérent dans la liste des cotisations
-  permet d'obtenir ses contributions au lieu de son profil
-- Lien "mot de passe perdu"
-- Masquage de la signification de l'acronyme "Galette"
-- Corrections dans les en-têtes
-- Meilleure détection du fichier de langue
-- Correction de bug dans l'affichage des vignettes
-- Le permission DROP n'était pas vérifié durant l'installation
-- Traduction en anglais
