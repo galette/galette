@@ -183,7 +183,7 @@ class PdfModel extends GaletteTestCase
             'contrib_id'        => '/{CONTRIB_ID}/',
             'contrib_payment'   => '/{CONTRIB_PAYMENT_TYPE}/',
             'contrib_info'       => '/{CONTRIB_INFO}/',
-            '_contrib_label'     => '/{CONTRIB_TYPE}/',
+            '_contrib_label'     => '/{CONTRIBUTION_LABEL}/',
             '_contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
             '_contrib_amount_letters' => '/{CONTRIBUTION_AMOUNT_LETTERS}/',
             '_contrib_date'      => '/{CONTRIBUTION_DATE}/',
@@ -194,6 +194,7 @@ class PdfModel extends GaletteTestCase
             '_contrib_id'        => '/{CONTRIBUTION_ID}/',
             '_contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/',
             '_contrib_info'       => '/{CONTRIBUTION_INFO}/',
+            '__contrib_label'    => '/{CONTRIB_TYPE}/'
         ];
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->array($model->getPatterns())->isIdenticalTo($expected);
