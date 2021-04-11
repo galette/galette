@@ -6,7 +6,7 @@
 # DALBARD <Verturin@live.fr>, 2018. #zanata
 # Miguel Cordas <mc@mcsi.ch>, 2019. #zanata
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
 # Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020.
@@ -24,15 +24,15 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-03-13 12:02+0000\n"
-"Last-Translator: Takeçi <polygoat@magamo.ovh>\n"
+"PO-Revision-Date: 2021-04-11 10:31+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.2-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1929,30 +1929,16 @@ msgid "Sent reminder email for impending membership"
 msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:284
-#, fuzzy
-#| msgid ""
-#| "A problem happened while sending contribution receipt to user %name "
-#| "(%email)"
 msgid "A problem happened while sending late membership email"
 msgstr ""
-"Si è verificato un problema durante l’invio della ricevuta del contributo "
-"all’utente %name (% email)"
 
 #: ../lib/Galette/Entity/Reminder.php:286
-#, fuzzy
-#| msgid ""
-#| "A problem happened while sending contribution receipt to user %name "
-#| "(%email)"
 msgid "A problem happened while sending impending membership email"
 msgstr ""
-"Si è verificato un problema durante l’invio della ricevuta del contributo "
-"all’utente %name (% email)"
 
 #: ../lib/Galette/Entity/Reminder.php:296
-#, fuzzy
-#| msgid "None of the selected members has an email address."
 msgid "Unable to send %membership reminder (no email address)."
-msgstr "Nessuno dei membri selezionati ha un indirizzo e-mail."
+msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:309
 msgid "%name (#%id - %days days)"
@@ -3232,10 +3218,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:59
-#, fuzzy
-#| msgid "List of contributions"
 msgid "Receipt send for new contribution"
-msgstr "Elenco dei contributi"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:64
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
