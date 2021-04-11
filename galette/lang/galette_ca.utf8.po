@@ -1,15 +1,15 @@
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-30 17:29+0000\n"
-"Last-Translator: Pol Casares Civit <pol.casares@e-campus.uab.cat>\n"
+"PO-Revision-Date: 2021-04-11 10:09+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4.1-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -166,9 +166,9 @@ msgid "Mailings"
 msgstr "Correus electrònics"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:658
-#, fuzzy, php-format
+#, php-format
 msgid "Remove mailing #%1$s"
-msgstr "Elimina el mailing #&lt;unk&gt;1$s"
+msgstr "Elimina el mailing #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
 #, fuzzy
@@ -217,9 +217,9 @@ msgid "Requested field does not exists!"
 msgstr "El camp sol·licitat no existeix!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:463
-#, fuzzy, php-format
+#, php-format
 msgid "Remove dynamic field %1$s"
-msgstr "Elimina el camp dinàmic percent1$s"
+msgstr "Elimina el camp dinàmic %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:508
 #, fuzzy
@@ -247,9 +247,8 @@ msgid "You do not have permission for requested URL."
 msgstr "No teniu permís per a l'URL sol·licitat."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:265
-#, fuzzy
 msgid "No member #%id."
-msgstr "Cap membre #&lt;unk&gt;id."
+msgstr "Cap membre #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:285
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1146
@@ -375,9 +374,9 @@ msgid "Delete failed"
 msgstr "Ha fallat la supressió"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1841
-#, fuzzy, php-format
+#, php-format
 msgid "Remove member %1$s"
-msgstr "Elimina el membre percent1$s"
+msgstr "Elimina el membre %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1850
 #, fuzzy, php-format
@@ -395,29 +394,29 @@ msgid "Edit title"
 msgstr "Edita el títol"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:205
-#, fuzzy, php-format
+#, php-format
 msgid "Title '%s' has not been added!"
-msgstr "No s'ha afegit el títol «&lt;unk&gt;s»."
+msgstr "No s'ha afegit el títol «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
-#, fuzzy, php-format
+#, php-format
 msgid "Title '%s' has not been modified!"
-msgstr "El títol \"&lt;unk&gt;s\" no s'ha modificat!"
+msgstr "El títol \"%s\" no s'ha modificat!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
-#, fuzzy, php-format
+#, php-format
 msgid "Title '%s' has been successfully added."
-msgstr "El títol '&lt;unk&gt;s' s'ha afegit amb èxit."
+msgstr "El títol '%s' s'ha afegit amb èxit."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:236
-#, fuzzy, php-format
+#, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr "El títol '&lt;unk&gt;s' s'ha modificat amb èxit."
+msgstr "El títol '%s' s'ha modificat amb èxit."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:287
-#, fuzzy, php-format
+#, php-format
 msgid "Remove title %1$s"
-msgstr "Elimina el títol percent1$s"
+msgstr "Elimina el títol %1$s"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:120
 #, fuzzy
@@ -445,9 +444,8 @@ msgid "%type has not been added :("
 msgstr "no s'ha afegit el tipus de l'1% ("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
-#, fuzzy
 msgid "%type #%id has not been updated"
-msgstr "percentatge #&lt;unk&gt;id no s'ha actualitzat"
+msgstr "%type #%id no s'ha actualitzat"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 #, fuzzy
@@ -455,14 +453,12 @@ msgid "%type has been successfully added!"
 msgstr "S'ha afegit amb èxit un tipus de percentatge!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
-#, fuzzy
 msgid "%type #%id has been successfully updated!"
-msgstr "El #&lt;unk&gt;id del tipus 0% s'ha actualitzat correctament!"
+msgstr "%type #%id s'ha actualitzat correctament!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:353
-#, fuzzy
 msgid "Remove %type '%label'"
-msgstr "Elimina el tipus '&lt;unk&gt;label'"
+msgstr "Elimina %type '%label'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:106
 #, fuzzy
@@ -493,9 +489,8 @@ msgstr "- Tipus de pagament desconegut!"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:477
 #: ../lib/Galette/Controllers/PdfController.php:449
 #: ../lib/Galette/Controllers/PdfController.php:713
-#, fuzzy
 msgid "Unable to load contribution #%id!"
-msgstr "No s'ha pogut carregar la contribució #&lt;unk&gt;id!"
+msgstr "No s'ha pogut carregar la contribució #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:582
 #, fuzzy
@@ -508,9 +503,9 @@ msgid "An error occurred while storing the contribution."
 msgstr "S'ha produït un error en emmagatzemar la contribució."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:684
-#, fuzzy, php-format
+#, php-format
 msgid "Remove %1$s %2$s"
-msgstr "Elimina el 5%$s.1$s.2$s."
+msgstr "Elimina %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
 #, fuzzy
@@ -523,9 +518,9 @@ msgid "transactions"
 msgstr "transaccions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
-#, fuzzy, php-format
+#, php-format
 msgid "Remove %1$s #%2$s"
-msgstr "Elimina el #&lt;unk&gt;2$s"
+msgstr "Elimina %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
 #: ../lib/Galette/IO/PdfContribution.php:84
@@ -834,9 +829,9 @@ msgid "Log off"
 msgstr "Tanca la sessió"
 
 #: ../lib/Galette/Controllers/AuthController.php:195
-#, fuzzy, php-format
+#, php-format
 msgid "Impersonating as %login"
-msgstr "S'està suplantant com a percentlogin"
+msgstr "S'està suplantant com a %login"
 
 #: ../lib/Galette/Controllers/AuthController.php:207
 #, fuzzy
@@ -870,14 +865,13 @@ msgid "Y-m-d H:i:s"
 msgstr "Y-m-d His"
 
 #: ../lib/Galette/Controllers/AuthController.php:368
-#, fuzzy, php-format
+#, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr ""
-"S'ha enviat un correu electrònic a '&lt;unk&gt;s' per a la recuperació de la "
+"S'ha enviat un correu electrònic a '%s' per a la recuperació de la "
 "contrasenya."
 
 #: ../lib/Galette/Controllers/AuthController.php:372
-#, fuzzy
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
@@ -891,24 +885,23 @@ msgid "An email has been sent to the member."
 msgstr "S'ha enviat un correu electrònic al membre."
 
 #: ../lib/Galette/Controllers/AuthController.php:385
-#, fuzzy, php-format
+#, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
-"S'ha produït un problema en enviar la contrasenya pel compte «&lt;unk&gt;s»"
+msgstr "S'ha produït un problema en enviar la contrasenya pel compte «%s»"
 
 #: ../lib/Galette/Controllers/AuthController.php:399
 #: ../lib/Galette/Events/MemberListener.php:250
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
-"S'ha produït un error en emmagatzemar la contrasenya temporal per a un 1%. "
-"Si us plau informeu un administrador."
+"S'ha produït un error en emmagatzemar la contrasenya temporal per %s. Si us "
+"plau informeu un administrador."
 
 #: ../lib/Galette/Controllers/AuthController.php:411
-#, fuzzy, php-format
+#, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr "El vostre compte (&lt;unk&gt;s) no conté cap adreça electrònica vàlida"
+msgstr "El vostre compte (%s) no conté cap adreça electrònica vàlida"
 
 #: ../lib/Galette/Controllers/AuthController.php:425
 #, fuzzy, php-format
@@ -951,9 +944,9 @@ msgid "An error occurred while updating your password."
 msgstr "S'ha produït un error en actualitzar la contrasenya."
 
 #: ../lib/Galette/Controllers/AuthController.php:532
-#, fuzzy, php-format
+#, php-format
 msgid "Password changed for member '%s'."
-msgstr "S'ha canviat la contrasenya pel membre '&lt;unk&gt;s'."
+msgstr "S'ha canviat la contrasenya pel membre '%s'."
 
 #: ../lib/Galette/Controllers/AuthController.php:540
 #, fuzzy
@@ -967,13 +960,13 @@ msgstr "Eines d'administració"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:111
-#, fuzzy
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
-"Falten alguns mòduls PHP. Instal·leu-los o contacteu amb el vostre suport. "
-"Es pot trobar més informació sobre els mòduls requerits a la documentació."
+"Falten alguns mòduls PHP. Instal·leu-los o contacteu amb el vostre "
+"suport.<br>Es pot trobar més informació sobre els mòduls requerits a la "
+"documentació."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
 #, fuzzy
@@ -1006,11 +999,10 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr "S'ha produït un error en tornar a inicialitzar els models PDF ("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-#, fuzzy
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr ""
-"Els inicis de sessió i les contrasenyes s'han omplert correctament (&lt;"
-"unk&gt;i processat)."
+"Els inicis de sessió i les contrasenyes s'han omplert correctament (%i "
+"processat)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 #, fuzzy
@@ -1079,20 +1071,18 @@ msgid "Translate labels"
 msgstr "Tradueix les etiquetes"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:119
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
-"No hi ha traducció per '&lt;unk&gt;s'!<br>Si us plau ompliu i envieu el "
-"formulari anterior per crear-lo."
+"No hi ha traducció per '%s'!<br>Si us plau ompliu i envieu el formulari "
+"anterior per crear-lo."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:191
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:216
-#, fuzzy
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
-"Hi ha hagut un error en desar l'etiqueta `&lt;unk&gt;label` per al "
-"llenguatge `&lt;unk&gt;lang`"
+"Hi ha hagut un error en desar l'etiqueta `%label` per al llenguatge `%lang`"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:232
 #, fuzzy
@@ -1110,29 +1100,26 @@ msgid "Table %table is empty, and has not been exported."
 msgstr "La taula del 10% està buida i no s'ha exportat."
 
 #: ../lib/Galette/Controllers/CsvController.php:194
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
-"El fitxer d'exportació no s'ha pogut escriure al disc per a «&lt;unk&gt;"
-"export». Assegureu-vos que el servidor web pot escriure al directori "
-"d'exportacions."
+"El fitxer d'exportació no s'ha pogut escriure al disc per a «%export». "
+"Assegureu-vos que el servidor web pot escriure al directori d'exportacions."
 
 #: ../lib/Galette/Controllers/CsvController.php:204
-#, fuzzy, php-format
+#, php-format
 msgid "An error occurred running parameted export '%export'."
-msgstr ""
-"S'ha produït un error en executar l'exportació parametada '&lt;unk&gt;"
-"export'."
+msgstr "S'ha produït un error en executar l'exportació parametada '%export'."
 
 #: ../lib/Galette/Controllers/CsvController.php:214
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "An error occurred running parameted export '%export'. Please check the logs."
 msgstr ""
-"S'ha produït un error en executar l'exportació parameted '&lt;unk&gt;"
-"export'. Comproveu els registres."
+"S'ha produït un error en executar l'exportació parameted '%export'. "
+"Comproveu els registres."
 
 #: ../lib/Galette/Controllers/CsvController.php:263
 #, fuzzy
@@ -1145,10 +1132,8 @@ msgid "An error occurred importing the file :("
 msgstr "S'ha produït un error en importar el fitxer ("
 
 #: ../lib/Galette/Controllers/CsvController.php:327
-#, fuzzy
 msgid "File '%filename%' has been successfully imported :)"
-msgstr ""
-"El fitxer '&lt;unk&gt;filename&lt;unk&gt;' s'ha importat correctament )"
+msgstr "El fitxer '%filename%' s'ha importat correctament :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:360
 #, fuzzy
@@ -1171,14 +1156,14 @@ msgid "Remove %1$s file %2$s"
 msgstr "Elimina el $1$s fitxer %2$s"
 
 #: ../lib/Galette/Controllers/CsvController.php:512
-#, fuzzy, php-format
+#, php-format
 msgid "'%export' file has been removed from disk."
-msgstr "El fitxer '&lt;unk&gt;export' ha estat eliminat del disc."
+msgstr "El fitxer '%export' ha estat eliminat del disc."
 
 #: ../lib/Galette/Controllers/CsvController.php:522
-#, fuzzy, php-format
+#, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr "No es pot eliminar '&lt;unk&gt;export' del disc /"
+msgstr "No es pot eliminar '%export' del disc :/"
 
 #: ../lib/Galette/Controllers/CsvController.php:594
 #, fuzzy
@@ -1206,14 +1191,14 @@ msgid "Automatic emails texts edition"
 msgstr "Edició automàtica de textos de correu electrònic"
 
 #: ../lib/Galette/Controllers/TextController.php:159
-#, fuzzy, php-format
+#, php-format
 msgid "Email: '%s' has not been modified!"
-msgstr "El correu electrònic \"&lt;unk&gt;s\" no ha estat modificat!"
+msgstr "El correu electrònic \"%s\" no ha estat modificat!"
 
 #: ../lib/Galette/Controllers/TextController.php:168
-#, fuzzy, php-format
+#, php-format
 msgid "Email: '%s' has been successfully modified."
-msgstr "El correu electrònic '&lt;unk&gt;s' s'ha modificat amb èxit."
+msgstr "El correu electrònic '%s' s'ha modificat amb èxit."
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:290
 #, fuzzy
@@ -1304,9 +1289,8 @@ msgid "Config file already exists and is up to date"
 msgstr "El fitxer Config ja existeix i està actualitzat"
 
 #: ../lib/Galette/Core/Install.php:1081
-#, fuzzy
 msgid "Unable to create configuration file (%path)"
-msgstr "No s'ha pogut crear el fitxer de configuració (&lt;unk&gt;path)"
+msgstr "No s'ha pogut crear el fitxer de configuració (%path)"
 
 #: ../lib/Galette/Core/Install.php:1129
 #, fuzzy
@@ -1364,11 +1348,11 @@ msgid "How much is %1$s added to %2$s?"
 msgstr "Quant s'ha afegit el $1 al $2?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
-msgstr "Tinc un amic de Galettes d'un milió de dòlars i un altre de Galettes."
+msgstr ""
 
 #: ../lib/Galette/Core/Gaptcha.php:108
 #, fuzzy, php-format
@@ -1396,14 +1380,12 @@ msgid "First page"
 msgstr "Primera pàgina"
 
 #: ../lib/Galette/Core/Pagination.php:268
-#, fuzzy
 msgid "Previous page (%i)"
-msgstr "Pàgina anterior (&lt;unk&gt;i)"
+msgstr "Pàgina anterior (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:280
-#, fuzzy
 msgid "Current page (%i)"
-msgstr "Pàgina actual (&lt;unk&gt;i)"
+msgstr "Pàgina actual (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:288
 #, fuzzy
@@ -1411,21 +1393,19 @@ msgid "Page %i"
 msgstr "Percenti"
 
 #: ../lib/Galette/Core/Pagination.php:296
-#, fuzzy
 msgid "Next page (%i)"
-msgstr "Pàgina següent (&lt;unk&gt;i)"
+msgstr "Pàgina següent (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:302
-#, fuzzy
 msgid "Last page (%i)"
-msgstr "Última pàgina (&lt;unk&gt;i)"
+msgstr "Última pàgina (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:314
 msgid "All"
 msgstr "Tot"
 
 #: ../lib/Galette/Core/Authentication.php:280
-#, fuzzy, php-format
+#, php-format
 msgid "Logged in as:<br/>%login"
 msgstr "S'ha iniciat la sessió com a<br>%login"
 
@@ -1563,14 +1543,13 @@ msgstr ""
 "La configuració de les targetes actuals pot superar l'alçada de la pàgina!"
 
 #: ../lib/Galette/Core/I18n.php:221
-#, fuzzy
 msgid "Unknown lang (%lang)"
-msgstr "Lang desconeguda (&lt;unk&gt;lang)"
+msgstr "Lang desconeguda (%lang)"
 
 #: ../lib/Galette/Core/CheckModules.php:97
-#, fuzzy, php-format
+#, php-format
 msgid "'%s' module"
-msgstr "mòdul '&lt;unk&gt;s'"
+msgstr "mòdul '%s'"
 
 #: ../lib/Galette/Core/CheckModules.php:103
 #, fuzzy
@@ -1681,14 +1660,12 @@ msgid "Y-m-d"
 msgstr "Y-m-d"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
-#, fuzzy
 msgid "Searches deleted (%list)"
-msgstr "Cerca esborrada (&lt;unk&gt;list)"
+msgstr "Cerca esborrada (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:449
-#, fuzzy
 msgid "Contributions deleted (%list)"
-msgstr "Contribucions suprimides (&lt;unk&gt;list)"
+msgstr "Contribucions suprimides (%list)"
 
 #: ../lib/Galette/Util/Password.php:87
 #, fuzzy
@@ -1752,9 +1729,8 @@ msgid "Staff member"
 msgstr "Membre del personal"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:507
-#, fuzzy
 msgid "Administrator"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:508
 #, fuzzy
@@ -2031,9 +2007,8 @@ msgstr ""
 "n’hi ha %count (fila %row)"
 
 #: ../lib/Galette/IO/CsvIn.php:303
-#, fuzzy
 msgid "Field %field is required, but missing in row %row"
-msgstr "El camp del camp és obligatori però falta al fila del 5%."
+msgstr "El camp %field és obligatori però falta al fila %row"
 
 #: ../lib/Galette/IO/CsvIn.php:325
 #, fuzzy, php-format
@@ -2056,10 +2031,8 @@ msgid "from member %id_adh"
 msgstr "de membre percentidadh"
 
 #: ../lib/Galette/IO/CsvIn.php:366
-#, fuzzy
 msgid "Email address %address is already used! (%extra)"
-msgstr ""
-"L'adreça de correu electrònic per cent ja s'utilitza! (&lt;unk&gt;extra)"
+msgstr "L'adreça de correu electrònic per cent ja s'utilitza! (%extra)"
 
 #: ../lib/Galette/IO/CsvIn.php:391
 #, fuzzy
@@ -2072,11 +2045,9 @@ msgid "File is empty!"
 msgstr "El fitxer és buit!"
 
 #: ../lib/Galette/IO/CsvIn.php:530 ../lib/Galette/IO/CsvIn.php:541
-#, fuzzy
 msgid "An error occurred storing member at row %row (%name):"
 msgstr ""
-"S'ha produït un error en emmagatzemar el membre a la fila per cent (&lt;"
-"unk&gt;name)"
+"S'ha produït un error en emmagatzemar el membre a la fila per cent (%name):"
 
 #: ../lib/Galette/IO/CsvIn.php:576
 #, fuzzy
@@ -2253,9 +2224,8 @@ msgid "Public"
 msgstr "Públic"
 
 #: ../lib/Galette/Entity/Reminder.php:269
-#, fuzzy
 msgid "%name <%mail> (%days days)"
-msgstr "Percentname &lt;%mail&gt; (&lt;unk&gt;dies dies)"
+msgstr "%name &lt;%mail&gt; (%days dies)"
 
 #: ../lib/Galette/Entity/Reminder.php:276
 #, fuzzy
@@ -2290,9 +2260,8 @@ msgstr ""
 "electrònica)."
 
 #: ../lib/Galette/Entity/Reminder.php:309
-#, fuzzy
 msgid "%name (#%id - %days days)"
-msgstr "nom del 5% (#&lt;unk&gt;id - dia-dilluns)"
+msgstr "%name (#%id - %days dia)"
 
 #: ../lib/Galette/Entity/I18nTrait.php:136
 #, fuzzy, php-format
@@ -2365,10 +2334,9 @@ msgstr ""
 #: ../lib/Galette/Entity/DynamicsTrait.php:197
 #: ../lib/Galette/Entity/Contribution.php:394
 #: ../lib/Galette/Entity/Contribution.php:1276
-#, fuzzy, php-format
+#, php-format
 msgid "- Wrong date format (%date_format) for %field!"
-msgstr ""
-"- Format de data incorrecte (&lt;unk&gt;dateformat) per a percentfield!"
+msgstr "- Format de data incorrecte (%date_format) per %field!"
 
 #: ../lib/Galette/Entity/Adherent.php:1259
 #, fuzzy
@@ -2414,9 +2382,8 @@ msgid "Password misrepeated: "
 msgstr "Contrasenya repetida erròniament "
 
 #: ../lib/Galette/Entity/Adherent.php:1381
-#, fuzzy
 msgid "Status #%id does not exists in database."
-msgstr "Estatus #&lt;unk&gt;id no existeix a la base de dades."
+msgstr "Estatus #%id no existeix a la base de dades."
 
 #: ../lib/Galette/Entity/Adherent.php:1390
 #, fuzzy
@@ -2424,9 +2391,8 @@ msgid "An error has occurred while looking if status does exists."
 msgstr "S'ha produït un error en cercar si l'estat existeix."
 
 #: ../lib/Galette/Entity/Adherent.php:1397
-#, fuzzy
 msgid "Gender %gender does not exists!"
-msgstr "El gènere no existeix."
+msgstr "El gènere %gender no existeix!"
 
 #: ../lib/Galette/Entity/Adherent.php:1502
 #, fuzzy
@@ -2459,14 +2425,12 @@ msgid "Inactive"
 msgstr "Inactiu"
 
 #: ../lib/Galette/Entity/Adherent.php:1885
-#, fuzzy
 msgid " (%age years old)"
-msgstr " (edat de&lt;unk&gt; anys)"
+msgstr " (edat de %age anys)"
 
 #: ../lib/Galette/Entity/Adherent.php:1958
-#, fuzzy
 msgid "Duplicated from %name (%id)"
-msgstr "Duplicat des del nom % (&lt;unk&gt;id)"
+msgstr "Duplicat des del nom %name (%id)"
 
 #: ../lib/Galette/Entity/Transaction.php:110
 #, fuzzy
@@ -2646,9 +2610,8 @@ msgid "Cannot delete this label: it's still used"
 msgstr "No es pot suprimir aquesta etiqueta encara s'utilitza"
 
 #: ../lib/Galette/Entity/Title.php:184
-#, fuzzy
 msgid "You cannot delete Mr. or Mrs. titles!"
-msgstr "No podeu suprimir títols de Sr. o Sra."
+msgstr "No podeu suprimir títols de Sr. o Sra.!"
 
 #: ../lib/Galette/Entity/PdfModel.php:322
 #, fuzzy, php-format
@@ -2661,14 +2624,14 @@ msgid "%field should not be empty!"
 msgstr "El percentatge no ha de quedar buit!"
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
+#, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr "Etiqueta per al camp dinàmic \"&lt;unk&gt;s\""
+msgstr "Etiqueta per al camp dinàmic \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
-#, fuzzy, php-format
+#, php-format
 msgid "Input for dynamic field \"%s\""
-msgstr "Entrada per al camp dinàmic \"&lt;unk&gt;s\""
+msgstr "Entrada per al camp dinàmic \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 #, fuzzy
@@ -2912,9 +2875,9 @@ msgid "Group updated"
 msgstr "Grup actualitzat"
 
 #: ../lib/Galette/Entity/Group.php:703
-#, fuzzy, php-format
+#, php-format
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr "El grup `&lt;unk&gt;1$s` no es pot establir com a pare!"
+msgstr "El grup `%1$s` no es pot establir com a pare!"
 
 #: ../lib/Galette/Entity/PdfContribution.php:90
 #, fuzzy
@@ -2967,14 +2930,12 @@ msgstr "Tipus de pagament"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:130
 #: ../lib/Galette/Middleware/CheckAcls.php:177
-#, fuzzy
 msgid "Route '%name' is not registered in ACLs!"
-msgstr "La ruta '&lt;unk&gt;name' no està registrada a ACLs!"
+msgstr "La ruta '%name' no està registrada a ACLs!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:136
-#, fuzzy
 msgid "Routes '%names' are not registered in ACLs!"
-msgstr "Les rutes '&lt;unk&gt;names' no estan registrades en ACLs!"
+msgstr "Les rutes '%names' no estan registrades en ACLs!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:102
 #, fuzzy
@@ -2982,9 +2943,8 @@ msgid "Login required"
 msgstr "Cal iniciar la sessió"
 
 #: ../lib/Galette/Middleware/Authenticate.php:154
-#, fuzzy
 msgid "Unknown ACL rule '%acl'!"
-msgstr "Regla ACL desconeguda '&lt;unk&gt;acl'!"
+msgstr "Regla ACL desconeguda '%acl'!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:146
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:183
@@ -3037,33 +2997,27 @@ msgstr ""
 "una adreça!"
 
 #: ../lib/Galette/Events/ContribListener.php:281
-#, fuzzy
 msgid "Email sent to user %name (%email)"
-msgstr "S'ha enviat un correu electrònic al nom d'usuari (&lt;unk&gt;email)"
+msgstr "S'ha enviat un correu electrònic al usuari %name (%email)"
 
 #: ../lib/Galette/Events/ContribListener.php:288
-#, fuzzy
 msgid ""
 "A problem happened while sending contribution receipt to user %name (%email)"
 msgstr ""
-"S'ha produït un problema en enviar el rebut de contribució al nom d'usuari "
-"(&lt;unk&gt;email)"
+"S'ha produït un problema en enviar el rebut de contribució del usuari %name "
+"(%email)"
 
 #: ../lib/Galette/Events/ContribListener.php:351
-#, fuzzy
 msgid "Email sent to admin for user %name (%email)"
-msgstr ""
-"Correu electrònic enviat a l'administrador pel nom d'usuari (&lt;unk&gt;"
-"email)"
+msgstr "Correu electrònic enviat a l'administrador pel usuari %name (%email)"
 
 #: ../lib/Galette/Events/ContribListener.php:358
-#, fuzzy
 msgid ""
 "A problem happened while sending to admin notification for user %name "
 "(%email) contribution"
 msgstr ""
 "S'ha produït un problema mentre s'enviava una notificació d'administrador "
-"per a la contribució del nom d'usuari (&lt;unk&gt;email)"
+"per a la contribució del usuari %name (%email)"
 
 #: ../lib/Galette/Events/ContribListener.php:387
 #, fuzzy
@@ -3087,27 +3041,25 @@ msgid "Post contribution script has failed."
 msgstr "L'script de contribució posterior ha fallat."
 
 #: ../lib/Galette/Events/MemberListener.php:288
-#, fuzzy, php-format
+#, php-format
 msgid "New account email sent to '%s'."
-msgstr "Nou correu electrònic de compte enviat a '&lt;unk&gt;s'."
+msgstr "Nou correu electrònic de compte enviat a '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:288
-#, fuzzy, php-format
+#, php-format
 msgid "Account modification email sent to '%s'."
-msgstr "Correu electrònic de modificació del compte enviat a '&lt;unk&gt;s'."
+msgstr "Correu electrònic de modificació del compte enviat a '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:296
-#, fuzzy, php-format
+#, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
-"S'ha produït un problema en enviar el correu electrònic del compte a '&lt;"
-"unk&gt;s'"
+"S'ha produït un problema en enviar el correu electrònic del compte a '%s'"
 
 #: ../lib/Galette/Events/MemberListener.php:357
-#, fuzzy, php-format
+#, php-format
 msgid "New account email sent to admin for '%s'."
-msgstr ""
-"Nou correu electrònic de compte enviat a l'administrador per «&lt;unk&gt;s»."
+msgstr "Nou correu electrònic de compte enviat a l'administrador per «%s»."
 
 #: ../lib/Galette/Events/MemberListener.php:358
 #, fuzzy
@@ -3116,11 +3068,11 @@ msgstr ""
 "S'ha enviat un correu electrònic de modificació del compte a l'administrador."
 
 #: ../lib/Galette/Events/MemberListener.php:370
-#, fuzzy, php-format
+#, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
 "S'ha produït un problema mentre s'enviava un correu electrònic a "
-"l'administrador per al compte '&lt;unk&gt;s'."
+"l'administrador per al compte '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:371
 #, fuzzy
@@ -3207,11 +3159,10 @@ msgstr "Y-m"
 #: ../lib/Galette/Filters/HistoryList.php:254
 #: ../lib/Galette/Filters/MailingsList.php:248
 #: ../lib/Galette/Filters/ContributionsList.php:273
-#, fuzzy, php-format
+#, php-format
 msgid "Unknown date format for %field.<br/>Know formats are: %formats"
 msgstr ""
-"Format de data desconegut per a percentfield. Els formats<br>know són "
-"percentformats"
+"Format de data desconegut per a %field. Els formats<br>know són %formats"
 
 #: ../webroot/installer.php:125
 #, fuzzy
@@ -3414,9 +3365,8 @@ msgid "Donation in money"
 msgstr "Donació en diners"
 
 #: ../includes/i18n.inc.php:296
-#, fuzzy
 msgid "Partnership"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../includes/i18n.inc.php:297
 #, fuzzy
@@ -3469,9 +3419,8 @@ msgid "reduced annual fee"
 msgstr "tarifa anual reduïda"
 
 #: ../includes/i18n.inc.php:307
-#, fuzzy
 msgid "Identity"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../includes/i18n.inc.php:308
 #, fuzzy
@@ -3499,9 +3448,8 @@ msgid "Miss"
 msgstr "Senyoreta"
 
 #: ../includes/i18n.inc.php:313
-#, fuzzy
 msgid "Identity:"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../includes/i18n.inc.php:314
 #, fuzzy
@@ -3546,9 +3494,8 @@ msgstr ""
 "normes d'un 1%."
 
 #: ../includes/i18n.inc.php:323
-#, fuzzy
 msgid "At ................................................"
-msgstr "A"
+msgstr "A ................................................"
 
 #: ../includes/i18n.inc.php:324
 #, fuzzy
@@ -3587,9 +3534,8 @@ msgstr ""
 "decidides pel generós donant."
 
 #: ../includes/i18n.inc.php:332
-#, fuzzy
 msgid "Required membership:"
-msgstr "&lt;unk&gt; requerida"
+msgstr ""
 
 #: ../includes/i18n.inc.php:333
 #, fuzzy
@@ -3616,9 +3562,8 @@ msgid "to"
 msgstr "a"
 
 #: ../includes/i18n.inc.php:337
-#, fuzzy
 msgid "Association"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:42
 #, fuzzy
@@ -3800,9 +3745,8 @@ msgid "Id GNUpg (GPG):"
 msgstr "Id GNUpg (GPG)"
 
 #: ../includes/fields_defs/members_fields.php:339
-#, fuzzy
 msgid "fingerprint:"
-msgstr "&lt;unk&gt; digital"
+msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:347
 #, fuzzy
@@ -4103,14 +4047,13 @@ msgid "Lost password email (disabled)"
 msgstr "S'ha perdut el correu electrònic de contrasenya"
 
 #: ../install/scripts/upgrade-to-0.8.php:93
-#, fuzzy
 msgid "Unable to create main datadir in %path!"
-msgstr "No s'ha pogut crear el directori de dades principal a l'Usuari."
+msgstr "No s'ha pogut crear el directori de dades principal en %path!"
 
 #: ../install/scripts/upgrade-to-0.8.php:109
-#, fuzzy, php-format
+#, php-format
 msgid "Unable to create datadir in %dir!"
-msgstr "No s'ha pogut crear el directori de dades en el directori de dades."
+msgstr "No s'ha pogut crear el directori de dades en %dir!"
 
 #: ../install/scripts/upgrade-to-0.8.php:189
 #, fuzzy, php-format
@@ -4251,7 +4194,6 @@ msgstr ""
 "en negreta</strong>."
 
 #: ../install/steps/db_select_version.php:80
-#, fuzzy
 msgid ""
 "It seems you already use latest Galette version!<br/>Are you sure you want "
 "to upgrade?"
@@ -4260,9 +4202,8 @@ msgstr ""
 "actualitzar?"
 
 #: ../install/steps/db_select_version.php:85
-#, fuzzy
 msgid "Your current Galette version is..."
-msgstr "La versió actual de Galette és"
+msgstr "La versió actual de Galette és..."
 
 #: ../install/steps/db_select_version.php:105
 #, fuzzy
@@ -4549,7 +4490,6 @@ msgid "Enter connection data for the existing database."
 msgstr "Introduïu les dades de connexió per a la base de dades existent."
 
 #: ../install/steps/db.php:51
-#, fuzzy
 msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
@@ -4691,9 +4631,8 @@ msgid "Reset all PDF models to their default values"
 msgstr "Restableix tots els models PDF als seus valors predeterminats"
 
 #: ../templates/default/admintools.tpl:22
-#, fuzzy
 msgid "Reinitialize PDF models"
-msgstr "Models PDF de Rei&lt;unk&gt;"
+msgstr ""
 
 #: ../templates/default/admintools.tpl:28
 #: ../templates/default/admintools.tpl:29
@@ -4720,16 +4659,14 @@ msgstr "Mostra les variables existents"
 #: ../templates/default/gestion_pdf.tpl:64
 #: ../templates/default/configurer_fiches.tpl:90
 #: ../templates/default/js_loader.tpl:2
-#, fuzzy
 msgid "Loading..."
-msgstr "S'està carregant"
+msgstr "S'està carregant..."
 
 #: ../templates/default/gestion_pdf.tpl:64
 #: ../templates/default/configurer_fiches.tpl:90
 #: ../templates/default/js_loader.tpl:2
-#, fuzzy
 msgid "Currently loading..."
-msgstr "S'està carregant"
+msgstr "S'està carregant..."
 
 #: ../templates/default/lostpasswd.tpl:6
 #, fuzzy
@@ -4767,9 +4704,8 @@ msgid "Save"
 msgstr "Desa"
 
 #: ../templates/default/editer_intitule.tpl:19
-#, fuzzy
 msgid "Priority:"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../templates/default/editer_intitule.tpl:21
 #: ../templates/default/gestion_intitule_content.tpl:12
@@ -5151,9 +5087,8 @@ msgstr "Seguretat"
 #: ../templates/default/gestion_adherents.tpl:213
 #: ../templates/default/gestion_adherents.tpl:418
 #: ../templates/default/gestion_adherents.tpl:419
-#, fuzzy
 msgid "Admin"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:20
 #, fuzzy
@@ -5183,9 +5118,9 @@ msgstr ""
 #: ../templates/default/preferences.tpl:432
 #: ../templates/default/preferences.tpl:444
 #: ../templates/default/gestion_paymentstypes.tpl:61
-#, fuzzy, php-format
+#, php-format
 msgid "Translate '%s'"
-msgstr "Tradueix '&lt;unk&gt;s'"
+msgstr "Tradueix '%s'"
 
 #: ../templates/default/preferences.tpl:39
 #, fuzzy
@@ -5473,7 +5408,6 @@ msgid "Post new contribution script URI"
 msgstr "Publica un script URI nou de contribució"
 
 #: ../templates/default/preferences.tpl:229
-#, fuzzy
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -5483,9 +5417,9 @@ msgid ""
 msgstr ""
 "Introduïu un URI de script que es cridarà després d'afegir una nova "
 "contribució. L'URI de l'script<br>ha de ser prefixat per un de «<em> "
-"galette//</em>' per a la crida interna de Galette». «<em> file//</em>' per a "
-"una crida directa<em>get//</em>' o<em>post//</em>' per a trucades HTTP (el "
-"prefix serà reemplaçat per http// en aquests casos)."
+"galette://</em>' per a la crida interna de Galette». «<em> file://</em>' per "
+"a una crida directa<em>get://</em>' o<em>post://</em>' per a trucades HTTP ("
+"el prefix serà reemplaçat per http:// en aquests casos)."
 
 #: ../templates/default/preferences.tpl:233
 #, fuzzy
@@ -5505,7 +5439,7 @@ msgid "Galette base URL"
 msgstr "URL base de Galette"
 
 #: ../templates/default/preferences.tpl:239
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
@@ -5693,7 +5627,6 @@ msgid "Use TLS for SMTP?"
 msgstr "Voleu utilitzar TLS per SMTP?"
 
 #: ../templates/default/preferences.tpl:346
-#, fuzzy
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -5731,7 +5664,6 @@ msgid "Mail signature"
 msgstr "Signatura de correu"
 
 #: ../templates/default/preferences.tpl:367
-#, fuzzy
 msgid ""
 "The text that will be automatically set as signature for all outgoing emails."
 "<br/>Variables are quoted with braces, are upper case, and will be replaced "
@@ -5932,7 +5864,6 @@ msgid "Year:"
 msgstr "Any"
 
 #: ../templates/default/preferences.tpl:502
-#, fuzzy
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -5942,7 +5873,6 @@ msgstr ""
 "membre"
 
 #: ../templates/default/preferences.tpl:505
-#, fuzzy
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
@@ -6152,9 +6082,9 @@ msgid "Additionnal fields:"
 msgstr "Camps addicionals"
 
 #: ../templates/default/display_dynamic_fields.tpl:26
-#, fuzzy, php-format
+#, php-format
 msgid "Open '%s' in a new window"
-msgstr "Obre '&lt;unk&gt;s' en una finestra nova"
+msgstr "Obre '%s' en una finestra nova"
 
 #: ../templates/default/gestion_contributions.tpl:10
 #, fuzzy
@@ -6470,9 +6400,8 @@ msgid "Select a date"
 msgstr "Seleccioneu una data"
 
 #: ../templates/default/attendance_sheet_details.tpl:10
-#, fuzzy
 msgid "Some details about your attendance sheet..."
-msgstr "Alguns detalls sobre el vostre full d'assistència"
+msgstr "Alguns detalls sobre el vostre full d'assistència..."
 
 #: ../templates/default/attendance_sheet_details.tpl:10
 #, fuzzy, php-format
@@ -6535,9 +6464,8 @@ msgstr ""
 "ja teniu instal·lat el nom del 5% i voleu actualitzar a la darrera versió"
 
 #: ../templates/default/plugin_initdb.tpl:52
-#, fuzzy
 msgid "You current %name version is..."
-msgstr "La versió actual del nom del 5% és"
+msgstr "La versió actual de %name és..."
 
 #: ../templates/default/plugin_initdb.tpl:79
 #, fuzzy
@@ -6565,14 +6493,12 @@ msgstr ""
 "anterior."
 
 #: ../templates/default/plugin_initdb.tpl:95
-#, fuzzy
 msgid "Plugin '%name' has been successfully installed!"
-msgstr "El connector «&lt;unk&gt;name» s'ha instal·lat correctament!"
+msgstr "El connector «%name» s'ha instal·lat correctament!"
 
 #: ../templates/default/plugin_initdb.tpl:97
-#, fuzzy
 msgid "Plugin '%name' has been successfully updated!"
-msgstr "El connector «&lt;unk&gt;name» s'ha actualitzat correctament!"
+msgstr "El connector «%name» s'ha actualitzat correctament!"
 
 #: ../templates/default/plugin_initdb.tpl:120
 #, fuzzy
@@ -6648,9 +6574,8 @@ msgid "Hide this panel"
 msgstr "Amaga aquest plafó"
 
 #: ../templates/default/desktop.tpl:26
-#, fuzzy
 msgid "Activities"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../templates/default/desktop.tpl:56
 #, fuzzy
@@ -6746,21 +6671,19 @@ msgid "Mailing entry %id"
 msgstr "Identificador de correu electrònic"
 
 #: ../templates/default/gestion_mailings.tpl:146
-#, fuzzy, php-format
+#, php-format
 msgid "Display mailing '%subject' details in preview window"
-msgstr ""
-"Mostra els detalls «&lt;unk&gt;subject» del mailing a la finestra de vista "
-"prèvia"
+msgstr "Mostra els detalls «%subject» del mailing a la finestra de vista prèvia"
 
 #: ../templates/default/gestion_mailings.tpl:153
-#, fuzzy, php-format
+#, php-format
 msgid "Use mailing '%subject' as a template for a new one"
-msgstr "Usa «&lt;unk&gt;subject» del mailing com a plantilla per a un de nou"
+msgstr "Usa «%subject» del mailing com a plantilla per a un de nou"
 
 #: ../templates/default/gestion_mailings.tpl:160
-#, fuzzy, php-format
+#, php-format
 msgid "Delete mailing '%subject'"
-msgstr "Suprimeix el correu '&lt;unk&gt;subject'"
+msgstr "Suprimeix el correu '%subject'"
 
 #: ../templates/default/gestion_mailings.tpl:165
 #, fuzzy
@@ -7421,9 +7344,9 @@ msgstr "Permisos"
 #: ../templates/default/config_lists.tpl:18
 #: ../templates/default/config_lists.tpl:42
 #: ../templates/default/config_fields.tpl:37
-#, fuzzy, php-format
+#, php-format
 msgid "Change '%field' permissions"
-msgstr "Canvia els permisos de '&lt;unk&gt;field'"
+msgstr "Canvia els permisos de '%field'"
 
 #: ../templates/default/config_lists.tpl:19
 #: ../templates/default/config_lists.tpl:43
@@ -7482,9 +7405,9 @@ msgid "Size"
 msgstr "Mida"
 
 #: ../templates/default/export.tpl:55 ../templates/default/import.tpl:50
-#, fuzzy, php-format
+#, php-format
 msgid "Remove '%file' from disk"
-msgstr "Elimina «&lt;unk&gt;file» del disc"
+msgstr "Elimina «%file» del disc"
 
 #: ../templates/default/export.tpl:66
 #, fuzzy
@@ -7948,9 +7871,8 @@ msgid "Add"
 msgstr "Afegeix"
 
 #: ../templates/default/js_chosen_adh.tpl:37
-#, fuzzy
 msgid "Load following members..."
-msgstr "Carrega els membres següents"
+msgstr "Carrega els membres següents..."
 
 #: ../templates/default/js_chosen_adh.tpl:55
 #: ../templates/default/js_chosen_adh.tpl:95
@@ -7959,9 +7881,8 @@ msgid "An error occurred retrieving members :("
 msgstr "S'ha produït un error en recuperar els membres ("
 
 #: ../templates/default/js_chosen_adh.tpl:77
-#, fuzzy
 msgid "Load previous members..."
-msgstr "Carrega els membres anteriors"
+msgstr "Carrega els membres anteriors..."
 
 #: ../templates/default/mailing_adherents.tpl:12
 #, fuzzy
@@ -8000,7 +7921,6 @@ msgid "Add attachment"
 msgstr "Afegeix un adjunt"
 
 #: ../templates/default/mailing_adherents.tpl:57
-#, fuzzy
 msgid ""
 "Select files to add as attachments.<br/>Multiple file selection using 'ctrl' "
 "or 'shift' keys are only available on compatible browsers."
@@ -8119,36 +8039,35 @@ msgstr "Cos de correu"
 
 #: ../templates/default/configurer_fiche_content.tpl:30
 #: ../templates/default/gestion_intitule_content.tpl:92
-#, fuzzy, php-format
+#, php-format
 msgid "Edit '%s' field"
-msgstr "Edita el camp '&lt;unk&gt;s'"
+msgstr "Edita el camp '%s'"
 
 #: ../templates/default/configurer_fiche_content.tpl:37
-#, fuzzy, php-format
+#, php-format
 msgid "Translate '%s' field"
-msgstr "Tradueix el camp «&lt;unk&gt;s»"
+msgstr "Tradueix el camp «%s»"
 
 #: ../templates/default/configurer_fiche_content.tpl:44
 #: ../templates/default/gestion_intitule_content.tpl:99
-#, fuzzy, php-format
+#, php-format
 msgid "Delete '%s' field"
-msgstr "Suprimeix el camp '&lt;unk&gt;s'"
+msgstr "Suprimeix el camp '%s'"
 
 #: ../templates/default/configurer_fiche_content.tpl:54
-#, fuzzy, php-format
+#, php-format
 msgid "Move up '%s' field"
-msgstr "Mou el camp '&lt;unk&gt;s' amunt"
+msgstr "Mou el camp '%s' amunt"
 
 #: ../templates/default/configurer_fiche_content.tpl:65
-#, fuzzy, php-format
+#, php-format
 msgid "Move down '%s' field"
-msgstr "Mou avall el camp '&lt;unk&gt;s'"
+msgstr "Mou avall el camp '%s'"
 
 #: ../templates/default/configurer_fiche_content.tpl:73
-#, fuzzy, php-format
+#, php-format
 msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr ""
-"Encara no hi ha cap camp dinàmic configurat per a '&lt;unk&gt;formname'"
+msgstr "Encara no hi ha cap camp dinàmic configurat per a '%formname'"
 
 #: ../templates/default/ajax.tpl:1
 #, fuzzy
@@ -8382,13 +8301,12 @@ msgid "Adhesion form"
 msgstr "Forma d'adhesius"
 
 #: ../templates/default/voir_adherent.tpl:45
-#, fuzzy
 msgid ""
 "Send member a link to generate a new passord, as if had used the 'lost "
 "password' functionnality."
 msgstr ""
 "Envia un enllaç al membre per generar un nou passord com si hagués utilitzat "
-"la funcionalitat «contrasenya perduda»"
+"la funcionalitat «contrasenya perduda»."
 
 #: ../templates/default/voir_adherent.tpl:49
 #, fuzzy
@@ -8655,14 +8573,14 @@ msgid "Collapse all"
 msgstr "Redueix-ho tot"
 
 #: ../templates/default/config_fields.tpl:31
-#, fuzzy, php-format
+#, php-format
 msgid "Field '%field' cannot be set as required."
-msgstr "El camp '&lt;unk&gt;field' no es pot establir segons sigui necessari."
+msgstr "El camp '%field' no es pot establir segons sigui necessari."
 
 #: ../templates/default/config_fields.tpl:31
-#, fuzzy, php-format
+#, php-format
 msgid "Mark '%field' as (not) required"
-msgstr "Marca '&lt;unk&gt;field' com (no) requerit"
+msgstr "Marca '%field' com (no) requerit"
 
 #: ../templates/default/config_fields.tpl:84
 #, fuzzy
@@ -8704,14 +8622,12 @@ msgid "Release date"
 msgstr "Data de publicació"
 
 #: ../templates/default/plugins.tpl:32
-#, fuzzy
 msgid "Click here to deactivate plugin '%name'"
-msgstr "Feu clic aquí per desactivar el connector '&lt;unk&gt;name'"
+msgstr "Feu clic aquí per desactivar el connector '%name'"
 
 #: ../templates/default/plugins.tpl:41
-#, fuzzy
 msgid "Initialize '%name' database"
-msgstr "IVA '&lt;unk&gt;name' base de dades"
+msgstr "IVA '%name' base de dades"
 
 #: ../templates/default/plugins.tpl:50
 #, fuzzy
@@ -8749,9 +8665,8 @@ msgid "Unknown"
 msgstr "Desconegut"
 
 #: ../templates/default/plugins.tpl:83
-#, fuzzy
 msgid "Activate plugin '%name'"
-msgstr "Activa el connector '&lt;unk&gt;name'"
+msgstr "Activa el connector '%name'"
 
 #: ../templates/default/plugins.tpl:90
 #, fuzzy
@@ -8890,14 +8805,14 @@ msgid "Choose label to translate"
 msgstr "Trieu l'etiqueta a traduir"
 
 #: ../templates/default/traduire_libelles.tpl:21
-#, fuzzy, php-format
+#, php-format
 msgid "Original text: '%s'"
-msgstr "Text original '&lt;unk&gt;s'"
+msgstr "Text original: '%s'"
 
 #: ../templates/default/traduire_libelles.tpl:26
-#, fuzzy, php-format
+#, php-format
 msgid "Translation of '%s' label"
-msgstr "Traducció de l'etiqueta «&lt;unk&gt;s»"
+msgstr "Traducció de l'etiqueta «%s»"
 
 #: ../templates/default/traduire_libelles.tpl:43
 #, fuzzy
@@ -8933,9 +8848,8 @@ msgstr "S'ha produït un error en enviar la foto ("
 #: ../templates/default/gestion_intitule_content.tpl:14
 #: ../templates/default/gestion_intitule_content.tpl:33
 #: ../templates/default/gestion_intitule_content.tpl:75
-#, fuzzy
 msgid "Priority"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../templates/default/gestion_intitule_content.tpl:24
 #, fuzzy
@@ -8981,14 +8895,12 @@ msgid "Transaction %id"
 msgstr "ID de transacció"
 
 #: ../templates/default/gestion_transactions.tpl:129
-#, fuzzy
 msgid "Edit transaction #%id"
-msgstr "Edita la transacció #&lt;unk&gt;id"
+msgstr "Edita la transacció #%id"
 
 #: ../templates/default/gestion_transactions.tpl:136
-#, fuzzy
 msgid "Remove transaction #%id"
-msgstr "Elimina la transacció #&lt;unk&gt;id"
+msgstr "Elimina la transacció #%id"
 
 #: ../templates/default/gestion_transactions.tpl:142
 #, fuzzy
@@ -9136,14 +9048,14 @@ msgid "%s payment type"
 msgstr "tipus de pagament del percentatge"
 
 #: ../templates/default/gestion_paymentstypes.tpl:54
-#, fuzzy, php-format
+#, php-format
 msgid "Edit '%s' payment type"
-msgstr "Edita el tipus de pagament «&lt;unk&gt;s»"
+msgstr "Edita el tipus de pagament «%s»"
 
 #: ../templates/default/gestion_paymentstypes.tpl:72
-#, fuzzy, php-format
+#, php-format
 msgid "Delete '%s' payment type"
-msgstr "Suprimeix el tipus de pagament '&lt;unk&gt;s'"
+msgstr "Suprimeix el tipus de pagament '%s'"
 
 #: ../templates/default/plugin_info.tpl:6
 #, fuzzy
@@ -9300,9 +9212,8 @@ msgid "Choose wich reminder(s) you want to send:"
 msgstr "Trieu els recordatoris wich que voleu enviar"
 
 #: ../templates/default/reminder.tpl:12 ../templates/default/reminder.tpl:19
-#, fuzzy
 msgid "preview"
-msgstr "&lt;unk&gt;"
+msgstr ""
 
 #: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20
 #, fuzzy, php-format
@@ -9340,14 +9251,12 @@ msgid "Attach member"
 msgstr "Adjunta un membre"
 
 #: ../templates/default/member.tpl:75
-#, fuzzy
 msgid "Notify member his account has been modified"
-msgstr "membre &lt;unk&gt; el seu compte ha estat modificat"
+msgstr "membre el seu compte ha estat modificat"
 
 #: ../templates/default/member.tpl:77
-#, fuzzy
 msgid "Notify member his account has been created"
-msgstr "Membre &lt;unk&gt; s'ha creat el seu compte"
+msgstr "Membre s'ha creat el seu compte"
 
 #: ../templates/default/member.tpl:83
 #, fuzzy
@@ -9396,7 +9305,6 @@ msgid "Do member want to appear publically?"
 msgstr "Voleu que el membre aparegui públicament?"
 
 #: ../templates/default/forms_types.tpl:81
-#, fuzzy
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name, website address ad other information will be publically "
@@ -9441,14 +9349,14 @@ msgid "%s title"
 msgstr "Títol del percentatge"
 
 #: ../templates/default/gestion_titres.tpl:59
-#, fuzzy, php-format
+#, php-format
 msgid "Edit '%s' title"
-msgstr "Edita el títol '&lt;unk&gt;s'"
+msgstr "Edita el títol '%s'"
 
 #: ../templates/default/gestion_titres.tpl:69
-#, fuzzy, php-format
+#, php-format
 msgid "Delete '%s' title"
-msgstr "Suprimeix el títol '&lt;unk&gt;s'"
+msgstr "Suprimeix el títol '%s'"
 
 #~ msgid "Generate fake data"
 #~ msgstr "Genera dades falses"
