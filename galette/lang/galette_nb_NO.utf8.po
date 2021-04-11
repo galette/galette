@@ -1,12 +1,12 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021.
 # Allan Nordhøy <epost@anotheragency.no>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"PO-Revision-Date: 2021-04-11 10:34+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -508,8 +508,6 @@ msgid "An SQL error has occurred while loading search."
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
-#, fuzzy
-#| msgid "System informations"
 msgid "System information"
 msgstr "Systeminfo"
 
@@ -2163,10 +2161,8 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1047
 #: ../lib/Galette/Entity/PdfContribution.php:198
-#, fuzzy
-#| msgid "System informations"
 msgid "Contribution information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1049
 msgid "Script output"
@@ -2203,14 +2199,12 @@ msgid "%field should not be empty!"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
-#| msgid "Dynamic fields"
+#, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Etikett for dynamisk felt \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
-#, fuzzy, php-format
-#| msgid "Dynamic fields"
+#, php-format
 msgid "Input for dynamic field \"%s\""
 msgstr "Inndata for dynamisk felt \"%s\""
 
@@ -2333,16 +2327,12 @@ msgid "None"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:925
-#, fuzzy
-#| msgid "System informations"
 msgid "Main information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:930
-#, fuzzy
-#| msgid "System informations"
 msgid "Member information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 msgid "You cannot delete system payment types!"
@@ -3175,10 +3165,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:59
-#, fuzzy
-#| msgid "List of contributions"
 msgid "Receipt send for new contribution"
-msgstr "Liste over bidrag"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:64
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
@@ -3207,10 +3195,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:75
-#, fuzzy
-#| msgid "System informations"
 msgid "New contribution (sent to admin)"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:80
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
@@ -4276,10 +4262,8 @@ msgid "Date on which you registered your Galette instance."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:105
-#, fuzzy
-#| msgid "System informations"
 msgid "Update your information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:108 ../templates/default/desktop.tpl:16
 msgid "Register"
@@ -5021,12 +5005,11 @@ msgid "See member profile"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:52
-#, fuzzy, php-format
-#| msgid "List of contributions"
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "Liste over bidrag"
-msgstr[1] "Liste over bidrag"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
@@ -6023,10 +6006,8 @@ msgid "Read/Write"
 msgstr ""
 
 #: ../templates/default/config_lists.tpl:31
-#, fuzzy
-#| msgid "Dynamic fields"
 msgid "Available fields"
-msgstr "Dynamiske felter"
+msgstr ""
 
 #: ../templates/default/export.tpl:5
 msgid ""
@@ -6443,10 +6424,8 @@ msgid "Load previous members..."
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:12
-#, fuzzy
-#| msgid "System informations"
 msgid "Mailing information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:17
 msgid "Go back to members list"
@@ -7101,10 +7080,8 @@ msgid "New group"
 msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:26
-#, fuzzy
-#| msgid "System informations"
 msgid "Group information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:32
 #: ../templates/default/ajax_groups.tpl:31
@@ -7370,10 +7347,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/telemetry.tpl:11
-#, fuzzy
-#| msgid "System informations"
 msgid "Send telemetry information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../templates/default/telemetry.tpl:39
 msgid "An error occurred sending telemetry information :("
@@ -7439,10 +7414,8 @@ msgid "No ACLs!"
 msgstr ""
 
 #: ../templates/default/plugin_info.tpl:44
-#, fuzzy
-#| msgid "System informations"
 msgid "Raw information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../templates/default/public_page.tpl:36
 msgid "View your member card"
