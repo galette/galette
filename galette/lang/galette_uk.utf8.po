@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-04-11 10:34+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-04-12 14:26+0000\n"
+"Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -499,17 +499,15 @@ msgstr "Видалити збережений пошук"
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:303
 #, php-format
 msgid "You are about to remove %count searches."
-msgstr ""
+msgstr "Ви збираєтеся видалити  %count запит(ів)."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:352
 msgid "Saved search loaded"
-msgstr ""
+msgstr "Збережений пошук завантажено"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:357
-#, fuzzy
-#| msgid "An SQL error has occurred."
 msgid "An SQL error has occurred while loading search."
-msgstr "Сталася помилка SQL."
+msgstr "Під час завантаження пошуку сталася помилка SQL."
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
 msgid "System information"
@@ -517,26 +515,26 @@ msgstr "Системи відомостей"
 
 #: ../lib/Galette/Controllers/GaletteController.php:128
 msgid "Dashboard"
-msgstr ""
+msgstr "Панель відомостей"
 
 #: ../lib/Galette/Controllers/GaletteController.php:233
 msgid "Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #: ../lib/Galette/Controllers/GaletteController.php:248
 #: ../lib/Galette/Filters/MembersList.php:306
 msgid "All accounts"
-msgstr ""
+msgstr "Усі облікові записи"
 
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:307
 msgid "Active accounts"
-msgstr ""
+msgstr "Діяльні облікові записи"
 
 #: ../lib/Galette/Controllers/GaletteController.php:250
 #: ../lib/Galette/Filters/MembersList.php:308
 msgid "Inactive accounts"
-msgstr ""
+msgstr "Бездіяльні облікові записи"
 
 #: ../lib/Galette/Controllers/GaletteController.php:275
 msgid ""
@@ -548,25 +546,27 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:279
 msgid "Preferences has been saved."
-msgstr ""
+msgstr "Налаштування збережено."
 
 #: ../lib/Galette/Controllers/GaletteController.php:392
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 msgstr ""
+"Ви попросили Galette надіслати перевірочне повідомлення на е-пошту, але її "
+"вимкнено в налаштуваннях."
 
 #: ../lib/Galette/Controllers/GaletteController.php:399
 msgid "Test message"
-msgstr ""
+msgstr "Перевірочне повідомлення"
 
 #: ../lib/Galette/Controllers/GaletteController.php:402
 msgid "Galette admin"
-msgstr ""
+msgstr "Адміністратор Galette"
 
 #: ../lib/Galette/Controllers/GaletteController.php:405
 msgid "Test message."
-msgstr ""
+msgstr "Перевірочне повідомлення."
 
 #: ../lib/Galette/Controllers/GaletteController.php:414
 #, php-format
@@ -576,55 +576,55 @@ msgstr "Електронний лист надіслано на %email"
 #: ../lib/Galette/Controllers/GaletteController.php:423
 #, php-format
 msgid "No email sent to %email"
-msgstr ""
+msgstr "На %email повідомлення не надіслано"
 
 #: ../lib/Galette/Controllers/GaletteController.php:430
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Недійсна е-пошта!"
 
 #: ../lib/Galette/Controllers/GaletteController.php:473
 msgid "Charts"
-msgstr ""
+msgstr "Діаграми"
 
 #: ../lib/Galette/Controllers/GaletteController.php:494
 msgid "Fields configuration"
-msgstr ""
+msgstr "Конфігурація полів"
 
 #: ../lib/Galette/Controllers/GaletteController.php:557
 msgid "Fields configuration has been successfully stored"
-msgstr ""
+msgstr "Конфігурацію полів успішно збережено"
 
 #: ../lib/Galette/Controllers/GaletteController.php:562
 msgid "An error occurred while storing fields configuration :("
-msgstr ""
+msgstr "Під час зберігання конфігурації полів сталася помилка :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:587
 msgid "Lists configuration"
-msgstr ""
+msgstr "Конфігурація списків"
 
 #: ../lib/Galette/Controllers/GaletteController.php:625
 msgid "List configuration has been successfully stored"
-msgstr ""
+msgstr "Конфігурацію списків успішно збережено"
 
 #: ../lib/Galette/Controllers/GaletteController.php:630
 msgid "An error occurred while storing list configuration :("
-msgstr ""
+msgstr "Під час зберігання конфігурації списків сталася помилка :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:664
 msgid "Reminders"
-msgstr ""
+msgstr "Нагадування"
 
 #: ../lib/Galette/Controllers/GaletteController.php:705
 msgid "No reminder to send for now."
-msgstr ""
+msgstr "Нагадувань про надсилання поки що немає."
 
 #: ../lib/Galette/Controllers/GaletteController.php:736
 msgid "There are no member to proceed."
-msgstr ""
+msgstr "Немає учасника для продовження."
 
 #: ../lib/Galette/Controllers/GaletteController.php:743
 msgid "Reminder has not been sent:"
-msgstr ""
+msgstr "Нагадування не надіслано:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:750
 msgid "Sent reminders:"
@@ -632,59 +632,57 @@ msgstr "Надіслані нагадування:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:826
 msgid "Download document"
-msgstr ""
+msgstr "Завантажити документ"
 
 #: ../lib/Galette/Controllers/CrudController.php:277
 #: ../lib/Galette/Controllers/HistoryController.php:208
 #: ../lib/Galette/Controllers/CsvController.php:499
 msgid "Removal has not been confirmed!"
-msgstr ""
+msgstr "Видалення не підтверджено!"
 
 #: ../lib/Galette/Controllers/CrudController.php:287
 msgid "Successfully deleted!"
-msgstr ""
+msgstr "Успішно видалено!"
 
 #: ../lib/Galette/Controllers/CrudController.php:299
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred trying to delete :("
-msgstr "Під час видалення поля виникла помилка :("
+msgstr "Під час видалення виникла помилка :("
 
 #: ../lib/Galette/Controllers/PdfController.php:186
 #: ../lib/Galette/Controllers/PdfController.php:258
 #: ../lib/Galette/Controllers/PdfController.php:694
 msgid "Unable to get members list."
-msgstr ""
+msgstr "Не вдається отримати список учасників."
 
 #: ../lib/Galette/Controllers/PdfController.php:346
 msgid "Attendance sheet configuration"
-msgstr ""
+msgstr "Конфігурація листа відвідуваності"
 
 #: ../lib/Galette/Controllers/PdfController.php:382
 #: ../lib/Galette/Controllers/PdfController.php:401
 msgid "No member selected to generate attendance sheet"
-msgstr ""
+msgstr "Жоден учасник не обраний для створення листа відвідуваності"
 
 #: ../lib/Galette/Controllers/PdfController.php:409
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 msgid "Attendance sheet"
-msgstr ""
+msgstr "Лист відвідуваності"
 
 #: ../lib/Galette/Controllers/PdfController.php:492
 msgid "Unable to get groups list."
-msgstr ""
+msgstr "Не вдалося отримати список груп."
 
 #: ../lib/Galette/Controllers/PdfController.php:550
 msgid "PDF models"
-msgstr ""
+msgstr "Моделі PDF"
 
 #: ../lib/Galette/Controllers/PdfController.php:578
 msgid "Missing PDF model type!"
-msgstr ""
+msgstr "Відсутній тип моделі PDF!"
 
 #: ../lib/Galette/Controllers/PdfController.php:609
 msgid "Model has been successfully stored!"
-msgstr ""
+msgstr "Модель успішно збережена!"
 
 #: ../lib/Galette/Controllers/PdfController.php:612
 msgid "Model has not been stored :("
@@ -692,42 +690,42 @@ msgstr "Модель не збережено :("
 
 #: ../lib/Galette/Controllers/PdfController.php:654
 msgid "Invalid link!"
-msgstr ""
+msgstr "Недійсне посилання!"
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
 #: ../lib/Galette/Entity/PdfModel.php:724
 msgid "Login"
-msgstr ""
+msgstr "Вхід"
 
 #: ../lib/Galette/Controllers/AuthController.php:116
 msgid "You must provide both login and password."
-msgstr ""
+msgstr "Ви повинні вказати як логін, так і пароль."
 
 #: ../lib/Galette/Controllers/AuthController.php:145
 msgid "Your password is too weak! Please consider updating it."
-msgstr ""
+msgstr "Ваш пароль є занадто слабким! Будь ласка, перепридумайте його."
 
 #: ../lib/Galette/Controllers/AuthController.php:153
 msgid "Login failed."
-msgstr ""
+msgstr "Увійти не вдалося."
 
 #: ../lib/Galette/Controllers/AuthController.php:154
 msgid "Authentication failed"
-msgstr ""
+msgstr "Автентифікація не вдалася"
 
 #: ../lib/Galette/Controllers/AuthController.php:170
 msgid "Log off"
-msgstr ""
+msgstr "Вийти"
 
 #: ../lib/Galette/Controllers/AuthController.php:195
 #, php-format
 msgid "Impersonating as %login"
-msgstr ""
+msgstr "Видається за %login"
 
 #: ../lib/Galette/Controllers/AuthController.php:207
 msgid "Unable to impersonate as %id"
-msgstr ""
+msgstr "Не вдається видати себе за %id"
 
 #: ../lib/Galette/Controllers/AuthController.php:233
 #: ../lib/Galette/Controllers/AuthController.php:238
@@ -2370,7 +2368,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
-msgstr ""
+msgstr "Paypal"
 
 #: ../lib/Galette/Entity/Status.php:119
 msgid "status"
@@ -5322,7 +5320,7 @@ msgstr ""
 
 #: ../templates/default/plugin_initdb.tpl:122
 msgid "Back to plugins managment page"
-msgstr "Повернутись до сторінки керування плагінами"
+msgstr "Повернутись до сторінки керування розширеннями"
 
 #: ../templates/default/plugin_initdb.tpl:132
 msgid "Access permissions to database"
