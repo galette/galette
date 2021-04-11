@@ -308,15 +308,13 @@ class DynamicFieldsHandle
         } catch (Throwable $e) {
             if (!$transaction) {
                 $this->zdb->connection->rollBack();
-            } else {
-                throw $e;
             }
             Analog::log(
                 'An error occurred storing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         } finally {
             unset(
                 $this->update_stmt,
@@ -332,7 +330,7 @@ class DynamicFieldsHandle
      */
     private function getInsertStatement(): StatementInterface
     {
-        if ($this->insert_stmt === null) {
+        if (!isset($this->insert_stmt)) {
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values([
                 'item_id'       => ':item_id',
@@ -353,7 +351,7 @@ class DynamicFieldsHandle
      */
     private function getUpdateStatement(): StatementInterface
     {
-        if ($this->update_stmt === null) {
+        if (!isset($this->update_stmt)) {
             $update = $this->zdb->update(self::TABLE);
             $update->set([
                 'field_val'     => ':field_val',
@@ -484,15 +482,13 @@ class DynamicFieldsHandle
         } catch (Throwable $e) {
             if (!$transaction) {
                 $this->zdb->connection->rollBack();
-            } else {
-                throw $e;
             }
             Analog::log(
                 'An error occurred removing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
