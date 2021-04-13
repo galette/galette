@@ -158,7 +158,7 @@
 {if $nb != 0}
             <tfoot>
                 <tr>
-                    <th class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
+                    <th class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{else}9{/if}">
                         {_T string="Found contributions total %f" pattern="/%f/" replace=$contribs->getSum()}
                     </th>
                 </tr>
@@ -176,7 +176,7 @@
 
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
                     <td class="{$cclass} nowrap" data-scope="row">
-                        {if $mode neq 'ajax'}
+                        {if ($login->isAdmin() or $login->isStaff()) or $mode eq 'ajax'}
                             <input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>
                         {else}
                             <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
@@ -186,7 +186,7 @@
     {else}
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
-    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+    {if ($login->isAdmin() or $login->isStaff()) or $mode eq 'ajax'}
                         <span class="row-title">
                             <a href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
@@ -335,11 +335,13 @@
         }
             $(function(){
                 var _init_contribs_page = function(res){
+    {if ($login->isAdmin() or $login->isStaff())}
                     var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection" escape="js"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend" escape="js"}</a></div>';
 
                     $('.listing').before(_checklinks);
                     $('.listing').after(_checklinks);
                     _bind_check('contrib_sel');
+    {/if}
                     _bind_legend();
 
                     $('#start_date_filter, #end_date_filter').datepicker({
