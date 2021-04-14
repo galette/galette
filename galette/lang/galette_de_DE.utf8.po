@@ -8,7 +8,7 @@
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
-# J. Lavoie <j.lavoie@net-c.ca>, 2020.
+# J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # aschlager <andreas.schlager@be-x.at>, 2020.
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
 # elea11 <p.manuel.warnecke@gmail.com>, 2020.
@@ -25,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
 "PO-Revision-Date: 2021-04-14 09:53+0000\n"
-"Last-Translator: Independent-Eye <michalek.jedrzejak@gmail.com>\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -794,7 +794,7 @@ msgstr "Die E-Mail an das Mitglied wurde gesendet."
 #: ../lib/Galette/Controllers/AuthController.php:385
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr "Beim Senden des Passwort für das Konto '%s' ist ein Fehler aufgetreten"
+msgstr "Beim Senden des Passwort für das Konto „%s“ ist ein Fehler aufgetreten"
 
 #: ../lib/Galette/Controllers/AuthController.php:399
 #: ../lib/Galette/Events/MemberListener.php:250
@@ -813,7 +813,7 @@ msgstr "Ihrem Konto (%s) ist keine gültige E-Mail-Adresse zugeordnet"
 #: ../lib/Galette/Controllers/AuthController.php:425
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr "Mailadresse %s existiert nicht"
+msgstr "E-Mail-Adresse %s existiert nicht"
 
 #: ../lib/Galette/Controllers/AuthController.php:431
 #, php-format
@@ -1208,7 +1208,7 @@ msgstr "Wie viel ist %1$s minus %2$s?"
 #: ../lib/Galette/Core/Gaptcha.php:109
 #, fuzzy, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr "Wie viel ist %1$s, auf dem wir in Rente gehen %2$s?"
+msgstr "Wie viel ist %1$s, worauf wir uns mit %2$s zurückziehen?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
 #, fuzzy, php-format
@@ -2277,12 +2277,12 @@ msgstr "%file darf nicht leer sein!"
 #: ../lib/Galette/Entity/PdfModel.php:363
 #, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr "Bezeichnung für dynamisches Feld \"%s\""
+msgstr "Bezeichnung für dynamisches Feld „%s“"
 
 #: ../lib/Galette/Entity/PdfModel.php:364
 #, php-format
 msgid "Input for dynamic field \"%s\""
-msgstr "Eingabe für dynamisches Feld \"%s\""
+msgstr "Eingabe für dynamisches Feld „%s“"
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
@@ -4075,8 +4075,8 @@ msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
 msgstr ""
-"Sie sind als \"Superadmin\" angemeldet. Einige Funktionen sind nicht "
-"verfügbar da dies *kein* normales Mitglied ist."
+"Sie sind als „Superadmin“ angemeldet. Einige Funktionen sind nicht verfügbar "
+"da dies *kein* normales Mitglied ist."
 
 #: ../templates/default/page.tpl:29 ../templates/default/public_page.tpl:41
 msgid ""
@@ -4589,7 +4589,7 @@ msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
-"Wenn Sie die Option \"Beginn der Mitgliedschaft\" nutzen; können Sie die "
+"Wenn Sie die Option „Beginn der Mitgliedschaft“ nutzen; können Sie die "
 "letzten Monate des Jahres anbieten."
 
 #: ../templates/default/preferences.tpl:208
