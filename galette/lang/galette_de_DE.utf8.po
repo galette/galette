@@ -25,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
 "PO-Revision-Date: 2021-04-14 09:53+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"Last-Translator: Independent-Eye <michalek.jedrzejak@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -2217,7 +2217,7 @@ msgstr "- Die Dauer muss eine positive Zahl sein!"
 
 #: ../lib/Galette/Entity/Contribution.php:482
 msgid "An error occurred checking overlaping fees :("
-msgstr "Ein Fehler bei der Prüfung überlagernder Beiträge ist aufgetreten :("
+msgstr "Beim Überprüfen überlappender Gebühren ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Entity/Contribution.php:543
 msgid "- Membership period overlaps period starting at "
