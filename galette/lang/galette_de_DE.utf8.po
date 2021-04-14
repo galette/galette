@@ -18,13 +18,14 @@
 # Patrick Ehlers <speddye@gmail.com>, 2020.
 # Manuel Zeschko <moebyus@pm.me>, 2021.
 # Translator <weblate.gledy@aleeas.com>, 2021.
+# Independent-Eye <michalek.jedrzejak@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-04-11 10:24+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-04-14 09:53+0000\n"
+"Last-Translator: Independent-Eye <michalek.jedrzejak@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -2078,8 +2079,7 @@ msgstr "Status #%id existiert in der Datenbank nicht."
 
 #: ../lib/Galette/Entity/Adherent.php:1390
 msgid "An error has occurred while looking if status does exists."
-msgstr ""
-"Ein Fehler bei der Überprüfung, ob der Status existiert, ist aufgetreten."
+msgstr "Bei der Suche nach einem Status ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Entity/Adherent.php:1397
 msgid "Gender %gender does not exists!"
