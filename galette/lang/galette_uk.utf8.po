@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-04-12 14:26+0000\n"
+"PO-Revision-Date: 2021-04-15 06:42+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -515,7 +515,7 @@ msgstr "Системи відомостей"
 
 #: ../lib/Galette/Controllers/GaletteController.php:128
 msgid "Dashboard"
-msgstr "Панель відомостей"
+msgstr "Дошка даних"
 
 #: ../lib/Galette/Controllers/GaletteController.php:233
 msgid "Settings"
@@ -620,7 +620,7 @@ msgstr "Нагадувань про надсилання поки що нема�
 
 #: ../lib/Galette/Controllers/GaletteController.php:736
 msgid "There are no member to proceed."
-msgstr "Немає учасника для продовження."
+msgstr "Немає члена для продовження."
 
 #: ../lib/Galette/Controllers/GaletteController.php:743
 msgid "Reminder has not been sent:"
@@ -652,7 +652,7 @@ msgstr "Під час видалення виникла помилка :("
 #: ../lib/Galette/Controllers/PdfController.php:258
 #: ../lib/Galette/Controllers/PdfController.php:694
 msgid "Unable to get members list."
-msgstr "Не вдається отримати список учасників."
+msgstr "Не вдається отримати список членів."
 
 #: ../lib/Galette/Controllers/PdfController.php:346
 msgid "Attendance sheet configuration"
@@ -661,7 +661,7 @@ msgstr "Конфігурація листа відвідуваності"
 #: ../lib/Galette/Controllers/PdfController.php:382
 #: ../lib/Galette/Controllers/PdfController.php:401
 msgid "No member selected to generate attendance sheet"
-msgstr "Жоден учасник не обраний для створення листа відвідуваності"
+msgstr "Жоден член не обраний для створення листа відвідуваності"
 
 #: ../lib/Galette/Controllers/PdfController.php:409
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
@@ -730,42 +730,46 @@ msgstr "Не вдається видати себе за %id"
 #: ../lib/Galette/Controllers/AuthController.php:233
 #: ../lib/Galette/Controllers/AuthController.php:238
 msgid "Impersonating ended"
-msgstr ""
+msgstr "Уособлення завершено"
 
 #: ../lib/Galette/Controllers/AuthController.php:263
 #: ../lib/Galette/Controllers/AuthController.php:478
 msgid "Password recovery"
-msgstr ""
+msgstr "Відновлення пароля"
 
 #: ../lib/Galette/Controllers/AuthController.php:295
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
+"Надісланий електронний лист у налаштуваннях вимкнено. Запитайте "
+"адміністратора Galette"
 
 #: ../lib/Galette/Controllers/AuthController.php:340
 #: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Events/MemberListener.php:245
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "Y-m-d H:i:s"
 
 #: ../lib/Galette/Controllers/AuthController.php:368
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "На е-пошту '%s' надіслано лист для відновлення пароля."
 
 #: ../lib/Galette/Controllers/AuthController.php:372
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
+"На вашу е-пошту надіслано повідомлення.<br>Перевірте свою е-пошту та "
+"дотримуйтесь указівок."
 
 #: ../lib/Galette/Controllers/AuthController.php:374
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Членові надіслано повідомлення на е-пошту."
 
 #: ../lib/Galette/Controllers/AuthController.php:385
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
+msgstr "Виникла проблема під час надсилання пароля для облікового запису \"%s\""
 
 #: ../lib/Galette/Controllers/AuthController.php:399
 #: ../lib/Galette/Events/MemberListener.php:250
@@ -901,7 +905,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PluginsController.php:82
 msgid "Plugins"
-msgstr ""
+msgstr "Розширення"
 
 #: ../lib/Galette/Controllers/PluginsController.php:113
 msgid "Plugin %name has been enabled"
@@ -1102,7 +1106,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1129
 msgid "Preferences"
-msgstr ""
+msgstr "Налаштування"
 
 #: ../lib/Galette/Core/Install.php:1133
 msgid "Contributions types"
