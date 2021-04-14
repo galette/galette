@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2021-04-14 09:54+0000\n"
-"Last-Translator: Translator <weblate.gledy@aleeas.com>\n"
+"PO-Revision-Date: 2021-04-15 06:42+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1216,10 +1216,10 @@ msgid "How much is %2$s retired to %1$s?"
 msgstr "Wie viel ist %2$s auf %1$s zurückgegacht?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
-#, fuzzy, php-format
+#, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr ""
-"Ich habe %1$s Galettes, ich gebe %2$s von ihnen. Wie viele Galettes habe ich?"
+"Ich habe %1$s Galettes, ich gebe %2$s davon. Wie viele Galettes habe ich?"
 
 #: ../lib/Galette/Core/Pagination.php:262
 msgid "First page"
@@ -3457,7 +3457,7 @@ msgid ""
 "is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"Hallo!{NEWLINE}Ein Antrag auf Passwortzurücksetzung wurde auf Ihrem Account "
+"Hallo!{NEWLINE}Ein Antrag auf Passwortzurücksetzung wurde auf Ihrem Konto "
 "auf {ASSO_NAME} eingereicht, aber es ist zur Zeit inaktiv und kann deshalb "
 "nicht bearbeitet werden.{NEWLINE}Bitte kontaktieren Sie den Adminstrator "
 "oder einen Mitarbeiter, falls Sie denken, dass dies ein Fehler sei.{NEWLINE}"
