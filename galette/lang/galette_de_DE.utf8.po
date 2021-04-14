@@ -2412,7 +2412,7 @@ msgstr "Mitgliederinformation"
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 msgid "You cannot delete system payment types!"
-msgstr "System-Zahlungsarten können nicht gelöscht werden!"
+msgstr "Sie können keine Systemzahlungsarten löschen!"
 
 #: ../lib/Galette/Entity/PaymentType.php:281
 msgid "Other"
