@@ -9,15 +9,15 @@
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
-# J. Lavoie <j.lavoie@net-c.ca>, 2020.
+# J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # Nathan <bonnemainsnathan@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-26 12:16+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-04-15 06:42+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.4.1-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -808,7 +808,7 @@ msgstr "Votre compte (%s) ne contient pas d’adresse courriel valide"
 #: ../lib/Galette/Controllers/AuthController.php:425
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr "L’adresse mail %s n’existe pas"
+msgstr "L’adresse courriel %s n’existe pas"
 
 #: ../lib/Galette/Controllers/AuthController.php:431
 #, php-format
@@ -1212,12 +1212,12 @@ msgstr "Combien font %1$s à qui l'on retranche %2$s ?"
 #: ../lib/Galette/Core/Gaptcha.php:110
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr "Combien font %2$s retranchés de %1$s ?"
+msgstr "Combien font %2$s retranchés de %1$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr "J'ai %1$s Galettes, j'en donne %2$s. Combien de Galettes ais-je ?"
+msgstr "J'ai %1$s Galettes, j'en donne %2$s. Combien de Galettes ai-je ?"
 
 #: ../lib/Galette/Core/Pagination.php:262
 msgid "First page"
@@ -2675,7 +2675,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:275
 msgid "Email,URL,IM"
-msgstr "Email, URL, IM"
+msgstr "Courriel,URL,IM"
 
 #: ../lib/Galette/Filters/MembersList.php:276
 msgid "Job"
@@ -3310,8 +3310,8 @@ msgid ""
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
 "Bonjour cher Administrateur,{NEWLINE}Un nouveau membre a été enregistré avec "
-"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Login : {LOGIN}{BR}* "
-"Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
+"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Identifiant : "
+"{LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "New user registration (sent to admin)"
@@ -3345,10 +3345,10 @@ msgid ""
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
-"Bonjour cher Administrateur,{NEWLINE}Un nouvel adhérent s'est auto inscrit "
+"Bonjour cher Administrateur,{NEWLINE}Un nouvel adhérent s'est auto-inscrit "
 "en ligne avec les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* "
-"Login : {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}"
-"Galette"
+"Identifiant : {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien "
+"sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "New self registration (sent to admin)"
@@ -4783,7 +4783,7 @@ msgstr "Utilisation d’un SMTP (plus lent)"
 
 #: ../templates/default/preferences.tpl:311
 msgid "Using GMAIL as SMTP server (slower)"
-msgstr "Utilisation de GMAIL comme serveur SMTP (plus lent)"
+msgstr "Utilisation de Gmail comme serveur SMTP (plus lent)"
 
 #: ../templates/default/preferences.tpl:314
 msgid "Using Sendmail server"
