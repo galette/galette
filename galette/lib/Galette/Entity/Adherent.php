@@ -1031,9 +1031,9 @@ class Adherent
         $this->errors = array();
 
         //Sanitize
-        foreach ($values as &$value) {
-            if (is_string($value)) {
-                $value = strip_tags($value);
+        foreach ($values as &$rawvalue) {
+            if (is_string($rawvalue)) {
+                $rawvalue = strip_tags($rawvalue);
             }
         }
 
@@ -1091,6 +1091,7 @@ class Adherent
                         break;
                     default:
                         $value = '';
+                        break;
                 }
             } else {
                 //keep stored value on update
