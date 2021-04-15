@@ -107,7 +107,7 @@ class Boolean extends atoum
         $this->variable($required)->isNull();
 
         $name = $this->bool->getName();
-        $this->variable($name)->isNull();
+        $this->variable($name)->isIdenticalTo('');
 
         $has_fixed_values = $this->bool->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();

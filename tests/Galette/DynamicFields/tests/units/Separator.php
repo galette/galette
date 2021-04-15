@@ -107,7 +107,7 @@ class Separator extends atoum
         $this->variable($required)->isNull();
 
         $name = $this->separator->getName();
-        $this->variable($name)->isNull();
+        $this->variable($name)->isIdenticalTo('');
 
         $has_fixed_values = $this->separator->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();
