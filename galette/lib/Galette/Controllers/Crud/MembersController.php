@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -1087,16 +1087,17 @@ class MembersController extends CrudController
             'dynamics'  => true
         );
 
+        //instanciate member object
+        $member = new Adherent($this->zdb, $id, $deps);
+
         if ($this->session->member !== null) {
+            //retrieve from session, in add or edit
             $member = $this->session->member;
             $this->session->member = null;
-        } else {
-            $member = new Adherent($this->zdb, $id, $deps);
-        }
-
-        if ($id !== null) {
+        } elseif ($id !== null) {
+            //load requested member
             $member->load($id);
-            if (!$member->canEdit($this->login)) {
+            if (!$member->canEdit($this->login) || $member->id != $id) {
                 $this->flash->addMessage(
                     'error_detected',
                     _T("You do not have permission for requested URL.")
@@ -1108,10 +1109,6 @@ class MembersController extends CrudController
                         'Location',
                         $this->router->pathFor('me')
                     );
-            }
-        } else {
-            if ($member->id != $id) {
-                $member->load($this->login->id);
             }
         }
 
