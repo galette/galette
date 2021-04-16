@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-06-02
@@ -55,7 +55,7 @@ use Galette\Repository\Members;
  * @name      Adherent
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 02-06-2009
@@ -1113,13 +1113,18 @@ class Adherent
                 // now, check validity
                 if ($value !== null && $value != '') {
                     $this->validate($key, $value, $values);
-                } elseif (
-                    ($key == 'login_adh' && !isset($required['login_adh']))
-                    || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
-                    && !isset($this->_id)
-                ) {
-                    $p = new Password($this->zdb);
-                    $this->$prop = $p->makeRandomPassword(15);
+                } elseif (!isset($this->id)) {
+                    //ensure login and password are not empty
+                    if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
+                        $p = new Password($this->zdb);
+                        $generated_value = $p->makeRandomPassword(15);
+                        if ($key == 'login_adh') {
+                            //'@' is not permitted in logins
+                            $this->$prop = str_replace('@', 'a', $generated_value);
+                        } else {
+                            $this->$prop = $generated_value;
+                        }
+                    }
                 }
             }
         }
