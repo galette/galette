@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" method="post">
+        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>

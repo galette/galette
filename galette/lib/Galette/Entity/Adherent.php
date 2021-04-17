@@ -1910,7 +1910,7 @@ class Adherent
     }
 
     /**
-     * Handle files (photo and dynamics files
+     * Handle files (photo and dynamics files)
      *
      * @param array $files Files sent
      *
@@ -1941,7 +1941,7 @@ class Adherent
                 );
             }
         }
-        $this->dynamicsFiles($_FILES);
+        $this->dynamicsFiles($files);
 
         if (count($this->errors) > 0) {
             Analog::log(

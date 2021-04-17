@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-08
@@ -54,7 +54,7 @@ use Analog\Analog;
  * @name      TransactionsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -264,6 +264,13 @@ class TransactionsController extends ContributionsController
             } else {
                 //something went wrong :'(
                 $error_detected[] = _T("An error occurred while storing the transaction.");
+            }
+        }
+
+        if (count($error_detected) === 0) {
+            $files_res = $trans->handleFiles($_FILES);
+            if (is_array($files_res)) {
+                $error_detected = array_merge($error_detected, $files_res);
             }
         }
 

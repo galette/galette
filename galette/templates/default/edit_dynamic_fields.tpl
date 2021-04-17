@@ -50,16 +50,31 @@
             {if $disabled} disabled="disabled"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFields\File'}
-        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label> <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
+        {if $object->id}
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label>
+        {/if}
+        <input
+            type="file"
+            name="info_field_{$field->getId()}_{$loop}"
+            id="info_field_{$field->getId()}_{$loop}_new"
             {if $field->isRequired() and $valuedata eq ''} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
         />
-        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_current">{_T string="current"}</label> <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
-            value="{$valuedata}"
-        />
-        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_delete">{_T string="delete"}</label> <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_delete"
+        {if $object->id}
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_current">{_T string="current"}</label>
+        <a href="{path_for name="getDynamicFile" data=["id" => $object->id, "fid" => $field->getId(), "pos" => $loop, "name" => $valuedata]}">
+            {$valuedata}
+        </a>
+        - <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_delete">
+            {_T string="delete"}
+        </label>
+        <input
+            type="checkbox"
+            name="info_field_{$field->getId()}_{$loop}"
+            id="info_field_{$field->getId()}_{$loop}_delete"
             onclick="this.form.info_field_{$field->getId()}_{$loop}_new.disabled = this.checked;"
         />
+        {/if}
     {/if}
 {/function}
 

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2018 The Galette Team
+ * Copyright © 2017-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-26
@@ -49,7 +49,7 @@ use Galette\DynamicFields\Boolean;
  * @name      DynamicsTrait
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-26
@@ -166,7 +166,9 @@ trait DynamicsTrait
                             $field_id,
                             $val_index
                         );
-                        unlink(GALETTE_FILES_PATH . $filename);
+                        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+                            unlink(GALETTE_FILES_PATH . $filename);
+                        }
                         $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                     } else {
                         if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
