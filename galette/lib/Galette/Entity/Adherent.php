@@ -1069,7 +1069,7 @@ class Adherent
                 if ($value !== true && $value !== false) {
                     $value = trim($value);
                 }
-            } elseif ($this->_id == '' || $this->_id == null) {
+            } elseif (empty($this->_id)) {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
@@ -1113,7 +1113,7 @@ class Adherent
                 // now, check validity
                 if ($value !== null && $value != '') {
                     $this->validate($key, $value, $values);
-                } elseif (!isset($this->_id)) {
+                } elseif (empty($this->_id)) {
                     //ensure login and password are not empty
                     if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
                         $p = new Password($this->zdb);
@@ -1278,7 +1278,7 @@ class Adherent
                         $select->columns(
                             array(self::PK)
                         )->where(array('email_adh' => $value));
-                        if ($this->_id != '' && $this->_id != null) {
+                        if (!empty($this->_id)) {
                             $select->where(
                                 self::PK . ' != ' . $this->_id
                             );
@@ -1323,7 +1323,7 @@ class Adherent
                             $select->columns(
                                 array(self::PK)
                             )->where(array('login_adh' => $value));
-                            if ($this->_id != '' && $this->_id != null) {
+                            if (!empty($this->_id)) {
                                 $select->where(
                                     self::PK . ' != ' . $this->_id
                                 );
@@ -1434,8 +1434,7 @@ class Adherent
             foreach ($fields as $field) {
                 if (
                     $field !== 'date_modif_adh'
-                    || !isset($this->_id)
-                    || $this->_id == ''
+                    || empty($this->_id)
                 ) {
                     $prop = '_' . $this->fields[$field]['propname'];
                     if (
@@ -1496,7 +1495,7 @@ class Adherent
             }
 
             $success = false;
-            if (!isset($this->_id) || $this->_id == '') {
+            if (empty($this->_id)) {
                 //we're inserting a new member
                 unset($values[self::PK]);
                 //set modification date
