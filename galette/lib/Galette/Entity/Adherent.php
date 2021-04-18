@@ -1113,7 +1113,7 @@ class Adherent
                 // now, check validity
                 if ($value !== null && $value != '') {
                     $this->validate($key, $value, $values);
-                } elseif (!isset($this->id)) {
+                } elseif (!isset($this->_id)) {
                     //ensure login and password are not empty
                     if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
                         $p = new Password($this->zdb);
