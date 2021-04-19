@@ -624,7 +624,7 @@ abstract class DynamicField
             }
         }
 
-        $this->required = $values['field_required'];
+        $this->required = $values['field_required'] ?? false;
 
         if (count($this->errors) === 0 && $this->isDuplicate($values['form_name'], $this->name, $this->id)) {
             $this->errors[] = _T("- Field name already used.");
