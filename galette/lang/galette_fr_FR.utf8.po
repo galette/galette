@@ -5,7 +5,7 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
@@ -14,10 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-24 10:13+0200\n"
-"PO-Revision-Date: 2021-04-15 06:42+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2021-04-24 18:02+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2051,10 +2051,8 @@ msgid "Member's groups (as list)"
 msgstr "Groupes de l’adhérent (liste)"
 
 #: ../lib/Galette/Features/Replacements.php:314
-#, fuzzy
-#| msgid "Members by state of dues"
 msgid "Member state of dues"
-msgstr "Adhérents par statut d’adhésion"
+msgstr "Statut d’adhésion des adhérents"
 
 #: ../lib/Galette/Features/Replacements.php:318
 msgid "Membership remaining days"
@@ -2486,10 +2484,8 @@ msgid "Galette's change password URI"
 msgstr "L’URL de modification de mot de passe de Galette"
 
 #: ../lib/Galette/Entity/Texts.php:633
-#, fuzzy
-#| msgid "Mail settings"
 msgid "Mail specific"
-msgstr "Paramètres courriel"
+msgstr "Spécifique aux courriels"
 
 #: ../lib/Galette/Entity/PdfModel.php:293
 #, php-format
@@ -3339,13 +3335,6 @@ msgid "[{ASSO_NAME}] Your contribution"
 msgstr "[{ASSO_NAME}] Votre cotisation"
 
 #: ../includes/fields_defs/texts_fields.php:57
-#, fuzzy
-#| msgid ""
-#| "Hello,{NEWLINE}Your contribution has successfully been taken into account "
-#| "by {ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now "
-#| "login and browse or modify your personnal data using your galette "
-#| "identifiers at this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}"
-#| "{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgid ""
 "Hello,{NEWLINE}Your contribution has successfully been taken into account by "
 "{ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login "
@@ -3354,11 +3343,11 @@ msgid ""
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
 "Bonjour,{NEWLINE}Votre cotisation a été enregistrée et validée par "
-"l'association {ASSO_NAME}.{NEWLINE}Elle est valable jusqu'au {DEADLINE}"
-"{NEWLINE}Vous pouvez désormais accéder à vos données personnelles à l'aide "
-"de vos identifiants galette à l'adresse suivante :{BR}{LOGIN_URI}.{NEWLINE}"
-"{CONTRIB_INFO}{NEWLINE}A Bientôt!{NEWLINE}(Ce courriel est un envoi "
-"automatique)"
+"l'association {ASSO_NAME}.{NEWLINE}Elle est valable jusqu'au "
+"{DEADLINE}{NEWLINE}Vous pouvez désormais accéder à vos données personnelles "
+"à l'aide de vos identifiants galette à l'adresse suivante "
+":{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}A Bientôt!{NEWLINE}(Ce "
+"courriel est un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:59
 msgid "Receipt send for new contribution"
@@ -3369,19 +3358,14 @@ msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
 msgstr "[{ASSO_NAME}] Nouvelle inscription de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:65
-#, fuzzy
-#| msgid ""
-#| "Hello dear Administrator,{NEWLINE}A new member has been registered with "
-#| "the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* "
-#| "E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has been registered with the "
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
 msgstr ""
 "Bonjour cher Administrateur,{NEWLINE}Un nouveau membre a été enregistré avec "
-"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Identifiant : {LOGIN}"
-"{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
+"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Identifiant : "
+"{LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "New user registration (sent to admin)"
@@ -3410,11 +3394,6 @@ msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
 msgstr "[{ASSO_NAME}] Nouvelle auto inscription de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:81
-#, fuzzy
-#| msgid ""
-#| "Hello dear Administrator,{NEWLINE}A new member has self registred on line "
-#| "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}"
-#| "{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has self registered on line "
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
@@ -3422,8 +3401,8 @@ msgid ""
 msgstr ""
 "Bonjour cher Administrateur,{NEWLINE}Un nouvel adhérent s'est auto-inscrit "
 "en ligne avec les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* "
-"Identifiant : {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,"
-"{BR}Galette"
+"Identifiant : {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien "
+"sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "New self registration (sent to admin)"
@@ -5879,10 +5858,9 @@ msgid "Field"
 msgstr "Champ"
 
 #: ../templates/default/import_model.tpl:27
-#, fuzzy, php-format
-#| msgid "Missing required field %field"
+#, php-format
 msgid "Missing field '%field'"
-msgstr "Champ requis %field manquant"
+msgstr "Champ « %field » manquant"
 
 #: ../templates/default/import_model.tpl:37
 msgid "Generate empty CSV file"
