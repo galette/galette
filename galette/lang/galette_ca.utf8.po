@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2020-12-24 07:29+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-24 10:13+0200\n"
 "PO-Revision-Date: 2021-04-11 10:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -32,14 +32,14 @@ msgid "Transaction"
 msgstr "Transacció"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1148
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1144
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:111
 msgid "modification"
 msgstr "modificació"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1150
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1146
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
 msgid "creation"
 msgstr "creació"
 
@@ -47,23 +47,23 @@ msgstr "creació"
 msgid "An error occurred while storing the transaction."
 msgstr "S'ha produït un error en emmagatzemar la transacció."
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:294
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:301
 msgid "Transaction has been successfully stored"
 msgstr "La transacció s'ha emmagatzemat correctament"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:350
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:357
 msgid "Unable to attach contribution to transaction"
 msgstr "No s'ha pogut adjuntar la contribució a la transacció"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:355
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
 msgstr "La contribució s'ha adjuntat correctament a la transacció actual"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:382
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:389
 msgid "Unable to detach contribution from transaction"
 msgstr "No s'ha pogut separar la contribució de la transacció"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:387
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:394
 msgid "Contribution has been successfully detached from current transaction"
 msgstr "La contribució s'ha separat correctament de la transacció actual"
 
@@ -231,13 +231,13 @@ msgstr "El camp s'ha mogut correctament"
 msgid "An error occurred moving field :("
 msgstr "S'ha produït un error en moure el camp ("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:156
+#: ../lib/Galette/Controllers/Crud/MembersController.php:155
 #, fuzzy
 msgid "Subscription"
 msgstr "Subscripció"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:250
-#: ../lib/Galette/Controllers/Crud/MembersController.php:456
+#: ../lib/Galette/Controllers/Crud/MembersController.php:249
+#: ../lib/Galette/Controllers/Crud/MembersController.php:455
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1103
 #: ../lib/Galette/Controllers/PdfController.php:120
 #: ../lib/Galette/Controllers/PdfController.php:288
@@ -246,139 +246,139 @@ msgstr "Subscripció"
 msgid "You do not have permission for requested URL."
 msgstr "No teniu permís per a l'URL sol·licitat."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:265
+#: ../lib/Galette/Controllers/Crud/MembersController.php:264
 msgid "No member #%id."
 msgstr "Cap membre #%id."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:285
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1146
+#: ../lib/Galette/Controllers/Crud/MembersController.php:284
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1142
 #, fuzzy
 msgid "Member Profile"
 msgstr "Perfil del membre"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:364
+#: ../lib/Galette/Controllers/Crud/MembersController.php:363
 #, fuzzy
 msgid "Members list"
 msgstr "Llista de membres"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:364
+#: ../lib/Galette/Controllers/Crud/MembersController.php:363
 #, fuzzy
 msgid "Trombinoscope"
 msgstr "Trombinoscopi"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:510
+#: ../lib/Galette/Controllers/Crud/MembersController.php:509
 #, fuzzy
 msgid "The file does not exists or cannot be read :("
 msgstr "El fitxer no existeix o no es pot llegir ("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:574
+#: ../lib/Galette/Controllers/Crud/MembersController.php:573
 #, fuzzy
 msgid "Members management"
 msgstr "Gestió de membres"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:795
+#: ../lib/Galette/Controllers/Crud/MembersController.php:794
 #, fuzzy
 msgid "Status label"
 msgstr "Etiqueta d'estat"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:835
+#: ../lib/Galette/Controllers/Crud/MembersController.php:834
 #, fuzzy
 msgid "Advanced search"
 msgstr "Cerca avançada"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1054
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1053
 #: ../lib/Galette/Controllers/PdfController.php:154
 #: ../lib/Galette/Controllers/PdfController.php:235
 #, fuzzy
 msgid "No member was selected, please check at least one name."
 msgstr "No s'ha seleccionat cap membre. Comproveu almenys un nom."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1265
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1261
 #, fuzzy, php-format
 msgid "Mass change %count members"
 msgstr "Membres del recompte de canvis massius"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1295
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1366
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1291
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1362
 #, fuzzy
 msgid "Mass changes has not been confirmed!"
 msgstr "No s'han confirmat canvis massius!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1336
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1332
 #, fuzzy, php-format
 msgid "Review mass change %count members"
 msgstr "Revisa els membres del nombre de comptes de canvi massiu"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1395
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1391
 #, fuzzy
 msgid "Nothing to do!"
 msgstr "Res a fer!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1423
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1660
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1419
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1656
 #, fuzzy
 msgid "An error occurred while storing the member."
 msgstr "S'ha produït un error en emmagatzemar el membre."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1435
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1431
 #, fuzzy
 msgid "Something went wront during mass edition!"
 msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1442
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1438
 #, fuzzy, php-format
 msgid "%count members has been changed successfully!"
 msgstr "El nombre de membres ha canviat amb èxit!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1512
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 #, fuzzy
 msgid "Invalid captcha"
 msgstr "Captcha no vàlid"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1619
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1615
 #, fuzzy
 msgid "Your account has been created!"
 msgstr "S'ha creat el compte!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1624
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1620
 #, fuzzy
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 "S'ha enviat un correu electrònic per comprovar la vostra bústia d'entrada."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1627
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1623
 #, fuzzy
 msgid "New member has been successfully added."
 msgstr "El nou membre s'ha afegit correctament."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1630
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1626
 #, fuzzy
 msgid "Member account has been modified."
 msgstr "S'ha modificat el compte de membre."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1644
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1640
 #, fuzzy
 msgid "An error occurred adding member to its groups."
 msgstr "Hi ha hagut un error en afegir un membre als seus grups."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1656
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1652
 #, fuzzy
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Hi ha hagut un error en afegir el membre als seus grups com a gestor."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1672
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1668
 #: ../lib/Galette/Controllers/GaletteController.php:310
 #: ../lib/Galette/Controllers/GaletteController.php:342
 #, fuzzy
 msgid "Delete failed"
 msgstr "Ha fallat la supressió"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1841
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1837
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Elimina el membre %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1850
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1846
 #, fuzzy, php-format
 msgid "You are about to remove %count members."
 msgstr "Esteu a punt d'eliminar a membres del recompte del 5%."
@@ -460,75 +460,75 @@ msgstr "%type #%id s'ha actualitzat correctament!"
 msgid "Remove %type '%label'"
 msgstr "Elimina %type '%label'"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:106
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:105
 #, fuzzy
 msgid "Membership fee"
 msgstr "Tarifa de pertinença"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:108
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
 #: ../lib/Galette/Entity/Contribution.php:1079
 #, fuzzy
 msgid "Donation"
 msgstr "Donació"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:334
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
 #, fuzzy
 msgid "Contributions management"
 msgstr "Gestió de contribucions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:334
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
 #, fuzzy
 msgid "Transactions management"
 msgstr "Gestió de transaccions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:428
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:427
 #, fuzzy
 msgid "- Unknown payment type!"
 msgstr "- Tipus de pagament desconegut!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:477
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:476
 #: ../lib/Galette/Controllers/PdfController.php:449
 #: ../lib/Galette/Controllers/PdfController.php:713
 msgid "Unable to load contribution #%id!"
 msgstr "No s'ha pogut carregar la contribució #%id!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:582
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:581
 #, fuzzy
 msgid "Contribution has been successfully stored"
 msgstr "La contribució s'ha desat correctament"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:586
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:585
 #, fuzzy
 msgid "An error occurred while storing the contribution."
 msgstr "S'ha produït un error en emmagatzemar la contribució."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:684
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Elimina %1$s %2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 #, fuzzy
 msgid "contributions"
 msgstr "contribucions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:686
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 #, fuzzy
 msgid "transactions"
 msgstr "transaccions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:696
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr "Elimina %1$s #%2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
 #: ../lib/Galette/IO/PdfContribution.php:84
 #, fuzzy
 msgid "contribution"
 msgstr "contribució"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
 #, fuzzy
 msgid "transaction"
 msgstr "transacció"
@@ -705,39 +705,39 @@ msgstr "Recordatoris"
 msgid "No reminder to send for now."
 msgstr "No hi ha recordatori per enviar ara."
 
-#: ../lib/Galette/Controllers/GaletteController.php:736
+#: ../lib/Galette/Controllers/GaletteController.php:742
 #, fuzzy
 msgid "There are no member to proceed."
 msgstr "No hi ha cap membre per continuar."
 
-#: ../lib/Galette/Controllers/GaletteController.php:743
+#: ../lib/Galette/Controllers/GaletteController.php:749
 #, fuzzy
 msgid "Reminder has not been sent:"
 msgstr "No s'ha enviat el recordatori"
 
-#: ../lib/Galette/Controllers/GaletteController.php:750
+#: ../lib/Galette/Controllers/GaletteController.php:756
 #, fuzzy
 msgid "Sent reminders:"
 msgstr "Recordatoris enviats"
 
-#: ../lib/Galette/Controllers/GaletteController.php:826
+#: ../lib/Galette/Controllers/GaletteController.php:832
 #, fuzzy
 msgid "Download document"
 msgstr "Descarrega el document"
 
-#: ../lib/Galette/Controllers/CrudController.php:277
+#: ../lib/Galette/Controllers/CrudController.php:289
 #: ../lib/Galette/Controllers/HistoryController.php:208
 #: ../lib/Galette/Controllers/CsvController.php:499
 #, fuzzy
 msgid "Removal has not been confirmed!"
 msgstr "La supressió no s'ha confirmat!"
 
-#: ../lib/Galette/Controllers/CrudController.php:287
+#: ../lib/Galette/Controllers/CrudController.php:299
 #, fuzzy
 msgid "Successfully deleted!"
 msgstr "S'ha suprimit correctament!"
 
-#: ../lib/Galette/Controllers/CrudController.php:299
+#: ../lib/Galette/Controllers/CrudController.php:311
 #, fuzzy
 msgid "An error occurred trying to delete :("
 msgstr "Hi ha hagut un error en intentar suprimir ("
@@ -796,82 +796,76 @@ msgstr "El model no s'ha desat ("
 msgid "Invalid link!"
 msgstr "Enllaç invàlid!"
 
-#: ../lib/Galette/Controllers/AuthController.php:90
-#: ../lib/Galette/Controllers/AuthController.php:150
-#: ../lib/Galette/Entity/PdfModel.php:724
+#: ../lib/Galette/Controllers/AuthController.php:88
+#: ../lib/Galette/Controllers/AuthController.php:148
+#: ../lib/Galette/Features/Replacements.php:302
+#: ../lib/Galette/Features/Replacements.php:342
 #, fuzzy
 msgid "Login"
 msgstr "Inici de sessió"
 
-#: ../lib/Galette/Controllers/AuthController.php:116
+#: ../lib/Galette/Controllers/AuthController.php:114
 #, fuzzy
 msgid "You must provide both login and password."
 msgstr "Heu de proporcionar tant l'inici de sessió com la contrasenya."
 
-#: ../lib/Galette/Controllers/AuthController.php:145
+#: ../lib/Galette/Controllers/AuthController.php:143
 #, fuzzy
 msgid "Your password is too weak! Please consider updating it."
 msgstr "La contrasenya és massa feble! Considereu actualitzar-la."
 
-#: ../lib/Galette/Controllers/AuthController.php:153
+#: ../lib/Galette/Controllers/AuthController.php:151
 #, fuzzy
 msgid "Login failed."
 msgstr "Ha fallat l'inici de sessió."
 
-#: ../lib/Galette/Controllers/AuthController.php:154
+#: ../lib/Galette/Controllers/AuthController.php:152
 #, fuzzy
 msgid "Authentication failed"
 msgstr "Ha fallat l'autenticació"
 
-#: ../lib/Galette/Controllers/AuthController.php:170
+#: ../lib/Galette/Controllers/AuthController.php:168
 #, fuzzy
 msgid "Log off"
 msgstr "Tanca la sessió"
 
-#: ../lib/Galette/Controllers/AuthController.php:195
+#: ../lib/Galette/Controllers/AuthController.php:193
 #, php-format
 msgid "Impersonating as %login"
 msgstr "S'està suplantant com a %login"
 
-#: ../lib/Galette/Controllers/AuthController.php:207
+#: ../lib/Galette/Controllers/AuthController.php:205
 #, fuzzy
 msgid "Unable to impersonate as %id"
 msgstr "No s'ha pogut suplantar com a percentid"
 
-#: ../lib/Galette/Controllers/AuthController.php:233
-#: ../lib/Galette/Controllers/AuthController.php:238
+#: ../lib/Galette/Controllers/AuthController.php:231
+#: ../lib/Galette/Controllers/AuthController.php:236
 #, fuzzy
 msgid "Impersonating ended"
 msgstr "S'ha acabat la suplantació"
 
-#: ../lib/Galette/Controllers/AuthController.php:263
-#: ../lib/Galette/Controllers/AuthController.php:478
+#: ../lib/Galette/Controllers/AuthController.php:261
+#: ../lib/Galette/Controllers/AuthController.php:462
 #, fuzzy
 msgid "Password recovery"
 msgstr "Recuperació de contrasenya"
 
-#: ../lib/Galette/Controllers/AuthController.php:295
+#: ../lib/Galette/Controllers/AuthController.php:293
 #, fuzzy
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 "El correu enviat està desactivat a les preferències. Pregunta-ho a "
 "l'administrador de galette"
 
-#: ../lib/Galette/Controllers/AuthController.php:340
-#: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
-#: ../lib/Galette/Events/MemberListener.php:245
-#, fuzzy
-msgid "Y-m-d H:i:s"
-msgstr "Y-m-d His"
-
-#: ../lib/Galette/Controllers/AuthController.php:368
+#: ../lib/Galette/Controllers/AuthController.php:352
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr ""
 "S'ha enviat un correu electrònic a '%s' per a la recuperació de la "
 "contrasenya."
 
-#: ../lib/Galette/Controllers/AuthController.php:372
+#: ../lib/Galette/Controllers/AuthController.php:356
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
@@ -879,18 +873,18 @@ msgstr ""
 "S'ha enviat un correu electrònic a la vostra adreça.<br>Comproveu la vostra "
 "bústia d'entrada i seguiu les instruccions."
 
-#: ../lib/Galette/Controllers/AuthController.php:374
+#: ../lib/Galette/Controllers/AuthController.php:358
 #, fuzzy
 msgid "An email has been sent to the member."
 msgstr "S'ha enviat un correu electrònic al membre."
 
-#: ../lib/Galette/Controllers/AuthController.php:385
+#: ../lib/Galette/Controllers/AuthController.php:369
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
 msgstr "S'ha produït un problema en enviar la contrasenya pel compte «%s»"
 
-#: ../lib/Galette/Controllers/AuthController.php:399
-#: ../lib/Galette/Events/MemberListener.php:250
+#: ../lib/Galette/Controllers/AuthController.php:383
+#: ../lib/Galette/Events/MemberListener.php:223
 #, php-format
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
@@ -898,22 +892,22 @@ msgstr ""
 "S'ha produït un error en emmagatzemar la contrasenya temporal per %s. Si us "
 "plau informeu un administrador."
 
-#: ../lib/Galette/Controllers/AuthController.php:411
+#: ../lib/Galette/Controllers/AuthController.php:395
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
 msgstr "El vostre compte (%s) no conté cap adreça electrònica vàlida"
 
-#: ../lib/Galette/Controllers/AuthController.php:425
+#: ../lib/Galette/Controllers/AuthController.php:409
 #, fuzzy, php-format
 msgid "Mails address %s does not exist"
 msgstr "L'adreçament dels correus no existeix"
 
-#: ../lib/Galette/Controllers/AuthController.php:431
+#: ../lib/Galette/Controllers/AuthController.php:415
 #, fuzzy, php-format
 msgid "Login %s does not exist"
 msgstr "L'inici de sessió no existeix"
 
-#: ../lib/Galette/Controllers/AuthController.php:462
+#: ../lib/Galette/Controllers/AuthController.php:446
 #, fuzzy
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
@@ -921,34 +915,34 @@ msgstr ""
 "Aquest enllaç ja no és vàlid. Hauríeu de demanar que recupereu la "
 "contrasenya de nou."
 
-#: ../lib/Galette/Controllers/AuthController.php:508
+#: ../lib/Galette/Controllers/AuthController.php:492
 #: ../webroot/installer.php:134 ../webroot/installer.php:177
 #, fuzzy
 msgid "No password"
 msgstr "Sense contrasenya"
 
-#: ../lib/Galette/Controllers/AuthController.php:511
-#: ../lib/Galette/Entity/Adherent.php:1342
+#: ../lib/Galette/Controllers/AuthController.php:495
+#: ../lib/Galette/Entity/Adherent.php:1355
 #, fuzzy
 msgid "- The passwords don't match!"
 msgstr "- Les contrasenyes no coincideixen!"
 
-#: ../lib/Galette/Controllers/AuthController.php:517
+#: ../lib/Galette/Controllers/AuthController.php:501
 #, fuzzy
 msgid "Your password is too weak!"
 msgstr "La contrasenya és massa feble!"
 
-#: ../lib/Galette/Controllers/AuthController.php:526
+#: ../lib/Galette/Controllers/AuthController.php:510
 #, fuzzy
 msgid "An error occurred while updating your password."
 msgstr "S'ha produït un error en actualitzar la contrasenya."
 
-#: ../lib/Galette/Controllers/AuthController.php:532
+#: ../lib/Galette/Controllers/AuthController.php:516
 #, php-format
 msgid "Password changed for member '%s'."
 msgstr "S'ha canviat la contrasenya pel membre '%s'."
 
-#: ../lib/Galette/Controllers/AuthController.php:540
+#: ../lib/Galette/Controllers/AuthController.php:524
 #, fuzzy
 msgid "Your password has been changed!"
 msgstr "La contrasenya ha canviat!"
@@ -964,8 +958,8 @@ msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
-"Falten alguns mòduls PHP. Instal·leu-los o contacteu amb el vostre "
-"suport.<br>Es pot trobar més informació sobre els mòduls requerits a la "
+"Falten alguns mòduls PHP. Instal·leu-los o contacteu amb el vostre suport."
+"<br>Es pot trobar més informació sobre els mòduls requerits a la "
 "documentació."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
@@ -1078,13 +1072,13 @@ msgstr ""
 "No hi ha traducció per '%s'!<br>Si us plau ompliu i envieu el formulari "
 "anterior per crear-lo."
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:191
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:216
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:192
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:217
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 "Hi ha hagut un error en desar l'etiqueta `%label` per al llenguatge `%lang`"
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:232
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:233
 #, fuzzy
 msgid "Labels has been sucessfully translated!"
 msgstr "Les etiquetes s'han traduït amb sucessió!"
@@ -1185,20 +1179,26 @@ msgstr "El model d'importació s'ha desat correctament )"
 msgid "Import model has not been stored :("
 msgstr "No s'ha desat el model d'importació ("
 
-#: ../lib/Galette/Controllers/TextController.php:91
+#: ../lib/Galette/Controllers/TextController.php:92
 #, fuzzy
 msgid "Automatic emails texts edition"
 msgstr "Edició automàtica de textos de correu electrònic"
 
-#: ../lib/Galette/Controllers/TextController.php:159
+#: ../lib/Galette/Controllers/TextController.php:161
 #, php-format
 msgid "Email: '%s' has not been modified!"
 msgstr "El correu electrònic \"%s\" no ha estat modificat!"
 
-#: ../lib/Galette/Controllers/TextController.php:168
+#: ../lib/Galette/Controllers/TextController.php:170
 #, php-format
 msgid "Email: '%s' has been successfully modified."
 msgstr "El correu electrònic '%s' s'ha modificat amb èxit."
+
+#: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
+#: ../lib/Galette/Entity/Texts.php:209
+#, fuzzy
+msgid "Y-m-d H:i:s"
+msgstr "Y-m-d His"
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:290
 #, fuzzy
@@ -1292,47 +1292,47 @@ msgstr "El fitxer Config ja existeix i està actualitzat"
 msgid "Unable to create configuration file (%path)"
 msgstr "No s'ha pogut crear el fitxer de configuració (%path)"
 
-#: ../lib/Galette/Core/Install.php:1129
+#: ../lib/Galette/Core/Install.php:1132
 #, fuzzy
 msgid "Preferences"
 msgstr "Preferències"
 
-#: ../lib/Galette/Core/Install.php:1133
+#: ../lib/Galette/Core/Install.php:1136
 #, fuzzy
 msgid "Contributions types"
 msgstr "Tipus de contribucions"
 
-#: ../lib/Galette/Core/Install.php:1137
+#: ../lib/Galette/Core/Install.php:1140
 #, fuzzy
 msgid "Status"
 msgstr "Estat"
 
-#: ../lib/Galette/Core/Install.php:1141
+#: ../lib/Galette/Core/Install.php:1144
 #, fuzzy
 msgid "Fields config and categories"
 msgstr "Configuració dels camps i categories"
 
-#: ../lib/Galette/Core/Install.php:1145 ../lib/Galette/Core/Install.php:1167
+#: ../lib/Galette/Core/Install.php:1148 ../lib/Galette/Core/Install.php:1170
 #, fuzzy
 msgid "Mails texts"
 msgstr "Texts de Mail"
 
-#: ../lib/Galette/Core/Install.php:1149
+#: ../lib/Galette/Core/Install.php:1152
 #, fuzzy
 msgid "Titles"
 msgstr "Títols"
 
-#: ../lib/Galette/Core/Install.php:1153
+#: ../lib/Galette/Core/Install.php:1156
 #, fuzzy
 msgid "PDF Models"
 msgstr "Models PDF"
 
-#: ../lib/Galette/Core/Install.php:1159
+#: ../lib/Galette/Core/Install.php:1162
 #, fuzzy
 msgid "Update preferences"
 msgstr "Actualitza les preferències"
 
-#: ../lib/Galette/Core/Install.php:1163
+#: ../lib/Galette/Core/Install.php:1166
 #, fuzzy
 msgid "Update models"
 msgstr "Actualitza els models"
@@ -1462,7 +1462,7 @@ msgstr ""
 "- Oferir mesos només és compatible amb el començament de la pertinença."
 
 #: ../lib/Galette/Core/Preferences.php:560
-#: ../lib/Galette/Entity/Adherent.php:1135
+#: ../lib/Galette/Entity/Adherent.php:1148
 #: ../lib/Galette/Entity/Transaction.php:337
 #: ../lib/Galette/Entity/Contribution.php:463
 #, fuzzy, php-format
@@ -1609,20 +1609,21 @@ msgstr "No es pot eliminar un membre que encara té dependències (mailings)"
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:89
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:121
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:176
+#: ../lib/Galette/Features/Replacements.php:466
 #: ../lib/Galette/Entity/Adherent.php:775
 #: ../lib/Galette/Entity/Adherent.php:793
 #: ../lib/Galette/Entity/Adherent.php:809
-#: ../lib/Galette/Entity/Adherent.php:1195
-#: ../lib/Galette/Entity/Adherent.php:1229
-#: ../lib/Galette/Entity/Adherent.php:1238
-#: ../lib/Galette/Entity/Adherent.php:1727
+#: ../lib/Galette/Entity/Adherent.php:1208
+#: ../lib/Galette/Entity/Adherent.php:1242
+#: ../lib/Galette/Entity/Adherent.php:1251
+#: ../lib/Galette/Entity/Adherent.php:1739
 #: ../lib/Galette/Entity/Transaction.php:280
 #: ../lib/Galette/Entity/Transaction.php:289
 #: ../lib/Galette/Entity/Transaction.php:298
 #: ../lib/Galette/Entity/Transaction.php:559
-#: ../lib/Galette/Entity/DynamicsTrait.php:172
-#: ../lib/Galette/Entity/DynamicsTrait.php:185
-#: ../lib/Galette/Entity/DynamicsTrait.php:194
+#: ../lib/Galette/Entity/DynamicsTrait.php:177
+#: ../lib/Galette/Entity/DynamicsTrait.php:190
+#: ../lib/Galette/Entity/DynamicsTrait.php:199
 #: ../lib/Galette/Entity/Contribution.php:373
 #: ../lib/Galette/Entity/Contribution.php:382
 #: ../lib/Galette/Entity/Contribution.php:391
@@ -1632,7 +1633,6 @@ msgstr "No es pot eliminar un membre que encara té dependències (mailings)"
 #: ../lib/Galette/Entity/Contribution.php:1264
 #: ../lib/Galette/Entity/Contribution.php:1273
 #: ../lib/Galette/Entity/ImportModel.php:213
-#: ../lib/Galette/Entity/PdfModel.php:136
 #: ../lib/Galette/Entity/SavedSearch.php:292
 #: ../lib/Galette/Entity/Group.php:616
 #: ../lib/Galette/Filters/TransactionsList.php:134
@@ -1862,26 +1862,29 @@ msgstr "Gestors"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:185
-#: ../lib/Galette/Entity/PdfModel.php:552
-#: ../lib/Galette/Entity/PdfModel.php:660
+#: ../lib/Galette/Features/Replacements.php:238
+#: ../lib/Galette/Entity/PdfModel.php:411
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
 #, fuzzy
 msgid "Name"
 msgstr "Nom"
 
-#: ../lib/Galette/IO/PdfGroups.php:180 ../lib/Galette/Entity/PdfModel.php:720
+#: ../lib/Galette/IO/PdfGroups.php:180
+#: ../lib/Galette/Features/Replacements.php:298
+#: ../lib/Galette/Features/Replacements.php:346
 msgid "Email"
 msgstr "Correu-e"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
+#: ../lib/Galette/Features/Replacements.php:290
 #: ../lib/Galette/Entity/ListsConfig.php:225
-#: ../lib/Galette/Entity/PdfModel.php:712
 #, fuzzy
 msgid "Phone"
 msgstr "Telèfon"
 
-#: ../lib/Galette/IO/PdfGroups.php:182 ../lib/Galette/Entity/PdfModel.php:716
+#: ../lib/Galette/IO/PdfGroups.php:182
+#: ../lib/Galette/Features/Replacements.php:294
 #, fuzzy
 msgid "GSM"
 msgstr "GSM"
@@ -1891,34 +1894,37 @@ msgstr "GSM"
 msgid "filtered_memberslist"
 msgstr "llista de membres filtrats"
 
-#: ../lib/Galette/IO/MembersCsv.php:228 ../lib/Galette/Entity/Adherent.php:1693
-#: ../lib/Galette/Entity/PdfModel.php:764
+#: ../lib/Galette/IO/MembersCsv.php:228
+#: ../lib/Galette/Features/Replacements.php:577
+#: ../lib/Galette/Entity/Adherent.php:1705
 #, fuzzy
 msgid "Man"
 msgstr "Man"
 
-#: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/Entity/Adherent.php:1695
-#: ../lib/Galette/Entity/PdfModel.php:766
+#: ../lib/Galette/IO/MembersCsv.php:231
+#: ../lib/Galette/Features/Replacements.php:579
+#: ../lib/Galette/Entity/Adherent.php:1707
 #, fuzzy
 msgid "Woman"
 msgstr "Dona"
 
-#: ../lib/Galette/IO/MembersCsv.php:234 ../lib/Galette/Entity/Adherent.php:1697
-#: ../lib/Galette/Entity/PdfModel.php:768
+#: ../lib/Galette/IO/MembersCsv.php:234
+#: ../lib/Galette/Features/Replacements.php:581
+#: ../lib/Galette/Entity/Adherent.php:1709
 #, fuzzy
 msgid "Unspecified"
 msgstr "Sense especificar"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1654
+#: ../lib/Galette/Entity/Adherent.php:1666
 #, fuzzy
 msgid "Yes"
 msgstr "Sí."
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1654
+#: ../lib/Galette/Entity/Adherent.php:1666
 #, fuzzy
 msgid "No"
 msgstr "No"
@@ -2118,7 +2124,7 @@ msgid "File extension is not allowed, only %s files are."
 msgstr "L'extensió del fitxer no està permesa només n'hi ha un 1%."
 
 #: ../lib/Galette/IO/FileTrait.php:494
-#: ../lib/Galette/Entity/DynamicsTrait.php:306
+#: ../lib/Galette/Entity/DynamicsTrait.php:311
 #, fuzzy, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr "El fitxer és massa gran. La mida màxima permesa és de percentKo"
@@ -2201,6 +2207,231 @@ msgstr "rebut"
 #, fuzzy
 msgid "invoice"
 msgstr "Factura"
+
+#: ../lib/Galette/Features/Replacements.php:117
+#, php-format
+msgid "Label for dynamic field \"%s\""
+msgstr "Etiqueta per al camp dinàmic \"%s\""
+
+#: ../lib/Galette/Features/Replacements.php:118
+#, php-format
+msgid "Input for dynamic field \"%s\""
+msgstr "Entrada per al camp dinàmic \"%s\""
+
+#: ../lib/Galette/Features/Replacements.php:184
+#, fuzzy
+msgid "Your organisation name"
+msgstr "Nom de l'organització"
+
+#: ../lib/Galette/Features/Replacements.php:188
+#, fuzzy
+msgid "Your organisation slogan"
+msgstr "L'eslògan de la vostra organització"
+
+#: ../lib/Galette/Features/Replacements.php:192
+#: ../lib/Galette/Features/Replacements.php:196
+#, fuzzy
+msgid "Your organisation address"
+msgstr "La vostra adreça d'organització"
+
+#: ../lib/Galette/Features/Replacements.php:196
+#, fuzzy
+msgid "with break lines"
+msgstr "amb línies de salt"
+
+#: ../lib/Galette/Features/Replacements.php:200
+#, fuzzy
+msgid "Your organisation website"
+msgstr "Lloc web de la vostra organització"
+
+#: ../lib/Galette/Features/Replacements.php:204
+#, fuzzy
+msgid "Your organisation logo"
+msgstr "Logotip de la vostra organització"
+
+#: ../lib/Galette/Features/Replacements.php:208
+#, fuzzy
+msgid "Current date (Y-m-d)"
+msgstr "Data actual (Y-m-d)"
+
+#: ../lib/Galette/Features/Replacements.php:212
+#, fuzzy
+msgid "Galette's login URI"
+msgstr "URI d'inici de sessió de Galette"
+
+#: ../lib/Galette/Features/Replacements.php:230
+#: ../lib/Galette/Entity/PdfModel.php:420
+#, fuzzy
+msgid "Title"
+msgstr "Títol"
+
+#: ../lib/Galette/Features/Replacements.php:234
+#, fuzzy
+msgid "Member's ID"
+msgstr "ID del membre"
+
+#: ../lib/Galette/Features/Replacements.php:242
+#: ../lib/Galette/Features/Replacements.php:334
+#, fuzzy
+msgid "Last name"
+msgstr "Darrer nom"
+
+#: ../lib/Galette/Features/Replacements.php:246
+#: ../lib/Galette/Features/Replacements.php:338 ../includes/i18n.inc.php:330
+#, fuzzy
+msgid "First name"
+msgstr "Nom"
+
+#: ../lib/Galette/Features/Replacements.php:250
+#, fuzzy
+msgid "Nickname"
+msgstr "Sobrenom"
+
+#: ../lib/Galette/Features/Replacements.php:254
+#, fuzzy
+msgid "Gender"
+msgstr "Gènere"
+
+#: ../lib/Galette/Features/Replacements.php:258
+#, fuzzy
+msgid "Birth date"
+msgstr "Data de naixement"
+
+#: ../lib/Galette/Features/Replacements.php:262
+#, fuzzy
+msgid "Birth place"
+msgstr "Lloc de naixement"
+
+#: ../lib/Galette/Features/Replacements.php:266
+#, fuzzy
+msgid "Profession"
+msgstr "Professió"
+
+#: ../lib/Galette/Features/Replacements.php:270
+#: ../lib/Galette/Features/Replacements.php:330
+#: ../lib/Galette/Filters/MembersList.php:273
+#, fuzzy
+msgid "Company name"
+msgstr "Nom de l'empresa"
+
+#: ../lib/Galette/Features/Replacements.php:274
+#: ../lib/Galette/Filters/MembersList.php:274
+#, fuzzy
+msgid "Address"
+msgstr "Adreça"
+
+#: ../lib/Galette/Features/Replacements.php:278
+#, fuzzy
+msgid "Zipcode"
+msgstr "Zipcode"
+
+#: ../lib/Galette/Features/Replacements.php:282
+#, fuzzy
+msgid "Town"
+msgstr "Ciutat"
+
+#: ../lib/Galette/Features/Replacements.php:286 ../includes/i18n.inc.php:327
+#, fuzzy
+msgid "Country"
+msgstr "País"
+
+#: ../lib/Galette/Features/Replacements.php:306
+#, fuzzy
+msgid "Member's main group"
+msgstr "Grup principal del membre"
+
+#: ../lib/Galette/Features/Replacements.php:310
+#, fuzzy
+msgid "Member's groups (as list)"
+msgstr "Grups de membres (com a llista)"
+
+#: ../lib/Galette/Features/Replacements.php:314
+#, fuzzy
+msgid "Member state of dues"
+msgstr "Membres per estat de les quotes"
+
+#: ../lib/Galette/Features/Replacements.php:318
+#, fuzzy
+msgid "Membership remaining days"
+msgstr "Pertinença dies restants"
+
+#: ../lib/Galette/Features/Replacements.php:322
+#, fuzzy
+msgid "Membership expired since"
+msgstr "La pertinença ha caducat des de"
+
+#: ../lib/Galette/Features/Replacements.php:368
+#, fuzzy
+msgid "Contribution label"
+msgstr "Etiqueta de contribució"
+
+#: ../lib/Galette/Features/Replacements.php:372
+#, fuzzy
+msgid "Amount"
+msgstr "Import"
+
+#: ../lib/Galette/Features/Replacements.php:376
+#, fuzzy
+msgid "Amount (in letters)"
+msgstr "Import (en lletres)"
+
+#: ../lib/Galette/Features/Replacements.php:380
+#, fuzzy
+msgid "Full date"
+msgstr "Data completa"
+
+#: ../lib/Galette/Features/Replacements.php:384
+#, fuzzy
+msgid "Contribution year"
+msgstr "Any de contribució"
+
+#: ../lib/Galette/Features/Replacements.php:388
+msgid "Comment"
+msgstr "Comentari"
+
+#: ../lib/Galette/Features/Replacements.php:392
+#, fuzzy
+msgid "Begin date"
+msgstr "Data d'inici"
+
+#: ../lib/Galette/Features/Replacements.php:396
+#, fuzzy
+msgid "End date"
+msgstr "Data de finalització"
+
+#: ../lib/Galette/Features/Replacements.php:400
+#, fuzzy
+msgid "Contribution id"
+msgstr "ID de contribució"
+
+#: ../lib/Galette/Features/Replacements.php:404
+#, fuzzy
+msgid "Payment type"
+msgstr "Tipus de pagament"
+
+#: ../lib/Galette/Features/Replacements.php:408
+#: ../lib/Galette/Entity/Contribution.php:1047
+#: ../lib/Galette/Entity/Texts.php:626
+#: ../lib/Galette/Entity/PdfContribution.php:89
+#, fuzzy
+msgid "Contribution information"
+msgstr "Informació de contribució"
+
+#: ../lib/Galette/Features/Replacements.php:585
+#: ../lib/Galette/Features/Replacements.php:586
+#, fuzzy
+msgid "None"
+msgstr "Cap"
+
+#: ../lib/Galette/Features/Replacements.php:755
+#, fuzzy
+msgid "Main information"
+msgstr "Informació principal"
+
+#: ../lib/Galette/Features/Replacements.php:760
+#, fuzzy
+msgid "Member information"
+msgstr "Informació del membre"
 
 #: ../lib/Galette/Entity/ListsConfig.php:215
 #, fuzzy
@@ -2318,117 +2549,117 @@ msgstr "Ja no és membre"
 msgid "%days days remaining (ending on %date)"
 msgstr "percentdays days restants (fins al dia d'espera)"
 
-#: ../lib/Galette/Entity/Adherent.php:1212
+#: ../lib/Galette/Entity/Adherent.php:1225
 #, fuzzy
 msgid "- Birthdate must be set in the past!"
 msgstr "- La data de naixement s'ha d'establir en el passat!"
 
-#: ../lib/Galette/Entity/Adherent.php:1220
+#: ../lib/Galette/Entity/Adherent.php:1233
 #, fuzzy
 msgid "- Members must be less than 200 years old (currently %years)!"
 msgstr ""
 "- Els diputats han de tenir menys de 200 anys (actualment, per cent anys)!"
 
-#: ../lib/Galette/Entity/Adherent.php:1241
+#: ../lib/Galette/Entity/Adherent.php:1254
 #: ../lib/Galette/Entity/Transaction.php:301
-#: ../lib/Galette/Entity/DynamicsTrait.php:197
+#: ../lib/Galette/Entity/DynamicsTrait.php:202
 #: ../lib/Galette/Entity/Contribution.php:394
 #: ../lib/Galette/Entity/Contribution.php:1276
 #, php-format
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Format de data incorrecte (%date_format) per %field!"
 
-#: ../lib/Galette/Entity/Adherent.php:1259
+#: ../lib/Galette/Entity/Adherent.php:1272
 #, fuzzy
 msgid "- Non-valid E-Mail address!"
 msgstr "- Adreça de correu electrònic no vàlida!"
 
-#: ../lib/Galette/Entity/Adherent.php:1276
+#: ../lib/Galette/Entity/Adherent.php:1289
 #, fuzzy
 msgid "- This E-Mail address is already used by another member!"
 msgstr ""
 "- Aquesta adreça de correu electrònic ja és utilitzada per un altre membre!"
 
-#: ../lib/Galette/Entity/Adherent.php:1283
-#: ../lib/Galette/Entity/Adherent.php:1331
+#: ../lib/Galette/Entity/Adherent.php:1296
+#: ../lib/Galette/Entity/Adherent.php:1344
 #, fuzzy
 msgid "An error has occurred while looking if login already exists."
 msgstr "S'ha produït un error en cercar si l'inici de sessió ja existeix."
 
-#: ../lib/Galette/Entity/Adherent.php:1291
+#: ../lib/Galette/Entity/Adherent.php:1304
 #, fuzzy
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr "- Adreça de lloc web no vàlida! Potser has omès la http//?"
 
-#: ../lib/Galette/Entity/Adherent.php:1300
+#: ../lib/Galette/Entity/Adherent.php:1313
 #, fuzzy
 msgid "- The username must be composed of at least %i characters!"
 msgstr ""
 "- El nom d'usuari ha d'estar compost d'almenys caràcters de l'u per cent!"
 
-#: ../lib/Galette/Entity/Adherent.php:1305
+#: ../lib/Galette/Entity/Adherent.php:1318
 #, fuzzy
 msgid "- The username cannot contain the @ character"
 msgstr "- El nom d'usuari no pot contenir el caràcter @"
 
-#: ../lib/Galette/Entity/Adherent.php:1324
+#: ../lib/Galette/Entity/Adherent.php:1337
 #, fuzzy
 msgid "- This username is already in use, please choose another one!"
 msgstr "- Aquest nom d'usuari ja està en ús trieu-ne un altre!"
 
-#: ../lib/Galette/Entity/Adherent.php:1347
+#: ../lib/Galette/Entity/Adherent.php:1360
 #, fuzzy
 msgid "Password misrepeated: "
 msgstr "Contrasenya repetida erròniament "
 
-#: ../lib/Galette/Entity/Adherent.php:1381
+#: ../lib/Galette/Entity/Adherent.php:1394
 msgid "Status #%id does not exists in database."
 msgstr "Estatus #%id no existeix a la base de dades."
 
-#: ../lib/Galette/Entity/Adherent.php:1390
+#: ../lib/Galette/Entity/Adherent.php:1403
 #, fuzzy
 msgid "An error has occurred while looking if status does exists."
 msgstr "S'ha produït un error en cercar si l'estat existeix."
 
-#: ../lib/Galette/Entity/Adherent.php:1397
+#: ../lib/Galette/Entity/Adherent.php:1410
 msgid "Gender %gender does not exists!"
 msgstr "El gènere %gender no existeix!"
 
-#: ../lib/Galette/Entity/Adherent.php:1502
+#: ../lib/Galette/Entity/Adherent.php:1514
 #, fuzzy
 msgid "Self_subscription as a member: "
 msgstr "Autodestinació com a membre"
 
-#: ../lib/Galette/Entity/Adherent.php:1508
+#: ../lib/Galette/Entity/Adherent.php:1520
 #, fuzzy
 msgid "Member card added"
 msgstr "Targeta de soci afegida"
 
-#: ../lib/Galette/Entity/Adherent.php:1516
+#: ../lib/Galette/Entity/Adherent.php:1528
 #, fuzzy
 msgid "Fail to add new member."
 msgstr "No s'ha pogut afegir un membre nou."
 
-#: ../lib/Galette/Entity/Adherent.php:1548
+#: ../lib/Galette/Entity/Adherent.php:1560
 #, fuzzy
 msgid "Member card updated"
 msgstr "Targeta de soci actualitzada"
 
-#: ../lib/Galette/Entity/Adherent.php:1657
+#: ../lib/Galette/Entity/Adherent.php:1669
 #, fuzzy
 msgid "Active"
 msgstr "Actiu"
 
-#: ../lib/Galette/Entity/Adherent.php:1657
+#: ../lib/Galette/Entity/Adherent.php:1669
 #, fuzzy
 msgid "Inactive"
 msgstr "Inactiu"
 
-#: ../lib/Galette/Entity/Adherent.php:1885
+#: ../lib/Galette/Entity/Adherent.php:1897
 msgid " (%age years old)"
 msgstr " (edat de %age anys)"
 
-#: ../lib/Galette/Entity/Adherent.php:1958
+#: ../lib/Galette/Entity/Adherent.php:1970
 msgid "Duplicated from %name (%id)"
 msgstr "Duplicat des del nom %name (%id)"
 
@@ -2498,7 +2729,7 @@ msgstr "Transacció actualitzada"
 msgid "contribution type"
 msgstr "tipus de contribució"
 
-#: ../lib/Galette/Entity/DynamicsTrait.php:155
+#: ../lib/Galette/Entity/DynamicsTrait.php:158
 #, fuzzy, php-format
 msgid "Missing required field %field"
 msgstr "Falta el camp obligatori del percentatge"
@@ -2578,12 +2809,6 @@ msgstr "No s'ha pogut afegir una contribució nova."
 msgid "Contribution updated"
 msgstr "Contribució actualitzada"
 
-#: ../lib/Galette/Entity/Contribution.php:1047
-#: ../lib/Galette/Entity/PdfContribution.php:198
-#, fuzzy
-msgid "Contribution information"
-msgstr "Informació de contribució"
-
 #: ../lib/Galette/Entity/Contribution.php:1049
 #, fuzzy
 msgid "Script output"
@@ -2613,181 +2838,70 @@ msgstr "No es pot suprimir aquesta etiqueta encara s'utilitza"
 msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr "No podeu suprimir títols de Sr. o Sra.!"
 
-#: ../lib/Galette/Entity/PdfModel.php:322
+#: ../lib/Galette/Entity/Texts.php:119
+#, fuzzy
+msgid "Insert a carriage return"
+msgstr "Insereix un retorn de carro"
+
+#: ../lib/Galette/Entity/Texts.php:123
+#, fuzzy
+msgid "Insert a new blank line"
+msgstr "Insereix una línia en blanc nova"
+
+#: ../lib/Galette/Entity/Texts.php:127
+#, fuzzy
+msgid "Link validity"
+msgstr "Validació de l'enllaç"
+
+#: ../lib/Galette/Entity/Texts.php:132
+#, fuzzy
+msgid "Direct link for member card download"
+msgstr "Enllaç directe per a la descàrrega de targetes de soci"
+
+#: ../lib/Galette/Entity/Texts.php:137
+#, fuzzy
+msgid "Direct link for invoice/receipt download"
+msgstr "Enllaç directe per a la baixada de la factura/receptor"
+
+#: ../lib/Galette/Entity/Texts.php:142
+#, fuzzy
+msgid "Galette's change password URI"
+msgstr "URI de canvi de contrasenya de Galette"
+
+#: ../lib/Galette/Entity/Texts.php:633
+#, fuzzy
+msgid "Mail specific"
+msgstr "Paràmetres del correu"
+
+#: ../lib/Galette/Entity/PdfModel.php:293
 #, fuzzy, php-format
 msgid "%field should be less than %chars characters long."
 msgstr "Percentfield ha de tenir menys de 100 caràcters."
 
-#: ../lib/Galette/Entity/PdfModel.php:332
+#: ../lib/Galette/Entity/PdfModel.php:303
 #, fuzzy, php-format
 msgid "%field should not be empty!"
 msgstr "El percentatge no ha de quedar buit!"
 
-#: ../lib/Galette/Entity/PdfModel.php:363
-#, php-format
-msgid "Label for dynamic field \"%s\""
-msgstr "Etiqueta per al camp dinàmic \"%s\""
-
-#: ../lib/Galette/Entity/PdfModel.php:364
-#, php-format
-msgid "Input for dynamic field \"%s\""
-msgstr "Entrada per al camp dinàmic \"%s\""
-
-#: ../lib/Galette/Entity/PdfModel.php:545
+#: ../lib/Galette/Entity/PdfModel.php:404
 #, fuzzy
 msgid "Unknown type %type!"
 msgstr "Tipus desconegut!"
 
-#: ../lib/Galette/Entity/PdfModel.php:561
-#: ../lib/Galette/Entity/PdfModel.php:652
-#, fuzzy
-msgid "Title"
-msgstr "Títol"
-
-#: ../lib/Galette/Entity/PdfModel.php:563
+#: ../lib/Galette/Entity/PdfModel.php:422
 #, fuzzy
 msgid "Subtitle"
 msgstr "Subtítol"
 
-#: ../lib/Galette/Entity/PdfModel.php:578
+#: ../lib/Galette/Entity/PdfModel.php:437
 #, fuzzy
 msgid "header and footer should not be empty!"
 msgstr "la capçalera i el peu de pàgina no han d'estar buits!"
 
-#: ../lib/Galette/Entity/PdfModel.php:582
+#: ../lib/Galette/Entity/PdfModel.php:441
 #, fuzzy
 msgid "body should not be empty!"
 msgstr "el cos no hauria d'estar buit!"
-
-#: ../lib/Galette/Entity/PdfModel.php:610
-#, fuzzy
-msgid "Your organisation name"
-msgstr "Nom de l'organització"
-
-#: ../lib/Galette/Entity/PdfModel.php:614
-#, fuzzy
-msgid "Your organisation slogan"
-msgstr "L'eslògan de la vostra organització"
-
-#: ../lib/Galette/Entity/PdfModel.php:618
-#: ../lib/Galette/Entity/PdfModel.php:622
-#, fuzzy
-msgid "Your organisation address"
-msgstr "La vostra adreça d'organització"
-
-#: ../lib/Galette/Entity/PdfModel.php:622
-#, fuzzy
-msgid "with break lines"
-msgstr "amb línies de salt"
-
-#: ../lib/Galette/Entity/PdfModel.php:626
-#, fuzzy
-msgid "Your organisation website"
-msgstr "Lloc web de la vostra organització"
-
-#: ../lib/Galette/Entity/PdfModel.php:630
-#, fuzzy
-msgid "Your organisation logo"
-msgstr "Logotip de la vostra organització"
-
-#: ../lib/Galette/Entity/PdfModel.php:634
-#, fuzzy
-msgid "Current date (Y-m-d)"
-msgstr "Data actual (Y-m-d)"
-
-#: ../lib/Galette/Entity/PdfModel.php:656
-#, fuzzy
-msgid "Member's ID"
-msgstr "ID del membre"
-
-#: ../lib/Galette/Entity/PdfModel.php:664
-#, fuzzy
-msgid "Last name"
-msgstr "Darrer nom"
-
-#: ../lib/Galette/Entity/PdfModel.php:668 ../includes/i18n.inc.php:330
-#, fuzzy
-msgid "First name"
-msgstr "Nom"
-
-#: ../lib/Galette/Entity/PdfModel.php:672
-#, fuzzy
-msgid "Nickname"
-msgstr "Sobrenom"
-
-#: ../lib/Galette/Entity/PdfModel.php:676
-#, fuzzy
-msgid "Gender"
-msgstr "Gènere"
-
-#: ../lib/Galette/Entity/PdfModel.php:680
-#, fuzzy
-msgid "Birth date"
-msgstr "Data de naixement"
-
-#: ../lib/Galette/Entity/PdfModel.php:684
-#, fuzzy
-msgid "Birth place"
-msgstr "Lloc de naixement"
-
-#: ../lib/Galette/Entity/PdfModel.php:688
-#, fuzzy
-msgid "Profession"
-msgstr "Professió"
-
-#: ../lib/Galette/Entity/PdfModel.php:692
-#: ../lib/Galette/Entity/PdfModel.php:739
-#: ../lib/Galette/Filters/MembersList.php:273
-#, fuzzy
-msgid "Company name"
-msgstr "Nom de l'empresa"
-
-#: ../lib/Galette/Entity/PdfModel.php:696
-#: ../lib/Galette/Filters/MembersList.php:274
-#, fuzzy
-msgid "Address"
-msgstr "Adreça"
-
-#: ../lib/Galette/Entity/PdfModel.php:700
-#, fuzzy
-msgid "Zipcode"
-msgstr "Zipcode"
-
-#: ../lib/Galette/Entity/PdfModel.php:704
-#, fuzzy
-msgid "Town"
-msgstr "Ciutat"
-
-#: ../lib/Galette/Entity/PdfModel.php:708 ../includes/i18n.inc.php:327
-#, fuzzy
-msgid "Country"
-msgstr "País"
-
-#: ../lib/Galette/Entity/PdfModel.php:728
-#, fuzzy
-msgid "Member's main group"
-msgstr "Grup principal del membre"
-
-#: ../lib/Galette/Entity/PdfModel.php:732
-#, fuzzy
-msgid "Member's groups (as list)"
-msgstr "Grups de membres (com a llista)"
-
-#: ../lib/Galette/Entity/PdfModel.php:772
-#: ../lib/Galette/Entity/PdfModel.php:773
-#, fuzzy
-msgid "None"
-msgstr "Cap"
-
-#: ../lib/Galette/Entity/PdfModel.php:925
-#, fuzzy
-msgid "Main information"
-msgstr "Informació principal"
-
-#: ../lib/Galette/Entity/PdfModel.php:930
-#, fuzzy
-msgid "Member information"
-msgstr "Informació del membre"
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 #, fuzzy
@@ -2879,55 +2993,6 @@ msgstr "Grup actualitzat"
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr "El grup `%1$s` no es pot establir com a pare!"
 
-#: ../lib/Galette/Entity/PdfContribution.php:90
-#, fuzzy
-msgid "Contribution label"
-msgstr "Etiqueta de contribució"
-
-#: ../lib/Galette/Entity/PdfContribution.php:94
-#, fuzzy
-msgid "Amount"
-msgstr "Import"
-
-#: ../lib/Galette/Entity/PdfContribution.php:98
-#, fuzzy
-msgid "Amount (in letters)"
-msgstr "Import (en lletres)"
-
-#: ../lib/Galette/Entity/PdfContribution.php:102
-#, fuzzy
-msgid "Full date"
-msgstr "Data completa"
-
-#: ../lib/Galette/Entity/PdfContribution.php:106
-#, fuzzy
-msgid "Contribution year"
-msgstr "Any de contribució"
-
-#: ../lib/Galette/Entity/PdfContribution.php:110
-msgid "Comment"
-msgstr "Comentari"
-
-#: ../lib/Galette/Entity/PdfContribution.php:114
-#, fuzzy
-msgid "Begin date"
-msgstr "Data d'inici"
-
-#: ../lib/Galette/Entity/PdfContribution.php:118
-#, fuzzy
-msgid "End date"
-msgstr "Data de finalització"
-
-#: ../lib/Galette/Entity/PdfContribution.php:122
-#, fuzzy
-msgid "Contribution id"
-msgstr "ID de contribució"
-
-#: ../lib/Galette/Entity/PdfContribution.php:126
-#, fuzzy
-msgid "Payment type"
-msgstr "Tipus de pagament"
-
 #: ../lib/Galette/Middleware/CheckAcls.php:130
 #: ../lib/Galette/Middleware/CheckAcls.php:177
 msgid "Route '%name' is not registered in ACLs!"
@@ -2977,8 +3042,8 @@ msgstr ""
 "Si us plau executeu instal·la o actualitza el procediment (verifiqueu la "
 "documentació)"
 
-#: ../lib/Galette/Events/ContribListener.php:206
-#: ../lib/Galette/Events/MemberListener.php:217
+#: ../lib/Galette/Events/ContribListener.php:162
+#: ../lib/Galette/Events/MemberListener.php:188
 #, fuzzy
 msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
@@ -2987,8 +3052,8 @@ msgstr ""
 "Heu demanat a Galette que enviï un correu electrònic de confirmació al "
 "membre però el correu electrònic ha estat desactivat a les preferències."
 
-#: ../lib/Galette/Events/ContribListener.php:221
-#: ../lib/Galette/Events/MemberListener.php:228
+#: ../lib/Galette/Events/ContribListener.php:177
+#: ../lib/Galette/Events/MemberListener.php:199
 #, fuzzy
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
@@ -2996,22 +3061,22 @@ msgstr ""
 "- No pots enviar una confirmació per correu electrònic si el membre no té "
 "una adreça!"
 
-#: ../lib/Galette/Events/ContribListener.php:281
+#: ../lib/Galette/Events/ContribListener.php:235
 msgid "Email sent to user %name (%email)"
 msgstr "S'ha enviat un correu electrònic al usuari %name (%email)"
 
-#: ../lib/Galette/Events/ContribListener.php:288
+#: ../lib/Galette/Events/ContribListener.php:242
 msgid ""
 "A problem happened while sending contribution receipt to user %name (%email)"
 msgstr ""
 "S'ha produït un problema en enviar el rebut de contribució del usuari %name "
 "(%email)"
 
-#: ../lib/Galette/Events/ContribListener.php:351
+#: ../lib/Galette/Events/ContribListener.php:307
 msgid "Email sent to admin for user %name (%email)"
 msgstr "Correu electrònic enviat a l'administrador pel usuari %name (%email)"
 
-#: ../lib/Galette/Events/ContribListener.php:358
+#: ../lib/Galette/Events/ContribListener.php:314
 msgid ""
 "A problem happened while sending to admin notification for user %name "
 "(%email) contribution"
@@ -3019,62 +3084,62 @@ msgstr ""
 "S'ha produït un problema mentre s'enviava una notificació d'administrador "
 "per a la contribució del usuari %name (%email)"
 
-#: ../lib/Galette/Events/ContribListener.php:387
+#: ../lib/Galette/Events/ContribListener.php:343
 #, fuzzy
 msgid "Post contribution script failed"
 msgstr "Ha fallat l'script de contribució posterior"
 
-#: ../lib/Galette/Events/ContribListener.php:396
+#: ../lib/Galette/Events/ContribListener.php:352
 #, fuzzy
 msgid "The configured post contribution script has failed."
 msgstr "Ha fallat l'script de contribució de publicació configurat."
 
-#: ../lib/Galette/Events/ContribListener.php:397
+#: ../lib/Galette/Events/ContribListener.php:353
 #, fuzzy
 msgid "You can find contribution information and script output below."
 msgstr ""
 "A continuació podeu trobar informació de contribució i sortida de script."
 
-#: ../lib/Galette/Events/ContribListener.php:405
+#: ../lib/Galette/Events/ContribListener.php:361
 #, fuzzy
 msgid "Post contribution script has failed."
 msgstr "L'script de contribució posterior ha fallat."
 
-#: ../lib/Galette/Events/MemberListener.php:288
+#: ../lib/Galette/Events/MemberListener.php:254
 #, php-format
 msgid "New account email sent to '%s'."
 msgstr "Nou correu electrònic de compte enviat a '%s'."
 
-#: ../lib/Galette/Events/MemberListener.php:288
+#: ../lib/Galette/Events/MemberListener.php:254
 #, php-format
 msgid "Account modification email sent to '%s'."
 msgstr "Correu electrònic de modificació del compte enviat a '%s'."
 
-#: ../lib/Galette/Events/MemberListener.php:296
+#: ../lib/Galette/Events/MemberListener.php:262
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
 "S'ha produït un problema en enviar el correu electrònic del compte a '%s'"
 
-#: ../lib/Galette/Events/MemberListener.php:357
+#: ../lib/Galette/Events/MemberListener.php:322
 #, php-format
 msgid "New account email sent to admin for '%s'."
 msgstr "Nou correu electrònic de compte enviat a l'administrador per «%s»."
 
-#: ../lib/Galette/Events/MemberListener.php:358
+#: ../lib/Galette/Events/MemberListener.php:323
 #, fuzzy
 msgid "Account modification email sent to admin."
 msgstr ""
 "S'ha enviat un correu electrònic de modificació del compte a l'administrador."
 
-#: ../lib/Galette/Events/MemberListener.php:370
+#: ../lib/Galette/Events/MemberListener.php:335
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
 "S'ha produït un problema mentre s'enviava un correu electrònic a "
 "l'administrador per al compte '%s'."
 
-#: ../lib/Galette/Events/MemberListener.php:371
+#: ../lib/Galette/Events/MemberListener.php:336
 #, fuzzy
 msgid "A problem happened while sending account email to admin"
 msgstr ""
@@ -3818,7 +3883,7 @@ msgstr "[{ASSONAME}] La vostra contribució"
 msgid ""
 "Hello,{NEWLINE}Your contribution has successfully been taken into account by "
 "{ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login "
-"and browse or modify your personnal data using your galette identifiers at "
+"and browse or modify your personal data using your galette identifiers at "
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
@@ -3844,7 +3909,7 @@ msgstr "[{ASSONAME}] Registre nou des de {NAMEADH}"
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has been registered with the "
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
-"mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
+"mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
 msgstr ""
 "Hola administrador {NEWLINE}S'ha registrat un nou membre amb la següent "
 "informació {BR}* Nom {NAMEADH}{BR}* Inici de sessió {LOGIN}{BR}* E-mail "
@@ -3884,7 +3949,7 @@ msgstr "[{ASSONAME}] Registre automàtic nou des de {NAMEADH}"
 #: ../includes/fields_defs/texts_fields.php:81
 #, fuzzy
 msgid ""
-"Hello dear Administrator,{NEWLINE}A new member has self registred on line "
+"Hello dear Administrator,{NEWLINE}A new member has self registered on line "
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
@@ -4651,7 +4716,7 @@ msgid "Go"
 msgstr "Vés"
 
 #: ../templates/default/gestion_pdf.tpl:23
-#: ../templates/default/gestion_textes.tpl:156
+#: ../templates/default/gestion_textes.tpl:84
 #, fuzzy
 msgid "Show existing variables"
 msgstr "Mostra les variables existents"
@@ -4766,7 +4831,6 @@ msgid "Go to Galette's dashboard"
 msgstr "Vés al tauler de Galette"
 
 #: ../templates/default/page.tpl:38 ../templates/default/desktop.tpl:30
-#: ../templates/default/desktop.tpl:46
 #, fuzzy
 msgid "View, search into and filter member's list"
 msgstr "Visualitza cerca i filtra la llista de membres"
@@ -4891,7 +4955,7 @@ msgstr "Importa els membres des de fitxers CSV"
 msgid "Various charts"
 msgstr "Diversos diagrames"
 
-#: ../templates/default/page.tpl:57
+#: ../templates/default/page.tpl:57 ../templates/default/desktop.tpl:47
 #, fuzzy
 msgid "View and filter all my contributions"
 msgstr "Visualitza i filtra totes les meves contribucions"
@@ -4901,17 +4965,17 @@ msgstr "Visualitza i filtra totes les meves contribucions"
 msgid "My contributions"
 msgstr "Les meves contribucions"
 
-#: ../templates/default/page.tpl:58
+#: ../templates/default/page.tpl:58 ../templates/default/desktop.tpl:48
 #, fuzzy
 msgid "View and filter all my transactions"
 msgstr "Visualitza i filtra totes les meves transaccions"
 
-#: ../templates/default/page.tpl:58
+#: ../templates/default/page.tpl:58 ../templates/default/desktop.tpl:48
 #, fuzzy
 msgid "My transactions"
 msgstr "Les meves transaccions"
 
-#: ../templates/default/page.tpl:61
+#: ../templates/default/page.tpl:61 ../templates/default/desktop.tpl:46
 #, fuzzy
 msgid "View my member card"
 msgstr "Visualitza la meva targeta de membre"
@@ -5046,7 +5110,7 @@ msgstr ""
 "o cancel·lar-ho."
 
 #: ../templates/default/page.tpl:142
-#: ../templates/default/gestion_adherents.tpl:473
+#: ../templates/default/gestion_adherents.tpl:475
 #, fuzzy
 msgid "Existing mailing"
 msgstr "Correu existent"
@@ -5085,8 +5149,8 @@ msgstr "Seguretat"
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:213
-#: ../templates/default/gestion_adherents.tpl:418
-#: ../templates/default/gestion_adherents.tpl:419
+#: ../templates/default/gestion_adherents.tpl:420
+#: ../templates/default/gestion_adherents.tpl:421
 msgid "Admin"
 msgstr ""
 
@@ -5418,8 +5482,8 @@ msgstr ""
 "Introduïu un URI de script que es cridarà després d'afegir una nova "
 "contribució. L'URI de l'script<br>ha de ser prefixat per un de «<em> "
 "galette://</em>' per a la crida interna de Galette». «<em> file://</em>' per "
-"a una crida directa<em>get://</em>' o<em>post://</em>' per a trucades HTTP ("
-"el prefix serà reemplaçat per http:// en aquests casos)."
+"a una crida directa<em>get://</em>' o<em>post://</em>' per a trucades HTTP "
+"(el prefix serà reemplaçat per http:// en aquests casos)."
 
 #: ../templates/default/preferences.tpl:233
 #, fuzzy
@@ -6076,7 +6140,7 @@ msgid "An error occurred sending test email :("
 msgstr "S'ha produït un error en enviar el correu electrònic de prova ("
 
 #: ../templates/default/display_dynamic_fields.tpl:3
-#: ../templates/default/edit_dynamic_fields.tpl:67
+#: ../templates/default/edit_dynamic_fields.tpl:82
 #, fuzzy
 msgid "Additionnal fields:"
 msgstr "Camps addicionals"
@@ -6242,7 +6306,7 @@ msgstr "Durada"
 
 #: ../templates/default/gestion_contributions.tpl:154
 #: ../templates/default/gestion_adherents.tpl:157
-#: ../templates/default/gestion_adherents.tpl:377
+#: ../templates/default/gestion_adherents.tpl:379
 #: ../templates/default/saved_searches.tpl:12
 #: ../templates/default/configurer_fiche_content.tpl:9
 #: ../templates/default/gestion_intitule_content.tpl:16
@@ -6293,7 +6357,7 @@ msgstr "sense contribució"
 
 #: ../templates/default/gestion_contributions.tpl:271
 #: ../templates/default/gestion_mailings.tpl:170
-#: ../templates/default/gestion_adherents.tpl:293
+#: ../templates/default/gestion_adherents.tpl:295
 #: ../templates/default/history.tpl:145
 #: ../templates/default/liste_membres.tpl:87
 #: ../templates/default/ajax_members.tpl:16
@@ -6304,13 +6368,13 @@ msgid "Pages:"
 msgstr "Pàgines"
 
 #: ../templates/default/gestion_contributions.tpl:276
-#: ../templates/default/gestion_adherents.tpl:297
+#: ../templates/default/gestion_adherents.tpl:299
 #, fuzzy
 msgid "For the selection:"
 msgstr "Per a la selecció"
 
 #: ../templates/default/gestion_contributions.tpl:279
-#: ../templates/default/gestion_adherents.tpl:301
+#: ../templates/default/gestion_adherents.tpl:303
 #: ../templates/default/group.tpl:81
 #, fuzzy
 msgid "Delete"
@@ -6318,8 +6382,8 @@ msgstr "Suprimeix"
 
 #: ../templates/default/gestion_contributions.tpl:286
 #: ../templates/default/gestion_contributions.tpl:287
-#: ../templates/default/gestion_adherents.tpl:349
-#: ../templates/default/gestion_adherents.tpl:350
+#: ../templates/default/gestion_adherents.tpl:351
+#: ../templates/default/gestion_adherents.tpl:352
 #: ../templates/default/gestion_transactions.tpl:152
 #: ../templates/default/gestion_transactions.tpl:153
 #, fuzzy
@@ -6327,14 +6391,14 @@ msgid "Legend"
 msgstr "Llegenda"
 
 #: ../templates/default/gestion_contributions.tpl:294
-#: ../templates/default/gestion_adherents.tpl:383
+#: ../templates/default/gestion_adherents.tpl:385
 #: ../templates/default/voir_adherent.tpl:61
 #, fuzzy
 msgid "Modification"
 msgstr "Modificació"
 
 #: ../templates/default/gestion_contributions.tpl:300
-#: ../templates/default/gestion_adherents.tpl:393
+#: ../templates/default/gestion_adherents.tpl:395
 #, fuzzy
 msgid "Deletion"
 msgstr "Supressió"
@@ -6363,30 +6427,30 @@ msgstr ""
 "Assegureu-vos de seleccionar almenys una contribució de la llista per a "
 "realitzar aquesta acció."
 
-#: ../templates/default/gestion_contributions.tpl:338
-#: ../templates/default/gestion_adherents.tpl:456
+#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_adherents.tpl:458
 #, fuzzy
 msgid "(Un)Check all"
 msgstr "(Des)Comprova-ho tot"
 
-#: ../templates/default/gestion_contributions.tpl:338
-#: ../templates/default/gestion_adherents.tpl:456
+#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_adherents.tpl:458
 #, fuzzy
 msgid "Invert selection"
 msgstr "Inverteix la selecció"
 
-#: ../templates/default/gestion_contributions.tpl:338
-#: ../templates/default/gestion_adherents.tpl:456
+#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_adherents.tpl:458
 #: ../templates/default/gestion_transactions.tpl:170
 #: ../templates/default/gestion_transactions.tpl:174
 #, fuzzy
 msgid "Show legend"
 msgstr "Mostra la llegenda"
 
-#: ../templates/default/gestion_contributions.tpl:349
+#: ../templates/default/gestion_contributions.tpl:351
 #: ../templates/default/gestion_mailings.tpl:192
-#: ../templates/default/edit_dynamic_fields.tpl:185
-#: ../templates/default/gestion_adherents.tpl:715
+#: ../templates/default/edit_dynamic_fields.tpl:200
+#: ../templates/default/gestion_adherents.tpl:717
 #: ../templates/default/history.tpl:166
 #: ../templates/default/ajouter_transaction.tpl:253
 #: ../templates/default/ajouter_contribution.tpl:198
@@ -6577,12 +6641,12 @@ msgstr "Amaga aquest plafó"
 msgid "Activities"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:56
+#: ../templates/default/desktop.tpl:57
 #, fuzzy
 msgid "News"
 msgstr "Notícies"
 
-#: ../templates/default/desktop.tpl:69
+#: ../templates/default/desktop.tpl:70
 #, fuzzy
 msgid "Show dashboard on login"
 msgstr "Mostra el tauler d'inici de sessió"
@@ -6673,7 +6737,8 @@ msgstr "Identificador de correu electrònic"
 #: ../templates/default/gestion_mailings.tpl:146
 #, php-format
 msgid "Display mailing '%subject' details in preview window"
-msgstr "Mostra els detalls «%subject» del mailing a la finestra de vista prèvia"
+msgstr ""
+"Mostra els detalls «%subject» del mailing a la finestra de vista prèvia"
 
 #: ../templates/default/gestion_mailings.tpl:153
 #, php-format
@@ -6734,116 +6799,6 @@ msgstr "Cos del correu electrònic"
 msgid "Existing variables"
 msgstr "Variables existents"
 
-#: ../templates/default/gestion_textes.tpl:52
-#, fuzzy
-msgid "Globally available"
-msgstr "Globalment disponible"
-
-#: ../templates/default/gestion_textes.tpl:63
-#, fuzzy
-msgid "Galette's login URI"
-msgstr "URI d'inici de sessió de Galette"
-
-#: ../templates/default/gestion_textes.tpl:69
-#, fuzzy
-msgid "Insert a carriage return"
-msgstr "Insereix un retorn de carro"
-
-#: ../templates/default/gestion_textes.tpl:71
-#, fuzzy
-msgid "Insert a new blank line"
-msgstr "Insereix una línia en blanc nova"
-
-#: ../templates/default/gestion_textes.tpl:75
-#, fuzzy
-msgid "Available with reservations"
-msgstr "Disponible amb reserves"
-
-#: ../templates/default/gestion_textes.tpl:80
-#, fuzzy
-msgid "Member's first and last name"
-msgstr "primer i últim nom del membre"
-
-#: ../templates/default/gestion_textes.tpl:82
-#, fuzzy
-msgid "Member's email address"
-msgstr "Adreça de correu electrònic del membre"
-
-#: ../templates/default/gestion_textes.tpl:86
-#, fuzzy
-msgid "Member's last name"
-msgstr "cognom"
-
-#: ../templates/default/gestion_textes.tpl:88
-#, fuzzy
-msgid "Member's first name"
-msgstr "nom del membre"
-
-#: ../templates/default/gestion_textes.tpl:94
-#, fuzzy
-msgid "Member's login"
-msgstr "Inici de sessió del membre"
-
-#: ../templates/default/gestion_textes.tpl:98
-#, fuzzy
-msgid "Available only for new password request"
-msgstr "Disponible només per a la petició de contrasenya nova"
-
-#: ../templates/default/gestion_textes.tpl:103
-#, fuzzy
-msgid "Galette's change password URI"
-msgstr "URI de canvi de contrasenya de Galette"
-
-#: ../templates/default/gestion_textes.tpl:105
-#, fuzzy
-msgid "Link validity"
-msgstr "Validació de l'enllaç"
-
-#: ../templates/default/gestion_textes.tpl:109
-#, fuzzy
-msgid "Available only for new contributions"
-msgstr "Disponible només per a contribucions noves"
-
-#: ../templates/default/gestion_textes.tpl:114
-#, fuzzy
-msgid "Member's deadline"
-msgstr "Data límit del membre"
-
-#: ../templates/default/gestion_textes.tpl:120
-#, fuzzy
-msgid "Contribution amount"
-msgstr "Quantitat de contribució"
-
-#: ../templates/default/gestion_textes.tpl:122
-#, fuzzy
-msgid "Contribution type"
-msgstr "Tipus de contribució"
-
-#: ../templates/default/gestion_textes.tpl:126
-#, fuzzy
-msgid "Direct link for member card download"
-msgstr "Enllaç directe per a la descàrrega de targetes de soci"
-
-#: ../templates/default/gestion_textes.tpl:128
-#, fuzzy
-msgid "Direct link for invoice/receipt download"
-msgstr "Enllaç directe per a la baixada de la factura/receptor"
-
-#: ../templates/default/gestion_textes.tpl:132
-#, fuzzy
-msgid "Available only for reminders"
-msgstr "Disponible només per a recordatoris"
-
-#: ../templates/default/gestion_textes.tpl:137
-#, fuzzy
-msgid "Membership remaining days"
-msgstr "Pertinença dies restants"
-
-#: ../templates/default/gestion_textes.tpl:139
-#, fuzzy
-msgid "Membership expired since"
-msgstr "La pertinença ha caducat des de"
-
 #: ../templates/default/import_model.tpl:6
 #, fuzzy
 msgid "Current model"
@@ -6865,42 +6820,47 @@ msgid "Model parameted on %date"
 msgstr "Model parat el dia u per cent"
 
 #: ../templates/default/import_model.tpl:20
-#: ../templates/default/import_model.tpl:54
+#: ../templates/default/import_model.tpl:58
 #, fuzzy
 msgid "Field"
 msgstr "Camp"
 
-#: ../templates/default/import_model.tpl:33
+#: ../templates/default/import_model.tpl:27
+#, fuzzy, php-format
+msgid "Missing field '%field'"
+msgstr "Falta el camp obligatori del percentatge"
+
+#: ../templates/default/import_model.tpl:37
 #, fuzzy
 msgid "Generate empty CSV file"
 msgstr "Genera un fitxer CSV buit"
 
-#: ../templates/default/import_model.tpl:40
+#: ../templates/default/import_model.tpl:44
 #, fuzzy
 msgid "Remove model and back to defaults"
 msgstr "Elimina el model i torna als valors predeterminats"
 
-#: ../templates/default/import_model.tpl:43
+#: ../templates/default/import_model.tpl:47
 #, fuzzy
 msgid "Remove model"
 msgstr "Elimina el model"
 
-#: ../templates/default/import_model.tpl:72
+#: ../templates/default/import_model.tpl:76
 #, fuzzy
 msgid "Store new model"
 msgstr "Desa un model nou"
 
-#: ../templates/default/import_model.tpl:84
+#: ../templates/default/import_model.tpl:88
 #, fuzzy
 msgid "Go back to import page"
 msgstr "Torna a la pàgina d'importació"
 
-#: ../templates/default/import_model.tpl:97
+#: ../templates/default/import_model.tpl:101
 #, fuzzy
 msgid "No field selected"
 msgstr "No s'ha seleccionat cap camp"
 
-#: ../templates/default/import_model.tpl:97
+#: ../templates/default/import_model.tpl:101
 #, fuzzy
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
@@ -6914,33 +6874,33 @@ msgstr ""
 msgid "Select an option"
 msgstr "Seleccioneu una opció"
 
-#: ../templates/default/edit_dynamic_fields.tpl:53
+#: ../templates/default/edit_dynamic_fields.tpl:54
 #, fuzzy
 msgid "new"
 msgstr "nou"
 
-#: ../templates/default/edit_dynamic_fields.tpl:57
+#: ../templates/default/edit_dynamic_fields.tpl:64
 #, fuzzy
 msgid "current"
 msgstr "actual"
 
-#: ../templates/default/edit_dynamic_fields.tpl:60
+#: ../templates/default/edit_dynamic_fields.tpl:69
 #, fuzzy
 msgid "delete"
 msgstr "suprimeix"
 
-#: ../templates/default/edit_dynamic_fields.tpl:101
+#: ../templates/default/edit_dynamic_fields.tpl:116
 #, fuzzy
 msgid "Enter as many occurences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
-#: ../templates/default/edit_dynamic_fields.tpl:109
-#: ../templates/default/edit_dynamic_fields.tpl:148
+#: ../templates/default/edit_dynamic_fields.tpl:124
+#: ../templates/default/edit_dynamic_fields.tpl:163
 #, fuzzy, php-format
 msgid "Enter up to %count more occurences."
 msgstr "Introduïu fins a un percentatge més d'aparició."
 
-#: ../templates/default/edit_dynamic_fields.tpl:118
+#: ../templates/default/edit_dynamic_fields.tpl:133
 #, fuzzy
 msgid "New occurence"
 msgstr "Nova aparició"
@@ -7087,117 +7047,117 @@ msgid "Mbr num"
 msgstr "Número Mbr"
 
 #: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_adherents.tpl:414
-#: ../templates/default/gestion_adherents.tpl:415
+#: ../templates/default/gestion_adherents.tpl:416
+#: ../templates/default/gestion_adherents.tpl:417
 #, fuzzy
 msgid "Is a company"
 msgstr "És una empresa"
 
 #: ../templates/default/gestion_adherents.tpl:184
-#: ../templates/default/gestion_adherents.tpl:408
-#: ../templates/default/gestion_adherents.tpl:409
+#: ../templates/default/gestion_adherents.tpl:410
+#: ../templates/default/gestion_adherents.tpl:411
 #, fuzzy
 msgid "Is a man"
 msgstr "És un home"
 
 #: ../templates/default/gestion_adherents.tpl:189
-#: ../templates/default/gestion_adherents.tpl:410
-#: ../templates/default/gestion_adherents.tpl:411
+#: ../templates/default/gestion_adherents.tpl:412
+#: ../templates/default/gestion_adherents.tpl:413
 #, fuzzy
 msgid "Is a woman"
 msgstr "És una dona"
 
 #: ../templates/default/gestion_adherents.tpl:197
-#: ../templates/default/gestion_adherents.tpl:312
-#: ../templates/default/gestion_adherents.tpl:401
+#: ../templates/default/gestion_adherents.tpl:314
+#: ../templates/default/gestion_adherents.tpl:403
 #, fuzzy
 msgid "Mail"
 msgstr "Correu"
 
 #: ../templates/default/gestion_adherents.tpl:205
-#: ../templates/default/gestion_adherents.tpl:403
+#: ../templates/default/gestion_adherents.tpl:405
 #: ../templates/default/footer.tpl:5
 #, fuzzy
 msgid "Website"
 msgstr "Lloc web"
 
-#: ../templates/default/gestion_adherents.tpl:287
+#: ../templates/default/gestion_adherents.tpl:289
 #, fuzzy
 msgid "No member has been found"
 msgstr "No s'ha trobat cap membre"
 
-#: ../templates/default/gestion_adherents.tpl:306
+#: ../templates/default/gestion_adherents.tpl:308
 #, fuzzy
 msgid "Mass change"
 msgstr "Canvi massiu"
 
-#: ../templates/default/gestion_adherents.tpl:324
+#: ../templates/default/gestion_adherents.tpl:326
 #: ../templates/default/mailing_recipients.tpl:20
 #, fuzzy
 msgid "Generate labels"
 msgstr "Genera etiquetes"
 
-#: ../templates/default/gestion_adherents.tpl:329
+#: ../templates/default/gestion_adherents.tpl:331
 #, fuzzy
 msgid "Generate Member Cards"
 msgstr "Genera targetes de membre"
 
-#: ../templates/default/gestion_adherents.tpl:335
+#: ../templates/default/gestion_adherents.tpl:337
 #, fuzzy
 msgid "Export as CSV"
 msgstr "Exporta com a CSV"
 
-#: ../templates/default/gestion_adherents.tpl:354
+#: ../templates/default/gestion_adherents.tpl:356
 #, fuzzy
 msgid "Reading the list"
 msgstr "Llegint la llista"
 
-#: ../templates/default/gestion_adherents.tpl:358
+#: ../templates/default/gestion_adherents.tpl:360
 #, fuzzy
 msgid "Active account"
 msgstr "Compte actiu"
 
-#: ../templates/default/gestion_adherents.tpl:360
+#: ../templates/default/gestion_adherents.tpl:362
 #, fuzzy
 msgid "Inactive account"
 msgstr "Compte inactiu"
 
-#: ../templates/default/gestion_adherents.tpl:364
+#: ../templates/default/gestion_adherents.tpl:366
 #, fuzzy
 msgid "Membership in order"
 msgstr "Pertinença en ordre"
 
-#: ../templates/default/gestion_adherents.tpl:366
+#: ../templates/default/gestion_adherents.tpl:368
 #, fuzzy
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "La pertinença caducarà aviat (lt;30d)"
 
-#: ../templates/default/gestion_adherents.tpl:372
+#: ../templates/default/gestion_adherents.tpl:374
 #, fuzzy
 msgid "Lateness in fee"
 msgstr "Tarifa"
 
-#: ../templates/default/gestion_adherents.tpl:398
+#: ../templates/default/gestion_adherents.tpl:400
 #, fuzzy
 msgid "User status/interactions"
 msgstr "Estat/interaccions de l'usuari"
 
-#: ../templates/default/gestion_adherents.tpl:402
+#: ../templates/default/gestion_adherents.tpl:404
 #, fuzzy
 msgid "Send an email"
 msgstr "Envia un correu electrònic"
 
-#: ../templates/default/gestion_adherents.tpl:404
+#: ../templates/default/gestion_adherents.tpl:406
 #, fuzzy
 msgid "Visit website"
 msgstr "Visiteu el lloc web"
 
-#: ../templates/default/gestion_adherents.tpl:436
+#: ../templates/default/gestion_adherents.tpl:438
 #, fuzzy
 msgid "No member selected"
 msgstr "No s'ha seleccionat cap membre"
 
-#: ../templates/default/gestion_adherents.tpl:436
+#: ../templates/default/gestion_adherents.tpl:438
 #, fuzzy
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
@@ -7206,7 +7166,7 @@ msgstr ""
 "Assegureu-vos de seleccionar almenys un membre de la llista per realitzar "
 "aquesta acció."
 
-#: ../templates/default/gestion_adherents.tpl:473
+#: ../templates/default/gestion_adherents.tpl:475
 #, fuzzy
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
@@ -7214,27 +7174,27 @@ msgid ""
 msgstr ""
 "Ja existeix un mailing. Voleu crear-ne un de nou o reprendre l'existent?"
 
-#: ../templates/default/gestion_adherents.tpl:483
+#: ../templates/default/gestion_adherents.tpl:485
 #, fuzzy
 msgid "Resume"
 msgstr "Reprèn"
 
-#: ../templates/default/gestion_adherents.tpl:487
+#: ../templates/default/gestion_adherents.tpl:489
 #, fuzzy
 msgid "New"
 msgstr "Nou"
 
-#: ../templates/default/gestion_adherents.tpl:518
+#: ../templates/default/gestion_adherents.tpl:520
 #, fuzzy
 msgid "Search title"
 msgstr "Cerca títol"
 
-#: ../templates/default/gestion_adherents.tpl:691
+#: ../templates/default/gestion_adherents.tpl:693
 #, fuzzy
 msgid "Attendance sheet details"
 msgstr "Detalls del full d'assistència"
 
-#: ../templates/default/gestion_adherents.tpl:719
+#: ../templates/default/gestion_adherents.tpl:721
 #, fuzzy
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
@@ -9357,6 +9317,58 @@ msgstr "Edita el títol '%s'"
 #, php-format
 msgid "Delete '%s' title"
 msgstr "Suprimeix el títol '%s'"
+
+#, fuzzy
+#~ msgid "Globally available"
+#~ msgstr "Globalment disponible"
+
+#, fuzzy
+#~ msgid "Available with reservations"
+#~ msgstr "Disponible amb reserves"
+
+#, fuzzy
+#~ msgid "Member's first and last name"
+#~ msgstr "primer i últim nom del membre"
+
+#, fuzzy
+#~ msgid "Member's email address"
+#~ msgstr "Adreça de correu electrònic del membre"
+
+#, fuzzy
+#~ msgid "Member's last name"
+#~ msgstr "cognom"
+
+#, fuzzy
+#~ msgid "Member's first name"
+#~ msgstr "nom del membre"
+
+#, fuzzy
+#~ msgid "Member's login"
+#~ msgstr "Inici de sessió del membre"
+
+#, fuzzy
+#~ msgid "Available only for new password request"
+#~ msgstr "Disponible només per a la petició de contrasenya nova"
+
+#, fuzzy
+#~ msgid "Available only for new contributions"
+#~ msgstr "Disponible només per a contribucions noves"
+
+#, fuzzy
+#~ msgid "Member's deadline"
+#~ msgstr "Data límit del membre"
+
+#, fuzzy
+#~ msgid "Contribution amount"
+#~ msgstr "Quantitat de contribució"
+
+#, fuzzy
+#~ msgid "Contribution type"
+#~ msgstr "Tipus de contribució"
+
+#, fuzzy
+#~ msgid "Available only for reminders"
+#~ msgstr "Disponible només per a recordatoris"
 
 #~ msgid "Generate fake data"
 #~ msgstr "Genera dades falses"
