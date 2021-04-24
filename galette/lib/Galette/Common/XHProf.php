@@ -135,7 +135,7 @@ class XHProf
         if (self::$run) {
             $data = xhprof_disable();
 
-            $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
+            $incl = (defined('GALETTE_XHPROF_PATH') ? GALETTE_XHPROF_PATH : self::XHPROF_PATH);
             include_once $incl . '/utils/xhprof_lib.php';
             include_once $incl . '/utils/xhprof_runs.php';
 

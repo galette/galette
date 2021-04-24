@@ -73,6 +73,7 @@
     "XHProfRuns_Default",
     "xhprof_disable",
     "xhprof_enable",
+    "GALETTE_XHPROF_PATH",
     "XHPROF_PATH",
     "XHPROF_URL",
     "XHPROF_FLAGS_CPU",
