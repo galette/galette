@@ -1075,7 +1075,7 @@ class MembersController extends CrudController
     public function edit(
         Request $request,
         Response $response,
-        $id = null,
+        int $id = null,
         $action = 'edit'
     ): Response {
         $deps = array(
