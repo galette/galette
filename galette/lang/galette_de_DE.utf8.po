@@ -22,9 +22,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-24 18:02+0000\n"
+"PO-Revision-Date: 2021-04-25 07:23+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -7807,10 +7807,8 @@ msgid "%s members without email address"
 msgstr "%s Mitglieder ohne E-Mail-Adresse"
 
 #: ../templates/default/reminder.tpl:25
-#, fuzzy
-#| msgid "Generate labels for late members without email address"
 msgid "Generate labels for members without email address"
-msgstr "E-Mail-Adressaufkleber für überfällige Mitgliedsbeiträge erstellen"
+msgstr "Etiketten für Mitglieder ohne E-Mail-Adresse generieren"
 
 #: ../templates/default/reminder.tpl:68
 msgid "No reminder selected"
