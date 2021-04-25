@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-24 10:13+0200\n"
+"POT-Creation-Date: 2021-04-25 09:14+0200\n"
 "PO-Revision-Date: 2021-04-11 10:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -727,7 +727,7 @@ msgstr "Descarrega el document"
 
 #: ../lib/Galette/Controllers/CrudController.php:289
 #: ../lib/Galette/Controllers/HistoryController.php:208
-#: ../lib/Galette/Controllers/CsvController.php:499
+#: ../lib/Galette/Controllers/CsvController.php:498
 #, fuzzy
 msgid "Removal has not been confirmed!"
 msgstr "La supressió no s'ha confirmat!"
@@ -1144,37 +1144,37 @@ msgstr "No s'ha seleccionat cap fitxer per a la pujada!"
 msgid "No files has been uploaded!"
 msgstr "No s'ha pujat cap fitxer!"
 
-#: ../lib/Galette/Controllers/CsvController.php:459
+#: ../lib/Galette/Controllers/CsvController.php:458
 #, fuzzy, php-format
 msgid "Remove %1$s file %2$s"
 msgstr "Elimina el $1$s fitxer %2$s"
 
-#: ../lib/Galette/Controllers/CsvController.php:512
+#: ../lib/Galette/Controllers/CsvController.php:511
 #, php-format
 msgid "'%export' file has been removed from disk."
 msgstr "El fitxer '%export' ha estat eliminat del disc."
 
-#: ../lib/Galette/Controllers/CsvController.php:522
+#: ../lib/Galette/Controllers/CsvController.php:521
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
 msgstr "No es pot eliminar '%export' del disc :/"
 
-#: ../lib/Galette/Controllers/CsvController.php:594
+#: ../lib/Galette/Controllers/CsvController.php:593
 #, fuzzy
 msgid "CSV import model"
 msgstr "Model d'importació CSV"
 
-#: ../lib/Galette/Controllers/CsvController.php:636
+#: ../lib/Galette/Controllers/CsvController.php:635
 #, fuzzy
 msgid "galette_import_model.csv"
 msgstr "galetteimportmodel.csv"
 
-#: ../lib/Galette/Controllers/CsvController.php:672
+#: ../lib/Galette/Controllers/CsvController.php:671
 #, fuzzy
 msgid "Import model has been successfully stored :)"
 msgstr "El model d'importació s'ha desat correctament )"
 
-#: ../lib/Galette/Controllers/CsvController.php:677
+#: ../lib/Galette/Controllers/CsvController.php:676
 #, fuzzy
 msgid "Import model has not been stored :("
 msgstr "No s'ha desat el model d'importació ("
@@ -2454,43 +2454,43 @@ msgstr "dia-b"
 msgid "Public"
 msgstr "Públic"
 
-#: ../lib/Galette/Entity/Reminder.php:269
+#: ../lib/Galette/Entity/Reminder.php:270
 msgid "%name <%mail> (%days days)"
 msgstr "%name &lt;%mail&gt; (%days dies)"
 
-#: ../lib/Galette/Entity/Reminder.php:276
+#: ../lib/Galette/Entity/Reminder.php:277
 #, fuzzy
 msgid "Sent reminder email for late membership"
 msgstr ""
 "S'ha enviat el correu electrònic del recordatori per a la pertinença tardana"
 
-#: ../lib/Galette/Entity/Reminder.php:278
+#: ../lib/Galette/Entity/Reminder.php:279
 #, fuzzy
 msgid "Sent reminder email for impending membership"
 msgstr ""
 "S'ha enviat el correu electrònic del recordatori per a la pertinença imminent"
 
-#: ../lib/Galette/Entity/Reminder.php:284
+#: ../lib/Galette/Entity/Reminder.php:285
 #, fuzzy
 msgid "A problem happened while sending late membership email"
 msgstr ""
 "S'ha produït un problema en enviar el correu electrònic de pertinença tard"
 
-#: ../lib/Galette/Entity/Reminder.php:286
+#: ../lib/Galette/Entity/Reminder.php:287
 #, fuzzy
 msgid "A problem happened while sending impending membership email"
 msgstr ""
 "S'ha produït un problema en enviar un correu electrònic de pertinença "
 "imminent"
 
-#: ../lib/Galette/Entity/Reminder.php:296
+#: ../lib/Galette/Entity/Reminder.php:297
 #, fuzzy
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
 "No s'ha pogut enviar el recordatori del percentmembership (sense adreça "
 "electrònica)."
 
-#: ../lib/Galette/Entity/Reminder.php:309
+#: ../lib/Galette/Entity/Reminder.php:310
 msgid "%name (#%id - %days days)"
 msgstr "%name (#%id - %days dia)"
 
@@ -6145,7 +6145,7 @@ msgstr "S'ha produït un error en enviar el correu electrònic de prova ("
 msgid "Additionnal fields:"
 msgstr "Camps addicionals"
 
-#: ../templates/default/display_dynamic_fields.tpl:26
+#: ../templates/default/display_dynamic_fields.tpl:34
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Obre '%s' en una finestra nova"
@@ -9187,7 +9187,7 @@ msgstr "percentatges membres sense adreça electrònica"
 
 #: ../templates/default/reminder.tpl:25
 #, fuzzy
-msgid "Generate labels for late members without email address"
+msgid "Generate labels for members without email address"
 msgstr "Genera etiquetes per als membres finals sense adreça electrònica"
 
 #: ../templates/default/reminder.tpl:68

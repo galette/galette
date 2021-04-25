@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-24 10:13+0200\n"
+"POT-Creation-Date: 2021-04-25 09:14+0200\n"
 "PO-Revision-Date: 2021-04-11 10:34+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -634,7 +634,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CrudController.php:289
 #: ../lib/Galette/Controllers/HistoryController.php:208
-#: ../lib/Galette/Controllers/CsvController.php:499
+#: ../lib/Galette/Controllers/CsvController.php:498
 msgid "Removal has not been confirmed!"
 msgstr ""
 
@@ -971,34 +971,34 @@ msgstr ""
 msgid "No files has been uploaded!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:459
+#: ../lib/Galette/Controllers/CsvController.php:458
 #, php-format
 msgid "Remove %1$s file %2$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:512
+#: ../lib/Galette/Controllers/CsvController.php:511
 #, php-format
 msgid "'%export' file has been removed from disk."
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:522
+#: ../lib/Galette/Controllers/CsvController.php:521
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:594
+#: ../lib/Galette/Controllers/CsvController.php:593
 msgid "CSV import model"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:636
+#: ../lib/Galette/Controllers/CsvController.php:635
 msgid "galette_import_model.csv"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:672
+#: ../lib/Galette/Controllers/CsvController.php:671
 msgid "Import model has been successfully stored :)"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CsvController.php:677
+#: ../lib/Galette/Controllers/CsvController.php:676
 msgid "Import model has not been stored :("
 msgstr ""
 
@@ -2065,31 +2065,31 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:269
+#: ../lib/Galette/Entity/Reminder.php:270
 msgid "%name <%mail> (%days days)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:276
+#: ../lib/Galette/Entity/Reminder.php:277
 msgid "Sent reminder email for late membership"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:278
+#: ../lib/Galette/Entity/Reminder.php:279
 msgid "Sent reminder email for impending membership"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:284
+#: ../lib/Galette/Entity/Reminder.php:285
 msgid "A problem happened while sending late membership email"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:286
+#: ../lib/Galette/Entity/Reminder.php:287
 msgid "A problem happened while sending impending membership email"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:296
+#: ../lib/Galette/Entity/Reminder.php:297
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:309
+#: ../lib/Galette/Entity/Reminder.php:310
 msgid "%name (#%id - %days days)"
 msgstr ""
 
@@ -4983,7 +4983,7 @@ msgstr ""
 msgid "Additionnal fields:"
 msgstr ""
 
-#: ../templates/default/display_dynamic_fields.tpl:26
+#: ../templates/default/display_dynamic_fields.tpl:34
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr ""
@@ -7497,7 +7497,7 @@ msgid "%s members without email address"
 msgstr ""
 
 #: ../templates/default/reminder.tpl:25
-msgid "Generate labels for late members without email address"
+msgid "Generate labels for members without email address"
 msgstr ""
 
 #: ../templates/default/reminder.tpl:68

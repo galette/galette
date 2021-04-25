@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2021-04-24 10:13+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-25 09:14+0200\n"
 "PO-Revision-Date: 2021-04-24 18:02+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -654,7 +654,7 @@ msgstr "Télécharger le document"
 
 #: ../lib/Galette/Controllers/CrudController.php:289
 #: ../lib/Galette/Controllers/HistoryController.php:208
-#: ../lib/Galette/Controllers/CsvController.php:499
+#: ../lib/Galette/Controllers/CsvController.php:498
 msgid "Removal has not been confirmed!"
 msgstr "La suppression n’a pas été confirmée !"
 
@@ -1018,34 +1018,34 @@ msgstr "Aucun fichier n’a encore été sélectionné pour l’envoi !"
 msgid "No files has been uploaded!"
 msgstr "Aucun fichier n’a été envoyé !"
 
-#: ../lib/Galette/Controllers/CsvController.php:459
+#: ../lib/Galette/Controllers/CsvController.php:458
 #, php-format
 msgid "Remove %1$s file %2$s"
 msgstr "Supprimer le fichier %2$s de %1$s"
 
-#: ../lib/Galette/Controllers/CsvController.php:512
+#: ../lib/Galette/Controllers/CsvController.php:511
 #, php-format
 msgid "'%export' file has been removed from disk."
 msgstr "Le fichier « %export » a été supprimé du disque."
 
-#: ../lib/Galette/Controllers/CsvController.php:522
+#: ../lib/Galette/Controllers/CsvController.php:521
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
 msgstr "Impossible de supprimer « %export » du disque :/"
 
-#: ../lib/Galette/Controllers/CsvController.php:594
+#: ../lib/Galette/Controllers/CsvController.php:593
 msgid "CSV import model"
 msgstr "Modèle d’import CSV"
 
-#: ../lib/Galette/Controllers/CsvController.php:636
+#: ../lib/Galette/Controllers/CsvController.php:635
 msgid "galette_import_model.csv"
 msgstr "galette_import_model.csv"
 
-#: ../lib/Galette/Controllers/CsvController.php:672
+#: ../lib/Galette/Controllers/CsvController.php:671
 msgid "Import model has been successfully stored :)"
 msgstr "Le modèle d’import a été enregistré avec succès :)"
 
-#: ../lib/Galette/Controllers/CsvController.php:677
+#: ../lib/Galette/Controllers/CsvController.php:676
 msgid "Import model has not been stored :("
 msgstr "Le modèle d’import n’a pas été enregistré :("
 
@@ -2139,34 +2139,34 @@ msgstr "anniv"
 msgid "Public"
 msgstr "Public"
 
-#: ../lib/Galette/Entity/Reminder.php:269
+#: ../lib/Galette/Entity/Reminder.php:270
 msgid "%name <%mail> (%days days)"
 msgstr "%name <%mail> (%days jours)"
 
-#: ../lib/Galette/Entity/Reminder.php:276
+#: ../lib/Galette/Entity/Reminder.php:277
 msgid "Sent reminder email for late membership"
 msgstr "Courriel de rappel envoyé pour l’adhésion en retard"
 
-#: ../lib/Galette/Entity/Reminder.php:278
+#: ../lib/Galette/Entity/Reminder.php:279
 msgid "Sent reminder email for impending membership"
 msgstr "Courriel de rappel envoyé pour l’ adhésion à échéance proche"
 
-#: ../lib/Galette/Entity/Reminder.php:284
+#: ../lib/Galette/Entity/Reminder.php:285
 msgid "A problem happened while sending late membership email"
 msgstr ""
 "Un problème est survenu lors de l’envoi du courriel d’adhésion en retard"
 
-#: ../lib/Galette/Entity/Reminder.php:286
+#: ../lib/Galette/Entity/Reminder.php:287
 msgid "A problem happened while sending impending membership email"
 msgstr ""
 "Un problème est survenu lors de l’envoi du courriel d’adhésion à échéance "
 "proche"
 
-#: ../lib/Galette/Entity/Reminder.php:296
+#: ../lib/Galette/Entity/Reminder.php:297
 msgid "Unable to send %membership reminder (no email address)."
 msgstr "Impossible d’envoyer le rappel %membership (pas d’adresse courriel)."
 
-#: ../lib/Galette/Entity/Reminder.php:309
+#: ../lib/Galette/Entity/Reminder.php:310
 msgid "%name (#%id - %days days)"
 msgstr "%name (#%id - %days jours)"
 
@@ -3343,11 +3343,11 @@ msgid ""
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
 "Bonjour,{NEWLINE}Votre cotisation a été enregistrée et validée par "
-"l'association {ASSO_NAME}.{NEWLINE}Elle est valable jusqu'au "
-"{DEADLINE}{NEWLINE}Vous pouvez désormais accéder à vos données personnelles "
-"à l'aide de vos identifiants galette à l'adresse suivante "
-":{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}A Bientôt!{NEWLINE}(Ce "
-"courriel est un envoi automatique)"
+"l'association {ASSO_NAME}.{NEWLINE}Elle est valable jusqu'au {DEADLINE}"
+"{NEWLINE}Vous pouvez désormais accéder à vos données personnelles à l'aide "
+"de vos identifiants galette à l'adresse suivante :{BR}{LOGIN_URI}.{NEWLINE}"
+"{CONTRIB_INFO}{NEWLINE}A Bientôt!{NEWLINE}(Ce courriel est un envoi "
+"automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:59
 msgid "Receipt send for new contribution"
@@ -3364,8 +3364,8 @@ msgid ""
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
 msgstr ""
 "Bonjour cher Administrateur,{NEWLINE}Un nouveau membre a été enregistré avec "
-"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Identifiant : "
-"{LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
+"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Identifiant : {LOGIN}"
+"{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "New user registration (sent to admin)"
@@ -3401,8 +3401,8 @@ msgid ""
 msgstr ""
 "Bonjour cher Administrateur,{NEWLINE}Un nouvel adhérent s'est auto-inscrit "
 "en ligne avec les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* "
-"Identifiant : {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien "
-"sincèrement,{BR}Galette"
+"Identifiant : {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,"
+"{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "New self registration (sent to admin)"
@@ -5259,7 +5259,7 @@ msgstr "Une erreur est survenue lors de l'envoi du courriel de test :("
 msgid "Additionnal fields:"
 msgstr "Champs supplémentaires :"
 
-#: ../templates/default/display_dynamic_fields.tpl:26
+#: ../templates/default/display_dynamic_fields.tpl:34
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Ouvrir « %s » dans une nouvelle fenêtre"
@@ -7839,7 +7839,9 @@ msgid "%s members without email address"
 msgstr "%s adhérents sans adresse courriel"
 
 #: ../templates/default/reminder.tpl:25
-msgid "Generate labels for late members without email address"
+#, fuzzy
+#| msgid "Generate labels for late members without email address"
+msgid "Generate labels for members without email address"
 msgstr ""
 "Génère des étiquettes pour les adhérents en retard sans adresse courriel"
 
