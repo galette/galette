@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-11 10:09+0000\n"
+"PO-Revision-Date: 2021-04-25 07:23+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -9186,9 +9186,8 @@ msgid "%s members without email address"
 msgstr "percentatges membres sense adreça electrònica"
 
 #: ../templates/default/reminder.tpl:25
-#, fuzzy
 msgid "Generate labels for members without email address"
-msgstr "Genera etiquetes per als membres finals sense adreça electrònica"
+msgstr "Genera etiquetes per als membres sense adreça electrònica"
 
 #: ../templates/default/reminder.tpl:68
 #, fuzzy
