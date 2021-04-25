@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -54,7 +54,7 @@ use Analog\Analog;
  * @name      CsvController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -431,7 +431,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       File id
      * @param string   $file     File name
      * @param string   $type     File type
      *
@@ -440,12 +439,12 @@ class CsvController extends AbstractController
     public function confirmRemoveFile(
         Request $request,
         Response $response,
-        int $id,
         string $file,
         string $type
     ): Response {
         $data = [
-            'id'            => $id,
+            'type' => $type,
+            'file' => $file,
             'redirect_uri'  => $this->router->pathFor($type)
         ];
 
