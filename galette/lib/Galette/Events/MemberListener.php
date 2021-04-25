@@ -289,7 +289,7 @@ class MemberListener implements ListenerProviderInterface
             $this->preferences,
             $this->router
         );
-        $texts->setMember($member);
+        $texts->setMember($member)->setNoContribution();
 
         $txt_id = null;
         if ($new) {
