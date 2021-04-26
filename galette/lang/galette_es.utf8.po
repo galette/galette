@@ -23,13 +23,14 @@
 # Alonso Arteaga <alon.arte.r@gmail.com>, 2021.
 # Flynn Hadford <fghadford@gmail.com>, 2021.
 # Lusuho <jevpsychox@gmail.com>, 2021.
+# Dario Briones <dariobriones101481@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-03 19:26+0000\n"
-"Last-Translator: Lusuho <jevpsychox@gmail.com>\n"
+"PO-Revision-Date: 2021-04-27 14:31+0000\n"
+"Last-Translator: Dario Briones <dariobriones101481@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -37,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -6667,7 +6668,7 @@ msgstr "Pie de página"
 
 #: ../templates/default/gestion_pdf_content.tpl:24
 msgid "Body"
-msgstr "Cuerpo"
+msgstr "Carrocería"
 
 #: ../templates/default/gestion_pdf_content.tpl:29
 msgid "CSS styles"
