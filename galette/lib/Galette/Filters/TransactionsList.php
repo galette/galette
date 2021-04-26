@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     june, 12th 2016
@@ -48,7 +48,7 @@ use Galette\Core\Pagination;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -59,6 +59,7 @@ class TransactionsList extends Pagination
     public const ORDERBY_DATE = 0;
     public const ORDERBY_MEMBER = 3;
     public const ORDERBY_AMOUNT = 5;
+    public const ORDERBY_ID = 8;
 
     //filters
     private $start_date_filter;

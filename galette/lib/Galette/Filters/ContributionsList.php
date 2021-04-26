@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-202 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     june, 12th 2016
@@ -48,14 +48,13 @@ use Galette\Core\Pagination;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
 
 class ContributionsList extends Pagination
 {
-
     public const ORDERBY_DATE = 0;
     public const ORDERBY_BEGIN_DATE = 1;
     public const ORDERBY_END_DATE = 2;
@@ -64,6 +63,7 @@ class ContributionsList extends Pagination
     public const ORDERBY_AMOUNT = 5;
     public const ORDERBY_DURATION = 6;
     public const ORDERBY_PAYMENT_TYPE = 7;
+    public const ORDERBY_ID = 8;
 
     public const DATE_BEGIN = 0;
     public const DATE_END = 1;

@@ -67,7 +67,17 @@
         <table class="listing">
             <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row">
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_ID"|constant]}">#
+                        {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_ID')}
+                            {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
+                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            {else}
+                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            {/if}
+                        {/if}
+                        </a>
+                    </th>
                     <th class="left date_row">
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_DATE')}
