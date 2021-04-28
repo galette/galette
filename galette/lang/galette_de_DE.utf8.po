@@ -19,13 +19,14 @@
 # Manuel Zeschko <moebyus@pm.me>, 2021.
 # Translator <weblate.gledy@aleeas.com>, 2021.
 # Independent-Eye <michalek.jedrzejak@gmail.com>, 2021.
+# Ricardo Santos <buehnenarbeiter@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-25 07:23+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-05-01 19:31+0000\n"
+"Last-Translator: Ricardo Santos <buehnenarbeiter@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1147,7 +1148,7 @@ msgstr "Konfigurationsdatei konnte nicht erstellt werden (%path)"
 
 #: ../lib/Galette/Core/Install.php:1132
 msgid "Preferences"
-msgstr "Einstelllungen"
+msgstr "Einstellungen"
 
 #: ../lib/Galette/Core/Install.php:1136
 msgid "Contributions types"
