@@ -1,12 +1,13 @@
 # Tymofij Lytvynenko <till.svit@gmail.com>, 2020, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
 "PO-Revision-Date: 2021-05-01 19:32+0000\n"
-"Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
+"Last-Translator: Віталій Куждін <kuzhdinvitaliy@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -754,8 +755,8 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"На вашу е-пошту надіслано повідомлення.<br>Перевірте свою е-пошту та "
-"дотримуйтесь указівок."
+"На вашу е-пошту надіслано лист.<br>Перевірте свої вхідні та дотримуйтесь "
+"указівок."
 
 #: ../lib/Galette/Controllers/AuthController.php:358
 msgid "An email has been sent to the member."
