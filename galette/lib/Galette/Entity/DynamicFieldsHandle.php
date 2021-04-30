@@ -439,7 +439,7 @@ class DynamicFieldsHandle
     }
 
     /**
-     * Is there any change in dynamic filelds?
+     * Is there any change in dynamic fields?
      *
      * @return boolean
      */

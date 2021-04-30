@@ -249,13 +249,7 @@ trait DynamicsTrait
      */
     protected function dynamicsFiles($files)
     {
-        if ($this->dynamics === null) {
-            Analog::log(
-                'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
-            );
-            $this->loadDynamicFields();
-        }
+        $this->loadDynamicFields();
         $fields = $this->dynamics->getFields();
         $store = false;
 
