@@ -1,13 +1,14 @@
 # rsichler <blagoslovichlibog@hotmail.fr>, 2020.
 # ThonyVezbe <a.guechoum@gmail.com>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021.
+# Egareg JAOUEN <egareg@jaouen.eu>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-11 10:34+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-05-01 19:32+0000\n"
+"Last-Translator: Egareg JAOUEN <egareg@jaouen.eu>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -16,10 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=5; plural=(n % 10 == 1 && n % 100 != 11 && n % 100 != "
 "71 && n % 100 != 91) ? 0 : ((n % 10 == 2 && n % 100 != 12 && n % 100 != 72 "
-"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && "
-"(n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
+"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
+"n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
 "< 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -108,7 +109,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:185
 msgid "Groups"
-msgstr ""
+msgstr "Strolladoù"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:365
 msgid "Group `%groupname` has been successfully saved."
@@ -121,7 +122,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:463
 #, php-format
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "Dilemel ar strollad %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:486
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
@@ -166,7 +167,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:658
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "Dilemel ar postel %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
 msgid "Mailing preview"
@@ -220,7 +221,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:155
 msgid "Subscription"
-msgstr ""
+msgstr "Enrollañ"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:249
 #: ../lib/Galette/Controllers/Crud/MembersController.php:455
@@ -233,20 +234,20 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:264
 msgid "No member #%id."
-msgstr ""
+msgstr "Ezel ebet gant #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:284
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1142
 msgid "Member Profile"
-msgstr ""
+msgstr "Profil ezel"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
 msgid "Members list"
-msgstr ""
+msgstr "Roll izili"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Poltredaoueg"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:509
 msgid "The file does not exists or cannot be read :("
@@ -254,7 +255,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:573
 msgid "Members management"
-msgstr ""
+msgstr "Merañ an izili"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:794
 msgid "Status label"
@@ -340,7 +341,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1837
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "Dilemel an ezel %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1846
 #, php-format
@@ -349,7 +350,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:111
 msgid "Titles management"
-msgstr ""
+msgstr "Merañ an titloù"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:152
 msgid "Edit title"
@@ -378,11 +379,11 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:287
 #, php-format
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Dilemel an titl %1$s"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:120
 msgid "User statuses"
-msgstr ""
+msgstr "Statud izili"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:126
 msgid "Contribution types"
@@ -418,12 +419,12 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:105
 msgid "Membership fee"
-msgstr ""
+msgstr "Skodenn"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
 #: ../lib/Galette/Entity/Contribution.php:1079
 msgid "Donation"
-msgstr ""
+msgstr "Donezon"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
 msgid "Contributions management"
@@ -454,7 +455,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
 #, php-format
 msgid "Remove %1$s %2$s"
-msgstr ""
+msgstr "Dilemel %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 msgid "contributions"
@@ -467,7 +468,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:696
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "Dilemel %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
 #: ../lib/Galette/IO/PdfContribution.php:84
@@ -521,22 +522,22 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:233
 msgid "Settings"
-msgstr ""
+msgstr "Arventennoù"
 
 #: ../lib/Galette/Controllers/GaletteController.php:248
 #: ../lib/Galette/Filters/MembersList.php:306
 msgid "All accounts"
-msgstr ""
+msgstr "An holl kontoù"
 
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:307
 msgid "Active accounts"
-msgstr ""
+msgstr "Kontoù oberiat"
 
 #: ../lib/Galette/Controllers/GaletteController.php:250
 #: ../lib/Galette/Filters/MembersList.php:308
 msgid "Inactive accounts"
-msgstr ""
+msgstr "Kontoù diweredekaet"
 
 #: ../lib/Galette/Controllers/GaletteController.php:275
 msgid ""
@@ -564,12 +565,12 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:405
 msgid "Test message."
-msgstr ""
+msgstr "Postel prouadiñ."
 
 #: ../lib/Galette/Controllers/GaletteController.php:414
 #, php-format
 msgid "An email has been sent to %email"
-msgstr ""
+msgstr "Ur postel zo bet kaset da %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:423
 #, php-format
@@ -578,11 +579,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:430
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Chomlec'h postel diwiriek !"
 
 #: ../lib/Galette/Controllers/GaletteController.php:473
 msgid "Charts"
-msgstr ""
+msgstr "Grafikoù"
 
 #: ../lib/Galette/Controllers/GaletteController.php:494
 msgid "Fields configuration"
@@ -610,7 +611,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:664
 msgid "Reminders"
-msgstr ""
+msgstr "Kounadurioù"
 
 #: ../lib/Galette/Controllers/GaletteController.php:705
 msgid "No reminder to send for now."
@@ -626,11 +627,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:756
 msgid "Sent reminders:"
-msgstr ""
+msgstr "Kounadurioù kaset :"
 
 #: ../lib/Galette/Controllers/GaletteController.php:832
 msgid "Download document"
-msgstr ""
+msgstr "Pellgargañ an teul"
 
 #: ../lib/Galette/Controllers/CrudController.php:289
 #: ../lib/Galette/Controllers/HistoryController.php:208
@@ -664,7 +665,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:409
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 msgid "Attendance sheet"
-msgstr ""
+msgstr "Follenn-sinañ"
 
 #: ../lib/Galette/Controllers/PdfController.php:492
 msgid "Unable to get groups list."
@@ -672,7 +673,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:550
 msgid "PDF models"
-msgstr ""
+msgstr "Patromoù PDF"
 
 #: ../lib/Galette/Controllers/PdfController.php:578
 msgid "Missing PDF model type!"
@@ -695,7 +696,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:302
 #: ../lib/Galette/Features/Replacements.php:342
 msgid "Login"
-msgstr ""
+msgstr "Anaout"
 
 #: ../lib/Galette/Controllers/AuthController.php:114
 msgid "You must provide both login and password."
@@ -715,7 +716,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:168
 msgid "Log off"
-msgstr ""
+msgstr "Digevreañ"
 
 #: ../lib/Galette/Controllers/AuthController.php:193
 #, php-format
@@ -734,7 +735,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:261
 #: ../lib/Galette/Controllers/AuthController.php:462
 msgid "Password recovery"
-msgstr ""
+msgstr "Adtapout ar ger-tremen"
 
 #: ../lib/Galette/Controllers/AuthController.php:293
 msgid "Email sent is disabled in the preferences. Ask galette admin"
@@ -743,7 +744,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:352
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "Postel kaset da \"%s\" evit adtapout ar ger-tremen."
 
 #: ../lib/Galette/Controllers/AuthController.php:356
 msgid ""
@@ -753,7 +754,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:358
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Ur postel zo bet kaset d'an ezel."
 
 #: ../lib/Galette/Controllers/AuthController.php:369
 #, php-format
@@ -775,12 +776,12 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:409
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr ""
+msgstr "Ne 'z eus ket chomlec'h postel %s ebet"
 
 #: ../lib/Galette/Controllers/AuthController.php:415
 #, php-format
 msgid "Login %s does not exist"
-msgstr ""
+msgstr "Ne 'z eus ket anaouder %s ebet"
 
 #: ../lib/Galette/Controllers/AuthController.php:446
 msgid ""
@@ -790,16 +791,16 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:492
 #: ../webroot/installer.php:134 ../webroot/installer.php:177
 msgid "No password"
-msgstr ""
+msgstr "Ger-tremen ebet"
 
 #: ../lib/Galette/Controllers/AuthController.php:495
 #: ../lib/Galette/Entity/Adherent.php:1355
 msgid "- The passwords don't match!"
-msgstr ""
+msgstr "- Ne kenglot ket ar gerioù-tremen !"
 
 #: ../lib/Galette/Controllers/AuthController.php:501
 msgid "Your password is too weak!"
-msgstr ""
+msgstr "N'eo ket kreñv a-walc'h ho ger-tremen !"
 
 #: ../lib/Galette/Controllers/AuthController.php:510
 msgid "An error occurred while updating your password."
@@ -808,15 +809,15 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:516
 #, php-format
 msgid "Password changed for member '%s'."
-msgstr ""
+msgstr "Kemmet eo bet ar ger-tremen evit an ezel \"%s\"."
 
 #: ../lib/Galette/Controllers/AuthController.php:524
 msgid "Your password has been changed!"
-msgstr ""
+msgstr "Kemmet eo bet ho ger-tremen !"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:73
 msgid "Administration tools"
-msgstr ""
+msgstr "Ostilhoù mererezh"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:111
@@ -860,7 +861,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/HistoryController.php:111
 #: ../install/steps/check.php:75
 msgid "Logs"
-msgstr ""
+msgstr "Restroù renabliñ"
 
 #: ../lib/Galette/Controllers/HistoryController.php:150
 #: ../lib/Galette/Filters/TransactionsList.php:230
@@ -880,7 +881,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/HistoryController.php:220
 msgid "Logs have been flushed!"
-msgstr ""
+msgstr "Karzhet eo bet ar restroù renabliñ !"
 
 #: ../lib/Galette/Controllers/HistoryController.php:232
 msgid "An error occurred trying to flush logs :("
@@ -888,7 +889,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/HistoryController.php:270
 msgid "Flush the logs"
-msgstr ""
+msgstr "Karzhañ ar restoù renabliñ"
 
 #: ../lib/Galette/Controllers/PluginsController.php:82
 msgid "Plugins"
@@ -949,7 +950,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:263
 msgid "CSV members import"
-msgstr ""
+msgstr "Enporzhiañ restr CSV izili"
 
 #: ../lib/Galette/Controllers/CsvController.php:315
 msgid "An error occurred importing the file :("
@@ -957,11 +958,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:327
 msgid "File '%filename%' has been successfully imported :)"
-msgstr ""
+msgstr "Enporzhiet mat eo bet ar restr \"%filename%\" :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:360
 msgid "Your file has been successfully uploaded!"
-msgstr ""
+msgstr "Ezkarget mat eo bet ho restr !"
 
 #: ../lib/Galette/Controllers/CsvController.php:379
 msgid "No files has been seleted for upload!"
@@ -969,7 +970,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:385
 msgid "No files has been uploaded!"
-msgstr ""
+msgstr "Restr ebet zo bet ezkarget !"
 
 #: ../lib/Galette/Controllers/CsvController.php:458
 #, php-format
@@ -992,7 +993,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:635
 msgid "galette_import_model.csv"
-msgstr ""
+msgstr "galette_import_model.csv"
 
 #: ../lib/Galette/Controllers/CsvController.php:671
 msgid "Import model has been successfully stored :)"
@@ -1019,7 +1020,7 @@ msgstr ""
 #: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Entity/Texts.php:209
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "d/m/Y H:i:s"
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:290
 msgid "Checks"
@@ -1098,7 +1099,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1132
 msgid "Preferences"
-msgstr ""
+msgstr "Dibaboù"
 
 #: ../lib/Galette/Core/Install.php:1136
 msgid "Contributions types"
@@ -1106,7 +1107,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1140
 msgid "Status"
-msgstr ""
+msgstr "Statud"
 
 #: ../lib/Galette/Core/Install.php:1144
 msgid "Fields config and categories"
@@ -1114,11 +1115,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1148 ../lib/Galette/Core/Install.php:1170
 msgid "Mails texts"
-msgstr ""
+msgstr "Posteloù testennoù"
 
 #: ../lib/Galette/Core/Install.php:1152
 msgid "Titles"
-msgstr ""
+msgstr "Titloù"
 
 #: ../lib/Galette/Core/Install.php:1156
 msgid "PDF Models"
@@ -1126,21 +1127,21 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1162
 msgid "Update preferences"
-msgstr ""
+msgstr "Dibaboù hizivadur"
 
 #: ../lib/Galette/Core/Install.php:1166
 msgid "Update models"
-msgstr ""
+msgstr "Patromoù hizivadur"
 
 #: ../lib/Galette/Core/Gaptcha.php:103
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Pegement eo %1$s ha %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Pegement eo %1$s ha %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, php-format
@@ -1152,12 +1153,12 @@ msgstr ""
 #: ../lib/Galette/Core/Gaptcha.php:108
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Pegement eo %1$s nemet %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:109
 #, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Pegement eo %1$s nemet %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
 #, php-format
@@ -1171,11 +1172,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:262
 msgid "First page"
-msgstr ""
+msgstr "Pajenn gentañ"
 
 #: ../lib/Galette/Core/Pagination.php:268
 msgid "Previous page (%i)"
-msgstr ""
+msgstr "Pajenn a-raok (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:280
 msgid "Current page (%i)"
@@ -1183,19 +1184,19 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:288
 msgid "Page %i"
-msgstr ""
+msgstr "Pajenn %i"
 
 #: ../lib/Galette/Core/Pagination.php:296
 msgid "Next page (%i)"
-msgstr ""
+msgstr "Pajenn da-heul (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:302
 msgid "Last page (%i)"
-msgstr ""
+msgstr "Pajenn diwezhañ (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:314
 msgid "All"
-msgstr ""
+msgstr "An holl"
 
 #: ../lib/Galette/Core/Authentication.php:280
 #, php-format
@@ -1204,7 +1205,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/MailingHistory.php:198
 msgid "Superadmin"
-msgstr ""
+msgstr "Merour-veur"
 
 #: ../lib/Galette/Core/MailingHistory.php:555
 msgid "Delete mailing entries"
@@ -1250,7 +1251,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:568 ../webroot/installer.php:185
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Ne kenglot ket ar gerioù-tremen"
 
 #: ../lib/Galette/Core/Preferences.php:581
 msgid "You have to select a staff member"
