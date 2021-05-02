@@ -369,9 +369,9 @@ Au milieu
 
         $this->string($model->hbody)->isEqualTo(
             'name: DURAND René login: arthur.hamon birthdate: 1937-12-26 dynlabel: Dynamic text field dynvalue: ' .
-            '<textarea id="Dynamic text field" name="Dynamic text field" value="My value (:"/> ' .
+            'My value (: ' .
             '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
-            'dynvalue: <input type="text" name="Dynamic date field" value="2020-12-03" size="10" />'
+            'dynvalue: 2020-12-03'
         );
 
         $legend = $model->getLegend();
