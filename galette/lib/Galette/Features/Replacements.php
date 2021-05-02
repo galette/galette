@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-20
@@ -56,7 +56,7 @@ use Slim\Router;
  * @name      Replacements
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-20
@@ -64,6 +64,8 @@ use Slim\Router;
 
 trait Replacements
 {
+    public static $RENDER_TXT = 0;
+    public static $RENDER_HTML = 1;
     private $patterns = [];
     private $replaces = [];
     private $dynamic_patterns = [];
@@ -649,6 +651,8 @@ trait Replacements
     public function setDynamicFields(string $form_name, array $dynamic_fields, $object): self
     {
         $uform_name = strtoupper($form_name);
+        $render = ($this instanceof PdfModel && ($object->id == null) ? self::$RENDER_HTML : self::$RENDER_TXT);
+
         $dynamic_patterns = $this->getDynamicPatterns($form_name);
         foreach ($dynamic_patterns as $dynamic_pattern) {
             $pattern = trim($dynamic_pattern['pattern'], '/');
@@ -681,56 +685,80 @@ trait Replacements
                     $field_value = '';
                 }
 
-                //FIXME: html is only required for pdf, not for emails
                 switch ($field_type) {
                     case DynamicField::TEXT:
-                        $value .= '<textarea' .
-                            ' id="' . $field_name . '"' .
-                            ' name="' . $field_name . '"' .
-                            ' value="' . $field_value . '"' .
-                            '/>';
+                        if ($render == self::$RENDER_HTML) {
+                            $value .= '<textarea' .
+                                ' id="' . $field_name . '"' .
+                                ' name="' . $field_name . '"' .
+                                ' value="' . $field_value . '"' .
+                                '/>';
+                        } else {
+                            $value .= $field_value;
+                        }
                         break;
                     case DynamicField::LINE:
-                        $value .= '<input type="text"' .
-                            ' id="' . $field_name . '"' .
-                            ' name="' . $field_name . '"' .
-                            ' value="' . $field_value . '"' .
-                            ' size="20" maxlength="30"/>';
+                        if ($render == self::$RENDER_HTML) {
+                            $value .= '<input type="text"' .
+                                ' id="' . $field_name . '"' .
+                                ' name="' . $field_name . '"' .
+                                ' value="' . $field_value . '"' .
+                                ' size="20" maxlength="30"/>';
+                        } else {
+                            $value .= $field_value;
+                        }
                         break;
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
                         foreach ($choice_values as $choice_idx => $choice_value) {
-                            $value .= '<input type="radio"' .
-                                ' id="' . $field_name . '"' .
-                                ' name="' . $field_name . '"' .
-                                ' value="' . $choice_value . '"';
-                            if ($choice_idx == $field_value) {
-                                $value .= ' checked="checked"';
+                            if ($render == self::$RENDER_HTML) {
+                                $value .= '<input type="radio"' .
+                                    ' id="' . $field_name . '"' .
+                                    ' name="' . $field_name . '"' .
+                                    ' value="' . $choice_value . '"';
+                                if ($choice_idx == $field_value) {
+                                    $value .= ' checked="checked"';
+                                }
+                                $value .= '/>';
+                                $value .= $choice_value;
+                                $value .= '&nbsp;';
+                            } else {
+                                $value .= $choice_value;
+                                $value .= '&nbsp;';
                             }
-                            $value .= '/>';
-                            $value .= $choice_value;
-                            $value .= '&nbsp;';
                         }
                         break;
                     case DynamicField::DATE:
-                        $value .= '<input type="text" name="' .
-                            $field_name . '" value="' .
-                            $field_value .
-                            '" size="10" />';
+                        if ($render == self::$RENDER_HTML) {
+                            $value .= '<input type="text" name="' .
+                                $field_name . '" value="' .
+                                $field_value .
+                                '" size="10" />';
+                        } else {
+                            $value .= $field_value;
+                        }
                         break;
                     case DynamicField::BOOLEAN:
-                        $value .= '<input type="checkbox"' .
-                            ' name="' . $field_name . '"' .
-                            ' value="1"';
-                        if ($field_value == 1) {
-                            $value .= ' checked="checked"';
+                        if ($render == self::$RENDER_HTML) {
+                            $value .= '<input type="checkbox"' .
+                                ' name="' . $field_name . '"' .
+                                ' value="1"';
+                            if ($field_value == 1) {
+                                $value .= ' checked="checked"';
+                            }
+                            $value .= '/>';
+                        } else {
+                            $value .= $field_value;
                         }
-                        $value .= '/>';
                         break;
                     case DynamicField::FILE:
-                        $value .= '<input type="text" name="' .
-                            $field_name . '" value="' .
-                            $field_value . '" />';
+                        if ($render == self::$RENDER_HTML) {
+                            $value .= '<input type="text" name="' .
+                                $field_name . '" value="' .
+                                $field_value . '" />';
+                        } else {
+                            $value .= $field_value;
+                        }
                         break;
                 }
             }
