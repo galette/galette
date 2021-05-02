@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2018 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2018 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7-dev - 2007-10-07
@@ -108,7 +108,7 @@ if (!defined('GALETTE_HIDE_VERSION')) {
 }
 
 define('GALETTE_COMPAT_VERSION', '0.9.5');
-define('GALETTE_DB_VERSION', '0.940');
+define('GALETTE_DB_VERSION', '0.950');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }

@@ -168,7 +168,7 @@ CREATE TABLE galette_paymenttypes (
 DROP TABLE IF EXISTS galette_statuts CASCADE;
 CREATE TABLE galette_statuts (
   id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
-  libelle_statut  character varying(100) DEFAULT '' NOT NULL,
+  libelle_statut  character varying(255) DEFAULT '' NOT NULL,
   priorite_statut smallint DEFAULT '0' NOT NULL,
   PRIMARY KEY (id_statut)
 );
@@ -177,7 +177,7 @@ DROP TABLE IF EXISTS galette_titles CASCADE;
 CREATE TABLE galette_titles (
   id_title integer DEFAULT nextval('galette_titles_id_seq'::text) NOT NULL,
   short_label character varying(10) DEFAULT '' NOT NULL,
-  long_label character varying(30) DEFAULT '',
+  long_label character varying(100) DEFAULT '',
   PRIMARY KEY (id_title)
 );
 
@@ -185,30 +185,30 @@ DROP TABLE IF EXISTS galette_adherents CASCADE;
 CREATE TABLE galette_adherents (
     id_adh integer DEFAULT nextval('galette_adherents_id_seq'::text) NOT NULL,
     id_statut integer DEFAULT '4' REFERENCES galette_statuts(id_statut) ON DELETE RESTRICT ON UPDATE CASCADE,
-    nom_adh character varying(50) DEFAULT '' NOT NULL,
-    prenom_adh character varying(50) DEFAULT '' NOT NULL,
+    nom_adh character varying(255) DEFAULT '' NOT NULL,
+    prenom_adh character varying(255) DEFAULT '' NOT NULL,
     societe_adh character varying(200) DEFAULT NULL,
-    pseudo_adh character varying(20) DEFAULT '' NOT NULL,
+    pseudo_adh character varying(255) DEFAULT '' NOT NULL,
     titre_adh integer DEFAULT NULL REFERENCES galette_titles(id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
     ddn_adh date DEFAULT '19010101',
     sexe_adh smallint DEFAULT '0' NOT NULL,
-    adresse_adh character varying(150) DEFAULT '' NOT NULL,
-    adresse2_adh character varying(150) DEFAULT NULL,
+    adresse_adh text DEFAULT '' NOT NULL,
+    adresse2_adh character varying(150) DEFAULT NULL, -- TODO: remove
     cp_adh character varying(10) DEFAULT '' NOT NULL,
-    ville_adh character varying(50) DEFAULT '' NOT NULL,
-    pays_adh character varying(50) DEFAULT NULL,
-    tel_adh character varying(20),
-    gsm_adh character varying(20),
+    ville_adh character varying(200) DEFAULT '' NOT NULL,
+    pays_adh character varying(200) DEFAULT NULL,
+    tel_adh character varying(50),
+    gsm_adh character varying(50),
     email_adh character varying(255),
-    url_adh character varying(200),
-    icq_adh character varying(20),
-    msn_adh character varying(150),
+    url_adh character varying(255),
+    icq_adh character varying(20), -- TODO: remove
+    msn_adh character varying(150), -- TODO: remove
     jabber_adh character varying(150),
     info_adh text,
     info_public_adh text,
     prof_adh character varying(150),
-    login_adh character varying(20) DEFAULT '' NOT NULL,
-    mdp_adh character varying(60) DEFAULT '' NOT NULL,
+    login_adh character varying(255) DEFAULT '' NOT NULL,
+    mdp_adh character varying(255) DEFAULT '' NOT NULL,
     date_crea_adh date DEFAULT '19010101' NOT NULL,
     date_modif_adh date DEFAULT '19010101' NOT NULL,
     activite_adh boolean DEFAULT FALSE,
@@ -219,7 +219,7 @@ CREATE TABLE galette_adherents (
     pref_lang character varying(20) DEFAULT 'fr_FR',
     lieu_naissance text DEFAULT '',
     gpgid text DEFAULT NULL,
-    fingerprint character varying(50) DEFAULT NULL,
+    fingerprint character varying(255) DEFAULT NULL,
     parent_id integer DEFAULT NULL REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_adh)
 );
@@ -229,7 +229,7 @@ CREATE UNIQUE INDEX galette_adherents_login_adh_idx ON galette_adherents (login_
 DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
-  libelle_type_cotis character varying(100) DEFAULT '' NOT NULL,
+  libelle_type_cotis character varying(255) DEFAULT '' NOT NULL,
   cotis_extension boolean DEFAULT FALSE,
   PRIMARY KEY (id_type_cotis)
 );
@@ -239,7 +239,7 @@ CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
     trans_amount real DEFAULT '0',
-    trans_desc character varying(150) NOT NULL DEFAULT '',
+    trans_desc character varying(255) NOT NULL DEFAULT '',
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (trans_id)
 );
@@ -263,7 +263,7 @@ DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
   id_pref integer DEFAULT nextval('galette_preferences_id_seq'::text) NOT NULL,
   nom_pref character varying(100) DEFAULT '' NOT NULL,
-  val_pref character varying(200) DEFAULT '' NOT NULL,
+  val_pref character varying(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (id_pref)
 );
 -- add index, nom_pref is used as foreign key elsewhere
@@ -274,7 +274,7 @@ CREATE TABLE galette_logs (
   id_log integer DEFAULT nextval('galette_logs_id_seq'::text) NOT NULL,
   date_log timestamp NOT NULL,
   ip_log character varying(46) DEFAULT '' NOT NULL,
-  adh_log character varying(41) DEFAULT '' NOT NULL,
+  adh_log character varying(255) DEFAULT '' NOT NULL, -- see galette_adherents.login_adh
   text_log text,
   action_log text,
   sql_log text,
@@ -287,7 +287,7 @@ CREATE TABLE galette_field_types (
   field_id integer DEFAULT nextval('galette_field_types_id_seq'::text) NOT NULL,
   field_form character varying(10) NOT NULL,
   field_index integer DEFAULT '0' NOT NULL,
-  field_name character varying(40) DEFAULT '' NOT NULL,
+  field_name character varying(255) DEFAULT '' NOT NULL,
   field_perm integer DEFAULT '0' NOT NULL,
   field_type integer DEFAULT '0' NOT NULL,
   field_required boolean DEFAULT FALSE,
@@ -324,10 +324,10 @@ CREATE TABLE galette_pictures (
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
-  text_orig character varying(100) NOT NULL,
+  text_orig character varying(255) NOT NULL,
   text_locale character varying(15) NOT NULL,
   text_nref integer DEFAULT '1' NOT NULL,
-  text_trans character varying(100) DEFAULT '' NOT NULL,
+  text_trans character varying(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (text_orig, text_locale)
 );
 
@@ -335,7 +335,7 @@ CREATE TABLE galette_l10n (
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
-  tmp_passwd character varying(60) NOT NULL,
+  tmp_passwd character varying(250) NOT NULL,
   date_crea_tmp_passwd timestamp NOT NULL,
   PRIMARY KEY (id_adh)
 );
@@ -348,7 +348,7 @@ CREATE TABLE galette_texts (
   tsubject character varying(256) NOT NULL,
   tbody text NOT NULL,
   tlang character varying(16) NOT NULL,
-  tcomment character varying(64) NOT NULL,
+  tcomment character varying(255) NOT NULL,
   PRIMARY KEY (tid)
 );
 CREATE UNIQUE INDEX galette_texts_localizedtxt_idx ON galette_texts (tref, tlang);
@@ -357,7 +357,7 @@ DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
   id_field_category integer  DEFAULT nextval('galette_fields_categories_id_seq'::text) NOT NULL,
   table_name character varying(30) NOT NULL,
-  category character varying(50) NOT NULL,
+  category character varying(100) NOT NULL,
   position integer NOT NULL,
   PRIMARY KEY (id_field_category)
 );
@@ -385,7 +385,7 @@ CREATE TABLE galette_mailing_history (
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT NULL,
   mailing_sent boolean DEFAULT FALSE,
-  mailing_sender_name character varying(100) DEFAULT NULL,
+  mailing_sender_name character varying(255) DEFAULT NULL,
   mailing_sender_address character varying(255) DEFAULT NULL,
   PRIMARY KEY (mailing_id)
 );
@@ -394,7 +394,7 @@ CREATE TABLE galette_mailing_history (
 DROP TABLE IF EXISTS galette_groups CASCADE;
 CREATE TABLE galette_groups (
   id_group integer DEFAULT nextval('galette_groups_id_seq'::text) NOT NULL,
-  group_name character varying(50) NOT NULL CONSTRAINT name UNIQUE,
+  group_name character varying(250) NOT NULL CONSTRAINT name UNIQUE,
   creation_date timestamp NOT NULL,
   parent_group integer DEFAULT NULL REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (id_group)
@@ -438,8 +438,8 @@ CREATE TABLE galette_pdfmodels (
   model_footer text,
   model_body text,
   model_styles text,
-  model_title character varying(100),
-  model_subtitle character varying(100),
+  model_title character varying(250),
+  model_subtitle character varying(250),
   model_parent integer DEFAULT NULL REFERENCES galette_pdfmodels (model_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (model_id)
 );
@@ -471,7 +471,7 @@ CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_
 -- new table for temporary links
 DROP TABLE IF EXISTS galette_tmplinks;
 CREATE TABLE galette_tmplinks (
-  hash character varying(60) NOT NULL,
+  hash character varying(250) NOT NULL,
   target smallint NOT NULL,
   id integer NOT NULL,
   creation_date timestamp NOT NULL,
@@ -483,4 +483,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.94);
+INSERT INTO galette_database (version) VALUES(0.95);

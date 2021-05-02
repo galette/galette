@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use atoum;
  * @name      Db
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2014-01-03
@@ -126,7 +126,8 @@ class Install extends atoum
             '0.92'  => 'upgrade-to-0.92-pgsql.sql',
             '0.93'  => 'upgrade-to-0.93-pgsql.sql',
             '0.931' => 'upgrade-to-0.931-pgsql.sql',
-            '0.94'  => 'upgrade-to-0.94-pgsql.sql'
+            '0.94'  => 'upgrade-to-0.94-pgsql.sql',
+            '0.95'  => 'upgrade-to-0.95-pgsql.sql'
         );
 
         $this->array($update_scripts)
