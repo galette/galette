@@ -139,7 +139,7 @@ class Install extends atoum
             '0.7'
         );
 
-        //if we're from 0.7.0, there are only 6 update scripts left
+        //if we're from 0.7.0, there are 4 less update scripts
         $this->array($update_scripts)
             ->hasSize(count($knowns) - 4);
 
@@ -147,7 +147,7 @@ class Install extends atoum
             GALETTE_BASE_PATH . '/install'
         );
 
-        //without specifying database nor version, we got 10 update scripts total
+        //without specifying database nor version, we got all update scripts
         $all_knowns = ['0.60' => 'upgrade-to-0.60-pgsql.sql'] + $knowns;
         $this->array(array_values($update_scripts))
             ->hasSize(count($all_knowns))
@@ -165,6 +165,7 @@ class Install extends atoum
             ->hasSize(count($knowns))
             ->isIdenticalTo($knowns);
 
+        //for installation, only one script is present :)
         $this->install->setMode(\Galette\Core\Install::INSTALL);
         $update_scripts = $this->install->getScripts(
             GALETTE_BASE_PATH . '/install'

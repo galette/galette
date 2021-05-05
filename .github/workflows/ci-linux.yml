@@ -108,6 +108,24 @@ jobs:
           galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
         if: matrix.php-versions == '7.4'
 
+      - name: Init for PostgreSQL (update)
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        run: |
+          PGPASSWORD=g@l3tte psql -d galette_tests -a -f tests/pgsql_06.sql -U galette_tests -h localhost
+        if: startsWith(matrix.db-image, 'postgres')
+
+      - name: Init for MariaDB (update)
+        run: |
+          mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+          mysql -e 'use galette_tests; source tests/mysql_06.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+        if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
+
+      - name: Update database tests
+        run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/GaletteUpdate/
+        if: matrix.coverage != 'xdebug'
+
       - name: Init for PostgreSQL
         env:
           POSTGRES_HOST: localhost

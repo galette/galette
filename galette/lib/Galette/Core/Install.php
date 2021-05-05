@@ -621,17 +621,18 @@ class Install
     /**
      * Execute SQL scripts
      *
-     * @param Galette\Core\Db $zdb Database instance
+     * @param Galette\Core\Db $zdb   Database instance
+     * @param string          $spath Path to scripts
      *
      * @return boolean
      */
-    public function executeScripts($zdb)
+    public function executeScripts($zdb, $spath = null)
     {
         $queries_results = array();
         $fatal_error = false;
-        $update_scripts = $this->getScripts();
+        $update_scripts = $this->getScripts($spath);
         $this->_report = array();
-        $scripts_path = GALETTE_ROOT . '/install/scripts/';
+        $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
             $sql_query = '';
