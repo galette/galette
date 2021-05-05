@@ -64,8 +64,6 @@ use Slim\Router;
 
 trait Replacements
 {
-    public static $RENDER_TXT = 0;
-    public static $RENDER_HTML = 1;
     private $patterns = [];
     private $replaces = [];
     private $dynamic_patterns = [];
@@ -651,7 +649,6 @@ trait Replacements
     public function setDynamicFields(string $form_name, array $dynamic_fields, $object): self
     {
         $uform_name = strtoupper($form_name);
-        $render = ($this instanceof PdfModel && ($object->id == null) ? self::$RENDER_HTML : self::$RENDER_TXT);
 
         $dynamic_patterns = $this->getDynamicPatterns($form_name);
         foreach ($dynamic_patterns as $dynamic_pattern) {
@@ -686,28 +683,6 @@ trait Replacements
                 }
 
                 switch ($field_type) {
-                    case DynamicField::TEXT:
-                        if ($render == self::$RENDER_HTML) {
-                            $value .= '<textarea' .
-                                ' id="' . $field_name . '"' .
-                                ' name="' . $field_name . '"' .
-                                ' value="' . $field_value . '"' .
-                                '/>';
-                        } else {
-                            $value .= $field_value;
-                        }
-                        break;
-                    case DynamicField::LINE:
-                        if ($render == self::$RENDER_HTML) {
-                            $value .= '<input type="text"' .
-                                ' id="' . $field_name . '"' .
-                                ' name="' . $field_name . '"' .
-                                ' value="' . $field_value . '"' .
-                                ' size="20" maxlength="30"/>';
-                        } else {
-                            $value .= $field_value;
-                        }
-                        break;
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
                         foreach ($choice_values as $choice_idx => $choice_value) {
@@ -728,37 +703,12 @@ trait Replacements
                             }
                         }
                         break;
+                    case DynamicField::TEXT:
+                    case DynamicField::LINE:
                     case DynamicField::DATE:
-                        if ($render == self::$RENDER_HTML) {
-                            $value .= '<input type="text" name="' .
-                                $field_name . '" value="' .
-                                $field_value .
-                                '" size="10" />';
-                        } else {
-                            $value .= $field_value;
-                        }
-                        break;
                     case DynamicField::BOOLEAN:
-                        if ($render == self::$RENDER_HTML) {
-                            $value .= '<input type="checkbox"' .
-                                ' name="' . $field_name . '"' .
-                                ' value="1"';
-                            if ($field_value == 1) {
-                                $value .= ' checked="checked"';
-                            }
-                            $value .= '/>';
-                        } else {
-                            $value .= $field_value;
-                        }
-                        break;
                     case DynamicField::FILE:
-                        if ($render == self::$RENDER_HTML) {
-                            $value .= '<input type="text" name="' .
-                                $field_name . '" value="' .
-                                $field_value . '" />';
-                        } else {
-                            $value .= $field_value;
-                        }
+                        $value .= $field_value;
                         break;
                 }
             }
