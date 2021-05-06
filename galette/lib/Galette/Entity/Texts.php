@@ -80,11 +80,13 @@ class Texts
      */
     public function __construct(Preferences $preferences, Router $router = null)
     {
-        global $zdb, $login;
+        global $zdb, $login, $container;
         $this->preferences = $preferences;
         if ($router === null) {
-            global $container;
             $router = $container->get('router');
+        }
+        if ($login === null) {
+            $login = $container->get('login');
         }
         $this->router = $router;
         $this
