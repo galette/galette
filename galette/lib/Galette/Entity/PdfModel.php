@@ -352,7 +352,7 @@ abstract class PdfModel
             case 'hsubtitle':
             case 'hbody':
                 $pname = substr($name, 1);
-                $prop_value = $this->$pname;
+                $prop_value = $this->$pname ?? '';
 
                 //get header and footer from parent if not defined in current model
                 if (
