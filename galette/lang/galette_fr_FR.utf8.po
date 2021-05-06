@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-25 07:23+0000\n"
+"PO-Revision-Date: 2021-05-06 04:21+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3608,7 +3608,7 @@ msgstr "La base de données n’a pas été installée !"
 
 #: ../install/steps/db_install.php:48
 msgid "Database has not been upgraded!"
-msgstr "La base de données n’a pas été mises à jour !"
+msgstr "La base de données n’a pas été mise à jour !"
 
 #: ../install/steps/db_install.php:52
 msgid "Database has been installed :)"
