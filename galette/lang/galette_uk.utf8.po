@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-05-01 19:32+0000\n"
-"Last-Translator: Віталій Куждін <kuzhdinvitaliy@gmail.com>\n"
+"PO-Revision-Date: 2021-05-08 08:39+0000\n"
+"Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -1042,7 +1042,7 @@ msgstr "Y-m-d H:i:s"
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:290
 msgid "Checks"
-msgstr "Перевірки"
+msgstr "Чеки"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:291
 #: ../install/steps/type.php:39
@@ -3974,7 +3974,7 @@ msgstr "Скинути всі моделі PDF до типових значен�
 
 #: ../templates/default/admintools.tpl:22
 msgid "Reinitialize PDF models"
-msgstr "Повторно ініціалізуйте моделі PDF"
+msgstr "Повторна ініціалізація моделей PDF"
 
 #: ../templates/default/admintools.tpl:28
 #: ../templates/default/admintools.tpl:29
