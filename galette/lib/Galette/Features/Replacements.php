@@ -686,21 +686,7 @@ trait Replacements
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
                         foreach ($choice_values as $choice_idx => $choice_value) {
-                            if ($render == self::$RENDER_HTML) {
-                                $value .= '<input type="radio"' .
-                                    ' id="' . $field_name . '"' .
-                                    ' name="' . $field_name . '"' .
-                                    ' value="' . $choice_value . '"';
-                                if ($choice_idx == $field_value) {
-                                    $value .= ' checked="checked"';
-                                }
-                                $value .= '/>';
-                                $value .= $choice_value;
-                                $value .= '&nbsp;';
-                            } else {
-                                $value .= $choice_value;
-                                $value .= '&nbsp;';
-                            }
+                            $value .= $choice_value . '&nbsp;';
                         }
                         break;
                     case DynamicField::TEXT:
