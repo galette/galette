@@ -110,7 +110,6 @@ class Install extends atoum
         );
 
         $knowns = array(
-            '0.60'  => 'upgrade-to-0.60-pgsql.sql',
             '0.61'  => 'upgrade-to-0.61-pgsql.sql',
             '0.62'  => 'upgrade-to-0.62-pgsql.sql',
             '0.63'  => 'upgrade-to-0.63-pgsql.sql',
@@ -149,9 +148,10 @@ class Install extends atoum
         );
 
         //without specifying database nor version, we got 10 update scripts total
+        $all_knowns = ['0.60' => 'upgrade-to-0.60-pgsql.sql'] + $knowns;
         $this->array(array_values($update_scripts))
-            ->hasSize(count($knowns))
-            ->isEqualTo(array_keys($knowns));
+            ->hasSize(count($all_knowns))
+            ->isEqualTo(array_keys($all_knowns));
 
         $this->install->setMode(\Galette\Core\Install::UPDATE);
         $errors = array();

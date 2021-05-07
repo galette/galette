@@ -590,7 +590,7 @@ class Install
                     if ($version === null) {
                         $php_update_scripts[$ver[1]] = $ver[1];
                     } else {
-                        if ($version <= $ver[1]) {
+                        if ($version < $ver[1]) {
                             $php_update_scripts[$ver[1]] = $file;
                         }
                     }
@@ -605,7 +605,7 @@ class Install
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
-                        if ($version <= $ver[1]) {
+                        if ($version < $ver[1]) {
                             $sql_update_scripts[$ver[1]] = $file;
                         }
                     }
