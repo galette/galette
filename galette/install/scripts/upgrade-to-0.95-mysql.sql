@@ -42,4 +42,6 @@ ALTER TABLE galette_pdfmodels CHANGE model_subtitle model_subtitle varchar(250);
 
 ALTER TABLE galette_tmplinks CHANGE hash hash varchar(250) NOT NULL;
 
+DROP TABLE IF EXISTS galette_required;
+
 UPDATE galette_database SET version = 0.950;

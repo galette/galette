@@ -22,7 +22,7 @@ CREATE TABLE galette_pictures (
 );
 
 -- stephs ;
-INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
+INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (a payer)');
 CREATE UNIQUE INDEX galette_adherents_idx ON galette_adherents (id_adh);
 CREATE UNIQUE INDEX galette_login_idx     ON galette_adherents (login_adh);
 CREATE UNIQUE INDEX galette_cotisations_idx ON galette_cotisations (id_cotis);
@@ -39,13 +39,13 @@ CREATE UNIQUE INDEX galette_preferences_idx ON galette_preferences (id_pref);
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_pays', '-');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_website', '');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_method', '0');
-INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_smtp', '0'); 
+INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_mail_smtp', '0');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_membership_ext', '12');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_beg_membership', '');
 INSERT INTO galette_preferences(nom_pref, val_pref) VALUES ('pref_email_reply_to', '');
 
 -- New tables for dynamic fields;
-DROP SEQUENCE galette_field_types_id_seq;
+DROP SEQUENCE IF EXISTS galette_field_types_id_seq;
 CREATE SEQUENCE galette_field_types_id_seq
     START 1
     INCREMENT 1
@@ -53,7 +53,7 @@ CREATE SEQUENCE galette_field_types_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE galette_field_types;
+DROP TABLE IF EXISTS galette_field_types;
 CREATE TABLE galette_field_types (
   field_id integer DEFAULT nextval('galette_field_types_id_seq'::text) NOT NULL,
   field_form character varying(10) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE galette_field_types (
 CREATE UNIQUE INDEX galette_field_types_idx ON galette_field_types (field_id);
 CREATE INDEX galette_field_types_form_idx ON galette_field_types (field_form);
 
-DROP TABLE galette_dynamic_fields;
+DROP TABLE IF EXISTS galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
   item_id integer DEFAULT '0' NOT NULL,
   field_id integer DEFAULT '0' NOT NULL,
@@ -110,7 +110,7 @@ UPDATE galette_types_cotisation SET cotis_extension=1 WHERE
     id_type_cotis <= 3 OR id_type_cotis = 7;
 
 -- Table for dynamic translation of strings;
-DROP TABLE galette_l10n;
+DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
   text_orig character varying(40) NOT NULL,
   text_locale character varying(15) NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE galette_l10n (
 CREATE UNIQUE INDEX galette_l10n_idx ON galette_l10n (text_orig, text_locale);
 
 -- Table for transactions;
-DROP SEQUENCE galette_transactions_id_seq;
+DROP SEQUENCE IF EXISTS galette_transactions_id_seq;
 CREATE SEQUENCE galette_transactions_id_seq
     START 1
     INCREMENT 1
@@ -128,7 +128,7 @@ CREATE SEQUENCE galette_transactions_id_seq
     MINVALUE 1
     CACHE 1;
 
-DROP TABLE galette_transactions;
+DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
@@ -142,7 +142,7 @@ ALTER TABLE galette_cotisations ADD trans_id integer;
 ALTER TABLE galette_cotisations ALTER COLUMN trans_id SET DEFAULT NULL;
 
 -- new table for temporary passwords  2006-02-18;
-DROP TABLE galette_tmppasswds;
+DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh integer NOT NULL,
     tmp_passwd character varying(40) NOT NULL,

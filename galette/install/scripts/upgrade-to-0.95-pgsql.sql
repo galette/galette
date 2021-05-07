@@ -40,6 +40,8 @@ ALTER TABLE galette_groups ALTER COLUMN group_name TYPE varchar(250);
 ALTER TABLE galette_pdfmodels ALTER COLUMN model_title TYPE varchar(250);
 ALTER TABLE galette_pdfmodels ALTER COLUMN model_subtitle TYPE varchar(250);
 
-ALTER TABLE galette_tmplinks ALTER COLUMN hash hash varchar(250);
+ALTER TABLE galette_tmplinks ALTER COLUMN hash TYPE varchar(250);
+
+DROP TABLE IF EXISTS galette_required;
 
 UPDATE galette_database SET version = 0.950;

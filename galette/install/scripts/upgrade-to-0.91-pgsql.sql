@@ -12,6 +12,6 @@ ALTER TABLE galette_adherents ALTER COLUMN gpgid TYPE text;
 DELETE FROM galette_dynamic_fields WHERE item_id = 0;
 
 -- Detailled log history has ben dropped
-UPDATE galette_preferences SET val_pref = 1 WHERE nom_pref = 'pref_log' AND val_pref = 2;
+UPDATE galette_preferences SET val_pref = 1 WHERE nom_pref = 'pref_log' AND val_pref = '2';
 
 UPDATE galette_database SET version = 0.91;
