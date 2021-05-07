@@ -630,11 +630,11 @@ class Install
         $queries_results = array();
         $fatal_error = false;
         $update_scripts = $this->getScripts();
-        $sql_query = '';
         $this->_report = array();
         $scripts_path = GALETTE_ROOT . '/install/scripts/';
 
         foreach ($update_scripts as $key => $val) {
+            $sql_query = '';
             if (substr($val, -strlen('.sql')) === '.sql') {
                 //just a SQL script, run it
                 $script = fopen($scripts_path . $val, 'r');
@@ -693,12 +693,16 @@ class Install
                     $this->_report[] = $ret;
                 }
             }
+
+            if ($sql_query !== '') {
+                $sql_res = $this->executeSql($zdb, $sql_query);
+                $fatal_error = !$sql_res;
+                if ($fatal_error) {
+                    break;
+                }
+            }
         }
 
-        if ($sql_query !== '') {
-            $sql_res = $this->executeSql($zdb, $sql_query);
-            $fatal_error = !$sql_res;
-        }
         return !$fatal_error;
     }
 
