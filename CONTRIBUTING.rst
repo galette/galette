@@ -3,9 +3,9 @@ Contributing
 ============
 
 
-Even when you think you can't help, you can.
+Even when you think you can't help, you can:
 
-**See `Contribute to Galette <https://galette.eu/site/contribute/>`_**.
+See `Contribute to Galette <https://galette.eu/site/contribute/>`_.
 
 You can Use, Test and Report:
 -----------------------------
@@ -18,7 +18,7 @@ You can Use, Test and Report:
 - If you encouter a bug, you should open a ticket on the `Galette tracker 
   <https://bugs.galette.eu/projects/galette>`_, with as much informations as
   you can (helpfull enough to a developper to understand, even reproduce this bug),
-  See `<https://doc.galette.eu/en/master/faq/index.html#how-to-report-a-bug-or-ask-for-a-feature>`_,
+  See `How to report a bug <https://doc.galette.eu/en/master/faq/index.html#how-to-report-a-bug-or-ask-for-a-feature>`_,
 
 - Use one of many communication channels, see `<https://galette.eu/site/contact/>`_, 
   to reach us.
@@ -41,7 +41,7 @@ Johan, the main `Galette` developper, never say *no* to a little motivation.
 You can Translate:
 ------------------
 
-This is a very usefull contribution. See `<https://galette.eu/site/contribute/#translate>`_ for more.
+This is a very usefull contribution. See `Translate <https://galette.eu/site/contribute/#translate>`_ for more.
 
 You can Hack, Fix and Code:
 ---------------------------
