@@ -2,7 +2,7 @@
 ALTER TABLE galette_adherents CHANGE nom_adh nom_adh varchar(255) NOT NULL default '';
 ALTER TABLE galette_adherents CHANGE prenom_adh prenom_adh varchar(255) NOT NULL default '';
 ALTER TABLE galette_adherents CHANGE pseudo_adh pseudo_adh varchar(255) NOT NULL default '';
-ALTER TABLE galette_adherents CHANGE adresse_adh adresse_adh text NOT NULL default '';
+ALTER TABLE galette_adherents CHANGE adresse_adh adresse_adh text NOT NULL;
 ALTER TABLE galette_adherents CHANGE ville_adh ville_adh varchar(200) NOT NULL default '';
 ALTER TABLE galette_adherents CHANGE pays_adh pays_adh varchar(200) default NULL;
 ALTER TABLE galette_adherents CHANGE tel_adh tel_adh varchar(50) default NULL;

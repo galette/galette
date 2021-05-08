@@ -14,7 +14,7 @@ CREATE TABLE galette_adherents (
   titre_adh int(10) unsigned default NULL,
   ddn_adh date default '1901-01-01',
   sexe_adh tinyint(1) NOT NULL default '0',
-  adresse_adh text NOT NULL default '',
+  adresse_adh text NOT NULL,
   adresse2_adh varchar(150) default NULL, -- TODO: remove
   cp_adh varchar(10) NOT NULL default '',
   ville_adh varchar(200) NOT NULL default '',
