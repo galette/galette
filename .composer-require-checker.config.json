@@ -84,8 +84,10 @@
     "// DI functions",
     "DI\\autowire",
     "DI\\Container",
-    "DI\\ContainerBuilder"
+    "DI\\ContainerBuilder",
 
+    "//PHP8 functions",
+    "str_contains"
   ],
   "scan-files": [
     "galette/*.php",
