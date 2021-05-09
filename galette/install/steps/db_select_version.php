@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-07-21
@@ -87,6 +87,7 @@ if (count($versions) == 0) {
                     <ul class="leaders">
     <?php
     $is_current = false;
+    $previous = null;
     foreach ($versions as $version) {
         ?>
                     <li>
@@ -115,7 +116,7 @@ if (count($versions) == 0) {
                             </label>
                         </span>
                         <span>
-                        <input type="radio" name="previous_version" value="<?php echo $version; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; }; ?> required/>
+                        <input type="radio" name="previous_version" value="<?php echo $previous ?? $version; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; }; ?> required/>
                         </span>
         <?php
         if ($is_current) {
@@ -126,6 +127,7 @@ if (count($versions) == 0) {
 
                     </li>
     <?php
+        $previous = $version;
     }
     ?>
                     </ul>

@@ -324,6 +324,9 @@ class Preferences
         $params = array();
         foreach (self::$defaults as $k => $v) {
             if (!isset($this->prefs[$k])) {
+                if ($k == 'pref_admin_pass' && $v == 'admin') {
+                    $v = password_hash($v, PASSWORD_BCRYPT);
+                }
                 $this->prefs[$k] = $v;
                 Analog::log(
                     'The field `' . $k . '` does not exists, Galette will attempt to create it.',

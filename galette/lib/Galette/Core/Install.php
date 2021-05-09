@@ -635,7 +635,6 @@ class Install
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
-            $sql_query = '';
             if (substr($val, -strlen('.sql')) === '.sql') {
                 //just a SQL script, run it
                 $script = fopen($scripts_path . $val, 'r');
@@ -646,10 +645,15 @@ class Install
                     );
                 }
 
-                $sql_query .= @fread(
+                $sql_query = @fread(
                     $script,
                     @filesize($scripts_path . $val)
                 ) . "\n";
+
+                $sql_res = $this->executeSql($zdb, $sql_query);
+                if (!$sql_res) {
+                    $fatal_error = true;
+                }
             } else {
                 //we got an update class
                 include_once $scripts_path . $val;
@@ -695,13 +699,10 @@ class Install
                 }
             }
 
-            if ($sql_query !== '') {
-                $sql_res = $this->executeSql($zdb, $sql_query);
-                $fatal_error = !$sql_res;
-                if ($fatal_error) {
-                    break;
-                }
-            }
+            Analog::log(
+                str_replace('%s', $key, 'Upgrade to %s complete'),
+                Analog::INFO
+            );
         }
 
         return !$fatal_error;
