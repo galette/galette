@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-05-08 08:39+0000\n"
+"PO-Revision-Date: 2021-05-14 21:09+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -2984,7 +2984,7 @@ msgstr "Дані, пов'язані з Galette:"
 
 #: ../includes/i18n.inc.php:315
 msgid "Contact information:"
-msgstr "Контактні відомості:"
+msgstr "Контактні дані:"
 
 #: ../includes/i18n.inc.php:316
 msgid "Society"
