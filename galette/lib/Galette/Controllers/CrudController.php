@@ -220,7 +220,7 @@ abstract class CrudController extends AbstractController
         //add to $args if needed
         if (is_array($ids)) {
             $args['ids'] = $ids;
-        } elseif (!isset($args['id'])) {
+        } elseif (!isset($args['id']) && $ids) {
             $args['id'] = $ids;
         }
 
