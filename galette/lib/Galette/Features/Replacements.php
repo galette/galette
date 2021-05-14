@@ -40,6 +40,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Logo;
 use Galette\Core\Preferences;
+use Galette\DynamicFields\Choice;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
@@ -110,19 +111,29 @@ trait Replacements
 
         $dynamic_patterns = [];
         foreach ($dynamic_fields as $dynamic_field) {
-            $key = strtoupper('_DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
-            foreach (['LABEL', 'INPUT'] as $capability) {
-                $dynamic_patterns[strtolower($capability . $key)] = [
+            $key = strtoupper('DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
+            $capabilities = [
+                'LABEL',
+                ''
+            ];
+            if ($dynamic_field instanceof Choice) {
+                $capabilities[] = 'INPUT';
+            }
+            foreach ($capabilities as $capability) {
+                if (empty($capability)) {
+                    $skey = $key;
+                } else {
+                    $skey = sprintf('%s_%s', $capability, $key);
+                }
+                $dynamic_patterns[strtolower($skey)] = [
                     'title' => sprintf(
                         ($capability == 'LABEL' ? _T('Label for dynamic field "%s"')
-                        : _T('Input for dynamic field "%s"')),
+                        : ($capability == 'INPUT' ? _T('Form entry for dynamic field "%s"') :
+                            _T('Value for dynamic field "%s"'))
+                        ),
                         $dynamic_field->getName()
                     ),
-                    'pattern'   => sprintf(
-                        '/{%s%s}/',
-                        $capability,
-                        $key
-                    )
+                    'pattern'   => sprintf('{%s}', $skey)
                 ];
             }
         }
@@ -655,46 +666,52 @@ trait Replacements
             $pattern = trim($dynamic_pattern['pattern'], '/');
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
-            if (preg_match("/^{DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
-                /** dynamic field first value */
-                $field_id = $match[1];
-                if ($object !== null) {
-                    $values = $object->getDynamicFields()->getValues($field_id);
-                    $value = $values[1];
-                } else {
-                    $value = '';
-                }
-            }
+
             if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field label */
                 $field_id = $match[1];
                 $value    = $dynamic_fields[$field_id]->getName();
             }
-            if (preg_match("/^{INPUT_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
-                /** dynamic field input form element */
-                $field_id    = $match[1];
+            if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+                /** dynamic field value */
+                $capacity = $match[1];
+                $field_id    = $match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
+                $field_values = [];
                 if ($object !== null) {
-                    $field_values = $object->getDynamicFields()->getValues($field_id);
-                    $field_value = $field_values[0]['field_val'];
+                    $all_values = $object->getDynamicFields()->getValues($field_id);
+                    foreach ($all_values as $field_value) {
+                        $field_values[$field_value['field_val']] = $field_value['text_val'] ?? $field_value['field_val'];
+                    }
                 } else {
-                    $field_value = '';
+                    $field_values = [];
                 }
 
                 switch ($field_type) {
                     case DynamicField::CHOICE:
-                        $choice_values = $dynamic_fields[$field_id]->getValues();
-                        foreach ($choice_values as $choice_idx => $choice_value) {
-                            $value .= $choice_value . '&nbsp;';
+                        if ($capacity == 'INPUT_') {
+                            $choice_values = $dynamic_fields[$field_id]->getValues();
+                            foreach ($choice_values as $choice_idx => $choice_value) {
+                                $value .= '<input type="radio" class="box" name="' . $field_name . '" value="' . $field_id . '"';
+                                if (isset($field_values[$choice_idx])) {
+                                    $value .= ' checked="checked"';
+                                }
+                                $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
+                            }
+                        } else {
+                            $value .= implode(' ', $field_values);
                         }
                         break;
+                    case DynamicField::FILE:
+                        //TODO: link to file
                     case DynamicField::TEXT:
                     case DynamicField::LINE:
                     case DynamicField::DATE:
+                        //TODO: ensure display
                     case DynamicField::BOOLEAN:
-                    case DynamicField::FILE:
-                        $value .= $field_value;
+                        //TODO: ensure display
+                        $value .= implode('<br/>', $field_values);
                         break;
                 }
             }
