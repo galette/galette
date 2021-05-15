@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-05-14 21:09+0000\n"
+"PO-Revision-Date: 2021-05-16 14:33+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -723,7 +723,7 @@ msgstr "Вийти"
 #: ../lib/Galette/Controllers/AuthController.php:193
 #, php-format
 msgid "Impersonating as %login"
-msgstr "Видається за %login"
+msgstr "Видає себе за %login"
 
 #: ../lib/Galette/Controllers/AuthController.php:205
 msgid "Unable to impersonate as %id"
@@ -732,7 +732,7 @@ msgstr "Не вдається видати себе за %id"
 #: ../lib/Galette/Controllers/AuthController.php:231
 #: ../lib/Galette/Controllers/AuthController.php:236
 msgid "Impersonating ended"
-msgstr "Уособлення завершено"
+msgstr "Видавання себе за іншого завершено"
 
 #: ../lib/Galette/Controllers/AuthController.php:261
 #: ../lib/Galette/Controllers/AuthController.php:462
