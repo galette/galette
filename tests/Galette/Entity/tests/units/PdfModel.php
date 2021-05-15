@@ -382,10 +382,10 @@ Au milieu
         $this->array($legend['main']['patterns'])->hasSize(8);
         $this->array($legend['member']['patterns'])
             ->hasSize(26)
-            ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'input_dynfield_' . $adf->getId() . '_adh']);
+            ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'dynfield_' . $adf->getId() . '_adh']);
         $this->array($legend['contribution']['patterns'])
             ->hasSize(13)
-            ->hasKeys(['label_dynfield_' . $cdf->getId() . '_contrib', 'input_dynfield_' . $cdf->getId() . '_contrib']);
+            ->hasKeys(['label_dynfield_' . $cdf->getId() . '_contrib', 'dynfield_' . $cdf->getId() . '_contrib']);
     }
 
     /**

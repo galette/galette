@@ -96,16 +96,13 @@ trait Replacements
     /**
      * Get dynamic patterns
      *
-     * @param string $form_name Dynamic form name
+     * @param string  $form_name Dynamic form name
+     * @param boolean $legacy    Whether to load legacy patterns
      *
      * @return array
      */
-    public function getDynamicPatterns(string $form_name): array
+    public function getDynamicPatterns(string $form_name, bool $legacy = true): array
     {
-        if (isset($this->dynamic_patterns[$form_name])) {
-            return $this->dynamic_patterns[$form_name];
-        }
-
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList($form_name);
 
@@ -116,24 +113,30 @@ trait Replacements
                 'LABEL',
                 ''
             ];
-            if ($dynamic_field instanceof Choice) {
+            if ($legacy === true || $dynamic_field instanceof Choice) {
                 $capabilities[] = 'INPUT';
             }
             foreach ($capabilities as $capability) {
-                if (empty($capability)) {
-                    $skey = $key;
-                } else {
-                    $skey = sprintf('%s_%s', $capability, $key);
+                $skey = sprintf('%s_%s', $capability, $key);
+                switch ($capability) {
+                    case 'LABEL':
+                        $title = _T('Label for dynamic field "%s"');
+                        break;
+                    case 'INPUT':
+                        $title = _T('Form entry for dynamic field "%s"');
+                        break;
+                    case '':
+                    case 'VALUE':
+                        $skey = $key;
+                        $title = _T('Value for dynamic field "%s"');
+                        break;
                 }
                 $dynamic_patterns[strtolower($skey)] = [
                     'title' => sprintf(
-                        ($capability == 'LABEL' ? _T('Label for dynamic field "%s"')
-                        : ($capability == 'INPUT' ? _T('Form entry for dynamic field "%s"') :
-                            _T('Value for dynamic field "%s"'))
-                        ),
+                        $title,
                         $dynamic_field->getName()
                     ),
-                    'pattern'   => sprintf('{%s}', $skey)
+                    'pattern'   => sprintf('/{%s}/', $skey)
                 ];
             }
         }
@@ -235,7 +238,7 @@ trait Replacements
      */
     protected function getMemberPatterns(bool $legacy = true): array
     {
-        $dynamic_patterns = $this->getDynamicPatterns('adh');
+        $dynamic_patterns = $this->getDynamicPatterns('adh', $legacy);
         $m_patterns = [
             'adh_title'         => [
                 'title'     => _('Title'),
@@ -372,7 +375,7 @@ trait Replacements
      */
     protected function getContributionPatterns($legacy = true): array
     {
-        $dynamic_patterns = $this->getDynamicPatterns('contrib');
+        $dynamic_patterns = $this->getDynamicPatterns('contrib', $legacy);
 
         $c_patterns = [
             'contrib_label'     => [
@@ -674,7 +677,7 @@ trait Replacements
             }
             if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field value */
-                $capacity = $match[1];
+                $capacity = trim('_', $match[1]);
                 $field_id    = $match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
@@ -690,7 +693,7 @@ trait Replacements
 
                 switch ($field_type) {
                     case DynamicField::CHOICE:
-                        if ($capacity == 'INPUT_') {
+                        if ($capacity == 'INPUT') {
                             $choice_values = $dynamic_fields[$field_id]->getValues();
                             foreach ($choice_values as $choice_idx => $choice_value) {
                                 $value .= '<input type="radio" class="box" name="' . $field_name . '" value="' . $field_id . '"';
