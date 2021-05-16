@@ -677,7 +677,7 @@ trait Replacements
             }
             if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field value */
-                $capacity = trim('_', $match[1]);
+                $capacity = trim($match[1], '_');
                 $field_id    = $match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
