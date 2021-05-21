@@ -25,8 +25,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-05-01 19:31+0000\n"
-"Last-Translator: Ricardo Santos <buehnenarbeiter@gmail.com>\n"
+"PO-Revision-Date: 2021-05-22 08:38+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1959,7 +1959,7 @@ msgstr "mit Bruchlinien"
 
 #: ../lib/Galette/Features/Replacements.php:200
 msgid "Your organisation website"
-msgstr "Webseite Ihrer Firma"
+msgstr "Website Ihrer Organisation"
 
 #: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation logo"
@@ -2249,7 +2249,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1304
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
-msgstr "- Ungültige Adresse der Webseite! Haben Sie das http:// vergessen?"
+msgstr "- Ungültige Adresse der Website! Haben Sie das http:// vergessen?"
 
 #: ../lib/Galette/Entity/Adherent.php:1313
 msgid "- The username must be composed of at least %i characters!"
@@ -2467,11 +2467,11 @@ msgstr "Link validiert"
 
 #: ../lib/Galette/Entity/Texts.php:132
 msgid "Direct link for member card download"
-msgstr "Direkter Link zum Download der Mitgliedskarte"
+msgstr "Direkter Link zum Herunterladen der Mitgliedskarte"
 
 #: ../lib/Galette/Entity/Texts.php:137
 msgid "Direct link for invoice/receipt download"
-msgstr "Direkter Link zum Download der Rechnung/Quittung"
+msgstr "Direkter Link zum Herunterladen der Rechnung/Quittung"
 
 #: ../lib/Galette/Entity/Texts.php:142
 msgid "Galette's change password URI"
@@ -3086,7 +3086,7 @@ msgid ""
 "website of the association. The amount of donations are free to be decided "
 "by the generous donor."
 msgstr ""
-"Die Mindestbeiträge für jede Beitragsart sind auf der Webseite des Vereins "
+"Die Mindestbeiträge für jede Beitragsart sind auf der Website des Vereins "
 "definiert. Spendenbeiträge können von den großzügigen Spendern selber "
 "eingegeben werden."
 
@@ -3188,7 +3188,7 @@ msgstr "E-Mail:"
 
 #: ../includes/fields_defs/members_fields.php:185
 msgid "Website:"
-msgstr "Webseite:"
+msgstr "Website:"
 
 #: ../includes/fields_defs/members_fields.php:193
 msgid "ICQ:"
@@ -4285,8 +4285,8 @@ msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 msgstr ""
-"Einstellungen ändern (Adresse, Webseite, Konfiguration des "
-"Mitgliedsausweises, ...)"
+"Einstellungen ändern (Adresse, Website, Konfiguration des Mitgliedsausweises "
+"…)"
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
 msgid "Informations about available plugins"
@@ -4382,7 +4382,7 @@ msgstr ""
 #: ../templates/default/page.tpl:142
 #: ../templates/default/gestion_adherents.tpl:475
 msgid "Existing mailing"
-msgstr "Bestehende Mails"
+msgstr "Bestehende E-Mails"
 
 #: ../templates/default/page.tpl:150
 msgid "Page content"
@@ -4395,7 +4395,7 @@ msgstr "Allgemein"
 #: ../templates/default/preferences.tpl:7
 #: ../templates/default/preferences.tpl:118
 msgid "Social networks"
-msgstr "Soziale Netze"
+msgstr "Soziale Netzwerke"
 
 #: ../templates/default/preferences.tpl:8
 #: ../templates/default/saved_searches.tpl:11
@@ -4443,7 +4443,7 @@ msgstr ""
 #: ../templates/default/gestion_paymentstypes.tpl:61
 #, php-format
 msgid "Translate '%s'"
-msgstr "Übersetze '%s'"
+msgstr "Übersetze „%s“"
 
 #: ../templates/default/preferences.tpl:39
 msgid "Footer text:"
@@ -6055,7 +6055,7 @@ msgstr "E-Mail"
 #: ../templates/default/gestion_adherents.tpl:405
 #: ../templates/default/footer.tpl:5
 msgid "Website"
-msgstr "Webseite"
+msgstr "Website"
 
 #: ../templates/default/gestion_adherents.tpl:289
 msgid "No member has been found"
