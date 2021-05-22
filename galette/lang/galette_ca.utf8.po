@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-25 07:23+0000\n"
+"PO-Revision-Date: 2021-05-22 08:47+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -257,32 +257,26 @@ msgid "Member Profile"
 msgstr "Perfil del membre"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
-#, fuzzy
 msgid "Members list"
 msgstr "Llista de membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
-#, fuzzy
 msgid "Trombinoscope"
 msgstr "Trombinoscopi"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:509
-#, fuzzy
 msgid "The file does not exists or cannot be read :("
-msgstr "El fitxer no existeix o no es pot llegir ("
+msgstr "El fitxer no existeix o no es pot llegir :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:573
-#, fuzzy
 msgid "Members management"
 msgstr "Gestió de membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:794
-#, fuzzy
 msgid "Status label"
 msgstr "Etiqueta d'estat"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:834
-#, fuzzy
 msgid "Advanced search"
 msgstr "Cerca avançada"
 
@@ -294,49 +288,43 @@ msgid "No member was selected, please check at least one name."
 msgstr "No s'ha seleccionat cap membre. Comproveu almenys un nom."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1261
-#, fuzzy, php-format
+#, php-format
 msgid "Mass change %count members"
-msgstr "Membres del recompte de canvis massius"
+msgstr "Canvi massiu %count membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1291
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1362
-#, fuzzy
 msgid "Mass changes has not been confirmed!"
 msgstr "No s'han confirmat canvis massius!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1332
-#, fuzzy, php-format
+#, php-format
 msgid "Review mass change %count members"
-msgstr "Revisa els membres del nombre de comptes de canvi massiu"
+msgstr "Revisar el canvi massiu %count membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1391
-#, fuzzy
 msgid "Nothing to do!"
 msgstr "Res a fer!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1419
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1656
-#, fuzzy
 msgid "An error occurred while storing the member."
 msgstr "S'ha produït un error en emmagatzemar el membre."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1431
-#, fuzzy
 msgid "Something went wront during mass edition!"
 msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1438
-#, fuzzy, php-format
+#, php-format
 msgid "%count members has been changed successfully!"
-msgstr "El nombre de membres ha canviat amb èxit!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
-#, fuzzy
 msgid "Invalid captcha"
 msgstr "Captcha no vàlid"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1615
-#, fuzzy
 msgid "Your account has been created!"
 msgstr "S'ha creat el compte!"
 
