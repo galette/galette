@@ -9,9 +9,15 @@ Changes
 - Inactive accounts can renew their password
 - Error on removing contribution type
 - Cannot cascade remove groups
+- Ability to order on contributions and transactions ID
 - Variables available in emails and PDF are now the same, dynamic fields has been added, ...
+- Fix late reminders PDF labels
 - Third party dependencies has been updated and cleaned, some for security reasons
+- Add dynamic files on contributions and transactions, fixes
 - Improve self subscription captcha
+- Few fixes on members views
+- Fix auto generated logins that contains `@`
+- Change some database fields so they can store more characters
 - dependency management system has been changed
 
 0.9.4.1 -> 0.9.4.2
