@@ -56,5 +56,10 @@
     },
     "config": {
         "optimize-autoloader": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-hrs.patch"
+        ]
     }
 }
