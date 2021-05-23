@@ -41,6 +41,7 @@ use Galette\Core\Login;
 use Galette\Core\Logo;
 use Galette\Core\Preferences;
 use Galette\DynamicFields\Choice;
+use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
@@ -108,6 +109,10 @@ trait Replacements
 
         $dynamic_patterns = [];
         foreach ($dynamic_fields as $dynamic_field) {
+            //no pattern for separators
+            if ($dynamic_field instanceof  Separator) {
+                continue;
+            }
             $key = strtoupper('DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
             $capabilities = [
                 'LABEL',
@@ -706,14 +711,32 @@ trait Replacements
                             $value .= implode(' ', $field_values);
                         }
                         break;
+                    case DynamicField::BOOLEAN:
+                        foreach ($field_values as $field_value) {
+                            $value .= ($field_value ? _T("Yes") : _T("No"));
+                        }
+                        break;
                     case DynamicField::FILE:
-                        //TODO: link to file
+                        $pos = 0;
+                        foreach ($field_values as $field_value) {
+                            $value .= sprintf(
+                                '<a href="%1$s%2$s">%3$s</a>',
+                                $this->preferences->getURL(),
+                                $this->router->pathFor(
+                                    'getDynamicFile', [
+                                        'id' => $object->id,
+                                        'fid' => $field_id,
+                                        'pos' => ++$pos,
+                                        'name' => $field_value
+                                    ]
+                                ),
+                                $field_value
+                            );
+                        }
+                        break;
                     case DynamicField::TEXT:
                     case DynamicField::LINE:
                     case DynamicField::DATE:
-                        //TODO: ensure display
-                    case DynamicField::BOOLEAN:
-                        //TODO: ensure display
                         $value .= implode('<br/>', $field_values);
                         break;
                 }
