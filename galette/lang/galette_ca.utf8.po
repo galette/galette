@@ -3,13 +3,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
+# Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-05-22 08:47+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-05-26 08:34+0000\n"
+"Last-Translator: Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -318,7 +319,7 @@ msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1438
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr ""
+msgstr "%count membres han estat canviats satisfactoriament!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "Invalid captcha"
