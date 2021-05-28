@@ -45,6 +45,7 @@ use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
+use Galette\Entity\Texts;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
@@ -118,7 +119,7 @@ trait Replacements
                 'LABEL',
                 ''
             ];
-            if ($legacy === true || $dynamic_field instanceof Choice) {
+            if (!($this instanceof Texts) && ($legacy === true || $dynamic_field instanceof Choice)) {
                 $capabilities[] = 'INPUT';
             }
             foreach ($capabilities as $capability) {
