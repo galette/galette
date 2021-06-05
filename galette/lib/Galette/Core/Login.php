@@ -344,4 +344,17 @@ class Login extends Authentication
     {
         return $this->impersonated;
     }
+
+    /**
+     * Set id
+     *
+     * @param int $id ID to set
+     *
+     * @return $this
+     */
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
 }

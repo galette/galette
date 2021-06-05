@@ -673,7 +673,7 @@ class PdfController extends AbstractController
             $this->zdb,
             $this->i18n
         );
-        $login->id = (int)$row['id_adh'];
+        $login->setId((int)$row['id_adh']);
 
         if ($target === Links::TARGET_MEMBERCARD) {
             $m = new Members();
