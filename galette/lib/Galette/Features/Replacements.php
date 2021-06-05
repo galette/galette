@@ -699,8 +699,8 @@ trait Replacements
 
                 switch ($field_type) {
                     case DynamicField::CHOICE:
+                        $choice_values = $dynamic_fields[$field_id]->getValues();
                         if ($capacity == 'INPUT') {
-                            $choice_values = $dynamic_fields[$field_id]->getValues();
                             foreach ($choice_values as $choice_idx => $choice_value) {
                                 $value .= '<input type="radio" class="box" name="' . $field_name . '" value="' . $field_id . '"';
                                 if (isset($field_values[$choice_idx])) {
@@ -709,7 +709,9 @@ trait Replacements
                                 $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
                             }
                         } else {
-                            $value .= implode(' ', $field_values);
+                            foreach ($field_values as $choice_idx) {
+                                $value .= $choice_values[$choice_idx];
+                            }
                         }
                         break;
                     case DynamicField::BOOLEAN:
@@ -720,8 +722,15 @@ trait Replacements
                     case DynamicField::FILE:
                         $pos = 0;
                         foreach ($field_values as $field_value) {
+                            if (empty($field_value)) {
+                                continue;
+                            }
+                            $spattern = (($this instanceof Texts) ?
+                                '%3$s (%1$s%2$s)' :
+                                '<a href="%1$s%2$s">%3$s</a>'
+                            );
                             $value .= sprintf(
-                                '<a href="%1$s%2$s">%3$s</a>',
+                                $spattern,
                                 $this->preferences->getURL(),
                                 $this->router->pathFor(
                                     'getDynamicFile',
