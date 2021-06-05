@@ -724,7 +724,8 @@ trait Replacements
                                 '<a href="%1$s%2$s">%3$s</a>',
                                 $this->preferences->getURL(),
                                 $this->router->pathFor(
-                                    'getDynamicFile', [
+                                    'getDynamicFile',
+                                    [
                                         'id' => $object->id,
                                         'fid' => $field_id,
                                         'pos' => ++$pos,
