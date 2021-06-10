@@ -4,13 +4,14 @@
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
+# mireia monne dominguez <mireiamonnedominguez@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-05-26 08:34+0000\n"
-"Last-Translator: Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>\n"
+"PO-Revision-Date: 2021-06-11 21:33+0000\n"
+"Last-Translator: mireia monne dominguez <mireiamonnedominguez@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -172,9 +173,8 @@ msgid "Remove mailing #%1$s"
 msgstr "Elimina el mailing #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
-#, fuzzy
 msgid "Mailing preview"
-msgstr "Previsualització del mailing"
+msgstr "Vista prèvia del correu"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:75
 #, fuzzy
@@ -182,20 +182,17 @@ msgid "Add field"
 msgstr "Afegeix un camp"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:130
-#, fuzzy
 msgid "An error occurred adding dynamic field :("
-msgstr "S'ha produït un error en afegir un camp dinàmic ("
+msgstr "S'ha produït un error en afegir un camp dinàmic:("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:144
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:367
-#, fuzzy
 msgid "Dynamic field has been successfully stored!"
-msgstr "El camp dinàmic s'ha desat correctament!"
+msgstr "El camp dinàmic ha estat emmagatzemat amb èxit."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:229
-#, fuzzy
 msgid "Dynamic fields configuration"
-msgstr "Configuració dels camps dinàmics"
+msgstr "Configuració de camps dinàmics"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:292
 #, fuzzy
@@ -203,17 +200,14 @@ msgid "Unable to retrieve field information."
 msgstr "No s'ha pogut recuperar la informació del camp."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:301
-#, fuzzy
 msgid "Edit field"
-msgstr "Edita el camp"
+msgstr "Editar el camp"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:353
-#, fuzzy
 msgid "An error occurred editing dynamic field :("
-msgstr "Hi ha hagut un error en editar el camp dinàmic ("
+msgstr "S'ha produït un error en editar un camp dinàmic:("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:452
-#, fuzzy
 msgid "Requested field does not exists!"
 msgstr "El camp sol·licitat no existeix!"
 
@@ -538,9 +532,8 @@ msgid "Search has been saved."
 msgstr "S'ha desat la cerca."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
-#, fuzzy
 msgid "Saved searches"
-msgstr "Cerques desades"
+msgstr "Recerques guardades"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:296
 #, fuzzy
