@@ -24,13 +24,14 @@
 # Flynn Hadford <fghadford@gmail.com>, 2021.
 # Lusuho <jevpsychox@gmail.com>, 2021.
 # Dario Briones <dariobriones101481@gmail.com>, 2021.
+# felipe <felipecandia@live.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-04-27 14:31+0000\n"
-"Last-Translator: Dario Briones <dariobriones101481@gmail.com>\n"
+"PO-Revision-Date: 2021-06-15 16:32+0000\n"
+"Last-Translator: felipe <felipecandia@live.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -1950,24 +1951,24 @@ msgstr "Entrada para el campo dinámico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:184
 msgid "Your organisation name"
-msgstr ""
+msgstr "Nombre de su organizacion"
 
 #: ../lib/Galette/Features/Replacements.php:188
 msgid "Your organisation slogan"
-msgstr ""
+msgstr "Eslogan de su organizacion"
 
 #: ../lib/Galette/Features/Replacements.php:192
 #: ../lib/Galette/Features/Replacements.php:196
 msgid "Your organisation address"
-msgstr ""
+msgstr "Direccion de su organizacion"
 
 #: ../lib/Galette/Features/Replacements.php:196
 msgid "with break lines"
-msgstr ""
+msgstr "con líneas de interrupción"
 
 #: ../lib/Galette/Features/Replacements.php:200
 msgid "Your organisation website"
-msgstr ""
+msgstr "Sitio web de su organización"
 
 #: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation logo"
@@ -1975,7 +1976,7 @@ msgstr "El logo de su organización"
 
 #: ../lib/Galette/Features/Replacements.php:208
 msgid "Current date (Y-m-d)"
-msgstr ""
+msgstr "Fecha actual (Y-m-d)"
 
 #: ../lib/Galette/Features/Replacements.php:212
 msgid "Galette's login URI"
@@ -1988,7 +1989,7 @@ msgstr "Título"
 
 #: ../lib/Galette/Features/Replacements.php:234
 msgid "Member's ID"
-msgstr ""
+msgstr "ID de miembro"
 
 #: ../lib/Galette/Features/Replacements.php:242
 #: ../lib/Galette/Features/Replacements.php:334
@@ -2010,21 +2011,21 @@ msgstr "Género"
 
 #: ../lib/Galette/Features/Replacements.php:258
 msgid "Birth date"
-msgstr ""
+msgstr "Fecha de nacimiento"
 
 #: ../lib/Galette/Features/Replacements.php:262
 msgid "Birth place"
-msgstr ""
+msgstr "Lugar de nacimiento"
 
 #: ../lib/Galette/Features/Replacements.php:266
 msgid "Profession"
-msgstr ""
+msgstr "Profesión"
 
 #: ../lib/Galette/Features/Replacements.php:270
 #: ../lib/Galette/Features/Replacements.php:330
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Company name"
-msgstr ""
+msgstr "Nombre de la compañía"
 
 #: ../lib/Galette/Features/Replacements.php:274
 #: ../lib/Galette/Filters/MembersList.php:274
@@ -2033,29 +2034,27 @@ msgstr "Dirección"
 
 #: ../lib/Galette/Features/Replacements.php:278
 msgid "Zipcode"
-msgstr ""
+msgstr "Código postal"
 
 #: ../lib/Galette/Features/Replacements.php:282
 msgid "Town"
-msgstr ""
+msgstr "Ciudad"
 
 #: ../lib/Galette/Features/Replacements.php:286 ../includes/i18n.inc.php:327
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: ../lib/Galette/Features/Replacements.php:306
 msgid "Member's main group"
-msgstr ""
+msgstr "Grupo principal del miembro"
 
 #: ../lib/Galette/Features/Replacements.php:310
 msgid "Member's groups (as list)"
-msgstr ""
+msgstr "Grupos de miembros (como lista)"
 
 #: ../lib/Galette/Features/Replacements.php:314
-#, fuzzy
-#| msgid "Freed of dues"
 msgid "Member state of dues"
-msgstr "Libre de cuotas"
+msgstr "Estado de cuotas del miembro"
 
 #: ../lib/Galette/Features/Replacements.php:318
 msgid "Membership remaining days"
@@ -2063,11 +2062,11 @@ msgstr "Días restantes de la membresía"
 
 #: ../lib/Galette/Features/Replacements.php:322
 msgid "Membership expired since"
-msgstr ""
+msgstr "La membresía expiró desde"
 
 #: ../lib/Galette/Features/Replacements.php:368
 msgid "Contribution label"
-msgstr ""
+msgstr "Etiqueta de contribución"
 
 #: ../lib/Galette/Features/Replacements.php:372
 msgid "Amount"
@@ -2075,11 +2074,11 @@ msgstr "Monto"
 
 #: ../lib/Galette/Features/Replacements.php:376
 msgid "Amount (in letters)"
-msgstr ""
+msgstr "Cantidad (en letras)"
 
 #: ../lib/Galette/Features/Replacements.php:380
 msgid "Full date"
-msgstr ""
+msgstr "Fecha completa"
 
 #: ../lib/Galette/Features/Replacements.php:384
 msgid "Contribution year"
@@ -2087,7 +2086,7 @@ msgstr "Año de contribución"
 
 #: ../lib/Galette/Features/Replacements.php:388
 msgid "Comment"
-msgstr ""
+msgstr "Comentario"
 
 #: ../lib/Galette/Features/Replacements.php:392
 msgid "Begin date"
@@ -2099,7 +2098,7 @@ msgstr "Fecha de finalización"
 
 #: ../lib/Galette/Features/Replacements.php:400
 msgid "Contribution id"
-msgstr ""
+msgstr "ID de contribucion"
 
 #: ../lib/Galette/Features/Replacements.php:404
 msgid "Payment type"
@@ -2115,7 +2114,7 @@ msgstr "Información sobre la contribución"
 #: ../lib/Galette/Features/Replacements.php:585
 #: ../lib/Galette/Features/Replacements.php:586
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: ../lib/Galette/Features/Replacements.php:755
 msgid "Main information"
@@ -2159,10 +2158,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Reminder.php:285
 msgid "A problem happened while sending late membership email"
 msgstr ""
+"Se ha producido un problema al enviar el correo electrónico de afiliación "
+"tardía"
 
 #: ../lib/Galette/Entity/Reminder.php:287
+#, fuzzy
 msgid "A problem happened while sending impending membership email"
 msgstr ""
+"Se ha producido un problema mientras se enviaba el correo electronico de "
+"membresia"
 
 #: ../lib/Galette/Entity/Reminder.php:297
 msgid "Unable to send %membership reminder (no email address)."
@@ -2171,7 +2175,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:310
 msgid "%name (#%id - %days days)"
-msgstr ""
+msgstr "%nombre (#%id - %días días)"
 
 #: ../lib/Galette/Entity/I18nTrait.php:136
 #, php-format
