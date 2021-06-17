@@ -448,6 +448,10 @@ trait Replacements
         }
 
         //handle DEADLINE alias
+        $c_patterns['deadline'] = [
+            'title'     => $c_patterns['contrib_edate'],
+            'pattern'   => '/{DEADLINE}/'
+        ];
 
         return $c_patterns + $dynamic_patterns;
     }
@@ -566,6 +570,7 @@ trait Replacements
         $c_replacements['__contrib_label'] = $c_replacements['contrib_label'];
 
         //handle DEADLINE alias
+        $c_replacements['deadline'] = $c_replacements['contrib_edate'];
 
         $this->setReplacements($c_replacements);
 

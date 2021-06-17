@@ -669,12 +669,10 @@ class Contribution
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
-                Analog::ERROR
-            );
+
+            if ($this->zdb->connection->inTransaction()) {
+                $this->zdb->connection->rollBack();
+            }
             return false;
         }
     }
