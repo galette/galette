@@ -709,8 +709,8 @@ trait Replacements
                                 $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
                             }
                         } else {
-                            foreach ($field_values as $choice_idx) {
-                                $value .= $choice_values[$choice_idx];
+                            foreach ($field_values as $field_value) {
+                                $value .= $field_value;
                             }
                         }
                         break;
