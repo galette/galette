@@ -193,8 +193,9 @@ class PdfModel extends GaletteTestCase
             '_contrib_edate'     => '/{CONTRIBUTION_END_DATE}/',
             '_contrib_id'        => '/{CONTRIBUTION_ID}/',
             '_contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/',
-            '_contrib_info'       => '/{CONTRIBUTION_INFO}/',
-            '__contrib_label'    => '/{CONTRIB_TYPE}/'
+            '_contrib_info'      => '/{CONTRIBUTION_INFO}/',
+            '__contrib_label'    => '/{CONTRIB_TYPE}/',
+            'deadline'           => '/{DEADLINE}/'
         ];
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->array($model->getPatterns())->isIdenticalTo($expected);
@@ -384,7 +385,7 @@ Au milieu
             ->hasSize(26)
             ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'dynfield_' . $adf->getId() . '_adh']);
         $this->array($legend['contribution']['patterns'])
-            ->hasSize(13)
+            ->hasSize(14)
             ->hasKeys(['label_dynfield_' . $cdf->getId() . '_contrib', 'dynfield_' . $cdf->getId() . '_contrib']);
     }
 
