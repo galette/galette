@@ -669,7 +669,6 @@ class Contribution
 
             return true;
         } catch (Throwable $e) {
-
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
