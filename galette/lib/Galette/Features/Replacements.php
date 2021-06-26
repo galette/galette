@@ -442,14 +442,14 @@ trait Replacements
             }
 
             $c_patterns['__contrib_label'] = [
-                'title'     => $c_patterns['contrib_label'],
+                'title'     => $c_patterns['contrib_label']['title'],
                 'pattern'   => '/{CONTRIB_TYPE}/'
             ];
         }
 
         //handle DEADLINE alias
         $c_patterns['deadline'] = [
-            'title'     => $c_patterns['contrib_edate'],
+            'title'     => $c_patterns['contrib_edate']['title'],
             'pattern'   => '/{DEADLINE}/'
         ];
 
