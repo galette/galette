@@ -36,6 +36,7 @@
 
 namespace Galette\Filters;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Status;
 use Galette\Entity\ContributionsTypes;
@@ -342,7 +343,7 @@ class AdvancedMembersList extends MembersList
                                 $d = new \DateTime($this->$rname);
                                 return $d->format(__("Y-m-d"));
                             }
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .
@@ -436,7 +437,7 @@ class AdvancedMembersList extends MembersList
                                 throw new \Exception('Incorrect format');
                             }
                             $this->$prop = $d->format('Y-m-d');
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             Analog::log(
                                 'Incorrect date format for ' . $name .
                                 '! was: ' . $value,
@@ -582,7 +583,7 @@ class AdvancedMembersList extends MembersList
                                                 throw new \Exception('Incorrect format');
                                             }
                                             $value['search'] = $d->format('Y-m-d');
-                                        } catch (\Exception $e) {
+                                        } catch (Throwable $e) {
                                             Analog::log(
                                                 'Incorrect date format for ' . $value['field'] .
                                                 '! was: ' . $value['search'],

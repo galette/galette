@@ -115,7 +115,8 @@ class Password extends atoum
         $insert->values(
             [
                 'nom_adh'   => 'Test password user',
-                'login_adh' => 'test_password_user'
+                'login_adh' => 'test_password_user',
+                'adresse_adh' => 'The address'
             ]
         );
         $this->zdb->execute($insert);
@@ -142,7 +143,7 @@ class Password extends atoum
     }
 
     /**
-     * Test new PasswordImage generation
+     * Test new Password generation
      *
      * @return void
      */

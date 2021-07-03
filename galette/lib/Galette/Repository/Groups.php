@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\PredicateSet;
@@ -102,7 +103,7 @@ class Groups
                 }
             }
             return $groups;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
@@ -174,7 +175,7 @@ class Groups
                 );
             }
             return $groups;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list groups | ' . $e->getMessage(),
                 Analog::WARNING
@@ -232,7 +233,7 @@ class Groups
                 }
             }
             return $groups;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -304,8 +305,8 @@ class Groups
 
                     $result = $stmt->execute(
                         array(
-                            Group::PK       => $gid,
-                            Adherent::PK    => $adh->id
+                            'group' => $gid,
+                            'adh'   => $adh->id
                         )
                     );
 
@@ -339,7 +340,7 @@ class Groups
                 $zdb->connection->commit();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
@@ -378,7 +379,7 @@ class Groups
             $del_qry = $zdb->delete(Group::GROUPSMANAGERS_TABLE);
             $del_qry->where->in(Adherent::PK, $ids);
             $zdb->execute($del_qry);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to remove member #' . $id . ' from his groups: ' .
                 $e->getMessage(),
@@ -417,7 +418,7 @@ class Groups
             )->where(array('group_name' => $name));
             $results = $zdb->execute($select);
             return !($results->count() > 0);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING

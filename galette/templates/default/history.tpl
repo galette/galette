@@ -26,7 +26,7 @@
             <select name="action_filter" id="action_filter">
                 <option value="0">{_T string="Select an action"}</option>
         {foreach from=$actions item=$action}
-                <option value="{$action}"{if $history->filters->action_filter eq $action} selected="selected"{/if}>{$action}</option>
+                <option value="{$action|escape}"{if $history->filters->action_filter eq $action} selected="selected"{/if}>{$action|escape}</option>
         {/foreach}
             </select>
     {/if}
@@ -126,9 +126,9 @@
                     <td class="nowrap" data-title="{_T string="Date"}">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
                     <td class="nowrap" data-title="{_T string="IP"}">{$log.ip_log}</td>
                     <td data-title="{_T string="User"}">{$log.adh_log}</td>
-                    <td data-title="{_T string="Action"}">{$log.action_log}</td>
+                    <td data-title="{_T string="Action"}">{$log.action_log|escape}</td>
                     <td data-title="{_T string="Description"}">
-                        {$log.text_log}
+                        {$log.text_log|escape}
         {if $log.sql_log}
                         <span class="sql_log">{$log.sql_log|escape:"htmlall"}</span>
         {/if}
@@ -150,10 +150,6 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#nbshow').change(function() {
-                this.form.submit();
-            });
-
             $(function() {
                 {include file="js_removal.tpl"}
                 var _elt = $('<img src="{base_url}/{$template_subdir}images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');

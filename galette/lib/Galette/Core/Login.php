@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
@@ -62,21 +63,18 @@ class Login extends Authentication
 
     private $zdb;
     private $i18n;
-    private $session;
     private $impersonated = false;
 
     /**
      * Instanciate object
      *
-     * @param Db      $zdb     Database instance
-     * @param I18n    $i18n    I18n instance
-     * @param Session $session Current session
+     * @param Db   $zdb  Database instance
+     * @param I18n $i18n I18n instance
      */
-    public function __construct(Db $zdb, I18n $i18n, Session $session)
+    public function __construct(Db $zdb, I18n $i18n)
     {
         $this->zdb = $zdb;
         $this->i18n = $i18n;
-        $this->session = $session;
     }
 
     /**
@@ -127,13 +125,13 @@ class Login extends Authentication
             $results = $this->zdb->execute($select);
             $log_suffix = '';
             if (isset($_SERVER['REMOTE_ADDR'])) {
-                $log_suffix = $log_suffix . ' Client ' . $_SERVER['REMOTE_ADDR'];
+                $log_suffix .= ' Client ' . $_SERVER['REMOTE_ADDR'];
             }
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $log_suffix = $log_suffix . ' X-Forwarded-For ' . $_SERVER['HTTP_X_FORWARDED_FOR'];
+                $log_suffix .= ' X-Forwarded-For ' . $_SERVER['HTTP_X_FORWARDED_FOR'];
             }
 
-            if ($results->count() == 0) {
+            if ($results->count() === 0) {
                 Analog::log(
                     'No entry found for login `' . $user . '`' . $log_suffix,
                     Analog::WARNING
@@ -143,7 +141,6 @@ class Login extends Authentication
                 $row = $results->current();
 
                 //check if member is active
-                $active = $row->activite_adh;
                 if (!$row->activite_adh == true) {
                     Analog::log(
                         'Member `' . $user . ' is inactive!`' . $log_suffix,
@@ -171,7 +168,7 @@ class Login extends Authentication
                 $this->logUser($row);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
@@ -296,7 +293,7 @@ class Login extends Authentication
                 $this->logUser($row);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
@@ -328,7 +325,7 @@ class Login extends Authentication
                 /* No results, user does not exists yet :) */
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),
                 Analog::WARNING
@@ -346,5 +343,18 @@ class Login extends Authentication
     public function isImpersonated()
     {
         return $this->impersonated;
+    }
+
+    /**
+     * Set id
+     *
+     * @param int $id ID to set
+     *
+     * @return $this
+     */
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
     }
 }

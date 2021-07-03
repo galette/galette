@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 
 /**
@@ -98,7 +99,7 @@ class Title
             $this->id = $id;
             $this->short = $res->short_label;
             $this->long = $res->long_label;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading title #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -156,12 +157,10 @@ class Title
                     return false;
                 }
 
-                $this->id = (int)$zdb->driver->getLastGeneratedValue(
-                    PREFIX_DB . self::TABLE . '_id_seq'
-                );
+                $this->id = $zdb->getLastGeneratedValue($this);
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing title: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -199,7 +198,7 @@ class Title
             return true;
         } catch (\RuntimeException $re) {
             throw $re;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to delete title ' . $id . ' | ' . $e->getMessage(),
                 Analog::ERROR

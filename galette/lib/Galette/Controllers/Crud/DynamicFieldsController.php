@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -62,22 +63,14 @@ class DynamicFieldsController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $form_name Form name
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response, string $form_name = null): Response
     {
-        $form_name = $args['form'];
-
-        $df = null;
-        if ($this->session->dynamicfieldtype) {
-            $df = $this->session->dynamicfieldtype;
-            $this->session->dynamicfieldtype = null;
-        }
-
         $params = [
             'page_title'        => _T("Add field"),
             'form_name'         => $form_name,
@@ -86,6 +79,11 @@ class DynamicFieldsController extends CrudController
             'mode'              => ($request->isXhr() ? 'ajax' : ''),
             'field_type_names'  => DynamicField::getFieldsTypesNames()
         ];
+
+        if ($this->session->dynamicfieldtype) {
+            $params['df'] = $this->session->dynamicfieldtype;
+            $this->session->dynamicfieldtype = null;
+        }
 
         // display page
         $this->view->render(
@@ -99,16 +97,16 @@ class DynamicFieldsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $form_name Form name
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response, string $form_name = null): Response
     {
         $post = $request->getParsedBody();
-        $post['form'] = $args['form'];
+        $post['form_name'] = $form_name;
 
         $error_detected = [];
         $warning_detected = [];
@@ -119,7 +117,7 @@ class DynamicFieldsController extends CrudController
             $df->store($post);
             $error_detected = $df->getErrors();
             $warning_detected = $df->getWarnings();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $msg = 'An error occurred adding new dynamic field.';
             Analog::log(
                 $msg . ' | ' .
@@ -166,7 +164,7 @@ class DynamicFieldsController extends CrudController
                     'Location',
                     $this->router->pathFor(
                         'addDynamicField',
-                        $args
+                        ['form_name' => $form_name]
                     )
                 );
         } else {
@@ -178,7 +176,7 @@ class DynamicFieldsController extends CrudController
                         $this->router->pathFor(
                             'editDynamicField',
                             [
-                                'form'      => $args['form'],
+                                'form_name' => $form_name,
                                 'id'        => $df->getId()
                             ]
                         )
@@ -191,7 +189,7 @@ class DynamicFieldsController extends CrudController
                     'Location',
                     $this->router->pathFor(
                         'configureDynamicFields',
-                        ['form' => $args['form']]
+                        ['form_name' => $form_name]
                     )
                 );
         }
@@ -203,22 +201,26 @@ class DynamicFieldsController extends CrudController
     /**
      * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request   PSR Request
+     * @param Response       $response  PSR Response
+     * @param string         $option    One of 'page' or 'order'
+     * @param string|integer $value     Value of the option
+     * @param string         $form_name Form name
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
-    {
-        $form_name = $args['form'] ?? 'adh';
-        if (isset($_POST['form']) && trim($_POST['form']) != '') {
-            $form_name = $_POST['form'];
+    public function list(
+        Request $request,
+        Response $response,
+        $option = null,
+        $value = null,
+        $form_name = 'adh'
+    ): Response {
+        if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
+            $form_name = $_POST['form_name'];
         }
         $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
         $fields_list = $fields->getList($form_name, $this->login);
-
-        $field_type_names = DynamicField::getFieldsTypesNames();
 
         $params = [
             'fields_list'       => $fields_list,
@@ -269,23 +271,21 @@ class DynamicFieldsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param integer  $id        Dynamic field id
+     * @param string   $form_name Form name
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id, $form_name = null): Response
     {
-        $id_dynf = (int)$args['id'];
-        $form_name = $args['form'];
-
         $df = null;
         if ($this->session->dynamicfieldtype) {
             $df = $this->session->dynamicfieldtype;
             $this->session->dynamicfieldtype = null;
         } else {
-            $df = DynamicField::loadFieldType($this->zdb, $id_dynf);
+            $df = DynamicField::loadFieldType($this->zdb, $id);
             if ($df === false) {
                 $this->flash->addMessage(
                     'error_detected',
@@ -318,28 +318,29 @@ class DynamicFieldsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param integer  $id        Dynamic field id
+     * @param string   $form_name Form name
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id = null, string $form_name = null): Response
     {
         $post = $request->getParsedBody();
-        $post['form'] = $args['form'];
+        $post['form_name'] = $form_name;
 
         $error_detected = [];
         $warning_detected = [];
 
-        $field_id = (int)$args['id'];
+        $field_id = $id;
         $df = DynamicField::loadFieldType($this->zdb, $field_id);
 
         try {
             $df->store($post);
             $error_detected = $df->getErrors();
             $warning_detected = $df->getWarnings();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             Analog::log(
                 $msg . ' | ' .
@@ -386,7 +387,10 @@ class DynamicFieldsController extends CrudController
                     'Location',
                     $this->router->pathFor(
                         'editDynamicField',
-                        $args
+                        [
+                            'form_name' => $form_name,
+                            'id'        => $id
+                        ]
                     )
                 );
         } else {
@@ -396,7 +400,7 @@ class DynamicFieldsController extends CrudController
                     'Location',
                     $this->router->pathFor(
                         'configureDynamicFields',
-                        ['form' => $args['form']]
+                        ['form_name' => $form_name]
                     )
                 );
         }
@@ -412,7 +416,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('configureDynamicFields');
     }
@@ -424,11 +428,11 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveDynamicField',
-            ['id' => $args['id'], 'form' => $args['form']]
+            ['id' => $args['id'], 'form_name' => $args['form_name']]
         );
     }
 
@@ -439,7 +443,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
@@ -449,7 +453,10 @@ class DynamicFieldsController extends CrudController
             );
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $args['form']]));
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('configureDynamicFields', ['form_name' => $args['form_name']])
+                );
         }
 
         return sprintf(
@@ -479,19 +486,23 @@ class DynamicFieldsController extends CrudController
     /**
      * Move field
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param integer  $id        Field id
+     * @param string   $form_name Form name
+     * @param string   $direction Either 'up' or 'down'
      *
      * @return Response
      */
-    public function move(Request $request, Response $response, array $args = []): Response
-    {
-        $field_id = (int)$args['id'];
-        $form_name = $args['form'];
-
-        $field = DynamicField::loadFieldType($this->zdb, $field_id);
-        if ($field->move($args['direction'])) {
+    public function move(
+        Request $request,
+        Response $response,
+        int $id = null,
+        string $form_name,
+        string $direction
+    ): Response {
+        $field = DynamicField::loadFieldType($this->zdb, $id);
+        if ($field->move($direction)) {
             $this->flash->addMessage(
                 'success_detected',
                 _T("Field has been successfully moved")
@@ -505,6 +516,6 @@ class DynamicFieldsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $form_name]));
+            ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form_name' => $form_name]));
     }
 }

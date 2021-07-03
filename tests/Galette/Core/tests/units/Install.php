@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use atoum;
  * @name      Db
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2014-01-03
@@ -110,7 +110,6 @@ class Install extends atoum
         );
 
         $knowns = array(
-            '0.60'  => 'upgrade-to-0.60-pgsql.sql',
             '0.61'  => 'upgrade-to-0.61-pgsql.sql',
             '0.62'  => 'upgrade-to-0.62-pgsql.sql',
             '0.63'  => 'upgrade-to-0.63-pgsql.sql',
@@ -126,7 +125,8 @@ class Install extends atoum
             '0.92'  => 'upgrade-to-0.92-pgsql.sql',
             '0.93'  => 'upgrade-to-0.93-pgsql.sql',
             '0.931' => 'upgrade-to-0.931-pgsql.sql',
-            '0.94'  => 'upgrade-to-0.94-pgsql.sql'
+            '0.94'  => 'upgrade-to-0.94-pgsql.sql',
+            '0.95'  => 'upgrade-to-0.95-pgsql.sql'
         );
 
         $this->array($update_scripts)
@@ -139,7 +139,7 @@ class Install extends atoum
             '0.7'
         );
 
-        //if we're from 0.7.0, there are only 6 update scripts left
+        //if we're from 0.7.0, there are 4 less update scripts
         $this->array($update_scripts)
             ->hasSize(count($knowns) - 4);
 
@@ -147,10 +147,11 @@ class Install extends atoum
             GALETTE_BASE_PATH . '/install'
         );
 
-        //without specifying database nor version, we got 10 update scripts total
+        //without specifying database nor version, we got all update scripts
+        $all_knowns = ['0.60' => 'upgrade-to-0.60-pgsql.sql'] + $knowns;
         $this->array(array_values($update_scripts))
-            ->hasSize(count($knowns))
-            ->isEqualTo(array_keys($knowns));
+            ->hasSize(count($all_knowns))
+            ->isEqualTo(array_keys($all_knowns));
 
         $this->install->setMode(\Galette\Core\Install::UPDATE);
         $errors = array();
@@ -164,6 +165,7 @@ class Install extends atoum
             ->hasSize(count($knowns))
             ->isIdenticalTo($knowns);
 
+        //for installation, only one script is present :)
         $this->install->setMode(\Galette\Core\Install::INSTALL);
         $update_scripts = $this->install->getScripts(
             GALETTE_BASE_PATH . '/install'

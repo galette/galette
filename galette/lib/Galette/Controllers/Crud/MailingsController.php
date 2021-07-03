@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -70,11 +71,10 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
         $get = $request->getQueryParams();
 
@@ -215,11 +215,10 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -250,8 +249,6 @@ class MailingsController extends CrudController
                 ->withStatus(301)
                 ->withHeader('Location', $redirect_url);
         }
-
-        $params = array();
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
@@ -459,24 +456,15 @@ class MailingsController extends CrudController
     /**
      * Mailings history page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
         if (isset($this->session->filter_mailings)) {
             $filters = $this->session->filter_mailings;
         } else {
@@ -563,7 +551,7 @@ class MailingsController extends CrudController
                     if (isset($post['end_date_filter'])) {
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }
@@ -604,13 +592,13 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id): Response
     {
-        //TODO
+        //no edit page, just to satisfy inheritance
     }
 
     /**
@@ -618,13 +606,13 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
-        //TODO
+        //no edit page, just to satisfy inheritance
     }
 
     // /CRUD - Update
@@ -637,7 +625,7 @@ class MailingsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('mailings');
     }
@@ -649,7 +637,7 @@ class MailingsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveMailing',
@@ -664,7 +652,7 @@ class MailingsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         return sprintf(
             _T('Remove mailing #%1$s'),
@@ -693,11 +681,11 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Mailing id
      *
      * @return Response
      */
-    public function preview(Request $request, Response $response, array $args = []): Response
+    public function preview(Request $request, Response $response, int $id = null): Response
     {
         $post = $request->getParsedBody();
         // check for ajax mode
@@ -711,9 +699,9 @@ class MailingsController extends CrudController
         }
 
         $mailing = null;
-        if (isset($args['id'])) {
+        if ($id !== null) {
             $mailing = new Mailing($this->preferences);
-            MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
+            MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
             $attachments = $mailing->attachments;
         } else {
             $mailing = $this->session->mailing;
@@ -750,7 +738,7 @@ class MailingsController extends CrudController
             'mailing_preview.tpl',
             [
                 'page_title'    => _T("Mailing preview"),
-                'mailing_id'    => $args['id'] ?? null,
+                'mailing_id'    => $id,
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
@@ -768,19 +756,19 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Mailiung id
+     * @param integer  $pos      Attachement position in list
      *
      * @return Response
      */
-    public function previewAttachment(Request $request, Response $response, array $args = []): Response
+    public function previewAttachment(Request $request, Response $response, int $id, $pos): Response
     {
         $mailing = new Mailing($this->preferences);
-        MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
+        MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
         $attachments = $mailing->attachments;
-        $attachment = $attachments[$args['pos']];
+        $attachment = $attachments[$pos];
         $filepath = $attachment->getDestDir() . $attachment->getFileName();
 
-        $ext = pathinfo($attachment->getFileName())['extension'];
         $response = $response->withHeader('Content-type', $attachment->getMimeType($filepath));
 
         $body = $response->getBody();
@@ -793,11 +781,10 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function setRecipients(Request $request, Response $response, array $args = []): Response
+    public function setRecipients(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $mailing = $this->session->mailing;

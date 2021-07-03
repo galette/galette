@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Galette\Entity\Title;
 use Analog\Analog;
 
@@ -151,9 +152,9 @@ class Titles
                 }
                 $stmt->execute(
                     array(
-                        'id_title'      => $d['id_title'],
-                        'short_label'   => $short,
-                        'long_label'    => $long
+                        'id'    => $d['id_title'],
+                        'short' => $short,
+                        'long'  => $long
                     )
                 );
             }
@@ -163,12 +164,12 @@ class Titles
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default titles. ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 

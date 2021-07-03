@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2014 The Galette Team
+ * Copyright © 2010-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -51,7 +52,7 @@ use Galette\Repository\PaymentTypes;
  * @name      Contribution
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -278,7 +279,7 @@ class Contribution
                     'No contribution #' . $id . ' (user ' . $this->login->id . ')'
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred attempting to load contribution #' . $id .
                 $e->getMessage(),
@@ -374,7 +375,7 @@ class Contribution
                                     throw new \Exception('Incorrect format');
                                 }
                                 $this->$prop = $d->format('Y-m-d');
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 Analog::log(
                                     'Wrong date format. field: ' . $key .
                                     ', value: ' . $value . ', expected fmt: ' .
@@ -543,7 +544,7 @@ class Contribution
                     $d->format(__("Y-m-d"));
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred checking overlaping fee. ' . $e->getMessage(),
                 Analog::ERROR
@@ -568,7 +569,6 @@ class Contribution
                 'Existing errors prevents storing contribution: ' .
                 print_r($this->errors, true)
             );
-            return false;
         }
 
         try {
@@ -605,13 +605,7 @@ class Contribution
                 $add = $this->zdb->execute($insert);
 
                 if ($add->count() > 0) {
-                    if ($this->zdb->isPostgres()) {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
-                            PREFIX_DB . 'cotisations_id_seq'
-                        );
-                    } else {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
-                    }
+                    $this->_id = $this->zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(
@@ -674,13 +668,10 @@ class Contribution
             }
 
             return true;
-        } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
-            Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
-                Analog::ERROR
-            );
+        } catch (Throwable $e) {
+            if ($this->zdb->connection->inTransaction()) {
+                $this->zdb->connection->rollBack();
+            }
             return false;
         }
     }
@@ -709,7 +700,7 @@ class Contribution
             );
             $this->zdb->execute($update);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred updating member ' . $this->_member .
                 '\'s deadline |' .
@@ -752,7 +743,7 @@ class Contribution
             }
             $emitter->emit('contribution.remove', $this);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction) {
                 $this->zdb->connection->rollBack();
             }
@@ -851,7 +842,7 @@ class Contribution
                 $due_date = '';
             }
             return $due_date;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred trying to retrieve member\'s due date',
                 Analog::ERROR
@@ -892,7 +883,7 @@ class Contribution
                 );
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to detach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
@@ -921,7 +912,7 @@ class Contribution
 
             $zdb->execute($update);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
@@ -1144,7 +1135,7 @@ class Contribution
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d;
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .
@@ -1162,7 +1153,7 @@ class Contribution
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .
@@ -1263,7 +1254,7 @@ class Contribution
                             throw new \Exception('Incorrect format');
                         }
                         $this->_begin_date = $d->format('Y-m-d');
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .
@@ -1348,5 +1339,30 @@ class Contribution
     public function sendEMail()
     {
         return $this->sendmail;
+    }
+
+    /**
+     * Handle files (dynamics files)
+     *
+     * @param array $files Files sent
+     *
+     * @return array|true
+     */
+    public function handleFiles($files)
+    {
+        $this->errors = [];
+
+        $this->dynamicsFiles($files);
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been throwed attempting to edit/store a contribution files' . "\n" .
+                print_r($this->errors, true),
+                Analog::ERROR
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
     }
 }

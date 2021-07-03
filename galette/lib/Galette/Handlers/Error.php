@@ -36,6 +36,7 @@
 
 namespace Galette\Handlers;
 
+use Exception;
 use Slim\Handlers\Error as SlimError;
 use Slim\Http\Body;
 use Psr\Http\Message\ResponseInterface;
@@ -68,7 +69,7 @@ class Error extends SlimError
      * @return ResponseInterface
      * @throws UnexpectedValueException
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, \Exception $exception)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
     {
         $response = parent::__invoke($request, $response, $exception);
 

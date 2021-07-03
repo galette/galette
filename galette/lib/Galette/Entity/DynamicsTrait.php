@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2018 The Galette Team
+ * Copyright © 2017-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-26
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
@@ -48,7 +49,7 @@ use Galette\DynamicFields\Boolean;
  * @name      DynamicsTrait
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-26
@@ -84,6 +85,9 @@ trait DynamicsTrait
      */
     public function getDynamicFields()
     {
+        if (null === $this->dynamics) {
+            $this->loadDynamicFields();
+        }
         return $this->dynamics;
     }
 
@@ -162,7 +166,9 @@ trait DynamicsTrait
                             $field_id,
                             $val_index
                         );
-                        unlink(GALETTE_FILES_PATH . $filename);
+                        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+                            unlink(GALETTE_FILES_PATH . $filename);
+                        }
                         $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                     } else {
                         if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
@@ -176,7 +182,7 @@ trait DynamicsTrait
                                         throw new \Exception('Incorrect format');
                                     }
                                 }
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 $valid = false;
                                 Analog::log(
                                     'Wrong date format. field: ' . $field_id .
@@ -243,13 +249,7 @@ trait DynamicsTrait
      */
     protected function dynamicsFiles($files)
     {
-        if ($this->dynamics === null) {
-            Analog::log(
-                'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
-            );
-            $this->loadDynamicFields();
-        }
+        $this->loadDynamicFields();
         $fields = $this->dynamics->getFields();
         $store = false;
 

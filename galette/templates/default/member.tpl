@@ -14,21 +14,8 @@
         </a>
     </nav>
 {/if}
-        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
-{if $self_adh and $head_redirect}
-            <div id="infobox">
-                <h1>{_T string="Account registered!"}</h1>
-                <p>
-    {if $pref_mail_method == constant('Galette\Core\GaletteMail::METHOD_DISABLED') or $member->email eq ""}
-                    {_T string="Your subscription has been registered."}
-    {else}
-                    {_T string="Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."}
-    {/if}
-                    <br/>{_T string="You'll be redirected to the login page in a few seconds"}
-                </p>
-            </div>
-{else}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
     {if !$self_adh}
             <div>
@@ -39,14 +26,14 @@
                 <label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
             {/if}
-        {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren()}
+        {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren() and isset($members.list)}
             <input type="checkbox" name="attach" id="attach" value="1"{if $member->isDuplicate()} checked="checked"{/if}/>
             <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}</label>
             <span id="parent_id_elt" class="sr-only">
                 <select name="parent_id" id="parent_id" class="nochosen">
                     <option value="">{_T string="-- select a name --"}</option>
                     {foreach $members.list as $k=>$v}
-                        <option value="{$k}"{if $member->isDuplicate() && $member->parent->id eq $k} selected="selected"{/if}>{$v}</option>
+                        <option value="{$k}"{if $member->isDuplicate() && isset($member->parent) && $member->parent->id eq $k} selected="selected"{/if}>{$v}</option>
                     {/foreach}
                 </select>
             </span>
@@ -135,7 +122,6 @@
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
         </form>
-{/if}
 {/block}
 
 {block name="javascripts"}
@@ -179,7 +165,7 @@
                     buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                 });
 
-{if !$self_adh and !$head_redirect}
+{if !$self_adh}
                 {* Groups popup *}
                 $('#btngroups, #btnmanagedgroups').click(function(){
                     var _managed = false;

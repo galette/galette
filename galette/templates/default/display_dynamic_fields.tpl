@@ -20,20 +20,20 @@
                     {/if}
                 {/if}
                 {if not $field_data@first}<br />{/if}
-                {if GaletteMail::isValidEmail($value)}
-            <a href="mailto:{$value}">{$value}</a>
-                {else if GaletteMail::isUrl($value)}
-            <a href="{$value}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$value pattern="/%s/"}">{$value}</a>
-                {else if $field|is_a:'Galette\DynamicFields\Boolean'}
+                {if $field|is_a:'Galette\DynamicFields\Boolean'}
                     {if $value}
-                {_T string="Yes"}
+            {_T string="Yes"}
                     {else}
-                {_T string="No"}
+            {_T string="No"}
                     {/if}
                 {else if $field|is_a:'Galette\DynamicFields\File'}
             <a href="{path_for name="getDynamicFile" data=["id" => $object->id, "fid" => $field->getId(), "pos" => $field_data@iteration, "name" => $value]}">{$value}</a>
+                {else if $field|is_a:'Galette\DynamicFields\Line' and GaletteMail::isValidEmail($value)}
+                    <a href="mailto:{$value}">{$value}</a>
+                {else if $field|is_a:'Galette\DynamicFields\Line' and GaletteMail::isUrl($value)}
+                    <a href="{$value}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$value pattern="/%s/"}">{$value}</a>
                 {else}
-                {$value|nl2br|default:"&nbsp;"}
+            {$value|nl2br|default:"&nbsp;"}
                 {/if}
             {/foreach}
         </td>

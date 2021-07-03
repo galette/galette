@@ -147,50 +147,6 @@ class ContribListener implements ListenerProviderInterface
     }
 
     /**
-     * Get texts replacements array for member
-     *
-     * @param Contribution $contrib Contribution instance
-     * @param Adherent     $member  Member instance
-     *
-     * @return array
-     */
-    private function getReplacements(Contribution $contrib, Adherent $member): array
-    {
-        $mreplaces = [];
-        $mreplaces = [
-            'name_adh'          => custom_html_entity_decode(
-                $member->sname
-            ),
-            'firstname_adh'     => custom_html_entity_decode(
-                $member->surname
-            ),
-            'lastname_adh'      => custom_html_entity_decode(
-                $member->name
-            ),
-            'mail_adh'          => custom_html_entity_decode(
-                $member->getEmail()
-            ),
-            'login_adh'         => custom_html_entity_decode(
-                $member->login
-            ),
-            'deadline'          => custom_html_entity_decode(
-                $contrib->end_date
-            ),
-            'contrib_info'      => custom_html_entity_decode(
-                $contrib->info
-            ),
-            'contrib_amount'    => custom_html_entity_decode(
-                $contrib->amount
-            ),
-            'contrib_type'      => custom_html_entity_decode(
-                $contrib->type->libelle
-            )
-
-        ];
-        return $mreplaces;
-    }
-
-    /**
      * Send account email to member
      *
      * @param Contribution $contrib Contribution
@@ -226,8 +182,10 @@ class ContribListener implements ListenerProviderInterface
         $texts = new Texts(
             $this->preferences,
             $this->router,
-            $this->getReplacements($contrib, $member)
         );
+        $texts
+            ->setMember($member)
+            ->setContribution($contrib);
 
         $text = 'contrib';
         if (!$contrib->isCotis()) {
@@ -252,6 +210,7 @@ class ContribListener implements ListenerProviderInterface
                     $this->router->pathFor('directlink', ['hash' => $hash]);
             }
         }
+        $texts->setMemberCardLink($link_card);
 
         $link_pdf = '';
         if (strpos($mtxt->tbody, '{LINK_CONTRIBPDF}') !== false) {
@@ -263,12 +222,7 @@ class ContribListener implements ListenerProviderInterface
                     $this->router->pathFor('directlink', ['hash' => $hash]);
             }
         }
-
-        //set replacements, even if empty, to be sure.
-        $texts->setReplaces([
-            'link_membercard'   => $link_card,
-            'link_contribpdf'   => $link_pdf
-        ]);
+        $texts->setContribLink($link_card);
 
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
@@ -319,9 +273,11 @@ class ContribListener implements ListenerProviderInterface
 
         $texts = new Texts(
             $this->preferences,
-            $this->router,
-            $this->getReplacements($contrib, $member)
+            $this->router
         );
+        $texts
+            ->setMember($member)
+            ->setContribution($contrib);
 
         // Sent email to admin if pref checked
         // Get email text in database

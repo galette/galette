@@ -375,11 +375,9 @@ class FieldsConfig extends atoum
         $fields_config = $this->fields_config;
         $fields_config->load();
 
-        $session = new \RKA\Session();
         $admin_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($admin_login)->isAdmin = true;
 
@@ -403,8 +401,7 @@ class FieldsConfig extends atoum
 
         $user_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($user_login)->isUp2Date = true;
 
@@ -437,11 +434,9 @@ class FieldsConfig extends atoum
         $fields_config = $this->fields_config;
         $fields_config->load();
 
-        $session = new \RKA\Session();
         $admin_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($admin_login)->isAdmin = true;
 
@@ -472,8 +467,7 @@ class FieldsConfig extends atoum
 
         $user_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($user_login)->isUp2Date = true;
 
@@ -513,8 +507,7 @@ class FieldsConfig extends atoum
         //form elements for self subscription
         $no_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $elements = $fields_config->getFormElements($no_login, false, true);
         $this->array($elements)

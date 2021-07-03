@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2014 The Galette Team
+ * Copyright © 2011-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-31
@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\Transaction;
@@ -53,7 +54,7 @@ use Galette\Filters\TransactionsList;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -113,7 +114,7 @@ class Transactions
                 $transactions = $results;
             }
             return $transactions;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list transactions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -161,7 +162,7 @@ class Transactions
             }
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -198,7 +199,7 @@ class Transactions
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count transactions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -217,6 +218,9 @@ class Transactions
         $order = array();
 
         switch ($this->filters->orderby) {
+            case TransactionsList::ORDERBY_ID:
+                $order[] = Transaction::PK . ' ' . $this->filters->ordered;
+                break;
             case TransactionsList::ORDERBY_DATE:
                 $order[] = 'trans_date' . ' ' . $this->filters->ordered;
                 break;
@@ -269,7 +273,7 @@ class Transactions
                     't.' . Adherent::PK . ' = ' . $this->filters->filtre_cotis_adh
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -326,7 +330,7 @@ class Transactions
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occurred trying to remove transactions | ' .

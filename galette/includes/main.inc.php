@@ -57,64 +57,19 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
 //Galette needs database update!
 if ($needs_update) {
-    $app = new \Slim\App(
-        array(
-            'templates.path'    => GALETTE_ROOT . 'templates/default/',
-            'mode'              => 'NEED_UPDATE'
-        )
-    );
-
-    define(
-        'GALETTE_THEME',
-        'themes/default/'
-    );
-
-    require_once GALETTE_ROOT . 'includes/dependencies.php';
-
-    $app->add(
-        new \Galette\Middleware\UpdateAndMaintenance(
-            $i18n,
-            \Galette\Middleware\UpdateAndMaintenance::NEED_UPDATE
-        )
-    );
-
-    $app->run();
-    die();
+    define('GALETTE_THEME', 'themes/default/');
+    $app =  new \Galette\Core\LightSlimApp();
 } else {
-    $app = new \Slim\App(
-        [
-            'settings' => [
-                'determineRouteBeforeAppMiddleware' => true,
-                'displayErrorDetails' => (GALETTE_MODE === 'DEV'),
-                'addContentLengthHeader' => false,
-                // monolog settings
-                'logger' => [
-                    'name'  => 'galette',
-                    'level' => \Monolog\Logger::DEBUG,
-                    'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
-                ],
-                //'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache' //disabled until properly handled
-            ],
-            'mode'      => 'PROD'
-        ]
-    );
+    $app =  new \Galette\Core\SlimApp();
 }
 
-//handle notices
-set_error_handler(function ($severity, $message, $file, $line) {
-    if (GALETTE_MODE === 'DEV') {
-        throw new \ErrorException($message, 0, $severity, $file, $line);
-    }
-});
+//CONFIGURE AND START SESSION
 
 //Session duration
 if (!defined('GALETTE_TIMEOUT')) {
     //See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
     define('GALETTE_TIMEOUT', 0);
 }
-
-$plugins = new Galette\Core\Plugins();
-$plugins->autoload(GALETTE_PLUGINS_PATH);
 
 $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
@@ -129,11 +84,24 @@ $session = new \RKA\SessionMiddleware([
     'name'      => $session_name,
     'lifetime'  => GALETTE_TIMEOUT
 ]);
-$app->add($session);
+
 $session->start();
+$app->add($session);
 
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
+
+if ($needs_update) {
+    $app->add(
+        new \Galette\Middleware\UpdateAndMaintenance(
+            $container->get('i18n'),
+            \Galette\Middleware\UpdateAndMaintenance::NEED_UPDATE
+        )
+    );
+
+    $app->run();
+    die();
+}
 
 $smarty = $app->getContainer()->get('view')->getSmarty();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';

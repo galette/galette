@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -108,7 +109,7 @@ class MailingHistory extends History
                 $select::JOIN_LEFT
             );
             $this->buildWhereClause($select);
-            $select->order(self::buildOrderClause());
+            $select->order($this->buildOrderClause());
             $this->buildLists($select);
             $this->proceedCount($select);
             //add limits to retrieve only relavant rows
@@ -161,7 +162,7 @@ class MailingHistory extends History
                 $ret[] = $r;
             }
             return $ret;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
@@ -173,7 +174,7 @@ class MailingHistory extends History
     /**
      * Builds users and actions lists
      *
-     * @param Select $select Original select
+     * @param \Laminas\Db\Sql\Select $select Original select
      *
      * @return void
      */
@@ -197,7 +198,7 @@ class MailingHistory extends History
                     $this->senders[-1] = _('Superadmin');
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list senders from mailing history! | ' . $e->getMessage(),
                 Analog::WARNING
@@ -293,7 +294,7 @@ class MailingHistory extends History
                     $token
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -329,7 +330,7 @@ class MailingHistory extends History
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count history | ' . $e->getMessage(),
                 Analog::WARNING
@@ -359,7 +360,7 @@ class MailingHistory extends History
             $result = $results->current();
 
             return $mailing->loadFromHistory($result, $new);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to load mailing model #' . $id . ' | ' .
                 $e->getMessage(),
@@ -451,7 +452,7 @@ class MailingHistory extends History
             $update->where(self::PK . ' = ' . $this->mailing->history_id);
             $this->zdb->execute($update);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurend updating Mailing | ' . $e->getMessage(),
                 Analog::ERROR
@@ -503,15 +504,9 @@ class MailingHistory extends History
             $insert->values($values);
             $this->zdb->execute($insert);
 
-            if ($this->zdb->isPostgres()) {
-                $this->id = $this->zdb->driver->getLastGeneratedValue(
-                    PREFIX_DB . 'mailing_history_id_seq'
-                );
-            } else {
-                $this->id = $this->zdb->driver->getLastGeneratedValue();
-            }
+            $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurend storing Mailing | ' . $e->getMessage(),
                 Analog::ERROR
@@ -523,14 +518,13 @@ class MailingHistory extends History
     /**
      * Remove specified entries
      *
-     * @param integer|array $ids Mailing history entries identifiers
+     * @param integer|array $ids  Mailing history entries identifiers
+     * @param History       $hist History instance
      *
      * @return boolean
      */
-    public function removeEntries($ids)
+    public function removeEntries($ids, History $hist)
     {
-        global $hist, $preferences;
-
         $list = array();
         if (is_numeric($ids)) {
             //we've got only one identifier
@@ -542,7 +536,7 @@ class MailingHistory extends History
         if (is_array($list)) {
             try {
                 foreach ($list as $id) {
-                    $mailing = new Mailing($preferences, [], $id);
+                    $mailing = new Mailing($this->preferences, [], $id);
                     $mailing->removeAttachments();
                 }
 
@@ -562,7 +556,7 @@ class MailingHistory extends History
                 );
 
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
                     'Unable to delete selected mailing history entries |' .

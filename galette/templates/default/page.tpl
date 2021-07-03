@@ -9,9 +9,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {include file=$header module_id=$mid}
     {/foreach}
 {/if}
-{if $head_redirect}
-    <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
-{/if}
 </head>
 <body id="galette_body">
 {if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
@@ -91,9 +88,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "paymentTypes"} class="selected"{/if}><a href="{path_for name="paymentTypes"}" title="{_T string="Manage payment types"}">{_T string="Payment types"}</a></li>
             <li><a href="{path_for name="emptyAdhesionForm"}" title="{_T string="Download empty adhesion form"}">{_T string="Empty adhesion form"}</a></li>
     {if $login->isSuperAdmin()}
-        {if $GALETTE_MODE neq 'DEMO'}
-            <li{if $cur_route eq "fakeData"} class="selected"{/if}><a href="{path_for name="fakeData"}">{_T string="Generate fake data"}</a></li>
-        {/if}
             <li{if $cur_route eq "adminTools"} class="selected"{/if}><a href="{path_for name="adminTools"}" title="{_T string="Various administrative tools"}">{_T string="Admin tools"}</a></li>
     {/if}
         </ul>

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2018 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2018 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7-dev - 2007-10-07
@@ -87,14 +87,6 @@ use Analog\Handler;
 use Analog\Handler\LevelName;
 use Galette\Core;
 
-/*
-BREAKS as of Galette 0.9-dev
-// To help the built-in PHP dev server, check if the request was actually for
-// something which should probably be served as a static file
-if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
-    return false;
-}*/
-
 require GALETTE_ROOT . '/vendor/autoload.php';
 
 //start profiling
@@ -108,15 +100,15 @@ if (
 }
 
 define('GALETTE_NIGHTLY', false);
-define('GALETTE_VERSION', 'v0.9.4.2');
+define('GALETTE_VERSION', 'v0.9.5');
 
 //Version to display
 if (!defined('GALETTE_HIDE_VERSION')) {
     define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
 }
 
-define('GALETTE_COMPAT_VERSION', '0.9.2');
-define('GALETTE_DB_VERSION', '0.940');
+define('GALETTE_COMPAT_VERSION', '0.9.5');
+define('GALETTE_DB_VERSION', '0.950');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
@@ -138,21 +130,20 @@ if (!defined('GALETTE_DISPLAY_ERRORS')) {
 }
 ini_set('display_errors', 0);
 
-set_include_path(
-    GALETTE_ZEND_PATH . PATH_SEPARATOR .
-    GALETTE_PHP_MAILER_PATH . PATH_SEPARATOR .
-    GALETTE_SMARTY_PATH . PATH_SEPARATOR .
-    get_include_path()
-);
-
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
 
+error_reporting(E_ALL);
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (error_reporting() & $severity) {
+        throw new \ErrorException($message, 0, $severity, $file, $line);
+    }
+});
+
 //change default format so the 3rd param is a string for level name
 Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
-$galette_debug_log = Handler\Ignore::init();
 
 if (!defined('GALETTE_LOG_LVL')) {
     if (GALETTE_MODE === 'DEV') {
@@ -168,50 +159,25 @@ if (defined('GALETTE_TESTS')) {
     $log_path = GALETTE_LOGS_PATH . 'tests.log';
     $galette_run_log = LevelName::init(Handler\File::init($log_path));
 } else {
-    if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
-        if (GALETTE_LOG_LVL >= Analog::INFO) {
-            $now = new \DateTime();
-            $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-                $now->format('Y-m-d') . '.log';
-            $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
-        } else {
-            $galette_debug_log = Handler\Ignore::init();
-        }
-    }
     $galette_log_var = null;
 
-    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
-        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = Handler\Syslog::init('galette', 'user');
-    } else {
-        if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
-            //logs everything in galette log file
-            if (!isset($logfile)) {
-                //if no filename has been setted (ie. from install), set default one
-                $logfile = 'galette_run';
-            }
-            $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-            $galette_run_log = LevelName::init(Handler\File::init($log_path));
-        } else {
-            $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
+    if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
+        //logs everything in galette log file
+        if (!isset($logfile)) {
+            //if no filename has been setted (ie. from install), set default one
+            $logfile = 'galette';
         }
+        $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
+        $galette_run_log = LevelName::init(Handler\File::init($log_path));
+    } else {
+        $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
     }
     if (!$installer) {
         Core\Logs::cleanup();
     }
 }
 
-Analog::handler(
-    Handler\Multi::init(
-        array(
-            Analog::NOTICE  => Handler\Threshold::init(
-                $galette_run_log,
-                GALETTE_LOG_LVL
-            ),
-            Analog::DEBUG   => $galette_debug_log
-        )
-    )
-);
+Analog::handler($galette_run_log);
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
@@ -256,3 +222,7 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         $needs_update = true;
     }
 }
+
+$plugins = new Galette\Core\Plugins();
+//make sure plugins autoload is caleld before session start
+$plugins->autoload(GALETTE_PLUGINS_PATH);

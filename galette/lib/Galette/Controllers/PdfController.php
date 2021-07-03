@@ -36,10 +36,12 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
 use Galette\Core\Links;
+use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
@@ -83,7 +85,6 @@ class PdfController extends AbstractController
             ->withHeader('Content-type', 'application/pdf')
             ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"')
             ->write($pdf->download());
-        return $response;
     }
 
     /**
@@ -91,11 +92,11 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id_adh   Member id
      *
      * @return Response
      */
-    public function membersCards(Request $request, Response $response, array $args = []): Response
+    public function membersCards(Request $request, Response $response, int $id_adh = null): Response
     {
         if ($this->session->filter_members) {
             $filters = $this->session->filter_members;
@@ -103,13 +104,9 @@ class PdfController extends AbstractController
             $filters = new MembersList();
         }
 
-        if (
-            isset($args[Adherent::PK])
-            && $args[Adherent::PK] > 0
-        ) {
-            $id_adh = (int)$args[Adherent::PK];
+        if ($id_adh !== null && $id_adh > 0) {
             $deps = ['dynamics' => true];
-            if ($this->login->id == $id_adh) {
+            if ($this->login->id === $id_adh) {
                 $deps['dues'] = true;
             }
             $adh = new Adherent(
@@ -277,13 +274,12 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id_adh   Member id
      *
      * @return Response
      */
-    public function adhesionForm(Request $request, Response $response, array $args = []): Response
+    public function adhesionForm(Request $request, Response $response, int $id_adh = null): Response
     {
-        $id_adh = isset($args[Adherent::PK]) ? (int)$args[Adherent::PK] : null;
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
         if ($id_adh !== null && !$adh->canEdit($this->login)) {
@@ -311,11 +307,10 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function attendanceSheetConfig(Request $request, Response $response, array $args = []): Response
+    public function attendanceSheetConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -329,13 +324,13 @@ class PdfController extends AbstractController
         $ajax = false;
         if (
             $request->isXhr()
-            || isset($post['ajax'])
-            && $post['ajax'] == 'true'
+            || (isset($post['ajax'])
+            && $post['ajax'] == 'true')
         ) {
             $ajax = true;
 
             //retrieve selected members
-            $selection = (isset($post['selection'])) ? $post['selection'] : array();
+            $selection = $post['selection'] ?? array();
 
             $filters->selected = $selection;
             $this->session->filter_members = $filters;
@@ -437,20 +432,20 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Contribution id
      *
      * @return Response
      */
-    public function contribution(Request $request, Response $response, array $args = []): Response
+    public function contribution(Request $request, Response $response, int $id): Response
     {
-        $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
+        $contribution = new Contribution($this->zdb, $this->login, $id);
         if ($contribution->id == '') {
             //not possible to load contribution, exit
             $this->flash->addMessage(
                 'error_detected',
                 str_replace(
                     '%id',
-                    $args['id'],
+                    $id,
                     _T("Unable to load contribution #%id!")
                 )
             );
@@ -460,10 +455,10 @@ class PdfController extends AbstractController
                     'contributions',
                     ['type' => 'contributions']
                 ));
-        } else {
-            $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
-            return $this->sendResponse($response, $pdf);
         }
+
+        $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
+        return $this->sendResponse($response, $pdf);
     }
 
     /**
@@ -471,17 +466,17 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Group id
      *
      * @return Response
      */
-    public function group(Request $request, Response $response, array $args = []): Response
+    public function group(Request $request, Response $response, int $id = null): Response
     {
         $groups = new Groups($this->zdb, $this->login);
 
         $groups_list = null;
-        if (isset($args['id'])) {
-            $groups_list = $groups->getList(true, $args['id']);
+        if ($id !== null) {
+            $groups_list = $groups->getList(true, $id);
         } else {
             $groups_list = $groups->getList();
         }
@@ -513,17 +508,17 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Model id
      *
      * @return Response
      */
-    public function models(Request $request, Response $response, array $args = []): Response
+    public function models(Request $request, Response $response, int $id = null): Response
     {
-        $id = 1;
+        $mid = 1;
         if (isset($_POST[PdfModel::PK])) {
-            $id = (int)$_POST[PdfModel::PK];
-        } elseif (isset($args['id'])) {
-            $id = (int)$args['id'];
+            $mid = (int)$_POST[PdfModel::PK];
+        } elseif ($id !== null) {
+            $mid = $id;
         }
 
 
@@ -532,30 +527,28 @@ class PdfController extends AbstractController
 
         $model = null;
         foreach ($models as $m) {
-            if ($m->id === $id) {
+            if ($m->id === $mid) {
                 $model = $m;
                 break;
             }
         }
 
         $tpl = null;
-        $params = [];
+        $params = ['model' => $model];
 
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
             $request->isXhr()
-            || isset($request->getQueryParams()['ajax'])
-            && $request->getQueryParams()['ajax'] == 'true'
+            || (isset($request->getQueryParams()['ajax'])
+            && $request->getQueryParams()['ajax'] == 'true')
         ) {
             $tpl = 'gestion_pdf_content.tpl';
-            $params['model'] = $model;
         } else {
             $tpl = 'gestion_pdf.tpl';
-            $params = [
+            $params += [
                 'page_title'        => _T("PDF models"),
-                'models'            => $models,
-                'model'             => $model
+                'models'            => $models
             ];
         }
 
@@ -573,45 +566,42 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function storeModels(Request $request, Response $response, array $args = []): Response
+    public function storeModels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $type = null;
-        if (isset($post['model_type'])) {
-            $type = (int)$post['model_type'];
-        }
-
         $error_detected = [];
-        if ($type === null) {
+
+        if (!isset($post['model_type'])) {
             $error_detected[] = _T("Missing PDF model type!");
         } else {
+            $type = (int)$post['model_type'];
             $class = PdfModel::getTypeClass($type);
             if (isset($post[PdfModel::PK])) {
-                $model = new $class($this->zdb, $this->preferences, (int)$_POST[PdfModel::PK]);
+                $model = new $class($this->zdb, $this->preferences, (int)$post[PdfModel::PK]);
             } else {
                 $model = new $class($this->zdb, $this->preferences);
             }
 
             try {
-                $model->header = $post['model_header'];
-                $model->footer = $post['model_footer'];
+                $fields = [
+                    'model_header'      => 'header',
+                    'model_footer'      => 'footer',
+                    'model_body'        => 'body',
+                    'model_title'       => 'title',
+                    'model_subtitle'    => 'subtitle',
+                    'model_styles'      => 'styles'
+                ];
+
                 $model->type = $type;
-                if (isset($post['model_body'])) {
-                    $model->body = $post['model_body'];
+                foreach ($fields as $pvar => $prop) {
+                    if (isset($post[$pvar])) {
+                        $model->$prop = $post[$pvar];
+                    }
                 }
-                if (isset($post['model_title'])) {
-                    $model->title = $post['model_title'];
-                }
-                if (isset($post['model_body'])) {
-                    $model->subtitle = $post['model_subtitle'];
-                }
-                if (isset($post['model_styles'])) {
-                    $model->styles = $post['model_styles'];
-                }
+
                 $res = $model->store();
                 if ($res === true) {
                     $this->flash->addMessage(
@@ -621,7 +611,7 @@ class PdfController extends AbstractController
                 } else {
                     $error_detected[] = _T("Model has not been stored :(");
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $error_detected[] = $e->getMessage();
             }
         }
@@ -637,7 +627,7 @@ class PdfController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id]));
+            ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id ?? null]));
     }
 
 
@@ -646,13 +636,12 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $hash     Hash
      *
      * @return Response
      */
-    public function directlinkDocument(Request $request, Response $response, array $args = []): Response
+    public function directlinkDocument(Request $request, Response $response, string $hash): Response
     {
-        $hash = $args['hash'];
         $post = $request->getParsedBody();
         $email = $post['email'];
 
@@ -680,12 +669,11 @@ class PdfController extends AbstractController
 
         //create a new login instance, to not break current session if any
         //this will be passed directly to Contribution constructor
-        $login = new \Galette\Core\Login(
+        $login = new Login(
             $this->zdb,
-            $this->i18n,
-            $this->session
+            $this->i18n
         );
-        $login->id = (int)$row['id_adh'];
+        $login->setId((int)$row['id_adh']);
 
         if ($target === Links::TARGET_MEMBERCARD) {
             $m = new Members();
@@ -721,7 +709,7 @@ class PdfController extends AbstractController
                     'error_detected',
                     str_replace(
                         '%id',
-                        $args['id'],
+                        $id,
                         _T("Unable to load contribution #%id!")
                     )
                 );
@@ -731,9 +719,8 @@ class PdfController extends AbstractController
                         'directlink',
                         ['hash' => $hash]
                     ));
-            } else {
-                $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
             }
+            $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
         }
 
         return $this->sendResponse($response, $pdf);

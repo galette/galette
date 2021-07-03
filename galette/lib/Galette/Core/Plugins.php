@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
 use Galette\Core\Preferences;
@@ -68,6 +69,7 @@ class Plugins
 
     protected $preferences;
     protected $autoload = false;
+
 
     /**
      * Register autoloaders for all plugins
@@ -109,24 +111,24 @@ class Plugins
                 if ($entry != '.' && $entry != '..' && is_dir($full_entry)) {
                     $this->id = $entry;
                     $this->mroot = $full_entry;
-                    if (
-                        !file_exists($full_entry . '/_define.php')
-                        || !file_exists($full_entry . '/_routes.php')
-                    ) {
-                        //plugin is not compatible with that version of galette.
-                        Analog::log(
-                            'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php ' .
-                            'files that are required.',
-                            Analog::WARNING
-                        );
-                        $this->setDisabled(self::DISABLED_MISS);
-                    } elseif (!file_exists($full_entry . '/_disabled')) {
-                        include $full_entry . '/_define.php';
-                        $this->id = null;
-                        $this->mroot = null;
-                        if ($this->autoload == true) {
+                    if ($this->autoload === true) {
+                        if (
+                            !file_exists($full_entry . '/_define.php')
+                            || !file_exists($full_entry . '/_routes.php')
+                        ) {
+                            //plugin is not compatible with that version of galette.
+                            Analog::log(
+                                'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php ' .
+                                'files that are required.',
+                                Analog::WARNING
+                            );
+                            $this->setDisabled(self::DISABLED_MISS);
+                        } elseif (!file_exists($full_entry . '/_disabled')) {
+                            include $full_entry . '/_define.php';
+                            $this->id = null;
+                            $this->mroot = null;
                             //set autoloader to PluginName.
-                            if (file_exists($full_entry . '/lib') && isset($this->modules[$entry])) {
+                            if (isset($this->modules[$entry]) && file_exists($full_entry . '/lib')) {
                                 $varname = $entry . 'Loader';
                                 $$varname = new ClassLoader(
                                     $this->getNamespace($entry),
@@ -134,14 +136,14 @@ class Plugins
                                 );
                                 $$varname->register();
                             }
+                        } else {
+                            //plugin is not compatible with that version of galette.
+                            Analog::log(
+                                'Plugin ' . $entry . ' is explicitely disabled',
+                                Analog::INFO
+                            );
+                            $this->setDisabled(self::DISABLED_EXPLICIT);
                         }
-                    } else {
-                        //plugin is not compatible with that version of galette.
-                        Analog::log(
-                            'Plugin ' . $entry . ' is explicitely disabled',
-                            Analog::INFO
-                        );
-                        $this->setDisabled(self::DISABLED_EXPLICIT);
                     }
                 }
             }
@@ -230,36 +232,20 @@ class Plugins
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } else {
-            if ($this->id) {
-                $release_date = $date;
-                if ($date !== null && $this->autoload === false) {
-                    //try to localize release date
-                    try {
-                        $release_date = new \DateTime($date);
-                        $release_date = $release_date->format(__("Y-m-d"));
-                    } catch (\Exception $e) {
-                        Analog::log(
-                            'Unable to localize release date for plugin ' . $name,
-                            Analog::WARNING
-                        );
-                    }
-                }
-
-                $this->modules[$this->id] = array(
-                    'root'          => $this->mroot,
-                    'name'          => $name,
-                    'desc'          => $desc,
-                    'author'        => $author,
-                    'version'       => $version,
-                    'acls'          => $acls,
-                    'date'          => $release_date,
-                    'priority'      => $priority === null ?
-                                         1000 : (int)$priority,
-                    'root_writable' => is_writable($this->mroot),
-                    'route'         => $route
-                );
-            }
+        } else if ($this->id) {
+            $this->modules[$this->id] = array(
+                'root'          => $this->mroot,
+                'name'          => $name,
+                'desc'          => $desc,
+                'author'        => $author,
+                'version'       => $version,
+                'acls'          => $acls,
+                'date'          => $date,
+                'priority'      => $priority === null ?
+                                     1000 : (int)$priority,
+                'root_writable' => is_writable($this->mroot),
+                'route'         => $route
+            );
         }
     }
 

@@ -38,7 +38,7 @@
  * @since     2013-01-13
  */
 
-use mageekguy\atoum;
+use atoum\atoum;
 
 $coverageField = new atoum\report\fields\runner\coverage\html(
     'Galette',

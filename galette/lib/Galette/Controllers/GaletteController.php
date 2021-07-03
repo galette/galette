@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -62,7 +62,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -75,13 +75,12 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function slash(Request $request, Response $response, array $args = []): Response
+    public function slash(Request $request, Response $response): Response
     {
-        return $this->galetteRedirect($request, $response, $args);
+        return $this->galetteRedirect($request, $response);
     }
 
     /**
@@ -541,7 +540,7 @@ class GaletteController extends AbstractController
 
             $res[$current_cat][] = array(
                 'field_id'  =>  $field,
-                'label'     =>  $post[$field . '_label'],
+                'label'     =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
                 'category'  =>  $post[$field . '_category'],
                 'visible'   =>  $post[$field . '_visible'],
                 'required'  =>  $required
@@ -574,13 +573,12 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $table    Tbale name
      *
      * @return Response
      */
-    public function configureListFields(Request $request, Response $response, array $args = []): Response
+    public function configureListFields(Request $request, Response $response, string $table): Response
     {
-        $table = $args['table'];
         //TODO: check if type table exists
 
         $lc = $this->lists_config;
@@ -607,11 +605,10 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function storeListFields(Request $request, Response $response, array $args = []): Response
+    public function storeListFields(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -636,93 +633,7 @@ class GaletteController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureListFields', $args));
-    }
-
-    /**
-     * Fake data page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
-     */
-    public function fakeData(Request $request, Response $response): Response
-    {
-        $params = [
-            'page_title'            => _T('Generate fake data'),
-            'number_members'        => \Galette\Util\FakeData::DEFAULT_NB_MEMBERS,
-            'number_contrib'        => \Galette\Util\FakeData::DEFAULT_NB_CONTRIB,
-            'number_groups'         => \Galette\Util\FakeData::DEFAULT_NB_GROUPS,
-            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS,
-            'photos'                => \Galette\Util\FakeData::DEFAULT_PHOTOS
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'fake_data.tpl',
-            $params
-        );
-        return $response;
-    }
-
-    /**
-     * Generate fake data
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
-     */
-    public function doFakeData(Request $request, Response $response): Response
-    {
-        $post = $request->getParsedBody();
-
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-
-        $fakedata->setDependencies(
-            $this->preferences,
-            $this->members_fields,
-            $this->history,
-            $this->login
-        );
-
-        $fakedata
-            ->setNbMembers($post['number_members'])
-            ->setNbGroups($post['number_groups'])
-            ->setNbTransactions($post['number_transactions'])
-            ->setMaxContribs($post['number_contrib'])
-            ->setWithPhotos(isset($post['photos']));
-
-        $fakedata->generate();
-
-        $report = $fakedata->getReport();
-
-        foreach ($report['success'] as $success) {
-            $this->flash->addMessage(
-                'success_detected',
-                $success
-            );
-        }
-
-        foreach ($report['errors'] as $error) {
-            $this->flash->addMessage(
-                'error_detected',
-                $error
-            );
-        }
-
-        foreach ($report['warnings'] as $warning) {
-            $this->flash->addMessage(
-                'warning_detected',
-                $warning
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->router->pathFor('configureListFields', $this->getArgs($request)));
     }
 
     /**
@@ -762,7 +673,7 @@ class GaletteController extends AbstractController
     }
 
     /**
-     * Main route
+     * Send reminders
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
@@ -795,6 +706,12 @@ class GaletteController extends AbstractController
         } else {
             foreach ($list_reminders as $reminder) {
                 if ($labels === false) {
+                    $reminder
+                        ->setDb($this->zdb)
+                        ->setLogin($this->login)
+                        ->setPreferences($this->preferences)
+                        ->setRouter($this->router)
+                    ;
                     //send reminders by email
                     $sent = $reminder->send($texts, $this->history, $this->zdb);
 
@@ -866,24 +783,25 @@ class GaletteController extends AbstractController
     /**
      * Main route
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request    PSR Request
+     * @param Response $response   PSR Response
+     * @param string   $membership Either 'late' or 'nearly'
+     * @param string   $mail       Either 'withmail' or 'withoutmail'
      *
      * @return Response
      */
-    public function filterReminders(Request $request, Response $response, array $args = []): Response
+    public function filterReminders(Request $request, Response $response, string $membership, string $mail): Response
     {
         //always reset filters
         $filters = new MembersList();
         $filters->filter_account = Members::ACTIVE_ACCOUNT;
 
-        $membership = ($args['membership'] === 'nearly' ?
+        $membership = ($membership === 'nearly' ?
             Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
         //TODO: filter on reminder may take care of parent email as well
-        $mail = ($args['mail'] === 'withmail' ?
+        $mail = ($mail === 'withmail' ?
             Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
 
@@ -899,18 +817,18 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $hash     Hash
      *
      * @return Response
      */
-    public function documentLink(Request $request, Response $response, array $args = []): Response
+    public function documentLink(Request $request, Response $response, string $hash): Response
     {
         // display page
         $this->view->render(
             $response,
             'directlink.tpl',
             array(
-                'hash'          => $args['hash'],
+                'hash'          => $hash,
                 'page_title'    => _T('Download document')
             )
         );

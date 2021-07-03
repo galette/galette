@@ -74,7 +74,7 @@ if (defined('STDIN')) {
     fclose($fp);
 } else {
     $json_args = json_decode($args);
-    foreach ($json_args as $k=>$v) {
+    foreach ($json_args as $k => $v) {
         echo 'key: ' . $k . ' | value: ' . $v;
     }
 }

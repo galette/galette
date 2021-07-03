@@ -36,14 +36,20 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
 use Laminas\Db\Adapter\Driver\ConnectionInterface;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
+use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Insert;
+use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Delete;
+use Laminas\Db\ResultSet;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\SqlInterface;
 
 /**
  * Zend Db wrapper
@@ -133,7 +139,7 @@ class Db
             }
 
             $this->doConnection();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
                 '[Db] Error (' . $e->getCode() . '|' .
@@ -158,11 +164,6 @@ class Db
         if (!$this->isPostgres()) {
             $this->db->query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         }
-
-        Analog::log(
-            '[Db] Database connection was successfull!',
-            Analog::DEBUG
-        );
     }
 
     /**
@@ -220,7 +221,7 @@ class Db
             } else {
                 return 0.63;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
@@ -276,8 +277,7 @@ class Db
      * @param string $port which tcp port we want to connect to
      * @param string $db   database name
      *
-     * @return true|array true if connection was successfull,
-     *                    an array with some infos otherwise
+     * @return true
      */
     public static function testConnectivity(
         $type,
@@ -309,19 +309,15 @@ class Db
             $_db = new Adapter($_options);
             $_db->getDriver()->getConnection()->connect();
 
-            Analog::log(
-                '[' . __METHOD__ . '] Database connection was successfull!',
-                Analog::DEBUG
-            );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             // perhaps failed to load the specified Adapter class
             Analog::log(
                 '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|' .
                 $e->getMessage() . ')',
                 Analog::ALERT
             );
-            return $e;
+            throw $e;
         }
     }
 
@@ -335,7 +331,7 @@ class Db
         try {
             $this->db->query('DROP TABLE IF EXISTS galette_test');
             Analog::log('Test table successfully dropped.', Analog::DEBUG);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot drop test table! ' . $e->getMessage(),
                 Analog::WARNING
@@ -379,7 +375,7 @@ class Db
             )';
             $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $results['create'] = true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log('Cannot CREATE TABLE', Analog::WARNING);
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
@@ -394,7 +390,7 @@ class Db
                     $sql = 'ALTER TABLE galette_test ALTER test_text SET DEFAULT \'nothing\'';
                     $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                     $results['alter'] = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot ALTER TABLE | ' . $e->getMessage(),
                         Analog::WARNING
@@ -419,7 +415,7 @@ class Db
                 } else {
                     throw new \Exception('No row inserted!');
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Cannot INSERT records | ' . $e->getMessage(),
                     Analog::WARNING
@@ -446,7 +442,7 @@ class Db
                     } else {
                         throw new \Exception('No row updated!');
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot UPDATE records | ' . $e->getMessage(),
                         Analog::WARNING
@@ -456,7 +452,6 @@ class Db
 
                 //can Galette SELECT records ?
                 try {
-                    $pass = false;
                     $select = $this->sql->select('galette_test');
                     $select->where('test_id = 1');
                     $res = $this->execute($select);
@@ -467,7 +462,7 @@ class Db
                     } else {
                         throw new \Exception('Select is empty!');
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot SELECT records | ' . $e->getMessage(),
                         Analog::WARNING
@@ -481,7 +476,7 @@ class Db
                     $delete->where(array('test_id' => 1));
                     $this->execute($delete);
                     $results['delete'] = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot DELETE records | ' . $e->getMessage(),
                         Analog::WARNING
@@ -495,7 +490,7 @@ class Db
                 $sql = 'DROP TABLE galette_test';
                 $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                 $results['drop'] = true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Cannot DROP TABLE | ' . $e->getMessage(),
                     Analog::WARNING
@@ -569,8 +564,6 @@ class Db
         }
 
         try {
-            $this->connection->beginTransaction();
-
             $tables = $this->getTables($prefix);
 
             foreach ($tables as $table) {
@@ -597,14 +590,13 @@ class Db
                     $this->convertContentToUTF($prefix, $table);
                 }
             }
-            $this->connection->commit();
-        } catch (\Exception $e) {
-            $this->connection->rollBack();
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while converting to utf table ' .
                 $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -625,7 +617,7 @@ class Db
                 $query,
                 Adapter::QUERY_MODE_EXECUTE
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
                 $e->getMessage(),
@@ -636,7 +628,6 @@ class Db
         try {
             $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
-            $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();
             $pkeys = array();
 
@@ -695,7 +686,7 @@ class Db
                 $update->set($data)->where($where);
                 $this->execute($update);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while converting contents to UTF-8 for table ' .
                 $table . ' (' . $e->getMessage() . ')',
@@ -784,22 +775,19 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return Stmt
+     * @return StatementInterface|ResultSet\ResultSet
      */
     public function execute($sql)
     {
         try {
             $query_string = $this->sql->buildSqlString($sql);
             $this->last_query = $query_string;
-            Analog::log(
-                'Executing query: ' . $query_string,
-                Analog::DEBUG
-            );
+            $this->log($query_string);
             return $this->db->query(
                 $query_string,
                 Adapter::QUERY_MODE_EXECUTE
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $msg = 'Query error: ';
             if (isset($query_string)) {
                 $msg .= $query_string;
@@ -827,25 +815,18 @@ class Db
         switch ($name) {
             case 'db':
                 return $this->db;
-                break;
             case 'sql':
                 return $this->sql;
-                break;
             case 'driver':
                 return $this->db->getDriver();
-                break;
             case 'connection':
                 return $this->db->getDriver()->getConnection();
-                break;
             case 'platform':
                 return $this->db->getPlatform();
-                break;
             case 'query_string':
                 return $this->last_query;
-                break;
             case 'type_db':
                 return $this->type_db;
-                break;
         }
     }
 
@@ -934,7 +915,7 @@ class Db
     /**
      * Check if current exception is on a duplicate key
      *
-     * @param \Exception $exception Exception to check
+     * @param Throwable $exception Exception to check
      *
      * @return boolean
      */
@@ -966,6 +947,37 @@ class Db
         $this->db->query(
             $sql,
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+    }
+
+    /**
+     * Log queries in specific file
+     *
+     * @param string $query Query to add in logs
+     *
+     * @return void
+     */
+    protected function log($query)
+    {
+        if (GALETTE_MODE == 'DEV' || defined('GALETTE_SQL_DEBUG')) {
+            $logfile = GALETTE_LOGS_PATH . 'galette_sql.log';
+            file_put_contents($logfile, $query . "\n", FILE_APPEND);
+        }
+    }
+
+    /**
+     * Get last generated value
+     *
+     * @param object $entity Entity instance
+     *
+     * @return integer
+     */
+    public function getLastGeneratedValue($entity): int
+    {
+        return (int)$this->driver->getLastGeneratedValue(
+            $this->isPostgres() ?
+                PREFIX_DB . $entity::TABLE . '_id_seq'
+                : null
         );
     }
 }

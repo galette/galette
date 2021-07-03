@@ -59,6 +59,7 @@ use Analog\Analog;
 class PdfAttendanceSheet extends Pdf
 {
     public const SHEET_FONT = self::FONT_SIZE - 2;
+    public const ATT_SHEET_MODEL = 100;
 
     public $doc_title = null;
     public $sheet_title = null;
@@ -102,8 +103,8 @@ class PdfAttendanceSheet extends Pdf
     public function __construct(Db $zdb, Preferences $prefs, $data = [])
     {
         $this->filename = __('attendance_sheet') . '.pdf';
-        $class = PdfModel::getTypeClass(__CLASS__);
-        $model = new $class($zdb, $prefs, PdfModel::MAIN_MODEL);
+        $class = PdfModel::getTypeClass(self::ATT_SHEET_MODEL);
+        $model = new $class($zdb, $prefs);
 
         // Set document and model information
         $this->doc_title = $data['doc_title'];

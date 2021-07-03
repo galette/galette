@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 
@@ -589,7 +590,7 @@ class Install
                     if ($version === null) {
                         $php_update_scripts[$ver[1]] = $ver[1];
                     } else {
-                        if ($version <= $ver[1]) {
+                        if ($version < $ver[1]) {
                             $php_update_scripts[$ver[1]] = $file;
                         }
                     }
@@ -604,7 +605,7 @@ class Install
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
-                        if ($version <= $ver[1]) {
+                        if ($version < $ver[1]) {
                             $sql_update_scripts[$ver[1]] = $file;
                         }
                     }
@@ -620,18 +621,18 @@ class Install
     /**
      * Execute SQL scripts
      *
-     * @param Galette\Core\Db $zdb Database instance
+     * @param Galette\Core\Db $zdb   Database instance
+     * @param string          $spath Path to scripts
      *
      * @return boolean
      */
-    public function executeScripts($zdb)
+    public function executeScripts($zdb, $spath = null)
     {
         $queries_results = array();
         $fatal_error = false;
-        $update_scripts = $this->getScripts();
-        $sql_query = '';
+        $update_scripts = $this->getScripts($spath);
         $this->_report = array();
-        $scripts_path = GALETTE_ROOT . '/install/scripts/';
+        $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
             if (substr($val, -strlen('.sql')) === '.sql') {
@@ -644,10 +645,15 @@ class Install
                     );
                 }
 
-                $sql_query .= @fread(
+                $sql_query = @fread(
                     $script,
                     @filesize($scripts_path . $val)
                 ) . "\n";
+
+                $sql_res = $this->executeSql($zdb, $sql_query);
+                if (!$sql_res) {
+                    $fatal_error = true;
+                }
             } else {
                 //we got an update class
                 include_once $scripts_path . $val;
@@ -692,12 +698,13 @@ class Install
                     $this->_report[] = $ret;
                 }
             }
+
+            Analog::log(
+                str_replace('%s', $key, 'Upgrade to %s complete'),
+                Analog::INFO
+            );
         }
 
-        if ($sql_query !== '') {
-            $sql_res = $this->executeSql($zdb, $sql_query);
-            $fatal_error = !$sql_res;
-        }
         return !$fatal_error;
     }
 
@@ -740,7 +747,7 @@ class Install
                         Adapter::QUERY_MODE_EXECUTE
                     );
                     $ret['res'] = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
                     $parts = explode(' ', $query, 1);
@@ -769,7 +776,14 @@ class Install
         if ($fatal_error) {
             $zdb->connection->rollBack();
         } else {
-            $zdb->connection->commit();
+            try {
+                $zdb->connection->commit();
+            } catch (\PDOException $e) {
+                //to avoid php8/mysql autocommit issue
+                if ($zdb->isPostgres() || (!$zdb->isPostgres() && !str_contains($e->getMessage(), 'no active transaction'))) {
+                    throw $e;
+                }
+            }
         }
 
         $this->_report = array_merge($this->_report, $queries_results);
@@ -1111,6 +1125,9 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 $members_fields_cats,
                 true
             );
+
+            global $login;
+            $login = new \Galette\Core\Login($zdb, $i18n);
             //$fc = new \Galette\Entity\FieldsCategories();
             $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles();
@@ -1157,7 +1174,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $preferences->store();
             $this->proceedReport(_T("Update preferences"), true);
 
-            $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n, new \RKA\Session()));
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
             $res = $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
 

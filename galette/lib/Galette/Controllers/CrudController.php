@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
@@ -62,22 +63,20 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    abstract public function add(Request $request, Response $response, array $args = []): Response;
+    abstract public function add(Request $request, Response $response): Response;
 
     /**
      * Add action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    abstract public function doAdd(Request $request, Response $response, array $args = []): Response;
+    abstract public function doAdd(Request $request, Response $response): Response;
 
     // /CRUD - Create
     // CRUD - Read
@@ -85,13 +84,14 @@ abstract class CrudController extends AbstractController
     /**
      * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    abstract public function list(Request $request, Response $response, array $args = []): Response;
+    abstract public function list(Request $request, Response $response, $option = null, $value = null): Response;
 
     /**
      * List filtering
@@ -111,22 +111,22 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    abstract public function edit(Request $request, Response $response, array $args = []): Response;
+    abstract public function edit(Request $request, Response $response, int $id): Response;
 
     /**
      * Edit action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    abstract public function doEdit(Request $request, Response $response, array $args = []): Response;
+    abstract public function doEdit(Request $request, Response $response, int $id): Response;
 
     // /CRUD - Update
     // CRUD - Delete
@@ -136,31 +136,43 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function confirmDelete(Request $request, Response $response, array $args = []): Response
+    public function confirmDelete(Request $request, Response $response): Response
     {
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            $this->getconfirmDeleteParams($request)
+        );
+        return $response;
+    }
+
+    /**
+     * Removal confirmation parameters, can be overriden
+     *
+     * @param Request $request PSR Request
+     *
+     * @return array
+     */
+    protected function getconfirmDeleteParams(Request $request): array
+    {
+        $args = $this->getArgs($request);
         $post = $request->getParsedBody();
         $data = [
             'id'            => $this->getIdsToRemove($args, $post),
             'redirect_uri'  => $this->redirectUri($args)
         ];
 
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => $this->confirmRemoveTitle($args),
-                'form_url'      => $this->formUri($args),
-                'cancel_uri'    => $this->cancelUri($args),
-                'data'          => $data
-            )
-        );
-        return $response;
+        return [
+            'mode'          => $request->isXhr() ? 'ajax' : '',
+            'page_title'    => $this->confirmRemoveTitle($args),
+            'form_url'      => $this->formUri($args),
+            'cancel_uri'    => $this->cancelUri($args),
+            'data'          => $data
+        ];
     }
 
     /**
@@ -208,7 +220,7 @@ abstract class CrudController extends AbstractController
         //add to $args if needed
         if (is_array($ids)) {
             $args['ids'] = $ids;
-        } elseif (!isset($args['id'])) {
+        } elseif (!isset($args['id']) && $ids) {
             $args['id'] = $ids;
         }
 
@@ -222,7 +234,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    abstract public function redirectUri(array $args = []);
+    abstract public function redirectUri(array $args);
 
     /**
      * Get cancel URI
@@ -231,7 +243,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    public function cancelUri(array $args = [])
+    public function cancelUri(array $args)
     {
         return $this->redirectUri($args);
     }
@@ -243,7 +255,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    abstract public function formUri(array $args = []);
+    abstract public function formUri(array $args);
 
     /**
      * Get confirmation removal page title
@@ -252,24 +264,24 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    abstract public function confirmRemoveTitle(array $args = []);
+    abstract public function confirmRemoveTitle(array $args);
 
     /**
      * Removal
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function delete(Request $request, Response $response, array $args = []): Response
+    public function delete(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
+        $args = $this->getArgs($request);
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
 
-        $uri = $post['redirect_uri'] ?? $this->redirectUri();
+        $uri = $post['redirect_uri'] ?? $this->redirectUri($args);
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -288,7 +300,7 @@ abstract class CrudController extends AbstractController
                     );
                     $success = true;
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'An error occurred on delete | ' . $e->getMessage(),
                     Analog::ERROR

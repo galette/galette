@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 
@@ -96,7 +97,7 @@ class FieldsCategories
                 $categories[] = $result;
             }
             return $categories;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 '[' . static::class . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
@@ -134,12 +135,12 @@ class FieldsCategories
             foreach ($categories as $k => $v) {
                 $params = array(
                     'position'  => $k,
-                    'where1'    => $v
+                    'pk'        => $v
                 );
                 $stmt->execute($params);
             }
             $zdb->connection->commit();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             throw $e;
         }
@@ -161,7 +162,7 @@ class FieldsCategories
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
                 array(
-                    self::PK        => ':id',
+                    self::PK        => ':' . self::PK,
                     'table_name'    => ':table_name',
                     'category'      => ':category',
                     'position'      => ':position'
@@ -185,13 +186,13 @@ class FieldsCategories
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default fields configuration.' .
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 }

@@ -43,8 +43,9 @@
     {/if}
 {else}
                 {* Single member *}
-                <a id="members" href="{path_for name="me"}" title="{_T string="View, search into and filter member's list"}">{_T string="My information"}</a>
-                <a id="contribs" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="My contributions"}">{_T string="Contributions"}</a>
+                <a id="members" href="{path_for name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a>
+                <a id="contribs" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a>
+                <a id="transactions" href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a>
                 {* Include plugins user dashboard *}
                 {$plugins->getMemberDashboard($tpl)}
 {/if}

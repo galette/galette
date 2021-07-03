@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -49,7 +49,7 @@ use Analog\Analog;
  * @name      TextController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-06-08
@@ -62,17 +62,18 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
+     * @param string   $lang     Language
+     * @param string   $ref      Ref code
      *
      * @return void
      */
-    public function list(Request $request, Response $response, array $args = [])
+    public function list(Request $request, Response $response, string $lang = null, string $ref = null)
     {
-        if (!isset($args['lang'])) {
-            $args['lang'] = $this->preferences->pref_lang;
+        if ($lang === null) {
+            $lang = $this->preferences->pref_lang;
         }
-        if (!isset($args['ref'])) {
-            $args['ref'] = Texts::DEFAULT_REF;
+        if ($ref === null) {
+            $ref = Texts::DEFAULT_REF;
         }
 
         $texts = new Texts(
@@ -80,7 +81,8 @@ class TextController extends AbstractController
             $this->router
         );
 
-        $mtxt = $texts->getTexts($args['ref'], $args['lang']);
+        $texts->setCurrent($ref);
+        $mtxt = $texts->getTexts($ref, $lang);
 
         // display page
         $this->view->render(
@@ -88,10 +90,11 @@ class TextController extends AbstractController
             'gestion_textes.tpl',
             [
                 'page_title'        => _T("Automatic emails texts edition"),
-                'reflist'           => $texts->getRefs($args['lang']),
+                'texts'             => $texts,
+                'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
-                'cur_lang'          => $args['lang'],
-                'cur_ref'           => $args['ref'],
+                'cur_lang'          => $lang,
+                'cur_ref'           => $ref,
                 'mtxt'              => $mtxt,
             ]
         );
@@ -103,11 +106,10 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
      *
      * @return void
      */
-    public function change(Request $request, Response $response, array $args = [])
+    public function change(Request $request, Response $response)
     {
         $post = $request->getParsedBody();
         return $response
@@ -129,11 +131,10 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
      *
      * @return void
      */
-    public function edit(Request $request, Response $response, array $args = [])
+    public function edit(Request $request, Response $response)
     {
         $post = $request->getParsedBody();
         $texts = new Texts($this->preferences, $this->router);
@@ -173,6 +174,15 @@ class TextController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('texts'));
+            ->withHeader(
+                'Location',
+                $this->router->pathFor(
+                    'texts',
+                    [
+                        'lang'  => $cur_lang,
+                        'ref'   => $cur_ref
+                    ]
+                )
+            );
     }
 }

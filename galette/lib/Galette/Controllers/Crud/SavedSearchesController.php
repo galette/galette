@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -68,11 +69,10 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -82,11 +82,10 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response): Response
     {
         if ($request->isPost()) {
             $post = $request->getParsedBody();
@@ -162,23 +161,15 @@ class SavedSearchesController extends CrudController
     /**
      * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
         if (isset($this->session->filter_savedsearch)) {
             $filters = $this->session->filter_savedsearch;
         } else {
@@ -239,11 +230,11 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id): Response
     {
         //no edition
     }
@@ -253,11 +244,11 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
         //no edition
     }
@@ -272,7 +263,7 @@ class SavedSearchesController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('searches');
     }
@@ -284,7 +275,7 @@ class SavedSearchesController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveSearch',
@@ -299,7 +290,7 @@ class SavedSearchesController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         if (isset($args['id'])) {
             return _T('Remove saved search');
@@ -348,19 +339,19 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Saved search id
      *
      * @return Response
      */
-    public function load(Request $request, Response $response, array $args = []): Response
+    public function load(Request $request, Response $response, int $id): Response
     {
         try {
-            $sco = new SavedSearch($this->zdb, $this->login, (int)$args['id']);
+            $sco = new SavedSearch($this->zdb, $this->login, $id);
             $this->flash->addMessage(
                 'success_detected',
                 _T("Saved search loaded")
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("An SQL error has occurred while loading search.")

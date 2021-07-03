@@ -63,5 +63,6 @@ class PdfAdhesionFormModel extends PdfModel
     public function __construct($zdb, $preferences, $args = null)
     {
         parent::__construct($zdb, $preferences, self::ADHESION_FORM_MODEL, $args);
+        $this->setPatterns($this->getMemberPatterns());
     }
 }

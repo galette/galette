@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -36,8 +36,10 @@
 
 namespace Galette\Entity;
 
-use Galette\Core;
+use Throwable;
 use Galette\Core\Db;
+use Galette\Core\Preferences;
+use Galette\Features\Replacements;
 use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -49,7 +51,7 @@ use Laminas\Db\Sql\Expression;
  * @name      PdfModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -57,6 +59,8 @@ use Laminas\Db\Sql\Expression;
 
 abstract class PdfModel
 {
+    use Replacements;
+
     public const TABLE = 'pdfmodels';
     public const PK = 'model_id';
 
@@ -64,8 +68,6 @@ abstract class PdfModel
     public const INVOICE_MODEL = 2;
     public const RECEIPT_MODEL = 3;
     public const ADHESION_FORM_MODEL = 4;
-
-    private $zdb;
 
     private $id;
     private $name;
@@ -78,9 +80,6 @@ abstract class PdfModel
     private $styles;
     private $parent;
 
-    private $patterns;
-    private $replaces;
-
     /**
      * Main constructor
      *
@@ -89,74 +88,40 @@ abstract class PdfModel
      * @param int         $type        Model type
      * @param mixed       $args        Arguments
      */
-    public function __construct(Db $zdb, $preferences, $type, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, $type, $args = null)
     {
-        global $container;
-        $router = $container->get('router');
-
-        if (!$zdb) {
-            throw new \RuntimeException(
-                get_class($this) . ' Database instance required!'
-            );
-        }
-
-        $this->zdb = $zdb;
+        global $container, $login;
+        $this->router = $container->get('router');
+        $this->preferences = $preferences;
+        $this
+            ->setDb($zdb)
+            ->setLogin($login);
         $this->type = $type;
 
         if (is_int($args)) {
-            $this->load($args, $preferences);
+            $this->load($args);
         } elseif ($args !== null && is_object($args)) {
-            $this->loadFromRs($args, $preferences);
+            $this->loadFromRs($args);
+        } else {
+            $this->load($type);
         }
 
-        $this->patterns = array(
-            'asso_name'          => '/{ASSO_NAME}/',
-            'asso_slogan'        => '/{ASSO_SLOGAN}/',
-            'asso_address'       => '/{ASSO_ADDRESS}/',
-            'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
-            'asso_website'       => '/{ASSO_WEBSITE}/',
-            'asso_logo'          => '/{ASSO_LOGO}/',
-            'date_now'           => '/{DATE_NOW}/'
-        );
-
-        $address = $preferences->getPostalAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
-
-        $website = '';
-        if ($preferences->pref_website != '') {
-            $website = '<a href="' . $preferences->pref_website . '">' .
-                $preferences->pref_website . '</a>';
-        }
-
-        $logo = new Core\Logo();
-        $logo_elt = '<img' .
-            ' src="' . $preferences->getURL() . $router->pathFor('logo') . '"' .
-            ' width="' . $logo->getOptimalWidth() . '"' .
-            ' height="' . $logo->getOptimalHeight() . '"' .
-            '/>';
-
-        $this->replaces = array(
-            'asso_name'          => $preferences->pref_nom,
-            'asso_slogan'        => $preferences->pref_slogan,
-            'asso_address'       => $address,
-            'asso_address_multi' => $address_multi,
-            'asso_website'       => $website,
-            'asso_logo'          => $logo_elt,
-            'date_now'           => date(_T('Y-m-d'))
-        );
+        $this->setPatterns($this->getMainPatterns());
+        $this->setMain();
     }
 
     /**
      * Load a Model from its identifier
      *
-     * @param int         $id          Identifier
-     * @param Preferences $preferences Galette preferences
-     * @param boolean     $init        Init data if required model is missing
+     * @param int     $id   Identifier
+     * @param boolean $init Init data if required model is missing
      *
      * @return void
      */
-    protected function load($id, $preferences, $init = true)
+    protected function load($id, $init = true)
     {
+        global $login;
+
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->limit(1)
@@ -167,33 +132,33 @@ abstract class PdfModel
             $count = $results->count();
             if ($count === 0) {
                 if ($init === true) {
-                    $models = new PdfModels($this->zdb, $preferences, $this->login);
+                    $models = new PdfModels($this->zdb, $this->preferences, $login);
                     $models->installInit();
-                    $this->load($id, $preferences, false);
+                    $this->load($id, false);
                 } else {
                     throw new \RuntimeException('Model not found!');
                 }
             } else {
-                $this->loadFromRs($results->current(), $preferences);
+                $this->loadFromRs($results->current());
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading model #' . $id . "Message:\n" .
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
     /**
      * Load model from a db ResultSet
      *
-     * @param ResultSet   $rs          ResultSet
-     * @param Preferences $preferences Galette preferences
+     * @param ResultSet $rs ResultSet
      *
      * @return void
      */
-    protected function loadFromRs($rs, $preferences)
+    protected function loadFromRs($rs)
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -218,25 +183,10 @@ abstract class PdfModel
             //FIXME: for now, parent will always be a PdfMain
             $this->parent = new PdfMain(
                 $this->zdb,
-                $preferences,
+                $this->preferences,
                 (int)$rs->model_parent
             );
         }
-
-        //let's check if some values should be retrieved from parent model
-        /*if ( $this->id > self::MAIN_MODEL ) {
-            //some infos are missing, load parent
-            if ( trim($this->header) === ''
-                || trim($this->footer) === ''
-            ) {
-                if ( trim($this->header) === '' ) {
-                    $this->header = $parent->header;
-                }
-                if ( trim($this->header) === '' ) {
-                    $this->footer = $parent->footer;
-                }
-            }
-        }*/
     }
 
     /**
@@ -247,12 +197,12 @@ abstract class PdfModel
     public function store()
     {
         $title = $this->title;
-        if (trim($title === '')) {
+        if (trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
-        if (trim($subtitle === '')) {
+        if (trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }
 
@@ -278,13 +228,13 @@ abstract class PdfModel
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
                 $add = $this->zdb->execute($insert);
-                if (!$add->count() > 0) {
+                if (!($add->count() > 0)) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing model: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -299,9 +249,9 @@ abstract class PdfModel
      *
      * @param int $type Type
      *
-     * @return Class
+     * @return string
      */
-    public static function getTypeClass($type)
+    public static function getTypeClass(int $type)
     {
         $class = null;
         switch ($type) {
@@ -323,10 +273,10 @@ abstract class PdfModel
     }
 
     /**
-     * Check lenght
+     * Check length
      *
      * @param string  $value The value
-     * @param int     $chars Lenght
+     * @param int     $chars Length
      * @param string  $field Field name
      * @param boolean $empty Can value be empty
      *
@@ -358,63 +308,6 @@ abstract class PdfModel
     }
 
     /**
-     * Extract patterns
-     *
-     * @return array
-     */
-    public function extractDynamicPatterns()
-    {
-
-        $patterns = array();
-        $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
-        foreach ($parts as $part) {
-            $content = $this->$part;
-
-            $matches = array();
-            preg_match_all(
-                '/{((LABEL|INPUT)?_DYNFIELD_[0-9]+_ADH)}/',
-                $content,
-                $matches
-            );
-            $patterns = array_merge($patterns, $matches[1]);
-
-            Analog::log("dynamic patterns found in $part: " . join(",", $matches[1]), Analog::DEBUG);
-        }
-
-        return $patterns;
-    }
-
-    /**
-     * Set patterns
-     *
-     * @param array $patterns Patterns to add
-     *
-     * @return void
-     */
-    public function setPatterns($patterns)
-    {
-        $this->patterns = array_merge(
-            $this->patterns,
-            $patterns
-        );
-    }
-
-    /**
-     * Set replacements
-     *
-     * @param array $replaces Replacements to add
-     *
-     * @return void
-     */
-    public function setReplacements($replaces)
-    {
-        $this->replaces = array_merge(
-            $this->replaces,
-            $replaces
-        );
-    }
-
-    /**
      * Getter
      *
      * @param string $name Property name
@@ -435,6 +328,8 @@ abstract class PdfModel
             case 'subtitle':
             case 'type':
             case 'styles':
+            case 'patterns':
+            case 'replaces':
                 return $this->$name;
                 break;
             case 'hstyles':
@@ -457,50 +352,20 @@ abstract class PdfModel
             case 'hsubtitle':
             case 'hbody':
                 $pname = substr($name, 1);
-                $prop_value = $this->$pname;
+                $prop_value = $this->$pname ?? '';
 
                 //get header and footer from parent if not defined in current model
                 if (
                     $this->id > self::MAIN_MODEL
-                    && trim($prop_value) === ''
                     && $this->parent !== null
                     && ($pname === 'footer'
                     || $pname === 'header')
+                    && trim($prop_value) === ''
                 ) {
                     $prop_value = $this->parent->$pname;
                 }
 
-                //handle translations
-                $callback = function ($matches) {
-                    return _T($matches[1]);
-                };
-                $value = preg_replace_callback(
-                    '/_T\("([^\"]+)"\)/',
-                    $callback,
-                    $prop_value
-                );
-
-                //handle replacements
-                $value = preg_replace(
-                    $this->patterns,
-                    $this->replaces,
-                    $value
-                );
-
-                //handle translations with replacements
-                $repl_callback = function ($matches) {
-                    return str_replace(
-                        $matches[1],
-                        $matches[2],
-                        $matches[3]
-                    );
-                };
-                $value = preg_replace_callback(
-                    '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
-                    $repl_callback,
-                    $value
-                );
-
+                $value = $this->proceedReplacements($prop_value);
                 return $value;
                 break;
             default:
@@ -545,7 +410,7 @@ abstract class PdfModel
                 try {
                     $this->checkChars($value, 50, _T("Name"));
                     $this->$name = $value;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     throw $e;
                 }
                 break;
@@ -559,42 +424,26 @@ abstract class PdfModel
                 try {
                     $this->checkChars($value, 100, $field, true);
                     $this->$name = $value;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     throw $e;
                 }
                 break;
             case 'header':
             case 'footer':
             case 'body':
-                if ($value == null || trim($value) == '') {
-                    if (get_class($this) === 'PdfMain' && $name !== 'body') {
+                if ($value === null || trim($value) === '') {
+                    if ($name !== 'body' && get_class($this) === 'PdfMain') {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
                         );
-                    } elseif (get_class($this) !== 'PdfMain' && $name === 'body') {
+                    } elseif ($name === 'body' && get_class($this) !== 'PdfMain') {
                         throw new \UnexpectedValueException(
                             _T("body should not be empty!")
                         );
                     }
                 }
 
-                if (function_exists('tidy_parse_string')) {
-                    //if tidy extension is present, we use it to clean a bit
-                    /*$tidy_config = array(
-                        'clean'             => true,
-                        'show-body-only'    => true,
-                        'join-styles'       => false,
-                        'join-classes'      => false,
-                        'wrap' => 0,
-                    );
-                    $tidy = tidy_parse_string($value, $tidy_config, 'UTF8');
-                    $tidy->cleanRepair();
-                    $this->$name = tidy_get_output($tidy);*/
-                    $this->$name = $value;
-                } else {
-                    //if it is not... Well, let's serve the text as it.
-                    $this->$name = $value;
-                }
+                $this->$name = $value;
                 break;
             case 'styles':
                 $this->styles = $value;

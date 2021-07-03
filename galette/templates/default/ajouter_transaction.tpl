@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" method="post">
+        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
@@ -194,7 +194,7 @@
             }
 
             var _contribs_ajax_mapper = function(res){
-                $("#legende").remove();
+                $("#contributions_list #legende").remove();
                 $('#contributions_list').append( res );
 
                 //Deactivate contributions list links
@@ -202,8 +202,9 @@
                     //for links in body (members links), we de nothing
                     return false;
                 });
+                _bindNbshow('#contributions_list #filtre');
                 //Use JS to send form
-                $('#filtre').submit(function(){
+                $('#contributions_list #filtre').submit(function(){
                     $.ajax({
                         url: this.action,
                         type: "POST",
@@ -219,16 +220,11 @@
                     });
                     return false;
                 });
-                //Re-bind submit event on the correct element here
-                $('#nbshow').unbind('change');
-                $('#nbshow').change(function() {
-                    $('form#filtre').submit();
-                });
                 //Bind pagination links
-                $('.pages a').bind({
+                $('#contributions_list .pages a').bind({
                     click: function(){
                         $.ajax({
-                            url: '{path_for name="contributions" data=["type" => "contributions"]}' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
+                            url: this.href.substring(this.href.indexOf('?')) + (this.href.indexOf('?') > -1 ? "&" : "?") + "ajax=true",
                             type: "GET",
                             {include file="js_loader.tpl"},
                             success: function(res){
@@ -243,7 +239,7 @@
                     }
                 });
                 //Select a row
-                $('.contribution_row').click(function(){
+                $('#contributions_list .contribution_row').click(function(){
                     $('#contributions_list').dialog("close");
                     var _cid = $(this).find('input[name="contrib_id"]').val();
                     window.location.href = '{path_for name="attach_contribution" data=["id" => $transaction->id, "cid" => "%cid"]}'.replace(/%cid/, _cid);

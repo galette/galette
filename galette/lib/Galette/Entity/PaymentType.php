@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Galette\Core;
 use Galette\Core\Db;
 use Galette\Repository\PaymentTypes;
@@ -107,7 +108,7 @@ class PaymentType
 
             $this->id = $id;
             $this->name = $res->type_name;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading payment type #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -161,14 +162,12 @@ class PaymentType
                     return false;
                 }
 
-                $this->id = (int)$this->zdb->driver->getLastGeneratedValue(
-                    PREFIX_DB . self::TABLE . '_id_seq'
-                );
+                $this->id = $this->zdb->getLastGeneratedValue($this);
 
                 $this->addTranslation($this->name);
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing payment type: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -203,7 +202,7 @@ class PaymentType
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to delete payment type ' . $id . ' | ' . $e->getMessage(),
                 Analog::ERROR

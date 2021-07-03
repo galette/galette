@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -67,11 +68,10 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -81,15 +81,15 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $name     Group name
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response, string $name = null): Response
     {
         $group = new Group();
         $group->setLogin($this->login);
-        $group->setName($args['name']);
+        $group->setName($name);
         $group->store();
         if (!$this->login->isSuperAdmin()) {
             $group->setManagers(new Adherent($this->zdb, $this->login->id));
@@ -98,7 +98,7 @@ class GroupsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('groups', ["id" => $id]));
+            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $id]));
     }
 
 
@@ -107,11 +107,10 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function checkUniqueness(Request $request, Response $response, array $args = []): Response
+    public function checkUniqueness(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         if (!isset($post['gname']) || $post['gname'] == '') {
@@ -135,13 +134,15 @@ class GroupsController extends CrudController
     /**
      * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
+     * @param integer        $id       Member id to check rights
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null, $id = null): Response
     {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
@@ -150,9 +151,7 @@ class GroupsController extends CrudController
         $groups_root = $groups->getList(false);
         $groups_list = $groups->getList();
 
-        $id = null;
-        if (isset($args['id'])) {
-            $id = $args['id'];
+        if ($id !== null) {
             if ($this->login->isGroupManager($id)) {
                 $group->load($id);
             } else {
@@ -198,11 +197,10 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function getGroup(Request $request, Response $response, array $args = []): Response
+    public function getGroup(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $id = $post['id_group'];
@@ -228,11 +226,10 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function simpleList(Request $request, Response $response, array $args = []): Response
+    public function simpleList(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -256,11 +253,10 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function ajaxMembers(Request $request, Response $response, array $args = []): Response
+    public function ajaxMembers(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -311,11 +307,11 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Record id
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page (included on list), just to satisfy inheritance
     }
@@ -325,15 +321,14 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Group id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
         $post = $request->getParsedBody();
-        $group = new Group((int)$args['id']);
-        $error = false;
+        $group = new Group($id);
 
         $group->setName($post['group_name']);
         try {
@@ -377,7 +372,7 @@ class GroupsController extends CrudController
                     _T("An error occurred while storing the group.")
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->flash->addMessage(
                 'error_detected',
                 $e->getMessage()
@@ -394,11 +389,10 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function reorder(Request $request, Response $response, array $args = []): Response
+    public function reorder(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         if (!isset($post['to']) || !isset($post['id_group']) || $post['id_group'] == '') {
@@ -411,7 +405,7 @@ class GroupsController extends CrudController
             $id = $post['id_group'];
             $group = new Group((int)$id);
             if (!empty($post['to'])) {
-                $group->setParentGroup((int)$_POST['to']);
+                $group->setParentGroup((int)$post['to']);
             } else {
                 $group->detach();
             }
@@ -435,7 +429,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('groups');
     }
@@ -447,7 +441,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveGroup',
@@ -462,7 +456,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         $group = new Group((int)$args['id']);
         return sprintf(
@@ -494,6 +488,18 @@ class GroupsController extends CrudController
         }
 
         return $is_deleted;
+    }
+
+    /**
+     * Removal confirmation parameters, can be overriden
+     *
+     * @param Request $request PSR Request
+     *
+     * @return array
+     */
+    protected function getconfirmDeleteParams(Request $request): array
+    {
+        return parent::getconfirmDeleteParams($request) + ['with_cascade' => true];
     }
 
     // CRUD - Delete

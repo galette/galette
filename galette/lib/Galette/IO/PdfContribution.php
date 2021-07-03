@@ -74,70 +74,12 @@ class PdfContribution extends Pdf
         $this->contrib = $contrib;
 
         $class = PdfModel::getTypeClass($this->contrib->model);
-        $this->model = new $class($zdb, $prefs, $this->contrib->model);
+        $this->model = new $class($zdb, $prefs);
 
-        $member = new Adherent($zdb, $this->contrib->member);
+        $member = new Adherent($zdb, $this->contrib->member, ['dynamics' => true]);
 
-        $this->model->setPatterns(
-            array(
-                'adh_id'            => '/{ID_ADH}/',
-                'adh_name'          => '/{NAME_ADH}/',
-                'adh_address'       => '/{ADDRESS_ADH}/',
-                'adh_zip'           => '/{ZIP_ADH}/',
-                'adh_town'          => '/{TOWN_ADH}/',
-                'adh_main_group'    => '/{GROUP_ADH}/',
-                'adh_groups'        => '/{GROUPS_ADH}/',
-                'adh_company'       => '/{COMPANY_ADH}/',
-                'contrib_label'     => '/{CONTRIBUTION_LABEL}/',
-                'contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
-                'contrib_date'      => '/{CONTRIBUTION_DATE}/',
-                'contrib_year'      => '/{CONTRIBUTION_YEAR}/',
-                'contrib_comment'   => '/{CONTRIBUTION_COMMENT}/',
-                'contrib_bdate'     => '/{CONTRIBUTION_BEGIN_DATE}/',
-                'contrib_edate'     => '/{CONTRIBUTION_END_DATE}/',
-                'contrib_id'        => '/{CONTRIBUTION_ID}/',
-                'contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/'
-            )
-        );
-
-        $address = $member->getAddress();
-        if ($member->getAddressContinuation() != '') {
-            $address .= '<br/>' . $member->getAddressContinuation();
-        }
-
-        $member_groups = $member->groups;
-        $main_group = _T("None");
-        $group_list = _T("None");
-        if (count($member_groups) > 0) {
-            $main_group = $member_groups[0]->getName();
-            $group_list = '<ul>';
-            foreach ($member_groups as $group) {
-                $group_list .= '<li>' . $group->getName() . '</li>';
-            }
-            $group_list .= '</ul>';
-        }
-
-        $this->model->setReplacements(
-            array(
-                'adh_id'            => $this->contrib->member,
-                'adh_name'          => $member->sfullname,
-                'adh_address'       => $address,
-                'adh_zip'           => $member->getZipcode(),
-                'adh_town'          => $member->getTown(),
-                'adh_main_group'    => $main_group,
-                'adh_groups'        => $group_list,
-                'adh_company'       => $member->company_name,
-                'contrib_label'     => $this->contrib->type->libelle,
-                'contrib_amount'    => $this->contrib->amount,
-                'contrib_date'      => $this->contrib->date,
-                'contrib_year'      => $this->contrib->raw_date->format('Y'),
-                'contrib_comment'   => $this->contrib->info,
-                'contrib_bdate'     => $this->contrib->begin_date,
-                'contrib_edate'     => $this->contrib->end_date,
-                'contrib_id'        => $this->contrib->id,
-                'contrib_payment'   => $this->contrib->spayment_type
-            )
-        );
+        $this->model->setMember($member);
+        $this->model->setContribution($this->contrib);
 
         $this->filename = __("contribution");
         $this->filename .= '_' . $this->contrib->id . '_';

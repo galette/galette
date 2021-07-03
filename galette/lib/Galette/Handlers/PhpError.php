@@ -36,6 +36,7 @@
 
 namespace Galette\Handlers;
 
+use Throwable;
 use Slim\Handlers\PhpError as SlimError;
 use Slim\Http\Body;
 use Psr\Http\Message\ResponseInterface;
@@ -63,12 +64,12 @@ class PhpError extends SlimError
      *
      * @param ServerRequestInterface $request  The most recent Request object
      * @param ResponseInterface      $response The most recent Response object
-     * @param \Throwable             $error    The caught Throwable object
+     * @param Throwable              $error    The caught Throwable object
      *
      * @return ResponseInterface
      * @throws UnexpectedValueException
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, \Throwable $error)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Throwable $error)
     {
         $response = parent::__invoke($request, $response, $error);
 

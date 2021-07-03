@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2014 The Galette Team
+ * Copyright © 2011-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-31
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Repository\Contributions;
@@ -50,7 +51,7 @@ use Galette\Core\Login;
  * @name      Transaction
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -156,7 +157,7 @@ class Transaction
             } else {
                 throw new \Exception();
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -177,8 +178,6 @@ class Transaction
     public function remove(History $hist, $transaction = true)
     {
         global $emitter;
-
-        $event = null;
 
         try {
             if ($transaction) {
@@ -211,7 +210,7 @@ class Transaction
 
             $emitter->emit('transaction.remove', $this);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction) {
                 $this->zdb->connection->rollBack();
             }
@@ -283,7 +282,7 @@ class Transaction
                                     throw new \Exception('Incorrect format');
                                 }
                                 $this->$prop = $d->format('Y-m-d');
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 Analog::log(
                                     'Wrong date format. field: ' . $key .
                                     ', value: ' . $value . ', expected fmt: ' .
@@ -377,6 +376,8 @@ class Transaction
     {
         global $emitter;
 
+        $event = null;
+
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
@@ -395,13 +396,7 @@ class Transaction
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
                 if ($add->count() > 0) {
-                    if ($this->zdb->isPostgres()) {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
-                            PREFIX_DB . 'transactions_id_seq'
-                        );
-                    } else {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
-                    }
+                    $this->_id = $this->zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(
@@ -412,7 +407,7 @@ class Transaction
                     $event = 'transaction.add';
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
-                    throw new \Exception(
+                    throw new \RuntimeException(
                         'An error occurred inserting new transaction!'
                     );
                 }
@@ -448,7 +443,7 @@ class Transaction
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -478,7 +473,7 @@ class Transaction
             $result = $results->current();
             $dispatched_amount = $result->sum;
             return (double)$dispatched_amount;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving dispatched amounts | ' .
                 $e->getMessage(),
@@ -506,7 +501,7 @@ class Transaction
             $result = $results->current();
             $dispatched_amount = $result->sum;
             return (double)$this->_amount - (double)$dispatched_amount;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving missing amounts | ' .
                 $e->getMessage(),
@@ -562,7 +557,7 @@ class Transaction
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .
@@ -609,5 +604,30 @@ class Transaction
         //remove trailing ':' and then nbsp (for french at least)
         $label = trim(trim($label, ':'), '&nbsp;');
         return $label;
+    }
+
+    /**
+     * Handle files (dynamics files)
+     *
+     * @param array $files Files sent
+     *
+     * @return array|true
+     */
+    public function handleFiles($files)
+    {
+        $this->errors = [];
+
+        $this->dynamicsFiles($files);
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been throwed attempting to edit/store a transaction files' . "\n" .
+                print_r($this->errors, true),
+                Analog::ERROR
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
     }
 }

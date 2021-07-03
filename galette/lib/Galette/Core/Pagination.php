@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2014 The Galette Team
+ * Copyright © 2010-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-03
@@ -38,6 +38,7 @@ namespace Galette\Core;
 
 use Slim\Slim;
 use Analog\Analog;
+use Laminas\Db\Sql\Select;
 
 /**
  * Pagination and ordering facilities
@@ -50,6 +51,13 @@ use Analog\Analog;
  * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property integer $current_page
+ * @property string $orderby
+ * @property string $ordered
+ * @property integer $show
+ * @property integer $pages
+ * @property integer $counter
  */
 
 abstract class Pagination
@@ -169,7 +177,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setLimits($select)
+    public function setLimits(Select $select)
     {
         if ($this->show !== 0) {
             $select->limit($this->show);
@@ -201,14 +209,14 @@ abstract class Pagination
     {
         if ($this->show !== 0) {
             if ($this->counter % $this->show == 0) {
-                $this->pages = intval($this->counter / $this->show);
+                $this->pages = (int)($this->counter / $this->show);
             } else {
-                $this->pages = intval($this->counter / $this->show) + 1;
+                $this->pages = (int)($this->counter / $this->show) + 1;
             }
         } else {
             $this->pages = 0;
         }
-        if ($this->pages == 0) {
+        if ($this->pages === 0) {
             $this->pages = 1;
         }
         if ($this->current_page > $this->pages) {
@@ -373,13 +381,6 @@ abstract class Pagination
      */
     public function __get($name)
     {
-
-        Analog::log(
-            '[' . get_class($this) .
-            '|Pagination] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         if (in_array($name, $this->pagination_fields)) {
             return $this->$name;
         } else {
@@ -401,13 +402,6 @@ abstract class Pagination
      */
     public function __set($name, $value)
     {
-
-        Analog::log(
-            '[' . get_class($this) . '|Pagination] Setting property `' .
-            $name . '`',
-            Analog::DEBUG
-        );
-
         switch ($name) {
             case 'ordered':
                 if ($value == self::ORDER_ASC || $value == self::ORDER_DESC) {

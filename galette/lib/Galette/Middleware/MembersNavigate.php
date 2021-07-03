@@ -41,6 +41,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Galette\Entity\Adherent;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
+use DI\Container;
 
 /**
  * Galette Slim middleware to navigate beetween members
@@ -68,9 +69,9 @@ class MembersNavigate
     /**
      * Constructor
      *
-     * @param Slim\Container $container Container instance
+     * @param Container $container Container instance
      */
-    public function __construct(\Slim\Container $container)
+    public function __construct(Container $container)
     {
         $this->login = $container->get('login');
         $this->session = $container->get('session');

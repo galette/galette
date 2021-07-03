@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -54,7 +54,7 @@ use Analog\Analog;
  * @name      CsvController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -396,24 +396,25 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $file     File name
+     * @param string   $type     File type
      *
      * @return Response
      */
-    public function getFile(Request $request, Response $response, array $args = []): Response
+    public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
-        $filename = $args['file'];
+        $filename = $file;
 
         //Exports main contain user confidential data, they're accessible only for
         //admins or staff members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $filepath = $args['type'] === 'export' ?
+            $filepath = $type === 'export' ?
                 CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
             $filepath .= $filename;
             return $this->sendResponse($response, $filepath, $filename);
         } else {
             Analog::log(
-                'A non authorized person asked to retrieve ' . $args['type'] . ' file named `' .
+                'A non authorized person asked to retrieve ' . $type . ' file named `' .
                 $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
@@ -430,15 +431,21 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $file     File name
+     * @param string   $type     File type
      *
      * @return Response
      */
-    public function confirmRemoveFile(Request $request, Response $response, array $args = []): Response
-    {
+    public function confirmRemoveFile(
+        Request $request,
+        Response $response,
+        string $file,
+        string $type
+    ): Response {
         $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor($args['type'])
+            'type' => $type,
+            'file' => $file,
+            'redirect_uri'  => $this->router->pathFor($type)
         ];
 
         // display page
@@ -449,14 +456,14 @@ class CsvController extends AbstractController
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove %1$s file %2$s'),
-                    $args['type'],
-                    $args['file']
+                    $type,
+                    $file
                 ),
                 'form_url'      => $this->router->pathFor(
                     'doRemoveCsv',
                     [
-                        'type' => $args['type'],
-                        'file' => $args['file']
+                        'type' => $type,
+                        'file' => $file
                     ]
                 ),
                 'cancel_uri'    => $data['redirect_uri'],
@@ -471,11 +478,12 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $file     File name
+     * @param string   $type     File type
      *
      * @return Response
      */
-    public function removeFile(Request $request, Response $response, array $args = []): Response
+    public function removeFile(Request $request, Response $response, string $file, string $type): Response
     {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -490,16 +498,16 @@ class CsvController extends AbstractController
                 _T("Removal has not been confirmed!")
             );
         } else {
-            $csv = $args['type'] === 'export' ?
+            $csv = $type === 'export' ?
                 new CsvOut() : new CsvIn($this->zdb);
-            $res = $csv->remove($args['file']);
+            $res = $csv->remove($file);
             if ($res === true) {
                 $success = true;
                 $this->flash->addMessage(
                     'success_detected',
                     str_replace(
                         '%export',
-                        $args['file'],
+                        $file,
                         _T("'%export' file has been removed from disk.")
                     )
                 );
@@ -509,7 +517,7 @@ class CsvController extends AbstractController
                     'error_detected',
                     str_replace(
                         '%export',
-                        $args['file'],
+                        $file,
                         _T("Cannot remove '%export' from disk :/")
                     )
                 );
@@ -534,11 +542,10 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function importModel(Request $request, Response $response, array $args = []): Response
+    public function importModel(Request $request, Response $response): Response
     {
         $model = new ImportModel();
         $model->load();
@@ -599,11 +606,10 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function getImportModel(Request $request, Response $response, array $args = []): Response
+    public function getImportModel(Request $request, Response $response): Response
     {
         $model = new ImportModel();
         $model->load();
@@ -649,11 +655,10 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function storeModel(Request $request, Response $response, array $args = []): Response
+    public function storeModel(Request $request, Response $response): Response
     {
         $model = new ImportModel();
         $model->load();
@@ -682,11 +687,10 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function membersExport(Request $request, Response $response, array $args = []): Response
+    public function membersExport(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();

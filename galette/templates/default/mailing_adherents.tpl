@@ -39,8 +39,13 @@
                         <ul id="existing_attachments">
                             {foreach item=attachment from=$attachments}
                             <li>
-                                <a href="?remove_attachment={$attachment->getFileName()}" class="rm_attachement">
-                                    <img alt="{_T string="Remove attachment"}" src="{base_url}/{$template_subdir}images/delete.png">
+
+                                <a
+                                    href="?remove_attachment={$attachment->getFileName()}"
+                                    class="rm_attachement tooltip delete"
+                                >
+                                    <i class="fas fa-trash-alt"></i>
+                                    <span class="sr-only">{_T string="Remove attachment"}</span>
                                 </a>
                                 {$attachment->getFileName()}
                             </li>

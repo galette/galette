@@ -90,6 +90,13 @@ div[dir=\'rtl\'] td#pdf_logo {
 div[dir=rtl] td#pdf_assoname {
     width: 100%;
     margin-left: 25%;
+}
+
+hr {
+    cap:\'\';
+    join:\'\';
+    dash:\'\';
+    phase:\'\';
 }',
         'model_parent'  => null
     ),

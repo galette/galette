@@ -23,46 +23,46 @@
                     </td>
                     <td class="center actions_row">
                         <a
-                            href="{path_for name="editDynamicField" data=["form" => $form_name, "id" => $field->getId()]}"
+                            href="{path_for name="editDynamicField" data=["form_name" => $form_name, "id" => $field->getId()]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                            <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
                         <a
                             href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName(false)|escape}]}"
                             class="tooltip"
                         >
                             <i class="fas fa-language fa-fw" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                            <span class="sr-only">{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
                         <a
-                            href="{path_for name="removeDynamicField" data=["form" => $form_name, "id" => $field->getId()]}"
+                            href="{path_for name="removeDynamicField" data=["form_name" => $form_name, "id" => $field->getId()]}"
                             class="delete tooltip"
                         >
                             <i class="fas fa-trash" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                            <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
     {if $field->getIndex() eq 1}
                         <i class="fas fa-fw">&nbsp;</i>
     {else}
                         <a
-                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => "up", "id" => $field->getId()]}"
+                            href="{path_for name="moveDynamicField" data=["form_name" => $form_name, "direction" => "up", "id" => $field->getId()]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-caret-up fa-fw"></i>
-                            <span class="sr-only">{_T string="Move up '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                            <span class="sr-only">{_T string="Move up '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
     {/if}
     {if $field->getIndex() eq $fields_list|@count}
                         <i class="fas fa-fw">&nbsp;</i>
     {else}
                         <a
-                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => "down", "id" => $field->getId()]}"
+                            href="{path_for name="moveDynamicField" data=["form_name" => $form_name, "direction" => "down", "id" => $field->getId()]}"
                             class="tooltip"
                         >
                             <i class="fas fa-caret-down fa-fw"></i>
-                            <span class="sr-only">{_T string="Move down '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                            <span class="sr-only">{_T string="Move down '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
     {/if}
                     </td>

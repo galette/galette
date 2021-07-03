@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-08
@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -47,7 +48,6 @@ use Galette\Repository\Transactions;
 use Galette\Repository\Members;
 use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
-use Galette\Entity\Texts;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
 use Analog\Analog;
@@ -59,7 +59,7 @@ use Analog\Analog;
  * @name      ContributionsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -77,7 +77,7 @@ class ContributionsController extends CrudController
      *
      * @param Request      $request  PSR Request
      * @param Response     $response PSR Response
-     * @param array        $args     Request arguments
+     * @param string       $type     Contribution type
      * @param Contribution $contrib  Contribution instance
      *
      * @return Response
@@ -85,12 +85,12 @@ class ContributionsController extends CrudController
     public function addEditPage(
         Request $request,
         Response $response,
-        array $args,
+        string $type,
         Contribution $contrib
     ): Response {
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
-        $contributions_types = $ct->getList($args['type'] === 'fee');
+        $contributions_types = $ct->getList($type === 'fee');
 
         $disabled = array();
 
@@ -101,7 +101,7 @@ class ContributionsController extends CrudController
 
         // template variable declaration
         $title = null;
-        if ($args['type'] === 'fee') {
+        if ($type === 'fee') {
             $title = _T("Membership fee");
         } else {
             $title = _T("Donation");
@@ -129,7 +129,7 @@ class ContributionsController extends CrudController
             'disabled'          => $disabled,
             'contribution'      => $contrib,
             'adh_selected'      => $contrib->member,
-            'type'              => $args['type']
+            'type'              => $type
         ];
 
         // contribution types
@@ -152,7 +152,7 @@ class ContributionsController extends CrudController
         }
 
         $ext_membership = '';
-        if (isset($contrib) && $contrib->isCotis() || !isset($contrib) && $args['type'] === 'fee') {
+        if (isset($contrib) && $contrib->isCotis() || !isset($contrib) && $type === 'fee') {
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
@@ -172,11 +172,11 @@ class ContributionsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response, string $type = null): Response
     {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -185,7 +185,7 @@ class ContributionsController extends CrudController
             $get = $request->getQueryParams();
 
             $ct = new ContributionsTypes($this->zdb);
-            $contributions_types = $ct->getList($args['type'] === 'fee');
+            $contributions_types = $ct->getList($type === 'fee');
 
             $cparams = ['type' => array_keys($contributions_types)[0]];
 
@@ -214,7 +214,7 @@ class ContributionsController extends CrudController
             }
         }
 
-        return $this->addEditPage($request, $response, $args, $contrib);
+        return $this->addEditPage($request, $response, $type, $contrib);
     }
 
     /**
@@ -222,14 +222,13 @@ class ContributionsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response, string $type = null): Response
     {
-        $args['action'] = 'add';
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, 'add', $type);
     }
 
     // /CRUD - Create
@@ -238,29 +237,30 @@ class ContributionsController extends CrudController
     /**
      * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
+     * @param string         $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null, $type = null): Response
     {
         $ajax = false;
+        $get = $request->getQueryParams();
+
         if (
             $request->isXhr()
-            || isset($request->getQueryParams()['ajax'])
-            && $request->getQueryParams()['ajax'] == 'true'
+            || isset($get['ajax'])
+            && $get['ajax'] == 'true'
         ) {
             $ajax = true;
         }
-        $get = $request->getQueryParams();
 
-        $option = $args['option'] ?? null;
-        $value = $args['value'] ?? null;
         $raw_type = null;
 
-        switch ($args['type']) {
+        switch ($type) {
             case 'transactions':
                 $raw_type = 'transactions';
                 break;
@@ -358,14 +358,14 @@ class ContributionsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response, array $args = []): Response
+    public function filter(Request $request, Response $response, string $type = null): Response
     {
         $raw_type = null;
-        switch ($args['type']) {
+        switch ($type) {
             case 'transactions':
                 $raw_type = 'transactions';
                 break;
@@ -406,7 +406,7 @@ class ContributionsController extends CrudController
                     if (isset($post['end_date_filter'])) {
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }
@@ -454,24 +454,25 @@ class ContributionsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param int      $id       Contribution id
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id, string $type = null): Response
     {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
-            $contrib = new Contribution($this->zdb, $this->login, (int)$args['id']);
+            $contrib = new Contribution($this->zdb, $this->login, $id);
             if ($contrib->id == '') {
                 //not possible to load contribution, exit
                 $this->flash->addMessage(
                     'error_detected',
                     str_replace(
                         '%id',
-                        $args['id'],
+                        $id,
                         _T("Unable to load contribution #%id!")
                     )
                 );
@@ -484,7 +485,7 @@ class ContributionsController extends CrudController
             }
         }
 
-        return $this->addEditPage($request, $response, $args, $contrib);
+        return $this->addEditPage($request, $response, $type, $contrib);
     }
 
     /**
@@ -492,14 +493,14 @@ class ContributionsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Contribution id
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id, string $type = null): Response
     {
-        $args['action'] = 'edit';
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, 'edit', $type, $id);
     }
 
     /**
@@ -507,14 +508,22 @@ class ContributionsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $action   Action ('edit' or 'add')
+     * @param string   $type     Contribution type
+     * @param integer  $id       Contribution id
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []): Response
+    public function store(Request $request, Response $response, $action, string $type, $id = null): Response
     {
         $post = $request->getParsedBody();
-        $action = $args['action'];
+        $args = [
+            'action'    => $action,
+            'type'      => $type
+        ];
+        if ($id !== null) {
+            $args['id'] = $id;
+        }
 
         if ($action == 'edit' && isset($post['btnreload'])) {
             $redirect_url = $this->router->pathFor($action . 'Contribution', $args);
@@ -529,19 +538,14 @@ class ContributionsController extends CrudController
         $error_detected = [];
         $redirect_url = null;
 
-        $id_cotis = null;
-        if (isset($args['id'])) {
-            $id_cotis = $args['id'];
-        }
-
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
-            if ($id_cotis === null) {
+            if ($id === null) {
                 $contrib = new Contribution($this->zdb, $this->login);
             } else {
-                $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
+                $contrib = new Contribution($this->zdb, $this->login, $id);
             }
         }
 
@@ -552,7 +556,7 @@ class ContributionsController extends CrudController
             'date_enreg'        => 1,
             'montant_cotis'     => 1, //TODO: not always required, see #196
             'date_debut_cotis'  => 1,
-            'date_fin_cotis'    => ($args['type'] === 'fee')
+            'date_fin_cotis'    => ($type === 'fee')
         ];
         $disabled = [];
 
@@ -564,11 +568,6 @@ class ContributionsController extends CrudController
 
         if (count($error_detected) == 0) {
             //all goes well, we can proceed
-            $new = false;
-            if ($contrib->id == '') {
-                $new = true;
-            }
-
             if (count($error_detected) == 0) {
                 // send email to member
                 if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
@@ -585,6 +584,13 @@ class ContributionsController extends CrudController
                     //something went wrong :'(
                     $error_detected[] = _T("An error occurred while storing the contribution.");
                 }
+            }
+        }
+
+        if (count($error_detected) === 0) {
+            $files_res = $contrib->handleFiles($_FILES);
+            if (is_array($files_res)) {
+                $error_detected = array_merge($error_detected, $files_res);
             }
         }
 
@@ -612,7 +618,7 @@ class ContributionsController extends CrudController
             //something went wrong.
             //store entity in session
             $this->session->contribution = $contrib;
-            $redirect_url = $this->router->pathFor($args['action'] . 'Contribution', $args);
+            $redirect_url = $this->router->pathFor($action . 'Contribution', $args);
 
             //report errors
             foreach ($error_detected as $error) {
@@ -639,7 +645,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('contributions', ['type' => $args['type']]);
     }
@@ -651,7 +657,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveContribution',
@@ -666,7 +672,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         $raw_type = null;
 

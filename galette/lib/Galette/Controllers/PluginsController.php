@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Install;
@@ -89,49 +90,49 @@ class PluginsController extends AbstractController
     /**
      * Plugins activation/desactivaion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $action    Action
+     * @param string   $module_id Module id
      *
      * @return Response
      */
-    public function togglePlugin(Request $request, Response $response, array $args = []): Response
+    public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
         if (GALETTE_MODE !== 'DEMO') {
             $plugins = $this->plugins;
-            $action = $args['action'];
             $reload_plugins = false;
             if ($action == 'activate') {
                 try {
-                    $plugins->activateModule($args['module_id']);
+                    $plugins->activateModule($module_id);
                     $this->flash->addMessage(
                         'success_detected',
                         str_replace(
                             '%name',
-                            $args['module_id'],
+                            $module_id,
                             _T("Plugin %name has been enabled")
                         )
                     );
                     $reload_plugins = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $this->flash->addMessage(
                         'error_detected',
                         $e->getMessage()
                     );
                 }
-            } elseif ($args['action'] == 'deactivate') {
+            } elseif ($action == 'deactivate') {
                 try {
-                    $plugins->deactivateModule($args['module_id']);
+                    $plugins->deactivateModule($module_id);
                     $this->flash->addMessage(
                         'success_detected',
                         str_replace(
                             '%name',
-                            $args['module_id'],
+                            $module_id,
                             _T("Plugin %name has been disabled")
                         )
                     );
                     $reload_plugins = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $this->flash->addMessage(
                         'error_detected',
                         $e->getMessage()
@@ -155,11 +156,11 @@ class PluginsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $id       Plugin id
      *
      * @return Response
      */
-    public function initPluginDb(Request $request, Response $response, array $args = []): Response
+    public function initPluginDb(Request $request, Response $response, string $id): Response
     {
         if (GALETTE_MODE === 'DEMO') {
             Analog::log(
@@ -173,7 +174,7 @@ class PluginsController extends AbstractController
         $warning_detected = [];
         $error_detected = [];
 
-        $plugid = $args['id'];
+        $plugid = $id;
         $plugin = $this->plugins->getModules($plugid);
 
         if ($plugin === null) {
@@ -202,8 +203,8 @@ class PluginsController extends AbstractController
             $install->atPreviousStep();
         } elseif (isset($post['install_prefs_ok'])) {
             $install->atEndStep();
-        } elseif (isset($_POST['previous_version'])) {
-            $install->setInstalledVersion($_POST['previous_version']);
+        } elseif (isset($post['previous_version'])) {
+            $install->setInstalledVersion($post['previous_version']);
             $install->atDbUpgradeStep();
         } elseif (isset($post['install_dbperms_ok'])) {
             if ($install->isInstall()) {
@@ -266,7 +267,7 @@ class PluginsController extends AbstractController
                 //not used here, but from include
                 $zdb = $this->zdb;
                 ob_start();
-                include_once __DIR__ . '/../../install/steps/db_checks.php';
+                include_once GALETTE_ROOT . '/install/steps/db_checks.php';
                 $params['results'] = ob_get_contents();
                 ob_end_clean();
                 break;
@@ -285,7 +286,7 @@ class PluginsController extends AbstractController
                     $update_scripts = Install::getUpdateScripts(
                         $plugin['root'],
                         TYPE_DB,
-                        $_POST['previous_version']
+                        $post['previous_version']
                     );
                 } else {
                     $update_scripts['current'] = TYPE_DB . '.sql';
@@ -321,7 +322,7 @@ class PluginsController extends AbstractController
                             );
                             $messages['success'][] = $w1 . ' ' . $w2 . ' ' . $w3 .
                                 ' ' . $extra;
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             Analog::log(
                                 'Error executing query | ' . $e->getMessage() .
                                 ' | Query was: ' . $query,

@@ -23,7 +23,11 @@
             <tbody>
         {foreach item=field from=$fields name=fields_list}
                 <tr class="{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
+            {if !isset($members_fields[$field])}
+                    <td>{_T string="Missing field '%field'" pattern="/%field/" replace=$field}</td>
+            {else}
                     <td>{$members_fields[$field]['label']|replace:':':''}</td>
+            {/if}
                 </tr>
         {/foreach}
         </table>

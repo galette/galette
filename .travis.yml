@@ -3,7 +3,9 @@ services:
   - postgresql
   - mysql
 before_script:
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then composer self-update --rollback; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then echo 'nothing to do'; else phpenv config-rm xdebug.ini; fi
+  - sed -e 's/"USER_DB", "galette_tests"/"USER_DB", "root"/' -e 's/"PWD_DB", "g@l3tte"/"PWD_DB", ""/' -i tests/config/mysql/config.inc.php
+  - sed -e 's/"USER_DB", "galette_tests"/"USER_DB", "postgres"/' -e 's/"PWD_DB", "g@l3tte"/"PWD_DB", ""/' -i tests/config/pgsql/config.inc.php
   - ./bin/install_deps
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS galette_tests;' -U postgres; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database galette_tests;' -U postgres; fi"
@@ -15,21 +17,22 @@ before_script:
 script:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then cd galette && vendor/bin/composer-require-checker check --config-file=../.composer-require-checker.config.json && cd ..; fi
-  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/
+  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/
+#  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/; fi
+#  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then echo 'nothing to do'; else php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/; fi
   - php galette/cron/reminder.php
 
-after_script:
-  ## Scrutinizer
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "pgsql" ]]; then php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml; fi
+#after_script:
+#  ## Scrutinizer
+#  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+#  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml; fi
 
 language: php
 
 php:
   - 7.4
-#  - 7.3
-  - 7.2
-#  - nightly
+  - 7.3
+  - nightly
 
 matrix:
   allow_failures:
@@ -38,6 +41,11 @@ matrix:
 env:
   - DB=pgsql
   - DB=mysql
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/.npm/_cacache
 
 notifications:
   webhooks:

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-06-02
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -54,10 +55,68 @@ use Galette\Repository\Members;
  * @name      Adherent
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 02-06-2009
+ *
+ * @property integer $id
+ * @property integer|Title $title Either a title id or an instance of Title
+ * @property string $stitle Title label
+ * @property string company_name
+ * @property string $name
+ * @property string $surname
+ * @property string $nickname
+ * @property string $birthdate Localized birth date
+ * @property string $rbirthdate Raw birth date
+ * @property string $birth_place
+ * @property integer $gender
+ * @property string $sgender Gender label
+ * @property string $job
+ * @property string $language
+ * @property integer $status
+ * @property string $sstatus Status label
+ * @property string $address
+ * @property string $address_continuation
+ * @property string $zipcode
+ * @property string $town
+ * @property string $country
+ * @property string $phone
+ * @property string $gsm
+ * @property string $email
+ * @property string $website
+ * @property string $msn
+ * @property string $icq
+ * @property string $jabber
+ * @property string $gnupgid
+ * @property string $fingerprint
+ * @property string $login
+ * @property string $creation_date Localized creation date
+ * @property string $modification_date Localized modification date
+ * @property string $due_date Localized due date
+ * @property string $others_infos
+ * @property string $others_infos_admin
+ * @property Picture $picture
+ * @property array $groups
+ * @property array $managed_groups
+ * @property integer|Adherent $parent Parent id if parent dep is not loaded, Adherent instance otherwise
+ * @property array $children
+ * @property boolean $admin better to rely on isAdmin()
+ * @property boolean $staff better to rely on isStaff()
+ * @property boolean $due_free better to rely on isDueFree()
+ * @property boolean $appears_in_list better to rely on appearsInMembersList()
+ * @property boolean $active better to rely on isActive()
+ * @property boolean $duplicate better to rely on isDuplicate()
+ * @property string $sadmin yes/no
+ * @property string $sstaff yes/no
+ * @property string $sdue_free yes/no
+ * @property string $sappears_in_list yes/no
+ * @property string $sactive yes/no
+ * @property string $sfullname
+ * @property string $sname
+ * @property string $saddress Concatened address and continuation
+ * @property string $contribstatus State of member contributions
+ * @property string $days_remaining
  */
 class Adherent
 {
@@ -247,7 +306,7 @@ class Adherent
 
             $this->loadFromRS($results->current());
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
@@ -280,7 +339,7 @@ class Adherent
             if ($result) {
                 $this->loadFromRS($result);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load member form login `' . $login . '` | ' .
                 $e->getMessage(),
@@ -429,7 +488,7 @@ class Adherent
                     $this->_children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load children for member #' . $this->_id . ' | ' .
                 $e->getMessage(),
@@ -783,7 +842,7 @@ class Adherent
                 ($wid === true ? $row->id_adh : false),
                 ($wnick === true ? $row->pseudo_adh : false)
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -830,7 +889,7 @@ class Adherent
         if ($id !== false || $nick !== false) {
             $str .= ')';
         }
-        return $str;
+        return strip_tags($str);
     }
 
     /**
@@ -857,7 +916,7 @@ class Adherent
                 Analog::DEBUG
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
@@ -971,6 +1030,13 @@ class Adherent
     {
         $this->errors = array();
 
+        //Sanitize
+        foreach ($values as &$rawvalue) {
+            if (is_string($rawvalue)) {
+                $rawvalue = strip_tags($rawvalue);
+            }
+        }
+
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needeed
@@ -1003,7 +1069,7 @@ class Adherent
                 if ($value !== true && $value !== false) {
                     $value = trim($value);
                 }
-            } elseif ($this->_id == '' || $this->_id == null) {
+            } elseif (empty($this->_id)) {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
@@ -1025,6 +1091,7 @@ class Adherent
                         break;
                     default:
                         $value = '';
+                        break;
                 }
             } else {
                 //keep stored value on update
@@ -1046,13 +1113,18 @@ class Adherent
                 // now, check validity
                 if ($value !== null && $value != '') {
                     $this->validate($key, $value, $values);
-                } elseif (
-                    ($key == 'login_adh' && !isset($required['login_adh']))
-                    || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
-                    && !isset($this->_id)
-                ) {
-                    $p = new Password($this->zdb);
-                    $this->$prop = $p->makeRandomPassword(15);
+                } elseif (empty($this->_id)) {
+                    //ensure login and password are not empty
+                    if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
+                        $p = new Password($this->zdb);
+                        $generated_value = $p->makeRandomPassword(15);
+                        if ($key == 'login_adh') {
+                            //'@' is not permitted in logins
+                            $this->$prop = str_replace('@', 'a', $generated_value);
+                        } else {
+                            $this->$prop = $generated_value;
+                        }
+                    }
                 }
             }
         }
@@ -1163,7 +1235,7 @@ class Adherent
                         }
                     }
                     $this->$prop = $d->format('Y-m-d');
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Wrong date format. field: ' . $field .
                         ', value: ' . $value . ', expected fmt: ' .
@@ -1206,7 +1278,7 @@ class Adherent
                         $select->columns(
                             array(self::PK)
                         )->where(array('email_adh' => $value));
-                        if ($this->_id != '' && $this->_id != null) {
+                        if (!empty($this->_id)) {
                             $select->where(
                                 self::PK . ' != ' . $this->_id
                             );
@@ -1216,7 +1288,7 @@ class Adherent
                         if ($results->count() !== 0) {
                             $this->errors[] = _T("- This E-Mail address is already used by another member!");
                         }
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'An error occurred checking member email unicity.',
                             Analog::ERROR
@@ -1251,7 +1323,7 @@ class Adherent
                             $select->columns(
                                 array(self::PK)
                             )->where(array('login_adh' => $value));
-                            if ($this->_id != '' && $this->_id != null) {
+                            if (!empty($this->_id)) {
                                 $select->where(
                                     self::PK . ' != ' . $this->_id
                                 );
@@ -1264,7 +1336,7 @@ class Adherent
                             ) {
                                 $this->errors[] = _T("- This username is already in use, please choose another one!");
                             }
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             Analog::log(
                                 'An error occurred checking member login unicity.',
                                 Analog::ERROR
@@ -1323,7 +1395,7 @@ class Adherent
                         );
                         break;
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'An error occurred checking status existance: ' . $e->getMessage(),
                         Analog::ERROR
@@ -1362,8 +1434,7 @@ class Adherent
             foreach ($fields as $field) {
                 if (
                     $field !== 'date_modif_adh'
-                    || !isset($this->_id)
-                    || $this->_id == ''
+                    || empty($this->_id)
                 ) {
                     $prop = '_' . $this->fields[$field]['propname'];
                     if (
@@ -1424,7 +1495,7 @@ class Adherent
             }
 
             $success = false;
-            if (!isset($this->_id) || $this->_id == '') {
+            if (empty($this->_id)) {
                 //we're inserting a new member
                 unset($values[self::PK]);
                 //set modification date
@@ -1435,13 +1506,7 @@ class Adherent
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
                 if ($add->count() > 0) {
-                    if ($this->zdb->isPostgres()) {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
-                            PREFIX_DB . 'adherents_id_seq'
-                        );
-                    } else {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
-                    }
+                    $this->_id = $this->zdb->getLastGeneratedValue($this);
                     $this->_picture = new Picture($this->_id);
                     // logging
                     if ($this->_self_adh) {
@@ -1511,7 +1576,7 @@ class Adherent
                 $emitter->emit($event, $this);
             }
             return $success;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -1537,7 +1602,7 @@ class Adherent
 
             $edit = $this->zdb->execute($update);
             $this->_modification_date = $modif_date;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong updating modif date :\'( | ' .
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
@@ -1557,12 +1622,15 @@ class Adherent
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
-            'row_classes'
+            'row_classes', 'oldness', 'duplicate'
         );
+        if (!defined('GALETTE_TESTS')) {
+            $forbidden[] = 'password'; //keep that for tests only
+        }
 
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
+            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
             'rbirthdate', 'sgender', 'contribstatus'
         );
 
@@ -1570,19 +1638,16 @@ class Adherent
             switch ($name) {
                 case 'admin':
                     return $this->isAdmin();
-                    break;
                 case 'staff':
                     return $this->isStaff();
-                    break;
                 case 'due_free':
                     return $this->isDueFree();
-                    break;
                 case 'appears_in_list':
                     return $this->appearsInMembersList();
-                    break;
                 case 'active':
                     return $this->isActive();
-                    break;
+                case 'duplicate':
+                    return $this->isDuplicate();
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
@@ -1604,7 +1669,7 @@ class Adherent
                         return (($this->$real) ? _T("Active") : _T("Inactive"));
                         break;
                     case 'stitle':
-                        if (isset($this->_title)) {
+                        if (isset($this->_title) && $this->_title instanceof Title) {
                             return $this->_title->tshort;
                         } else {
                             return null;
@@ -1626,7 +1691,7 @@ class Adherent
                         if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
                             $address .= "\n" . $this->_address_continuation;
                         }
-                        return $address;
+                        return htmlspecialchars($address, ENT_QUOTES);
                         break;
                     case 'sname':
                         return $this->getNameWithCase($this->_name, $this->_surname);
@@ -1641,7 +1706,7 @@ class Adherent
                             case self::WOMAN:
                                 return _T('Woman');
                             default:
-                                return __('Unspecified');
+                                return _T('Unspecified');
                         }
                         break;
                     case 'contribstatus':
@@ -1672,7 +1737,7 @@ class Adherent
                             try {
                                 $d = new \DateTime($this->$rname);
                                 return $d->format(__("Y-m-d"));
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 //oops, we've got a bad date :/
                                 Analog::log(
                                     'Bad date (' . $this->$rname . ') | ' .
@@ -1844,7 +1909,7 @@ class Adherent
     }
 
     /**
-     * Handle files (photo and dynamics files
+     * Handle files (photo and dynamics files)
      *
      * @param array $files Files sent
      *
@@ -1875,7 +1940,7 @@ class Adherent
                 );
             }
         }
-        $this->dynamicsFiles($_FILES);
+        $this->dynamicsFiles($files);
 
         if (count($this->errors) > 0) {
             Analog::log(

@@ -186,7 +186,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $member->isWoman()}
                         <span class="tooltip">
                             <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Is a women"}</span>
+                            <span class="sr-only">{_T string="Is a woman"}</span>
                         </span>
             {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
@@ -221,16 +221,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
             {/if}
                         {assign var="mid" value=$member->id}
-                        <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
+                        <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name|escape}){/if}</a>
                     </td>
         {else}
             {assign var="lrclass" value=$rclass}
             {assign var="propname" value=$column->propname}
-            {assign var=value value=$member->$propname}
+            {assign var=value value=$member->$propname|escape}
 
-            {if $column->field_id eq 'pseudo_adh'}
+            {if $column->field_id eq 'nom_adh'}
+                {assign var="value" value=$member->sfullname}
+            {elseif $column->field_id eq 'pseudo_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
-                {assign var=value value=$member->$propname|htmlspecialchars}
+                {assign var=value value=$member->$propname|escape}
             {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
             {elseif $column->field_id eq 'id_statut'}
@@ -283,7 +285,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     {draw_actions class=$rclass member=$member login=$login plugin_actions=$plugin_actions}
                 </tr>
 {foreachelse}
-                <tr><td colspan="{$galette_list|count}" class="emptylist">{_T string="No member has been found"}</td></tr>
+                {* colspan +1 for actions column *}
+                <tr><td colspan="{$galette_list|count + 1}" class="emptylist">{_T string="No member has been found"}</td></tr>
 {/foreach}
             </tbody>
         </table>
@@ -457,9 +460,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             $('.listing').after(_checklinks);
             _bind_check();
             _bind_legend();
-            $('#nbshow').change(function() {
-                this.form.submit();
-            });
+
             $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(){
                 if ( this.id == 'delete' ) {
                     //mass removal is handled from 2 steps removal

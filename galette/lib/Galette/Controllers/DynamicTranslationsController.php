@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\L10n;
@@ -59,18 +60,15 @@ class DynamicTranslationsController extends AbstractController
     /**
      * Dynamic fields translations
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $text_orig Original translatext
      *
      * @return Response
      */
-    public function dynamicTranslations(Request $request, Response $response, array $args = []): Response
+    public function dynamicTranslations(Request $request, Response $response, string $text_orig = null): Response
     {
-        $text_orig = '';
-        if (isset($args['text_orig'])) {
-            $text_orig = $args['text_orig'];
-        } elseif (isset($_GET['text_orig'])) {
+        if ($text_orig == null && isset($_GET['text_orig'])) {
             $text_orig = $_GET['text_orig'];
         }
 
@@ -87,7 +85,7 @@ class DynamicTranslationsController extends AbstractController
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $nb_fields = $result->nb;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred counting l10n entries | ' .
                 $e->getMessage(),
@@ -141,7 +139,7 @@ class DynamicTranslationsController extends AbstractController
                 $params['exists'] = $exists;
                 $params['orig'] = $orig;
                 $params['trans'] = $trans;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'An error occurred retrieving l10n entries | ' .
                     $e->getMessage(),
@@ -172,6 +170,7 @@ class DynamicTranslationsController extends AbstractController
     public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
+        $post['text_orig'] = htmlspecialchars($post['text_orig'], ENT_QUOTES);
         $error_detected = [];
 
         if (isset($post['trans']) && isset($post['text_orig'])) {

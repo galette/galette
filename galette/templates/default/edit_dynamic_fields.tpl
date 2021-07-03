@@ -50,16 +50,31 @@
             {if $disabled} disabled="disabled"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFields\File'}
-        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label> <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
+        {if $object->id}
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label>
+        {/if}
+        <input
+            type="file"
+            name="info_field_{$field->getId()}_{$loop}"
+            id="info_field_{$field->getId()}_{$loop}_new"
             {if $field->isRequired() and $valuedata eq ''} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
         />
-        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_current">{_T string="current"}</label> <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
-            value="{$valuedata}"
-        />
-        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_delete">{_T string="delete"}</label> <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_delete"
+        {if $object->id}
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_current">{_T string="current"}</label>
+        <a href="{path_for name="getDynamicFile" data=["id" => $object->id, "fid" => $field->getId(), "pos" => $loop, "name" => $valuedata]}">
+            {$valuedata}
+        </a>
+        - <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_delete">
+            {_T string="delete"}
+        </label>
+        <input
+            type="checkbox"
+            name="info_field_{$field->getId()}_{$loop}"
+            id="info_field_{$field->getId()}_{$loop}_delete"
             onclick="this.form.info_field_{$field->getId()}_{$loop}_new.disabled = this.checked;"
         />
+        {/if}
     {/if}
 {/function}
 
@@ -115,7 +130,7 @@
 </fieldset>
 <script type="text/javascript">
     var _addLnk = function(){
-        return $('<a href="#"><img src="{base_url}/{$template_subdir}images/icon-add.png" alt="{_T string="New occurence"}"/></a>');
+        return $('<a class="button" href="#"><i class="fas fa-plus" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
     };
 
     var _lnkEvent = function(_a, _input, _parent) {
@@ -140,7 +155,7 @@
             _parent.append('<br/>');
             _parent.append(_new);
             _new.focus();
-            if( _total === '0' || _current < _total ) {
+            if( _total == '0' || _current < _total ) {
                 var _b = _addLnk();
                 _lnkEvent(_b, _new, _parent);
                 _parent.append(_b);
@@ -171,7 +186,7 @@
                 var _total = $(_input[0]).data('maxrepeat'); //max number of occurences
                 var _current = _vals[_vals.length-1]; //current occurrence
 
-                if ( _total === '0' || _current < _total ) {
+                if ( _total == '0' || _current < _total ) {
                     var _a = _addLnk();
                     $(this).append(_a);
                     _lnkEvent(_a, _input, _parent);

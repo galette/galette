@@ -55,7 +55,7 @@ use Galette\Core\Db as GaletteDb;
                         </p>
                     </fieldset>
                     <p id="btn_box">
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
+                        <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
                     </p>
                 </form>
                 <script type="text/javascript">

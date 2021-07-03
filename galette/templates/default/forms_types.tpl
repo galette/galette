@@ -99,7 +99,7 @@
                         {/if}
 
                         {* If value has not been set, take the generic value *}
-                        {if !$value}
+                        {if !$value and $propname != 'password'}
                             {assign var="value" value=$member->$propname}
                         {/if}
 

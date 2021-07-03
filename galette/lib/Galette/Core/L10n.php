@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\I18n;
@@ -138,7 +139,7 @@ class L10n
                 }
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred adding dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
@@ -170,12 +171,12 @@ class L10n
             foreach ($this->i18n->getList() as $lang) {
                 $stmt->execute(
                     array(
-                        'where2' => $lang->getLongID()
+                        'text_locale' => $lang->getLongID()
                     )
                 );
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting dynamic translation for `' .
                 $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
@@ -235,7 +236,7 @@ class L10n
                 $this->zdb->execute($insert);
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred updating dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
@@ -272,7 +273,7 @@ class L10n
             } else {
                 return;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving l10n entry. text_orig=' . $text_orig .
                 ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),

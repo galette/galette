@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -116,8 +117,10 @@ class GaletteMail
                 $this->mail->IsSMTP();
                 // enables SMTP debug information
                 if (GALETTE_MODE == 'DEV') {
-                    $this->mail->SMTPDebug = 2;
-                    $this->mail->Debugoutput = $this->Debugoutput($message, $level);
+                    $this->mail->SMTPDebug = 4;
+                    //cannot use a callable here; this prevents class to be serialized
+                    //see https://bugs.galette.eu/issues/1468
+                    $this->mail->Debugoutput = 'error_log';
                 }
 
                 if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
@@ -359,7 +362,7 @@ class GaletteMail
                 $this->mail = null;
                 return self::MAIL_SENT;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Error sending message: ' . $e->getMessage(),
                 Analog::ERROR
@@ -419,7 +422,7 @@ class GaletteMail
     protected function cleanedHtml()
     {
         $html = $this->message;
-        $txt = \Html2Text\Html2Text::convert($html);
+        $txt = \Soundasleep\Html2Text::convert($html);
         return $txt;
     }
 
@@ -571,21 +574,5 @@ class GaletteMail
     {
         $this->timeout = $timeout;
         return $this;
-    }
-
-    /**
-     * Debug SMTP output
-     *
-     * @param string  $message Debug message,
-     * @param integer $level   Debug level
-     *
-     * @return void
-     */
-    private function debugOutput($message, $level)
-    {
-        Analog::log(
-            $level . ' - ' . $message,
-            Analog::DEBUG
-        );
     }
 }

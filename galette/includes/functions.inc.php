@@ -143,3 +143,21 @@ function get_numeric_posted_value($name, $defval)
     }
     return $defval;
 }
+
+if (!function_exists('str_contains')) {
+    /**
+     * PHP8 str_contains polyfill
+     *
+     * based on original work from the PHP Laravel framework
+     * see https://www.php.net/manual/fr/function.str-contains.php#125977
+     *
+     * @param string $haystack The string to search in.
+     * @param string $needle   The substring to search for in the haystack
+     *
+     * @return bool
+     */
+    function str_contains($haystack, $needle)
+    {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+    }
+}

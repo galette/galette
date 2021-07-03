@@ -69,7 +69,6 @@ class Password extends atoum
         $this->preferences->pref_password_length = 6;
         $this->preferences->pref_password_blacklist = false;
         $this->preferences->store();
-        return parent::afterTestMethod($method);
     }
 
     /**
@@ -248,11 +247,10 @@ class Password extends atoum
         //create member
         global $zdb, $login, $i18n; // globals :(
         $zdb = $this->zdb;
-        $session = new \RKA\Session();
         $i18n = new \Galette\Core\I18n(
             \Galette\Core\I18n::DEFAULT_LANG
         );
-        $login = new \Galette\Core\Login($this->zdb, $i18n, $session);
+        $login = new \Galette\Core\Login($this->zdb, $i18n);
         $history = new \Galette\Core\History($this->zdb, $login, $this->preferences);
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $members_fields = $members_fields;

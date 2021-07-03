@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2014 The Galette Team
+ * Copyright © 2011-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-20
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Expression;
@@ -61,7 +62,7 @@ use Galette\Repository\DynamicFieldsSet;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -78,6 +79,7 @@ class DynamicFieldsHandle
     private $errors = array();
 
     private $zdb;
+    private $login;
 
     private $insert_stmt;
     private $update_stmt;
@@ -133,8 +135,6 @@ class DynamicFieldsHandle
             $results = $this->getCurrentFields();
 
             if ($results->count() > 0) {
-                $dfields = array();
-
                 foreach ($results as $f) {
                     if (isset($this->dynamic_fields[$f->{DynamicField::PK}])) {
                         $field = $this->dynamic_fields[$f->{DynamicField::PK}];
@@ -144,7 +144,7 @@ class DynamicFieldsHandle
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
-                            function ($k) {
+                            static function ($k) {
                                 return $k != DynamicField::PK;
                             },
                             ARRAY_FILTER_USE_KEY
@@ -161,7 +161,7 @@ class DynamicFieldsHandle
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -175,7 +175,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -185,7 +185,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->dynamic_fields;
     }
@@ -197,7 +197,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getValues($field)
+    public function getValues($field): array
     {
         if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
@@ -290,10 +290,10 @@ class DynamicFieldsHandle
                         $params = [
                             'field_val' => $value['field_val'],
                             'val_index' => $value['val_index'],
-                            'where1'    => $value['item_id'],
-                            'where2'    => $value['field_id'],
-                            'where3'    => $value['field_form'], //:val_index
-                            'where4'    => $value['old_val_index'] ?? $value['val_index'] //:old_val_index
+                            'item_id'   => $value['item_id'],
+                            'field_id'  => $value['field_id'],
+                            'field_form' => $value['field_form'],
+                            'old_val_index' => $value['old_val_index'] ?? $value['val_index'] //:old_val_index
                         ];
                         $this->getUpdateStatement()->execute($params);
                         $this->has_changed = true;
@@ -305,21 +305,21 @@ class DynamicFieldsHandle
                 $this->zdb->connection->commit();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if (!$transaction) {
                 $this->zdb->connection->rollBack();
-            } else {
-                throw $e;
             }
             Analog::log(
                 'An error occurred storing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         } finally {
-            unset($this->update_stmt);
-            unset($this->insert_stmt);
+            unset(
+                $this->update_stmt,
+                $this->insert_stmt
+            );
         }
     }
 
@@ -330,7 +330,7 @@ class DynamicFieldsHandle
      */
     private function getInsertStatement(): StatementInterface
     {
-        if ($this->insert_stmt === null) {
+        if (!isset($this->insert_stmt)) {
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values([
                 'item_id'       => ':item_id',
@@ -351,7 +351,7 @@ class DynamicFieldsHandle
      */
     private function getUpdateStatement(): StatementInterface
     {
-        if ($this->update_stmt === null) {
+        if (!isset($this->update_stmt)) {
             $update = $this->zdb->update(self::TABLE);
             $update->set([
                 'field_val'     => ':field_val',
@@ -383,10 +383,10 @@ class DynamicFieldsHandle
         if ($results->count() > 0) {
             foreach ($results as $result) {
                 $fromdb[$result->field_id . '_' . $result->val_index] = [
-                    'where1'    => $this->item_id,
-                    'where2'    => $this->form_name,
-                    'where3'    => $result->field_id,
-                    'where4'    => $result->val_index
+                    'item_id'       => $this->item_id,
+                    'field_form'    => $this->form_name,
+                    'field_id'      => $result->field_id,
+                    'val_index'     => $result->val_index
                 ];
             }
         }
@@ -419,12 +419,12 @@ class DynamicFieldsHandle
                 }
                 $this->delete_stmt->execute($entry);
                 //update val index
-                $field_id = $entry['where3'];
+                $field_id = $entry['field_id'];
                 if (
                     isset($this->current_values[$field_id])
                     && count($this->current_values[$field_id])
                 ) {
-                    $val_index = (int)$entry['where4'];
+                    $val_index = (int)$entry['val_index'];
                     foreach ($this->current_values[$field_id] as &$current) {
                         if ((int)$current['val_index'] === $val_index + 1) {
                             $current['val_index'] = $val_index;
@@ -439,7 +439,7 @@ class DynamicFieldsHandle
     }
 
     /**
-     * Is there any change in dynamic filelds?
+     * Is there any change in dynamic fields?
      *
      * @return boolean
      */
@@ -479,18 +479,16 @@ class DynamicFieldsHandle
                 $this->zdb->connection->commit();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if (!$transaction) {
                 $this->zdb->connection->rollBack();
-            } else {
-                throw $e;
             }
             Analog::log(
                 'An error occurred removing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

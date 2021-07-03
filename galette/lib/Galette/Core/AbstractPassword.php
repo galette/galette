@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2016 The Galette Team
+ * Copyright © 2003-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2016 The Galette Team
+ * @copyright 2003-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2016-11-08
@@ -67,25 +67,19 @@ abstract class AbstractPassword
     protected $new_password;
 
     /**
-     * Generates a random passord based on default salt
+     * Generates a random password based on default salt
      *
-     * @param int $size Password size (optionnal)
+     * @param int|null $size Password size (optional)
      *
      * @return string random password
      */
-    public function makeRandomPassword($size = null)
+    public function makeRandomPassword(int $size = null): string
     {
-        if (
-            $size === null
-            || trim($size) == ''
-            || !is_int($size)
-        ) {
-            $size = static::DEFAULT_SIZE;
-        }
+        $size = $size ?? static::DEFAULT_SIZE;
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, strlen($this->chars) - 1)  % strlen($this->chars);
+            $num = mt_rand(0, strlen($this->chars) - 1) % strlen($this->chars);
             $pass .= substr($this->chars, $num, 1);
             $i++;
         }
@@ -99,21 +93,21 @@ abstract class AbstractPassword
      *
      * @return boolean
      */
-    abstract public function generateNewPassword($arg);
+    abstract public function generateNewPassword($arg): bool;
 
     /**
      * Remove expired passwords queries (older than 24 hours)
      *
      * @return boolean
      */
-    abstract protected function cleanExpired();
+    abstract protected function cleanExpired(): bool;
 
     /**
-     * Retrieve new pasword for sending it to the user
+     * Retrieve new password for sending it to the user
      *
      * @return string the new password
      */
-    public function getNewPassword()
+    public function getNewPassword(): string
     {
         return $this->new_password;
     }
@@ -123,7 +117,7 @@ abstract class AbstractPassword
      *
      * @return string hash
      */
-    public function getHash()
+    public function getHash(): string
     {
         return $this->hash;
     }
@@ -135,7 +129,7 @@ abstract class AbstractPassword
      *
      * @return void
      */
-    protected function setPassword($password)
+    protected function setPassword(string $password): void
     {
         $this->new_password = $password;
     }
@@ -147,7 +141,7 @@ abstract class AbstractPassword
      *
      * @return void
      */
-    protected function setHash($hash)
+    protected function setHash(string $hash): void
     {
         $this->hash = $hash;
     }

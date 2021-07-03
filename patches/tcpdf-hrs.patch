@@ -1,0 +1,23 @@
+diff -up vendor/tecnickcom/tcpdf/tcpdf.php.patch vendor/tecnickcom/tcpdf/tcpdf.php
+--- vendor/tecnickcom/tcpdf/tcpdf.php.patch	2021-05-23 10:30:56.970668957 +0200
++++ vendor/tecnickcom/tcpdf/tcpdf.php	2021-05-23 10:33:11.760593379 +0200
+@@ -18918,18 +18918,7 @@ Putting 1 is equivalent to putting 0 and
+ 				}
+ 				$prevlinewidth = $this->GetLineWidth();
+ 				$this->SetLineWidth($hrHeight);
+-
+-				$lineStyle = array(
+-					'color' => $tag['fgcolor'],
+-					'cap'   => $tag['style']['cap'],
+-					'join'  => $tag['style']['join'],
+-					'dash'  => $tag['style']['dash'],
+-					'phase' => $tag['style']['phase'],
+-				);
+-
+-				$lineStyle = array_filter($lineStyle);
+-
+-				$this->Line($x, $y, $x + $hrWidth, $y, $lineStyle);
++				$this->Line($x, $y, $x + $hrWidth, $y);
+ 				$this->SetLineWidth($prevlinewidth);
+ 				$this->addHTMLVertSpace(max($hbc, ($hrHeight / 2)), 0, $cell, !isset($dom[($key + 1)]));
+ 				break;

@@ -16,121 +16,40 @@
             </div>
         </div>
         </div>
-        <div id="legende" class="texts_legend" title="{_T string="Existing variables"}">
-            <h1>{_T string="Existing variables"}</h1>
-            <table>
-                <tr>
-                    <th colspan="4">
-                        {_T string="Globally available"}
-                    </th>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}ASSO_NAME{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation name"}</td>
-                    <th><tt>{ldelim}ASSO_SLOGAN{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation slogan"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}ASSO_ADDRESS{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation address"}</td>
-                    <th><tt>{ldelim}ASSO_WEBSITE{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation website"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}ASSO_LOGO{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation logo"}</td>
-                    <th><tt>{ldelim}DATE_NOW{rdelim}</tt></th>
-                    <td class=back">{_T string="Current date (Y-m-d)"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's name"}</td>
-                    <th><tt>{ldelim}ADDRESS_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's address"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}ZIP_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's zipcode"}</td>
-                    <th><tt>{ldelim}TOWN_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's town"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}GROUP_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's main group"}</td>
-                    <th><tt>{ldelim}GROUPS_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's groups (as list)"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}COMPANY_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Company name"}</td>
-                    <th><tt>{ldelim}ID_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's ID"}</td>
-                </tr>
-                <tr>
-                    <th colspan="4">
-                        {_T string="Available for invoices and receipts only"}
-                    </th>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}CONTRIBUTION_LABEL{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution label"}</td>
-                    <th><tt>{ldelim}CONTRIBUTION_AMOUNT{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution amount"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}CONTRIBUTION_DATE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution full date"}</td>
-                    <th><tt>{ldelim}CONTRIBUTION_YEAR{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution year"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}CONTRIBUTION_COMMENT{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution comment"}</td>
-                    <th><tt>{ldelim}CONTRIBUTION_BEGIN_DATE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution begin date"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}CONTRIBUTION_END_DATE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution end date"}</td>
-                    <th><tt>{ldelim}CONTRIBUTION_ID{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution id"}</td>
-                </tr>
-                <tr>
-                    <th><tt>{ldelim}CONTRIBUTION_PAYMENT_TYPE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution payment type"}</td>
-                    <th>&nbsp;</th>
-                    <td class="back">&nbsp;</td>
-                </tr>
-            </table>
-        </div>
 {/block}
 
 {block name="javascripts"}
         <script type="text/javascript">
             $('#tabs').append('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
-            $(function(){
-                $('#legende h1').remove();
-                $('#legende').dialog({
+
+            var _handleLegend = function(index) {
+                $('#legende' + index + ' h1').remove();
+                $('#legende' + index).dialog({
                     autoOpen: false,
                     modal: true,
                     hide: 'fold',
                     width: '60em'
                 }).dialog('close');
 
-                $('#btnlegend').click(function(){
-                    $('#legende').dialog('open');
+                $('#btnlegend').unbind('click').click(function(){
+                    $('#legende' + index).dialog('open');
                         return false;
                 });
+            };
 
+            $(function(){
                 $('#tabs').tabs({
                     active: {$activetab-1},
                     load: function(event, ui) {
                         $('#tabs input:submit, #tabs .button, #tabs input:reset' ).button();
+                        _handleLegend($(event.currentTarget).attr('href').replace('{path_for name="pdfModels"}/', ''));
                     },
                     {* Cannot include js_loader.tpl here because we need to use beforeSend specificaly... *}
                     beforeLoad: function(event, ui) {
                         _tab_name = ui.ajaxSettings.url.split('/');
                         _tab_name = _tab_name[_tab_name.length-1];
+
+                        _handleLegend({$model->id});
 
                         if ( ui.ajaxSettings.url == '{path_for name="pdfModels" data=["id" => $model->id]}'
                              ||  ui.ajaxSettings.url == '{path_for name="pdfModels"}'

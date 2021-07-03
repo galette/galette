@@ -44,6 +44,7 @@ use Analog\Handler\LevelName;
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
 define('GALETTE_ROOT', __DIR__ . '/../');
+define('GALETTE_MODE', 'INSTALL');
 
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
@@ -65,12 +66,7 @@ session_start();
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
 
-$app = new \Slim\App(
-    array(
-        'templates.path'    => GALETTE_ROOT . 'templates/default/',
-        'mode'              => 'INSTALL'
-    )
-);
+$app =  new \Galette\Core\SlimApp();
 require_once '../includes/dependencies.php';
 
 if (isset($_POST['abort_btn'])) {
@@ -110,31 +106,9 @@ function initDbConstants($install)
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
 
-    $now = new \DateTime();
-    $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-        $now->format('Y-m-d') . '.log';
-    $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
-
-    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
-        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Syslog::init('galette', 'user');
-    } else {
-        $logfile = 'galette_install';
-        $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-        $galette_run_log = LevelName::init(Handler\File::init($log_path));
-    }
-
-    Analog::handler(
-        Handler\Multi::init(
-            array(
-                Analog::NOTICE  => Handler\Threshold::init(
-                    $galette_run_log,
-                    GALETTE_LOG_LVL
-                ),
-                Analog::DEBUG   => $galette_debug_log
-            )
-        )
-    );
+    $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
+    $galette_run_log = LevelName::init(Handler\File::init($log_path));
+    Analog::handler($galette_run_log);
 }
 
 if (isset($_POST['stepback_btn'])) {

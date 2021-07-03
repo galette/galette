@@ -60,7 +60,12 @@ ALTER TABLE `galette_adherents` CHANGE `activite_adh` `activite_adh` TINYINT( 1 
 ALTER TABLE `galette_adherents` CHANGE `bool_admin_adh` `bool_admin_adh` TINYINT( 1 ) NOT NULL DEFAULT 0;
 ALTER TABLE `galette_adherents` CHANGE `bool_exempt_adh` `bool_exempt_adh` TINYINT( 1 ) NOT NULL DEFAULT 0;
 ALTER TABLE `galette_adherents` CHANGE `bool_display_info` `bool_display_info` TINYINT( 1 ) NOT NULL DEFAULT 0;
-ALTER TABLE `galette_types_cotisation` CHANGE `cotis_extension` `cotis_extension` TINYINT( 1 ) NOT NULL DEFAULT 0;
+
+ALTER TABLE `galette_types_cotisation` ADD `_cotis_extension` TINYINT(1) NOT NULL DEFAULT 0 AFTER `cotis_extension`;
+UPDATE `galette_types_cotisation` SET _cotis_extension=1 WHERE cotis_extension IS NOT NULL;
+ALTER TABLE `galette_types_cotisation` DROP `cotis_extension`;
+ALTER TABLE `galette_types_cotisation` CHANGE `_cotis_extension` `cotis_extension` TINYINT(1) NOT NULL DEFAULT 0;
+
 ALTER TABLE `galette_field_types` CHANGE `field_required` `field_required` TINYINT( 1 ) NOT NULL DEFAULT 0;
 
 -- New table for fields categories

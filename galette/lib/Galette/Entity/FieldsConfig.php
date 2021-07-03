@@ -37,6 +37,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
@@ -145,7 +146,7 @@ class FieldsConfig
      * @param array   $cats_defaults default categories values
      * @param boolean $install       Are we calling from installer?
      */
-    public function __construct(Db $zdb, $table, $defaults, $cats_defaults, $install = false)
+    public function __construct(Db $zdb, string $table, array $defaults, array $cats_defaults, bool $install = false)
     {
         $this->zdb = $zdb;
         $this->table = $table;
@@ -181,7 +182,7 @@ class FieldsConfig
 
             $this->buildLists();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Fields configuration cannot be loaded!',
                 Analog::URGENT
@@ -371,7 +372,7 @@ class FieldsConfig
                     $this->load();
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 '[' . $class . '] An error occurred while checking update for ' .
                 'fields configuration for table `' . $this->table . '`. ' .
@@ -424,23 +425,13 @@ class FieldsConfig
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default fields configuration.' . $e->getMessage(),
                 Analog::ERROR
             );
 
-            /*$messages = array();
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-
-            Analog::log(
-                'Unable to initialize default fields configuration.' .
-                implode("\n", $messages),
-                Analog::ERROR
-            );*/
-            return $e;
+            throw $e;
         }
     }
 
@@ -590,7 +581,7 @@ class FieldsConfig
                 'fieldsets' => $form_elements,
                 'hiddens'   => $hidden_elements
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting form elements',
                 Analog::ERROR
@@ -674,7 +665,7 @@ class FieldsConfig
                 }
             }
             return $display_elements;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting display elements',
                 Analog::ERROR
@@ -756,7 +747,7 @@ class FieldsConfig
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
-                    FieldsCategories::PK    => ':category'
+                    FieldsCategories::PK    => ':' . FieldsCategories::PK
                 )
             )->where(
                 array(
@@ -782,7 +773,7 @@ class FieldsConfig
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
-                        'where1'                => $field['field_id']
+                        'field_id'              => $field['field_id']
                     );
 
                     $stmt->execute($params);
@@ -805,7 +796,7 @@ class FieldsConfig
 
             $this->zdb->connection->commit();
             return $this->load();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 '[' . $class . '] An error occurred while storing fields ' .
@@ -817,7 +808,7 @@ class FieldsConfig
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -864,12 +855,11 @@ class FieldsConfig
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ($old_required as $or) {
-                /** Why where parameter is named where1 ?? */
                 $stmt->execute(
                     array(
                         'required'  => ($or->required === false) ?
                             ($this->zdb->isPostgres() ? 'false' : 0) : true,
-                        'where1'    => $or->field_id
+                        'field_id'  => $or->field_id
                     )
                 );
             }
@@ -892,7 +882,7 @@ class FieldsConfig
 
             $this->zdb->connection->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'An error occurred migrating old required fields. | ' .
@@ -943,7 +933,7 @@ class FieldsConfig
                     'table_name'            => $d['table_name'],
                     'required'              => $required,
                     'visible'               => $d['visible'],
-                    FieldsCategories::PK    => $d['category'],
+                    'category'              => $d['category'],
                     'position'              => $d['position'],
                     'list_visible'          => $list_visible,
                     'list_position'         => $d['list_position'] ?? -1

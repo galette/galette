@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;
@@ -221,7 +222,7 @@ class Picture implements FileInterface
                 $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             return false;
         }
     }
@@ -301,14 +302,23 @@ class Picture implements FileInterface
     /**
      * Set header and displays the picture.
      *
+     * @param Response $response Reponse
+     *
      * @return object the binary file
      */
-    public function display()
+    public function display(\Slim\Http\Response $response)
     {
-        header('Content-type: ' . $this->mime);
-        ob_clean();
-        flush();
-        $this->getContents();
+        $response = $response->withHeader('Content-Type', $this->mime)
+            ->withHeader('Content-Transfer-Encoding', 'binary')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate')
+            ->withHeader('Pragma', 'public');
+
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, file_get_contents($this->file_path));
+        rewind($stream);
+
+        return $response->withBody(new \Slim\Http\Stream($stream));
     }
 
     /**
@@ -384,7 +394,7 @@ class Picture implements FileInterface
                 $this->has_picture = false;
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction === true) {
                 $zdb->connection->rollBack();
             }
@@ -531,7 +541,7 @@ class Picture implements FileInterface
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
                     array(
-                        $class::PK  => ':id',
+                        $class::PK  => ':' . $class::PK,
                         'picture'   => ':picture',
                         'format'    => ':format'
                     )
@@ -539,17 +549,9 @@ class Picture implements FileInterface
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
                 $container = $stmt->getParameterContainer();
                 $container->offsetSet(
-                    $class::PK,
-                    ':id'
-                );
-                $container->offsetSet(
-                    'picture',
+                    'picture', //'picture',
                     ':picture',
                     $container::TYPE_LOB
-                );
-                $container->offsetSet(
-                    'format',
-                    ':format'
                 );
                 $stmt->setParameterContainer($container);
                 $this->insert_stmt = $stmt;
@@ -564,7 +566,7 @@ class Picture implements FileInterface
             );
             $zdb->connection->commit();
             $this->has_picture = true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             Analog::log(
                 'An error occurred storing picture in database: ' .

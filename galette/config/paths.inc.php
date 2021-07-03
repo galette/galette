@@ -73,9 +73,9 @@ if (!defined('GALETTE_TCPDF_PATH')) {
 if ( !defined('GALETTE_SLIM_VIEWS_PATH') ) {
     define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views');
 }*/
-/*if ( !defined('GALETTE_XHPROF_PATH') ) {
+if ( !defined('GALETTE_XHPROF_PATH') ) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
-}*/
+}
 
 //galete's paths
 if (!defined('GALETTE_CONFIG_PATH')) {

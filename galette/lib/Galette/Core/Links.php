@@ -37,6 +37,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -103,7 +104,7 @@ class Links
                     Analog::DEBUG
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred removing old temporary link ' .
                 $e->getMessage(),
@@ -167,7 +168,7 @@ class Links
                 return base64_encode($hash);
             }
             return false;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add temporary link entry. " .
                 $e->getMessage(),
@@ -212,7 +213,7 @@ class Links
                 return true;
             }
             return false;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting expired temporary links. ' .
                 $e->getMessage(),
@@ -252,7 +253,7 @@ class Links
                 }
             }
             return false;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting requested hash. ' . $e->getMessage(),
                 Analog::WARNING

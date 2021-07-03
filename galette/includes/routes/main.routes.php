@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
@@ -40,25 +40,25 @@ use Galette\Controllers\ImagesController;
 //main route
 $app->get(
     '/',
-    GaletteController::class . ':slash'
+    [GaletteController::class, 'slash']
 )->setName('slash');
 
 //logo route
 $app->get(
     '/logo',
-    ImagesController::class . ':logo'
+    [ImagesController::class, 'logo']
 )->setName('logo');
 
 //print logo route
 $app->get(
     '/print-logo',
-    ImagesController::class . ':printLogo'
+    [ImagesController::class, 'printLogo']
 )->setName('printLogo');
 
 //photo route
 $app->get(
     '/photo/{id:\d+}',
-    ImagesController::class . ':photo'
+    [ImagesController::class, 'photo']
 )->setName('photo');
 
 //system information - keep old route with typo ('s' on 'information') for now (0.9.4)
@@ -67,12 +67,12 @@ $app->get(
     function ($request, $response) {
         return $response
             ->withStatus(302)
-            ->withHeader('Location', $this->router->pathFor('sysinfos'));
+            ->withHeader('Location', $this->get('router')->pathFor('sysinfos'));
     }
 );
 
 //system information
 $app->get(
     '/system-information',
-    GaletteController::class . ':systemInformation'
+    [GaletteController::class, 'systemInformation']
 )->setName('sysinfos')->add($authenticate);

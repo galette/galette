@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     june, 12th 2016
@@ -36,6 +36,7 @@
 
 namespace Galette\Filters;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Pagination;
 
@@ -47,14 +48,13 @@ use Galette\Core\Pagination;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
 
 class ContributionsList extends Pagination
 {
-
     public const ORDERBY_DATE = 0;
     public const ORDERBY_BEGIN_DATE = 1;
     public const ORDERBY_END_DATE = 2;
@@ -63,6 +63,7 @@ class ContributionsList extends Pagination
     public const ORDERBY_AMOUNT = 5;
     public const ORDERBY_DURATION = 6;
     public const ORDERBY_PAYMENT_TYPE = 7;
+    public const ORDERBY_ID = 8;
 
     public const DATE_BEGIN = 0;
     public const DATE_END = 1;
@@ -162,7 +163,7 @@ class ContributionsList extends Pagination
                                 }
                             }
                             return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$name . ') | ' .
@@ -276,7 +277,7 @@ class ContributionsList extends Pagination
                         } else {
                             $this->$name = null;
                         }
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'Wrong date format. field: ' . $key .
                             ', value: ' . $value . ', expected fmt: ' .

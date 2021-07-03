@@ -67,7 +67,17 @@
         <table class="listing">
             <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row">
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_ID"|constant]}">#
+                        {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_ID')}
+                            {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
+                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            {else}
+                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            {/if}
+                        {/if}
+                        </a>
+                    </th>
                     <th class="left date_row">
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_DATE')}
@@ -158,9 +168,9 @@
 {if $nb != 0}
             <tfoot>
                 <tr>
-                    <td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
+                    <th class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{else}9{/if}">
                         {_T string="Found contributions total %f" pattern="/%f/" replace=$contribs->getSum()}
-                    </td>
+                    </th>
                 </tr>
             </tfoot>
 {/if}
@@ -176,7 +186,7 @@
 
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
                     <td class="{$cclass} nowrap" data-scope="row">
-                        {if $mode neq 'ajax'}
+                        {if ($login->isAdmin() or $login->isStaff()) or $mode eq 'ajax'}
                             <input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>
                         {else}
                             <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
@@ -186,7 +196,7 @@
     {else}
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
-    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+    {if ($login->isAdmin() or $login->isStaff()) or $mode eq 'ajax'}
                         <span class="row-title">
                             <a href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
@@ -335,14 +345,13 @@
         }
             $(function(){
                 var _init_contribs_page = function(res){
-                    $('#nbshow').change(function() {
-                        this.form.submit();
-                    });
+    {if ($login->isAdmin() or $login->isStaff())}
+                    var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection" escape="js"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend" escape="js"}</a></div>';
 
-                    var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
                     $('.listing').before(_checklinks);
                     $('.listing').after(_checklinks);
                     _bind_check('contrib_sel');
+    {/if}
                     _bind_legend();
 
                     $('#start_date_filter, #end_date_filter').datepicker({

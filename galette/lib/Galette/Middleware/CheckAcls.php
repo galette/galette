@@ -39,6 +39,7 @@ namespace Galette\Middleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Analog\Analog;
+use DI\Container;
 
 /**
  * Galette Slim ACLs checks middleware
@@ -62,9 +63,9 @@ class CheckAcls
     /**
      * Constructor
      *
-     * @param Slim\Container $container Container instance
+     * @param Container $container Container instance
      */
-    public function __construct(\Slim\Container $container)
+    public function __construct(Container $container)
     {
         $this->view = $container->get('view');
         $this->router = $container->get('router');
@@ -164,7 +165,6 @@ class CheckAcls
                     $matches = [];
                     if (preg_match($regex, $name, $matches)) {
                         return $route_acl;
-                        continue;
                     }
                 }
             }

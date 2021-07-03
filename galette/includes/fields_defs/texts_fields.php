@@ -54,7 +54,7 @@ $texts_fields = array(
     array(
         'tref'      => 'contrib',
         'tsubject'  => _T('[{ASSO_NAME}] Your contribution'),
-        'tbody'     => _T("Hello,{NEWLINE}Your contribution has successfully been taken into account by {ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login and browse or modify your personnal data using your galette identifiers at this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
+        'tbody'     => _T("Hello,{NEWLINE}Your contribution has successfully been taken into account by {ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login and browse or modify your personal data using your galette identifiers at this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
         'tcomment'  => _T('Receipt send for new contribution')
     ),
@@ -62,7 +62,7 @@ $texts_fields = array(
     array(
         'tref'      => 'newadh',
         'tsubject'  => _T('[{ASSO_NAME}] New registration from {NAME_ADH}'),
-        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A new member has been registered with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"),
+        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A new member has been registered with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"),
         'tlang'     => 'en_US',
         'tcomment'  => _T('New user registration (sent to admin)')
     ),
@@ -78,7 +78,7 @@ $texts_fields = array(
     array(
         'tref'      => 'newselfadh',
         'tsubject'  => _T('[{ASSO_NAME}] New self registration from {NAME_ADH}'),
-        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A new member has self registred on line with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"),
+        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A new member has self registered on line with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"),
         'tlang'     => 'en_US',
         'tcomment'  => _T('New self registration (sent to admin)')
     ),
@@ -129,5 +129,13 @@ $texts_fields = array(
         'tbody'     => _T("Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
         'tcomment'  => _T('Informs admin a member edit his information')
+    ),
+
+    array(
+        'tref'      => 'pwddisabled',
+        'tsubject'  => _T('[{ASSO_NAME}] Account {NAME_ADH} is inactive'),
+        'tbody'     => _T("Hello!{NEWLINE}A password recovery request has been made on your account on {ASSO_NAME}, but it is currently inactive and therefore cannot be processed.{NEWLINE}Please contact an administrator or a staff member if you think this is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
+        'tlang'     => 'en_US',
+        'tcomment'  => _T('Lost password email (disabled)')
     ),
 );

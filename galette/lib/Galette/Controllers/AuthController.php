@@ -38,13 +38,11 @@ namespace Galette\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Galette\Core\SysInfos;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
-use Analog\Analog;
 
 /**
  * Galette authentication controller
@@ -66,19 +64,19 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
+     * @param string   $r        Redirect after login
      *
      * @return void
      */
-    public function login(Request $request, Response $response, array $args = [])
+    public function login(Request $request, Response $response, string $r = null)
     {
         //store redirect path if any
         if (
-            isset($args['r'])
-            && $args['r'] != '/logout'
-            && $args['r'] != '/login'
+            $r !== null
+            && $r != '/logout'
+            && $r != '/login'
         ) {
-            $this->session->urlRedirect = $args['r'];
+            $this->session->urlRedirect = $r;
         }
 
         if (!$this->login->isLogged()) {
@@ -92,7 +90,7 @@ class AuthController extends AbstractController
             );
             return $response;
         } else {
-            return $this->galetteRedirect($request, $response, $args);
+            return $this->galetteRedirect($request, $response);
         }
     }
 
@@ -148,7 +146,7 @@ class AuthController extends AbstractController
             }
             $this->session->login = $this->login;
             $this->history->add(_T("Login"));
-            return $this->galetteRedirect($request, $response, []);
+            return $this->galetteRedirect($request, $response);
         } else {
             $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
@@ -179,13 +177,13 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['id']
+     * @param integer  $id       Member to impersonate
      *
      * @return void
      */
-    public function impersonate(Request $request, Response $response, array $args)
+    public function impersonate(Request $request, Response $response, int $id)
     {
-        $success = $this->login->impersonate((int)$args['id']);
+        $success = $this->login->impersonate($id);
 
         if ($success === true) {
             $this->session->login = $this->login;
@@ -203,7 +201,7 @@ class AuthController extends AbstractController
         } else {
             $msg = str_replace(
                 '%id',
-                $args['id'],
+                $id,
                 _T("Unable to impersonate as %id")
             );
             $this->flash->addMessage(
@@ -228,7 +226,7 @@ class AuthController extends AbstractController
      */
     public function unimpersonate(Request $request, Response $response)
     {
-        $login = new Login($this->zdb, $this->i18n, $this->session);
+        $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
         $this->history->add(_T("Impersonating ended"));
         $this->session->login = $login;
@@ -271,17 +269,17 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['id']
+     * @param integer  $id_adh   Member id
      *
      * @return Response
      */
-    public function retrievePassword(Request $request, Response $response, array $args): Response
+    public function retrievePassword(Request $request, Response $response, int $id_adh = null): Response
     {
         $from_admin = false;
         $redirect_url = $this->router->pathFor('slash');
-        if ((($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK]))) {
+        if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
             $from_admin = true;
-            $redirect_url = $this->router->pathFor('member', ['id' => $args[Adherent::PK]]);
+            $redirect_url = $this->router->pathFor('member', ['id' => $id_adh]);
         }
 
         if (
@@ -302,38 +300,38 @@ class AuthController extends AbstractController
 
         $adh = null;
         $login_adh = null;
-        if (($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK])) {
-            $adh = new Adherent($this->zdb, (int)$args[Adherent::PK]);
+        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
+            $adh = new Adherent($this->zdb, $id_adh);
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
-            $login_adh = $post['login'];
+            $login_adh = htmlspecialchars($post['login'], ENT_QUOTES);
             $adh = new Adherent($this->zdb, $login_adh);
         }
 
         if ($adh->id != '') {
             //account has been found, proceed
             if (GaletteMail::isValidEmail($adh->email)) {
-                $password = new Password($this->zdb);
-                $res = $password->generateNewPassword($adh->id);
-                if ($res == true) {
-                    $link_validity = new \DateTime();
-                    $link_validity->add(new \DateInterval('PT24H'));
+                $texts = new Texts($this->preferences, $this->router);
+                $texts
+                    ->setMember($adh)
+                    ->setNoContribution();
 
-                    $texts = new Texts(
-                        $this->preferences,
-                        $this->router,
-                        array(
-                            'change_pass_uri'   => $this->preferences->getURL() .
-                                                    $this->router->pathFor(
-                                                        'password-recovery',
-                                                        ['hash' => base64_encode($password->getHash())]
-                                                    ),
-                            'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
-                            'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
-                        )
-                    );
-                    $mtxt = $texts->getTexts('pwd', $adh->language);
+                //check if account is active
+                if (!$adh->isActive()) { //https://bugs.galette.eu/issues/1529
+                    $res = true;
+                    $text_id = 'pwddisabled';
+                } else {
+                    $password = new Password($this->zdb);
+                    $res = $password->generateNewPassword($adh->id);
+                    $text_id = 'pwd';
+                    $texts
+                        ->setLinkValidity()
+                        ->setChangePasswordURI($password);
+                }
+
+                if ($res === true) {
+                    $texts->getTexts($text_id, $adh->language);
 
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
@@ -435,14 +433,14 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $hash     Hash
      *
      * @return Response
      */
-    public function recoverPassword(Request $request, Response $response, array $args): Response
+    public function recoverPassword(Request $request, Response $response, string $hash): Response
     {
         $password = new Password($this->zdb);
-        if (!$password->isHashValid(base64_decode($args['hash']))) {
+        if (!$password->isHashValid(base64_decode($hash))) {
             $this->flash->addMessage(
                 'warning_detected',
                 _T("This link is no longer valid. You should ask to retrieve your password again.")
@@ -460,7 +458,7 @@ class AuthController extends AbstractController
             $response,
             'change_passwd.tpl',
             array(
-                'hash'          => $args['hash'],
+                'hash'          => $hash,
                 'page_title'    => _T("Password recovery")
             )
         );

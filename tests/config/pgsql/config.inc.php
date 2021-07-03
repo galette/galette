@@ -28,10 +28,10 @@ if (!defined('PORT_DB')) {
     define("PORT_DB", "5432");
 }
 if (!defined('USER_DB')) {
-    define("USER_DB", "postgres");
+    define("USER_DB", "galette_tests");
 }
 if (!defined('PWD_DB')) {
-    define("PWD_DB", "");
+    define("PWD_DB", "g@l3tte");
 }
 if (!defined('NAME_DB')) {
     define("NAME_DB", "galette_tests");

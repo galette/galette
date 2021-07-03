@@ -37,7 +37,7 @@
  * @since     2020-06-14
  */
 
-use mageekguy\atoum;
+use atoum\atoum;
 
 $script->addDefaultReport();
 

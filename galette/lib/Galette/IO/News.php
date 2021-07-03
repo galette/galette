@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use Throwable;
 use Analog\Analog;
 
 /**
@@ -110,7 +111,7 @@ class News
                 $now = new \DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Unable check cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
@@ -237,7 +238,7 @@ class News
                 );
             }
             $this->posts = $posts;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to load feed from "' . $this->feed_url .
                 '" :( | ' . $e->getMessage(),

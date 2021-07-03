@@ -35,6 +35,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
@@ -323,6 +324,9 @@ class Preferences
         $params = array();
         foreach (self::$defaults as $k => $v) {
             if (!isset($this->prefs[$k])) {
+                if ($k == 'pref_admin_pass' && $v == 'admin') {
+                    $v = password_hash($v, PASSWORD_BCRYPT);
+                }
                 $this->prefs[$k] = $v;
                 Analog::log(
                     'The field `' . $k . '` does not exists, Galette will attempt to create it.',
@@ -354,7 +358,7 @@ class Preferences
                         )
                     );
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Unable to add missing preferences.' . $e->getMessage(),
                     Analog::WARNING
@@ -384,7 +388,7 @@ class Preferences
                 $this->prefs[$pref->nom_pref] = $pref->val_pref;
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Preferences cannot be loaded. Galette should not work without ' .
                 'preferences. Exiting.',
@@ -440,12 +444,12 @@ class Preferences
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default preferences.' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 
@@ -779,7 +783,7 @@ class Preferences
                 $stmt->execute(
                     array(
                         'val_pref'  => $value,
-                        'where1'    => $k
+                        'nom_pref'  => $k
                     )
                 );
             }
@@ -789,7 +793,7 @@ class Preferences
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
 
             $messages = array();

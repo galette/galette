@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
@@ -44,7 +44,7 @@ $app->group('/ajax', function () use ($authenticate) {
     $this->get(
         '/messages',
         function ($request, $response) {
-            $this->view->render(
+            $this->get('view')->render(
                 $response,
                 'ajax_messages.tpl'
             );
@@ -64,7 +64,7 @@ $app->group('/ajax', function () use ($authenticate) {
                 || !isset($post['filename'])
                 || !isset($post['filesize'])
             ) {
-                $this->flash->addMessage(
+                $this->get('flash')->addMessage(
                     'error_detected',
                     _T("Required argument not present!")
                 );
@@ -84,7 +84,7 @@ $app->group('/ajax', function () use ($authenticate) {
             fwrite($fp, $raw_file);
             fclose($fp);
 
-            $adh = new Adherent($this->zdb, (int)$mid);
+            $adh = new Adherent($this->get('zdb'), (int)$mid);
 
             $res = $adh->picture->store(
                 array(
@@ -97,13 +97,13 @@ $app->group('/ajax', function () use ($authenticate) {
 
             if ($res < 0) {
                 $ret['message'] = $adh->picture->getErrorMessage($res);
-                $this->flash->addMessage(
+                $this->get('flash')->addMessage(
                     'error_detected',
                     $ret['message']
                 );
             } else {
                 $ret['result'] = true;
-                $this->flash->addMessage(
+                $this->get('flash')->addMessage(
                     'success_detected',
                     _T('Member photo has been changed.')
                 );
@@ -121,22 +121,22 @@ $app->group('/ajax', function () use ($authenticate) {
             $ret = [];
 
             try {
-                $select1 = $this->zdb->select(Adherent::TABLE);
+                $select1 = $this->get('zdb')->select(Adherent::TABLE);
                 $select1->columns(['ville_adh']);
                 $select1->where->like('ville_adh', '%' . html_entity_decode($post['term']) . '%');
 
-                $select2 = $this->zdb->select(Adherent::TABLE);
+                $select2 = $this->get('zdb')->select(Adherent::TABLE);
                 $select2->columns(['lieu_naissance']);
                 $select2->where->like('lieu_naissance', '%' . html_entity_decode($post['term']) . '%');
 
                 $select1->combine($select2);
 
-                $select = $this->zdb->sql->select();
+                $select = $this->get('zdb')->sql->select();
                 $select->from(['sub' => $select1])
                     ->order('ville_adh ASCC')
                     ->limit(10);
 
-                $towns = $this->zdb->execute($select);
+                $towns = $this->get('zdb')->execute($select);
 
                 foreach ($towns as $town) {
                     $ret[] = [
@@ -144,7 +144,7 @@ $app->group('/ajax', function () use ($authenticate) {
                         'label' => $town->ville_adh
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Something went wrong is towns suggestion: ' . $e->getMessage(),
                     Analog::WARNING
@@ -164,13 +164,13 @@ $app->group('/ajax', function () use ($authenticate) {
             $ret = [];
 
             try {
-                $select = $this->zdb->select(Adherent::TABLE);
+                $select = $this->get('zdb')->select(Adherent::TABLE);
                 $select->columns(['pays_adh']);
                 $select->where->like('pays_adh', '%' . html_entity_decode($post['term']) . '%');
                 $select->limit(10);
                 $select->order(['pays_adh ASC']);
 
-                $towns = $this->zdb->execute($select);
+                $towns = $this->get('zdb')->execute($select);
 
                 foreach ($towns as $town) {
                     $ret[] = [
@@ -178,7 +178,7 @@ $app->group('/ajax', function () use ($authenticate) {
                         'label' => $town->pays_adh
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Something went wrong is countries suggestion: ' . $e->getMessage(),
                     Analog::WARNING
@@ -194,9 +194,9 @@ $app->group('/ajax', function () use ($authenticate) {
         '/telemetry/infos',
         function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
-                $this->zdb,
-                $this->preferences,
-                $this->plugins
+                $this->get('zdb'),
+                $this->get('preferences'),
+                $this->get('plugins')
             );
             $body = $response->getBody();
             $body->write('<pre>' . json_encode($telemetry->getTelemetryInfos(), JSON_PRETTY_PRINT) . '</pre>');
@@ -208,9 +208,9 @@ $app->group('/ajax', function () use ($authenticate) {
         '/telemetry/send',
         function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
-                $this->zdb,
-                $this->preferences,
-                $this->plugins
+                $this->get('zdb'),
+                $this->get('preferences'),
+                $this->get('plugins')
             );
             try {
                 $telemetry->send();
@@ -219,7 +219,7 @@ $app->group('/ajax', function () use ($authenticate) {
                     'success'   => true,
                     'message'   => $message
                 ];
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $result = [
                     'success'   => false,
                     'message'   => $e->getMessage()
@@ -232,8 +232,8 @@ $app->group('/ajax', function () use ($authenticate) {
     $this->get(
         '/telemetry/registered',
         function ($request, $response) {
-            $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
-            $this->preferences->store();
+            $this->get('preferences')->pref_registration_date = date('Y-m-d H:i:s');
+            $this->get('preferences')->store();
             return $response->withJson(['message' => _T('Thank you for registering!')]);
         }
     )->setName('setRegistered')->add($authenticate);
@@ -244,14 +244,14 @@ $app->group('/ajax', function () use ($authenticate) {
             $post = $request->getParsedBody();
 
             $contrib = new Contribution(
-                $this->zdb,
-                $this->login,
+                $this->get('zdb'),
+                $this->get('login'),
                 [
                     'type'  => (int)$post['fee_id'],
                     'adh'   => (int)$post['member_id']
                 ]
             );
-            $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
+            $contribution['duree_mois_cotis'] = $this->get('preferences')->pref_membership_ext;
 
             return $response->withJson([
                 'date_debut_cotis'  => $contrib->begin_date,
@@ -262,31 +262,27 @@ $app->group('/ajax', function () use ($authenticate) {
 
     $this->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
-        function ($request, $response, $args) {
+        function ($request, $response, int $page = null, $search = null) {
             $post = $request->getParsedBody();
             $filters = new MembersList();
             if (isset($post['page'])) {
                 $filters->current_page = (int)$post['page'];
-            } elseif (isset($args['page'])) {
-                $filters->current_page = (int)$args['page'];
+            } elseif ($page !== null) {
+                $filters->current_page = $page;
             }
 
-            $term = null;
-            if (isset($args['search'])) {
-                $term = $args['search'];
-            }
             if (isset($post['search'])) {
-                $term = $post['search'];
+                $search = $post['search'];
             }
-            if ($term !== null) {
-                $filters->filter_str = $term;
-                if (is_numeric($term)) {
+            if ($search !== null) {
+                $filters->filter_str = $search;
+                if (is_numeric($search)) {
                     $filters->field_filter = Members::FILTER_NUMBER;
                 }
             }
 
             $m = new Members($filters);
-            $list_members = $m->getSelectizedMembers($this->zdb);
+            $list_members = $m->getSelectizedMembers($this->get('zdb'));
 
             $members = [];
             if (count($list_members) > 0) {
@@ -312,18 +308,18 @@ $app->group('/ajax', function () use ($authenticate) {
             $post = $request->getParsedBody();
 
             if (isset($post['pref_password_length'])) {
-                $this->preferences->pref_password_length = $post['pref_password_length'];
+                $this->get('preferences')->pref_password_length = $post['pref_password_length'];
             }
 
             if (isset($post['pref_password_strength'])) {
-                $this->preferences->pref_password_strength = $post['pref_password_strength'];
+                $this->get('preferences')->pref_password_strength = $post['pref_password_strength'];
             }
 
             if (isset($post['pref_password_blacklist'])) {
-                $this->preferences->pref_password_blacklist = $post['pref_password_blacklist'];
+                $this->get('preferences')->pref_password_blacklist = $post['pref_password_blacklist'];
             }
 
-            $pass = new \Galette\Util\Password($this->preferences);
+            $pass = new \Galette\Util\Password($this->get('preferences'));
             $valid = $pass->isValid($post['value']);
 
             return $response->withJson(

@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use Galette\GaletteTestCase;
 
 /**
  * Login tests class
@@ -51,20 +51,11 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2016-12-05
  */
-class Login extends atoum
+class Login extends GaletteTestCase
 {
-    private $zdb;
-    private $i18n;
-    private $session;
-    private $login;
-    private $preferences;
-    private $seed = 320112365;
+    protected $seed = 320112365;
     private $login_adh = 'dumas.roger';
     private $mdp_adh = 'sd8)AvtE|*';
-
-    private $members_fields;
-    private $history;
-    private $adh;
 
     /**
      * Cleanup after tests
@@ -77,28 +68,6 @@ class Login extends atoum
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
-    }
-
-    /**
-     * Set up tests
-     *
-     * @param string $testMethod Method name
-     *
-     * @return void
-     */
-    public function beforeTestMethod($testMethod)
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n();
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
     }
 
     /**
@@ -119,29 +88,13 @@ class Login extends atoum
     }
 
     /**
-     * Test (un)serialize
-     *
-     * @return void
-     */
-    public function testSerialize()
-    {
-        $this->login->name = 'Serialization test';
-        $serialized = serialize($this->login);
-        $this->string($serialized)->isNotEmpty();
-
-        $login = unserialize($serialized);
-        $this->object($login)->isInstanceOf('\Galette\Core\Login');
-        $this->string($login->name)->isIdenticalTo('Serialization test');
-    }
-
-    /**
      * Test not logged in users Impersonating
      *
      * @return void
      */
     public function testNotLoggedCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
 
         $this->calling($login)->isLogged = false;
         $this
@@ -159,7 +112,7 @@ class Login extends atoum
      */
     public function testStaffCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
 
         $this->calling($login)->isLogged = true;
         $this->calling($login)->isStaff = true;
@@ -180,7 +133,7 @@ class Login extends atoum
      */
     public function testAdminCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isLogged = true;
         $this->calling($login)->isStaff = true;
         $this->calling($login)->isAdmin = true;
@@ -207,7 +160,7 @@ class Login extends atoum
             }
         };
 
-        $login = new \mock\Galette\Core\Login($zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($zdb, $this->i18n);
         $this->calling($login)->isSuperAdmin = true;
         $this->boolean($login->impersonate(1))->isFalse();
     }
@@ -219,7 +172,7 @@ class Login extends atoum
      */
     public function testSuperadminCanImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isSuperAdmin = true;
 
         ///We're faking, Impersonating won't work but will not throw any exception
@@ -261,7 +214,7 @@ class Login extends atoum
             }
         };
 
-        $login = new \Galette\Core\Login($zdb, $this->i18n, $this->session);
+        $login = new \Galette\Core\Login($zdb, $this->i18n);
         $this->boolean($login->loginExists('doesnotexists'))->isTrue();
     }
 
@@ -311,17 +264,34 @@ class Login extends atoum
                 $this->boolean($res)->isTrue();
             }
 
-            $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-            $fakedata
-                ->setSeed($this->seed)
-                ->setDependencies(
-                    $this->preferences,
-                    $this->members_fields,
-                    $this->history,
-                    $this->login
-                );
-
-            $data = $fakedata->fakeMember();
+            $data = [
+                'nom_adh' => 'Barre',
+                'prenom_adh' => 'Olivier',
+                'ville_adh' => 'Le GoffVille',
+                'cp_adh' => '05 029',
+                'adresse_adh' => '9, impasse Frédérique Boulanger',
+                'email_adh' => 'bernadette37@hernandez.fr',
+                'login_adh' => 'dumas.roger',
+                'mdp_adh' => 'sd8)AvtE|*',
+                'mdp_adh2' => 'sd8)AvtE|*',
+                'bool_admin_adh' => false,
+                'bool_exempt_adh' => false,
+                'bool_display_info' => true,
+                'sexe_adh' => 1,
+                'prof_adh' => 'Pédologue',
+                'titre_adh' => null,
+                'ddn_adh' => '1948-10-23',
+                'lieu_naissance' => 'Lagarde',
+                'pseudo_adh' => 'elisabeth50',
+                'pays_adh' => 'Géorgie',
+                'tel_adh' => '05 05 20 88 04',
+                'url_adh' => 'http://www.gay.com/tempora-nemo-quidem-laudantium-dolores',
+                'activite_adh' => true,
+                'id_statut' => 6,
+                'date_crea_adh' => '2019-09-02',
+                'pref_lang' => 'nb_NO',
+                'fingerprint' => 'FAKER' . $this->seed,
+            ];
 
             $this->adh = new \Galette\Entity\Adherent($this->zdb);
             $this->adh->setDependencies(

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2014 The Galette Team
+ * Copyright © 2010-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -46,6 +47,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Transaction;
 use Galette\Entity\ContributionsTypes;
 use Galette\Filters\ContributionsList;
+use Laminas\Db\Sql\Select;
 
 /**
  * Contributions class for galette
@@ -55,7 +57,7 @@ use Galette\Filters\ContributionsList;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -129,12 +131,12 @@ class Contributions
                 $contributions = $results;
             }
             return $contributions;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list contributions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -172,7 +174,7 @@ class Contributions
             }
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -188,7 +190,7 @@ class Contributions
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select)
     {
         try {
             $countSelect = clone $select;
@@ -210,7 +212,7 @@ class Contributions
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count contributions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -226,7 +228,7 @@ class Contributions
      *
      * @return void
      */
-    private function calculateSum($select)
+    private function calculateSum(Select $select)
     {
         try {
             $sumSelect = clone $select;
@@ -243,7 +245,7 @@ class Contributions
             $result = $results->current();
 
             $this->sum = round($result->contribsum, 2);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
                 Analog::WARNING
@@ -262,6 +264,9 @@ class Contributions
         $order = array();
 
         switch ($this->filters->orderby) {
+            case ContributionsList::ORDERBY_ID:
+                $order[] = Contribution::PK . ' ' . $this->filters->ordered;
+                break;
             case ContributionsList::ORDERBY_DATE:
                 $order[] = 'date_enreg ' . $this->filters->ordered;
                 break;
@@ -304,7 +309,7 @@ class Contributions
      *
      * @return string SQL WHERE clause
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select)
     {
         $field = 'date_debut_cotis';
 
@@ -374,7 +379,7 @@ class Contributions
             if ($this->filters->filtre_transactions === true) {
                 $select->where('a.trans_id IS NULL');
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -448,7 +453,7 @@ class Contributions
                     )
                 );
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 if ($transaction) {
                     $this->zdb->connection->rollBack();
                 }

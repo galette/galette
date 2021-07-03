@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -114,7 +115,7 @@ class Group
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
@@ -204,7 +205,7 @@ class Group
                 } else {
                     $this->managers = $members;
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Cannot get group persons | ' . $e->getMessage(),
                     Analog::WARNING
@@ -245,7 +246,7 @@ class Group
                 $groups[] = $group;
             }
             $this->groups = $groups;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot get subgroup for group ' . $this->group_name .
                 ' (' . $this->id . ')| ' . $e->getMessage(),
@@ -319,7 +320,7 @@ class Group
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction) {
                 $zdb->connection->rollBack();
             }
@@ -384,7 +385,7 @@ class Group
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong detaching group `' . $this->group_name .
                 '` (' . $this->id . ') from its parent:\'( | ' .
@@ -425,13 +426,7 @@ class Group
                 $insert->values($values);
                 $add = $zdb->execute($insert);
                 if ($add->count() > 0) {
-                    if ($zdb->isPostgres()) {
-                        $this->id = (int)$zdb->driver->getLastGeneratedValue(
-                            PREFIX_DB . 'groups_id_seq'
-                        );
-                    } else {
-                        $this->id = (int)$zdb->driver->getLastGeneratedValue();
-                    }
+                    $this->id = $zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(
@@ -465,7 +460,7 @@ class Group
                 return true;
             }
             /** FIXME: also store members and managers? */
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -756,8 +751,8 @@ class Group
                 foreach ($members as $m) {
                     $result = $stmt->execute(
                         array(
-                            self::PK        => $this->id,
-                            Adherent::PK    => $m->id
+                            'group' => $this->id,
+                            'adh'   => $m->id
                         )
                     );
 
@@ -790,7 +785,7 @@ class Group
             );
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             $messages = array();
             do {
@@ -846,8 +841,8 @@ class Group
                 foreach ($members as $m) {
                     $result = $stmt->execute(
                         array(
-                            Group::PK       => $this->id,
-                            Adherent::PK    => $m->id
+                            'group' => $this->id,
+                            'adh'   => $m->id
                         )
                     );
 
@@ -880,7 +875,7 @@ class Group
             );
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             $messages = array();
             do {

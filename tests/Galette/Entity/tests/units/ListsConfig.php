@@ -236,13 +236,11 @@ class ListsConfig extends atoum
     {
         $lists_config = $this->lists_config;
         $lists_config->load();
-        $session = new \RKA\Session();
 
         //admin
         $superadmin_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($superadmin_login)->isSuperAdmin = true;
 
@@ -254,8 +252,7 @@ class ListsConfig extends atoum
         //admin
         $admin_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($admin_login)->isAdmin = true;
 
@@ -267,8 +264,7 @@ class ListsConfig extends atoum
         //staff
         $staff_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($staff_login)->isStaff = true;
 
@@ -293,8 +289,7 @@ class ListsConfig extends atoum
         //group manager
         $manager_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($manager_login)->isGroupManager = true;
 
@@ -317,8 +312,7 @@ class ListsConfig extends atoum
         //simplemember
         $user_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($user_login)->isUp2Date = true;
 

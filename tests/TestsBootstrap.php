@@ -25,9 +25,13 @@ if (file_exists('../galette/index.php')) {
     die('Unable to define GALETTE_BASE_PATH :\'(');
 }
 
-$db = getenv('DB');
-if ($db === false || $db !== 'pgsql') {
-    $db = 'mysql';
+$db = 'mysql';
+$dbenv = getenv('DB');
+if (
+    $dbenv === 'pgsql'
+    || substr($dbenv, 0, strlen('postgres')) === 'postgres'
+) {
+    $db = 'pgsql';
 }
 
 define('GALETTE_CONFIG_PATH', __DIR__ . '/config/' . $db . '/');
@@ -72,15 +76,17 @@ foreach ($directories as $directory) {
 }
 
 $logfile = 'galette_tests';
-
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
-$app = new \Slim\App(
-    array(
-        'templates.path'    => GALETTE_ROOT . 'templates/default/',
-        'mode'              => 'CRON'
-    )
-);
-session_start();
+
+$session_name = 'galette_tests';
+$session = new \RKA\SessionMiddleware([
+    'name'      => $session_name,
+    'lifetime'  => 0
+]);
+$session->start();
+
+$app =  new \Galette\Core\SlimApp();
+$app->add($session);
 
 require_once GALETTE_BASE_PATH . '/includes/dependencies.php';
 //Globals... :(
@@ -96,3 +102,5 @@ if (!defined('_CURRENT_THEME_PATH')) {
         GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
     );
 }
+
+require_once __DIR__ . '/GaletteTestCase.php';

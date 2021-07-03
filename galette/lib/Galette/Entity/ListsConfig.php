@@ -37,6 +37,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
@@ -191,7 +192,7 @@ class ListsConfig extends FieldsConfig
             }
 
             return $display_elements;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting list elements to display',
                 Analog::ERROR
@@ -318,18 +319,18 @@ class ListsConfig extends FieldsConfig
 
             foreach ($this->listed_fields as $pos => $field) {
                 $params = array(
-                    'list_visible'          => $field['list_visible'],
-                    'list_position'         => $pos,
-                    'where1'                => $field['field_id']
+                    'list_visible'  => $field['list_visible'],
+                    'list_position' => $pos,
+                    'field_id'      => $field['field_id']
                 );
                 $stmt->execute($params);
             }
 
             foreach (array_keys($this->getRemainingFields()) as $field) {
                 $params = array(
-                    'list_visible'          => $this->zdb->isPostgres() ? 'false' : 0,
-                    'list_position'         => -1,
-                    'where1'                => $field
+                    'list_visible'  => $this->zdb->isPostgres() ? 'false' : 0,
+                    'list_position' => -1,
+                    'field_id'      => $field
                 );
                 $stmt->execute($params);
             }
@@ -346,7 +347,7 @@ class ListsConfig extends FieldsConfig
 
             $this->zdb->connection->commit();
             return $this->load();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 '[' . $class . '] An error occurred while storing list ' .

@@ -93,7 +93,7 @@
             <li>
                 <a
                     href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
-                    title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sname}"
+                    title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sfullname}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-clone fa-fw fa-2x" aria-hidden="true"></i>
@@ -143,7 +143,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {assign var="value" value=$member->$propname|escape}
 
         {if $element->field_id eq 'nom_adh'}
-            {assign var="value" value=$member->sfullname|escape}
+            {assign var="value" value=$member->sfullname}
         {elseif $element->field_id eq 'pref_lang'}
             {assign var="value" value=$pref_lang}
         {elseif $element->field_id eq 'adresse_adh'}
@@ -206,13 +206,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <td>
     {foreach from=$groups item=group key=kgroup}
         {if $member->isGroupMember($group) or $member->isGroupManager($group)}
-                    <a href="{if $login->isGroupManager($kgroup)}{path_for name="groups" data=["id" => $kgroup]}{else}#{/if}" class="button group-btn{if not $login->isGroupManager($kgroup)} notmanaged{/if}">
+                    <a href="{if $login->isGroupManager($kgroup)}{path_for name="groups" data=["id" => $kgroup]}{else}#{/if}" class="button {if not $login->isGroupManager($kgroup)} notmanaged{/if}">
                         {$group}
             {if $member->isGroupMember($group)}
-                        <img src="{base_url}/{$template_subdir}images/icon-user.png" alt="{_T string="[member]"}" width="16" height="16"/>
+                        <i class="fas fa-user fa-w" title="{_T string="Member of group"}"></i>
             {/if}
             {if $member->isGroupManager($group)}
-                        <i class="fas fa-user-astronaut fa-w"></i>
+                        <i class="fas fa-user-tie fa-w" title="{_T string="Group manager"}"></i>
             {/if}
                     </a>
         {/if}

@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\History;
@@ -60,23 +61,19 @@ class HistoryController extends AbstractController
     /**
      * History page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function history(Request $request, Response $response, array $args = []): Response
-    {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
+    public function list(
+        Request $request,
+        Response $response,
+        $option = null,
+        $value = null
+    ): Response {
         if (isset($this->session->filter_history)) {
             $filters = $this->session->filter_history;
         } else {
@@ -144,7 +141,7 @@ class HistoryController extends AbstractController
             if (
                 (isset($post['nbshow']) && is_numeric($post['nbshow']))
             ) {
-                $filters->show = $post['nbshow'];
+                $filters->show = (int)$post['nbshow'];
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
@@ -157,7 +154,7 @@ class HistoryController extends AbstractController
                         $field = _T("end date filter");
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }
@@ -223,7 +220,7 @@ class HistoryController extends AbstractController
                     _T('Logs have been flushed!')
                 );
                 $success = true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occurred flushing logs | ' . $e->getMessage(),

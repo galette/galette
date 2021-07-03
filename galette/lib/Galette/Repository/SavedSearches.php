@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -111,7 +112,7 @@ class SavedSearches
                 $searches = $results;
             }
             return $searches;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list saved searches | ' . $e->getMessage(),
                 Analog::WARNING
@@ -151,7 +152,7 @@ class SavedSearches
             }
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot build SELECT clause for saved searches | ' . $e->getMessage(),
                 Analog::WARNING
@@ -189,7 +190,7 @@ class SavedSearches
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count saved searches | ' . $e->getMessage(),
                 Analog::WARNING
@@ -267,7 +268,7 @@ class SavedSearches
                     )
                 );
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 if ($transaction) {
                     $this->zdb->connection->rollBack();
                 }

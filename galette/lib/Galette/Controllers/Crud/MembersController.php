@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -41,8 +41,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Authentication;
 use Galette\Core\GaletteMail;
+use Galette\Core\Gaptcha;
 use Galette\Core\Password;
-use Galette\Core\PasswordImage;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -51,7 +51,6 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
-use Galette\Entity\Texts;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;
@@ -77,6 +76,9 @@ use Analog\Analog;
 
 class MembersController extends CrudController
 {
+    /** @var boolean */
+    private $is_self_membership = false;
+
     // CRUD - Create
 
     /**
@@ -84,14 +86,12 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
-        $args['action'] = 'add';
-        return $this->edit($request, $response, $args);
+        return $this->edit($request, $response, null, 'add');
     }
 
     /**
@@ -99,11 +99,10 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function selfSubscribe(Request $request, Response $response, array $args = []): Response
+    public function selfSubscribe(Request $request, Response $response): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
@@ -128,11 +127,6 @@ class MembersController extends CrudController
         $fc = $this->fields_config;
         $form_elements = $fc->getFormElements($this->login, true, true);
 
-        //image to defeat mass filling forms
-        $spam = new PasswordImage();
-        $spam_pass = $spam->newImage();
-        $spam_img = $spam->getImage();
-
         // members
         $m = new Members();
         $members = $m->getSelectizedMembers(
@@ -151,6 +145,8 @@ class MembersController extends CrudController
             $params['members']['list'] = $members;
         }
 
+        $gaptcha = new Gaptcha($this->i18n);
+        $this->session->gaptcha = $gaptcha;
         // display page
         $this->view->render(
             $response,
@@ -164,11 +160,10 @@ class MembersController extends CrudController
                 // pseudo random int
                 'time'              => time(),
                 'titles_list'       => Titles::getList($this->zdb),
-                //self_adh specific
-                'spam_pass'         => $spam_pass,
-                'spam_img'          => $spam_img,
                 'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens']
+                'hidden_elements'   => $form_elements['hiddens'],
+                //self_adh specific
+                'gaptcha'           => $gaptcha
             ) + $params
         );
         return $response;
@@ -179,27 +174,40 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response);
     }
+
+    /**
+     * Self subscription add action
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doSelfSubscribe(Request $request, Response $response): Response
+    {
+        $this->setSelfMembership();
+        return $this->doAdd($request, $response);
+    }
+
 
     /**
      * Duplicate action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id_adh   Member ID to duplicate
      *
      * @return Response
      */
-    public function duplicate(Request $request, Response $response, array $args = []): Response
+    public function duplicate(Request $request, Response $response, int $id_adh): Response
     {
-        $id_adh = (int)$args[Adherent::PK];
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
 
@@ -219,14 +227,12 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Member ID
      *
      * @return Response
      */
-    public function show(Request $request, Response $response, array $args): Response
+    public function show(Request $request, Response $response, int $id): Response
     {
-        $id = (int)$args['id'];
-
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -255,7 +261,7 @@ class MembersController extends CrudController
             //member does not exists!
             $this->flash->addMessage(
                 'error_detected',
-                str_replace('%id', $args['id'], _T("No member #%id."))
+                str_replace('%id', $id, _T("No member #%id."))
             );
 
             return $response
@@ -292,43 +298,37 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function showMe(Request $request, Response $response, array $args = []): Response
+    public function showMe(Request $request, Response $response): Response
     {
         if ($this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
-        $args['show_me'] = true;
-        $args['id'] = $this->login->id;
-        return $this->show($request, $response, $args);
+        return $this->show($request, $response, $this->login->id);
     }
 
     /**
      * Public pages (trombinoscope, public list)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
+     * @param string         $type     List type (either list or trombi)
      *
      * @return Response
      */
-    public function publicList(Request $request, Response $response, array $args = []): Response
-    {
-        $option = null;
-        $type = $args['type'];
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
+    public function publicList(
+        Request $request,
+        Response $response,
+        $option = null,
+        $value = null,
+        $type = null
+    ): Response {
         $varname = 'public_filter_' . $type;
         if (isset($this->session->$varname)) {
             $filters = $this->session->$varname;
@@ -376,13 +376,12 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $type     Type
      *
      * @return Response
      */
-    public function filterPublicList(Request $request, Response $response, array $args = []): Response
+    public function filterPublicList(Request $request, Response $response, string $type): Response
     {
-        $type = $args['type'];
         $post = $request->getParsedBody();
 
         $varname = 'public_filter_' . $type;
@@ -398,7 +397,7 @@ class MembersController extends CrudController
         } else {
             //number of rows to show
             if (isset($post['nbshow'])) {
-                $filters->show = $post['nbshow'];
+                $filters->show = (int)$post['nbshow'];
             }
         }
 
@@ -414,13 +413,21 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Member ID
+     * @param integer  $fid      Dynamic fields ID
+     * @param integer  $pos      Dynamic field position
+     * @param string   $name     File name
      *
      * @return Response
      */
-    public function getDynamicFile(Request $request, Response $response, array $args): Response
-    {
-        $id = (int)$args['id'];
+    public function getDynamicFile(
+        Request $request,
+        Response $response,
+        int $id,
+        int $fid,
+        int $pos,
+        string $name
+    ): Response {
         $deps = array(
             'picture'   => false,
             'groups'    => false,
@@ -434,7 +441,7 @@ class MembersController extends CrudController
         $denied = null;
         if (!$member->canEdit($this->login)) {
             $fields = $member->getDynamicFields()->getFields();
-            if (!isset($fields[$args['fid']])) {
+            if (!isset($fields[$fid])) {
                 //field does not exists or access is forbidden
                 $denied = true;
             } else {
@@ -466,9 +473,9 @@ class MembersController extends CrudController
                 '%pos'
             ],
             [
-                $args['id'],
-                $args['fid'],
-                $args['pos']
+                $id,
+                $fid,
+                $pos
             ],
             'member_%mid_field_%fid_value_%pos'
         );
@@ -478,7 +485,7 @@ class MembersController extends CrudController
 
             $response = $response->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Type', $type)
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $args['name'] . '"')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $name . '"')
                 ->withHeader('Pragma', 'no-cache')
                 ->withHeader('Content-Transfer-Encoding', 'binary')
                 ->withHeader('Expires', '0')
@@ -506,7 +513,7 @@ class MembersController extends CrudController
                 ->withStatus(404)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('member', ['id' => $args['id']])
+                    $this->router->pathFor('member', ['id' => $id])
                 );
         }
     }
@@ -514,17 +521,15 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
-        $option = $args['option'] ?? null;
-        $value = $args['value'] ?? null;
-
         if (isset($this->session->filter_members)) {
             $filters = $this->session->filter_members;
         } else {
@@ -649,7 +654,7 @@ class MembersController extends CrudController
             }
             //number of rows to show
             if (isset($post['nbshow'])) {
-                $filters->show = $post['nbshow'];
+                $filters->show = (int)$post['nbshow'];
             }
 
             if (isset($post['advanced_filtering'])) {
@@ -669,7 +674,7 @@ class MembersController extends CrudController
                                     trim($f) !== ''
                                     && trim($post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = $post['free_text'][$i];
+                                    $fs_search = htmlspecialchars($post['free_text'][$i], ENT_QUOTES);
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
@@ -843,13 +848,14 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function ajaxList(Request $request, Response $response, array $args = []): Response
+    public function ajaxList(Request $request, Response $response, string $option = null, $value = null): Response
     {
         $post = $request->getParsedBody();
 
@@ -859,13 +865,13 @@ class MembersController extends CrudController
             $filters = new MembersList();
         }
 
-        if (isset($args['option']) && $args['option'] == 'page') {
-            $filters->current_page = (int)$args['value'];
+        if ($option == 'page') {
+            $filters->current_page = (int)$value;
         }
 
         //numbers of rows to display
         if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
-            $filters->show = $post['nbshow'];
+            $filters->show = (int)$post['nbshow'];
         }
 
         $members = new Members($filters);
@@ -915,7 +921,6 @@ class MembersController extends CrudController
                             Analog::ERROR
                         );
                         throw new \Exception('A group id is required.');
-                        exit(0);
                     }
                     if (!isset($post['members'])) {
                         $group = new Group((int)$post['gid']);
@@ -930,7 +935,6 @@ class MembersController extends CrudController
                                 Analog::ERROR
                             );
                             throw new \Exception('Unknown mode.');
-                            exit(0);
                         }
                     } else {
                         $m = new Members();
@@ -945,7 +949,6 @@ class MembersController extends CrudController
                         throw new \RuntimeException(
                             'Current selected member must be excluded while attaching!'
                         );
-                        exit(0);
                     }
                     break;
             }
@@ -963,11 +966,11 @@ class MembersController extends CrudController
         }
 
         if (isset($post['gid'])) {
-            $params['the_id'] = $post['gid'];
+            $params['the_id'] = (int)$post['gid'];
         }
 
         if (isset($post['id_adh'])) {
-            $params['excluded'] = $post['id_adh'];
+            $params['excluded'] = (int)$post['id_adh'];
         }
 
         // display page
@@ -1064,18 +1067,17 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param mixed    $id       Member id/array of members id
+     * @param string   $action   null or 'add'
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
-    {
-        $action = $args['action'] ?? 'edit';
-        $id = null;
-        if (isset($args['id'])) {
-            $id = (int)$args['id'];
-        }
-
+    public function edit(
+        Request $request,
+        Response $response,
+        int $id = null,
+        $action = 'edit'
+    ): Response {
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -1085,16 +1087,17 @@ class MembersController extends CrudController
             'dynamics'  => true
         );
 
+        //instanciate member object
+        $member = new Adherent($this->zdb, $id, $deps);
+
         if ($this->session->member !== null) {
+            //retrieve from session, in add or edit
             $member = $this->session->member;
             $this->session->member = null;
-        } else {
-            $member = new Adherent($this->zdb, $id, $deps);
-        }
-
-        if ($id !== null) {
+        } elseif ($id !== null) {
+            //load requested member
             $member->load($id);
-            if (!$member->canEdit($this->login)) {
+            if (!$member->canEdit($this->login) || $member->id != $id) {
                 $this->flash->addMessage(
                     'error_detected',
                     _T("You do not have permission for requested URL.")
@@ -1106,10 +1109,6 @@ class MembersController extends CrudController
                         'Location',
                         $this->router->pathFor('me')
                     );
-            }
-        } else {
-            if ($member->id != $id) {
-                $member->load($this->login->id);
             }
         }
 
@@ -1207,13 +1206,13 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Member id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response);
     }
 
     /**
@@ -1221,11 +1220,10 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function massChange(Request $request, Response $response, array $args = []): Response
+    public function massChange(Request $request, Response $response): Response
     {
         $filters = $this->session->filter_members;
 
@@ -1280,11 +1278,10 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function validateMassChange(Request $request, Response $response, array $args = []): Response
+    public function validateMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -1350,11 +1347,10 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function doMassChange(Request $request, Response $response, array $args = []): Response
+    public function doMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $redirect_url = $post['redirect_uri'];
@@ -1471,11 +1467,10 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []): Response
+    public function store(Request $request, Response $response): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
@@ -1498,34 +1493,26 @@ class MembersController extends CrudController
             $this->members_fields,
             $this->history
         );
-        if (isset($args['self'])) {
-            //mark as self membership
-            $member->setSelfMembership();
-        }
 
         $success_detected = [];
         $warning_detected = [];
         $error_detected = [];
 
-        //check captcha
-        if (isset($args['self'])) {
-            if (
-                !$post['mdp_crypt']
-                || !$post['mdp_adh']
-                || !crypt($post['mdp_adh'], $post['mdp_crypt']) == $post['mdp_crypt']
-            ) {
-                $error_detected[] = __('Please repeat in the field the password shown in the image.');
-            } else {
-                unset($post['mdp_adh']);
-                unset($post['mdp_crypt']);
+        if ($this->isSelfMembership() && !isset($post[Adherent::PK])) {
+            //mark as self membership
+            $member->setSelfMembership();
+
+            //check captcha
+            $gaptcha = $this->session->gaptcha;
+            if (!$gaptcha->check($post['gaptcha'])) {
+                $error_detected[] = _T('Invalid captcha');
             }
         }
 
         // new or edit
-        $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
         if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
-            if ($adherent['id_adh']) {
-                $member->load((int)$adherent['id_adh']);
+            if (isset($post['id_adh'])) {
+                $member->load((int)$post['id_adh']);
                 if (!$member->canEdit($this->login)) {
                     //redirection should have been done before. Just throw an Exception.
                     throw new \RuntimeException(
@@ -1539,14 +1526,13 @@ class MembersController extends CrudController
             }
         } else {
             $member->load($this->login->id);
-            $adherent['id_adh'] = $this->login->id;
         }
 
         // flagging required fields
         $fc = $this->fields_config;
 
         // password required if we create a new member but not from self subscription
-        if ($member->id != '' || isset($args['self'])) {
+        if ($member->id != '' || $this->isSelfMembership()) {
             $fc->setNotRequired('mdp_adh');
         }
 
@@ -1571,7 +1557,7 @@ class MembersController extends CrudController
         $form_elements = $fc->getFormElements(
             $this->login,
             $member->id == '',
-            isset($args['self'])
+            $this->isSelfMembership()
         );
         $fieldsets     = $form_elements['fieldsets'];
         $required      = array();
@@ -1601,7 +1587,7 @@ class MembersController extends CrudController
 
         // Validation
         $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
-        if (isset($post[array_shift($real_requireds)])) {
+        if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
             // regular fields
             $valid = $member->check($post, $required, $disabled);
             if ($valid !== true) {
@@ -1617,7 +1603,7 @@ class MembersController extends CrudController
                 }
 
                 // send email to member
-                if (isset($args['self']) || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+                if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
                     $member->setSendmail(); //flag to send creation email
                 }
 
@@ -1625,7 +1611,7 @@ class MembersController extends CrudController
                 if ($store === true) {
                     //member has been stored :)
                     if ($new) {
-                        if (isset($args['self'])) {
+                        if ($this->isSelfMembership()) {
                             $success_detected[] = _T("Your account has been created!");
                             if (
                                 $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
@@ -1641,14 +1627,10 @@ class MembersController extends CrudController
                     }
 
                     //store requested groups
-                    $add_groups = null;
-                    $groups_adh = null;
-                    $managed_groups_adh = null;
+                    $groups_adh = $post['groups_adh'] ?? null;
+                    $managed_groups_adh = $post['groups_managed_adh'] ?? null;
 
                     //add/remove user from groups
-                    if (isset($post['groups_adh'])) {
-                        $groups_adh = $post['groups_adh'];
-                    }
                     $add_groups = Groups::addMemberToGroups(
                         $member,
                         $groups_adh
@@ -1659,9 +1641,6 @@ class MembersController extends CrudController
                     }
 
                     //add/remove manager from groups
-                    if (isset($post['groups_managed_adh'])) {
-                        $managed_groups_adh = $post['groups_managed_adh'];
-                    }
                     $add_groups = Groups::addMemberToGroups(
                         $member,
                         $managed_groups_adh,
@@ -1732,7 +1711,7 @@ class MembersController extends CrudController
             }
 
             if (count($error_detected) === 0) {
-                if (isset($args['self'])) {
+                if ($this->isSelfMembership()) {
                     $redirect_url = $this->router->pathFor('login');
                 } elseif (
                     isset($post['redirect_on_create'])
@@ -1767,7 +1746,7 @@ class MembersController extends CrudController
                 //store entity in session
                 $this->session->member = $member;
 
-                if (isset($args['self'])) {
+                if ($this->isSelfMembership()) {
                     $redirect_url = $this->router->pathFor('subscribe');
                 } else {
                     if ($member->id) {
@@ -1798,7 +1777,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('members');
     }
@@ -1810,7 +1789,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveMember',
@@ -1848,11 +1827,12 @@ class MembersController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
-        if (isset($args['id_adh'])) {
+        if (isset($args['id_adh']) || isset($args['id'])) {
             //one member removal
-            $adh = new Adherent($this->zdb, (int)$args['id_adh']);
+            $id_adh = $args['id_adh'] ?? $args['id'];
+            $adh = new Adherent($this->zdb, (int)$id_adh);
             return sprintf(
                 _T('Remove member %1$s'),
                 $adh->sfullname
@@ -1895,4 +1875,25 @@ class MembersController extends CrudController
     }
 
     // CRUD - Delete
+
+    /**
+     * Set self memebrship flag
+     *
+     * @return MembersController
+     */
+    private function setSelfMembership(): MembersController
+    {
+        $this->is_self_membership = true;
+        return $this;
+    }
+
+    /**
+     * Is self membership?
+     *
+     * @return boolean
+     */
+    private function isSelfMembership(): bool
+    {
+        return $this->is_self_membership;
+    }
 }

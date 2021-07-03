@@ -1,5 +1,9 @@
 ALTER TABLE galette_adherents ADD pref_lang varchar(20) default 'french' AFTER date_echeance;
-INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (à payer)');
+ALTER TABLE galette_adherents ADD lieu_naissance varchar(20) default '';
+ALTER TABLE galette_adherents ADD gpgid varchar(8);
+ALTER TABLE galette_adherents ADD fingerprint varchar(50);
+
+INSERT INTO galette_types_cotisation VALUES (7, 'Cotisation annuelle (a payer)');
 ALTER TABLE galette_adherents ADD  UNIQUE (login_adh);
 ALTER TABLE `galette_adherents` CHANGE `mdp_adh` `mdp_adh` VARCHAR(40);
 
@@ -13,7 +17,7 @@ INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_beg_membershi
 INSERT INTO galette_preferences (nom_pref, val_pref) VALUES ('pref_email_reply_to', '');
 
 -- New tables for dynamic fields;
-DROP TABLE galette_field_types;
+DROP TABLE IF EXISTS galette_field_types;
 CREATE TABLE galette_field_types (
     field_id int(10) unsigned NOT NULL auto_increment,
     field_form varchar(10) NOT NULL,
@@ -32,7 +36,7 @@ CREATE TABLE galette_field_types (
     INDEX (field_form)
 ) ENGINE=MyISAM;
 
-DROP TABLE galette_dynamic_fields;
+DROP TABLE IF EXISTS galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
     item_id int(10) NOT NULL default '0',
     field_id int(10) NOT NULL default '0',
@@ -72,7 +76,7 @@ UPDATE galette_types_cotisation SET cotis_extension='1' WHERE
     id_type_cotis <= 3 OR id_type_cotis = 7;
 
 -- Table for dynamic translation of strings;
-DROP TABLE galette_l10n;
+DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
     text_orig varchar(40) NOT NULL,
     text_locale varchar(15) NOT NULL,
@@ -82,7 +86,7 @@ CREATE TABLE galette_l10n (
 ) ENGINE=MyISAM;
 
 -- Table for transactions;
-DROP TABLE galette_transactions;
+DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
   trans_date date NOT NULL default '0000-00-00',
