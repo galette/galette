@@ -21,13 +21,14 @@
 # Independent-Eye <michalek.jedrzejak@gmail.com>, 2021.
 # Ricardo Santos <buehnenarbeiter@gmail.com>, 2021.
 # Johannes Keyser <joke@fsfe.org>, 2021.
+# G-Manu Studios <robbankz@yahoo.de>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-07-25 17:32+0000\n"
-"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"PO-Revision-Date: 2021-07-30 02:33+0000\n"
+"Last-Translator: G-Manu Studios <robbankz@yahoo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1208,7 +1209,7 @@ msgid "How much is %1$s minus %2$s?"
 msgstr "Wie viel ist %1$s minus %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:109
-#, fuzzy, php-format
+#, php-format
 msgid "How much is %1$s on which we retire %2$s?"
 msgstr "Wie viel ist %1$s, worauf wir uns mit %2$s zurückziehen?"
 
