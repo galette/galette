@@ -5,13 +5,14 @@
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
 # mireia monne dominguez <mireiamonnedominguez@gmail.com>, 2021.
+# Adrián <pico0155@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-06-15 21:54+0000\n"
-"Last-Translator: mireia monne dominguez <mireiamonnedominguez@gmail.com>\n"
+"PO-Revision-Date: 2021-08-06 14:32+0000\n"
+"Last-Translator: Adrián <pico0155@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.8-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -222,9 +223,8 @@ msgid "Field has been successfully moved"
 msgstr "El camp s'ha mogut correctament"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:513
-#, fuzzy
 msgid "An error occurred moving field :("
-msgstr "S'ha produït un error en moure el camp ("
+msgstr "S'ha produït un error en moure el camp :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:155
 msgid "Subscription"
@@ -323,10 +323,8 @@ msgid "Your account has been created!"
 msgstr "S'ha creat el compte!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1620
-#, fuzzy
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
-"S'ha enviat un correu electrònic per comprovar la vostra bústia d'entrada."
+msgstr "S'ha enviat un correu electrònic. Comprova la teva bústia d'entrada."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1623
 #, fuzzy
@@ -421,18 +419,16 @@ msgid "Edit contribution type"
 msgstr "Edita el tipus de contribució"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
-#, fuzzy
 msgid "%type has not been added :("
-msgstr "no s'ha afegit el tipus de l'1% ("
+msgstr "No s'ha afegit el tipus %type :("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type #%id has not been updated"
 msgstr "%type #%id no s'ha actualitzat"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
-#, fuzzy
 msgid "%type has been successfully added!"
-msgstr "S'ha afegit amb èxit un tipus de percentatge!"
+msgstr "%type s'ha afegit amb èxit!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type #%id has been successfully updated!"
@@ -565,9 +561,8 @@ msgid "Dashboard"
 msgstr "Tauler"
 
 #: ../lib/Galette/Controllers/GaletteController.php:233
-#, fuzzy
 msgid "Settings"
-msgstr "Paràmetres"
+msgstr "Configuració"
 
 #: ../lib/Galette/Controllers/GaletteController.php:248
 #: ../lib/Galette/Filters/MembersList.php:306
@@ -626,15 +621,14 @@ msgid "Test message."
 msgstr "Missatge de prova."
 
 #: ../lib/Galette/Controllers/GaletteController.php:414
-#, fuzzy, php-format
+#, php-format
 msgid "An email has been sent to %email"
-msgstr ""
-"S'ha enviat un correu electrònic a l'adreça de correu electrònic del 5%"
+msgstr "S'ha enviat un correu electrònic a %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:423
-#, fuzzy, php-format
+#, php-format
 msgid "No email sent to %email"
-msgstr "No s'ha enviat cap correu electrònic a l'adreça electrònica del 5%"
+msgstr "No s'ha enviat cap correu electrònic a %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:430
 #, fuzzy
@@ -657,9 +651,8 @@ msgid "Fields configuration has been successfully stored"
 msgstr "La configuració dels camps s'ha desat correctament"
 
 #: ../lib/Galette/Controllers/GaletteController.php:562
-#, fuzzy
 msgid "An error occurred while storing fields configuration :("
-msgstr "S'ha produït un error en emmagatzemar la configuració dels camps ("
+msgstr "S'ha produït un error en emmagatzemar la configuració dels camps :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:587
 #, fuzzy
@@ -672,9 +665,8 @@ msgid "List configuration has been successfully stored"
 msgstr "La configuració de la llista s'ha desat correctament"
 
 #: ../lib/Galette/Controllers/GaletteController.php:630
-#, fuzzy
 msgid "An error occurred while storing list configuration :("
-msgstr "Hi ha hagut un error en desar la configuració de la llista ("
+msgstr "Hi ha hagut un error en desar la configuració de la llista :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:664
 #, fuzzy
@@ -697,9 +689,8 @@ msgid "Reminder has not been sent:"
 msgstr "No s'ha enviat el recordatori"
 
 #: ../lib/Galette/Controllers/GaletteController.php:756
-#, fuzzy
 msgid "Sent reminders:"
-msgstr "Recordatoris enviats"
+msgstr "Recordatoris enviats:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:832
 #, fuzzy
