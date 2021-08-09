@@ -2,18 +2,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # HelaBasa <R45XvezA@protonmail.ch>, 2021.
+# Theekshana Fernando <rtheekshanafernando@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-08-10 16:32+0000\n"
+"Last-Translator: Theekshana Fernando <rtheekshanafernando@gmail.com>\n"
+"Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
+"si/>\n"
 "Language: si\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.8-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -21,51 +25,51 @@ msgstr ""
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
-msgstr ""
+msgstr "පිටුව හමු නොවීය"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
-msgstr ""
+msgstr "ගණුදෙනුව"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1144
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:111
 msgid "modification"
-msgstr ""
+msgstr "වෙනස් කිරීම"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1146
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
 msgid "creation"
-msgstr ""
+msgstr "නිර්මාණය"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:266
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:301
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "ගණුදෙනුව සාර්ථකව සටහන් කර ගත හැකි විය"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:357
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "වර්තමාන ගනුදෙනුවට දායකත්වය සාර්ථකව සම්බන්ධ කර ඇත"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:389
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "ගනුදෙනුවෙන් දායකත්වය වෙන් කිරීම කළ නොහැක"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:394
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "දායකත්‍වය වර්තමාන ගනුදෙනුවෙන් සාර්ථකව ඉවත් වී ඇත"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:116
 msgid "Payment types management"
-msgstr ""
+msgstr "ගෙවීමේ ක්‍රම කළමනාකරණය"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:157
 msgid "Edit payment type"
