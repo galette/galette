@@ -25,13 +25,14 @@
 # Lusuho <jevpsychox@gmail.com>, 2021.
 # Dario Briones <dariobriones101481@gmail.com>, 2021.
 # felipe <felipecandia@live.com>, 2021.
+# noelia <zizizhuji1@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-06-15 16:32+0000\n"
-"Last-Translator: felipe <felipecandia@live.com>\n"
+"PO-Revision-Date: 2021-08-22 22:33+0000\n"
+"Last-Translator: noelia <zizizhuji1@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -39,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.8.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2230,7 +2231,7 @@ msgstr "- ¡Fecha de cumpleaños debe estar en el pasado!"
 
 #: ../lib/Galette/Entity/Adherent.php:1233
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr ""
+msgstr "¡Los miembros deben tener menos de 200 años (ahora % años)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1254
 #: ../lib/Galette/Entity/Transaction.php:301
@@ -2243,7 +2244,7 @@ msgstr "- ¡Formato de fecha incorrecto (%date_format) para %field!"
 
 #: ../lib/Galette/Entity/Adherent.php:1272
 msgid "- Non-valid E-Mail address!"
-msgstr ""
+msgstr "- ¡La dirección de correo no es válida!"
 
 #: ../lib/Galette/Entity/Adherent.php:1289
 msgid "- This E-Mail address is already used by another member!"
@@ -2273,7 +2274,7 @@ msgstr "- ¡Este nombre de usuario ya se utiliza; elija otro!"
 
 #: ../lib/Galette/Entity/Adherent.php:1360
 msgid "Password misrepeated: "
-msgstr ""
+msgstr "La contraseña no se ha repetido igual: "
 
 #: ../lib/Galette/Entity/Adherent.php:1394
 msgid "Status #%id does not exists in database."
@@ -2284,8 +2285,9 @@ msgid "An error has occurred while looking if status does exists."
 msgstr "Ha ocurrido un error al buscar si el estado existe."
 
 #: ../lib/Galette/Entity/Adherent.php:1410
+#, fuzzy
 msgid "Gender %gender does not exists!"
-msgstr ""
+msgstr "¡El género %gender no existe!"
 
 #: ../lib/Galette/Entity/Adherent.php:1514
 msgid "Self_subscription as a member: "
@@ -2343,7 +2345,7 @@ msgstr "- ¡El monto debe ser un número entero!"
 
 #: ../lib/Galette/Entity/Transaction.php:319
 msgid "- Empty transaction description!"
-msgstr ""
+msgstr "- ¡La descripción de la transacción está vacía!"
 
 #: ../lib/Galette/Entity/Transaction.php:321
 msgid "- Transaction description must be 150 characters long maximum."
@@ -2377,7 +2379,7 @@ msgstr "tipo de contribución"
 #: ../lib/Galette/Entity/DynamicsTrait.php:158
 #, php-format
 msgid "Missing required field %field"
-msgstr ""
+msgstr "Falta el campo requerido %field"
 
 #: ../lib/Galette/Entity/Contribution.php:121
 msgid "Contributor:"
@@ -2429,19 +2431,19 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:612
 msgid "Contribution added"
-msgstr ""
+msgstr "La contribución se ha añadido"
 
 #: ../lib/Galette/Entity/Contribution.php:618
 msgid "Fail to add new contribution."
-msgstr ""
+msgstr "Ha ocurrido un error al añadir la contribución."
 
 #: ../lib/Galette/Entity/Contribution.php:635
 msgid "Contribution updated"
-msgstr ""
+msgstr "La contribución se ha actualizado"
 
 #: ../lib/Galette/Entity/Contribution.php:1049
 msgid "Script output"
-msgstr ""
+msgstr "Salida del script"
 
 #: ../lib/Galette/Entity/Contribution.php:1077
 msgid "Membership"
@@ -2449,7 +2451,7 @@ msgstr "Membresía"
 
 #: ../lib/Galette/Entity/Entitled.php:332
 msgid "ID must be an integer!"
-msgstr ""
+msgstr "¡El ID debe ser un número entero!"
 
 #: ../lib/Galette/Entity/Entitled.php:344
 msgid "Label does not exist"
@@ -2461,15 +2463,15 @@ msgstr "No se puede eliminar esta etiqueta: aún se utiliza"
 
 #: ../lib/Galette/Entity/Title.php:184
 msgid "You cannot delete Mr. or Mrs. titles!"
-msgstr ""
+msgstr "¡No puedes borrar los títulos de Sr. o Sra!"
 
 #: ../lib/Galette/Entity/Texts.php:119
 msgid "Insert a carriage return"
-msgstr ""
+msgstr "Introduce un retorno de carro"
 
 #: ../lib/Galette/Entity/Texts.php:123
 msgid "Insert a new blank line"
-msgstr ""
+msgstr "Introduce una nueva línea"
 
 #: ../lib/Galette/Entity/Texts.php:127
 msgid "Link validity"
@@ -2485,21 +2487,21 @@ msgstr "Enlace directo para descargar factura/recibo"
 
 #: ../lib/Galette/Entity/Texts.php:142
 msgid "Galette's change password URI"
-msgstr ""
+msgstr "URL de Galette para el cambio de contraseña"
 
 #: ../lib/Galette/Entity/Texts.php:633
 msgid "Mail specific"
-msgstr ""
+msgstr "Ajustes del correo"
 
 #: ../lib/Galette/Entity/PdfModel.php:293
 #, php-format
 msgid "%field should be less than %chars characters long."
-msgstr ""
+msgstr "%field debe tener menos de %chars caracteres."
 
 #: ../lib/Galette/Entity/PdfModel.php:303
 #, php-format
 msgid "%field should not be empty!"
-msgstr ""
+msgstr "¡El campo %field no puede estar vacío!"
 
 #: ../lib/Galette/Entity/PdfModel.php:404
 msgid "Unknown type %type!"
@@ -2507,7 +2509,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:422
 msgid "Subtitle"
-msgstr ""
+msgstr "Subtítulo"
 
 #: ../lib/Galette/Entity/PdfModel.php:437
 msgid "header and footer should not be empty!"
@@ -2515,15 +2517,15 @@ msgstr "¡la cabecera y el pie de página no pueden quedar vacíos!"
 
 #: ../lib/Galette/Entity/PdfModel.php:441
 msgid "body should not be empty!"
-msgstr ""
+msgstr "¡El cuerpo no puede estar vacío!"
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 msgid "You cannot delete system payment types!"
-msgstr ""
+msgstr "¡No puedes borrar los tipos de pago del sistema!"
 
 #: ../lib/Galette/Entity/PaymentType.php:281
 msgid "Other"
-msgstr ""
+msgstr "Otros"
 
 #: ../lib/Galette/Entity/PaymentType.php:282
 msgid "Cash"
@@ -2539,7 +2541,7 @@ msgstr "Cheque"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Transfer"
-msgstr ""
+msgstr "Transferir"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
@@ -2547,11 +2549,11 @@ msgstr "Paypal"
 
 #: ../lib/Galette/Entity/Status.php:119
 msgid "status"
-msgstr ""
+msgstr "Estado"
 
 #: ../lib/Galette/Entity/Status.php:132
 msgid "You cannot delete default status!"
-msgstr ""
+msgstr "¡No puedes borrar el estado por defecto!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:154
 msgid "Form is mandatory!"
@@ -2560,7 +2562,7 @@ msgstr "¡El formulario es obligatorio!"
 #: ../lib/Galette/Entity/SavedSearch.php:346
 #, php-format
 msgid "Unknown form %form!"
-msgstr ""
+msgstr "¡Formulario desconocido %form!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:361
 msgid "Name cannot be empty!"
@@ -2572,7 +2574,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:396
 msgid "Unable to detach group :("
-msgstr ""
+msgstr "No se ha podido separar el grupo :("
 
 #: ../lib/Galette/Entity/Group.php:433
 msgid "Group added"
