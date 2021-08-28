@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # ibrahimyzr <ibrahimyzr@hotmail.com>, 2021.
+# Ahmet Aylin Öztürk <ahmetaylinozturk@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-07-17 08:05+0000\n"
-"Last-Translator: ibrahimyzr <ibrahimyzr@hotmail.com>\n"
+"PO-Revision-Date: 2021-08-29 12:32+0000\n"
+"Last-Translator: Ahmet Aylin Öztürk <ahmetaylinozturk@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -16,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.2-dev\n"
+"X-Generator: Weblate 4.8.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
-msgstr ""
+msgstr "Galette hatası"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
@@ -51,20 +52,21 @@ msgid "Transaction has been successfully stored"
 msgstr "İşlem başarıyla kaydedildi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:357
+#, fuzzy
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "Katılım işleme eklemlenemedi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "Katılım başarılı bir şekilde işleme eklemlendi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:389
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "Katılım işlemden ayrıştırılamadı"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:394
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "Katılım başarılı bir şekilde işlemden ayrıştırıldı"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:116
 msgid "Payment types management"
@@ -77,31 +79,31 @@ msgstr "Ödeme türünü düzenle"
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:209
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "Ödeme tipi '%s' eklenemedi!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:218
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr ""
+msgstr "Ödeme tipi '%s' değiştirilemedi!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:231
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "Ödeme tipi '%s' başarıyla eklendi."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:240
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "Ödeme tpi '%s' başarıyla değiştirildi."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:303
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "%1$s ödeme tipini çıkar"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:122
 msgid "Group name is missing!"
-msgstr ""
+msgstr "Grup adı eksik!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:185
 msgid "Groups"
@@ -113,16 +115,18 @@ msgstr "`%groupname` grubu başarıyla kaydedildi."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:372
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Gurubu kaydederken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:463
 #, php-format
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "%1$s gurubunu kaldır"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:486
+#, fuzzy
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr ""
+"Gurup boş değil, bu yüzden silinemez. Bunun yerine kademeli silmeyi kullanın."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:102
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:106
@@ -130,19 +134,21 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:260
 msgid "Trying to load mailing while email is disabled in preferences."
 msgstr ""
+"Email seçeneklerde etkin olmadığı halde mail özelliği yüklenmeye çalışılıyor."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:150
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:283
+#, fuzzy
 msgid "No member selected for mailing!"
-msgstr ""
+msgstr "Mailleşmek için herhangi bir üye seçilmedi!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:205
 msgid "Mailing"
-msgstr ""
+msgstr "Mailleşme"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:302
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "İleti için lütfen bir nesne tuşlayın."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:308
 msgid "Please enter a message."
@@ -150,74 +156,75 @@ msgstr "Lütfen bir mesaj girin."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:405
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "Mailleşme başarıyla gönderildi!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:428
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "Mailleşme başarıyla kaydedildi."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:510
 msgid "Mailings"
-msgstr ""
+msgstr "Mailleşmeler"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:658
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "#%1$s mailleşmesini kaldır"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
+#, fuzzy
 msgid "Mailing preview"
-msgstr ""
+msgstr "Mailleşme önizlemesi"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:75
 msgid "Add field"
-msgstr ""
+msgstr "Alan ekle"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:130
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Değişken alan eklerken bir hata oluştu :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:144
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:367
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "Değişken alan başarıyla eklendi!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:229
 msgid "Dynamic fields configuration"
-msgstr ""
+msgstr "Değişken alan ayarı"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:292
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "Alan bilgisine ulaşılamadı."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:301
 msgid "Edit field"
-msgstr ""
+msgstr "Alanı değiştir"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:353
 msgid "An error occurred editing dynamic field :("
-msgstr ""
+msgstr "Değişken alanı düzenlerken hata oluştu :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:452
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "İstenen alan bulunamadı!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:463
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "%1$s değişken alanını çıkar"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:508
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "Alan başarıyla taşındı"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:513
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "Alanı taışrken bir hata oluştu :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:155
 msgid "Subscription"
-msgstr ""
+msgstr "Üyelik"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:249
 #: ../lib/Galette/Controllers/Crud/MembersController.php:455
@@ -226,324 +233,327 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:288
 #: ../lib/Galette/Middleware/Authenticate.php:166
 msgid "You do not have permission for requested URL."
-msgstr ""
+msgstr "Ulaşılmaya çalışılan URL için yetkiniz bulunmamaktadır."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:264
 msgid "No member #%id."
-msgstr ""
+msgstr "Üye numaraı #%id bulunamadı."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:284
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1142
 msgid "Member Profile"
-msgstr ""
+msgstr "Üye Profili"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
 msgid "Members list"
-msgstr ""
+msgstr "Üye listesi"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#, fuzzy
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Trombinoscope"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:509
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "Dosya bulunamadı veya okunamıyor :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:573
 msgid "Members management"
-msgstr ""
+msgstr "Üye yönetimi"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:794
 msgid "Status label"
-msgstr ""
+msgstr "Durum etiketi"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:834
 msgid "Advanced search"
-msgstr ""
+msgstr "Gelişmiş arama"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1053
 #: ../lib/Galette/Controllers/PdfController.php:154
 #: ../lib/Galette/Controllers/PdfController.php:235
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "Bir üye seçilmedi, lütfen en azından birini seçiniz."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1261
 #, php-format
 msgid "Mass change %count members"
-msgstr ""
+msgstr "Toplu güncelleme %count üye"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1291
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1362
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "Toplu güncelleme teyit edilmedi!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1332
 #, php-format
 msgid "Review mass change %count members"
-msgstr ""
+msgstr "%count üye için toplu güncellemeyi gözden geçirin"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1391
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Yapılacak bir eylem bulunamadı!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1419
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1656
 msgid "An error occurred while storing the member."
-msgstr ""
+msgstr "Üyeyi kaydederken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1431
 msgid "Something went wront during mass edition!"
-msgstr ""
+msgstr "Toplu güncelleme yaparken beklenmedik birşeyler oldu!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1438
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr ""
+msgstr "%count üye başarıyla güncellendi!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Geçersiz captcha"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1615
 msgid "Your account has been created!"
-msgstr ""
+msgstr "Hesabınız oluşturuldu!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1620
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
+msgstr "E-mail gönderildi, gelen kutusunu kontrol ediniz."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1623
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Yeni üye başarıyla eklandi."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1626
 msgid "Member account has been modified."
-msgstr ""
+msgstr "Üye hesabı güncellendi."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1640
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Üyeyi gruplarına eklerken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1652
 msgid "An error occurred adding member to its groups as manager."
-msgstr ""
+msgstr "Üyeyi gruplarına yönetici olarak eklerken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1668
 #: ../lib/Galette/Controllers/GaletteController.php:310
 #: ../lib/Galette/Controllers/GaletteController.php:342
 msgid "Delete failed"
-msgstr ""
+msgstr "Silme başarısız"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1837
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "%1$s üyeyi çıkar"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1846
 #, php-format
 msgid "You are about to remove %count members."
-msgstr ""
+msgstr "%count üyeyi çıkarmak üzeresiniz."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:111
 msgid "Titles management"
-msgstr ""
+msgstr "Başlık yönetimi"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:152
 msgid "Edit title"
-msgstr ""
+msgstr "Başlığı değiştir"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:205
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "Başlık '%s' eklenemedi!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "Başlık '%s' güncellenemedi!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "Başlık '%s' başarıyla eklendi."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:236
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "Başlık '%s' başarıyla güncellendi."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:287
 #, php-format
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "%1$s başlığını çıkar"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:120
 msgid "User statuses"
-msgstr ""
+msgstr "Kullanıcı durumları"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:126
 msgid "Contribution types"
-msgstr ""
+msgstr "Katılım türü"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:191
 msgid "Edit status"
-msgstr ""
+msgstr "Durumu Güncelle"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:197
 msgid "Edit contribution type"
-msgstr ""
+msgstr "Katılım türünü güncelle"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type has not been added :("
-msgstr ""
+msgstr "%type türü eklenemedi :("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type #%id has not been updated"
-msgstr ""
+msgstr "%type #%id güncellenemedi"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type has been successfully added!"
-msgstr ""
+msgstr "%type türü başarıyla eklendi!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type #%id has been successfully updated!"
-msgstr ""
+msgstr "%type #%id başarıyla güncellendi!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:353
 msgid "Remove %type '%label'"
-msgstr ""
+msgstr "%type türündeki '%label' başlığını çıkar"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:105
 msgid "Membership fee"
-msgstr ""
+msgstr "Üyelik ücreti"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
 #: ../lib/Galette/Entity/Contribution.php:1079
 msgid "Donation"
-msgstr ""
+msgstr "Bağış"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
 msgid "Contributions management"
-msgstr ""
+msgstr "Katılım yönetimi"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
 msgid "Transactions management"
-msgstr ""
+msgstr "İşlem yönetimi"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:427
 msgid "- Unknown payment type!"
-msgstr ""
+msgstr "- Bilinmeyen ödeme türü!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:476
 #: ../lib/Galette/Controllers/PdfController.php:449
 #: ../lib/Galette/Controllers/PdfController.php:713
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "#%id numaralı katılım yüklenemedi!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:581
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "Katılım başarıyla kaydedildi"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:585
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "Katılımı kaydederken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
 #, php-format
 msgid "Remove %1$s %2$s"
-msgstr ""
+msgstr "%1$s %2$s kaldır"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 msgid "contributions"
-msgstr ""
+msgstr "katılımlar"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 msgid "transactions"
-msgstr ""
+msgstr "işlemler"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:696
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "%1$s #%2$s kaldır"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
-msgstr ""
+msgstr "katılım"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
 msgid "transaction"
-msgstr ""
+msgstr "işlem"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:124
 msgid "An SQL error has occurred while storing search."
-msgstr ""
+msgstr "Aramayı kaydederken SQL hatası oluştu."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:129
 msgid "This search is already saved."
-msgstr ""
+msgstr "Bu arama zaten kayıtlı."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:135
 msgid "Search has been saved."
-msgstr ""
+msgstr "Arama kaydedildi."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
 msgid "Saved searches"
-msgstr ""
+msgstr "Kayıtlı aramalar"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:296
 msgid "Remove saved search"
-msgstr ""
+msgstr "Kayıtlı aramayı kaldır"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:303
 #, php-format
 msgid "You are about to remove %count searches."
-msgstr ""
+msgstr "%count tane aramayı kaldırmak üzeresiniz."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:352
 msgid "Saved search loaded"
-msgstr ""
+msgstr "Kayıtlı aramalar yüklendi"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:357
 msgid "An SQL error has occurred while loading search."
-msgstr ""
+msgstr "Aramayı yüklerken SQL hatası oluştu."
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
 msgid "System information"
-msgstr ""
+msgstr "Sistem bilgisi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:128
 msgid "Dashboard"
-msgstr ""
+msgstr "Yönetim Paneli"
 
 #: ../lib/Galette/Controllers/GaletteController.php:233
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: ../lib/Galette/Controllers/GaletteController.php:248
 #: ../lib/Galette/Filters/MembersList.php:306
 msgid "All accounts"
-msgstr ""
+msgstr "Tüm hesaplar"
 
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:307
 msgid "Active accounts"
-msgstr ""
+msgstr "Aktif hesaplar"
 
 #: ../lib/Galette/Controllers/GaletteController.php:250
 #: ../lib/Galette/Filters/MembersList.php:308
 msgid "Inactive accounts"
-msgstr ""
+msgstr "Inaktif hesaplar"
 
 #: ../lib/Galette/Controllers/GaletteController.php:275
 msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
+"Seçenekleri kaydederken SQL hatası oluştu. Lütfen yeniden deneyin ve sorun "
+"devam ediyorsa sistem yöneticisiyle iletişim kurun."
 
 #: ../lib/Galette/Controllers/GaletteController.php:279
 msgid "Preferences has been saved."
-msgstr ""
+msgstr "Seçenekler kaydedildi."
 
 #: ../lib/Galette/Controllers/GaletteController.php:392
 msgid ""
