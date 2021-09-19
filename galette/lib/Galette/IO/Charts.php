@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.4dev - 2013-02-02
@@ -52,7 +52,7 @@ use Galette\Repository\Members;
  * @name      Charts
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.4dev - 2013-02-02
@@ -168,7 +168,9 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where(array('bool_exempt_adh' => new Expression('true')));
+        )
+            ->where(array('activite_adh' => new Expression('true')))
+            ->where(array('bool_exempt_adh' => new Expression('true')));
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -183,7 +185,10 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where('date_echeance IS NULL');
+        )
+            ->where(array('activite_adh' => new Expression('true')))
+            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where('date_echeance IS NULL');
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -204,6 +209,8 @@ class Charts
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
         )
+            ->where(array('activite_adh' => new Expression('true')))
+            ->where(array('bool_exempt_adh' => new Expression('false')))
             ->where->lessThanOrEqualTo('date_echeance', $soon_date->format('Y-m-d'))
             ->where->greaterThanOrEqualTo('date_echeance', $now->format('Y-m-d'));
 
@@ -220,7 +227,10 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where->greaterThan('date_echeance', $now->format('Y-m-d'));
+        )
+            ->where(array('activite_adh' => new Expression('true')))
+            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where->greaterThan('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -235,7 +245,10 @@ class Charts
             array(
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
             )
-        )->where->lessThan('date_echeance', $now->format('Y-m-d'));
+        )
+            ->where(array('activite_adh' => new Expression('true')))
+            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where->lessThan('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
         $result = $results->current();
