@@ -1091,10 +1091,10 @@ class Members
                         $now = new \DateTime();
                         $duedate = new \DateTime();
                         $duedate->modify('+1 month');
-                        $select->where->greaterThanOrEqualTo(
+                        $select->where->greaterThan(
                             'date_echeance',
                             $now->format('Y-m-d')
-                        )->lessThan(
+                        )->lessThanOrEqualTo(
                             'date_echeance',
                             $duedate->format('Y-m-d')
                         );

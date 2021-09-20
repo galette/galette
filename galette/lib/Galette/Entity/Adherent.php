@@ -765,6 +765,9 @@ class Adherent
     public function getDues()
     {
         $ret = '';
+        $date_now = new \DateTime();
+        $ddate = new \DateTime($this->_due_date);
+        $date_diff = $date_now->diff($ddate);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($this->_due_date == '') {
@@ -784,10 +787,13 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         } elseif ($this->_days_remaining == 0) {
-            $ret = _T("Last day!");
+            if ($date_diff->invert == 0) {
+                $ret = _T("Last day!");
+            } else {
+                $ret = _T("Late since today!");
+            }
         } elseif ($this->_days_remaining < 0) {
             $patterns = array('/%days/', '/%date/');
-            $ddate = new \DateTime($this->_due_date);
             $replace = array(
                 $this->_days_remaining * -1,
                 $ddate->format(__("Y-m-d"))
@@ -803,7 +809,6 @@ class Adherent
             }
         } else {
             $patterns = array('/%days/', '/%date/');
-            $ddate = new \DateTime($this->_due_date);
             $replace = array(
                 $this->_days_remaining,
                 $ddate->format(__("Y-m-d"))
