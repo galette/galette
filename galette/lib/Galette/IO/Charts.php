@@ -132,6 +132,7 @@ class Charts
             'a.' . Status::PK . '=b.' . Status::PK,
             array()
         )
+            ->where(array('b.activite_adh' => new Expression('true')))
             ->order('a.priorite_statut')
             ->group('a.' . Status::PK);
 
