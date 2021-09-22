@@ -147,7 +147,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {elseif $element->field_id eq 'pref_lang'}
             {assign var="value" value=$pref_lang}
         {elseif $element->field_id eq 'adresse_adh'}
-            {assign var="value" value=$member->saddress|escape|nl2br}
+            {assign var="value" value=$member->saddress|nl2br}
         {elseif $element->field_id eq 'bool_display_info'}
             {assign var="value" value=$member->sappears_in_list}
         {elseif $element->field_id eq 'activite_adh'}

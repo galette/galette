@@ -245,7 +245,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $column->field_id eq 'pref_lang'}
                 {assign var="value" value=$i18n->getNameFromId($member->language)}
             {elseif $column->field_id eq 'adresse_adh'}
-                {assign var="value" value=$member->saddress|escape|nl2br}
+                {assign var="value" value=$member->saddress|nl2br}
             {elseif $column->field_id eq 'bool_display_info'}
                 {assign var="value" value=$member->sappears_in_list}
             {elseif $column->field_id eq 'activite_adh'}
