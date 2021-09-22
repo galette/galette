@@ -55,7 +55,7 @@
                     {/if}
                     <label for="attachment" class="bline tooltip" title="{_T string="Select attachments"}">{_T string="Add attachment"}</label>
                     <span class="tip">{_T string="Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."}</span>
-                    <input type="file" name="files[]" name="attachment" id="attachment" multiple="multiple">
+                    <input type="file" name="attachment[]" id="attachment" multiple="multiple">
                 </div>
             </section>
 

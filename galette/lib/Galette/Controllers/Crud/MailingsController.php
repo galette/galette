@@ -333,15 +333,15 @@ class MailingsController extends CrudController
                 $mailing->html = (isset($post['mailing_html'])) ? true : false;
 
                 //handle attachments
-                if (isset($_FILES['files'])) {
-                    $cnt_files = count($_FILES['files']['name']);
+                if (isset($_FILES['attachment'])) {
+                    $cnt_files = count($_FILES['attachment']['name']);
                     for ($i = 0; $i < $cnt_files; $i++) {
-                        if ($_FILES['files']['error'][$i] === UPLOAD_ERR_OK) {
-                            if ($_FILES['files']['tmp_name'][$i] != '') {
-                                if (is_uploaded_file($_FILES['files']['tmp_name'][$i])) {
+                        if ($_FILES['attachment']['error'][$i] === UPLOAD_ERR_OK) {
+                            if ($_FILES['attachment']['tmp_name'][$i] != '') {
+                                if (is_uploaded_file($_FILES['attachment']['tmp_name'][$i])) {
                                     $da_file = array();
-                                    foreach (array_keys($_FILES['files']) as $key) {
-                                        $da_file[$key] = $_FILES['files'][$key][$i];
+                                    foreach (array_keys($_FILES['attachment']) as $key) {
+                                        $da_file[$key] = $_FILES['attachment'][$key][$i];
                                     }
                                     $res = $mailing->store($da_file);
                                     if ($res < 0) {
@@ -350,13 +350,13 @@ class MailingsController extends CrudController
                                     }
                                 }
                             }
-                        } elseif ($_FILES['files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                        } elseif ($_FILES['attachment']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
                             Analog::log(
-                                $this->logo->getPhpErrorMessage($_FILES['files']['error'][$i]),
+                                $this->logo->getPhpErrorMessage($_FILES['attachment']['error'][$i]),
                                 Analog::WARNING
                             );
                             $error_detected[] = $this->logo->getPhpErrorMessage(
-                                $_FILES['files']['error'][$i]
+                                $_FILES['attachment']['error'][$i]
                             );
                         }
                     }
