@@ -43,6 +43,9 @@ var main_assets = [
         'src': './node_modules/summernote/dist/font/*',
         'dest': '/webfonts/'
     }, {
+        'src': './node_modules/summernote/dist/lang/*.min.js',
+        'dest': '/js/lang/'
+    }, {
         'src': './node_modules/jquery-ui-dist/images/*',
         'dest': '/images/'
     }, {

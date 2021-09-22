@@ -37,8 +37,7 @@
         <script type="text/javascript" src="{base_url}/{$scripts_dir}mass_changes.js"></script>
     {/if}
     {if $html_editor}
-        <!--<script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>-->
+        <script src="{base_url}/assets/js/lang/summernote-{$i18n->getID()|replace:'_':'-'}.min.js"></script>
         <script language="javascript">
             function activateMailingEditor(id) {
                 if(!$('#mailing_html').attr('checked')){
@@ -50,6 +49,7 @@
                 $('#summernote_toggler').html('<a href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
 
                 $('#mailing_corps').summernote({
+                    lang: '{$i18n->getID()|replace:'_':'-'}',
                     height: 240,
                     toolbar: [
                         ['style', ['style']],
