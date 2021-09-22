@@ -156,9 +156,12 @@ class Reminders extends GaletteTestCase
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is up to date, no reminder to send
+        //member is up to date, but on last day, one impending reminder to send
         $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->isIdenticalTo([]);
+        $this->array($reminders->getList($this->zdb))->hasSize(1);
+        $this->array($lreminders->getList($this->zdb))->hasSize(0);
+        $this->array($ireminders->getList($this->zdb))->hasSize(1);
+
 
         //create contribution, just impending
         $date_begin = clone $now;
