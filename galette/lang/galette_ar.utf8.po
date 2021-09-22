@@ -8,12 +8,13 @@
 # Woodyx <shiposhouyou@gmail.com>, 2020.
 # Mustafa Wahhudi <mustafawahhudi@gmail.com>, 2021.
 # Moumen Harmoush <momen.harmoush@gmail.com>, 2021.
+# mustapha nhaily <nhaily@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-07-13 14:33+0000\n"
-"Last-Translator: Moumen Harmoush <momen.harmoush@gmail.com>\n"
+"PO-Revision-Date: 2021-09-23 12:35+0000\n"
+"Last-Translator: mustapha nhaily <nhaily@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -21,11 +22,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.7.2-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
-msgstr ""
+msgstr "خطأ في النظام"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
@@ -57,7 +58,7 @@ msgstr "تم حفظ التحويل بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:357
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "لم نتمكن من تسجيل المساهمة"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
@@ -123,7 +124,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:463
 #, php-format
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "حذف المجموعات%1$"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:486
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
