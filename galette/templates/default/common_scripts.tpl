@@ -62,10 +62,7 @@
                         'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
                     ]
                 });
-                $('#mailing_corps').summernote({
-                    codeviewFilter: true,
-                    codeviewIframeFilter: false
-                });
+                $('#mailing_corps').summernote('focus');
             }
             function deactivateMailingEditor(id) {
                 $('#mailing_corps').summernote('destroy');
@@ -90,10 +87,7 @@
                         'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
                     ]
                 });
-                $('#mailing_corps').summernote({
-                    codeviewFilter: true,
-                    codeviewIframeFilter: false
-                });
+                $('#mailing_corps').summernote('focus');
             });
         {/if}
         </script>
