@@ -19,6 +19,7 @@ var main_styles = [
     './node_modules/jquery-ui-dist/jquery-ui.css',
     './galette/webroot/themes/default/jquery-ui/jquery-ui-1.12.1.custom.css',
     './node_modules/selectize/dist/css/selectize.default.css',
+    './node_modules/summernote/dist/summernote-lite.min.css',
 ];
 
 var main_scripts = [
@@ -30,12 +31,16 @@ var main_scripts = [
     './node_modules/sifter/sifter.js',
     './node_modules/selectize/dist/js/selectize.min.js',
     './galette/webroot/js/jquery/jquery.bgFade.js',
+    './node_modules/summernote/dist/summernote-lite.min.js',
     './galette/webroot/js/common.js',
 ];
 
 var main_assets = [
     {
         'src': './node_modules/@fortawesome/fontawesome-free/webfonts/*',
+        'dest': '/webfonts/'
+    }, {
+        'src': './node_modules/summernote/dist/font/*',
         'dest': '/webfonts/'
     }, {
         'src': './node_modules/jquery-ui-dist/images/*',
@@ -76,6 +81,7 @@ function styles() {
     .pipe(replace('jquery-ui/images/', '../images/'))
     .pipe(replace('("images/ui', '("../images/ui')) //
     .pipe(replace('url(images/', 'url(../images/'))
+    .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
     .pipe(concat('galette-main.bundle.min.css'))
     .pipe(gulp.dest(_dir));

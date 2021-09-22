@@ -37,24 +37,63 @@
         <script type="text/javascript" src="{base_url}/{$scripts_dir}mass_changes.js"></script>
     {/if}
     {if $html_editor}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
+        <!--<script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>-->
         <script language="javascript">
-            function toggleMailingEditor(id) {
+            function activateMailingEditor(id) {
                 if(!$('#mailing_html').attr('checked')){
                     $('#mailing_html').attr('checked', true);
                 }
 
                 $('input#html_editor_active').attr('value', '1');
-                {* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
-                $('#toggle_editor').remove();
-                $('#mailing_corps').markItUp(galetteSettings);
+                $('#activate_editor').remove();
+                $('#summernote_toggler').html('<a href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
+
+                $('#mailing_corps').summernote({
+                    height: 240,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['insert', ['link', 'picture']],
+                        ['view', ['codeview', 'help']]
+                    ],
+                    styleTags: [
+                        'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+                    ]
+                });
+                $('#mailing_corps').summernote({
+                    codeviewFilter: true,
+                    codeviewIframeFilter: false
+                });
+            }
+            function deactivateMailingEditor(id) {
+                $('#mailing_corps').summernote('destroy');
+                $('#deactivate_editor').remove();
+                $('#summernote_toggler').html('<a href="javascript:activateMailingEditor(\'mailing_corps\');" id="activate_editor">{_T string="Activate HTML editor"}</a>');
             }
         {if $html_editor_active eq 1}
             $(function(){
-                {* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
-                $('#toggle_editor').remove();
-                $('#mailing_corps').markItUp(galetteSettings);
+                $('#activate_editor').remove();
+                $('#summernote_toggler').html('<a href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
+
+                $('#mailing_corps').summernote({
+                    height: 240,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['insert', ['link', 'picture']],
+                        ['view', ['codeview', 'help']]
+                    ],
+                    styleTags: [
+                        'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+                    ]
+                });
+                $('#mailing_corps').summernote({
+                    codeviewFilter: true,
+                    codeviewIframeFilter: false
+                });
             });
         {/if}
         </script>
