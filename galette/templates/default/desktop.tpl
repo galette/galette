@@ -80,10 +80,13 @@
             $(function() {
                 $('#show_dashboard').change(function(){
                     var _checked = $(this).is(':checked');
-                    $.cookie(
+                    Cookies.set(
                         'show_galette_dashboard',
                         (_checked ? 1 : 0),
-                        { expires: 365 }
+                        {
+                            expires: 365,
+                            path: '/'
+                        }
                     );
                     if ( !_checked ) {
                         var _url = '{path_for name="members"}';
@@ -94,10 +97,13 @@
     {if not $hide_telemetry}
                 $('#hide_telemetry').change(function(){
                     var _checked = $(this).is(':checked');
-                    $.cookie(
+                    Cookies.set(
                         'hide_galette_telemetry',
                         (_checked ? 1 : 0),
-                        { expires: 365 }
+                        {
+                            expires: 365,
+                            path: '/'
+                        }
                     );
                     var _url = '{path_for name="dashboard"}';
                     window.location.replace(_url);
