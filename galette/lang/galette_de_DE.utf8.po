@@ -22,13 +22,14 @@
 # Ricardo Santos <buehnenarbeiter@gmail.com>, 2021.
 # Johannes Keyser <joke@fsfe.org>, 2021.
 # G-Manu Studios <robbankz@yahoo.de>, 2021.
+# CryptKid <CryptKiddie@chaospott.de>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-07-30 02:33+0000\n"
-"Last-Translator: G-Manu Studios <robbankz@yahoo.de>\n"
+"PO-Revision-Date: 2021-09-24 05:09+0000\n"
+"Last-Translator: CryptKid <CryptKiddie@chaospott.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.2-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -6862,7 +6863,7 @@ msgstr "Fußzeile"
 
 #: ../templates/default/gestion_pdf_content.tpl:24
 msgid "Body"
-msgstr "Körper"
+msgstr "Karosserie"
 
 #: ../templates/default/gestion_pdf_content.tpl:29
 msgid "CSS styles"
