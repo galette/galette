@@ -1,6 +1,15 @@
 Changes
 -------
 
+0.9.5 -> 0.9.5.1
+
+- Replace Markitup with Summernote for HTML emails
+- Fix address variable in template
+- Fix impending reminders
+- Fix close expiries
+- Adjust members by status charts count
+- Fix overlapping menu on mobile
+
 0.9.4.2 -> 0.9.5
 
 - Fix CVE-2021-21319
