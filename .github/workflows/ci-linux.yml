@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '7.3', '7.4', '8.0' ]
+        php-versions: [ '7.3', '7.4', '8.0', '8.1' ]
         coverage: ['none']
         db-image: ['mysql:5.7', 'mysql:8.0', 'mariadb:10.2', 'mariadb:10.6', 'postgres:10', 'postgres:14']
         include:
