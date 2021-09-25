@@ -222,7 +222,7 @@ class ContribListener implements ListenerProviderInterface
                     $this->router->pathFor('directlink', ['hash' => $hash]);
             }
         }
-        $texts->setContribLink($link_card);
+        $texts->setContribLink($link_pdf);
 
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
