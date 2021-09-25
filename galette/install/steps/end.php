@@ -48,7 +48,6 @@ if ($install->isUpgrade()) {
     echo _T("Galette has been successfully updated!");
 }
 ?></p>
-                <div id="errorbox"><?php echo _T("To secure the system, please delete the install directory"); ?></div>
                 <form action="<?php echo GALETTE_BASE_PATH; ?>" method="get">
                     <p id="btn_box">
                         <button type="submit"><?php echo _T("Homepage"); ?> <i class="fas fa-home"></i></button>
