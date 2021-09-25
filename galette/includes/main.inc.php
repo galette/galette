@@ -39,6 +39,10 @@ use Slim\Route;
 use Galette\Core\Login;
 use Analog\Analog;
 
+if (!defined('GLOB_BRACE')) {
+    define('GLOB_BRACE', 0);
+}
+
 $time_start = microtime(true);
 
 //define galette's root directory
