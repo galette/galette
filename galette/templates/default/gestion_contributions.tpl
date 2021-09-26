@@ -232,11 +232,25 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="End"}">{$contribution->end_date}</td>
     {if ($login->isAdmin() or $login->isStaff()) && !isset($member)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
-        {if $filters->filtre_cotis_adh eq ""}
-                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+        {if isset($member)}
+            {assign var="mname" value=$member->sname}
         {else}
-                        <a href="{path_for name="member" data=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+            {assign var="mname" value={memberName id=$mid}}
         {/if}
+        {if $filters->filtre_cotis_adh eq ""}
+                        <a
+                            href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}"
+                            title="{_T string="Show only '%name' contributions" pattern="/%name/" replace=$mname}"
+                        >
+                            <i class="fa fa-filter"></i>
+                        </a>
+        {/if}
+                        <a
+                            href="{path_for name="member" data=["id" => $mid]}"
+                            title="{_T string="Show '%name' card" pattern="/%name/" replace=$mname}"
+                        >
+                            {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
+                        </a>
                     </td>
     {/if}
                     <td class="{$cclass}" data-title="{_T string="Type"}">{$contribution->type->libelle}</td>
