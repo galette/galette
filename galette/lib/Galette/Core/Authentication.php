@@ -295,7 +295,12 @@ abstract class Authentication
     {
         $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
         if (isset($this->$name) && !in_array($name, $forbidden)) {
-            return $this->$name;
+            switch ($name) {
+                case 'id':
+                    return (int)$this->$name;
+                default:
+                    return $this->$name;
+            }
         } else {
             return false;
         }
