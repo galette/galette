@@ -285,6 +285,11 @@
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
+                    <label for="pref_bool_mailowner" class="bline tooltip">{_T string="Send email to members?"}</label>
+                    <span class="tip">{_T string="Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case."}</span>
+                    <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" value="1" {if $pref.pref_bool_mailowner eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailowner) and $required.pref_bool_mailowner eq 1} required="required"{/if}/>
+                </p>
+                <p>
                     <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap emails text?"}</label>
                     <span class="tip">{_T string="Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
                     <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {if $pref.pref_bool_wrap_mails eq 1}checked="checked"{/if}{if isset($required.pref_bool_wrap_mails) and $required.pref_bool_wrap_mails eq 1} required="required"{/if}/>

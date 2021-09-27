@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @category  Core
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -50,7 +50,7 @@ use Galette\Repository\Members;
  * @name      Preferences
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -74,6 +74,7 @@ use Galette\Repository\Members;
  * @property string $pref_email
  * @property string $pref_email_newadh
  * @property boolean $pref_bool_mailadh
+ * @property boolean $pref_bool_mailowner
  * @property boolean $pref_editor_enabled
  * @property integer $pref_mail_method Mail method, see GaletteMail::METHOD_*
  * @property string $pref_mail_smtp
@@ -202,6 +203,7 @@ class Preferences
         'pref_email'        =>    'mail@domain.com',
         'pref_email_newadh'    =>    'mail@domain.com',
         'pref_bool_mailadh'    =>    false,
+        'pref_bool_mailowner' => false,
         'pref_editor_enabled'    =>    false,
         'pref_mail_method'    =>    GaletteMail::METHOD_DISABLED,
         'pref_mail_smtp'    =>    '',

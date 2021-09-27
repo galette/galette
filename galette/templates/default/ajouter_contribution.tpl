@@ -160,7 +160,7 @@
     {if not $contribution->id and $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>
-                <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+                <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $preferences->pref_bool_mailowner || isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
                 <br/><span class="exemple">{_T string="Member will receive a notification by email, if he has an address."}</span>
             </p>
     {/if}
