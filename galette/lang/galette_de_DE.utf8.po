@@ -26,8 +26,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2021-04-25 09:14+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-28 17:57+0200\n"
 "PO-Revision-Date: 2021-09-28 16:03+0000\n"
 "Last-Translator: TwoB00m <qwertze@gmx.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -52,13 +52,13 @@ msgid "Transaction"
 msgstr "Transaktion"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1144
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1127
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:111
 msgid "modification"
 msgstr "Änderung"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1146
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1129
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
 msgid "creation"
 msgstr "Erstellung"
@@ -238,136 +238,136 @@ msgstr "Das Feld wurde erfolgreich verschoben"
 msgid "An error occurred moving field :("
 msgstr "Beim Verschieben des Feldes ist ein Fehler aufgetreten :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:155
+#: ../lib/Galette/Controllers/Crud/MembersController.php:156
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:249
-#: ../lib/Galette/Controllers/Crud/MembersController.php:455
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1103
+#: ../lib/Galette/Controllers/Crud/MembersController.php:250
+#: ../lib/Galette/Controllers/Crud/MembersController.php:456
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1086
 #: ../lib/Galette/Controllers/PdfController.php:120
 #: ../lib/Galette/Controllers/PdfController.php:288
 #: ../lib/Galette/Middleware/Authenticate.php:166
 msgid "You do not have permission for requested URL."
 msgstr "Du hast keine Berechtigung für die angeforderte URL."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:264
+#: ../lib/Galette/Controllers/Crud/MembersController.php:265
 msgid "No member #%id."
 msgstr "Kein Mitglied #%id."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:284
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1142
+#: ../lib/Galette/Controllers/Crud/MembersController.php:285
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1125
 msgid "Member Profile"
 msgstr "Mitgliedsprofil"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Members list"
 msgstr "Mitgliedsliste"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Trombinoscope"
 msgstr "Mitlgiederverzeichnis"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:509
+#: ../lib/Galette/Controllers/Crud/MembersController.php:510
 msgid "The file does not exists or cannot be read :("
 msgstr "Die Datei existiert nicht oder kann nicht gelesen werden :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:573
+#: ../lib/Galette/Controllers/Crud/MembersController.php:574
 msgid "Members management"
 msgstr "Mitgliedsverwaltung"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:794
+#: ../lib/Galette/Controllers/Crud/MembersController.php:777
 msgid "Status label"
 msgstr "Statusbezeichnung"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:834
+#: ../lib/Galette/Controllers/Crud/MembersController.php:817
 msgid "Advanced search"
 msgstr "Erweiterte Suche"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1053
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1036
 #: ../lib/Galette/Controllers/PdfController.php:154
 #: ../lib/Galette/Controllers/PdfController.php:235
 msgid "No member was selected, please check at least one name."
 msgstr "Kein Mitglied gewählt, bitte wählen Sie mindestens einen Namen."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1261
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1244
 #, php-format
 msgid "Mass change %count members"
 msgstr "Massenänderung an %count Mitgliedern"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1291
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1362
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1274
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1376
 msgid "Mass changes has not been confirmed!"
 msgstr "Massenänderungen sind nicht bestätigt worden!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1332
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1345
 #, php-format
 msgid "Review mass change %count members"
 msgstr "Massenänderung für %count Mitglieder prüfen"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1391
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1435
 msgid "Nothing to do!"
 msgstr "Nichts zu tun!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1419
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1656
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1463
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1700
 msgid "An error occurred while storing the member."
 msgstr "Beim Speichern des Mitglieds ist ein Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1431
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1475
 msgid "Something went wront during mass edition!"
 msgstr "Beim Massenbearbeiten ist etwas fehlgeschlagen!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1438
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1482
 #, php-format
 msgid "%count members has been changed successfully!"
 msgstr "%count Mitglieder wurden erfolgreich geändert!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1552
 msgid "Invalid captcha"
 msgstr "Ungültiges Captcha"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1615
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1659
 msgid "Your account has been created!"
 msgstr "Dein Konto wurde angelegt!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1620
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1664
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 "Eine E-Mail wurde an Ihre Adresse geschickt, bitte schauen Sie in Ihr "
 "Postfach."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1623
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1667
 msgid "New member has been successfully added."
 msgstr "Das neue Mitglied wurde erfolgreich hinzugefügt."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1626
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1670
 msgid "Member account has been modified."
 msgstr "Mitgliedskonto wurde geändert."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1640
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1684
 msgid "An error occurred adding member to its groups."
 msgstr ""
 "Beim Hinzufügen eines Mitglieds zu seinen Gruppen ist ein Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1652
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1696
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Beim Hinzufügen eines Mitglieds zu seinen Gruppen als Verwalter ist ein "
 "Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1668
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1712
 #: ../lib/Galette/Controllers/GaletteController.php:310
 #: ../lib/Galette/Controllers/GaletteController.php:342
 msgid "Delete failed"
 msgstr "Löschen fehlgeschlagen"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1837
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1881
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Mitglied %1$s entfernen"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1846
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1890
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Du willst %count Mitglieder löschen."
@@ -446,7 +446,7 @@ msgid "Membership fee"
 msgstr "Mitgliedsbeitrag"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
-#: ../lib/Galette/Entity/Contribution.php:1079
+#: ../lib/Galette/Entity/Contribution.php:1076
 msgid "Donation"
 msgstr "Spende"
 
@@ -692,7 +692,7 @@ msgid "No member selected to generate attendance sheet"
 msgstr "Keine Mitglieder zum Erzeugen der Anwesenheitsliste ausgewählt"
 
 #: ../lib/Galette/Controllers/PdfController.php:409
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:141
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:142
 msgid "Attendance sheet"
 msgstr "Teilnehmerliste"
 
@@ -722,8 +722,8 @@ msgstr "Ungültiger Link!"
 
 #: ../lib/Galette/Controllers/AuthController.php:88
 #: ../lib/Galette/Controllers/AuthController.php:148
-#: ../lib/Galette/Features/Replacements.php:302
-#: ../lib/Galette/Features/Replacements.php:342
+#: ../lib/Galette/Features/Replacements.php:322
+#: ../lib/Galette/Features/Replacements.php:362
 msgid "Login"
 msgstr "Login"
 
@@ -831,7 +831,7 @@ msgid "No password"
 msgstr "Kein Passwort"
 
 #: ../lib/Galette/Controllers/AuthController.php:495
-#: ../lib/Galette/Entity/Adherent.php:1355
+#: ../lib/Galette/Entity/Adherent.php:1360
 msgid "- The passwords don't match!"
 msgstr "- Die Passwörter stimmen nicht überein!"
 
@@ -907,7 +907,7 @@ msgid "Logs"
 msgstr "Protokolle"
 
 #: ../lib/Galette/Controllers/HistoryController.php:150
-#: ../lib/Galette/Filters/TransactionsList.php:230
+#: ../lib/Galette/Filters/TransactionsList.php:231
 #: ../lib/Galette/Filters/HistoryList.php:241
 #: ../lib/Galette/Filters/MailingsList.php:235
 #: ../lib/Galette/Filters/ContributionsList.php:260
@@ -915,7 +915,7 @@ msgid "start date filter"
 msgstr "Filter für Startdatum"
 
 #: ../lib/Galette/Controllers/HistoryController.php:154
-#: ../lib/Galette/Filters/TransactionsList.php:233
+#: ../lib/Galette/Filters/TransactionsList.php:234
 #: ../lib/Galette/Filters/HistoryList.php:244
 #: ../lib/Galette/Filters/MailingsList.php:238
 #: ../lib/Galette/Filters/ContributionsList.php:263
@@ -1070,7 +1070,7 @@ msgid "Email: '%s' has been successfully modified."
 msgstr "E-Mail: „%s“ wurde erfolgreich geändert."
 
 #: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
-#: ../lib/Galette/Entity/Texts.php:209
+#: ../lib/Galette/Entity/Texts.php:211
 msgid "Y-m-d H:i:s"
 msgstr "d.m.Y H:i:s"
 
@@ -1129,59 +1129,59 @@ msgstr "Ko"
 msgid "Database type unknown"
 msgstr "Unbekannten Datenbanktyp"
 
-#: ../lib/Galette/Core/Install.php:678
+#: ../lib/Galette/Core/Install.php:683
 msgid "%version script has been successfully executed :)"
 msgstr "Die Version %version des Skriptes wurde erfolgreich ausgeführt :)"
 
-#: ../lib/Galette/Core/Install.php:690
+#: ../lib/Galette/Core/Install.php:695
 msgid "Unable to run %version update script :("
 msgstr "Das %version Updateprgramm kann nicht ausgeführt werden :("
 
-#: ../lib/Galette/Core/Install.php:1023
+#: ../lib/Galette/Core/Install.php:1036
 msgid "Write configuration file"
 msgstr "Konfigurationsdatei schreiben"
 
-#: ../lib/Galette/Core/Install.php:1052
+#: ../lib/Galette/Core/Install.php:1065
 msgid "Config file already exists and is up to date"
 msgstr "Die Konfigurationsdatei existiert bereits und ist aktuell"
 
-#: ../lib/Galette/Core/Install.php:1081
+#: ../lib/Galette/Core/Install.php:1094
 msgid "Unable to create configuration file (%path)"
 msgstr "Konfigurationsdatei konnte nicht erstellt werden (%path)"
 
-#: ../lib/Galette/Core/Install.php:1132
+#: ../lib/Galette/Core/Install.php:1145
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: ../lib/Galette/Core/Install.php:1136
+#: ../lib/Galette/Core/Install.php:1149
 msgid "Contributions types"
 msgstr "Beitragstypen"
 
-#: ../lib/Galette/Core/Install.php:1140
+#: ../lib/Galette/Core/Install.php:1153
 msgid "Status"
 msgstr "Status"
 
-#: ../lib/Galette/Core/Install.php:1144
+#: ../lib/Galette/Core/Install.php:1157
 msgid "Fields config and categories"
 msgstr "Feldkonfiguration und Kategorien"
 
-#: ../lib/Galette/Core/Install.php:1148 ../lib/Galette/Core/Install.php:1170
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Install.php:1183
 msgid "Mails texts"
 msgstr "Texte der E-Mails"
 
-#: ../lib/Galette/Core/Install.php:1152
+#: ../lib/Galette/Core/Install.php:1165
 msgid "Titles"
 msgstr "Titel"
 
-#: ../lib/Galette/Core/Install.php:1156
+#: ../lib/Galette/Core/Install.php:1169
 msgid "PDF Models"
 msgstr "PDF Modelle"
 
-#: ../lib/Galette/Core/Install.php:1162
+#: ../lib/Galette/Core/Install.php:1175
 msgid "Update preferences"
 msgstr "Einstellungen aktualisieren"
 
-#: ../lib/Galette/Core/Install.php:1166
+#: ../lib/Galette/Core/Install.php:1179
 msgid "Update models"
 msgstr "Modelle aktualisieren"
 
@@ -1266,28 +1266,28 @@ msgstr "Superadmin"
 msgid "Delete mailing entries"
 msgstr "Mailkampagnen löchen"
 
-#: ../lib/Galette/Core/Preferences.php:499
+#: ../lib/Galette/Core/Preferences.php:504
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Sie müssen einen Namen für den Absender der E-Mail eingeben!"
 
-#: ../lib/Galette/Core/Preferences.php:505
+#: ../lib/Galette/Core/Preferences.php:510
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Sie müssen eine E-Mail-Adresse angeben, an die Galette E-Mails senden soll!"
 
-#: ../lib/Galette/Core/Preferences.php:512
+#: ../lib/Galette/Core/Preferences.php:517
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Sie müssen den SMTP Server angeben, den Sie nutzen wollen!"
 
-#: ../lib/Galette/Core/Preferences.php:524
+#: ../lib/Galette/Core/Preferences.php:529
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- Sie müssen Anmeldeinformationen für die SMTP Anmeldung eingeben."
 
-#: ../lib/Galette/Core/Preferences.php:530
+#: ../lib/Galette/Core/Preferences.php:535
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- Sie müssen ein Passwort für die SMTP Anmeldung eingeben."
 
-#: ../lib/Galette/Core/Preferences.php:542
+#: ../lib/Galette/Core/Preferences.php:547
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
@@ -1295,74 +1295,74 @@ msgstr ""
 "- Standardverlängerung der Mitgliedschaft und Beginn der Mitgliedschaft "
 "schließen sich gegenseitig aus."
 
-#: ../lib/Galette/Core/Preferences.php:551
+#: ../lib/Galette/Core/Preferences.php:556
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Angebotsmonate sind nur beim Beginn der Mitgliedschaft möglich."
 
-#: ../lib/Galette/Core/Preferences.php:560
-#: ../lib/Galette/Entity/Adherent.php:1148
+#: ../lib/Galette/Core/Preferences.php:565
+#: ../lib/Galette/Entity/Adherent.php:1153
 #: ../lib/Galette/Entity/Transaction.php:337
 #: ../lib/Galette/Entity/Contribution.php:463
 #, php-format
 msgid "- Mandatory field %field empty."
 msgstr "- Benötigtes Feld %field ist leer."
 
-#: ../lib/Galette/Core/Preferences.php:568 ../webroot/installer.php:185
+#: ../lib/Galette/Core/Preferences.php:573 ../webroot/installer.php:185
 msgid "Passwords mismatch"
 msgstr "Passwörter stimmen nicht überein"
 
-#: ../lib/Galette/Core/Preferences.php:581
+#: ../lib/Galette/Core/Preferences.php:586
 msgid "You have to select a staff member"
 msgstr "Sie müssen einen Mitarbeiter auswählen"
 
-#: ../lib/Galette/Core/Preferences.php:634
+#: ../lib/Galette/Core/Preferences.php:639
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Ungültige E-Mail-Adresse: %s"
 
-#: ../lib/Galette/Core/Preferences.php:648
+#: ../lib/Galette/Core/Preferences.php:653
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Der Benutzername muss aus mindestens 4 Zeichen bestehen!"
 
-#: ../lib/Galette/Core/Preferences.php:652
+#: ../lib/Galette/Core/Preferences.php:657
 msgid "- This username is already used by another member !"
 msgstr "- Dieser Benutzername wird schon von einem anderen Mitglied benutzt !"
 
-#: ../lib/Galette/Core/Preferences.php:659
-#: ../lib/Galette/Core/Preferences.php:680
+#: ../lib/Galette/Core/Preferences.php:664
+#: ../lib/Galette/Core/Preferences.php:685
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Die Zahlen und Einheiten müssen ganze Zahlen sein!"
 
-#: ../lib/Galette/Core/Preferences.php:714
+#: ../lib/Galette/Core/Preferences.php:719
 msgid "- Invalid number of months of membership extension."
 msgstr "- Ungültige Anzahl an Monaten für Verlängerung der Mitgliedschaft."
 
-#: ../lib/Galette/Core/Preferences.php:720
+#: ../lib/Galette/Core/Preferences.php:725
 msgid "- Invalid format of beginning of membership."
 msgstr "- Ungültiges Format für den Beginn der Mitgliedschaft."
 
-#: ../lib/Galette/Core/Preferences.php:724
+#: ../lib/Galette/Core/Preferences.php:729
 msgid "- Invalid date for beginning of membership."
 msgstr "- Ungültiges Datum für den Beginn der Mitgliedschaft."
 
-#: ../lib/Galette/Core/Preferences.php:730
+#: ../lib/Galette/Core/Preferences.php:735
 msgid "- Invalid number of offered months."
 msgstr "- Ungültige Anzahl der angebotenen Monate."
 
-#: ../lib/Galette/Core/Preferences.php:735
+#: ../lib/Galette/Core/Preferences.php:740
 msgid "- Invalid year for cards."
 msgstr "- Ungültiges Jahr für Karte."
 
-#: ../lib/Galette/Core/Preferences.php:846
+#: ../lib/Galette/Core/Preferences.php:851
 msgid "%name association's %status"
 msgstr "%status des Verbands %name"
 
-#: ../lib/Galette/Core/Preferences.php:1075
+#: ../lib/Galette/Core/Preferences.php:1080
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
 "Die aktuelle Konfiguration der Karten kann die Seitenbreite überschreiten!"
 
-#: ../lib/Galette/Core/Preferences.php:1086
+#: ../lib/Galette/Core/Preferences.php:1091
 msgid "Current cards configuration may exceed page height!"
 msgstr "Aktuelle Kartenkonfiguration überschreitet die Seitenhöhe!"
 
@@ -1422,17 +1422,17 @@ msgstr ""
 #: ../lib/Galette/Util/Password.php:267 ../lib/Galette/IO/MembersCsv.php:182
 #: ../lib/Galette/IO/MembersCsv.php:194 ../lib/Galette/IO/MembersCsv.php:206
 #: ../lib/Galette/IO/MembersCsv.php:218
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:89
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:121
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:176
-#: ../lib/Galette/Features/Replacements.php:466
-#: ../lib/Galette/Entity/Adherent.php:775
-#: ../lib/Galette/Entity/Adherent.php:793
-#: ../lib/Galette/Entity/Adherent.php:809
-#: ../lib/Galette/Entity/Adherent.php:1208
-#: ../lib/Galette/Entity/Adherent.php:1242
-#: ../lib/Galette/Entity/Adherent.php:1251
-#: ../lib/Galette/Entity/Adherent.php:1739
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:90
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:122
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:177
+#: ../lib/Galette/Features/Replacements.php:490
+#: ../lib/Galette/Entity/Adherent.php:778
+#: ../lib/Galette/Entity/Adherent.php:799
+#: ../lib/Galette/Entity/Adherent.php:814
+#: ../lib/Galette/Entity/Adherent.php:1213
+#: ../lib/Galette/Entity/Adherent.php:1247
+#: ../lib/Galette/Entity/Adherent.php:1256
+#: ../lib/Galette/Entity/Adherent.php:1744
 #: ../lib/Galette/Entity/Transaction.php:280
 #: ../lib/Galette/Entity/Transaction.php:289
 #: ../lib/Galette/Entity/Transaction.php:298
@@ -1444,17 +1444,17 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:382
 #: ../lib/Galette/Entity/Contribution.php:391
 #: ../lib/Galette/Entity/Contribution.php:544
-#: ../lib/Galette/Entity/Contribution.php:1158
-#: ../lib/Galette/Entity/Contribution.php:1255
-#: ../lib/Galette/Entity/Contribution.php:1264
-#: ../lib/Galette/Entity/Contribution.php:1273
+#: ../lib/Galette/Entity/Contribution.php:1155
+#: ../lib/Galette/Entity/Contribution.php:1252
+#: ../lib/Galette/Entity/Contribution.php:1261
+#: ../lib/Galette/Entity/Contribution.php:1270
 #: ../lib/Galette/Entity/ImportModel.php:213
 #: ../lib/Galette/Entity/SavedSearch.php:292
 #: ../lib/Galette/Entity/Group.php:616
-#: ../lib/Galette/Filters/TransactionsList.php:134
-#: ../lib/Galette/Filters/TransactionsList.php:216
-#: ../lib/Galette/Filters/TransactionsList.php:225
-#: ../lib/Galette/Filters/TransactionsList.php:254
+#: ../lib/Galette/Filters/TransactionsList.php:135
+#: ../lib/Galette/Filters/TransactionsList.php:217
+#: ../lib/Galette/Filters/TransactionsList.php:226
+#: ../lib/Galette/Filters/TransactionsList.php:255
 #: ../lib/Galette/Filters/HistoryList.php:150
 #: ../lib/Galette/Filters/HistoryList.php:227
 #: ../lib/Galette/Filters/HistoryList.php:236
@@ -1478,7 +1478,7 @@ msgstr "d.m.Y"
 msgid "Searches deleted (%list)"
 msgstr "Suchanfragen gelöscht (%list)"
 
-#: ../lib/Galette/Repository/Contributions.php:449
+#: ../lib/Galette/Repository/Contributions.php:452
 msgid "Contributions deleted (%list)"
 msgstr "Beiträge gelöscht (%list)"
 
@@ -1628,7 +1628,7 @@ msgid "Members by groups"
 msgstr "Mitglieder nach Gruppen sortiert"
 
 #: ../lib/Galette/IO/PdfGroups.php:109
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:140
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 #: ../lib/Galette/IO/PdfMembersLabels.php:86
 #: ../lib/Galette/IO/PdfMembersCards.php:105
 msgid "Generated by Galette"
@@ -1639,8 +1639,8 @@ msgid "Managers:"
 msgstr "Manager:"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:185
-#: ../lib/Galette/Features/Replacements.php:238
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:186
+#: ../lib/Galette/Features/Replacements.php:258
 #: ../lib/Galette/Entity/PdfModel.php:411
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
@@ -1648,19 +1648,19 @@ msgid "Name"
 msgstr "Name"
 
 #: ../lib/Galette/IO/PdfGroups.php:180
-#: ../lib/Galette/Features/Replacements.php:298
-#: ../lib/Galette/Features/Replacements.php:346
+#: ../lib/Galette/Features/Replacements.php:318
+#: ../lib/Galette/Features/Replacements.php:366
 msgid "Email"
 msgstr "E-Mail"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
-#: ../lib/Galette/Features/Replacements.php:290
+#: ../lib/Galette/Features/Replacements.php:310
 #: ../lib/Galette/Entity/ListsConfig.php:225
 msgid "Phone"
 msgstr "Telefon"
 
 #: ../lib/Galette/IO/PdfGroups.php:182
-#: ../lib/Galette/Features/Replacements.php:294
+#: ../lib/Galette/Features/Replacements.php:314
 msgid "GSM"
 msgstr "GSM"
 
@@ -1669,76 +1669,78 @@ msgid "filtered_memberslist"
 msgstr "gefilterte_Mitgliedsliste"
 
 #: ../lib/Galette/IO/MembersCsv.php:228
-#: ../lib/Galette/Features/Replacements.php:577
-#: ../lib/Galette/Entity/Adherent.php:1705
+#: ../lib/Galette/Features/Replacements.php:602
+#: ../lib/Galette/Entity/Adherent.php:1710
 msgid "Man"
 msgstr "Mann"
 
 #: ../lib/Galette/IO/MembersCsv.php:231
-#: ../lib/Galette/Features/Replacements.php:579
-#: ../lib/Galette/Entity/Adherent.php:1707
+#: ../lib/Galette/Features/Replacements.php:604
+#: ../lib/Galette/Entity/Adherent.php:1712
 msgid "Woman"
 msgstr "Frau"
 
 #: ../lib/Galette/IO/MembersCsv.php:234
-#: ../lib/Galette/Features/Replacements.php:581
-#: ../lib/Galette/Entity/Adherent.php:1709
+#: ../lib/Galette/Features/Replacements.php:606
+#: ../lib/Galette/Entity/Adherent.php:1714
 msgid "Unspecified"
 msgstr "Nicht spezifiziert"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1666
+#: ../lib/Galette/Features/Replacements.php:724
+#: ../lib/Galette/Entity/Adherent.php:1671
 msgid "Yes"
 msgstr "Ja"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1666
+#: ../lib/Galette/Features/Replacements.php:724
+#: ../lib/Galette/Entity/Adherent.php:1671
 msgid "No"
 msgstr "Nein"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:104
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:105
 msgid "attendance_sheet"
 msgstr "Teilnehmer_Seite"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:168
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:169
 msgid "%A, %B %#d%O %Y"
 msgstr "%A, %B %#d%O %Y"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:186
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:187
 msgid "Signature"
 msgstr "Unterschrift"
 
-#: ../lib/Galette/IO/Charts.php:141 ../lib/Galette/Filters/MembersList.php:297
+#: ../lib/Galette/IO/Charts.php:142 ../lib/Galette/Filters/MembersList.php:297
 msgid "Staff members"
 msgstr "Mitarbeiter"
 
-#: ../lib/Galette/IO/Charts.php:177
+#: ../lib/Galette/IO/Charts.php:180
 msgid "Due free"
 msgstr "Beitragsfrei"
 
-#: ../lib/Galette/IO/Charts.php:192
+#: ../lib/Galette/IO/Charts.php:198
 msgid "Never contribute"
 msgstr "Keine Beiträge zahlen"
 
-#: ../lib/Galette/IO/Charts.php:214
+#: ../lib/Galette/IO/Charts.php:222
 msgid "Impending due dates"
 msgstr "Bevorstehende Fälligkeitsdaten"
 
-#: ../lib/Galette/IO/Charts.php:229
+#: ../lib/Galette/IO/Charts.php:240
 msgid "Up to date"
 msgstr "Aktuell"
 
-#: ../lib/Galette/IO/Charts.php:244
+#: ../lib/Galette/IO/Charts.php:258
 msgid "Late"
 msgstr "Verspätet"
 
-#: ../lib/Galette/IO/Charts.php:300
+#: ../lib/Galette/IO/Charts.php:314
 msgid "Individuals"
 msgstr "Individuen"
 
-#: ../lib/Galette/IO/Charts.php:304
+#: ../lib/Galette/IO/Charts.php:318
 msgid "Companies"
 msgstr "Firmen"
 
@@ -1862,7 +1864,7 @@ msgid "File extension is not allowed, only %s files are."
 msgstr "- Dateityp ist nicht erlaubt, nur %s Dateien sind erlaubt."
 
 #: ../lib/Galette/IO/FileTrait.php:494
-#: ../lib/Galette/Entity/DynamicsTrait.php:311
+#: ../lib/Galette/Entity/DynamicsTrait.php:305
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr "Die Datei ist zu groß. Die maximale Dateigröße beträgt %dKo"
@@ -1933,190 +1935,197 @@ msgstr "Quittung"
 msgid "invoice"
 msgstr "Rechnung"
 
-#: ../lib/Galette/Features/Replacements.php:117
+#: ../lib/Galette/Features/Replacements.php:129
 #, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Bezeichnung für dynamisches Feld „%s“"
 
-#: ../lib/Galette/Features/Replacements.php:118
-#, php-format
-msgid "Input for dynamic field \"%s\""
+#: ../lib/Galette/Features/Replacements.php:132
+#, fuzzy, php-format
+#| msgid "Input for dynamic field \"%s\""
+msgid "Form entry for dynamic field \"%s\""
 msgstr "Eingabe für dynamisches Feld „%s“"
 
-#: ../lib/Galette/Features/Replacements.php:184
+#: ../lib/Galette/Features/Replacements.php:137
+#, fuzzy, php-format
+#| msgid "Label for dynamic field \"%s\""
+msgid "Value for dynamic field \"%s\""
+msgstr "Bezeichnung für dynamisches Feld „%s“"
+
+#: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation name"
 msgstr "Firmenname"
 
-#: ../lib/Galette/Features/Replacements.php:188
+#: ../lib/Galette/Features/Replacements.php:208
 msgid "Your organisation slogan"
 msgstr "Ihr Motto"
 
-#: ../lib/Galette/Features/Replacements.php:192
-#: ../lib/Galette/Features/Replacements.php:196
+#: ../lib/Galette/Features/Replacements.php:212
+#: ../lib/Galette/Features/Replacements.php:216
 msgid "Your organisation address"
 msgstr "Adresse ihrer Firma"
 
-#: ../lib/Galette/Features/Replacements.php:196
+#: ../lib/Galette/Features/Replacements.php:216
 msgid "with break lines"
 msgstr "mit Bruchlinien"
 
-#: ../lib/Galette/Features/Replacements.php:200
+#: ../lib/Galette/Features/Replacements.php:220
 msgid "Your organisation website"
 msgstr "Website Ihrer Organisation"
 
-#: ../lib/Galette/Features/Replacements.php:204
+#: ../lib/Galette/Features/Replacements.php:224
 msgid "Your organisation logo"
 msgstr "Logo ihrer Organisation"
 
-#: ../lib/Galette/Features/Replacements.php:208
+#: ../lib/Galette/Features/Replacements.php:228
 msgid "Current date (Y-m-d)"
 msgstr "Aktuelles Datum (Y-m-d)"
 
-#: ../lib/Galette/Features/Replacements.php:212
+#: ../lib/Galette/Features/Replacements.php:232
 msgid "Galette's login URI"
 msgstr "Anmelde URI"
 
-#: ../lib/Galette/Features/Replacements.php:230
+#: ../lib/Galette/Features/Replacements.php:250
 #: ../lib/Galette/Entity/PdfModel.php:420
 msgid "Title"
 msgstr "Anrede"
 
-#: ../lib/Galette/Features/Replacements.php:234
+#: ../lib/Galette/Features/Replacements.php:254
 msgid "Member's ID"
 msgstr "Mitgliedskennung"
 
-#: ../lib/Galette/Features/Replacements.php:242
-#: ../lib/Galette/Features/Replacements.php:334
+#: ../lib/Galette/Features/Replacements.php:262
+#: ../lib/Galette/Features/Replacements.php:354
 msgid "Last name"
 msgstr "Nachname"
 
-#: ../lib/Galette/Features/Replacements.php:246
-#: ../lib/Galette/Features/Replacements.php:338 ../includes/i18n.inc.php:330
+#: ../lib/Galette/Features/Replacements.php:266
+#: ../lib/Galette/Features/Replacements.php:358 ../includes/i18n.inc.php:330
 msgid "First name"
 msgstr "Vorname"
 
-#: ../lib/Galette/Features/Replacements.php:250
+#: ../lib/Galette/Features/Replacements.php:270
 msgid "Nickname"
 msgstr "Spitzname"
 
-#: ../lib/Galette/Features/Replacements.php:254
+#: ../lib/Galette/Features/Replacements.php:274
 msgid "Gender"
 msgstr "Geschlecht"
 
-#: ../lib/Galette/Features/Replacements.php:258
+#: ../lib/Galette/Features/Replacements.php:278
 msgid "Birth date"
 msgstr "Geburtsdatum"
 
-#: ../lib/Galette/Features/Replacements.php:262
+#: ../lib/Galette/Features/Replacements.php:282
 msgid "Birth place"
 msgstr "Geburtsort"
 
-#: ../lib/Galette/Features/Replacements.php:266
+#: ../lib/Galette/Features/Replacements.php:286
 msgid "Profession"
 msgstr "Beruf"
 
-#: ../lib/Galette/Features/Replacements.php:270
-#: ../lib/Galette/Features/Replacements.php:330
+#: ../lib/Galette/Features/Replacements.php:290
+#: ../lib/Galette/Features/Replacements.php:350
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Company name"
 msgstr "Firmenname"
 
-#: ../lib/Galette/Features/Replacements.php:274
+#: ../lib/Galette/Features/Replacements.php:294
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Address"
 msgstr "Adresse"
 
-#: ../lib/Galette/Features/Replacements.php:278
+#: ../lib/Galette/Features/Replacements.php:298
 msgid "Zipcode"
 msgstr "Postleitzahl"
 
-#: ../lib/Galette/Features/Replacements.php:282
+#: ../lib/Galette/Features/Replacements.php:302
 msgid "Town"
 msgstr "Stadt"
 
-#: ../lib/Galette/Features/Replacements.php:286 ../includes/i18n.inc.php:327
+#: ../lib/Galette/Features/Replacements.php:306 ../includes/i18n.inc.php:327
 msgid "Country"
 msgstr "Land"
 
-#: ../lib/Galette/Features/Replacements.php:306
+#: ../lib/Galette/Features/Replacements.php:326
 msgid "Member's main group"
 msgstr "Hauptgruppe des Mitglieds"
 
-#: ../lib/Galette/Features/Replacements.php:310
+#: ../lib/Galette/Features/Replacements.php:330
 msgid "Member's groups (as list)"
 msgstr "Gruppen des Mitglieds (als Liste)"
 
-#: ../lib/Galette/Features/Replacements.php:314
+#: ../lib/Galette/Features/Replacements.php:334
 #, fuzzy
 #| msgid "Members by state of dues"
 msgid "Member state of dues"
 msgstr "Mitglieder nach Gebühren"
 
-#: ../lib/Galette/Features/Replacements.php:318
+#: ../lib/Galette/Features/Replacements.php:338
 msgid "Membership remaining days"
 msgstr "Verbleibende Tage der Mitgliedschaft"
 
-#: ../lib/Galette/Features/Replacements.php:322
+#: ../lib/Galette/Features/Replacements.php:342
 msgid "Membership expired since"
 msgstr "Mitgliedschaft abgelaufen seit"
 
-#: ../lib/Galette/Features/Replacements.php:368
+#: ../lib/Galette/Features/Replacements.php:388
 msgid "Contribution label"
 msgstr "Beitragsbeschreibung"
 
-#: ../lib/Galette/Features/Replacements.php:372
+#: ../lib/Galette/Features/Replacements.php:392
 msgid "Amount"
 msgstr "Betrag"
 
-#: ../lib/Galette/Features/Replacements.php:376
+#: ../lib/Galette/Features/Replacements.php:396
 msgid "Amount (in letters)"
 msgstr "Betrag (in Buchstaben)"
 
-#: ../lib/Galette/Features/Replacements.php:380
+#: ../lib/Galette/Features/Replacements.php:400
 msgid "Full date"
 msgstr "Vollständiges Datum"
 
-#: ../lib/Galette/Features/Replacements.php:384
+#: ../lib/Galette/Features/Replacements.php:404
 msgid "Contribution year"
 msgstr "Beitragsjahr"
 
-#: ../lib/Galette/Features/Replacements.php:388
+#: ../lib/Galette/Features/Replacements.php:408
 msgid "Comment"
 msgstr "Kommentar"
 
-#: ../lib/Galette/Features/Replacements.php:392
+#: ../lib/Galette/Features/Replacements.php:412
 msgid "Begin date"
 msgstr "Anfangsdatum"
 
-#: ../lib/Galette/Features/Replacements.php:396
+#: ../lib/Galette/Features/Replacements.php:416
 msgid "End date"
 msgstr "Enddatum"
 
-#: ../lib/Galette/Features/Replacements.php:400
+#: ../lib/Galette/Features/Replacements.php:420
 msgid "Contribution id"
 msgstr "Beitrags-ID"
 
-#: ../lib/Galette/Features/Replacements.php:404
+#: ../lib/Galette/Features/Replacements.php:424
 msgid "Payment type"
 msgstr "Zahlungsart"
 
-#: ../lib/Galette/Features/Replacements.php:408
-#: ../lib/Galette/Entity/Contribution.php:1047
-#: ../lib/Galette/Entity/Texts.php:626
+#: ../lib/Galette/Features/Replacements.php:428
+#: ../lib/Galette/Entity/Contribution.php:1044
+#: ../lib/Galette/Entity/Texts.php:628
 #: ../lib/Galette/Entity/PdfContribution.php:89
 msgid "Contribution information"
 msgstr "Beitragsinformationen"
 
-#: ../lib/Galette/Features/Replacements.php:585
-#: ../lib/Galette/Features/Replacements.php:586
+#: ../lib/Galette/Features/Replacements.php:610
+#: ../lib/Galette/Features/Replacements.php:611
 msgid "None"
 msgstr "Keine"
 
-#: ../lib/Galette/Features/Replacements.php:755
+#: ../lib/Galette/Features/Replacements.php:778
 msgid "Main information"
 msgstr "Hauptinformation"
 
-#: ../lib/Galette/Features/Replacements.php:760
+#: ../lib/Galette/Features/Replacements.php:783
 msgid "Member information"
 msgstr "Mitgliederinformation"
 
@@ -2186,131 +2195,137 @@ msgstr ""
 "Die alte dynamische Übersetzung für das Feld %field konnte nicht entfernt "
 "werden :("
 
-#: ../lib/Galette/Entity/Adherent.php:769
+#: ../lib/Galette/Entity/Adherent.php:772
 msgid "Freed of dues"
 msgstr "Beitragsfrei"
 
-#: ../lib/Galette/Entity/Adherent.php:781
+#: ../lib/Galette/Entity/Adherent.php:784
 #, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "Keine Beiträge: Registriert seit %days Tagen (seit %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:784
+#: ../lib/Galette/Entity/Adherent.php:787
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Never contributed"
 msgstr "Hat nie einen Beitrag gezahlt"
 
-#: ../lib/Galette/Entity/Adherent.php:787
+#: ../lib/Galette/Entity/Adherent.php:791
 msgid "Last day!"
 msgstr "Letzter Tag!"
 
-#: ../lib/Galette/Entity/Adherent.php:799
+#: ../lib/Galette/Entity/Adherent.php:793
+#, fuzzy
+#| msgid "Last day!"
+msgid "Late since today!"
+msgstr "Letzter Tag!"
+
+#: ../lib/Galette/Entity/Adherent.php:805
 #, php-format
 msgid "Late of %days days (since %date)"
 msgstr "Verspätet um %days Tage (seit %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:802
+#: ../lib/Galette/Entity/Adherent.php:808
 msgid "No longer member"
 msgstr "Kein Mitglied mehr"
 
-#: ../lib/Galette/Entity/Adherent.php:814
+#: ../lib/Galette/Entity/Adherent.php:819
 #, php-format
 msgid "%days days remaining (ending on %date)"
 msgstr "%days Tage verbleibend (endet am %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:1225
+#: ../lib/Galette/Entity/Adherent.php:1230
 msgid "- Birthdate must be set in the past!"
 msgstr "- Geburtsdatum muss in der Vergangenheit festgelegt werden!"
 
-#: ../lib/Galette/Entity/Adherent.php:1233
+#: ../lib/Galette/Entity/Adherent.php:1238
 msgid "- Members must be less than 200 years old (currently %years)!"
 msgstr "- Mitglieder müssen jünger als 200 Jahre sein (derzeit %years)!"
 
-#: ../lib/Galette/Entity/Adherent.php:1254
+#: ../lib/Galette/Entity/Adherent.php:1259
 #: ../lib/Galette/Entity/Transaction.php:301
 #: ../lib/Galette/Entity/DynamicsTrait.php:202
 #: ../lib/Galette/Entity/Contribution.php:394
-#: ../lib/Galette/Entity/Contribution.php:1276
+#: ../lib/Galette/Entity/Contribution.php:1273
 #, php-format
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Falsches Datumsformat (%date_format) für Feld %field!"
 
-#: ../lib/Galette/Entity/Adherent.php:1272
+#: ../lib/Galette/Entity/Adherent.php:1277
 msgid "- Non-valid E-Mail address!"
 msgstr "- Ungültige E-Mail-Adresse!"
 
-#: ../lib/Galette/Entity/Adherent.php:1289
+#: ../lib/Galette/Entity/Adherent.php:1294
 msgid "- This E-Mail address is already used by another member!"
 msgstr "- Diese E-Mail-Adresse wird schon von einem anderen Mitglied benutzt!"
 
-#: ../lib/Galette/Entity/Adherent.php:1296
-#: ../lib/Galette/Entity/Adherent.php:1344
+#: ../lib/Galette/Entity/Adherent.php:1301
+#: ../lib/Galette/Entity/Adherent.php:1349
 msgid "An error has occurred while looking if login already exists."
 msgstr ""
 "Bei der Suche nach einer bereits vorhandenen Anmeldung ist ein Fehler "
 "aufgetreten."
 
-#: ../lib/Galette/Entity/Adherent.php:1304
+#: ../lib/Galette/Entity/Adherent.php:1309
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr "- Ungültige Adresse der Website! Haben Sie das http:// vergessen?"
 
-#: ../lib/Galette/Entity/Adherent.php:1313
+#: ../lib/Galette/Entity/Adherent.php:1318
 msgid "- The username must be composed of at least %i characters!"
 msgstr "- Der Benutzername muss aus mindestens %i Zeichen bestehen!"
 
-#: ../lib/Galette/Entity/Adherent.php:1318
+#: ../lib/Galette/Entity/Adherent.php:1323
 msgid "- The username cannot contain the @ character"
 msgstr "- Der Benutzername darf das @ Zeichen nicht enthalten"
 
-#: ../lib/Galette/Entity/Adherent.php:1337
+#: ../lib/Galette/Entity/Adherent.php:1342
 msgid "- This username is already in use, please choose another one!"
 msgstr "- Diesen Benutzernamen gibt es schon, bitte wählen Sie einen anderen!"
 
-#: ../lib/Galette/Entity/Adherent.php:1360
+#: ../lib/Galette/Entity/Adherent.php:1365
 msgid "Password misrepeated: "
 msgstr "Passwort falsch wiederholt: "
 
-#: ../lib/Galette/Entity/Adherent.php:1394
+#: ../lib/Galette/Entity/Adherent.php:1399
 msgid "Status #%id does not exists in database."
 msgstr "Status #%id existiert in der Datenbank nicht."
 
-#: ../lib/Galette/Entity/Adherent.php:1403
+#: ../lib/Galette/Entity/Adherent.php:1408
 msgid "An error has occurred while looking if status does exists."
 msgstr "Bei der Suche nach einem Status ist ein Fehler aufgetreten."
 
-#: ../lib/Galette/Entity/Adherent.php:1410
+#: ../lib/Galette/Entity/Adherent.php:1415
 msgid "Gender %gender does not exists!"
 msgstr "Geschlecht %gender existiert nicht!"
 
-#: ../lib/Galette/Entity/Adherent.php:1514
+#: ../lib/Galette/Entity/Adherent.php:1519
 msgid "Self_subscription as a member: "
 msgstr "Eigenabonnement als Mitglied: "
 
-#: ../lib/Galette/Entity/Adherent.php:1520
+#: ../lib/Galette/Entity/Adherent.php:1525
 msgid "Member card added"
 msgstr "Mitgliedskarte hinzugefügt"
 
-#: ../lib/Galette/Entity/Adherent.php:1528
+#: ../lib/Galette/Entity/Adherent.php:1533
 msgid "Fail to add new member."
 msgstr "Neues Mitglied konnte nicht hinzugefügt werden."
 
-#: ../lib/Galette/Entity/Adherent.php:1560
+#: ../lib/Galette/Entity/Adherent.php:1565
 msgid "Member card updated"
 msgstr "Mitgliedskarte upgedatet"
 
-#: ../lib/Galette/Entity/Adherent.php:1669
+#: ../lib/Galette/Entity/Adherent.php:1674
 msgid "Active"
 msgstr "Aktive"
 
-#: ../lib/Galette/Entity/Adherent.php:1669
+#: ../lib/Galette/Entity/Adherent.php:1674
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: ../lib/Galette/Entity/Adherent.php:1897
+#: ../lib/Galette/Entity/Adherent.php:1902
 msgid " (%age years old)"
 msgstr " (%age Jahre alt)"
 
-#: ../lib/Galette/Entity/Adherent.php:1970
+#: ../lib/Galette/Entity/Adherent.php:1975
 msgid "Duplicated from %name (%id)"
 msgstr "Duplikat von %name (%id)"
 
@@ -2432,11 +2447,11 @@ msgstr "Neuer Beitrag konnte nicht hinzugefügt werden."
 msgid "Contribution updated"
 msgstr "Beitrag upgedated"
 
-#: ../lib/Galette/Entity/Contribution.php:1049
+#: ../lib/Galette/Entity/Contribution.php:1046
 msgid "Script output"
 msgstr "Skriptergebnis"
 
-#: ../lib/Galette/Entity/Contribution.php:1077
+#: ../lib/Galette/Entity/Contribution.php:1074
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
@@ -2456,31 +2471,31 @@ msgstr "- Die Beschreibung kann nicht gelöscht werden: sie wird noch genutzt"
 msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr "Sie können die Anreden Herr und Frau nicht löschen!"
 
-#: ../lib/Galette/Entity/Texts.php:119
+#: ../lib/Galette/Entity/Texts.php:121
 msgid "Insert a carriage return"
 msgstr "Einen Zeilenumbruch einfügen"
 
-#: ../lib/Galette/Entity/Texts.php:123
+#: ../lib/Galette/Entity/Texts.php:125
 msgid "Insert a new blank line"
 msgstr "Eine Leerzeile einfügen"
 
-#: ../lib/Galette/Entity/Texts.php:127
+#: ../lib/Galette/Entity/Texts.php:129
 msgid "Link validity"
 msgstr "Link validiert"
 
-#: ../lib/Galette/Entity/Texts.php:132
+#: ../lib/Galette/Entity/Texts.php:134
 msgid "Direct link for member card download"
 msgstr "Direkter Link zum Herunterladen der Mitgliedskarte"
 
-#: ../lib/Galette/Entity/Texts.php:137
+#: ../lib/Galette/Entity/Texts.php:139
 msgid "Direct link for invoice/receipt download"
 msgstr "Direkter Link zum Herunterladen der Rechnung/Quittung"
 
-#: ../lib/Galette/Entity/Texts.php:142
+#: ../lib/Galette/Entity/Texts.php:144
 msgid "Galette's change password URI"
 msgstr "Galette URI zum Ändern des Passworts"
 
-#: ../lib/Galette/Entity/Texts.php:633
+#: ../lib/Galette/Entity/Texts.php:635
 msgid "Mail specific"
 msgstr "Mailspezifisch"
 
@@ -2761,8 +2776,8 @@ msgstr "Administratoren"
 msgid "Non members"
 msgstr "Nicht Mitglieder"
 
-#: ../lib/Galette/Filters/TransactionsList.php:186
-#: ../lib/Galette/Filters/TransactionsList.php:223
+#: ../lib/Galette/Filters/TransactionsList.php:187
+#: ../lib/Galette/Filters/TransactionsList.php:224
 #: ../lib/Galette/Filters/HistoryList.php:197
 #: ../lib/Galette/Filters/HistoryList.php:234
 #: ../lib/Galette/Filters/MailingsList.php:191
@@ -2772,8 +2787,8 @@ msgstr "Nicht Mitglieder"
 msgid "Y"
 msgstr "Y"
 
-#: ../lib/Galette/Filters/TransactionsList.php:202
-#: ../lib/Galette/Filters/TransactionsList.php:224
+#: ../lib/Galette/Filters/TransactionsList.php:203
+#: ../lib/Galette/Filters/TransactionsList.php:225
 #: ../lib/Galette/Filters/HistoryList.php:213
 #: ../lib/Galette/Filters/HistoryList.php:235
 #: ../lib/Galette/Filters/MailingsList.php:207
@@ -2783,7 +2798,7 @@ msgstr "Y"
 msgid "Y-m"
 msgstr "J-M"
 
-#: ../lib/Galette/Filters/TransactionsList.php:243
+#: ../lib/Galette/Filters/TransactionsList.php:244
 #: ../lib/Galette/Filters/HistoryList.php:254
 #: ../lib/Galette/Filters/MailingsList.php:248
 #: ../lib/Galette/Filters/ContributionsList.php:273
@@ -3584,7 +3599,7 @@ msgid "Retype password:"
 msgstr "Passwort erneut eingeben:"
 
 #: ../install/steps/admin.php:58 ../install/steps/db_install.php:82
-#: ../install/steps/db_select_version.php:134
+#: ../install/steps/db_select_version.php:136
 #: ../install/steps/db_checks.php:241 ../install/steps/galette.php:81
 #: ../install/steps/check.php:166 ../install/steps/db.php:110
 #: ../install/steps/type.php:65
@@ -3617,7 +3632,7 @@ msgid "Retry"
 msgstr "Nochmal versuchen"
 
 #: ../install/steps/db_install.php:93 ../install/steps/db_select_version.php:61
-#: ../install/steps/db_select_version.php:135
+#: ../install/steps/db_select_version.php:137
 #: ../install/steps/db_checks.php:250 ../install/steps/galette.php:92
 #: ../install/steps/db.php:111 ../install/steps/type.php:66
 msgid "Back"
@@ -3669,15 +3684,15 @@ msgstr ""
 msgid "Your current Galette version is..."
 msgstr "Ihre aktuelle Version von Galette ist ..."
 
-#: ../install/steps/db_select_version.php:105
+#: ../install/steps/db_select_version.php:106
 msgid "older than %version"
 msgstr "älter als %version"
 
-#: ../install/steps/db_select_version.php:108
+#: ../install/steps/db_select_version.php:109
 msgid "comprised between"
 msgstr "zwischen"
 
-#: ../install/steps/db_select_version.php:109
+#: ../install/steps/db_select_version.php:110
 msgid "and"
 msgstr "und"
 
@@ -4081,14 +4096,14 @@ msgstr ""
 
 #: ../templates/default/edit_paymenttype.tpl:15
 #: ../templates/default/editer_intitule.tpl:40
-#: ../templates/default/preferences.tpl:600
+#: ../templates/default/preferences.tpl:605
 #: ../templates/default/gestion_textes.tpl:43
 #: ../templates/default/gestion_adherents.tpl:77
 #: ../templates/default/gestion_adherents.tpl:98
 #: ../templates/default/config_lists.tpl:57
 #: ../templates/default/ajouter_transaction.tpl:45
 #: ../templates/default/group.tpl:76 ../templates/default/editer_champ.tpl:72
-#: ../templates/default/mailing_adherents.tpl:98
+#: ../templates/default/mailing_adherents.tpl:100
 #: ../templates/default/edit_title.tpl:19
 #: ../templates/default/gestion_pdf_content.tpl:51
 #: ../templates/default/ajouter_contribution.tpl:170
@@ -4286,8 +4301,8 @@ msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 msgstr ""
-"Einstellungen ändern (Adresse, Website, Konfiguration des Mitgliedsausweises "
-"…)"
+"Einstellungen ändern (Adresse, Website, Konfiguration des "
+"Mitgliedsausweises …)"
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
 msgid "Informations about available plugins"
@@ -4439,8 +4454,8 @@ msgstr ""
 "der Hauptseite und im Seitentitel gezeigt."
 
 #: ../templates/default/preferences.tpl:34
-#: ../templates/default/preferences.tpl:432
-#: ../templates/default/preferences.tpl:444
+#: ../templates/default/preferences.tpl:437
+#: ../templates/default/preferences.tpl:449
 #: ../templates/default/gestion_paymentstypes.tpl:61
 #, php-format
 msgid "Translate '%s'"
@@ -4459,7 +4474,7 @@ msgstr ""
 "dargestellt wird"
 
 #: ../templates/default/preferences.tpl:44
-#: ../templates/default/preferences.tpl:469
+#: ../templates/default/preferences.tpl:474
 msgid "Logo:"
 msgstr "Logo:"
 
@@ -4468,7 +4483,7 @@ msgid "Current logo"
 msgstr "Aktuelles Logo"
 
 #: ../templates/default/preferences.tpl:47
-#: ../templates/default/preferences.tpl:472
+#: ../templates/default/preferences.tpl:477
 #: ../templates/default/forms_types/picture.tpl:10
 msgid "Delete image"
 msgstr "Bild löschen"
@@ -4732,7 +4747,7 @@ msgid "Mail settings"
 msgstr "E-Mail-Einstellungen"
 
 #: ../templates/default/preferences.tpl:252
-#: ../templates/default/preferences.tpl:574
+#: ../templates/default/preferences.tpl:579
 #: ../templates/default/plugins.tpl:102
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
@@ -4787,10 +4802,28 @@ msgstr ""
 "registriert oder sein Konto bearbeitet"
 
 #: ../templates/default/preferences.tpl:288
+#, fuzzy
+#| msgid "Send reminders to late members"
+msgid "Send email to members?"
+msgstr "Erinnerungen an überfällige Mitglieder versenden"
+
+#: ../templates/default/preferences.tpl:289
+#, fuzzy
+#| msgid ""
+#| "Sends an email each time a new member registers online or edit his/her "
+#| "account"
+msgid ""
+"Sends an email each time a member card or a contribution has been added or "
+"edited. This can be disabled for each case."
+msgstr ""
+"Sendet jedes Mal eine E-Mail, wenn sich ein neues Mitglied online "
+"registriert oder sein Konto bearbeitet"
+
+#: ../templates/default/preferences.tpl:293
 msgid "Wrap emails text?"
 msgstr "Zeilenumbruch für Text-E-Mails?"
 
-#: ../templates/default/preferences.tpl:289
+#: ../templates/default/preferences.tpl:294
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
@@ -4800,60 +4833,60 @@ msgstr ""
 "ausgeschaltet ist, müssen Sie den Umbruch selber erstellen. Die aktuelle "
 "Mail wird durch das Ändern nicht beeinflußt."
 
-#: ../templates/default/preferences.tpl:294
+#: ../templates/default/preferences.tpl:299
 msgid "Activate HTML editor?"
 msgstr "HTML Editor aktivieren?"
 
-#: ../templates/default/preferences.tpl:295
+#: ../templates/default/preferences.tpl:300
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Soll der HTML Editor aktiviert werden ?"
 
-#: ../templates/default/preferences.tpl:299
+#: ../templates/default/preferences.tpl:304
 msgid "Emailing method:"
 msgstr "E-Mail-Methode:"
 
-#: ../templates/default/preferences.tpl:302
+#: ../templates/default/preferences.tpl:307
 msgid "Emailing disabled"
 msgstr "E-Mail-Versand deaktiviert"
 
-#: ../templates/default/preferences.tpl:305
+#: ../templates/default/preferences.tpl:310
 msgid "PHP mail() function"
 msgstr "PHP mail() Funktion"
 
-#: ../templates/default/preferences.tpl:308
+#: ../templates/default/preferences.tpl:313
 msgid "Using a SMTP server (slower)"
 msgstr "Über einen SMTP Server (langsamer)"
 
-#: ../templates/default/preferences.tpl:311
+#: ../templates/default/preferences.tpl:316
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "GMAIL als SMTP Server nutzen (langsamer)"
 
-#: ../templates/default/preferences.tpl:314
+#: ../templates/default/preferences.tpl:319
 msgid "Using Sendmail server"
 msgstr "Sendmail Server benutzen"
 
-#: ../templates/default/preferences.tpl:317
+#: ../templates/default/preferences.tpl:322
 msgid "Using QMAIL server"
 msgstr "QMAIL Server nutzen"
 
-#: ../templates/default/preferences.tpl:327
-#: ../templates/default/preferences.tpl:634
+#: ../templates/default/preferences.tpl:332
+#: ../templates/default/preferences.tpl:639
 msgid "Test email settings"
 msgstr "E-Mail-Einstellungen testen"
 
-#: ../templates/default/preferences.tpl:332
+#: ../templates/default/preferences.tpl:337
 msgid "SMTP server:"
 msgstr "SMTP Server:"
 
-#: ../templates/default/preferences.tpl:336
+#: ../templates/default/preferences.tpl:341
 msgid "SMTP port:"
 msgstr "SMTP Port:"
 
-#: ../templates/default/preferences.tpl:340
+#: ../templates/default/preferences.tpl:345
 msgid "Use SMTP authentication?"
 msgstr "SMTP Anmeldung nutzen?"
 
-#: ../templates/default/preferences.tpl:341
+#: ../templates/default/preferences.tpl:346
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
@@ -4861,11 +4894,11 @@ msgstr ""
 "Benötigt E-Mail SMTP-Authentifizierung? Bitte geben Sie Benutzername und "
 "Passwort an. Für GMail wird Authentifizierung immer benötigt."
 
-#: ../templates/default/preferences.tpl:345
+#: ../templates/default/preferences.tpl:350
 msgid "Use TLS for SMTP?"
 msgstr "TLS für SMTP nutzen?"
 
-#: ../templates/default/preferences.tpl:346
+#: ../templates/default/preferences.tpl:351
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -4873,11 +4906,11 @@ msgstr ""
 "Wollen Sie die TLS Funktion des Servers nutzen?<br/>Für GMail muss dies "
 "immer gewählt werden."
 
-#: ../templates/default/preferences.tpl:350
+#: ../templates/default/preferences.tpl:355
 msgid "Allow unsecure TLS?"
 msgstr "Unsichere TLS erlauben?"
 
-#: ../templates/default/preferences.tpl:351
+#: ../templates/default/preferences.tpl:356
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
@@ -4886,19 +4919,19 @@ msgstr ""
 "Beispiel nützlich sein, wenn Dein Server selbsterstellte Zertifikate "
 "benutzt, und in einigen anderen Fällen."
 
-#: ../templates/default/preferences.tpl:357
+#: ../templates/default/preferences.tpl:362
 msgid "SMTP (or GMail) user:"
 msgstr "SMTP (oder GMail) Benutzer:"
 
-#: ../templates/default/preferences.tpl:361
+#: ../templates/default/preferences.tpl:366
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (oder GMail) Passwort:"
 
-#: ../templates/default/preferences.tpl:366
+#: ../templates/default/preferences.tpl:371
 msgid "Mail signature"
 msgstr "E-Mail-Signatur"
 
-#: ../templates/default/preferences.tpl:367
+#: ../templates/default/preferences.tpl:372
 msgid ""
 "The text that will be automatically set as signature for all outgoing emails."
 "<br/>Variables are quoted with braces, are upper case, and will be replaced "
@@ -4909,162 +4942,162 @@ msgstr ""
 "aus Großbuchstaben und werden automatisch ersetzt.<br/>Die verfügbaren "
 "Variablen sind in der Dokumentation beschrieben. "
 
-#: ../templates/default/preferences.tpl:374
+#: ../templates/default/preferences.tpl:379
 msgid "Label generation parameters"
 msgstr "Parameter für Adressaufkleber"
 
-#: ../templates/default/preferences.tpl:376
-#: ../templates/default/preferences.tpl:507
+#: ../templates/default/preferences.tpl:381
+#: ../templates/default/preferences.tpl:512
 msgid "Vertical margins:"
 msgstr "Vertikaler Rand:"
 
-#: ../templates/default/preferences.tpl:378
 #: ../templates/default/preferences.tpl:383
 #: ../templates/default/preferences.tpl:388
 #: ../templates/default/preferences.tpl:393
 #: ../templates/default/preferences.tpl:398
 #: ../templates/default/preferences.tpl:403
 #: ../templates/default/preferences.tpl:408
-#: ../templates/default/preferences.tpl:417
-#: ../templates/default/preferences.tpl:509
+#: ../templates/default/preferences.tpl:413
+#: ../templates/default/preferences.tpl:422
 #: ../templates/default/preferences.tpl:514
 #: ../templates/default/preferences.tpl:519
 #: ../templates/default/preferences.tpl:524
+#: ../templates/default/preferences.tpl:529
 msgid "(Integer)"
 msgstr "(ganze Zahl)"
 
-#: ../templates/default/preferences.tpl:381
-#: ../templates/default/preferences.tpl:512
+#: ../templates/default/preferences.tpl:386
+#: ../templates/default/preferences.tpl:517
 msgid "Horizontal margins:"
 msgstr "Horizontaler Rand:"
 
-#: ../templates/default/preferences.tpl:386
-#: ../templates/default/preferences.tpl:522
+#: ../templates/default/preferences.tpl:391
+#: ../templates/default/preferences.tpl:527
 msgid "Horizontal spacing:"
 msgstr "Horizontaler Abstand:"
 
-#: ../templates/default/preferences.tpl:391
-#: ../templates/default/preferences.tpl:517
+#: ../templates/default/preferences.tpl:396
+#: ../templates/default/preferences.tpl:522
 msgid "Vertical spacing:"
 msgstr "Vertikaler Abstand:"
 
-#: ../templates/default/preferences.tpl:396
+#: ../templates/default/preferences.tpl:401
 msgid "Label width:"
 msgstr "Breite des Adressaufklebers:"
 
-#: ../templates/default/preferences.tpl:401
+#: ../templates/default/preferences.tpl:406
 msgid "Label height:"
 msgstr "Höhe des Addressaufklebers:"
 
-#: ../templates/default/preferences.tpl:406
+#: ../templates/default/preferences.tpl:411
 msgid "Number of label columns:"
 msgstr "Anzahl Spalten:"
 
-#: ../templates/default/preferences.tpl:411
+#: ../templates/default/preferences.tpl:416
 msgid "Number of label lines:"
 msgstr "Anzahl Zeilen pro Beschreibung:"
 
-#: ../templates/default/preferences.tpl:415
+#: ../templates/default/preferences.tpl:420
 msgid "Font size:"
 msgstr "Schriftgröße:"
 
-#: ../templates/default/preferences.tpl:422
+#: ../templates/default/preferences.tpl:427
 msgid "Cards generation parameters"
 msgstr "Parameter für Kartenerstellung"
 
-#: ../templates/default/preferences.tpl:424
+#: ../templates/default/preferences.tpl:429
 msgid "Short Text (Card Center):"
 msgstr "Kurztext (Kartenmitte):"
 
-#: ../templates/default/preferences.tpl:434
+#: ../templates/default/preferences.tpl:439
 msgid "(10 characters max)"
 msgstr "(max. 10 Zeichen)"
 
-#: ../templates/default/preferences.tpl:437
+#: ../templates/default/preferences.tpl:442
 msgid "Long Text (Bottom Line):"
 msgstr "Langer Text (Fusszeile):"
 
-#: ../templates/default/preferences.tpl:446
+#: ../templates/default/preferences.tpl:451
 msgid "(65 characters max)"
 msgstr "(max. 65 Zeichen)"
 
-#: ../templates/default/preferences.tpl:449
+#: ../templates/default/preferences.tpl:454
 msgid "Strip Text Color:"
 msgstr "Farbe des Streifentextes:"
 
-#: ../templates/default/preferences.tpl:450
 #: ../templates/default/preferences.tpl:455
 #: ../templates/default/preferences.tpl:460
 #: ../templates/default/preferences.tpl:465
+#: ../templates/default/preferences.tpl:470
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "HEX Code der Zahl: #RRGGBB"
 
-#: ../templates/default/preferences.tpl:454
+#: ../templates/default/preferences.tpl:459
 msgid "Active Member Color:"
 msgstr "Farbe des aktiven Mitglieds:"
 
-#: ../templates/default/preferences.tpl:459
+#: ../templates/default/preferences.tpl:464
 msgid "Board Members Color:"
 msgstr "Farbe für Vorstand:"
 
-#: ../templates/default/preferences.tpl:464
+#: ../templates/default/preferences.tpl:469
 msgid "Honor Members Color:"
 msgstr "Farbe für Ehrenmitglieder:"
 
-#: ../templates/default/preferences.tpl:471
+#: ../templates/default/preferences.tpl:476
 msgid "Current logo for printing"
 msgstr "Aktuelles Logo für den Druck"
 
-#: ../templates/default/preferences.tpl:477
+#: ../templates/default/preferences.tpl:482
 msgid "Allow members to print card ?"
 msgstr "Dürfen Mitglieder ihre Karte drucken ?"
 
-#: ../templates/default/preferences.tpl:479
+#: ../templates/default/preferences.tpl:484
 msgid "(Members will be able to generate their own member card)"
 msgstr "(Mitglieder können ihre eigenen Mitgliedsausweis erstellen)"
 
-#: ../templates/default/preferences.tpl:482
+#: ../templates/default/preferences.tpl:487
 msgid "Show title ?"
 msgstr "Titel anzeigen?"
 
-#: ../templates/default/preferences.tpl:484
+#: ../templates/default/preferences.tpl:489
 msgid "(Show or not title in front of name)"
 msgstr "(Anrede vor dem Namen zeigen oder nicht)"
 
-#: ../templates/default/preferences.tpl:487
+#: ../templates/default/preferences.tpl:492
 msgid "Address type:"
 msgstr "Adresstyp:"
 
-#: ../templates/default/preferences.tpl:490
+#: ../templates/default/preferences.tpl:495
 msgid "MSN"
 msgstr "MSN"
 
-#: ../templates/default/preferences.tpl:491
+#: ../templates/default/preferences.tpl:496
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../templates/default/preferences.tpl:492
+#: ../templates/default/preferences.tpl:497
 msgid "Web Site"
 msgstr "Website"
 
-#: ../templates/default/preferences.tpl:493
+#: ../templates/default/preferences.tpl:498
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../templates/default/preferences.tpl:494
+#: ../templates/default/preferences.tpl:499
 #: ../templates/default/ajax_members.tpl:9
 msgid "Zip - Town"
 msgstr "Postleitzahl - Stadt"
 
-#: ../templates/default/preferences.tpl:498
+#: ../templates/default/preferences.tpl:503
 msgid "(Choose address printed below name)"
 msgstr "(Wähle die Adresse, die unter dem Namen gedruckt werden soll)"
 
-#: ../templates/default/preferences.tpl:501
+#: ../templates/default/preferences.tpl:506
 msgid "Year:"
 msgstr "Jahr:"
 
-#: ../templates/default/preferences.tpl:502
+#: ../templates/default/preferences.tpl:507
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -5073,7 +5106,7 @@ msgstr ""
 "Schrägstrich als Trennzeichen,<br/>- die Zeichenkette 'Frist' zur Verwendung "
 "der Mitgliederfrist"
 
-#: ../templates/default/preferences.tpl:505
+#: ../templates/default/preferences.tpl:510
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
@@ -5081,30 +5114,30 @@ msgstr ""
 "Die Karten sind 75 mm breit und 40 mm hoch. Jede Seite besteht aus 2 Spalten "
 "und 6 Zeilen.<br/>Bitte prüfe die Ränder und Abstände ;)"
 
-#: ../templates/default/preferences.tpl:530
+#: ../templates/default/preferences.tpl:535
 msgid "Security parameters"
 msgstr "Sicherheitsparameter"
 
-#: ../templates/default/preferences.tpl:532
-#: ../templates/default/preferences.tpl:533
+#: ../templates/default/preferences.tpl:537
+#: ../templates/default/preferences.tpl:538
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 "Minimale Passwortlänge, die für alle Konten erforderlich ist. Mindestlänge "
 "beträgt 6 Zeichen."
 
-#: ../templates/default/preferences.tpl:532
+#: ../templates/default/preferences.tpl:537
 msgid "Password length:"
 msgstr "Passwortlänge:"
 
-#: ../templates/default/preferences.tpl:537
+#: ../templates/default/preferences.tpl:542
 msgid "Enable password blacklists"
 msgstr "Aktiviere Passwort-Sperrliste"
 
-#: ../templates/default/preferences.tpl:537
+#: ../templates/default/preferences.tpl:542
 msgid "Enable blacklists:"
 msgstr "Aktiviere Sperrlisten:"
 
-#: ../templates/default/preferences.tpl:538
+#: ../templates/default/preferences.tpl:543
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -5113,71 +5146,71 @@ msgstr ""
 "der Sperrliste zu verwenden. Eine List wird von Galette zur Verfügung "
 "gestellt, aber Sie können Ihre eigene Sperrliste hinzufügen."
 
-#: ../templates/default/preferences.tpl:542
+#: ../templates/default/preferences.tpl:547
 msgid "Enforce password strength"
 msgstr "Erzwinge Passwortlänge"
 
-#: ../templates/default/preferences.tpl:542
+#: ../templates/default/preferences.tpl:547
 msgid "Password strength:"
 msgstr "Passwortstärke:"
 
-#: ../templates/default/preferences.tpl:544
+#: ../templates/default/preferences.tpl:549
 msgid "Enforce minimal password strength for all password."
 msgstr "Erzwinge minimal Passwortstärke für alle Passwörter."
 
-#: ../templates/default/preferences.tpl:545
+#: ../templates/default/preferences.tpl:550
 msgid "Levels are:"
 msgstr "Stufen sind:"
 
-#: ../templates/default/preferences.tpl:546
+#: ../templates/default/preferences.tpl:551
 msgid "for no strength enforcement"
 msgstr "kein erzwingen von Passwortstärke"
 
-#: ../templates/default/preferences.tpl:547
-#: ../templates/default/preferences.tpl:556
+#: ../templates/default/preferences.tpl:552
+#: ../templates/default/preferences.tpl:561
 msgid "Weak"
 msgstr "Schwach"
 
-#: ../templates/default/preferences.tpl:547
+#: ../templates/default/preferences.tpl:552
 msgid "require at least one matched rule"
 msgstr "Mindestens eine übereinstimmende Regel erfordern"
 
-#: ../templates/default/preferences.tpl:548
-#: ../templates/default/preferences.tpl:557
+#: ../templates/default/preferences.tpl:553
+#: ../templates/default/preferences.tpl:562
 msgid "Medium"
 msgstr "Mittel"
 
-#: ../templates/default/preferences.tpl:548
+#: ../templates/default/preferences.tpl:553
 msgid "require at least two matched rules"
 msgstr "mindestens zwei übereinstimmende Regel erfordern"
 
-#: ../templates/default/preferences.tpl:549
-#: ../templates/default/preferences.tpl:558
+#: ../templates/default/preferences.tpl:554
+#: ../templates/default/preferences.tpl:563
 msgid "Strong"
 msgstr "Stark"
 
-#: ../templates/default/preferences.tpl:549
+#: ../templates/default/preferences.tpl:554
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "mindestens drei übereinstimmende Regeln erfordern (für die meisten "
 "Verwendenung empfohlen)"
 
-#: ../templates/default/preferences.tpl:550
+#: ../templates/default/preferences.tpl:555
 msgid "Very Strong"
 msgstr "Sehr stark"
 
-#: ../templates/default/preferences.tpl:550
+#: ../templates/default/preferences.tpl:555
 msgid "requires all rules."
 msgstr "Erzwingt alle Regeln."
 
-#: ../templates/default/preferences.tpl:551
+#: ../templates/default/preferences.tpl:556
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 msgstr ""
 "Regeln beinhalten Kleinbuchstaben, Großbuchstaben, Nummern und Sonderzeichen."
 
-#: ../templates/default/preferences.tpl:552
+#: ../templates/default/preferences.tpl:557
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
@@ -5186,35 +5219,35 @@ msgstr ""
 "seine/ihre persönlichen Informationen (Name, Login, ...) als Passwort "
 "verwenden kann."
 
-#: ../templates/default/preferences.tpl:555
+#: ../templates/default/preferences.tpl:560
 msgid "None (default)"
 msgstr "Kein Level (Standard)"
 
-#: ../templates/default/preferences.tpl:559
+#: ../templates/default/preferences.tpl:564
 msgid "Very strong"
 msgstr "Sehr stark"
 
-#: ../templates/default/preferences.tpl:563
-#: ../templates/default/preferences.tpl:564
+#: ../templates/default/preferences.tpl:568
+#: ../templates/default/preferences.tpl:569
 msgid "Test a password with current selected values."
 msgstr "Testen Sie ein Passwort mit aktuell ausgewählten Werten."
 
-#: ../templates/default/preferences.tpl:563
+#: ../templates/default/preferences.tpl:568
 msgid "Test a password:"
 msgstr "Passwort testen:"
 
-#: ../templates/default/preferences.tpl:564
+#: ../templates/default/preferences.tpl:569
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
 "Vergessen Sie nicht ihre Einstellungen zu sichern, wenn sie glücklich mit "
 "ihrem Ergebnis sind ;)"
 
-#: ../templates/default/preferences.tpl:572
+#: ../templates/default/preferences.tpl:577
 msgid "Admin account (independant of members)"
 msgstr "Administratorenkonto (unabhängig von Mitgliedern)"
 
-#: ../templates/default/preferences.tpl:603
+#: ../templates/default/preferences.tpl:608
 #: ../templates/default/ajouter_transaction.tpl:50
 #: ../templates/default/group.tpl:90
 #: ../templates/default/ajouter_contribution.tpl:42
@@ -5222,7 +5255,7 @@ msgstr "Administratorenkonto (unabhängig von Mitgliedern)"
 msgid "NB : The mandatory fields are in"
 msgstr "Hinweis: die benötigten Felder sind"
 
-#: ../templates/default/preferences.tpl:603
+#: ../templates/default/preferences.tpl:608
 #: ../templates/default/ajouter_transaction.tpl:50
 #: ../templates/default/group.tpl:90
 #: ../templates/default/ajouter_contribution.tpl:42
@@ -5230,23 +5263,23 @@ msgstr "Hinweis: die benötigten Felder sind"
 msgid "red"
 msgstr "Rot"
 
-#: ../templates/default/preferences.tpl:634
+#: ../templates/default/preferences.tpl:639
 msgid "Enter the email adress"
 msgstr "E-Mail-Adresse eingeben"
 
-#: ../templates/default/preferences.tpl:651
-#: ../templates/default/mailing_adherents.tpl:102
-#: ../templates/default/mailing_adherents.tpl:133
+#: ../templates/default/preferences.tpl:656
+#: ../templates/default/mailing_adherents.tpl:104
+#: ../templates/default/mailing_adherents.tpl:135
 #: ../templates/default/telemetry.tpl:13 ../templates/default/reminder.tpl:33
 msgid "Send"
 msgstr "Senden"
 
-#: ../templates/default/preferences.tpl:671
+#: ../templates/default/preferences.tpl:676
 msgid "An error occurred sending test email :("
 msgstr "Beim Senden von der Test-E-Mail ist ein Fehler aufgetreten :("
 
 #: ../templates/default/display_dynamic_fields.tpl:3
-#: ../templates/default/edit_dynamic_fields.tpl:82
+#: ../templates/default/edit_dynamic_fields.tpl:103
 msgid "Additionnal fields:"
 msgstr "Zusätzliche Felder:"
 
@@ -5260,15 +5293,15 @@ msgid "Show contributions by"
 msgstr "Zeige Beiträge von"
 
 #: ../templates/default/gestion_contributions.tpl:12
-#: ../templates/default/gestion_contributions.tpl:83
-#: ../templates/default/gestion_contributions.tpl:221
+#: ../templates/default/gestion_contributions.tpl:93
+#: ../templates/default/gestion_contributions.tpl:231
 #: ../templates/default/ajouter_transaction.tpl:85
 msgid "Begin"
 msgstr "Anfang"
 
 #: ../templates/default/gestion_contributions.tpl:13
-#: ../templates/default/gestion_contributions.tpl:94
-#: ../templates/default/gestion_contributions.tpl:222
+#: ../templates/default/gestion_contributions.tpl:104
+#: ../templates/default/gestion_contributions.tpl:232
 #: ../templates/default/ajouter_transaction.tpl:86
 msgid "End"
 msgstr "Ende"
@@ -5353,8 +5386,8 @@ msgstr "Sätze pro Seite:"
 msgid "Change"
 msgstr "Ändern"
 
-#: ../templates/default/gestion_contributions.tpl:72
-#: ../templates/default/gestion_contributions.tpl:220
+#: ../templates/default/gestion_contributions.tpl:82
+#: ../templates/default/gestion_contributions.tpl:230
 #: ../templates/default/attendance_sheet_details.tpl:24
 #: ../templates/default/gestion_mailings.tpl:60
 #: ../templates/default/gestion_mailings.tpl:128
@@ -5363,21 +5396,21 @@ msgstr "Ändern"
 #: ../templates/default/ajouter_transaction.tpl:84
 #: ../templates/default/import.tpl:26 ../templates/default/import.tpl:38
 #: ../templates/default/ajouter_contribution.tpl:27
-#: ../templates/default/gestion_transactions.tpl:49
-#: ../templates/default/gestion_transactions.tpl:106
+#: ../templates/default/gestion_transactions.tpl:59
+#: ../templates/default/gestion_transactions.tpl:116
 msgid "Date"
 msgstr "Datum"
 
-#: ../templates/default/gestion_contributions.tpl:106
-#: ../templates/default/gestion_contributions.tpl:224
+#: ../templates/default/gestion_contributions.tpl:116
+#: ../templates/default/gestion_contributions.tpl:234
 #: ../templates/default/history.tpl:14
 #: ../templates/default/ajouter_transaction.tpl:89
 #: ../templates/default/ajouter_contribution.tpl:28
 msgid "Member"
 msgstr "Mitglied"
 
-#: ../templates/default/gestion_contributions.tpl:118
-#: ../templates/default/gestion_contributions.tpl:232
+#: ../templates/default/gestion_contributions.tpl:128
+#: ../templates/default/gestion_contributions.tpl:256
 #: ../templates/default/ajouter_transaction.tpl:91
 #: ../templates/default/editer_champ.tpl:100
 #: ../templates/default/configurer_fiche_content.tpl:7
@@ -5386,112 +5419,122 @@ msgstr "Mitglied"
 msgid "Type"
 msgstr "Art"
 
-#: ../templates/default/gestion_contributions.tpl:151
-#: ../templates/default/gestion_contributions.tpl:235
+#: ../templates/default/gestion_contributions.tpl:161
+#: ../templates/default/gestion_contributions.tpl:259
 #: ../templates/default/ajouter_transaction.tpl:87
 msgid "Duration"
 msgstr "Dauer"
 
-#: ../templates/default/gestion_contributions.tpl:154
+#: ../templates/default/gestion_contributions.tpl:164
 #: ../templates/default/gestion_adherents.tpl:157
 #: ../templates/default/gestion_adherents.tpl:379
 #: ../templates/default/saved_searches.tpl:12
 #: ../templates/default/configurer_fiche_content.tpl:9
 #: ../templates/default/gestion_intitule_content.tpl:16
-#: ../templates/default/gestion_transactions.tpl:85
+#: ../templates/default/gestion_transactions.tpl:95
 #: ../templates/default/gestion_paymentstypes.tpl:10
 #: ../templates/default/gestion_titres.tpl:11
 msgid "Actions"
 msgstr "Aktionen"
 
-#: ../templates/default/gestion_contributions.tpl:162
+#: ../templates/default/gestion_contributions.tpl:172
 #, php-format
 msgid "Found contributions total %f"
 msgstr "Gefundene Beiträge in Summe %f"
 
-#: ../templates/default/gestion_contributions.tpl:192
-#: ../templates/default/gestion_contributions.tpl:206
+#: ../templates/default/gestion_contributions.tpl:202
+#: ../templates/default/gestion_contributions.tpl:216
 msgid "Contribution %id"
 msgstr "Beitrag %id"
 
-#: ../templates/default/gestion_contributions.tpl:201
-#: ../templates/default/gestion_contributions.tpl:210
+#: ../templates/default/gestion_contributions.tpl:211
+#: ../templates/default/gestion_contributions.tpl:220
 #, php-format
 msgid "Transaction: %s"
 msgstr "Transaktion: %s"
 
 #: ../templates/default/gestion_contributions.tpl:243
+#, fuzzy
+#| msgid "Show all members contributions"
+msgid "Show only '%name' contributions"
+msgstr "Zeige alle Beiträge des Mitglieds"
+
+#: ../templates/default/gestion_contributions.tpl:250
+msgid "Show '%name' card"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:267
 msgid "Print an invoice or a receipt (depending on contribution type)"
 msgstr "Rechnung oder Quittung drucken (vom Beitragstyp abhängig)"
 
-#: ../templates/default/gestion_contributions.tpl:251
+#: ../templates/default/gestion_contributions.tpl:275
 msgid "Edit the contribution"
 msgstr "Beitrag ändern"
 
-#: ../templates/default/gestion_contributions.tpl:258
+#: ../templates/default/gestion_contributions.tpl:282
 msgid "Delete the contribution"
 msgstr "Beitrag löschen"
 
-#: ../templates/default/gestion_contributions.tpl:265
+#: ../templates/default/gestion_contributions.tpl:289
 #: ../templates/default/ajouter_transaction.tpl:140
 msgid "no contribution"
 msgstr "keine Beiträge"
 
-#: ../templates/default/gestion_contributions.tpl:271
+#: ../templates/default/gestion_contributions.tpl:295
 #: ../templates/default/gestion_mailings.tpl:170
 #: ../templates/default/gestion_adherents.tpl:295
 #: ../templates/default/history.tpl:145
 #: ../templates/default/liste_membres.tpl:87
 #: ../templates/default/ajax_members.tpl:16
 #: ../templates/default/trombinoscope.tpl:28
-#: ../templates/default/gestion_transactions.tpl:148
+#: ../templates/default/gestion_transactions.tpl:158
 msgid "Pages:"
 msgstr "Seiten:"
 
-#: ../templates/default/gestion_contributions.tpl:276
+#: ../templates/default/gestion_contributions.tpl:300
 #: ../templates/default/gestion_adherents.tpl:299
 msgid "For the selection:"
 msgstr "Für die Auswahl:"
 
-#: ../templates/default/gestion_contributions.tpl:279
+#: ../templates/default/gestion_contributions.tpl:303
 #: ../templates/default/gestion_adherents.tpl:303
 #: ../templates/default/group.tpl:81
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../templates/default/gestion_contributions.tpl:286
-#: ../templates/default/gestion_contributions.tpl:287
+#: ../templates/default/gestion_contributions.tpl:310
+#: ../templates/default/gestion_contributions.tpl:311
 #: ../templates/default/gestion_adherents.tpl:351
 #: ../templates/default/gestion_adherents.tpl:352
-#: ../templates/default/gestion_transactions.tpl:152
-#: ../templates/default/gestion_transactions.tpl:153
+#: ../templates/default/gestion_transactions.tpl:162
+#: ../templates/default/gestion_transactions.tpl:163
 msgid "Legend"
 msgstr "Beschreibung"
 
-#: ../templates/default/gestion_contributions.tpl:294
+#: ../templates/default/gestion_contributions.tpl:318
 #: ../templates/default/gestion_adherents.tpl:385
 #: ../templates/default/voir_adherent.tpl:61
 msgid "Modification"
 msgstr "Ändern"
 
-#: ../templates/default/gestion_contributions.tpl:300
+#: ../templates/default/gestion_contributions.tpl:324
 #: ../templates/default/gestion_adherents.tpl:395
 msgid "Deletion"
 msgstr "Löschen"
 
-#: ../templates/default/gestion_contributions.tpl:305
+#: ../templates/default/gestion_contributions.tpl:329
 msgid "Contribution"
 msgstr "Beitrag"
 
-#: ../templates/default/gestion_contributions.tpl:309
+#: ../templates/default/gestion_contributions.tpl:333
 msgid "Gift"
 msgstr "Spende"
 
-#: ../templates/default/gestion_contributions.tpl:320
+#: ../templates/default/gestion_contributions.tpl:344
 msgid "No contribution selected"
 msgstr "Kein Beitrag ausgewählt"
 
-#: ../templates/default/gestion_contributions.tpl:320
+#: ../templates/default/gestion_contributions.tpl:344
 msgid ""
 "Please make sure to select at least one contribution from the list to "
 "perform this action."
@@ -5499,26 +5542,26 @@ msgstr ""
 "Bitte wählen Sie mindestens einen Beitrag aus der Liste aus, um diese Aktion "
 "auszuführen."
 
-#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_contributions.tpl:363
 #: ../templates/default/gestion_adherents.tpl:458
 msgid "(Un)Check all"
 msgstr "Alle aus-/abwählen"
 
-#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_contributions.tpl:363
 #: ../templates/default/gestion_adherents.tpl:458
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
-#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_contributions.tpl:363
 #: ../templates/default/gestion_adherents.tpl:458
-#: ../templates/default/gestion_transactions.tpl:170
-#: ../templates/default/gestion_transactions.tpl:174
+#: ../templates/default/gestion_transactions.tpl:180
+#: ../templates/default/gestion_transactions.tpl:184
 msgid "Show legend"
 msgstr "Legende anzeigen"
 
-#: ../templates/default/gestion_contributions.tpl:351
+#: ../templates/default/gestion_contributions.tpl:375
 #: ../templates/default/gestion_mailings.tpl:192
-#: ../templates/default/edit_dynamic_fields.tpl:200
+#: ../templates/default/edit_dynamic_fields.tpl:227
 #: ../templates/default/gestion_adherents.tpl:717
 #: ../templates/default/history.tpl:166
 #: ../templates/default/ajouter_transaction.tpl:253
@@ -5526,7 +5569,7 @@ msgstr "Legende anzeigen"
 #: ../templates/default/advanced_search.tpl:385
 #: ../templates/default/advanced_search.tpl:392
 #: ../templates/default/advanced_search.tpl:513
-#: ../templates/default/gestion_transactions.tpl:182
+#: ../templates/default/gestion_transactions.tpl:192
 #: ../templates/default/member.tpl:157 ../templates/default/member.tpl:165
 msgid "Select a date"
 msgstr "Wählen Sie ein Datum"
@@ -5545,7 +5588,7 @@ msgid "Sheet type"
 msgstr "Blatt Typ"
 
 #: ../templates/default/attendance_sheet_details.tpl:26
-#: ../templates/default/edit_dynamic_fields.tpl:44
+#: ../templates/default/edit_dynamic_fields.tpl:63
 #: ../templates/default/ajouter_transaction.tpl:26
 #: ../templates/default/ajouter_contribution.tpl:115
 #: ../templates/default/ajouter_contribution.tpl:127
@@ -5791,7 +5834,7 @@ msgid "Create new mailing"
 msgstr "Neue Mailkampagne erstellen"
 
 #: ../templates/default/gestion_mailings.tpl:208
-#: ../templates/default/mailing_adherents.tpl:186
+#: ../templates/default/mailing_adherents.tpl:188
 msgid "An error occurred displaying preview :("
 msgstr "Beim Anzeigen der Vorschau ist ein Fehler aufgetreten :("
 
@@ -5879,33 +5922,33 @@ msgid ""
 "action."
 msgstr "Bitte wählen Sie mindestens ein Feld aus der Liste für diese Aktion."
 
-#: ../templates/default/edit_dynamic_fields.tpl:34
+#: ../templates/default/edit_dynamic_fields.tpl:51
 msgid "Select an option"
 msgstr "Bitte wähle eine Option"
 
-#: ../templates/default/edit_dynamic_fields.tpl:54
+#: ../templates/default/edit_dynamic_fields.tpl:75
 msgid "new"
 msgstr "Neu"
 
-#: ../templates/default/edit_dynamic_fields.tpl:64
+#: ../templates/default/edit_dynamic_fields.tpl:85
 msgid "current"
 msgstr "aktuell"
 
-#: ../templates/default/edit_dynamic_fields.tpl:69
+#: ../templates/default/edit_dynamic_fields.tpl:90
 msgid "delete"
 msgstr "Löschen"
 
-#: ../templates/default/edit_dynamic_fields.tpl:116
+#: ../templates/default/edit_dynamic_fields.tpl:139
 msgid "Enter as many occurences you want."
 msgstr "Geben Sie die Anzahl der gewünschten Wiederholungen ein."
 
-#: ../templates/default/edit_dynamic_fields.tpl:124
-#: ../templates/default/edit_dynamic_fields.tpl:163
+#: ../templates/default/edit_dynamic_fields.tpl:147
+#: ../templates/default/edit_dynamic_fields.tpl:187
 #, php-format
 msgid "Enter up to %count more occurences."
 msgstr "Gib bis zu %count Wiederholungen ein."
 
-#: ../templates/default/edit_dynamic_fields.tpl:133
+#: ../templates/default/edit_dynamic_fields.tpl:157
 msgid "New occurence"
 msgstr "Neue Instanz"
 
@@ -5918,11 +5961,11 @@ msgid "You are about to proceed following changes for selected members:"
 msgstr ""
 "Du willst die folgenden Änderungen für die ausgewählten Mitglieder machen:"
 
-#: ../templates/default/mass_change_members.tpl:47
+#: ../templates/default/mass_change_members.tpl:49
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: ../templates/default/mass_change_members.tpl:47
+#: ../templates/default/mass_change_members.tpl:49
 msgid "OK"
 msgstr "OK"
 
@@ -6199,8 +6242,8 @@ msgid "Code:"
 msgstr "Code:"
 
 #: ../templates/default/500.tpl:21
-#: ../templates/default/mailing_adherents.tpl:86
-#: ../templates/default/mailing_adherents.tpl:117
+#: ../templates/default/mailing_adherents.tpl:88
+#: ../templates/default/mailing_adherents.tpl:119
 #: ../templates/default/reminder.tpl:45
 msgid "Message:"
 msgstr "Nachricht:"
@@ -6307,8 +6350,8 @@ msgstr "Welcher parametrisierte Export soll ausgeführt werden?"
 #: ../templates/default/export.tpl:75 ../templates/default/export.tpl:87
 #: ../templates/default/history.tpl:110 ../templates/default/history.tpl:130
 #: ../templates/default/plugins.tpl:8 ../templates/default/plugins.tpl:22
-#: ../templates/default/gestion_transactions.tpl:59
-#: ../templates/default/gestion_transactions.tpl:107
+#: ../templates/default/gestion_transactions.tpl:69
+#: ../templates/default/gestion_transactions.tpl:117
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -6461,9 +6504,9 @@ msgid "please create a member"
 msgstr "Bitte erstellen Sie ein Mitglied"
 
 #: ../templates/default/ajouter_transaction.tpl:175
-#: ../templates/default/mailing_adherents.tpl:219
-#: ../templates/default/mailing_adherents.tpl:265
-#: ../templates/default/mailing_adherents.tpl:321
+#: ../templates/default/mailing_adherents.tpl:221
+#: ../templates/default/mailing_adherents.tpl:267
+#: ../templates/default/mailing_adherents.tpl:323
 #: ../templates/default/gestion_groupes.tpl:203
 #: ../templates/default/gestion_groupes.tpl:263
 #: ../templates/default/gestion_groupes.tpl:316
@@ -6708,7 +6751,7 @@ msgid "Existing attachments:"
 msgstr "Vorhandene Anhänge:"
 
 #: ../templates/default/mailing_adherents.tpl:48
-#: ../templates/default/mailing_adherents.tpl:330
+#: ../templates/default/mailing_adherents.tpl:332
 msgid "Remove attachment"
 msgstr "Anhang entfernen"
 
@@ -6741,44 +6784,47 @@ msgid "other"
 msgstr "Sonstige(s)"
 
 #: ../templates/default/mailing_adherents.tpl:81
-#: ../templates/default/mailing_adherents.tpl:115
+#: ../templates/default/mailing_adherents.tpl:117
 msgid "Object:"
 msgstr "Zweck:"
 
-#: ../templates/default/mailing_adherents.tpl:85
-msgid "(De)Activate HTML editor"
-msgstr "HTML Editor (de)aktivieren"
+#: ../templates/default/mailing_adherents.tpl:86
+#: ../templates/default/common_scripts.tpl:70
+#, fuzzy
+#| msgid "Activate HTML editor?"
+msgid "Activate HTML editor"
+msgstr "HTML Editor aktivieren?"
 
-#: ../templates/default/mailing_adherents.tpl:91
+#: ../templates/default/mailing_adherents.tpl:93
 msgid "Interpret HTML"
 msgstr "HTML übersetzen"
 
-#: ../templates/default/mailing_adherents.tpl:94
+#: ../templates/default/mailing_adherents.tpl:96
 msgid "Preview"
 msgstr "Vorschau"
 
-#: ../templates/default/mailing_adherents.tpl:106
-#: ../templates/default/mailing_adherents.tpl:137
+#: ../templates/default/mailing_adherents.tpl:108
+#: ../templates/default/mailing_adherents.tpl:139
 msgid "Cancel mailing"
 msgstr "E-Mail-Versand abbrechen"
 
-#: ../templates/default/mailing_adherents.tpl:113
+#: ../templates/default/mailing_adherents.tpl:115
 msgid "Preview your mailing"
 msgstr "Vorschau der E-Mail-Kampagne"
 
-#: ../templates/default/mailing_adherents.tpl:129
+#: ../templates/default/mailing_adherents.tpl:131
 msgid "Modifiy mailing"
 msgstr "E-Mails anpassen"
 
-#: ../templates/default/mailing_adherents.tpl:226
+#: ../templates/default/mailing_adherents.tpl:228
 msgid "Members selection"
 msgstr "Mitgliedsauswahl"
 
-#: ../templates/default/mailing_adherents.tpl:330
+#: ../templates/default/mailing_adherents.tpl:332
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Wollen Sie diesen Anhang wirklich entfernen?"
 
-#: ../templates/default/mailing_adherents.tpl:330
+#: ../templates/default/mailing_adherents.tpl:332
 msgid "This will immediately remove attachment from disk and cannot be undo."
 msgstr "Anhang sofort entfernen, kann nicht rückgängig gemacht werden."
 
@@ -7000,6 +7046,13 @@ msgstr ""
 #: ../templates/default/trombinoscope.tpl:32
 msgid "No member to show"
 msgstr "Kein Mitglied anzuzeigen"
+
+#: ../templates/default/common_scripts.tpl:49
+#: ../templates/default/common_scripts.tpl:75
+#, fuzzy
+#| msgid "(De)Activate HTML editor"
+msgid "Deactivate HTML editor"
+msgstr "HTML Editor (de)aktivieren"
 
 #: ../templates/default/change_passwd.tpl:6
 msgid "New password:"
@@ -7521,32 +7574,32 @@ msgid_plural "%count transactions"
 msgstr[0] "%count Transation"
 msgstr[1] "%count Transaktionen"
 
-#: ../templates/default/gestion_transactions.tpl:62
-#: ../templates/default/gestion_transactions.tpl:109
+#: ../templates/default/gestion_transactions.tpl:72
+#: ../templates/default/gestion_transactions.tpl:119
 msgid "Originator"
 msgstr "Urheber"
 
-#: ../templates/default/gestion_transactions.tpl:102
+#: ../templates/default/gestion_transactions.tpl:112
 msgid "Transaction %id"
 msgstr "Transaktion %id"
 
-#: ../templates/default/gestion_transactions.tpl:129
+#: ../templates/default/gestion_transactions.tpl:139
 msgid "Edit transaction #%id"
 msgstr "Bearbeite Transaktion #%id"
 
-#: ../templates/default/gestion_transactions.tpl:136
+#: ../templates/default/gestion_transactions.tpl:146
 msgid "Remove transaction #%id"
 msgstr "Entferne Transaktion #%id"
 
-#: ../templates/default/gestion_transactions.tpl:142
+#: ../templates/default/gestion_transactions.tpl:152
 msgid "no transaction"
 msgstr "Keine Transation"
 
-#: ../templates/default/gestion_transactions.tpl:157
+#: ../templates/default/gestion_transactions.tpl:167
 msgid "Completely dispatched transaction"
 msgstr "Liste der abgeschlossenen Transaktionen"
 
-#: ../templates/default/gestion_transactions.tpl:161
+#: ../templates/default/gestion_transactions.tpl:171
 msgid "Uncomplete dispatched transaction"
 msgstr "Unvollständige Transaktion"
 
@@ -7640,7 +7693,7 @@ msgstr ""
 msgid "Send telemetry information"
 msgstr "Nutzungsdaten übermitteln"
 
-#: ../templates/default/telemetry.tpl:39
+#: ../templates/default/telemetry.tpl:42
 msgid "An error occurred sending telemetry information :("
 msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 

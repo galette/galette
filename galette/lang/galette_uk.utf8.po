@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2021-04-25 09:14+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-28 17:57+0200\n"
 "PO-Revision-Date: 2021-05-16 14:33+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -31,13 +31,13 @@ msgid "Transaction"
 msgstr "Переказ"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1144
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1127
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:111
 msgid "modification"
 msgstr "модифікація"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1146
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1129
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
 msgid "creation"
 msgstr "створення"
@@ -217,131 +217,131 @@ msgstr "Поле успішно переміщено"
 msgid "An error occurred moving field :("
 msgstr "Сталася помилка переміщення поля :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:155
+#: ../lib/Galette/Controllers/Crud/MembersController.php:156
 msgid "Subscription"
 msgstr "Підписка"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:249
-#: ../lib/Galette/Controllers/Crud/MembersController.php:455
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1103
+#: ../lib/Galette/Controllers/Crud/MembersController.php:250
+#: ../lib/Galette/Controllers/Crud/MembersController.php:456
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1086
 #: ../lib/Galette/Controllers/PdfController.php:120
 #: ../lib/Galette/Controllers/PdfController.php:288
 #: ../lib/Galette/Middleware/Authenticate.php:166
 msgid "You do not have permission for requested URL."
 msgstr "У Вас нема дозволу на запитувану URL-адресу."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:264
+#: ../lib/Galette/Controllers/Crud/MembersController.php:265
 msgid "No member #%id."
 msgstr "Нема члена з ID #%id."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:284
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1142
+#: ../lib/Galette/Controllers/Crud/MembersController.php:285
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1125
 msgid "Member Profile"
 msgstr "Профіль члена"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Members list"
 msgstr "Список членів"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#: ../lib/Galette/Controllers/Crud/MembersController.php:364
 msgid "Trombinoscope"
 msgstr "Дошка членів"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:509
+#: ../lib/Galette/Controllers/Crud/MembersController.php:510
 msgid "The file does not exists or cannot be read :("
 msgstr "Файл не існує або його неможливо прочитати :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:573
+#: ../lib/Galette/Controllers/Crud/MembersController.php:574
 msgid "Members management"
 msgstr "Управління членами"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:794
+#: ../lib/Galette/Controllers/Crud/MembersController.php:777
 msgid "Status label"
 msgstr "Підпис стану"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:834
+#: ../lib/Galette/Controllers/Crud/MembersController.php:817
 msgid "Advanced search"
 msgstr "Розширений пошук"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1053
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1036
 #: ../lib/Galette/Controllers/PdfController.php:154
 #: ../lib/Galette/Controllers/PdfController.php:235
 msgid "No member was selected, please check at least one name."
 msgstr "Жодного члена не вибрано. Будь ласка, перевірте принаймні одне ім’я."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1261
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1244
 #, php-format
 msgid "Mass change %count members"
 msgstr "Масова зміна %count членів"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1291
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1362
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1274
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1376
 msgid "Mass changes has not been confirmed!"
 msgstr "Масові зміни не підтверджено!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1332
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1345
 #, php-format
 msgid "Review mass change %count members"
 msgstr "Перегляньте масові зміни %count членів"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1391
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1435
 msgid "Nothing to do!"
 msgstr "Нічого немає!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1419
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1656
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1463
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1700
 msgid "An error occurred while storing the member."
 msgstr "Під час зберігання члена сталася помилка."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1431
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1475
 msgid "Something went wront during mass edition!"
 msgstr "Щось пішло не так під час масової правки!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1438
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1482
 #, php-format
 msgid "%count members has been changed successfully!"
 msgstr "%count членів успішно змінено!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1552
 msgid "Invalid captcha"
 msgstr "Тест на ботоподібність не пройдено"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1615
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1659
 msgid "Your account has been created!"
 msgstr "Ваш обліковий запис створено!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1620
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1664
 msgid "An email has been sent to you, check your inbox."
 msgstr "Вам надіслано повідомлення на е-пошту, перевірте \"Вхідні\"."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1623
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1667
 msgid "New member has been successfully added."
 msgstr "Нового члена успішно додано."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1626
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1670
 msgid "Member account has been modified."
 msgstr "Обліковий запис члена змінено."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1640
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1684
 msgid "An error occurred adding member to its groups."
 msgstr "Не вдалося додати члена до своїх груп."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1652
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1696
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Не вдалося додати члена до своїх груп як управника."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1668
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1712
 #: ../lib/Galette/Controllers/GaletteController.php:310
 #: ../lib/Galette/Controllers/GaletteController.php:342
 msgid "Delete failed"
 msgstr "Не вдалося видалити"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1837
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1881
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Видалити члена %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1846
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1890
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Ви збираєтеся видалити %count членів."
@@ -420,7 +420,7 @@ msgid "Membership fee"
 msgstr "Членський внесок"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
-#: ../lib/Galette/Entity/Contribution.php:1079
+#: ../lib/Galette/Entity/Contribution.php:1076
 msgid "Donation"
 msgstr "Пожертва"
 
@@ -665,7 +665,7 @@ msgid "No member selected to generate attendance sheet"
 msgstr "Жоден член не обраний для створення листа відвідуваності"
 
 #: ../lib/Galette/Controllers/PdfController.php:409
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:141
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:142
 msgid "Attendance sheet"
 msgstr "Лист відвідуваності"
 
@@ -695,8 +695,8 @@ msgstr "Недійсне посилання!"
 
 #: ../lib/Galette/Controllers/AuthController.php:88
 #: ../lib/Galette/Controllers/AuthController.php:148
-#: ../lib/Galette/Features/Replacements.php:302
-#: ../lib/Galette/Features/Replacements.php:342
+#: ../lib/Galette/Features/Replacements.php:322
+#: ../lib/Galette/Features/Replacements.php:362
 msgid "Login"
 msgstr "Вхід"
 
@@ -804,7 +804,7 @@ msgid "No password"
 msgstr "Немає пароля"
 
 #: ../lib/Galette/Controllers/AuthController.php:495
-#: ../lib/Galette/Entity/Adherent.php:1355
+#: ../lib/Galette/Entity/Adherent.php:1360
 msgid "- The passwords don't match!"
 msgstr "- Паролі не збігаються!"
 
@@ -876,7 +876,7 @@ msgid "Logs"
 msgstr "Журнали"
 
 #: ../lib/Galette/Controllers/HistoryController.php:150
-#: ../lib/Galette/Filters/TransactionsList.php:230
+#: ../lib/Galette/Filters/TransactionsList.php:231
 #: ../lib/Galette/Filters/HistoryList.php:241
 #: ../lib/Galette/Filters/MailingsList.php:235
 #: ../lib/Galette/Filters/ContributionsList.php:260
@@ -884,7 +884,7 @@ msgid "start date filter"
 msgstr "добірка дати початку"
 
 #: ../lib/Galette/Controllers/HistoryController.php:154
-#: ../lib/Galette/Filters/TransactionsList.php:233
+#: ../lib/Galette/Filters/TransactionsList.php:234
 #: ../lib/Galette/Filters/HistoryList.php:244
 #: ../lib/Galette/Filters/MailingsList.php:238
 #: ../lib/Galette/Filters/ContributionsList.php:263
@@ -1036,7 +1036,7 @@ msgid "Email: '%s' has been successfully modified."
 msgstr "Е-пошта: \"%s\" успішно змінено."
 
 #: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
-#: ../lib/Galette/Entity/Texts.php:209
+#: ../lib/Galette/Entity/Texts.php:211
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
@@ -1095,59 +1095,59 @@ msgstr "Ko"
 msgid "Database type unknown"
 msgstr "Невідомий тип бази даних"
 
-#: ../lib/Galette/Core/Install.php:678
+#: ../lib/Galette/Core/Install.php:683
 msgid "%version script has been successfully executed :)"
 msgstr "Скрипт %version успішно виконано :)"
 
-#: ../lib/Galette/Core/Install.php:690
+#: ../lib/Galette/Core/Install.php:695
 msgid "Unable to run %version update script :("
 msgstr "Неможливо запустити скрипт оновлення %version :("
 
-#: ../lib/Galette/Core/Install.php:1023
+#: ../lib/Galette/Core/Install.php:1036
 msgid "Write configuration file"
 msgstr "Записати файл конфігурації"
 
-#: ../lib/Galette/Core/Install.php:1052
+#: ../lib/Galette/Core/Install.php:1065
 msgid "Config file already exists and is up to date"
 msgstr "Файл конфігурації вже існує та оновлений"
 
-#: ../lib/Galette/Core/Install.php:1081
+#: ../lib/Galette/Core/Install.php:1094
 msgid "Unable to create configuration file (%path)"
 msgstr "Неможливо створити файл конфігурації (%path)"
 
-#: ../lib/Galette/Core/Install.php:1132
+#: ../lib/Galette/Core/Install.php:1145
 msgid "Preferences"
 msgstr "Налаштування"
 
-#: ../lib/Galette/Core/Install.php:1136
+#: ../lib/Galette/Core/Install.php:1149
 msgid "Contributions types"
 msgstr "Типи внесків"
 
-#: ../lib/Galette/Core/Install.php:1140
+#: ../lib/Galette/Core/Install.php:1153
 msgid "Status"
 msgstr "Стан"
 
-#: ../lib/Galette/Core/Install.php:1144
+#: ../lib/Galette/Core/Install.php:1157
 msgid "Fields config and categories"
 msgstr "Поля конфігурації та категорії"
 
-#: ../lib/Galette/Core/Install.php:1148 ../lib/Galette/Core/Install.php:1170
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Install.php:1183
 msgid "Mails texts"
 msgstr "Поштові тексти"
 
-#: ../lib/Galette/Core/Install.php:1152
+#: ../lib/Galette/Core/Install.php:1165
 msgid "Titles"
 msgstr "Заголовки"
 
-#: ../lib/Galette/Core/Install.php:1156
+#: ../lib/Galette/Core/Install.php:1169
 msgid "PDF Models"
 msgstr "Моделі PDF"
 
-#: ../lib/Galette/Core/Install.php:1162
+#: ../lib/Galette/Core/Install.php:1175
 msgid "Update preferences"
 msgstr "Налаштування оновлення"
 
-#: ../lib/Galette/Core/Install.php:1166
+#: ../lib/Galette/Core/Install.php:1179
 msgid "Update models"
 msgstr "Оновлення моделей"
 
@@ -1230,101 +1230,101 @@ msgstr "Суперадміністратор"
 msgid "Delete mailing entries"
 msgstr "Видалення записів розсилання"
 
-#: ../lib/Galette/Core/Preferences.php:499
+#: ../lib/Galette/Core/Preferences.php:504
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Ви повинні вказати ім'я відправника для е-пошт!"
 
-#: ../lib/Galette/Core/Preferences.php:505
+#: ../lib/Galette/Core/Preferences.php:510
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
 "для надсилання електронних листів!"
 
-#: ../lib/Galette/Core/Preferences.php:512
+#: ../lib/Galette/Core/Preferences.php:517
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Ви повинні вказати SMTP-сервер, який хочете використовувати!"
 
-#: ../lib/Galette/Core/Preferences.php:524
+#: ../lib/Galette/Core/Preferences.php:529
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- Ви повинні вказати логін для SMTP-автентифікації."
 
-#: ../lib/Galette/Core/Preferences.php:530
+#: ../lib/Galette/Core/Preferences.php:535
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- Ви повинні вказати пароль для SMTP-автентифікації."
 
-#: ../lib/Galette/Core/Preferences.php:542
+#: ../lib/Galette/Core/Preferences.php:547
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr "- Типове розширення членства та початок членства взаємозаперечні."
 
-#: ../lib/Galette/Core/Preferences.php:551
+#: ../lib/Galette/Core/Preferences.php:556
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Пропонування місяців сумісне лише з початком членства."
 
-#: ../lib/Galette/Core/Preferences.php:560
-#: ../lib/Galette/Entity/Adherent.php:1148
+#: ../lib/Galette/Core/Preferences.php:565
+#: ../lib/Galette/Entity/Adherent.php:1153
 #: ../lib/Galette/Entity/Transaction.php:337
 #: ../lib/Galette/Entity/Contribution.php:463
 #, php-format
 msgid "- Mandatory field %field empty."
 msgstr "- Обов’язкове поле %field порожнє."
 
-#: ../lib/Galette/Core/Preferences.php:568 ../webroot/installer.php:185
+#: ../lib/Galette/Core/Preferences.php:573 ../webroot/installer.php:185
 msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
 
-#: ../lib/Galette/Core/Preferences.php:581
+#: ../lib/Galette/Core/Preferences.php:586
 msgid "You have to select a staff member"
 msgstr "Ви повинні вибрати співробітника"
 
-#: ../lib/Galette/Core/Preferences.php:634
+#: ../lib/Galette/Core/Preferences.php:639
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Неприпустима адреса е-пошти: %s"
 
-#: ../lib/Galette/Core/Preferences.php:648
+#: ../lib/Galette/Core/Preferences.php:653
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Ім'я користувача повинно складатися щонайменше з 4 знаків!"
 
-#: ../lib/Galette/Core/Preferences.php:652
+#: ../lib/Galette/Core/Preferences.php:657
 msgid "- This username is already used by another member !"
 msgstr "- Це ім’я користувача вже використовується іншим членом!"
 
-#: ../lib/Galette/Core/Preferences.php:659
-#: ../lib/Galette/Core/Preferences.php:680
+#: ../lib/Galette/Core/Preferences.php:664
+#: ../lib/Galette/Core/Preferences.php:685
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Числа та міри мають бути цілими числами!"
 
-#: ../lib/Galette/Core/Preferences.php:714
+#: ../lib/Galette/Core/Preferences.php:719
 msgid "- Invalid number of months of membership extension."
 msgstr "- Неприпустима кількість місяців продовження членства."
 
-#: ../lib/Galette/Core/Preferences.php:720
+#: ../lib/Galette/Core/Preferences.php:725
 msgid "- Invalid format of beginning of membership."
 msgstr "- Неприпустимий формат початку членства."
 
-#: ../lib/Galette/Core/Preferences.php:724
+#: ../lib/Galette/Core/Preferences.php:729
 msgid "- Invalid date for beginning of membership."
 msgstr "- Неприпустима дата початку членства."
 
-#: ../lib/Galette/Core/Preferences.php:730
+#: ../lib/Galette/Core/Preferences.php:735
 msgid "- Invalid number of offered months."
 msgstr "- Неприпустима кількість запропонованих місяців."
 
-#: ../lib/Galette/Core/Preferences.php:735
+#: ../lib/Galette/Core/Preferences.php:740
 msgid "- Invalid year for cards."
 msgstr "- Неприпустимий рік для карток."
 
-#: ../lib/Galette/Core/Preferences.php:846
+#: ../lib/Galette/Core/Preferences.php:851
 msgid "%name association's %status"
 msgstr "%name - %status товариства"
 
-#: ../lib/Galette/Core/Preferences.php:1075
+#: ../lib/Galette/Core/Preferences.php:1080
 msgid "Current cards configuration may exceed page width!"
 msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
 
-#: ../lib/Galette/Core/Preferences.php:1086
+#: ../lib/Galette/Core/Preferences.php:1091
 msgid "Current cards configuration may exceed page height!"
 msgstr "Поточна конфігурація карток може перевищувати висоту сторінки!"
 
@@ -1383,17 +1383,17 @@ msgstr ""
 #: ../lib/Galette/Util/Password.php:267 ../lib/Galette/IO/MembersCsv.php:182
 #: ../lib/Galette/IO/MembersCsv.php:194 ../lib/Galette/IO/MembersCsv.php:206
 #: ../lib/Galette/IO/MembersCsv.php:218
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:89
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:121
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:176
-#: ../lib/Galette/Features/Replacements.php:466
-#: ../lib/Galette/Entity/Adherent.php:775
-#: ../lib/Galette/Entity/Adherent.php:793
-#: ../lib/Galette/Entity/Adherent.php:809
-#: ../lib/Galette/Entity/Adherent.php:1208
-#: ../lib/Galette/Entity/Adherent.php:1242
-#: ../lib/Galette/Entity/Adherent.php:1251
-#: ../lib/Galette/Entity/Adherent.php:1739
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:90
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:122
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:177
+#: ../lib/Galette/Features/Replacements.php:490
+#: ../lib/Galette/Entity/Adherent.php:778
+#: ../lib/Galette/Entity/Adherent.php:799
+#: ../lib/Galette/Entity/Adherent.php:814
+#: ../lib/Galette/Entity/Adherent.php:1213
+#: ../lib/Galette/Entity/Adherent.php:1247
+#: ../lib/Galette/Entity/Adherent.php:1256
+#: ../lib/Galette/Entity/Adherent.php:1744
 #: ../lib/Galette/Entity/Transaction.php:280
 #: ../lib/Galette/Entity/Transaction.php:289
 #: ../lib/Galette/Entity/Transaction.php:298
@@ -1405,17 +1405,17 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:382
 #: ../lib/Galette/Entity/Contribution.php:391
 #: ../lib/Galette/Entity/Contribution.php:544
-#: ../lib/Galette/Entity/Contribution.php:1158
-#: ../lib/Galette/Entity/Contribution.php:1255
-#: ../lib/Galette/Entity/Contribution.php:1264
-#: ../lib/Galette/Entity/Contribution.php:1273
+#: ../lib/Galette/Entity/Contribution.php:1155
+#: ../lib/Galette/Entity/Contribution.php:1252
+#: ../lib/Galette/Entity/Contribution.php:1261
+#: ../lib/Galette/Entity/Contribution.php:1270
 #: ../lib/Galette/Entity/ImportModel.php:213
 #: ../lib/Galette/Entity/SavedSearch.php:292
 #: ../lib/Galette/Entity/Group.php:616
-#: ../lib/Galette/Filters/TransactionsList.php:134
-#: ../lib/Galette/Filters/TransactionsList.php:216
-#: ../lib/Galette/Filters/TransactionsList.php:225
-#: ../lib/Galette/Filters/TransactionsList.php:254
+#: ../lib/Galette/Filters/TransactionsList.php:135
+#: ../lib/Galette/Filters/TransactionsList.php:217
+#: ../lib/Galette/Filters/TransactionsList.php:226
+#: ../lib/Galette/Filters/TransactionsList.php:255
 #: ../lib/Galette/Filters/HistoryList.php:150
 #: ../lib/Galette/Filters/HistoryList.php:227
 #: ../lib/Galette/Filters/HistoryList.php:236
@@ -1439,7 +1439,7 @@ msgstr "РР-мм-дд"
 msgid "Searches deleted (%list)"
 msgstr "Пошукові запити видалено (%list)"
 
-#: ../lib/Galette/Repository/Contributions.php:449
+#: ../lib/Galette/Repository/Contributions.php:452
 msgid "Contributions deleted (%list)"
 msgstr "Внески видалено (%list)"
 
@@ -1589,7 +1589,7 @@ msgid "Members by groups"
 msgstr "Члени за групами"
 
 #: ../lib/Galette/IO/PdfGroups.php:109
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:140
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 #: ../lib/Galette/IO/PdfMembersLabels.php:86
 #: ../lib/Galette/IO/PdfMembersCards.php:105
 msgid "Generated by Galette"
@@ -1600,8 +1600,8 @@ msgid "Managers:"
 msgstr "Менеджери:"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:185
-#: ../lib/Galette/Features/Replacements.php:238
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:186
+#: ../lib/Galette/Features/Replacements.php:258
 #: ../lib/Galette/Entity/PdfModel.php:411
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
@@ -1609,19 +1609,19 @@ msgid "Name"
 msgstr "Ім'я"
 
 #: ../lib/Galette/IO/PdfGroups.php:180
-#: ../lib/Galette/Features/Replacements.php:298
-#: ../lib/Galette/Features/Replacements.php:346
+#: ../lib/Galette/Features/Replacements.php:318
+#: ../lib/Galette/Features/Replacements.php:366
 msgid "Email"
 msgstr "Е-пошта"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
-#: ../lib/Galette/Features/Replacements.php:290
+#: ../lib/Galette/Features/Replacements.php:310
 #: ../lib/Galette/Entity/ListsConfig.php:225
 msgid "Phone"
 msgstr "Телефон"
 
 #: ../lib/Galette/IO/PdfGroups.php:182
-#: ../lib/Galette/Features/Replacements.php:294
+#: ../lib/Galette/Features/Replacements.php:314
 msgid "GSM"
 msgstr "GSM"
 
@@ -1630,76 +1630,78 @@ msgid "filtered_memberslist"
 msgstr "filtered_memberslist"
 
 #: ../lib/Galette/IO/MembersCsv.php:228
-#: ../lib/Galette/Features/Replacements.php:577
-#: ../lib/Galette/Entity/Adherent.php:1705
+#: ../lib/Galette/Features/Replacements.php:602
+#: ../lib/Galette/Entity/Adherent.php:1710
 msgid "Man"
 msgstr "Чоловік"
 
 #: ../lib/Galette/IO/MembersCsv.php:231
-#: ../lib/Galette/Features/Replacements.php:579
-#: ../lib/Galette/Entity/Adherent.php:1707
+#: ../lib/Galette/Features/Replacements.php:604
+#: ../lib/Galette/Entity/Adherent.php:1712
 msgid "Woman"
 msgstr "Жінка"
 
 #: ../lib/Galette/IO/MembersCsv.php:234
-#: ../lib/Galette/Features/Replacements.php:581
-#: ../lib/Galette/Entity/Adherent.php:1709
+#: ../lib/Galette/Features/Replacements.php:606
+#: ../lib/Galette/Entity/Adherent.php:1714
 msgid "Unspecified"
 msgstr "Невстановлено"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1666
+#: ../lib/Galette/Features/Replacements.php:724
+#: ../lib/Galette/Entity/Adherent.php:1671
 msgid "Yes"
 msgstr "Так"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1666
+#: ../lib/Galette/Features/Replacements.php:724
+#: ../lib/Galette/Entity/Adherent.php:1671
 msgid "No"
 msgstr "Ні"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:104
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:105
 msgid "attendance_sheet"
 msgstr "attendance_sheet"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:168
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:169
 msgid "%A, %B %#d%O %Y"
 msgstr "%A, %B %#d%O %Y"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:186
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:187
 msgid "Signature"
 msgstr "Підпис"
 
-#: ../lib/Galette/IO/Charts.php:141 ../lib/Galette/Filters/MembersList.php:297
+#: ../lib/Galette/IO/Charts.php:142 ../lib/Galette/Filters/MembersList.php:297
 msgid "Staff members"
 msgstr "Співробітники"
 
-#: ../lib/Galette/IO/Charts.php:177
+#: ../lib/Galette/IO/Charts.php:180
 msgid "Due free"
 msgstr "Належне безплатно"
 
-#: ../lib/Galette/IO/Charts.php:192
+#: ../lib/Galette/IO/Charts.php:198
 msgid "Never contribute"
 msgstr "Ніколи не робити внесок"
 
-#: ../lib/Galette/IO/Charts.php:214
+#: ../lib/Galette/IO/Charts.php:222
 msgid "Impending due dates"
 msgstr "Спливні строки"
 
-#: ../lib/Galette/IO/Charts.php:229
+#: ../lib/Galette/IO/Charts.php:240
 msgid "Up to date"
 msgstr "Наразі"
 
-#: ../lib/Galette/IO/Charts.php:244
+#: ../lib/Galette/IO/Charts.php:258
 msgid "Late"
 msgstr "Пізно"
 
-#: ../lib/Galette/IO/Charts.php:300
+#: ../lib/Galette/IO/Charts.php:314
 msgid "Individuals"
 msgstr "Фізичні особи"
 
-#: ../lib/Galette/IO/Charts.php:304
+#: ../lib/Galette/IO/Charts.php:318
 msgid "Companies"
 msgstr "Компанії"
 
@@ -1823,7 +1825,7 @@ msgid "File extension is not allowed, only %s files are."
 msgstr "Розширення файлів не дозволено, є лише %s файлів."
 
 #: ../lib/Galette/IO/FileTrait.php:494
-#: ../lib/Galette/Entity/DynamicsTrait.php:311
+#: ../lib/Galette/Entity/DynamicsTrait.php:305
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr "Файл завеликий. Найбільш допустимий розмір - %dKo"
@@ -1891,188 +1893,195 @@ msgstr "квитанція"
 msgid "invoice"
 msgstr "рахунок-фактура"
 
-#: ../lib/Galette/Features/Replacements.php:117
+#: ../lib/Galette/Features/Replacements.php:129
 #, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Мітка для динамічного поля \"%s\""
 
-#: ../lib/Galette/Features/Replacements.php:118
-#, php-format
-msgid "Input for dynamic field \"%s\""
+#: ../lib/Galette/Features/Replacements.php:132
+#, fuzzy, php-format
+#| msgid "Input for dynamic field \"%s\""
+msgid "Form entry for dynamic field \"%s\""
 msgstr "Вхід для динамічного поля \"%s\""
 
-#: ../lib/Galette/Features/Replacements.php:184
+#: ../lib/Galette/Features/Replacements.php:137
+#, fuzzy, php-format
+#| msgid "Label for dynamic field \"%s\""
+msgid "Value for dynamic field \"%s\""
+msgstr "Мітка для динамічного поля \"%s\""
+
+#: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation name"
 msgstr "Назва вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:188
+#: ../lib/Galette/Features/Replacements.php:208
 msgid "Your organisation slogan"
 msgstr "Слоган вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:192
-#: ../lib/Galette/Features/Replacements.php:196
+#: ../lib/Galette/Features/Replacements.php:212
+#: ../lib/Galette/Features/Replacements.php:216
 msgid "Your organisation address"
 msgstr "Адреса вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:196
+#: ../lib/Galette/Features/Replacements.php:216
 msgid "with break lines"
 msgstr "з лініями розриву"
 
-#: ../lib/Galette/Features/Replacements.php:200
+#: ../lib/Galette/Features/Replacements.php:220
 msgid "Your organisation website"
 msgstr "Вебсайт вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:204
+#: ../lib/Galette/Features/Replacements.php:224
 msgid "Your organisation logo"
 msgstr "Логотип Вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:208
+#: ../lib/Galette/Features/Replacements.php:228
 msgid "Current date (Y-m-d)"
 msgstr "Поточна дата (рік-міс-день)"
 
-#: ../lib/Galette/Features/Replacements.php:212
+#: ../lib/Galette/Features/Replacements.php:232
 msgid "Galette's login URI"
 msgstr "URI логіну Galette"
 
-#: ../lib/Galette/Features/Replacements.php:230
+#: ../lib/Galette/Features/Replacements.php:250
 #: ../lib/Galette/Entity/PdfModel.php:420
 msgid "Title"
 msgstr "Заголовок"
 
-#: ../lib/Galette/Features/Replacements.php:234
+#: ../lib/Galette/Features/Replacements.php:254
 msgid "Member's ID"
 msgstr "ID члена"
 
-#: ../lib/Galette/Features/Replacements.php:242
-#: ../lib/Galette/Features/Replacements.php:334
+#: ../lib/Galette/Features/Replacements.php:262
+#: ../lib/Galette/Features/Replacements.php:354
 msgid "Last name"
 msgstr "Прізвище"
 
-#: ../lib/Galette/Features/Replacements.php:246
-#: ../lib/Galette/Features/Replacements.php:338 ../includes/i18n.inc.php:330
+#: ../lib/Galette/Features/Replacements.php:266
+#: ../lib/Galette/Features/Replacements.php:358 ../includes/i18n.inc.php:330
 msgid "First name"
 msgstr "Ім'я"
 
-#: ../lib/Galette/Features/Replacements.php:250
+#: ../lib/Galette/Features/Replacements.php:270
 msgid "Nickname"
 msgstr "Позивний"
 
-#: ../lib/Galette/Features/Replacements.php:254
+#: ../lib/Galette/Features/Replacements.php:274
 msgid "Gender"
 msgstr "Стать"
 
-#: ../lib/Galette/Features/Replacements.php:258
+#: ../lib/Galette/Features/Replacements.php:278
 msgid "Birth date"
 msgstr "День народження"
 
-#: ../lib/Galette/Features/Replacements.php:262
+#: ../lib/Galette/Features/Replacements.php:282
 msgid "Birth place"
 msgstr "Місце народження"
 
-#: ../lib/Galette/Features/Replacements.php:266
+#: ../lib/Galette/Features/Replacements.php:286
 msgid "Profession"
 msgstr "Професія"
 
-#: ../lib/Galette/Features/Replacements.php:270
-#: ../lib/Galette/Features/Replacements.php:330
+#: ../lib/Galette/Features/Replacements.php:290
+#: ../lib/Galette/Features/Replacements.php:350
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Company name"
 msgstr "Назва компанії"
 
-#: ../lib/Galette/Features/Replacements.php:274
+#: ../lib/Galette/Features/Replacements.php:294
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Address"
 msgstr "Адреса"
 
-#: ../lib/Galette/Features/Replacements.php:278
+#: ../lib/Galette/Features/Replacements.php:298
 msgid "Zipcode"
 msgstr "ZIP-код"
 
-#: ../lib/Galette/Features/Replacements.php:282
+#: ../lib/Galette/Features/Replacements.php:302
 msgid "Town"
 msgstr "Місто"
 
-#: ../lib/Galette/Features/Replacements.php:286 ../includes/i18n.inc.php:327
+#: ../lib/Galette/Features/Replacements.php:306 ../includes/i18n.inc.php:327
 msgid "Country"
 msgstr "Країна"
 
-#: ../lib/Galette/Features/Replacements.php:306
+#: ../lib/Galette/Features/Replacements.php:326
 msgid "Member's main group"
 msgstr "Основна група члена"
 
-#: ../lib/Galette/Features/Replacements.php:310
+#: ../lib/Galette/Features/Replacements.php:330
 msgid "Member's groups (as list)"
 msgstr "Групи членів (як список)"
 
-#: ../lib/Galette/Features/Replacements.php:314
+#: ../lib/Galette/Features/Replacements.php:334
 msgid "Member state of dues"
 msgstr "Члени за станом внесків"
 
-#: ../lib/Galette/Features/Replacements.php:318
+#: ../lib/Galette/Features/Replacements.php:338
 msgid "Membership remaining days"
 msgstr "Днів членства залишилося"
 
-#: ../lib/Galette/Features/Replacements.php:322
+#: ../lib/Galette/Features/Replacements.php:342
 msgid "Membership expired since"
 msgstr "Членство закінчилось з"
 
-#: ../lib/Galette/Features/Replacements.php:368
+#: ../lib/Galette/Features/Replacements.php:388
 msgid "Contribution label"
 msgstr "Мітка внеску"
 
-#: ../lib/Galette/Features/Replacements.php:372
+#: ../lib/Galette/Features/Replacements.php:392
 msgid "Amount"
 msgstr "Сума"
 
-#: ../lib/Galette/Features/Replacements.php:376
+#: ../lib/Galette/Features/Replacements.php:396
 msgid "Amount (in letters)"
 msgstr "Кількість (як числівник)"
 
-#: ../lib/Galette/Features/Replacements.php:380
+#: ../lib/Galette/Features/Replacements.php:400
 msgid "Full date"
 msgstr "Повна дата"
 
-#: ../lib/Galette/Features/Replacements.php:384
+#: ../lib/Galette/Features/Replacements.php:404
 msgid "Contribution year"
 msgstr "Рік внеску"
 
-#: ../lib/Galette/Features/Replacements.php:388
+#: ../lib/Galette/Features/Replacements.php:408
 msgid "Comment"
 msgstr "Коментар"
 
-#: ../lib/Galette/Features/Replacements.php:392
+#: ../lib/Galette/Features/Replacements.php:412
 msgid "Begin date"
 msgstr "Дата початку"
 
-#: ../lib/Galette/Features/Replacements.php:396
+#: ../lib/Galette/Features/Replacements.php:416
 msgid "End date"
 msgstr "Дата завершення"
 
-#: ../lib/Galette/Features/Replacements.php:400
+#: ../lib/Galette/Features/Replacements.php:420
 msgid "Contribution id"
 msgstr "ID внеску"
 
-#: ../lib/Galette/Features/Replacements.php:404
+#: ../lib/Galette/Features/Replacements.php:424
 msgid "Payment type"
 msgstr "Вид оплати"
 
-#: ../lib/Galette/Features/Replacements.php:408
-#: ../lib/Galette/Entity/Contribution.php:1047
-#: ../lib/Galette/Entity/Texts.php:626
+#: ../lib/Galette/Features/Replacements.php:428
+#: ../lib/Galette/Entity/Contribution.php:1044
+#: ../lib/Galette/Entity/Texts.php:628
 #: ../lib/Galette/Entity/PdfContribution.php:89
 msgid "Contribution information"
 msgstr "Відомості про внесок"
 
-#: ../lib/Galette/Features/Replacements.php:585
-#: ../lib/Galette/Features/Replacements.php:586
+#: ../lib/Galette/Features/Replacements.php:610
+#: ../lib/Galette/Features/Replacements.php:611
 msgid "None"
 msgstr "Немає"
 
-#: ../lib/Galette/Features/Replacements.php:755
+#: ../lib/Galette/Features/Replacements.php:778
 msgid "Main information"
 msgstr "Контактні відомості"
 
-#: ../lib/Galette/Features/Replacements.php:760
+#: ../lib/Galette/Features/Replacements.php:783
 msgid "Member information"
 msgstr "Відомості про члена"
 
@@ -2141,129 +2150,135 @@ msgstr "Не вдалося оновити динамічний переклад
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr "Неможливо видалити старий динамічний переклад для поля %field :("
 
-#: ../lib/Galette/Entity/Adherent.php:769
+#: ../lib/Galette/Entity/Adherent.php:772
 msgid "Freed of dues"
 msgstr "Звільнений від внесків"
 
-#: ../lib/Galette/Entity/Adherent.php:781
+#: ../lib/Galette/Entity/Adherent.php:784
 #, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "Ніколи не робив унесків: зареєстровано %days днів тому (з %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:784
+#: ../lib/Galette/Entity/Adherent.php:787
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Never contributed"
 msgstr "Ніколи не робив унесків"
 
-#: ../lib/Galette/Entity/Adherent.php:787
+#: ../lib/Galette/Entity/Adherent.php:791
 msgid "Last day!"
 msgstr "Останній день!"
 
-#: ../lib/Galette/Entity/Adherent.php:799
+#: ../lib/Galette/Entity/Adherent.php:793
+#, fuzzy
+#| msgid "Last day!"
+msgid "Late since today!"
+msgstr "Останній день!"
+
+#: ../lib/Galette/Entity/Adherent.php:805
 #, php-format
 msgid "Late of %days days (since %date)"
 msgstr "Кінець %days днів (починаючи з %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:802
+#: ../lib/Galette/Entity/Adherent.php:808
 msgid "No longer member"
 msgstr "Більше не є членом"
 
-#: ../lib/Galette/Entity/Adherent.php:814
+#: ../lib/Galette/Entity/Adherent.php:819
 #, php-format
 msgid "%days days remaining (ending on %date)"
 msgstr "%days днів, що залишилися (закінчується %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:1225
+#: ../lib/Galette/Entity/Adherent.php:1230
 msgid "- Birthdate must be set in the past!"
 msgstr "- Дата народження повинна бути встановлена раніше!"
 
-#: ../lib/Galette/Entity/Adherent.php:1233
+#: ../lib/Galette/Entity/Adherent.php:1238
 msgid "- Members must be less than 200 years old (currently %years)!"
 msgstr "- Членам має бути менше ніж 200 років (зараз %years)!"
 
-#: ../lib/Galette/Entity/Adherent.php:1254
+#: ../lib/Galette/Entity/Adherent.php:1259
 #: ../lib/Galette/Entity/Transaction.php:301
 #: ../lib/Galette/Entity/DynamicsTrait.php:202
 #: ../lib/Galette/Entity/Contribution.php:394
-#: ../lib/Galette/Entity/Contribution.php:1276
+#: ../lib/Galette/Entity/Contribution.php:1273
 #, php-format
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Неправильний формат дати (%date_format) для %field!"
 
-#: ../lib/Galette/Entity/Adherent.php:1272
+#: ../lib/Galette/Entity/Adherent.php:1277
 msgid "- Non-valid E-Mail address!"
 msgstr "- Недійсна адреса е-пошти!"
 
-#: ../lib/Galette/Entity/Adherent.php:1289
+#: ../lib/Galette/Entity/Adherent.php:1294
 msgid "- This E-Mail address is already used by another member!"
 msgstr "- Ця адреса е-пошти вже використовується іншим членом!"
 
-#: ../lib/Galette/Entity/Adherent.php:1296
-#: ../lib/Galette/Entity/Adherent.php:1344
+#: ../lib/Galette/Entity/Adherent.php:1301
+#: ../lib/Galette/Entity/Adherent.php:1349
 msgid "An error has occurred while looking if login already exists."
 msgstr "Сталася помилка під час перегляду, якщо логін вже існує."
 
-#: ../lib/Galette/Entity/Adherent.php:1304
+#: ../lib/Galette/Entity/Adherent.php:1309
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr "- Недійсна адреса вебсайту! Можливо, ви пропустили http://?"
 
-#: ../lib/Galette/Entity/Adherent.php:1313
+#: ../lib/Galette/Entity/Adherent.php:1318
 msgid "- The username must be composed of at least %i characters!"
 msgstr "- Ім'я користувача має складатися принаймні з %i символів!"
 
-#: ../lib/Galette/Entity/Adherent.php:1318
+#: ../lib/Galette/Entity/Adherent.php:1323
 msgid "- The username cannot contain the @ character"
 msgstr "- Ім'я користувача не може містити символ @"
 
-#: ../lib/Galette/Entity/Adherent.php:1337
+#: ../lib/Galette/Entity/Adherent.php:1342
 msgid "- This username is already in use, please choose another one!"
 msgstr "- Це ім'я користувача вже використовується, будь ласка, виберіть інше!"
 
-#: ../lib/Galette/Entity/Adherent.php:1360
+#: ../lib/Galette/Entity/Adherent.php:1365
 msgid "Password misrepeated: "
 msgstr "Пароль введено неправильно: "
 
-#: ../lib/Galette/Entity/Adherent.php:1394
+#: ../lib/Galette/Entity/Adherent.php:1399
 msgid "Status #%id does not exists in database."
 msgstr "Стан #%id не існує в базі даних."
 
-#: ../lib/Galette/Entity/Adherent.php:1403
+#: ../lib/Galette/Entity/Adherent.php:1408
 msgid "An error has occurred while looking if status does exists."
 msgstr "Під час перевірки наявності стану сталася помилка."
 
-#: ../lib/Galette/Entity/Adherent.php:1410
+#: ../lib/Galette/Entity/Adherent.php:1415
 msgid "Gender %gender does not exists!"
 msgstr "Статі %gender не існує!"
 
-#: ../lib/Galette/Entity/Adherent.php:1514
+#: ../lib/Galette/Entity/Adherent.php:1519
 msgid "Self_subscription as a member: "
 msgstr "Self_subscription як член:"
 
-#: ../lib/Galette/Entity/Adherent.php:1520
+#: ../lib/Galette/Entity/Adherent.php:1525
 msgid "Member card added"
 msgstr "Картку члена додано"
 
-#: ../lib/Galette/Entity/Adherent.php:1528
+#: ../lib/Galette/Entity/Adherent.php:1533
 msgid "Fail to add new member."
 msgstr "Не вдалося додати нового члена."
 
-#: ../lib/Galette/Entity/Adherent.php:1560
+#: ../lib/Galette/Entity/Adherent.php:1565
 msgid "Member card updated"
 msgstr "Картку члена оновлено"
 
-#: ../lib/Galette/Entity/Adherent.php:1669
+#: ../lib/Galette/Entity/Adherent.php:1674
 msgid "Active"
 msgstr "Діяльний"
 
-#: ../lib/Galette/Entity/Adherent.php:1669
+#: ../lib/Galette/Entity/Adherent.php:1674
 msgid "Inactive"
 msgstr "Незадіяний"
 
-#: ../lib/Galette/Entity/Adherent.php:1897
+#: ../lib/Galette/Entity/Adherent.php:1902
 msgid " (%age years old)"
 msgstr " (вік: %age)"
 
-#: ../lib/Galette/Entity/Adherent.php:1970
+#: ../lib/Galette/Entity/Adherent.php:1975
 msgid "Duplicated from %name (%id)"
 msgstr "Повторюється з %name (%id)"
 
@@ -2383,11 +2398,11 @@ msgstr "Не вдалося додати новий внесок."
 msgid "Contribution updated"
 msgstr "Внесок оновлено"
 
-#: ../lib/Galette/Entity/Contribution.php:1049
+#: ../lib/Galette/Entity/Contribution.php:1046
 msgid "Script output"
 msgstr "Вивід скрипту"
 
-#: ../lib/Galette/Entity/Contribution.php:1077
+#: ../lib/Galette/Entity/Contribution.php:1074
 msgid "Membership"
 msgstr "Членство"
 
@@ -2407,31 +2422,31 @@ msgstr "Не вдалося видалити цю мітку: вона все щ
 msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr "Ви не можете видалити заголовки \"Пан\" або \"Пані\"!"
 
-#: ../lib/Galette/Entity/Texts.php:119
+#: ../lib/Galette/Entity/Texts.php:121
 msgid "Insert a carriage return"
 msgstr "Вставити зворотну каретку"
 
-#: ../lib/Galette/Entity/Texts.php:123
+#: ../lib/Galette/Entity/Texts.php:125
 msgid "Insert a new blank line"
 msgstr "Вставити новий порожній рядок"
 
-#: ../lib/Galette/Entity/Texts.php:127
+#: ../lib/Galette/Entity/Texts.php:129
 msgid "Link validity"
 msgstr "Строк дії посилання"
 
-#: ../lib/Galette/Entity/Texts.php:132
+#: ../lib/Galette/Entity/Texts.php:134
 msgid "Direct link for member card download"
 msgstr "Пряме посилання для завантаження картки члена"
 
-#: ../lib/Galette/Entity/Texts.php:137
+#: ../lib/Galette/Entity/Texts.php:139
 msgid "Direct link for invoice/receipt download"
 msgstr "Пряме посилання для завантаження рахунку-фактури/квитанції"
 
-#: ../lib/Galette/Entity/Texts.php:142
+#: ../lib/Galette/Entity/Texts.php:144
 msgid "Galette's change password URI"
 msgstr "URI зміни пароля Galette"
 
-#: ../lib/Galette/Entity/Texts.php:633
+#: ../lib/Galette/Entity/Texts.php:635
 msgid "Mail specific"
 msgstr "Специфічне для пошти"
 
@@ -2655,8 +2670,8 @@ msgstr ""
 #, php-format
 msgid "New account email sent to admin for '%s'."
 msgstr ""
-"Нове повідомлення е-пошти облікового запису надіслано адміністратору для \"%"
-"s\"."
+"Нове повідомлення е-пошти облікового запису надіслано адміністратору для \"%s"
+"\"."
 
 #: ../lib/Galette/Events/MemberListener.php:323
 msgid "Account modification email sent to admin."
@@ -2716,8 +2731,8 @@ msgstr "Адміністратори"
 msgid "Non members"
 msgstr "Не члени"
 
-#: ../lib/Galette/Filters/TransactionsList.php:186
-#: ../lib/Galette/Filters/TransactionsList.php:223
+#: ../lib/Galette/Filters/TransactionsList.php:187
+#: ../lib/Galette/Filters/TransactionsList.php:224
 #: ../lib/Galette/Filters/HistoryList.php:197
 #: ../lib/Galette/Filters/HistoryList.php:234
 #: ../lib/Galette/Filters/MailingsList.php:191
@@ -2727,8 +2742,8 @@ msgstr "Не члени"
 msgid "Y"
 msgstr "РР"
 
-#: ../lib/Galette/Filters/TransactionsList.php:202
-#: ../lib/Galette/Filters/TransactionsList.php:224
+#: ../lib/Galette/Filters/TransactionsList.php:203
+#: ../lib/Galette/Filters/TransactionsList.php:225
 #: ../lib/Galette/Filters/HistoryList.php:213
 #: ../lib/Galette/Filters/HistoryList.php:235
 #: ../lib/Galette/Filters/MailingsList.php:207
@@ -2738,7 +2753,7 @@ msgstr "РР"
 msgid "Y-m"
 msgstr "РР-ММ"
 
-#: ../lib/Galette/Filters/TransactionsList.php:243
+#: ../lib/Galette/Filters/TransactionsList.php:244
 #: ../lib/Galette/Filters/HistoryList.php:254
 #: ../lib/Galette/Filters/MailingsList.php:248
 #: ../lib/Galette/Filters/ContributionsList.php:273
@@ -3248,9 +3263,8 @@ msgstr ""
 "{ASSO_NAME}.{NEWLINE}Тепер можна наживо стежити за станом своєї підписки й "
 "оновлювати свої налаштування з вебінтерфейсу.{NEWLINE}Будь ласка, увійдіть "
 "за цією адресою, щоб встановити новий пароль :{BR}{CHG_PWD_URI}{NEWLINE}Ім'я "
-"користувача: {LOGIN}{BR}Наведене вище посилання дійсне до "
-"{LINK_VALIDITY}.{NEWLINE}Бувайте!{NEWLINE}(Це повідомлення було надіслано "
-"автоматично)"
+"користувача: {LOGIN}{BR}Наведене вище посилання дійсне до {LINK_VALIDITY}."
+"{NEWLINE}Бувайте!{NEWLINE}(Це повідомлення було надіслано автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:43
 msgid "New user registration"
@@ -3265,10 +3279,10 @@ msgid ""
 "automatically)"
 msgstr ""
 "Вітання,{NEWLINE}Хтось (мабуть, ви) попросив відновити ваш пароль.{NEWLINE}"
-"Будь ласка, увійдіть за цією адресою, щоб встановити новий пароль "
-":{BR}{CHG_PWD_URI}{NEWLINE}Ім'я користувача: {LOGIN}{BR}Наведене вище "
-"посилання дійсне до {LINK_VALIDITY}.{NEWLINE}Бувайте!{NEWLINE}(Це "
-"повідомлення було надіслано автоматично)"
+"Будь ласка, увійдіть за цією адресою, щоб встановити новий пароль :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Ім'я користувача: {LOGIN}{BR}Наведене вище посилання "
+"дійсне до {LINK_VALIDITY}.{NEWLINE}Бувайте!{NEWLINE}(Це повідомлення було "
+"надіслано автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:51
 msgid "Lost password email"
@@ -3288,8 +3302,8 @@ msgid ""
 msgstr ""
 "Вітання,{NEWLINE}Ваш внесок успішно враховано {ASSO_NAME}.{NEWLINE}Він діє "
 "до {DEADLINE}.{NEWLINE}Тепер ви можете увійти та переглянути або змінити "
-"свої особисті дані за допомогою ідентифікаторів Galette за цією "
-"адресою:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Бувайте!{NEWLINE}(Це "
+"свої особисті дані за допомогою ідентифікаторів Galette за цією адресою:{BR}"
+"{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Бувайте!{NEWLINE}(Це "
 "повідомлення надіслано автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:59
@@ -3363,8 +3377,8 @@ msgid ""
 msgstr ""
 "Вітання!{NEWLINE}Ваш обліковий запис на {ASSO_NAME} (з логіном '{LOGIN}') "
 "було змінено адміністратором або співробітником.{NEWLINE}Ви можете увійти за "
-"посиланням {LOGIN_URI}, щоб переглянути зміни та/або редагувати "
-"їх.{NEWLINE}Бувайте!{NEWLINE}(це повідомлення надіслано автоматично)"
+"посиланням {LOGIN_URI}, щоб переглянути зміни та/або редагувати їх.{NEWLINE}"
+"Бувайте!{NEWLINE}(це повідомлення надіслано автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:91
 msgid "Informs user that his account has been modified"
@@ -3397,8 +3411,9 @@ msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Вітання,{NEWLINE}Ваше членство в {ASSO_NAME} припиниться через {DAYS_EXPIRED}"
-" днів.{NEWLINE}Бувайте!{NEWLINE}(це повідомлення було надіслано автоматично)"
+"Вітання,{NEWLINE}Ваше членство в {ASSO_NAME} припиниться через "
+"{DAYS_EXPIRED} днів.{NEWLINE}Бувайте!{NEWLINE}(це повідомлення було "
+"надіслано автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:107
 msgid "Late due date"
@@ -3414,9 +3429,9 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"Вітання,{NEWLINE}Ваша пожертва до {ASSO_NAME} успішно "
-"збережена.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Дякуємо!{NEWLINE}(це повідомлення "
-"було надіслано автоматично)"
+"Вітання,{NEWLINE}Ваша пожертва до {ASSO_NAME} успішно збережена.{NEWLINE}"
+"{CONTRIB_INFO}{NEWLINE}Дякуємо!{NEWLINE}(це повідомлення було надіслано "
+"автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:115
 msgid "Receipt send for new donations"
@@ -3447,8 +3462,8 @@ msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Вітання!{NEWLINE}{NAME_ADH} змінив(ла) свій обліковий "
-"запис.{NEWLINE}Бувайте!{NEWLINE}(це повідомлення було надіслано автоматично)"
+"Вітання!{NEWLINE}{NAME_ADH} змінив(ла) свій обліковий запис.{NEWLINE}Бувайте!"
+"{NEWLINE}(це повідомлення було надіслано автоматично)"
 
 #: ../includes/fields_defs/texts_fields.php:131
 msgid "Informs admin a member edit his information"
@@ -3531,7 +3546,7 @@ msgid "Retype password:"
 msgstr "Введіть пароль ще раз:"
 
 #: ../install/steps/admin.php:58 ../install/steps/db_install.php:82
-#: ../install/steps/db_select_version.php:134
+#: ../install/steps/db_select_version.php:136
 #: ../install/steps/db_checks.php:241 ../install/steps/galette.php:81
 #: ../install/steps/check.php:166 ../install/steps/db.php:110
 #: ../install/steps/type.php:65
@@ -3564,7 +3579,7 @@ msgid "Retry"
 msgstr "Повторити"
 
 #: ../install/steps/db_install.php:93 ../install/steps/db_select_version.php:61
-#: ../install/steps/db_select_version.php:135
+#: ../install/steps/db_select_version.php:137
 #: ../install/steps/db_checks.php:250 ../install/steps/galette.php:92
 #: ../install/steps/db.php:111 ../install/steps/type.php:66
 msgid "Back"
@@ -3614,15 +3629,15 @@ msgstr ""
 msgid "Your current Galette version is..."
 msgstr "Ваша поточна версія Galette..."
 
-#: ../install/steps/db_select_version.php:105
+#: ../install/steps/db_select_version.php:106
 msgid "older than %version"
 msgstr "старіша за %version"
 
-#: ../install/steps/db_select_version.php:108
+#: ../install/steps/db_select_version.php:109
 msgid "comprised between"
 msgstr "що міститься між"
 
-#: ../install/steps/db_select_version.php:109
+#: ../install/steps/db_select_version.php:110
 msgid "and"
 msgstr "і"
 
@@ -4021,14 +4036,14 @@ msgstr ""
 
 #: ../templates/default/edit_paymenttype.tpl:15
 #: ../templates/default/editer_intitule.tpl:40
-#: ../templates/default/preferences.tpl:600
+#: ../templates/default/preferences.tpl:605
 #: ../templates/default/gestion_textes.tpl:43
 #: ../templates/default/gestion_adherents.tpl:77
 #: ../templates/default/gestion_adherents.tpl:98
 #: ../templates/default/config_lists.tpl:57
 #: ../templates/default/ajouter_transaction.tpl:45
 #: ../templates/default/group.tpl:76 ../templates/default/editer_champ.tpl:72
-#: ../templates/default/mailing_adherents.tpl:98
+#: ../templates/default/mailing_adherents.tpl:100
 #: ../templates/default/edit_title.tpl:19
 #: ../templates/default/gestion_pdf_content.tpl:51
 #: ../templates/default/ajouter_contribution.tpl:170
@@ -4375,8 +4390,8 @@ msgstr ""
 "головній сторінці та в заголовку сторінок."
 
 #: ../templates/default/preferences.tpl:34
-#: ../templates/default/preferences.tpl:432
-#: ../templates/default/preferences.tpl:444
+#: ../templates/default/preferences.tpl:437
+#: ../templates/default/preferences.tpl:449
 #: ../templates/default/gestion_paymentstypes.tpl:61
 #, php-format
 msgid "Translate '%s'"
@@ -4395,7 +4410,7 @@ msgstr ""
 "колонтитулі кожної сторінки"
 
 #: ../templates/default/preferences.tpl:44
-#: ../templates/default/preferences.tpl:469
+#: ../templates/default/preferences.tpl:474
 msgid "Logo:"
 msgstr "Логотип:"
 
@@ -4404,7 +4419,7 @@ msgid "Current logo"
 msgstr "Поточний логотип"
 
 #: ../templates/default/preferences.tpl:47
-#: ../templates/default/preferences.tpl:472
+#: ../templates/default/preferences.tpl:477
 #: ../templates/default/forms_types/picture.tpl:10
 msgid "Delete image"
 msgstr "Видалити зображення"
@@ -4625,11 +4640,11 @@ msgid ""
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
 msgstr ""
-"Уведіть скрипт URI, який буде викликаний після додавання нового "
-"внеску.<br>Скрипт URI повинен бути префіксовано одним з '<em>Galette://</"
-"em>' для внутрішнього виклику Galette. '<em>file://</em>' для прямого "
-"виклику файлу, '<em>get://</em>' чи '<em>post://</em>' для викликів HTTP ("
-"префікс буде замінено на http:// в обох випадках)."
+"Уведіть скрипт URI, який буде викликаний після додавання нового внеску."
+"<br>Скрипт URI повинен бути префіксовано одним з '<em>Galette://</em>' для "
+"внутрішнього виклику Galette. '<em>file://</em>' для прямого виклику файлу, "
+"'<em>get://</em>' чи '<em>post://</em>' для викликів HTTP (префікс буде "
+"замінено на http:// в обох випадках)."
 
 #: ../templates/default/preferences.tpl:233
 msgid "RSS feed URL"
@@ -4668,7 +4683,7 @@ msgid "Mail settings"
 msgstr "Налаштування пошти"
 
 #: ../templates/default/preferences.tpl:252
-#: ../templates/default/preferences.tpl:574
+#: ../templates/default/preferences.tpl:579
 #: ../templates/default/plugins.tpl:102
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
@@ -4722,10 +4737,28 @@ msgstr ""
 "або редагує свій обліковий запис"
 
 #: ../templates/default/preferences.tpl:288
+#, fuzzy
+#| msgid "Send reminders to late members"
+msgid "Send email to members?"
+msgstr "Надіслати нагадування спізнілим членам"
+
+#: ../templates/default/preferences.tpl:289
+#, fuzzy
+#| msgid ""
+#| "Sends an email each time a new member registers online or edit his/her "
+#| "account"
+msgid ""
+"Sends an email each time a member card or a contribution has been added or "
+"edited. This can be disabled for each case."
+msgstr ""
+"Надсилає повідомлення е-пошти щоразу, коли новий член реєструється в мережі "
+"або редагує свій обліковий запис"
+
+#: ../templates/default/preferences.tpl:293
 msgid "Wrap emails text?"
 msgstr "Переносити текст е-пошти?"
 
-#: ../templates/default/preferences.tpl:289
+#: ../templates/default/preferences.tpl:294
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
@@ -4735,60 +4768,60 @@ msgstr ""
 "функцію, обов'язково загорніть текст самостійно. Зверніть увагу, що на "
 "поточне редагування розсилання зміни не вплинуть."
 
-#: ../templates/default/preferences.tpl:294
+#: ../templates/default/preferences.tpl:299
 msgid "Activate HTML editor?"
 msgstr "Задіяти редактор HTML?"
 
-#: ../templates/default/preferences.tpl:295
+#: ../templates/default/preferences.tpl:300
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Чи слід задіяти редактор HTML під час завантаження сторінки?"
 
-#: ../templates/default/preferences.tpl:299
+#: ../templates/default/preferences.tpl:304
 msgid "Emailing method:"
 msgstr "Спосіб розсилання е-поштлю:"
 
-#: ../templates/default/preferences.tpl:302
+#: ../templates/default/preferences.tpl:307
 msgid "Emailing disabled"
 msgstr "Розсилання е-поштою вимкнено"
 
-#: ../templates/default/preferences.tpl:305
+#: ../templates/default/preferences.tpl:310
 msgid "PHP mail() function"
 msgstr "Функція PHP mail()"
 
-#: ../templates/default/preferences.tpl:308
+#: ../templates/default/preferences.tpl:313
 msgid "Using a SMTP server (slower)"
 msgstr "Використовувати сервер SMTP (повільніше)"
 
-#: ../templates/default/preferences.tpl:311
+#: ../templates/default/preferences.tpl:316
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Використання GMAIL як SMTP-сервера (повільніше)"
 
-#: ../templates/default/preferences.tpl:314
+#: ../templates/default/preferences.tpl:319
 msgid "Using Sendmail server"
 msgstr "Використовувати сервер Sendmail"
 
-#: ../templates/default/preferences.tpl:317
+#: ../templates/default/preferences.tpl:322
 msgid "Using QMAIL server"
 msgstr "Використовувати сервер QMAIL"
 
-#: ../templates/default/preferences.tpl:327
-#: ../templates/default/preferences.tpl:634
+#: ../templates/default/preferences.tpl:332
+#: ../templates/default/preferences.tpl:639
 msgid "Test email settings"
 msgstr "Перевірка налаштувань е-пошти"
 
-#: ../templates/default/preferences.tpl:332
+#: ../templates/default/preferences.tpl:337
 msgid "SMTP server:"
 msgstr "SMTP-сервер:"
 
-#: ../templates/default/preferences.tpl:336
+#: ../templates/default/preferences.tpl:341
 msgid "SMTP port:"
 msgstr "SMTP-порт:"
 
-#: ../templates/default/preferences.tpl:340
+#: ../templates/default/preferences.tpl:345
 msgid "Use SMTP authentication?"
 msgstr "Використовувати автентифікацію SMTP?"
 
-#: ../templates/default/preferences.tpl:341
+#: ../templates/default/preferences.tpl:346
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
@@ -4797,11 +4830,11 @@ msgstr ""
 "вказати ім'я користувача та пароль нижче. Для GMail автентифікація завжди "
 "буде увімкнена."
 
-#: ../templates/default/preferences.tpl:345
+#: ../templates/default/preferences.tpl:350
 msgid "Use TLS for SMTP?"
 msgstr "Використовувати TLS для SMTP?"
 
-#: ../templates/default/preferences.tpl:346
+#: ../templates/default/preferences.tpl:351
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -4809,11 +4842,11 @@ msgstr ""
 "Ви хочете використовувати можливості TLS сервера?<br>Для GMail це завжди "
 "буде увімкнено."
 
-#: ../templates/default/preferences.tpl:350
+#: ../templates/default/preferences.tpl:355
 msgid "Allow unsecure TLS?"
 msgstr "Дозволити незахищений TLS?"
 
-#: ../templates/default/preferences.tpl:351
+#: ../templates/default/preferences.tpl:356
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
@@ -4822,19 +4855,19 @@ msgstr ""
 "ваш сервер використовує самопідписаний сертифікат, а також у деяких інших "
 "випадках."
 
-#: ../templates/default/preferences.tpl:357
+#: ../templates/default/preferences.tpl:362
 msgid "SMTP (or GMail) user:"
 msgstr "Користувач SMTP (або GMail):"
 
-#: ../templates/default/preferences.tpl:361
+#: ../templates/default/preferences.tpl:366
 msgid "SMTP (or GMail) password:"
 msgstr "Пароль SMTP (або GMail) :"
 
-#: ../templates/default/preferences.tpl:366
+#: ../templates/default/preferences.tpl:371
 msgid "Mail signature"
 msgstr "Поштовий підпис"
 
-#: ../templates/default/preferences.tpl:367
+#: ../templates/default/preferences.tpl:372
 msgid ""
 "The text that will be automatically set as signature for all outgoing emails."
 "<br/>Variables are quoted with braces, are upper case, and will be replaced "
@@ -4845,170 +4878,170 @@ msgstr ""
 "регістрі та замінюються автоматично.<br>Пошукайте у документації, щоб знати, "
 "які змінні ARA доступні. "
 
-#: ../templates/default/preferences.tpl:374
+#: ../templates/default/preferences.tpl:379
 msgid "Label generation parameters"
 msgstr "Параметри утворення мітки"
 
-#: ../templates/default/preferences.tpl:376
-#: ../templates/default/preferences.tpl:507
+#: ../templates/default/preferences.tpl:381
+#: ../templates/default/preferences.tpl:512
 msgid "Vertical margins:"
 msgstr "Вертикальні поля:"
 
-#: ../templates/default/preferences.tpl:378
 #: ../templates/default/preferences.tpl:383
 #: ../templates/default/preferences.tpl:388
 #: ../templates/default/preferences.tpl:393
 #: ../templates/default/preferences.tpl:398
 #: ../templates/default/preferences.tpl:403
 #: ../templates/default/preferences.tpl:408
-#: ../templates/default/preferences.tpl:417
-#: ../templates/default/preferences.tpl:509
+#: ../templates/default/preferences.tpl:413
+#: ../templates/default/preferences.tpl:422
 #: ../templates/default/preferences.tpl:514
 #: ../templates/default/preferences.tpl:519
 #: ../templates/default/preferences.tpl:524
+#: ../templates/default/preferences.tpl:529
 msgid "(Integer)"
 msgstr "(Ціле число)"
 
-#: ../templates/default/preferences.tpl:381
-#: ../templates/default/preferences.tpl:512
+#: ../templates/default/preferences.tpl:386
+#: ../templates/default/preferences.tpl:517
 msgid "Horizontal margins:"
 msgstr "Горизонтальні поля:"
 
-#: ../templates/default/preferences.tpl:386
-#: ../templates/default/preferences.tpl:522
+#: ../templates/default/preferences.tpl:391
+#: ../templates/default/preferences.tpl:527
 msgid "Horizontal spacing:"
 msgstr "Поземний інтервал:"
 
-#: ../templates/default/preferences.tpl:391
-#: ../templates/default/preferences.tpl:517
+#: ../templates/default/preferences.tpl:396
+#: ../templates/default/preferences.tpl:522
 msgid "Vertical spacing:"
 msgstr "Вертикальний інтервал:"
 
-#: ../templates/default/preferences.tpl:396
+#: ../templates/default/preferences.tpl:401
 msgid "Label width:"
 msgstr "Ширина мітки:"
 
-#: ../templates/default/preferences.tpl:401
+#: ../templates/default/preferences.tpl:406
 msgid "Label height:"
 msgstr "Висота мітки:"
 
-#: ../templates/default/preferences.tpl:406
+#: ../templates/default/preferences.tpl:411
 msgid "Number of label columns:"
 msgstr "Кількість стовпців міток:"
 
-#: ../templates/default/preferences.tpl:411
+#: ../templates/default/preferences.tpl:416
 msgid "Number of label lines:"
 msgstr "Кількість рядків міток:"
 
-#: ../templates/default/preferences.tpl:415
+#: ../templates/default/preferences.tpl:420
 msgid "Font size:"
 msgstr "Розмір шрифту:"
 
-#: ../templates/default/preferences.tpl:422
+#: ../templates/default/preferences.tpl:427
 msgid "Cards generation parameters"
 msgstr "Параметри утворення карток"
 
-#: ../templates/default/preferences.tpl:424
+#: ../templates/default/preferences.tpl:429
 msgid "Short Text (Card Center):"
 msgstr "Короткий текст (Картковий центр):"
 
-#: ../templates/default/preferences.tpl:434
+#: ../templates/default/preferences.tpl:439
 msgid "(10 characters max)"
 msgstr "(Не більше 10 знаків)"
 
-#: ../templates/default/preferences.tpl:437
+#: ../templates/default/preferences.tpl:442
 msgid "Long Text (Bottom Line):"
 msgstr "Довгий текст (нижній рядок):"
 
-#: ../templates/default/preferences.tpl:446
+#: ../templates/default/preferences.tpl:451
 msgid "(65 characters max)"
 msgstr "(не більше 65 знаків)"
 
-#: ../templates/default/preferences.tpl:449
+#: ../templates/default/preferences.tpl:454
 msgid "Strip Text Color:"
 msgstr "Колір тексту смуги:"
 
-#: ../templates/default/preferences.tpl:450
 #: ../templates/default/preferences.tpl:455
 #: ../templates/default/preferences.tpl:460
 #: ../templates/default/preferences.tpl:465
+#: ../templates/default/preferences.tpl:470
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "Шістнадцяткове позначення кольорів: #RRGGBB"
 
-#: ../templates/default/preferences.tpl:454
+#: ../templates/default/preferences.tpl:459
 msgid "Active Member Color:"
 msgstr "Активний колір члена:"
 
-#: ../templates/default/preferences.tpl:459
+#: ../templates/default/preferences.tpl:464
 msgid "Board Members Color:"
 msgstr "Колір членів ради:"
 
-#: ../templates/default/preferences.tpl:464
+#: ../templates/default/preferences.tpl:469
 msgid "Honor Members Color:"
 msgstr "Колір почесних членів:"
 
-#: ../templates/default/preferences.tpl:471
+#: ../templates/default/preferences.tpl:476
 msgid "Current logo for printing"
 msgstr "Поточний логотип для друку"
 
-#: ../templates/default/preferences.tpl:477
+#: ../templates/default/preferences.tpl:482
 msgid "Allow members to print card ?"
 msgstr "Дозволити членам друкувати картку?"
 
-#: ../templates/default/preferences.tpl:479
+#: ../templates/default/preferences.tpl:484
 msgid "(Members will be able to generate their own member card)"
 msgstr "(Члени зможуть створити власну картку члена)"
 
-#: ../templates/default/preferences.tpl:482
+#: ../templates/default/preferences.tpl:487
 msgid "Show title ?"
 msgstr "Показувати заголовок?"
 
-#: ../templates/default/preferences.tpl:484
+#: ../templates/default/preferences.tpl:489
 msgid "(Show or not title in front of name)"
 msgstr "(Показувати заголовок перед іменем чи ні)"
 
-#: ../templates/default/preferences.tpl:487
+#: ../templates/default/preferences.tpl:492
 msgid "Address type:"
 msgstr "Тип адреси:"
 
-#: ../templates/default/preferences.tpl:490
+#: ../templates/default/preferences.tpl:495
 msgid "MSN"
 msgstr "MSN"
 
-#: ../templates/default/preferences.tpl:491
+#: ../templates/default/preferences.tpl:496
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../templates/default/preferences.tpl:492
+#: ../templates/default/preferences.tpl:497
 msgid "Web Site"
 msgstr "Вебсайт"
 
-#: ../templates/default/preferences.tpl:493
+#: ../templates/default/preferences.tpl:498
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../templates/default/preferences.tpl:494
+#: ../templates/default/preferences.tpl:499
 #: ../templates/default/ajax_members.tpl:9
 msgid "Zip - Town"
 msgstr "ZIP - Місто"
 
-#: ../templates/default/preferences.tpl:498
+#: ../templates/default/preferences.tpl:503
 msgid "(Choose address printed below name)"
 msgstr "(Виберіть адресу, надруковану під назвою)"
 
-#: ../templates/default/preferences.tpl:501
+#: ../templates/default/preferences.tpl:506
 msgid "Year:"
 msgstr "Рік:"
 
-#: ../templates/default/preferences.tpl:502
+#: ../templates/default/preferences.tpl:507
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
-"Ви можете ввести:<br>- рік,<br>- два роки зі скісною рискою як "
-"роздільником,<br>- рядок 'DEADLINE' для використання крайнього строку члена"
+"Ви можете ввести:<br>- рік,<br>- два роки зі скісною рискою як роздільником,"
+"<br>- рядок 'DEADLINE' для використання крайнього строку члена"
 
-#: ../templates/default/preferences.tpl:505
+#: ../templates/default/preferences.tpl:510
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
@@ -5016,30 +5049,30 @@ msgstr ""
 "Кожна картка має ширину 75 мм і висоту 40 мм. Кожна сторінка містить 2 "
 "стовпчики та 6 рядків.<br/>Подвійні контрольні поля та проміжки;)"
 
-#: ../templates/default/preferences.tpl:530
+#: ../templates/default/preferences.tpl:535
 msgid "Security parameters"
 msgstr "Параметри безпеки"
 
-#: ../templates/default/preferences.tpl:532
-#: ../templates/default/preferences.tpl:533
+#: ../templates/default/preferences.tpl:537
+#: ../templates/default/preferences.tpl:538
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 "Щонайменша довжина пароля, необхідна для всіх облікових записів. Щонайменший "
 "розмір - 6."
 
-#: ../templates/default/preferences.tpl:532
+#: ../templates/default/preferences.tpl:537
 msgid "Password length:"
 msgstr "Довжина пароля:"
 
-#: ../templates/default/preferences.tpl:537
+#: ../templates/default/preferences.tpl:542
 msgid "Enable password blacklists"
 msgstr "Увімкнути чорні списки паролів"
 
-#: ../templates/default/preferences.tpl:537
+#: ../templates/default/preferences.tpl:542
 msgid "Enable blacklists:"
 msgstr "Увімкнути чорні списки:"
 
-#: ../templates/default/preferences.tpl:538
+#: ../templates/default/preferences.tpl:543
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -5048,63 +5081,63 @@ msgstr ""
 "неможливим. Список надається разом з Galette, але ви можете додати свій "
 "власний."
 
-#: ../templates/default/preferences.tpl:542
+#: ../templates/default/preferences.tpl:547
 msgid "Enforce password strength"
 msgstr "Посилення надійності паролю"
 
-#: ../templates/default/preferences.tpl:542
+#: ../templates/default/preferences.tpl:547
 msgid "Password strength:"
 msgstr "Надійність паролю:"
 
-#: ../templates/default/preferences.tpl:544
+#: ../templates/default/preferences.tpl:549
 msgid "Enforce minimal password strength for all password."
 msgstr "Забезпечте щонайменшу надійність пароля для всіх паролів."
 
-#: ../templates/default/preferences.tpl:545
+#: ../templates/default/preferences.tpl:550
 msgid "Levels are:"
 msgstr "Рівні:"
 
-#: ../templates/default/preferences.tpl:546
+#: ../templates/default/preferences.tpl:551
 msgid "for no strength enforcement"
 msgstr "без примусового виконання"
 
-#: ../templates/default/preferences.tpl:547
-#: ../templates/default/preferences.tpl:556
+#: ../templates/default/preferences.tpl:552
+#: ../templates/default/preferences.tpl:561
 msgid "Weak"
 msgstr "Слабкий"
 
-#: ../templates/default/preferences.tpl:547
+#: ../templates/default/preferences.tpl:552
 msgid "require at least one matched rule"
 msgstr "вимагає принаймні одного відповідного правила"
 
-#: ../templates/default/preferences.tpl:548
-#: ../templates/default/preferences.tpl:557
+#: ../templates/default/preferences.tpl:553
+#: ../templates/default/preferences.tpl:562
 msgid "Medium"
 msgstr "Середній"
 
-#: ../templates/default/preferences.tpl:548
+#: ../templates/default/preferences.tpl:553
 msgid "require at least two matched rules"
 msgstr "вимагає принаймні двох відповідних правил"
 
-#: ../templates/default/preferences.tpl:549
-#: ../templates/default/preferences.tpl:558
+#: ../templates/default/preferences.tpl:554
+#: ../templates/default/preferences.tpl:563
 msgid "Strong"
 msgstr "Сильний"
 
-#: ../templates/default/preferences.tpl:549
+#: ../templates/default/preferences.tpl:554
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "вимагає принаймні трьох відповідних правил (пораджено для більшості випадків)"
 
-#: ../templates/default/preferences.tpl:550
+#: ../templates/default/preferences.tpl:555
 msgid "Very Strong"
 msgstr "Дуже сильний"
 
-#: ../templates/default/preferences.tpl:550
+#: ../templates/default/preferences.tpl:555
 msgid "requires all rules."
 msgstr "вимагає всіх правил."
 
-#: ../templates/default/preferences.tpl:551
+#: ../templates/default/preferences.tpl:556
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
@@ -5112,7 +5145,7 @@ msgstr ""
 "Правила включають знаки нижнього регістру, великого регістру, цифр та "
 "спеціальних символів."
 
-#: ../templates/default/preferences.tpl:552
+#: ../templates/default/preferences.tpl:557
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
@@ -5120,33 +5153,33 @@ msgstr ""
 "Зверніть увагу, що при будь-якому рівні дотримання користувач не може "
 "використовувати свої особисті відомості (ім'я, логін, ...) в якості пароля."
 
-#: ../templates/default/preferences.tpl:555
+#: ../templates/default/preferences.tpl:560
 msgid "None (default)"
 msgstr "Немає (типово)"
 
-#: ../templates/default/preferences.tpl:559
+#: ../templates/default/preferences.tpl:564
 msgid "Very strong"
 msgstr "Дуже сильний"
 
-#: ../templates/default/preferences.tpl:563
-#: ../templates/default/preferences.tpl:564
+#: ../templates/default/preferences.tpl:568
+#: ../templates/default/preferences.tpl:569
 msgid "Test a password with current selected values."
 msgstr "Перевірка пароля з поточними вибраними значеннями."
 
-#: ../templates/default/preferences.tpl:563
+#: ../templates/default/preferences.tpl:568
 msgid "Test a password:"
 msgstr "Перевірка пароля:"
 
-#: ../templates/default/preferences.tpl:564
+#: ../templates/default/preferences.tpl:569
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr "Не забудьте зберегти свої налаштування, якщо задоволені результатом ;)"
 
-#: ../templates/default/preferences.tpl:572
+#: ../templates/default/preferences.tpl:577
 msgid "Admin account (independant of members)"
 msgstr "Обліковий запис адміністратора (незалежно від членів)"
 
-#: ../templates/default/preferences.tpl:603
+#: ../templates/default/preferences.tpl:608
 #: ../templates/default/ajouter_transaction.tpl:50
 #: ../templates/default/group.tpl:90
 #: ../templates/default/ajouter_contribution.tpl:42
@@ -5154,7 +5187,7 @@ msgstr "Обліковий запис адміністратора (незале
 msgid "NB : The mandatory fields are in"
 msgstr "NB: Обов’язкові поля вказані в"
 
-#: ../templates/default/preferences.tpl:603
+#: ../templates/default/preferences.tpl:608
 #: ../templates/default/ajouter_transaction.tpl:50
 #: ../templates/default/group.tpl:90
 #: ../templates/default/ajouter_contribution.tpl:42
@@ -5162,24 +5195,24 @@ msgstr "NB: Обов’язкові поля вказані в"
 msgid "red"
 msgstr "червоний"
 
-#: ../templates/default/preferences.tpl:634
+#: ../templates/default/preferences.tpl:639
 msgid "Enter the email adress"
 msgstr "Уведіть адресу е-пошти"
 
-#: ../templates/default/preferences.tpl:651
-#: ../templates/default/mailing_adherents.tpl:102
-#: ../templates/default/mailing_adherents.tpl:133
+#: ../templates/default/preferences.tpl:656
+#: ../templates/default/mailing_adherents.tpl:104
+#: ../templates/default/mailing_adherents.tpl:135
 #: ../templates/default/telemetry.tpl:13 ../templates/default/reminder.tpl:33
 msgid "Send"
 msgstr "Надіслати"
 
-#: ../templates/default/preferences.tpl:671
+#: ../templates/default/preferences.tpl:676
 msgid "An error occurred sending test email :("
 msgstr ""
 "Сталася помилка під час надсилання перевіркового повідомлення е-пошти :("
 
 #: ../templates/default/display_dynamic_fields.tpl:3
-#: ../templates/default/edit_dynamic_fields.tpl:82
+#: ../templates/default/edit_dynamic_fields.tpl:103
 msgid "Additionnal fields:"
 msgstr "Додаткові поля:"
 
@@ -5193,15 +5226,15 @@ msgid "Show contributions by"
 msgstr "Показати внески за"
 
 #: ../templates/default/gestion_contributions.tpl:12
-#: ../templates/default/gestion_contributions.tpl:83
-#: ../templates/default/gestion_contributions.tpl:221
+#: ../templates/default/gestion_contributions.tpl:93
+#: ../templates/default/gestion_contributions.tpl:231
 #: ../templates/default/ajouter_transaction.tpl:85
 msgid "Begin"
 msgstr "Початок"
 
 #: ../templates/default/gestion_contributions.tpl:13
-#: ../templates/default/gestion_contributions.tpl:94
-#: ../templates/default/gestion_contributions.tpl:222
+#: ../templates/default/gestion_contributions.tpl:104
+#: ../templates/default/gestion_contributions.tpl:232
 #: ../templates/default/ajouter_transaction.tpl:86
 msgid "End"
 msgstr "Кінець"
@@ -5287,8 +5320,8 @@ msgstr "Записів на сторінці:"
 msgid "Change"
 msgstr "Змінити"
 
-#: ../templates/default/gestion_contributions.tpl:72
-#: ../templates/default/gestion_contributions.tpl:220
+#: ../templates/default/gestion_contributions.tpl:82
+#: ../templates/default/gestion_contributions.tpl:230
 #: ../templates/default/attendance_sheet_details.tpl:24
 #: ../templates/default/gestion_mailings.tpl:60
 #: ../templates/default/gestion_mailings.tpl:128
@@ -5297,21 +5330,21 @@ msgstr "Змінити"
 #: ../templates/default/ajouter_transaction.tpl:84
 #: ../templates/default/import.tpl:26 ../templates/default/import.tpl:38
 #: ../templates/default/ajouter_contribution.tpl:27
-#: ../templates/default/gestion_transactions.tpl:49
-#: ../templates/default/gestion_transactions.tpl:106
+#: ../templates/default/gestion_transactions.tpl:59
+#: ../templates/default/gestion_transactions.tpl:116
 msgid "Date"
 msgstr "Дата"
 
-#: ../templates/default/gestion_contributions.tpl:106
-#: ../templates/default/gestion_contributions.tpl:224
+#: ../templates/default/gestion_contributions.tpl:116
+#: ../templates/default/gestion_contributions.tpl:234
 #: ../templates/default/history.tpl:14
 #: ../templates/default/ajouter_transaction.tpl:89
 #: ../templates/default/ajouter_contribution.tpl:28
 msgid "Member"
 msgstr "Член"
 
-#: ../templates/default/gestion_contributions.tpl:118
-#: ../templates/default/gestion_contributions.tpl:232
+#: ../templates/default/gestion_contributions.tpl:128
+#: ../templates/default/gestion_contributions.tpl:256
 #: ../templates/default/ajouter_transaction.tpl:91
 #: ../templates/default/editer_champ.tpl:100
 #: ../templates/default/configurer_fiche_content.tpl:7
@@ -5320,112 +5353,122 @@ msgstr "Член"
 msgid "Type"
 msgstr "Тип"
 
-#: ../templates/default/gestion_contributions.tpl:151
-#: ../templates/default/gestion_contributions.tpl:235
+#: ../templates/default/gestion_contributions.tpl:161
+#: ../templates/default/gestion_contributions.tpl:259
 #: ../templates/default/ajouter_transaction.tpl:87
 msgid "Duration"
 msgstr "Тривалість"
 
-#: ../templates/default/gestion_contributions.tpl:154
+#: ../templates/default/gestion_contributions.tpl:164
 #: ../templates/default/gestion_adherents.tpl:157
 #: ../templates/default/gestion_adherents.tpl:379
 #: ../templates/default/saved_searches.tpl:12
 #: ../templates/default/configurer_fiche_content.tpl:9
 #: ../templates/default/gestion_intitule_content.tpl:16
-#: ../templates/default/gestion_transactions.tpl:85
+#: ../templates/default/gestion_transactions.tpl:95
 #: ../templates/default/gestion_paymentstypes.tpl:10
 #: ../templates/default/gestion_titres.tpl:11
 msgid "Actions"
 msgstr "Дії"
 
-#: ../templates/default/gestion_contributions.tpl:162
+#: ../templates/default/gestion_contributions.tpl:172
 #, php-format
 msgid "Found contributions total %f"
 msgstr "Знайдено внесків у цілому %f"
 
-#: ../templates/default/gestion_contributions.tpl:192
-#: ../templates/default/gestion_contributions.tpl:206
+#: ../templates/default/gestion_contributions.tpl:202
+#: ../templates/default/gestion_contributions.tpl:216
 msgid "Contribution %id"
 msgstr "Внесок %id"
 
-#: ../templates/default/gestion_contributions.tpl:201
-#: ../templates/default/gestion_contributions.tpl:210
+#: ../templates/default/gestion_contributions.tpl:211
+#: ../templates/default/gestion_contributions.tpl:220
 #, php-format
 msgid "Transaction: %s"
 msgstr "Переказ: %s"
 
 #: ../templates/default/gestion_contributions.tpl:243
+#, fuzzy
+#| msgid "Show all members contributions"
+msgid "Show only '%name' contributions"
+msgstr "Показати внески всіх членів"
+
+#: ../templates/default/gestion_contributions.tpl:250
+msgid "Show '%name' card"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:267
 msgid "Print an invoice or a receipt (depending on contribution type)"
 msgstr "Роздрукуйте рахунок-фактуру або квитанцію (залежно від типу внеску)"
 
-#: ../templates/default/gestion_contributions.tpl:251
+#: ../templates/default/gestion_contributions.tpl:275
 msgid "Edit the contribution"
 msgstr "Редагувати внеску"
 
-#: ../templates/default/gestion_contributions.tpl:258
+#: ../templates/default/gestion_contributions.tpl:282
 msgid "Delete the contribution"
 msgstr "Видалити внесок"
 
-#: ../templates/default/gestion_contributions.tpl:265
+#: ../templates/default/gestion_contributions.tpl:289
 #: ../templates/default/ajouter_transaction.tpl:140
 msgid "no contribution"
 msgstr "немає внеску"
 
-#: ../templates/default/gestion_contributions.tpl:271
+#: ../templates/default/gestion_contributions.tpl:295
 #: ../templates/default/gestion_mailings.tpl:170
 #: ../templates/default/gestion_adherents.tpl:295
 #: ../templates/default/history.tpl:145
 #: ../templates/default/liste_membres.tpl:87
 #: ../templates/default/ajax_members.tpl:16
 #: ../templates/default/trombinoscope.tpl:28
-#: ../templates/default/gestion_transactions.tpl:148
+#: ../templates/default/gestion_transactions.tpl:158
 msgid "Pages:"
 msgstr "Сторінки:"
 
-#: ../templates/default/gestion_contributions.tpl:276
+#: ../templates/default/gestion_contributions.tpl:300
 #: ../templates/default/gestion_adherents.tpl:299
 msgid "For the selection:"
 msgstr "Для вибору:"
 
-#: ../templates/default/gestion_contributions.tpl:279
+#: ../templates/default/gestion_contributions.tpl:303
 #: ../templates/default/gestion_adherents.tpl:303
 #: ../templates/default/group.tpl:81
 msgid "Delete"
 msgstr "Видалити"
 
-#: ../templates/default/gestion_contributions.tpl:286
-#: ../templates/default/gestion_contributions.tpl:287
+#: ../templates/default/gestion_contributions.tpl:310
+#: ../templates/default/gestion_contributions.tpl:311
 #: ../templates/default/gestion_adherents.tpl:351
 #: ../templates/default/gestion_adherents.tpl:352
-#: ../templates/default/gestion_transactions.tpl:152
-#: ../templates/default/gestion_transactions.tpl:153
+#: ../templates/default/gestion_transactions.tpl:162
+#: ../templates/default/gestion_transactions.tpl:163
 msgid "Legend"
 msgstr "Умовне позначення"
 
-#: ../templates/default/gestion_contributions.tpl:294
+#: ../templates/default/gestion_contributions.tpl:318
 #: ../templates/default/gestion_adherents.tpl:385
 #: ../templates/default/voir_adherent.tpl:61
 msgid "Modification"
 msgstr "Змінення"
 
-#: ../templates/default/gestion_contributions.tpl:300
+#: ../templates/default/gestion_contributions.tpl:324
 #: ../templates/default/gestion_adherents.tpl:395
 msgid "Deletion"
 msgstr "Видалення"
 
-#: ../templates/default/gestion_contributions.tpl:305
+#: ../templates/default/gestion_contributions.tpl:329
 msgid "Contribution"
 msgstr "Внесок"
 
-#: ../templates/default/gestion_contributions.tpl:309
+#: ../templates/default/gestion_contributions.tpl:333
 msgid "Gift"
 msgstr "Подарунок"
 
-#: ../templates/default/gestion_contributions.tpl:320
+#: ../templates/default/gestion_contributions.tpl:344
 msgid "No contribution selected"
 msgstr "Жодного внеску не вибрано"
 
-#: ../templates/default/gestion_contributions.tpl:320
+#: ../templates/default/gestion_contributions.tpl:344
 msgid ""
 "Please make sure to select at least one contribution from the list to "
 "perform this action."
@@ -5433,26 +5476,26 @@ msgstr ""
 "Будь ласка, обов’язково виберіть зі списку хоча б один внесок, щоб виконати "
 "цю дію."
 
-#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_contributions.tpl:363
 #: ../templates/default/gestion_adherents.tpl:458
 msgid "(Un)Check all"
 msgstr "Зняти/вибрати все"
 
-#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_contributions.tpl:363
 #: ../templates/default/gestion_adherents.tpl:458
 msgid "Invert selection"
 msgstr "Узворотнити виділення"
 
-#: ../templates/default/gestion_contributions.tpl:339
+#: ../templates/default/gestion_contributions.tpl:363
 #: ../templates/default/gestion_adherents.tpl:458
-#: ../templates/default/gestion_transactions.tpl:170
-#: ../templates/default/gestion_transactions.tpl:174
+#: ../templates/default/gestion_transactions.tpl:180
+#: ../templates/default/gestion_transactions.tpl:184
 msgid "Show legend"
 msgstr "Показати умовні позначення"
 
-#: ../templates/default/gestion_contributions.tpl:351
+#: ../templates/default/gestion_contributions.tpl:375
 #: ../templates/default/gestion_mailings.tpl:192
-#: ../templates/default/edit_dynamic_fields.tpl:200
+#: ../templates/default/edit_dynamic_fields.tpl:227
 #: ../templates/default/gestion_adherents.tpl:717
 #: ../templates/default/history.tpl:166
 #: ../templates/default/ajouter_transaction.tpl:253
@@ -5460,7 +5503,7 @@ msgstr "Показати умовні позначення"
 #: ../templates/default/advanced_search.tpl:385
 #: ../templates/default/advanced_search.tpl:392
 #: ../templates/default/advanced_search.tpl:513
-#: ../templates/default/gestion_transactions.tpl:182
+#: ../templates/default/gestion_transactions.tpl:192
 #: ../templates/default/member.tpl:157 ../templates/default/member.tpl:165
 msgid "Select a date"
 msgstr "Виберіть дату"
@@ -5479,7 +5522,7 @@ msgid "Sheet type"
 msgstr "Тип листа"
 
 #: ../templates/default/attendance_sheet_details.tpl:26
-#: ../templates/default/edit_dynamic_fields.tpl:44
+#: ../templates/default/edit_dynamic_fields.tpl:63
 #: ../templates/default/ajouter_transaction.tpl:26
 #: ../templates/default/ajouter_contribution.tpl:115
 #: ../templates/default/ajouter_contribution.tpl:127
@@ -5720,7 +5763,7 @@ msgid "Create new mailing"
 msgstr "Створити нове розсилання"
 
 #: ../templates/default/gestion_mailings.tpl:208
-#: ../templates/default/mailing_adherents.tpl:186
+#: ../templates/default/mailing_adherents.tpl:188
 msgid "An error occurred displaying preview :("
 msgstr "Під час відображення попереднього перегляду сталася помилка :("
 
@@ -5810,33 +5853,33 @@ msgstr ""
 "Будь ласка, не забудьте вибрати принаймні одне поле зі списку для виконання "
 "цієї дії."
 
-#: ../templates/default/edit_dynamic_fields.tpl:34
+#: ../templates/default/edit_dynamic_fields.tpl:51
 msgid "Select an option"
 msgstr "Виберіть опцію"
 
-#: ../templates/default/edit_dynamic_fields.tpl:54
+#: ../templates/default/edit_dynamic_fields.tpl:75
 msgid "new"
 msgstr "новий"
 
-#: ../templates/default/edit_dynamic_fields.tpl:64
+#: ../templates/default/edit_dynamic_fields.tpl:85
 msgid "current"
 msgstr "поточний"
 
-#: ../templates/default/edit_dynamic_fields.tpl:69
+#: ../templates/default/edit_dynamic_fields.tpl:90
 msgid "delete"
 msgstr "видалити"
 
-#: ../templates/default/edit_dynamic_fields.tpl:116
+#: ../templates/default/edit_dynamic_fields.tpl:139
 msgid "Enter as many occurences you want."
 msgstr "Уведіть скільки завгодно випадків."
 
-#: ../templates/default/edit_dynamic_fields.tpl:124
-#: ../templates/default/edit_dynamic_fields.tpl:163
+#: ../templates/default/edit_dynamic_fields.tpl:147
+#: ../templates/default/edit_dynamic_fields.tpl:187
 #, php-format
 msgid "Enter up to %count more occurences."
 msgstr "Уведіть до %count зустрічей."
 
-#: ../templates/default/edit_dynamic_fields.tpl:133
+#: ../templates/default/edit_dynamic_fields.tpl:157
 msgid "New occurence"
 msgstr "Новий випадок"
 
@@ -5848,11 +5891,11 @@ msgstr "Будуть оновлені лише позначені поля."
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Ви збираєтесь виконати наступні зміни для вибраних членів:"
 
-#: ../templates/default/mass_change_members.tpl:47
+#: ../templates/default/mass_change_members.tpl:49
 msgid "Edit"
 msgstr "Редагувати"
 
-#: ../templates/default/mass_change_members.tpl:47
+#: ../templates/default/mass_change_members.tpl:49
 msgid "OK"
 msgstr "Гаразд"
 
@@ -6130,8 +6173,8 @@ msgid "Code:"
 msgstr "Код:"
 
 #: ../templates/default/500.tpl:21
-#: ../templates/default/mailing_adherents.tpl:86
-#: ../templates/default/mailing_adherents.tpl:117
+#: ../templates/default/mailing_adherents.tpl:88
+#: ../templates/default/mailing_adherents.tpl:119
 #: ../templates/default/reminder.tpl:45
 msgid "Message:"
 msgstr "Повідомлення:"
@@ -6237,8 +6280,8 @@ msgstr "Який параметрований експорт(и) ви хочет
 #: ../templates/default/export.tpl:75 ../templates/default/export.tpl:87
 #: ../templates/default/history.tpl:110 ../templates/default/history.tpl:130
 #: ../templates/default/plugins.tpl:8 ../templates/default/plugins.tpl:22
-#: ../templates/default/gestion_transactions.tpl:59
-#: ../templates/default/gestion_transactions.tpl:107
+#: ../templates/default/gestion_transactions.tpl:69
+#: ../templates/default/gestion_transactions.tpl:117
 msgid "Description"
 msgstr "Опис"
 
@@ -6389,9 +6432,9 @@ msgid "please create a member"
 msgstr "будь ласка, створіть члена"
 
 #: ../templates/default/ajouter_transaction.tpl:175
-#: ../templates/default/mailing_adherents.tpl:219
-#: ../templates/default/mailing_adherents.tpl:265
-#: ../templates/default/mailing_adherents.tpl:321
+#: ../templates/default/mailing_adherents.tpl:221
+#: ../templates/default/mailing_adherents.tpl:267
+#: ../templates/default/mailing_adherents.tpl:323
 #: ../templates/default/gestion_groupes.tpl:203
 #: ../templates/default/gestion_groupes.tpl:263
 #: ../templates/default/gestion_groupes.tpl:316
@@ -6636,7 +6679,7 @@ msgid "Existing attachments:"
 msgstr "Наявні долучення:"
 
 #: ../templates/default/mailing_adherents.tpl:48
-#: ../templates/default/mailing_adherents.tpl:330
+#: ../templates/default/mailing_adherents.tpl:332
 msgid "Remove attachment"
 msgstr "Вилучити долучення"
 
@@ -6670,44 +6713,47 @@ msgid "other"
 msgstr "інше"
 
 #: ../templates/default/mailing_adherents.tpl:81
-#: ../templates/default/mailing_adherents.tpl:115
+#: ../templates/default/mailing_adherents.tpl:117
 msgid "Object:"
 msgstr "Об'єкт:"
 
-#: ../templates/default/mailing_adherents.tpl:85
-msgid "(De)Activate HTML editor"
-msgstr "Задіяти/знедіяти редактор HTML"
+#: ../templates/default/mailing_adherents.tpl:86
+#: ../templates/default/common_scripts.tpl:70
+#, fuzzy
+#| msgid "Activate HTML editor?"
+msgid "Activate HTML editor"
+msgstr "Задіяти редактор HTML?"
 
-#: ../templates/default/mailing_adherents.tpl:91
+#: ../templates/default/mailing_adherents.tpl:93
 msgid "Interpret HTML"
 msgstr "Інтерпретувати HTML"
 
-#: ../templates/default/mailing_adherents.tpl:94
+#: ../templates/default/mailing_adherents.tpl:96
 msgid "Preview"
 msgstr "Попередній перегляд"
 
-#: ../templates/default/mailing_adherents.tpl:106
-#: ../templates/default/mailing_adherents.tpl:137
+#: ../templates/default/mailing_adherents.tpl:108
+#: ../templates/default/mailing_adherents.tpl:139
 msgid "Cancel mailing"
 msgstr "Скасувати розсилання"
 
-#: ../templates/default/mailing_adherents.tpl:113
+#: ../templates/default/mailing_adherents.tpl:115
 msgid "Preview your mailing"
 msgstr "Попередній перегляд розсилання"
 
-#: ../templates/default/mailing_adherents.tpl:129
+#: ../templates/default/mailing_adherents.tpl:131
 msgid "Modifiy mailing"
 msgstr "Модифікувати розсилку"
 
-#: ../templates/default/mailing_adherents.tpl:226
+#: ../templates/default/mailing_adherents.tpl:228
 msgid "Members selection"
 msgstr "Вибір членів"
 
-#: ../templates/default/mailing_adherents.tpl:330
+#: ../templates/default/mailing_adherents.tpl:332
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ви впевнені, що хочете видалити цей додаток?"
 
-#: ../templates/default/mailing_adherents.tpl:330
+#: ../templates/default/mailing_adherents.tpl:332
 msgid "This will immediately remove attachment from disk and cannot be undo."
 msgstr "Це негайно видалить долучення з диска і це не можна скасувати."
 
@@ -6927,6 +6973,13 @@ msgstr ""
 #: ../templates/default/trombinoscope.tpl:32
 msgid "No member to show"
 msgstr "Немає члена для показу"
+
+#: ../templates/default/common_scripts.tpl:49
+#: ../templates/default/common_scripts.tpl:75
+#, fuzzy
+#| msgid "(De)Activate HTML editor"
+msgid "Deactivate HTML editor"
+msgstr "Задіяти/знедіяти редактор HTML"
 
 #: ../templates/default/change_passwd.tpl:6
 msgid "New password:"
@@ -7449,32 +7502,32 @@ msgstr[0] "%count переказ"
 msgstr[1] "%count перекази"
 msgstr[2] "%count переказів"
 
-#: ../templates/default/gestion_transactions.tpl:62
-#: ../templates/default/gestion_transactions.tpl:109
+#: ../templates/default/gestion_transactions.tpl:72
+#: ../templates/default/gestion_transactions.tpl:119
 msgid "Originator"
 msgstr "Автор"
 
-#: ../templates/default/gestion_transactions.tpl:102
+#: ../templates/default/gestion_transactions.tpl:112
 msgid "Transaction %id"
 msgstr "Переказ %id"
 
-#: ../templates/default/gestion_transactions.tpl:129
+#: ../templates/default/gestion_transactions.tpl:139
 msgid "Edit transaction #%id"
 msgstr "Змінити переказ #%id"
 
-#: ../templates/default/gestion_transactions.tpl:136
+#: ../templates/default/gestion_transactions.tpl:146
 msgid "Remove transaction #%id"
 msgstr "Видалити переказ #%id"
 
-#: ../templates/default/gestion_transactions.tpl:142
+#: ../templates/default/gestion_transactions.tpl:152
 msgid "no transaction"
 msgstr "немає переказів"
 
-#: ../templates/default/gestion_transactions.tpl:157
+#: ../templates/default/gestion_transactions.tpl:167
 msgid "Completely dispatched transaction"
 msgstr "Повністю надісланий переказ"
 
-#: ../templates/default/gestion_transactions.tpl:161
+#: ../templates/default/gestion_transactions.tpl:171
 msgid "Uncomplete dispatched transaction"
 msgstr "Не повністю надісланий переказ"
 
@@ -7571,7 +7624,7 @@ msgstr ""
 msgid "Send telemetry information"
 msgstr "Надіслати дані телеметрії"
 
-#: ../templates/default/telemetry.tpl:39
+#: ../templates/default/telemetry.tpl:42
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
 
