@@ -961,18 +961,17 @@ class FieldsConfig
     }
 
     /**
-     * Get fields for massive changes
-     * @see FieldsConfig::getFormElements
+     * Filter visible fields
      *
-     * @param array $fields Member fields
      * @param Login $login  Login instance
+     * @param array $fields Fields list
      *
-     * @return array
+     * @return void
      */
-    public function getMassiveFormElements(array $fields, Login $login)
+    public function filterVisible(Login $login, array &$fields): void
     {
-        $visibles = $this->getVisibilities();
         $access_level = $login->getAccessLevel();
+        $visibles = $this->getVisibilities();
 
         //remove not searchable fields
         unset($fields['mdp_adh']);
@@ -990,6 +989,21 @@ class FieldsConfig
                 unset($fields[$k]);
             }
         }
+
+    }
+
+    /**
+     * Get fields for massive changes
+     * @see FieldsConfig::getFormElements
+     *
+     * @param array $fields Member fields
+     * @param Login $login  Login instance
+     *
+     * @return array
+     */
+    public function getMassiveFormElements(array $fields, Login $login)
+    {
+        $this->filterVisible($login, $fields);
 
         $mass_fields = [
             'titre_adh',

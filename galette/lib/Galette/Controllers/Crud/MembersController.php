@@ -768,25 +768,7 @@ class MembersController extends CrudController
         //we want only visibles fields
         $fields = $this->members_fields;
         $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-        $access_level = $this->login->getAccessLevel();
-
-        //remove not searchable fields
-        unset($fields['mdp_adh']);
-
-        foreach ($fields as $k => $f) {
-            if (
-                $visibles[$k] == FieldsConfig::NOBODY ||
-                ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN) ||
-                ($visibles[$k] == FieldsConfig::STAFF &&
-                    $access_level < Authentication::ACCESS_STAFF) ||
-                ($visibles[$k] == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER)
-            ) {
-                unset($fields[$k]);
-            }
-        }
+        $fc->filterVisible($this->login, $fields);
 
         //add status label search
         if ($pos = array_search(Status::PK, array_keys($fields))) {
@@ -1097,7 +1079,7 @@ class MembersController extends CrudController
         } elseif ($id !== null) {
             //load requested member
             $member->load($id);
-            if (!$member->canEdit($this->login) || $member->id != $id) {
+            if (!$member->canEdit($this->login)) {
                 $this->flash->addMessage(
                     'error_detected',
                     _T("You do not have permission for requested URL.")
