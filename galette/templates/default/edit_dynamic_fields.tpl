@@ -1,35 +1,52 @@
 {if !empty($object->getDynamicFields())}
-    {if !empty($object->getDynamicFields()->getFields())}
+    {assign var=fields value=$object->getDynamicFields()->getFields()}
+    {if !isset($masschange)}
+        {assign var="masschange" value=false}
+    {/if}
+
+    {if !empty($fields)}
 
 {function name=draw_field}
     {assign var=valuedata value=$field_data.field_val|escape}
     {if $field|is_a:'Galette\DynamicFields\File'}
     <span class="bline libelle">{$field->getName()|escape}</span>
     {else}
-    <label class="bline libelle" for="info_field_{$field->getId()}_{$loop}">{$field->getName()|escape}</label>
+    <label class="bline libelle" for="info_field_{$field->getId()}_{$loop}">
+        {if $masschange}
+            {* Add a checkbox for fields to change on mass edition *}
+            <input type="checkbox" name="mass_info_field_{$field->getId()}" class="mass_checkbox"/>
+        {/if}
+        {$field->getName()|escape}
+    </label>
     {/if}
     {if $field|is_a:'Galette\DynamicFields\Text'}
         <textarea name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             cols="{if $field->getWidth() > 0}{$field->getWidth()}{else}61{/if}"
             rows="{if $field->getHeight() > 0}{$field->getHeight()}{else}6{/if}"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+        {if !$masschange}
             {if $field->isRequired()} required="required"{/if}
+        {/if}
             {if $disabled} disabled="disabled"{/if}>{$valuedata}</textarea>
     {elseif $field|is_a:'Galette\DynamicFields\Line'}
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             {if $field->getWidth() > 0}size="{$field->getWidth()}"{/if}
             {if $field->getSize() > 0}maxlength="{$field->getSize()}"{/if}
             value="{$valuedata}"
+    {if !$masschange}
             {if $field->isRequired()} required="required"{/if}
-            {if $disabled} disabled="disabled"{/if}
+    {/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+            {if $disabled} disabled="disabled"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFields\Choice'}
         <select name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
+        {if !$masschange}
             {if $field->isRequired()} required="required"{/if}
-            {if $disabled} disabled="disabled"{/if}
+        {/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
-        >
+            {if $disabled} disabled="disabled"{/if}
+            >
             <!-- If no option is present, page is not XHTML compliant -->
             <option value="">{_T string="Select an option"}</option>
             {html_options options=$field->getValues() selected=$valuedata}
@@ -38,7 +55,9 @@
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" maxlength="10"
             value="{$valuedata}" class="dynamic_date modif_date"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+        {if !$masschange}
             {if $field->isRequired()} required="required"{/if}
+        {/if}
             {if $disabled} disabled="disabled"{/if}
         />
         <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
@@ -46,7 +65,9 @@
         <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" value="1"
             {if $valuedata eq 1} checked="checked"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+        {if !$masschange}
             {if $field->isRequired()} required="required"{/if}
+        {/if}
             {if $disabled} disabled="disabled"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFields\File'}
@@ -82,10 +103,12 @@
     <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
     <div>
     {assign var=access_level value=$login->getAccessLevel()}
-    {foreach from=$object->getDynamicFields()->getFields() item=field}
+    {foreach from=$fields item=field}
         {assign var=perm value=$field->getPerm()}
         {if $field|is_a:'Galette\DynamicFields\Separator'}
         <div class="separator">{$field->getName()|escape}</div>
+        {elseif ($field|is_a:'Galette\DynamicFields\File' || $field->isRepeatable())  && $masschange}
+            <!-- File and repetable fields not shown in mass changes form -->
         {else}
         <p{if $field->isRepeatable()} class="repetable"{/if}>
             {assign var=disabled value=false}
@@ -129,6 +152,7 @@
     </div>
 </fieldset>
 <script type="text/javascript">
+    {if !$masschange}
     var _addLnk = function(){
         return $('<a class="button" href="#"><i class="fas fa-plus" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
     };
@@ -168,8 +192,10 @@
             return false;
         });
     }
+    {/if}
 
     $(function(){
+    {if !$masschange}
         $('.repetable').each(function(){
             var _total;
             var _current;
@@ -193,6 +219,7 @@
                 }
             }
         });
+    {/if}
         $('.dynamic_date').datepicker({
             changeMonth: true,
             changeYear: true,

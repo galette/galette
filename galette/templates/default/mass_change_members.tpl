@@ -43,6 +43,8 @@
     {if !isset($changes)}
         {* Form entries*}
         {include file="forms_types.tpl" masschange=true}
+        {* Dynamic entries *}
+        {include file="edit_dynamic_fields.tpl" object=$member masschange=true}
     {/if}
             <input type="submit" id="masschange" class="button" value="{if !isset($changes)}{_T string="Edit"}{else}{_T string="OK"}{/if}"/>
             <a href="{$cancel_uri}" class="button" id="btncancel">{_T string="Cancel"}</a>
