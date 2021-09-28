@@ -22,13 +22,14 @@
 # Ricardo Santos <buehnenarbeiter@gmail.com>, 2021.
 # Johannes Keyser <joke@fsfe.org>, 2021.
 # G-Manu Studios <robbankz@yahoo.de>, 2021.
+# TwoB00m <qwertze@gmx.at>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-04-25 09:14+0200\n"
-"PO-Revision-Date: 2021-07-30 02:33+0000\n"
-"Last-Translator: G-Manu Studios <robbankz@yahoo.de>\n"
+"PO-Revision-Date: 2021-09-28 16:03+0000\n"
+"Last-Translator: TwoB00m <qwertze@gmx.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.2-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2480,10 +2481,8 @@ msgid "Galette's change password URI"
 msgstr "Galette URI zum Ändern des Passworts"
 
 #: ../lib/Galette/Entity/Texts.php:633
-#, fuzzy
-#| msgid "Mail settings"
 msgid "Mail specific"
-msgstr "E-Mail-Einstellungen"
+msgstr "Mailspezifisch"
 
 #: ../lib/Galette/Entity/PdfModel.php:293
 #, php-format
