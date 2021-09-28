@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-28 17:57+0200\n"
-"PO-Revision-Date: 2021-05-06 04:21+0000\n"
+"PO-Revision-Date: 2021-09-28 16:34+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1945,16 +1945,14 @@ msgid "Label for dynamic field \"%s\""
 msgstr "Étiquette du champ dynamique « %s »"
 
 #: ../lib/Galette/Features/Replacements.php:132
-#, fuzzy, php-format
-#| msgid "Input for dynamic field \"%s\""
+#, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr "Valeur du champ dynamique « %s »"
+msgstr "Entrée de formulaire du champ dynamique « %s »"
 
 #: ../lib/Galette/Features/Replacements.php:137
-#, fuzzy, php-format
-#| msgid "Label for dynamic field \"%s\""
+#, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr "Étiquette du champ dynamique « %s »"
+msgstr "Valeur du champ dynamique « %s »"
 
 #: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation name"
@@ -2213,10 +2211,8 @@ msgid "Last day!"
 msgstr "Dernier jour !"
 
 #: ../lib/Galette/Entity/Adherent.php:793
-#, fuzzy
-#| msgid "Last day!"
 msgid "Late since today!"
-msgstr "Dernier jour !"
+msgstr "En retard depuis aujourd'hui !"
 
 #: ../lib/Galette/Entity/Adherent.php:805
 #, php-format
@@ -4812,22 +4808,16 @@ msgstr ""
 "qu'il modifie son compte"
 
 #: ../templates/default/preferences.tpl:288
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Send email to members?"
-msgstr "Envoyer un rappel aux adhérents retardataires"
+msgstr "Envoyer un courriel aux adhérents ?"
 
 #: ../templates/default/preferences.tpl:289
-#, fuzzy
-#| msgid ""
-#| "Sends an email each time a new member registers online or edit his/her "
-#| "account"
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
-"Envoie un courriel à chaque fois qu'un nouvel adhérent s'enregistre, ou "
-"qu'il modifie son compte"
+"Envoie un courriel à chaque fois qu'une fiche adhérent ou une contribution a "
+"été ajoutée ou modifiée. Cela peut être désactivé pour chaque cas."
 
 #: ../templates/default/preferences.tpl:293
 msgid "Wrap emails text?"
@@ -5463,14 +5453,12 @@ msgid "Transaction: %s"
 msgstr "Transaction : %s"
 
 #: ../templates/default/gestion_contributions.tpl:243
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show only '%name' contributions"
-msgstr "Voir les contributions de tous les membres"
+msgstr "Voir uniquement les contributions « %name »"
 
 #: ../templates/default/gestion_contributions.tpl:250
 msgid "Show '%name' card"
-msgstr ""
+msgstr "Voir la fiche de « %name »"
 
 #: ../templates/default/gestion_contributions.tpl:267
 msgid "Print an invoice or a receipt (depending on contribution type)"
@@ -6814,10 +6802,8 @@ msgstr "Sujet :"
 
 #: ../templates/default/mailing_adherents.tpl:86
 #: ../templates/default/common_scripts.tpl:70
-#, fuzzy
-#| msgid "Activate HTML editor?"
 msgid "Activate HTML editor"
-msgstr "Activer l’éditeur HTML ?"
+msgstr "Activer l’éditeur HTML"
 
 #: ../templates/default/mailing_adherents.tpl:93
 msgid "Interpret HTML"
@@ -7073,10 +7059,8 @@ msgstr "Aucun adhérent à afficher"
 
 #: ../templates/default/common_scripts.tpl:49
 #: ../templates/default/common_scripts.tpl:75
-#, fuzzy
-#| msgid "(De)Activate HTML editor"
 msgid "Deactivate HTML editor"
-msgstr "(Dés)Activer l’éditeur HTML"
+msgstr "Déssctiver l’éditeur HTML"
 
 #: ../templates/default/change_passwd.tpl:6
 msgid "New password:"
