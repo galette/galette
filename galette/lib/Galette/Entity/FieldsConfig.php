@@ -989,7 +989,6 @@ class FieldsConfig
                 unset($fields[$k]);
             }
         }
-
     }
 
     /**

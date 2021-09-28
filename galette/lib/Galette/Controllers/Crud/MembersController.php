@@ -37,6 +37,7 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
+use Galette\DynamicFields\Boolean;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Authentication;
@@ -1224,7 +1225,7 @@ class MembersController extends CrudController
             'dues'      => false,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => true
         );
         $member = new Adherent($this->zdb, null, $deps);
 
@@ -1291,6 +1292,36 @@ class MembersController extends CrudController
                     }
                 }
             }
+
+            //handle dynamic fields
+            $deps = array(
+                'picture'   => true,
+                'groups'    => true,
+                'dues'      => true,
+                'parent'    => true,
+                'children'  => true,
+                'dynamics'  => true
+            );
+            $member = new Adherent($this->zdb, null, $deps);
+            $member->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
+            $dynamic_fields = $member->getDynamicFields()->getFields();
+            foreach ($dynamic_fields as $field) {
+                $mass_id = 'mass_info_field_' . $field->getId();
+                $field_id = 'info_field_' . $field->getId() . '_1';
+                if (
+                    isset($post[$mass_id])
+                    && (isset($post[$field_id]) || $field instanceof Boolean)
+                ) {
+                    $changes[$field_id] = [
+                        'label' => $field->getName(),
+                        'value' => $post[$field_id] ?? 0
+                    ];
+                }
+            }
         }
 
         $filters = $this->session->filter_members;
@@ -1338,6 +1369,7 @@ class MembersController extends CrudController
         $redirect_url = $post['redirect_uri'];
         $error_detected = [];
         $mass = 0;
+        $dynamic_fields = null;
 
         unset($post['redirect_uri']);
         if (!isset($post['confirm'])) {
@@ -1355,9 +1387,39 @@ class MembersController extends CrudController
                 foreach ($form_elements['fieldsets'] as $fieldset) {
                     if (isset($fieldset->elements[$key])) {
                         $found = true;
-                        continue;
+                        break;
                     }
                 }
+
+                if (!$found) {
+                    //try on dynamic fields
+                    if ($dynamic_fields === null) {
+                        //handle dynamic fields
+                        $deps = array(
+                            'picture' => true,
+                            'groups' => true,
+                            'dues' => true,
+                            'parent' => true,
+                            'children' => true,
+                            'dynamics' => true
+                        );
+                        $member = new Adherent($this->zdb, null, $deps);
+                        $member->setDependencies(
+                            $this->preferences,
+                            $this->members_fields,
+                            $this->history
+                        );
+                        $dynamic_fields = $member->getDynamicFields()->getFields();
+                    }
+                    foreach ($dynamic_fields as $field) {
+                        $field_id = 'info_field_' . $field->getId() . '_1';
+                        if ($key == $field_id) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                }
+
                 if (!$found) {
                     Analog::log(
                         'Permission issue mass editing field ' . $key,
