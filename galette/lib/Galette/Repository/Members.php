@@ -666,19 +666,18 @@ class Members
             //check if there are dynamic fields in filter
             $hasDf = false;
             $dfs = array();
-
-            if (
-                $this->filters instanceof AdvancedMembersList
-                && isset($this->filters->free_search)
-                && count($this->filters->free_search) > 0
-                && !isset($this->filters->free_search['empty'])
-            ) {
-                $free_searches = $this->filters->free_search;
-                foreach ($free_searches as $fs) {
-                    if (strpos($fs['field'], 'dyn_') === 0) {
-                        // simple dynamic fields
-                        $hasDf = true;
-                        $dfs[] = str_replace('dyn_', '', $fs['field']);
+            if ($this->filters instanceof AdvancedMembersList) {
+                if (
+                    (bool)count($this->filters->free_search)
+                    && !isset($this->filters->free_search['empty'])
+                ) {
+                    $free_searches = $this->filters->free_search;
+                    foreach ($free_searches as $fs) {
+                        if (strpos($fs['field'], 'dyn_') === 0) {
+                            // simple dynamic fields
+                            $hasDf = true;
+                            $dfs[] = str_replace('dyn_', '', $fs['field']);
+                        }
                     }
                 }
             }
