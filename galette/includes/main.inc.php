@@ -62,9 +62,9 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 //Galette needs database update!
 if ($needs_update) {
     define('GALETTE_THEME', 'themes/default/');
-    $app =  new \Galette\Core\LightSlimApp();
+    $app = new \Galette\Core\LightSlimApp();
 } else {
-    $app =  new \Galette\Core\SlimApp();
+    $app = new \Galette\Core\SlimApp();
 }
 
 //CONFIGURE AND START SESSION
