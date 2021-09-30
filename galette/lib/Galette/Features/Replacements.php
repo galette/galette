@@ -525,6 +525,7 @@ trait Replacements
         $c_replacements['__contrib_label'] = $c_replacements['contrib_label'];
 
         //handle DEADLINE alias
+        $c_replacements['deadline'] = null;
 
         $this->setReplacements($c_replacements);
 
