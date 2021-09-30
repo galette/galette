@@ -26,10 +26,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-09-28 16:03+0000\n"
-"Last-Translator: TwoB00m <qwertze@gmx.at>\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -2435,8 +2435,6 @@ msgid "- The duration must be a positive integer!"
 msgstr "- Die Dauer muss eine positive Zahl sein!"
 
 #: ../lib/Galette/Entity/Contribution.php:487
-#, fuzzy
-#| msgid "An error occurred checking overlaping fees :("
 msgid "An error occurred checking overlapping fees :("
 msgstr "Beim Überprüfen überlappender Gebühren ist ein Fehler aufgetreten :("
 
@@ -4314,8 +4312,6 @@ msgstr ""
 "Mitgliedsausweises …)"
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
-#, fuzzy
-#| msgid "Informations about available plugins"
 msgid "Information about available plugins"
 msgstr "Informationen über verfügbar Plugins"
 
@@ -6555,8 +6551,6 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-#, fuzzy
-#| msgid "Informations"
 msgid "Information"
 msgstr "Informationen"
 
