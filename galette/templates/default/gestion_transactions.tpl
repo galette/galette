@@ -97,7 +97,7 @@
                 </tr>
             </thead>
             <tbody>
-{foreach from=$list item=transaction name=transactions_list}
+{foreach from=$list item=transaction name=transactions_list key=ordre}
     {assign var="mid" value=$transaction->member}
     {assign var="cclass" value=$transaction->getRowClass()}
                 <tr>
