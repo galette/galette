@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-04-11 10:34+0000\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -6250,10 +6250,8 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-#, fuzzy
-#| msgid "System information"
 msgid "Information"
-msgstr "Systeminfo"
+msgstr ""
 
 #: ../templates/default/group.tpl:5 ../templates/default/group.tpl:50
 msgid "Managers"
