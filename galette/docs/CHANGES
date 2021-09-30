@@ -3,6 +3,10 @@ Changes
 
 0.9.5 -> 0.9.5.1
 
+- Mass contribtion add
+- Mass edition of dynamic fields
+- Add a preference to send emails to member by default
+- Fix PDF links in emails
 - Replace Markitup with Summernote for HTML emails
 - Replace jQuery Cookie with JS Cookie
 - Fix address variable in template
