@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-09-28 16:34+0000\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -438,10 +438,9 @@ msgstr "Don"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:236
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:280
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass add contribution on %count members"
-msgstr "Modification en masse de %count adhérents"
+msgstr "Ajout de contribution en masse sur %count adhérents"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:461
 msgid "Contributions management"
@@ -2432,8 +2431,6 @@ msgid "- The duration must be a positive integer!"
 msgstr "- La durée doit être un entier positif !"
 
 #: ../lib/Galette/Entity/Contribution.php:487
-#, fuzzy
-#| msgid "An error occurred checking overlaping fees :("
 msgid "An error occurred checking overlapping fees :("
 msgstr ""
 "Une erreur est survenue lors de la vérification des chevauchements de "
@@ -4321,8 +4318,6 @@ msgstr ""
 "configuration, ...)"
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
-#, fuzzy
-#| msgid "Informations about available plugins"
 msgid "Information about available plugins"
 msgstr "Informations sur les plugins disponibles"
 
@@ -6131,10 +6126,8 @@ msgid "Mass change"
 msgstr "Modification en masse"
 
 #: ../templates/default/gestion_adherents.tpl:313
-#, fuzzy
-#| msgid "My contributions"
 msgid "Mass add contributions"
-msgstr "Mes contributions"
+msgstr "Ajout en masse de contributions"
 
 #: ../templates/default/gestion_adherents.tpl:331
 #: ../templates/default/mailing_recipients.tpl:20
@@ -6563,8 +6556,6 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-#, fuzzy
-#| msgid "Informations"
 msgid "Information"
 msgstr "Informations"
 
