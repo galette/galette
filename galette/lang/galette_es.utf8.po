@@ -1,4 +1,4 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
@@ -29,10 +29,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-08-22 22:33+0000\n"
-"Last-Translator: noelia <zizizhuji1@gmail.com>\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -40,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8.1-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -4216,8 +4216,6 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
-#, fuzzy
-#| msgid "Informations about available plugins"
 msgid "Information about available plugins"
 msgstr "Información sobre los complementos disponibles"
 
@@ -6363,10 +6361,8 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-#, fuzzy
-#| msgid "Raw information"
 msgid "Information"
-msgstr "Información en bruto"
+msgstr "Información"
 
 #: ../templates/default/group.tpl:5 ../templates/default/group.tpl:50
 msgid "Managers"
