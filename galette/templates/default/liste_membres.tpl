@@ -50,7 +50,7 @@
                     </th>
                     {/if}
                     <th class="left">
-                        {_T string="Informations"}
+                        {_T string="Information"}
                     </th>
                 </tr>
             </thead>
@@ -78,7 +78,7 @@
                     {if $login->isLogged()}
                     <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Email"}"><a href="mailto:{$member->email}">{$member->email}</a></td>
                     {/if}
-                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Informations"}">{$member->others_infos}</td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Information"}">{$member->others_infos}</td>
                 </tr>
     {/foreach}
             </tbody>

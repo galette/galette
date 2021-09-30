@@ -144,7 +144,7 @@ class Contribution extends GaletteTestCase
     {
         $contrib = $this->contrib;
         $this->variable($contrib->id)->isNull();
-        $this->variable($contrib->isCotis())->isNull();
+        $this->variable($contrib->isFee())->isNull();
         $this->variable($contrib->is_cotis)->isNull();
         $this->variable($contrib->date)->isNull();
         $this->variable($contrib->begin_date)->isNull();

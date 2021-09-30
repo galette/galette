@@ -74,7 +74,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}"
+                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-user-check fa-fw fa-2x"></i>
@@ -83,7 +83,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}"
+                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-gift fa-fw fa-2x"></i>

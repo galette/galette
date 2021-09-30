@@ -43,17 +43,6 @@ use Galette\Controllers\PdfController;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
-use Galette\DynamicFields\DynamicField;
-use Galette\Repository\Members;
-use Galette\IO\News;
-use Analog\Analog;
-use Galette\IO\Csv;
-use Galette\IO\CsvOut;
-use Galette\IO\CsvIn;
-use Galette\Entity\Title;
-use Galette\Repository\Titles;
-use Galette\Core\Install;
-use Galette\Entity\Status;
 
 //galette's dashboard
 $app->get(

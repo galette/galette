@@ -38,17 +38,7 @@ use Galette\Controllers\Crud;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\PdfController;
-use Analog\Analog;
-use Galette\Core\Password;
-use Galette\Repository\Members;
-use Galette\Filters\MembersList;
-use Galette\Repository\Groups;
-use Galette\Repository\Reminders;
 use Galette\Entity\Adherent;
-use Galette\Entity\Status;
-use Galette\Repository\Titles;
-use Galette\Entity\Group;
-use Galette\IO\File;
 use Galette\Middleware\MembersNavigate;
 
 //self subscription

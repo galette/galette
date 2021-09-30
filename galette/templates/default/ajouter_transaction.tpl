@@ -33,8 +33,8 @@
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
-                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{constant('Galette\Entity\Contribution::TYPE_FEE')}" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{constant('Galette\Entity\Contribution::TYPE_DONATION')}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
                 </p>
     {/if}
             </fieldset>
@@ -55,14 +55,14 @@
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-user-check"></i>
                         <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
                     </a>
                     <a
-                        href="{path_for name="addContribution" data=["type" => "donation"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-gift"></i>

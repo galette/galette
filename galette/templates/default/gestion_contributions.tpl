@@ -44,8 +44,8 @@
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
             (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+            <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
+            <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
             -
 {/if}
@@ -178,10 +178,10 @@
 {foreach from=$list item=contribution key=ordre}
     {assign var="mid" value=$contribution->member}
     {assign var="cclass" value=$contribution->getRowClass()}
-    {if $contribution->isCotis()}
-        {assign var="ctype" value="fee"}
+    {if $contribution->isFee()}
+        {assign var="ctype" value=constant('Galette\Entity\Contribution::TYPE_FEE')}
     {else}
-        {assign var="ctype" value="donation"}
+        {assign var="ctype" value=constant('Galette\Entity\Contribution::TYPE_DONATION')}
     {/if}
 
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>

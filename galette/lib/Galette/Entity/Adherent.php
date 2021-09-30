@@ -1165,7 +1165,7 @@ class Adherent
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a member' . "\n" .
+                'Some errors has been thew attempting to edit/store a member' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
@@ -1949,7 +1949,7 @@ class Adherent
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a member files' . "\n" .
+                'Some errors has been thew attempting to edit/store a member files' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );

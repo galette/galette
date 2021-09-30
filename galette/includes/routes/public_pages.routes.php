@@ -35,8 +35,6 @@
  */
 
 use Galette\Controllers\Crud;
-use Galette\Repository\Members;
-use Galette\Filters\MembersList;
 
 $showPublicPages = function ($request, $response, $next) use ($container) {
     $login = $container->get('login');

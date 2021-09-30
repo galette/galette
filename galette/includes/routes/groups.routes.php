@@ -36,10 +36,6 @@
 
 use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
-use Galette\Entity\Adherent;
-use Galette\Entity\Group;
-use Galette\Repository\Groups;
-use Galette\Repository\Members;
 
 $app->get(
     '/groups[/{id:\d+}]',

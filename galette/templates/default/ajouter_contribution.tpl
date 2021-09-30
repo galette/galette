@@ -47,14 +47,14 @@
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">
-    {if $type eq "fee"}
+    {if $type eq constant('Galette\Entity\Contribution::TYPE_FEE')}
                     {_T string="Select contributor and membership fee type"}
     {else}
                     {_T string="Select contributor and donation type"}
     {/if}
     {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$contribution->transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?trans_id={$contribution->transaction->id}"
                         class="button fright tooltip"
                         title="{_T string="Create a new fee that will be attached to the current transaction"}">
                         <i class="fas fa-user-check"></i>
@@ -93,7 +93,7 @@
                         {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
                 </p>
-    {if $type eq "fee"}
+    {if $type eq constant('Galette\Entity\Contribution::TYPE_FEE')}
                 <noscript>
                     <div class="button-container" id="reloadcont">
                         <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date information according to selected member and contribution type"}"/>
@@ -103,7 +103,7 @@
             </fieldset>
 
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq "fee"}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq constant('Galette\Entity\Contribution::TYPE_FEE')}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
                 <p>
                     <label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if isset($required.montant_cotis) &&  ($required.montant_cotis eq 1)} required="required"{/if}/>
@@ -124,7 +124,7 @@
 
                 <p>
                     <label class="bline" for="date_debut_cotis">
-                        {if $type eq "fee"}
+                        {if $type eq constant('Galette\Entity\Contribution::TYPE_FEE')}
                             {_T string="Start date of membership:"}
                         {else}
                             {_T string="Date of contribution:"}
@@ -133,7 +133,7 @@
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if isset($required.date_debut_cotis) &&  ($required.date_debut_cotis eq 1)} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
-        {if $type eq "fee"}
+        {if $type eq constant('Galette\Entity\Contribution::TYPE_FEE')}
                 <p>
             {if $preferences->pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
@@ -158,7 +158,7 @@
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{constant('Galette\Entity\Contribution::TYPE_FEE')}" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
                     <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
                 </p>
             </fieldset>
@@ -209,7 +209,7 @@
             buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
         });
 
-    {if $type eq "fee" and !$contribution->id}
+    {if $type eq constant('Galette\Entity\Contribution::TYPE_FEE') and !$contribution->id}
         $('#id_adh, #id_type_cotis').on('change', function() {
             var _this = $(this);
             var _member = $('#id_adh').val();

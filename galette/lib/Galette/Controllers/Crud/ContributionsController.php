@@ -85,11 +85,11 @@ class ContributionsController extends CrudController
     ): Response {
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
-        $contributions_types = $ct->getList($type === 'fee');
+        $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
         // template variable declaration
         $title = null;
-        if ($type === 'fee') {
+        if ($type === Contribution::TYPE_FEE) {
             $title = _T("Membership fee");
         } else {
             $title = _T("Donation");
@@ -129,7 +129,7 @@ class ContributionsController extends CrudController
         }
 
         $ext_membership = '';
-        if ($contrib->isCotis() || !isset($contrib) && $type === 'fee') {
+        if ($contrib->isFee() || !isset($contrib) && $type === Contribution::TYPE_FEE) {
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
@@ -162,7 +162,7 @@ class ContributionsController extends CrudController
             $get = $request->getQueryParams();
 
             $ct = new ContributionsTypes($this->zdb);
-            $contributions_types = $ct->getList($type === 'fee');
+            $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
             $cparams = ['type' => array_keys($contributions_types)[0]];
 
@@ -197,9 +197,9 @@ class ContributionsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param string|null $type     Contribution type
      *
      * @return Response
      */
@@ -266,7 +266,7 @@ class ContributionsController extends CrudController
 
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
-        $contributions_types = $ct->getList($type === 'fee');
+        $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
         // display page
         $this->view->render(
@@ -484,9 +484,9 @@ class ContributionsController extends CrudController
     /**
      * Filtering
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param string|null $type     Contribution type
      *
      * @return Response
      */
@@ -580,10 +580,10 @@ class ContributionsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Contribution id
-     * @param string   $type     Contribution type
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param int         $id       Contribution id
+     * @param string|null $type     Contribution type
      *
      * @return Response
      */
@@ -619,10 +619,10 @@ class ContributionsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param integer  $id       Contribution id
-     * @param string   $type     Contribution type
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param integer     $id       Contribution id
+     * @param string|null $type     Contribution type
      *
      * @return Response
      */
@@ -664,7 +664,6 @@ class ContributionsController extends CrudController
         }
 
         $error_detected = [];
-        $redirect_url = null;
 
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -685,24 +684,22 @@ class ContributionsController extends CrudController
             $error_detected = array_merge($error_detected, $valid);
         }
 
+        //all goes well, we can proceed
         if (count($error_detected) == 0) {
-            //all goes well, we can proceed
-            if (count($error_detected) == 0) {
-                // send email to member
-                if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
-                    $contrib->setSendmail(); //flag to send creation email
-                }
+            // send email to member
+            if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+                $contrib->setSendmail(); //flag to send creation email
+            }
 
-                $store = $contrib->store();
-                if ($store === true) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        _T('Contribution has been successfully stored')
-                    );
-                } else {
-                    //something went wrong :'(
-                    $error_detected[] = _T("An error occurred while storing the contribution.");
-                }
+            $store = $contrib->store();
+            if ($store === true) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T('Contribution has been successfully stored')
+                );
+            } else {
+                //something went wrong :'(
+                $error_detected[] = _T("An error occurred while storing the contribution.");
             }
         }
 

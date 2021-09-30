@@ -74,6 +74,7 @@ abstract class Entitled
     public static $fields;
     protected static $defaults;
 
+    /** @var string|false */
     protected $order_field = false;
 
     private $id;
@@ -225,11 +226,11 @@ abstract class Entitled
      * Get list in an array built as:
      * $array[id] = "translated label"
      *
-     * @param boolean $extent Filter on (non) cotisations types
+     * @param boolean|null $extent Filter on (non) cotisations types
      *
      * @return array|false
      */
-    public function getList($extent = null)
+    public function getList(bool $extent = null)
     {
         $list = array();
 
@@ -277,7 +278,7 @@ abstract class Entitled
     /**
      * Complete list
      *
-     * @return array of all objects if succeed, false otherwise
+     * @return array of all objects if succeeded, false otherwise
      */
     public function getCompleteList()
     {

@@ -351,7 +351,7 @@ class Transaction
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a transaction' .
+                'Some errors has been thew attempting to edit/store a transaction' .
                 print_r($this->errors, true),
                 Analog::DEBUG
             );
@@ -621,7 +621,7 @@ class Transaction
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a transaction files' . "\n" .
+                'Some errors has been thew attempting to edit/store a transaction files' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
