@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # HelaBasa <R45XvezA@protonmail.ch>, 2021.
 # Theekshana Fernando <rtheekshanafernando@gmail.com>, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-08-10 16:32+0000\n"
-"Last-Translator: Theekshana Fernando <rtheekshanafernando@gmail.com>\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
 "si/>\n"
 "Language: si\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.8-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2346,8 +2347,6 @@ msgid "- The duration must be a positive integer!"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:487
-#, fuzzy
-#| msgid "An error occurred while storing the transaction."
 msgid "An error occurred checking overlapping fees :("
 msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය."
 
