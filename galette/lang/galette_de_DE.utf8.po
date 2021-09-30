@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-28 17:57+0200\n"
+"POT-Creation-Date: 2021-09-30 11:40+0200\n"
 "PO-Revision-Date: 2021-09-28 16:03+0000\n"
 "Last-Translator: TwoB00m <qwertze@gmx.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -52,14 +52,14 @@ msgid "Transaction"
 msgstr "Transaktion"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1127
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:111
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1133
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:99
 msgid "modification"
 msgstr "Änderung"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1129
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1135
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:101
 msgid "creation"
 msgstr "Erstellung"
 
@@ -244,7 +244,7 @@ msgstr "Abonnement"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:250
 #: ../lib/Galette/Controllers/Crud/MembersController.php:456
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1086
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1092
 #: ../lib/Galette/Controllers/PdfController.php:120
 #: ../lib/Galette/Controllers/PdfController.php:288
 #: ../lib/Galette/Middleware/Authenticate.php:166
@@ -256,7 +256,7 @@ msgid "No member #%id."
 msgstr "Kein Mitglied #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:285
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1125
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1131
 msgid "Member Profile"
 msgstr "Mitgliedsprofil"
 
@@ -284,90 +284,90 @@ msgstr "Statusbezeichnung"
 msgid "Advanced search"
 msgstr "Erweiterte Suche"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1036
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1042
 #: ../lib/Galette/Controllers/PdfController.php:154
 #: ../lib/Galette/Controllers/PdfController.php:235
 msgid "No member was selected, please check at least one name."
 msgstr "Kein Mitglied gewählt, bitte wählen Sie mindestens einen Namen."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1244
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1250
 #, php-format
 msgid "Mass change %count members"
 msgstr "Massenänderung an %count Mitgliedern"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1274
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1376
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1280
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1382
 msgid "Mass changes has not been confirmed!"
 msgstr "Massenänderungen sind nicht bestätigt worden!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1345
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1351
 #, php-format
 msgid "Review mass change %count members"
 msgstr "Massenänderung für %count Mitglieder prüfen"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1435
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1441
 msgid "Nothing to do!"
 msgstr "Nichts zu tun!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1463
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1700
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1469
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1706
 msgid "An error occurred while storing the member."
 msgstr "Beim Speichern des Mitglieds ist ein Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1475
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1481
 msgid "Something went wront during mass edition!"
 msgstr "Beim Massenbearbeiten ist etwas fehlgeschlagen!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1482
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1488
 #, php-format
 msgid "%count members has been changed successfully!"
 msgstr "%count Mitglieder wurden erfolgreich geändert!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1552
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1558
 msgid "Invalid captcha"
 msgstr "Ungültiges Captcha"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1659
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1665
 msgid "Your account has been created!"
 msgstr "Dein Konto wurde angelegt!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1664
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1670
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 "Eine E-Mail wurde an Ihre Adresse geschickt, bitte schauen Sie in Ihr "
 "Postfach."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1667
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1673
 msgid "New member has been successfully added."
 msgstr "Das neue Mitglied wurde erfolgreich hinzugefügt."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1670
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1676
 msgid "Member account has been modified."
 msgstr "Mitgliedskonto wurde geändert."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1684
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1690
 msgid "An error occurred adding member to its groups."
 msgstr ""
 "Beim Hinzufügen eines Mitglieds zu seinen Gruppen ist ein Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1696
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1702
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Beim Hinzufügen eines Mitglieds zu seinen Gruppen als Verwalter ist ein "
 "Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1712
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1718
 #: ../lib/Galette/Controllers/GaletteController.php:310
 #: ../lib/Galette/Controllers/GaletteController.php:342
 msgid "Delete failed"
 msgstr "Löschen fehlgeschlagen"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1881
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1887
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Mitglied %1$s entfernen"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1890
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1896
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Du willst %count Mitglieder löschen."
@@ -441,65 +441,72 @@ msgstr "%type #%id wurde erfolgreich geändert!"
 msgid "Remove %type '%label'"
 msgstr "%type '%label' entfernen"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:105
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:93
 msgid "Membership fee"
 msgstr "Mitgliedsbeitrag"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
-#: ../lib/Galette/Entity/Contribution.php:1076
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:95
+#: ../lib/Galette/Entity/Contribution.php:1081
 msgid "Donation"
 msgstr "Spende"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:236
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:280
+#, fuzzy, php-format
+#| msgid "Mass change %count members"
+msgid "Mass add contribution on %count members"
+msgstr "Massenänderung an %count Mitgliedern"
+
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:461
 msgid "Contributions management"
 msgstr "Beitragsverwaltung"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:333
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:461
 msgid "Transactions management"
 msgstr "Transaktionsverwaltung"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:427
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:555
 msgid "- Unknown payment type!"
 msgstr "- Unbekannte Zahlungsmethode!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:476
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:604
 #: ../lib/Galette/Controllers/PdfController.php:449
 #: ../lib/Galette/Controllers/PdfController.php:713
 msgid "Unable to load contribution #%id!"
 msgstr "Der Beitrag #%id konnte nicht geladen werden!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:581
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:698
 msgid "Contribution has been successfully stored"
 msgstr "Der Beitrag wurde erfolgreich gespeichert"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:585
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:702
 msgid "An error occurred while storing the contribution."
 msgstr "Beim Speichern des Beitrags ist ein Fehler aufgetreten."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:690
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:806
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "%1$s·%2$s entfernen"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:808
 msgid "contributions"
 msgstr "Beiträge"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:808
 msgid "transactions"
 msgstr "Transaktionen"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:696
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:812
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr "Entferne %1$s #%2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:813
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
 msgstr "Beitrag"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:697
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:813
 msgid "transaction"
 msgstr "Transaktion"
 
@@ -1302,7 +1309,7 @@ msgstr "- Angebotsmonate sind nur beim Beginn der Mitgliedschaft möglich."
 #: ../lib/Galette/Core/Preferences.php:565
 #: ../lib/Galette/Entity/Adherent.php:1153
 #: ../lib/Galette/Entity/Transaction.php:337
-#: ../lib/Galette/Entity/Contribution.php:463
+#: ../lib/Galette/Entity/Contribution.php:468
 #, php-format
 msgid "- Mandatory field %field empty."
 msgstr "- Benötigtes Feld %field ist leer."
@@ -1440,14 +1447,14 @@ msgstr ""
 #: ../lib/Galette/Entity/DynamicsTrait.php:177
 #: ../lib/Galette/Entity/DynamicsTrait.php:190
 #: ../lib/Galette/Entity/DynamicsTrait.php:199
-#: ../lib/Galette/Entity/Contribution.php:373
-#: ../lib/Galette/Entity/Contribution.php:382
-#: ../lib/Galette/Entity/Contribution.php:391
-#: ../lib/Galette/Entity/Contribution.php:544
-#: ../lib/Galette/Entity/Contribution.php:1155
-#: ../lib/Galette/Entity/Contribution.php:1252
-#: ../lib/Galette/Entity/Contribution.php:1261
-#: ../lib/Galette/Entity/Contribution.php:1270
+#: ../lib/Galette/Entity/Contribution.php:378
+#: ../lib/Galette/Entity/Contribution.php:387
+#: ../lib/Galette/Entity/Contribution.php:396
+#: ../lib/Galette/Entity/Contribution.php:549
+#: ../lib/Galette/Entity/Contribution.php:1160
+#: ../lib/Galette/Entity/Contribution.php:1257
+#: ../lib/Galette/Entity/Contribution.php:1266
+#: ../lib/Galette/Entity/Contribution.php:1275
 #: ../lib/Galette/Entity/ImportModel.php:213
 #: ../lib/Galette/Entity/SavedSearch.php:292
 #: ../lib/Galette/Entity/Group.php:616
@@ -2110,7 +2117,7 @@ msgid "Payment type"
 msgstr "Zahlungsart"
 
 #: ../lib/Galette/Features/Replacements.php:428
-#: ../lib/Galette/Entity/Contribution.php:1044
+#: ../lib/Galette/Entity/Contribution.php:1049
 #: ../lib/Galette/Entity/Texts.php:628
 #: ../lib/Galette/Entity/PdfContribution.php:89
 msgid "Contribution information"
@@ -2244,8 +2251,8 @@ msgstr "- Mitglieder müssen jünger als 200 Jahre sein (derzeit %years)!"
 #: ../lib/Galette/Entity/Adherent.php:1259
 #: ../lib/Galette/Entity/Transaction.php:301
 #: ../lib/Galette/Entity/DynamicsTrait.php:202
-#: ../lib/Galette/Entity/Contribution.php:394
-#: ../lib/Galette/Entity/Contribution.php:1273
+#: ../lib/Galette/Entity/Contribution.php:399
+#: ../lib/Galette/Entity/Contribution.php:1278
 #, php-format
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Falsches Datumsformat (%date_format) für Feld %field!"
@@ -2334,7 +2341,7 @@ msgid "Date:"
 msgstr "Datum:"
 
 #: ../lib/Galette/Entity/Transaction.php:114
-#: ../lib/Galette/Entity/Contribution.php:129
+#: ../lib/Galette/Entity/Contribution.php:134
 msgid "Amount:"
 msgstr "Betrag:"
 
@@ -2347,7 +2354,7 @@ msgid "Originator:"
 msgstr "Herausgeber:"
 
 #: ../lib/Galette/Entity/Transaction.php:312
-#: ../lib/Galette/Entity/Contribution.php:413
+#: ../lib/Galette/Entity/Contribution.php:418
 msgid "- The amount must be an integer!"
 msgstr "- Der Wert muss eine ganze Zahl sein!"
 
@@ -2361,7 +2368,7 @@ msgstr ""
 "- Die Beschreibung der Transaktion muss mindestens 150 Zeichen lang sein."
 
 #: ../lib/Galette/Entity/Transaction.php:346
-#: ../lib/Galette/Entity/Contribution.php:474
+#: ../lib/Galette/Entity/Contribution.php:479
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
 "- Die Summe aller Beiträge ist größer als der zugehörige Transaktionsbetrag."
@@ -2387,83 +2394,85 @@ msgstr "Beitragstyp"
 msgid "Missing required field %field"
 msgstr "Benötigtes Feld %field fehlt"
 
-#: ../lib/Galette/Entity/Contribution.php:121
+#: ../lib/Galette/Entity/Contribution.php:126
 msgid "Contributor:"
 msgstr "Beitragszahler:"
 
-#: ../lib/Galette/Entity/Contribution.php:125
+#: ../lib/Galette/Entity/Contribution.php:130
 msgid "Contribution type:"
 msgstr "Beitragstyp:"
 
-#: ../lib/Galette/Entity/Contribution.php:133
+#: ../lib/Galette/Entity/Contribution.php:138
 msgid "Payment type:"
 msgstr "Zahlunsgart:"
 
-#: ../lib/Galette/Entity/Contribution.php:137
+#: ../lib/Galette/Entity/Contribution.php:142
 msgid "Comments:"
 msgstr "Kommentare:"
 
-#: ../lib/Galette/Entity/Contribution.php:145
+#: ../lib/Galette/Entity/Contribution.php:150
 msgid "Date of contribution:"
 msgstr "Beitragsdatum:"
 
-#: ../lib/Galette/Entity/Contribution.php:146
+#: ../lib/Galette/Entity/Contribution.php:151
 msgid "Start date of membership:"
 msgstr "Start der Mitgliedschaft:"
 
-#: ../lib/Galette/Entity/Contribution.php:150
+#: ../lib/Galette/Entity/Contribution.php:155
 msgid "End date of membership:"
 msgstr "Ende der Mitgliedschaft:"
 
-#: ../lib/Galette/Entity/Contribution.php:160
+#: ../lib/Galette/Entity/Contribution.php:165
 msgid "Membership extension:"
 msgstr "Mitgliedschaft verlängern:"
 
-#: ../lib/Galette/Entity/Contribution.php:426
+#: ../lib/Galette/Entity/Contribution.php:431
 msgid "- Unknown payment type"
 msgstr "- Unbekannte Zahlungsart"
 
-#: ../lib/Galette/Entity/Contribution.php:440
+#: ../lib/Galette/Entity/Contribution.php:445
 msgid "- The duration must be a positive integer!"
 msgstr "- Die Dauer muss eine positive Zahl sein!"
 
-#: ../lib/Galette/Entity/Contribution.php:482
-msgid "An error occurred checking overlaping fees :("
+#: ../lib/Galette/Entity/Contribution.php:487
+#, fuzzy
+#| msgid "An error occurred checking overlaping fees :("
+msgid "An error occurred checking overlapping fees :("
 msgstr "Beim Überprüfen überlappender Gebühren ist ein Fehler aufgetreten :("
 
-#: ../lib/Galette/Entity/Contribution.php:543
+#: ../lib/Galette/Entity/Contribution.php:548
 msgid "- Membership period overlaps period starting at "
 msgstr "- Mitgliedsperiode überschneidet sich mit der Mitgliedschaft vom "
 
-#: ../lib/Galette/Entity/Contribution.php:612
+#: ../lib/Galette/Entity/Contribution.php:617
 msgid "Contribution added"
 msgstr "Beitrag hinzugefügt"
 
-#: ../lib/Galette/Entity/Contribution.php:618
+#: ../lib/Galette/Entity/Contribution.php:623
 msgid "Fail to add new contribution."
 msgstr "Neuer Beitrag konnte nicht hinzugefügt werden."
 
-#: ../lib/Galette/Entity/Contribution.php:635
+#: ../lib/Galette/Entity/Contribution.php:640
 msgid "Contribution updated"
 msgstr "Beitrag upgedated"
 
-#: ../lib/Galette/Entity/Contribution.php:1046
+#: ../lib/Galette/Entity/Contribution.php:1051
 msgid "Script output"
 msgstr "Skriptergebnis"
 
-#: ../lib/Galette/Entity/Contribution.php:1074
+#: ../lib/Galette/Entity/Contribution.php:1079
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
-#: ../lib/Galette/Entity/Entitled.php:332
+#: ../lib/Galette/Entity/Entitled.php:333
 msgid "ID must be an integer!"
 msgstr "- ID muss eine ganze Zahl sein!"
 
-#: ../lib/Galette/Entity/Entitled.php:344
+#: ../lib/Galette/Entity/Entitled.php:345
 msgid "Label does not exist"
 msgstr "- Beschreibung existiert nicht"
 
-#: ../lib/Galette/Entity/Entitled.php:542
+#: ../lib/Galette/Entity/Entitled.php:543
 msgid "Cannot delete this label: it's still used"
 msgstr "- Die Beschreibung kann nicht gelöscht werden: sie wird noch genutzt"
 
@@ -2867,7 +2876,7 @@ msgstr "Datenbankinstallation"
 msgid "Galette initialisation"
 msgstr "Galette-Initialisierung"
 
-#: ../includes/routes/public_pages.routes.php:46
+#: ../includes/routes/public_pages.routes.php:44
 msgid "Unauthorized"
 msgstr "Nicht autorisiert"
 
@@ -4106,7 +4115,7 @@ msgstr ""
 #: ../templates/default/mailing_adherents.tpl:100
 #: ../templates/default/edit_title.tpl:19
 #: ../templates/default/gestion_pdf_content.tpl:51
-#: ../templates/default/ajouter_contribution.tpl:170
+#: ../templates/default/ajouter_contribution.tpl:180
 #: ../templates/default/config_fields.tpl:56
 #: ../templates/default/traduire_libelles.tpl:38
 #: ../templates/default/member.tpl:93
@@ -4305,7 +4314,9 @@ msgstr ""
 "Mitgliedsausweises …)"
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
-msgid "Informations about available plugins"
+#, fuzzy
+#| msgid "Informations about available plugins"
+msgid "Information about available plugins"
 msgstr "Informationen über verfügbar Plugins"
 
 #: ../templates/default/page.tpl:79
@@ -4396,7 +4407,7 @@ msgstr ""
 "fortzusetzen oder abzubrechen."
 
 #: ../templates/default/page.tpl:142
-#: ../templates/default/gestion_adherents.tpl:475
+#: ../templates/default/gestion_adherents.tpl:482
 msgid "Existing mailing"
 msgstr "Bestehende E-Mails"
 
@@ -4428,8 +4439,8 @@ msgstr "Sicherheit"
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:213
-#: ../templates/default/gestion_adherents.tpl:420
-#: ../templates/default/gestion_adherents.tpl:421
+#: ../templates/default/gestion_adherents.tpl:425
+#: ../templates/default/gestion_adherents.tpl:426
 msgid "Admin"
 msgstr "Administrator"
 
@@ -5250,7 +5261,7 @@ msgstr "Administratorenkonto (unabhängig von Mitgliedern)"
 #: ../templates/default/preferences.tpl:608
 #: ../templates/default/ajouter_transaction.tpl:50
 #: ../templates/default/group.tpl:90
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_contribution.tpl:47
 #: ../templates/default/member.tpl:19
 msgid "NB : The mandatory fields are in"
 msgstr "Hinweis: die benötigten Felder sind"
@@ -5258,7 +5269,7 @@ msgstr "Hinweis: die benötigten Felder sind"
 #: ../templates/default/preferences.tpl:608
 #: ../templates/default/ajouter_transaction.tpl:50
 #: ../templates/default/group.tpl:90
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_contribution.tpl:47
 #: ../templates/default/member.tpl:19
 msgid "red"
 msgstr "Rot"
@@ -5395,7 +5406,7 @@ msgstr "Ändern"
 #: ../templates/default/history.tpl:63 ../templates/default/history.tpl:126
 #: ../templates/default/ajouter_transaction.tpl:84
 #: ../templates/default/import.tpl:26 ../templates/default/import.tpl:38
-#: ../templates/default/ajouter_contribution.tpl:27
+#: ../templates/default/ajouter_contribution.tpl:32
 #: ../templates/default/gestion_transactions.tpl:59
 #: ../templates/default/gestion_transactions.tpl:116
 msgid "Date"
@@ -5405,7 +5416,7 @@ msgstr "Datum"
 #: ../templates/default/gestion_contributions.tpl:234
 #: ../templates/default/history.tpl:14
 #: ../templates/default/ajouter_transaction.tpl:89
-#: ../templates/default/ajouter_contribution.tpl:28
+#: ../templates/default/ajouter_contribution.tpl:33
 msgid "Member"
 msgstr "Mitglied"
 
@@ -5427,7 +5438,7 @@ msgstr "Dauer"
 
 #: ../templates/default/gestion_contributions.tpl:164
 #: ../templates/default/gestion_adherents.tpl:157
-#: ../templates/default/gestion_adherents.tpl:379
+#: ../templates/default/gestion_adherents.tpl:384
 #: ../templates/default/saved_searches.tpl:12
 #: ../templates/default/configurer_fiche_content.tpl:9
 #: ../templates/default/gestion_intitule_content.tpl:16
@@ -5504,21 +5515,21 @@ msgstr "Löschen"
 
 #: ../templates/default/gestion_contributions.tpl:310
 #: ../templates/default/gestion_contributions.tpl:311
-#: ../templates/default/gestion_adherents.tpl:351
-#: ../templates/default/gestion_adherents.tpl:352
+#: ../templates/default/gestion_adherents.tpl:356
+#: ../templates/default/gestion_adherents.tpl:357
 #: ../templates/default/gestion_transactions.tpl:162
 #: ../templates/default/gestion_transactions.tpl:163
 msgid "Legend"
 msgstr "Beschreibung"
 
 #: ../templates/default/gestion_contributions.tpl:318
-#: ../templates/default/gestion_adherents.tpl:385
+#: ../templates/default/gestion_adherents.tpl:390
 #: ../templates/default/voir_adherent.tpl:61
 msgid "Modification"
 msgstr "Ändern"
 
 #: ../templates/default/gestion_contributions.tpl:324
-#: ../templates/default/gestion_adherents.tpl:395
+#: ../templates/default/gestion_adherents.tpl:400
 msgid "Deletion"
 msgstr "Löschen"
 
@@ -5543,17 +5554,17 @@ msgstr ""
 "auszuführen."
 
 #: ../templates/default/gestion_contributions.tpl:363
-#: ../templates/default/gestion_adherents.tpl:458
+#: ../templates/default/gestion_adherents.tpl:463
 msgid "(Un)Check all"
 msgstr "Alle aus-/abwählen"
 
 #: ../templates/default/gestion_contributions.tpl:363
-#: ../templates/default/gestion_adherents.tpl:458
+#: ../templates/default/gestion_adherents.tpl:463
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
 #: ../templates/default/gestion_contributions.tpl:363
-#: ../templates/default/gestion_adherents.tpl:458
+#: ../templates/default/gestion_adherents.tpl:463
 #: ../templates/default/gestion_transactions.tpl:180
 #: ../templates/default/gestion_transactions.tpl:184
 msgid "Show legend"
@@ -5562,10 +5573,10 @@ msgstr "Legende anzeigen"
 #: ../templates/default/gestion_contributions.tpl:375
 #: ../templates/default/gestion_mailings.tpl:192
 #: ../templates/default/edit_dynamic_fields.tpl:227
-#: ../templates/default/gestion_adherents.tpl:717
+#: ../templates/default/gestion_adherents.tpl:764
 #: ../templates/default/history.tpl:166
 #: ../templates/default/ajouter_transaction.tpl:253
-#: ../templates/default/ajouter_contribution.tpl:198
+#: ../templates/default/ajouter_contribution.tpl:209
 #: ../templates/default/advanced_search.tpl:385
 #: ../templates/default/advanced_search.tpl:392
 #: ../templates/default/advanced_search.tpl:513
@@ -5590,9 +5601,9 @@ msgstr "Blatt Typ"
 #: ../templates/default/attendance_sheet_details.tpl:26
 #: ../templates/default/edit_dynamic_fields.tpl:63
 #: ../templates/default/ajouter_transaction.tpl:26
-#: ../templates/default/ajouter_contribution.tpl:115
-#: ../templates/default/ajouter_contribution.tpl:127
-#: ../templates/default/ajouter_contribution.tpl:138
+#: ../templates/default/ajouter_contribution.tpl:122
+#: ../templates/default/ajouter_contribution.tpl:134
+#: ../templates/default/ajouter_contribution.tpl:145
 #: ../templates/default/advanced_search.tpl:273
 #: ../templates/default/advanced_search.tpl:443
 #: ../templates/default/forms_types/date.tpl:5
@@ -5737,6 +5748,16 @@ msgstr "Neuigkeiten"
 #: ../templates/default/desktop.tpl:70
 msgid "Show dashboard on login"
 msgstr "Dashboard nach Anmeldung öffnen"
+
+#: ../templates/default/mass_choose_type.tpl:12
+msgid "Contribution type"
+msgstr "Beitragstyp"
+
+#: ../templates/default/mass_choose_type.tpl:18
+#: ../templates/default/mass_change_members.tpl:49
+#: ../templates/default/mass_add_contribution.tpl:8
+msgid "OK"
+msgstr "OK"
 
 #: ../templates/default/gestion_mailings.tpl:13
 #: ../templates/default/gestion_mailings.tpl:72
@@ -5962,12 +5983,9 @@ msgstr ""
 "Du willst die folgenden Änderungen für die ausgewählten Mitglieder machen:"
 
 #: ../templates/default/mass_change_members.tpl:49
+#: ../templates/default/mass_add_contribution.tpl:8
 msgid "Edit"
 msgstr "Bearbeiten"
-
-#: ../templates/default/mass_change_members.tpl:49
-msgid "OK"
-msgstr "OK"
 
 #: ../templates/default/gestion_adherents.tpl:11
 msgid "%membername: edit information"
@@ -6071,31 +6089,31 @@ msgid "Mbr num"
 msgstr "Mitgliedsnummer"
 
 #: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_adherents.tpl:416
-#: ../templates/default/gestion_adherents.tpl:417
+#: ../templates/default/gestion_adherents.tpl:421
+#: ../templates/default/gestion_adherents.tpl:422
 msgid "Is a company"
 msgstr "Ist eine Firma"
 
 #: ../templates/default/gestion_adherents.tpl:184
-#: ../templates/default/gestion_adherents.tpl:410
-#: ../templates/default/gestion_adherents.tpl:411
+#: ../templates/default/gestion_adherents.tpl:415
+#: ../templates/default/gestion_adherents.tpl:416
 msgid "Is a man"
 msgstr "Ist ein Mann"
 
 #: ../templates/default/gestion_adherents.tpl:189
-#: ../templates/default/gestion_adherents.tpl:412
-#: ../templates/default/gestion_adherents.tpl:413
+#: ../templates/default/gestion_adherents.tpl:417
+#: ../templates/default/gestion_adherents.tpl:418
 msgid "Is a woman"
 msgstr "Ist eine Frau"
 
 #: ../templates/default/gestion_adherents.tpl:197
-#: ../templates/default/gestion_adherents.tpl:314
-#: ../templates/default/gestion_adherents.tpl:403
+#: ../templates/default/gestion_adherents.tpl:319
+#: ../templates/default/gestion_adherents.tpl:408
 msgid "Mail"
 msgstr "E-Mail"
 
 #: ../templates/default/gestion_adherents.tpl:205
-#: ../templates/default/gestion_adherents.tpl:405
+#: ../templates/default/gestion_adherents.tpl:410
 #: ../templates/default/footer.tpl:5
 msgid "Website"
 msgstr "Website"
@@ -6108,66 +6126,72 @@ msgstr "Kein Mitglied gefunden"
 msgid "Mass change"
 msgstr "Massenänderung"
 
-#: ../templates/default/gestion_adherents.tpl:326
+#: ../templates/default/gestion_adherents.tpl:313
+#, fuzzy
+#| msgid "My contributions"
+msgid "Mass add contributions"
+msgstr "Meine Beiträge"
+
+#: ../templates/default/gestion_adherents.tpl:331
 #: ../templates/default/mailing_recipients.tpl:20
 msgid "Generate labels"
 msgstr "Erstelle Beschreibungen"
 
-#: ../templates/default/gestion_adherents.tpl:331
+#: ../templates/default/gestion_adherents.tpl:336
 msgid "Generate Member Cards"
 msgstr "Mitgliedsausweis erstellen"
 
-#: ../templates/default/gestion_adherents.tpl:337
+#: ../templates/default/gestion_adherents.tpl:342
 msgid "Export as CSV"
 msgstr "Als CSV exportieren"
 
-#: ../templates/default/gestion_adherents.tpl:356
+#: ../templates/default/gestion_adherents.tpl:361
 msgid "Reading the list"
 msgstr "Lesen der Liste"
 
-#: ../templates/default/gestion_adherents.tpl:360
+#: ../templates/default/gestion_adherents.tpl:365
 msgid "Active account"
 msgstr "Aktives Konto"
 
-#: ../templates/default/gestion_adherents.tpl:362
+#: ../templates/default/gestion_adherents.tpl:367
 msgid "Inactive account"
 msgstr "Inaktives Konto"
 
-#: ../templates/default/gestion_adherents.tpl:366
+#: ../templates/default/gestion_adherents.tpl:371
 msgid "Membership in order"
 msgstr "Mitgliedschaft in Ordnung"
 
-#: ../templates/default/gestion_adherents.tpl:368
+#: ../templates/default/gestion_adherents.tpl:373
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "Mitgliedschaft läuft bald ab (&lt;30d)"
 
-#: ../templates/default/gestion_adherents.tpl:374
+#: ../templates/default/gestion_adherents.tpl:379
 msgid "Lateness in fee"
 msgstr "Verspätungsgebühr"
 
-#: ../templates/default/gestion_adherents.tpl:400
+#: ../templates/default/gestion_adherents.tpl:405
 msgid "User status/interactions"
 msgstr "Benutzerstatus/Interaktionen"
 
-#: ../templates/default/gestion_adherents.tpl:404
+#: ../templates/default/gestion_adherents.tpl:409
 msgid "Send an email"
 msgstr "E-Mail senden"
 
-#: ../templates/default/gestion_adherents.tpl:406
+#: ../templates/default/gestion_adherents.tpl:411
 msgid "Visit website"
 msgstr "Website ansehen"
 
-#: ../templates/default/gestion_adherents.tpl:438
+#: ../templates/default/gestion_adherents.tpl:443
 msgid "No member selected"
 msgstr "Kein Mitglied ausgewählt"
 
-#: ../templates/default/gestion_adherents.tpl:438
+#: ../templates/default/gestion_adherents.tpl:443
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
 msgstr "Bitte wählen Sie für diese Aktion mindestens ein Mitglied aus."
 
-#: ../templates/default/gestion_adherents.tpl:475
+#: ../templates/default/gestion_adherents.tpl:482
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
@@ -6175,23 +6199,23 @@ msgstr ""
 "Es existiert schon eine E-Mail-Kampagne. Wollen Sie eine neue erstellen oder "
 "die vorhandene fortführen?"
 
-#: ../templates/default/gestion_adherents.tpl:485
+#: ../templates/default/gestion_adherents.tpl:492
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: ../templates/default/gestion_adherents.tpl:489
+#: ../templates/default/gestion_adherents.tpl:496
 msgid "New"
 msgstr "Neu"
 
-#: ../templates/default/gestion_adherents.tpl:520
+#: ../templates/default/gestion_adherents.tpl:563
 msgid "Search title"
 msgstr "Suchtitel"
 
-#: ../templates/default/gestion_adherents.tpl:693
+#: ../templates/default/gestion_adherents.tpl:740
 msgid "Attendance sheet details"
 msgstr "Teilnehmer Details"
 
-#: ../templates/default/gestion_adherents.tpl:721
+#: ../templates/default/gestion_adherents.tpl:768
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 "Bei der Anzeige von den Details des Anwesenheitsblattes ist ein Fehler "
@@ -6443,13 +6467,13 @@ msgstr "-- Wählen Sie einen Namen --"
 
 #: ../templates/default/ajouter_transaction.tpl:34
 #: ../templates/default/ajouter_transaction.tpl:35
-#: ../templates/default/ajouter_contribution.tpl:152
-#: ../templates/default/ajouter_contribution.tpl:153
+#: ../templates/default/ajouter_contribution.tpl:159
+#: ../templates/default/ajouter_contribution.tpl:160
 msgid "Select a contribution type to create for dispatch transaction"
 msgstr "Bitte wählen eine Beitragsart für die Versandart"
 
 #: ../templates/default/ajouter_transaction.tpl:34
-#: ../templates/default/ajouter_contribution.tpl:152
+#: ../templates/default/ajouter_contribution.tpl:159
 msgid "Dispatch type:"
 msgstr "Versandart:"
 
@@ -6458,13 +6482,13 @@ msgid "Attached contributions"
 msgstr "Angehängte Beiträge"
 
 #: ../templates/default/ajouter_transaction.tpl:62
-#: ../templates/default/ajouter_contribution.tpl:54
+#: ../templates/default/ajouter_contribution.tpl:59
 msgid "Create a new fee that will be attached to the current transaction"
 msgstr ""
 "Einen neuen Beitrag erstellen der zur aktuellen Transaktion hinzugefügt wird"
 
 #: ../templates/default/ajouter_transaction.tpl:69
-#: ../templates/default/ajouter_contribution.tpl:61
+#: ../templates/default/ajouter_contribution.tpl:66
 msgid "Create a new donation that will be attached to the current transaction"
 msgstr ""
 "Erstelle eine neue Spende die mit der aktuellen Transaktion verknüpft wird"
@@ -6489,17 +6513,17 @@ msgid "Detach contribution from this transaction"
 msgstr "Entferne den Beitrag von der Transaktion"
 
 #: ../templates/default/ajouter_transaction.tpl:147
-#: ../templates/default/ajouter_contribution.tpl:179
+#: ../templates/default/ajouter_contribution.tpl:190
 msgid "No member registered!"
 msgstr "Keine Mitglieder registriert!"
 
 #: ../templates/default/ajouter_transaction.tpl:149
-#: ../templates/default/ajouter_contribution.tpl:181
+#: ../templates/default/ajouter_contribution.tpl:192
 msgid "Unfortunately, there is no member in your database yet,"
 msgstr "Es gibt noch keine Mitglieder in der Datenbank"
 
 #: ../templates/default/ajouter_transaction.tpl:151
-#: ../templates/default/ajouter_contribution.tpl:183
+#: ../templates/default/ajouter_contribution.tpl:194
 msgid "please create a member"
 msgstr "Bitte erstellen Sie ein Mitglied"
 
@@ -6531,7 +6555,9 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-msgid "Informations"
+#, fuzzy
+#| msgid "Informations"
+msgid "Information"
 msgstr "Informationen"
 
 #: ../templates/default/group.tpl:5 ../templates/default/group.tpl:50
@@ -6945,88 +6971,88 @@ msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 msgid "Remove"
 msgstr "Entfernen"
 
-#: ../templates/default/ajouter_contribution.tpl:10
+#: ../templates/default/ajouter_contribution.tpl:15
 msgid "Related transaction information"
 msgstr "Informationen zu verknüpften Transaktionen"
 
-#: ../templates/default/ajouter_contribution.tpl:15
+#: ../templates/default/ajouter_contribution.tpl:20
 msgid "View transaction"
 msgstr "Transaktion anzeigen"
 
-#: ../templates/default/ajouter_contribution.tpl:17
+#: ../templates/default/ajouter_contribution.tpl:22
 msgid "[view]"
 msgstr "[Ansicht]"
 
-#: ../templates/default/ajouter_contribution.tpl:30
+#: ../templates/default/ajouter_contribution.tpl:35
 msgid "Not dispatched amount"
 msgstr "Nicht der geschickte Betrag"
 
-#: ../templates/default/ajouter_contribution.tpl:46
+#: ../templates/default/ajouter_contribution.tpl:51
 msgid "Select contributor and membership fee type"
 msgstr "Beitragszahler und Art des Mitgliedsbeitrags auswählen"
 
-#: ../templates/default/ajouter_contribution.tpl:48
+#: ../templates/default/ajouter_contribution.tpl:53
 msgid "Select contributor and donation type"
 msgstr "Wählen Sie den Spender und die Art der Spende aus"
 
-#: ../templates/default/ajouter_contribution.tpl:56
+#: ../templates/default/ajouter_contribution.tpl:61
 msgid "New attached fee"
 msgstr "Neuer Beitrag hinzugefügt"
 
-#: ../templates/default/ajouter_contribution.tpl:63
+#: ../templates/default/ajouter_contribution.tpl:68
 msgid "New attached donation"
 msgstr "Neue Spende verbunden"
 
-#: ../templates/default/ajouter_contribution.tpl:71
+#: ../templates/default/ajouter_contribution.tpl:77
 msgid "Search for name or ID and pick member"
 msgstr "Suche nach Namen oder Kennung und wähle ein Mitglied aus"
 
-#: ../templates/default/ajouter_contribution.tpl:92
+#: ../templates/default/ajouter_contribution.tpl:99
 msgid "Reload"
 msgstr "Neu laden"
 
-#: ../templates/default/ajouter_contribution.tpl:92
+#: ../templates/default/ajouter_contribution.tpl:99
 msgid ""
 "Reload date information according to selected member and contribution type"
 msgstr ""
 "Datumsinformationen basierend auf den gewählten Mitgliedern und "
 "Beitragsarten neu laden"
 
-#: ../templates/default/ajouter_contribution.tpl:99
+#: ../templates/default/ajouter_contribution.tpl:106
 msgid "Details of membership fee"
 msgstr "Details des Mitgliedsbeitrags"
 
-#: ../templates/default/ajouter_contribution.tpl:99
+#: ../templates/default/ajouter_contribution.tpl:106
 msgid "Details of donation"
 msgstr "Details der Spende"
 
-#: ../templates/default/ajouter_contribution.tpl:112
+#: ../templates/default/ajouter_contribution.tpl:119
 msgid "Record date:"
 msgstr "Datum des Datensatzes:"
 
-#: ../templates/default/ajouter_contribution.tpl:134
+#: ../templates/default/ajouter_contribution.tpl:141
 msgid "months"
 msgstr "Monate"
 
-#: ../templates/default/ajouter_contribution.tpl:150
+#: ../templates/default/ajouter_contribution.tpl:157
 msgid "Transaction related"
 msgstr "Transaktionsbezogen"
 
-#: ../templates/default/ajouter_contribution.tpl:162
+#: ../templates/default/ajouter_contribution.tpl:170
 msgid "Notify member"
 msgstr "Mitglied benachrichtigen"
 
-#: ../templates/default/ajouter_contribution.tpl:164
+#: ../templates/default/ajouter_contribution.tpl:172
 msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
 "Das Mitglied wird per E-Mail benachrichtigt wenn eine E-Mail-Adresse "
 "vorliegt."
 
-#: ../templates/default/ajouter_contribution.tpl:221
+#: ../templates/default/ajouter_contribution.tpl:232
 msgid "An error occurred retrieving dates :("
 msgstr "Beim Abrufen der Daten ist ein Fehler aufgetreten :("
 
-#: ../templates/default/ajouter_contribution.tpl:236
+#: ../templates/default/ajouter_contribution.tpl:247
 msgid "Contribution amount should be greater than %max"
 msgstr "Der Betrag sollte größer als %max sein"
 
@@ -8006,9 +8032,6 @@ msgstr "Titel „%s“ löschen"
 
 #~ msgid "Contribution amount"
 #~ msgstr "Beitragsbetrag"
-
-#~ msgid "Contribution type"
-#~ msgstr "Beitragstyp"
 
 #~ msgid "Available only for reminders"
 #~ msgstr "Nur verfügbar für Erinnerungen"
