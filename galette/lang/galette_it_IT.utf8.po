@@ -22,9 +22,9 @@
 # Alessandro Mandelli <mandelli.alessandro@ngi.it>, 2021.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-04-25 07:23+0000\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -4165,8 +4165,6 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
-#, fuzzy
-#| msgid "Informations about available plugins"
 msgid "Information about available plugins"
 msgstr "Informazioni sui plugin disponibili"
 
@@ -6318,10 +6316,8 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-#, fuzzy
-#| msgid "System information"
 msgid "Information"
-msgstr "Informazioni di sistema"
+msgstr "Informazioni"
 
 #: ../templates/default/group.tpl:5 ../templates/default/group.tpl:50
 msgid "Managers"
