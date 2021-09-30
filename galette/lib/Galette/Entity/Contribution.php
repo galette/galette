@@ -1365,4 +1365,23 @@ class Contribution
             return true;
         }
     }
+
+    /**
+     * Get required fields list
+     *
+     * @return array
+     */
+    public function getRequired(): array
+    {
+        // required fields
+        $required = [
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1,
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => $this->isCotis(),
+            'montant_cotis'     => $this->isCotis() ? 1 : 0
+        ];
+        return $required;
+    }
 }

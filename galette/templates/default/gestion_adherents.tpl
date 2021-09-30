@@ -308,6 +308,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-user-edit fa-fw"></i> {_T string="Mass change"}
                 </button>
             </li>
+            <li>
+                <button type="submit" id="masscontributions" name="masscontributions" class="action">
+                    <i class="fas fa-cookie-bite fa-fw"></i> {_T string="Mass add contributions"}
+                </button>
+            </li>
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <li>
                 <button type="submit" id="sendmail" name="mailing">
@@ -461,9 +466,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             _bind_check();
             _bind_legend();
 
-            $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(){
-                if ( this.id == 'delete' ) {
+            $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(event){
+                event.preventDefault();
+                if ( this.id == 'delete' || this.id == 'masschange' ) {
                     //mass removal is handled from 2 steps removal
+                    //mass change is specifically handled below
                     return;
                 }
 
@@ -503,6 +510,42 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         _attendance_sheet_details();
                         return false;
                     }
+
+                    if (this.id == 'masscontributions') {
+                        $.ajax({
+                            url: '{path_for name="batch-memberslist"}',
+                            type: "POST",
+                            data: {
+                                ajax: true,
+                                masscontributions: true,
+                                member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                                    return $(this).val();
+                                }).get()
+                            },
+                            datatype: 'json',
+                            {include file="js_loader.tpl"},
+                            success: function(res){
+                                var _res = $(res);
+                                _bindmassres(_res);
+                                $('body').append(_res);
+
+                                _initTooltips('#mass_contributions');
+                                _massCheckboxes('#mass_contributions');
+
+                                _res.dialog({
+                                    width: 'auto',
+                                    modal: true,
+                                    close: function(event, ui){
+                                        $(this).dialog('destroy').remove()
+                                    }
+                                });
+                            },
+                            error: function() {
+                                alert("{_T string="An error occurred :(" escape="js"}");
+                            }
+                        });
+                    }
+
                     return true;
                 }
             });
@@ -572,6 +615,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
             res.find('input[type=submit]')
                 .button();
+
+            res.find('select:not(.nochosen)').selectize({
+                maxItems: 1
+            });
         }
 
         $('#masschange').off('click').on('click', function(event) {

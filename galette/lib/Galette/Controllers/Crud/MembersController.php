@@ -1029,6 +1029,12 @@ class MembersController extends CrudController
                     ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
             }
 
+            if (isset($post['masscontributions'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('massAddContributionsChooseType'));
+            }
+
             throw new \RuntimeException('Does not know what to batch :(');
         } else {
             $this->flash->addMessage(

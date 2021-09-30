@@ -1,7 +1,12 @@
-{extends file="page.tpl"}
+{if isset($mode) && $mode eq 'ajax'}
+    {assign var="extend" value='ajax.tpl'}
+{else}
+    {assign var="extend" value='page.tpl'}
+{/if}
+{extends file=$extend}
 
 {block name="content"}
-{if isset($members.list)}
+{if isset($members.list) || $require_mass}
         <form action="{if $contribution->id}{path_for name="doEditContribution" data=["type" => $type, "id" => $contribution->id]}{else}{path_for name="doAddContribution" data=["type" => $type]}{/if}" enctype="multipart/form-data" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
@@ -64,9 +69,10 @@
                     </a>
     {/if}
 </legend>
+    {if !$require_mass}
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
-                    <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
+                    <select name="id_adh" id="id_adh" class="nochosen">
                         {if $adh_selected eq 0}
                         <option value="">{_T string="Search for name or ID and pick member"}</option>
                         {/if}
@@ -75,9 +81,10 @@
                         {/foreach}
                     </select>
                 </p>
+    {/if}
                 <p>
                     <label for="id_type_cotis" class="bline">{_T string="Contribution type:"}</label>
-                    <select name="id_type_cotis" id="id_type_cotis"{if $required.id_type_cotis eq 1} required="required"{/if}>
+                    <select name="id_type_cotis" id="id_type_cotis"{if isset($required.id_type_cotis) &&  ($required.id_type_cotis eq 1)} required="required"{/if}>
                         {if $contribution->type}
                             {assign var="selectedid" value=$contribution->type->id}
                         {else}
@@ -99,7 +106,7 @@
                 <legend class="ui-state-active ui-corner-top">{if $type eq "fee"}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
                 <p>
                     <label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
-                    <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required="required"{/if}/>
+                    <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if isset($required.montant_cotis) &&  ($required.montant_cotis eq 1)} required="required"{/if}/>
                 </p>
                 {* payment type *}
                 {assign var="ptype" value=$contribution->payment_type}
@@ -111,7 +118,7 @@
                     <label class="bline" for="date_enreg">
                         {_T string="Record date:"}
                     </label>
-                    <input class="past-date-pick" type="text" name="date_enreg" id="date_enreg" value="{$contribution->date}" maxlength="10"{if $required.date_enreg eq 1} required="required"{/if}/>
+                    <input class="past-date-pick" type="text" name="date_enreg" id="date_enreg" value="{$contribution->date}" maxlength="10"{if isset($required.date_enreg) &&  ($required.date_enreg eq 1)} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
 
@@ -123,18 +130,18 @@
                             {_T string="Date of contribution:"}
                         {/if}
                     </label>
-                    <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required="required"{/if}/>
+                    <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if isset($required.date_debut_cotis) &&  ($required.date_debut_cotis eq 1)} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
         {if $type eq "fee"}
                 <p>
-            {if $pref_membership_ext != ""}
+            {if $preferences->pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
-                    <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{$contribution->duration}" maxlength="3"{if $required.date_fin_cotis eq 1} required="required"{/if}/>
+                    <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{$contribution->duration}" maxlength="3"{if isset($required.date_fin_cotis) &&  ($required.date_fin_cotis eq 1)} required="required"{/if}/>
                     <span class="exemple">{_T string="months"}</span>
             {else}
                     <label class="bline" for="date_fin_cotis">{_T string="End date of membership:"}</label>
-                    <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if $required.date_fin_cotis eq 1} required="required"{/if}/>
+                    <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if isset($required.date_fin_cotis) &&  ($required.date_fin_cotis eq 1)} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
             {/if}
                 </p>
@@ -158,13 +165,16 @@
     {/if}
         {include file="edit_dynamic_fields.tpl" object=$contribution}
     {if not $contribution->id and $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
+        {if !$require_mass}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>
                 <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $preferences->pref_bool_mailowner || isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
                 <br/><span class="exemple">{_T string="Member will receive a notification by email, if he has an address."}</span>
             </p>
+        {/if}
     {/if}
         </div>
+    {if !$require_mass}
         <div class="button-container">
             <button type="submit" name="valid" class="action">
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
@@ -173,6 +183,7 @@
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
         </div>
+    {/if}
         </form>
 {else} {* No members *}
     <div class="center" id="warningbox">

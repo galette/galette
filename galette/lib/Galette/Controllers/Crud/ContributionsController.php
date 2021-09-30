@@ -43,14 +43,9 @@ use Slim\Http\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
-use Galette\Repository\Contributions;
-use Galette\Repository\Transactions;
 use Galette\Repository\Members;
 use Galette\Entity\ContributionsTypes;
-use Galette\Core\GaletteMail;
-use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
-use Analog\Analog;
 
 /**
  * Galette contributions controller
@@ -92,13 +87,6 @@ class ContributionsController extends CrudController
         $ct = new ContributionsTypes($this->zdb);
         $contributions_types = $ct->getList($type === 'fee');
 
-        $disabled = array();
-
-        if (!is_int($contrib->id)) {
-            // initialiser la structure contribution à vide (nouvelle contribution)
-            $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
-        }
-
         // template variable declaration
         $title = null;
         if ($type === 'fee') {
@@ -113,20 +101,9 @@ class ContributionsController extends CrudController
             $title .= ' (' . _T("creation") . ')';
         }
 
-        // required fields
-        $required = [
-            'id_type_cotis'     => 1,
-            'id_adh'            => 1,
-            'date_enreg'        => 1,
-            'date_debut_cotis'  => 1,
-            'date_fin_cotis'    => $contrib->isCotis(),
-            'montant_cotis'     => $contrib->isCotis() ? 1 : 0
-        ];
-
         $params = [
             'page_title'        => $title,
-            'required'          => $required,
-            'disabled'          => $disabled,
+            'required'          => $contrib->getRequired(),
             'contribution'      => $contrib,
             'adh_selected'      => $contrib->member,
             'type'              => $type
@@ -139,7 +116,7 @@ class ContributionsController extends CrudController
         $m = new Members();
         $members = $m->getSelectizedMembers(
             $this->zdb,
-            isset($contrib) && $contrib->member > 0 ? $contrib->member : null
+            $contrib->member > 0 ? $contrib->member : null
         );
 
         $params['members'] = [
@@ -152,7 +129,7 @@ class ContributionsController extends CrudController
         }
 
         $ext_membership = '';
-        if (isset($contrib) && $contrib->isCotis() || !isset($contrib) && $type === 'fee') {
+        if ($contrib->isCotis() || !isset($contrib) && $type === 'fee') {
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
@@ -170,9 +147,9 @@ class ContributionsController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param string|null $type     Contribution type
      *
      * @return Response
      */
@@ -229,6 +206,157 @@ class ContributionsController extends CrudController
     public function doAdd(Request $request, Response $response, string $type = null): Response
     {
         return $this->store($request, $response, 'add', $type);
+    }
+
+    /**
+     * Choose contribution type to mass add contribution
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function massAddChooseType(Request $request, Response $response): Response
+    {
+        $filters = $this->session->filter_members;
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->router->pathFor('members')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'mass_choose_type.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => str_replace(
+                    '%count',
+                    count($data['id']),
+                    _T('Mass add contribution on %count members')
+                ),
+                'data'          => $data,
+                'form_url'      => $this->router->pathFor('massAddContributions'),
+                'cancel_uri'    => $this->router->pathFor('members')
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * Massive change page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function massAddContributions(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $filters = $this->session->filter_members;
+        $contribution = new Contribution($this->zdb, $this->login);
+
+        $type = $post['type'];
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->router->pathFor('members'),
+            'type'          => $type
+        ];
+
+        // contribution types
+        $ct = new ContributionsTypes($this->zdb);
+        $contributions_types = $ct->getList($type === 'fee');
+
+        // display page
+        $this->view->render(
+            $response,
+            'mass_add_contribution.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => str_replace(
+                    '%count',
+                    count($data['id']),
+                    _T('Mass add contribution on %count members')
+                ),
+                'form_url'      => $this->router->pathFor('doMassAddContributions'),
+                'cancel_uri'    => $this->router->pathFor('members'),
+                'data'          => $data,
+                'contribution'  => $contribution,
+                'type'          => $type,
+                'require_mass'  => true,
+                'required'      => $contribution->getRequired(),
+                'type_cotis_options' => $contributions_types
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * Do massive contribution add
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doMassAddContributions(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $members_ids = $post['id'];
+        unset($post['id']);
+
+        $error_detected = [];
+
+        // flagging required fields for first step only
+        $disabled = [];
+        $success = 0;
+        $errors = 0;
+
+        foreach ($members_ids as $member_id) {
+            $post[Adherent::PK] = (int)$member_id;
+            $contrib = new Contribution($this->zdb, $this->login);
+
+            // regular fields
+            $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
+            if ($valid !== true) {
+                $error_detected = array_merge($error_detected, $valid);
+            }
+
+            //all goes well, we can proceed
+            if (count($error_detected) == 0) {
+                $store = $contrib->store();
+                if ($store === true) {
+                    ++$success;
+                    $files_res = $contrib->handleFiles($_FILES);
+                    if (is_array($files_res)) {
+                        $error_detected = array_merge($error_detected, $files_res);
+                    }
+                } else {
+                    ++$errors;
+                }
+            }
+        }
+
+        if (count($error_detected) == 0) {
+            $redirect_url = $this->router->pathFor('members');
+        } else {
+            //something went wrong.
+            //store entity in session
+            $redirect_url = $this->router->pathFor('massAddContributions');
+            //report errors
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        //redirect to calling action
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_url);
     }
 
     // /CRUD - Create
@@ -549,19 +677,10 @@ class ContributionsController extends CrudController
             }
         }
 
-        // flagging required fields for first step only
-        $required = [
-            'id_type_cotis'     => 1,
-            'id_adh'            => 1,
-            'date_enreg'        => 1,
-            'montant_cotis'     => 1, //TODO: not always required, see #196
-            'date_debut_cotis'  => 1,
-            'date_fin_cotis'    => ($type === 'fee')
-        ];
         $disabled = [];
 
         // regular fields
-        $valid = $contrib->check($post, $required, $disabled);
+        $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
         if ($valid !== true) {
             $error_detected = array_merge($error_detected, $valid);
         }

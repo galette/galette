@@ -136,3 +136,18 @@ $app->post(
     '/document/{hash}',
     [PdfController::class, 'directlinkDocument']
 )->setName('get-directlink');
+
+$app->get(
+    '/contribution/mass-add/choose-type',
+    [Crud\ContributionsController::class, 'massAddChooseType']
+)->setName('massAddContributionsChooseType')->add($authenticate);
+
+$app->post(
+    '/contribution/mass-add',
+    [Crud\ContributionsController::class, 'massAddContributions']
+)->setName('massAddContributions')->add($authenticate);
+
+$app->post(
+    '/contribution/do-mass-add',
+    [Crud\ContributionsController::class, 'doMassAddContributions']
+)->setName('doMassAddContributions')->add($authenticate);
