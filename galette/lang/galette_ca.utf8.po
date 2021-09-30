@@ -9,10 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-08-06 14:32+0000\n"
-"Last-Translator: Adrián <pico0155@gmail.com>\n"
+"PO-Revision-Date: 2021-09-30 09:49+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2778,7 +2778,6 @@ msgid "- The duration must be a positive integer!"
 msgstr "- La durada ha de ser un enter positiu!"
 
 #: ../lib/Galette/Entity/Contribution.php:487
-#, fuzzy
 msgid "An error occurred checking overlapping fees :("
 msgstr "Hi ha hagut un error en comprovar les tarifes de superposició ("
 
@@ -4993,8 +4992,6 @@ msgstr ""
 "configuració de targetes)"
 
 #: ../templates/default/page.tpl:78 ../templates/default/desktop.tpl:40
-#, fuzzy
-#| msgid "Informations about available plugins"
 msgid "Information about available plugins"
 msgstr "Informació quant als connectors disponibles"
 
@@ -7628,7 +7625,6 @@ msgstr ""
 #: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
 #: ../templates/default/liste_membres.tpl:53
 #: ../templates/default/liste_membres.tpl:81
-#, fuzzy
 msgid "Information"
 msgstr "Informació"
 
