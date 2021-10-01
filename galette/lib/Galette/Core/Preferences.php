@@ -35,6 +35,7 @@
 
 namespace Galette\Core;
 
+use Galette\Entity\PaymentType;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -271,7 +272,8 @@ class Preferences
         /* Security related */
         'pref_password_length' => 6,
         'pref_password_blacklist' => false,
-        'pref_password_strength' => self::PWD_NONE
+        'pref_password_strength' => self::PWD_NONE,
+        'pref_default_paymenttype' => PaymentType::CHECK
     );
 
     // flagging required fields

@@ -86,9 +86,11 @@ class Contribution
     //fields list and their translation
     private $_fields;
 
+    /** @var Db */
     private $zdb;
+    /** @var Login */
     private $login;
-
+    /** @var array */
     private $errors;
 
     private $sendmail = false;
@@ -106,6 +108,9 @@ class Contribution
     {
         $this->zdb = $zdb;
         $this->login = $login;
+
+        global $preferences;
+        $this->_payment_type = (int)$preferences->pref_default_paymenttype;
 
         /*
          * Fields configuration. Each field is an array and must reflect:

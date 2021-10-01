@@ -209,6 +209,12 @@
                     <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{$pref.pref_membership_offermonths}" maxlength="5"{if isset($required.pref_membership_offermonths) and $required.pref_membership_offermonths eq 1} required="required"{/if}/>
                 </p>
                 <p>
+                    <label for="pref_default_paymenttype" class="bline">{_T string="Default payment type:"}</label>
+                    <select name="pref_default_paymenttype" id="pref_default_paymenttype">
+                        {html_options options=$paymenttypes selected=$pref.pref_default_paymenttype}
+                    </select>
+                </p>
+                <p>
                     <label for="pref_bool_publicpages" class="bline">{_T string="Public pages enabled?"}</label>
                     <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}{if isset($required.pref_bool_publicpages) and $required.pref_bool_publicpages eq 1} required="required"{/if}/>
                 </p>

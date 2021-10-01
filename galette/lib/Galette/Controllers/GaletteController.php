@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Galette\Repository\PaymentTypes;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Logo;
@@ -222,6 +223,14 @@ class GaletteController extends AbstractController
         }
         $d->close();
 
+        //List payment types for default to be selected
+        $ptypes = new PaymentTypes(
+            $this->zdb,
+            $this->preferences,
+            $this->login
+        );
+        $ptlist = $ptypes->getList();
+
         $m = new Members();
         $s = new Status($this->zdb);
 
@@ -248,7 +257,8 @@ class GaletteController extends AbstractController
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
-                )
+                ),
+                'paymenttypes'          => $ptlist
             )
         );
         return $response;
