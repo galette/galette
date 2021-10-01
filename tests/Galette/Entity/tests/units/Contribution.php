@@ -153,8 +153,8 @@ class Contribution extends GaletteTestCase
         $this->variable($contrib->raw_begin_date)->isNull();
         $this->variable($contrib->raw_end_date)->isNull();
         $this->string($contrib->duration)->isEmpty();
-        $this->variable($contrib->payment_type)->isNull();
-        $this->string($contrib->spayment_type)->isIdenticalTo('-');
+        $this->variable($contrib->payment_type)->isIdenticalTo((int)$this->preferences->pref_default_paymenttype);
+        $this->string($contrib->spayment_type)->isIdenticalTo('Check');
         $this->variable($contrib->model)->isNull();
         $this->variable($contrib->member)->isNull();
         $this->variable($contrib->type)->isNull();
@@ -180,7 +180,7 @@ class Contribution extends GaletteTestCase
         $this->boolean($contrib->isTransactionPartOf(1))->isFalse();
         $this->string($contrib->getRawType())->isIdenticalTo('donation');
         $this->string($contrib->getTypeLabel())->isIdenticalTo('Donation');
-        $this->string($contrib->getPaymentType())->isIdenticalTo('-');
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Check');
         $this->variable($contrib->unknown_property)->isNull();
     }
 
