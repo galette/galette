@@ -38,9 +38,9 @@ namespace Galette\Core;
 use Galette\Entity\PaymentType;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
-use Galette\Core\Db;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
@@ -140,6 +140,8 @@ use Galette\Repository\Members;
  * @property integer $pref_password_length
  * @property boolean $pref_password_blacklist
  * @property integer $pref_password_strength
+ * @property integer $pref_default_paymenttype
+ * @property boolean $pref_bool_create_member
  * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences
@@ -478,7 +480,7 @@ class Preferences
     public function check(array $values, Login $login)
     {
         $insert_values = array();
-        if ($login->isSuperAdmin() && GALETTE_MODE !== 'DEMO') {
+        if ($login->isSuperAdmin() && GALETTE_MODE !== Galette::MODE_DEMO) {
             $this->required[] = 'pref_admin_login';
         }
 
@@ -495,7 +497,7 @@ class Preferences
 
         // missing relations
         if (
-            GALETTE_MODE !== 'DEMO'
+            GALETTE_MODE !== Galette::MODE_DEMO
             && isset($insert_values['pref_mail_method'])
         ) {
             if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
@@ -569,7 +571,7 @@ class Preferences
             }
         }
 
-        if (GALETTE_MODE !== 'DEMO' && isset($values['pref_admin_pass_check'])) {
+        if (GALETTE_MODE !== Galette::MODE_DEMO && isset($values['pref_admin_pass_check'])) {
             // Check passwords. Hash will be done into the Preferences class
             if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
                 $this->errors[] = _T("Passwords mismatch");
@@ -645,7 +647,7 @@ class Preferences
                 }
                 break;
             case 'pref_admin_login':
-                if (GALETTE_MODE === 'DEMO') {
+                if (GALETTE_MODE === Galette::MODE_DEMO) {
                     Analog::log(
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
@@ -700,7 +702,7 @@ class Preferences
                 }
                 break;
             case 'pref_admin_pass':
-                if (GALETTE_MODE == 'DEMO') {
+                if (GALETTE_MODE == Galette::MODE_DEMO) {
                     Analog::log(
                         'Trying to set superadmin pass while in DEMO.',
                         Analog::WARNING
@@ -767,7 +769,7 @@ class Preferences
 
             foreach (self::$defaults as $k => $v) {
                 if (
-                    GALETTE_MODE == 'DEMO'
+                    GALETTE_MODE == Galette::MODE_DEMO
                     && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
                 ) {
                     continue;
@@ -941,7 +943,7 @@ class Preferences
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
-                GALETTE_MODE === 'DEMO'
+                GALETTE_MODE === Galette::MODE_DEMO
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
@@ -1010,7 +1012,7 @@ class Preferences
             || $name == 'pref_email_newadh'
             || $name == 'pref_email_reply_to'
         ) {
-            if (GALETTE_MODE === 'DEMO') {
+            if (GALETTE_MODE === Galette::MODE_DEMO) {
                 Analog::log(
                     'Trying to set pref_email while in DEMO.',
                     Analog::WARNING
@@ -1050,7 +1052,7 @@ class Preferences
     }
 
     /**
-     * Get default URL (when not setted by user in preferences)
+     * Get default URL (when not set by user in preferences)
      *
      * @return string
      */

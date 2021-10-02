@@ -69,7 +69,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -1065,7 +1065,7 @@ class MembersController extends CrudController
         Request $request,
         Response $response,
         int $id = null,
-        $action = 'edit'
+        string $action = 'edit'
     ): Response {
         $deps = array(
             'picture'   => true,
@@ -1076,7 +1076,7 @@ class MembersController extends CrudController
             'dynamics'  => true
         );
 
-        //instanciate member object
+        //instantiate member object
         $member = new Adherent($this->zdb, $id, $deps);
 
         if ($this->session->member !== null) {

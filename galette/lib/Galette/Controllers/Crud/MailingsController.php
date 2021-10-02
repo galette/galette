@@ -38,6 +38,7 @@ namespace Galette\Controllers\Crud;
 
 use Throwable;
 use Galette\Controllers\CrudController;
+use Galette\Core\Galette;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\GaletteMail;
@@ -96,7 +97,7 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !GALETTE_MODE === 'DEMO'
+            && !GALETTE_MODE === Galette::MODE_DEMO
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
@@ -252,7 +253,7 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !GALETTE_MODE === 'DEMO'
+            && !GALETTE_MODE === Galette::MODE_DEMO
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")

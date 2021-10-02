@@ -423,7 +423,7 @@ class Adherent
         if ($r->parent_id !== null) {
             $this->_parent = (int)$r->parent_id;
             if ($this->_deps['parent'] === true) {
-                $this->loadParent($r->parent_id);
+                $this->loadParent();
             }
         }
 

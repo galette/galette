@@ -50,6 +50,11 @@ namespace Galette\Core;
  */
 class Galette
 {
+    public const MODE_PROD = 'PROD';
+    public const MODE_DEV = 'DEV';
+    public const MODE_MAINT = 'MAINT';
+    public const MODE_DEMO = 'DEMO';
+
     /**
      * Retrieve Galette version from git, if present.
      *

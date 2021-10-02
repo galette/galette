@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Galette's instanciation and routes
+ * Galette's instantiation and routes
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,14 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-10
  */
 
 use Slim\Slim;
-use Slim\Route;
-use Galette\Core\Login;
-use Analog\Analog;
+use Galette\Core\Galette;
 
 if (!defined('GLOB_BRACE')) {
     define('GLOB_BRACE', 0);
@@ -116,7 +114,7 @@ require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 $authenticate = new \Galette\Middleware\Authenticate($container);
 
 //Maintainance middleware
-if ('MAINT' === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
+if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
         new \Galette\Middleware\UpdateAndMaintenance(
             $i18n,

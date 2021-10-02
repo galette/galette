@@ -39,6 +39,7 @@ namespace Galette\Controllers;
 use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Galette\Core\Galette;
 use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Laminas\Db\Adapter\Adapter;
@@ -99,7 +100,7 @@ class PluginsController extends AbstractController
      */
     public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
-        if (GALETTE_MODE !== 'DEMO') {
+        if (GALETTE_MODE !== Galette::MODE_DEMO) {
             $plugins = $this->plugins;
             $reload_plugins = false;
             if ($action == 'activate') {
@@ -162,7 +163,7 @@ class PluginsController extends AbstractController
      */
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {
-        if (GALETTE_MODE === 'DEMO') {
+        if (GALETTE_MODE === Galette::MODE_DEMO) {
             Analog::log(
                 'Trying to access plugin database initialization in DEMO mode.',
                 Analog::WARNING
