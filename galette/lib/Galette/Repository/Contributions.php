@@ -292,7 +292,7 @@ class Contributions
             case ContributionsList::ORDERBY_DURATION:
                 break;*/
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_cotis ' . $this->ordered;
+                $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
                 break;
             default:
                 $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
