@@ -88,6 +88,11 @@ $app->get(
     [Crud\MembersController::class, 'add']
 )->setName('addMember')->add($authenticate)->add(MembersNavigate::class);
 
+$app->get(
+    '/member/add/child',
+    [Crud\MembersController::class, 'addChild']
+)->setName('addMemberChild')->add($authenticate);
+
 $app->post(
     '/subscribe/store',
     [Crud\MembersController::class, 'doSelfSubscribe']

@@ -38,7 +38,6 @@ namespace Galette\Core;
 use Galette\Entity\PaymentType;
 use Throwable;
 use Analog\Analog;
-use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\IO\PdfMembersCards;
@@ -275,7 +274,8 @@ class Preferences
         'pref_password_length' => 6,
         'pref_password_blacklist' => false,
         'pref_password_strength' => self::PWD_NONE,
-        'pref_default_paymenttype' => PaymentType::CHECK
+        'pref_default_paymenttype' => PaymentType::CHECK,
+        'pref_bool_create_member' => false
     );
 
     // flagging required fields

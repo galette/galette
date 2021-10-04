@@ -96,6 +96,19 @@ class MembersController extends CrudController
     }
 
     /**
+     * Add child page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function addChild(Request $request, Response $response): Response
+    {
+        return $this->edit($request, $response, null, 'addchild');
+    }
+
+    /**
      * Self subscription page
      *
      * @param Request  $request  PSR Request
@@ -1083,29 +1096,41 @@ class MembersController extends CrudController
             //retrieve from session, in add or edit
             $member = $this->session->member;
             $this->session->member = null;
-        } elseif ($id !== null) {
+            $id = $member->id;
+        }
+
+        if ($id !== null) {
             //load requested member
             $member->load($id);
-            if (!$member->canEdit($this->login)) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("You do not have permission for requested URL.")
-                );
+            $can = $member->canEdit($this->login);
+        } else {
+            $can = $member->canCreate($this->login);
+        }
 
-                return $response
-                    ->withStatus(403)
-                    ->withHeader(
-                        'Location',
-                        $this->router->pathFor('me')
-                    );
-            }
+        if (!$can) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withStatus(403)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('me')
+                );
+        }
+
+        //if adding a child, force parent here
+        if ($action === 'addchild') {
+            $member->setParent((int)$this->login->id);
         }
 
         // flagging required fields
         $fc = $this->fields_config;
 
         // password required if we create a new member
-        if ($member->id != '') {
+        if ($id === null) {
             $fc->setNotRequired('mdp_adh');
         }
 
@@ -1144,18 +1169,18 @@ class MembersController extends CrudController
 
         $form_elements = $fc->getFormElements(
             $this->login,
-            $member->id == ''
+            $id === null
         );
 
         // members
         $m = new Members();
-        $id = null;
+        $pid = null;
         if ($member->hasParent()) {
-            $id = ($member->parent instanceof Adherent ? $member->parent->id : $member->parent);
+            $pid = ($member->parent instanceof Adherent ? $member->parent->id : $member->parent);
         }
         $members = $m->getSelectizedMembers(
             $this->zdb,
-            $id
+            $pid
         );
 
         $route_params['members'] = [
@@ -1184,7 +1209,8 @@ class MembersController extends CrudController
                 'groups'            => $groups_list,
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
-                'parent_fields'     => $tpl_parent_fields
+                'parent_fields'     => $tpl_parent_fields,
+                'addchild'          => ($action === 'addchild')
             ) + $route_params
         );
         return $response;

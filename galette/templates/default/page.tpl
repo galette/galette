@@ -34,6 +34,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Navigation"}</h1>
         <ul>
             <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
+  {if $preferences->pref_bool_create_member}
+            <li{if $cur_route eq "addMemberChild"} class="selected"{/if}><a href="{path_for name="addMemberChild"}" title="{_T string="Add new child member in database"}">{_T string="Add a child member"}</a></li>
+  {/if}
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
             <li{if $cur_route eq "members"} class="selected"{/if}><a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
             <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>

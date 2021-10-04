@@ -159,6 +159,11 @@
                     </select>
                 </p>
                 <p>
+                    <label for="pref_bool_create_member" class="bline tooltip">{_T string="Can members create child?"}</label>
+                    <span class="tip">{_T string="Any logged in member will be able to create his own child cards"}</span>
+                    <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {if $pref.pref_bool_create_member eq 1}checked="checked"{/if}{if isset($required.pref_bool_create_member) and $required.pref_bool_create_member eq 1} required="required"{/if}/>
+                </p>
+                <p>
 
                     <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
                     <select name="pref_redirect_on_create" id="pref_redirect_on_create">

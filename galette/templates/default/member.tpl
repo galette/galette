@@ -21,9 +21,9 @@
             <div>
         {if $member->hasParent() && !$member->isDuplicate()}
                 <strong>{_T string="Attached to:"}
-                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
-            {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
-                <label for="detach_parent">{_T string="Detach?"}</label>
+                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong>
+            {if $login->isAdmin() or $login->isStaff() && (!isset($addchild) || !$addchild)}
+                <br/><label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
             {/if}
         {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren() and isset($members.list)}
@@ -45,7 +45,6 @@
             {foreach from=$member->children item=child}
                 <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
             {/foreach}
-            </tr>
         {/if}
             </div>
     {/if}

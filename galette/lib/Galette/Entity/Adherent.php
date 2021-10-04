@@ -2039,7 +2039,27 @@ class Adherent
     }
 
     /**
-     * Can current logged in user edit member
+     * Can current logged-in user create member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canCreate(Login $login)
+    {
+        global $preferences;
+
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        if ($preferences->pref_bool_create_member && $login->isLogged()) {
+            return true;
+        }
+    }
+
+    /**
+     * Can current logged-in user edit member
      *
      * @param Login $login Login instance
      *
@@ -2112,5 +2132,19 @@ class Adherent
     public function sendEMail()
     {
         return $this->sendmail;
+    }
+
+    /**
+     * Set member parent
+     *
+     * @param integer $id Parent identifier
+     *
+     * @return $this
+     */
+    public function setParent(int $id): self
+    {
+        $this->_parent = $id;
+        $this->loadParent();
+        return $this;
     }
 }
