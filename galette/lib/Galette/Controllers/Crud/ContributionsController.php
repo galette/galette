@@ -387,8 +387,6 @@ class ContributionsController extends CrudController
             $ajax = true;
         }
 
-        $raw_type = null;
-
         switch ($type) {
             case 'transactions':
                 $raw_type = 'transactions';
@@ -396,6 +394,17 @@ class ContributionsController extends CrudController
             case 'contributions':
                 $raw_type = 'contributions';
                 break;
+            default:
+                Analog::log(
+                    'Trying to load unknown contribution type ' . $type,
+                    Analog::WARNING
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader(
+                        'Location',
+                        $this->router->pathFor('me')
+                    );
         }
 
         $filter_name = 'filter_' . $raw_type;

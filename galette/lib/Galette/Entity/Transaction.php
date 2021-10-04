@@ -55,6 +55,12 @@ use Galette\Core\Login;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
+ *
+ * @property integer $id
+ * @property date $date
+ * @property integer $amount
+ * @property string $description
+ * @property integer $member
  */
 class Transaction
 {

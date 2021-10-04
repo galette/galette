@@ -118,6 +118,7 @@ use Galette\Repository\Members;
  * @property string $saddress Concatened address and continuation
  * @property string $contribstatus State of member contributions
  * @property string $days_remaining
+ * @property-read integer $parent_id
  */
 class Adherent
 {
@@ -1045,7 +1046,7 @@ class Adherent
 
         $fields = self::getDbFields($this->zdb);
 
-        //reset company name if needeed
+        //reset company name if needed
         if (!isset($values['is_company'])) {
             unset($values['is_company']);
             $values['societe_adh'] = '';
@@ -1066,7 +1067,7 @@ class Adherent
         }
 
         foreach ($fields as $key) {
-            //first of all, let's sanitize values
+            //first, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->fields[$key]['propname'];
 
@@ -1083,7 +1084,7 @@ class Adherent
                         $value = 0;
                         break;
                     case 'activite_adh':
-                        //values that are setted at object instanciation
+                        //values that are set at object instantiation
                         $value = true;
                         break;
                     case 'date_crea_adh':
@@ -1092,7 +1093,7 @@ class Adherent
                     case 'id_statut':
                     case 'pref_lang':
                     case 'parent_id':
-                        //values that are setted at object instanciation
+                        //values that are set at object instantiation
                         $value = $this->$prop;
                         break;
                     default:
@@ -2045,7 +2046,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function canCreate(Login $login)
+    public function canCreate(Login $login): bool
     {
         global $preferences;
 
@@ -2065,7 +2066,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function canEdit(Login $login)
+    public function canEdit(Login $login): bool
     {
         //admin and staff users can edit, as well as member itself
         if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
@@ -2090,13 +2091,13 @@ class Adherent
     }
 
     /**
-     * Can current logged in user display member
+     * Can current logged-in user display member
      *
      * @param Login $login Login instance
      *
      * @return boolean
      */
-    public function canShow(Login $login)
+    public function canShow(Login $login): bool
     {
         return $this->canEdit($login);
     }
@@ -2106,7 +2107,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isDuplicate()
+    public function isDuplicate(): bool
     {
         return $this->_duplicate;
     }
@@ -2118,7 +2119,7 @@ class Adherent
      *
      * @return Adherent
      */
-    public function setSendmail($send = true)
+    public function setSendmail($send = true): self
     {
         $this->sendmail = $send;
         return $this;
