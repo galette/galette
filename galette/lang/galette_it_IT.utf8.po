@@ -20,12 +20,13 @@
 # Takeçi <polygoat@magamo.ovh>, 2021.
 # dwe sds <radiancenot@tutanota.com>, 2021.
 # Alessandro Mandelli <mandelli.alessandro@ngi.it>, 2021.
+# Cecilia Frego <cecilia.frego@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-10-06 05:48+0000\n"
+"Last-Translator: Cecilia Frego <cecilia.frego@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -1149,7 +1150,7 @@ msgstr "Preferenze"
 
 #: ../lib/Galette/Core/Install.php:1149
 msgid "Contributions types"
-msgstr ""
+msgstr "Tipi di contributi"
 
 #: ../lib/Galette/Core/Install.php:1153
 msgid "Status"
@@ -1182,12 +1183,12 @@ msgstr "Aggiorna modelli"
 #: ../lib/Galette/Core/Gaptcha.php:103
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Quanto fa %1$s più %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Quanto fa %1$s aggiunto a %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, php-format
@@ -1195,11 +1196,13 @@ msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
 msgstr ""
+"Io ho %1$s Galettes, un amico me ne ha date altre %2$s. Quante Galettes ho "
+"ora?"
 
 #: ../lib/Galette/Core/Gaptcha.php:108
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Quanto fa %1$s meno %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:109
 #, php-format
@@ -1214,7 +1217,7 @@ msgstr ""
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr ""
+msgstr "Ho %1$s Galettes, ne offro %2$s. Quante Galettes mi rimangono?"
 
 #: ../lib/Galette/Core/Pagination.php:262
 msgid "First page"
@@ -1295,7 +1298,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:468
 #, php-format
 msgid "- Mandatory field %field empty."
-msgstr ""
+msgstr "- Il campo obbligatorio %field è vuoto."
 
 #: ../lib/Galette/Core/Preferences.php:573 ../webroot/installer.php:185
 msgid "Passwords mismatch"
@@ -1459,7 +1462,7 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:435
 #: ../lib/Galette/Filters/AdvancedMembersList.php:581
 msgid "Y-m-d"
-msgstr "d/m/Y"
+msgstr "gg/mm/aaaa"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
@@ -1854,7 +1857,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:499
 msgid "Mime-Type not allowed"
-msgstr ""
+msgstr "Tipo MIME non consentito"
 
 #: ../lib/Galette/IO/FileTrait.php:502
 msgid "A file with that name already exists!"
@@ -6686,7 +6689,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf_content.tpl:24
 msgid "Body"
-msgstr ""
+msgstr "Stato della carrozzeria"
 
 #: ../templates/default/gestion_pdf_content.tpl:29
 msgid "CSS styles"
