@@ -442,9 +442,8 @@ class ContributionsController extends CrudController
         }
 
         if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
-            if ($value == 'all') {
-                $value = null;
-                $filters->filtre_cotis_children = $this->login->id;
+            if ($value === 'all') {
+                $value = $this->login->id;
             } else {
                 $member = new Adherent(
                     $this->zdb,
@@ -469,6 +468,22 @@ class ContributionsController extends CrudController
                 }
             }
             $filters->filtre_cotis_children = $value;
+        }
+
+        $class = '\\Galette\\Entity\\' . ucwords(trim($raw_type, 's'));
+        $contrib = new $class($this->zdb, $this->login);
+
+        if (!$contrib->canShow($this->login)) {
+            Analog::log(
+                'Trying to display contributions without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('me')
+                );
         }
 
         $class = '\\Galette\\Repository\\' . ucwords($raw_type);

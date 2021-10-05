@@ -265,12 +265,56 @@ class Transactions
                 );
             }
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                //non staff members can only view their own transactions
-                $select->where('t.' . Adherent::PK . ' = ' . $this->login->id);
+            $member_clause = null;
+            if ($this->filters->filtre_cotis_children !== false) {
+                $member_clause = [$this->login->id];
+                $member = new Adherent(
+                    $this->zdb,
+                    (int)$this->filters->filtre_cotis_children,
+                    [
+                        'picture'   => false,
+                        'groups'    => false,
+                        'dues'      => false,
+                        'children'  => true
+                    ]
+                );
+                foreach ($member->children as $child) {
+                    $member_clause[] = $child->id;
+                }
             } elseif ($this->filters->filtre_cotis_adh != null) {
+                $member_clause = [$this->filters->filtre_cotis_adh];
+                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
+                    $member = new Adherent(
+                        $this->zdb,
+                        (int)$this->filters->filtre_cotis_adh,
+                        [
+                            'picture'   => false,
+                            'groups'    => false,
+                            'dues'      => false,
+                            'parent'    => true
+                        ]
+                    );
+                    if (
+                        !$member->hasParent() ||
+                        $member->hasParent() && $member->parent->id != $this->login->id
+                    ) {
+                        Analog::log(
+                            'Trying to display transactions for member #' . $member->id .
+                            ' without appropriate ACLs',
+                            Analog::WARNING
+                        );
+                        $member_clause = [$this->login->id];
+                    }
+                }
+            } elseif (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                $member_clause = $this->login->id;
+            }
+
+            if ($member_clause !== null) {
                 $select->where(
-                    't.' . Adherent::PK . ' = ' . $this->filters->filtre_cotis_adh
+                    array(
+                        't.' . Adherent::PK => $member_clause
+                    )
                 );
             }
         } catch (Throwable $e) {

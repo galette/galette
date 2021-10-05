@@ -31,7 +31,7 @@
 {/if}
         <div class="infoline">
 {if isset($member) && $mode neq 'ajax'}
-    {if $login->isAdmin() or $login->isStaff()}
+    {if $login->isAdmin() or $login->isStaff() or $member->canShow($login)}
             <a
                 href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
                 class="tooltip"

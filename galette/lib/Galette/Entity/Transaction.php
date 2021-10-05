@@ -90,7 +90,7 @@ class Transaction
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row or its id for to load
      *                                  a specific transaction, or null to just
-     *                                  instanciate object
+     *                                  instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -154,6 +154,21 @@ class Transaction
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->where(self::PK . ' = ' . $id);
+
+            //restrict query on current member id if he's not admin nor staff member
+            if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
+                $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id)
+                        ->or
+                        ->equalTo('a.parent_id', $this->login->id)
+                    ->unnest()
+                    ->and
+                    ->equalTo('c.' . self::PK, $id)
+                ;
+            } else {
+                $select->where->equalTo(self::PK, $id);
+            }
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -635,5 +650,32 @@ class Transaction
         } else {
             return true;
         }
+    }
+
+    /**
+     * Can current logged-in user display transaction
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login): bool
+    {
+        //admin and staff users can edit, as well as member itself
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //parent can see their children transactions
+        $parent = new Adherent($this->zdb);
+        $parent
+            ->disableAllDeps()
+            ->enableDep('children')
+            ->load($this->login->id);
+        if ($parent->hasChildren()) {
+            return true;
+        }
+
+        return false;
     }
 }

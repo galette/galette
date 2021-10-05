@@ -1413,4 +1413,31 @@ class Contribution
             'montant_cotis'     => $this->isFee() ? 1 : 0
         ];
     }
+
+    /**
+     * Can current logged-in user display contribution
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login): bool
+    {
+        //admin and staff users can edit, as well as member itself
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //parent can see their children contributions
+        $parent = new Adherent($this->zdb);
+        $parent
+            ->disableAllDeps()
+            ->enableDep('children')
+            ->load($this->login->id);
+        if ($parent->hasChildren()) {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -72,11 +72,13 @@ class TransactionsList extends Pagination
     private $start_date_filter;
     private $end_date_filter;
     private $filtre_cotis_adh;
+    private $filtre_cotis_children = false;
 
     protected $list_fields = array(
         'start_date_filter',
         'end_date_filter',
-        'filtre_cotis_adh'
+        'filtre_cotis_adh',
+        'filtre_cotis_children'
     );
 
     protected $virtuals_list_fields = array(
@@ -113,6 +115,7 @@ class TransactionsList extends Pagination
         $this->start_date_filter = null;
         $this->end_date_filter = null;
         $this->filtre_cotis_adh = null;
+        $this->filtre_cotis_children = false;
     }
 
     /**
