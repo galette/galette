@@ -118,18 +118,14 @@ class ImagesController extends AbstractController
      */
     public function photo(Request $request, Response $response, int $id): Response
     {
-        $deps = array(
-            'groups'    => false,
-            'dues'      => false
-        );
-
-        //if loggedin user is a group manager, we have to check
-        //he manages a group requested member belongs to.
-        if ($this->login->isGroupManager()) {
-            $deps['groups'] = true;
+        $adh = new Adherent($this->zdb);
+        $adh->disableDep('dues');
+        if (!$this->login->isGroupManager()) {
+            //if logged-in user is a group manager, we have to check
+            //he manages a group requested member belongs to.
+            $adh->disableDep('groups');
         }
-
-        $adh = new Adherent($this->zdb, (int)$id, $deps);
+        $adh->load($id);
 
         $picture = null;
         if (

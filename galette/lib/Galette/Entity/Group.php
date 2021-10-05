@@ -188,7 +188,6 @@ class Group
 
                 $results = $zdb->execute($select);
                 $members = array();
-                $adhpk = Adherent::PK;
 
                 $deps = array(
                     'picture'   => false,
@@ -471,7 +470,7 @@ class Group
     }
 
     /**
-     * Is current loggedin user manager of the group?
+     * Is current logged-in user manager of the group?
      *
      * @param Login $login Login instance
      *
@@ -483,7 +482,7 @@ class Group
             //admins as well as staff members are managers for all groups!
             return true;
         } else {
-            //let's check if current loggedin user is part of group managers
+            //let's check if current logged-in user is part of group managers
             foreach ($this->managers as $manager) {
                 if ($login->login == $manager->login) {
                     return true;

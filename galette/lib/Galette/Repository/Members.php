@@ -485,12 +485,12 @@ class Members
 
             $results = $zdb->execute($select);
             $members = array();
+            $deps = array(
+                'groups'    => false,
+                'dues'      => false,
+                'picture'   => $with_photos
+            );
             foreach ($results as $row) {
-                $deps = array(
-                    'groups'    => false,
-                    'dues'      => false,
-                    'picture'   => $with_photos
-                );
                 $members[] = new Adherent($zdb, $row, $deps);
             }
             return $members;
@@ -556,13 +556,13 @@ class Members
             $results = $zdb->execute($select);
 
             $members = array();
+            $deps = array(
+                'picture'   => $with_photos,
+                'groups'    => false,
+                'dues'      => $dues,
+                'parent'    => $parent
+            );
             foreach ($results as $o) {
-                $deps = array(
-                    'picture'   => $with_photos,
-                    'groups'    => false,
-                    'dues'      => $dues,
-                    'parent'    => $parent
-                );
                 if ($as_members === true) {
                     $members[] = new Adherent($zdb, $o, $deps);
                 } else {

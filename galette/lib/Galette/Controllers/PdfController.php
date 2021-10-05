@@ -105,15 +105,13 @@ class PdfController extends AbstractController
         }
 
         if ($id_adh !== null && $id_adh > 0) {
-            $deps = ['dynamics' => true];
-            if ($this->login->id === $id_adh) {
-                $deps['dues'] = true;
+            $adh = new Adherent($this->zdb);
+            $adh->enableDep('dynamics');
+            if ($this->login->id != $id_adh) {
+                $adh->disableDep('dues');
             }
-            $adh = new Adherent(
-                $this->zdb,
-                $id_adh,
-                $deps
-            );
+            $adh->load($id_adh);
+
             if (!$adh->canEdit($this->login)) {
                 $this->flash->addMessage(
                     'error_detected',

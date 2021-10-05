@@ -285,7 +285,7 @@ class Adherent
     /**
      * Loads a member from its id
      *
-     * @param int $id the identifiant for the member to load
+     * @param int $id the identifier for the member to load
      *
      * @return bool true if query succeed, false otherwise
      */
@@ -2146,6 +2146,74 @@ class Adherent
     {
         $this->_parent = $id;
         $this->loadParent();
+        return $this;
+    }
+
+    /**
+     * Reset dependencies to load
+     *
+     * @return $this
+     */
+    public function disableAllDeps(): self
+    {
+        foreach ($this->_deps as &$dep) {
+            $dep = false;
+        }
+        return $this;
+    }
+
+    /**
+     * Enable all dependencies to load
+     *
+     * @return $this
+     */
+    public function enableAllDeps(): self
+    {
+        foreach ($this->_deps as &$dep) {
+            $dep = true;
+        }
+        return $this;
+    }
+
+    /**
+     * Enable a load dependency
+     *
+     * @param string $name Dependency name
+     *
+     * @return $this
+     */
+    public function enableDep(string $name): self
+    {
+        if (!isset($this->_deps[$name])) {
+            Analog::log(
+                'dependency ' . $name . ' does not exists!',
+                Analog::WARNING
+            );
+        } else {
+            $this->_deps[$name] = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Enable a load dependency
+     *
+     * @param string $name Dependency name
+     *
+     * @return $this
+     */
+    public function disableDep(string $name): self
+    {
+        if (!isset($this->_deps[$name])) {
+            Analog::log(
+                'dependency ' . $name . ' does not exists!',
+                Analog::WARNING
+            );
+        } else {
+            $this->_deps[$name] = false;
+        }
+
         return $this;
     }
 }

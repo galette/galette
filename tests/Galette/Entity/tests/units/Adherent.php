@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Galette\GaletteTestCase;
  * @name      Adherent
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-04-17
@@ -126,6 +126,68 @@ class Adherent extends GaletteTestCase
         $this->variable($adh->fake_prop)->isNull();
 
         $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+    }
+
+    /**
+     * Test member load dependencies
+     *
+     * @return void
+     */
+    public function testDependencies()
+    {
+        $adh = $this->adh;
+        $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+
+        $adh = clone $this->adh;
+        $adh->disableAllDeps();
+        $expected = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => false
+        ];
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $expected = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => true,
+            'parent'    => false,
+            'children'  => true,
+            'dynamics'  => true
+        ];
+        $adh
+            ->enableDep('dues')
+            ->enableDep('dynamics')
+            ->enableDep('children');
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $expected = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => true,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => true
+        ];
+        $adh->disableDep('children');
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $adh->disableDep('none')->enableDep('anothernone');
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $expected = [
+            'picture'   => true,
+            'groups'    => true,
+            'dues'      => true,
+            'parent'    => true,
+            'children'  => true,
+            'dynamics'  => true
+        ];
+        $adh->enableAllDeps('children');
+        $this->array($adh->deps)->isIdenticalTo($expected);
     }
 
     /**

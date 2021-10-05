@@ -40,11 +40,8 @@ use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Galette\Core\Authentication;
 use Galette\Core\GaletteMail;
 use Galette\Core\Gaptcha;
-use Galette\Core\Password;
-use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
@@ -55,7 +52,6 @@ use Galette\Entity\FieldsConfig;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;
-use Galette\IO\MembersCsv;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Repository\PaymentTypes;
@@ -128,10 +124,8 @@ class MembersController extends CrudController
             $member = $this->session->member;
             $this->session->member = null;
         } else {
-            $deps = [
-                'dynamics'  => true
-            ];
-            $member = new Adherent($this->zdb, null, $deps);
+            $member = new Adherent($this->zdb);
+            $member->enableDep('dynamics');
         }
 
         //mark as self membership
@@ -247,15 +241,10 @@ class MembersController extends CrudController
      */
     public function show(Request $request, Response $response, int $id): Response
     {
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, $id, $deps);
+        $member = new Adherent($this->zdb);
+        $member
+            ->enableAllDeps()
+            ->load($id);
 
         if (!$member->canShow($this->login)) {
             $this->flash->addMessage(
@@ -442,15 +431,11 @@ class MembersController extends CrudController
         int $pos,
         string $name
     ): Response {
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, $id, $deps);
+        $member = new Adherent($this->zdb);
+        $member
+            ->disableAllDeps()
+            ->enableDep('dynamics')
+            ->load($id);
 
         $denied = null;
         if (!$member->canShow($this->login)) {
@@ -779,7 +764,7 @@ class MembersController extends CrudController
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
 
-        //we want only visibles fields
+        //we want only visible fields
         $fields = $this->members_fields;
         $fc = $this->fields_config;
         $fc->filterVisible($this->login, $fields);
@@ -792,15 +777,11 @@ class MembersController extends CrudController
         }
 
         //dynamic fields
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => false
-        );
-        $member = new Adherent($this->zdb, $this->login->login, $deps);
+        $member = new Adherent($this->zdb);
+        $member
+            ->disableAllDeps()
+            ->enableDep('dynamics')
+            ->loadFromLoginOrMail($this->login->login);
         $adh_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $member);
 
         $contrib = new Contribution($this->zdb, $this->login);
@@ -812,7 +793,7 @@ class MembersController extends CrudController
         //Contributions types
         $ct = new ContributionsTypes($this->zdb);
 
-        //Payments types
+        //Payment types
         $ptypes = new PaymentTypes(
             $this->zdb,
             $this->preferences,
@@ -846,7 +827,7 @@ class MembersController extends CrudController
      *
      * @param Request        $request  PSR Request
      * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
+     * @param string|null    $option   One of 'page' or 'order'
      * @param string|integer $value    Value of the option
      *
      * @return Response
@@ -855,11 +836,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        if (isset($this->session->ajax_members_filters)) {
-            $filters = $this->session->ajax_members_filters;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->ajax_members_filters ?? new MembersList();
 
         if ($option == 'page') {
             $filters->current_page = (int)$value;
@@ -1080,17 +1057,9 @@ class MembersController extends CrudController
         int $id = null,
         string $action = 'edit'
     ): Response {
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-
         //instantiate member object
-        $member = new Adherent($this->zdb, $id, $deps);
+        $member = new Adherent($this->zdb);
+        $member->enableAllDeps()->load($id);
 
         if ($this->session->member !== null) {
             //retrieve from session, in add or edit
@@ -1251,15 +1220,8 @@ class MembersController extends CrudController
         $form_elements = $fc->getMassiveFormElements($this->members_fields, $this->login);
 
         //dynamic fields
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, null, $deps);
+        $member = new Adherent($this->zdb);
+        $member->disableAllDeps()->enableDep('dynamics');
 
         //Status
         $statuts = new Status($this->zdb);
@@ -1326,20 +1288,14 @@ class MembersController extends CrudController
             }
 
             //handle dynamic fields
-            $deps = array(
-                'picture'   => true,
-                'groups'    => true,
-                'dues'      => true,
-                'parent'    => true,
-                'children'  => true,
-                'dynamics'  => true
-            );
-            $member = new Adherent($this->zdb, null, $deps);
-            $member->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history
-            );
+            $member = new Adherent($this->zdb);
+            $member
+                ->enableAllDeps()
+                ->setDependencies(
+                    $this->preferences,
+                    $this->members_fields,
+                    $this->history
+                );
             $dynamic_fields = $member->getDynamicFields()->getFields();
             foreach ($dynamic_fields as $field) {
                 $mass_id = 'mass_info_field_' . $field->getId();
@@ -1427,20 +1383,14 @@ class MembersController extends CrudController
                     //try on dynamic fields
                     if ($dynamic_fields === null) {
                         //handle dynamic fields
-                        $deps = array(
-                            'picture' => true,
-                            'groups' => true,
-                            'dues' => true,
-                            'parent' => true,
-                            'children' => true,
-                            'dynamics' => true
-                        );
-                        $member = new Adherent($this->zdb, null, $deps);
-                        $member->setDependencies(
-                            $this->preferences,
-                            $this->members_fields,
-                            $this->history
-                        );
+                        $member = new Adherent($this->zdb);
+                        $member
+                            ->enableAllDeps()
+                            ->setDependencies(
+                                $this->preferences,
+                                $this->members_fields,
+                                $this->history
+                            );
                         $dynamic_fields = $member->getDynamicFields()->getFields();
                     }
                     foreach ($dynamic_fields as $field) {
@@ -1470,15 +1420,12 @@ class MembersController extends CrudController
                     $is_manager = !$this->login->isAdmin()
                         && !$this->login->isStaff()
                         && $this->login->isGroupManager();
-                    $deps = array(
-                        'picture'   => false,
-                        'groups'    => $is_manager,
-                        'dues'      => false,
-                        'parent'    => false,
-                        'children'  => false,
-                        'dynamics'  => false
-                    );
-                    $member = new Adherent($this->zdb, (int)$id, $deps);
+                    $member = new Adherent($this->zdb);
+                    $member->disableAllDeps();
+                    if ($is_manager) {
+                        $member->enableDep('groups');
+                    }
+                    $member->load((int)$id);
                     $member->setDependencies(
                         $this->preferences,
                         $this->members_fields,
@@ -1555,20 +1502,14 @@ class MembersController extends CrudController
         }
 
         $post = $request->getParsedBody();
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, null, $deps);
-        $member->setDependencies(
-            $this->preferences,
-            $this->members_fields,
-            $this->history
-        );
+        $member = new Adherent($this->zdb);
+        $member
+            ->enableAllDeps()
+            ->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
 
         $success_detected = [];
         $warning_detected = [];
