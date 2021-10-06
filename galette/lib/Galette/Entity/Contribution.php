@@ -58,6 +58,25 @@ use Galette\Repository\PaymentTypes;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
+ *
+ * @property integer $id
+ * @property string $date
+ * @property DateTime $raw_date
+ * @property integer $member
+ * @property ContributionsTypes $type
+ * @property integer $amount
+ * @property integer $payment_type
+ * @property integer $orig_amount
+ * @property string $info
+ * @property string $begin_date
+ * @property DateTime $raw_begin_date
+ * @property string $end_date
+ * @property DateTime $raw_end_date
+ * @property Transaction|null $transaction
+ * @property integer $extension
+ * @property integer $duration
+ * @property string $spayment_type
+ * @property integer $model
  */
 class Contribution
 {
