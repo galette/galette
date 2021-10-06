@@ -119,7 +119,6 @@ class PdfController extends AbstractController
                 );
 
                 return $response
-                    ->withStatus(403)
                     ->withHeader(
                         'Location',
                         $this->router->pathFor('me')
@@ -287,7 +286,6 @@ class PdfController extends AbstractController
             );
 
             return $response
-                ->withStatus(403)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor('me')

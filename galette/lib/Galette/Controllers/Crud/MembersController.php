@@ -268,7 +268,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(404)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor('slash')
@@ -455,7 +454,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(403)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor(
@@ -509,7 +507,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(404)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor('member', ['id' => $id])
@@ -1083,7 +1080,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(403)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor('me')
