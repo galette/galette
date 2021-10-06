@@ -930,6 +930,7 @@ class Members
             case 'list_adh_name':
             case 'nom_adh':
             case 'prenom_adh':
+            case self::ORDERBY_NAME:
                 //defaults
                 break;
             default:
