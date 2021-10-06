@@ -46,7 +46,6 @@
                 <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
             {/foreach}
         {/if}
-            </div>
     {/if}
 
     {* Main form entries*}
@@ -55,7 +54,8 @@
     {include file="edit_dynamic_fields.tpl" object=$member}
 
                     <p>
-            {if !$member->id && !$self_adh }
+    {if !$member->id && !$self_adh}
+        {if ($login->isAdmin() or $login->isStaff())}
                <label for="redirect_on_create">{_T string="After member creation:"}</label>
                <select name="redirect_on_create" id="redirect_on_create">
                   <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
@@ -66,7 +66,10 @@
                   <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
                </select>
                <br/>
-            {/if}
+        {else}
+            <input type="hidden" name="redirect_on_create" value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"/>
+        {/if}
+    {/if}
 
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
                         <br/><label for="mail_confirm">
