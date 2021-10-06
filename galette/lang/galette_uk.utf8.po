@@ -1,13 +1,14 @@
 # Tymofij Lytvynenko <till.svit@gmail.com>, 2020, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
+# Andrii Leitsius <leits.dev@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-10-07 09:05+0000\n"
+"Last-Translator: Andrii Leitsius <leits.dev@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -1912,10 +1913,9 @@ msgid "Form entry for dynamic field \"%s\""
 msgstr "Вхід для динамічного поля \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:137
-#, fuzzy, php-format
-#| msgid "Label for dynamic field \"%s\""
+#, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr "Мітка для динамічного поля \"%s\""
+msgstr "Значення для динамічного поля \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation name"
@@ -4744,10 +4744,8 @@ msgstr ""
 "або редагує свій обліковий запис"
 
 #: ../templates/default/preferences.tpl:288
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Send email to members?"
-msgstr "Надіслати нагадування спізнілим членам"
+msgstr "Надіслати лист спізнілим членам?"
 
 #: ../templates/default/preferences.tpl:289
 #, fuzzy
@@ -5395,10 +5393,8 @@ msgid "Transaction: %s"
 msgstr "Переказ: %s"
 
 #: ../templates/default/gestion_contributions.tpl:243
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show only '%name' contributions"
-msgstr "Показати внески всіх членів"
+msgstr "Показати внески лише від '%name'"
 
 #: ../templates/default/gestion_contributions.tpl:250
 msgid "Show '%name' card"
