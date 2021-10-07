@@ -662,7 +662,7 @@ class Transaction
     public function canShow(Login $login): bool
     {
         //admin and staff users can edit, as well as member itself
-        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+        if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 

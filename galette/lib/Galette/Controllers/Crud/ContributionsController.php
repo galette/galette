@@ -442,7 +442,7 @@ class ContributionsController extends CrudController
         }
 
         if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
-            if ($value === 'all') {
+            if ($value === 'all' || empty($value)) {
                 $value = $this->login->id;
             } else {
                 $member = new Adherent(
