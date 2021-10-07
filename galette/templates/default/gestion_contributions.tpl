@@ -286,7 +286,7 @@
     {/if}
                 </tr>
 {foreachelse}
-                <tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+                <tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}11{else}10{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
             </tbody>
         </table>
