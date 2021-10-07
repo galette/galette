@@ -26,13 +26,14 @@
 # Dario Briones <dariobriones101481@gmail.com>, 2021.
 # felipe <felipecandia@live.com>, 2021.
 # noelia <zizizhuji1@gmail.com>, 2021.
+# KasukeLp <kasukelp23@yahoo.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-10-08 17:03+0000\n"
+"Last-Translator: KasukeLp <kasukelp23@yahoo.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -2202,7 +2203,7 @@ msgstr "No es posible agregar traducción dinámica para %field :("
 #: ../lib/Galette/Entity/I18nTrait.php:202
 #, php-format
 msgid "Unable to update dynamic translation for %field :("
-msgstr ""
+msgstr "No se puede actualizar la traducción dinámica para %field :("
 
 #: ../lib/Galette/Entity/I18nTrait.php:237
 #, php-format
