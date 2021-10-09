@@ -365,32 +365,17 @@ class Contributions
             }
 
             $member_clause = null;
-            if ($this->filters->filtre_cotis_children !== false) {
-                $member_clause = [$this->login->id];
-                $member = new Adherent(
-                    $this->zdb,
-                    (int)$this->filters->filtre_cotis_children,
-                    [
-                        'picture'   => false,
-                        'groups'    => false,
-                        'dues'      => false,
-                        'children'  => true
-                    ]
-                );
-                foreach ($member->children as $child) {
-                    $member_clause[] = $child->id;
-                }
-            } elseif ($this->filters->filtre_cotis_adh != null) {
+            if ($this->filters->filtre_cotis_adh != null) {
                 $member_clause = [$this->filters->filtre_cotis_adh];
                 if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
                     $member = new Adherent(
                         $this->zdb,
                         (int)$this->filters->filtre_cotis_adh,
                         [
-                            'picture'   => false,
-                            'groups'    => false,
-                            'dues'      => false,
-                            'parent'    => true
+                            'picture' => false,
+                            'groups' => false,
+                            'dues' => false,
+                            'parent' => true
                         ]
                     );
                     if (
@@ -404,6 +389,21 @@ class Contributions
                         );
                         $member_clause = [$this->login->id];
                     }
+                }
+            } elseif ($this->filters->filtre_cotis_children !== false) {
+                $member_clause = [$this->login->id];
+                $member = new Adherent(
+                    $this->zdb,
+                    (int)$this->filters->filtre_cotis_children,
+                    [
+                        'picture'   => false,
+                        'groups'    => false,
+                        'dues'      => false,
+                        'children'  => true
+                    ]
+                );
+                foreach ($member->children as $child) {
+                    $member_clause[] = $child->id;
                 }
             } elseif (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 //non staff members can only view their own contributions
