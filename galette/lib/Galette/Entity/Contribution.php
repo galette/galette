@@ -1454,7 +1454,12 @@ class Contribution
             ->enableDep('children')
             ->load($this->login->id);
         if ($parent->hasChildren()) {
-            return true;
+            foreach ($parent->children as $child) {
+                if ($child->id === $this->_member) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         return false;
