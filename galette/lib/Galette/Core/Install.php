@@ -774,7 +774,14 @@ class Install
         }
 
         if ($fatal_error) {
-            $zdb->connection->rollBack();
+            try {
+                $zdb->connection->rollBack();
+            } catch (\PDOException $e) {
+                //to avoid php8/mysql autocommit issue
+                if ($zdb->isPostgres() || (!$zdb->isPostgres() && !str_contains($e->getMessage(), 'no active transaction'))) {
+                    throw $e;
+                }
+            }
         } else {
             try {
                 $zdb->connection->commit();
