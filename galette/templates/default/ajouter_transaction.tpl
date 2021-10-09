@@ -194,8 +194,9 @@
             }
 
             var _contribs_ajax_mapper = function(res){
-                $("#contributions_list #legende").remove();
                 $('#contributions_list').append( res );
+                $("#contributions_list #legende").remove();
+                $("#contributions_list i.fa-filter").remove();
 
                 //Deactivate contributions list links
                 $('#contributions_list tbody a').click(function(){
@@ -220,8 +221,8 @@
                     });
                     return false;
                 });
-                //Bind pagination links
-                $('#contributions_list .pages a').bind({
+                //Bind pagination and ordering links
+                $('#contributions_list .pages a, #contributions_list thead a').bind({
                     click: function(){
                         $.ajax({
                             url: this.href.substring(this.href.indexOf('?')) + (this.href.indexOf('?') > -1 ? "&" : "?") + "ajax=true",
@@ -241,7 +242,7 @@
                 //Select a row
                 $('#contributions_list .contribution_row').click(function(){
                     $('#contributions_list').dialog("close");
-                    var _cid = $(this).find('input[name="contrib_id"]').val();
+                    var _cid = $(this).find('input[name="contrib_sel[]"]').val();
                     window.location.href = '{path_for name="attach_contribution" data=["id" => $transaction->id, "cid" => "%cid"]}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
             }
