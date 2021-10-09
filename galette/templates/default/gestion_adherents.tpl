@@ -467,7 +467,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             _bind_legend();
 
             $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(event){
-                event.preventDefault();
                 if ( this.id == 'delete' || this.id == 'masschange' ) {
                     //mass removal is handled from 2 steps removal
                     //mass change is specifically handled below
