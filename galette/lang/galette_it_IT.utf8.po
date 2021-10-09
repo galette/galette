@@ -21,12 +21,13 @@
 # dwe sds <radiancenot@tutanota.com>, 2021.
 # Alessandro Mandelli <mandelli.alessandro@ngi.it>, 2021.
 # Cecilia Frego <cecilia.frego@gmail.com>, 2021.
+# Gerardo <gerardo.zinno@aol.com>, 2021.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-09-30 11:40+0200\n"
-"PO-Revision-Date: 2021-10-06 05:48+0000\n"
-"Last-Translator: Cecilia Frego <cecilia.frego@gmail.com>\n"
+"PO-Revision-Date: 2021-10-10 19:05+0000\n"
+"Last-Translator: Gerardo <gerardo.zinno@aol.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -1262,7 +1263,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:504
 msgid "- You must indicate a sender name for emails!"
-msgstr ""
+msgstr "- Devi indicare un mittente per le email!"
 
 #: ../lib/Galette/Core/Preferences.php:510
 msgid "- You must indicate an email address Galette should use to send emails!"
@@ -1306,7 +1307,7 @@ msgstr "Password non corrispondenti"
 
 #: ../lib/Galette/Core/Preferences.php:586
 msgid "You have to select a staff member"
-msgstr ""
+msgstr "Devi selezionare un membro dello staff"
 
 #: ../lib/Galette/Core/Preferences.php:639
 #, php-format
@@ -1344,7 +1345,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:740
 msgid "- Invalid year for cards."
-msgstr ""
+msgstr "- Anno per le carte non valido."
 
 #: ../lib/Galette/Core/Preferences.php:851
 msgid "%name association's %status"
@@ -1377,7 +1378,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Plugins.php:276 ../lib/Galette/Core/Plugins.php:280
 msgid "Cannot deactivate plugin."
-msgstr ""
+msgstr "Il plugin non può essere disattivato."
 
 #: ../lib/Galette/Core/Plugins.php:298 ../lib/Galette/Core/Plugins.php:302
 msgid "Cannot activate plugin."
