@@ -2057,6 +2057,8 @@ class Adherent
         if ($preferences->pref_bool_create_member && $login->isLogged()) {
             return true;
         }
+
+        return false;
     }
 
     /**

@@ -175,9 +175,9 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return $this->admin;
+        return (bool)$this->admin;
     }
 
     /**
@@ -185,9 +185,9 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
-        return $this->superadmin;
+        return (bool)$this->superadmin;
     }
 
     /**
@@ -195,9 +195,9 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
-        return $this->active;
+        return (bool)$this->active;
     }
 
     /**
@@ -205,9 +205,9 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isStaff()
+    public function isStaff(): bool
     {
-        return $this->staff;
+        return (bool)$this->staff;
     }
 
     /**
@@ -215,9 +215,9 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isCron()
+    public function isCron(): bool
     {
-        return $this->cron;
+        return (bool)$this->cron;
     }
 
     /**
@@ -229,7 +229,7 @@ abstract class Authentication
      *
      * @return boolean
      */
-    public function isGroupManager($id_group = null)
+    public function isGroupManager($id_group = null): bool
     {
         $manager = false;
         if ($this->isAdmin() || $this->isStaff()) {
@@ -258,9 +258,9 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isUp2Date()
+    public function isUp2Date(): bool
     {
-        return $this->uptodate;
+        return (bool)$this->uptodate;
     }
 
     /**
