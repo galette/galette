@@ -247,17 +247,23 @@ abstract class GaletteTestCase extends atoum
      */
     public function createMember(array $data)
     {
-        $adh = $this->adh;
-        $check = $adh->check($data, [], []);
+        $this->adh = new \Galette\Entity\Adherent($this->zdb);
+        $this->adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $check = $this->adh->check($data, [], []);
         if (is_array($check)) {
             var_dump($check);
         }
         $this->boolean($check)->isTrue();
 
-        $store = $adh->store();
+        $store = $this->adh->store();
         $this->boolean($store)->isTrue();
 
-        return $adh;
+        return $this->adh;
     }
 
     /**
@@ -479,8 +485,38 @@ abstract class GaletteTestCase extends atoum
      */
     protected function adhOneExists()
     {
+        $mdata = $this->dataAdherentOne();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
-        $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
+        $select->where(
+            array(
+                'a.fingerprint' => 'FAKER' . $this->seed,
+                'a.login_adh' => $mdata['login_adh']
+            )
+        );
+
+        $results = $this->zdb->execute($select);
+        if ($results->count() === 0) {
+            return false;
+        } else {
+            return $results;
+        }
+    }
+
+    /**
+     * Look in database if test member already exists
+     *
+     * @return false|ResultSet
+     */
+    protected function adhTwoExists()
+    {
+        $mdata = $this->dataAdherentTwo();
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
+        $select->where(
+            array(
+                'a.fingerprint' => 'FAKER' . $this->seed,
+                'a.login_adh' => $mdata['login_adh']
+            )
+        );
 
         $results = $this->zdb->execute($select);
         if ($results->count() === 0) {
@@ -512,7 +548,7 @@ abstract class GaletteTestCase extends atoum
      */
     protected function getMemberTwo()
     {
-        $rs = $this->adhOneExists();
+        $rs = $this->adhTwoExists();
         if ($rs === false) {
             $this->createMember($this->dataAdherentTwo());
         } else {

@@ -514,4 +514,105 @@ class Adherent extends GaletteTestCase
         $this->string($member->sfullname)->isIdenticalTo('DOE Johny Console.log("anything");');
         $this->string($member->others_infos)->isIdenticalTo('Any console.log("useful"); information');
     }
+
+    /**
+     * Test can* methods
+     *
+     * @return void
+     */
+    public function testCan()
+    {
+        $this->getMemberOne();
+        //load member from db
+        $member = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+
+        $this->boolean($member->canShow($this->login))->isFalse();
+        $this->boolean($member->canCreate($this->login))->isFalse();
+        $this->boolean($member->canEdit($this->login))->isFalse();
+
+        //Superadmin can fully change members
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+
+        $this->boolean($member->canShow($this->login))->isTrue();
+        $this->boolean($member->canCreate($this->login))->isTrue();
+        $this->boolean($member->canEdit($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Member can fully change its own information
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($member->canShow($this->login))->isTrue();
+        $this->boolean($member->canCreate($this->login))->isTrue();
+        $this->boolean($member->canEdit($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Another member has no access
+        $this->getMemberTwo();
+        $mdata = $this->dataAdherentTwo();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($member->canShow($this->login))->isFalse();
+        $this->boolean($member->canCreate($this->login))->isFalse();
+        $this->boolean($member->canEdit($this->login))->isFalse();
+
+        //parents can fully change children information
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        global $login;
+        $login = $this->login;
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+
+        $child_data = [
+                'nom_adh'       => 'Doe',
+                'prenom_adh'    => 'Johny',
+                'parent_id'     => $member->id,
+                'attach'        => true,
+                'login_adh'     => 'child.johny.doe',
+                'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $child = $this->createMember($child_data);
+        $cid = $child->id;
+        $this->login->logOut();
+
+        //load child from db
+        $child = new \Galette\Entity\Adherent($this->zdb);
+        $child->enableDep('parent');
+        $this->boolean($child->load($cid))->isTrue();
+
+        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
+            $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->integer($child->parent->id)->isIdenticalTo($member->id);
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($child->canShow($this->login))->isTrue();
+        $this->boolean($child->canCreate($this->login))->isFalse();
+        $this->boolean($child->canEdit($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+    }
 }
