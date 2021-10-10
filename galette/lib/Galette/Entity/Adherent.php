@@ -944,7 +944,7 @@ class Adherent
     {
         $label = $this->fields[$field]['label'];
         //remove trailing ':' and then nbsp (for french at least)
-        $label = trim(trim($label, ':'), '&nbsp;');
+        $label = trim(trim($label ?? '', ':'), '&nbsp;');
         return $label;
     }
 
@@ -1074,7 +1074,7 @@ class Adherent
             if (isset($values[$key])) {
                 $value = $values[$key];
                 if ($value !== true && $value !== false) {
-                    $value = trim($value);
+                    $value = trim($value ?? '');
                 }
             } elseif (empty($this->_id)) {
                 switch ($key) {
