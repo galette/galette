@@ -64,6 +64,12 @@ class Adherent extends GaletteTestCase
     public function tearDown()
     {
         $this->zdb = new \Galette\Core\Db();
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $delete->where('parent_id IS NOT NULL');
+        $this->zdb->execute($delete);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
