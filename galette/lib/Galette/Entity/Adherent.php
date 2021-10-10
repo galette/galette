@@ -1435,7 +1435,9 @@ class Adherent
         $event = null;
 
         if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
-            $this->_parent = $login->id;
+            if ($this->preferences->pref_bool_create_member) {
+                $this->_parent = $login->id;
+            }
         }
 
         try {
