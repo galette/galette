@@ -208,12 +208,12 @@ abstract class PdfModel
     public function store()
     {
         $title = $this->title;
-        if (trim($title) === '') {
+        if ($title === null || trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
-        if (trim($subtitle) === '') {
+        if ($subtitle === null || trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }
 

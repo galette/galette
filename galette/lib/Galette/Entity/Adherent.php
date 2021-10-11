@@ -768,8 +768,6 @@ class Adherent
     {
         $ret = '';
         $date_now = new \DateTime();
-        $ddate = new \DateTime($this->_due_date);
-        $date_diff = $date_now->diff($ddate);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($this->_due_date == '') {
@@ -789,12 +787,15 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         } elseif ($this->_days_remaining == 0) {
+            $ddate = new \DateTime($this->_due_date);
+            $date_diff = $date_now->diff($ddate);
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
         } elseif ($this->_days_remaining < 0) {
+            $ddate = new \DateTime($this->_due_date);
             $patterns = array('/%days/', '/%date/');
             $replace = array(
                 $this->_days_remaining * -1,
@@ -810,6 +811,7 @@ class Adherent
                 $ret = _T("No longer member");
             }
         } else {
+            $ddate = new \DateTime($this->_due_date);
             $patterns = array('/%days/', '/%date/');
             $replace = array(
                 $this->_days_remaining,

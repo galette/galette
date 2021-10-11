@@ -226,7 +226,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {else}
             {assign var="lrclass" value=$rclass}
             {assign var="propname" value=$column->propname}
-            {assign var=value value=$member->$propname|escape}
+            {assign var="propvalue" value=$member->$propname}
+            {if $propvalue}
+                {assign var=value value=$propvalue|escape}
+            {else}
+                {assign var=value value=$propvalue}
+            {/if}
 
             {if $column->field_id eq 'nom_adh'}
                 {assign var="value" value=$member->sfullname}
