@@ -481,10 +481,15 @@ class Adherent extends GaletteTestCase
         $parent = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         $this->checkMemberOneExpected($parent);
 
-        $child_data = $this->dataAdherentOne() + [
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+
+        $child_data = [
             'nom_adh'       => 'Doe',
             'prenom_adh'    => 'Johny',
             'parent_id'     => $parent->id,
+            'attach'        => true
         ];
         $child = $this->createMember($child_data);
 
