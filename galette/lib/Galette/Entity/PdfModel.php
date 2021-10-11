@@ -55,6 +55,17 @@ use Laminas\Db\Sql\Expression;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
+ *
+ * @property integer $id
+ * @property string $name
+ * @property integer $type
+ * @property string $header
+ * @property string $footer
+ * @property string $title
+ * @property string $subtitle
+ * @property string $body
+ * @property string $styles
+ * @property PdfMain $parent
  */
 
 abstract class PdfModel
