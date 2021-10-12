@@ -89,12 +89,8 @@
                     <span class="bline tooltip">{_T string="Telemetry date:"}</span>
                     <span class="tip">{_T string="Last telemetry sent date."}</span>
                     <span>
-                        {if $pref.pref_telemetry_date}
-                            {$pref.pref_telemetry_date|date_format:"%a %d/%m/%Y - %R"}
-                        {else}
-                            {_T string="Never"}
-                        {/if}
-                        - <a href="#" id="telemetry" class="button"><i class="fas fa-chart-bar" aria-hidden="true"></i> {_T string="send"}</a>
+                        {$preferences->getTelemetryDate()}
+                        <a href="#" id="telemetry" class="button"><i class="fas fa-chart-bar" aria-hidden="true"></i> {_T string="send"}</a>
                     </span>
                 </div>
                 <div class="p">
@@ -103,12 +99,12 @@
                     <span>
                         {if $pref.pref_registration_date}
                             {assign var="regtxt" value={_T string="Update your information"}}
-                            {$pref.pref_registration_date|date_format:"%a %d/%m/%Y - %R"}
+                            {$preferences->getRegistrationDate()}
                         {else}
                             {assign var="regtxt" value={_T string="Register"}}
                             {_T string="Not registered"}
                         {/if}
-                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button"><i class="fas fa-marker"></i>{$regtxt}</a>
+                        <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button"><i class="fas fa-marker"></i>{$regtxt}</a>
                     </span>
                 </div>
 

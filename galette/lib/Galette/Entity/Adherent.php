@@ -657,7 +657,7 @@ class Adherent
      */
     public function isCompany()
     {
-        return trim($this->_company_name) != '';
+        return trim($this->_company_name ?? '') != '';
     }
 
     /**
@@ -876,8 +876,8 @@ class Adherent
             $str .= $title->tshort . ' ';
         }
 
-        $str .= mb_strtoupper($name, 'UTF-8') . ' ' .
-            ucwords(mb_strtolower($surname, 'UTF-8'), " \t\r\n\f\v-_|");
+        $str .= mb_strtoupper($name ?? '', 'UTF-8') . ' ' .
+            ucwords(mb_strtolower($surname ?? '', 'UTF-8'), " \t\r\n\f\v-_|");
 
         if ($id !== false || $nick !== false) {
             $str .= ' (';
@@ -1733,6 +1733,10 @@ class Adherent
                         } else {
                             return null;
                         }
+                        break;
+                    case 'address':
+                    case 'address_continuation':
+                        return $this->$rname ?? '';
                         break;
                     case 'birthdate':
                     case 'creation_date':

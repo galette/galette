@@ -18,17 +18,17 @@
                 <form action="{path_for name="editDynamicTranslation"}" method="post" enctype="multipart/form-data">
     {if not $exists}
                 <p class="right">
-                    <span>{_T string="Original text: '%s'" pattern='/%s/' replace=$text_orig}</span>
+                    <span>{_T string="Original text: '%s'" pattern='/%s/' replace=$text_orig|escape}</span>
                     <input type="hidden" name="new" value="true"/>
                 </p>
     {/if}
                 <fieldset class="cssform">
-                    <legend class="ui-state-active ui-corner-top">{_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig}</legend>
+                    <legend class="ui-state-active ui-corner-top">{_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig|escape}</legend>
 {section name="lang" loop=$trans}
                     <p>
                         <label for="text_trans_{$trans[lang].key}" class="bline">{$trans[lang].name}</label>
-                        <input type="text" name="text_trans_{$trans[lang].key}" id="text_trans_{$trans[lang].key}" value="{$trans[lang].text|escape}"/>
-                        <input type=hidden name="text_orig" value="{$text_orig}"/>
+                        <input type="text" name="text_trans_{$trans[lang].key}" id="text_trans_{$trans[lang].key}" value="{if $trans[lang].text}{$trans[lang].text|escape}{/if}"/>
+                        <input type=hidden name="text_orig" value="{$text_orig|escape}"/>
                     </p>
 {/section}
                 </fieldset>

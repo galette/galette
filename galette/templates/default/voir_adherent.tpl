@@ -140,7 +140,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {continue}
         {/if}
         {assign var="propname" value=$element->propname}
-        {assign var="value" value=$member->$propname|escape}
+
+        {assign var="propvalue" value=$member->$propname}
+        {if $propvalue}
+            {assign var=value value=$propvalue|escape}
+        {else}
+            {assign var=value value=$propvalue}
+        {/if}
 
         {if $element->field_id eq 'nom_adh'}
             {assign var="value" value=$member->sfullname}

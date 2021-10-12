@@ -68,7 +68,7 @@ class CheckModules extends atoum
         $this->array($checks->getMissings())
             ->isEmpty();
         $this->array($checks->getShoulds())
-            ->isEmpty(2);
+            ->isEmpty();
         $this->boolean($checks->isGood('mbstring'))
             ->isTrue();
     }

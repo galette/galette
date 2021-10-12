@@ -104,7 +104,7 @@ class DynamicTranslationsController extends AbstractController
 
                 $orig = array();
                 foreach ($all_texts as $idx => $row) {
-                    $orig[] = $row->text_orig;
+                    $orig[] = $row->text_orig ?? '';
                 }
                 $exists = true;
                 if ($text_orig == '') {

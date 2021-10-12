@@ -86,7 +86,7 @@
                         <a href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{_T string="Activate HTML editor"}</a>
                     </span>
                     <label for="mailing_corps" class="bline">{_T string="Message:"}</label>
-                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{$mailing->message|escape}</textarea>
+                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{if $mailing->message}{$mailing->message|escape}{/if}</textarea>
                     <input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
                 </div>
                 <div class="center">
@@ -140,7 +140,7 @@
                         </button>
 
                         <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
-                        <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>
+                        <input type="hidden" name="mailing_corps" value="{if $mailing->message}{$mailing->message|escape}{/if}"/>
                     </p>
                 </div>
         {/if}

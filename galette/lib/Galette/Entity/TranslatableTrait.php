@@ -65,7 +65,9 @@ trait TranslatableTrait
      */
     public function getName($translated = true)
     {
-        if ($translated === true) {
+        if (empty($this->name)) {
+            return '';
+        } elseif ($translated === true) {
             return _T(strip_tags($this->name));
         } else {
             return strip_tags($this->name);

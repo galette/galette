@@ -70,7 +70,7 @@ use Galette\Repository\Members;
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
  * @property integer $pref_log History, one of self::LOG_*
- * @property interger $pref_statut Default status for new members
+ * @property integer $pref_statut Default status for new members
  * @property string $pref_email_nom
  * @property string $pref_email
  * @property string $pref_email_newadh
@@ -1061,6 +1061,38 @@ class Preferences
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
         $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
         return $uri;
+    }
+
+    /**
+     * Get last telemetry date
+     *
+     * @return string
+     */
+    public function getTelemetryDate(): string
+    {
+        $rawdate = $this->prefs['pref_telemetry_date'];
+        if ($rawdate) {
+            $date = new \DateTime($rawdate);
+            return $date->format(_T('Y-m-d H:i:s'));
+        } else {
+            return _T('Never');
+        }
+    }
+
+    /**
+     * Get last telemetry date
+     *
+     * @return string|null
+     */
+    public function getRegistrationDate()
+    {
+        $rawdate = $this->prefs['pref_registration_date'];
+        if ($rawdate) {
+            $date = new \DateTime($rawdate);
+            return $date->format(_T('Y-m-d H:i:s'));
+        }
+
+        return null;
     }
 
     /**
