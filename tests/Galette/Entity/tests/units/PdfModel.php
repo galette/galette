@@ -350,7 +350,7 @@ class PdfModel extends GaletteTestCase
         $this->createMember($data);
         $model->setMember($this->adh);
 
-        $this->createContribution($cdf);
+        $this->createPdfContribution($cdf);
         $model->setContribution($this->contrib);
 
         $this->string($model->hheader)->isIdenticalTo("<table>
@@ -417,7 +417,7 @@ Au milieu
      *
      * @return void
      */
-    private function createContribution($cdf)
+    protected function createPdfContribution($cdf)
     {
         $bdate = new \DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P5M')); // 2020-06-07

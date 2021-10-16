@@ -580,6 +580,93 @@ abstract class GaletteTestCase extends atoum
     }
 
     /**
+     * Create test contribution in database
+     *
+     * @return void
+     */
+    protected function createContribution()
+    {
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 1,
+            'montant_cotis' => 92,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $this->createContrib($data);
+        $this->checkContribExpected();
+    }
+
+    /**
+     * Check contributions expected
+     *
+     * @param Contribution $contrib       Contribution instance, if any
+     * @param array        $new_expecteds Changes on expected values
+     *
+     * @return void
+     */
+    protected function checkContribExpected($contrib = null, $new_expecteds = [])
+    {
+        if ($contrib === null) {
+            $contrib = $this->contrib;
+        }
+
+        $date_begin = $contrib->raw_begin_date;
+        $date_end = clone $date_begin;
+        $date_end->add(new \DateInterval('P1Y'));
+
+        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
+        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
+        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
+
+        $expecteds = [
+            'id_adh' => "{$this->adh->id}",
+            'id_type_cotis' => 1,
+            'montant_cotis' => '92',
+            'type_paiement_cotis' => '3',
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_fin_cotis' => $date_end->format('Y-m-d'),
+        ];
+        $expecteds = array_merge($expecteds, $new_expecteds);
+
+        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
+
+        foreach ($expecteds as $key => $value) {
+            $property = $this->contrib->fields[$key]['propname'];
+            switch ($key) {
+                case \Galette\Entity\ContributionsTypes::PK:
+                    $ct = $this->contrib->type;
+                    if ($ct instanceof \Galette\Entity\ContributionsTypes) {
+                        $this->integer((int)$ct->id)->isIdenticalTo($value);
+                    } else {
+                        $this->integer($ct)->isIdenticalTo($value);
+                    }
+                    break;
+                default:
+                    $this->variable($contrib->$property)->isEqualTo($value, $property);
+                    break;
+            }
+        }
+
+        //load member from db
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        //member is now up-to-date
+        $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
+        $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
+        $this->boolean($this->adh->isUp2Date())->isTrue();
+    }
+
+    /**
      * Initialize default status in database
      *
      * @return void

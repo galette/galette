@@ -285,7 +285,7 @@ class Transaction
 
         $fields = array_keys($this->_fields);
         foreach ($fields as $key) {
-            //first of all, let's sanitize values
+            //first, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->_fields[$key]['propname'];
 
@@ -322,7 +322,7 @@ class Transaction
                                     ),
                                     array(
                                         __("Y-m-d"),
-                                        $this->_fields[$key]['label']
+                                        $this->getFieldLabel($key)
                                     ),
                                     _T("- Wrong date format (%date_format) for %field!")
                                 );
@@ -341,9 +341,7 @@ class Transaction
                         case 'trans_desc':
                             /** TODO: retrieve field length from database and check that */
                             $this->_description = $value;
-                            if (trim($value) == '') {
-                                $this->errors[] = _T("- Empty transaction description!");
-                            } elseif (mb_strlen($value) > 150) {
+                            if (mb_strlen($value) > 150) {
                                 $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                             }
                             break;
@@ -485,8 +483,12 @@ class Transaction
      *
      * @return double
      */
-    public function getDispatchedAmount()
+    public function getDispatchedAmount(): float
     {
+        if (empty($this->_id)) {
+            return (double)0;
+        }
+
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
@@ -515,6 +517,10 @@ class Transaction
      */
     public function getMissingAmount()
     {
+        if (empty($this->_id)) {
+            return (double)$this->amount;
+        }
+
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
@@ -576,7 +582,7 @@ class Transaction
         $forbidden = array();
 
         $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && isset($this->$rname)) {
+        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
             switch ($name) {
                 case 'date':
                     if ($this->$rname != '') {
@@ -594,9 +600,13 @@ class Transaction
                         }
                     }
                     break;
+                case 'id':
+                    if ($this->_id !== null) {
+                        return (int)$this->$rname;
+                    }
+                    return null;
                 default:
                     return $this->$rname;
-                    break;
             }
         } else {
             return false;
@@ -624,11 +634,13 @@ class Transaction
      *
      * @return string
      */
-    private function getFieldLabel($field)
+    public function getFieldLabel($field)
     {
         $label = $this->_fields[$field]['label'];
-        //remove trailing ':' and then nbsp (for french at least)
-        $label = trim(trim($label, ':'), '&nbsp;');
+        //replace "&nbsp;"
+        $label = str_replace('&nbsp;', ' ', $label);
+        //remove trailing ':' and then trim
+        $label = trim(trim($label, ':'));
         return $label;
     }
 

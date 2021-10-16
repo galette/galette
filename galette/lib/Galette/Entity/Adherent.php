@@ -943,8 +943,10 @@ class Adherent
     private function getFieldLabel($field)
     {
         $label = $this->fields[$field]['label'];
-        //remove trailing ':' and then nbsp (for french at least)
-        $label = trim(trim($label ?? '', ':'), '&nbsp;');
+        //replace "&nbsp;"
+        $label = str_replace('&nbsp;', ' ', $label);
+        //remove trailing ':' and then trim
+        $label = trim(trim($label ?? '', ':'));
         return $label;
     }
 

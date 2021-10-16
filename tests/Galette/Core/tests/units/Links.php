@@ -275,7 +275,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    private function createContribution()
+    protected function createContribution()
     {
         $bdate = new \DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P1Y')); // 2019-11-07
@@ -307,7 +307,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    private function checkContribExpected($contrib = null, $new_expecteds = [])
+    protected function checkContribExpected($contrib = null, $new_expecteds = [])
     {
         if ($contrib === null) {
             $contrib = $this->contrib;
