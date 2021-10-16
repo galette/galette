@@ -22,6 +22,9 @@
         {if $member->hasParent() && !$member->isDuplicate()}
                 <strong>{_T string="Attached to:"}
                 <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong>
+            {if !$member->id}
+                <input type="hidden" name="parent_id" value="{$member->parent->id}"/>
+            {/if}
             {if $login->isAdmin() or $login->isStaff() && (!isset($addchild) || !$addchild)}
                 <br/><label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
