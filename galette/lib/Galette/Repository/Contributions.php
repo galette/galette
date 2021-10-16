@@ -387,6 +387,7 @@ class Contributions
                             ' without appropriate ACLs',
                             Analog::WARNING
                         );
+                        $this->filters->filtre_cotis_adh = $this->login->id;
                         $member_clause = [$this->login->id];
                     }
                 }
