@@ -86,6 +86,7 @@ class Adherent extends GaletteTestCase
     {
         parent::beforeTestMethod($testMethod);
         $this->initStatus();
+        $this->initTitles();
 
         $this->default_deps = [
             'picture'   => true,
@@ -625,5 +626,91 @@ class Adherent extends GaletteTestCase
         //logout
         $this->login->logOut();
         $this->boolean($this->login->isLogged())->isFalse();
+    }
+
+    /**
+     * Names provider
+     *
+     * @return array[]
+     */
+    protected function nameCaseProvider(): array
+    {
+        return [
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => false,
+                'id' => false,
+                'nick' => false,
+                'expected' => 'DOE John'
+            ],
+            [
+                'name' => 'Doéè',
+                'surname' => 'John',
+                'title' => false,
+                'id' => false,
+                'nick' => false,
+                'expected' => 'DOÉÈ John'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => new \Galette\Entity\Title(\Galette\Entity\Title::MR),
+                'id' => false,
+                'nick' => false,
+                'expected' => 'Mr. DOE John'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => false,
+                'id' => false,
+                'nick' => 'foo',
+                'expected' => 'DOE John (foo)'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => false,
+                'id' => 42,
+                'nick' => false,
+                'expected' => 'DOE John (42)'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => new \Galette\Entity\Title(\Galette\Entity\Title::MR),
+                'id' => 42,
+                'nick' => 'foo',
+                'expected' => 'Mr. DOE John (foo, 42)'
+            ],
+        ];
+    }
+
+    /**
+     * Test getNameWithCase
+     *
+     * @dataProvider nameCaseProvider
+     *
+     * @param string                      $name     Name
+     * @param string                      $surname  Surname
+     * @param \Galette\Entity\Title|false $title    Title
+     * @param string|false                $id       ID
+     * @param string|false                $nick     Nick
+     * @param  string                      $expected Expected result
+     *
+     * @return void
+     */
+    public function testsGetNameWithCase(string $name, string $surname, $title, $id, $nick, string $expected)
+    {
+        $this->string(
+            \Galette\Entity\Adherent::getNameWithCase(
+                $name,
+                $surname,
+                $title,
+                $id,
+                $nick,
+            )
+        )->isIdenticalTo($expected);
     }
 }

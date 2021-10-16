@@ -608,4 +608,18 @@ abstract class GaletteTestCase extends atoum
             $this->boolean($res)->isTrue();
         }
     }
+
+    /**
+     * Initialize default titles in database
+     *
+     * @return void
+     */
+    protected function initTitles(): void
+    {
+        $titles = new \Galette\Repository\Titles($this->zdb);
+        if (count($titles->getList($this->zdb)) === 0) {
+            $res = $titles->installInit($this->zdb);
+            $this->boolean($res)->isTrue();
+        }
+    }
 }
