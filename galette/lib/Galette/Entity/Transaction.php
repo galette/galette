@@ -152,8 +152,13 @@ class Transaction
     public function load($id)
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE, 't');
             $select->where(self::PK . ' = ' . $id);
+            $select->join(
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                't.' . Adherent::PK . '=a.' . Adherent::PK,
+                array()
+            );
 
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
@@ -164,7 +169,7 @@ class Transaction
                         ->equalTo('a.parent_id', $this->login->id)
                     ->unnest()
                     ->and
-                    ->equalTo('c.' . self::PK, $id)
+                    ->equalTo('t.' . self::PK, $id)
                 ;
             } else {
                 $select->where->equalTo(self::PK, $id);
