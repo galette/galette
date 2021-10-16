@@ -1768,7 +1768,7 @@ class MembersController extends CrudController
                             ['id'    => $member->id]
                         );
                     } else {
-                        $redirect_url = $this->router->pathFor('addMember');
+                        $redirect_url = $this->router->pathFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
                     }
                 }
             }

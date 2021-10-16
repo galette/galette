@@ -69,6 +69,9 @@
         {else}
             <input type="hidden" name="redirect_on_create" value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"/>
         {/if}
+        {if isset($addchild) && $addchild}
+            <input type="hidden" name="addchild" value="true"/>
+        {/if}
     {/if}
 
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}

@@ -1096,6 +1096,9 @@ class Adherent
                         //values that are set at object instantiation
                         $value = $this->$prop;
                         break;
+                    case self::PK:
+                        $value = null;
+                        break;
                     default:
                         $value = '';
                         break;
