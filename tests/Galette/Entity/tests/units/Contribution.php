@@ -68,6 +68,12 @@ class Contribution extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $delete->where('parent_id IS NOT NULL');
+        $this->zdb->execute($delete);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
@@ -571,10 +577,123 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
         $this->createContribution();
 
-        $id = (int)$this->contrib->id;
         $this->boolean($this->contrib->remove())->isTrue();
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->boolean($this->contrib->remove())->isFalse();
+    }
+
+    /**
+     * Test can* methods
+     *
+     * @return void
+     */
+    public function testCan()
+    {
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+        $contrib = $this->contrib;
+
+        $this->boolean($contrib->canShow($this->login))->isFalse();
+
+        //Superadmin can fully change contributions
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+
+        $this->boolean($contrib->canShow($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Member can fully change its own contributions
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($contrib->canShow($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Another member has no access
+        $this->getMemberTwo();
+        $mdata = $this->dataAdherentTwo();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($contrib->canShow($this->login))->isFalse();
+
+        //parents can chow change children contributions
+        $this->getMemberOne();
+        $member = $this->adh;
+        $mdata = $this->dataAdherentOne();
+        global $login;
+        $login = $this->login;
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+
+        $child_data = [
+            'nom_adh'       => 'Doe',
+            'prenom_adh'    => 'Johny',
+            'parent_id'     => $member->id,
+            'attach'        => true,
+            'login_adh'     => 'child.johny.doe',
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $child = $this->createMember($child_data);
+        $cid = $child->id;
+
+        //contribution for child
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $cid,
+            'id_type_cotis' => 1,
+            'montant_cotis' => 25,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $ccontrib = $this->createContrib($data);
+
+        $this->login->logOut();
+
+        //load child from db
+        $child = new \Galette\Entity\Adherent($this->zdb);
+        $child->enableDep('parent');
+        $this->boolean($child->load($cid))->isTrue();
+
+        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
+        $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->integer($child->parent->id)->isIdenticalTo($member->id);
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($ccontrib->canShow($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
     }
 }
