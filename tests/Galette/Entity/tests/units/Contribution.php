@@ -77,6 +77,8 @@ class Contribution extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $this->cleanHistory();
     }
 
     /**
@@ -502,9 +504,7 @@ class Contribution extends GaletteTestCase
         $this->boolean($contrib->canShow($this->login))->isFalse();
 
         //Superadmin can fully change contributions
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $this->boolean($contrib->canShow($this->login))->isTrue();
 
@@ -541,9 +541,7 @@ class Contribution extends GaletteTestCase
         $mdata = $this->dataAdherentOne();
         global $login;
         $login = $this->login;
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $child_data = [
             'nom_adh'       => 'Doe',

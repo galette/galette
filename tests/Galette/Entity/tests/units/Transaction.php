@@ -87,6 +87,8 @@ class Transaction extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $this->cleanHistory();
     }
 
     /**
@@ -271,9 +273,7 @@ class Transaction extends GaletteTestCase
      */
     public function testRemove()
     {
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $this->getMemberOne();
         $this->createTransaction();
@@ -295,16 +295,14 @@ class Transaction extends GaletteTestCase
     public function testCan()
     {
         $this->getMemberOne();
-        //create contribution for member
+        //create transaction for member
         $this->createTransaction();
         $transaction = $this->transaction;
 
         $this->boolean($transaction->canShow($this->login))->isFalse();
 
         //Superadmin can fully change contributions
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $this->boolean($transaction->canShow($this->login))->isTrue();
 
@@ -341,9 +339,7 @@ class Transaction extends GaletteTestCase
         $mdata = $this->dataAdherentOne();
         global $login;
         $login = $this->login;
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $child_data = [
             'nom_adh'       => 'Doe',

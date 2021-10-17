@@ -72,7 +72,7 @@ class History extends GaletteTestCase
     public function testHistoryFlow()
     {
         $this->i18n->changeLanguage('en_US');
-        //nothing in the logs at the begining
+        //nothing in the logs at the beginning
         $list = $this->history->getHistory();
         $this->array($list)->hasSize(0);
 
@@ -123,10 +123,7 @@ class History extends GaletteTestCase
         $list = $this->history->getHistory();
         $this->array($list)->hasSize(1);
 
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
+        $this->cleanHistory();
     }
 
     /**

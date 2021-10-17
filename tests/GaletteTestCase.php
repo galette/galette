@@ -709,4 +709,29 @@ abstract class GaletteTestCase extends atoum
             $this->boolean($res)->isTrue();
         }
     }
+
+    /**
+     * Clean history
+     *
+     * @return void
+     */
+    protected function cleanHistory(): void
+    {
+        $this->zdb->db->query(
+            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
+            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+    }
+
+    /**
+     * Log-in as super administrator
+     *
+     * @return void
+     */
+    protected function logSuperAdmin(): void
+    {
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+    }
 }

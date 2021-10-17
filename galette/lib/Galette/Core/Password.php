@@ -255,7 +255,7 @@ class Password extends AbstractPassword
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error ocured attempting to delete used hash' .
+                'An error occurred attempting to delete used hash' .
                 $e->getMessage(),
                 Analog::WARNING
             );

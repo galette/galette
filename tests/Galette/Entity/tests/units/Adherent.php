@@ -73,6 +73,8 @@ class Adherent extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $this->cleanHistory();
     }
 
     /**
@@ -482,9 +484,7 @@ class Adherent extends GaletteTestCase
         $parent = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         $this->checkMemberOneExpected($parent);
 
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $child_data = [
             'nom_adh'       => 'Doe',
@@ -543,9 +543,7 @@ class Adherent extends GaletteTestCase
         $this->boolean($member->canEdit($this->login))->isFalse();
 
         //Superadmin can fully change members
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $this->boolean($member->canShow($this->login))->isTrue();
         $this->boolean($member->canCreate($this->login))->isTrue();
@@ -587,9 +585,7 @@ class Adherent extends GaletteTestCase
         $mdata = $this->dataAdherentOne();
         global $login;
         $login = $this->login;
-        $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->logSuperAdmin();
 
         $child_data = [
                 'nom_adh'       => 'Doe',
