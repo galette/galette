@@ -240,6 +240,67 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test contribution update
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $this->getMemberOne();
+        //create contribution for member
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 12,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $this->createContrib($data);
+        $this->array($this->contrib->getRequired())->isIdenticalTo([
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1,
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => 0,
+            'montant_cotis'     => 0
+        ]);
+
+        $this->logSuperAdmin();
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 1280,
+            'type_paiement_cotis' => 4,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+
+        ];
+        $check = $this->contrib->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+
+        $store = $this->contrib->store();
+        $this->boolean($store)->isTrue();
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
+        $this->variable($contrib->amount)->isIdenticalTo(1280);
+    }
+
+    /**
      * Test end date retrieving
      * This is based on some Preferences parameters
      *
@@ -255,7 +316,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
-            ['type' => 1] //anual fee
+            ['type' => 1] //annual fee
         );
 
         // First, check for 12 months renewal
@@ -272,7 +333,7 @@ class Contribution extends GaletteTestCase
                 $contrib = new \Galette\Entity\Contribution(
                     $this->zdb,
                     $this->login,
-                    ['type' => 1] //anual fee
+                    ['type' => 1] //annual fee
                 );
             }
         )
@@ -290,7 +351,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
-            ['type' => 1] // anual fee
+            ['type' => 1] // annual fee
         );
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
 
@@ -305,7 +366,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
-            ['type' => 1] // anual fee
+            ['type' => 1] // annual fee
         );
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-t'));
 
@@ -355,7 +416,7 @@ class Contribution extends GaletteTestCase
         $end_date->add(new \DateInterval('P1Y'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
-            \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
+            \Galette\Entity\ContributionsTypes::PK  => 1, //annual fee
             'montant_cotis'                         => 20,
             'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
@@ -384,7 +445,7 @@ class Contribution extends GaletteTestCase
         $end_date->add(new \DateInterval('P1Y'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
-            \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
+            \Galette\Entity\ContributionsTypes::PK  => 1, //anunal fee
             'montant_cotis'                         => 20,
             'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),

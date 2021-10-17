@@ -351,9 +351,9 @@ class Contribution
         $pk = self::PK;
         $this->_id = (int)$r->$pk;
         $this->_date = $r->date_enreg;
-        $this->_amount = $r->montant_cotis;
+        $this->_amount = (int)$r->montant_cotis;
         //save original amount, we need it for transactions parts calculations
-        $this->_orig_amount = $r->montant_cotis;
+        $this->_orig_amount = (int)$r->montant_cotis;
         $this->_payment_type = $r->type_paiement_cotis;
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
@@ -1428,7 +1428,7 @@ class Contribution
             'id_adh'            => 1,
             'date_enreg'        => 1,
             'date_debut_cotis'  => 1,
-            'date_fin_cotis'    => $this->isFee(),
+            'date_fin_cotis'    => $this->isFee() ? 1 : 0,
             'montant_cotis'     => $this->isFee() ? 1 : 0
         ];
     }

@@ -595,7 +595,7 @@ abstract class GaletteTestCase extends atoum
 
         $data = [
             'id_adh' => $this->adh->id,
-            'id_type_cotis' => 1,
+            'id_type_cotis' => 1, //annual fee
             'montant_cotis' => 92,
             'type_paiement_cotis' => 3,
             'info_cotis' => 'FAKER' . $this->seed,
@@ -631,7 +631,7 @@ abstract class GaletteTestCase extends atoum
 
         $expecteds = [
             'id_adh' => "{$this->adh->id}",
-            'id_type_cotis' => 1,
+            'id_type_cotis' => 1, //annual fee
             'montant_cotis' => '92',
             'type_paiement_cotis' => '3',
             'info_cotis' => 'FAKER' . $this->seed,
@@ -664,6 +664,17 @@ abstract class GaletteTestCase extends atoum
         $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
         $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
         $this->boolean($this->adh->isUp2Date())->isTrue();
+        $this->boolean($contrib->isFee())->isTrue();
+        $this->string($contrib->getTypeLabel())->isIdenticalTo('Membership');
+        $this->string($contrib->getRawType())->isIdenticalTo('membership');
+        $this->array($this->contrib->getRequired())->isIdenticalTo([
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1,
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => 1,
+            'montant_cotis'     => 1
+        ]);
     }
 
     /**

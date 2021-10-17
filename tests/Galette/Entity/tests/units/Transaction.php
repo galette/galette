@@ -201,7 +201,7 @@ class Transaction extends GaletteTestCase
         $data = ['trans_amount' => 1256];
         $check = $transaction->check($data, ['trans_amount' => 1], []);
         $this->boolean($check)->isTrue();
-        $this->string($transaction->amount)->isIdenticalTo('1256');
+        $this->variable($transaction->amount)->isIdenticalTo(1256.00);
 
         //set a bad description
         $data = ['trans_desc' => 'this is a very long description that should give an error; because the length of transaction description is limited to 150 characters long, even if this is quite hard to find something to write.'];
@@ -220,6 +220,34 @@ class Transaction extends GaletteTestCase
         $this->getMemberOne();
         //create transaction for member
         $this->createTransaction();
+    }
+
+    /**
+     * Test transaction update
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $this->getMemberOne();
+        //create transaction for member
+        $this->createTransaction();
+
+        $this->logSuperAdmin();
+        $data = [
+            'trans_amount' => 42
+        ];
+        $check = $this->transaction->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+
+        $store = $this->transaction->store($this->history);
+        $this->boolean($store)->isTrue();
+
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login, $this->transaction->id);
+        $this->variable($transaction->amount)->isIdenticalTo(42.00);
     }
 
     /**
@@ -301,7 +329,7 @@ class Transaction extends GaletteTestCase
 
         $this->boolean($transaction->canShow($this->login))->isFalse();
 
-        //Superadmin can fully change contributions
+        //Superadmin can fully change transactions
         $this->logSuperAdmin();
 
         $this->boolean($transaction->canShow($this->login))->isTrue();
@@ -310,7 +338,7 @@ class Transaction extends GaletteTestCase
         $this->login->logOut();
         $this->boolean($this->login->isLogged())->isFalse();
 
-        //Member can fully change its own contributions
+        //Member can fully change its own transactions
         $mdata = $this->dataAdherentOne();
         $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
         $this->boolean($this->login->isLogged())->isTrue();
@@ -333,7 +361,7 @@ class Transaction extends GaletteTestCase
 
         $this->boolean($transaction->canShow($this->login))->isFalse();
 
-        //parents can chow change children contributions
+        //parents can chow change children transactions
         $this->getMemberOne();
         $member = $this->adh;
         $mdata = $this->dataAdherentOne();
@@ -352,7 +380,7 @@ class Transaction extends GaletteTestCase
         $child = $this->createMember($child_data);
         $cid = $child->id;
 
-        //contribution for child
+        //transaction for child
         $date = new \DateTime(); // 2020-11-07
 
         $data = [
@@ -395,5 +423,113 @@ class Transaction extends GaletteTestCase
         //logout
         $this->login->logOut();
         $this->boolean($this->login->isLogged())->isFalse();
+    }
+
+    /**
+     * Test a transaction
+     *
+     * @return void
+     */
+    public function testTransaction(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create transaction for member
+        $this->createTransaction();
+
+        $contribs_ids = [];
+        $tid = $this->transaction->id;
+
+        //create a contribution attached to transaction
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 1,
+            'montant_cotis' => 25,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+            \Galette\Entity\Transaction::PK => $tid
+        ];
+        $contrib = $this->createContrib($data);
+        $contribs_ids[] = $contrib->id;
+
+        $this->boolean($contrib->isTransactionPart())->isTrue();
+        $this->boolean($contrib->isTransactionPartOf($this->transaction->id))->isTrue();
+
+        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)25);
+        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)67);
+        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-uncomplete');
+
+        //complete the transaction
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 67,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+            \Galette\Entity\Transaction::PK => $tid
+        ];
+        $contrib = $this->createContrib($data);
+        $contribs_ids[] = $contrib->id;
+
+        $this->boolean($contrib->isTransactionPart())->isTrue();
+        $this->boolean($contrib->isTransactionPartOf($this->transaction->id))->isTrue();
+        $this->boolean($contrib->isFee())->isFalse();
+        $this->string($contrib->getTypeLabel())->isIdenticalTo('Donation');
+        $this->string($contrib->getRawType())->isIdenticalTo('donation');
+
+
+        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)92);
+        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)0);
+        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-normal');
+
+        //cannot add more
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 36,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+            \Galette\Entity\Transaction::PK => $tid
+        ];
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $check = $contrib->check($data, [], []);
+        $this->array($check)->isIdenticalTo(['- Sum of all contributions exceed corresponding transaction amount.']);
+
+        $contrib_id = $contribs_ids[0];
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contrib_id);
+        $this->boolean($contrib->unsetTransactionPart($this->zdb, $this->login, $tid, $contrib_id))->isTrue();
+
+        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)67);
+        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)25);
+        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-uncomplete');
+
+        $this->boolean($contrib->setTransactionPart($this->zdb, $tid, $contrib_id))->isTrue();
+
+        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)92);
+        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)0);
+        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-normal');
+
+        //delete transaction, and ensures all contributions has been removed as well
+        $this->boolean($this->transaction->remove($this->history))->isTrue();
+        $this->boolean($this->transaction->load($tid))->isFalse();
+        foreach ($contribs_ids as $contrib_id) {
+            $this->boolean($this->contrib->load($contrib_id))->isFalse();
+        }
     }
 }

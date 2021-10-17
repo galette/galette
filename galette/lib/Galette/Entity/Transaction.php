@@ -601,30 +601,28 @@ class Transaction
                     }
                     break;
                 case 'id':
-                    if ($this->_id !== null) {
+                    if ($this->$rname !== null) {
                         return (int)$this->$rname;
+                    }
+                    return null;
+                case 'amount':
+                    if ($this->$rname !== null) {
+                        return (double)$this->$rname;
                     }
                     return null;
                 default:
                     return $this->$rname;
             }
         } else {
+            Analog::log(
+                sprintf(
+                    'Property %1$s does not exists for transaction',
+                    $name
+                ),
+                Analog::WARNING
+            );
             return false;
         }
-    }
-
-    /**
-     * Global setter method
-     *
-     * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
-     *
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        /*$forbidden = array('fields');*/
-        /** TODO: What to do ? :-) */
     }
 
     /**
