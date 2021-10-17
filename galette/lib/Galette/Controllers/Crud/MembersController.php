@@ -73,7 +73,7 @@ use Analog\Analog;
 
 class MembersController extends CrudController
 {
-    /** @var boolean */
+    /** @var bool */
     private $is_self_membership = false;
 
     // CRUD - Create
