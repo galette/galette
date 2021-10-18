@@ -496,7 +496,7 @@ class Preferences
         }
 
         //cleanup fields for demo
-        if (GALETTE_MODE == Galette::MODE_DEMO ) {
+        if (GALETTE_MODE == Galette::MODE_DEMO) {
             unset(
                 $insert_values['pref_admin_login'],
                 $insert_values['pref_admin_pass'],
