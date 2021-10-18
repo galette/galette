@@ -1095,7 +1095,7 @@ class MembersController extends CrudController
         $fc = $this->fields_config;
 
         // password required if we create a new member
-        if ($id === null) {
+        if ($id !== null) {
             $fc->setNotRequired('mdp_adh');
         }
 
