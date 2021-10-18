@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-10-17 09:45+0200\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
+"PO-Revision-Date: 2021-10-18 04:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -4182,16 +4182,12 @@ msgid "Go to Galette's dashboard"
 msgstr "Aller au tableau de bord de Galette"
 
 #: ../templates/default/page.tpl:38
-#, fuzzy
-#| msgid "Add new member in database"
 msgid "Add new child member in database"
-msgstr "Ajouter un nouveau membre à la base"
+msgstr "Ajouter un nouvel enfant à la base"
 
 #: ../templates/default/page.tpl:38
-#, fuzzy
-#| msgid "Add a member"
 msgid "Add a child member"
-msgstr "Ajouter un adhérent"
+msgstr "Ajouter un enfant"
 
 #: ../templates/default/page.tpl:41 ../templates/default/desktop.tpl:30
 msgid "View, search into and filter member's list"
@@ -4607,16 +4603,14 @@ msgid "Lines / Page:"
 msgstr "Lignes / Page :"
 
 #: ../templates/default/preferences.tpl:162
-#, fuzzy
-#| msgid "%count members created"
 msgid "Can members create child?"
-msgstr "%count adhérents créés"
+msgstr "Les adhérents peuvent créer des enfants ?"
 
 #: ../templates/default/preferences.tpl:163
-#, fuzzy
-#| msgid "(Members will be able to generate their own member card)"
 msgid "Any logged in member will be able to create his own child cards"
-msgstr "(Les membres pourront imprimer leur carte)"
+msgstr ""
+"(Les adhérents connectés auront la possibilité de créer les fiches de leurs "
+"enfants)"
 
 #: ../templates/default/preferences.tpl:168 ../templates/default/member.tpl:62
 msgid "After member creation:"
@@ -4706,10 +4700,8 @@ msgstr ""
 "pour toute l'année suivante."
 
 #: ../templates/default/preferences.tpl:213
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Default payment type:"
-msgstr "Supprimer le type de paiement « %s »"
+msgstr "Type de paiement par défaut :"
 
 #: ../templates/default/preferences.tpl:219
 msgid "Public pages enabled?"
@@ -7641,10 +7633,8 @@ msgid "Transaction %id"
 msgstr "Transaction %s"
 
 #: ../templates/default/gestion_transactions.tpl:140
-#, fuzzy
-#| msgid "Show only '%name' contributions"
 msgid "Show only '%name' transactions"
-msgstr "Voir uniquement les contributions « %name »"
+msgstr "Voir uniquement les transaction de « %name »"
 
 #: ../templates/default/gestion_transactions.tpl:175
 msgid "Edit transaction #%id"
