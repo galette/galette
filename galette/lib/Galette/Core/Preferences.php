@@ -495,6 +495,15 @@ class Preferences
             $insert_values[$fieldname] = $value;
         }
 
+        //cleanup fields for demo
+        if (GALETTE_MODE == Galette::MODE_DEMO ) {
+            unset(
+                $insert_values['pref_admin_login'],
+                $insert_values['pref_admin_pass'],
+                $insert_values['pref_mail_method']
+            );
+        }
+
         // missing relations
         if (
             GALETTE_MODE !== Galette::MODE_DEMO
