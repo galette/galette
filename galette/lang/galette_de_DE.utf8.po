@@ -23,13 +23,14 @@
 # Johannes Keyser <joke@fsfe.org>, 2021.
 # G-Manu Studios <robbankz@yahoo.de>, 2021.
 # TwoB00m <qwertze@gmx.at>, 2021.
+# Harald Wopenka <hwop@wopit.at>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-10-17 09:45+0200\n"
-"PO-Revision-Date: 2021-10-02 14:36+0000\n"
-"Last-Translator: TwoB00m <qwertze@gmx.at>\n"
+"PO-Revision-Date: 2021-10-20 07:37+0000\n"
+"Last-Translator: Harald Wopenka <hwop@wopit.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -388,7 +389,7 @@ msgstr "Titel '%s' wurde nicht hinzugefügt!"
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr "Die Anrede „%s“ wurde nicht geändert!"
+msgstr "Der Titel „%s“ wurde nicht geändert!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
 #, php-format
