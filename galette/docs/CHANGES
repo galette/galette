@@ -3,9 +3,11 @@ Changes
 
 0.9.5 -> 0.9.5.1
 
+- Members can manage their children and create new ones (if preference is on)
 - Mass contribtion add
 - Mass edition of dynamic fields
 - Add a preference to send emails to member by default
+- Add a preference to choose default payment type
 - Fix PDF links in emails
 - Replace Markitup with Summernote for HTML emails
 - Replace jQuery Cookie with JS Cookie
@@ -14,6 +16,12 @@ Changes
 - Fix close expiries
 - Adjust members by status charts count
 - Fix overlapping menu on mobile
+- Prevent installation page access if Galette is already installed
+- Fix public list ordering
+- Fix contributions ordered on payment type
+- Fix new user registration email
+- Fix search on dynamic fields
+- Fix transactions list display
 
 0.9.4.2 -> 0.9.5
 
