@@ -2,7 +2,7 @@
 # Translators:
 # imed omri <omriimed@ymail.com>, 2014
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
-# ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020.
+# ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 # Woodyx <shiposhouyou@gmail.com>, 2020.
@@ -11,10 +11,10 @@
 # mustapha nhaily <nhaily@gmail.com>, 2021.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-10-17 09:45+0200\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-10-23 05:24+0000\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -124,7 +124,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:462
 #, php-format
 msgid "Remove group %1$s"
-msgstr "حذف المجموعات%1$"
+msgstr "حذف الفريق %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:485
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
@@ -494,19 +494,19 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:129
 msgid "This search is already saved."
-msgstr ""
+msgstr "تم حفظ هذا البحث بالفعل."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:135
 msgid "Search has been saved."
-msgstr ""
+msgstr "تم حفظ البحث."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
 msgid "Saved searches"
-msgstr ""
+msgstr "عمليات البحث المحفوظة"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:296
 msgid "Remove saved search"
-msgstr ""
+msgstr "إزالة البحث المحفوظ"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:303
 #, php-format
@@ -515,7 +515,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:352
 msgid "Saved search loaded"
-msgstr ""
+msgstr "تم تحميل البحث المحفوظ"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:357
 msgid "An SQL error has occurred while loading search."
@@ -541,12 +541,12 @@ msgstr "جميع الحسابات"
 #: ../lib/Galette/Controllers/GaletteController.php:256
 #: ../lib/Galette/Filters/MembersList.php:307
 msgid "Active accounts"
-msgstr ""
+msgstr "الحسابات النشطة"
 
 #: ../lib/Galette/Controllers/GaletteController.php:257
 #: ../lib/Galette/Filters/MembersList.php:308
 msgid "Inactive accounts"
-msgstr ""
+msgstr "الحسابات غير النشطة"
 
 #: ../lib/Galette/Controllers/GaletteController.php:283
 msgid ""
@@ -1584,7 +1584,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
-msgstr ""
+msgstr "الأعضاء حسب الفِرَق"
 
 #: ../lib/Galette/IO/PdfGroups.php:109
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
@@ -1595,7 +1595,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:169
 msgid "Managers:"
-msgstr ""
+msgstr "المسؤولون:"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
@@ -1633,13 +1633,13 @@ msgstr "قائمة الأعضاء"
 #: ../lib/Galette/Features/Replacements.php:603
 #: ../lib/Galette/Entity/Adherent.php:1722
 msgid "Man"
-msgstr ""
+msgstr "رجل"
 
 #: ../lib/Galette/IO/MembersCsv.php:231
 #: ../lib/Galette/Features/Replacements.php:605
 #: ../lib/Galette/Entity/Adherent.php:1724
 msgid "Woman"
-msgstr ""
+msgstr "امرأة"
 
 #: ../lib/Galette/IO/MembersCsv.php:234
 #: ../lib/Galette/Features/Replacements.php:607
@@ -1828,7 +1828,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:499
 msgid "Mime-Type not allowed"
-msgstr "Mime-Type not allowed"
+msgstr "نوع Mime غير مسموح به"
 
 #: ../lib/Galette/IO/FileTrait.php:502
 msgid "A file with that name already exists!"
@@ -1899,14 +1899,13 @@ msgid "Form entry for dynamic field \"%s\""
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:137
-#, fuzzy, php-format
-#| msgid "Dynamic fields"
+#, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr "حقول ديناميكية"
+msgstr "قيمة الحقل الديناميكي \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:204
 msgid "Your organisation name"
-msgstr ""
+msgstr "اسم جمعيتكم"
 
 #: ../lib/Galette/Features/Replacements.php:208
 msgid "Your organisation slogan"
@@ -1949,16 +1948,16 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:262
 #: ../lib/Galette/Features/Replacements.php:354
 msgid "Last name"
-msgstr ""
+msgstr "الإسم"
 
 #: ../lib/Galette/Features/Replacements.php:266
 #: ../lib/Galette/Features/Replacements.php:358 ../includes/i18n.inc.php:330
 msgid "First name"
-msgstr ""
+msgstr "اللقب"
 
 #: ../lib/Galette/Features/Replacements.php:270
 msgid "Nickname"
-msgstr ""
+msgstr "الإسم المستعار"
 
 #: ../lib/Galette/Features/Replacements.php:274
 msgid "Gender"
@@ -1989,7 +1988,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:298
 msgid "Zipcode"
-msgstr ""
+msgstr "الرمز البريدي"
 
 #: ../lib/Galette/Features/Replacements.php:302
 msgid "Town"
@@ -1997,7 +1996,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:306 ../includes/i18n.inc.php:327
 msgid "Country"
-msgstr ""
+msgstr "البلد"
 
 #: ../lib/Galette/Features/Replacements.php:326
 msgid "Member's main group"
@@ -2325,7 +2324,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:150
 msgid "Contributor:"
-msgstr ""
+msgstr "المساهِم:"
 
 #: ../lib/Galette/Entity/Contribution.php:154
 msgid "Contribution type:"
@@ -2337,7 +2336,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:166
 msgid "Comments:"
-msgstr ""
+msgstr "تعليقات:"
 
 #: ../lib/Galette/Entity/Contribution.php:174
 msgid "Date of contribution:"
@@ -2471,11 +2470,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:282
 msgid "Cash"
-msgstr ""
+msgstr "نقدًا"
 
 #: ../lib/Galette/Entity/PaymentType.php:283
 msgid "Credit card"
-msgstr ""
+msgstr "بطاقة ائتمان"
 
 #: ../lib/Galette/Entity/PaymentType.php:284
 msgid "Check"
@@ -2670,7 +2669,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:281
 msgid "Member number"
-msgstr ""
+msgstr "رقم العضو"
 
 #: ../lib/Galette/Filters/MembersList.php:292
 msgid "All members"
@@ -2736,7 +2735,7 @@ msgstr ""
 
 #: ../webroot/installer.php:131 ../webroot/installer.php:171
 msgid "No user name"
-msgstr ""
+msgstr "اسم مستخدم فارغ"
 
 #: ../webroot/installer.php:137
 msgid "No database name"
@@ -3005,7 +3004,7 @@ msgstr "اسم المستخدِم"
 
 #: ../includes/i18n.inc.php:326
 msgid "Email address"
-msgstr ""
+msgstr "عنوان البريد الإلكتروني"
 
 #: ../includes/i18n.inc.php:328
 msgid "City"
@@ -3013,7 +3012,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:329
 msgid "Zip Code"
-msgstr ""
+msgstr "الرمز البريدي"
 
 #: ../includes/i18n.inc.php:331
 msgid ""
@@ -3050,15 +3049,15 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:42
 msgid "Member number:"
-msgstr ""
+msgstr "رقم العضو:"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
-msgstr ""
+msgstr "الحالة:"
 
 #: ../includes/fields_defs/members_fields.php:62
 msgid "Name:"
-msgstr ""
+msgstr "الإسم:"
 
 #: ../includes/fields_defs/members_fields.php:70
 msgid "First name:"
@@ -3134,7 +3133,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:217
 msgid "Other information (admin):"
-msgstr ""
+msgstr "معلومات أخرى (المدير):"
 
 #: ../includes/fields_defs/members_fields.php:225
 msgid "Other information:"
@@ -3163,7 +3162,7 @@ msgstr "تعديل التسجيل:"
 
 #: ../includes/fields_defs/members_fields.php:275
 msgid "Account:"
-msgstr ""
+msgstr "الحساب:"
 
 #: ../includes/fields_defs/members_fields.php:283
 msgid "Galette Admin:"
@@ -3977,7 +3976,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:34
 msgid "Navigation"
-msgstr ""
+msgstr "التنقل"
 
 #: ../templates/default/page.tpl:36
 msgid "Go to Galette's dashboard"
@@ -4011,7 +4010,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:44
 msgid "Manage groups"
-msgstr "إدارة المجموعات"
+msgstr "إدارة الفِرَق"
 
 #: ../templates/default/page.tpl:47 ../templates/default/desktop.tpl:33
 msgid "View and filter contributions"
@@ -4120,7 +4119,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:69
 msgid "Public pages"
-msgstr ""
+msgstr "الصفحات العامة"
 
 #: ../templates/default/page.tpl:80 ../templates/default/desktop.tpl:39
 msgid ""
@@ -4195,11 +4194,11 @@ msgstr ""
 
 #: ../templates/default/page.tpl:92
 msgid "Download empty adhesion form"
-msgstr ""
+msgstr "تنزيل استمارة انخراط فارغة"
 
 #: ../templates/default/page.tpl:92
 msgid "Empty adhesion form"
-msgstr ""
+msgstr "استمارة انخراط فارغة"
 
 #: ../templates/default/page.tpl:94
 msgid "Various administrative tools"
@@ -4259,7 +4258,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:22
 msgid "Name of the association:"
-msgstr ""
+msgstr "اسم الجمعية:"
 
 #: ../templates/default/preferences.tpl:26
 msgid "Association's short description:"
@@ -4445,7 +4444,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:186
 msgid "Default membership status:"
-msgstr ""
+msgstr "حالة العضوية الافتراضية:"
 
 #: ../templates/default/preferences.tpl:192
 msgid "Default account filter:"
@@ -4457,7 +4456,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:200
 msgid "(Months)"
-msgstr "(Months)"
+msgstr "(أشهر)"
 
 #: ../templates/default/preferences.tpl:203
 msgid "Beginning of membership:"
@@ -4491,12 +4490,13 @@ msgid "Default payment type:"
 msgstr "تعديل نوع الدفع"
 
 #: ../templates/default/preferences.tpl:219
+#, fuzzy
 msgid "Public pages enabled?"
-msgstr "صفحات تمكين الجمهور؟"
+msgstr "تمكين الصفحات العامة؟"
 
 #: ../templates/default/preferences.tpl:223
 msgid "Show public pages for"
-msgstr ""
+msgstr "إظهار الصفحات العامة لـ"
 
 #: ../templates/default/preferences.tpl:225
 msgid "Everyone"
@@ -4564,7 +4564,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:262
 msgid "Sender name:"
-msgstr ""
+msgstr "اسم المُرسِل:"
 
 #: ../templates/default/preferences.tpl:266
 msgid "Sender Email:"
@@ -5588,10 +5588,9 @@ msgid "Display mailing '%subject' details in preview window"
 msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:153
-#, fuzzy, php-format
-#| msgid "Use mailing '%subject' as a template for a new one"
+#, php-format
 msgid "Use mailing '%subject' as a template for a new one"
-msgstr "استخدام البريد '٪ الموضوع' كنموذج عن واحدة جديدة"
+msgstr "استخدم '%subject' البريد كقالب لإنشاء واحد جديد"
 
 #: ../templates/default/gestion_mailings.tpl:160
 #, php-format
@@ -5860,7 +5859,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:417
 #: ../templates/default/gestion_adherents.tpl:418
 msgid "Is a woman"
-msgstr ""
+msgstr "هي امرأة"
 
 #: ../templates/default/gestion_adherents.tpl:197
 #: ../templates/default/gestion_adherents.tpl:319
@@ -5995,7 +5994,7 @@ msgstr ""
 
 #: ../templates/default/saved_searches.tpl:51
 msgid "Delete saved search"
-msgstr ""
+msgstr "حذف البحث المحفوظ"
 
 #: ../templates/default/saved_searches.tpl:56
 msgid "no search"
@@ -6046,7 +6045,7 @@ msgstr ""
 #: ../templates/default/config_fields.tpl:16
 #: ../templates/default/config_fields.tpl:25
 msgid "Field name"
-msgstr ""
+msgstr "اسم الحقل"
 
 #: ../templates/default/config_lists.tpl:18
 #: ../templates/default/config_lists.tpl:42
@@ -6143,7 +6142,7 @@ msgstr ""
 
 #: ../templates/default/export.tpl:107
 msgid "Table name"
-msgstr ""
+msgstr "اسم الجدول"
 
 #: ../templates/default/export.tpl:126
 msgid "Continue"
@@ -6213,7 +6212,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:17
 #: ../templates/default/member.tpl:37
 msgid "-- select a name --"
-msgstr ""
+msgstr "-- اختر اسما --"
 
 #: ../templates/default/ajouter_transaction.tpl:34
 #: ../templates/default/ajouter_transaction.tpl:35
@@ -6686,7 +6685,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf_content.tpl:39
 msgid "Adhesion Form"
-msgstr ""
+msgstr "استمارة الإنخراط"
 
 #: ../templates/default/confirm_removal.tpl:13
 msgid "Cascade delete"
@@ -6726,11 +6725,11 @@ msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:51
 msgid "Select contributor and membership fee type"
-msgstr ""
+msgstr "حدد المساهِم ونوع رسوم العضوية"
 
 #: ../templates/default/ajouter_contribution.tpl:53
 msgid "Select contributor and donation type"
-msgstr "اختر المساعم ونوع التبرّع"
+msgstr "تحديد المساهِم ونوع التبرع"
 
 #: ../templates/default/ajouter_contribution.tpl:61
 msgid "New attached fee"
@@ -6841,7 +6840,7 @@ msgstr "توليد بطاقة العضو"
 
 #: ../templates/default/voir_adherent.tpl:37
 msgid "Adhesion form"
-msgstr ""
+msgstr "استمارة الإنخراط"
 
 #: ../templates/default/voir_adherent.tpl:45
 msgid ""
@@ -6899,7 +6898,7 @@ msgstr ""
 #: ../templates/default/voir_adherent.tpl:213
 #: ../templates/default/forms_types/groups.tpl:2
 msgid "Groups:"
-msgstr ""
+msgstr "الفِرَق:"
 
 #: ../templates/default/voir_adherent.tpl:220
 #: ../templates/default/advanced_search.tpl:29
@@ -6964,7 +6963,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Advanced groups search"
-msgstr ""
+msgstr "البحث المتقدم للفِرَق"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
@@ -7415,7 +7414,7 @@ msgstr ""
 
 #: ../templates/default/forms_types/picture.tpl:2
 msgid "Picture:"
-msgstr ""
+msgstr "صورة:"
 
 #: ../templates/default/telemetry.tpl:3
 msgid ""
