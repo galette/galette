@@ -1,12 +1,12 @@
         <form class="tabbed" action="{path_for name="doEditGroup" data=["id" => $group->getId()]}" method="post" enctype="multipart/form-data" id="group_form">
         <div id="group">
             <ul>
-                <li><a href="#group_information">{_T string="Informations"}</a></li>
+                <li><a href="#group_information">{_T string="Information"}</a></li>
                 <li><a href="#group_managers">{_T string="Managers"}</a></li>
                 <li><a href="#group_members">{_T string="Members"}</a></li>
             </ul>
             <fieldset class="cssform" id="group_information">
-                <legend >{_T string="Informations"}</legend>
+                <legend >{_T string="Information"}</legend>
                 <div>
 {if $group->getId() }
                     <p>

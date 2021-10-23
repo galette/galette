@@ -31,7 +31,7 @@
 {/if}
         <div class="infoline">
 {if isset($member) && $mode neq 'ajax'}
-    {if $login->isAdmin() or $login->isStaff()}
+    {if $login->isAdmin() or $login->isStaff() or $member->canShow($login)}
             <a
                 href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
                 class="tooltip"
@@ -44,8 +44,8 @@
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
             (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+            <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
+            <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
             -
 {/if}
@@ -111,7 +111,7 @@
                         {/if}
                         </a>
                     </th>
-{if ($login->isAdmin() or $login->isStaff()) and !isset($member)}
+{if (($login->isAdmin() or $login->isStaff()) and !isset($member)) or isset($pmember)}
                     <th class="left">
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_MEMBER')}
@@ -178,10 +178,10 @@
 {foreach from=$list item=contribution key=ordre}
     {assign var="mid" value=$contribution->member}
     {assign var="cclass" value=$contribution->getRowClass()}
-    {if $contribution->isCotis()}
-        {assign var="ctype" value="fee"}
+    {if $contribution->isFee()}
+        {assign var="ctype" value=constant('Galette\Entity\Contribution::TYPE_FEE')}
     {else}
-        {assign var="ctype" value="donation"}
+        {assign var="ctype" value=constant('Galette\Entity\Contribution::TYPE_DONATION')}
     {/if}
 
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
@@ -230,13 +230,27 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Date"}">{$contribution->date}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Begin"}">{$contribution->begin_date}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="End"}">{$contribution->end_date}</td>
-    {if ($login->isAdmin() or $login->isStaff()) && !isset($member)}
+    {if (($login->isAdmin() or $login->isStaff()) && !isset($member)) or isset($pmember)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
-        {if $filters->filtre_cotis_adh eq ""}
-                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+        {if isset($member)}
+            {assign var="mname" value=$member->sname}
         {else}
-                        <a href="{path_for name="member" data=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+            {assign var="mname" value={memberName id=$mid}}
         {/if}
+        {if $filters->filtre_cotis_adh eq ""}
+                        <a
+                            href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}"
+                            title="{_T string="Show only '%name' contributions" pattern="/%name/" replace=$mname}"
+                        >
+                            <i class="fa fa-filter"></i>
+                        </a>
+        {/if}
+                        <a
+                            href="{path_for name="member" data=["id" => $mid]}"
+                            title="{_T string="Show '%name' card" pattern="/%name/" replace=$mname}"
+                        >
+                            {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
+                        </a>
                     </td>
     {/if}
                     <td class="{$cclass}" data-title="{_T string="Type"}">{$contribution->type->libelle}</td>
@@ -272,7 +286,7 @@
     {/if}
                 </tr>
 {foreachelse}
-                <tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+                <tr><td colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}11{else}10{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
 {/foreach}
             </tbody>
         </table>

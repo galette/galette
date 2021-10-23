@@ -292,7 +292,7 @@ class Contributions
             case ContributionsList::ORDERBY_DURATION:
                 break;*/
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_cotis ' . $this->ordered;
+                $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
                 break;
             default:
                 $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
@@ -364,18 +364,61 @@ class Contributions
                 );
             }
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $member_clause = null;
+            if ($this->filters->filtre_cotis_adh != null) {
+                $member_clause = [$this->filters->filtre_cotis_adh];
+                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
+                    $member = new Adherent(
+                        $this->zdb,
+                        (int)$this->filters->filtre_cotis_adh,
+                        [
+                            'picture' => false,
+                            'groups' => false,
+                            'dues' => false,
+                            'parent' => true
+                        ]
+                    );
+                    if (
+                        !$member->hasParent() ||
+                        $member->hasParent() && $member->parent->id != $this->login->id
+                    ) {
+                        Analog::log(
+                            'Trying to display contributions for member #' . $member->id .
+                            ' without appropriate ACLs',
+                            Analog::WARNING
+                        );
+                        $this->filters->filtre_cotis_adh = $this->login->id;
+                        $member_clause = [$this->login->id];
+                    }
+                }
+            } elseif ($this->filters->filtre_cotis_children !== false) {
+                $member_clause = [$this->login->id];
+                $member = new Adherent(
+                    $this->zdb,
+                    (int)$this->filters->filtre_cotis_children,
+                    [
+                        'picture'   => false,
+                        'groups'    => false,
+                        'dues'      => false,
+                        'children'  => true
+                    ]
+                );
+                foreach ($member->children as $child) {
+                    $member_clause[] = $child->id;
+                }
+            } elseif (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 //non staff members can only view their own contributions
+                $member_clause = $this->login->id;
+            }
+
+            if ($member_clause !== null) {
                 $select->where(
                     array(
-                        'a.' . Adherent::PK => $this->login->id
+                        'a.' . Adherent::PK => $member_clause
                     )
                 );
-            } elseif ($this->filters->filtre_cotis_adh != null) {
-                $select->where(
-                    'a.' . Adherent::PK . ' = ' . $this->filters->filtre_cotis_adh
-                );
             }
+
             if ($this->filters->filtre_transactions === true) {
                 $select->where('a.trans_id IS NULL');
             }
@@ -384,6 +427,7 @@ class Contributions
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 

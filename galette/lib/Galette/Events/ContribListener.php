@@ -188,7 +188,7 @@ class ContribListener implements ListenerProviderInterface
             ->setContribution($contrib);
 
         $text = 'contrib';
-        if (!$contrib->isCotis()) {
+        if (!$contrib->isFee()) {
             $text = 'donation';
         }
         $mtxt = $texts->getTexts($text, $member->language);
@@ -222,7 +222,7 @@ class ContribListener implements ListenerProviderInterface
                     $this->router->pathFor('directlink', ['hash' => $hash]);
             }
         }
-        $texts->setContribLink($link_card);
+        $texts->setContribLink($link_pdf);
 
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
@@ -282,7 +282,7 @@ class ContribListener implements ListenerProviderInterface
         // Sent email to admin if pref checked
         // Get email text in database
         $text = 'newcont';
-        if (!$contrib->isCotis()) {
+        if (!$contrib->isFee()) {
             $text = 'newdonation';
         }
         $texts->getTexts($text, $this->preferences->pref_lang);

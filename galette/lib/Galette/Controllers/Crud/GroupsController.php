@@ -165,9 +165,8 @@ class GroupsController extends CrudController
         }
 
         if ($id === null && count($groups_root) > 0) {
-            reset($groups);
             $group = current($groups_root);
-            if (!$this->login->isGroupManager($group->getId())) {
+            if (!$this->login->isGroupManager($id)) {
                 foreach ($groups_list as $g) {
                     if ($this->login->isGroupManager($g->getId())) {
                         $group = $g;

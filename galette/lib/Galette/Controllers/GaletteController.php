@@ -36,21 +36,20 @@
 
 namespace Galette\Controllers;
 
+use Galette\Repository\PaymentTypes;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Logo;
 use Galette\Core\PrintLogo;
+use Galette\Core\Galette;
 use Galette\Core\GaletteMail;
 use Galette\Core\SysInfos;
-use Galette\Entity\Contribution;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
 use Galette\Filters\MembersList;
 use Galette\IO\News;
 use Galette\IO\Charts;
-use Galette\IO\PdfMembersCards;
-use Galette\IO\PdfContribution;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 use Analog\Analog;
@@ -190,7 +189,7 @@ class GaletteController extends AbstractController
             'pref_card_vspace'      => 1
         );
 
-        if ($this->login->isSuperAdmin() && GALETTE_MODE !== 'DEMO') {
+        if ($this->login->isSuperAdmin() && GALETTE_MODE !== Galette::MODE_DEMO) {
             $required['pref_admin_login'] = 1;
         }
 
@@ -222,6 +221,14 @@ class GaletteController extends AbstractController
         }
         $d->close();
 
+        //List payment types for default to be selected
+        $ptypes = new PaymentTypes(
+            $this->zdb,
+            $this->preferences,
+            $this->login
+        );
+        $ptlist = $ptypes->getList();
+
         $m = new Members();
         $s = new Status($this->zdb);
 
@@ -248,7 +255,8 @@ class GaletteController extends AbstractController
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
-                )
+                ),
+                'paymenttypes'          => $ptlist
             )
         );
         return $response;
@@ -282,7 +290,7 @@ class GaletteController extends AbstractController
                 $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
-                if (GALETTE_MODE !== 'DEMO' && isset($_FILES['logo'])) {
+                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($_FILES['logo'])) {
                     if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
@@ -305,7 +313,7 @@ class GaletteController extends AbstractController
                     }
                 }
 
-                if (GALETTE_MODE !== 'DEMO' && isset($post['del_logo'])) {
+                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($post['del_logo'])) {
                     if (!$this->logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {
@@ -314,7 +322,7 @@ class GaletteController extends AbstractController
                 }
 
                 // Card logo upload
-                if (GALETTE_MODE !== 'DEMO' && isset($_FILES['card_logo'])) {
+                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($_FILES['card_logo'])) {
                     if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['card_logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
@@ -337,7 +345,7 @@ class GaletteController extends AbstractController
                     }
                 }
 
-                if (GALETTE_MODE !== 'DEMO' && isset($post['del_card_logo'])) {
+                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($post['del_card_logo'])) {
                     if (!$this->print_logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {

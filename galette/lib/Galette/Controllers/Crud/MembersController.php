@@ -37,13 +37,11 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
+use Galette\DynamicFields\Boolean;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Galette\Core\Authentication;
 use Galette\Core\GaletteMail;
 use Galette\Core\Gaptcha;
-use Galette\Core\Password;
-use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
@@ -54,7 +52,6 @@ use Galette\Entity\FieldsConfig;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;
-use Galette\IO\MembersCsv;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Repository\PaymentTypes;
@@ -68,7 +65,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -76,7 +73,7 @@ use Analog\Analog;
 
 class MembersController extends CrudController
 {
-    /** @var boolean */
+    /** @var bool */
     private $is_self_membership = false;
 
     // CRUD - Create
@@ -92,6 +89,19 @@ class MembersController extends CrudController
     public function add(Request $request, Response $response): Response
     {
         return $this->edit($request, $response, null, 'add');
+    }
+
+    /**
+     * Add child page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function addChild(Request $request, Response $response): Response
+    {
+        return $this->edit($request, $response, null, 'addchild');
     }
 
     /**
@@ -114,10 +124,8 @@ class MembersController extends CrudController
             $member = $this->session->member;
             $this->session->member = null;
         } else {
-            $deps = [
-                'dynamics'  => true
-            ];
-            $member = new Adherent($this->zdb, null, $deps);
+            $member = new Adherent($this->zdb);
+            $member->enableDep('dynamics');
         }
 
         //mark as self membership
@@ -233,17 +241,12 @@ class MembersController extends CrudController
      */
     public function show(Request $request, Response $response, int $id): Response
     {
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, $id, $deps);
+        $member = new Adherent($this->zdb);
+        $member
+            ->enableAllDeps()
+            ->load($id);
 
-        if (!$member->canEdit($this->login)) {
+        if (!$member->canShow($this->login)) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("You do not have permission for requested URL.")
@@ -265,7 +268,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(404)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor('slash')
@@ -428,18 +430,14 @@ class MembersController extends CrudController
         int $pos,
         string $name
     ): Response {
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, $id, $deps);
+        $member = new Adherent($this->zdb);
+        $member
+            ->disableAllDeps()
+            ->enableDep('dynamics')
+            ->load($id);
 
         $denied = null;
-        if (!$member->canEdit($this->login)) {
+        if (!$member->canShow($this->login)) {
             $fields = $member->getDynamicFields()->getFields();
             if (!isset($fields[$fid])) {
                 //field does not exists or access is forbidden
@@ -456,7 +454,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(403)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor(
@@ -510,7 +507,6 @@ class MembersController extends CrudController
             );
 
             return $response
-                ->withStatus(404)
                 ->withHeader(
                     'Location',
                     $this->router->pathFor('member', ['id' => $id])
@@ -765,28 +761,10 @@ class MembersController extends CrudController
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
 
-        //we want only visibles fields
+        //we want only visible fields
         $fields = $this->members_fields;
         $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-        $access_level = $this->login->getAccessLevel();
-
-        //remove not searchable fields
-        unset($fields['mdp_adh']);
-
-        foreach ($fields as $k => $f) {
-            if (
-                $visibles[$k] == FieldsConfig::NOBODY ||
-                ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN) ||
-                ($visibles[$k] == FieldsConfig::STAFF &&
-                    $access_level < Authentication::ACCESS_STAFF) ||
-                ($visibles[$k] == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER)
-            ) {
-                unset($fields[$k]);
-            }
-        }
+        $fc->filterVisible($this->login, $fields);
 
         //add status label search
         if ($pos = array_search(Status::PK, array_keys($fields))) {
@@ -796,15 +774,11 @@ class MembersController extends CrudController
         }
 
         //dynamic fields
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => false
-        );
-        $member = new Adherent($this->zdb, $this->login->login, $deps);
+        $member = new Adherent($this->zdb);
+        $member
+            ->disableAllDeps()
+            ->enableDep('dynamics')
+            ->loadFromLoginOrMail($this->login->login);
         $adh_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $member);
 
         $contrib = new Contribution($this->zdb, $this->login);
@@ -816,7 +790,7 @@ class MembersController extends CrudController
         //Contributions types
         $ct = new ContributionsTypes($this->zdb);
 
-        //Payments types
+        //Payment types
         $ptypes = new PaymentTypes(
             $this->zdb,
             $this->preferences,
@@ -850,7 +824,7 @@ class MembersController extends CrudController
      *
      * @param Request        $request  PSR Request
      * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
+     * @param string|null    $option   One of 'page' or 'order'
      * @param string|integer $value    Value of the option
      *
      * @return Response
@@ -859,11 +833,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        if (isset($this->session->ajax_members_filters)) {
-            $filters = $this->session->ajax_members_filters;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->ajax_members_filters ?? new MembersList();
 
         if ($option == 'page') {
             $filters->current_page = (int)$value;
@@ -1046,6 +1016,12 @@ class MembersController extends CrudController
                     ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
             }
 
+            if (isset($post['masscontributions'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('massAddContributionsChooseType'));
+            }
+
             throw new \RuntimeException('Does not know what to batch :(');
         } else {
             $this->flash->addMessage(
@@ -1076,47 +1052,50 @@ class MembersController extends CrudController
         Request $request,
         Response $response,
         int $id = null,
-        $action = 'edit'
+        string $action = 'edit'
     ): Response {
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-
-        //instanciate member object
-        $member = new Adherent($this->zdb, $id, $deps);
+        //instantiate member object
+        $member = new Adherent($this->zdb);
+        $member->enableAllDeps()->load($id);
 
         if ($this->session->member !== null) {
             //retrieve from session, in add or edit
             $member = $this->session->member;
             $this->session->member = null;
-        } elseif ($id !== null) {
+            $id = $member->id;
+        }
+
+        if ($id !== null) {
             //load requested member
             $member->load($id);
-            if (!$member->canEdit($this->login) || $member->id != $id) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("You do not have permission for requested URL.")
-                );
+            $can = $member->canEdit($this->login);
+        } else {
+            $can = $member->canCreate($this->login);
+        }
 
-                return $response
-                    ->withStatus(403)
-                    ->withHeader(
-                        'Location',
-                        $this->router->pathFor('me')
-                    );
-            }
+        if (!$can) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('me')
+                );
+        }
+
+        //if adding a child, force parent here
+        if ($action === 'addchild') {
+            $member->setParent((int)$this->login->id);
         }
 
         // flagging required fields
         $fc = $this->fields_config;
 
         // password required if we create a new member
-        if ($member->id != '') {
+        if ($id !== null) {
             $fc->setNotRequired('mdp_adh');
         }
 
@@ -1155,18 +1134,18 @@ class MembersController extends CrudController
 
         $form_elements = $fc->getFormElements(
             $this->login,
-            $member->id == ''
+            $id === null
         );
 
         // members
         $m = new Members();
-        $id = null;
+        $pid = null;
         if ($member->hasParent()) {
-            $id = ($member->parent instanceof Adherent ? $member->parent->id : $member->parent);
+            $pid = ($member->parent instanceof Adherent ? $member->parent->id : $member->parent);
         }
         $members = $m->getSelectizedMembers(
             $this->zdb,
-            $id
+            $pid
         );
 
         $route_params['members'] = [
@@ -1195,7 +1174,8 @@ class MembersController extends CrudController
                 'groups'            => $groups_list,
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
-                'parent_fields'     => $tpl_parent_fields
+                'parent_fields'     => $tpl_parent_fields,
+                'addchild'          => ($action === 'addchild')
             ) + $route_params
         );
         return $response;
@@ -1236,15 +1216,8 @@ class MembersController extends CrudController
         $form_elements = $fc->getMassiveFormElements($this->members_fields, $this->login);
 
         //dynamic fields
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => false
-        );
-        $member = new Adherent($this->zdb, null, $deps);
+        $member = new Adherent($this->zdb);
+        $member->disableAllDeps()->enableDep('dynamics');
 
         //Status
         $statuts = new Status($this->zdb);
@@ -1309,6 +1282,30 @@ class MembersController extends CrudController
                     }
                 }
             }
+
+            //handle dynamic fields
+            $member = new Adherent($this->zdb);
+            $member
+                ->enableAllDeps()
+                ->setDependencies(
+                    $this->preferences,
+                    $this->members_fields,
+                    $this->history
+                );
+            $dynamic_fields = $member->getDynamicFields()->getFields();
+            foreach ($dynamic_fields as $field) {
+                $mass_id = 'mass_info_field_' . $field->getId();
+                $field_id = 'info_field_' . $field->getId() . '_1';
+                if (
+                    isset($post[$mass_id])
+                    && (isset($post[$field_id]) || $field instanceof Boolean)
+                ) {
+                    $changes[$field_id] = [
+                        'label' => $field->getName(),
+                        'value' => $post[$field_id] ?? 0
+                    ];
+                }
+            }
         }
 
         $filters = $this->session->filter_members;
@@ -1356,6 +1353,7 @@ class MembersController extends CrudController
         $redirect_url = $post['redirect_uri'];
         $error_detected = [];
         $mass = 0;
+        $dynamic_fields = null;
 
         unset($post['redirect_uri']);
         if (!isset($post['confirm'])) {
@@ -1373,9 +1371,33 @@ class MembersController extends CrudController
                 foreach ($form_elements['fieldsets'] as $fieldset) {
                     if (isset($fieldset->elements[$key])) {
                         $found = true;
-                        continue;
+                        break;
                     }
                 }
+
+                if (!$found) {
+                    //try on dynamic fields
+                    if ($dynamic_fields === null) {
+                        //handle dynamic fields
+                        $member = new Adherent($this->zdb);
+                        $member
+                            ->enableAllDeps()
+                            ->setDependencies(
+                                $this->preferences,
+                                $this->members_fields,
+                                $this->history
+                            );
+                        $dynamic_fields = $member->getDynamicFields()->getFields();
+                    }
+                    foreach ($dynamic_fields as $field) {
+                        $field_id = 'info_field_' . $field->getId() . '_1';
+                        if ($key == $field_id) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                }
+
                 if (!$found) {
                     Analog::log(
                         'Permission issue mass editing field ' . $key,
@@ -1394,15 +1416,12 @@ class MembersController extends CrudController
                     $is_manager = !$this->login->isAdmin()
                         && !$this->login->isStaff()
                         && $this->login->isGroupManager();
-                    $deps = array(
-                        'picture'   => false,
-                        'groups'    => $is_manager,
-                        'dues'      => false,
-                        'parent'    => false,
-                        'children'  => false,
-                        'dynamics'  => false
-                    );
-                    $member = new Adherent($this->zdb, (int)$id, $deps);
+                    $member = new Adherent($this->zdb);
+                    $member->disableAllDeps();
+                    if ($is_manager) {
+                        $member->enableDep('groups');
+                    }
+                    $member->load((int)$id);
                     $member->setDependencies(
                         $this->preferences,
                         $this->members_fields,
@@ -1479,20 +1498,14 @@ class MembersController extends CrudController
         }
 
         $post = $request->getParsedBody();
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, null, $deps);
-        $member->setDependencies(
-            $this->preferences,
-            $this->members_fields,
-            $this->history
-        );
+        $member = new Adherent($this->zdb);
+        $member
+            ->enableAllDeps()
+            ->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
 
         $success_detected = [];
         $warning_detected = [];
@@ -1510,22 +1523,22 @@ class MembersController extends CrudController
         }
 
         // new or edit
-        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
-            if (isset($post['id_adh'])) {
-                $member->load((int)$post['id_adh']);
-                if (!$member->canEdit($this->login)) {
-                    //redirection should have been done before. Just throw an Exception.
-                    throw new \RuntimeException(
-                        str_replace(
-                            '%id',
-                            $member->id,
-                            'No right to store member #%id'
-                        )
-                    );
-                }
+        if (isset($post['id_adh'])) {
+            $member->load((int)$post['id_adh']);
+            if (!$member->canEdit($this->login)) {
+                //redirection should have been done before. Just throw an Exception.
+                throw new \RuntimeException(
+                    str_replace(
+                        '%id',
+                        $member->id,
+                        'No right to store member #%id'
+                    )
+                );
             }
         } else {
-            $member->load($this->login->id);
+            if ($member->id != '') {
+                $member->load($this->login->id);
+            }
         }
 
         // flagging required fields
@@ -1755,7 +1768,7 @@ class MembersController extends CrudController
                             ['id'    => $member->id]
                         );
                     } else {
-                        $redirect_url = $this->router->pathFor('addMember');
+                        $redirect_url = $this->router->pathFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
                     }
                 }
             }

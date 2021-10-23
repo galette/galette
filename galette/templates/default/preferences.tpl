@@ -89,12 +89,8 @@
                     <span class="bline tooltip">{_T string="Telemetry date:"}</span>
                     <span class="tip">{_T string="Last telemetry sent date."}</span>
                     <span>
-                        {if $pref.pref_telemetry_date}
-                            {$pref.pref_telemetry_date|date_format:"%a %d/%m/%Y - %R"}
-                        {else}
-                            {_T string="Never"}
-                        {/if}
-                        - <a href="#" id="telemetry" class="button"><i class="fas fa-chart-bar" aria-hidden="true"></i> {_T string="send"}</a>
+                        {$preferences->getTelemetryDate()}
+                        <a href="#" id="telemetry" class="button"><i class="fas fa-chart-bar" aria-hidden="true"></i> {_T string="send"}</a>
                     </span>
                 </div>
                 <div class="p">
@@ -103,12 +99,12 @@
                     <span>
                         {if $pref.pref_registration_date}
                             {assign var="regtxt" value={_T string="Update your information"}}
-                            {$pref.pref_registration_date|date_format:"%a %d/%m/%Y - %R"}
+                            {$preferences->getRegistrationDate()}
                         {else}
                             {assign var="regtxt" value={_T string="Register"}}
                             {_T string="Not registered"}
                         {/if}
-                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button"><i class="fas fa-marker"></i>{$regtxt}</a>
+                        <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button"><i class="fas fa-marker"></i>{$regtxt}</a>
                     </span>
                 </div>
 
@@ -163,6 +159,11 @@
                     </select>
                 </p>
                 <p>
+                    <label for="pref_bool_create_member" class="bline tooltip">{_T string="Can members create child?"}</label>
+                    <span class="tip">{_T string="Any logged in member will be able to create his own child cards"}</span>
+                    <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {if $pref.pref_bool_create_member eq 1}checked="checked"{/if}{if isset($required.pref_bool_create_member) and $required.pref_bool_create_member eq 1} required="required"{/if}/>
+                </p>
+                <p>
 
                     <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
                     <select name="pref_redirect_on_create" id="pref_redirect_on_create">
@@ -207,6 +208,12 @@
                     <label for="pref_membership_offermonths" class="bline tooltip">{_T string="Number of months offered:"}</label>
                     <span class="tip">{_T string="When using the beginning of membership option; you can offer the last months of the year."}<br/>{_T string="Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year."}</span>
                     <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{$pref.pref_membership_offermonths}" maxlength="5"{if isset($required.pref_membership_offermonths) and $required.pref_membership_offermonths eq 1} required="required"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_default_paymenttype" class="bline">{_T string="Default payment type:"}</label>
+                    <select name="pref_default_paymenttype" id="pref_default_paymenttype">
+                        {html_options options=$paymenttypes selected=$pref.pref_default_paymenttype}
+                    </select>
                 </p>
                 <p>
                     <label for="pref_bool_publicpages" class="bline">{_T string="Public pages enabled?"}</label>
@@ -283,6 +290,11 @@
                     <label for="pref_bool_mailadh" class="bline tooltip">{_T string="Send email to administrators?"}</label>
                     <span class="tip">{_T string="Sends an email each time a new member registers online or edit his/her account"}</span>
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_mailowner" class="bline tooltip">{_T string="Send email to members?"}</label>
+                    <span class="tip">{_T string="Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case."}</span>
+                    <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" value="1" {if $pref.pref_bool_mailowner eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailowner) and $required.pref_bool_mailowner eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap emails text?"}</label>

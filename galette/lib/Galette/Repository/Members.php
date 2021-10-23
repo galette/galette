@@ -485,12 +485,12 @@ class Members
 
             $results = $zdb->execute($select);
             $members = array();
+            $deps = array(
+                'groups'    => false,
+                'dues'      => false,
+                'picture'   => $with_photos
+            );
             foreach ($results as $row) {
-                $deps = array(
-                    'groups'    => false,
-                    'dues'      => false,
-                    'picture'   => $with_photos
-                );
                 $members[] = new Adherent($zdb, $row, $deps);
             }
             return $members;
@@ -556,13 +556,13 @@ class Members
             $results = $zdb->execute($select);
 
             $members = array();
+            $deps = array(
+                'picture'   => $with_photos,
+                'groups'    => false,
+                'dues'      => $dues,
+                'parent'    => $parent
+            );
             foreach ($results as $o) {
-                $deps = array(
-                    'picture'   => $with_photos,
-                    'groups'    => false,
-                    'dues'      => $dues,
-                    'parent'    => $parent
-                );
                 if ($as_members === true) {
                     $members[] = new Adherent($zdb, $o, $deps);
                 } else {
@@ -666,19 +666,18 @@ class Members
             //check if there are dynamic fields in filter
             $hasDf = false;
             $dfs = array();
-
-            if (
-                $this->filters instanceof AdvancedMembersList
-                && isset($this->filters->free_search)
-                && count($this->filters->free_search) > 0
-                && !isset($this->filters->free_search['empty'])
-            ) {
-                $free_searches = $this->filters->free_search;
-                foreach ($free_searches as $fs) {
-                    if (strpos($fs['field'], 'dyn_') === 0) {
-                        // simple dynamic fields
-                        $hasDf = true;
-                        $dfs[] = str_replace('dyn_', '', $fs['field']);
+            if ($this->filters instanceof AdvancedMembersList) {
+                if (
+                    (bool)count($this->filters->free_search)
+                    && !isset($this->filters->free_search['empty'])
+                ) {
+                    $free_searches = $this->filters->free_search;
+                    foreach ($free_searches as $fs) {
+                        if (strpos($fs['field'], 'dyn_') === 0) {
+                            // simple dynamic fields
+                            $hasDf = true;
+                            $dfs[] = str_replace('dyn_', '', $fs['field']);
+                        }
                     }
                 }
             }
@@ -931,6 +930,7 @@ class Members
             case 'list_adh_name':
             case 'nom_adh':
             case 'prenom_adh':
+            case self::ORDERBY_NAME:
                 //defaults
                 break;
             default:
@@ -1091,10 +1091,10 @@ class Members
                         $now = new \DateTime();
                         $duedate = new \DateTime();
                         $duedate->modify('+1 month');
-                        $select->where->greaterThanOrEqualTo(
+                        $select->where->greaterThan(
                             'date_echeance',
                             $now->format('Y-m-d')
-                        )->lessThan(
+                        )->lessThanOrEqualTo(
                             'date_echeance',
                             $duedate->format('Y-m-d')
                         );

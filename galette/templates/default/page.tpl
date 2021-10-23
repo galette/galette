@@ -34,6 +34,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Navigation"}</h1>
         <ul>
             <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
+  {if $preferences->pref_bool_create_member and !$login->isSuperAdmin()}
+            <li{if $cur_route eq "addMemberChild"} class="selected"{/if}><a href="{path_for name="addMemberChild"}" title="{_T string="Add new child member in database"}">{_T string="Add a child member"}</a></li>
+  {/if}
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
             <li{if $cur_route eq "members"} class="selected"{/if}><a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
             <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
@@ -44,8 +47,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
             <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
             <li{if $cur_route eq "editMember" or $cur_route eq "addMember"} class="selected"{/if}><a href="{path_for name="addMember"}" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
-            <li{if $cur_route eq "addContribution" and $cur_subroute eq "fee"} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => "fee"]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
-            <li{if $cur_route eq "addContribution" and $cur_subroute eq "donation"} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => "donation"]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
+            <li{if $cur_route eq "addContribution" and $cur_subroute eq constant('Galette\Entity\Contribution::TYPE_FEE')} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
+            <li{if $cur_route eq "addContribution" and $cur_subroute eq constant('Galette\Entity\Contribution::TYPE_DONATION')} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
             <li{if $cur_route eq "addTransaction" or $cur_route eq "editTransaction"} class="selected"{/if}><a href="{path_for name="addTransaction"}" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $cur_route eq "reminders"} class="selected"{/if}><a href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
             <li{if $cur_route eq "history"} class="selected"{/if}><a href="{path_for name="history"}" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
@@ -75,7 +78,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Configuration"}</h1>
         <ul>
             <li{if $cur_route eq "preferences"} class="selected"{/if}><a href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
-            <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
+            <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{path_for name="plugins"}" title="{_T string="Information about available plugins"}">{_T string="Plugins"}</a></li>
             <li{if $cur_route eq "configureListFields"} class="selected"{/if}><a href="{path_for name="configureListFields" data=["table" => "adherents"]}" title="{_T string="Customize lists fields and order"}">{_T string="Core lists"}</a></li>
             <li{if $cur_route eq "configureCoreFields"} class="selected"{/if}><a href="{path_for name="configureCoreFields"}" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Core fields"}</a></li>
             <li{if $cur_route eq "configureDynamicFields" or $cur_route eq 'editDynamicField' or $cur_route eq 'addDynamicField'} class="selected"{/if}><a href="{path_for name="configureDynamicFields"}" title="{_T string="Manage additional fields for various forms"}">{_T string="Dynamic fields"}</a></li>

@@ -51,6 +51,13 @@ use Galette\Core\Pagination;
  * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property date $start_date_filter
+ * @property date $end_date_filter
+ * @property integer $filtre_cotis_adh
+ * @property boolean $filtre_cotis_children
+ * @property string $rstart_date_filter
+ * @property string $rend_date_filter
  */
 
 class TransactionsList extends Pagination
@@ -65,11 +72,13 @@ class TransactionsList extends Pagination
     private $start_date_filter;
     private $end_date_filter;
     private $filtre_cotis_adh;
+    private $filtre_cotis_children = false;
 
     protected $list_fields = array(
         'start_date_filter',
         'end_date_filter',
-        'filtre_cotis_adh'
+        'filtre_cotis_adh',
+        'filtre_cotis_children'
     );
 
     protected $virtuals_list_fields = array(
@@ -106,6 +115,7 @@ class TransactionsList extends Pagination
         $this->start_date_filter = null;
         $this->end_date_filter = null;
         $this->filtre_cotis_adh = null;
+        $this->filtre_cotis_children = false;
     }
 
     /**

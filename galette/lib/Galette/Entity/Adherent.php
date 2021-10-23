@@ -46,6 +46,7 @@ use Galette\Core\Password;
 use Galette\Core\Preferences;
 use Galette\Core\History;
 use Galette\Repository\Groups;
+use Galette\Core\Login;
 use Galette\Repository\Members;
 
 /**
@@ -117,6 +118,7 @@ use Galette\Repository\Members;
  * @property string $saddress Concatened address and continuation
  * @property string $contribstatus State of member contributions
  * @property string $days_remaining
+ * @property-read integer $parent_id
  */
 class Adherent
 {
@@ -283,7 +285,7 @@ class Adherent
     /**
      * Loads a member from its id
      *
-     * @param int $id the identifiant for the member to load
+     * @param int $id the identifier for the member to load
      *
      * @return bool true if query succeed, false otherwise
      */
@@ -423,7 +425,7 @@ class Adherent
         if ($r->parent_id !== null) {
             $this->_parent = (int)$r->parent_id;
             if ($this->_deps['parent'] === true) {
-                $this->loadParent($r->parent_id);
+                $this->loadParent();
             }
         }
 
@@ -657,7 +659,7 @@ class Adherent
      */
     public function isCompany()
     {
-        return trim($this->_company_name) != '';
+        return trim($this->_company_name ?? '') != '';
     }
 
     /**
@@ -765,6 +767,9 @@ class Adherent
     public function getDues()
     {
         $ret = '';
+        $date_now = new \DateTime();
+        $ddate = new \DateTime($this->_due_date);
+        $date_diff = $date_now->diff($ddate);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($this->_due_date == '') {
@@ -784,10 +789,13 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         } elseif ($this->_days_remaining == 0) {
-            $ret = _T("Last day!");
+            if ($date_diff->invert == 0) {
+                $ret = _T("Last day!");
+            } else {
+                $ret = _T("Late since today!");
+            }
         } elseif ($this->_days_remaining < 0) {
             $patterns = array('/%days/', '/%date/');
-            $ddate = new \DateTime($this->_due_date);
             $replace = array(
                 $this->_days_remaining * -1,
                 $ddate->format(__("Y-m-d"))
@@ -803,7 +811,6 @@ class Adherent
             }
         } else {
             $patterns = array('/%days/', '/%date/');
-            $ddate = new \DateTime($this->_due_date);
             $replace = array(
                 $this->_days_remaining,
                 $ddate->format(__("Y-m-d"))
@@ -871,8 +878,8 @@ class Adherent
             $str .= $title->tshort . ' ';
         }
 
-        $str .= mb_strtoupper($name, 'UTF-8') . ' ' .
-            ucwords(mb_strtolower($surname, 'UTF-8'), " \t\r\n\f\v-_|");
+        $str .= mb_strtoupper($name ?? '', 'UTF-8') . ' ' .
+            ucwords(mb_strtolower($surname ?? '', 'UTF-8'), " \t\r\n\f\v-_|");
 
         if ($id !== false || $nick !== false) {
             $str .= ' (';
@@ -936,8 +943,10 @@ class Adherent
     private function getFieldLabel($field)
     {
         $label = $this->fields[$field]['label'];
-        //remove trailing ':' and then nbsp (for french at least)
-        $label = trim(trim($label, ':'), '&nbsp;');
+        //replace "&nbsp;"
+        $label = str_replace('&nbsp;', ' ', $label);
+        //remove trailing ':' and then trim
+        $label = trim(trim($label ?? '', ':'));
         return $label;
     }
 
@@ -1039,7 +1048,7 @@ class Adherent
 
         $fields = self::getDbFields($this->zdb);
 
-        //reset company name if needeed
+        //reset company name if needed
         if (!isset($values['is_company'])) {
             unset($values['is_company']);
             $values['societe_adh'] = '';
@@ -1060,14 +1069,14 @@ class Adherent
         }
 
         foreach ($fields as $key) {
-            //first of all, let's sanitize values
+            //first, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = $values[$key];
                 if ($value !== true && $value !== false) {
-                    $value = trim($value);
+                    $value = trim($value ?? '');
                 }
             } elseif (empty($this->_id)) {
                 switch ($key) {
@@ -1077,7 +1086,7 @@ class Adherent
                         $value = 0;
                         break;
                     case 'activite_adh':
-                        //values that are setted at object instanciation
+                        //values that are set at object instantiation
                         $value = true;
                         break;
                     case 'date_crea_adh':
@@ -1086,8 +1095,11 @@ class Adherent
                     case 'id_statut':
                     case 'pref_lang':
                     case 'parent_id':
-                        //values that are setted at object instanciation
+                        //values that are set at object instantiation
                         $value = $this->$prop;
+                        break;
+                    case self::PK:
+                        $value = null;
                         break;
                     default:
                         $value = '';
@@ -1160,7 +1172,7 @@ class Adherent
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a member' . "\n" .
+                'Some errors has been thew attempting to edit/store a member' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
@@ -1424,8 +1436,14 @@ class Adherent
      */
     public function store()
     {
-        global $hist, $emitter;
+        global $hist, $emitter, $login;
         $event = null;
+
+        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
+            if ($this->preferences->pref_bool_create_member) {
+                $this->_parent = $login->id;
+            }
+        }
 
         try {
             $values = array();
@@ -1562,7 +1580,6 @@ class Adherent
                     );
                 }
                 $success = true;
-
                 $event = 'member.edit';
             }
 
@@ -1729,6 +1746,10 @@ class Adherent
                             return null;
                         }
                         break;
+                    case 'address':
+                    case 'address_continuation':
+                        return $this->$rname ?? '';
+                        break;
                     case 'birthdate':
                     case 'creation_date':
                     case 'modification_date':
@@ -1747,6 +1768,9 @@ class Adherent
                                 return $this->$rname;
                             }
                         }
+                        break;
+                    case 'parent_id':
+                        return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
                         break;
                     default:
                         if (!property_exists($this, $rname)) {
@@ -1944,7 +1968,7 @@ class Adherent
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a member files' . "\n" .
+                'Some errors has been thew attempting to edit/store a member files' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
@@ -2023,19 +2047,47 @@ class Adherent
     }
 
     /**
-     * Can current logged in user edit member
+     * Can current logged-in user create member
      *
      * @param Login $login Login instance
      *
      * @return boolean
      */
-    public function canEdit($login)
+    public function canCreate(Login $login): bool
     {
+        global $preferences;
+
         if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
-        //check if requested member is part of managed groups
+        if ($preferences->pref_bool_create_member && $login->isLogged()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Can current logged-in user edit member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit(Login $login): bool
+    {
+        //admin and staff users can edit, as well as member itself
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //parent can edit their child cards
+        if ($this->hasParent() && $this->parent_id === $login->id) {
+            return true;
+        }
+
+        //group managers can edit members of groups they manage
         if ($login->isGroupManager()) {
             foreach ($this->getGroups() as $g) {
                 if ($login->isGroupManager($g->getId())) {
@@ -2048,11 +2100,23 @@ class Adherent
     }
 
     /**
+     * Can current logged-in user display member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login): bool
+    {
+        return $this->canEdit($login);
+    }
+
+    /**
      * Are we currently duplicated a member?
      *
      * @return boolean
      */
-    public function isDuplicate()
+    public function isDuplicate(): bool
     {
         return $this->_duplicate;
     }
@@ -2064,7 +2128,7 @@ class Adherent
      *
      * @return Adherent
      */
-    public function setSendmail($send = true)
+    public function setSendmail($send = true): self
     {
         $this->sendmail = $send;
         return $this;
@@ -2078,5 +2142,87 @@ class Adherent
     public function sendEMail()
     {
         return $this->sendmail;
+    }
+
+    /**
+     * Set member parent
+     *
+     * @param integer $id Parent identifier
+     *
+     * @return $this
+     */
+    public function setParent(int $id): self
+    {
+        $this->_parent = $id;
+        $this->loadParent();
+        return $this;
+    }
+
+    /**
+     * Reset dependencies to load
+     *
+     * @return $this
+     */
+    public function disableAllDeps(): self
+    {
+        foreach ($this->_deps as &$dep) {
+            $dep = false;
+        }
+        return $this;
+    }
+
+    /**
+     * Enable all dependencies to load
+     *
+     * @return $this
+     */
+    public function enableAllDeps(): self
+    {
+        foreach ($this->_deps as &$dep) {
+            $dep = true;
+        }
+        return $this;
+    }
+
+    /**
+     * Enable a load dependency
+     *
+     * @param string $name Dependency name
+     *
+     * @return $this
+     */
+    public function enableDep(string $name): self
+    {
+        if (!isset($this->_deps[$name])) {
+            Analog::log(
+                'dependency ' . $name . ' does not exists!',
+                Analog::WARNING
+            );
+        } else {
+            $this->_deps[$name] = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Enable a load dependency
+     *
+     * @param string $name Dependency name
+     *
+     * @return $this
+     */
+    public function disableDep(string $name): self
+    {
+        if (!isset($this->_deps[$name])) {
+            Analog::log(
+                'dependency ' . $name . ' does not exists!',
+                Analog::WARNING
+            );
+        } else {
+            $this->_deps[$name] = false;
+        }
+
+        return $this;
     }
 }

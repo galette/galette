@@ -247,17 +247,23 @@ abstract class GaletteTestCase extends atoum
      */
     public function createMember(array $data)
     {
-        $adh = $this->adh;
-        $check = $adh->check($data, [], []);
+        $this->adh = new \Galette\Entity\Adherent($this->zdb);
+        $this->adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $check = $this->adh->check($data, [], []);
         if (is_array($check)) {
             var_dump($check);
         }
         $this->boolean($check)->isTrue();
 
-        $store = $adh->store();
+        $store = $this->adh->store();
         $this->boolean($store)->isTrue();
 
-        return $adh;
+        return $this->adh;
     }
 
     /**
@@ -479,8 +485,38 @@ abstract class GaletteTestCase extends atoum
      */
     protected function adhOneExists()
     {
+        $mdata = $this->dataAdherentOne();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
-        $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
+        $select->where(
+            array(
+                'a.fingerprint' => 'FAKER' . $this->seed,
+                'a.login_adh' => $mdata['login_adh']
+            )
+        );
+
+        $results = $this->zdb->execute($select);
+        if ($results->count() === 0) {
+            return false;
+        } else {
+            return $results;
+        }
+    }
+
+    /**
+     * Look in database if test member already exists
+     *
+     * @return false|ResultSet
+     */
+    protected function adhTwoExists()
+    {
+        $mdata = $this->dataAdherentTwo();
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
+        $select->where(
+            array(
+                'a.fingerprint' => 'FAKER' . $this->seed,
+                'a.login_adh' => $mdata['login_adh']
+            )
+        );
 
         $results = $this->zdb->execute($select);
         if ($results->count() === 0) {
@@ -512,7 +548,7 @@ abstract class GaletteTestCase extends atoum
      */
     protected function getMemberTwo()
     {
-        $rs = $this->adhOneExists();
+        $rs = $this->adhTwoExists();
         if ($rs === false) {
             $this->createMember($this->dataAdherentTwo());
         } else {
@@ -544,6 +580,104 @@ abstract class GaletteTestCase extends atoum
     }
 
     /**
+     * Create test contribution in database
+     *
+     * @return void
+     */
+    protected function createContribution()
+    {
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 1, //annual fee
+            'montant_cotis' => 92,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $this->createContrib($data);
+        $this->checkContribExpected();
+    }
+
+    /**
+     * Check contributions expected
+     *
+     * @param Contribution $contrib       Contribution instance, if any
+     * @param array        $new_expecteds Changes on expected values
+     *
+     * @return void
+     */
+    protected function checkContribExpected($contrib = null, $new_expecteds = [])
+    {
+        if ($contrib === null) {
+            $contrib = $this->contrib;
+        }
+
+        $date_begin = $contrib->raw_begin_date;
+        $date_end = clone $date_begin;
+        $date_end->add(new \DateInterval('P1Y'));
+
+        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
+        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
+        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
+
+        $expecteds = [
+            'id_adh' => "{$this->adh->id}",
+            'id_type_cotis' => 1, //annual fee
+            'montant_cotis' => '92',
+            'type_paiement_cotis' => '3',
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_fin_cotis' => $date_end->format('Y-m-d'),
+        ];
+        $expecteds = array_merge($expecteds, $new_expecteds);
+
+        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
+
+        foreach ($expecteds as $key => $value) {
+            $property = $this->contrib->fields[$key]['propname'];
+            switch ($key) {
+                case \Galette\Entity\ContributionsTypes::PK:
+                    $ct = $this->contrib->type;
+                    if ($ct instanceof \Galette\Entity\ContributionsTypes) {
+                        $this->integer((int)$ct->id)->isIdenticalTo($value);
+                    } else {
+                        $this->integer($ct)->isIdenticalTo($value);
+                    }
+                    break;
+                default:
+                    $this->variable($contrib->$property)->isEqualTo($value, $property);
+                    break;
+            }
+        }
+
+        //load member from db
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        //member is now up-to-date
+        $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
+        $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
+        $this->boolean($this->adh->isUp2Date())->isTrue();
+        $this->boolean($contrib->isFee())->isTrue();
+        $this->string($contrib->getTypeLabel())->isIdenticalTo('Membership');
+        $this->string($contrib->getRawType())->isIdenticalTo('membership');
+        $this->array($this->contrib->getRequired())->isIdenticalTo([
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1,
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => 1,
+            'montant_cotis'     => 1
+        ]);
+    }
+
+    /**
      * Initialize default status in database
      *
      * @return void
@@ -571,5 +705,44 @@ abstract class GaletteTestCase extends atoum
             $res = $ct->installInit();
             $this->boolean($res)->isTrue();
         }
+    }
+
+    /**
+     * Initialize default titles in database
+     *
+     * @return void
+     */
+    protected function initTitles(): void
+    {
+        $titles = new \Galette\Repository\Titles($this->zdb);
+        if (count($titles->getList($this->zdb)) === 0) {
+            $res = $titles->installInit($this->zdb);
+            $this->boolean($res)->isTrue();
+        }
+    }
+
+    /**
+     * Clean history
+     *
+     * @return void
+     */
+    protected function cleanHistory(): void
+    {
+        $this->zdb->db->query(
+            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
+            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+    }
+
+    /**
+     * Log-in as super administrator
+     *
+     * @return void
+     */
+    protected function logSuperAdmin(): void
+    {
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
     }
 }

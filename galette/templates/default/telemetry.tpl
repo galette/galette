@@ -26,10 +26,13 @@
     {/if}
     {if isset($renew_telemetry)}
                                         $('#renewbox').remove();
-                                        $.cookie(
+                                        Cookies.set(
                                             'renew_telemetry',
                                             1,
-                                            { expires: 365 }
+                                            {
+                                                expires: 365,
+                                                path: '/'
+                                            }
                                         );
     {/if}
                                     }
@@ -73,18 +76,24 @@
                 });
     {if isset($renew_telemetry)}
             $('#norenew').on('click', function() {
-                $.cookie(
+                Cookies.set(
                     'renew_telemetry',
                     1,
-                    { expires: 365 }
+                    {
+                        expires: 365,
+                        path: '/'
+                    }
                 );
                 window.location.reload();
             });
             $('#renewlater').on('click', function() {
-                $.cookie(
+                Cookies.set(
                     'renew_telemetry',
                     1,
-                    { expires: 182 }
+                    {
+                        expires: 182,
+                        path: '/'
+                    }
                 );
                 window.location.reload();
             });

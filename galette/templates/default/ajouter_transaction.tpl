@@ -33,8 +33,8 @@
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
-                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{constant('Galette\Entity\Contribution::TYPE_FEE')}" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{constant('Galette\Entity\Contribution::TYPE_DONATION')}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
                 </p>
     {/if}
             </fieldset>
@@ -55,14 +55,14 @@
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-user-check"></i>
                         <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
                     </a>
                     <a
-                        href="{path_for name="addContribution" data=["type" => "donation"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-gift"></i>
@@ -194,8 +194,9 @@
             }
 
             var _contribs_ajax_mapper = function(res){
-                $("#contributions_list #legende").remove();
                 $('#contributions_list').append( res );
+                $("#contributions_list #legende").remove();
+                $("#contributions_list i.fa-filter").remove();
 
                 //Deactivate contributions list links
                 $('#contributions_list tbody a').click(function(){
@@ -220,8 +221,8 @@
                     });
                     return false;
                 });
-                //Bind pagination links
-                $('#contributions_list .pages a').bind({
+                //Bind pagination and ordering links
+                $('#contributions_list .pages a, #contributions_list thead a').bind({
                     click: function(){
                         $.ajax({
                             url: this.href.substring(this.href.indexOf('?')) + (this.href.indexOf('?') > -1 ? "&" : "?") + "ajax=true",
@@ -241,7 +242,7 @@
                 //Select a row
                 $('#contributions_list .contribution_row').click(function(){
                     $('#contributions_list').dialog("close");
-                    var _cid = $(this).find('input[name="contrib_id"]').val();
+                    var _cid = $(this).find('input[name="contrib_sel[]"]').val();
                     window.location.href = '{path_for name="attach_contribution" data=["id" => $transaction->id, "cid" => "%cid"]}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
             }

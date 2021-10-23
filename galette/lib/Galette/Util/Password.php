@@ -241,7 +241,7 @@ class Password
     }
 
     /**
-     * Set member and calculate personal informations to blacklist
+     * Set member and calculate personal information to blacklist
      *
      * @param Adherent $adh Adherent instance
      *

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Galette\GaletteTestCase;
  * @name      Adherent
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-04-17
@@ -64,9 +64,17 @@ class Adherent extends GaletteTestCase
     public function tearDown()
     {
         $this->zdb = new \Galette\Core\Db();
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $delete->where('parent_id IS NOT NULL');
+        $this->zdb->execute($delete);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $this->cleanHistory();
     }
 
     /**
@@ -80,6 +88,7 @@ class Adherent extends GaletteTestCase
     {
         parent::beforeTestMethod($testMethod);
         $this->initStatus();
+        $this->initTitles();
 
         $this->default_deps = [
             'picture'   => true,
@@ -126,6 +135,68 @@ class Adherent extends GaletteTestCase
         $this->variable($adh->fake_prop)->isNull();
 
         $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+    }
+
+    /**
+     * Test member load dependencies
+     *
+     * @return void
+     */
+    public function testDependencies()
+    {
+        $adh = $this->adh;
+        $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+
+        $adh = clone $this->adh;
+        $adh->disableAllDeps();
+        $expected = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => false
+        ];
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $expected = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => true,
+            'parent'    => false,
+            'children'  => true,
+            'dynamics'  => true
+        ];
+        $adh
+            ->enableDep('dues')
+            ->enableDep('dynamics')
+            ->enableDep('children');
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $expected = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => true,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => true
+        ];
+        $adh->disableDep('children');
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $adh->disableDep('none')->enableDep('anothernone');
+        $this->array($adh->deps)->isIdenticalTo($expected);
+
+        $expected = [
+            'picture'   => true,
+            'groups'    => true,
+            'dues'      => true,
+            'parent'    => true,
+            'children'  => true,
+            'dynamics'  => true
+        ];
+        $adh->enableAllDeps('children');
+        $this->array($adh->deps)->isIdenticalTo($expected);
     }
 
     /**
@@ -413,10 +484,13 @@ class Adherent extends GaletteTestCase
         $parent = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         $this->checkMemberOneExpected($parent);
 
-        $child_data = $this->dataAdherentOne() + [
+        $this->logSuperAdmin();
+
+        $child_data = [
             'nom_adh'       => 'Doe',
             'prenom_adh'    => 'Johny',
             'parent_id'     => $parent->id,
+            'attach'        => true
         ];
         $child = $this->createMember($child_data);
 
@@ -451,5 +525,188 @@ class Adherent extends GaletteTestCase
 
         $this->string($member->sfullname)->isIdenticalTo('DOE Johny Console.log("anything");');
         $this->string($member->others_infos)->isIdenticalTo('Any console.log("useful"); information');
+    }
+
+    /**
+     * Test can* methods
+     *
+     * @return void
+     */
+    public function testCan()
+    {
+        $this->getMemberOne();
+        //load member from db
+        $member = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+
+        $this->boolean($member->canShow($this->login))->isFalse();
+        $this->boolean($member->canCreate($this->login))->isFalse();
+        $this->boolean($member->canEdit($this->login))->isFalse();
+
+        //Superadmin can fully change members
+        $this->logSuperAdmin();
+
+        $this->boolean($member->canShow($this->login))->isTrue();
+        $this->boolean($member->canCreate($this->login))->isTrue();
+        $this->boolean($member->canEdit($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Member can fully change its own information
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($member->canShow($this->login))->isTrue();
+        $this->boolean($member->canCreate($this->login))->isTrue();
+        $this->boolean($member->canEdit($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Another member has no access
+        $this->getMemberTwo();
+        $mdata = $this->dataAdherentTwo();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($member->canShow($this->login))->isFalse();
+        $this->boolean($member->canCreate($this->login))->isFalse();
+        $this->boolean($member->canEdit($this->login))->isFalse();
+
+        //parents can fully change children information
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        global $login;
+        $login = $this->login;
+        $this->logSuperAdmin();
+
+        $child_data = [
+                'nom_adh'       => 'Doe',
+                'prenom_adh'    => 'Johny',
+                'parent_id'     => $member->id,
+                'attach'        => true,
+                'login_adh'     => 'child.johny.doe',
+                'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $child = $this->createMember($child_data);
+        $cid = $child->id;
+        $this->login->logOut();
+
+        //load child from db
+        $child = new \Galette\Entity\Adherent($this->zdb);
+        $child->enableDep('parent');
+        $this->boolean($child->load($cid))->isTrue();
+
+        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
+            $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->integer($child->parent->id)->isIdenticalTo($member->id);
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($child->canShow($this->login))->isTrue();
+        $this->boolean($child->canCreate($this->login))->isFalse();
+        $this->boolean($child->canEdit($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+    }
+
+    /**
+     * Names provider
+     *
+     * @return array[]
+     */
+    protected function nameCaseProvider(): array
+    {
+        return [
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => false,
+                'id' => false,
+                'nick' => false,
+                'expected' => 'DOE John'
+            ],
+            [
+                'name' => 'Doéè',
+                'surname' => 'John',
+                'title' => false,
+                'id' => false,
+                'nick' => false,
+                'expected' => 'DOÉÈ John'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => new \Galette\Entity\Title(\Galette\Entity\Title::MR),
+                'id' => false,
+                'nick' => false,
+                'expected' => 'Mr. DOE John'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => false,
+                'id' => false,
+                'nick' => 'foo',
+                'expected' => 'DOE John (foo)'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => false,
+                'id' => 42,
+                'nick' => false,
+                'expected' => 'DOE John (42)'
+            ],
+            [
+                'name' => 'Doe',
+                'surname' => 'John',
+                'title' => new \Galette\Entity\Title(\Galette\Entity\Title::MR),
+                'id' => 42,
+                'nick' => 'foo',
+                'expected' => 'Mr. DOE John (foo, 42)'
+            ],
+        ];
+    }
+
+    /**
+     * Test getNameWithCase
+     *
+     * @dataProvider nameCaseProvider
+     *
+     * @param string                      $name     Name
+     * @param string                      $surname  Surname
+     * @param \Galette\Entity\Title|false $title    Title
+     * @param string|false                $id       ID
+     * @param string|false                $nick     Nick
+     * @param  string                      $expected Expected result
+     *
+     * @return void
+     */
+    public function testsGetNameWithCase(string $name, string $surname, $title, $id, $nick, string $expected)
+    {
+        $this->string(
+            \Galette\Entity\Adherent::getNameWithCase(
+                $name,
+                $surname,
+                $title,
+                $id,
+                $nick,
+            )
+        )->isIdenticalTo($expected);
     }
 }

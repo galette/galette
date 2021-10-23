@@ -4,6 +4,7 @@
 
 /**
  * Contribution class for galette
+ * Manage membership fees and donations.
  *
  * PHP version 5
  *
@@ -47,6 +48,7 @@ use Galette\Repository\PaymentTypes;
 
 /**
  * Contribution class for galette
+ * Manage membership fees and donations.
  *
  * @category  Entity
  * @name      Contribution
@@ -56,6 +58,25 @@ use Galette\Repository\PaymentTypes;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
+ *
+ * @property integer $id
+ * @property string $date
+ * @property DateTime $raw_date
+ * @property integer $member
+ * @property ContributionsTypes $type
+ * @property integer $amount
+ * @property integer $payment_type
+ * @property integer $orig_amount
+ * @property string $info
+ * @property string $begin_date
+ * @property DateTime $raw_begin_date
+ * @property string $end_date
+ * @property DateTime $raw_end_date
+ * @property Transaction|null $transaction
+ * @property integer $extension
+ * @property integer $duration
+ * @property string $spayment_type
+ * @property integer $model
  */
 class Contribution
 {
@@ -63,6 +84,9 @@ class Contribution
 
     public const TABLE = 'cotisations';
     public const PK = 'id_cotis';
+
+    public const TYPE_FEE = 'fee';
+    public const TYPE_DONATION = 'donation';
 
     private $_id;
     private $_date;
@@ -81,9 +105,11 @@ class Contribution
     //fields list and their translation
     private $_fields;
 
+    /** @var Db */
     private $zdb;
+    /** @var Login */
     private $login;
-
+    /** @var array */
     private $errors;
 
     private $sendmail = false;
@@ -95,18 +121,21 @@ class Contribution
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row to load
      *                                  a specific contribution, or an type id
-     *                                  to just instanciate object
+     *                                  to just instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
 
+        global $preferences;
+        $this->_payment_type = (int)$preferences->pref_default_paymenttype;
+
         /*
          * Fields configuration. Each field is an array and must reflect:
          * array(
          *   (string)label,
-         *   (string) propname
+         *   (string) property name
          * )
          *
          * I'd prefer a static private variable for this...
@@ -143,7 +172,7 @@ class Contribution
             ),
             'date_debut_cotis'    => array(
                 'label'    => _T("Date of contribution:"),
-                'cotlabel' => _T("Start date of membership:"), //if contribution is a cotisation, label differs
+                'cotlabel' => _T("Start date of membership:"), //if contribution is a membership fee, label differs
                 'propname' => 'begin_date'
             ),
             'date_fin_cotis'      => array(
@@ -176,7 +205,7 @@ class Contribution
                 $this->_amount = $this->_transaction->getMissingAmount();
             }
             $this->type = (int)$args['type'];
-            //calculate begin date for cotisation
+            //calculate begin date for membership fee
             $this->_begin_date = $this->_date;
             if ($this->_is_cotis) {
                 $curend = self::getDueDate($this->zdb, $this->_member);
@@ -255,18 +284,39 @@ class Contribution
     /**
      * Loads a contribution from its id
      *
-     * @param int $id the identifiant for the contribution to load
+     * @param int $id the identifier for the contribution to load
      *
      * @return bool true if query succeed, false otherwise
      */
     public function load($id)
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->where(self::PK . ' = ' . $id);
+            $select = $this->zdb->select(self::TABLE, 'c');
+            $select->join(
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                'c.' . Adherent::PK . '=a.' . Adherent::PK,
+                array()
+            );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $select->where(Adherent::PK . ' = ' . $this->login->id);
+                if (!$this->login->isGroupManager()) {
+                    $select->where
+                        ->nest()
+                            ->equalTo('a.' . Adherent::PK, $this->login->id)
+                            ->or
+                            ->equalTo('a.parent_id', $this->login->id)
+                        ->unnest()
+                        ->and
+                        ->equalTo('c.' . self::PK, $id)
+                    ;
+                } else {
+                    $select->where([
+                        Adherent::PK    => $this->login->id,
+                        self::PK        => $id
+                    ]);
+                }
+            } else {
+                $select->where->equalTo(self::PK, $id);
             }
 
             $results = $this->zdb->execute($select);
@@ -301,16 +351,16 @@ class Contribution
         $pk = self::PK;
         $this->_id = (int)$r->$pk;
         $this->_date = $r->date_enreg;
-        $this->_amount = $r->montant_cotis;
-        //save original amount, we need it for transactions parts calulations
-        $this->_orig_amount = $r->montant_cotis;
+        $this->_amount = (int)$r->montant_cotis;
+        //save original amount, we need it for transactions parts calculations
+        $this->_orig_amount = (int)$r->montant_cotis;
         $this->_payment_type = $r->type_paiement_cotis;
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
         $enddate = $r->date_fin_cotis;
         //do not work with knows bad dates...
         //the one with BC comes from 0.63/pgsl demo... Why the hell a so
-        //strange date? dont know :(
+        //strange date? don't know :(
         if (
             $enddate !== '0000-00-00'
             && $enddate !== '1901-01-01'
@@ -347,7 +397,7 @@ class Contribution
 
         $fields = array_keys($this->_fields);
         foreach ($fields as $key) {
-            //first of all, let's sanitize values
+            //first, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->_fields[$key]['propname'];
 
@@ -475,11 +525,11 @@ class Contribution
             }
         }
 
-        if ($this->isCotis() && count($this->errors) == 0) {
+        if ($this->isFee() && count($this->errors) == 0) {
             $overlap = $this->checkOverlap();
             if ($overlap !== true) {
                 if ($overlap === false) {
-                    $this->errors[] = _T("An error occurred checking overlaping fees :(");
+                    $this->errors[] = _T("An error occurred checking overlapping fees :(");
                 } else {
                     //method directly return error message
                     $this->errors[] = $overlap;
@@ -491,7 +541,7 @@ class Contribution
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a contribution' .
+                'Some errors has been threw attempting to edit/store a contribution' .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
@@ -546,7 +596,7 @@ class Contribution
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred checking overlaping fee. ' . $e->getMessage(),
+                'An error occurred checking overlapping fee. ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -591,7 +641,7 @@ class Contribution
             }
 
             //no end date, let's take database defaults
-            if (!$this->isCotis() && !$this->_end_date) {
+            if (!$this->isFee() && !$this->_end_date) {
                 unset($values['date_fin_cotis']);
             }
 
@@ -646,10 +696,10 @@ class Contribution
                 $event = 'contribution.edit';
             }
             //update deadline
-            if ($this->isCotis()) {
+            if ($this->isFee()) {
                 $deadline = $this->updateDeadline();
                 if ($deadline !== true) {
-                    //if something went wrong, we rollback transaction
+                    //if something went wrong, we roll back transaction
                     throw new \Exception('An error occurred updating member\'s deadline');
                 }
             }
@@ -766,7 +816,7 @@ class Contribution
     public function getFieldLabel($field)
     {
         $label = $this->_fields[$field]['label'];
-        if ($this->isCotis() && $field == 'date_debut_cotis') {
+        if ($this->isFee() && $field == 'date_debut_cotis') {
             $label = $this->_fields[$field]['cotlabel'];
         }
         //replace "&nbsp;"
@@ -923,11 +973,11 @@ class Contribution
     }
 
     /**
-     * Is current contribution a cotisation
+     * Is current contribution a membership fee
      *
      * @return boolean
      */
-    public function isCotis()
+    public function isFee()
     {
         return $this->_is_cotis;
     }
@@ -1056,7 +1106,7 @@ class Contribution
      */
     public function getRawType()
     {
-        if ($this->isCotis()) {
+        if ($this->isFee()) {
             return 'membership';
         } else {
             return 'donation';
@@ -1070,7 +1120,7 @@ class Contribution
      */
     public function getTypeLabel()
     {
-        if ($this->isCotis()) {
+        if ($this->isFee()) {
             return _T("Membership");
         } else {
             return _T("Donation");
@@ -1095,7 +1145,7 @@ class Contribution
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return false|object the called property
      */
@@ -1117,7 +1167,7 @@ class Contribution
 
             switch ($name) {
                 case 'is_cotis':
-                    return $this->isCotis();
+                    return $this->isFee();
                     break;
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
@@ -1187,7 +1237,7 @@ class Contribution
                     if ($this->_is_cotis === null) {
                         return null;
                     }
-                    return ($this->isCotis()) ?
+                    return ($this->isFee()) ?
                         PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
                     break;
                 default:
@@ -1356,7 +1406,7 @@ class Contribution
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a contribution files' . "\n" .
+                'Some errors has been threw attempting to edit/store a contribution files' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
@@ -1364,5 +1414,54 @@ class Contribution
         } else {
             return true;
         }
+    }
+
+    /**
+     * Get required fields list
+     *
+     * @return array
+     */
+    public function getRequired(): array
+    {
+        return [
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1,
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => $this->isFee() ? 1 : 0,
+            'montant_cotis'     => $this->isFee() ? 1 : 0
+        ];
+    }
+
+    /**
+     * Can current logged-in user display contribution
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login): bool
+    {
+        //admin and staff users can edit, as well as member itself
+        if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //parent can see their children contributions
+        $parent = new Adherent($this->zdb);
+        $parent
+            ->disableAllDeps()
+            ->enableDep('children')
+            ->load($this->login->id);
+        if ($parent->hasChildren()) {
+            foreach ($parent->children as $child) {
+                if ($child->id === $this->_member) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return false;
     }
 }

@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
@@ -219,8 +220,8 @@ class DynamicFieldsController extends CrudController
         if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
         }
-        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
-        $fields_list = $fields->getList($form_name, $this->login);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
+        $fields_list = $fields->getList($form_name);
 
         $params = [
             'fields_list'       => $fields_list,

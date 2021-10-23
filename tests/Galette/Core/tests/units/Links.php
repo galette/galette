@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-03-15
@@ -45,7 +45,7 @@ use Galette\GaletteTestCase;
  * @name      Password
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-03-15
@@ -100,6 +100,8 @@ class Links extends GaletteTestCase
 
         $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
         $this->zdb->execute($delete);
+
+        $this->cleanHistory();
     }
 
     /**
@@ -275,7 +277,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    private function createContribution()
+    protected function createContribution()
     {
         $bdate = new \DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P1Y')); // 2019-11-07
@@ -307,7 +309,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    private function checkContribExpected($contrib = null, $new_expecteds = [])
+    protected function checkContribExpected($contrib = null, $new_expecteds = [])
     {
         if ($contrib === null) {
             $contrib = $this->contrib;

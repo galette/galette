@@ -56,7 +56,7 @@ class Contribution extends GaletteTestCase
     protected $seed = 95842354;
 
     /**
-     * Cleanup after testeach test method
+     * Cleanup after each test method
      *
      * @param string $method Calling method
      *
@@ -68,9 +68,17 @@ class Contribution extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $delete->where('parent_id IS NOT NULL');
+        $this->zdb->execute($delete);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $this->cleanHistory();
     }
 
     /**
@@ -96,46 +104,6 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Create test contribution in database
-     *
-     * @return void
-     */
-    private function createContribution()
-    {
-        $bdate = new \DateTime(); // 2020-11-07
-        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
-        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
-
-        $edate = clone $bdate;
-        $edate->add(new \DateInterval('P1Y'));
-
-        $data = [
-            'id_adh' => $this->adh->id,
-            'id_type_cotis' => 1,
-            'montant_cotis' => 92,
-            'type_paiement_cotis' => 3,
-            'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $bdate->format('Y-m-d'),
-            'date_debut_cotis' => $bdate->format('Y-m-d'),
-            'date_fin_cotis' => $edate->format('Y-m-d'),
-        ];
-        $this->createContrib($data);
-        $this->checkContribExpected();
-    }
-
-    /**
-     * Loads contribution from a resultset
-     *
-     * @param ResultSet $rs ResultSet
-     *
-     * @return void
-     */
-    private function loadContribution($rs)
-    {
-        $this->adh = new \Galette\Entity\Contribution($this->zdb, $this->login, $rs);
-    }
-
-    /**
      * Test empty contribution
      *
      * @return void
@@ -144,7 +112,7 @@ class Contribution extends GaletteTestCase
     {
         $contrib = $this->contrib;
         $this->variable($contrib->id)->isNull();
-        $this->variable($contrib->isCotis())->isNull();
+        $this->variable($contrib->isFee())->isNull();
         $this->variable($contrib->is_cotis)->isNull();
         $this->variable($contrib->date)->isNull();
         $this->variable($contrib->begin_date)->isNull();
@@ -153,8 +121,8 @@ class Contribution extends GaletteTestCase
         $this->variable($contrib->raw_begin_date)->isNull();
         $this->variable($contrib->raw_end_date)->isNull();
         $this->string($contrib->duration)->isEmpty();
-        $this->variable($contrib->payment_type)->isNull();
-        $this->string($contrib->spayment_type)->isIdenticalTo('-');
+        $this->variable($contrib->payment_type)->isIdenticalTo((int)$this->preferences->pref_default_paymenttype);
+        $this->string($contrib->spayment_type)->isIdenticalTo('Check');
         $this->variable($contrib->model)->isNull();
         $this->variable($contrib->member)->isNull();
         $this->variable($contrib->type)->isNull();
@@ -180,7 +148,7 @@ class Contribution extends GaletteTestCase
         $this->boolean($contrib->isTransactionPartOf(1))->isFalse();
         $this->string($contrib->getRawType())->isIdenticalTo('donation');
         $this->string($contrib->getTypeLabel())->isIdenticalTo('Donation');
-        $this->string($contrib->getPaymentType())->isIdenticalTo('-');
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Check');
         $this->variable($contrib->unknown_property)->isNull();
     }
 
@@ -224,7 +192,7 @@ class Contribution extends GaletteTestCase
         $this->variable($contrib->transaction)->isNull();
         $contrib->transaction = 46;
         $this->object($contrib->transaction)->isInstanceOf('\Galette\Entity\Transaction');
-        $this->boolean($contrib->transaction->id)->isFalse();
+        $this->variable($contrib->transaction->id)->isNull();
 
         $contrib->member = 'not a member';
         $this->variable($contrib->member)->isNull();
@@ -260,65 +228,6 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Check contributions expecteds
-     *
-     * @param Contribution $contrib       Contribution instance, if any
-     * @param array        $new_expecteds Changes on expected values
-     *
-     * @return void
-     */
-    private function checkContribExpected($contrib = null, $new_expecteds = [])
-    {
-        if ($contrib === null) {
-            $contrib = $this->contrib;
-        }
-
-        $date_begin = $contrib->raw_begin_date;
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
-
-        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
-        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
-        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
-
-        $expecteds = [
-            'id_adh' => "{$this->adh->id}",
-            'id_type_cotis' => 1,
-            'montant_cotis' => '92',
-            'type_paiement_cotis' => '3',
-            'info_cotis' => 'FAKER' . $this->seed,
-            'date_fin_cotis' => $date_end->format('Y-m-d'),
-        ];
-        $expecteds = array_merge($expecteds, $new_expecteds);
-
-        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
-
-        foreach ($expecteds as $key => $value) {
-            $property = $this->contrib->fields[$key]['propname'];
-            switch ($key) {
-                case \Galette\Entity\ContributionsTypes::PK:
-                    $ct = $this->contrib->type;
-                    if ($ct instanceof \Galette\Entity\ContributionsTypes) {
-                        $this->integer((int)$ct->id)->isIdenticalTo($value);
-                    } else {
-                        $this->integer($ct)->isIdenticalTo($value);
-                    }
-                    break;
-                default:
-                    $this->variable($contrib->$property)->isEqualTo($value, $property);
-                    break;
-            }
-        }
-
-        //load member from db
-        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
-        //member is now up-to-date
-        $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
-        $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-    }
-
-    /**
      * Test contribution creation
      *
      * @return void
@@ -328,6 +237,67 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
         //create contribution for member
         $this->createContribution();
+    }
+
+    /**
+     * Test contribution update
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $this->getMemberOne();
+        //create contribution for member
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 12,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $this->createContrib($data);
+        $this->array($this->contrib->getRequired())->isIdenticalTo([
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1,
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => 0,
+            'montant_cotis'     => 0
+        ]);
+
+        $this->logSuperAdmin();
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 1280,
+            'type_paiement_cotis' => 4,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+
+        ];
+        $check = $this->contrib->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+
+        $store = $this->contrib->store();
+        $this->boolean($store)->isTrue();
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
+        $this->variable($contrib->amount)->isIdenticalTo(1280);
     }
 
     /**
@@ -346,7 +316,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
-            ['type' => 1] //anual fee
+            ['type' => 1] //annual fee
         );
 
         // First, check for 12 months renewal
@@ -363,7 +333,7 @@ class Contribution extends GaletteTestCase
                 $contrib = new \Galette\Entity\Contribution(
                     $this->zdb,
                     $this->login,
-                    ['type' => 1] //anual fee
+                    ['type' => 1] //annual fee
                 );
             }
         )
@@ -381,7 +351,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
-            ['type' => 1] // anual fee
+            ['type' => 1] // annual fee
         );
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
 
@@ -396,7 +366,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
-            ['type' => 1] // anual fee
+            ['type' => 1] // annual fee
         );
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-t'));
 
@@ -446,7 +416,7 @@ class Contribution extends GaletteTestCase
         $end_date->add(new \DateInterval('P1Y'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
-            \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
+            \Galette\Entity\ContributionsTypes::PK  => 1, //annual fee
             'montant_cotis'                         => 20,
             'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
@@ -475,7 +445,7 @@ class Contribution extends GaletteTestCase
         $end_date->add(new \DateInterval('P1Y'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
-            \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
+            \Galette\Entity\ContributionsTypes::PK  => 1, //anunal fee
             'montant_cotis'                         => 20,
             'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
@@ -533,6 +503,9 @@ class Contribution extends GaletteTestCase
         $this->contrib->type = 1;
         $this->string($this->contrib->getFieldLabel('date_debut_cotis'))
             ->isIdenticalTo('Start date of membership');
+
+        $this->string($this->contrib->getFieldLabel('info_cotis'))
+            ->isIdenticalTo('Comments');
     }
 
     /**
@@ -571,10 +544,119 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
         $this->createContribution();
 
-        $id = (int)$this->contrib->id;
         $this->boolean($this->contrib->remove())->isTrue();
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->boolean($this->contrib->remove())->isFalse();
+    }
+
+    /**
+     * Test can* methods
+     *
+     * @return void
+     */
+    public function testCan()
+    {
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+        $contrib = $this->contrib;
+
+        $this->boolean($contrib->canShow($this->login))->isFalse();
+
+        //Superadmin can fully change contributions
+        $this->logSuperAdmin();
+
+        $this->boolean($contrib->canShow($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Member can fully change its own contributions
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($contrib->canShow($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
+
+        //Another member has no access
+        $this->getMemberTwo();
+        $mdata = $this->dataAdherentTwo();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($contrib->canShow($this->login))->isFalse();
+
+        //parents can chow change children contributions
+        $this->getMemberOne();
+        $member = $this->adh;
+        $mdata = $this->dataAdherentOne();
+        global $login;
+        $login = $this->login;
+        $this->logSuperAdmin();
+
+        $child_data = [
+            'nom_adh'       => 'Doe',
+            'prenom_adh'    => 'Johny',
+            'parent_id'     => $member->id,
+            'attach'        => true,
+            'login_adh'     => 'child.johny.doe',
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $child = $this->createMember($child_data);
+        $cid = $child->id;
+
+        //contribution for child
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $cid,
+            'id_type_cotis' => 1,
+            'montant_cotis' => 25,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $ccontrib = $this->createContrib($data);
+
+        $this->login->logOut();
+
+        //load child from db
+        $child = new \Galette\Entity\Adherent($this->zdb);
+        $child->enableDep('parent');
+        $this->boolean($child->load($cid))->isTrue();
+
+        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
+        $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->integer($child->parent->id)->isIdenticalTo($member->id);
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+
+        $mdata = $this->dataAdherentOne();
+        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isStaff())->isFalse();
+
+        $this->boolean($ccontrib->canShow($this->login))->isTrue();
+
+        //logout
+        $this->login->logOut();
+        $this->boolean($this->login->isLogged())->isFalse();
     }
 }

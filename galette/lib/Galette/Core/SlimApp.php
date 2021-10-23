@@ -76,7 +76,7 @@ class SlimApp extends \DI\Bridge\Slim\App
                     'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
                 ]
             ],
-            'mode'              => GALETTE_MODE,//TODO: rely on galette.mode
+            'mode'              => GALETTE_MODE, //TODO: rely on galette.mode
             'galette.mode'      => GALETTE_MODE,
             'session'           => \DI\autowire('\RKA\Session')
         ]);

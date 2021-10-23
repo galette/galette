@@ -525,6 +525,7 @@ trait Replacements
         $c_replacements['__contrib_label'] = $c_replacements['contrib_label'];
 
         //handle DEADLINE alias
+        $c_replacements['deadline'] = null;
 
         $this->setReplacements($c_replacements);
 
@@ -593,9 +594,9 @@ trait Replacements
     {
         global $login;
 
-        $address = $member->address;
-        if ($member->address_continuation !== '') {
-            $address .= '<br/>' . $member->address_continuation;
+        $address = $member->getAddress();
+        if ($member->getAddressContinuation() !== '') {
+            $address .= '<br/>' . $member->getAddressContinuation();
         }
 
         if ($member->isMan()) {
@@ -632,11 +633,12 @@ trait Replacements
                 'adh_profession'    => $member->job,
                 'adh_company'       => $member->company_name,
                 'adh_address'       => $address,
-                'adh_zip'           => $member->zipcode,
-                'adh_town'          => $member->town,
-                'adh_country'       => $member->country,
+                'adh_zip'           => $member->getZipcode(),
+                'adh_town'          => $member->getTown(),
+                'adh_country'       => $member->getCountry(),
                 'adh_phone'         => $member->phone,
                 'adh_mobile'        => $member->gsm,
+                //always take current member email, to be sure.
                 'adh_email'         => $member->email,
                 'adh_login'         => $member->login,
                 'adh_main_group'    => $main_group,

@@ -60,11 +60,20 @@ $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../');
 define('GALETTE_THEME_DIR', './themes/default/');
 
+$needs_update = false;
 require_once '../includes/galette.inc.php';
 
 session_start();
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
+
+// don't display installer if not necessary
+$install_in_progress = isset($session[md5(GALETTE_ROOT)]);
+$force_installer = defined('FORCE_INSTALLER') && FORCE_INSTALLER;
+if (!$install_in_progress && !$force_installer && $installed && !$needs_update) {
+    http_response_code(404);
+    die();
+}
 
 $app =  new \Galette\Core\SlimApp();
 require_once '../includes/dependencies.php';
@@ -84,24 +93,6 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 }
 
 $error_detected = array();
-
-/**
- * Initialize database constants to connect
- *
- * @param Install $install Installer
- *
- * @return void
- */
-function initDbConstants($install)
-{
-    define('TYPE_DB', $install->getDbType());
-    define('PREFIX_DB', $install->getTablesPrefix());
-    define('USER_DB', $install->getDbUser());
-    define('PWD_DB', $install->getDbPass());
-    define('HOST_DB', $install->getDbHost());
-    define('PORT_DB', $install->getDbPort());
-    define('NAME_DB', $install->getDbName());
-}
 
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
@@ -198,13 +189,15 @@ if (isset($_POST['stepback_btn'])) {
 if (!$install->isEndStep()
     && ($install->postCheckDb() || $install->isDbCheckStep())
 ) {
-    //if we have passed database configuration, define required constants
-    initDbConstants($install);
-
-    if ($install->postCheckDb()) {
-        //while before check db, connection is not checked
-        $zdb = new GaletteDb();
-    }
+    //while before check db, connection is not checked
+    $zdb = new GaletteDb(array(
+        'TYPE_DB' => $install->getDbType(),
+        'HOST_DB' => $install->getDbHost(),
+        'PORT_DB' => $install->getDbPort(),
+        'USER_DB' => $install->getDbUser(),
+        'PWD_DB' => $install->getDbPass(),
+        'NAME_DB' => $install->getDbName()
+    ));
 }
 
 header('Content-Type: text/html; charset=UTF-8');

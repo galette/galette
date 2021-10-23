@@ -61,7 +61,7 @@
                     {_T string="Modification"}
                 </a>
             </li>
-{if $login->isAdmin() or $login->isStaff()}
+{if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
             <li>
                 <a
                     href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
@@ -72,9 +72,11 @@
                     {_T string="View contributions"}
                 </a>
             </li>
+{/if}
+{if $login->isAdmin() or $login->isStaff()}
             <li>
                 <a
-                    href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}"
+                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-user-check fa-fw fa-2x"></i>
@@ -83,7 +85,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}"
+                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-gift fa-fw fa-2x"></i>
@@ -140,14 +142,20 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {continue}
         {/if}
         {assign var="propname" value=$element->propname}
-        {assign var="value" value=$member->$propname|escape}
+
+        {assign var="propvalue" value=$member->$propname}
+        {if $propvalue}
+            {assign var=value value=$propvalue|escape}
+        {else}
+            {assign var=value value=$propvalue}
+        {/if}
 
         {if $element->field_id eq 'nom_adh'}
             {assign var="value" value=$member->sfullname}
         {elseif $element->field_id eq 'pref_lang'}
             {assign var="value" value=$pref_lang}
         {elseif $element->field_id eq 'adresse_adh'}
-            {assign var="value" value=$member->saddress|escape|nl2br}
+            {assign var="value" value=$member->saddress|nl2br}
         {elseif $element->field_id eq 'bool_display_info'}
             {assign var="value" value=$member->sappears_in_list}
         {elseif $element->field_id eq 'activite_adh'}

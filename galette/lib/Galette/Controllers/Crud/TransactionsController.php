@@ -275,7 +275,7 @@ class TransactionsController extends ContributionsController
         }
 
         if (count($error_detected) == 0) {
-            if ($trans->getMissingAmount() > 0) {
+            if (isset($post['contrib_type']) && $trans->getMissingAmount() > 0) {
                 $rparams = [
                     'type' => $post['contrib_type']
                 ];

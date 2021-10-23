@@ -113,7 +113,7 @@ class News
                 return !$has_expired;
             } catch (Throwable $e) {
                 Analog::log(
-                    'Unable check cache expiracy. Are you sure you have ' .
+                    'Unable check cache expiry. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
                     Analog::WARNING
                 );
@@ -277,14 +277,22 @@ class News
             return $url;
         }
 
-        $galette_website_langs = $url . '/langs.json';
-        $context = stream_context_create($this->stream_opts);
-        $langs = json_decode(file_get_contents($galette_website_langs, false, $context));
+        try {
+            $galette_website_langs = $url . '/langs.json';
+            $context = stream_context_create($this->stream_opts);
+            $langs = json_decode(file_get_contents($galette_website_langs, false, $context));
 
-        if ($i18n->getAbbrev() != 'en' && in_array($i18n->getAbbrev(), $langs)) {
-            $url .= '/' . $i18n->getAbbrev();
+            if ($i18n->getAbbrev() != 'en' && in_array($i18n->getAbbrev(), $langs)) {
+                $url .= '/' . $i18n->getAbbrev();
+            }
+            $url .= '/feed.xml';
+        } catch (Throwable $e) {
+            Analog::log(
+                'Unable to load feed languages from "' . $url .
+                '" :( | ' . $e->getMessage(),
+                Analog::ERROR
+            );
         }
-        $url .= '/feed.xml';
 
         return $url;
     }

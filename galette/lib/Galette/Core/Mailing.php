@@ -57,7 +57,7 @@ use Galette\IO\File;
  * @property boolean $html
  * @property integer $current_step
  * @property-read  integer $step
- * @property integer $id
+ * @property integer|string $id
  * @property-read string $alt_message
  * @property-read string $wrapped_message
  * @property-read PHPMailer\PHPMailer\PHPMailer $mail

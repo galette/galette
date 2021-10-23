@@ -76,7 +76,7 @@ class LightSlimApp extends \DI\Bridge\Slim\App
                     'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
                 ]
             ],
-            'mode'          => 'NEED_UPDATE',//TODO: rely on galette.mode
+            'mode'          => 'NEED_UPDATE', //TODO: rely on galette.mode
             'galette.mode'  => 'NEED_UPDATE',
             'session'       => \DI\autowire('\RKA\Session')
         ]);

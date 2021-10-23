@@ -37,14 +37,7 @@
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
-use Galette\Repository\Contributions;
-use Galette\Entity\Transaction;
-use Galette\Repository\Transactions;
-use Galette\Repository\Members;
-use Galette\Entity\Adherent;
-use Galette\Entity\ContributionsTypes;
-use Galette\Core\GaletteMail;
-use Galette\Repository\PaymentTypes;
+use Galette\Entity\Contribution;
 
 $app->get(
     '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
@@ -57,22 +50,22 @@ $app->post(
 )->setName('payments_filter')->add($authenticate);
 
 $app->get(
-    '/contribution/{type:fee|donation}/add',
+    '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
     [Crud\ContributionsController::class, 'add']
 )->setName('addContribution')->add($authenticate);
 
 $app->get(
-    '/contribution/{type:fee|donation}/edit/{id:\d+}',
+    '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
     [Crud\ContributionsController::class, 'edit']
 )->setName('editContribution')->add($authenticate);
 
 $app->post(
-    '/contribution/{type:fee|donation}/add',
+    '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
     [Crud\ContributionsController::class, 'doAdd']
 )->setName('doAddContribution')->add($authenticate);
 
 $app->post(
-    '/contribution/{type:fee|donation}/edit/{id:\d+}',
+    '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
     [Crud\ContributionsController::class, 'doEdit']
 )->setName('doEditContribution')->add($authenticate);
 
@@ -136,3 +129,18 @@ $app->post(
     '/document/{hash}',
     [PdfController::class, 'directlinkDocument']
 )->setName('get-directlink');
+
+$app->get(
+    '/contribution/mass-add/choose-type',
+    [Crud\ContributionsController::class, 'massAddChooseType']
+)->setName('massAddContributionsChooseType')->add($authenticate);
+
+$app->post(
+    '/contribution/mass-add',
+    [Crud\ContributionsController::class, 'massAddContributions']
+)->setName('massAddContributions')->add($authenticate);
+
+$app->post(
+    '/contribution/do-mass-add',
+    [Crud\ContributionsController::class, 'doMassAddContributions']
+)->setName('doMassAddContributions')->add($authenticate);

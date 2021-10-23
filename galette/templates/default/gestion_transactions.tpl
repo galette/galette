@@ -13,7 +13,7 @@
             <tr>
                 <td class="left nowrap">
 {if isset($member)}
-    {if $login->isAdmin() or $login->isStaff()}
+    {if $login->isAdmin() or $login->isStaff() or $member->canShow($login)}
                     <a
                         href="{path_for name="contributions" data=["type" => "transactions", "option" => "member", "value" => "all"]}"
                         class="tooltip"
@@ -66,6 +66,19 @@
                         {/if}
                         </a>
                     </th>
+                    {if (($login->isAdmin() or $login->isStaff()) and !isset($member)) or isset($pmember)}
+                        <th class="left">
+                            <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
+                                {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_MEMBER')}
+                                    {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
+                                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                                    {else}
+                                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                                    {/if}
+                                {/if}
+                            </a>
+                        </th>
+                    {/if}
                     <th class="left">{_T string="Description"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="left">
@@ -97,7 +110,7 @@
                 </tr>
             </thead>
             <tbody>
-{foreach from=$list item=transaction name=transactions_list}
+{foreach from=$list item=transaction name=transactions_list key=ordre}
     {assign var="mid" value=$transaction->member}
     {assign var="cclass" value=$transaction->getRowClass()}
                 <tr>
@@ -114,6 +127,29 @@
                         </span>
                     </td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Date"}">{$transaction->date}</td>
+                    {if (($login->isAdmin() or $login->isStaff()) && !isset($member)) or isset($pmember)}
+                        <td class="{$cclass}" data-title="{_T string="Member"}">
+                            {if isset($member)}
+                                {assign var="mname" value=$member->sname}
+                            {else}
+                                {assign var="mname" value={memberName id=$mid}}
+                            {/if}
+                            {if $filters->filtre_cotis_adh eq ""}
+                                <a
+                                        href="{path_for name="contributions" data=["type" => "transactions", "option" => "member", "value" => $mid]}"
+                                        title="{_T string="Show only '%name' transactions" pattern="/%name/" replace=$mname}"
+                                >
+                                    <i class="fa fa-filter"></i>
+                                </a>
+                            {/if}
+                            <a
+                                    href="{path_for name="member" data=["id" => $mid]}"
+                                    title="{_T string="Show '%name' card" pattern="/%name/" replace=$mname}"
+                            >
+                                {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
+                            </a>
+                        </td>
+                    {/if}
                     <td class="{$cclass} nowrap" data-title="{_T string="Description"}">{$transaction->description}</td>
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}" data-title="{_T string="Originator"}">
@@ -149,7 +185,7 @@
 {/if}
                 </tr>
 {foreachelse}
-                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}6{else}4{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
+                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}7{else}5{/if}" class="emptylist">{_T string="no transaction"}</td></tr>
 {/foreach}
             </tbody>
         </table>

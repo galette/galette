@@ -21,9 +21,12 @@
             <div>
         {if $member->hasParent() && !$member->isDuplicate()}
                 <strong>{_T string="Attached to:"}
-                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
-            {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
-                <label for="detach_parent">{_T string="Detach?"}</label>
+                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong>
+            {if !$member->id}
+                <input type="hidden" name="parent_id" value="{$member->parent->id}"/>
+            {/if}
+            {if $login->isAdmin() or $login->isStaff() && (!isset($addchild) || !$addchild)}
+                <br/><label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
             {/if}
         {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren() and isset($members.list)}
@@ -45,9 +48,7 @@
             {foreach from=$member->children item=child}
                 <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
             {/foreach}
-            </tr>
         {/if}
-            </div>
     {/if}
 
     {* Main form entries*}
@@ -56,7 +57,8 @@
     {include file="edit_dynamic_fields.tpl" object=$member}
 
                     <p>
-            {if !$member->id && !$self_adh }
+    {if !$member->id && !$self_adh}
+        {if ($login->isAdmin() or $login->isStaff())}
                <label for="redirect_on_create">{_T string="After member creation:"}</label>
                <select name="redirect_on_create" id="redirect_on_create">
                   <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
@@ -67,7 +69,13 @@
                   <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
                </select>
                <br/>
-            {/if}
+        {else}
+            <input type="hidden" name="redirect_on_create" value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"/>
+        {/if}
+        {if isset($addchild) && $addchild}
+            <input type="hidden" name="addchild" value="true"/>
+        {/if}
+    {/if}
 
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
                         <br/><label for="mail_confirm">
@@ -77,7 +85,7 @@
                             {_T string="Notify member his account has been created"}
         {/if}
                         </label>
-                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $preferences->pref_bool_mailowner || isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
                         <br/><span class="exemple">
         {if $member->id}
                             {_T string="Member will be notified by email his account has been modified."}

@@ -55,7 +55,7 @@
                     {/if}
                     <label for="attachment" class="bline tooltip" title="{_T string="Select attachments"}">{_T string="Add attachment"}</label>
                     <span class="tip">{_T string="Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."}</span>
-                    <input type="file" name="files[]" name="attachment" id="attachment" multiple="multiple">
+                    <input type="file" name="attachment[]" id="attachment" multiple="multiple">
                 </div>
             </section>
 
@@ -82,9 +82,11 @@
                     <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80" required/>
                 </div>
                 <div>
-                    <span class="fright"><a href="javascript:toggleMailingEditor('mailing_corps');" id="toggle_editor">{_T string="(De)Activate HTML editor"}</a></span>
+                    <span id="summernote_toggler" class="fright">
+                        <a href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{_T string="Activate HTML editor"}</a>
+                    </span>
                     <label for="mailing_corps" class="bline">{_T string="Message:"}</label>
-                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{$mailing->message|escape}</textarea>
+                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{if $mailing->message}{$mailing->message|escape}{/if}</textarea>
                     <input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
                 </div>
                 <div class="center">
@@ -138,7 +140,7 @@
                         </button>
 
                         <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
-                        <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>
+                        <input type="hidden" name="mailing_corps" value="{if $mailing->message}{$mailing->message|escape}{/if}"/>
                     </p>
                 </div>
         {/if}

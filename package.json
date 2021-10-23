@@ -38,9 +38,9 @@
     "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "jquery-ui-dist": "^1.12.1",
-    "jquery.cookie": "^1.4.1",
+    "js-cookie": "^3.0.1",
     "jstree": "^3.3.9",
-    "markitup": "^3.0.0-0",
-    "selectize": "^0.12.6"
+    "selectize": "^0.12.6",
+    "summernote": "^0.8.18"
   }
 }

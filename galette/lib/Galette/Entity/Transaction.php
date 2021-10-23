@@ -55,6 +55,12 @@ use Galette\Core\Login;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
+ *
+ * @property integer $id
+ * @property date $date
+ * @property integer $amount
+ * @property string $description
+ * @property integer $member
  */
 class Transaction
 {
@@ -84,7 +90,7 @@ class Transaction
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row or its id for to load
      *                                  a specific transaction, or null to just
-     *                                  instanciate object
+     *                                  instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -146,8 +152,28 @@ class Transaction
     public function load($id)
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE, 't');
             $select->where(self::PK . ' = ' . $id);
+            $select->join(
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                't.' . Adherent::PK . '=a.' . Adherent::PK,
+                array()
+            );
+
+            //restrict query on current member id if he's not admin nor staff member
+            if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
+                $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id)
+                        ->or
+                        ->equalTo('a.parent_id', $this->login->id)
+                    ->unnest()
+                    ->and
+                    ->equalTo('t.' . self::PK, $id)
+                ;
+            } else {
+                $select->where->equalTo(self::PK, $id);
+            }
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -259,7 +285,7 @@ class Transaction
 
         $fields = array_keys($this->_fields);
         foreach ($fields as $key) {
-            //first of all, let's sanitize values
+            //first, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->_fields[$key]['propname'];
 
@@ -296,7 +322,7 @@ class Transaction
                                     ),
                                     array(
                                         __("Y-m-d"),
-                                        $this->_fields[$key]['label']
+                                        $this->getFieldLabel($key)
                                     ),
                                     _T("- Wrong date format (%date_format) for %field!")
                                 );
@@ -315,9 +341,7 @@ class Transaction
                         case 'trans_desc':
                             /** TODO: retrieve field length from database and check that */
                             $this->_description = $value;
-                            if (trim($value) == '') {
-                                $this->errors[] = _T("- Empty transaction description!");
-                            } elseif (mb_strlen($value) > 150) {
+                            if (mb_strlen($value) > 150) {
                                 $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                             }
                             break;
@@ -351,7 +375,7 @@ class Transaction
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a transaction' .
+                'Some errors has been thew attempting to edit/store a transaction' .
                 print_r($this->errors, true),
                 Analog::DEBUG
             );
@@ -459,8 +483,12 @@ class Transaction
      *
      * @return double
      */
-    public function getDispatchedAmount()
+    public function getDispatchedAmount(): float
     {
+        if (empty($this->_id)) {
+            return (double)0;
+        }
+
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
@@ -489,6 +517,10 @@ class Transaction
      */
     public function getMissingAmount()
     {
+        if (empty($this->_id)) {
+            return (double)$this->amount;
+        }
+
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
@@ -550,7 +582,7 @@ class Transaction
         $forbidden = array();
 
         $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && isset($this->$rname)) {
+        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
             switch ($name) {
                 case 'date':
                     if ($this->$rname != '') {
@@ -568,27 +600,29 @@ class Transaction
                         }
                     }
                     break;
+                case 'id':
+                    if ($this->$rname !== null) {
+                        return (int)$this->$rname;
+                    }
+                    return null;
+                case 'amount':
+                    if ($this->$rname !== null) {
+                        return (double)$this->$rname;
+                    }
+                    return null;
                 default:
                     return $this->$rname;
-                    break;
             }
         } else {
+            Analog::log(
+                sprintf(
+                    'Property %1$s does not exists for transaction',
+                    $name
+                ),
+                Analog::WARNING
+            );
             return false;
         }
-    }
-
-    /**
-     * Global setter method
-     *
-     * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
-     *
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        /*$forbidden = array('fields');*/
-        /** TODO: What to do ? :-) */
     }
 
     /**
@@ -598,11 +632,13 @@ class Transaction
      *
      * @return string
      */
-    private function getFieldLabel($field)
+    public function getFieldLabel($field)
     {
         $label = $this->_fields[$field]['label'];
-        //remove trailing ':' and then nbsp (for french at least)
-        $label = trim(trim($label, ':'), '&nbsp;');
+        //replace "&nbsp;"
+        $label = str_replace('&nbsp;', ' ', $label);
+        //remove trailing ':' and then trim
+        $label = trim(trim($label, ':'));
         return $label;
     }
 
@@ -621,7 +657,7 @@ class Transaction
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a transaction files' . "\n" .
+                'Some errors has been thew attempting to edit/store a transaction files' . "\n" .
                 print_r($this->errors, true),
                 Analog::ERROR
             );
@@ -629,5 +665,37 @@ class Transaction
         } else {
             return true;
         }
+    }
+
+    /**
+     * Can current logged-in user display transaction
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login): bool
+    {
+        //admin and staff users can edit, as well as member itself
+        if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //parent can see their children transactions
+        $parent = new Adherent($this->zdb);
+        $parent
+            ->disableAllDeps()
+            ->enableDep('children')
+            ->load($this->login->id);
+        if ($parent->hasChildren()) {
+            foreach ($parent->children as $child) {
+                if ($child->id === $this->_member) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return false;
     }
 }

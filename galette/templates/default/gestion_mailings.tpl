@@ -125,7 +125,7 @@
                             {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing_id}
                         </span>
                     </td>
-                    <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
+                    <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:{_T string="Y-m-d H:i:s"}}</td>
                     <td data-title="{_T string="Sender"}">{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
                     <td data-title="{_T string="Recipients"}">{$log.mailing_recipients|unserialize|@count}</td>
                     <td data-title="{_T string="Subject"}">{$log.mailing_subject}</td>

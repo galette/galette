@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @category  Core
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -35,11 +35,11 @@
 
 namespace Galette\Core;
 
+use Galette\Entity\PaymentType;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
-use Galette\Core\Db;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
 
@@ -50,7 +50,7 @@ use Galette\Repository\Members;
  * @name      Preferences
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -69,11 +69,12 @@ use Galette\Repository\Members;
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
  * @property integer $pref_log History, one of self::LOG_*
- * @property interger $pref_statut Default status for new members
+ * @property integer $pref_statut Default status for new members
  * @property string $pref_email_nom
  * @property string $pref_email
  * @property string $pref_email_newadh
  * @property boolean $pref_bool_mailadh
+ * @property boolean $pref_bool_mailowner
  * @property boolean $pref_editor_enabled
  * @property integer $pref_mail_method Mail method, see GaletteMail::METHOD_*
  * @property string $pref_mail_smtp
@@ -138,6 +139,8 @@ use Galette\Repository\Members;
  * @property integer $pref_password_length
  * @property boolean $pref_password_blacklist
  * @property integer $pref_password_strength
+ * @property integer $pref_default_paymenttype
+ * @property boolean $pref_bool_create_member
  * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences
@@ -202,6 +205,7 @@ class Preferences
         'pref_email'        =>    'mail@domain.com',
         'pref_email_newadh'    =>    'mail@domain.com',
         'pref_bool_mailadh'    =>    false,
+        'pref_bool_mailowner' => false,
         'pref_editor_enabled'    =>    false,
         'pref_mail_method'    =>    GaletteMail::METHOD_DISABLED,
         'pref_mail_smtp'    =>    '',
@@ -269,7 +273,9 @@ class Preferences
         /* Security related */
         'pref_password_length' => 6,
         'pref_password_blacklist' => false,
-        'pref_password_strength' => self::PWD_NONE
+        'pref_password_strength' => self::PWD_NONE,
+        'pref_default_paymenttype' => PaymentType::CHECK,
+        'pref_bool_create_member' => false
     );
 
     // flagging required fields
@@ -474,7 +480,7 @@ class Preferences
     public function check(array $values, Login $login)
     {
         $insert_values = array();
-        if ($login->isSuperAdmin() && GALETTE_MODE !== 'DEMO') {
+        if ($login->isSuperAdmin() && GALETTE_MODE !== Galette::MODE_DEMO) {
             $this->required[] = 'pref_admin_login';
         }
 
@@ -489,9 +495,18 @@ class Preferences
             $insert_values[$fieldname] = $value;
         }
 
+        //cleanup fields for demo
+        if (GALETTE_MODE == Galette::MODE_DEMO) {
+            unset(
+                $insert_values['pref_admin_login'],
+                $insert_values['pref_admin_pass'],
+                $insert_values['pref_mail_method']
+            );
+        }
+
         // missing relations
         if (
-            GALETTE_MODE !== 'DEMO'
+            GALETTE_MODE !== Galette::MODE_DEMO
             && isset($insert_values['pref_mail_method'])
         ) {
             if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
@@ -565,7 +580,7 @@ class Preferences
             }
         }
 
-        if (GALETTE_MODE !== 'DEMO' && isset($values['pref_admin_pass_check'])) {
+        if (GALETTE_MODE !== Galette::MODE_DEMO && isset($values['pref_admin_pass_check'])) {
             // Check passwords. Hash will be done into the Preferences class
             if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
                 $this->errors[] = _T("Passwords mismatch");
@@ -641,7 +656,7 @@ class Preferences
                 }
                 break;
             case 'pref_admin_login':
-                if (GALETTE_MODE === 'DEMO') {
+                if (GALETTE_MODE === Galette::MODE_DEMO) {
                     Analog::log(
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
@@ -696,7 +711,7 @@ class Preferences
                 }
                 break;
             case 'pref_admin_pass':
-                if (GALETTE_MODE == 'DEMO') {
+                if (GALETTE_MODE == Galette::MODE_DEMO) {
                     Analog::log(
                         'Trying to set superadmin pass while in DEMO.',
                         Analog::WARNING
@@ -763,7 +778,7 @@ class Preferences
 
             foreach (self::$defaults as $k => $v) {
                 if (
-                    GALETTE_MODE == 'DEMO'
+                    GALETTE_MODE == Galette::MODE_DEMO
                     && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
                 ) {
                     continue;
@@ -937,7 +952,7 @@ class Preferences
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
-                GALETTE_MODE === 'DEMO'
+                GALETTE_MODE === Galette::MODE_DEMO
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
@@ -1006,7 +1021,7 @@ class Preferences
             || $name == 'pref_email_newadh'
             || $name == 'pref_email_reply_to'
         ) {
-            if (GALETTE_MODE === 'DEMO') {
+            if (GALETTE_MODE === Galette::MODE_DEMO) {
                 Analog::log(
                     'Trying to set pref_email while in DEMO.',
                     Analog::WARNING
@@ -1046,7 +1061,7 @@ class Preferences
     }
 
     /**
-     * Get default URL (when not setted by user in preferences)
+     * Get default URL (when not set by user in preferences)
      *
      * @return string
      */
@@ -1055,6 +1070,38 @@ class Preferences
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
         $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
         return $uri;
+    }
+
+    /**
+     * Get last telemetry date
+     *
+     * @return string
+     */
+    public function getTelemetryDate(): string
+    {
+        $rawdate = $this->prefs['pref_telemetry_date'];
+        if ($rawdate) {
+            $date = new \DateTime($rawdate);
+            return $date->format(_T('Y-m-d H:i:s'));
+        } else {
+            return _T('Never');
+        }
+    }
+
+    /**
+     * Get last telemetry date
+     *
+     * @return string|null
+     */
+    public function getRegistrationDate()
+    {
+        $rawdate = $this->prefs['pref_registration_date'];
+        if ($rawdate) {
+            $date = new \DateTime($rawdate);
+            return $date->format(_T('Y-m-d H:i:s'));
+        }
+
+        return null;
     }
 
     /**
