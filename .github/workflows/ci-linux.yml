@@ -18,11 +18,11 @@ jobs:
       matrix:
         php-versions: [ '7.3', '7.4', '8.0' ]
         coverage: ['none']
-        db-image: ['mysql:5.6', 'mariadb:10.1', 'mariadb:10.5', 'postgres:9.5', 'postgres:13']
+        db-image: ['mysql:5.7', 'mysql:8.0', 'mariadb:10.2', 'mariadb:10.6', 'postgres:10', 'postgres:14']
         include:
           - php-versions: '7.4'
             coverage: 'xdebug'
-            db-image: 'postgres:13'
+            db-image: 'postgres:14'
         exclude:
           - php-versions: 7.3
             db-image: 'mysql:8.0' #due to a mysql config; fixed as of php 7.4
