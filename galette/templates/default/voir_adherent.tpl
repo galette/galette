@@ -183,12 +183,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-venus fa-fw"></i>
             {/if}
         {/if}
-        {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
+        {if $element->field_id eq 'email_adh'}
                         <a href="mailto:{$value}">{$value}</a>
         {elseif $element->field_id eq 'tel_adh' or $element->field_id eq 'gsm_adh'}
                         <a href="tel:{$value}">{$value}</a>
-        {elseif $element->field_id eq 'url_adh'}
-                        <a href="{$value}">{$value}</a>
         {elseif $element->field_id eq 'ddn_adh'}
                         {$value} {$member->getAge()}
         {else}
@@ -233,6 +231,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
 
 {include file="display_dynamic_fields.tpl" object=$member}
+{include file="display_socials.tpl" socials=$member->socials}
+
         <a href="#" id="back2top">{_T string="Back to top"}</a>
     </div>
 {/block}

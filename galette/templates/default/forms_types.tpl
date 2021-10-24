@@ -67,10 +67,7 @@
                         {if $entry->field_id eq 'gpgid'}
                             {assign var="size" value="8"}
                         {/if}
-                        {if $entry->field_id eq 'email_adh'
-                            or $entry->field_id eq 'msn_adh'
-                            or $entry->field_id eq 'jabber_adh'
-                            or $entry->field_id eq 'url_adh'}
+                        {if $entry->field_id eq 'email_adh'}
                             {assign var="size" value="30"}
                         {/if}
                         {if $entry->field_id eq 'fingerprint'}
@@ -78,7 +75,7 @@
                         {/if}
                         {if $entry->field_id eq 'bool_display_info'}
                             {assign var="title" value={_T string="Do member want to appear publically?"}}
-                            {assign var="tip" value={_T string="If you check this box (and if you are up to date with your contributions), your full name, website address ad other information will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}}
+                            {assign var="tip" value={_T string="If you check this box (and if you are up to date with your contributions), your full name and other information will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}}
                             {assign var="checked" value=$member->appearsInMembersList()}
                         {/if}
                         {if $entry->field_id eq 'login_adh'}

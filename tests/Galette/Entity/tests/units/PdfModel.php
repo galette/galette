@@ -341,7 +341,6 @@ class PdfModel extends GaletteTestCase
             'pseudo_adh' => 'ubertrand',
             'pays_adh' => 'Antarctique',
             'tel_adh' => '0439153432',
-            'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
             'date_crea_adh' => '2020-06-10',

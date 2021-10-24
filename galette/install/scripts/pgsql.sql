@@ -156,6 +156,15 @@ CREATE SEQUENCE galette_fields_categories_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for socials
+DROP SEQUENCE IF EXISTS galette_socials_id_seq;
+CREATE SEQUENCE galette_socials_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_paymenttypes;
@@ -200,10 +209,6 @@ CREATE TABLE galette_adherents (
     tel_adh character varying(50),
     gsm_adh character varying(50),
     email_adh character varying(255),
-    url_adh character varying(255),
-    icq_adh character varying(20), -- TODO: remove
-    msn_adh character varying(150), -- TODO: remove
-    jabber_adh character varying(150),
     info_adh text,
     info_public_adh text,
     prof_adh character varying(150),
@@ -478,9 +483,21 @@ CREATE TABLE galette_tmplinks (
   PRIMARY KEY (target, id)
 );
 
+-- table for social networks
+DROP TABLE IF EXISTS galette_socials;
+CREATE TABLE galette_socials (
+  id_social integer DEFAULT nextval('galette_socials_id_seq'::text) NOT NULL,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+  type character varying(250) NOT NULL,
+  url character varying(255) DEFAULT NULL,
+  PRIMARY KEY (id_social)
+);
+-- add index on table to look for type
+CREATE INDEX galette_socials_idx ON galette_socials (type);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.95);
+INSERT INTO galette_database (version) VALUES(0.96);

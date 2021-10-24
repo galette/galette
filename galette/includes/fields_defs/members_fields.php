@@ -181,38 +181,6 @@ $members_fields = array(
         'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
-    'url_adh' => array(
-        'label'    => _T("Website:"),
-        'propname' => 'website',
-        'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 19,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'icq_adh' => array(
-        'label'    => _T("ICQ:"),
-        'propname' => 'icq',
-        'required' => false,
-        'visible'  => FieldsConfig::NOBODY,
-        'position' => 20,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'msn_adh' => array(
-        'label'    => _T("MSN:"),
-        'propname' => 'msn',
-        'required' => false,
-        'visible'  => FieldsConfig::NOBODY,
-        'position' => 22,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'jabber_adh' => array(
-        'label'    => _T("Jabber:"),
-        'propname' => 'jabber',
-        'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 21,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
     'info_adh' => array(
         'label'    => _T("Other information (admin):"),
         'propname' => 'others_infos_admin',

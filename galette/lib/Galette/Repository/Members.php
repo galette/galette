@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Entity\Social;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
@@ -617,6 +618,11 @@ class Members
                         array('p' => PREFIX_DB . Status::TABLE),
                         'a.' . Status::PK . '=p.' . Status::PK,
                         array()
+                    )->join(
+                        array('so' => PREFIX_DB . Social::TABLE),
+                        'a.' . Adherent::PK . '=so.' . Adherent::PK,
+                        array(),
+                        $select::JOIN_LEFT
                     );
                     break;
                 case self::SHOW_EXPORT:
@@ -631,6 +637,11 @@ class Members
                     $select->join(
                         array('p' => PREFIX_DB . Status::TABLE),
                         'a.' . Status::PK . '=p.' . Status::PK
+                    )->join(
+                        array('so' => PREFIX_DB . Social::TABLE),
+                        'a.' . Adherent::PK . '=so.' . Adherent::PK,
+                        array(),
+                        $select::JOIN_LEFT
                     )->join(
                         array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                         'a.' . Adherent::PK . '=gr.' . Adherent::PK,
@@ -1056,13 +1067,7 @@ class Members
                             '(' .
                             'LOWER(email_adh) LIKE ' . $token
                             . ' OR ' .
-                            'LOWER(url_adh) LIKE ' . $token
-                            . ' OR ' .
-                            'LOWER(msn_adh) LIKE ' . $token
-                            . ' OR ' .
-                            'LOWER(icq_adh) LIKE ' . $token
-                            . ' OR ' .
-                            'LOWER(jabber_adh) LIKE ' . $token
+                            'LOWER(so.url) LIKE ' . $token
                             . ')'
                         );
                         break;
@@ -1435,6 +1440,15 @@ class Members
                     $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
                     $prefix = 'df' . $index . '.';
                     $fs['field'] = 'val';
+                }
+
+                //handle socials networks
+                if (strpos($fs['field'], 'socials_') === 0) {
+                    //social networks
+                    $type = str_replace('socials_', '', $fs['field']);
+                    $prefix = 'so.';
+                    $fs['field'] = 'url';
+                    $select->where(['so.type' => $type]);
                 }
 
                 if ($dyn_field && $dyn_field instanceof \Galette\DynamicFields\Boolean) {

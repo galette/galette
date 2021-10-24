@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Features\Socials;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -86,10 +87,6 @@ use Galette\Features\Dynamics;
  * @property string $phone
  * @property string $gsm
  * @property string $email
- * @property string $website
- * @property string $msn
- * @property string $icq
- * @property string $jabber
  * @property string $gnupgid
  * @property string $fingerprint
  * @property string $login
@@ -120,10 +117,13 @@ use Galette\Features\Dynamics;
  * @property string $contribstatus State of member contributions
  * @property string $days_remaining
  * @property-read integer $parent_id
+ * @property Social $social Social networks/Contact
+ *
  */
 class Adherent
 {
     use Dynamics;
+    use Socials;
 
     public const TABLE = 'adherents';
     public const PK = 'id_adh';
@@ -162,10 +162,6 @@ class Adherent
     private $_phone;
     private $_gsm;
     private $_email;
-    private $_website;
-    private $_msn; /** TODO: remove */
-    private $_icq; /** TODO: remove */
-    private $_jabber; /** TODO: remove */
     private $_gnupgid;
     private $_fingerprint;
     //Galette relative information
@@ -188,6 +184,7 @@ class Adherent
     private $_parent;
     private $_children;
     private $_duplicate = false;
+    private $_socials;
 
     private $_row_classes;
 
@@ -198,7 +195,8 @@ class Adherent
         'dues'      => true,
         'parent'    => false,
         'children'  => false,
-        'dynamics'  => false
+        'dynamics'  => false,
+        'socials'   => false
     );
 
     private $zdb;
@@ -390,16 +388,7 @@ class Adherent
         $this->_phone = $r->tel_adh;
         $this->_gsm = $r->gsm_adh;
         $this->_email = $r->email_adh;
-        $this->_website = $r->url_adh;
-        /** TODO: remove */
-        $this->_msn = $r->msn_adh;
-        /** TODO: remove */
-        $this->_icq = $r->icq_adh;
-        /** TODO: remove */
-        $this->_jabber = $r->jabber_adh;
-        /** TODO: remove */
         $this->_gnupgid = $r->gpgid;
-        /** TODO: remove */
         $this->_fingerprint = $r->fingerprint;
         //Galette relative information
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
@@ -448,6 +437,10 @@ class Adherent
 
         if ($this->_deps['dynamics'] === true) {
             $this->loadDynamicFields();
+        }
+
+        if ($this->_deps['socials'] === true) {
+            $this->loadSocials();
         }
     }
 
@@ -510,6 +503,16 @@ class Adherent
     {
         $this->_groups = Groups::loadGroups($this->_id);
         $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+    }
+
+    /**
+     * Load member social network/contact information
+     *
+     * @return void
+     */
+    public function loadSocials()
+    {
+        $this->_socials = Social::getListForMember($this->_id);
     }
 
     /**
@@ -1179,6 +1182,7 @@ class Adherent
         }
 
         $this->dynamicsCheck($values, $required, $disabled);
+        $this->checkSocials($values);
 
         if (count($this->errors) > 0) {
             Analog::log(
@@ -1289,7 +1293,6 @@ class Adherent
                 }
                 break;
             case 'email_adh':
-            case 'msn_adh':
                 if (!GaletteMail::isValidEmail($value)) {
                     $this->errors[] = _T("- Non-valid E-Mail address!") .
                         ' (' . $this->getFieldLabel($field) . ')';
@@ -1317,13 +1320,6 @@ class Adherent
                         );
                         $this->errors[] = _T("An error has occurred while looking if login already exists.");
                     }
-                }
-                break;
-            case 'url_adh':
-                if ($value == 'http://' || $value == 'https://') {
-                    $this->$prop = '';
-                } elseif (!isValidWebUrl($value)) {
-                    $this->errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
                 }
                 break;
             case 'login_adh':
@@ -1596,6 +1592,7 @@ class Adherent
             //dynamic fields
             if ($success) {
                 $success = $this->dynamicsStore();
+                $this->storeSocials($this->id);
             }
 
             //send event at the end of process, once all has been stored
@@ -1659,8 +1656,10 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus'
+            'rbirthdate', 'sgender', 'contribstatus',
         );
+
+        $socials = array('website', 'msn', 'jabber', 'icq');
 
         if (in_array($name, $forbidden)) {
             switch ($name) {
@@ -1742,6 +1741,12 @@ class Adherent
                     return $this->getDues();
                     break;
             }
+        }
+
+        //for backward compatibility
+        if (in_array($name, $socials)) {
+            $values = Social::getListForMember($this->_id, $name);
+            return $values[0] ?? null;
         }
 
         if (substr($name, 0, 1) !== '_') {

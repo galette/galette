@@ -199,14 +199,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
             {/if}
-            {if $member->website != ''}
-                        <a href="{$member->website}" class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-website.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Website"}<span>
-                        </a>
-            {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
-            {/if}
             {if $member->isAdmin()}
                         <span class="tooltip">
                             <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="" width="16" height="16"/>
@@ -278,12 +270,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 but for notw, that works as excpected.
             *}
             {if not empty($value)}
-                {if $column->field_id eq 'email_adh' or $column->field_id eq 'msn_adh'}
+                {if $column->field_id eq 'email_adh'}
                                 <a href="mailto:{$value}">{$value}</a>
                 {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
                                 <a href="tel:{$value}">{$value}</a>
-                {elseif $column->field_id eq 'url_adh'}
-                                <a href="{$value}">{$value}</a>
                 {elseif $column->field_id eq 'parent_id'}
                                 <a href="{path_for name="member" data=["id" => $member->parent]}">{memberName id=$member->parent}</a>
                 {elseif $column->field_id eq 'ddn_adh'}
@@ -420,8 +410,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <tr>
                         <th><img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="{_T string="Mail"}" width="16" height="16"/></th>
                         <td class="back">{_T string="Send an email"}</td>
-                        <th><img src="{base_url}/{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
-                        <td class="back">{_T string="Visit website"}</td>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="Is a company"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Is a company"}</td>
                     </tr>
 
                     <tr>
@@ -429,10 +419,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <td class="back">{_T string="Is a man"}</td>
                         <th><img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="Is a woman"}" width="16" height="16"/></th>
                         <td class="back">{_T string="Is a woman"}</td>
-                    </tr>
-                    <tr>
-                        <th><img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="Is a company"}" width="16" height="16"/></th>
-                        <td class="back">{_T string="Is a company"}</td>
                     </tr>
                     <tr>
                         <th><img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>

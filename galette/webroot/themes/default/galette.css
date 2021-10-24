@@ -834,6 +834,10 @@ legend .tab-button {
     font-size:1.1em;
 }
 
+p#mail_sign {
+    position: relative;
+}
+
 /* =/ Main Galette styles */
 
 /* == Groups stuff */

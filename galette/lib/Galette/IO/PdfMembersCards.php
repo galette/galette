@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.2dev - 2014-11-30
@@ -48,7 +48,7 @@ use Analog\Analog;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.2dev - 2014-11-30
@@ -147,7 +147,7 @@ class PdfMembersCards extends Pdf
         $this->nbcol = self::getCols();
         // Number of rows
         $this->nbrow = self::getRows();
-        // Spacing betweeen cards
+        // Spacing between cards
         $this->hspacing = $this->preferences->pref_card_hspace;
         $this->vspacing = $this->preferences->pref_card_vspace;
 
@@ -210,18 +210,6 @@ class PdfMembersCards extends Pdf
             switch ($this->preferences->pref_card_address) {
                 case 0:
                     $email .= $member->email;
-                    break;
-                case 1:
-                    $email .= $member->msn;
-                    break;
-                case 2:
-                    $email .= $member->jabber;
-                    break;
-                case 3:
-                    $email .= $member->website;
-                    break;
-                case 4:
-                    $email .= $member->icq;
                     break;
                 case 5:
                     $email .= $member->zipcode . ' - ' . $member->town;

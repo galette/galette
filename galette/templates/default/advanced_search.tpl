@@ -245,6 +245,14 @@
         {/if}
                             <option value="dyn_{$field->getId()}"{if $fs.field eq $rid} selected="selected"{/if}>{$field->getName()}</option>
     {/foreach}
+    {foreach from=$adh_socials item=$label key=$type}
+        {assign var=rid value="socials_$type"}
+        {if $fs.field eq $rid}
+            {assign var=cur_field value=$type}
+        {/if}
+        <option value="socials_{$type}"{if $fs.field eq $rid} selected="selected"{/if}>{$label}</option>
+    {/foreach}
+
                         </select>
     {* may not be defined *}
     {if !isset($cur_field)}{assign var=cur_field value=null}{/if}

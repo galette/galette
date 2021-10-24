@@ -110,29 +110,8 @@
 
             </fieldset>
 
-            <fieldset class="cssform" id="social">
-                <legend>{_T string="Social networks"}</legend>
-                <p>
-                    <label for="pref_googleplus" class="bline">{_T string="Google+"}</label>
-                    <input type="text" name="pref_googleplus" id="pref_googleplus" value="{$pref.pref_googleplus}" class="large"/>
-                </p>
-                <p>
-                    <label for="pref_facebook" class="bline">{_T string="Facebook"}</label>
-                    <input type="text" name="pref_facebook" id="pref_facebook" value="{$pref.pref_facebook}" class="large"/>
-                </p>
-                <p>
-                    <label for="pref_twitter" class="bline">{_T string="Twitter"}</label>
-                    <input type="text" name="pref_twitter" id="pref_twitter" value="{$pref.pref_twitter}" class="large"/>
-                </p>
-                <p>
-                    <label for="pref_linkedin" class="bline">{_T string="LinkedIn"}</label>
-                    <input type="text" name="pref_linkedin" id="pref_linkedin" value="{$pref.pref_linkedin}" class="large"/>
-                </p>
-                <p>
-                    <label for="pref_viadeo" class="bline">{_T string="Viadeo"}</label>
-                    <input type="text" name="pref_viadeo" id="pref_viadeo" value="{$pref.pref_viadeo}" class="large"/>
-                </p>
-            </fieldset>
+            {assign var="socials" value=$preferences->socials}
+            {include file="edit_socials.tpl"}
 
             <fieldset class="cssform" id="parameters">
                 <legend>{_T string="Galette's parameters"}</legend>
@@ -374,7 +353,7 @@
                         <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{$pref.pref_mail_smtp_password}" autocomplete="off" maxlength="100" size="30"{if isset($required.pref_mail_smtp_password) and $required.pref_mail_smtp_password eq 1} required="required"{/if}/>
                     </p>
                 </div>
-                <p>
+                <p id="mail_sign">
                     <label for="pref_mail_sign" class="bline tooltip vtop">{_T string="Mail signature"}</label>
                     <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
                     <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
@@ -499,10 +478,6 @@
                     <label for="pref_card_address" class="bline">{_T string="Address type:"}</label>
                     <select name="pref_card_address" id="pref_card_address">
                         <option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T string="Email"}</option>
-                        <option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T string="MSN"}</option>
-                        <option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T string="Jabber"}</option>
-                        <option value="3" {if $pref.pref_card_address eq 3}selected="selected"{/if}>{_T string="Web Site"}</option>
-                        <option value="4" {if $pref.pref_card_address eq 4}selected="selected"{/if}>{_T string="ICQ"}</option>
                         <option value="5" {if $pref.pref_card_address eq 5}selected="selected"{/if}>{_T string="Zip - Town"}</option>
                         <option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T string="Nickname"}</option>
                         <option value="7" {if $pref.pref_card_address eq 7}selected="selected"{/if}>{_T string="Profession"}</option>
@@ -558,7 +533,7 @@
                         <em>* {_T string="None"}</em> {_T string="for no strength enforcement"}<br/>
                         <em>* {_T string="Weak"}</em> {_T string="require at least one matched rule"}<br/>
                         <em>* {_T string="Medium"}</em> {_T string="require at least two matched rules"}<br/>
-                        <em>* {_T string="Strong"}</em> {_T string="require at least three matched rules (recommended for most usages)"}</br/>
+                        <em>* {_T string="Strong"}</em> {_T string="require at least three matched rules (recommended for most usages)"}<br/>
                         <em>* {_T string="Very Strong"}</em> {_T string="requires all rules."}<br/><br/>
                         {_T string="Rules include lower case characters, upper case characters, numbers, and special characters."}<br/><br/>
                         {_T string="Note that with any enforcement level, user cannot use his personal information (name, login, ...) as password."}
@@ -616,6 +591,7 @@
         </form>
 
         {include file="telemetry.tpl" part="dialog"}
+        {include file="replacements_legend.tpl" legends=$preferences->getLegend() cur_ref='prefs'}
 {/block}
 
 {block name="javascripts"}
@@ -687,6 +663,9 @@
                         }
                     });
                 });
+
+                _addLegenButton('#mail_sign');
+                _handleLegend();
 
                 {include file="js_pwdcheck.tpl" selector="#pref_admin_pass"}
                 {include file="js_pwdcheck.tpl" selector="#test_password_strength" extra_data="pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"}

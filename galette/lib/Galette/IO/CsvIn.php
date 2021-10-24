@@ -84,7 +84,6 @@ class CsvIn extends Csv implements FileInterface
         'tel_adh',
         'gsm_adh',
         'email_adh',
-        'url_adh',
         'prof_adh',
         'pseudo_adh',
         'societe_adh',

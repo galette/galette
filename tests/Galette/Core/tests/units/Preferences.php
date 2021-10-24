@@ -55,6 +55,8 @@ class Preferences extends atoum
 {
     private $preferences = null;
     private $zdb;
+    private $login;
+    private $mocked_router;
 
     /**
      * Set up tests
@@ -65,10 +67,25 @@ class Preferences extends atoum
      */
     public function beforeTestMethod($method)
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
+        $this->mocked_router = new \mock\Slim\Router();
+        $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
+            return $name;
+        };
+
+        $app =  new \Galette\Core\SlimApp();
+        $plugins = new \Galette\Core\Plugins();
+        require GALETTE_BASE_PATH . '/includes/dependencies.php';
+        $container = $app->getContainer();
+        $_SERVER['HTTP_HOST'] = '';
+
+        $this->zdb = $container->get('zdb');
+        $this->login = $container->get('login');
+        $this->preferences = $container->get('preferences');
+        $container->set('router', $this->mocked_router);
+        $container->set(Slim\Router::class, $this->mocked_router);
+
+        global $router;
+        $router = $this->mocked_router;
     }
 
     /**
@@ -83,6 +100,9 @@ class Preferences extends atoum
         if (TYPE_DB === 'mysql') {
             $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
         }
+
+        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
+        $this->zdb->execute($delete);
     }
 
     /**
@@ -200,7 +220,7 @@ class Preferences extends atoum
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             array(
-                \Galette\Core\Preferences::PK => 'pref_facebook'
+                \Galette\Core\Preferences::PK => 'pref_footer'
             )
         );
         $this->zdb->execute($delete);
@@ -208,24 +228,24 @@ class Preferences extends atoum
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             array(
-                \Galette\Core\Preferences::PK => 'pref_viadeo'
+                \Galette\Core\Preferences::PK => 'pref_new_contrib_script'
             )
         );
         $this->zdb->execute($delete);
 
         $this->preferences->load();
-        $fb = $this->preferences->pref_facebook;
-        $viadeo = $this->preferences->pref_viadeo;
+        $footer = $this->preferences->pref_footer;
+        $new_contrib_script = $this->preferences->pref_new_contrib_script;
 
-        $this->boolean($fb)->isFalse();
-        $this->boolean($viadeo)->isFalse();
+        $this->boolean($footer)->isFalse();
+        $this->boolean($new_contrib_script)->isFalse();
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
-        $fb = $prefs->pref_facebook;
-        $viadeo = $prefs->pref_viadeo;
+        $footer = $prefs->pref_footer;
+        $new_contrib_script = $prefs->pref_new_contrib_script;
 
-        $this->variable($fb)->isIdenticalTo('');
-        $this->variable($viadeo)->isIdenticalTo('');
+        $this->variable($footer)->isIdenticalTo('');
+        $this->variable($new_contrib_script)->isIdenticalTo('');
     }
 
     /**
@@ -408,5 +428,181 @@ class Preferences extends atoum
         $prop = 'pref_card_' . $prop;
         $this->preferences->$prop = $color;
         $this->string($this->preferences->$prop)->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test social networks
+     *
+     * @return void
+     */
+    public function testSocials()
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $preferences = array_merge($preferences, [
+            'pref_nom' => 'Galette',
+            'pref_ville' => 'Avignon',
+            'pref_cp' => '84000',
+            'pref_adresse' => 'Palais des Papes',
+            'pref_adresse2' => 'Au milieu',
+            'pref_pays' => 'France'
+        ]);
+
+        //will create 2 social networks in table
+        $post = [
+            'notasocial' => 'notasocial', //must be ignored
+            'social_new_type_1' => \Galette\Entity\Social::MASTODON,
+            'social_new_value_1' => 'Galette mastodon URL',
+            'social_new_type_2' => \Galette\Entity\Social::JABBER,
+            'social_new_value_2' => 'Galette jabber ID',
+            'social_new_type_3' => \Galette\Entity\Social::FACEBOOK,
+            'social_new_value_3' => '', //empty value, no entry
+            'social_new_type_4' => \Galette\Entity\Social::BLOG, //no value, no entry
+        ];
+
+        $post = array_merge($preferences, $post);
+
+        $this->boolean($this->preferences->check($post, $this->login))->isTrue(print_r($this->preferences->getErrors(), true));
+        $this->boolean($this->preferences->store())->isTrue();
+
+        $socials = \Galette\Entity\Social::getListForMember(null);
+        $this->array($socials)->hasSize(2);
+
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(1);
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER))->hasSize(1);
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK))->hasSize(0);
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::BLOG))->hasSize(0);
+
+        //create one new social network
+        $post = [
+            'social_new_type_1' => \Galette\Entity\Social::FACEBOOK,
+            'social_new_value_1' => 'Galette does not have facebook',
+        ];
+
+        //existing social networks, change jabber ID
+        foreach ($socials as $social) {
+            $post['social_' . $social->id] = $social->url . ($social->type == \Galette\Entity\Social::JABBER ? ' - modified' : '');
+        }
+
+        $post = array_merge($preferences, $post);
+
+        $this->boolean($this->preferences->check($post, $this->login))->isTrue(print_r($this->preferences->getErrors(), true));
+        $this->boolean($this->preferences->store())->isTrue();
+
+        $socials = \Galette\Entity\Social::getListForMember(null);
+        $this->array($socials)->hasSize(3);
+
+        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON);
+        $this->array($search)->hasSize(1);
+        $masto = array_pop($search);
+        $this->string($masto->url)->isIdenticalTo('Galette mastodon URL');
+
+        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER);
+        $this->array($search)->hasSize(1);
+        $jabber = array_pop($search);
+        $this->string($jabber->url)->isIdenticalTo('Galette jabber ID - modified');
+
+        $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK);
+        $this->array($search)->hasSize(1);
+        $facebook = array_pop($search);
+        $this->string($facebook->url)->isIdenticalTo('Galette does not have facebook');
+
+        $post = [];
+
+        //existing social networks, drop mastodon
+        foreach ($socials as $social) {
+            if ($social->type != \Galette\Entity\Social::MASTODON) {
+                $post['social_' . $social->id] = $social->url;
+            }
+        }
+
+        $post = array_merge($preferences, $post);
+        $this->boolean($this->preferences->check($post, $this->login))->isTrue(print_r($this->preferences->getErrors(), true));
+        $this->boolean($this->preferences->store())->isTrue();
+
+        $socials = \Galette\Entity\Social::getListForMember(null);
+        $this->array($socials)->hasSize(2);
+
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(0);
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER))->hasSize(1);
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK))->hasSize(1);
+    }
+
+    /**
+     * Test email signature
+     *
+     * @return void
+     */
+    public function testGetMailSignature()
+    {
+        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\n");
+
+        $this->preferences->pref_website = 'https://galette.eu';
+        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu");
+
+        //with legacy values
+        $this->preferences->pref_mailsign = "NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
+        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu");
+
+        $social = new \Galette\Entity\Social($this->zdb);
+        $this->boolean(
+            $social
+                ->setType(\Galette\Entity\Social::MASTODON)
+                ->setUrl('https://framapiaf.org/@galette')
+                ->setLinkedMember(null)
+                ->store()
+        )->isTrue();
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(1);
+
+        $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE} - {ASSO_SOCIAL_MASTODON}";
+        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette");
+
+        $social = new \Galette\Entity\Social($this->zdb);
+        $this->boolean(
+            $social
+                ->setType(\Galette\Entity\Social::MASTODON)
+                ->setUrl('Galette mastodon URL - the return')
+                ->setLinkedMember(null)
+                ->store()
+        )->isTrue();
+        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(2);
+        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return");
+    }
+
+    /**
+     * Test getLegend
+     *
+     * @return void
+     */
+    public function testGetLegend()
+    {
+        $legend = $this->preferences->getLegend();
+        $this->array($legend)->hasSize(2);
+        $this->array($legend['main']['patterns'])->hasSize(8);
+        $this->array($legend['socials']['patterns'])->hasSize(9);
+        $this->array($legend['socials']['patterns']['asso_social_mastodon'])->isIdenticalTo([
+            'title' => __('Mastodon'),
+            'pattern' => '/{ASSO_SOCIAL_MASTODON}/'
+        ]);
+
+        $social = new \Galette\Entity\Social($this->zdb);
+        $this->boolean(
+            $social
+                ->setType('mynewtype')
+                ->setUrl('Galette specific social network URL')
+                ->setLinkedMember(null)
+                ->store()
+        )->isTrue();
+
+        $legend = $this->preferences->getLegend();
+        $this->array($legend)->hasSize(2);
+        $this->array($legend['socials']['patterns'])->hasSIze(10)->hasKey('asso_social_mynewtype');
+        $this->array($legend['socials']['patterns']['asso_social_mynewtype'])->isIdenticalTo([
+            'title' => 'mynewtype',
+            'pattern' => '/{ASSO_SOCIAL_MYNEWTYPE}/'
+        ]);
     }
 }

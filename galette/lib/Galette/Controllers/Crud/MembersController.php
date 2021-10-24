@@ -49,6 +49,7 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;
@@ -165,6 +166,7 @@ class MembersController extends CrudController
                 'member'            => $member,
                 'self_adh'          => true,
                 'autocomplete'      => true,
+                'osocials'          => new Social($this->zdb),
                 // pseudo random int
                 'time'              => time(),
                 'titles_list'       => Titles::getList($this->zdb),
@@ -289,7 +291,8 @@ class MembersController extends CrudController
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'display_elements'  => $display_elements
+                'display_elements'  => $display_elements,
+                'osocials'          => new Social($this->zdb)
             )
         );
         return $response;
@@ -800,6 +803,13 @@ class MembersController extends CrudController
 
         $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
+        $social = new Social($this->zdb);
+        $types = $member->getMemberRegisteredTypes();
+        $social_types = [];
+        foreach ($types as $type) {
+            $social_types[$type] = $social->getSystemType($type);
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -810,6 +820,7 @@ class MembersController extends CrudController
                 'search_fields'         => $fields,
                 'adh_dynamics'          => $adh_dynamics->getFields(),
                 'contrib_dynamics'      => $contrib_dynamics->getFields(),
+                'adh_socials'           => $social_types,
                 'statuts'               => $statuts->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
@@ -1175,7 +1186,8 @@ class MembersController extends CrudController
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
-                'addchild'          => ($action === 'addchild')
+                'addchild'          => ($action === 'addchild'),
+                'osocials'          => new Social($this->zdb)
             ) + $route_params
         );
         return $response;

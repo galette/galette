@@ -96,7 +96,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => false,
+            'socials'   => false
         ];
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
@@ -155,7 +156,8 @@ class Adherent extends GaletteTestCase
             'dues'      => false,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => false,
+            'socials'   => false
         ];
         $this->array($adh->deps)->isIdenticalTo($expected);
 
@@ -165,7 +167,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => false,
             'children'  => true,
-            'dynamics'  => true
+            'dynamics'  => true,
+            'socials'   => false
         ];
         $adh
             ->enableDep('dues')
@@ -179,7 +182,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => true
+            'dynamics'  => true,
+            'socials'   => false
         ];
         $adh->disableDep('children');
         $this->array($adh->deps)->isIdenticalTo($expected);
@@ -193,7 +197,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => true,
             'children'  => true,
-            'dynamics'  => true
+            'dynamics'  => true,
+            'socials'   => true
         ];
         $adh->enableAllDeps('children');
         $this->array($adh->deps)->isIdenticalTo($expected);
@@ -228,7 +233,8 @@ class Adherent extends GaletteTestCase
             'dues'      => false,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => false,
+            'socials'   => false
         ];
         $adh = new \Galette\Entity\Adherent(
             $this->zdb,
@@ -334,20 +340,6 @@ class Adherent extends GaletteTestCase
         $expected = ['- Non-valid E-Mail address! (E-Mail)'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
-
-        $data = [
-            'email_adh' => '',
-            'url_adh'   => 'mywebsite'
-        ];
-        $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
-        $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
-
-        $data = ['url_adh' => 'http://'];
-        $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
-        $check = $adh->check($data, [], []);
-        $this->boolean($check)->isTrue($expected);
-        $this->variable($adh->_website)->isIdenticalTo('');
 
         $data = ['login_adh' => 'a'];
         $expected = ['- The username must be composed of at least 2 characters!'];
