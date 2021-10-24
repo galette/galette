@@ -2,13 +2,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
 # Andrii Leitsius <leits.dev@gmail.com>, 2021.
+# Tymofii Lytvynenko <till.svit@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-10-17 09:45+0200\n"
-"PO-Revision-Date: 2021-10-07 09:05+0000\n"
-"Last-Translator: Andrii Leitsius <leits.dev@gmail.com>\n"
+"PO-Revision-Date: 2021-10-25 16:36+0000\n"
+"Last-Translator: Tymofii Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -427,10 +428,9 @@ msgstr "Пожертва"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:237
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:281
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass add contribution on %count members"
-msgstr "Масова зміна %count членів"
+msgstr "Масове додавання внесків %count членів"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:503
 msgid "Contributions management"
@@ -1912,10 +1912,9 @@ msgid "Label for dynamic field \"%s\""
 msgstr "Мітка для динамічного поля \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:132
-#, fuzzy, php-format
-#| msgid "Input for dynamic field \"%s\""
+#, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr "Вхід для динамічного поля \"%s\""
+msgstr "Запис форми для динамічного поля \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:137
 #, php-format
