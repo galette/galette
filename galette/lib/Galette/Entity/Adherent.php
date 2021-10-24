@@ -165,8 +165,8 @@ class Adherent
     private $_msn; /** TODO: remove */
     private $_icq; /** TODO: remove */
     private $_jabber; /** TODO: remove */
-    private $_gnupgid; /** TODO: remove */
-    private $_fingerprint; /** TODO: remove */
+    private $_gnupgid;
+    private $_fingerprint;
     //Galette relative information
     private $_appears_in_list;
     private $_admin;
@@ -223,7 +223,7 @@ class Adherent
      * @param Db          $zdb  Database instance
      * @param mixed       $args Either a ResultSet row, its id or its
      *                          login or its email for to load s specific
-     *                          member, or null to just instanciate object
+     *                          member, or null to just instantiate object
      * @param false|array $deps Dependencies configuration, see Adherent::$_deps
      */
     public function __construct(Db $zdb, $args = null, $deps = null)
@@ -246,7 +246,7 @@ class Adherent
                 );
             } else {
                 Analog::log(
-                    '$deps shoud be an array, ' . gettype($deps) . ' given!',
+                    '$deps should be an array, ' . gettype($deps) . ' given!',
                     Analog::WARNING
                 );
             }
@@ -1312,14 +1312,14 @@ class Adherent
                 }
                 break;
             case 'url_adh':
-                if ($value == 'http://') {
+                if ($value == 'http://' || $value == 'https://') {
                     $this->$prop = '';
                 } elseif (!isValidWebUrl($value)) {
                     $this->errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
                 }
                 break;
             case 'login_adh':
-                /** FIXME: add a preference for login lenght */
+                /** FIXME: add a preference for login length */
                 if (strlen($value) < 2) {
                     $this->errors[] = str_replace(
                         '%i',
@@ -1352,7 +1352,7 @@ class Adherent
                             }
                         } catch (Throwable $e) {
                             Analog::log(
-                                'An error occurred checking member login unicity.',
+                                'An error occurred checking member login uniqueness.',
                                 Analog::ERROR
                             );
                             $this->errors[] = _T("An error has occurred while looking if login already exists.");
@@ -1411,7 +1411,7 @@ class Adherent
                     }
                 } catch (Throwable $e) {
                     Analog::log(
-                        'An error occurred checking status existance: ' . $e->getMessage(),
+                        'An error occurred checking status existence: ' . $e->getMessage(),
                         Analog::ERROR
                     );
                     $this->errors[] = _T("An error has occurred while looking if status does exists.");
@@ -1633,7 +1633,7 @@ class Adherent
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return false|object the called property
      */
