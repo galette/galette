@@ -72,7 +72,7 @@ trait Replacements
     private $dynamic_patterns = [];
 
     /**
-     * @Inject("db")
+     * @Inject("zdb")
      * @var Db
      */
     protected $zdb;
