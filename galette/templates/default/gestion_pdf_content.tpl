@@ -52,25 +52,4 @@
                 </button>
             </div>
         </form>
-        <div id="legende{$model->id}" class="texts_legend" title="{_T string="Existing variables"}">
-            <h1>{_T string="Existing variables"}</h1>
-            <table>
-{foreach from=$model->getLegend() item=legend}
-                <tr>
-                    <th colspan="4">
-                        {$legend.title}
-                    </th>
-                </tr>
-    {foreach from=$legend.patterns item=pattern name=patternloop}
-        {if $smarty.foreach.patternloop.index % 2 == 0}
-                <tr>
-        {/if}
-                    <th><tt>{$pattern.pattern|trim:'/'}</tt></th>
-                    <td class="back">{if isset($pattern.title)}{$pattern.title}{/if}</td>
-        {if $smarty.foreach.patternloop.index % 2 != 0}
-                </tr>
-        {/if}
-    {/foreach}
-{/foreach}
-            </table>
-        </div>
+        {include file="replacements_legend.tpl" legends=$model->getLegend() cur_ref=$model->id}

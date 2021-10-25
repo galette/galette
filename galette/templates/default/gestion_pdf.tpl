@@ -20,22 +20,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#tabs').append('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
-
-            var _handleLegend = function(index) {
-                $('#legende' + index + ' h1').remove();
-                $('#legende' + index).dialog({
-                    autoOpen: false,
-                    modal: true,
-                    hide: 'fold',
-                    width: '60em'
-                }).dialog('close');
-
-                $('#btnlegend').unbind('click').click(function(){
-                    $('#legende' + index).dialog('open');
-                        return false;
-                });
-            };
+            _addLegenButton('#tabs');
 
             $(function(){
                 $('#tabs').tabs({
