@@ -227,11 +227,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {assign var="lrclass" value=$rclass}
             {assign var="propname" value=$column->propname}
             {assign var="propvalue" value=$member->$propname}
-            {if $propvalue}
-                {assign var=value value=$propvalue|escape}
-            {else}
-                {assign var=value value=$propvalue}
-            {/if}
+            {assign var="value" value=null}
 
             {if $column->field_id eq 'nom_adh'}
                 {assign var="value" value=$member->sfullname}
@@ -264,7 +260,19 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $column->field_id eq 'sexe_adh'}
                 {assign var="value" value=$member->sgender}
             {/if}
-                    <td class="{$lrclass}" data-title="{$column->label}">
+
+            {* If value has not been set, take the generic value *}
+            {if !$value}
+                {if $propvalue}
+                    {assign var=value value=$propvalue|escape}
+                {else}
+                    {assign var=value value=$propvalue}
+                {/if}
+            {else}
+                {assign var=value value=$value|escape}
+            {/if}
+
+                <td class="{$lrclass}" data-title="{$column->label}">
             {* Display column.
                 A check is done here to adapt display, this is may not the best way to go
                 but for notw, that works as excpected.
