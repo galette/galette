@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2020 The Galette Team
+ * Copyright © 2014-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2020 The Galette Team
+ * @copyright 2014-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
@@ -57,7 +57,7 @@ $showPublicPages = function ($request, $response, $next) use ($container) {
 $app->group('/public', function () {
     //public members list
     $this->get(
-        '/{type:list|trombi}[/{option:page|order}/{value:\d+}]',
+        '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',
         [Crud\MembersController::class, 'publicList']
     )->setName('publicList');
 
@@ -68,9 +68,13 @@ $app->group('/public', function () {
     )->setName('filterPublicList');
 
     $this->get(
-        '/members[/{option:page|order}/{value:\d+}]',
-        function ($request, $response) {
+        '/members[/{option:page|order}/{value:\d+|\w+}]',
+        function ($request, $response, string $option = null, string $value = null) {
             $args = ['type' => 'list'];
+            if ($option !== null && $value !== null) {
+                $args['option'] = $option;
+                $args['value'] = $value;
+            }
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->get('router')->pathFor('publicList', $args));
