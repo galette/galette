@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Core\I18n;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
@@ -302,7 +303,7 @@ class Texts
                     );
 
                     try {
-                        $this->insert($this->zdb, [$values]);
+                        $this->insert([$values]);
                         return $this->getTexts($ref, $lang);
                     } catch (Throwable $e) {
                         Analog::log(
@@ -376,7 +377,7 @@ class Texts
      *
      * @return array: list of references used for texts
      */
-    public function getRefs($lang)
+    public function getRefs(string $lang = I18n::DEFAULT_LANG)
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -546,7 +547,7 @@ class Texts
      *
      * @return void
      */
-    private function insert($values)
+    private function insert(array $values)
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
