@@ -45,6 +45,7 @@ use Galette\Core\Login;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
+use Galette\Features\Dynamics;
 
 /**
  * Contribution class for galette
@@ -80,7 +81,7 @@ use Galette\Repository\PaymentTypes;
  */
 class Contribution
 {
-    use DynamicsTrait;
+    use Dynamics;
 
     public const TABLE = 'cotisations';
     public const PK = 'id_cotis';

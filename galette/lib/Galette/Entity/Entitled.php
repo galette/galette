@@ -39,8 +39,8 @@ namespace Galette\Entity;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
-use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
+use Galette\Features\I18n;
 
 /**
  * Entitled handling. Manage:
@@ -66,7 +66,7 @@ use Galette\Core\Db;
 
 abstract class Entitled
 {
-    use I18nTrait;
+    use I18n;
 
     public const ID_NOT_EXITS = -1;
 

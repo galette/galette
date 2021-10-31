@@ -48,6 +48,7 @@ use Galette\Core\History;
 use Galette\Repository\Groups;
 use Galette\Core\Login;
 use Galette\Repository\Members;
+use Galette\Features\Dynamics;
 
 /**
  * Member class for galette
@@ -122,7 +123,7 @@ use Galette\Repository\Members;
  */
 class Adherent
 {
-    use DynamicsTrait;
+    use Dynamics;
 
     public const TABLE = 'adherents';
     public const PK = 'id_adh';

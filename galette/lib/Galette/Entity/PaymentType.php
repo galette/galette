@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2018 The Galette Team
+ * Copyright © 2018-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018 The Galette Team
+ * @copyright 2018-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -37,11 +37,10 @@
 namespace Galette\Entity;
 
 use Throwable;
-use Galette\Core;
 use Galette\Core\Db;
-use Galette\Repository\PaymentTypes;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
+use Galette\Features\I18n;
+use Galette\Features\Translatable;
 
 /**
  * Payment type
@@ -50,7 +49,7 @@ use Laminas\Db\Sql\Expression;
  * @name      PaymentType
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018 The Galette Team
+ * @copyright 2018-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -58,8 +57,8 @@ use Laminas\Db\Sql\Expression;
 
 class PaymentType
 {
-    use TranslatableTrait;
-    use I18nTrait;
+    use Translatable;
+    use I18n;
 
     public const TABLE = 'paymenttypes';
     public const PK = 'type_id';

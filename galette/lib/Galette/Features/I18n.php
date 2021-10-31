@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2018 The Galette Team
+ * Copyright © 2018-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -24,17 +24,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Entity
+ * @category  Features
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018 The Galette Team
+ * @copyright 2018-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.1dev - 2018-03-10
  */
 
-namespace Galette\Entity;
+namespace Galette\Features;
 
 use Throwable;
 use Analog\Analog;
@@ -44,17 +44,17 @@ use Laminas\Db\Sql\Expression;
 /**
  * Files
  *
- * @category  Entity
- * @name      I18nTrait
+ * @category  Features
+ * @name      I18n
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018 The Galette Team
+ * @copyright 2018-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.1dev - 2018-03-10
  */
 
-trait I18nTrait
+trait I18n
 {
     protected $warnings = [];
 

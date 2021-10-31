@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Entity
+ * @category  Features
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -34,19 +34,20 @@
  * @since     Available since 0.9dev - 2017-05-26
  */
 
-namespace Galette\Entity;
+namespace Galette\Features;
 
 use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
+use Galette\Entity\DynamicFieldsHandle;
 
 /**
  * Dynamics fields trait
  *
- * @category  Entity
- * @name      DynamicsTrait
+ * @category  Features
+ * @name      Dynamics
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017-2021 The Galette Team
@@ -55,7 +56,7 @@ use Galette\DynamicFields\Boolean;
  * @since     Available since 0.9dev - 2017-05-26
  */
 
-trait DynamicsTrait
+trait Dynamics
 {
     /** @var string */
     protected $name_pattern = 'info_field_';

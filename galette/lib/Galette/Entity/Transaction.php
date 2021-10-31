@@ -43,6 +43,7 @@ use Galette\Repository\Contributions;
 use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
+use Galette\Features\Dynamics;
 
 /**
  * Transaction class for galette
@@ -64,7 +65,7 @@ use Galette\Core\Login;
  */
 class Transaction
 {
-    use DynamicsTrait;
+    use Dynamics;
 
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
