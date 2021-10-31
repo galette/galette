@@ -610,38 +610,28 @@ class Members
 
             $select->quantifier('DISTINCT');
 
+            $select->join(
+                array('so' => PREFIX_DB . Social::TABLE),
+                'a.' . Adherent::PK . '=so.' . Adherent::PK,
+                array(),
+                $select::JOIN_LEFT
+            );
+
             switch ($mode) {
                 case self::SHOW_STAFF:
                 case self::SHOW_LIST:
                 case self::SHOW_ARRAY_LIST:
-                    $select->join(
-                        array('p' => PREFIX_DB . Status::TABLE),
-                        'a.' . Status::PK . '=p.' . Status::PK,
-                        array()
-                    )->join(
-                        array('so' => PREFIX_DB . Social::TABLE),
-                        'a.' . Adherent::PK . '=so.' . Adherent::PK,
-                        array(),
-                        $select::JOIN_LEFT
-                    );
-                    break;
                 case self::SHOW_EXPORT:
-                    //basically the same as above, but without any fields
                     $select->join(
-                        array('p' => PREFIX_DB . Status::TABLE),
-                        'a.' . Status::PK . '=p.' . Status::PK,
+                        array('status' => PREFIX_DB . Status::TABLE),
+                        'a.' . Status::PK . '=status.' . Status::PK,
                         array()
                     );
                     break;
                 case self::SHOW_MANAGED:
                     $select->join(
-                        array('p' => PREFIX_DB . Status::TABLE),
-                        'a.' . Status::PK . '=p.' . Status::PK
-                    )->join(
-                        array('so' => PREFIX_DB . Social::TABLE),
-                        'a.' . Adherent::PK . '=so.' . Adherent::PK,
-                        array(),
-                        $select::JOIN_LEFT
+                        array('status' => PREFIX_DB . Status::TABLE),
+                        'a.' . Status::PK . '=status.' . Status::PK
                     )->join(
                         array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                         'a.' . Adherent::PK . '=gr.' . Adherent::PK,
@@ -655,8 +645,8 @@ class Members
                 case self::SHOW_PUBLIC_LIST:
                     if ($photos) {
                         $select->join(
-                            array('p' => PREFIX_DB . Picture::TABLE),
-                            'a.' . self::PK . '= p.' . self::PK,
+                            array('picture' => PREFIX_DB . Picture::TABLE),
+                            'a.' . self::PK . '= picture.' . self::PK,
                             array()
                         );
                     }
@@ -820,7 +810,7 @@ class Members
 
             if ($mode === self::SHOW_STAFF) {
                 $select->where->lessThan(
-                    'p.priorite_statut',
+                    'status.priorite_statut',
                     self::NON_STAFF_MEMBERS
                 );
             }
@@ -1125,7 +1115,7 @@ class Members
                         break;
                     case self::MEMBERSHIP_STAFF:
                         $select->where->lessThan(
-                            'p.priorite_statut',
+                            'status.priorite_statut',
                             self::NON_STAFF_MEMBERS
                         );
                         break;
@@ -1494,7 +1484,7 @@ class Members
                             '%value'
                         ],
                         [
-                            'p.',
+                            'status.',
                             'libelle_statut',
                             $qop,
                             $zdb->platform->quoteValue($fs['search'])
@@ -1634,8 +1624,8 @@ class Members
         );
 
         $select->join(
-            array('p' => PREFIX_DB . self::TABLE),
-            'a.parent_id=p.' . self::PK,
+            array('parent' => PREFIX_DB . self::TABLE),
+            'a.parent_id=parent.' . self::PK,
             array(),
             $select::JOIN_LEFT
         );
@@ -1650,10 +1640,10 @@ class Members
         $select_wo_mail = clone $select;
 
         $select->where(
-            '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND p.email_adh != \'\')'
+            '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')'
         );
         $select_wo_mail->where(
-            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (p.email_adh = \'\' OR p.email_adh IS NULL)'
+            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (parent.email_adh = \'\' OR parent.email_adh IS NULL)'
         );
 
         $results = $zdb->execute($select);
@@ -1672,8 +1662,8 @@ class Members
         );
 
         $select->join(
-            array('p' => PREFIX_DB . self::TABLE),
-            'a.parent_id=p.' . self::PK,
+            array('parent' => PREFIX_DB . self::TABLE),
+            'a.parent_id=parent.' . self::PK,
             array(),
             $select::JOIN_LEFT
         );
@@ -1687,11 +1677,11 @@ class Members
         $select_wo_mail = clone $select;
 
         $select->where(
-            '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND p.email_adh != \'\')'
+            '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')'
         );
 
         $select_wo_mail->where(
-            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (p.email_adh = \'\' OR p.email_adh IS NULL)'
+            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (parent.email_adh = \'\' OR parent.email_adh IS NULL)'
         );
 
         $results = $zdb->execute($select);
