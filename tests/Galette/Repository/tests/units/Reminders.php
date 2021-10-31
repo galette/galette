@@ -137,7 +137,7 @@ class Reminders extends GaletteTestCase
         //create contribution, just about to be impending
         $now = new \DateTime();
         $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
+        $date_begin->sub(new \DateInterval('P1YP1D'));
         $date_begin->add(new \DateInterval('P1M'));
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
