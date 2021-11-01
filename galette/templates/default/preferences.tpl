@@ -481,6 +481,7 @@
                         <option value="5" {if $pref.pref_card_address eq 5}selected="selected"{/if}>{_T string="Zip - Town"}</option>
                         <option value="6" {if $pref.pref_card_address eq 6}selected="selected"{/if}>{_T string="Nickname"}</option>
                         <option value="7" {if $pref.pref_card_address eq 7}selected="selected"{/if}>{_T string="Profession"}</option>
+                        <option value="8" {if $pref.pref_card_address eq 8}selected="selected"{/if}>{_T string="Member nubmer"}</option>
                     </select>
                     <span class="exemple">{_T string="(Choose address printed below name)"}</span>
                 </p>

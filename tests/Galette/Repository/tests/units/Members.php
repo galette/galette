@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Galette\GaletteTestCase;
  * @name      Members
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-04-15
@@ -340,7 +340,7 @@ class Members extends GaletteTestCase
         //search on member number
         $filters = new \Galette\Filters\MembersList();
         $filters->filter_str = $this->mids[2];
-        $filters->field_filter = \Galette\Repository\Members::FILTER_NUMBER;
+        $filters->field_filter = \Galette\Repository\Members::FILTER_ID;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 

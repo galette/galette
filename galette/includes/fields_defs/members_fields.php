@@ -39,7 +39,7 @@ use Galette\Entity\FieldsCategories;
 
 $members_fields = array(
     'id_adh' => array(
-        'label'    => _T("Member number:"),
+        'label'    => _T("Member id:"),
         'propname' => 'id',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
@@ -318,6 +318,14 @@ $members_fields = array(
         'visible'  => FieldsConfig::NOBODY,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
+    'num_adh'       => array(
+        'label'    => _T("Member number:"),
+        'propname' => 'number',
+        'required' => false,
+        'visible'  => FieldsConfig::MANAGER,
+        'position' => 26,
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
     'list_adh_name' => array(
         'label'    => _T("Name"),

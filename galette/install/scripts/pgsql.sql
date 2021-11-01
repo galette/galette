@@ -226,6 +226,7 @@ CREATE TABLE galette_adherents (
     gpgid text DEFAULT NULL,
     fingerprint character varying(255) DEFAULT NULL,
     parent_id integer DEFAULT NULL REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    num_adh character varying(255) DEFAULT NULL,
     PRIMARY KEY (id_adh)
 );
 -- add index for faster search on login_adh (auth)

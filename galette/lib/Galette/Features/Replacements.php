@@ -254,6 +254,10 @@ trait Replacements
                 'title'     => _T("Member's ID"),
                 'pattern'   => '/{ID_ADH}/',
             ],
+            'adh_num'            =>  [
+                'title'     => _T("Member number"),
+                'pattern'   => '/{NUM_ADH}/',
+            ],
             'adh_name'          =>  [
                 'title'     => _T("Name"),
                 'pattern'    => '/{NAME_ADH}/',
@@ -623,6 +627,7 @@ trait Replacements
             array(
                 'adh_title'         => $member->stitle,
                 'adh_id'            => $member->id,
+                'adh_num'           => $member->number,
                 'adh_name'          => $member->sfullname,
                 'adh_last_name'     => $member->name,
                 'adh_first_name'    => $member->surname,

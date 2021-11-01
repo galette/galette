@@ -118,6 +118,7 @@ use Galette\Features\Dynamics;
  * @property string $days_remaining
  * @property-read integer $parent_id
  * @property Social $social Social networks/Contact
+ * @property string $number Member number
  *
  */
 class Adherent
@@ -185,6 +186,7 @@ class Adherent
     private $_children;
     private $_duplicate = false;
     private $_socials;
+    private $_number;
 
     private $_row_classes;
 
@@ -411,6 +413,7 @@ class Adherent
         $this->_due_date = $r->date_echeance;
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
+        $this->_number = $r->num_adh;
 
         if ($r->parent_id !== null) {
             $this->_parent = (int)$r->parent_id;
@@ -1502,6 +1505,10 @@ class Adherent
 
             if (!$this->_parent) {
                 $values['parent_id'] = new Expression('NULL');
+            }
+
+            if (!$this->_number) {
+                $values['num_adh'] = new Expression('NULL');
             }
 
             //fields that cannot be null

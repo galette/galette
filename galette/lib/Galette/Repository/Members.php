@@ -98,7 +98,8 @@ class Members
     public const FILTER_DC_PUBINFOS = 9;
     public const FILTER_W_PUBINFOS = 10;
     public const FILTER_WO_PUBINFOS = 11;
-    public const FILTER_NUMBER = 12;
+    public const FILTER_ID = 12;
+    public const FILTER_NUMBER = 13;
 
     public const MEMBERSHIP_ALL = 0;
     public const MEMBERSHIP_UP2DATE = 3;
@@ -1077,6 +1078,9 @@ class Members
                         );
                         break;
                     case self::FILTER_NUMBER:
+                        $select->where->equalTo('a.num_adh', $this->filters->filter_str);
+                        break;
+                    case self::FILTER_ID:
                         $select->where->equalTo('a.id_adh', $this->filters->filter_str);
                         break;
                 }

@@ -126,7 +126,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {if $preferences->pref_show_id}
                     <th class="id_row">
                         <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
-                            {_T string="Mbr num"}
+                            {_T string="Mbr id"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
                             <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>

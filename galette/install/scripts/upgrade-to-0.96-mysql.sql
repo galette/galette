@@ -37,4 +37,7 @@ ALTER TABLE galette_adherents DROP column jabber_adh;
 -- cleanup fields config
 DELETE FROM galette_fields_config WHERE field_id IN ('url_adh', 'icq_adh', 'msn_adh', 'jabber_adh');
 
+-- add num_adh column
+ALTER TABLE galette_adherents ADD COLUMN num_adh varchar(255) DEFAULT NULL;
+
 UPDATE galette_database SET version = 0.960;

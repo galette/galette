@@ -225,7 +225,7 @@ class ListsConfig extends atoum
         $this->boolean($town['required'])->isFalse();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
-        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][10]; //12 in FieldsConfig but 10 here
+        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][11]; //13 in FieldsConfig but 11 here
         $this->array($gsm2)->isIdenticalTo($gsm);
         // /copied from FieldsConfig::testSetFields to ensure it works as expected from here.
     }

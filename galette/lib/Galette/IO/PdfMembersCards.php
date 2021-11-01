@@ -220,6 +220,9 @@ class PdfMembersCards extends Pdf
                 case 7:
                     $email .= $member->job;
                     break;
+                case 8:
+                    $email .= $member->number;
+                    break;
             }
 
             // Select strip color according to status
