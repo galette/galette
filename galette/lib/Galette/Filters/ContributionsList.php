@@ -168,6 +168,9 @@ class ContributionsList extends Pagination
                 switch ($name) {
                     case 'start_date_filter':
                     case 'end_date_filter':
+                        if ($this->$name === null) {
+                            return $this->$name;
+                        }
                         try {
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $this->$name);
                             if ($d === false) {

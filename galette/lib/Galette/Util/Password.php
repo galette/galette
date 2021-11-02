@@ -272,6 +272,9 @@ class Password
 
         //some possible combinations
         foreach ([$adh->surname, $adh->nickname, $adh->login] as $surname) {
+            if ($surname === null) {
+                continue;
+            }
             $infos[] = mb_substr($surname, 0, 1) . $adh->name;
             $infos[] = $adh->name . mb_substr($surname, 0, 1);
             $infos[] = $surname . $adh->name;
