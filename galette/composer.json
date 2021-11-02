@@ -62,7 +62,8 @@
         "post-install-cmd": [
             "patch -d vendor/slim/slim/ -p3 < ../patches/slim-php81.patch",
             "patch -d vendor/smarty/smarty/ -p3 < ../patches/smarty-php81.patch",
-            "patch -d vendor/mathmarques/smarty-view/ -p3 < ../patches/smarty-view-php81.patch"
+            "patch -d vendor/mathmarques/smarty-view/ -p3 < ../patches/smarty-view-php81.patch",
+            "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch"
         ]
     }
 }
