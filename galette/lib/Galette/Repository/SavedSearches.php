@@ -117,7 +117,7 @@ class SavedSearches
                 'Cannot list saved searches | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 

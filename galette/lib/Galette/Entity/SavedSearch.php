@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -49,7 +49,7 @@ use Analog\Analog;
  * @name      SavedSearch
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -185,46 +185,22 @@ class SavedSearch
     public function store()
     {
         $parameters = json_encode($this->parameters);
-        $parameters_sum = sha1($parameters, true);
-        if ($this->zdb->isPostgres()) {
-            $parameters_sum = pg_escape_bytea($parameters_sum);
-        }
         $data = array(
             'name'              => $this->name,
             'parameters'        => $parameters,
-            'parameters_sum'    => $parameters_sum,
+            'parameters_sum'   => '',
             'id_adh'            => $this->author_id,
             'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
             'form'              => $this->form
         );
 
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select
-                ->where([
-                    'form'              => $this->form,
-                    'parameters_sum'    => $parameters_sum,
-                    'id_adh'            => $this->author_id,
-                ])
-                ->limit(1);
-
-            $results = $this->zdb->execute($select);
-            if ($results->count() !== 0) {
-                $result = $results->current();
-                //search already exists
-                Analog::log(
-                    str_replace('%name', $result->name, 'Already saved as "%name"!'),
-                    Analog::INFO
-                );
-                return null;
-            } else {
-                $insert = $this->zdb->insert(self::TABLE);
-                $insert->values($data);
-                $add = $this->zdb->execute($insert);
-                if (!$add->count() > 0) {
-                    Analog::log('Not stored!', Analog::ERROR);
-                    return false;
-                }
+            $insert = $this->zdb->insert(self::TABLE);
+            $insert->values($data);
+            $add = $this->zdb->execute($insert);
+            if (!$add->count() > 0) {
+                Analog::log('Not stored!', Analog::ERROR);
+                return false;
             }
             return true;
         } catch (Throwable $e) {
@@ -233,7 +209,7 @@ class SavedSearch
                 "\n" . print_r($data, true),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

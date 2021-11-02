@@ -73,6 +73,7 @@ class SavedSearch extends atoum
         $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($this->login)->isLogged = true;
         $this->calling($this->login)->isSuperAdmin = true;
+        $this->calling($this->login)->__get = 0; //to get login id
     }
 
     /**
@@ -112,6 +113,7 @@ class SavedSearch extends atoum
         $i18n->changeLanguage('en_US');
 
         $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
+        $searches = new \Galette\Repository\SavedSearches($this->zdb, $this->login);
 
         $post = [
             'parameters'    => [
@@ -135,7 +137,9 @@ class SavedSearch extends atoum
         //store search
         $this->boolean($saved->check($post))->isTrue();
         $this->boolean($saved->store())->isTrue();
+        $this->array($searches->getList(true))->hasSize(1);
         //store again, got a duplicate
-        $this->variable($saved->store())->isNull();
+        $this->boolean($saved->store())->isTrue();
+        $this->array($searches->getList(true))->hasSize(2);
     }
 }
