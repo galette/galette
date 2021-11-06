@@ -1127,7 +1127,9 @@ class Adherent
 
                 // now, check validity
                 if ($value !== null && $value != '') {
-                    $this->validate($key, $value, $values);
+                    if ($key !== 'mdp_adh') {
+                        $this->validate($key, $value, $values);
+                    }
                 } elseif (empty($this->_id)) {
                     //ensure login and password are not empty
                     if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
@@ -1142,6 +1144,11 @@ class Adherent
                     }
                 }
             }
+        }
+
+        //password checks need data to be previously set
+        if (isset($values['mdp_adh'])) {
+            $this->validate('mdp_adh', $values['mdp_adh'], $values);
         }
 
         // missing required fields?
