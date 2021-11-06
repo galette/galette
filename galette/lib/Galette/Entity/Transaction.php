@@ -677,6 +677,11 @@ class Transaction
      */
     public function canShow(Login $login): bool
     {
+        //non-logged-in members cannot show contributions
+        if (!$login->isLogged()) {
+            return false;
+        }
+
         //admin and staff users can edit, as well as member itself
         if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
             return true;
