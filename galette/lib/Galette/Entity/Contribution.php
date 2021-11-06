@@ -300,6 +300,13 @@ class Contribution
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                if (!$this->login->isLogged()) {
+                    Analog::log(
+                        'Non-logged-in users cannot load contribution id `' . $id,
+                        Analog::ERROR
+                    );
+                    return false;
+                }
                 if (!$this->login->isGroupManager()) {
                     $select->where
                         ->nest()
@@ -326,9 +333,11 @@ class Contribution
                 $this->loadFromRS($row);
                 return true;
             } else {
-                throw new \Exception(
-                    'No contribution #' . $id . ' (user ' . $this->login->id . ')'
+                Analog::log(
+                    'No contribution #' . $id . ' (user ' . $this->login->id . ')',
+                    Analog::ERROR
                 );
+                return false;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -336,7 +345,7 @@ class Contribution
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -600,7 +609,7 @@ class Contribution
                 'An error occurred checking overlapping fee. ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -723,7 +732,7 @@ class Contribution
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
-            return false;
+            throw $e;
         }
     }
 
@@ -758,7 +767,7 @@ class Contribution
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -785,9 +794,11 @@ class Contribution
                 $this->updateDeadline();
                 $this->dynamicsRemove(true);
             } else {
-                throw new \RuntimeException(
-                    'Contribution has not been removed!'
+                Analog::log(
+                    'Contribution has not been removed!',
+                    Analog::WARNING
                 );
+                return false;
             }
             if ($transaction) {
                 $this->zdb->connection->commit();
@@ -803,7 +814,7 @@ class Contribution
                 $this->_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -898,7 +909,7 @@ class Contribution
                 'An error occurred trying to retrieve member\'s due date',
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -940,7 +951,7 @@ class Contribution
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -969,7 +980,7 @@ class Contribution
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

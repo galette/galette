@@ -108,6 +108,7 @@ class Groups
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -180,6 +181,7 @@ class Groups
                 'Cannot list groups | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -239,7 +241,7 @@ class Groups
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -356,7 +358,7 @@ class Groups
                 $msg . ' |' . implode("\n", $messages),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -423,6 +425,7 @@ class Groups
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 

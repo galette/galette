@@ -119,6 +119,7 @@ class SavedSearch
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 

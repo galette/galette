@@ -469,25 +469,6 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Test checkOverlap method that throws an exception
-     *
-     * @return void
-     */
-    public function testCheckOverlapWException()
-    {
-        $zdb = new \mock\Galette\Core\Db();
-        $this->calling($zdb)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
-                throw new \LogicException('Error executing query!', 123);
-            }
-        };
-
-        $contrib = new \Galette\Entity\Contribution($zdb, $this->login);
-        $this->boolean($contrib->checkOverlap())->isFalse();
-    }
-
-
-    /**
      * Test fields labels
      *
      * @return void
@@ -545,8 +526,6 @@ class Contribution extends GaletteTestCase
         $this->createContribution();
 
         $this->boolean($this->contrib->remove())->isTrue();
-
-        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->boolean($this->contrib->remove())->isFalse();
     }
 

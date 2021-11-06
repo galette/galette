@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2018 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2018 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
@@ -51,7 +51,7 @@ use Laminas\Db\Sql\Expression;
  * @name      MailingHistory
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2018 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
@@ -167,7 +167,7 @@ class MailingHistory extends History
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -203,6 +203,7 @@ class MailingHistory extends History
                 'Cannot list senders from mailing history! | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -299,6 +300,7 @@ class MailingHistory extends History
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -335,7 +337,7 @@ class MailingHistory extends History
                 'Cannot count history | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -366,7 +368,7 @@ class MailingHistory extends History
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -408,7 +410,6 @@ class MailingHistory extends History
                 '] Mailing should be an instance of Mailing',
                 Analog::ERROR
             );
-            return false;
         }
     }
 
@@ -457,7 +458,7 @@ class MailingHistory extends History
                 'An error occurend updating Mailing | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -511,7 +512,7 @@ class MailingHistory extends History
                 'An error occurend storing Mailing | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

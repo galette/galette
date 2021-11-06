@@ -179,7 +179,7 @@ class Contributions
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -217,7 +217,7 @@ class Contributions
                 'Cannot count contributions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -250,7 +250,7 @@ class Contributions
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -506,7 +506,7 @@ class Contributions
                     $e->getMessage(),
                     Analog::ERROR
                 );
-                return false;
+                throw $e;
             }
         } else {
             //not numeric and not an array: incorrect.

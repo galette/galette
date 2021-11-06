@@ -208,7 +208,7 @@ class Login extends Authentication
     }
 
     /**
-     * Populate object after successfull login
+     * Populate object after successful login
      *
      * @param \ArrayObject $row User information
      *

@@ -314,7 +314,7 @@ class Adherent
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -348,7 +348,7 @@ class Adherent
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -497,7 +497,7 @@ class Adherent
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -858,7 +858,7 @@ class Adherent
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -932,7 +932,7 @@ class Adherent
                 '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -1602,7 +1602,7 @@ class Adherent
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -1628,6 +1628,7 @@ class Adherent
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 

@@ -310,9 +310,7 @@ class Transaction extends GaletteTestCase
         $this->boolean($this->transaction->load($tid))->isTrue();
         $this->boolean($this->transaction->remove($this->history))->isTrue();
         $this->boolean($this->transaction->load($tid))->isFalse();
-
-        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
-        $this->boolean($transaction->remove($this->history))->isFalse();
+        $this->boolean($this->transaction->remove($this->history))->isFalse();
     }
 
     /**

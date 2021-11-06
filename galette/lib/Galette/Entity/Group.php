@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2012-01-17
@@ -48,7 +48,7 @@ use Laminas\Db\Sql\Expression;
  * @name      Group
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2012-01-17
@@ -120,7 +120,7 @@ class Group
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -209,6 +209,7 @@ class Group
                     'Cannot get group persons | ' . $e->getMessage(),
                     Analog::WARNING
                 );
+                throw $e;
             }
         }
     }
@@ -251,6 +252,7 @@ class Group
                 ' (' . $this->id . ')| ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -339,6 +341,7 @@ class Group
                     ' (' . $this->id . ') |' . $e->getMessage(),
                     Analog::ERROR
                 );
+                throw $e;
             }
             return false;
         }
@@ -392,7 +395,7 @@ class Group
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
-            throw new \Exception(_T("Unable to detach group :("));
+            throw $e;
         }
     }
 
@@ -465,7 +468,7 @@ class Group
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -795,7 +798,7 @@ class Group
                 '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -885,7 +888,7 @@ class Group
                 '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

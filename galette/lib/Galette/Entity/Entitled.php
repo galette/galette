@@ -135,9 +135,11 @@ abstract class Entitled
 
                 return true;
             } else {
-                throw new \RuntimeException(
-                    'Unknown ID ' . $id . '!'
+                Analog::log(
+                    'Unknown ID ' . $id,
+                    Analog::ERROR
                 );
+                return false;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -145,7 +147,7 @@ abstract class Entitled
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -169,7 +171,8 @@ abstract class Entitled
     /**
      * Set defaults at install time
      *
-     * @return boolean|Exception
+     * @return boolean
+     * @throws Throwable
      */
     public function installInit()
     {
@@ -277,7 +280,7 @@ abstract class Entitled
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -322,7 +325,7 @@ abstract class Entitled
                 ') | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -358,7 +361,7 @@ abstract class Entitled
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -410,7 +413,7 @@ abstract class Entitled
                 $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

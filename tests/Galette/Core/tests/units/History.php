@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -124,39 +124,5 @@ class History extends GaletteTestCase
         $this->array($list)->hasSize(1);
 
         $this->cleanHistory();
-    }
-
-    /**
-     * Test add that throws an exception
-     *
-     * @return void
-     */
-    public function testAddWException()
-    {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
-
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-        $add = $this->history->add('Test');
-        $this->boolean($add)->isFalse();
-    }
-
-    /**
-     * Test getHistory that throws an exception
-     *
-     * @return void
-     */
-    public function testGetHistoryWException()
-    {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
-
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
-        $list = $this->history->getHistory();
-        $this->boolean($list)->isFalse();
     }
 }

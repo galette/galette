@@ -432,6 +432,7 @@ class Members
                     $e->getMessage(),
                     Analog::ERROR
                 );
+                throw $e;
             }
             return false;
         }
@@ -500,7 +501,7 @@ class Members
                 . $with_photos . ') | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -575,6 +576,7 @@ class Members
                 'Cannot load members form ids array | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -879,7 +881,7 @@ class Members
                 'Cannot count members | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -1590,7 +1592,7 @@ class Members
                 'empty logins/passwords (' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

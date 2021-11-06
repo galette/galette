@@ -121,6 +121,7 @@ class Reminder
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -149,10 +150,7 @@ class Reminder
                 __METHOD__ . ': incorrect ResultSet. Error: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            Analog::log(
-                print_r($rs, true),
-                Analog::INFO
-            );
+            throw $e;
         }
     }
 
@@ -193,7 +191,7 @@ class Reminder
                 "\n" . print_r($data, true),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

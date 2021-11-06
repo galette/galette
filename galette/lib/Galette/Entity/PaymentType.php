@@ -113,6 +113,7 @@ class PaymentType
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -172,7 +173,7 @@ class PaymentType
                 "\n" . print_r($data, true),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -298,7 +299,7 @@ class PaymentType
     }
 
     /**
-     * Is current paymant a system one
+     * Is current payment a system one
      *
      * @return boolean
      *
