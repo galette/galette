@@ -538,12 +538,8 @@ class Contribution
         if ($this->isFee() && count($this->errors) == 0) {
             $overlap = $this->checkOverlap();
             if ($overlap !== true) {
-                if ($overlap === false) {
-                    $this->errors[] = _T("An error occurred checking overlapping fees :(");
-                } else {
-                    //method directly return error message
-                    $this->errors[] = $overlap;
-                }
+                //method directly return error message
+                $this->errors[] = $overlap;
             }
         }
 
@@ -707,11 +703,7 @@ class Contribution
             }
             //update deadline
             if ($this->isFee()) {
-                $deadline = $this->updateDeadline();
-                if ($deadline !== true) {
-                    //if something went wrong, we roll back transaction
-                    throw new \Exception('An error occurred updating member\'s deadline');
-                }
+                $this->updateDeadline();
             }
 
             //dynamic fields
