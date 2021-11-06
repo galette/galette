@@ -58,13 +58,27 @@ class Db extends atoum
     /**
      * Set up tests
      *
-     * @param stgring $testMethod Method tested
+     * @param stgring $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->db = new \Galette\Core\Db();
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql' and $method !== 'testExecuteWException') {
+            $this->array($this->db->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**
@@ -611,6 +625,17 @@ class Db extends atoum
 
         $this->object($results)
             ->isInstanceOf('\Zend\Db\ResultSet\ResultSet');
+    }
+
+    /**
+     * Test execute Method
+     *
+     * @return void
+     */
+    public function testExecuteWException()
+    {
+        $select = $this->db->select('preferences', 'p');
+        $select->where(['p.nom_pref' => 'azerty']);
 
         $this->exception(
             function () use ($select) {

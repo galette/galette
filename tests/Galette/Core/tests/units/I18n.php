@@ -53,20 +53,36 @@ use atoum;
  */
 class I18n extends atoum
 {
+    private $zdb;
     private $i18n = null;
 
     /**
      * Set up tests
      *
-     * @param string $testMethod Tested method name
+     * @param string $method Tested method name
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
+        $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n(
             \Galette\Core\I18n::DEFAULT_LANG
         );
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**

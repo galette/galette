@@ -63,11 +63,11 @@ class Install extends atoum
     /**
      * Set up tests
      *
-     * @param stgring $testMethod Method tested
+     * @param stgring $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         setlocale(LC_ALL, 'en_US');
 
@@ -93,6 +93,20 @@ class Install extends atoum
         $this->container = $container;
 
         $this->zdb = $container->get('zdb');
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**

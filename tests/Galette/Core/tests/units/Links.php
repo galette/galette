@@ -56,17 +56,18 @@ class Links extends GaletteTestCase
     protected $seed = 95842355;
     private $links;
     private $ids = [];
+    protected $excluded_after_methods = ['testDuplicateLinkTarget'];
 
     /**
      * Set up tests
      *
-     * @param string $testMethod Method name
+     * @param string $method Method name
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->initStatus();
         $this->initContributionsTypes();
 
@@ -90,6 +91,8 @@ class Links extends GaletteTestCase
      */
     public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
+
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);

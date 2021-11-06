@@ -65,6 +65,8 @@ class Transaction extends GaletteTestCase
      */
     public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
+
         $this->zdb = new \Galette\Core\Db();
 
         //first, remove contributions
@@ -94,13 +96,13 @@ class Transaction extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);

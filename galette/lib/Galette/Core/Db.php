@@ -980,4 +980,21 @@ class Db
                 : null
         );
     }
+
+    /**
+     * Get MySQL warnings
+     *
+     * @return array
+     */
+    public function getWarnings(): array
+    {
+        $results = $this->db->query('SHOW WARNINGS', Adapter::QUERY_MODE_EXECUTE);
+
+        $warnings = [];
+        foreach ($results as $result) {
+            $warnings[] = $result;
+        }
+
+        return $warnings;
+    }
 }

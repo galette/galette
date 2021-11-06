@@ -90,15 +90,16 @@ abstract class GaletteTestCase extends atoum
     protected $request;
     protected $response;
     protected $seed;
+    protected $excluded_after_methods = [];
 
     /**
      * Set up tests
      *
-     * @param stgring $testMethod Method tested
+     * @param stgring $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->mocked_router = new \mock\Slim\Router();
         $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
@@ -138,6 +139,20 @@ abstract class GaletteTestCase extends atoum
         $i18n = $this->i18n;
         $container = $this->container;
         $galette_log_var = $this->logger_storage;
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql' && !in_array($method, $this->excluded_after_methods)) {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**

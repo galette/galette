@@ -54,6 +54,21 @@ use atoum;
 class CheckModules extends atoum
 {
     /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $zdb = new \Galette\Core\Db();
+            $this->array($zdb->getWarnings())->isIdenticalTo([]);
+        }
+    }
+
+    /**
      * Test modules, all should be ok
      *
      * @return void

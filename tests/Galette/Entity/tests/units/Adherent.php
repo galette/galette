@@ -80,13 +80,13 @@ class Adherent extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->initStatus();
         $this->initTitles();
 

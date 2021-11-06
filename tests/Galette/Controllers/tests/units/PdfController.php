@@ -73,11 +73,11 @@ class PdfController extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
@@ -148,6 +148,20 @@ class PdfController extends atoum
         $i18n = $this->i18n;
         $login = $this->login;
         $hist = $this->history;
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**
