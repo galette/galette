@@ -10,6 +10,7 @@ Changes
 - Drop duplicate check on saved searches
 - Fix some silent errors
 - Some data were missing checking passwords against personal data
+- Fix gateway timeout sending emails with SSL SMTP
 
 0.9.5 -> 0.9.5.1
 
