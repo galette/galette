@@ -225,7 +225,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 {assign var="value" value=$member->sfullname}
             {elseif $column->field_id eq 'pseudo_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
-                {assign var=value value=$member->$propname|escape}
+                {assign var=value value=$member->$propname}
             {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
             {elseif $column->field_id eq 'id_statut'}
@@ -238,7 +238,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $column->field_id eq 'pref_lang'}
                 {assign var="value" value=$i18n->getNameFromId($member->language)}
             {elseif $column->field_id eq 'adresse_adh'}
-                {assign var="value" value=$member->saddress|nl2br}
+                {assign var="value" value=$member->saddress|escape|nl2br}
+                {assign var="escaped" value=true}
             {elseif $column->field_id eq 'bool_display_info'}
                 {assign var="value" value=$member->sappears_in_list}
             {elseif $column->field_id eq 'activite_adh'}
@@ -260,7 +261,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 {else}
                     {assign var=value value=$propvalue}
                 {/if}
-            {else}
+            {else if !isset($escaped)}
                 {assign var=value value=$value|escape}
             {/if}
 

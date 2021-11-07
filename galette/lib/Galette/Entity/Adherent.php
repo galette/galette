@@ -1726,7 +1726,7 @@ class Adherent
                     if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
                         $address .= "\n" . $this->_address_continuation;
                     }
-                    return htmlspecialchars($address, ENT_QUOTES);
+                    return $address;
                     break;
                 case 'sname':
                     return $this->getNameWithCase($this->_name, $this->_surname);
