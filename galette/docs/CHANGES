@@ -1,10 +1,20 @@
 Changes
 -------
 
+0.9.5.1 -> 0.9.5.2
+- Update translations
+- Work on PHP 8.1 compatibility and tests improvements
+- Fix members list issue with titles column displayed
+- Fix members list ordering
+- Fix missing emails texts insertion
+- Drop duplicate check on saved searches
+- Fix some silent errors
+- Some data were missing checking passwords against personal data
+
 0.9.5 -> 0.9.5.1
 
 - Members can manage their children and create new ones (if preference is on)
-- Mass contribtion add
+- Mass contribution add
 - Mass edition of dynamic fields
 - Add a preference to send emails to member by default
 - Add a preference to choose default payment type
