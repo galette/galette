@@ -48,6 +48,7 @@ use Galette\Core\History;
 use Galette\Repository\Groups;
 use Galette\Core\Login;
 use Galette\Repository\Members;
+use Galette\Features\Dynamics;
 
 /**
  * Member class for galette
@@ -122,7 +123,7 @@ use Galette\Repository\Members;
  */
 class Adherent
 {
-    use DynamicsTrait;
+    use Dynamics;
 
     public const TABLE = 'adherents';
     public const PK = 'id_adh';
@@ -165,8 +166,8 @@ class Adherent
     private $_msn; /** TODO: remove */
     private $_icq; /** TODO: remove */
     private $_jabber; /** TODO: remove */
-    private $_gnupgid; /** TODO: remove */
-    private $_fingerprint; /** TODO: remove */
+    private $_gnupgid;
+    private $_fingerprint;
     //Galette relative information
     private $_appears_in_list;
     private $_admin;
@@ -223,7 +224,7 @@ class Adherent
      * @param Db          $zdb  Database instance
      * @param mixed       $args Either a ResultSet row, its id or its
      *                          login or its email for to load s specific
-     *                          member, or null to just instanciate object
+     *                          member, or null to just instantiate object
      * @param false|array $deps Dependencies configuration, see Adherent::$_deps
      */
     public function __construct(Db $zdb, $args = null, $deps = null)
@@ -246,7 +247,7 @@ class Adherent
                 );
             } else {
                 Analog::log(
-                    '$deps shoud be an array, ' . gettype($deps) . ' given!',
+                    '$deps should be an array, ' . gettype($deps) . ' given!',
                     Analog::WARNING
                 );
             }
@@ -313,7 +314,7 @@ class Adherent
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -347,7 +348,7 @@ class Adherent
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -496,7 +497,7 @@ class Adherent
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -768,8 +769,6 @@ class Adherent
     {
         $ret = '';
         $date_now = new \DateTime();
-        $ddate = new \DateTime($this->_due_date);
-        $date_diff = $date_now->diff($ddate);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($this->_due_date == '') {
@@ -789,12 +788,15 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         } elseif ($this->_days_remaining == 0) {
+            $ddate = new \DateTime($this->_due_date);
+            $date_diff = $date_now->diff($ddate);
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
         } elseif ($this->_days_remaining < 0) {
+            $ddate = new \DateTime($this->_due_date);
             $patterns = array('/%days/', '/%date/');
             $replace = array(
                 $this->_days_remaining * -1,
@@ -810,6 +812,7 @@ class Adherent
                 $ret = _T("No longer member");
             }
         } else {
+            $ddate = new \DateTime($this->_due_date);
             $patterns = array('/%days/', '/%date/');
             $replace = array(
                 $this->_days_remaining,
@@ -855,7 +858,7 @@ class Adherent
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -929,7 +932,7 @@ class Adherent
                 '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -1124,7 +1127,9 @@ class Adherent
 
                 // now, check validity
                 if ($value !== null && $value != '') {
-                    $this->validate($key, $value, $values);
+                    if ($key !== 'mdp_adh') {
+                        $this->validate($key, $value, $values);
+                    }
                 } elseif (empty($this->_id)) {
                     //ensure login and password are not empty
                     if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
@@ -1139,6 +1144,11 @@ class Adherent
                     }
                 }
             }
+        }
+
+        //password checks need data to be previously set
+        if (isset($values['mdp_adh'])) {
+            $this->validate('mdp_adh', $values['mdp_adh'], $values);
         }
 
         // missing required fields?
@@ -1310,14 +1320,14 @@ class Adherent
                 }
                 break;
             case 'url_adh':
-                if ($value == 'http://') {
+                if ($value == 'http://' || $value == 'https://') {
                     $this->$prop = '';
                 } elseif (!isValidWebUrl($value)) {
                     $this->errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
                 }
                 break;
             case 'login_adh':
-                /** FIXME: add a preference for login lenght */
+                /** FIXME: add a preference for login length */
                 if (strlen($value) < 2) {
                     $this->errors[] = str_replace(
                         '%i',
@@ -1350,7 +1360,7 @@ class Adherent
                             }
                         } catch (Throwable $e) {
                             Analog::log(
-                                'An error occurred checking member login unicity.',
+                                'An error occurred checking member login uniqueness.',
                                 Analog::ERROR
                             );
                             $this->errors[] = _T("An error has occurred while looking if login already exists.");
@@ -1409,7 +1419,7 @@ class Adherent
                     }
                 } catch (Throwable $e) {
                     Analog::log(
-                        'An error occurred checking status existance: ' . $e->getMessage(),
+                        'An error occurred checking status existence: ' . $e->getMessage(),
                         Analog::ERROR
                     );
                     $this->errors[] = _T("An error has occurred while looking if status does exists.");
@@ -1599,7 +1609,7 @@ class Adherent
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -1625,13 +1635,14 @@ class Adherent
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return false|object the called property
      */
@@ -1668,123 +1679,123 @@ class Adherent
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
-        } else {
-            if (in_array($name, $virtuals)) {
-                if (substr($name, 0, 1) !== '_') {
-                    $real = '_' . substr($name, 1);
-                } else {
-                    $real = $name;
-                }
-                switch ($name) {
-                    case 'sadmin':
-                    case 'sdue_free':
-                    case 'sappears_in_list':
-                    case 'sstaff':
-                        return (($this->$real) ? _T("Yes") : _T("No"));
-                        break;
-                    case 'sactive':
-                        return (($this->$real) ? _T("Active") : _T("Inactive"));
-                        break;
-                    case 'stitle':
-                        if (isset($this->_title) && $this->_title instanceof Title) {
-                            return $this->_title->tshort;
-                        } else {
-                            return null;
-                        }
-                        break;
-                    case 'sstatus':
-                        $status = new Status($this->zdb);
-                        return $status->getLabel($this->_status);
-                        break;
-                    case 'sfullname':
-                        return $this->getNameWithCase(
-                            $this->_name,
-                            $this->_surname,
-                            (isset($this->_title) ? $this->title : false)
-                        );
-                        break;
-                    case 'saddress':
-                        $address = $this->_address;
-                        if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
-                            $address .= "\n" . $this->_address_continuation;
-                        }
-                        return htmlspecialchars($address, ENT_QUOTES);
-                        break;
-                    case 'sname':
-                        return $this->getNameWithCase($this->_name, $this->_surname);
-                        break;
-                    case 'rbirthdate':
-                        return $this->_birthdate;
-                        break;
-                    case 'sgender':
-                        switch ($this->gender) {
-                            case self::MAN:
-                                return _T('Man');
-                            case self::WOMAN:
-                                return _T('Woman');
-                            default:
-                                return _T('Unspecified');
-                        }
-                        break;
-                    case 'contribstatus':
-                        return $this->getDues();
-                        break;
-                }
-            } else {
-                if (substr($name, 0, 1) !== '_') {
-                    $rname = '_' . $name;
-                } else {
-                    $rname = $name;
-                }
+        }
 
-                switch ($name) {
-                    case 'id':
-                    case 'id_statut':
-                        if ($this->$rname !== null) {
-                            return (int)$this->$rname;
-                        } else {
-                            return null;
-                        }
-                        break;
-                    case 'address':
-                    case 'address_continuation':
-                        return $this->$rname ?? '';
-                        break;
-                    case 'birthdate':
-                    case 'creation_date':
-                    case 'modification_date':
-                    case 'due_date':
-                        if ($this->$rname != '') {
-                            try {
-                                $d = new \DateTime($this->$rname);
-                                return $d->format(__("Y-m-d"));
-                            } catch (Throwable $e) {
-                                //oops, we've got a bad date :/
-                                Analog::log(
-                                    'Bad date (' . $this->$rname . ') | ' .
-                                    $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                return $this->$rname;
-                            }
-                        }
-                        break;
-                    case 'parent_id':
-                        return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
-                        break;
-                    default:
-                        if (!property_exists($this, $rname)) {
-                            Analog::log(
-                                "Unknown property '$rname'",
-                                Analog::WARNING
-                            );
-                            return null;
-                        } else {
-                            return $this->$rname;
-                        }
-                        break;
-                }
+        if (in_array($name, $virtuals)) {
+            if (substr($name, 0, 1) !== '_') {
+                $real = '_' . substr($name, 1);
+            } else {
+                $real = $name;
             }
+            switch ($name) {
+                case 'sadmin':
+                case 'sdue_free':
+                case 'sappears_in_list':
+                case 'sstaff':
+                    return (($this->$real) ? _T("Yes") : _T("No"));
+                    break;
+                case 'sactive':
+                    return (($this->$real) ? _T("Active") : _T("Inactive"));
+                    break;
+                case 'stitle':
+                    if (isset($this->_title) && $this->_title instanceof Title) {
+                        return $this->_title->tshort;
+                    } else {
+                        return null;
+                    }
+                    break;
+                case 'sstatus':
+                    $status = new Status($this->zdb);
+                    return $status->getLabel($this->_status);
+                    break;
+                case 'sfullname':
+                    return $this->getNameWithCase(
+                        $this->_name,
+                        $this->_surname,
+                        (isset($this->_title) ? $this->title : false)
+                    );
+                    break;
+                case 'saddress':
+                    $address = $this->_address;
+                    if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
+                        $address .= "\n" . $this->_address_continuation;
+                    }
+                    return htmlspecialchars($address, ENT_QUOTES);
+                    break;
+                case 'sname':
+                    return $this->getNameWithCase($this->_name, $this->_surname);
+                    break;
+                case 'rbirthdate':
+                    return $this->_birthdate;
+                    break;
+                case 'sgender':
+                    switch ($this->gender) {
+                        case self::MAN:
+                            return _T('Man');
+                        case self::WOMAN:
+                            return _T('Woman');
+                        default:
+                            return _T('Unspecified');
+                    }
+                    break;
+                case 'contribstatus':
+                    return $this->getDues();
+                    break;
+            }
+        }
+
+        if (substr($name, 0, 1) !== '_') {
+            $rname = '_' . $name;
+        } else {
+            $rname = $name;
+        }
+
+        switch ($name) {
+            case 'id':
+            case 'id_statut':
+                if ($this->$rname !== null) {
+                    return (int)$this->$rname;
+                } else {
+                    return null;
+                }
+                break;
+            case 'address':
+            case 'address_continuation':
+                return $this->$rname ?? '';
+                break;
+            case 'birthdate':
+            case 'creation_date':
+            case 'modification_date':
+            case 'due_date':
+                if ($this->$rname != '') {
+                    try {
+                        $d = new \DateTime($this->$rname);
+                        return $d->format(__("Y-m-d"));
+                    } catch (Throwable $e) {
+                        //oops, we've got a bad date :/
+                        Analog::log(
+                            'Bad date (' . $this->$rname . ') | ' .
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                        return $this->$rname;
+                    }
+                }
+                break;
+            case 'parent_id':
+                return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
+                break;
+            default:
+                if (!property_exists($this, $rname)) {
+                    Analog::log(
+                        "Unknown property '$rname'",
+                        Analog::WARNING
+                    );
+                    return null;
+                } else {
+                    return $this->$rname;
+                }
+                break;
         }
     }
 

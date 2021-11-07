@@ -3,12 +3,12 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Temporay links for galette, to send direct links to invoices, recipts,
+ * Temporary links for galette, to send direct links to invoices, receipts,
  * and member cards directly by email
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4 - 2020-03-11
@@ -43,13 +43,14 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 
 /**
- * Temporary password managment
+ * Temporary links for galette, to send direct links to invoices, receipts,
+ * and member cards directly by email
  *
  * @category  Core
  * @name      Links
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4 - 2020-03-11

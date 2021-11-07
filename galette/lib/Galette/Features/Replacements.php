@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Entity
+ * @category  Features
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>

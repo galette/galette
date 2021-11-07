@@ -60,13 +60,13 @@ class Reminders extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->initStatus();
         $this->initContributionsTypes();
 
@@ -83,12 +83,13 @@ class Reminders extends GaletteTestCase
     /**
      * Tear down tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function afterTestMethod($testMethod)
+    public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
         $this->cleanContributions();
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
@@ -137,7 +138,7 @@ class Reminders extends GaletteTestCase
         //create contribution, just about to be impending
         $now = new \DateTime();
         $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
+        $date_begin->sub(new \DateInterval('P1YP1D'));
         $date_begin->add(new \DateInterval('P1M'));
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));

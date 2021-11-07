@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-07-28
@@ -40,8 +40,8 @@ use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
-use Galette\Entity\TranslatableTrait;
-use Galette\Entity\I18nTrait;
+use Galette\Features\Translatable;
+use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
@@ -60,8 +60,8 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
 abstract class DynamicField
 {
-    use TranslatableTrait;
-    use I18nTrait;
+    use Translatable;
+    use I18n;
 
     public const TABLE = 'field_types';
     public const PK = 'field_id';

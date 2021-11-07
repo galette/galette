@@ -61,11 +61,11 @@ class FieldsConfig extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
 

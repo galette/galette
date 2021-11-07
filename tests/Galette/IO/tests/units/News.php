@@ -58,11 +58,11 @@ class News extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Method name
+     * @param string $method Method name
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->i18n = new \Galette\Core\I18n();
         global $i18n;

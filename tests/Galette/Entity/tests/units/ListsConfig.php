@@ -69,11 +69,11 @@ class ListsConfig extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
 
@@ -94,12 +94,15 @@ class ListsConfig extends atoum
     /**
      * Tear down tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function afterTestMethod($testMethod)
+    public function afterTestMethod($method)
     {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
         $this->resetListsConfig();
     }
 

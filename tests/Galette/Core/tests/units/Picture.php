@@ -53,6 +53,7 @@ use atoum;
  */
 class Picture extends atoum
 {
+    private $zdb;
     private $picture;
     private $expected_badchars = [
         '.',
@@ -72,13 +73,28 @@ class Picture extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Method name
+     * @param string $method Method name
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
+        $this->zdb = new \Galette\Core\Db();
         $this->picture = new \Galette\Core\Picture();
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**

@@ -58,13 +58,13 @@ class PdfModels extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
@@ -74,12 +74,13 @@ class PdfModels extends GaletteTestCase
     /**
      * Tear down tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function afterTestMethod($testMethod)
+    public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
         $this->deletePdfModels();
     }
 

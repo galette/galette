@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-27
@@ -37,6 +37,13 @@
 namespace Galette;
 
 use atoum;
+use Galette\Core\Db;
+use Galette\Core\History;
+use Galette\Core\I18n;
+use Galette\Core\Login;
+use Galette\Core\Preferences;
+use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
 
 /**
  * Galette tests case main class
@@ -52,17 +59,24 @@ use atoum;
  */
 abstract class GaletteTestCase extends atoum
 {
+    /** @var Db */
     protected $zdb;
     protected $members_fields;
     protected $members_fields_cats;
+    /** @var I18n */
     protected $i18n;
+    /** @var Preferences */
     protected $preferences;
     protected $session;
+    /** @var Login */
     protected $login;
+    /** @var History */
     protected $history;
     protected $logger_storage = '';
 
+    /** @var Adherent */
     protected $adh;
+    /** @var Contribution */
     protected $contrib;
     protected $adh_ids = [];
     protected $contrib_ids = [];
@@ -76,15 +90,16 @@ abstract class GaletteTestCase extends atoum
     protected $request;
     protected $response;
     protected $seed;
+    protected $excluded_after_methods = [];
 
     /**
      * Set up tests
      *
-     * @param stgring $testMethod Method tested
+     * @param stgring $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->mocked_router = new \mock\Slim\Router();
         $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
@@ -124,6 +139,20 @@ abstract class GaletteTestCase extends atoum
         $i18n = $this->i18n;
         $container = $this->container;
         $galette_log_var = $this->logger_storage;
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql' && !in_array($method, $this->excluded_after_methods)) {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**

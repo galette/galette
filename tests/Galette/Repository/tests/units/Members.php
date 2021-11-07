@@ -59,25 +59,27 @@ class Members extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->createMembers();
     }
 
     /**
      * Tear down tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function afterTestMethod($testMethod)
+    public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
+
         $this->deleteGroups();
         $this->deleteMembers();
     }

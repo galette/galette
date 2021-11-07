@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4
@@ -47,11 +47,11 @@ use Galette\Entity\Adherent;
  * @name      Password
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @see       https://github.com/rollerworks/PasswordStrengthValidator
- * @since     Available since 0.9dev - 2017-09-22
+ * @since     Available since 0.9.4
  */
 class Password
 {
@@ -272,6 +272,9 @@ class Password
 
         //some possible combinations
         foreach ([$adh->surname, $adh->nickname, $adh->login] as $surname) {
+            if ($surname === null) {
+                continue;
+            }
             $infos[] = mb_substr($surname, 0, 1) . $adh->name;
             $infos[] = $adh->name . mb_substr($surname, 0, 1);
             $infos[] = $surname . $adh->name;
@@ -289,9 +292,6 @@ class Password
             }
         }
 
-        foreach ($infos as &$info) {
-            $info = mb_strtolower($info);
-        }
         $this->addPersonalInformation($infos);
 
         return $this;

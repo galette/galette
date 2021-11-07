@@ -45,6 +45,7 @@ use Galette\Core\Login;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
+use Galette\Features\Dynamics;
 
 /**
  * Contribution class for galette
@@ -80,7 +81,7 @@ use Galette\Repository\PaymentTypes;
  */
 class Contribution
 {
-    use DynamicsTrait;
+    use Dynamics;
 
     public const TABLE = 'cotisations';
     public const PK = 'id_cotis';
@@ -299,6 +300,13 @@ class Contribution
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                if (!$this->login->isLogged()) {
+                    Analog::log(
+                        'Non-logged-in users cannot load contribution id `' . $id,
+                        Analog::ERROR
+                    );
+                    return false;
+                }
                 if (!$this->login->isGroupManager()) {
                     $select->where
                         ->nest()
@@ -325,9 +333,11 @@ class Contribution
                 $this->loadFromRS($row);
                 return true;
             } else {
-                throw new \Exception(
-                    'No contribution #' . $id . ' (user ' . $this->login->id . ')'
+                Analog::log(
+                    'No contribution #' . $id . ' (user ' . $this->login->id . ')',
+                    Analog::ERROR
                 );
+                return false;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -335,7 +345,7 @@ class Contribution
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -528,12 +538,8 @@ class Contribution
         if ($this->isFee() && count($this->errors) == 0) {
             $overlap = $this->checkOverlap();
             if ($overlap !== true) {
-                if ($overlap === false) {
-                    $this->errors[] = _T("An error occurred checking overlapping fees :(");
-                } else {
-                    //method directly return error message
-                    $this->errors[] = $overlap;
-                }
+                //method directly return error message
+                $this->errors[] = $overlap;
             }
         }
 
@@ -599,7 +605,7 @@ class Contribution
                 'An error occurred checking overlapping fee. ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -697,11 +703,7 @@ class Contribution
             }
             //update deadline
             if ($this->isFee()) {
-                $deadline = $this->updateDeadline();
-                if ($deadline !== true) {
-                    //if something went wrong, we roll back transaction
-                    throw new \Exception('An error occurred updating member\'s deadline');
-                }
+                $this->updateDeadline();
             }
 
             //dynamic fields
@@ -722,7 +724,7 @@ class Contribution
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
-            return false;
+            throw $e;
         }
     }
 
@@ -757,7 +759,7 @@ class Contribution
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -784,9 +786,11 @@ class Contribution
                 $this->updateDeadline();
                 $this->dynamicsRemove(true);
             } else {
-                throw new \RuntimeException(
-                    'Contribution has not been removed!'
+                Analog::log(
+                    'Contribution has not been removed!',
+                    Analog::WARNING
                 );
+                return false;
             }
             if ($transaction) {
                 $this->zdb->connection->commit();
@@ -802,7 +806,7 @@ class Contribution
                 $this->_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -897,7 +901,7 @@ class Contribution
                 'An error occurred trying to retrieve member\'s due date',
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -939,7 +943,7 @@ class Contribution
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -968,7 +972,7 @@ class Contribution
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -1442,6 +1446,11 @@ class Contribution
      */
     public function canShow(Login $login): bool
     {
+        //non-logged-in members cannot show contributions
+        if (!$login->isLogged()) {
+            return false;
+        }
+
         //admin and staff users can edit, as well as member itself
         if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
             return true;

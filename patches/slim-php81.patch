@@ -1,0 +1,118 @@
+diff -up vendor/slim/slim/Slim/App.php.patch vendor/slim/slim/Slim/App.php
+--- vendor/slim/slim/Slim/App.php.patch	2021-10-11 15:47:02.759006753 +0200
++++ vendor/slim/slim/Slim/App.php	2021-10-11 15:42:04.816335261 +0200
+@@ -663,7 +663,7 @@ class App
+      */
+     protected function isHeadRequest(RequestInterface $request)
+     {
+-        return strtoupper($request->getMethod()) === 'HEAD';
++        return strtoupper($request->getMethod() ?? '') === 'HEAD';
+     }
+ 
+     /**
+diff -up vendor/slim/slim/Slim/Collection.php.patch vendor/slim/slim/Slim/Collection.php
+--- vendor/slim/slim/Slim/Collection.php.patch	2021-10-11 15:46:20.250066699 +0200
++++ vendor/slim/slim/Slim/Collection.php	2021-10-11 15:04:06.200385425 +0200
+@@ -109,7 +109,7 @@ class Collection implements CollectionIn
+      *
+      * @return bool
+      */
+-    public function offsetExists($key)
++    public function offsetExists($key): bool
+     {
+         return $this->has($key);
+     }
+@@ -121,6 +121,7 @@ class Collection implements CollectionIn
+      *
+      * @return mixed The key's value, or the default value
+      */
++    #[\ReturnTypeWillChange]
+     public function offsetGet($key)
+     {
+         return $this->get($key);
+@@ -132,7 +133,7 @@ class Collection implements CollectionIn
+      * @param string $key   The data key
+      * @param mixed  $value The data value
+      */
+-    public function offsetSet($key, $value)
++    public function offsetSet($key, $value): void
+     {
+         $this->set($key, $value);
+     }
+@@ -142,7 +143,7 @@ class Collection implements CollectionIn
+      *
+      * @param string $key The data key
+      */
+-    public function offsetUnset($key)
++    public function offsetUnset($key): void
+     {
+         $this->remove($key);
+     }
+@@ -152,7 +153,7 @@ class Collection implements CollectionIn
+      *
+      * @return int
+      */
+-    public function count()
++    public function count(): int
+     {
+         return count($this->data);
+     }
+@@ -162,7 +163,7 @@ class Collection implements CollectionIn
+      *
+      * @return ArrayIterator
+      */
+-    public function getIterator()
++    public function getIterator(): \Traversable
+     {
+         return new ArrayIterator($this->data);
+     }
+diff -up vendor/slim/slim/Slim/Http/Request.php.patch vendor/slim/slim/Slim/Http/Request.php
+--- vendor/slim/slim/Slim/Http/Request.php.patch	2021-10-16 07:19:02.079746981 +0200
++++ vendor/slim/slim/Slim/Http/Request.php	2021-10-16 07:19:22.315187184 +0200
+@@ -1016,7 +1016,7 @@ class Request extends Message implements
+         // Check if this specific media type has a parser registered first
+         if (!isset($this->bodyParsers[$mediaType])) {
+             // If not, look for a media type with a structured syntax suffix (RFC 6839)
+-            $parts = explode('+', $mediaType);
++            $parts = explode('+', $mediaType ?? '');
+             if (count($parts) >= 2) {
+                 $mediaType = 'application/' . $parts[count($parts)-1];
+             }
+diff -up vendor/slim/slim/Slim/Http/Uri.php.patch vendor/slim/slim/Slim/Http/Uri.php
+--- vendor/slim/slim/Slim/Http/Uri.php.patch	2021-10-11 15:45:45.184291247 +0200
++++ vendor/slim/slim/Slim/Http/Uri.php	2021-10-11 15:41:39.278759355 +0200
+@@ -179,14 +179,14 @@ class Uri implements UriInterface
+             $port = (int)$env->get('SERVER_PORT', 80);
+         }
+ 
+-        if (preg_match('/^(\[[a-fA-F0-9:.]+\])(:\d+)?\z/', $host, $matches)) {
++        if (preg_match('/^(\[[a-fA-F0-9:.]+\])(:\d+)?\z/', $host ?? '', $matches)) {
+             $host = $matches[1];
+ 
+             if (isset($matches[2])) {
+                 $port = (int) substr($matches[2], 1);
+             }
+         } else {
+-            $pos = strpos($host, ':');
++            $pos = strpos($host ?? '', ':');
+             if ($pos !== false) {
+                 $port = (int) substr($host, $pos + 1);
+                 $host = strstr($host, ':', true);
+@@ -389,7 +389,7 @@ class Uri implements UriInterface
+      *
+      * @return string The percent-encoded query string.
+      */
+-    protected function filterUserInfo($query)
++    protected function filterUserInfo(string $query)
+     {
+         return preg_replace_callback(
+             '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=]+|%(?![A-Fa-f0-9]{2}))/u',
+@@ -718,7 +718,7 @@ class Uri implements UriInterface
+             function ($match) {
+                 return rawurlencode($match[0]);
+             },
+-            $query
++            $query ?? ''
+         );
+     }
+ 

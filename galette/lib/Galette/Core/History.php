@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
@@ -51,7 +51,7 @@ use Laminas\Db\Sql\Select;
  * @name      History
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
@@ -157,7 +157,7 @@ class History
                 "An error occurred trying to add log entry. " . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
 
         return true;
@@ -192,7 +192,7 @@ class History
                 'Unable to flush logs. | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -226,7 +226,7 @@ class History
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -277,6 +277,7 @@ class History
                 'Cannot list actions from history! | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -353,6 +354,7 @@ class History
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -389,7 +391,7 @@ class History
                 'Cannot count history | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 

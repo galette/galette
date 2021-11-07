@@ -61,25 +61,27 @@ class CsvIn extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->contents_table = null;
     }
 
     /**
      * Tear down tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function afterTestMethod($testMethod)
+    public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);

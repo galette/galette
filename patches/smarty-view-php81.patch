@@ -1,0 +1,39 @@
+diff -up vendor/mathmarques/smarty-view/src/Smarty.php.patch vendor/mathmarques/smarty-view/src/Smarty.php
+--- vendor/mathmarques/smarty-view/src/Smarty.php.patch	2021-09-24 12:02:58.287223301 +0200
++++ vendor/mathmarques/smarty-view/src/Smarty.php	2021-09-25 10:35:50.856555954 +0200
+@@ -153,7 +153,7 @@ class Smarty implements \ArrayAccess
+      *
+      * @return bool
+      */
+-    public function offsetExists($key)
++    public function offsetExists($key): bool
+     {
+         return array_key_exists($key, $this->defaultVariables);
+     }
+@@ -165,7 +165,7 @@ class Smarty implements \ArrayAccess
+      *
+      * @return mixed The key's value, or the default value
+      */
+-    public function offsetGet($key)
++    public function offsetGet($key): mixed
+     {
+         return $this->defaultVariables[$key];
+     }
+@@ -176,7 +176,7 @@ class Smarty implements \ArrayAccess
+      * @param string $key The data key
+      * @param mixed $value The data value
+      */
+-    public function offsetSet($key, $value)
++    public function offsetSet($key, $value): void
+     {
+         $this->defaultVariables[$key] = $value;
+     }
+@@ -186,7 +186,7 @@ class Smarty implements \ArrayAccess
+      *
+      * @param string $key The data key
+      */
+-    public function offsetUnset($key)
++    public function offsetUnset($key): void
+     {
+         unset($this->defaultVariables[$key]);
+     }

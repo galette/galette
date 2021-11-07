@@ -1,0 +1,11 @@
+diff -up vendor/laminas/laminas-cache-storage-adapter-apcu/src/Apcu.php.patch vendor/laminas/laminas-cache-storage-adapter-apcu/src/Apcu.php
+--- vendor/laminas/laminas-cache-storage-adapter-apcu/src/Apcu.php.patch	2021-11-02 12:45:13.681224419 +0100
++++ vendor/laminas/laminas-cache-storage-adapter-apcu/src/Apcu.php	2021-11-02 12:45:41.509820264 +0100
+@@ -125,6 +125,7 @@ class Apcu extends AbstractAdapter imple
+      *
+      * @return ApcuIterator
+      */
++    #[\ReturnTypeWillChange]
+     public function getIterator()
+     {
+         $options   = $this->getOptions();

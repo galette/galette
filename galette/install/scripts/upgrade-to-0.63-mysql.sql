@@ -42,7 +42,7 @@ CREATE TABLE galette_dynamic_fields (
     field_id int(10) NOT NULL default '0',
     field_form varchar(10) NOT NULL,
     val_index int(10) NOT NULL default '0',
-    field_val text DEFAULT '',
+    field_val text,
     KEY  (item_id)
 ) ENGINE=MyISAM;
 
@@ -60,9 +60,9 @@ ALTER TABLE galette_logs ADD action_log text;
 ALTER TABLE galette_logs ADD sql_log text;
 
 -- Change table cotisations to store date_fin_cotis instead of duration;
-ALTER TABLE galette_cotisations ADD date_enreg date NOT NULL default '0000-00-00';
-ALTER TABLE galette_cotisations ADD date_debut_cotis date NOT NULL default '0000-00-00';
-ALTER TABLE galette_cotisations ADD date_fin_cotis date NOT NULL default '0000-00-00';
+ALTER TABLE galette_cotisations ADD date_enreg date NOT NULL default '1901-01-01';
+ALTER TABLE galette_cotisations ADD date_debut_cotis date NOT NULL default '1901-01-01';
+ALTER TABLE galette_cotisations ADD date_fin_cotis date NOT NULL default '1901-01-01';
 UPDATE galette_cotisations
     SET date_enreg=date_cotis,
         date_debut_cotis=date_cotis,
@@ -89,7 +89,7 @@ CREATE TABLE galette_l10n (
 DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
-  trans_date date NOT NULL default '0000-00-00',
+  trans_date date NOT NULL default '1901-01-01',
   trans_amount float default '0',
   trans_desc varchar(30) NOT NULL default '',
   id_adh int(10) unsigned default NULL,

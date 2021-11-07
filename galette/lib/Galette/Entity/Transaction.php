@@ -43,6 +43,7 @@ use Galette\Repository\Contributions;
 use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
+use Galette\Features\Dynamics;
 
 /**
  * Transaction class for galette
@@ -64,7 +65,7 @@ use Galette\Core\Login;
  */
 class Transaction
 {
-    use DynamicsTrait;
+    use Dynamics;
 
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
@@ -162,6 +163,13 @@ class Transaction
 
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
+                if (!$this->login->isLogged()) {
+                    Analog::log(
+                        'Non-logged-in users cannot load transaction id `' . $id,
+                        Analog::ERROR
+                    );
+                    return false;
+                }
                 $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)
@@ -181,7 +189,11 @@ class Transaction
                 $this->loadFromRS($result);
                 return true;
             } else {
-                throw new \Exception();
+                Analog::log(
+                    'Transaction id `' . $id . '` does not exists',
+                    Analog::WARNING
+                );
+                return false;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -189,7 +201,7 @@ class Transaction
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -226,9 +238,16 @@ class Transaction
             $delete->where(
                 self::PK . ' = ' . $this->_id
             );
-            $this->zdb->execute($delete);
-
-            $this->dynamicsRemove(true);
+            $del = $this->zdb->execute($delete);
+            if ($del->count() > 0) {
+                $this->dynamicsRemove(true);
+            } else {
+                Analog::log(
+                    'Transaction has not been removed!',
+                    Analog::WARNING
+                );
+                return false;
+            }
 
             if ($transaction) {
                 $this->zdb->connection->commit();
@@ -245,7 +264,7 @@ class Transaction
                 $this->_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -474,7 +493,7 @@ class Transaction
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -507,6 +526,7 @@ class Transaction
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -539,6 +559,7 @@ class Transaction
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -676,6 +697,11 @@ class Transaction
      */
     public function canShow(Login $login): bool
     {
+        //non-logged-in members cannot show contributions
+        if (!$login->isLogged()) {
+            return false;
+        }
+
         //admin and staff users can edit, as well as member itself
         if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
             return true;

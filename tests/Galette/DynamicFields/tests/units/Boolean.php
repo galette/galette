@@ -59,11 +59,11 @@ class Boolean extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Current test method
+     * @param string $method Current test method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
         $this->bool = new \Galette\DynamicFields\Boolean($this->zdb);

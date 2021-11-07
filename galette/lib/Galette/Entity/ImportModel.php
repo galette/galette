@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -47,7 +47,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      ImportModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -89,7 +89,7 @@ class ImportModel
                 "\n" . $e->__toString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -135,7 +135,7 @@ class ImportModel
                 'Unable to remove import model ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -185,7 +185,7 @@ class ImportModel
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

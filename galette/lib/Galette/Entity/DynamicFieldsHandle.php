@@ -166,7 +166,7 @@ class DynamicFieldsHandle
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 

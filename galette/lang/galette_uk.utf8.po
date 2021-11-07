@@ -2,13 +2,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
 # Andrii Leitsius <leits.dev@gmail.com>, 2021.
+# Tymofii Lytvynenko <till.svit@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-10-17 09:45+0200\n"
-"PO-Revision-Date: 2021-10-07 09:05+0000\n"
-"Last-Translator: Andrii Leitsius <leits.dev@gmail.com>\n"
+"PO-Revision-Date: 2021-10-26 21:52+0000\n"
+"Last-Translator: Tymofii Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -427,10 +428,9 @@ msgstr "Пожертва"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:237
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:281
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass add contribution on %count members"
-msgstr "Масова зміна %count членів"
+msgstr "Масове додавання внесків %count членів"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:503
 msgid "Contributions management"
@@ -1527,7 +1527,7 @@ msgstr "Внески"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
 msgid "Transactions"
-msgstr "Транзакції"
+msgstr "Перекази"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:597
 msgid "Missing required field name!"
@@ -1912,10 +1912,9 @@ msgid "Label for dynamic field \"%s\""
 msgstr "Мітка для динамічного поля \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:132
-#, fuzzy, php-format
-#| msgid "Input for dynamic field \"%s\""
+#, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr "Вхід для динамічного поля \"%s\""
+msgstr "Запис форми для динамічного поля \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:137
 #, php-format
@@ -2181,8 +2180,6 @@ msgid "Last day!"
 msgstr "Останній день!"
 
 #: ../lib/Galette/Entity/Adherent.php:795
-#, fuzzy
-#| msgid "Last day!"
 msgid "Late since today!"
 msgstr "Останній день!"
 
@@ -2356,7 +2353,7 @@ msgstr "Тип внеску:"
 
 #: ../lib/Galette/Entity/Contribution.php:162
 msgid "Payment type:"
-msgstr "Тип платежу:"
+msgstr "Вид оплати:"
 
 #: ../lib/Galette/Entity/Contribution.php:166
 msgid "Comments:"
@@ -2380,7 +2377,7 @@ msgstr "Розширення членства:"
 
 #: ../lib/Galette/Entity/Contribution.php:476
 msgid "- Unknown payment type"
-msgstr "- Невідомий тип платежу"
+msgstr "- Невідомий вид оплати"
 
 #: ../lib/Galette/Entity/Contribution.php:490
 msgid "- The duration must be a positive integer!"
@@ -2486,7 +2483,7 @@ msgstr "тіло не повинно бути порожнім!"
 
 #: ../lib/Galette/Entity/PaymentType.php:189
 msgid "You cannot delete system payment types!"
-msgstr "Ви не можете видалити системні типи платежів!"
+msgstr "Ви не можете видалити системні види оплати!"
 
 #: ../lib/Galette/Entity/PaymentType.php:281
 msgid "Other"
@@ -4110,16 +4107,12 @@ msgid "Go to Galette's dashboard"
 msgstr "Перейти до дошки даних Galette"
 
 #: ../templates/default/page.tpl:38
-#, fuzzy
-#| msgid "Add new member in database"
 msgid "Add new child member in database"
-msgstr "Додати нового члена в базу даних"
+msgstr "Додати нового дочірнього члена в базу даних"
 
 #: ../templates/default/page.tpl:38
-#, fuzzy
-#| msgid "Add a member"
 msgid "Add a child member"
-msgstr "Додати члена"
+msgstr "Додати дочірнього члена"
 
 #: ../templates/default/page.tpl:41 ../templates/default/desktop.tpl:30
 msgid "View, search into and filter member's list"
@@ -4155,7 +4148,7 @@ msgstr "Перегляд і добірка переказів"
 
 #: ../templates/default/page.tpl:48
 msgid "List of transactions"
-msgstr "Список транзакцій"
+msgstr "Список переказів"
 
 #: ../templates/default/page.tpl:49
 msgid "Add new member in database"
@@ -4236,7 +4229,7 @@ msgstr "Перегляд і добірка всіх моїх переказів"
 
 #: ../templates/default/page.tpl:61 ../templates/default/desktop.tpl:48
 msgid "My transactions"
-msgstr "Мої транзакції"
+msgstr "Мої перекази"
 
 #: ../templates/default/page.tpl:64 ../templates/default/desktop.tpl:46
 msgid "View my member card"
@@ -4317,11 +4310,11 @@ msgstr "Управління моделями PDF"
 
 #: ../templates/default/page.tpl:91
 msgid "Manage payment types"
-msgstr "Управління типами платежів"
+msgstr "Управління видами оплати"
 
 #: ../templates/default/page.tpl:91
 msgid "Payment types"
-msgstr "Типи платежів"
+msgstr "Види оплат"
 
 #: ../templates/default/page.tpl:92
 msgid "Download empty adhesion form"
@@ -4534,16 +4527,12 @@ msgid "Lines / Page:"
 msgstr "Рядки / Сторінка:"
 
 #: ../templates/default/preferences.tpl:162
-#, fuzzy
-#| msgid "No member attached"
 msgid "Can members create child?"
-msgstr "Не долучено жодного члена"
+msgstr "Чи можуть члени створити дочірнє?"
 
 #: ../templates/default/preferences.tpl:163
-#, fuzzy
-#| msgid "(Members will be able to generate their own member card)"
 msgid "Any logged in member will be able to create his own child cards"
-msgstr "(Члени зможуть створити власну картку члена)"
+msgstr "Будь-який зареєстрований член зможе створювати власні дочірні картки"
 
 #: ../templates/default/preferences.tpl:168 ../templates/default/member.tpl:62
 msgid "After member creation:"
@@ -4633,10 +4622,8 @@ msgstr ""
 "наступного року."
 
 #: ../templates/default/preferences.tpl:213
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Default payment type:"
-msgstr "Видалити тип платежу '%s'"
+msgstr "Типовий вид оплати:"
 
 #: ../templates/default/preferences.tpl:219
 msgid "Public pages enabled?"
@@ -4771,16 +4758,12 @@ msgid "Send email to members?"
 msgstr "Надіслати лист спізнілим членам?"
 
 #: ../templates/default/preferences.tpl:296
-#, fuzzy
-#| msgid ""
-#| "Sends an email each time a new member registers online or edit his/her "
-#| "account"
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
-"Надсилає повідомлення е-пошти щоразу, коли новий член реєструється в мережі "
-"або редагує свій обліковий запис"
+"Надсилає електронний лист кожного разу, коли картка члена або внесок були "
+"додані або відредаговані. Це можна вимкнути для кожного випадку."
 
 #: ../templates/default/preferences.tpl:300
 msgid "Wrap emails text?"
@@ -5424,7 +5407,7 @@ msgstr "Показати внески лише від '%name'"
 #: ../templates/default/gestion_contributions.tpl:250
 #: ../templates/default/gestion_transactions.tpl:147
 msgid "Show '%name' card"
-msgstr ""
+msgstr "Показ картки '%name'"
 
 #: ../templates/default/gestion_contributions.tpl:267
 msgid "Print an invoice or a receipt (depending on contribution type)"
@@ -5694,10 +5677,8 @@ msgid "Show dashboard on login"
 msgstr "Показувати дошку даних під час входу"
 
 #: ../templates/default/mass_choose_type.tpl:12
-#, fuzzy
-#| msgid "Contribution types"
 msgid "Contribution type"
-msgstr "Види внесків"
+msgstr "Вид внеску"
 
 #: ../templates/default/mass_choose_type.tpl:18
 #: ../templates/default/mass_change_members.tpl:49
@@ -6079,10 +6060,8 @@ msgid "Mass change"
 msgstr "Масова зміна"
 
 #: ../templates/default/gestion_adherents.tpl:313
-#, fuzzy
-#| msgid "My contributions"
 msgid "Mass add contributions"
-msgstr "Мої внески"
+msgstr "Масове додавання внесків"
 
 #: ../templates/default/gestion_adherents.tpl:331
 #: ../templates/default/mailing_recipients.tpl:20
@@ -6764,10 +6743,8 @@ msgstr "Об'єкт:"
 
 #: ../templates/default/mailing_adherents.tpl:86
 #: ../templates/default/common_scripts.tpl:70
-#, fuzzy
-#| msgid "Activate HTML editor?"
 msgid "Activate HTML editor"
-msgstr "Задіяти редактор HTML?"
+msgstr "Задіяти редактор HTML"
 
 #: ../templates/default/mailing_adherents.tpl:93
 msgid "Interpret HTML"
@@ -7021,10 +6998,8 @@ msgstr "Немає члена для показу"
 
 #: ../templates/default/common_scripts.tpl:49
 #: ../templates/default/common_scripts.tpl:75
-#, fuzzy
-#| msgid "(De)Activate HTML editor"
 msgid "Deactivate HTML editor"
-msgstr "Задіяти/знедіяти редактор HTML"
+msgstr "Знедіяти редактор HTML"
 
 #: ../templates/default/change_passwd.tpl:6
 msgid "New password:"
@@ -7557,10 +7532,8 @@ msgid "Transaction %id"
 msgstr "Переказ %id"
 
 #: ../templates/default/gestion_transactions.tpl:140
-#, fuzzy
-#| msgid "Show only '%name' contributions"
 msgid "Show only '%name' transactions"
-msgstr "Показати внески лише від '%name'"
+msgstr "Показати перекази лише від '%name'"
 
 #: ../templates/default/gestion_transactions.tpl:175
 msgid "Edit transaction #%id"
@@ -7681,7 +7654,7 @@ msgstr "Під час надсилання відомостей про теле�
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
-msgstr "Додати тип платежу"
+msgstr "Додати вид оплати"
 
 #: ../templates/default/gestion_paymentstypes.tpl:20
 msgid "Label"
@@ -7690,17 +7663,17 @@ msgstr "Мітка"
 #: ../templates/default/gestion_paymentstypes.tpl:43
 #, php-format
 msgid "%s payment type"
-msgstr "Тип платежу %s"
+msgstr "Вид оплати %s"
 
 #: ../templates/default/gestion_paymentstypes.tpl:54
 #, php-format
 msgid "Edit '%s' payment type"
-msgstr "Редагувати тип платежу '%s'"
+msgstr "Редагувати вид оплати '%s'"
 
 #: ../templates/default/gestion_paymentstypes.tpl:72
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr "Видалити тип платежу '%s'"
+msgstr "Видалити вид оплати '%s'"
 
 #: ../templates/default/plugin_info.tpl:6
 msgid "By %name"

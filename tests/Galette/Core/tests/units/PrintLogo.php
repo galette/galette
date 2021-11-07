@@ -58,15 +58,29 @@ class PrintLogo extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Method name
+     * @param string $method Method name
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         global $zdb;
         $this->zdb = new \Galette\Core\Db();
         $zdb = $this->zdb;
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
     }
 
     /**

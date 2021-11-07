@@ -65,6 +65,9 @@ class Password extends atoum
      */
     public function afterTestMethod($method)
     {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
         $this->preferences->pref_password_strength = Preferences::PWD_NONE;
         $this->preferences->pref_password_length = 6;
         $this->preferences->pref_password_blacklist = false;
@@ -74,11 +77,11 @@ class Password extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Method tested
+     * @param string $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);

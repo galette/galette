@@ -89,11 +89,11 @@ class Plugins extends atoum
     /**
      * Set up tests
      *
-     * @param string $testMethod Method tested
+     * @param string $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
@@ -104,6 +104,19 @@ class Plugins extends atoum
             $this->plugin2['root'];
     }
 
+    /**
+     * Tear down tests
+     *
+     * @param string $method Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($method)
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        }
+    }
 
     /**
      * Tests plugins load

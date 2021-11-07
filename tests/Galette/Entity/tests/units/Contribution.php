@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Galette\GaletteTestCase;
  * @name      Contribution
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-06-11
@@ -64,6 +64,8 @@ class Contribution extends GaletteTestCase
      */
     public function afterTestMethod($method)
     {
+        parent::afterTestMethod($method);
+
         $this->zdb = new \Galette\Core\Db();
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
@@ -84,13 +86,13 @@ class Contribution extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $testMethod Calling method
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
-        parent::beforeTestMethod($testMethod);
+        parent::beforeTestMethod($method);
         $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
@@ -469,25 +471,6 @@ class Contribution extends GaletteTestCase
     }
 
     /**
-     * Test checkOverlap method that throws an exception
-     *
-     * @return void
-     */
-    public function testCheckOverlapWException()
-    {
-        $zdb = new \mock\Galette\Core\Db();
-        $this->calling($zdb)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
-                throw new \LogicException('Error executing query!', 123);
-            }
-        };
-
-        $contrib = new \Galette\Entity\Contribution($zdb, $this->login);
-        $this->boolean($contrib->checkOverlap())->isFalse();
-    }
-
-
-    /**
      * Test fields labels
      *
      * @return void
@@ -545,8 +528,6 @@ class Contribution extends GaletteTestCase
         $this->createContribution();
 
         $this->boolean($this->contrib->remove())->isTrue();
-
-        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->boolean($this->contrib->remove())->isFalse();
     }
 

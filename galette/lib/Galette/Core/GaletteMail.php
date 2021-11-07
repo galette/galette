@@ -135,7 +135,6 @@ class GaletteMail
                 } else {
                     $this->mail->Host = $this->preferences->pref_mail_smtp_host;
                     $this->mail->SMTPAuth   = $this->preferences->pref_mail_smtp_auth;
-                    $this->mail->SMTPSecure = $this->preferences->pref_mail_smtp_secure;
 
                     if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or
@@ -161,7 +160,13 @@ class GaletteMail
                             ']No SMTP port provided. Switch to default (25).',
                             Analog::INFO
                         );
-                        $this->mail->Port = 25;
+                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
+                    }
+
+                    if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {
+                        $this->mail->SMTPSecure = "ssl";
+                    } elseif ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 587) {
+                        $this->mail->SMTPSecure = "tls";
                     }
                 }
 

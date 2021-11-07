@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -65,7 +65,7 @@ use Galette\Core\Db;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -108,12 +108,12 @@ class Members
     public const MEMBERSHIP_ADMIN = 6;
     public const MEMBERSHIP_NONE = 7;
 
-    public const ORDERBY_NAME = 0;
-    public const ORDERBY_NICKNAME = 1;
-    public const ORDERBY_STATUS = 2;
-    public const ORDERBY_FEE_STATUS = 3;
-    public const ORDERBY_MODIFDATE = 4;
-    public const ORDERBY_ID = 5;
+    public const ORDERBY_NAME = 'name';
+    public const ORDERBY_NICKNAME = 'nickname';
+    public const ORDERBY_STATUS = 'status';
+    public const ORDERBY_FEE_STATUS = 'fee_status';
+    public const ORDERBY_MODIFDATE = 'modif_date';
+    public const ORDERBY_ID = 'id';
 
     public const NON_STAFF_MEMBERS = 30;
 
@@ -432,6 +432,7 @@ class Members
                     $e->getMessage(),
                     Analog::ERROR
                 );
+                throw $e;
             }
             return false;
         }
@@ -500,7 +501,7 @@ class Members
                 . $with_photos . ') | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -575,6 +576,7 @@ class Members
                 'Cannot load members form ids array | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -879,7 +881,7 @@ class Members
                 'Cannot count members | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -888,7 +890,7 @@ class Members
      *
      * @param Select $select Original select
      * @param array  $fields Fields list to ensure ORDER clause
-     *                       references selected fields. Optionnal.
+     *                       references selected fields. Optional.
      *
      * @return Select
      */
@@ -1590,7 +1592,7 @@ class Members
                 'empty logins/passwords (' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

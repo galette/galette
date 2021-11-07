@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2020 The Galette Team
+ * Copyright © 2013-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2020 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -51,7 +51,7 @@ use Laminas\Db\Sql\Expression;
  * @name      PdfModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2020 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -208,12 +208,12 @@ abstract class PdfModel
     public function store()
     {
         $title = $this->title;
-        if (trim($title) === '') {
+        if ($title === null || trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
-        if (trim($subtitle) === '') {
+        if ($subtitle === null || trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }
 
@@ -251,7 +251,7 @@ abstract class PdfModel
                 "\n" . print_r($data, true),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

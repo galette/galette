@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -45,7 +45,7 @@ use Galette\Core\Db;
  * @name      ContibutionTypes
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -81,7 +81,7 @@ class ContributionsTypes extends Entitled
      * Default constructor
      *
      * @param Db        $zdb  Database
-     * @param ResultSet $args Optionnal existing result set
+     * @param ResultSet $args Optional existing result set
      */
     public function __construct(Db $zdb, $args = null)
     {

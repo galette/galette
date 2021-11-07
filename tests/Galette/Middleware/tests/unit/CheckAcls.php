@@ -58,11 +58,11 @@ class CheckAcls extends atoum
     /**
      * Set up tests
      *
-     * @param stgring $testMethod Method tested
+     * @param stgring $method Method tested
      *
      * @return void
      */
-    public function beforeTestMethod($testMethod)
+    public function beforeTestMethod($method)
     {
         $app =  new \Galette\Core\SlimApp();
         require GALETTE_ROOT . 'includes/core_acls.php';

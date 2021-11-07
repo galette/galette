@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2020 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2020 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-26
@@ -53,7 +53,7 @@ use Galette\Core\Authentication;
  * @name      FieldsConfig
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2020 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-26
@@ -387,7 +387,8 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @return boolean|\Exception
+     * @return boolean
+     * @throws Throwable
      */
     public function installInit()
     {
@@ -804,10 +805,6 @@ class FieldsConfig
                 $e->getMessage(),
                 Analog::ERROR
             );
-            Analog::log(
-                $e->getTraceAsString(),
-                Analog::ERROR
-            );
             throw $e;
         }
     }
@@ -889,7 +886,7 @@ class FieldsConfig
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 

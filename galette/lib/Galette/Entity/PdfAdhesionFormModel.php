@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,15 +28,13 @@
  * @package   Galette
  *
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.3dev - 2014-07-02
  */
 
 namespace Galette\Entity;
-
-use Analog\Analog as Analog;
 
 /**
  * PDF form model
@@ -45,7 +43,7 @@ use Analog\Analog as Analog;
  * @name      PdfAdhesionFormModel
  * @package   Galette
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.3dev - 2014-07-02

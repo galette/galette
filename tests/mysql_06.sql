@@ -24,7 +24,7 @@ CREATE TABLE adherents (
   prof_adh varchar(150) default NULL,
   login_adh varchar(20) NOT NULL default '',
   mdp_adh varchar(20) NOT NULL default '',
-  date_crea_adh date NOT NULL default '0000-00-00',
+  date_crea_adh date NOT NULL default '1901-01-01',
   activite_adh enum('0','1') NOT NULL default '0',
   bool_admin_adh enum('1') default NULL,
   bool_exempt_adh enum('1') default NULL,
@@ -41,7 +41,7 @@ CREATE TABLE cotisations (
   montant_cotis float unsigned default '0',
   info_cotis text,
   duree_mois_cotis tinyint(3) unsigned NOT NULL default '12',
-  date_cotis date NOT NULL default '0000-00-00',
+  date_cotis date NOT NULL default '1901-01-01',
   PRIMARY KEY  (id_cotis)
 ) ENGINE=MyISAM;
 
