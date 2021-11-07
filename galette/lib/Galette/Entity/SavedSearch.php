@@ -189,7 +189,6 @@ class SavedSearch
         $data = array(
             'name'              => $this->name,
             'parameters'        => $parameters,
-            'parameters_sum'   => '',
             'id_adh'            => $this->author_id,
             'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
             'form'              => $this->form

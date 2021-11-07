@@ -320,11 +320,9 @@ CREATE TABLE galette_searches (
   name varchar(100) DEFAULT NULL,
   form varchar(50) NOT NULL,
   parameters text NOT NULL,
-  parameters_sum binary(20),
   id_adh int(10) unsigned,
   creation_date datetime NOT NULL,
   PRIMARY KEY (search_id),
-  KEY (form, parameters_sum, id_adh),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

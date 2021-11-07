@@ -466,13 +466,10 @@ CREATE TABLE galette_searches (
   name character varying(100) DEFAULT NULL,
   form character varying(50) NOT NULL,
   parameters jsonb NOT NULL,
-  parameters_sum bytea NOT NULL,
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
   creation_date timestamp NOT NULL,
   PRIMARY KEY (search_id)
 );
--- add index on table to look for existing searches
-CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_adh);
 
 -- new table for temporary links
 DROP TABLE IF EXISTS galette_tmplinks;

@@ -48,4 +48,7 @@ DELETE FROM galette_fields_config WHERE field_id IN ('url_adh', 'icq_adh', 'msn_
 -- add num_adh column
 ALTER TABLE galette_adherents ADD COLUMN num_adh character varying (255) DEFAULT NULL;
 
+DROP INDEX galette_searches_idx;
+ALTER TABLE galette_searches DROP COLUMN parameters_sum;
+
 UPDATE galette_database SET version = 0.960;
