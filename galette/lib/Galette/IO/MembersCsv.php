@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Memers CSV exports
+ * Members CSV exports
  *
  * PHP version 5
  *

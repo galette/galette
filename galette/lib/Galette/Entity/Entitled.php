@@ -378,7 +378,7 @@ abstract class Entitled
     {
         $res = $this->get($id);
         if ($res === false) {
-            //get() alred logged
+            //get() already logged
             return self::ID_NOT_EXITS;
         };
         $field = $this->flabel;

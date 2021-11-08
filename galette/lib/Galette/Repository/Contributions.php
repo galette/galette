@@ -69,6 +69,7 @@ class Contributions
     private $count = null;
 
     private $sum;
+    private $current_selection;
 
     /**
      * Default constructor
@@ -100,6 +101,34 @@ class Contributions
     {
         $this->filters->from_transaction = $trans_id;
         return $this->getList(true);
+    }
+
+    /**
+     * Get contributions list for a specific transaction
+     *
+     * @param array   $ids        an array of members id that has been selected
+     * @param bool    $as_contrib return the results as an array of
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                            an array. If null, all fields will be
+     *                            returned
+     * @param boolean $count      true if we want to count members
+     *
+     * @return Contribution[]
+     */
+    public function getArrayList(array $ids, bool $as_contrib = false, array $fields = null, bool $count = true)
+    {
+        if (count($ids) < 1) {
+            Analog::log('No contribution selected.', Analog::INFO);
+            return false;
+        }
+
+        $this->current_selection = $ids;
+        $list = $this->getList($as_contrib, $fields, $count);
+        $array_list = [];
+        foreach ($list as $entry) {
+            $array_list[] = $entry;
+        }
+        return $array_list;
     }
 
     /**
@@ -161,7 +190,8 @@ class Contributions
 
             $select->join(
                 array('p' => PREFIX_DB . Adherent::TABLE),
-                'a.' . Adherent::PK . '= p.' . Adherent::PK
+                'a.' . Adherent::PK . '= p.' . Adherent::PK,
+                array()
             );
 
             $this->buildWhereClause($select);
@@ -324,6 +354,10 @@ class Contributions
             default:
                 $field = 'date_debut_cotis';
                 break;
+        }
+
+        if (isset($this->current_selection)) {
+            $select->where->in('a.' . self::PK, $this->current_selection);
         }
 
         try {

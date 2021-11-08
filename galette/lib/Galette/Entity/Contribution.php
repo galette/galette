@@ -144,7 +144,7 @@ class Contribution
          */
         $this->_fields = array(
             'id_cotis'            => array(
-                'label'    => null, //not a field in the form
+                'label'    => _T('Contribution id'), //not a field in the form
                 'propname' => 'id'
             ),
             Adherent::PK          => array(
@@ -168,7 +168,7 @@ class Contribution
                 'propname' => 'info'
             ),
             'date_enreg'          => array(
-                'label'    => null, //not a field in the form
+                'label'    => _T('Date'), //not a field in the form
                 'propname' => 'date'
             ),
             'date_debut_cotis'    => array(
@@ -181,11 +181,11 @@ class Contribution
                 'propname' => 'end_date'
             ),
             Transaction::PK       => array(
-                'label'    => null, //not a field in the form
+                'label'    => _T('Transaction ID'), //not a field in the form
                 'propname' => 'transaction'
             ),
             //this one is not really a field, but is required in some cases...
-            //adding it here make simplier to check required fields
+            //adding it here make more simple to check required fields
             'duree_mois_cotis'    => array(
                 'label'    => _T("Membership extension:"),
                 'propname' => 'extension'
@@ -255,7 +255,7 @@ class Contribution
                 //count days until end of membership date
                 $diff1 = (int)$bdate->diff($edate)->format('%a');
 
-                //count days beetween end of membership date and offered months
+                //count days between end of membership date and offered months
                 $tdate = clone $edate;
                 $tdate->modify('-' . $preferences->pref_membership_offermonths . ' month');
                 $diff2 = (int)$edate->diff($tdate)->format('%a');
@@ -369,7 +369,7 @@ class Contribution
         $this->_begin_date = $r->date_debut_cotis;
         $enddate = $r->date_fin_cotis;
         //do not work with knows bad dates...
-        //the one with BC comes from 0.63/pgsl demo... Why the hell a so
+        //the one with BC comes from 0.63/pgsql demo... Why the hell a so
         //strange date? don't know :(
         if (
             $enddate !== '0000-00-00'
@@ -1231,13 +1231,7 @@ class Contribution
                     }
                     break;
                 case 'spayment_type':
-                    if ($this->_payment_type === null) {
-                        return '-';
-                    }
-
-                    $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
-                    return $ptype->getName();
-
+                    return $this->getPaymentType();
                     break;
                 case 'model':
                     if ($this->_is_cotis === null) {

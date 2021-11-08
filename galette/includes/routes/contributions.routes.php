@@ -36,6 +36,7 @@
 
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\Crud;
+use Galette\Controllers\CsvController;
 use Galette\Controllers\PdfController;
 use Galette\Entity\Contribution;
 
@@ -68,6 +69,19 @@ $app->post(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/edit/{id:\d+}',
     [Crud\ContributionsController::class, 'doEdit']
 )->setName('doEditContribution')->add($authenticate);
+
+//Batch actions on contributions list
+$app->post(
+    '/{type:contributions|transactions}/batch',
+    [Crud\ContributionsController::class, 'handleBatch']
+)->setName('batch-contributionslist')->add($authenticate);
+
+//contributions list CSV export
+$app->map(
+    ['GET', 'POST'],
+    '/{type:contributions|transactions}/export/csv',
+    [CsvController::class, 'contributionsExport']
+)->setName('csv-contributionslist')->add($authenticate);
 
 $app->get(
     '/transaction/add',
@@ -104,7 +118,7 @@ $app->get(
     [Crud\ContributionsController::class, 'confirmDelete']
 )->setName('removeContribution')->add($authenticate);
 
-$app->post(
+$app->get(
     '/{type:contributions|transactions}/batch/remove',
     [Crud\ContributionsController::class, 'confirmDelete']
 )->setName('removeContributions')->add($authenticate);
