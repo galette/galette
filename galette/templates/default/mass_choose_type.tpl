@@ -27,6 +27,7 @@
                 <input type="hidden" name="{$key}" value="{$value}"/>
                 {/if}
             {/foreach}
+            {include file="forms_types/csrf.tpl"}
         </div>
     </form>
     </div>

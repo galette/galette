@@ -86,6 +86,7 @@
                 {_T string="Group PDF"}
             </a>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
+            {include file="forms_types/csrf.tpl"}
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>

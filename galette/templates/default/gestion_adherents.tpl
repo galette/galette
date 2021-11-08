@@ -104,6 +104,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </p>
             <pre id="sql_qry" class="hidden">{$filters->query}</pre>
 {/if}
+            {include file="forms_types/csrf.tpl"}
         </div>
         <div class="infoline">
             {_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}
@@ -354,7 +355,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/if}
         </ul>
 {/if}
-
+            {include file="forms_types/csrf.tpl"}
         </form>
 {if $nb_members != 0}
         <div id="legende" title="{_T string="Legend"}">
@@ -511,6 +512,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     }
 
                     if (this.id == 'masscontributions') {
+                        event.preventDefault();
                         $.ajax({
                             url: '{path_for name="batch-memberslist"}',
                             type: "POST",

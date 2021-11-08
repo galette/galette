@@ -144,7 +144,7 @@
                     </p>
                 </div>
         {/if}
-
+            {include file="forms_types/csrf.tpl"}
             </section>
         </div>
         </form>

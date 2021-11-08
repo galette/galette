@@ -589,6 +589,7 @@
             </button>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
+        {include file="forms_types/csrf.tpl"}
         </form>
 
         {include file="telemetry.tpl" part="dialog"}

@@ -128,7 +128,7 @@
                     {/if}
                 {/if}
             {/foreach}
-
+            {include file="forms_types/csrf.tpl"}
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
         </form>

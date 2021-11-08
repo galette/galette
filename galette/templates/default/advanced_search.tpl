@@ -312,6 +312,7 @@
                 <input type="hidden" name="advanced_filtering" value="true" />
                 <input type="submit" class="inline" value="{_T string="Filter"}"/>
                 <input type="submit" name="clear_adv_filter" class="inline" value="{_T string="Clear filter"}"/>
+                {include file="forms_types/csrf.tpl"}
             </div>
         </form>
 {/block}

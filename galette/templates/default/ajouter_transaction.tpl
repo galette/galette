@@ -46,6 +46,7 @@
             </button>
             <input type="hidden" name="trans_id" value="{$transaction->id}"/>
             <input type="hidden" name="valid" value="1"/>
+            {include file="forms_types/csrf.tpl"}
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>

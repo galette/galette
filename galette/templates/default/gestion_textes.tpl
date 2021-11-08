@@ -18,6 +18,7 @@
                     {/foreach}
                 </select>
                 <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            {include file="forms_types/csrf.tpl"}
         </form>
         </div>
 
@@ -42,6 +43,7 @@
             <button type="submit" class="action">
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
             </button>
+            {include file="forms_types/csrf.tpl"}
         </div>
         </form>
         {include file="replacements_legend.tpl" legends=$texts->getLegend() cur_ref=$cur_ref}

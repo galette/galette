@@ -61,6 +61,7 @@
                             <i class="fas fa-file-import"></i>
                             {_T string="Import"}
                         </button>
+                        {include file="forms_types/csrf.tpl"}
                     </div>
 {else}
                     <p>{_T string="No import file actually exists."}<br/>{_T string="Use upload form below to send a new file on server, or copy it directly in the imports directory."}</p>
@@ -81,6 +82,7 @@
                             <i class="fas fa-upload" aria-hidd="true"></i>
                             {_T string="Upload file"}
                         </button>
+                        {include file="forms_types/csrf.tpl"}
                     </div>
                 </div>
             </fieldset>

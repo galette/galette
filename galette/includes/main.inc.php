@@ -92,6 +92,8 @@ $app->add($session);
 
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
+$app->add(new \Galette\Middleware\SmartyCsrf($app->getContainer()));
+$app->add($app->getContainer()->get('csrf'));
 
 if ($needs_update) {
     $app->add(

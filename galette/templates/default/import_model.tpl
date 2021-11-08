@@ -75,6 +75,7 @@
                 <i class="fas fa-save" aria-hidden="true"></i>
                 {_T string="Store new model"}
             </button>
+            {include file="forms_types/csrf.tpl"}
         </div>
         </form>
     </div>

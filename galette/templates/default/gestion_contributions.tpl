@@ -61,6 +61,7 @@
                 </select>
                 <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
             </div>
+            {include file="forms_types/csrf.tpl"}
         </div>
         </form>
         <form action="{path_for name="batch-contributionslist" data=["type" => "contributions"]}" method="post" id="listform">
@@ -307,6 +308,7 @@
                 <button type="submit" id="csv" name="csv">
                     <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}
                 </button>
+                {include file="forms_types/csrf.tpl"}
             </li>
         </ul>
     {/if}

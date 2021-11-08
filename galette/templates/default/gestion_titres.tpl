@@ -74,6 +74,7 @@
             {/foreach}
                     </tbody>
                 </table>
+            {include file="forms_types/csrf.tpl"}
         </form>
 {/block}
 

@@ -184,6 +184,7 @@
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
         </div>
     {/if}
+            {include file="forms_types/csrf.tpl"}
         </form>
 {else} {* No members *}
     <div class="center" id="warningbox">

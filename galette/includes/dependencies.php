@@ -432,6 +432,31 @@ $container->set(
         )
 );
 
+$container->set(
+    'csrf',
+    function (ContainerInterface $c) {
+        $storage = null;
+        $guard = new \Slim\Csrf\Guard(
+            'csrf',
+            $storage,
+            null,
+            200,
+            16,
+            true
+        );
+
+        $guard->setFailureCallable(function ($request, $response, $next) {
+            Analog::log(
+                'CSRF check has failed',
+                Analog::CRITICAL
+            );
+            throw new \RuntimeException(_T('Failed CSRF check!'));
+        });
+
+        return $guard;
+    }
+);
+
 //For bad existing globals can be used...
 global $translator, $i18n;
 if (

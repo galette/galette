@@ -50,7 +50,8 @@
         "doctrine/annotations": "^1.8",
         "laminas/laminas-servicemanager": "3.7",
         "symfony/polyfill-php80": "^1.23",
-        "ezyang/htmlpurifier": "^4.13"
+        "ezyang/htmlpurifier": "^4.13",
+        "slim/csrf": "0.8.3"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",

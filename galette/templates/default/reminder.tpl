@@ -32,6 +32,7 @@
                     <i class="fas fa-rocket" aria-hidden="true"></i>
                     {_T string="Send"}
                 </button>
+                {include file="forms_types/csrf.tpl"}
             </div>
         </form>
 {foreach from=$previews key=key item=preview}

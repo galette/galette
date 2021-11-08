@@ -1,5 +1,23 @@
         <script type="text/javascript">
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
             $(function(){
+                $.ajaxPrefilter(function(options, originalOptions, jqXHR){
+                    if (options.type.toLowerCase() === "post") {
+                        // initialize `data` to empty string if it does not exist
+                        options.data = options.data || "";
+
+                        // add leading ampersand if `data` is non-empty
+                        options.data += options.data?"&":"";
+
+                        // add csrf
+                        options.data += encodeURIComponent("{$csrf_name_key}") + "=" + encodeURIComponent("{$csrf_name}") + "&" + encodeURIComponent("{$csrf_value_key}") + "=" + encodeURIComponent("{$csrf_value}")
+                    }
+                });
+
                 $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
     {if $galette_lang eq 'en'}
                 $.datepicker.setDefaults({

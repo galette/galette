@@ -124,6 +124,7 @@
                 </fieldset>
             <div class="button-container">
                 <input type="submit" name="valid" value="{_T string="Continue"}"/>
+                {include file="forms_types/csrf.tpl"}
             </div>
         </form>
 {/block}

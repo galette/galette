@@ -31,6 +31,7 @@
 {foreach $selection as $member}
                 <input type="hidden" name="selection[]" value="{$member}"/>
 {/foreach}
+                {include file="forms_types/csrf.tpl"}
             </p>
         </fieldset>
 {if not $ajax}

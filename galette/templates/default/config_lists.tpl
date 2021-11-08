@@ -57,6 +57,7 @@
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
             </button>
         </div>
+        {include file="forms_types/csrf.tpl"}
     </form>
 {/block}
 
