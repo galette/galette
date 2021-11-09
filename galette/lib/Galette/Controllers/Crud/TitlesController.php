@@ -189,7 +189,7 @@ class TitlesController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
-        $title = new Title((int)$id);
+        $title = new Title($id);
         $title->short = $post['short_label'];
         $title->long = $post['long_label'];
         $res = $title->store($this->zdb);
