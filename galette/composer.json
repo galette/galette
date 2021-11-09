@@ -49,7 +49,8 @@
         "php-di/slim-bridge": "2.0.0",
         "doctrine/annotations": "^1.8",
         "laminas/laminas-servicemanager": "3.7",
-        "symfony/polyfill-php80": "^1.23"
+        "symfony/polyfill-php80": "^1.23",
+        "ezyang/htmlpurifier": "^4.13"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",

@@ -429,6 +429,7 @@ abstract class Entitled
     public function add($label, $extra)
     {
         // Avoid duplicates.
+        $label = strip_tags($label);
         $ret = $this->getIdByLabel($label);
 
         if ($ret !== false) {
@@ -489,6 +490,7 @@ abstract class Entitled
      */
     public function update($id, $label, $extra)
     {
+        $label = strip_tags($label);
         $ret = $this->get($id);
         if (!$ret) {
             /* get() already logged and set $this->error. */

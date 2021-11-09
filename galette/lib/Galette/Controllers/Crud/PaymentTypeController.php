@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-09
@@ -50,7 +50,7 @@ use Analog\Analog;
  * @name      PaymentTypeController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-09
@@ -205,7 +205,7 @@ class PaymentTypeController extends CrudController
                     'error_detected',
                     preg_replace(
                         '(%s)',
-                        $ptype->name,
+                        $ptype->getName(),
                         _T("Payment type '%s' has not been added!")
                     )
                 );
@@ -214,7 +214,7 @@ class PaymentTypeController extends CrudController
                     'error_detected',
                     preg_replace(
                         '(%s)',
-                        $ptype->name,
+                        $ptype->getName(),
                         _T("Payment type '%s' has not been modified!")
                     )
                 );
@@ -227,7 +227,7 @@ class PaymentTypeController extends CrudController
                     'success_detected',
                     preg_replace(
                         '(%s)',
-                        $ptype->name,
+                        $ptype->getName(),
                         _T("Payment type '%s' has been successfully added.")
                     )
                 );
@@ -236,7 +236,7 @@ class PaymentTypeController extends CrudController
                     'success_detected',
                     preg_replace(
                         '(%s)',
-                        $ptype->name,
+                        $ptype->getName(),
                         _T("Payment type '%s' has been successfully modified.")
                     )
                 );

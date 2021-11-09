@@ -139,8 +139,8 @@ class Title
     public function store($zdb)
     {
         $data = array(
-            'short_label'   => $this->short,
-            'long_label'    => $this->long
+            'short_label'   => strip_tags($this->short),
+            'long_label'    => strip_tags($this->long)
         );
         try {
             if ($this->id !== null && $this->id > 0) {

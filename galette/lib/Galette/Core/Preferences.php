@@ -755,6 +755,9 @@ class Preferences
                     $this->errors[] = _T("- Invalid year for cards.");
                 }
                 break;
+            case 'pref_footer':
+                $value = $this->cleanHtmlValue($value);
+                break;
         }
 
         return $value;
@@ -961,6 +964,8 @@ class Preferences
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
+            } elseif ($name == 'pref_footer') {
+                return $this->cleanHtmlValue($this->prefs[$name]);
             } else {
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
                     $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
@@ -1293,5 +1298,20 @@ class Preferences
         $this->setReplacements($replacements);
 
         return $this;
+    }
+
+    /**
+     * Purify HTML value
+     *
+     * @param string $value Value to clean
+     *
+     * @return string
+     */
+    public function cleanHtmlValue(string $value): string
+    {
+        $config = \HTMLPurifier_Config::createDefault();
+        $config->set('Cache.SerializerPath', GALETTE_CACHE_DIR);
+        $purifier = new \HTMLPurifier($config);
+        return $purifier->purify($value);
     }
 }

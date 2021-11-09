@@ -357,7 +357,7 @@ class Transaction
                             break;
                         case 'trans_desc':
                             /** TODO: retrieve field length from database and check that */
-                            $this->_description = $value;
+                            $this->_description = strip_tags($value);
                             if (mb_strlen($value) > 150) {
                                 $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                             }
