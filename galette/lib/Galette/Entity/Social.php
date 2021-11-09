@@ -114,7 +114,7 @@ class Social
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->limit(1)->where(self::PK . ' = ' . $id);
+            $select->limit(1)->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
             $res = $results->current();
@@ -199,7 +199,7 @@ class Social
             if ($this->id !== null && $this->id > 0) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set(['url' => $this->url])->where(
-                    self::PK . '=' . $this->id
+                    [self::PK => $this->id]
                 );
                 $this->zdb->execute($update);
             } else {

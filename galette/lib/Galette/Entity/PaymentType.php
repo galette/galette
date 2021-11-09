@@ -100,7 +100,7 @@ class PaymentType
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->limit(1)->where(self::PK . ' = ' . $id);
+            $select->limit(1)->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
             $res = $results->current();
@@ -149,9 +149,7 @@ class PaymentType
                 }
 
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($data)->where(
-                    self::PK . '=' . $this->id
-                );
+                $update->set($data)->where([self::PK => $this->id]);
                 $this->zdb->execute($update);
             } else {
                 $insert = $this->zdb->insert(self::TABLE);
@@ -191,9 +189,7 @@ class PaymentType
 
         try {
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(
-                self::PK . ' = ' . $id
-            );
+            $delete->where([self::PK => $id]);
             $this->zdb->execute($delete);
             $this->deleteTranslation($this->name);
             Analog::log(

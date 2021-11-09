@@ -641,7 +641,7 @@ class Members
                         array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                         'gr.' . Group::PK . '=m.' . Group::PK,
                         array()
-                    )->where('m.' . Adherent::PK . ' = ' . $login->id);
+                    )->where(['m.' . Adherent::PK => $login->id]);
                     break;
                 case self::SHOW_PUBLIC_LIST:
                     if ($photos) {
@@ -731,8 +731,8 @@ class Members
                             'val'       => 'field_val'
                         ]
                     );
-                    $subselect->where('df.field_form = \'adh\'');
-                    $subselect->where('df.field_id = ' . $df);
+                    $subselect->where(['df.field_form' => 'adh']);
+                    $subselect->where(['df.field_id' => $df]);
                     $select->join(
                         array('df' . $df => $subselect),
                         'a.id_adh = df' . $df . '.item_id',
@@ -1155,7 +1155,7 @@ class Members
                     array(),
                     $select::JOIN_LEFT
                 )->where(
-                    '(g.' . Group::PK . ' = ' . $this->filters->group_filter .
+                    '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue($this->filters->group_filter) .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
                     $this->filters->group_filter . ')'
                 );

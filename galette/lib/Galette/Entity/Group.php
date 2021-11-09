@@ -179,9 +179,9 @@ class Group
                     array('g' => $join),
                     'g.' . Adherent::PK . '=a.' . Adherent::PK,
                     array()
-                )->where(
-                    'g.' . self::PK . ' = ' . $this->id
-                )->order(
+                )->where([
+                    'g.' . self::PK => $this->id
+                ])->order(
                     'nom_adh ASC',
                     'prenom_adh ASC'
                 );
@@ -231,10 +231,10 @@ class Group
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Adherent::PK . ' = ' . $this->login->id);
+                )->where(['b.' . Adherent::PK => $this->login->id]);
             }
 
-            $select->where('parent_group = ' . $this->id)
+            $select->where(['parent_group' => $this->id])
                 ->order('group_name ASC');
 
             $results = $zdb->execute($select);
@@ -295,24 +295,18 @@ class Group
 
                 //delete members
                 $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
-                $delete->where(
-                    self::PK . ' = ' . $this->id
-                );
+                $delete->where([self::PK => $this->id]);
                 $zdb->execute($delete);
 
                 //delete managers
                 $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
-                $delete->where(
-                    self::PK . ' = ' . $this->id
-                );
+                $delete->where([self::PK => $this->id]);
                 $zdb->execute($delete);
             }
 
             //delete group itself
             $delete = $zdb->delete(self::TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->id
-            );
+            $delete->where([self::PK => $this->id]);
             $zdb->execute($delete);
 
             //commit all changes
@@ -371,7 +365,7 @@ class Group
             $update->set(
                 array('parent_group' => new Expression('NULL'))
             )->where(
-                self::PK . ' = ' . $this->id
+                [self::PK => $this->id]
             );
 
             $edit = $zdb->execute($update);
@@ -447,7 +441,7 @@ class Group
                 $update = $zdb->update(self::TABLE);
                 $update
                     ->set($values)
-                    ->where(self::PK . '=' . $this->id);
+                    ->where([self::PK => $this->id]);
 
                 $edit = $zdb->execute($update);
 
@@ -728,9 +722,7 @@ class Group
 
             //first, remove current groups members
             $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->id
-            );
+            $delete->where([self::PK => $this->id]);
             $zdb->execute($delete);
 
             Analog::log(
@@ -818,9 +810,7 @@ class Group
 
             //first, remove current groups managers
             $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->id
-            );
+            $delete->where([self::PK => $this->id]);
             $zdb->execute($delete);
 
             Analog::log(

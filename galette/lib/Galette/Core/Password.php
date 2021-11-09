@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2020 The Galette Team
+ * Copyright © 2003-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2014 The Galette Team
+ * @copyright 2003-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -52,7 +52,7 @@ use Galette\Entity\Adherent;
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2020 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-16
@@ -95,7 +95,7 @@ class Password extends AbstractPassword
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(self::PK . ' = ' . $id_adh);
+            $delete->where([self::PK => $id_adh]);
 
             $del = $this->zdb->execute($delete);
             if ($del) {

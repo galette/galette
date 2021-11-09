@@ -356,7 +356,7 @@ class MailingHistory extends History
     {
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where('mailing_id = ' . $id);
+            $select->where(['mailing_id' => $id]);
 
             $results = $zdb->execute($select);
             $result = $results->current();
@@ -450,7 +450,7 @@ class MailingHistory extends History
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
-            $update->where(self::PK . ' = ' . $this->mailing->history_id);
+            $update->where([self::PK => $this->mailing->history_id]);
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {

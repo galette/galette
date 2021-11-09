@@ -143,7 +143,7 @@ abstract class DynamicField
     {
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where('field_id = ' . $id);
+            $select->where(['field_id' => $id]);
 
             $results = $zdb->execute($select);
             $result = $results->current();
@@ -216,7 +216,7 @@ abstract class DynamicField
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->where(self::PK . ' = ' . $id);
+            $select->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -716,9 +716,7 @@ abstract class DynamicField
 
             if (!$isnew) {
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where(
-                    self::PK . ' = ' . $this->id
-                );
+                $update->set($values)->where([self::PK => $this->id]);
                 $this->zdb->execute($update);
             } else {
                 $values['field_type'] = $this->getType();

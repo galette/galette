@@ -154,7 +154,7 @@ class Transaction
     {
         try {
             $select = $this->zdb->select(self::TABLE, 't');
-            $select->where(self::PK . ' = ' . $id);
+            $select->where([self::PK => $id]);
             $select->join(
                 array('a' => PREFIX_DB . Adherent::TABLE),
                 't.' . Adherent::PK . '=a.' . Adherent::PK,
@@ -235,9 +235,7 @@ class Transaction
 
             //remove transaction itself
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->_id
-            );
+            $delete->where([self::PK => $this->_id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->dynamicsRemove(true);
@@ -457,9 +455,7 @@ class Transaction
             } else {
                 //we're editing an existing transaction
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where(
-                    self::PK . '=' . $this->_id
-                );
+                $update->set($values)->where([self::PK => $this->_id]);
                 $edit = $this->zdb->execute($update);
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
@@ -514,7 +510,7 @@ class Transaction
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
-            )->where(self::PK . ' = ' . $this->_id);
+            )->where([self::PK => $this->_id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -547,7 +543,7 @@ class Transaction
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
-            )->where(self::PK . ' = ' . $this->_id);
+            )->where([self::PK => $this->_id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();

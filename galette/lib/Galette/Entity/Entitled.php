@@ -126,7 +126,7 @@ abstract class Entitled
     {
         try {
             $select = $this->zdb->select($this->table);
-            $select->where($this->fpk . ' = ' . $id);
+            $select->where([$this->fpk => $id]);
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
@@ -345,7 +345,7 @@ abstract class Entitled
 
         try {
             $select = $this->zdb->select($this->table);
-            $select->where($this->fpk . '=' . $id);
+            $select->where([$this->fpk => $id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -507,7 +507,7 @@ abstract class Entitled
 
             $update = $this->zdb->update($this->table);
             $update->set($values);
-            $update->where($this->fpk . ' = ' . $id);
+            $update->where([$this->fpk => $id]);
 
             $ret = $this->zdb->execute($update);
 
@@ -556,7 +556,7 @@ abstract class Entitled
         try {
             $this->zdb->connection->beginTransaction();
             $delete = $this->zdb->delete($this->table);
-            $delete->where($this->fpk . ' = ' . $id);
+            $delete->where([$this->fpk => $id]);
 
             $this->zdb->execute($delete);
             $this->deleteTranslation($ret->{$this->flabel});
@@ -590,7 +590,7 @@ abstract class Entitled
     {
         try {
             $select = $this->zdb->select($this->used);
-            $select->where($this->fpk . ' = ' . $id);
+            $select->where([$this->fpk => $id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();

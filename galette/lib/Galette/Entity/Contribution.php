@@ -579,7 +579,7 @@ class Contribution
                 array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
-            )->where(Adherent::PK . ' = ' . $this->_member)
+            )->where([Adherent::PK => $this->_member])
                 ->where(array('cotis_extension' => new Expression('true')))
                 ->where->nest->nest
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
@@ -590,7 +590,7 @@ class Contribution
                 ->lessThanOrEqualTo('date_fin_cotis', $this->_end_date);
 
             if ($this->id != '') {
-                $select->where(self::PK . ' != ' . $this->id);
+                $select->where->notEqualTo(self::PK, $this->id);
             }
 
             $results = $this->zdb->execute($select);
@@ -681,9 +681,7 @@ class Contribution
             } else {
                 //we're editing an existing contribution
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where(
-                    self::PK . '=' . $this->_id
-                );
+                $update->set($values)->where([self::PK => $this->_id]);
                 $edit = $this->zdb->execute($update);
 
                 //edit == 0 does not mean there were an error, but that there
@@ -750,7 +748,7 @@ class Contribution
             $update->set(
                 array('date_echeance' => $date_fin_update)
             )->where(
-                Adherent::PK . '=' . $this->_member
+                [Adherent::PK => $this->_member]
             );
             $this->zdb->execute($update);
             return true;
@@ -782,7 +780,7 @@ class Contribution
             }
 
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(self::PK . ' = ' . $this->_id);
+            $delete->where([self::PK => $this->_id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->updateDeadline();
@@ -884,7 +882,7 @@ class Contribution
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
             )->where(
-                Adherent::PK . ' = ' . $member_id
+                [Adherent::PK => $member_id]
             )->where(
                 array('cotis_extension' => new Expression('true'))
             );
@@ -927,7 +925,7 @@ class Contribution
                 $update->set(
                     array(Transaction::PK => null)
                 )->where(
-                    self::PK . ' = ' . $contrib_id
+                    [self::PK => $contrib_id]
                 );
                 $zdb->execute($update);
                 return true;
@@ -964,7 +962,7 @@ class Contribution
             $update = $zdb->update(self::TABLE);
             $update->set(
                 array(Transaction::PK => $trans_id)
-            )->where(self::PK . ' = ' . $contrib_id);
+            )->where([self::PK => $contrib_id]);
 
             $zdb->execute($update);
             return true;

@@ -91,7 +91,7 @@ class Title
         global $zdb;
         try {
             $select = $zdb->select(self::TABLE);
-            $select->limit(1)->where(self::PK . ' = ' . $id);
+            $select->limit(1)->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
             $res = $results->current();
@@ -145,9 +145,7 @@ class Title
         try {
             if ($this->id !== null && $this->id > 0) {
                 $update = $zdb->update(self::TABLE);
-                $update->set($data)->where(
-                    self::PK . '=' . $this->id
-                );
+                $update->set($data)->where([self::PK => $this->id]);
                 $zdb->execute($update);
             } else {
                 $insert = $zdb->insert(self::TABLE);
@@ -187,9 +185,7 @@ class Title
 
         try {
             $delete = $zdb->delete(self::TABLE);
-            $delete->where(
-                self::PK . ' = ' . $id
-            );
+            $delete->where([self::PK => $id]);
             $zdb->execute($delete);
             Analog::log(
                 'Title #' . $id . ' (' . $this->short

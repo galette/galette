@@ -473,9 +473,7 @@ class Adherent
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array($id)
-            )->where(
-                'parent_id = ' . $this->_id
-            );
+            )->where(['parent_id' => $this->_id]);
 
             $results = $this->zdb->execute($select);
 
@@ -847,7 +845,7 @@ class Adherent
     {
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where(self::PK . ' = ' . $id);
+            $select->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
             $row = $results->current();
@@ -925,7 +923,7 @@ class Adherent
             $update = $zdb->update(self::TABLE);
             $update->set(
                 array('mdp_adh' => $cpass)
-            )->where(self::PK . ' = ' . $id_adh);
+            )->where([self::PK => $id_adh]);
             $zdb->execute($update);
             Analog::log(
                 'Password for `' . $id_adh . '` has been updated.',
@@ -1307,8 +1305,9 @@ class Adherent
                             array(self::PK)
                         )->where(array('email_adh' => $value));
                         if (!empty($this->_id)) {
-                            $select->where(
-                                self::PK . ' != ' . $this->_id
+                            $select->where->notEqualTo(
+                                self::PK,
+                                $this->_id
                             );
                         }
 
@@ -1345,8 +1344,9 @@ class Adherent
                                 array(self::PK)
                             )->where(array('login_adh' => $value));
                             if (!empty($this->_id)) {
-                                $select->where(
-                                    self::PK . ' != ' . $this->_id
+                                $select->where->notEqualTo(
+                                    self::PK,
+                                    $this->_id
                                 );
                             }
 
@@ -1404,7 +1404,7 @@ class Adherent
                     $this->$prop = (int)$value;
                     //check if status exists
                     $select = $this->zdb->select(Status::TABLE);
-                    $select->where(Status::PK . '= ' . $value);
+                    $select->where([Status::PK => $value]);
 
                     $results = $this->zdb->execute($select);
                     $result = $results->current();
@@ -1577,9 +1577,7 @@ class Adherent
 
                 $update = $this->zdb->update(self::TABLE);
                 $update->set($values);
-                $update->where(
-                    self::PK . '=' . $this->_id
-                );
+                $update->where([self::PK => $this->_id]);
 
                 $edit = $this->zdb->execute($update);
 
@@ -1629,7 +1627,7 @@ class Adherent
             $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array('date_modif_adh' => $modif_date)
-            )->where(self::PK . '=' . $this->_id);
+            )->where([self::PK => $this->_id]);
 
             $edit = $this->zdb->execute($update);
             $this->_modification_date = $modif_date;
