@@ -295,7 +295,7 @@ class I18n
 
                 $langs[$real_lang] = [
                     'long'      => $lang,
-                    'shortname' => $parsed_lang['language'],
+                    'shortname' => $parsed_lang['language'] ?? '',
                     'longname'  => ucfirst(
                         \Locale::getDisplayLanguage(
                             $lang,
