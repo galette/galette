@@ -420,7 +420,7 @@ class Groups
             return !($results->count() > 0);
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list groups (simple) | ' . $e->getMessage(),
+                'Cannot check group name unicity | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

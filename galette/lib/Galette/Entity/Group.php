@@ -133,7 +133,7 @@ class Group
      */
     private function loadFromRS($r)
     {
-        $this->id = $r->id_group;
+        $this->id = (int)$r->id_group;
         $this->group_name = $r->group_name;
         $this->creation_date = $r->creation_date;
         if ($r->parent_group) {
@@ -485,10 +485,13 @@ class Group
             return true;
         } else {
             //let's check if current logged-in user is part of group managers
+            if (!is_array($this->managers)) {
+                $this->loadPersons(self::MANAGER_TYPE);
+            }
+
             foreach ($this->managers as $manager) {
                 if ($login->login == $manager->login) {
                     return true;
-                    break;
                 }
             }
             return false;
@@ -652,19 +655,6 @@ class Group
     public function setName($name)
     {
         $this->group_name = $name;
-        return $this;
-    }
-
-    /**
-     * Set all subgroups
-     *
-     * @param array $groups Groups id
-     *
-     * @return Group
-     */
-    public function setSubgroups($groups)
-    {
-        $this->groups = $groups;
         return $this;
     }
 
