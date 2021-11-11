@@ -220,6 +220,7 @@ class SavedSearchesController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filters
+        return $response;
     }
 
     // /CRUD - Read
@@ -237,6 +238,7 @@ class SavedSearchesController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edition
+        return $response;
     }
 
     /**
@@ -251,6 +253,7 @@ class SavedSearchesController extends CrudController
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         //no edition
+        return $response;
     }
 
     // /CRUD - Update
