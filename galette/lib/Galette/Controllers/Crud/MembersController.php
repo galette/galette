@@ -1651,30 +1651,32 @@ class MembersController extends CrudController
                         $success_detected[] = _T("Member account has been modified.");
                     }
 
-                    //store requested groups
-                    $groups_adh = $post['groups_adh'] ?? null;
-                    $managed_groups_adh = $post['groups_managed_adh'] ?? null;
+                    if ($this->login->isGroupManager()) {
+                        //store requested groups
+                        $groups_adh = $post['groups_adh'] ?? null;
+                        $managed_groups_adh = $post['groups_managed_adh'] ?? null;
 
-                    //add/remove user from groups
-                    $add_groups = Groups::addMemberToGroups(
-                        $member,
-                        $groups_adh
-                    );
+                        //add/remove user from groups
+                        $add_groups = Groups::addMemberToGroups(
+                            $member,
+                            $groups_adh
+                        );
 
-                    if ($add_groups === false) {
-                        $error_detected[] = _T("An error occurred adding member to its groups.");
-                    }
+                        if ($add_groups === false) {
+                            $error_detected[] = _T("An error occurred adding member to its groups.");
+                        }
 
-                    //add/remove manager from groups
-                    $add_groups = Groups::addMemberToGroups(
-                        $member,
-                        $managed_groups_adh,
-                        true
-                    );
-                    $member->loadGroups();
+                        //add/remove manager from groups
+                        $add_groups = Groups::addMemberToGroups(
+                            $member,
+                            $managed_groups_adh,
+                            true
+                        );
+                        $member->loadGroups();
 
-                    if ($add_groups === false) {
-                        $error_detected[] = _T("An error occurred adding member to its groups as manager.");
+                        if ($add_groups === false) {
+                            $error_detected[] = _T("An error occurred adding member to its groups as manager.");
+                        }
                     }
                 } else {
                     //something went wrong :'(

@@ -260,7 +260,13 @@ class Groups
      */
     public static function addMemberToGroups($adh, $groups, $manager = false, $transaction = false)
     {
-        global $zdb;
+        global $zdb, $login;
+
+        $managed_groups = [];
+        if (!$login->isSuperAdmin() && !$login->isAdmin() && !$login->isStaff()) {
+            $managed_groups = $login->getManagedGroups();
+        }
+
         try {
             if ($transaction === false) {
                 $zdb->connection->beginTransaction();
@@ -276,6 +282,9 @@ class Groups
             //first, remove current groups members
             $delete = $zdb->delete($table);
             $delete->where([Adherent::PK => $adh->id]);
+            if (count($managed_groups)) {
+                $delete->where->in(Group::PK, $managed_groups);
+            }
             $zdb->execute($delete);
 
             $msg = null;
@@ -302,6 +311,10 @@ class Groups
 
                 foreach ($groups as $group) {
                     list($gid, $gname) = explode('|', $group);
+
+                    if (count($managed_groups) && !in_array($gid, $managed_groups)) {
+                        continue;
+                    }
 
                     $result = $stmt->execute(
                         array(
