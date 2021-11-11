@@ -10,6 +10,7 @@
     notag=true
     elt_class="large"
 }
+{if isset($fieldset->elements['adresse2_adh'])}
 <br/>
 {assign var="address2" value=$fieldset->elements['adresse2_adh']}
 {include
@@ -23,4 +24,5 @@
     notag=true
     elt_class="large"
 }
+{/if}
 </p>
