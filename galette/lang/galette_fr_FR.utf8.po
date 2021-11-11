@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-11 12:01+0100\n"
-"PO-Revision-Date: 2021-10-18 04:46+0000\n"
+"PO-Revision-Date: 2021-11-11 11:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.9.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -455,10 +455,8 @@ msgid "- Unknown payment type!"
 msgstr "- Type de paiement inconnu !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No contribution was selected, please check at least one."
-msgstr "Veuillez sélectionner au moins un adhérent."
+msgstr "Veuillez sélectionner au moins une contribution."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
@@ -2441,10 +2439,8 @@ msgid "End date of membership:"
 msgstr "Date de fin d’adhésion :"
 
 #: ../lib/Galette/Entity/Contribution.php:184
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "Transaction"
+msgstr "ID Transaction"
 
 #: ../lib/Galette/Entity/Contribution.php:190
 msgid "Membership extension:"
@@ -2528,7 +2524,7 @@ msgstr "Spécifique aux courriels"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:349
 msgid "Twitter"
@@ -2560,7 +2556,7 @@ msgstr "Site Web"
 
 #: ../lib/Galette/Entity/Social.php:356
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ../lib/Galette/Entity/PdfModel.php:304
 #, php-format
@@ -2815,8 +2811,6 @@ msgid "Infos"
 msgstr "Informations"
 
 #: ../lib/Galette/Filters/MembersList.php:282
-#, fuzzy
-#| msgid "Member's ID"
 msgid "Member ID"
 msgstr "ID de l'adhérent"
 
@@ -3207,13 +3201,11 @@ msgstr "Association"
 
 #: ../includes/dependencies.php:453
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "Échec de la vérification CSRF !"
 
 #: ../includes/fields_defs/members_fields.php:42
-#, fuzzy
-#| msgid "Member of:"
 msgid "Member id:"
-msgstr "Membre de :"
+msgstr "ID de l'adhérent :"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
@@ -5122,8 +5114,6 @@ msgid "Zip - Town"
 msgstr "Code postal - Ville"
 
 #: ../templates/default/preferences.tpl:484
-#, fuzzy
-#| msgid "Member number"
 msgid "Member nubmer"
 msgstr "Numéro adhérent"
 
@@ -6103,8 +6093,6 @@ msgstr[0] "%count membre"
 msgstr[1] "%count membres"
 
 #: ../templates/default/gestion_adherents.tpl:130
-#, fuzzy
-#| msgid "Mbr num"
 msgid "Mbr id"
 msgstr "N° Adh"
 
@@ -7736,22 +7724,16 @@ msgstr ""
 "Une erreur est survenue lors de l'envoi des informations de télémétrie :("
 
 #: ../templates/default/edit_socials.tpl:11
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "Suppression %type « %label »"
+msgstr "Suppression %type"
 
 #: ../templates/default/edit_socials.tpl:17
-#, fuzzy
-#| msgid "Social networks"
 msgid "Add new social network"
-msgstr "Réseaux sociaux"
+msgstr "Ajouter un nouveau réseau sociaal"
 
 #: ../templates/default/edit_socials.tpl:20
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose or enter your own..."
-msgstr "Choisissez une entrée"
+msgstr "Choisissez ou entrez votre propre valeur..."
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
@@ -7994,14 +7976,6 @@ msgid "Do member want to appear publically?"
 msgstr "Est-ce que l’adhérent souhaite apparaître publiquement ?"
 
 #: ../templates/default/forms_types.tpl:78
-#, fuzzy
-#| msgid ""
-#| "If you check this box (and if you are up to date with your "
-#| "contributions), your full name, website address ad other information will "
-#| "be publically visible on the members list.<br/>If you've uploaded a "
-#| "photo, it will be displayed on the trombinoscope page.<br/>Note that "
-#| "administrators can disabled public pages, this setting will have no "
-#| "effect in that case."
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name and other information will be publically visible on the "
@@ -8010,11 +7984,11 @@ msgid ""
 "this setting will have no effect in that case."
 msgstr ""
 "Si vous cochez cette case (et que vous êtes à jour de vos cotisations), "
-"votre nom complet, l’adresse de votre site web et les autres informations "
-"seront visibles publiquement dans la liste des membres.<br/>Si vous avez "
-"envoyé une photo, elle sera affichée sur la page trombinoscope.<br/>Notez "
-"que les administrateurs peuvent désactiver les pages publiques ; dans ce "
-"cas, ce paramètre n’aura aucun effet."
+"votre nom complet et les autres informations seront visibles publiquement "
+"dans la liste des membres.<br>Si vous avez envoyé une photo, elle sera "
+"affichée sur la page trombinoscope.<br>Notez que les administrateurs peuvent "
+"désactiver les pages publiques ; dans ce cas, ce paramètre n’aura aucun "
+"effet."
 
 #: ../templates/default/forms_types.tpl:82
 msgid "(at least %i characters)"
