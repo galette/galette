@@ -223,6 +223,11 @@ class Group
     {
         global $zdb;
 
+        if (!isset($this->login) || !$this->login->isLogged()) {
+            $this->groups = [];
+            return;
+        }
+
         try {
             $select = $zdb->select(self::TABLE, 'a');
 
@@ -319,7 +324,7 @@ class Group
             if ($transaction) {
                 $zdb->connection->rollBack();
             }
-            if ($e->getCode() == 23000) {
+            if (!$zdb->isPostgres() && $e->getCode() == 23000 || $zdb->isPostgres() && $e->getCode() == 23503) {
                 Analog::log(
                     str_replace(
                         '%group',
