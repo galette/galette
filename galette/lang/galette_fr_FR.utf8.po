@@ -7492,7 +7492,7 @@ msgid "Create"
 msgstr "Créer"
 
 #: ../templates/default/gestion_groupes.tpl:159
-msgid "The group name you have requested already exits in the database."
+msgid "The group name you have requested already exists in the database."
 msgstr "Le nom de groupe que vous avez demandé existe déjà dans la base."
 
 #: ../templates/default/gestion_groupes.tpl:166

@@ -8748,7 +8748,7 @@ msgstr "Crea"
 
 #: ../templates/default/gestion_groupes.tpl:159
 #, fuzzy
-msgid "The group name you have requested already exits in the database."
+msgid "The group name you have requested already exists in the database."
 msgstr "El nom del grup que heu demanat ja surt a la base de dades."
 
 #: ../templates/default/gestion_groupes.tpl:166

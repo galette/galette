@@ -156,7 +156,7 @@
                                         if (res.message) {
                                             alert(res.message)
                                         } else {
-                                            alert('{_T string="The group name you have requested already exits in the database."}');
+                                            alert('{_T string="The group name you have requested already exists in the database."}');
                                         }
                                     } else {
                                         $(location).attr('href', _href.replace('NAME', _name));

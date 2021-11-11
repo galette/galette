@@ -7394,7 +7394,7 @@ msgid "Create"
 msgstr "Створити"
 
 #: ../templates/default/gestion_groupes.tpl:159
-msgid "The group name you have requested already exits in the database."
+msgid "The group name you have requested already exists in the database."
 msgstr "Назва групи, яку ви запитували, вже є у базі даних."
 
 #: ../templates/default/gestion_groupes.tpl:166

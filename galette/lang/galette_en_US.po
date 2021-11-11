@@ -7355,8 +7355,8 @@ msgid "Create"
 msgstr "Create"
 
 #: ../templates/default/gestion_groupes.tpl:159
-msgid "The group name you have requested already exits in the database."
-msgstr "The group name you have requested already exits in the database."
+msgid "The group name you have requested already exists in the database."
+msgstr "The group name you have requested already exists in the database."
 
 #: ../templates/default/gestion_groupes.tpl:166
 msgid "An error occurred checking name uniqueness :("
