@@ -297,7 +297,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
             </tbody>
         </table>
-{if $nb_members != 0}
+{if $nb_members != 0 && ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff())}
         <div class="center cright">
             {_T string="Pages:"}<br/>
             <ul class="pages">{$pagination}</ul>
@@ -320,6 +320,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-cookie-bite fa-fw"></i> {_T string="Mass add contributions"}
                 </button>
             </li>
+    {/if}
+    {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager() and $preferences->pref_bool_groupsmanagers_mailings}
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <li>
                 <button type="submit" id="sendmail" name="mailing">
@@ -328,6 +330,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </li>
         {/if}
     {/if}
+
+    {if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
             <li>
                 <button type="submit" id="attendance_sheet" name="attendance_sheet">
                     <i class="fas fa-file-alt fa-fw"></i> {_T string="Attendance sheet"}
@@ -343,7 +347,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-id-badge fa-fw"></i> {_T string="Generate Member Cards"}
                 </button>
             </li>
-    {if $login->isAdmin() or $login->isStaff()}
             <li>
                 <button type="submit" id="csv" name="csv">
                     <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}

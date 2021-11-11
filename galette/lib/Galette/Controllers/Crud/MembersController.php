@@ -1652,11 +1652,8 @@ class MembersController extends CrudController
                     }
 
                     if ($this->login->isGroupManager()) {
-                        //store requested groups
-                        $groups_adh = $post['groups_adh'] ?? null;
-                        $managed_groups_adh = $post['groups_managed_adh'] ?? null;
-
                         //add/remove user from groups
+                        $groups_adh = $post['groups_adh'] ?? null;
                         $add_groups = Groups::addMemberToGroups(
                             $member,
                             $groups_adh
@@ -1665,8 +1662,10 @@ class MembersController extends CrudController
                         if ($add_groups === false) {
                             $error_detected[] = _T("An error occurred adding member to its groups.");
                         }
-
+                    }
+                    if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
                         //add/remove manager from groups
+                        $managed_groups_adh = $post['groups_managed_adh'] ?? null;
                         $add_groups = Groups::addMemberToGroups(
                             $member,
                             $managed_groups_adh,

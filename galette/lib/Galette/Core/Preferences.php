@@ -139,6 +139,11 @@ use Galette\Repository\Members;
  * @property integer $pref_password_strength
  * @property integer $pref_default_paymenttype
  * @property boolean $pref_bool_create_member
+ * @property boolean $pref_bool_groupsmanagers_create_member
+ * @property boolean $pref_bool_groupsmanagers_edit_member
+ * @property boolean $pref_bool_groupsmanagers_edit_groups
+ * @property boolean $pref_bool_groupsmanagers_mailings
+ * @property boolean $pref_bool_groupsmanagers_exports
  * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences
@@ -271,7 +276,12 @@ class Preferences
         'pref_password_blacklist' => false,
         'pref_password_strength' => self::PWD_NONE,
         'pref_default_paymenttype' => PaymentType::CHECK,
-        'pref_bool_create_member' => false
+        'pref_bool_create_member' => false,
+        'pref_bool_groupsmanagers_create_member' => false,
+        'pref_bool_groupsmanagers_edit_member' => false,
+        'pref_bool_groupsmanagers_edit_groups' => false,
+        'pref_bool_groupsmanagers_mailings' => false,
+        'pref_bool_groupsmanagers_exports' => true
     );
 
     /** @var Social[] */

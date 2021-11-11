@@ -53,6 +53,10 @@ $core_acls = [
     'charts'                            => 'staff',
     '/(.+)?plugin(.+)?/i'               => 'admin',
     '/(.+)?mailing(.+)?/i'              => 'staff',
+    'mailing'                           => 'groupmanager',
+    'doMailing'                         => 'groupmanager',
+    'mailingPreview'                    => 'groupmanager',
+    'mailingRecipients'                 => 'groupmanager',
     '/(.+)?history(.+)?/i'              => 'staff',
     '/(.+)?import(.+)?/i'               => 'staff',
     '/(.+)?export(.+)?/i'               => 'staff',
@@ -73,7 +77,6 @@ $core_acls = [
     '/(.+)?member(.+)?/i'               => 'groupmanager',
     'ajaxGroupMembers'                  => 'staff',
     'duplicateMember'                   => 'staff',
-    'csv-memberslist'                   => 'staff',
     'payments_filter'                   => 'member',
     'adhesionForm'                      => 'member',
     'getDynamicFile'                    => 'member',
@@ -81,7 +84,6 @@ $core_acls = [
     // /Members rules
     // Groups rules
     '/(.+)?group(.+)?/i'                => 'groupmanager',
-    'ajax_groups_reorder'               => 'staff', //groups ordering is limited to staff
     'add_group'                         => 'staff', //adding group is for staff only
     // /Groups rules
 
@@ -91,7 +93,7 @@ $core_acls = [
     '/(.+)?reminder(.+)?/i'             => 'staff',
     '/(.+)?paymentType(.+)?/i'          => 'staff',
     '/(.+)?dynamicTranslation(.+)?/i'   => 'staff',
-    'previewAttachment'                 => 'staff',
+    'previewAttachment'                 => 'groupmanager',
     'getCsv'                            => 'staff',
     'pdfModels'                         => 'staff',
     'attendance_sheet_details'          => 'groupmanager',

@@ -6,6 +6,7 @@
                 <li><a href="#general">{_T string="General"}</a></li>
                 <li><a href="#social">{_T string="Social networks"}</a></li>
                 <li><a href="#parameters">{_T string="Parameters"}</a></li>
+                <li><a href="#rights">{_T string="Rights"}</a></li>
                 <li><a href="#mail">{_T string="E-Mail"}</a></li>
                 <li><a href="#labels">{_T string="Labels"}</a></li>
                 <li><a href="#cards">{_T string="Cards"}</a></li>
@@ -138,12 +139,6 @@
                     </select>
                 </p>
                 <p>
-                    <label for="pref_bool_create_member" class="bline tooltip">{_T string="Can members create child?"}</label>
-                    <span class="tip">{_T string="Any logged in member will be able to create his own child cards"}</span>
-                    <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {if $pref.pref_bool_create_member eq 1}checked="checked"{/if}{if isset($required.pref_bool_create_member) and $required.pref_bool_create_member eq 1} required="required"{/if}/>
-                </p>
-                <p>
-
                     <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
                     <select name="pref_redirect_on_create" id="pref_redirect_on_create">
                         <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
@@ -229,6 +224,35 @@
                     <label for="pref_show_id" class="bline tooltip">{_T string="Show identifiers"}</label>
                     <span class="tip">{_T string="Display database identifiers in related windows"}</span>
                     <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required="required"{/if}/>
+                </p>
+            </fieldset>
+
+            <fieldset class="cssform" id="rights">
+                <legend>{_T string="Rights"}</legend>
+                                <p>
+                    <label for="pref_bool_create_member" class="bline">{_T string="Can members create child?"}</label>
+                    <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {if $pref.pref_bool_create_member eq 1}checked="checked"{/if}{if isset($required.pref_bool_create_member) and $required.pref_bool_create_member eq 1} required="required"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_groupsmanagers_edit_groups" class="bline">{_T string="Can group managers edit their groups?"}</label>
+                    <input type="checkbox" name="pref_bool_groupsmanagers_edit_groups" id="pref_bool_groupsmanagers_edit_groups" value="1" {if $pref.pref_bool_groupsmanagers_edit_groups eq 1}checked="checked"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_groupsmanagers_create_member" class="bline">{_T string="Can group managers create members?"}</label>
+                    <input type="checkbox" name="pref_bool_groupsmanagers_create_member" id="pref_bool_groupsmanagers_create_member" value="1" {if $pref.pref_bool_groupsmanagers_create_member eq 1}checked="checked"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_groupsmanagers_edit_member" class="bline">{_T string="Can group managers edit members?"}</label>
+                    <input type="checkbox" name="pref_bool_groupsmanagers_edit_member" id="pref_bool_groupsmanagers_edit_member" value="1" {if $pref.pref_bool_groupsmanagers_edit_member eq 1}checked="checked"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_groupsmanagers_mailings" class="bline">{_T string="Can group managers send mailings?"}</label>
+                    <input type="checkbox" name="pref_bool_groupsmanagers_mailings" id="pref_bool_groupsmanagers_mailings" value="1" {if $pref.pref_bool_groupsmanagers_mailings eq 1}checked="checked"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_bool_groupsmanagers_exports" class="bline tooltip">{_T string="Can group managers do exports?"}</label>
+                    <span class="tip">{_T string="Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf"}</span>
+                    <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" value="1" {if $pref.pref_bool_groupsmanagers_exports eq 1}checked="checked"{/if}/>
                 </p>
             </fieldset>
 

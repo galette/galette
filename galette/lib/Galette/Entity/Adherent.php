@@ -1040,6 +1040,8 @@ class Adherent
      */
     public function check(array $values, array $required, array $disabled)
     {
+        global $login;
+
         $this->errors = array();
 
         //Sanitize
@@ -1178,6 +1180,19 @@ class Adherent
             $this->_parent = null;
         }
 
+        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff()) {
+            if (!isset($values['groups_adh'])) {
+                $this->errors[] = _T('You have to select a group you own!');
+            } else {
+                foreach ($values['groups_adh'] as $group) {
+                    list($gid) = explode('|', $group);
+                    if (!$login->isGroupManager($gid)) {
+                        $this->errors[] = _T('You have to select a group you own!');
+                    }
+                }
+            }
+        }
+
         $this->dynamicsCheck($values, $required, $disabled);
         $this->checkSocials($values);
 
@@ -1313,7 +1328,7 @@ class Adherent
                         }
                     } catch (Throwable $e) {
                         Analog::log(
-                            'An error occurred checking member email unicity.',
+                            'An error occurred checking member email uniqueness.',
                             Analog::ERROR
                         );
                         $this->errors[] = _T("An error has occurred while looking if login already exists.");
@@ -2092,6 +2107,10 @@ class Adherent
             return true;
         }
 
+        if ($preferences->pref_bool_groupsmanagers_create_member && $login->isGroupManager()) {
+            return true;
+        }
+
         if ($preferences->pref_bool_create_member && $login->isLogged()) {
             return true;
         }
@@ -2108,6 +2127,8 @@ class Adherent
      */
     public function canEdit(Login $login): bool
     {
+        global $preferences;
+
         //admin and staff users can edit, as well as member itself
         if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
             return true;
@@ -2118,8 +2139,8 @@ class Adherent
             return true;
         }
 
-        //group managers can edit members of groups they manage
-        if ($login->isGroupManager()) {
+        //group managers can edit members of groups they manage when pref is on
+        if ($preferences->pref_bool_groupsmanagers_edit_member && $login->isGroupManager()) {
             foreach ($this->getGroups() as $g) {
                 if ($login->isGroupManager($g->getId())) {
                     return true;
@@ -2139,6 +2160,15 @@ class Adherent
      */
     public function canShow(Login $login): bool
     {
+        //group managers can show members of groups they manage
+        if ($login->isGroupManager()) {
+            foreach ($this->getGroups() as $g) {
+                if ($login->isGroupManager($g->getId())) {
+                    return true;
+                }
+            }
+        }
+
         return $this->canEdit($login);
     }
 
