@@ -558,10 +558,6 @@ class AdvancedMembersList extends MembersList
                     }
                     break;
                 case 'free_search':
-                    if (isset($this->_free_search['empty'])) {
-                        unset($this->_free_search['empty']);
-                    }
-
                     if ($this->isValidFreeSearch($value)) {
                         //should this happen?
                         $values = [$value];
