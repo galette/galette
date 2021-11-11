@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-11 12:01+0100\n"
-"PO-Revision-Date: 2021-10-26 21:52+0000\n"
+"PO-Revision-Date: 2021-11-12 05:52+0000\n"
 "Last-Translator: Tymofii Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.9.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -445,10 +445,8 @@ msgid "- Unknown payment type!"
 msgstr "- Невідомий вид оплати!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No contribution was selected, please check at least one."
-msgstr "Жодного члена не вибрано. Будь ласка, перевірте принаймні одне ім’я."
+msgstr "Жодного внеску не вибрано. Помітьте принаймні один."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
@@ -2393,10 +2391,8 @@ msgid "End date of membership:"
 msgstr "Дата завершення членства:"
 
 #: ../lib/Galette/Entity/Contribution.php:184
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "Переказ"
+msgstr "ID переказу"
 
 #: ../lib/Galette/Entity/Contribution.php:190
 msgid "Membership extension:"
@@ -2480,7 +2476,7 @@ msgstr "Специфічне для пошти"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:349
 msgid "Twitter"
@@ -2512,7 +2508,7 @@ msgstr "Вебсайт"
 
 #: ../lib/Galette/Entity/Social.php:356
 msgid "Blog"
-msgstr ""
+msgstr "Блоґ"
 
 #: ../lib/Galette/Entity/PdfModel.php:304
 #, php-format
@@ -2768,8 +2764,6 @@ msgid "Infos"
 msgstr "Відомості"
 
 #: ../lib/Galette/Filters/MembersList.php:282
-#, fuzzy
-#| msgid "Member's ID"
 msgid "Member ID"
 msgstr "ID члена"
 
@@ -3155,13 +3149,11 @@ msgstr "Товариство"
 
 #: ../includes/dependencies.php:453
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "Не вдалося перевірити CSRF!"
 
 #: ../includes/fields_defs/members_fields.php:42
-#, fuzzy
-#| msgid "Member of:"
 msgid "Member id:"
-msgstr "Член:"
+msgstr "ID члена:"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
@@ -5050,8 +5042,6 @@ msgid "Zip - Town"
 msgstr "ZIP - Місто"
 
 #: ../templates/default/preferences.tpl:484
-#, fuzzy
-#| msgid "Member number"
 msgid "Member nubmer"
 msgstr "Номер члена"
 
@@ -6020,10 +6010,8 @@ msgstr[1] "%count члени"
 msgstr[2] "%count членів"
 
 #: ../templates/default/gestion_adherents.tpl:130
-#, fuzzy
-#| msgid "Mbr num"
 msgid "Mbr id"
-msgstr "№ члена"
+msgstr "ID члена"
 
 #: ../templates/default/gestion_adherents.tpl:180
 #: ../templates/default/gestion_adherents.tpl:415
@@ -7640,22 +7628,16 @@ msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
 
 #: ../templates/default/edit_socials.tpl:11
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "Вилучити вид %type заголовка '%label'"
+msgstr "Вилучити вид %type"
 
 #: ../templates/default/edit_socials.tpl:17
-#, fuzzy
-#| msgid "Social networks"
 msgid "Add new social network"
-msgstr "Соціальні мережі"
+msgstr "Додати нову соцмережу"
 
 #: ../templates/default/edit_socials.tpl:20
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose or enter your own..."
-msgstr "Виберіть запис"
+msgstr "Виберіть або введіть свій..."
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
@@ -7892,14 +7874,6 @@ msgid "Do member want to appear publically?"
 msgstr "Член хоче/має відображатися прилюдно?"
 
 #: ../templates/default/forms_types.tpl:78
-#, fuzzy
-#| msgid ""
-#| "If you check this box (and if you are up to date with your "
-#| "contributions), your full name, website address ad other information will "
-#| "be publically visible on the members list.<br/>If you've uploaded a "
-#| "photo, it will be displayed on the trombinoscope page.<br/>Note that "
-#| "administrators can disabled public pages, this setting will have no "
-#| "effect in that case."
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name and other information will be publically visible on the "
@@ -7908,10 +7882,10 @@ msgid ""
 "this setting will have no effect in that case."
 msgstr ""
 "Якщо ви відзначите цей прапорець (і якщо ви своєчасно робите внески), ваше "
-"повне ім'я, адреса сайту та інші відомості буде прилюдно видно в списку "
-"членів. <br> Якщо ви завантажили світлину, вона буде відображатися на "
-"сторінці дошки членів.<br> Примітка: адміністратори можуть вимкнути прилюдні "
-"сторінки, в цьому випадку дане налаштування не матиме жодного ефекту."
+"повне ім'я та інші відомості буде прилюдно видно в списку членів. <br> Якщо "
+"ви завантажили світлину, вона буде відображатися на сторінці дошки "
+"членів.<br> Примітка: адміністратори можуть вимкнути прилюдні сторінки, в "
+"цьому випадку дане налаштування не матиме жодного ефекту."
 
 #: ../templates/default/forms_types.tpl:82
 msgid "(at least %i characters)"
