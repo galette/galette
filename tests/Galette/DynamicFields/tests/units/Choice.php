@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic booleans tests
+ * Dynamic choice tests
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,11 +28,11 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     2013-10-18
+ * @since     2021-11-11
  */
 
 namespace Galette\DynamicFields\test\units;
@@ -40,21 +40,21 @@ namespace Galette\DynamicFields\test\units;
 use atoum;
 
 /**
- * Dynamic booleans test
+ * Dynamic choice test
  *
  * @category  DynamicFields
- * @name      Boolean
+ * @name      Choice
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     2013-10-18
+ * @since     2021-11-11
  */
-class Boolean extends atoum
+class Choice extends atoum
 {
     private $zdb;
-    private $bool;
+    private $choice;
 
     /**
      * Set up tests
@@ -66,7 +66,7 @@ class Boolean extends atoum
     public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
-        $this->bool = new \Galette\DynamicFields\Boolean($this->zdb);
+        $this->choice = new \Galette\DynamicFields\Choice($this->zdb);
     }
 
     /**
@@ -76,7 +76,7 @@ class Boolean extends atoum
      */
     public function testConstructor()
     {
-        $o = new \Galette\DynamicFields\Boolean($this->zdb, 10);
+        $o = new \Galette\DynamicFields\Choice($this->zdb, 10);
         $this->variable($o->getId())
             ->isNull();
     }
@@ -88,8 +88,8 @@ class Boolean extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->bool->getTypeName())
-            ->isIdenticalTo(_T('boolean'));
+        $this->variable($this->choice->getTypeName())
+            ->isIdenticalTo(_T('choice'));
     }
 
     /**
@@ -99,51 +99,51 @@ class Boolean extends atoum
      */
     public function testBaseProperties()
     {
-        $muliple = $this->bool->isMultiValued();
+        $muliple = $this->choice->isMultiValued();
         $this->boolean($muliple)->isFalse();
 
-        $required = $this->bool->isRequired();
+        $required = $this->choice->isRequired();
         $this->boolean($required)->isFalse();
 
-        $name = $this->bool->getName();
+        $name = $this->choice->getName();
         $this->variable($name)->isIdenticalTo('');
 
-        $has_fixed_values = $this->bool->hasFixedValues();
-        $this->boolean($has_fixed_values)->isFalse();
+        $has_fixed_values = $this->choice->hasFixedValues();
+        $this->boolean($has_fixed_values)->isTrue();
 
-        $has_data = $this->bool->hasData();
+        $has_data = $this->choice->hasData();
         $this->boolean($has_data)->isTrue();
 
-        $has_w = $this->bool->hasWidth();
+        $has_w = $this->choice->hasWidth();
         $this->boolean($has_w)->isFalse();
 
-        $has_h = $this->bool->hasHeight();
+        $has_h = $this->choice->hasHeight();
         $this->boolean($has_h)->isFalse();
 
-        $has_s = $this->bool->hasSize();
+        $has_s = $this->choice->hasSize();
         $this->boolean($has_s)->isFalse();
 
-        $perms = $this->bool->getPerm();
+        $perms = $this->choice->getPerm();
         $this->variable($perms)->isNull();
 
-        $width = $this->bool->getWidth();
+        $width = $this->choice->getWidth();
         $this->variable($width)->isNull();
 
-        $height = $this->bool->getHeight();
+        $height = $this->choice->getHeight();
         $this->variable($height)->isNull();
 
-        $repeat = $this->bool->getRepeat();
+        $repeat = $this->choice->getRepeat();
         $this->variable($repeat)->isNull();
 
-        $repeat = $this->bool->isRepeatable();
+        $repeat = $this->choice->isRepeatable();
         $this->boolean($repeat)->isFalse();
 
-        $size = $this->bool->getSize();
+        $size = $this->choice->getSize();
         $this->variable($size)->isNull();
 
-        $values = $this->bool->getValues();
+        $values = $this->choice->getValues();
         $this->boolean($values)->isFalse();
 
-        $this->boolean($this->bool->hasPermissions())->isTrue();
+        $this->boolean($this->choice->hasPermissions())->isTrue();
     }
 }

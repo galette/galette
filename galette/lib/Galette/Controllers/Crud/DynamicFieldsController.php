@@ -491,14 +491,14 @@ class DynamicFieldsController extends CrudController
      * @param Response $response  PSR Response
      * @param integer  $id        Field id
      * @param string   $form_name Form name
-     * @param string   $direction Either 'up' or 'down'
+     * @param string   $direction One of DynamicField::MOVE_*
      *
      * @return Response
      */
     public function move(
         Request $request,
         Response $response,
-        int $id = null,
+        int $id,
         string $form_name,
         string $direction
     ): Response {

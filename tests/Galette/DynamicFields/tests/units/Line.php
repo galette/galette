@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic booleans tests
+ * Dynamic single line tests
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,11 +28,11 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     2013-10-18
+ * @since     2021-11-11
  */
 
 namespace Galette\DynamicFields\test\units;
@@ -40,21 +40,21 @@ namespace Galette\DynamicFields\test\units;
 use atoum;
 
 /**
- * Dynamic booleans test
+ * Dynamic single line test
  *
  * @category  DynamicFields
- * @name      Boolean
+ * @name      Line
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     2013-10-18
+ * @since     2021-11-11
  */
-class Boolean extends atoum
+class Line extends atoum
 {
     private $zdb;
-    private $bool;
+    private $line;
 
     /**
      * Set up tests
@@ -66,7 +66,7 @@ class Boolean extends atoum
     public function beforeTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
-        $this->bool = new \Galette\DynamicFields\Boolean($this->zdb);
+        $this->line = new \Galette\DynamicFields\Line($this->zdb);
     }
 
     /**
@@ -76,7 +76,7 @@ class Boolean extends atoum
      */
     public function testConstructor()
     {
-        $o = new \Galette\DynamicFields\Boolean($this->zdb, 10);
+        $o = new \Galette\DynamicFields\Line($this->zdb, 10);
         $this->variable($o->getId())
             ->isNull();
     }
@@ -88,8 +88,8 @@ class Boolean extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->bool->getTypeName())
-            ->isIdenticalTo(_T('boolean'));
+        $this->variable($this->line->getTypeName())
+            ->isIdenticalTo(_T('single line'));
     }
 
     /**
@@ -99,51 +99,51 @@ class Boolean extends atoum
      */
     public function testBaseProperties()
     {
-        $muliple = $this->bool->isMultiValued();
-        $this->boolean($muliple)->isFalse();
+        $muliple = $this->line->isMultiValued();
+        $this->boolean($muliple)->isTrue();
 
-        $required = $this->bool->isRequired();
+        $required = $this->line->isRequired();
         $this->boolean($required)->isFalse();
 
-        $name = $this->bool->getName();
+        $name = $this->line->getName();
         $this->variable($name)->isIdenticalTo('');
 
-        $has_fixed_values = $this->bool->hasFixedValues();
+        $has_fixed_values = $this->line->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();
 
-        $has_data = $this->bool->hasData();
+        $has_data = $this->line->hasData();
         $this->boolean($has_data)->isTrue();
 
-        $has_w = $this->bool->hasWidth();
-        $this->boolean($has_w)->isFalse();
+        $has_w = $this->line->hasWidth();
+        $this->boolean($has_w)->isTrue();
 
-        $has_h = $this->bool->hasHeight();
+        $has_h = $this->line->hasHeight();
         $this->boolean($has_h)->isFalse();
 
-        $has_s = $this->bool->hasSize();
-        $this->boolean($has_s)->isFalse();
+        $has_s = $this->line->hasSize();
+        $this->boolean($has_s)->isTrue();
 
-        $perms = $this->bool->getPerm();
+        $perms = $this->line->getPerm();
         $this->variable($perms)->isNull();
 
-        $width = $this->bool->getWidth();
+        $width = $this->line->getWidth();
         $this->variable($width)->isNull();
 
-        $height = $this->bool->getHeight();
+        $height = $this->line->getHeight();
         $this->variable($height)->isNull();
 
-        $repeat = $this->bool->getRepeat();
+        $repeat = $this->line->getRepeat();
         $this->variable($repeat)->isNull();
 
-        $repeat = $this->bool->isRepeatable();
+        $repeat = $this->line->isRepeatable();
         $this->boolean($repeat)->isFalse();
 
-        $size = $this->bool->getSize();
+        $size = $this->line->getSize();
         $this->variable($size)->isNull();
 
-        $values = $this->bool->getValues();
+        $values = $this->line->getValues();
         $this->boolean($values)->isFalse();
 
-        $this->boolean($this->bool->hasPermissions())->isTrue();
+        $this->boolean($this->line->hasPermissions())->isTrue();
     }
 }

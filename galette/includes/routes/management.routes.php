@@ -43,6 +43,7 @@ use Galette\Controllers\PdfController;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
+use Galette\DynamicFields\DynamicField;
 
 //galette's dashboard
 $app->get(
@@ -338,7 +339,7 @@ $app->get(
 
 $app->get(
     '/fields/dynamic/move/{form_name:adh|contrib|trans}' .
-        '/{direction:up|down}/{id:\d+}',
+        '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'move']
 )->setName('moveDynamicField')->add($authenticate);
 

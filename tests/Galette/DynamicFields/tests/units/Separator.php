@@ -103,8 +103,7 @@ class Separator extends atoum
         $this->boolean($muliple)->isFalse();
 
         $required = $this->separator->isRequired();
-        //should'nt that one be false?
-        $this->variable($required)->isNull();
+        $this->boolean($required)->isFalse();
 
         $name = $this->separator->getName();
         $this->variable($name)->isIdenticalTo('');
@@ -136,10 +135,15 @@ class Separator extends atoum
         $repeat = $this->separator->getRepeat();
         $this->variable($repeat)->isNull();
 
+        $repeat = $this->separator->isRepeatable();
+        $this->boolean($repeat)->isFalse();
+
         $size = $this->separator->getSize();
         $this->variable($size)->isNull();
 
         $values = $this->separator->getValues();
         $this->boolean($values)->isFalse();
+
+        $this->boolean($this->separator->hasPermissions())->isFalse();
     }
 }
