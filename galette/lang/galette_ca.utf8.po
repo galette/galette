@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-11 12:01+0100\n"
+"POT-Creation-Date: 2021-11-12 06:51+0100\n"
 "PO-Revision-Date: 2021-09-30 09:49+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -1722,121 +1722,121 @@ msgstr "La foto no s'ha desat!"
 msgid "Photo has not been copied!"
 msgstr "La foto no s'ha copiat!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:505
+#: ../lib/Galette/DynamicFields/DynamicField.php:519
 #, fuzzy
 msgid "User, read/write"
 msgstr "Lectura/escriptura de l'usuari"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:506
+#: ../lib/Galette/DynamicFields/DynamicField.php:520
 #, fuzzy
 msgid "Staff member"
 msgstr "Membre del personal"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:507
+#: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Administrator"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:508
+#: ../lib/Galette/DynamicFields/DynamicField.php:522
 #, fuzzy
 msgid "Group manager"
 msgstr "Gestor de grups"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:509
+#: ../lib/Galette/DynamicFields/DynamicField.php:523
 #, fuzzy
 msgid "User, read only"
 msgstr "Només lectura de l'usuari"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:521
+#: ../lib/Galette/DynamicFields/DynamicField.php:535
 #, fuzzy
 msgid "Members"
 msgstr "Membres"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:522
+#: ../lib/Galette/DynamicFields/DynamicField.php:536
 #, fuzzy
 msgid "Contributions"
 msgstr "Contribucions"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:523
+#: ../lib/Galette/DynamicFields/DynamicField.php:537
 #, fuzzy
 msgid "Transactions"
 msgstr "Operacions"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:597
+#: ../lib/Galette/DynamicFields/DynamicField.php:611
 #, fuzzy
 msgid "Missing required field name!"
 msgstr "Falta el nom de camp requerit!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:606
+#: ../lib/Galette/DynamicFields/DynamicField.php:620
 #, fuzzy
 msgid "Missing required field permissions!"
 msgstr "Falten els permisos necessaris!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:611
+#: ../lib/Galette/DynamicFields/DynamicField.php:625
 #, fuzzy
 msgid "Unknown permission!"
 msgstr "Permís desconegut!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:617
+#: ../lib/Galette/DynamicFields/DynamicField.php:631
 #, fuzzy
 msgid "Missing required form!"
 msgstr "Falta el formulari necessari!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:622
+#: ../lib/Galette/DynamicFields/DynamicField.php:636
 #, fuzzy
 msgid "Unknown form!"
 msgstr "Formulari desconegut!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:630
+#: ../lib/Galette/DynamicFields/DynamicField.php:644
 #, fuzzy
 msgid "- Field name already used."
 msgstr "- El nom del camp ja s'utilitza."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:738
+#: ../lib/Galette/DynamicFields/DynamicField.php:758
 #, fuzzy
 msgid "An error occurred storing the field."
 msgstr "S'ha produït un error en emmagatzemar el camp."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:759
+#: ../lib/Galette/DynamicFields/DynamicField.php:779
 #, fuzzy
 msgid "An error occurred creating field values table"
 msgstr "S'ha produït un error en crear la taula de valors de camp"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:793
+#: ../lib/Galette/DynamicFields/DynamicField.php:813
 #, fuzzy
 msgid "An error occurred storing dynamic field values :("
 msgstr "S'ha produït un error en emmagatzemar els valors de camp dinàmic ("
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:998
+#: ../lib/Galette/DynamicFields/DynamicField.php:1023
 #, fuzzy
 msgid "separator"
 msgstr "separador"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:999
+#: ../lib/Galette/DynamicFields/DynamicField.php:1024
 #, fuzzy
 msgid "free text"
 msgstr "text lliure"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1000
+#: ../lib/Galette/DynamicFields/DynamicField.php:1025
 #, fuzzy
 msgid "single line"
 msgstr "línia única"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1001
+#: ../lib/Galette/DynamicFields/DynamicField.php:1026
 #, fuzzy
 msgid "choice"
 msgstr "tria"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1002
+#: ../lib/Galette/DynamicFields/DynamicField.php:1027
 #, fuzzy
 msgid "date"
 msgstr "data"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1003
+#: ../lib/Galette/DynamicFields/DynamicField.php:1028
 #, fuzzy
 msgid "boolean"
 msgstr "booleà"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1004
+#: ../lib/Galette/DynamicFields/DynamicField.php:1029
 #, fuzzy
 msgid "file"
 msgstr "fitxer"
@@ -4793,7 +4793,7 @@ msgstr "Cadena original per al nom que s'utilitzarà per a les traduccions."
 #: ../templates/default/gestion_adherents.tpl:98
 #: ../templates/default/config_lists.tpl:57
 #: ../templates/default/ajouter_transaction.tpl:45
-#: ../templates/default/group.tpl:76 ../templates/default/editer_champ.tpl:72
+#: ../templates/default/group.tpl:76 ../templates/default/editer_champ.tpl:77
 #: ../templates/default/mailing_adherents.tpl:100
 #: ../templates/default/edit_title.tpl:19
 #: ../templates/default/gestion_pdf_content.tpl:51
@@ -6306,7 +6306,7 @@ msgstr "Membre"
 #: ../templates/default/gestion_contributions.tpl:129
 #: ../templates/default/gestion_contributions.tpl:257
 #: ../templates/default/ajouter_transaction.tpl:93
-#: ../templates/default/editer_champ.tpl:101
+#: ../templates/default/editer_champ.tpl:106
 #: ../templates/default/configurer_fiche_content.tpl:7
 #: ../templates/default/gestion_pdf_content.tpl:34
 #: ../templates/default/advanced_search.tpl:164
@@ -6482,7 +6482,7 @@ msgstr "Mostra la llegenda"
 
 #: ../templates/default/gestion_contributions.tpl:382
 #: ../templates/default/gestion_mailings.tpl:193
-#: ../templates/default/edit_dynamic_fields.tpl:227
+#: ../templates/default/edit_dynamic_fields.tpl:231
 #: ../templates/default/gestion_adherents.tpl:765
 #: ../templates/default/history.tpl:167
 #: ../templates/default/ajouter_transaction.tpl:256
@@ -6926,18 +6926,18 @@ msgstr "actual"
 msgid "delete"
 msgstr "suprimeix"
 
-#: ../templates/default/edit_dynamic_fields.tpl:139
+#: ../templates/default/edit_dynamic_fields.tpl:143
 #, fuzzy
 msgid "Enter as many occurences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
-#: ../templates/default/edit_dynamic_fields.tpl:147
-#: ../templates/default/edit_dynamic_fields.tpl:187
+#: ../templates/default/edit_dynamic_fields.tpl:151
+#: ../templates/default/edit_dynamic_fields.tpl:191
 #, fuzzy, php-format
 msgid "Enter up to %count more occurences."
 msgstr "Introduïu fins a un percentatge més d'aparició."
 
-#: ../templates/default/edit_dynamic_fields.tpl:157
+#: ../templates/default/edit_dynamic_fields.tpl:161
 #, fuzzy
 msgid "New occurence"
 msgstr "Nova aparició"
@@ -7307,7 +7307,7 @@ msgstr "Camps a la llista"
 
 #: ../templates/default/config_lists.tpl:14
 #: ../templates/default/config_lists.tpl:38
-#: ../templates/default/editer_champ.tpl:87
+#: ../templates/default/editer_champ.tpl:92
 #: ../templates/default/config_fields.tpl:16
 #: ../templates/default/config_fields.tpl:25
 #, fuzzy
@@ -7823,18 +7823,28 @@ msgstr "Valors"
 msgid "Choice list (one entry per line)."
 msgstr "Llista d'opcions (una entrada per línia)."
 
-#: ../templates/default/editer_champ.tpl:79
-#: ../templates/default/editer_champ.tpl:82
+#: ../templates/default/editer_champ.tpl:70
+#, fuzzy
+#| msgid "Information"
+msgid "Information:"
+msgstr "Informació"
+
+#: ../templates/default/editer_champ.tpl:71
+msgid "Extra information displayed along with dynamic field."
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:84
+#: ../templates/default/editer_champ.tpl:87
 #, fuzzy
 msgid "New dynamic field"
 msgstr "Camp dinàmic nou"
 
-#: ../templates/default/editer_champ.tpl:91
+#: ../templates/default/editer_champ.tpl:96
 #, fuzzy
 msgid "Visibility"
 msgstr "Visibilitat"
 
-#: ../templates/default/editer_champ.tpl:111
+#: ../templates/default/editer_champ.tpl:116
 #: ../templates/default/configurer_fiche_content.tpl:8
 #: ../templates/default/config_fields.tpl:17
 #: ../templates/default/config_fields.tpl:31
@@ -7842,7 +7852,7 @@ msgstr "Visibilitat"
 msgid "Required"
 msgstr "Requerit"
 
-#: ../templates/default/editer_champ.tpl:120
+#: ../templates/default/editer_champ.tpl:125
 #: ../templates/default/configurer_fiches.tpl:11
 #: ../templates/default/gestion_intitule_content.tpl:48
 #: ../templates/default/edit_socials.tpl:28

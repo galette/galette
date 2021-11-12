@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-11 12:01+0100\n"
+"POT-Creation-Date: 2021-11-12 06:51+0100\n"
 "PO-Revision-Date: 2021-10-08 17:03+0000\n"
 "Last-Translator: KasukeLp <kasukelp23@yahoo.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -1563,99 +1563,99 @@ msgstr "¡No se almacenó la fotografía!"
 msgid "Photo has not been copied!"
 msgstr "No se copió la foto!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:505
+#: ../lib/Galette/DynamicFields/DynamicField.php:519
 msgid "User, read/write"
 msgstr "Usuario, leer/escribir"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:506
+#: ../lib/Galette/DynamicFields/DynamicField.php:520
 msgid "Staff member"
 msgstr "Miembro del personal"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:507
+#: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Administrator"
 msgstr "Administrador"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:508
+#: ../lib/Galette/DynamicFields/DynamicField.php:522
 msgid "Group manager"
 msgstr "Gerente de grupo"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:509
+#: ../lib/Galette/DynamicFields/DynamicField.php:523
 msgid "User, read only"
 msgstr "Usuario, solo lectura"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:521
+#: ../lib/Galette/DynamicFields/DynamicField.php:535
 msgid "Members"
 msgstr "Miembros"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:522
+#: ../lib/Galette/DynamicFields/DynamicField.php:536
 msgid "Contributions"
 msgstr "Contribuciones"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:523
+#: ../lib/Galette/DynamicFields/DynamicField.php:537
 msgid "Transactions"
 msgstr "Transacciones"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:597
+#: ../lib/Galette/DynamicFields/DynamicField.php:611
 msgid "Missing required field name!"
 msgstr "Falta campo obligatorio!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:606
+#: ../lib/Galette/DynamicFields/DynamicField.php:620
 msgid "Missing required field permissions!"
 msgstr "¡Faltan los campos de permisos requeridos!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:611
+#: ../lib/Galette/DynamicFields/DynamicField.php:625
 msgid "Unknown permission!"
 msgstr "¡Credenciales desconocidas!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:617
+#: ../lib/Galette/DynamicFields/DynamicField.php:631
 msgid "Missing required form!"
 msgstr "¡Falta formulario requerido!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:622
+#: ../lib/Galette/DynamicFields/DynamicField.php:636
 msgid "Unknown form!"
 msgstr "¡Formulario desconocido!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:630
+#: ../lib/Galette/DynamicFields/DynamicField.php:644
 msgid "- Field name already used."
 msgstr "- Ya se utiliza el nombre del campo."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:738
+#: ../lib/Galette/DynamicFields/DynamicField.php:758
 msgid "An error occurred storing the field."
 msgstr "Ha ocurrido un error al guardar el campo."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:759
+#: ../lib/Galette/DynamicFields/DynamicField.php:779
 msgid "An error occurred creating field values table"
 msgstr "Hubo un error al crear el campo en la tabla de valores"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:793
+#: ../lib/Galette/DynamicFields/DynamicField.php:813
 msgid "An error occurred storing dynamic field values :("
 msgstr "Hubo un error al almacenar los campos dinámicos de valores"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:998
+#: ../lib/Galette/DynamicFields/DynamicField.php:1023
 msgid "separator"
 msgstr "separador"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:999
+#: ../lib/Galette/DynamicFields/DynamicField.php:1024
 msgid "free text"
 msgstr "texto libre"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1000
+#: ../lib/Galette/DynamicFields/DynamicField.php:1025
 msgid "single line"
 msgstr "una linea"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1001
+#: ../lib/Galette/DynamicFields/DynamicField.php:1026
 msgid "choice"
 msgstr "elección"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1002
+#: ../lib/Galette/DynamicFields/DynamicField.php:1027
 msgid "date"
 msgstr "fecha"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1003
+#: ../lib/Galette/DynamicFields/DynamicField.php:1028
 msgid "boolean"
 msgstr "booleano"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1004
+#: ../lib/Galette/DynamicFields/DynamicField.php:1029
 msgid "file"
 msgstr "archivo"
 
@@ -4067,7 +4067,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:98
 #: ../templates/default/config_lists.tpl:57
 #: ../templates/default/ajouter_transaction.tpl:45
-#: ../templates/default/group.tpl:76 ../templates/default/editer_champ.tpl:72
+#: ../templates/default/group.tpl:76 ../templates/default/editer_champ.tpl:77
 #: ../templates/default/mailing_adherents.tpl:100
 #: ../templates/default/edit_title.tpl:19
 #: ../templates/default/gestion_pdf_content.tpl:51
@@ -5274,7 +5274,7 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:129
 #: ../templates/default/gestion_contributions.tpl:257
 #: ../templates/default/ajouter_transaction.tpl:93
-#: ../templates/default/editer_champ.tpl:101
+#: ../templates/default/editer_champ.tpl:106
 #: ../templates/default/configurer_fiche_content.tpl:7
 #: ../templates/default/gestion_pdf_content.tpl:34
 #: ../templates/default/advanced_search.tpl:164
@@ -5427,7 +5427,7 @@ msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:382
 #: ../templates/default/gestion_mailings.tpl:193
-#: ../templates/default/edit_dynamic_fields.tpl:227
+#: ../templates/default/edit_dynamic_fields.tpl:231
 #: ../templates/default/gestion_adherents.tpl:765
 #: ../templates/default/history.tpl:167
 #: ../templates/default/ajouter_transaction.tpl:256
@@ -5798,17 +5798,17 @@ msgstr "actual"
 msgid "delete"
 msgstr "eliminar"
 
-#: ../templates/default/edit_dynamic_fields.tpl:139
+#: ../templates/default/edit_dynamic_fields.tpl:143
 msgid "Enter as many occurences you want."
 msgstr "Proporcione tantas ocurrencias como desee."
 
-#: ../templates/default/edit_dynamic_fields.tpl:147
-#: ../templates/default/edit_dynamic_fields.tpl:187
+#: ../templates/default/edit_dynamic_fields.tpl:151
+#: ../templates/default/edit_dynamic_fields.tpl:191
 #, php-format
 msgid "Enter up to %count more occurences."
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:157
+#: ../templates/default/edit_dynamic_fields.tpl:161
 msgid "New occurence"
 msgstr "Ocurrencia nueva"
 
@@ -6111,7 +6111,7 @@ msgstr ""
 
 #: ../templates/default/config_lists.tpl:14
 #: ../templates/default/config_lists.tpl:38
-#: ../templates/default/editer_champ.tpl:87
+#: ../templates/default/editer_champ.tpl:92
 #: ../templates/default/config_fields.tpl:16
 #: ../templates/default/config_fields.tpl:25
 msgid "Field name"
@@ -6536,23 +6536,33 @@ msgstr ""
 msgid "Choice list (one entry per line)."
 msgstr ""
 
-#: ../templates/default/editer_champ.tpl:79
-#: ../templates/default/editer_champ.tpl:82
+#: ../templates/default/editer_champ.tpl:70
+#, fuzzy
+#| msgid "Information"
+msgid "Information:"
+msgstr "Información"
+
+#: ../templates/default/editer_champ.tpl:71
+msgid "Extra information displayed along with dynamic field."
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:84
+#: ../templates/default/editer_champ.tpl:87
 msgid "New dynamic field"
 msgstr ""
 
-#: ../templates/default/editer_champ.tpl:91
+#: ../templates/default/editer_champ.tpl:96
 msgid "Visibility"
 msgstr ""
 
-#: ../templates/default/editer_champ.tpl:111
+#: ../templates/default/editer_champ.tpl:116
 #: ../templates/default/configurer_fiche_content.tpl:8
 #: ../templates/default/config_fields.tpl:17
 #: ../templates/default/config_fields.tpl:31
 msgid "Required"
 msgstr ""
 
-#: ../templates/default/editer_champ.tpl:120
+#: ../templates/default/editer_champ.tpl:125
 #: ../templates/default/configurer_fiches.tpl:11
 #: ../templates/default/gestion_intitule_content.tpl:48
 #: ../templates/default/edit_socials.tpl:28
