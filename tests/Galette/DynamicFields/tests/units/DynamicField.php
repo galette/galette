@@ -516,4 +516,33 @@ class DynamicField extends atoum
         )->isInstanceOf('\PDOException');
         $this->boolean(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id))->isFalse();
     }
+
+    /**
+     * Test information
+     *
+     * @return void
+     */
+    public function testInformation()
+    {
+        $field_data = [
+            'form_name'         => 'adh',
+            'field_name'        => 'A first text field',
+            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
+            'field_information' => '<p>This is an important information.</p><p>And here an xss...  <img src=img.png onerror=alert(1) /></p>'
+        ];
+
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+        $stored = $df->store($field_data);
+        $this->boolean($stored)->isTrue(
+            implode(
+                ' ',
+                $df->getErrors() + $df->getWarnings()
+            )
+        );
+        $this->boolean($stored)->isTrue();
+        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
+
+        $this->string($df->getInformation())->isIdenticalTo('<p>This is an important information.</p><p>And here an xss...  <img src="img.png" alt="img.png" /></p>');
+    }
 }

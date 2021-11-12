@@ -104,11 +104,15 @@
     <div>
     {assign var=access_level value=$login->getAccessLevel()}
     {foreach from=$fields item=field}
+        {if $field->getInformation()}
+            <div>{$field->getInformation()}</div>
+        {/if}
+
         {assign var=perm value=$field->getPerm()}
         {if $field|is_a:'Galette\DynamicFields\Separator'}
         <div class="separator">{$field->getName()|escape}</div>
         {elseif ($field|is_a:'Galette\DynamicFields\File' || $field->isRepeatable())  && $masschange}
-            <!-- File and repetable fields not shown in mass changes form -->
+            <!-- File and repeatable fields not shown in mass changes form -->
         {else}
         <p{if $field->isRepeatable()} class="repetable"{/if}>
             {assign var=disabled value=false}

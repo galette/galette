@@ -53,7 +53,7 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -112,6 +112,9 @@ abstract class DynamicField
     protected $old_size;
     protected $values;
     protected $form;
+    protected $information;
+    protected $name;
+    protected $old_name;
 
     protected $errors = [];
 
@@ -255,6 +258,7 @@ abstract class DynamicField
         $this->repeat = (int)$rs->field_repeat;
         $this->size = $rs->field_size;
         $this->form = $rs->field_form;
+        $this->information = $rs->field_information;
         if ($values && $this->hasFixedValues()) {
             $this->loadFixedValues();
         }
@@ -404,7 +408,6 @@ abstract class DynamicField
         return (bool)$this->has_permissions;
     }
 
-
     /**
      * Get field id
      *
@@ -424,7 +427,6 @@ abstract class DynamicField
     {
         return $this->perm;
     }
-
 
     /**
      * Is field required?
@@ -494,6 +496,16 @@ abstract class DynamicField
     public function getIndex(): ?int
     {
         return $this->index;
+    }
+
+    /**
+     * Get field information
+     *
+     * @return string
+     */
+    public function getInformation(): string
+    {
+        return $this->information ?? '';
     }
 
     /**
@@ -648,6 +660,11 @@ abstract class DynamicField
             $this->repeat = $values['field_repeat'];
         }
 
+        if (isset($values['field_information']) && trim($values['field_information']) != '') {
+            global $preferences;
+            $this->information = $preferences->cleanHtmlValue($values['field_information']);
+        }
+
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
             foreach (explode("\n", $values['fixed_values']) as $val) {
@@ -708,7 +725,8 @@ abstract class DynamicField
                 'field_size'        => ($this->size === null ? new Expression('NULL') : $this->size),
                 'field_repeat'      => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
                 'field_form'        => $this->form,
-                'field_index'       => $this->index
+                'field_index'       => $this->index,
+                'field_information' => ($this->information === null ? new Expression('NULL') : $this->information)
             );
 
             if ($this->required === false) {

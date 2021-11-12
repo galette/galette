@@ -302,7 +302,7 @@ CREATE TABLE galette_field_types (
   field_height integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
   field_repeat integer DEFAULT NULL,
-  field_layout integer DEFAULT NULL,
+  field_information text DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
 -- add index, field_form is used elsewhere

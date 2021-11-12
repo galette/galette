@@ -137,7 +137,7 @@ CREATE TABLE galette_field_types (
     field_height int(10) default NULL,
     field_size int(10) default NULL,
     field_repeat int(10) default NULL,
-    field_layout int(10) default NULL,
+    field_information TEXT default NULL,
     PRIMARY KEY (field_id),
     INDEX (field_form)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

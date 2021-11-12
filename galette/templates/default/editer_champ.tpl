@@ -66,6 +66,11 @@
                 <br/><span class="exemple">{_T string="Choice list (one entry per line)."}</span>
             </p>
 {/if}
+            <p>
+                <label for="field_information" class="bline tooltip">{_T string="Information:"}</label>
+                <span class="tip">{_T string="Extra information displayed along with dynamic field."}</span>
+                <textarea name="field_information" id="field_information" cols="20" rows="6">{$df->getInformation()}</textarea>
+            </p>
         </fieldset>
             <div class="button-container">
                 <button type="submit" class="action">
@@ -128,4 +133,25 @@
     {/if}
     </form>
 {/if}
+{/block}
+
+{block name="javascripts"}
+    <script>
+        $('#field_information').summernote({
+            lang: '{$i18n->getID()|replace:'_':'-'}',
+            height: 240,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture']],
+                ['view', ['codeview', 'help']]
+            ],
+            styleTags: [
+                'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+            ]
+        });
+        $('#field_information').summernote('focus');
+
+    </script>
 {/block}

@@ -54,4 +54,9 @@ ALTER TABLE galette_searches DROP COLUMN parameters_sum;
 -- drop groups unique name constraint
 ALTER TABLE galette_groups DROP CONSTRAINT name;
 
+-- add information on dynamic fields
+ALTER TABLE galette_field_types ADD COLUMN field_information text DEFAULT NULL;
+-- field that has never been used
+ALTER TABLE galette_field_types DROP COLUMN field_layout;
+
 UPDATE galette_database SET version = 0.960;
