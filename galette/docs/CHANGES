@@ -1,6 +1,21 @@
 Changes
 -------
 
+0.9.5.2 -> 0.9.6
+- Social networks/contact externalization
+- Add member number
+- Export contributions as CSV
+- Drop group name uniqueness at same level
+- Add information to display for dynamic fields
+- Fix various XSS issues
+- Fix possible SQL injection
+- Add CSRF protection
+- Fix address escaping at display
+- Prevent issue creating contribution with an empty amount
+- Fix undefined index when locale is missing on system
+- Fix issue reusing a saved search from advanced search
+- Update translations
+
 0.9.5.1 -> 0.9.5.2
 - Update translations
 - Work on PHP 8.1 compatibility and tests improvements
