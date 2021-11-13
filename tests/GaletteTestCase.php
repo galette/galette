@@ -131,6 +131,7 @@ abstract class GaletteTestCase extends atoum
         $this->members_fields_cats = $container->get('members_fields_cats');
         $this->request = $container->get('request');
         $this->response = $container->get('response');
+        $this->session = $container->get('session');
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var; // globals :(
         $zdb = $this->zdb;

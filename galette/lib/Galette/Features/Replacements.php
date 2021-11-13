@@ -90,7 +90,6 @@ trait Replacements
     protected $preferences;
 
     /**
-     * @Inject
      * @var Router
      */
     protected $router;
