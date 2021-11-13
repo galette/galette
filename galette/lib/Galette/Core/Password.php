@@ -217,7 +217,7 @@ class Password extends AbstractPassword
             if ($results->count() > 0) {
                 $result = $results->current();
                 $pk = self::PK;
-                return $result->$pk;
+                return (int)$result->$pk;
             } else {
                 return false;
             }

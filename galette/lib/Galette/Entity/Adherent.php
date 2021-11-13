@@ -168,7 +168,7 @@ class Adherent
     //Galette relative information
     private $_appears_in_list;
     private $_admin;
-    private $_staff;
+    private $_staff = false;
     private $_due_free;
     private $_login;
     private $_password;
@@ -221,11 +221,11 @@ class Adherent
     /**
      * Default constructor
      *
-     * @param Db          $zdb  Database instance
-     * @param mixed       $args Either a ResultSet row, its id or its
-     *                          login or its email for to load s specific
-     *                          member, or null to just instantiate object
-     * @param false|array $deps Dependencies configuration, see Adherent::$_deps
+     * @param Db               $zdb  Database instance
+     * @param mixed            $args Either a ResultSet row, its id or its
+     *                               login or its email for to load s specific
+     *                               member, or null to just instantiate object
+     * @param false|array|null $deps Dependencies configuration, see Adherent::$_deps
      */
     public function __construct(Db $zdb, $args = null, $deps = null)
     {
@@ -290,7 +290,7 @@ class Adherent
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load($id)
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE, 'a');
@@ -323,9 +323,9 @@ class Adherent
      *
      * @param string $login login for the member to load
      *
-     * @return bool true if query succeed, false otherwise
+     * @return boolean
      */
-    public function loadFromLoginOrMail($login)
+    public function loadFromLoginOrMail(string $login): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -342,6 +342,7 @@ class Adherent
             if ($result) {
                 $this->loadFromRS($result);
             }
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot load member form login `' . $login . '` | ' .
@@ -359,7 +360,7 @@ class Adherent
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS($r): void
     {
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
@@ -452,7 +453,7 @@ class Adherent
      *
      * @return void
      */
-    private function loadParent()
+    private function loadParent(): void
     {
         if (!$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
@@ -465,7 +466,7 @@ class Adherent
      *
      * @return void
      */
-    private function loadChildren()
+    private function loadChildren(): void
     {
         $this->_children = array();
         try {
@@ -500,7 +501,7 @@ class Adherent
      *
      * @return void
      */
-    public function loadGroups()
+    public function loadGroups(): void
     {
         $this->_groups = Groups::loadGroups($this->_id);
         $this->_managed_groups = Groups::loadManagedGroups($this->_id);
@@ -511,7 +512,7 @@ class Adherent
      *
      * @return void
      */
-    public function loadSocials()
+    public function loadSocials(): void
     {
         $this->_socials = Social::getListForMember($this->_id);
     }
@@ -519,10 +520,10 @@ class Adherent
     /**
      * Retrieve status from preferences
      *
-     * @return pref_statut
+     * @return integer
      *
      */
-    private function getDefaultStatus()
+    private function getDefaultStatus(): int
     {
         global $preferences;
         if ($preferences->pref_statut != '') {
@@ -541,7 +542,7 @@ class Adherent
      *
      * @return void
      */
-    private function checkDues()
+    private function checkDues(): void
     {
         //how many days since our beloved member has been created
         $date_now = new \DateTime();
@@ -582,7 +583,7 @@ class Adherent
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->_admin;
     }
@@ -592,7 +593,7 @@ class Adherent
      *
      * @return bool
      */
-    public function isStaff()
+    public function isStaff(): bool
     {
         return $this->_staff;
     }
@@ -602,7 +603,7 @@ class Adherent
      *
      * @return bool
      */
-    public function isDueFree()
+    public function isDueFree(): bool
     {
         return $this->_due_free;
     }
@@ -614,7 +615,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isGroupMember($group_name)
+    public function isGroupMember(string $group_name): bool
     {
         if (is_array($this->_groups)) {
             foreach ($this->_groups as $g) {
@@ -639,7 +640,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isGroupManager($group_name)
+    public function isGroupManager(string $group_name): bool
     {
         if (is_array($this->_managed_groups)) {
             foreach ($this->_managed_groups as $mg) {
@@ -662,7 +663,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isCompany()
+    public function isCompany(): bool
     {
         return trim($this->_company_name ?? '') != '';
     }
@@ -672,7 +673,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isMan()
+    public function isMan(): bool
     {
         return (int)$this->_gender === self::MAN;
     }
@@ -682,7 +683,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isWoman()
+    public function isWoman(): bool
     {
         return (int)$this->_gender === self::WOMAN;
     }
@@ -693,7 +694,7 @@ class Adherent
      *
      * @return bool
      */
-    public function appearsInMembersList()
+    public function appearsInMembersList(): bool
     {
         return $this->_appears_in_list;
     }
@@ -703,7 +704,7 @@ class Adherent
      *
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->_active;
     }
@@ -713,7 +714,7 @@ class Adherent
      *
      * @return bool
      */
-    public function hasPicture()
+    public function hasPicture(): bool
     {
         return $this->_picture->hasPicture();
     }
@@ -723,7 +724,7 @@ class Adherent
      *
      * @return bool
      */
-    public function hasParent()
+    public function hasParent(): bool
     {
         return !empty($this->_parent);
     }
@@ -733,7 +734,7 @@ class Adherent
      *
      * @return bool
      */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         if ($this->_children === null) {
             if ($this->id) {
@@ -755,7 +756,7 @@ class Adherent
      *
      * @return string the class to apply
      */
-    public function getRowClass($public = false)
+    public function getRowClass(bool $public = false): string
     {
         $strclass = ($this->isActive()) ? 'active' : 'inactive';
         if ($public === false) {
@@ -769,7 +770,7 @@ class Adherent
      *
      * @return string i18n string representing state of due
      */
-    public function getDues()
+    public function getDues(): string
     {
         $ret = '';
         $date_now = new \DateTime();
@@ -841,7 +842,7 @@ class Adherent
      *
      * @return string formatted Name and Surname
      */
-    public static function getSName($zdb, $id, $wid = false, $wnick = false)
+    public static function getSName(Db $zdb, int $id, bool $wid = false, bool $wnick = false): string
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -870,18 +871,23 @@ class Adherent
      * Get member name with correct case
      *
      * @param string        $name    Member name
-     * @param string        $surname Mmeber surname
+     * @param string        $surname Member surname
      * @param false|Title   $title   Member title to show or false
      * @param false|integer $id      Member id to display or false
      * @param false|string  $nick    Member nickname to display or false
      *
      * @return string
      */
-    public static function getNameWithCase($name, $surname, $title = false, $id = false, $nick = false)
-    {
+    public static function getNameWithCase(
+        string $name,
+        string $surname,
+        $title = false,
+        $id = false,
+        $nick = false
+    ): string {
         $str = '';
 
-        if ($title !== false && $title instanceof Title) {
+        if ($title instanceof Title) {
             $str .= $title->tshort . ' ';
         }
 
@@ -909,13 +915,13 @@ class Adherent
     /**
      * Change password for a given user
      *
-     * @param Db     $zdb    Database instance
-     * @param string $id_adh Member identifier
-     * @param string $pass   New password
+     * @param Db      $zdb    Database instance
+     * @param integer $id_adh Member identifier
+     * @param string  $pass   New password
      *
      * @return boolean
      */
-    public static function updatePassword(Db $zdb, $id_adh, $pass)
+    public static function updatePassword(Db $zdb, int $id_adh, string $pass): bool
     {
         try {
             $cpass = password_hash($pass, PASSWORD_BCRYPT);
@@ -947,7 +953,7 @@ class Adherent
      *
      * @return string
      */
-    private function getFieldLabel($field)
+    private function getFieldLabel(string $field): string
     {
         $label = $this->fields[$field]['label'];
         //replace "&nbsp;"
@@ -964,7 +970,7 @@ class Adherent
      *
      * @return array
      */
-    public static function getDbFields(Db $zdb)
+    public static function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
@@ -979,7 +985,7 @@ class Adherent
      *
      * @return void
      */
-    public function setSelfMembership()
+    public function setSelfMembership(): void
     {
         $this->_self_adh = true;
     }
@@ -989,7 +995,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function isUp2Date()
+    public function isUp2Date(): bool
     {
         if ($this->_deps['dues']) {
             if ($this->isDueFree()) {
@@ -1042,7 +1048,7 @@ class Adherent
      *
      * @return true|array
      */
-    public function check($values, $required, $disabled)
+    public function check(array $values, array $required, array $disabled)
     {
         $this->errors = array();
 
@@ -1213,7 +1219,7 @@ class Adherent
      *
      * @return void
      */
-    public function validate($field, $value, $values)
+    public function validate(string $field, $value, array $values): void
     {
         global $preferences;
 
@@ -1443,7 +1449,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         global $hist, $emitter, $login;
         $event = null;
@@ -1620,7 +1626,7 @@ class Adherent
      *
      * @return void
      */
-    private function updateModificationDate()
+    private function updateModificationDate(): void
     {
         try {
             $modif_date = date('Y-m-d');
@@ -1646,9 +1652,9 @@ class Adherent
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
@@ -1816,7 +1822,7 @@ class Adherent
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         $email = $this->_email;
         if (empty($email)) {
@@ -1833,7 +1839,7 @@ class Adherent
      *
      * @return string
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         $address = $this->_address;
         if (empty($address) && $this->hasParent()) {
@@ -1850,7 +1856,7 @@ class Adherent
      *
      * @return string
      */
-    public function getAddressContinuation()
+    public function getAddressContinuation(): string
     {
         $address = $this->_address;
         $address_continuation = $this->_address_continuation;
@@ -1868,7 +1874,7 @@ class Adherent
      *
      * @return string
      */
-    public function getZipcode()
+    public function getZipcode(): string
     {
         $address = $this->_address;
         $zip = $this->_zipcode;
@@ -1886,7 +1892,7 @@ class Adherent
      *
      * @return string
      */
-    public function getTown()
+    public function getTown(): string
     {
         $address = $this->_address;
         $town = $this->_town;
@@ -1904,7 +1910,7 @@ class Adherent
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountry(): string
     {
         $address = $this->_address;
         $country = $this->_country;
@@ -1921,7 +1927,7 @@ class Adherent
      *
      * @return string
      */
-    public function getAge()
+    public function getAge(): string
     {
         if ($this->_birthdate == null) {
             return '';
@@ -1933,7 +1939,7 @@ class Adherent
                 'Invalid birthdate: ' . $this->_birthdate,
                 Analog::ERROR
             );
-            return;
+            return '';
         }
 
         return str_replace(
@@ -1948,7 +1954,7 @@ class Adherent
      *
      * @return array
      */
-    public function getParentFields()
+    public function getParentFields(): array
     {
         return $this->parent_fields;
     }
@@ -1960,7 +1966,7 @@ class Adherent
      *
      * @return array|true
      */
-    public function handleFiles($files)
+    public function handleFiles(array $files)
     {
         $this->errors = [];
         // picture upload
@@ -2004,7 +2010,7 @@ class Adherent
      *
      * @return void
      */
-    public function setDuplicate()
+    public function setDuplicate(): void
     {
         //mark as duplicated
         $this->_duplicate = true;
@@ -2042,7 +2048,7 @@ class Adherent
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -2052,7 +2058,7 @@ class Adherent
      *
      * @return array
      */
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->_groups;
     }
@@ -2062,7 +2068,7 @@ class Adherent
      *
      * @return array
      */
-    public function getManagedGroups()
+    public function getManagedGroups(): array
     {
         return $this->_managed_groups;
     }
@@ -2149,7 +2155,7 @@ class Adherent
      *
      * @return Adherent
      */
-    public function setSendmail($send = true): self
+    public function setSendmail(bool $send = true): self
     {
         $this->sendmail = $send;
         return $this;
@@ -2160,7 +2166,7 @@ class Adherent
      *
      * @return boolean
      */
-    public function sendEMail()
+    public function sendEMail(): bool
     {
         return $this->sendmail;
     }

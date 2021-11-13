@@ -59,6 +59,10 @@ use Galette\Core\Db;
  */
 class Groups
 {
+    /** @var Db */
+    private $zdb;
+    /** @var Login */
+    private $login;
 
     /**
      * Constructor
@@ -79,7 +83,7 @@ class Groups
      *
      * @return array
      */
-    public static function getSimpleList($as_groups = false)
+    public static function getSimpleList(bool $as_groups = false): array
     {
         global $zdb;
 
@@ -115,12 +119,12 @@ class Groups
     /**
      * Get groups list
      *
-     * @param boolean $full Return full list or root only
-     * @param int     $id   Group ID to retrieve
+     * @param boolean  $full Return full list or root only
+     * @param int|null $id   Group ID to retrieve
      *
      * @return Group[]
      */
-    public function getList($full = true, $id = null)
+    public function getList(bool $full = true, int $id = null): array
     {
         try {
             $select = $this->zdb->select(Group::TABLE, 'a');
@@ -193,7 +197,7 @@ class Groups
      *
      * @return array
      */
-    public static function loadManagedGroups($id, $as_group = true)
+    public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
         return self::loadGroups($id, true, $as_group);
     }
@@ -207,7 +211,7 @@ class Groups
      *
      * @return array
      */
-    public static function loadGroups($id, $managed = false, $as_group = true)
+    public static function loadGroups(int $id, bool $managed = false, bool $as_group = true): array
     {
         global $zdb;
         try {
