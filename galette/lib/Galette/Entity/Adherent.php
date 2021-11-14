@@ -180,8 +180,8 @@ class Adherent
     private $_picture;
     private $_oldness;
     private $_days_remaining;
-    private $_groups;
-    private $_managed_groups;
+    private $_groups = [];
+    private $_managed_groups = [];
     private $_parent;
     private $_children;
     private $_duplicate = false;
@@ -379,7 +379,7 @@ class Adherent
         $this->_gender = (int)$r->sexe_adh;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
-        $this->_active = ($r->activite_adh == 1) ? true : false;
+        $this->_active = $r->activite_adh == 1;
         $this->_status = (int)$r->id_statut;
         //Contact information
         $this->_address = $r->adresse_adh;
@@ -394,15 +394,15 @@ class Adherent
         $this->_gnupgid = $r->gpgid;
         $this->_fingerprint = $r->fingerprint;
         //Galette relative information
-        $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
-        $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
+        $this->_appears_in_list = $r->bool_display_info == 1;
+        $this->_admin = $r->bool_admin_adh == 1;
         if (
             isset($r->priorite_statut)
             && $r->priorite_statut < Members::NON_STAFF_MEMBERS
         ) {
             $this->_staff = true;
         }
-        $this->_due_free = ($r->bool_exempt_adh == 1) ? true : false;
+        $this->_due_free = $r->bool_exempt_adh == 1;
         $this->_login = $r->login_adh;
         $this->_password = $r->mdp_adh;
         $this->_creation_date = $r->date_crea_adh;
@@ -617,20 +617,16 @@ class Adherent
      */
     public function isGroupMember(string $group_name): bool
     {
-        if (is_array($this->_groups)) {
-            foreach ($this->_groups as $g) {
-                if ($g->getName() == $group_name) {
-                    return true;
-                    break;
-                }
-            }
-        } else {
-            Analog::log(
-                'Calling ' . __METHOD__ . ' without groups loaded!',
-                Analog::ERROR
-            );
-            return false;
+        if (!$this->isDepEnabled('groups')) {
+            $this->loadGroups();
         }
+
+        foreach ($this->_groups as $g) {
+            if ($g->getName() == $group_name) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -642,20 +638,16 @@ class Adherent
      */
     public function isGroupManager(string $group_name): bool
     {
-        if (is_array($this->_managed_groups)) {
-            foreach ($this->_managed_groups as $mg) {
-                if ($mg->getName() == $group_name) {
-                    return true;
-                    break;
-                }
-            }
-        } else {
-            Analog::log(
-                'Calling ' . __METHOD__ . ' without groups loaded!',
-                Analog::ERROR
-            );
-            return false;
+        if (!$this->isDepEnabled('groups')) {
+            $this->loadGroups();
         }
+
+        foreach ($this->_managed_groups as $mg) {
+            if ($mg->getName() == $group_name) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -894,19 +886,19 @@ class Adherent
         $str .= mb_strtoupper($name ?? '', 'UTF-8') . ' ' .
             ucwords(mb_strtolower($surname ?? '', 'UTF-8'), " \t\r\n\f\v-_|");
 
-        if ($id !== false || $nick !== false) {
+        if ($id !== false || !empty($nick)) {
             $str .= ' (';
         }
-        if ($nick !== false) {
+        if (!empty($nick)) {
             $str .= $nick;
         }
         if ($id !== false) {
-            if ($nick !== false && !empty($nick)) {
+            if (!empty($nick)) {
                 $str .= ', ';
             }
             $str .= $id;
         }
-        if ($id !== false || $nick !== false) {
+        if ($id !== false || !empty($nick)) {
             $str .= ')';
         }
         return strip_tags($str);
@@ -997,25 +989,23 @@ class Adherent
      */
     public function isUp2Date(): bool
     {
-        if ($this->_deps['dues']) {
-            if ($this->isDueFree()) {
-                //member is due free, he's up to date.
-                return true;
-            } else {
-                //let's check from end date, if present
-                if ($this->_due_date == null) {
-                    return false;
-                } else {
-                    $ech = new \DateTime($this->_due_date);
-                    $now = new \DateTime();
-                    $now->setTime(0, 0, 0);
-                    return $ech >= $now;
-                }
-            }
+        if (!$this->isDepEnabled('dues')) {
+            $this->checkDues();
+        }
+
+        if ($this->isDueFree()) {
+            //member is due free, he's up to date.
+            return true;
         } else {
-            throw new \RuntimeException(
-                'Cannot check if member is up to date, dues deps is disabled!'
-            );
+            //let's check from end date, if present
+            if ($this->_due_date == null) {
+                return false;
+            } else {
+                $ech = new \DateTime($this->_due_date);
+                $now = new \DateTime();
+                $now->setTime(0, 0, 0);
+                return $ech >= $now;
+            }
         }
     }
 
@@ -1658,7 +1648,7 @@ class Adherent
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
-            'row_classes', 'oldness', 'duplicate'
+            'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
         );
         if (!defined('GALETTE_TESTS')) {
             $forbidden[] = 'password'; //keep that for tests only
@@ -1673,6 +1663,10 @@ class Adherent
         $socials = array('website', 'msn', 'jabber', 'icq');
 
         if (in_array($name, $forbidden)) {
+            Analog::log(
+                'Calling property "' . $name . '" directly is discouraged.',
+                Analog::WARNING
+            );
             switch ($name) {
                 case 'admin':
                     return $this->isAdmin();
@@ -1686,6 +1680,10 @@ class Adherent
                     return $this->isActive();
                 case 'duplicate':
                     return $this->isDuplicate();
+                case 'groups':
+                    return $this->getGroups();
+                case 'managed_groups':
+                    return $this->getManagedGroups();
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
@@ -2060,6 +2058,9 @@ class Adherent
      */
     public function getGroups(): array
     {
+        if (!$this->isDepEnabled('groups')) {
+            $this->loadGroups();
+        }
         return $this->_groups;
     }
 
@@ -2070,6 +2071,9 @@ class Adherent
      */
     public function getManagedGroups(): array
     {
+        if (!$this->isDepEnabled('groups')) {
+            $this->loadGroups();
+        }
         return $this->_managed_groups;
     }
 
@@ -2251,5 +2255,17 @@ class Adherent
         }
 
         return $this;
+    }
+
+    /**
+     * Is load dependency enabled?
+     *
+     * @param string $name Dependency name
+     *
+     * @return boolean
+     */
+    protected function isDepEnabled(string $name): bool
+    {
+        return $this->_deps[$name];
     }
 }

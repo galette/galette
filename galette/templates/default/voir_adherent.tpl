@@ -206,7 +206,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 </td>
         {/if}
             </tr>
-        {if $display_element@last and $element@last and ($member->groups != false && $member->groups|@count != 0 || $member->managed_groups != false && $member->managed_groups|@count != 0)}
+        {if $display_element@last and $element@last and ($member->getGroups()|@count != 0 || $member->getManagedGroups()|@count != 0)}
             <tr>
                 <th>{_T string="Groups:"}</th>
                 <td>
