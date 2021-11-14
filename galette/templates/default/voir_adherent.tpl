@@ -51,6 +51,7 @@
             </li>
     {/if}
 {/if}
+{if $member->canEdit($login)}
             <li>
                 <a
                     href="{path_for name="editMember" data=["id" => $member->id]}"
@@ -61,6 +62,7 @@
                     {_T string="Modification"}
                 </a>
             </li>
+{/if}
 {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
             <li>
                 <a

@@ -3,6 +3,7 @@
 
 {function name=draw_actions}
                     <td class="{$rclass} center nowrap actions_row">
+{if $member->canEdit($login)}
                         <a
                             href="{path_for name="editMember" data=["id" => $member->id]}"
                             class="tooltip action"
@@ -10,6 +11,7 @@
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
                             <span class="sr-only">{_T string="%membername: edit information" pattern="/%membername/" replace=$member->sname}</span>
                         </a>
+{/if}
 {if $login->isAdmin() or $login->isStaff()}
                         <a
                             href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
