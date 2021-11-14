@@ -152,6 +152,14 @@ class Transaction
      */
     public function load($id)
     {
+        if (!$this->login->isLogged()) {
+            Analog::log(
+                'Non-logged-in users cannot load transaction id `' . $id,
+                Analog::ERROR
+            );
+            return false;
+        }
+
         try {
             $select = $this->zdb->select(self::TABLE, 't');
             $select->where([self::PK => $id]);
@@ -162,14 +170,7 @@ class Transaction
             );
 
             //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
-                if (!$this->login->isLogged()) {
-                    Analog::log(
-                        'Non-logged-in users cannot load transaction id `' . $id,
-                        Analog::ERROR
-                    );
-                    return false;
-                }
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)

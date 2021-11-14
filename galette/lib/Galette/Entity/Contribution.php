@@ -291,6 +291,14 @@ class Contribution
      */
     public function load($id)
     {
+        if (!$this->login->isLogged()) {
+            Analog::log(
+                'Non-logged-in users cannot load contribution id `' . $id,
+                Analog::ERROR
+            );
+            return false;
+        }
+
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
             $select->join(
@@ -300,29 +308,15 @@ class Contribution
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if (!$this->login->isLogged()) {
-                    Analog::log(
-                        'Non-logged-in users cannot load contribution id `' . $id,
-                        Analog::ERROR
-                    );
-                    return false;
-                }
-                if (!$this->login->isGroupManager()) {
-                    $select->where
-                        ->nest()
-                            ->equalTo('a.' . Adherent::PK, $this->login->id)
-                            ->or
-                            ->equalTo('a.parent_id', $this->login->id)
-                        ->unnest()
-                        ->and
-                        ->equalTo('c.' . self::PK, $id)
-                    ;
-                } else {
-                    $select->where([
-                        Adherent::PK    => $this->login->id,
-                        self::PK        => $id
-                    ]);
-                }
+                $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id)
+                        ->or
+                        ->equalTo('a.parent_id', $this->login->id)
+                    ->unnest()
+                    ->and
+                    ->equalTo('c.' . self::PK, $id)
+                ;
             } else {
                 $select->where->equalTo(self::PK, $id);
             }
