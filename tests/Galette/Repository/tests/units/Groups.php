@@ -56,6 +56,7 @@ class Groups extends GaletteTestCase
     private $parents = [];
     private $children = [];
     private $subchildren = [];
+    protected $seed = '855224771456';
 
     /**
      * Tear down tests
@@ -76,6 +77,12 @@ class Groups extends GaletteTestCase
     {
         $zdb = new \Galette\Core\Db();
 
+        //Clean managers
+        $zdb->db->query(
+            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE,
+            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+
         $groups = $this->groupsProvider();
         foreach ($groups as $group) {
             foreach ($group['children'] as $child) {
@@ -89,6 +96,10 @@ class Groups extends GaletteTestCase
         }
 
         $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
+        $zdb->execute($delete);
+
+        $delete = $zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $zdb->execute($delete);
 
         //Clean logs
@@ -203,6 +214,7 @@ class Groups extends GaletteTestCase
     public function testGetList()
     {
         $this->logSuperAdmin();
+
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
 
         $parents_list = $groups->getList(false);
@@ -218,14 +230,25 @@ class Groups extends GaletteTestCase
 
         $children_list = $groups->getList(true, $europe);
         $this->array($children_list)->hasSize(4);
+
+        //set manager on one group, impersonate him, and check it gets only one group
+        $this->getMemberOne();
+        $group = new \Galette\Entity\Group((int)$europe);
+        $this->boolean($group->setManagers([$this->adh]))->isTrue();
+
+        $this->login->impersonate($this->adh->id);
+
+        $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
+        $parents_list = $groups->getList();
+        $this->array($parents_list)->hasSize(1);
     }
 
     /**
-     * Test group name unicity
+     * Test group name uniqueness
      *
      * @return void
      */
-    public function testUnicity()
+    public function testUniqueness()
     {
         $group = new \Galette\Entity\Group();
         $group->setLogin($this->login);

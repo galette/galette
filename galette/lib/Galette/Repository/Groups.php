@@ -127,41 +127,42 @@ class Groups
     public function getList(bool $full = true, int $id = null): array
     {
         try {
-            $select = $this->zdb->select(Group::TABLE, 'a');
-            $select->join(
-                array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-                'a.' . Group::PK . '=b.' . Group::PK,
-                array('members' => new Expression('count(b.' . Group::PK . ')')),
-                $select::JOIN_LEFT
-            );
+            $select = $this->zdb->select(Group::TABLE, 'ggroup');
 
             if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
                 $select->join(
-                    array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
-                    'a.' . Group::PK . '=c.' . Group::PK,
+                    array('gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    'ggroup.' . Group::PK . '=gmanagers.' . Group::PK,
                     array()
-                )->where(['c.' . Adherent::PK => $this->login->id]);
+                )->where(['gmanagers.' . Adherent::PK => $this->login->id]);
             }
 
+            $select->join(
+                array('gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                'ggroup.' . Group::PK . '=gusers.' . Group::PK,
+                array('members' => new Expression('count(gusers.' . Group::PK . ')')),
+                $select::JOIN_LEFT
+            );
+
             if ($full !== true) {
-                $select->where('parent_group IS NULL');
+                $select->where('ggroup.parent_group IS NULL');
             }
 
             if ($id !== null) {
-                $select->where(
-                    array(
-                        'a.' . Group::PK => $id,
-                        'a.parent_group' => $id
-                    ),
-                    PredicateSet::OP_OR
-                );
+                $select->where
+                    ->nest()
+                        ->equalTo('ggroup.' . Group::PK, $id)
+                    ->or
+                        ->equalTo('ggroup.parent_group', $id)
+                    ->unnest()
+                ;
             }
 
-            $select->group('a.' . Group::PK)
-                ->group('a.group_name')
-                ->group('a.creation_date')
-                ->group('a.parent_group')
-                ->order('a.group_name ASC');
+            $select->group('ggroup.' . Group::PK)
+                ->group('ggroup.group_name')
+                ->group('ggroup.creation_date')
+                ->group('ggroup.parent_group')
+                ->order('ggroup.group_name ASC');
 
             $groups = array();
 
@@ -174,10 +175,6 @@ class Groups
             }
             if ($full) { // Order by tree name instead of name
                 ksort($groups);
-                Analog::log(
-                    'Groups SORTED: ' . print_r(array_keys($groups), true),
-                    Analog::DEBUG
-                );
             }
             return $groups;
         } catch (Throwable $e) {
@@ -192,7 +189,7 @@ class Groups
     /**
      * Loads managed groups for specific member
      *
-     * @param int     $id       Memebr id
+     * @param int     $id       Member id
      * @param boolean $as_group Retrieve Group[] or int[]
      *
      * @return array
@@ -218,12 +215,12 @@ class Groups
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
-            $select = $zdb->select(Group::TABLE, 'a');
+            $select = $zdb->select(Group::TABLE, 'group');
             $select->join(
                 array(
                     'b' => PREFIX_DB . $join_table
                 ),
-                'a.' . Group::PK . '=b.' . Group::PK,
+                'group.' . Group::PK . '=b.' . Group::PK,
                 array()
             )->where(array('b.' . Adherent::PK => $id));
 
@@ -398,7 +395,7 @@ class Groups
             $zdb->execute($del_qry);
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to remove member #' . $id . ' from his groups: ' .
+                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -473,12 +470,12 @@ class Groups
             $groups = self::loadManagedGroups($this->login->id, false);
         }
 
-        $select = $this->zdb->select(Adherent::TABLE, 'a');
+        $select = $this->zdb->select(Adherent::TABLE, 'adh');
         $select->columns(
             [Adherent::PK]
         )->join(
             array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-            'a.' . Adherent::PK . '=b.' . Adherent::PK,
+            'adh.' . Adherent::PK . '=b.' . Adherent::PK,
             []
         )->where->in('b.' . Group::PK, $groups);
 
