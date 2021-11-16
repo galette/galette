@@ -7,18 +7,6 @@
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$history->filters->start_date_filter}"/>
             <label for="end_date_filter">{_T string="until"}</label>&nbsp;
             <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$history->filters->end_date_filter}"/>
-
-    {assign var="senders" value=$history->getSendersList()}
-    {if $senders|@count gt 0}
-            <label for="sender_filter">{_T string="Sender"}</label>&nbsp;
-            <select name="sender_filter" id="sender_filter">
-                <option value="0"{if $history->filters->sender_filter eq 0} selected="selected"{/if}>{_T string="Select a sender"}</option>
-        {foreach from=$senders item=$sender key=$key}
-                <option value="{$key}"{if $history->filters->sender_filter == $key} selected="selected"{/if}>{$sender}</option>
-        {/foreach}
-            </select>
-    {/if}
-
             <input type="submit" class="inline" value="{_T string="Filter"}"/>
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
 

@@ -110,7 +110,6 @@ class MailingHistory extends History
             );
             $this->buildWhereClause($select);
             $select->order($this->buildOrderClause());
-            $this->buildLists($select);
             $this->proceedCount($select);
             //add limits to retrieve only relevant rows
             $this->filters->setLimits($select);
@@ -165,42 +164,6 @@ class MailingHistory extends History
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
-        }
-    }
-
-    /**
-     * Builds users and actions lists
-     *
-     * @param \Laminas\Db\Sql\Select $select Original select
-     *
-     * @return void
-     */
-    private function buildLists($select)
-    {
-        try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->quantifier('DISTINCT')->columns(['mailing_sender']);
-            $select->order(['mailing_sender ASC']);
-
-            $results = $this->zdb->execute($select);
-
-            $this->senders = [];
-            foreach ($results as $result) {
-                $sender = $result->mailing_sender;
-                if ($sender != null) {
-                    $this->senders[$sender] = Adherent::getSName($this->zdb, (int)$sender);
-                } elseif ($result->mailing_sender_name != null || $result->mailing_sender_address != null) {
-                    $this->senders[$result->mailing_sender_address] = $result->mailing_sender_name;
-                } else {
-                    $this->senders[-1] = _('Superadmin');
-                }
-            }
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list senders from mailing history! | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -611,15 +574,5 @@ class MailingHistory extends History
     public function getCount()
     {
         return $this->count;
-    }
-
-    /**
-     * Get senders list
-     *
-     * @return array
-     */
-    public function getSendersList()
-    {
-        return $this->senders;
     }
 }
