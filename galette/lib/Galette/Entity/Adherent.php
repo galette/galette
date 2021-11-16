@@ -871,8 +871,8 @@ class Adherent
      * @return string
      */
     public static function getNameWithCase(
-        string $name,
-        string $surname,
+        ?string $name,
+        ?string $surname,
         $title = false,
         $id = false,
         $nick = false
