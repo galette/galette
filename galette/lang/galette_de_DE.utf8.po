@@ -24,13 +24,14 @@
 # G-Manu Studios <robbankz@yahoo.de>, 2021.
 # TwoB00m <qwertze@gmx.at>, 2021.
 # Harald Wopenka <hwop@wopit.at>, 2021.
+# Phil Clifford <philip.clifford@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-12 06:51+0100\n"
-"PO-Revision-Date: 2021-10-20 07:37+0000\n"
-"Last-Translator: Harald Wopenka <hwop@wopit.at>\n"
+"PO-Revision-Date: 2021-11-18 04:52+0000\n"
+"Last-Translator: Phil Clifford <philip.clifford@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -38,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.9.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -453,10 +454,9 @@ msgstr "Spende"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:238
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:282
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass add contribution on %count members"
-msgstr "Massenänderung an %count Mitgliedern"
+msgstr "Massenbeitrag für %c-Mitglieder hinzufügen"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:504
 msgid "Contributions management"
@@ -471,10 +471,9 @@ msgid "- Unknown payment type!"
 msgstr "- Unbekannte Zahlungsmethode!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No contribution was selected, please check at least one."
-msgstr "Kein Mitglied gewählt, bitte wählen Sie mindestens einen Namen."
+msgstr ""
+"Es wurde kein Beitrag ausgewählt, bitte kreuzen Sie mindestens einen an."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
@@ -2260,10 +2259,8 @@ msgid "Last day!"
 msgstr "Letzter Tag!"
 
 #: ../lib/Galette/Entity/Adherent.php:800
-#, fuzzy
-#| msgid "Last day!"
 msgid "Late since today!"
-msgstr "Letzter Tag!"
+msgstr "Seit heute zu spät!"
 
 #: ../lib/Galette/Entity/Adherent.php:813
 #, php-format
@@ -2444,10 +2441,8 @@ msgid "End date of membership:"
 msgstr "Ende der Mitgliedschaft:"
 
 #: ../lib/Galette/Entity/Contribution.php:184
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "Transaktion"
+msgstr "Transaktions-ID"
 
 #: ../lib/Galette/Entity/Contribution.php:190
 msgid "Membership extension:"
@@ -2531,7 +2526,7 @@ msgstr "Mailspezifisch"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:349
 msgid "Twitter"
@@ -2563,7 +2558,7 @@ msgstr "Website"
 
 #: ../lib/Galette/Entity/Social.php:356
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ../lib/Galette/Entity/PdfModel.php:304
 #, php-format
@@ -2815,10 +2810,8 @@ msgid "Infos"
 msgstr "Informationen"
 
 #: ../lib/Galette/Filters/MembersList.php:282
-#, fuzzy
-#| msgid "Member's ID"
 msgid "Member ID"
-msgstr "Mitgliedskennung"
+msgstr "Mitglieds-ID"
 
 #: ../lib/Galette/Filters/MembersList.php:293
 msgid "All members"
@@ -3204,13 +3197,11 @@ msgstr "Verein"
 
 #: ../includes/dependencies.php:453
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "CSRF-Prüfung fehlgeschlagen!"
 
 #: ../includes/fields_defs/members_fields.php:42
-#, fuzzy
-#| msgid "Member of:"
 msgid "Member id:"
-msgstr "Mitglied von:"
+msgstr "Mitglieds-ID:"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
@@ -4221,16 +4212,12 @@ msgid "Go to Galette's dashboard"
 msgstr "Zum Galette Dashboard"
 
 #: ../templates/default/page.tpl:38
-#, fuzzy
-#| msgid "Add new member in database"
 msgid "Add new child member in database"
-msgstr "Neues Mitglied hinzufügen"
+msgstr "Neues untergeordnetes Mitglied in der Datenbank hinzufügen"
 
 #: ../templates/default/page.tpl:38
-#, fuzzy
-#| msgid "Add a member"
 msgid "Add a child member"
-msgstr "Mitglied hinzufügen"
+msgstr "Ein untergeordnetes Mitglied hinzufügen"
 
 #: ../templates/default/page.tpl:41 ../templates/default/desktop.tpl:30
 msgid "View, search into and filter member's list"
@@ -4626,16 +4613,15 @@ msgid "Lines / Page:"
 msgstr "Zeilen / Seite:"
 
 #: ../templates/default/preferences.tpl:141
-#, fuzzy
-#| msgid "%count members created"
 msgid "Can members create child?"
-msgstr "%count Mitglieder erstellt"
+msgstr "Können Mitglieder einen Untergeordneten hinzufügen?"
 
 #: ../templates/default/preferences.tpl:142
 #, fuzzy
 #| msgid "(Members will be able to generate their own member card)"
 msgid "Any logged in member will be able to create his own child cards"
-msgstr "(Mitglieder können ihre eigenen Mitgliedsausweis erstellen)"
+msgstr ""
+"Jedes eingeloggte Mitglied kann seine eigenen untergeordnete Karten erstellen"
 
 #: ../templates/default/preferences.tpl:147 ../templates/default/member.tpl:64
 msgid "After member creation:"
@@ -4725,10 +4711,8 @@ msgstr ""
 "gültig."
 
 #: ../templates/default/preferences.tpl:192
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Default payment type:"
-msgstr "Lösche die Zahlungsart '%s'"
+msgstr "Standard-Zahlungsart:"
 
 #: ../templates/default/preferences.tpl:198
 msgid "Public pages enabled?"
@@ -4860,22 +4844,17 @@ msgstr ""
 "registriert oder sein Konto bearbeitet"
 
 #: ../templates/default/preferences.tpl:274
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Send email to members?"
-msgstr "Erinnerungen an überfällige Mitglieder versenden"
+msgstr "E-Mail an Mitglieder senden?"
 
 #: ../templates/default/preferences.tpl:275
-#, fuzzy
-#| msgid ""
-#| "Sends an email each time a new member registers online or edit his/her "
-#| "account"
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
-"Sendet jedes Mal eine E-Mail, wenn sich ein neues Mitglied online "
-"registriert oder sein Konto bearbeitet"
+"Sendet jedes Mal eine E-Mail, wenn eine Mitgliedskarte oder ein Beitrag "
+"hinzugefügt oder bearbeitet wurde. Dies kann für jeden Fall deaktiviert "
+"werden."
 
 #: ../templates/default/preferences.tpl:279
 msgid "Wrap emails text?"
@@ -5489,15 +5468,13 @@ msgid "Transaction: %s"
 msgstr "Transaktion: %s"
 
 #: ../templates/default/gestion_contributions.tpl:244
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show only '%name' contributions"
-msgstr "Zeige alle Beiträge des Mitglieds"
+msgstr "Nur '%name'-Beiträge anzeigen"
 
 #: ../templates/default/gestion_contributions.tpl:251
 #: ../templates/default/gestion_transactions.tpl:148
 msgid "Show '%name' card"
-msgstr ""
+msgstr "Karte '%name' anzeigen"
 
 #: ../templates/default/gestion_contributions.tpl:268
 msgid "Print an invoice or a receipt (depending on contribution type)"
@@ -6109,10 +6086,8 @@ msgstr[0] "%count Mitglied"
 msgstr[1] "%count Mitglieder"
 
 #: ../templates/default/gestion_adherents.tpl:130
-#, fuzzy
-#| msgid "Mbr num"
 msgid "Mbr id"
-msgstr "Mitgliedsnummer"
+msgstr "Mbr id"
 
 #: ../templates/default/gestion_adherents.tpl:180
 #: ../templates/default/gestion_adherents.tpl:415
@@ -6150,7 +6125,7 @@ msgstr "Massenänderung"
 #, fuzzy
 #| msgid "My contributions"
 msgid "Mass add contributions"
-msgstr "Meine Beiträge"
+msgstr "Massenbeiträge"
 
 #: ../templates/default/gestion_adherents.tpl:336
 #: ../templates/default/mailing_recipients.tpl:20
@@ -6734,14 +6709,13 @@ msgid "Choice list (one entry per line)."
 msgstr "Auswahllist (ein Eintrag pro Zeile)."
 
 #: ../templates/default/editer_champ.tpl:70
-#, fuzzy
-#| msgid "Information"
 msgid "Information:"
-msgstr "Informationen"
+msgstr "Informationen:"
 
 #: ../templates/default/editer_champ.tpl:71
 msgid "Extra information displayed along with dynamic field."
 msgstr ""
+"Zusätzliche Informationen werden zusammen mit dem dynamischen Feld angezeigt."
 
 #: ../templates/default/editer_champ.tpl:84
 #: ../templates/default/editer_champ.tpl:87
@@ -6837,10 +6811,8 @@ msgstr "Zweck:"
 
 #: ../templates/default/mailing_adherents.tpl:86
 #: ../templates/default/common_scripts.tpl:88
-#, fuzzy
-#| msgid "Activate HTML editor?"
 msgid "Activate HTML editor"
-msgstr "HTML Editor aktivieren?"
+msgstr "HTML-Editor aktivieren"
 
 #: ../templates/default/mailing_adherents.tpl:93
 msgid "Interpret HTML"
@@ -7096,10 +7068,8 @@ msgstr "Kein Mitglied anzuzeigen"
 
 #: ../templates/default/common_scripts.tpl:67
 #: ../templates/default/common_scripts.tpl:93
-#, fuzzy
-#| msgid "(De)Activate HTML editor"
 msgid "Deactivate HTML editor"
-msgstr "HTML Editor (de)aktivieren"
+msgstr "HTML-Editor deaktivieren"
 
 #: ../templates/default/change_passwd.tpl:6
 msgid "New password:"
@@ -7627,10 +7597,8 @@ msgid "Transaction %id"
 msgstr "Transaktion %id"
 
 #: ../templates/default/gestion_transactions.tpl:141
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show only '%name' transactions"
-msgstr "Zeige alle Beiträge des Mitglieds"
+msgstr "Nur '%name'-Transaktionen anzeigen"
 
 #: ../templates/default/gestion_transactions.tpl:176
 msgid "Edit transaction #%id"
@@ -7747,22 +7715,18 @@ msgid "An error occurred sending telemetry information :("
 msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 
 #: ../templates/default/edit_socials.tpl:11
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "%type '%label' entfernen"
+msgstr "%type entfernen"
 
 #: ../templates/default/edit_socials.tpl:17
 #, fuzzy
 #| msgid "Social networks"
 msgid "Add new social network"
-msgstr "Soziale Netzwerke"
+msgstr "Neues Soziales Netzwerk hinzufügen"
 
 #: ../templates/default/edit_socials.tpl:20
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose or enter your own..."
-msgstr "Wähle einen Eintrag"
+msgstr "Wählen Sie oder geben Sie Ihre eigene..."
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
@@ -8002,14 +7966,6 @@ msgid "Do member want to appear publically?"
 msgstr "Sollen ihre Angaben in der öffentlichen Liste enthalten sein?"
 
 #: ../templates/default/forms_types.tpl:78
-#, fuzzy
-#| msgid ""
-#| "If you check this box (and if you are up to date with your "
-#| "contributions), your full name, website address ad other information will "
-#| "be publically visible on the members list.<br/>If you've uploaded a "
-#| "photo, it will be displayed on the trombinoscope page.<br/>Note that "
-#| "administrators can disabled public pages, this setting will have no "
-#| "effect in that case."
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name and other information will be publically visible on the "
@@ -8018,9 +7974,9 @@ msgid ""
 "this setting will have no effect in that case."
 msgstr ""
 "Wenn Sie diese Option wählen und Ihren Mitgliedsbeitrag gezahlt haben werden "
-"ihr Name, ihre Adresse und andere Informationen in der öffentlich sichtbaren "
-"Mitgliederliste veröffentlicht.<br/>Wenn Sie ein Foto hochgeladen haben wird "
-"es in der Mitgliederliste gezeigt.<br/>Die öffentlichen Seiten können von "
+"ihr Name und andere Informationen in der öffentlich sichtbaren "
+"Mitgliederliste veröffentlicht.<br>Wenn Sie ein Foto hochgeladen haben wird "
+"es in der Mitgliederliste gezeigt.<br>Die öffentlichen Seiten können von "
 "einem Administrator deaktiviert werden, dann hat diese Option keinen Effekt."
 
 #: ../templates/default/forms_types.tpl:82
