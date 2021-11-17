@@ -471,6 +471,7 @@ if (
     $hist = $container->get('history');
     $l10n = $container->get('l10n');
     $emitter = $container->get('event_manager');
+    $router = $container->get('router');
 }
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');

@@ -1828,7 +1828,7 @@ class Adherent
             $email = $this->parent->email;
         }
 
-        return $email;
+        return $email ?? '';
     }
 
     /**
@@ -1845,7 +1845,7 @@ class Adherent
             $address = $this->parent->address;
         }
 
-        return $address;
+        return $address ?? '';
     }
 
     /**
@@ -1863,7 +1863,7 @@ class Adherent
             $address_continuation = $this->parent->address_continuation;
         }
 
-        return $address_continuation;
+        return $address_continuation ?? '';
     }
 
     /**
@@ -1881,7 +1881,7 @@ class Adherent
             $zip = $this->parent->zipcode;
         }
 
-        return $zip;
+        return $zip ?? '';
     }
 
     /**
@@ -1899,7 +1899,7 @@ class Adherent
             $town = $this->parent->town;
         }
 
-        return $town;
+        return $town ?? '';
     }
 
     /**
@@ -1917,7 +1917,7 @@ class Adherent
             $country = $this->parent->country;
         }
 
-        return $country;
+        return $country ?? '';
     }
 
     /**

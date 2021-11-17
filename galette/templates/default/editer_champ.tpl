@@ -125,6 +125,7 @@
                     {_T string="Add"}
                 </button>
                 <input type="hidden" name="form_name" id="form_name" value="{$form_name}"/>
+                {include file="forms_types/csrf.tpl"}
             </div>
     {if $mode neq 'ajax'}
         </fieldset>

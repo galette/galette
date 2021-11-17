@@ -47,6 +47,7 @@
 {/block}
 
 {block name="javascripts"}
+{if isset($trans) && $trans|@count > 0}
     {if $exists}
     <script type="text/javascript">
         $('#text_orig').change(function(e) {
@@ -58,4 +59,5 @@
         });
     </script>
     {/if}
+{/if}
 {/block}

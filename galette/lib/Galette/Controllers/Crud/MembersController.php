@@ -1067,7 +1067,6 @@ class MembersController extends CrudController
     ): Response {
         //instantiate member object
         $member = new Adherent($this->zdb);
-        $member->enableAllDeps()->load($id);
 
         if ($this->session->member !== null) {
             //retrieve from session, in add or edit
@@ -1075,6 +1074,7 @@ class MembersController extends CrudController
             $this->session->member = null;
             $id = $member->id;
         }
+        $member->enableAllDeps();
 
         if ($id !== null) {
             //load requested member
