@@ -4,13 +4,15 @@
 # HelaBasa <R45XvezA@protonmail.ch>, 2021.
 # Theekshana Fernando <rtheekshanafernando@gmail.com>, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021.
+# Yowun Sajeewana Wickramatantri <YowunSajeewana@protonmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-12 06:51+0100\n"
 "PO-Revision-Date: 2021-11-18 04:52+0000\n"
-"Last-Translator: Theekshana Fernando <rtheekshanafernando@gmail.com>\n"
+"Last-Translator: Yowun Sajeewana Wickramatantri <YowunSajeewana@protonmail."
+"com>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
 "si/>\n"
 "Language: si\n"
@@ -74,40 +76,40 @@ msgstr "ගෙවීමේ ක්‍රම කළමනාකරණය"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:157
 msgid "Edit payment type"
-msgstr ""
+msgstr "ගෙවීමේ ක්‍රමවේදය වෙනස් කරන්න"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:209
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "'%s' ගෙවීමේ ක්‍රමය ඇතුලත් ව නොමැත!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:218
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr ""
+msgstr "'%s' ගෙවීමේ ක්‍රමවේදය වෙනස් කර නොමැත!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:231
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:240
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව වෙනස් කර ඇත."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:303
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "%1$s ගෙවීමේ ක්‍රමය ඉවත් කරන්න"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:122
 msgid "Group name is missing!"
-msgstr ""
+msgstr "කණ්ඩායම් නාමය අතුරුදහන් වී ඇත!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:184
 msgid "Groups"
-msgstr ""
+msgstr "කණ්ඩාය"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:364
 msgid "Group `%groupname` has been successfully saved."
