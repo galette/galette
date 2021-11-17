@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-12 06:51+0100\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-11-18 04:52+0000\n"
+"Last-Translator: Theekshana Fernando <rtheekshanafernando@gmail.com>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
 "si/>\n"
 "Language: si\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.9.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
-msgstr ""
+msgstr "Galette හි දෝෂයක්"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
