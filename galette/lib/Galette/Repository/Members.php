@@ -1498,7 +1498,7 @@ class Members
                 } else {
                     $field = $prefix . $fs['field'];
                     if ($zdb->isPostgres()) {
-                        $field = 'CAST('.$field.' AS TEXT)';
+                        $field = 'CAST(' . $field . ' AS TEXT)';
                     }
                     $qry .= 'LOWER(' . $field . ') ' .
                         $qop . ' ' . $zdb->platform->quoteValue($fs['search']);
