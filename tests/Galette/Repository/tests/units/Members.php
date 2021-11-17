@@ -467,6 +467,21 @@ class Members extends GaletteTestCase
 
         $this->integer($list->count())->isIdenticalTo(5);
 
+        //search on status from free search
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => \Galette\Entity\Status::PK,
+            'type' => 0,
+            'search' => \Galette\Entity\Status::DEFAULT_STATUS,
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_EQUALS
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(5);
+
         //search on contribution amount
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->contrib_min_amount = 30.0;
