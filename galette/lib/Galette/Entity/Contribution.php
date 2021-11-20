@@ -291,14 +291,6 @@ class Contribution
      */
     public function load($id)
     {
-        if (!$this->login->isLogged()) {
-            Analog::log(
-                'Non-logged-in users cannot load contribution id `' . $id,
-                Analog::ERROR
-            );
-            return false;
-        }
-
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
             $select->join(
