@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-12 05:55+0000\n"
+"PO-Revision-Date: 2021-11-20 09:02+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.9.1-dev\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2270,10 +2270,8 @@ msgstr "%days jours restants (fin le %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:1185
 #: ../lib/Galette/Entity/Adherent.php:1190
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a group you own!"
-msgstr "Vous devez sélectionner un membre du bureau"
+msgstr "Vous devez sélectionner un groupe que vous gérez !"
 
 #: ../lib/Galette/Entity/Adherent.php:1263
 msgid "- Birthdate must be set in the past!"
@@ -4481,10 +4479,8 @@ msgstr "Paramètres"
 
 #: ../templates/default/preferences.tpl:9
 #: ../templates/default/preferences.tpl:231
-#, fuzzy
-#| msgid "Height:"
 msgid "Rights"
-msgstr "Hauteur :"
+msgstr "Droits"
 
 #: ../templates/default/preferences.tpl:10
 msgid "E-Mail"
@@ -4798,33 +4794,31 @@ msgstr "Les adhérents peuvent créer des enfants ?"
 
 #: ../templates/default/preferences.tpl:237
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "Les responsables de groupes peuvent éditer leurs groupes ?"
 
 #: ../templates/default/preferences.tpl:241
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Can group managers create members?"
-msgstr "Envoyer un rappel aux adhérents retardataires"
+msgstr "Les responsables de groupes peuvent créer des adhérents ?"
 
 #: ../templates/default/preferences.tpl:245
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "Les responsables de groupe peuvent éditer les adhérents ?"
 
 #: ../templates/default/preferences.tpl:249
-#, fuzzy
-#| msgid "Group managers selection"
 msgid "Can group managers send mailings?"
-msgstr "Sélection des responsables du groupe"
+msgstr "Les responsables de groupe peuvent effectuer des envois ?"
 
 #: ../templates/default/preferences.tpl:253
 msgid "Can group managers do exports?"
-msgstr ""
+msgstr "Les responsables de groupe peuvent effectuer des exports ?"
 
 #: ../templates/default/preferences.tpl:254
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"Les responsables de groupe seront autorisés à effectuer des exports CSV des "
+"adhérents, les cartes pdf, les feuilles d'émargement et les pdf des groupes"
 
 #: ../templates/default/preferences.tpl:260
 msgid "Mail settings"
