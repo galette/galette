@@ -63,6 +63,7 @@ class Plugins
     protected $path;
     protected $modules = array();
     protected $disabled = array();
+    protected $csrf_exclusions = array();
 
     protected $id;
     protected $mroot;
@@ -811,5 +812,28 @@ class Plugins
     public function getNamespace($id)
     {
         return str_replace(' ', '', $this->modules[$id]['name']);
+    }
+
+    /**
+     * Set CRSF excluded routes
+     *
+     * @param array $exclusions Array of regular expressions patterns to be excluded
+     *
+     * @return $this
+     */
+    public function setCsrfExclusions(array $exclusions): self
+    {
+        $this->csrf_exclusions = $exclusions;
+        return $this;
+    }
+
+    /**
+     * Get CSRF excluded routes patterns
+     *
+     * @return array
+     */
+    public function getCsrfExclusions(): array
+    {
+        return $this->csrf_exclusions;
     }
 }

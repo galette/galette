@@ -34,8 +34,8 @@
  */
 
 use Psr\Container\ContainerInterface;
-use Galette\Entity\PdfModel;
-use Slim\Event\SlimEventManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Views\SmartyPlugins;
 
 $container = $app->getContainer();
@@ -433,6 +433,13 @@ $container->set(
 );
 
 $container->set(
+    'CsrfExclusions',
+    function (ContainerInterface $c): array {
+        return $c->get('plugins')->getCsrfExclusions();
+    }
+);
+
+$container->set(
     'csrf',
     function (ContainerInterface $c) {
         $storage = null;
@@ -445,7 +452,14 @@ $container->set(
             true
         );
 
-        $guard->setFailureCallable(function ($request, $response, $next) {
+        $exclusions = $c->get('CsrfExclusions');
+        $guard->setFailureCallable(function (ServerRequestInterface $request, ResponseInterface $response, $next) use ($exclusions) {
+            foreach ($exclusions as $exclusion) {
+                if (preg_match($exclusion, $request->getAttribute('route')->getname())) {
+                    //route is excluded form CSRF checks
+                    return $next($request, $response);
+                }
+            }
             Analog::log(
                 'CSRF check has failed',
                 Analog::CRITICAL
