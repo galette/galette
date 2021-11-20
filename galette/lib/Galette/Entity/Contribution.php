@@ -1120,16 +1120,18 @@ class Contribution
     /**
      * Get payment type label
      *
+     * @param boolean $translated Whether to translate
+     *
      * @return string
      */
-    public function getPaymentType()
+    public function getPaymentType(bool $translated = false): string
     {
         if ($this->_payment_type === null) {
             return '-';
         }
 
         $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
-        return $ptype->getName(false);
+        return $ptype->getName($translated);
     }
 
     /**
@@ -1215,7 +1217,7 @@ class Contribution
                     }
                     break;
                 case 'spayment_type':
-                    return $this->getPaymentType();
+                    return $this->getPaymentType(true);
                     break;
                 case 'model':
                     if ($this->_is_cotis === null) {
