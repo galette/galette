@@ -3406,16 +3406,16 @@
         },
         {
             "name": "galette/smarty-xgettext",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/galette/smarty-xgettext.git",
-                "reference": "650858118f046e0df4fa6cb221415f7ff8e1ad35"
+                "reference": "85a6d1cea2b8ce825e850916b398a7ac66cd61d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/galette/smarty-xgettext/zipball/650858118f046e0df4fa6cb221415f7ff8e1ad35",
-                "reference": "650858118f046e0df4fa6cb221415f7ff8e1ad35",
+                "url": "https://api.github.com/repos/galette/smarty-xgettext/zipball/85a6d1cea2b8ce825e850916b398a7ac66cd61d9",
+                "reference": "85a6d1cea2b8ce825e850916b398a7ac66cd61d9",
                 "shasum": ""
             },
             "require": {
@@ -3457,7 +3457,7 @@
             "homepage": "https://github.com/galette/smarty-xgettext",
             "support": {
                 "issues": "https://github.com/galette/smarty-xgettext/issues",
-                "source": "https://github.com/galette/smarty-xgettext/tree/1.2.3"
+                "source": "https://github.com/galette/smarty-xgettext/tree/1.2.4"
             },
             "funding": [
                 {
@@ -3465,7 +3465,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-11-21T12:42:44+00:00"
+            "time": "2021-11-21T17:57:07+00:00"
         },
         {
             "name": "geekwright/po",
