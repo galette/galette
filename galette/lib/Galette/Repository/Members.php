@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Core\Login;
 use Galette\Entity\Social;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
@@ -1760,11 +1761,12 @@ class Members
      * Get members list to instanciate dropdowns
      *
      * @param Db      $zdb     Database instance
+     * @param Login   $login   Login instance
      * @param integer $current Current member
      *
      * @return array
      */
-    public function getSelectizedMembers(Db $zdb, $current = null)
+    public function getSelectizedMembers(Db $zdb, Login $login, $current = null)
     {
         $members = [];
         $required_fields = array(
@@ -1773,7 +1775,13 @@ class Members
             'prenom_adh',
             'pseudo_adh'
         );
-        $list_members = $this->getList(false, $required_fields);
+
+        $list_members = [];
+        if ($login->isAdmin() || $login->isStaff()) {
+            $list_members = $this->getList(false, $required_fields);
+        } elseif ($login->isGroupManager()) {
+            $list_members = $this->getManagedMembersList(false, $required_fields);
+        }
 
         if (count($list_members) > 0) {
             foreach ($list_members as $member) {

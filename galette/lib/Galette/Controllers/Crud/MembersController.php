@@ -140,6 +140,7 @@ class MembersController extends CrudController
         $m = new Members();
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $member->hasParent() ? $member->parent->id : null
         );
 
@@ -1156,6 +1157,7 @@ class MembersController extends CrudController
         }
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $pid
         );
 

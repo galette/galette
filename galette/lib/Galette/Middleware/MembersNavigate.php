@@ -110,7 +110,15 @@ class MembersNavigate
             || $this->login->isGroupManager()
         ) {
             $m = new Members($filters);
-            $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
+
+            $ids = array();
+            $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
+            if ($this->login->isAdmin() || $this->login->isStaff()) {
+                $ids = $m->getMembersList(false, $fields);
+            } else {
+                $ids = $m->getManagedMembersList(false, $fields);
+            }
+
             $ids = $ids->toArray();
             foreach ($ids as $k => $m) {
                 if ($m['id_adh'] == $args['id']) {

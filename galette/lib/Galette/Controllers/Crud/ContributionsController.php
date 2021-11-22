@@ -118,6 +118,7 @@ class ContributionsController extends CrudController
         $m = new Members();
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $contrib->member > 0 ? $contrib->member : null
         );
 

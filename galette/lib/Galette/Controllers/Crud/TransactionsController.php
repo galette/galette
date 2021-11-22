@@ -173,6 +173,7 @@ class TransactionsController extends ContributionsController
         $m = new Members();
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $trans->member > 0 ? $trans->member : null
         );
 
