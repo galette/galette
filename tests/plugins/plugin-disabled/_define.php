@@ -40,7 +40,7 @@ $this->register(
     'Test disabled plugin',     //Short description
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
-    '0.9.5',                    //Galette compatible version
+    GALETTE_COMPAT_VERSION,     //Galette compatible version
     'plugdis',                  //routing name
     '2016-10-19',               //Release date
     [   //Permissions needed

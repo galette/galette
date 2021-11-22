@@ -97,7 +97,7 @@ if (
 }
 
 define('GALETTE_NIGHTLY', false);
-define('GALETTE_VERSION', 'v0.9.5.2');
+define('GALETTE_VERSION', 'v0.9.6');
 
 //Version to display
 if (!defined('GALETTE_HIDE_VERSION')) {

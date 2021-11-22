@@ -926,7 +926,8 @@ class Members extends GaletteTestCase
     public function testGetSelectizedMembers()
     {
         $members = new \Galette\Repository\Members();
-        $selectized = $members->getSelectizedMembers($this->zdb);
+        $this->logSuperAdmin();
+        $selectized = $members->getSelectizedMembers($this->zdb, $this->login);
         $this->array($selectized)->hasSize(10);
     }
 
