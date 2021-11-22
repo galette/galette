@@ -104,7 +104,7 @@ if (!defined('GALETTE_HIDE_VERSION')) {
     define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
 }
 
-define('GALETTE_COMPAT_VERSION', '0.9.5');
+define('GALETTE_COMPAT_VERSION', '0.9.6');
 define('GALETTE_DB_VERSION', '0.960');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
