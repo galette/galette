@@ -748,6 +748,18 @@ abstract class GaletteTestCase extends atoum
     }
 
     /**
+     * Initialize default PDF models in database
+     *
+     * @return void
+     */
+    protected function initModels(): void
+    {
+        $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
+        $res = $models->installInit(false);
+        $this->boolean($res)->isTrue();
+    }
+
+    /**
      * Clean history
      *
      * @return void

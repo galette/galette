@@ -121,7 +121,7 @@ class Contribution
      * @param Db                 $zdb   Database
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row to load
-     *                                  a specific contribution, or an type id
+     *                                  a specific contribution, or a type id
      *                                  to just instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
@@ -291,6 +291,10 @@ class Contribution
      */
     public function load($id)
     {
+        if (!$this->login->isLogged()) {
+            return false;
+        }
+
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
             $select->join(
