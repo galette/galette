@@ -330,8 +330,9 @@ abstract class PdfModel
         global $lang;
 
         switch ($name) {
-            case 'name':
             case 'id':
+                return (int)$this->$name;
+            case 'name':
             case 'header':
             case 'footer':
             case 'body':
@@ -341,8 +342,7 @@ abstract class PdfModel
             case 'styles':
             case 'patterns':
             case 'replaces':
-                return $this->$name;
-                break;
+                return $this->$name ?? '';
             case 'hstyles':
                 $value = null;
 
