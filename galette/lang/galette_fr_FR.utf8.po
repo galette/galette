@@ -3638,7 +3638,11 @@ msgstr "Galette a été installé avec succès !"
 msgid "Galette has been successfully updated!"
 msgstr "Galette a été mis à jour avec succès !"
 
-#: ../install/steps/end.php:53
+#: ../install/steps/end.php:51
+msgid "To secure the system, please delete the install directory"
+msgstr "Pour sécuriser le système, veuillez supprimer le dossier « install »"
+
+#: ../install/steps/end.php:54
 msgid "Homepage"
 msgstr "Page d’accueil"
 

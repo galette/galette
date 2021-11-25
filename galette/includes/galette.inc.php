@@ -68,8 +68,6 @@ $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
 if (!$installed && !$installer) {
     header('location: ./installer.php');
     die();
-} else if ($installed) {
-    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
 if (
@@ -77,6 +75,11 @@ if (
     && !defined('GALETTE_TESTS') && !$cron
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
+}
+
+if (isset($installer) && $installer !== true) {
+    //If we're not working from installer
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
 use Analog\Analog;
@@ -181,8 +184,9 @@ Analog::handler($galette_run_log);
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
-//If we're not working from tests
-if ($installed && !defined('GALETTE_TESTS')) {
+if (!$installer and !defined('GALETTE_TESTS')) {
+    //If we're not working from installer nor from tests
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
      * Database instantiation

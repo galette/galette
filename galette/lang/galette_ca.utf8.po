@@ -4200,7 +4200,13 @@ msgstr "La Galette s'ha instal·lat correctament!"
 msgid "Galette has been successfully updated!"
 msgstr "La Galette s'ha actualitzat correctament!"
 
-#: ../install/steps/end.php:53
+#: ../install/steps/end.php:51
+#, fuzzy
+msgid "To secure the system, please delete the install directory"
+msgstr ""
+"Per assegurar el sistema si us plau esborra el directori d'instal·lació"
+
+#: ../install/steps/end.php:54
 #, fuzzy
 msgid "Homepage"
 msgstr "Pàgina d'inici"
