@@ -60,7 +60,6 @@ class CheckModules
         'gd'        => true,
         'pdo'       => true,
         'curl'      => false,
-        'tidy'      => false,
         'gettext'   => false,
         'mbstring'  => true,
         'openssl'   => false,

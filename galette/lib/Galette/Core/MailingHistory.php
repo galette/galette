@@ -121,25 +121,6 @@ class MailingHistory extends History
                     $r['mailing_sender_name']
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
                 }
-                $body_resume = $r['mailing_body'];
-                if (strlen($body_resume) > 150) {
-                    $body_resume = substr($body_resume, 0, 150);
-                    $body_resume .= '[...]';
-                }
-                if (function_exists('tidy_parse_string')) {
-                    //if tidy extension is present, we use it to clean a bit
-                    $tidy_config = array(
-                        'clean'             => true,
-                        'show-body-only'    => true,
-                        'wrap' => 0,
-                    );
-                    $tidy = tidy_parse_string($body_resume, $tidy_config, 'UTF8');
-                    $tidy->cleanRepair();
-                    $r['mailing_body_resume'] = tidy_get_output($tidy);
-                } else {
-                    //if it is not... Well, let's serve the text as it.
-                    $r['mailing_body_resume'] = $body_resume;
-                }
 
                 $attachments = 0;
                 if (file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK])) {
