@@ -24,17 +24,17 @@
 # Gerardo <gerardo.zinno@aol.com>, 2021.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-10-10 19:05+0000\n"
-"Last-Translator: Gerardo <gerardo.zinno@aol.com>\n"
+"PO-Revision-Date: 2021-11-28 15:20+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.10-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1482,7 +1482,7 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:435
 #: ../lib/Galette/Filters/AdvancedMembersList.php:581
 msgid "Y-m-d"
-msgstr "gg/mm/aaaa"
+msgstr "d/m/Y"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
