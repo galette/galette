@@ -8,11 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-18 04:52+0000\n"
-"Last-Translator: Yowun Sajeewana Wickramatantri <YowunSajeewana@protonmail."
-"com>\n"
+"PO-Revision-Date: 2021-11-28 15:20+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
 "si/>\n"
 "Language: si\n"
@@ -20,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.9.1-dev\n"
+"X-Generator: Weblate 4.10-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1434,7 +1433,7 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:435
 #: ../lib/Galette/Filters/AdvancedMembersList.php:581
 msgid "Y-m-d"
-msgstr ""
+msgstr "Y-m-d"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
