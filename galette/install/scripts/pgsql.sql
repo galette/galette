@@ -202,7 +202,6 @@ CREATE TABLE galette_adherents (
     ddn_adh date DEFAULT '19010101',
     sexe_adh smallint DEFAULT '0' NOT NULL,
     adresse_adh text DEFAULT '' NOT NULL,
-    adresse2_adh character varying(150) DEFAULT NULL, -- TODO: remove
     cp_adh character varying(10) DEFAULT '' NOT NULL,
     ville_adh character varying(200) DEFAULT '' NOT NULL,
     pays_adh character varying(200) DEFAULT NULL,

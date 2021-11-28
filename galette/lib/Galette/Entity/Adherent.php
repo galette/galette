@@ -70,8 +70,8 @@ use Galette\Features\Dynamics;
  * @property string $name
  * @property string $surname
  * @property string $nickname
- * @property string $birthdate Localized birth date
- * @property string $rbirthdate Raw birth date
+ * @property string $birthdate Localized birthdate
+ * @property string $rbirthdate Raw birthdate
  * @property string $birth_place
  * @property integer $gender
  * @property string $sgender Gender label
@@ -80,7 +80,6 @@ use Galette\Features\Dynamics;
  * @property integer $status
  * @property string $sstatus Status label
  * @property string $address
- * @property string $address_continuation
  * @property string $zipcode
  * @property string $town
  * @property string $country
@@ -113,7 +112,7 @@ use Galette\Features\Dynamics;
  * @property string $sactive yes/no
  * @property string $sfullname
  * @property string $sname
- * @property string $saddress Concatened address and continuation
+ * @property string $saddress
  * @property string $contribstatus State of member contributions
  * @property string $days_remaining
  * @property-read integer $parent_id
@@ -156,7 +155,6 @@ class Adherent
     private $_status;
     //Contact information
     private $_address;
-    private $_address_continuation; /** TODO: remove */
     private $_zipcode;
     private $_town;
     private $_country;
@@ -208,7 +206,6 @@ class Adherent
 
     private $parent_fields = [
         'adresse_adh',
-        'adresse2_adh',
         'cp_adh',
         'ville_adh',
         'email_adh'
@@ -383,8 +380,6 @@ class Adherent
         $this->_status = (int)$r->id_statut;
         //Contact information
         $this->_address = $r->adresse_adh;
-        /** TODO: remove and merge with address */
-        $this->_address_continuation = $r->adresse2_adh;
         $this->_zipcode = $r->cp_adh;
         $this->_town = $r->ville_adh;
         $this->_country = $r->pays_adh;
@@ -1730,27 +1725,19 @@ class Adherent
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->_status);
-                    break;
                 case 'sfullname':
                     return $this->getNameWithCase(
                         $this->_name,
                         $this->_surname,
                         (isset($this->_title) ? $this->title : false)
                     );
-                    break;
                 case 'saddress':
                     $address = $this->_address;
-                    if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
-                        $address .= "\n" . $this->_address_continuation;
-                    }
                     return $address;
-                    break;
                 case 'sname':
                     return $this->getNameWithCase($this->_name, $this->_surname);
-                    break;
                 case 'rbirthdate':
                     return $this->_birthdate;
-                    break;
                 case 'sgender':
                     switch ($this->gender) {
                         case self::MAN:
@@ -1760,10 +1747,8 @@ class Adherent
                         default:
                             return _T('Unspecified');
                     }
-                    break;
                 case 'contribstatus':
                     return $this->getDues();
-                    break;
             }
         }
 
@@ -1787,11 +1772,8 @@ class Adherent
                 } else {
                     return null;
                 }
-                break;
             case 'address':
-            case 'address_continuation':
                 return $this->$rname ?? '';
-                break;
             case 'birthdate':
             case 'creation_date':
             case 'modification_date':
@@ -1813,7 +1795,6 @@ class Adherent
                 break;
             case 'parent_id':
                 return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
-                break;
             default:
                 if (!property_exists($this, $rname)) {
                     Analog::log(
@@ -1824,7 +1805,6 @@ class Adherent
                 } else {
                     return $this->$rname;
                 }
-                break;
         }
     }
 
@@ -1861,24 +1841,6 @@ class Adherent
         }
 
         return $address ?? '';
-    }
-
-    /**
-     * Get member address continuation.
-     * If member does not have an address, but is attached to another member, we'll take information from its parent.
-     *
-     * @return string
-     */
-    public function getAddressContinuation(): string
-    {
-        $address = $this->_address;
-        $address_continuation = $this->_address_continuation;
-        if (empty($address) && $this->hasParent()) {
-            $this->loadParent();
-            $address_continuation = $this->parent->address_continuation;
-        }
-
-        return $address_continuation ?? '';
     }
 
     /**

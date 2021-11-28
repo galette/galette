@@ -186,7 +186,7 @@ class FieldsConfig extends atoum
         $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE])
             ->hasSize(11);
         $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT])
-            ->hasSize(11);
+            ->hasSize(10);
     }
 
     /**
@@ -248,7 +248,7 @@ class FieldsConfig extends atoum
         $fields = $fields_config->getCategorizedFields();
 
         //town
-        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
+        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2];
         $this->boolean($town['required'])->isTrue();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
 
@@ -256,9 +256,9 @@ class FieldsConfig extends atoum
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
         //gsm
-        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][6];
+        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5];
         $gsm['position'] = count($fields[1]);
-        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][6]);
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]);
         $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 
@@ -267,7 +267,7 @@ class FieldsConfig extends atoum
         $fields_config->load();
         $fields = $fields_config->getCategorizedFields();
 
-        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
+        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2];
         $this->boolean($town['required'])->isFalse();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
@@ -454,7 +454,7 @@ class FieldsConfig extends atoum
 
         $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(9);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
 
         $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
@@ -485,7 +485,7 @@ class FieldsConfig extends atoum
 
         $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(9);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->boolean($mail->required)->isFalse(); //email is not required per default
@@ -523,7 +523,7 @@ class FieldsConfig extends atoum
 
         $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(9);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->boolean($mail->required)->isTrue(); //email is required for self subscription

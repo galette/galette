@@ -598,9 +598,6 @@ trait Replacements
         global $login;
 
         $address = $member->getAddress();
-        if ($member->getAddressContinuation() !== '') {
-            $address .= '<br/>' . $member->getAddressContinuation();
-        }
 
         if ($member->isMan()) {
             $gender = _T("Man");

@@ -882,9 +882,7 @@ class Preferences
                 _T("%name association's %status")
             ) . "\n";
             $_address = $adh->address;
-            if ($adh->address_continuation && $adh->address_continuation != '') {
-                $_address .= "\n" . $adh->address_continuation;
-            }
+
             $replacements = array(
                 $adh->sfullname . "\n",
                 $_complement,

@@ -1044,8 +1044,6 @@ class Members
                             '(' .
                             'LOWER(adresse_adh) LIKE ' . $token
                             . ' OR ' .
-                            'LOWER(adresse2_adh) LIKE ' . $token
-                            . ' OR ' .
                             'cp_adh LIKE ' . $token
                             . ' OR ' .
                             'LOWER(ville_adh) LIKE ' . $token

@@ -391,7 +391,6 @@ abstract class GaletteTestCase extends atoum
         $this->string($adh->sname)->isIdenticalTo('DURAND René');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isEmpty();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
@@ -495,7 +494,6 @@ abstract class GaletteTestCase extends atoum
         $this->string($adh->sname)->isIdenticalTo('HOARAU Lucas');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isEmpty();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);

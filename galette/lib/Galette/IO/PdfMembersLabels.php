@@ -166,28 +166,16 @@ class PdfMembersLabels extends Pdf
             $this->SetFont(self::FONT, '', $this->preferences->pref_etiq_corps);
             $this->SetXY($x, $y + $this->line_h);
 
-            //calculte font size to display address and address continuation
+            //calculte font size to display address
             $max_text_size = $this->preferences->pref_etiq_hsize;
-            $text = mb_strlen($member->address) > mb_strlen($member->address_continuation) ?
-                $member->address : $member->address_continuation;
             $this->fixSize(
-                $text,
+                $member->address,
                 $max_text_size,
                 $this->preferences->pref_etiq_corps
             );
 
             $this->Cell($this->lw, $this->line_h, $member->address, 0, 0, 'L', 0);
-            // Print second line of address
-            $this->SetXY($x, $y + $this->line_h * 2);
-            $this->Cell(
-                $this->lw,
-                $this->line_h,
-                $member->address_continuation,
-                0,
-                0,
-                'L',
-                0
-            );
+
             // Print zip code and town
             $this->SetFont(self::FONT, 'B', $this->preferences->pref_etiq_corps);
             $text = $member->zipcode . ' - ' . $member->town;

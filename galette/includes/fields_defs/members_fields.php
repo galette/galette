@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -122,15 +122,6 @@ $members_fields = array(
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 11,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    /** TODO remove second address... */
-    'adresse2_adh' => array(
-        'label'    => _T("Address (continuation)"),
-        'propname' => 'address_continuation',
-        'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 12,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'cp_adh' => array(

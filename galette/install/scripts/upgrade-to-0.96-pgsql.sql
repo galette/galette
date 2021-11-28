@@ -37,13 +37,20 @@ INSERT INTO galette_socials (id_adh, type, url) SELECT id_adh, 'website', url_ad
 INSERT INTO galette_socials (id_adh, type, url) SELECT id_adh, 'icq', icq_adh FROM galette_adherents WHERE icq_adh != '';
 INSERT INTO galette_socials (id_adh, type, url) SELECT id_adh, 'msn', msn_adh FROM galette_adherents WHERE msn_adh != '';
 INSERT INTO galette_socials (id_adh, type, url) SELECT id_adh, 'jabber', jabber_adh FROM galette_adherents WHERE jabber_adh != '';
+
+-- drop adresse2_adh field
+UPDATE galette_adherents SET adresse2_adh = NULL WHERE adresse2_adh = '';
+UPDATE galette_adherents SET adresse_adh = CONCAT_WS('\n', adresse_adh, adresse2_adh);
+
 -- cleanup members table
 ALTER TABLE galette_adherents DROP column url_adh;
 ALTER TABLE galette_adherents DROP column icq_adh;
 ALTER TABLE galette_adherents DROP column msn_adh;
 ALTER TABLE galette_adherents DROP column jabber_adh;
+ALTER TABLE galette_adherents DROP column adresse2_adh;
+
 -- cleanup fields config table
-DELETE FROM galette_fields_config WHERE field_id IN ('url_adh', 'icq_adh', 'msn_adh', 'jabber_adh');
+DELETE FROM galette_fields_config WHERE field_id IN ('url_adh', 'icq_adh', 'msn_adh', 'jabber_adh', 'adresse2_adh');
 
 -- add num_adh column
 ALTER TABLE galette_adherents ADD COLUMN num_adh character varying (255) DEFAULT NULL;
