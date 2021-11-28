@@ -11,10 +11,10 @@
 # mustapha nhaily <nhaily@gmail.com>, 2021.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-10-24 14:00+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2021-11-28 15:20+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.10-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1439,8 +1439,9 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:344
 #: ../lib/Galette/Filters/AdvancedMembersList.php:435
 #: ../lib/Galette/Filters/AdvancedMembersList.php:581
+#, fuzzy
 msgid "Y-m-d"
-msgstr ""
+msgstr "m-d-Y"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
