@@ -1,6 +1,6 @@
 <p>
 {include
-    file="forms_types/text.tpl"
+    file="forms_types/textarea.tpl"
     name=$entry->field_id
     id=$entry->field_id
     value=$member->address|escape
