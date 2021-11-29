@@ -100,9 +100,13 @@ class I18n
                 arsort($preferred_locales);
 
                 foreach (array_keys($preferred_locales) as $preferred_locale) {
-                    if (array_key_exists(str_replace('-', '_', $preferred_locale), $this->langs)) {
-                        $dlang = str_replace('-', '_', $preferred_locale);
-                        break;
+                    $short_locale = explode('_', $preferred_locale)[0];
+                    foreach (array_keys($this->langs) as $lang) {
+                        $short_key = explode('_', $lang)[0];
+                        if ($short_key == $short_locale) {
+                            $dlang = $lang;
+                            break;
+                        }
                     }
                 }
             }
