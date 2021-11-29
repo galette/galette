@@ -1,6 +1,5 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <div class="ui fitted small red message">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></div>
         <form action="{path_for name="store-preferences"}" method="post" enctype="multipart/form-data" class="ui form">
         <div class="ui {if $login->isSuperAdmin()}eight{elseif $login->isAdmin()}seven{else}six{/if} item top attached stackable tabs menu tabbed">
             <a class="item active" data-tab="general">{_T string="General"}</a>

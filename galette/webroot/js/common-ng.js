@@ -21,7 +21,7 @@
  *
  * @author    Guillaume AGNIERAY
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -39,6 +39,7 @@ $(function() {
       monthFirst: false,
       /* TODO : Find a way to translate widget content.
        * https://fomantic-ui.com/modules/calendar.html#language
+       * https://www.php.net/manual/fr/intldateformatter.create.php
        */
       text: {
         days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
@@ -89,7 +90,6 @@ $(function() {
      */
     $('i.tooltip').popup({
         inline: false, // default value
-        on: 'click',
     });
 });
 

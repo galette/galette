@@ -24,6 +24,7 @@
                         {_T string="Galette is configured to display errors. This must be avoided in production environments."}
                     </div>
 {/if}
+
 {if !$login->isLogged()}
                     <div class="ui basic center aligned fitted segment">
                         <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{$preferences->pref_nom}" class="icon"/>
@@ -46,6 +47,7 @@
                         </a>
             {/if}
                     </h1>
+                    {include file="toasts.tpl"}
                     {*include file="global_messages.tpl"*}
                     {block name="content"}{_T string="Page content"}{/block}
                     {include file="footer.tpl"}
@@ -57,7 +59,6 @@
             {_T string="Back to top"}
         </a>
         {include file="common_scripts.tpl"}
-        {include file="toasts.tpl"}
         {block name="javascripts"}{/block}
     </body>
 </html>
