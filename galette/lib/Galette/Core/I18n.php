@@ -94,7 +94,9 @@ class I18n
                         list($l, $q) = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float) $q;
                         return $res;
-                    }, []);
+                    },
+                    []
+                );
                 arsort($preferred_locales);
 
                 foreach (array_keys($preferred_locales) as $preferred_locale) {
