@@ -88,19 +88,19 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <div class="field">
                     <div class="inline fields">
                         <label for="email_filter">{_T string="Members that have an email address:"}</label>
-                        <div class="field">
+                        <div class="field inline">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
                                 <label for="filter_dc_email">{_T string="Don't care"}</label>
                             </div>
                         </div>
-                        <div class="field">
+                        <div class="field inline">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="email_filter" id="filter_with_email" value="{Galette\Repository\Members::FILTER_W_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
                                 <label for="filter_with_email">{_T string="With"}</label>
                             </div>
                         </div>
-                        <div class="field">
+                        <div class="field inline">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="email_filter" id="filter_without_email" value="{Galette\Repository\Members::FILTER_WO_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
                                 <label for="filter_without_email">{_T string="Without"}</label>
