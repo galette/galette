@@ -57,8 +57,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>
                 </div>
                 <div class="field">
-                    <label for="filter_str">{_T string="in:"}</label>
-                    <select name="field_filter" class="ui search dropdown nochosen">
+                    <label for="field_filter">{_T string="in:"}</label>
+                    <select name="field_filter" id"=field_filter" class="ui search dropdown nochosen">
                         {html_options options=$field_filter_options selected=$filters->field_filter}
                     </select>
                 </div>
