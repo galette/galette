@@ -209,12 +209,12 @@ class ListsConfig extends atoum
         $town['required'] = false;
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
-        //jabber
-        $jabber = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10];
-        $jabber['position'] = count($fields[1]);
-        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10]);
-        $jabber['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
-        $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $jabber;
+        //gsm
+        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]; //6 in FieldsConfig but 5 here.
+        $gsm['position'] = count($fields[1]);
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]); //6 in FieldsConfig but 5 here.
+        $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
+        $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 
         $this->boolean($lists_config->setFields($fields))->isTrue();
 
@@ -225,9 +225,9 @@ class ListsConfig extends atoum
         $this->boolean($town['required'])->isFalse();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
-        $jabber2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][10]; //12 in FieldsConfig but 10 here
-        $this->array($jabber2)->isIdenticalTo($jabber);
-        // /copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
+        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][11]; //13 in FieldsConfig but 11 here
+        $this->array($gsm2)->isIdenticalTo($gsm);
+        // /copied from FieldsConfig::testSetFields to ensure it works as expected from here.
     }
 
     /**

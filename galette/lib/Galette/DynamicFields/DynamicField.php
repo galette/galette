@@ -53,7 +53,7 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -80,6 +80,9 @@ abstract class DynamicField
     public const BOOLEAN = 5;
     /** File field (upload) */
     public const FILE = 6;
+
+    public const MOVE_UP = 'up';
+    public const MOVE_DOWN = 'down';
 
     public const PERM_USER_WRITE = 0;
     public const PERM_ADMIN = 1;
@@ -109,8 +112,11 @@ abstract class DynamicField
     protected $old_size;
     protected $values;
     protected $form;
+    protected $information;
+    protected $name;
+    protected $old_name;
 
-    protected $errors;
+    protected $errors = [];
 
     protected $zdb;
 
@@ -126,7 +132,7 @@ abstract class DynamicField
 
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
+        } elseif (is_object($args)) {
             $this->loadFromRs($args);
         }
     }
@@ -139,11 +145,11 @@ abstract class DynamicField
      *
      * @return DynamicField|false
      */
-    public static function loadFieldType(Db $zdb, $id)
+    public static function loadFieldType(Db $zdb, int $id)
     {
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where('field_id = ' . $id);
+            $select->where(['field_id' => $id]);
 
             $results = $zdb->execute($select);
             $result = $results->current();
@@ -167,13 +173,13 @@ abstract class DynamicField
     /**
      * Get correct field type instance
      *
-     * @param Db  $zdb Database instance
-     * @param int $t   Field type
-     * @param int $id  Optional dynamic field id (to load data)
+     * @param Db       $zdb Database instance
+     * @param int      $t   Field type
+     * @param int|null $id  Optional dynamic field id (to load data)
      *
      * @return DynamicField
      */
-    public static function getFieldType(Db $zdb, $t, $id = null)
+    public static function getFieldType(Db $zdb, int $t, int $id = null)
     {
         $df = null;
         switch ($t) {
@@ -200,7 +206,6 @@ abstract class DynamicField
                 break;
             default:
                 throw new \Exception('Unknown field type ' . $t . '!');
-                break;
         }
         return $df;
     }
@@ -212,11 +217,11 @@ abstract class DynamicField
      *
      * @return void
      */
-    public function load($id)
+    public function load(int $id): void
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->where(self::PK . ' = ' . $id);
+            $select->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -241,18 +246,19 @@ abstract class DynamicField
      *
      * @return void
      */
-    public function loadFromRs($rs, $values = true)
+    public function loadFromRs($rs, bool $values = true): void
     {
         $this->id = (int)$rs->field_id;
         $this->name = $rs->field_name;
         $this->index = (int)$rs->field_index;
         $this->perm = (int)$rs->field_perm;
-        $this->required = ($rs->field_required == 1 ? true : false);
+        $this->required = $rs->field_required == 1;
         $this->width = $rs->field_width;
         $this->height = $rs->field_height;
-        $this->repeat = $rs->field_repeat;
+        $this->repeat = (int)$rs->field_repeat;
         $this->size = $rs->field_size;
         $this->form = $rs->field_form;
+        $this->information = $rs->field_information;
         if ($values && $this->hasFixedValues()) {
             $this->loadFixedValues();
         }
@@ -266,7 +272,7 @@ abstract class DynamicField
      *
      * @return string
      */
-    public static function getFixedValuesTableName($id, $prefixed = false)
+    public static function getFixedValuesTableName(int $id, bool $prefixed = false): string
     {
         $name = 'field_contents_' . $id;
         if ($prefixed === true) {
@@ -313,21 +319,21 @@ abstract class DynamicField
      *
      * @return integer
      */
-    abstract public function getType();
+    abstract public function getType(): int;
 
     /**
      * Get field type name
      *
      * @return String
      */
-    public function getTypeName()
+    public function getTypeName(): string
     {
         $types = $this->getFieldsTypesNames();
         if (isset($types[$this->getType()])) {
             return $types[$this->getType()];
         } else {
             throw new \RuntimeException(
-                'Unknow type ' . $this->getType()
+                'Unknown type ' . $this->getType()
             );
         }
     }
@@ -337,9 +343,9 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function hasData()
+    public function hasData(): bool
     {
-        return $this->has_data;
+        return (bool)$this->has_data;
     }
 
     /**
@@ -347,9 +353,9 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function hasWidth()
+    public function hasWidth(): bool
     {
-        return $this->has_width;
+        return (bool)$this->has_width;
     }
 
     /**
@@ -357,9 +363,9 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function hasHeight()
+    public function hasHeight(): bool
     {
-        return $this->has_height;
+        return (bool)$this->has_height;
     }
 
     /**
@@ -367,19 +373,19 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function hasSize()
+    public function hasSize(): bool
     {
-        return $this->has_size;
+        return (bool)$this->has_size;
     }
 
     /**
-     * Is the field multi valued?
+     * Is the field multivalued?
      *
      * @return boolean
      */
-    public function isMultiValued()
+    public function isMultiValued(): bool
     {
-        return $this->multi_valued;
+        return (bool)$this->multi_valued;
     }
 
     /**
@@ -387,9 +393,9 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function hasFixedValues()
+    public function hasFixedValues(): bool
     {
-        return $this->fixed_values;
+        return (bool)$this->fixed_values;
     }
 
     /**
@@ -397,18 +403,17 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function hasPermissions()
+    public function hasPermissions(): bool
     {
-        return $this->has_permissions;
+        return (bool)$this->has_permissions;
     }
-
 
     /**
      * Get field id
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -416,30 +421,29 @@ abstract class DynamicField
     /**
      * Get field Permissions
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getPerm()
+    public function getPerm(): ?int
     {
         return $this->perm;
     }
-
 
     /**
      * Is field required?
      *
      * @return boolean
      */
-    public function isRequired()
+    public function isRequired(): bool
     {
-        return $this->required;
+        return (bool)$this->required;
     }
 
     /**
      * Get field width
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getWidth()
+    public function getWidth(): ?int
     {
         return $this->width;
     }
@@ -447,9 +451,9 @@ abstract class DynamicField
     /**
      * Get field height
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getHeight()
+    public function getHeight(): ?int
     {
         return $this->height;
     }
@@ -459,7 +463,7 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function isRepeatable()
+    public function isRepeatable(): bool
     {
         return $this->repeat != null && trim($this->repeat) != '' && (int)$this->repeat >= 0;
     }
@@ -467,9 +471,9 @@ abstract class DynamicField
     /**
      * Get fields repetitions
      *
-     * @return integer|boolean
+     * @return integer|null
      */
-    public function getRepeat()
+    public function getRepeat(): ?int
     {
         return $this->repeat;
     }
@@ -477,9 +481,9 @@ abstract class DynamicField
     /**
      * Get field size
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
@@ -487,11 +491,21 @@ abstract class DynamicField
     /**
      * Get field index
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getIndex()
+    public function getIndex(): ?int
     {
         return $this->index;
+    }
+
+    /**
+     * Get field information
+     *
+     * @return string
+     */
+    public function getInformation(): string
+    {
+        return $this->information ?? '';
     }
 
     /**
@@ -499,7 +513,7 @@ abstract class DynamicField
      *
      * @return array
      */
-    public static function getPermsNames()
+    public static function getPermsNames(): array
     {
         return [
             self::PERM_USER_WRITE => _T("User, read/write"),
@@ -515,7 +529,7 @@ abstract class DynamicField
      *
      * @return array
      */
-    public static function getFormsNames()
+    public static function getFormsNames(): array
     {
         return [
             'adh'       => _T("Members"),
@@ -531,7 +545,7 @@ abstract class DynamicField
      *
      * @return string
      */
-    public static function getFormTitle($form_name)
+    public static function getFormTitle(string $form_name): string
     {
         $names = self::getFormsNames();
         return $names[$form_name];
@@ -542,7 +556,7 @@ abstract class DynamicField
      *
      * @return string
      */
-    public function getPermName()
+    public function getPermName(): string
     {
         $perms = self::getPermsNames();
         return $perms[$this->getPerm()];
@@ -553,7 +567,7 @@ abstract class DynamicField
      *
      * @return string
      */
-    public function getForm()
+    public function getForm(): string
     {
         return $this->form;
     }
@@ -563,9 +577,9 @@ abstract class DynamicField
      *
      * @param boolean $imploded Whether to implode values
      *
-     * @return array
+     * @return array|string|false
      */
-    public function getValues($imploded = false)
+    public function getValues(bool $imploded = false)
     {
         if (!is_array($this->values)) {
             return false;
@@ -585,7 +599,7 @@ abstract class DynamicField
      *
      * @return true|array
      */
-    public function check($values)
+    public function check(array $values)
     {
         $this->errors = [];
         $this->warnings = [];
@@ -646,6 +660,11 @@ abstract class DynamicField
             $this->repeat = $values['field_repeat'];
         }
 
+        if (isset($values['field_information']) && trim($values['field_information']) != '') {
+            global $preferences;
+            $this->information = $preferences->cleanHtmlValue($values['field_information']);
+        }
+
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
             foreach (explode("\n", $values['fixed_values']) as $val) {
@@ -684,7 +703,7 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function store($values)
+    public function store(array $values): bool
     {
         if (!$this->check($values)) {
             return false;
@@ -706,7 +725,8 @@ abstract class DynamicField
                 'field_size'        => ($this->size === null ? new Expression('NULL') : $this->size),
                 'field_repeat'      => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
                 'field_form'        => $this->form,
-                'field_index'       => $this->index
+                'field_index'       => $this->index,
+                'field_information' => ($this->information === null ? new Expression('NULL') : $this->information)
             );
 
             if ($this->required === false) {
@@ -716,9 +736,7 @@ abstract class DynamicField
 
             if (!$isnew) {
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where(
-                    self::PK . ' = ' . $this->id
-                );
+                $update->set($values)->where([self::PK => $this->id]);
                 $this->zdb->execute($update);
             } else {
                 $values['field_type'] = $this->getType();
@@ -809,7 +827,7 @@ abstract class DynamicField
      *
      * @return integer
      */
-    protected function getNewIndex()
+    protected function getNewIndex(): int
     {
         $select = $this->zdb->select(self::TABLE);
         $select->columns(
@@ -821,7 +839,7 @@ abstract class DynamicField
         $results = $this->zdb->execute($select);
         $result = $results->current();
         $idx = $result->idx;
-        return $idx;
+        return (int)$idx;
     }
 
     /**
@@ -829,7 +847,7 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function isDuplicate()
+    public function isDuplicate(): bool
     {
         //let's consider field is duplicated, in case of future errors
         $duplicated = true;
@@ -869,21 +887,26 @@ abstract class DynamicField
         }
         return $duplicated;
     }
+
     /**
      * Move a dynamic field
      *
-     * @param string $action What to do (either 'up' or 'down')
+     * @param string $action What to do (one of self::MOVE_*)
      *
      * @return boolean
      */
-    public function move($action)
+    public function move(string $action): bool
     {
+        if ($action !== self::MOVE_UP && $action !== self::MOVE_DOWN) {
+            throw new \RuntimeException(('Unknown action ' . $action));
+        }
+
         try {
             $this->zdb->connection->beginTransaction();
 
             $old_rank = $this->index;
 
-            $direction = $action == 'up' ? -1 : 1;
+            $direction = $action == self::MOVE_UP ? -1 : 1;
             $new_rank = $old_rank + $direction;
             $update = $this->zdb->update(self::TABLE);
             $update->set([
@@ -924,7 +947,7 @@ abstract class DynamicField
      *
      * @return boolean
      */
-    public function remove()
+    public function remove(): bool
     {
         try {
             if ($this->hasFixedValues()) {
@@ -994,7 +1017,7 @@ abstract class DynamicField
      *
      * @return array
      */
-    public static function getFieldsTypesNames()
+    public static function getFieldsTypesNames(): array
     {
         $names = [
             self::SEPARATOR => _T("separator"),
@@ -1013,7 +1036,7 @@ abstract class DynamicField
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -1023,7 +1046,7 @@ abstract class DynamicField
      *
      * @return array
      */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         return $this->warnings;
     }

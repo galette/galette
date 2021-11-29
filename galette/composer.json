@@ -48,7 +48,10 @@
         "psr/container": "^1.0",
         "php-di/slim-bridge": "2.0.0",
         "doctrine/annotations": "^1.8",
-        "laminas/laminas-servicemanager": "3.7"
+        "laminas/laminas-servicemanager": "3.7",
+        "symfony/polyfill-php80": "^1.23",
+        "ezyang/htmlpurifier": "^4.13",
+        "slim/csrf": "0.8.3"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",
@@ -63,7 +66,8 @@
             "patch -d vendor/slim/slim/ -p3 < ../patches/slim-php81.patch",
             "patch -d vendor/smarty/smarty/ -p3 < ../patches/smarty-php81.patch",
             "patch -d vendor/mathmarques/smarty-view/ -p3 < ../patches/smarty-view-php81.patch",
-            "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch"
+            "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch",
+            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch"
         ]
     }
 }

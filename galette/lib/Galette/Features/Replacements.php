@@ -72,7 +72,7 @@ trait Replacements
     private $dynamic_patterns = [];
 
     /**
-     * @Inject("db")
+     * @Inject("zdb")
      * @var Db
      */
     protected $zdb;
@@ -90,7 +90,6 @@ trait Replacements
     protected $preferences;
 
     /**
-     * @Inject
      * @var Router
      */
     protected $router;
@@ -253,6 +252,10 @@ trait Replacements
             'adh_id'            =>  [
                 'title'     => _T("Member's ID"),
                 'pattern'   => '/{ID_ADH}/',
+            ],
+            'adh_num'            =>  [
+                'title'     => _T("Member number"),
+                'pattern'   => '/{NUM_ADH}/',
             ],
             'adh_name'          =>  [
                 'title'     => _T("Name"),
@@ -595,9 +598,6 @@ trait Replacements
         global $login;
 
         $address = $member->getAddress();
-        if ($member->getAddressContinuation() !== '') {
-            $address .= '<br/>' . $member->getAddressContinuation();
-        }
 
         if ($member->isMan()) {
             $gender = _T("Man");
@@ -623,6 +623,7 @@ trait Replacements
             array(
                 'adh_title'         => $member->stitle,
                 'adh_id'            => $member->id,
+                'adh_num'           => $member->number,
                 'adh_name'          => $member->sfullname,
                 'adh_last_name'     => $member->name,
                 'adh_first_name'    => $member->surname,

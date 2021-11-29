@@ -110,7 +110,6 @@ class MailingHistory extends History
             );
             $this->buildWhereClause($select);
             $select->order($this->buildOrderClause());
-            $this->buildLists($select);
             $this->proceedCount($select);
             //add limits to retrieve only relevant rows
             $this->filters->setLimits($select);
@@ -121,25 +120,6 @@ class MailingHistory extends History
                 if ($r['mailing_sender'] !== null && $r['mailing_sender_name'] === null) {
                     $r['mailing_sender_name']
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
-                }
-                $body_resume = $r['mailing_body'];
-                if (strlen($body_resume) > 150) {
-                    $body_resume = substr($body_resume, 0, 150);
-                    $body_resume .= '[...]';
-                }
-                if (function_exists('tidy_parse_string')) {
-                    //if tidy extension is present, we use it to clean a bit
-                    $tidy_config = array(
-                        'clean'             => true,
-                        'show-body-only'    => true,
-                        'wrap' => 0,
-                    );
-                    $tidy = tidy_parse_string($body_resume, $tidy_config, 'UTF8');
-                    $tidy->cleanRepair();
-                    $r['mailing_body_resume'] = tidy_get_output($tidy);
-                } else {
-                    //if it is not... Well, let's serve the text as it.
-                    $r['mailing_body_resume'] = $body_resume;
                 }
 
                 $attachments = 0;
@@ -165,42 +145,6 @@ class MailingHistory extends History
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
-        }
-    }
-
-    /**
-     * Builds users and actions lists
-     *
-     * @param \Laminas\Db\Sql\Select $select Original select
-     *
-     * @return void
-     */
-    private function buildLists($select)
-    {
-        try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->quantifier('DISTINCT')->columns(['mailing_sender']);
-            $select->order(['mailing_sender ASC']);
-
-            $results = $this->zdb->execute($select);
-
-            $this->senders = [];
-            foreach ($results as $result) {
-                $sender = $result->mailing_sender;
-                if ($sender != null) {
-                    $this->senders[$sender] = Adherent::getSName($this->zdb, (int)$sender);
-                } elseif ($result->mailing_sender_name != null || $result->mailing_sender_address != null) {
-                    $this->senders[$result->mailing_sender_address] = $result->mailing_sender_name;
-                } else {
-                    $this->senders[-1] = _('Superadmin');
-                }
-            }
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot list senders from mailing history! | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -356,7 +300,7 @@ class MailingHistory extends History
     {
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where('mailing_id = ' . $id);
+            $select->where(['mailing_id' => $id]);
 
             $results = $zdb->execute($select);
             $result = $results->current();
@@ -450,7 +394,7 @@ class MailingHistory extends History
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
-            $update->where(self::PK . ' = ' . $this->mailing->history_id);
+            $update->where([self::PK => $this->mailing->history_id]);
             $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
@@ -611,15 +555,5 @@ class MailingHistory extends History
     public function getCount()
     {
         return $this->count;
-    }
-
-    /**
-     * Get senders list
-     *
-     * @return array
-     */
-    public function getSendersList()
-    {
-        return $this->senders;
     }
 }

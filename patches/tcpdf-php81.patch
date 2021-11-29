@@ -1,0 +1,24 @@
+diff -up vendor/tecnickcom/tcpdf/include/tcpdf_images.php.patch vendor/tecnickcom/tcpdf/include/tcpdf_images.php
+--- vendor/tecnickcom/tcpdf/include/tcpdf_images.php.patch	2021-11-24 06:24:49.340507070 +0100
++++ vendor/tecnickcom/tcpdf/include/tcpdf_images.php	2021-11-24 06:25:00.907754698 +0100
+@@ -79,7 +79,7 @@ class TCPDF_IMAGES {
+ 			}
+ 		}
+ 		if (empty($type)) {
+-            $type = strtolower(trim(pathinfo(parse_url($imgfile, PHP_URL_PATH), PATHINFO_EXTENSION)));
++            $type = strtolower(trim(pathinfo(parse_url($imgfile, PHP_URL_PATH) ?? '', PATHINFO_EXTENSION)));
+ 		}
+ 		if ($type == 'jpg') {
+ 			$type = 'jpeg';
+diff -up vendor/tecnickcom/tcpdf/tcpdf.php.patch vendor/tecnickcom/tcpdf/tcpdf.php
+--- vendor/tecnickcom/tcpdf/tcpdf.php.patch	2021-11-24 05:56:44.695440293 +0100
++++ vendor/tecnickcom/tcpdf/tcpdf.php	2021-11-24 05:58:00.574064870 +0100
+@@ -7357,7 +7357,7 @@ class TCPDF {
+ 						$color = imagecolorat($img, $xpx, $ypx);
+ 						// get and correct gamma color
+ 						$alpha = $this->getGDgamma($img, $color);
+-						imagesetpixel($imgalpha, $xpx, $ypx, $alpha);
++						imagesetpixel($imgalpha, intval($xpx), intval($ypx), intval($alpha));
+ 					}
+ 				}
+ 				imagepng($imgalpha, $tempfile_alpha);

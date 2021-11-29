@@ -56,6 +56,8 @@
     {* Dynamic entries *}
     {include file="edit_dynamic_fields.tpl" object=$member}
 
+    {include file="edit_socials.tpl" socials=$member->socials social_fieldset_class="galette_form" social_fieldset_legend_class="ui-state-active ui-corner-top"}
+
                     <p>
     {if !$member->id && !$self_adh}
         {if ($login->isAdmin() or $login->isStaff())}
@@ -126,7 +128,7 @@
                     {/if}
                 {/if}
             {/foreach}
-
+            {include file="forms_types/csrf.tpl"}
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
         </form>

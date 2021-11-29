@@ -11,6 +11,7 @@
                             {html_options values=$orig output=$orig selected=$text_orig}
                         </select>
                         <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                        {include file="forms_types/csrf.tpl"}
                     </p>
                 </form>
     {/if}
@@ -37,6 +38,7 @@
                 <button type="submit" name="trans" class="action">
                     <i class="fas fa-save fa-fw"></i> {_T string="Save"}
                 </button>
+                {include file="forms_types/csrf.tpl"}
             </div>
         </form>
 {else}
@@ -45,6 +47,7 @@
 {/block}
 
 {block name="javascripts"}
+{if isset($trans) && $trans|@count > 0}
     {if $exists}
     <script type="text/javascript">
         $('#text_orig').change(function(e) {
@@ -56,4 +59,5 @@
         });
     </script>
     {/if}
+{/if}
 {/block}

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-12-10
@@ -47,7 +47,7 @@ use PHPMailer\PHPMailer\PHPMailer;
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -289,46 +289,19 @@ class GaletteMail
             );
         }
 
-        if (trim($this->preferences->pref_mail_sign) != '') {
-            $patterns = array(
-                '/{NAME}/',
-                '/{WEBSITE}/',
-                '/{FACEBOOK}/',
-                '/{GOOGLEPLUS}/',
-                '/{TWITTER}/',
-                '/{LINKEDIN}/',
-                '/{VIADEO}/'
-            );
-
-            $replaces = array(
-                $this->preferences->pref_nom,
-                $this->preferences->pref_website,
-                $this->preferences->pref_facebook,
-                $this->preferences->pref_googleplus,
-                $this->preferences->pref_twitter,
-                $this->preferences->pref_linkedin,
-                $this->preferences->pref_viadeo
-            );
-
-            $sign = preg_replace(
-                $patterns,
-                $replaces,
-                $this->preferences->pref_mail_sign
-            );
-
+        $signature = $this->preferences->getMailSignature();
+        if ($signature != '') {
             if ($this->html) {
                 //we are sending html message
-                $tsign = "\r\n-- \r\n" . $sign;
                 //apply email sign to text version
-                $this->mail->AltBody .= $tsign;
+                $this->mail->AltBody .= $signature;
                 //then apply email sign to html version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style . '">' .
-                    nl2br($sign) . '</div>';
+                    nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
-                $sign = "\r\n-- \r\n" . $sign;
-                $this->mail->Body .= $sign;
+                $this->mail->Body .= $signature;
             }
         }
 

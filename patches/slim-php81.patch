@@ -116,3 +116,15 @@ diff -up vendor/slim/slim/Slim/Http/Uri.php.patch vendor/slim/slim/Slim/Http/Uri
          );
      }
  
+diff -up vendor/slim/slim/Slim/Http/Stream.php.patch vendor/slim/slim/Slim/Http/Stream.php
+--- vendor/slim/slim/Slim/Http/Stream.php.patch	2021-11-24 05:52:35.953125135 +0100
++++ vendor/slim/slim/Slim/Http/Stream.php	2021-11-24 06:02:19.388606169 +0100
+@@ -399,7 +399,7 @@ class Stream implements StreamInterface
+      */
+     public function write($string)
+     {
+-        if (!$this->isWritable() || ($written = fwrite($this->stream, $string)) === false) {
++        if (!$this->isWritable() || ($written = fwrite($this->stream, $string ?? '')) === false) {
+             throw new RuntimeException('Could not write to stream');
+         }
+

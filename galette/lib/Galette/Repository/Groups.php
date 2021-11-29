@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2014 The Galette Team
+ * Copyright © 2011-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -52,13 +52,17 @@ use Galette\Core\Db;
  * @name      Groups
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
  */
 class Groups
 {
+    /** @var Db */
+    private $zdb;
+    /** @var Login */
+    private $login;
 
     /**
      * Constructor
@@ -79,7 +83,7 @@ class Groups
      *
      * @return array
      */
-    public static function getSimpleList($as_groups = false)
+    public static function getSimpleList(bool $as_groups = false): array
     {
         global $zdb;
 
@@ -115,49 +119,50 @@ class Groups
     /**
      * Get groups list
      *
-     * @param boolean $full Return full list or root only
-     * @param int     $id   Group ID to retrieve
+     * @param boolean  $full Return full list or root only
+     * @param int|null $id   Group ID to retrieve
      *
      * @return Group[]
      */
-    public function getList($full = true, $id = null)
+    public function getList(bool $full = true, int $id = null): array
     {
         try {
-            $select = $this->zdb->select(Group::TABLE, 'a');
-            $select->join(
-                array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-                'a.' . Group::PK . '=b.' . Group::PK,
-                array('members' => new Expression('count(b.' . Group::PK . ')')),
-                $select::JOIN_LEFT
-            );
+            $select = $this->zdb->select(Group::TABLE, 'ggroup');
 
             if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
                 $select->join(
-                    array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
-                    'a.' . Group::PK . '=c.' . Group::PK,
+                    array('gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    'ggroup.' . Group::PK . '=gmanagers.' . Group::PK,
                     array()
-                )->where('c.' . Adherent::PK . ' = ' . $this->login->id);
+                )->where(['gmanagers.' . Adherent::PK => $this->login->id]);
             }
 
+            $select->join(
+                array('gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                'ggroup.' . Group::PK . '=gusers.' . Group::PK,
+                array('members' => new Expression('count(gusers.' . Group::PK . ')')),
+                $select::JOIN_LEFT
+            );
+
             if ($full !== true) {
-                $select->where('parent_group IS NULL');
+                $select->where('ggroup.parent_group IS NULL');
             }
 
             if ($id !== null) {
-                $select->where(
-                    array(
-                        'a.' . Group::PK => $id,
-                        'a.parent_group' => $id
-                    ),
-                    PredicateSet::OP_OR
-                );
+                $select->where
+                    ->nest()
+                        ->equalTo('ggroup.' . Group::PK, $id)
+                    ->or
+                        ->equalTo('ggroup.parent_group', $id)
+                    ->unnest()
+                ;
             }
 
-            $select->group('a.' . Group::PK)
-                ->group('a.group_name')
-                ->group('a.creation_date')
-                ->group('a.parent_group')
-                ->order('a.group_name ASC');
+            $select->group('ggroup.' . Group::PK)
+                ->group('ggroup.group_name')
+                ->group('ggroup.creation_date')
+                ->group('ggroup.parent_group')
+                ->order('ggroup.group_name ASC');
 
             $groups = array();
 
@@ -170,10 +175,6 @@ class Groups
             }
             if ($full) { // Order by tree name instead of name
                 ksort($groups);
-                Analog::log(
-                    'Groups SORTED: ' . print_r(array_keys($groups), true),
-                    Analog::DEBUG
-                );
             }
             return $groups;
         } catch (Throwable $e) {
@@ -188,12 +189,12 @@ class Groups
     /**
      * Loads managed groups for specific member
      *
-     * @param int     $id       Memebr id
+     * @param int     $id       Member id
      * @param boolean $as_group Retrieve Group[] or int[]
      *
      * @return array
      */
-    public static function loadManagedGroups($id, $as_group = true)
+    public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
         return self::loadGroups($id, true, $as_group);
     }
@@ -207,19 +208,19 @@ class Groups
      *
      * @return array
      */
-    public static function loadGroups($id, $managed = false, $as_group = true)
+    public static function loadGroups(int $id, bool $managed = false, bool $as_group = true): array
     {
         global $zdb;
         try {
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
-            $select = $zdb->select(Group::TABLE, 'a');
+            $select = $zdb->select(Group::TABLE, 'group');
             $select->join(
                 array(
                     'b' => PREFIX_DB . $join_table
                 ),
-                'a.' . Group::PK . '=b.' . Group::PK,
+                'group.' . Group::PK . '=b.' . Group::PK,
                 array()
             )->where(array('b.' . Adherent::PK => $id));
 
@@ -260,7 +261,13 @@ class Groups
      */
     public static function addMemberToGroups($adh, $groups, $manager = false, $transaction = false)
     {
-        global $zdb;
+        global $zdb, $login;
+
+        $managed_groups = [];
+        if (!$login->isSuperAdmin() && !$login->isAdmin() && !$login->isStaff()) {
+            $managed_groups = $login->getManagedGroups();
+        }
+
         try {
             if ($transaction === false) {
                 $zdb->connection->beginTransaction();
@@ -275,9 +282,10 @@ class Groups
 
             //first, remove current groups members
             $delete = $zdb->delete($table);
-            $delete->where(
-                Adherent::PK . ' = ' . $adh->id
-            );
+            $delete->where([Adherent::PK => $adh->id]);
+            if (count($managed_groups)) {
+                $delete->where->in(Group::PK, $managed_groups);
+            }
             $zdb->execute($delete);
 
             $msg = null;
@@ -304,6 +312,10 @@ class Groups
 
                 foreach ($groups as $group) {
                     list($gid, $gname) = explode('|', $group);
+
+                    if (count($managed_groups) && !in_array($gid, $managed_groups)) {
+                        continue;
+                    }
 
                     $result = $stmt->execute(
                         array(
@@ -383,7 +395,7 @@ class Groups
             $zdb->execute($del_qry);
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to remove member #' . $id . ' from his groups: ' .
+                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -406,23 +418,35 @@ class Groups
     /**
      * Check if groupname is unique
      *
-     * @param Db     $zdb  Database instance
-     * @param string $name Requested name
+     * @param Db       $zdb     Database instance
+     * @param string   $name    Requested name
+     * @param int|null $parent  Parent groupe (defaults to null)
+     * @param int|null $current Current ID to be excluded (defaults to null)
      *
      * @return boolean
      */
-    public static function isUnique(Db $zdb, $name)
+    public static function isUnique(Db $zdb, string $name, int $parent = null, int $current = null)
     {
         try {
             $select = $zdb->select(Group::TABLE);
-            $select->columns(
-                array('group_name')
-            )->where(array('group_name' => $name));
+            $select->columns(['group_name'])
+                ->where(['group_name'    => $name]);
+
+            if ($parent === null) {
+                $select->where('parent_group IS NULL');
+            } else {
+                $select->where(['parent_group' => $parent]);
+            }
+
+            if ($current !== null) {
+                $select->where->notEqualTo(Group::PK, $current);
+            }
+
             $results = $zdb->execute($select);
             return !($results->count() > 0);
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list groups (simple) | ' . $e->getMessage(),
+                'Cannot check group name uniqueness | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -446,12 +470,12 @@ class Groups
             $groups = self::loadManagedGroups($this->login->id, false);
         }
 
-        $select = $this->zdb->select(Adherent::TABLE, 'a');
+        $select = $this->zdb->select(Adherent::TABLE, 'adh');
         $select->columns(
             [Adherent::PK]
         )->join(
             array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-            'a.' . Adherent::PK . '=b.' . Adherent::PK,
+            'adh.' . Adherent::PK . '=b.' . Adherent::PK,
             []
         )->where->in('b.' . Group::PK, $groups);
 

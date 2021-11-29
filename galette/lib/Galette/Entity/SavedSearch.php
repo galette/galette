@@ -102,11 +102,11 @@ class SavedSearch
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->limit(1)->where(self::PK . ' = ' . $id);
+            $select->limit(1)->where([self::PK => $id]);
             if ($this->login->isSuperAdmin()) {
                 $select->where(Adherent::PK . ' IS NULL');
             } else {
-                $select->where(Adherent::PK . ' = ' . (int)$this->login->id);
+                $select->where([Adherent::PK => $this->login->id]);
             }
 
             $results = $this->zdb->execute($select);
@@ -189,7 +189,6 @@ class SavedSearch
         $data = array(
             'name'              => $this->name,
             'parameters'        => $parameters,
-            'parameters_sum'   => '',
             'id_adh'            => $this->author_id,
             'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
             'form'              => $this->form
@@ -224,9 +223,7 @@ class SavedSearch
         $id = (int)$this->id;
         try {
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(
-                self::PK . ' = ' . $id
-            );
+            $delete->where([self::PK => $id]);
             $this->zdb->execute($delete);
             Analog::log(
                 'Saved search #' . $id . ' (' . $this->name

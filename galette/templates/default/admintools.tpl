@@ -31,10 +31,11 @@
             </p>
         </fieldset>
         <div class="button-container">
-            <button ype="submit" class="action">
+            <button type="submit" class="action">
                 <i class="fas fa-database" aria-hidden="true"></i>
                 {_T string="Go"}
             </button>
+            {include file="forms_types/csrf.tpl"}
         </div>
     </form>
 {/block}

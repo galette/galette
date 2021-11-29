@@ -35,9 +35,11 @@
     </section>
 </div>
 <div class="button-container">
+{if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
     <a href="{path_for name="pdf_groups"}" class="button tooltip" title="{_T string="Export all groups and their members as PDF"}">
         <i class="fas fa-file-pdf"></i> {_T string="All groups PDF"}
     </a>
+{/if}
 </div>
 {/block}
 
@@ -156,7 +158,7 @@
                                         if (res.message) {
                                             alert(res.message)
                                         } else {
-                                            alert('{_T string="The group name you have requested already exits in the database."}');
+                                            alert('{_T string="The group name you have requested already exists in the database."}');
                                         }
                                     } else {
                                         $(location).attr('href', _href.replace('NAME', _name));

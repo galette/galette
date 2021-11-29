@@ -125,7 +125,7 @@ class PdfController extends AbstractController
                     );
             }
 
-            //check if member is up to date
+            //check if member is up-to-date
             if ($this->login->id == $id_adh) {
                 if (!$adh->isUp2Date()) {
                     Analog::log(

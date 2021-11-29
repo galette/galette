@@ -49,6 +49,7 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;
@@ -139,6 +140,7 @@ class MembersController extends CrudController
         $m = new Members();
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $member->hasParent() ? $member->parent->id : null
         );
 
@@ -165,6 +167,7 @@ class MembersController extends CrudController
                 'member'            => $member,
                 'self_adh'          => true,
                 'autocomplete'      => true,
+                'osocials'          => new Social($this->zdb),
                 // pseudo random int
                 'time'              => time(),
                 'titles_list'       => Titles::getList($this->zdb),
@@ -289,7 +292,8 @@ class MembersController extends CrudController
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'display_elements'  => $display_elements
+                'display_elements'  => $display_elements,
+                'osocials'          => new Social($this->zdb)
             )
         );
         return $response;
@@ -800,6 +804,13 @@ class MembersController extends CrudController
 
         $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
+        $social = new Social($this->zdb);
+        $types = $member->getMemberRegisteredTypes();
+        $social_types = [];
+        foreach ($types as $type) {
+            $social_types[$type] = $social->getSystemType($type);
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -810,6 +821,7 @@ class MembersController extends CrudController
                 'search_fields'         => $fields,
                 'adh_dynamics'          => $adh_dynamics->getFields(),
                 'contrib_dynamics'      => $contrib_dynamics->getFields(),
+                'adh_socials'           => $social_types,
                 'statuts'               => $statuts->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
@@ -1056,7 +1068,6 @@ class MembersController extends CrudController
     ): Response {
         //instantiate member object
         $member = new Adherent($this->zdb);
-        $member->enableAllDeps()->load($id);
 
         if ($this->session->member !== null) {
             //retrieve from session, in add or edit
@@ -1064,6 +1075,7 @@ class MembersController extends CrudController
             $this->session->member = null;
             $id = $member->id;
         }
+        $member->enableAllDeps();
 
         if ($id !== null) {
             //load requested member
@@ -1145,6 +1157,7 @@ class MembersController extends CrudController
         }
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $pid
         );
 
@@ -1175,7 +1188,8 @@ class MembersController extends CrudController
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
-                'addchild'          => ($action === 'addchild')
+                'addchild'          => ($action === 'addchild'),
+                'osocials'          => new Social($this->zdb)
             ) + $route_params
         );
         return $response;
@@ -1639,30 +1653,31 @@ class MembersController extends CrudController
                         $success_detected[] = _T("Member account has been modified.");
                     }
 
-                    //store requested groups
-                    $groups_adh = $post['groups_adh'] ?? null;
-                    $managed_groups_adh = $post['groups_managed_adh'] ?? null;
+                    if ($this->login->isGroupManager()) {
+                        //add/remove user from groups
+                        $groups_adh = $post['groups_adh'] ?? null;
+                        $add_groups = Groups::addMemberToGroups(
+                            $member,
+                            $groups_adh
+                        );
 
-                    //add/remove user from groups
-                    $add_groups = Groups::addMemberToGroups(
-                        $member,
-                        $groups_adh
-                    );
-
-                    if ($add_groups === false) {
-                        $error_detected[] = _T("An error occurred adding member to its groups.");
+                        if ($add_groups === false) {
+                            $error_detected[] = _T("An error occurred adding member to its groups.");
+                        }
                     }
+                    if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
+                        //add/remove manager from groups
+                        $managed_groups_adh = $post['groups_managed_adh'] ?? null;
+                        $add_groups = Groups::addMemberToGroups(
+                            $member,
+                            $managed_groups_adh,
+                            true
+                        );
+                        $member->loadGroups();
 
-                    //add/remove manager from groups
-                    $add_groups = Groups::addMemberToGroups(
-                        $member,
-                        $managed_groups_adh,
-                        true
-                    );
-                    $member->loadGroups();
-
-                    if ($add_groups === false) {
-                        $error_detected[] = _T("An error occurred adding member to its groups as manager.");
+                        if ($add_groups === false) {
+                            $error_detected[] = _T("An error occurred adding member to its groups as manager.");
+                        }
                     }
                 } else {
                     //something went wrong :'(

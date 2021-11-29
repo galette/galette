@@ -7,9 +7,9 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2021 The Galette Team
+ * Copyright © 2017 The Galette Team
  *
- * This file is part of Galette (https://galette.eu).
+ * This file is part of Galette (http://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,9 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
-
- * @copyright 2017-2021 The Galette Team
+ * @copyright 2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
+ * @link      http://galette.eu
  */
 
 //change this *ONLY* for debug purposes!
@@ -53,9 +52,3 @@
  *  a single reverse proxy
  */
 //define('GALETTE_X_FORWARDED_FOR_INDEX', 1);
-
-/*
- * Uncomment to enable the installer page even if galette is already installed and up to date
- * @see https://bugs.galette.eu/issues/1574
- */
-//define('FORCE_INSTALLER', true);

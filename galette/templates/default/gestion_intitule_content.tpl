@@ -57,7 +57,7 @@
                     {$eid}
                     <span class="row-title">
                         <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $eid]}">
-                            {_T string="%s field" pattern="/%s/" replace=$entry.name}
+                            {_T string="%s field" pattern="/%s/" replace=$entry.name|escape}
                         </a>
                     </span>
                 </td>
@@ -89,14 +89,14 @@
                         class="action tooltip"
                     >
                         <i class="fas fa-edit fa-fw"></i>
-                        <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}</span>
+                        <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name|escape}</span>
                     </a>
                     <a
                         href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}"
                         class="delete tooltip"
                     >
                         <i class="fas fa-trash fa-fw"></i>
-                        <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}</span>
+                        <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name|escape}</span>
                     </a>
                 </td>
             </tr>

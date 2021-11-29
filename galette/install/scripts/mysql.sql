@@ -15,17 +15,12 @@ CREATE TABLE galette_adherents (
   ddn_adh date default '1901-01-01',
   sexe_adh tinyint(1) NOT NULL default '0',
   adresse_adh text NOT NULL,
-  adresse2_adh varchar(150) default NULL, -- TODO: remove
   cp_adh varchar(10) NOT NULL default '',
   ville_adh varchar(200) NOT NULL default '',
   pays_adh varchar(200) default NULL,
   tel_adh varchar(50) default NULL,
   gsm_adh varchar(50) default NULL,
   email_adh varchar(255) default NULL,
-  url_adh varchar(255) default NULL,
-  icq_adh varchar(20) default NULL, -- TODO: remove
-  msn_adh varchar(150) default NULL, -- TODO: remove
-  jabber_adh varchar(150) default NULL,
   info_adh text,
   info_public_adh text,
   prof_adh varchar(150) default NULL,
@@ -43,6 +38,7 @@ CREATE TABLE galette_adherents (
   gpgid text DEFAULT NULL,
   fingerprint varchar(255) DEFAULT NULL,
   parent_id int(10) unsigned DEFAULT NULL,
+  num_adh varchar(255) DEFAULT NULL,
   PRIMARY KEY (id_adh),
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -140,7 +136,7 @@ CREATE TABLE galette_field_types (
     field_height int(10) default NULL,
     field_size int(10) default NULL,
     field_repeat int(10) default NULL,
-    field_layout int(10) default NULL,
+    field_information TEXT default NULL,
     PRIMARY KEY (field_id),
     INDEX (field_form)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -245,7 +241,6 @@ CREATE TABLE galette_groups (
   creation_date datetime NOT NULL,
   parent_group int(10) DEFAULT NULL,
   PRIMARY KEY (id_group),
-  UNIQUE KEY `name` (group_name),
   FOREIGN KEY (parent_group) REFERENCES galette_groups (id_group) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -323,11 +318,9 @@ CREATE TABLE galette_searches (
   name varchar(100) DEFAULT NULL,
   form varchar(50) NOT NULL,
   parameters text NOT NULL,
-  parameters_sum binary(20),
   id_adh int(10) unsigned,
   creation_date datetime NOT NULL,
   PRIMARY KEY (search_id),
-  KEY (form, parameters_sum, id_adh),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -341,11 +334,23 @@ CREATE TABLE galette_tmplinks (
   PRIMARY KEY (target, id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+-- table for social networks
+DROP TABLE IF EXISTS galette_socials;
+CREATE TABLE galette_socials (
+  id_social int(10) unsigned NOT NULL auto_increment,
+  id_adh int(10) unsigned NULL,
+  type varchar(250) NOT NULL,
+  url varchar(255) DEFAULT NULL,
+  PRIMARY KEY (id_social),
+  KEY (type),
+  FOREIGN KEY (id_adh) REFERENCES  galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.95);
+INSERT INTO galette_database(version) VALUES(0.96);
 
 SET FOREIGN_KEY_CHECKS=1;

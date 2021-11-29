@@ -9,6 +9,7 @@
                     <input type="submit" name="directlink" value="{_T string="Get my document"}" />
                     <input type="hidden" name="valid" value="1"/>
                     <input type="hidden" name="hash" value="{$hash}"/>
+                    {include file="forms_types/csrf.tpl"}
                 </section>
             </form>
 {/block}

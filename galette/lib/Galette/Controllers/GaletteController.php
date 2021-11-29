@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -256,7 +257,8 @@ class GaletteController extends AbstractController
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
                 ),
-                'paymenttypes'          => $ptlist
+                'paymenttypes'          => $ptlist,
+                'osocials'              => new Social($this->zdb)
             )
         );
         return $response;

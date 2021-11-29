@@ -18,6 +18,7 @@
                     {/foreach}
                 </select>
                 <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            {include file="forms_types/csrf.tpl"}
         </form>
         </div>
 
@@ -42,32 +43,10 @@
             <button type="submit" class="action">
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
             </button>
+            {include file="forms_types/csrf.tpl"}
         </div>
         </form>
-        <div id="legende{$cur_ref}" class="texts_legend" title="{_T string="Existing variables"}">
-            <h1>{_T string="Existing variables"}</h1>
-            <table>
-                {foreach from=$texts->getLegend() item=legend}
-                    <tr>
-                        <th colspan="4">
-                            {$legend.title}
-                        </th>
-                    </tr>
-                    {foreach from=$legend.patterns item=pattern name=patternloop}
-                        {if $smarty.foreach.patternloop.index % 2 == 0}
-                            <tr>
-                        {/if}
-                        <th><tt>{$pattern.pattern|trim:'/'}</tt></th>
-                        <td class="back">
-                            {if isset($pattern.title)}{$pattern.title}{/if}
-                        </td>
-                        {if $smarty.foreach.patternloop.index % 2 != 0}
-                            </tr>
-                        {/if}
-                    {/foreach}
-                {/foreach}
-            </table>
-        </div>
+        {include file="replacements_legend.tpl" legends=$texts->getLegend() cur_ref=$cur_ref}
 {/block}
 
 {block name="javascripts"}
@@ -80,28 +59,8 @@
                     this.form.submit();
                 });
 
-
-                $('fieldset').prepend('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
-                $('#legende{$cur_ref} h1').remove();
-                $('#legende{$cur_ref}').dialog({
-                    autoOpen: false,
-                    modal: true,
-                    hide: 'fold',
-                    width: '40%',
-                    create: function (event, ui) {
-                        if ($(window ).width() < 767) {
-                            $(this).dialog('option', {
-                                    'width': '95%',
-                                    'draggable': false
-                            });
-                        }
-                    }
-                }).dialog('close');
-
-                $('#btnlegend').click(function(){
-                    $('#legende{$cur_ref}').dialog('open');
-                        return false;
-                });
+                _addLegenButton('fieldset > p:nth-child(2)');
+                _handleLegend();
             });
         </script>
 {/block}

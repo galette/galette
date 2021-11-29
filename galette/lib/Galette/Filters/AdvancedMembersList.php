@@ -558,7 +558,7 @@ class AdvancedMembersList extends MembersList
                     }
                     break;
                 case 'free_search':
-                    if (isset($this->_free_search['empty'])) {
+                    if (isset($this->_free_search['empty']) && !isset($value['empty'])) {
                         unset($this->_free_search['empty']);
                     }
 

@@ -126,7 +126,7 @@ abstract class Entitled
     {
         try {
             $select = $this->zdb->select($this->table);
-            $select->where($this->fpk . ' = ' . $id);
+            $select->where([$this->fpk => $id]);
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
@@ -345,7 +345,7 @@ abstract class Entitled
 
         try {
             $select = $this->zdb->select($this->table);
-            $select->where($this->fpk . '=' . $id);
+            $select->where([$this->fpk => $id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -378,7 +378,7 @@ abstract class Entitled
     {
         $res = $this->get($id);
         if ($res === false) {
-            //get() alred logged
+            //get() already logged
             return self::ID_NOT_EXITS;
         };
         $field = $this->flabel;
@@ -429,6 +429,7 @@ abstract class Entitled
     public function add($label, $extra)
     {
         // Avoid duplicates.
+        $label = strip_tags($label);
         $ret = $this->getIdByLabel($label);
 
         if ($ret !== false) {
@@ -489,6 +490,7 @@ abstract class Entitled
      */
     public function update($id, $label, $extra)
     {
+        $label = strip_tags($label);
         $ret = $this->get($id);
         if (!$ret) {
             /* get() already logged and set $this->error. */
@@ -507,7 +509,7 @@ abstract class Entitled
 
             $update = $this->zdb->update($this->table);
             $update->set($values);
-            $update->where($this->fpk . ' = ' . $id);
+            $update->where([$this->fpk => $id]);
 
             $ret = $this->zdb->execute($update);
 
@@ -556,7 +558,7 @@ abstract class Entitled
         try {
             $this->zdb->connection->beginTransaction();
             $delete = $this->zdb->delete($this->table);
-            $delete->where($this->fpk . ' = ' . $id);
+            $delete->where([$this->fpk => $id]);
 
             $this->zdb->execute($delete);
             $this->deleteTranslation($ret->{$this->flabel});
@@ -590,7 +592,7 @@ abstract class Entitled
     {
         try {
             $select = $this->zdb->select($this->used);
-            $select->where($this->fpk . ' = ' . $id);
+            $select->where([$this->fpk => $id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();

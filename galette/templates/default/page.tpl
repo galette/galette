@@ -46,7 +46,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
   {if $login->isAdmin() or $login->isStaff()}
             <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
             <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
+  {/if}
+  {if $login->isAdmin() or $login->isStaff() or ($login->isGroupManager() and $preferences->pref_bool_groupsmanagers_create_member)}
             <li{if $cur_route eq "editMember" or $cur_route eq "addMember"} class="selected"{/if}><a href="{path_for name="addMember"}" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
+  {/if}
+  {if $login->isAdmin() or $login->isStaff()}
             <li{if $cur_route eq "addContribution" and $cur_subroute eq constant('Galette\Entity\Contribution::TYPE_FEE')} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
             <li{if $cur_route eq "addContribution" and $cur_subroute eq constant('Galette\Entity\Contribution::TYPE_DONATION')} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
             <li{if $cur_route eq "addTransaction" or $cur_route eq "editTransaction"} class="selected"{/if}><a href="{path_for name="addTransaction"}" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
@@ -56,11 +60,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "export"} class="selected"{/if}><a href="{path_for name="export"}" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
             <li{if $cur_route eq "import" or $cur_route eq "importModel"} class="selected"{/if}><a href="{path_for name="import"}" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
             <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{path_for name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
-  {else}
-            <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
-            <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
   {/if}
   {if !$login->isSuperAdmin()}
+            <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
             <li{if $cur_route eq "me" or $cur_route eq "member"} class="selected"{/if}><a href="{path_for name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
   {/if}
         </ul>

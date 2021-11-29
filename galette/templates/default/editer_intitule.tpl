@@ -39,6 +39,7 @@
             <i class="fas fa-save"></i>
             {_T string="Save"}
         </button>
+        {include file="forms_types/csrf.tpl"}
     </div>
     </div>
 </form>

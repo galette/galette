@@ -142,6 +142,7 @@ class PdfModel extends GaletteTestCase
         $expected = $main_expected + [
             'adh_title'         => '/{TITLE_ADH}/',
             'adh_id'            => '/{ID_ADH}/',
+            'adh_num'           => '/{NUM_ADH}/',
             'adh_name'          => '/{NAME_ADH}/',
             'adh_last_name'     => '/{LAST_NAME_ADH}/',
             'adh_first_name'    => '/{FIRST_NAME_ADH}/',
@@ -341,7 +342,6 @@ class PdfModel extends GaletteTestCase
             'pseudo_adh' => 'ubertrand',
             'pays_adh' => 'Antarctique',
             'tel_adh' => '0439153432',
-            'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
             'date_crea_adh' => '2020-06-10',
@@ -384,7 +384,7 @@ Au milieu
 
         $this->array($legend['main']['patterns'])->hasSize(8);
         $this->array($legend['member']['patterns'])
-            ->hasSize(26)
+            ->hasSize(27)
             ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'dynfield_' . $adf->getId() . '_adh']);
         $this->array($legend['contribution']['patterns'])
             ->hasSize(14)

@@ -43,7 +43,7 @@ use atoum;
  * Dynamic booleans test
  *
  * @category  DynamicFields
- * @name      Separator
+ * @name      Boolean
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
@@ -103,8 +103,7 @@ class Boolean extends atoum
         $this->boolean($muliple)->isFalse();
 
         $required = $this->bool->isRequired();
-        //should'nt that one be false?
-        $this->variable($required)->isNull();
+        $this->boolean($required)->isFalse();
 
         $name = $this->bool->getName();
         $this->variable($name)->isIdenticalTo('');
@@ -136,10 +135,15 @@ class Boolean extends atoum
         $repeat = $this->bool->getRepeat();
         $this->variable($repeat)->isNull();
 
+        $repeat = $this->bool->isRepeatable();
+        $this->boolean($repeat)->isFalse();
+
         $size = $this->bool->getSize();
         $this->variable($size)->isNull();
 
         $values = $this->bool->getValues();
         $this->boolean($values)->isFalse();
+
+        $this->boolean($this->bool->hasPermissions())->isTrue();
     }
 }

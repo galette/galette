@@ -131,6 +131,7 @@ abstract class GaletteTestCase extends atoum
         $this->members_fields_cats = $container->get('members_fields_cats');
         $this->request = $container->get('request');
         $this->response = $container->get('response');
+        $this->session = $container->get('session');
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var; // globals :(
         $zdb = $this->zdb;
@@ -208,7 +209,6 @@ abstract class GaletteTestCase extends atoum
             'pseudo_adh' => 'ubertrand',
             'pays_adh' => 'Antarctique',
             'tel_adh' => '0439153432',
-            'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
             'date_crea_adh' => '2020-06-10',
@@ -255,7 +255,6 @@ abstract class GaletteTestCase extends atoum
             'pseudo_adh' => 'vallet.camille',
             'pays_adh' => null,
             'tel_adh' => '05 59 53 59 43',
-            'url_adh' => 'http://bodin.net/omnis-ratione-sint-dolorem-architecto',
             'activite_adh' => true,
             'id_statut' => 9,
             'date_crea_adh' => '2019-05-20',
@@ -330,7 +329,6 @@ abstract class GaletteTestCase extends atoum
             'cp_adh' => '39 069',
             'pays_adh' => 'Antarctique',
             'tel_adh' => '0439153432',
-            'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
             'pref_lang' => 'en_US',
@@ -393,7 +391,6 @@ abstract class GaletteTestCase extends atoum
         $this->string($adh->sname)->isIdenticalTo('DURAND René');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isEmpty();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
@@ -436,7 +433,6 @@ abstract class GaletteTestCase extends atoum
             'pseudo_adh' => 'vallet.camille',
             'pays_adh' => '',
             'tel_adh' => '05 59 53 59 43',
-            'url_adh' => 'http://bodin.net/omnis-ratione-sint-dolorem-architecto',
             'activite_adh' => true,
             'id_statut' => 9,
             'pref_lang' => 'ca',
@@ -498,7 +494,6 @@ abstract class GaletteTestCase extends atoum
         $this->string($adh->sname)->isIdenticalTo('HOARAU Lucas');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isEmpty();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
@@ -748,6 +743,18 @@ abstract class GaletteTestCase extends atoum
             $res = $titles->installInit($this->zdb);
             $this->boolean($res)->isTrue();
         }
+    }
+
+    /**
+     * Initialize default PDF models in database
+     *
+     * @return void
+     */
+    protected function initModels(): void
+    {
+        $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
+        $res = $models->installInit(false);
+        $this->boolean($res)->isTrue();
     }
 
     /**

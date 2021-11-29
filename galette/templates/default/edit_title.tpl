@@ -20,6 +20,7 @@
                 </button>
                 <input type="submit" name="cancel" value="{_T string="Cancel"}"/>
                 <input type="hidden" name="id" id="id" value="{$title->id}"/>
+                {include file="forms_types/csrf.tpl"}
             </div>
      </form>
 {/block}

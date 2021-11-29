@@ -40,7 +40,7 @@ $this->register(
     'Test two plugin',          //Short description
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
-    '0.9.5',                    //Galette compatible version
+    GALETTE_COMPAT_VERSION,     //Galette compatible version
     'plugin2',                  //routing name
     '2013-12-15',               //Release date
     [   //Permissions needed

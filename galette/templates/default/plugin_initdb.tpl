@@ -122,6 +122,7 @@
             <a href="{path_for name="plugins"}" class="button" id="btnback"><i class="fas fa-backward"></i> {_T string="Back to plugins managment page"}</a>
     {/if}
 {/if}
+            {include file="forms_types/csrf.tpl"}
         </p>
     </form>
     </div>

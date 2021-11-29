@@ -834,6 +834,10 @@ legend .tab-button {
     font-size:1.1em;
 }
 
+p#mail_sign {
+    position: relative;
+}
+
 /* =/ Main Galette styles */
 
 /* == Groups stuff */
@@ -1827,6 +1831,11 @@ th.bline, td.bline{
     width: 19.9em;
 }
 
+#rights .bline, #rights.galette_form label, #rights.galette_form .bline {
+    margin: 0 0 0 -22em;
+    width: 30em;
+}
+
 .galette_form .radios label,
 .galette_form label.labelalign {
     width: auto;
@@ -2358,7 +2367,7 @@ meter[value="4"]::-moz-meter-bar { background: green ; }
         padding-left: 0;
     }
 
-    .cssform .bline, .galette_form label, .galette_form .bline {
+    .cssform .bline, .galette_form label, .galette_form .bline, #rights .bline {
         margin-left: 0;
         margin-bottom: .2em;
         padding-right: 0;

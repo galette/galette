@@ -131,7 +131,7 @@ class ExternalScript
                 );
             } else {
                 throw new \RuntimeException(
-                    __METHOD__ . 'File ' . $uri . ' does not exits!'
+                    __METHOD__ . 'File ' . $uri . ' does not exists!'
                 );
             }
         }

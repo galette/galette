@@ -88,13 +88,26 @@ class I18n
             //try to determine user language
             $dlang = self::DEFAULT_LANG;
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-                $blang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-                if (substr($blang, 0, 2) == 'fr') {
-                    $dlang = 'fr_FR';
-                } elseif (substr($blang, 0, 2) == 'en') {
-                    $dlang = 'en_US';
-                } else {
-                    $dlang = self::DEFAULT_LANG;
+                $preferred_locales = array_reduce(
+                    explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
+                    function ($res, $el) {
+                        list($l, $q) = array_merge(explode(';q=', $el), [1]);
+                        $res[$l] = (float) $q;
+                        return $res;
+                    },
+                    []
+                );
+                arsort($preferred_locales);
+
+                foreach (array_keys($preferred_locales) as $preferred_locale) {
+                    $short_locale = explode('_', $preferred_locale)[0];
+                    foreach (array_keys($this->langs) as $lang) {
+                        $short_key = explode('_', $lang)[0];
+                        if ($short_key == $short_locale) {
+                            $dlang = $lang;
+                            break;
+                        }
+                    }
                 }
             }
             $this->changeLanguage($dlang);
@@ -193,7 +206,7 @@ class I18n
         $list = $this->getList();
         $al = array();
         foreach ($list as $l) {
-            //FIXME: shoudl use mb with sthing like:
+            //FIXME: should use mb with something like:
             //$strlen = mb_strlen($string, $encoding);
             //$firstChar = mb_substr($string, 0, 1, $encoding);
             //$then = mb_substr($string, 1, $strlen - 1, $encoding);
@@ -295,7 +308,7 @@ class I18n
 
                 $langs[$real_lang] = [
                     'long'      => $lang,
-                    'shortname' => $parsed_lang['language'],
+                    'shortname' => $parsed_lang['language'] ?? '',
                     'longname'  => ucfirst(
                         \Locale::getDisplayLanguage(
                             $lang,

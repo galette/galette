@@ -93,7 +93,7 @@ class PaymentTypes extends GaletteTestCase
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\PaymentType::TABLE);
-            $delete->where->in(\Galette\Repository\PaymentTypes::PK, $this->remove);
+            $delete->where->in(\Galette\Entity\PaymentTypes::PK, $this->remove);
             $this->zdb->execute($delete);
         }
 

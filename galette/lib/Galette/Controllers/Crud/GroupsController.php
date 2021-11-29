@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -50,10 +50,10 @@ use Analog\Analog;
  * Galette groups controller
  *
  * @category  Controllers
- * @name      PaymentTypeController
+ * @name      GroupsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -74,6 +74,7 @@ class GroupsController extends CrudController
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -164,8 +165,8 @@ class GroupsController extends CrudController
             }
         }
 
-        if ($id === null && count($groups_root) > 0) {
-            $group = current($groups_root);
+        if ($id === null && count($groups_list) > 0) {
+            $group = current($groups_list);
             if (!$this->login->isGroupManager($id)) {
                 foreach ($groups_list as $g) {
                     if ($this->login->isGroupManager($g->getId())) {
@@ -393,6 +394,14 @@ class GroupsController extends CrudController
      */
     public function reorder(Request $request, Response $response): Response
     {
+        if (
+            !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && !($this->login->isGroupManager() && $this->preferences->pref_bool_groupsmanagers_edit_groups)
+        ) {
+            throw new \RuntimeException('Trying to reorder groups without appropriate permissions');
+        }
+
         $post = $request->getParsedBody();
         if (!isset($post['to']) || !isset($post['id_group']) || $post['id_group'] == '') {
             Analog::log(

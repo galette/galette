@@ -34,8 +34,8 @@
  */
 
 use Psr\Container\ContainerInterface;
-use Galette\Entity\PdfModel;
-use Slim\Event\SlimEventManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Views\SmartyPlugins;
 
 $container = $app->getContainer();
@@ -432,6 +432,45 @@ $container->set(
         )
 );
 
+$container->set(
+    'CsrfExclusions',
+    function (ContainerInterface $c): array {
+        return $c->get('plugins')->getCsrfExclusions();
+    }
+);
+
+$container->set(
+    'csrf',
+    function (ContainerInterface $c) {
+        $storage = null;
+        $guard = new \Slim\Csrf\Guard(
+            'csrf',
+            $storage,
+            null,
+            200,
+            16,
+            true
+        );
+
+        $exclusions = $c->get('CsrfExclusions');
+        $guard->setFailureCallable(function (ServerRequestInterface $request, ResponseInterface $response, $next) use ($exclusions) {
+            foreach ($exclusions as $exclusion) {
+                if (preg_match($exclusion, $request->getAttribute('route')->getname())) {
+                    //route is excluded form CSRF checks
+                    return $next($request, $response);
+                }
+            }
+            Analog::log(
+                'CSRF check has failed',
+                Analog::CRITICAL
+            );
+            throw new \RuntimeException(_T('Failed CSRF check!'));
+        });
+
+        return $guard;
+    }
+);
+
 //For bad existing globals can be used...
 global $translator, $i18n;
 if (
@@ -446,6 +485,7 @@ if (
     $hist = $container->get('history');
     $l10n = $container->get('l10n');
     $emitter = $container->get('event_manager');
+    $router = $container->get('router');
 }
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');

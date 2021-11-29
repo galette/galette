@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2006-2014 The Galette Team
+ * Copyright © 2006-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2014 The Galette Team
+ * @copyright 2006-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -51,7 +51,7 @@ use Galette\IO\FileTrait;
  * @package   Galette
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2014 The Galette Team
+ * @copyright 2006-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -339,9 +339,7 @@ class Picture implements FileInterface
             }
 
             $delete = $zdb->delete($this->tbl_prefix . $class::TABLE);
-            $delete->where(
-                $class::PK . ' = ' . $this->db_id
-            );
+            $delete->where([$class::PK => $this->db_id]);
             $del = $zdb->execute($delete);
 
             if (!$del->count() > 0) {

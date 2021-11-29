@@ -175,7 +175,7 @@ class ImportModel
                 //we're editing an existing model
                 $update = $zdb->update(self::TABLE);
                 $update->set($values);
-                $update->where(self::PK . '=' . $this->id);
+                $update->where([self::PK => $this->id]);
                 $zdb->execute($update);
                 return true;
             }

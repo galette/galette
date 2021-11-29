@@ -136,7 +136,7 @@ abstract class PdfModel
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->limit(1)
-                ->where(self::PK . ' = ' . $id);
+                ->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
 
@@ -231,7 +231,7 @@ abstract class PdfModel
             if ($this->id !== null) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set($data)->where(
-                    self::PK . '=' . $this->id
+                    [self::PK => $this->id]
                 );
                 $this->zdb->execute($update);
             } else {
@@ -330,8 +330,9 @@ abstract class PdfModel
         global $lang;
 
         switch ($name) {
-            case 'name':
             case 'id':
+                return (int)$this->$name;
+            case 'name':
             case 'header':
             case 'footer':
             case 'body':
@@ -341,8 +342,7 @@ abstract class PdfModel
             case 'styles':
             case 'patterns':
             case 'replaces':
-                return $this->$name;
-                break;
+                return $this->$name ?? '';
             case 'hstyles':
                 $value = null;
 

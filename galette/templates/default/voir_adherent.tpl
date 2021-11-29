@@ -51,6 +51,7 @@
             </li>
     {/if}
 {/if}
+{if $member->canEdit($login)}
             <li>
                 <a
                     href="{path_for name="editMember" data=["id" => $member->id]}"
@@ -61,6 +62,7 @@
                     {_T string="Modification"}
                 </a>
             </li>
+{/if}
 {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
             <li>
                 <a
@@ -155,7 +157,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {elseif $element->field_id eq 'pref_lang'}
             {assign var="value" value=$pref_lang}
         {elseif $element->field_id eq 'adresse_adh'}
-            {assign var="value" value=$member->saddress|nl2br}
+            {assign var="value" value=$member->saddress|escape|nl2br}
         {elseif $element->field_id eq 'bool_display_info'}
             {assign var="value" value=$member->sappears_in_list}
         {elseif $element->field_id eq 'activite_adh'}
@@ -183,12 +185,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-venus fa-fw"></i>
             {/if}
         {/if}
-        {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
+        {if $element->field_id eq 'email_adh'}
                         <a href="mailto:{$value}">{$value}</a>
         {elseif $element->field_id eq 'tel_adh' or $element->field_id eq 'gsm_adh'}
                         <a href="tel:{$value}">{$value}</a>
-        {elseif $element->field_id eq 'url_adh'}
-                        <a href="{$value}">{$value}</a>
         {elseif $element->field_id eq 'ddn_adh'}
                         {$value} {$member->getAge()}
         {else}
@@ -208,7 +208,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 </td>
         {/if}
             </tr>
-        {if $display_element@last and $element@last and ($member->groups != false && $member->groups|@count != 0 || $member->managed_groups != false && $member->managed_groups|@count != 0)}
+        {if $display_element@last and $element@last and ($member->getGroups()|@count != 0 || $member->getManagedGroups()|@count != 0)}
             <tr>
                 <th>{_T string="Groups:"}</th>
                 <td>
@@ -233,6 +233,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
 
 {include file="display_dynamic_fields.tpl" object=$member}
+{include file="display_socials.tpl" socials=$member->socials}
+
         <a href="#" id="back2top">{_T string="Back to top"}</a>
     </div>
 {/block}

@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Filters\ContributionsList;
 use Throwable;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
@@ -117,6 +118,7 @@ class ContributionsController extends CrudController
         $m = new Members();
         $members = $m->getSelectizedMembers(
             $this->zdb,
+            $this->login,
             $contrib->member > 0 ? $contrib->member : null
         );
 
@@ -542,30 +544,20 @@ class ContributionsController extends CrudController
      *
      * @param Request     $request  PSR Request
      * @param Response    $response PSR Response
-     * @param string|null $type     Contribution type
+     * @param string|null $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
     public function filter(Request $request, Response $response, string $type = null): Response
     {
-        $raw_type = null;
-        switch ($type) {
-            case 'transactions':
-                $raw_type = 'transactions';
-                break;
-            case 'contributions':
-                $raw_type = 'contributions';
-                break;
-        }
-
-        $type = 'filter_' . $raw_type;
+        $filter_name = 'filter_' . $type;
         $post = $request->getParsedBody();
         $error_detected = [];
 
-        if ($this->session->$type !== null) {
-            $filters = $this->session->$type;
+        if ($this->session->$filter_name !== null) {
+            $filters = $this->session->$filter_name;
         } else {
-            $filter_class = '\\Galette\\Filters\\' . ucwords($raw_type) . 'List';
+            $filter_class = '\\Galette\\Filters\\' . ucwords($type) . 'List';
             $filters = new $filter_class();
         }
 
@@ -613,7 +605,7 @@ class ContributionsController extends CrudController
             }
         }
 
-        $this->session->$type = $filters;
+        $this->session->$filter_name = $filters;
 
         if (count($error_detected) > 0) {
             //report errors
@@ -627,7 +619,56 @@ class ContributionsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $raw_type]));
+            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $type]));
+    }
+
+    /**
+     * Batch actions handler
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param string   $type     One of 'transactions' or 'contributions'
+     *
+     * @return Response
+     */
+    public function handleBatch(Request $request, Response $response, string $type): Response
+    {
+        $filter_name = 'filter_' . $type;
+        $post = $request->getParsedBody();
+
+        if (isset($post['contrib_sel'])) {
+            if (isset($this->session->$filter_name)) {
+                $filters = $this->session->$filter_name;
+            } else {
+                $filters = new ContributionsList();
+            }
+
+            $filters->selected = $post['contrib_sel'];
+            $this->session->$filter_name = $filters;
+
+            if (isset($post['csv'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('csv-contributionslist', ['type' => $type]));
+            }
+
+            if (isset($post['delete'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('removeContributions'));
+            }
+
+            throw new \RuntimeException('Does not know what to batch :(');
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("No contribution was selected, please check at least one.")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $type]));
+        }
     }
 
     // /CRUD - Read

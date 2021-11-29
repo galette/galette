@@ -16,5 +16,6 @@
                 </table>
                 <input type="submit" name="change_passwd" value="{_T string="Change my password"}"/>
                 <input type="hidden" name="hash" value="{$hash}"/>
+                {include file="forms_types/csrf.tpl"}
         </form>
 {/block}

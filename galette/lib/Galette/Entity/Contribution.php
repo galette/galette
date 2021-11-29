@@ -121,7 +121,7 @@ class Contribution
      * @param Db                 $zdb   Database
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row to load
-     *                                  a specific contribution, or an type id
+     *                                  a specific contribution, or a type id
      *                                  to just instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
@@ -144,7 +144,7 @@ class Contribution
          */
         $this->_fields = array(
             'id_cotis'            => array(
-                'label'    => null, //not a field in the form
+                'label'    => _T('Contribution id'), //not a field in the form
                 'propname' => 'id'
             ),
             Adherent::PK          => array(
@@ -168,7 +168,7 @@ class Contribution
                 'propname' => 'info'
             ),
             'date_enreg'          => array(
-                'label'    => null, //not a field in the form
+                'label'    => _T('Date'), //not a field in the form
                 'propname' => 'date'
             ),
             'date_debut_cotis'    => array(
@@ -181,11 +181,11 @@ class Contribution
                 'propname' => 'end_date'
             ),
             Transaction::PK       => array(
-                'label'    => null, //not a field in the form
+                'label'    => _T('Transaction ID'), //not a field in the form
                 'propname' => 'transaction'
             ),
             //this one is not really a field, but is required in some cases...
-            //adding it here make simplier to check required fields
+            //adding it here make more simple to check required fields
             'duree_mois_cotis'    => array(
                 'label'    => _T("Membership extension:"),
                 'propname' => 'extension'
@@ -255,7 +255,7 @@ class Contribution
                 //count days until end of membership date
                 $diff1 = (int)$bdate->diff($edate)->format('%a');
 
-                //count days beetween end of membership date and offered months
+                //count days between end of membership date and offered months
                 $tdate = clone $edate;
                 $tdate->modify('-' . $preferences->pref_membership_offermonths . ' month');
                 $diff2 = (int)$edate->diff($tdate)->format('%a');
@@ -291,6 +291,10 @@ class Contribution
      */
     public function load($id)
     {
+        if (!$this->login->isLogged()) {
+            return false;
+        }
+
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
             $select->join(
@@ -300,29 +304,15 @@ class Contribution
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if (!$this->login->isLogged()) {
-                    Analog::log(
-                        'Non-logged-in users cannot load contribution id `' . $id,
-                        Analog::ERROR
-                    );
-                    return false;
-                }
-                if (!$this->login->isGroupManager()) {
-                    $select->where
-                        ->nest()
-                            ->equalTo('a.' . Adherent::PK, $this->login->id)
-                            ->or
-                            ->equalTo('a.parent_id', $this->login->id)
-                        ->unnest()
-                        ->and
-                        ->equalTo('c.' . self::PK, $id)
-                    ;
-                } else {
-                    $select->where([
-                        Adherent::PK    => $this->login->id,
-                        self::PK        => $id
-                    ]);
-                }
+                $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id)
+                        ->or
+                        ->equalTo('a.parent_id', $this->login->id)
+                    ->unnest()
+                    ->and
+                    ->equalTo('c.' . self::PK, $id)
+                ;
             } else {
                 $select->where->equalTo(self::PK, $id);
             }
@@ -369,7 +359,7 @@ class Contribution
         $this->_begin_date = $r->date_debut_cotis;
         $enddate = $r->date_fin_cotis;
         //do not work with knows bad dates...
-        //the one with BC comes from 0.63/pgsl demo... Why the hell a so
+        //the one with BC comes from 0.63/pgsql demo... Why the hell a so
         //strange date? don't know :(
         if (
             $enddate !== '0000-00-00'
@@ -467,7 +457,9 @@ class Contribution
                         }
                         break;
                     case 'montant_cotis':
-                        $this->_amount = $value;
+                        if (!empty($value)) {
+                            $this->_amount = $value;
+                        }
                         $value = strtr($value, ',', '.');
                         if (!is_numeric($value) && $value !== '') {
                             $this->errors[] = _T("- The amount must be an integer!");
@@ -577,7 +569,7 @@ class Contribution
                 array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
-            )->where(Adherent::PK . ' = ' . $this->_member)
+            )->where([Adherent::PK => $this->_member])
                 ->where(array('cotis_extension' => new Expression('true')))
                 ->where->nest->nest
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
@@ -588,7 +580,7 @@ class Contribution
                 ->lessThanOrEqualTo('date_fin_cotis', $this->_end_date);
 
             if ($this->id != '') {
-                $select->where(self::PK . ' != ' . $this->id);
+                $select->where->notEqualTo(self::PK, $this->id);
             }
 
             $results = $this->zdb->execute($select);
@@ -679,9 +671,7 @@ class Contribution
             } else {
                 //we're editing an existing contribution
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where(
-                    self::PK . '=' . $this->_id
-                );
+                $update->set($values)->where([self::PK => $this->_id]);
                 $edit = $this->zdb->execute($update);
 
                 //edit == 0 does not mean there were an error, but that there
@@ -748,7 +738,7 @@ class Contribution
             $update->set(
                 array('date_echeance' => $date_fin_update)
             )->where(
-                Adherent::PK . '=' . $this->_member
+                [Adherent::PK => $this->_member]
             );
             $this->zdb->execute($update);
             return true;
@@ -780,7 +770,7 @@ class Contribution
             }
 
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(self::PK . ' = ' . $this->_id);
+            $delete->where([self::PK => $this->_id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->updateDeadline();
@@ -882,7 +872,7 @@ class Contribution
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
             )->where(
-                Adherent::PK . ' = ' . $member_id
+                [Adherent::PK => $member_id]
             )->where(
                 array('cotis_extension' => new Expression('true'))
             );
@@ -925,7 +915,7 @@ class Contribution
                 $update->set(
                     array(Transaction::PK => null)
                 )->where(
-                    self::PK . ' = ' . $contrib_id
+                    [self::PK => $contrib_id]
                 );
                 $zdb->execute($update);
                 return true;
@@ -962,7 +952,7 @@ class Contribution
             $update = $zdb->update(self::TABLE);
             $update->set(
                 array(Transaction::PK => $trans_id)
-            )->where(self::PK . ' = ' . $contrib_id);
+            )->where([self::PK => $contrib_id]);
 
             $zdb->execute($update);
             return true;
@@ -1134,16 +1124,18 @@ class Contribution
     /**
      * Get payment type label
      *
+     * @param boolean $translated Whether to translate
+     *
      * @return string
      */
-    public function getPaymentType()
+    public function getPaymentType(bool $translated = false): string
     {
         if ($this->_payment_type === null) {
             return '-';
         }
 
         $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
-        return $ptype->getName(false);
+        return $ptype->getName($translated);
     }
 
     /**
@@ -1229,13 +1221,7 @@ class Contribution
                     }
                     break;
                 case 'spayment_type':
-                    if ($this->_payment_type === null) {
-                        return '-';
-                    }
-
-                    $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
-                    return $ptype->getName();
-
+                    return $this->getPaymentType(true);
                     break;
                 case 'model':
                     if ($this->_is_cotis === null) {

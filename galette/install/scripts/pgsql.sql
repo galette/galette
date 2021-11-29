@@ -156,6 +156,15 @@ CREATE SEQUENCE galette_fields_categories_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for socials
+DROP SEQUENCE IF EXISTS galette_socials_id_seq;
+CREATE SEQUENCE galette_socials_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_paymenttypes;
@@ -193,17 +202,12 @@ CREATE TABLE galette_adherents (
     ddn_adh date DEFAULT '19010101',
     sexe_adh smallint DEFAULT '0' NOT NULL,
     adresse_adh text DEFAULT '' NOT NULL,
-    adresse2_adh character varying(150) DEFAULT NULL, -- TODO: remove
     cp_adh character varying(10) DEFAULT '' NOT NULL,
     ville_adh character varying(200) DEFAULT '' NOT NULL,
     pays_adh character varying(200) DEFAULT NULL,
     tel_adh character varying(50),
     gsm_adh character varying(50),
     email_adh character varying(255),
-    url_adh character varying(255),
-    icq_adh character varying(20), -- TODO: remove
-    msn_adh character varying(150), -- TODO: remove
-    jabber_adh character varying(150),
     info_adh text,
     info_public_adh text,
     prof_adh character varying(150),
@@ -221,6 +225,7 @@ CREATE TABLE galette_adherents (
     gpgid text DEFAULT NULL,
     fingerprint character varying(255) DEFAULT NULL,
     parent_id integer DEFAULT NULL REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    num_adh character varying(255) DEFAULT NULL,
     PRIMARY KEY (id_adh)
 );
 -- add index for faster search on login_adh (auth)
@@ -296,7 +301,7 @@ CREATE TABLE galette_field_types (
   field_height integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
   field_repeat integer DEFAULT NULL,
-  field_layout integer DEFAULT NULL,
+  field_information text DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
 -- add index, field_form is used elsewhere
@@ -394,7 +399,7 @@ CREATE TABLE galette_mailing_history (
 DROP TABLE IF EXISTS galette_groups CASCADE;
 CREATE TABLE galette_groups (
   id_group integer DEFAULT nextval('galette_groups_id_seq'::text) NOT NULL,
-  group_name character varying(250) NOT NULL CONSTRAINT name UNIQUE,
+  group_name character varying(250) NOT NULL,
   creation_date timestamp NOT NULL,
   parent_group integer DEFAULT NULL REFERENCES galette_groups(id_group) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (id_group)
@@ -460,13 +465,10 @@ CREATE TABLE galette_searches (
   name character varying(100) DEFAULT NULL,
   form character varying(50) NOT NULL,
   parameters jsonb NOT NULL,
-  parameters_sum bytea NOT NULL,
   id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
   creation_date timestamp NOT NULL,
   PRIMARY KEY (search_id)
 );
--- add index on table to look for existing searches
-CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_adh);
 
 -- new table for temporary links
 DROP TABLE IF EXISTS galette_tmplinks;
@@ -478,9 +480,21 @@ CREATE TABLE galette_tmplinks (
   PRIMARY KEY (target, id)
 );
 
+-- table for social networks
+DROP TABLE IF EXISTS galette_socials;
+CREATE TABLE galette_socials (
+  id_social integer DEFAULT nextval('galette_socials_id_seq'::text) NOT NULL,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+  type character varying(250) NOT NULL,
+  url character varying(255) DEFAULT NULL,
+  PRIMARY KEY (id_social)
+);
+-- add index on table to look for type
+CREATE INDEX galette_socials_idx ON galette_socials (type);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.95);
+INSERT INTO galette_database (version) VALUES(0.96);

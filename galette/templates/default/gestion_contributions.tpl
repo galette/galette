@@ -61,9 +61,10 @@
                 </select>
                 <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
             </div>
+            {include file="forms_types/csrf.tpl"}
         </div>
         </form>
-        <form action="" method="post" id="listform">
+        <form action="{path_for name="batch-contributionslist" data=["type" => "contributions"]}" method="post" id="listform">
         <table class="listing">
             <thead>
                 <tr>
@@ -303,6 +304,12 @@
                     <i class="fas fa-trash fa-fw"></i> {_T string="Delete"}
                 </button>
             </li>
+            <li>
+                <button type="submit" id="csv" name="csv">
+                    <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}
+                </button>
+                {include file="forms_types/csrf.tpl"}
+            </li>
         </ul>
     {/if}
 {/if}
@@ -378,7 +385,7 @@
                 _init_contribs_page();
 
                 {include file="js_removal.tpl"}
-                {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeContributions" data=["type" => "contributions"]}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
+                {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="batch-contributionslist" data=["type" => "contributions"]}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
             });
         </script>
 {/block}

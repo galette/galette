@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2016-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use atoum;
  * @name      FieldsConfig
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-09-24
@@ -182,11 +182,11 @@ class FieldsConfig extends atoum
         $this->array($categorized)
             ->hasSize(3);
         $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
-            ->hasSize(12);
+            ->hasSize(13);
         $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE])
             ->hasSize(11);
         $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT])
-            ->hasSize(15);
+            ->hasSize(10);
     }
 
     /**
@@ -248,31 +248,31 @@ class FieldsConfig extends atoum
         $fields = $fields_config->getCategorizedFields();
 
         //town
-        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
+        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2];
         $this->boolean($town['required'])->isTrue();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
 
         $town['required'] = false;
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
-        //jabber
-        $jabber = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10];
-        $jabber['position'] = count($fields[1]);
-        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10]);
-        $jabber['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
-        $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $jabber;
+        //gsm
+        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5];
+        $gsm['position'] = count($fields[1]);
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]);
+        $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
+        $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 
         $this->boolean($fields_config->setFields($fields))->isTrue();
 
         $fields_config->load();
         $fields = $fields_config->getCategorizedFields();
 
-        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
+        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2];
         $this->boolean($town['required'])->isFalse();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
-        $jabber2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][12];
-        $this->array($jabber2)->isIdenticalTo($jabber);
+        $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][13];
+        $this->array($gsm2)->isIdenticalTo($gsm);
     }
 
     /**
@@ -323,7 +323,7 @@ class FieldsConfig extends atoum
         $categorized = $fields_config->getCategorizedFields();
         $this->integer(
             count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
-        )->isIdenticalTo(12);
+        )->isIdenticalTo(13);
 
         //new object instanciation should add missing field back
         $fields_config = new \Galette\Entity\FieldsConfig(
@@ -387,11 +387,11 @@ class FieldsConfig extends atoum
 
         $this->object($elements[0])->isInstanceOf('\stdClass');
         $this->integer($elements[0]->id)->isIdenticalTo(1);
-        $this->array($elements[0]->elements)->hasSize(7);
+        $this->array($elements[0]->elements)->hasSize(8);
 
         $this->object($elements[1])->isInstanceOf('\stdClass');
         $this->integer($elements[1]->id)->isIdenticalTo(3);
-        $this->array($elements[1]->elements)->hasSize(10);
+        $this->array($elements[1]->elements)->hasSize(8);
 
         $this->object($elements[2])->isInstanceOf('\stdClass');
         $this->integer($elements[2]->id)->isIdenticalTo(2);
@@ -415,7 +415,7 @@ class FieldsConfig extends atoum
 
         $this->object($elements[1])->isInstanceOf('\stdClass');
         $this->integer($elements[1]->id)->isIdenticalTo(3);
-        $this->array($elements[1]->elements)->hasSize(10);
+        $this->array($elements[1]->elements)->hasSize(8);
 
         $this->object($elements[2])->isInstanceOf('\stdClass');
         $this->integer($elements[2]->id)->isIdenticalTo(2);
@@ -450,11 +450,11 @@ class FieldsConfig extends atoum
 
         $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
-        $this->array($elements['fieldsets'][0]->elements)->hasSize(10);
+        $this->array($elements['fieldsets'][0]->elements)->hasSize(11);
 
         $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
 
         $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
@@ -485,7 +485,7 @@ class FieldsConfig extends atoum
 
         $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->boolean($mail->required)->isFalse(); //email is not required per default
@@ -523,7 +523,7 @@ class FieldsConfig extends atoum
 
         $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->boolean($mail->required)->isTrue(); //email is required for self subscription

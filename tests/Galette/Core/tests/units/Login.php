@@ -285,7 +285,6 @@ class Login extends GaletteTestCase
                 'pseudo_adh' => 'elisabeth50',
                 'pays_adh' => 'Géorgie',
                 'tel_adh' => '05 05 20 88 04',
-                'url_adh' => 'http://www.gay.com/tempora-nemo-quidem-laudantium-dolores',
                 'activite_adh' => true,
                 'id_statut' => 6,
                 'date_crea_adh' => '2019-09-02',

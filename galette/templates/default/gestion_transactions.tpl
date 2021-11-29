@@ -37,6 +37,7 @@
                         {html_options options=$nbshow_options selected=$numrows}
                     </select>
                     <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                    {include file="forms_types/csrf.tpl"}
                 </td>
             </tr>
         </table>
@@ -150,7 +151,7 @@
                             </a>
                         </td>
                     {/if}
-                    <td class="{$cclass} nowrap" data-title="{_T string="Description"}">{$transaction->description}</td>
+                    <td class="{$cclass} nowrap" data-title="{_T string="Description"}">{$transaction->description|escape}</td>
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}" data-title="{_T string="Originator"}">
     {if $filters->filtre_cotis_adh eq ""}

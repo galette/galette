@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Repository\Groups;
 use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
@@ -133,7 +134,7 @@ class Group
      */
     private function loadFromRS($r)
     {
-        $this->id = $r->id_group;
+        $this->id = (int)$r->id_group;
         $this->group_name = $r->group_name;
         $this->creation_date = $r->creation_date;
         if ($r->parent_group) {
@@ -179,9 +180,9 @@ class Group
                     array('g' => $join),
                     'g.' . Adherent::PK . '=a.' . Adherent::PK,
                     array()
-                )->where(
-                    'g.' . self::PK . ' = ' . $this->id
-                )->order(
+                )->where([
+                    'g.' . self::PK => $this->id
+                ])->order(
                     'nom_adh ASC',
                     'prenom_adh ASC'
                 );
@@ -223,6 +224,11 @@ class Group
     {
         global $zdb;
 
+        if (!isset($this->login) || !$this->login->isLogged()) {
+            $this->groups = [];
+            return;
+        }
+
         try {
             $select = $zdb->select(self::TABLE, 'a');
 
@@ -231,10 +237,10 @@ class Group
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Adherent::PK . ' = ' . $this->login->id);
+                )->where(['b.' . Adherent::PK => $this->login->id]);
             }
 
-            $select->where('parent_group = ' . $this->id)
+            $select->where(['parent_group' => $this->id])
                 ->order('group_name ASC');
 
             $results = $zdb->execute($select);
@@ -295,24 +301,18 @@ class Group
 
                 //delete members
                 $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
-                $delete->where(
-                    self::PK . ' = ' . $this->id
-                );
+                $delete->where([self::PK => $this->id]);
                 $zdb->execute($delete);
 
                 //delete managers
                 $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
-                $delete->where(
-                    self::PK . ' = ' . $this->id
-                );
+                $delete->where([self::PK => $this->id]);
                 $zdb->execute($delete);
             }
 
             //delete group itself
             $delete = $zdb->delete(self::TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->id
-            );
+            $delete->where([self::PK => $this->id]);
             $zdb->execute($delete);
 
             //commit all changes
@@ -325,7 +325,7 @@ class Group
             if ($transaction) {
                 $zdb->connection->rollBack();
             }
-            if ($e->getCode() == 23000) {
+            if (!$zdb->isPostgres() && $e->getCode() == 23000 || $zdb->isPostgres() && $e->getCode() == 23503) {
                 Analog::log(
                     str_replace(
                         '%group',
@@ -371,7 +371,7 @@ class Group
             $update->set(
                 array('parent_group' => new Expression('NULL'))
             )->where(
-                self::PK . ' = ' . $this->id
+                [self::PK => $this->id]
             );
 
             $edit = $zdb->execute($update);
@@ -408,6 +408,20 @@ class Group
     {
         global $zdb, $hist;
 
+        $parent_group = null;
+        if ($this->parent_group) {
+            $parent_group = $this->parent_group->getId();
+        }
+        if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->getId())) {
+            Analog::log(
+                'Group name is not unique at requested level',
+                Analog::WARNING
+            );
+            throw new \RuntimeException(
+                _T("The group name you have requested already exists in the database.")
+            );
+        }
+
         try {
             $values = array(
                 self::PK     => $this->id,
@@ -415,7 +429,7 @@ class Group
             );
 
             if ($this->parent_group) {
-                $values['parent_group'] = $this->parent_group->getId();
+                $values['parent_group'] = $parent_group;
             }
 
             if (!isset($this->id) || $this->id == '') {
@@ -447,7 +461,7 @@ class Group
                 $update = $zdb->update(self::TABLE);
                 $update
                     ->set($values)
-                    ->where(self::PK . '=' . $this->id);
+                    ->where([self::PK => $this->id]);
 
                 $edit = $zdb->execute($update);
 
@@ -486,10 +500,13 @@ class Group
             return true;
         } else {
             //let's check if current logged-in user is part of group managers
+            if (!is_array($this->managers)) {
+                $this->loadPersons(self::MANAGER_TYPE);
+            }
+
             foreach ($this->managers as $manager) {
                 if ($login->login == $manager->login) {
                     return true;
-                    break;
                 }
             }
             return false;
@@ -657,19 +674,6 @@ class Group
     }
 
     /**
-     * Set all subgroups
-     *
-     * @param array $groups Groups id
-     *
-     * @return Group
-     */
-    public function setSubgroups($groups)
-    {
-        $this->groups = $groups;
-        return $this;
-    }
-
-    /**
      * check if can Set parent group
      *
      * @param Group $group Parent group
@@ -728,9 +732,7 @@ class Group
 
             //first, remove current groups members
             $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->id
-            );
+            $delete->where([self::PK => $this->id]);
             $zdb->execute($delete);
 
             Analog::log(
@@ -818,9 +820,7 @@ class Group
 
             //first, remove current groups managers
             $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
-            $delete->where(
-                self::PK . ' = ' . $this->id
-            );
+            $delete->where([self::PK => $this->id]);
             $zdb->execute($delete);
 
             Analog::log(

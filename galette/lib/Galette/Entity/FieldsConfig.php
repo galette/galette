@@ -133,8 +133,7 @@ class FieldsConfig
         'mdp_adh',
         'titre_adh',
         'sexe_adh',
-        'prenom_adh',
-        'adresse2_adh'
+        'prenom_adh'
     );
 
     /**

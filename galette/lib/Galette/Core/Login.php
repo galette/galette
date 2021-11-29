@@ -230,9 +230,9 @@ class Login extends Authentication
         if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {
             $this->staff = true;
         }
-        //check if member is up to date
+        //check if member is up-to-date
         if ($row->bool_exempt_adh == true) {
-            //member is due free, he's up to date.
+            //member is due free, he's up-to-date.
             $this->uptodate = true;
         } else {
             //let's check from end date, if present

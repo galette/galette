@@ -8,6 +8,7 @@
                     </p>
                     <input type="submit" name="lostpasswd" value="{_T string="Recover password"}" />
                     <input type="hidden" name="valid" value="1"/>
+                    {include file="forms_types/csrf.tpl"}
                 </section>
                 </form>
 {/block}

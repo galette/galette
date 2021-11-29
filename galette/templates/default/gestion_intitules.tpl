@@ -4,6 +4,7 @@
 <form action="{path_for name="doAddEntitled" data=["class" => $url_class]}" method="post" class="tabbed">
 <div id="intitules_tabs">
     {include file="gestion_intitule_content.tpl"}
+    {include file="forms_types/csrf.tpl"}
 </div>
 </form>
 {/block}

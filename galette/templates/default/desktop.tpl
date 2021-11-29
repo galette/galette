@@ -38,9 +38,9 @@
     {if $login->isAdmin()}
                 <a id="prefs" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
                 <a id="plugins" href="{path_for name="plugins"}" title="{_T string="Information about available plugins"}">{_T string="Plugins"}</a>
+    {/if}
                 {* Include plugins user dashboard *}
                 {$plugins->getDashboard($tpl)}
-    {/if}
 {else}
                 {* Single member *}
                 <a id="members" href="{path_for name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a>

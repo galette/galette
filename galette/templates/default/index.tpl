@@ -17,6 +17,7 @@
                     </table>
                     <input type="submit" value="{_T string="Login"}" />
                     <input type="hidden" name="ident" value="1" />
+                    {include file="forms_types/csrf.tpl"}
                 </section>
                 </form>
 {/block}

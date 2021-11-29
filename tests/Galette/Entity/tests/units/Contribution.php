@@ -287,19 +287,27 @@ class Contribution extends GaletteTestCase
             'date_enreg' => $bdate->format('Y-m-d'),
             'date_debut_cotis' => $bdate->format('Y-m-d'),
             'date_fin_cotis' => $edate->format('Y-m-d'),
-
         ];
-        $check = $this->contrib->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->boolean($check)->isTrue();
-
-        $store = $this->contrib->store();
-        $this->boolean($store)->isTrue();
+        $this->createContrib($data);
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->variable($contrib->amount)->isIdenticalTo(1280);
+
+        //empty amount
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => '',
+            'type_paiement_cotis' => 4,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
+        $this->createContrib($data);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
+        $this->variable($contrib->amount)->isIdenticalTo(0);
     }
 
     /**

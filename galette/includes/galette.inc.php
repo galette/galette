@@ -68,8 +68,6 @@ $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
 if (!$installed && !$installer) {
     header('location: ./installer.php');
     die();
-} else if ($installed) {
-    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
 if (
@@ -77,6 +75,11 @@ if (
     && !defined('GALETTE_TESTS') && !$cron
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
+}
+
+if (isset($installer) && $installer !== true) {
+    //If we're not working from installer
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
 use Analog\Analog;
@@ -97,15 +100,15 @@ if (
 }
 
 define('GALETTE_NIGHTLY', false);
-define('GALETTE_VERSION', 'v0.9.5.2');
+define('GALETTE_VERSION', 'v0.9.6');
 
 //Version to display
 if (!defined('GALETTE_HIDE_VERSION')) {
     define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
 }
 
-define('GALETTE_COMPAT_VERSION', '0.9.5');
-define('GALETTE_DB_VERSION', '0.950');
+define('GALETTE_COMPAT_VERSION', '0.9.6');
+define('GALETTE_DB_VERSION', '0.960');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }
@@ -181,8 +184,9 @@ Analog::handler($galette_run_log);
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
-//If we're not working from tests
-if ($installed && !defined('GALETTE_TESTS')) {
+if (!$installer and !defined('GALETTE_TESTS')) {
+    //If we're not working from installer nor from tests
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
      * Database instantiation

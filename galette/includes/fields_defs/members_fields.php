@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -39,7 +39,7 @@ use Galette\Entity\FieldsCategories;
 
 $members_fields = array(
     'id_adh' => array(
-        'label'    => _T("Member number:"),
+        'label'    => _T("Member id:"),
         'propname' => 'id',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
@@ -124,15 +124,6 @@ $members_fields = array(
         'position' => 11,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
-    /** TODO remove second address... */
-    'adresse2_adh' => array(
-        'label'    => _T("Address (continuation)"),
-        'propname' => 'address_continuation',
-        'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 12,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
     'cp_adh' => array(
         'label'    => _T("Zip Code:"),
         'propname' => 'zipcode',
@@ -179,38 +170,6 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 18,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'url_adh' => array(
-        'label'    => _T("Website:"),
-        'propname' => 'website',
-        'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 19,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'icq_adh' => array(
-        'label'    => _T("ICQ:"),
-        'propname' => 'icq',
-        'required' => false,
-        'visible'  => FieldsConfig::NOBODY,
-        'position' => 20,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'msn_adh' => array(
-        'label'    => _T("MSN:"),
-        'propname' => 'msn',
-        'required' => false,
-        'visible'  => FieldsConfig::NOBODY,
-        'position' => 22,
-        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'jabber_adh' => array(
-        'label'    => _T("Jabber:"),
-        'propname' => 'jabber',
-        'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 21,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'info_adh' => array(
@@ -350,6 +309,14 @@ $members_fields = array(
         'visible'  => FieldsConfig::NOBODY,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
+    'num_adh'       => array(
+        'label'    => _T("Member number:"),
+        'propname' => 'number',
+        'required' => false,
+        'visible'  => FieldsConfig::MANAGER,
+        'position' => 26,
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
     'list_adh_name' => array(
         'label'    => _T("Name"),

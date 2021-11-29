@@ -3,6 +3,7 @@
 
 {function name=draw_actions}
                     <td class="{$rclass} center nowrap actions_row">
+{if $member->canEdit($login)}
                         <a
                             href="{path_for name="editMember" data=["id" => $member->id]}"
                             class="tooltip action"
@@ -10,6 +11,7 @@
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
                             <span class="sr-only">{_T string="%membername: edit information" pattern="/%membername/" replace=$member->sname}</span>
                         </a>
+{/if}
 {if $login->isAdmin() or $login->isStaff()}
                         <a
                             href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
@@ -104,6 +106,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </p>
             <pre id="sql_qry" class="hidden">{$filters->query}</pre>
 {/if}
+            {include file="forms_types/csrf.tpl"}
         </div>
         <div class="infoline">
             {_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}
@@ -126,7 +129,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {if $preferences->pref_show_id}
                     <th class="id_row">
                         <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
-                            {_T string="Mbr num"}
+                            {_T string="Mbr id"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
                             <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -199,14 +202,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
             {/if}
-            {if $member->website != ''}
-                        <a href="{$member->website}" class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-website.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Website"}<span>
-                        </a>
-            {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
-            {/if}
             {if $member->isAdmin()}
                         <span class="tooltip">
                             <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="" width="16" height="16"/>
@@ -233,7 +228,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 {assign var="value" value=$member->sfullname}
             {elseif $column->field_id eq 'pseudo_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
-                {assign var=value value=$member->$propname|escape}
+                {assign var=value value=$member->$propname}
             {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
             {elseif $column->field_id eq 'id_statut'}
@@ -246,7 +241,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $column->field_id eq 'pref_lang'}
                 {assign var="value" value=$i18n->getNameFromId($member->language)}
             {elseif $column->field_id eq 'adresse_adh'}
-                {assign var="value" value=$member->saddress|nl2br}
+                {assign var="value" value=$member->saddress|escape|nl2br}
+                {assign var="escaped" value=true}
             {elseif $column->field_id eq 'bool_display_info'}
                 {assign var="value" value=$member->sappears_in_list}
             {elseif $column->field_id eq 'activite_adh'}
@@ -268,7 +264,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 {else}
                     {assign var=value value=$propvalue}
                 {/if}
-            {else}
+            {else if !isset($escaped)}
                 {assign var=value value=$value|escape}
             {/if}
 
@@ -278,12 +274,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 but for notw, that works as excpected.
             *}
             {if not empty($value)}
-                {if $column->field_id eq 'email_adh' or $column->field_id eq 'msn_adh'}
+                {if $column->field_id eq 'email_adh'}
                                 <a href="mailto:{$value}">{$value}</a>
                 {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
                                 <a href="tel:{$value}">{$value}</a>
-                {elseif $column->field_id eq 'url_adh'}
-                                <a href="{$value}">{$value}</a>
                 {elseif $column->field_id eq 'parent_id'}
                                 <a href="{path_for name="member" data=["id" => $member->parent]}">{memberName id=$member->parent}</a>
                 {elseif $column->field_id eq 'ddn_adh'}
@@ -303,7 +297,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
             </tbody>
         </table>
-{if $nb_members != 0}
+{if $nb_members != 0 && ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff())}
         <div class="center cright">
             {_T string="Pages:"}<br/>
             <ul class="pages">{$pagination}</ul>
@@ -326,6 +320,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-cookie-bite fa-fw"></i> {_T string="Mass add contributions"}
                 </button>
             </li>
+    {/if}
+    {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager() and $preferences->pref_bool_groupsmanagers_mailings}
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <li>
                 <button type="submit" id="sendmail" name="mailing">
@@ -334,6 +330,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </li>
         {/if}
     {/if}
+
+    {if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
             <li>
                 <button type="submit" id="attendance_sheet" name="attendance_sheet">
                     <i class="fas fa-file-alt fa-fw"></i> {_T string="Attendance sheet"}
@@ -349,7 +347,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <i class="fas fa-id-badge fa-fw"></i> {_T string="Generate Member Cards"}
                 </button>
             </li>
-    {if $login->isAdmin() or $login->isStaff()}
             <li>
                 <button type="submit" id="csv" name="csv">
                     <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}
@@ -363,7 +360,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/if}
         </ul>
 {/if}
-
+            {include file="forms_types/csrf.tpl"}
         </form>
 {if $nb_members != 0}
         <div id="legende" title="{_T string="Legend"}">
@@ -420,8 +417,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <tr>
                         <th><img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="{_T string="Mail"}" width="16" height="16"/></th>
                         <td class="back">{_T string="Send an email"}</td>
-                        <th><img src="{base_url}/{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
-                        <td class="back">{_T string="Visit website"}</td>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="Is a company"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Is a company"}</td>
                     </tr>
 
                     <tr>
@@ -429,10 +426,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <td class="back">{_T string="Is a man"}</td>
                         <th><img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="Is a woman"}" width="16" height="16"/></th>
                         <td class="back">{_T string="Is a woman"}</td>
-                    </tr>
-                    <tr>
-                        <th><img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="Is a company"}" width="16" height="16"/></th>
-                        <td class="back">{_T string="Is a company"}</td>
                     </tr>
                     <tr>
                         <th><img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>
@@ -524,6 +517,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     }
 
                     if (this.id == 'masscontributions') {
+                        event.preventDefault();
                         $.ajax({
                             url: '{path_for name="batch-memberslist"}',
                             type: "POST",

@@ -36,6 +36,9 @@
 namespace Galette\Core;
 
 use Galette\Entity\PaymentType;
+use Galette\Entity\Social;
+use Galette\Features\Replacements;
+use Galette\Features\Socials;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -116,11 +119,6 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_publicpages
  * @property integer $pref_publicpages_visibility
  * @property boolean $pref_bool_selfsubscribe
- * @property string $pref_googleplus
- * @property string $pref_facebook
- * @property string $pref_twitter
- * @property string $pref_viadeo
- * @property string $pref_linkedin
  * @property string $pref_mail_sign
  * @property string $pref_new_contrib_script
  * @property boolean $pref_bool_wrap_mails
@@ -141,11 +139,19 @@ use Galette\Repository\Members;
  * @property integer $pref_password_strength
  * @property integer $pref_default_paymenttype
  * @property boolean $pref_bool_create_member
+ * @property boolean $pref_bool_groupsmanagers_create_member
+ * @property boolean $pref_bool_groupsmanagers_edit_member
+ * @property boolean $pref_bool_groupsmanagers_edit_groups
+ * @property boolean $pref_bool_groupsmanagers_mailings
+ * @property boolean $pref_bool_groupsmanagers_exports
  * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences
 {
-    private $zdb;
+    use Replacements;
+    use Socials;
+
+    protected $preferences; //redefined from Replacements feature - avoid circular dependency
     private $prefs;
     private $errors = [];
 
@@ -249,12 +255,7 @@ class Preferences
         'pref_bool_publicpages' => true,
         'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_bool_selfsubscribe' => true,
-        'pref_googleplus' => '',
-        'pref_facebook' => '',
-        'pref_twitter' => '',
-        'pref_viadeo' => '',
-        'pref_linkedin' => '',
-        'pref_mail_sign' => "{NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}",
+        'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
         /* New contribution script */
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
@@ -275,8 +276,16 @@ class Preferences
         'pref_password_blacklist' => false,
         'pref_password_strength' => self::PWD_NONE,
         'pref_default_paymenttype' => PaymentType::CHECK,
-        'pref_bool_create_member' => false
+        'pref_bool_create_member' => false,
+        'pref_bool_groupsmanagers_create_member' => false,
+        'pref_bool_groupsmanagers_edit_member' => false,
+        'pref_bool_groupsmanagers_edit_groups' => false,
+        'pref_bool_groupsmanagers_mailings' => false,
+        'pref_bool_groupsmanagers_exports' => true
     );
+
+    /** @var Social[] */
+    private $socials;
 
     // flagging required fields
     private $required = array(
@@ -393,6 +402,7 @@ class Preferences
             foreach ($result as $pref) {
                 $this->prefs[$pref->nom_pref] = $pref->val_pref;
             }
+            $this->socials = Social::getListForMember(null);
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -617,6 +627,8 @@ class Preferences
             }
         }
 
+        $this->checkSocials($values);
+
         return 0 === count($this->errors);
     }
 
@@ -753,6 +765,9 @@ class Preferences
                     $this->errors[] = _T("- Invalid year for cards.");
                 }
                 break;
+            case 'pref_footer':
+                $value = $this->cleanHtmlValue($value);
+                break;
         }
 
         return $value;
@@ -807,6 +822,9 @@ class Preferences
                 'Preferences were successfully stored into database.',
                 Analog::INFO
             );
+
+            $this->storeSocials(null);
+
             return true;
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
@@ -864,9 +882,7 @@ class Preferences
                 _T("%name association's %status")
             ) . "\n";
             $_address = $adh->address;
-            if ($adh->address_continuation && $adh->address_continuation != '') {
-                $_address .= "\n" . $adh->address_continuation;
-            }
+
             $replacements = array(
                 $adh->sfullname . "\n",
                 $_complement,
@@ -956,6 +972,8 @@ class Preferences
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
+            } elseif ($name == 'pref_footer') {
+                return $this->cleanHtmlValue($this->prefs[$name]);
             } else {
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
                     $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
@@ -977,6 +995,8 @@ class Preferences
         } elseif (in_array($name, $virtuals)) {
             $virtual = str_replace('vpref_', 'pref_', $name);
             return explode(',', $this->prefs[$virtual]);
+        } elseif ($name === 'socials') {
+            return $this->socials;
         } else {
             Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',
@@ -1147,5 +1167,159 @@ class Preferences
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Build legend array
+     *
+     * @return array
+     */
+    public function getLegend(): array
+    {
+        $legend = [];
+
+        $legend['main'] = [
+            'title'     => _T('Main information'),
+            'patterns'  => $this->getMainPatterns()
+        ];
+
+        $s_patterns = $this->getSignaturePatterns(false);
+        if (count($s_patterns)) {
+            $legend['socials'] = [
+                'title' => _T('Social networks'),
+                'patterns' => $this->getSignaturePatterns(false)
+            ];
+        }
+
+        return $legend;
+    }
+
+    /**
+     * Get email signature
+     *
+     * @return string
+     */
+    public function getMailSignature(): string
+    {
+        global $router;
+
+        $signature = $this->pref_mail_sign;
+
+        if (trim($signature) == '') {
+            return '';
+        }
+
+        $this->setPreferences($this)->setRouter($router);
+        $this->setPatterns(
+            $this->getMainPatterns() + $this->getSignaturePatterns()
+        );
+        $this
+            ->setMain()
+            ->setSocialReplacements();
+
+        $signature = $this->proceedReplacements($signature);
+
+        return "\r\n-- \r\n" . $signature;
+    }
+
+    /**
+     * Get patterns for mail signature
+     *
+     * @param boolean $legacy Whether to load legacy patterns
+     *
+     * @return array
+     */
+    protected function getSignaturePatterns($legacy = true): array
+    {
+        $s_patterns = [];
+        $social = new Social($this->zdb);
+
+        $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
+
+        foreach ($types as $type) {
+            $s_patterns['asso_social_' . $type] = [
+                'title' => $social->getSystemType($type),
+                'pattern' => '/{ASSO_SOCIAL_' . strtoupper($type) . '}/'
+            ];
+        }
+
+        if ($legacy === true) {
+            $main = $this->getMainPatterns();
+            $s_patterns['_asso_name'] = [
+                'title'     => $main['asso_name']['title'],
+                'pattern'   => '/{NAME}/'
+            ];
+
+            $s_patterns['_asso_website'] = [
+                'title'     => $main['asso_website']['title'],
+                'pattern'   => '/{WEBSITE}/'
+            ];
+
+            foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
+                $s_patterns['_asso_social_' . $legacy_type] = [
+                    'title' => $s_patterns['asso_social_' . $legacy_type]['title'],
+                    'pattern' => '/{' . strtoupper($legacy_type) . '}/'
+                ];
+            }
+        }
+
+        return $s_patterns;
+    }
+
+    /**
+     * Set emails replacements
+     *
+     * @return $this
+     */
+    public function setSocialReplacements(): self
+    {
+        $replacements = [];
+
+        $done_replacements = $this->getReplacements();
+        $replacements['_asso_name'] = $done_replacements['asso_name'];
+        $replacements['asso_website'] = $this->pref_website;
+        $replacements['_asso_website'] = $replacements['asso_website'];
+
+        $social = new Social($this->zdb);
+        $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
+
+        foreach ($types as $type) {
+            $replace_value = null;
+            $socials = Social::getListForMember(null, $type);
+            if (count($socials)) {
+                $replace_value = '';
+                foreach ($socials as $social) {
+                    if ($replace_value != '') {
+                        $replace_value .= ', ';
+                    }
+                    $replace_value .= $social->url;
+                }
+            }
+            $replacements['asso_social_' . strtolower($type)] = $replace_value;
+        }
+
+
+        foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
+            $replacements['_asso_social_' . $legacy_type] = $replacements['asso_social_' . $legacy_type];
+        }
+
+        $this->setReplacements($replacements);
+
+        return $this;
+    }
+
+    /**
+     * Purify HTML value
+     *
+     * @param string $value Value to clean
+     *
+     * @return string
+     */
+    public function cleanHtmlValue(string $value): string
+    {
+        $config = \HTMLPurifier_Config::createDefault();
+        $config->set('Cache.SerializerPath', GALETTE_CACHE_DIR);
+        $purifier = new \HTMLPurifier($config);
+        return $purifier->purify($value);
     }
 }

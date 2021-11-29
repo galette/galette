@@ -40,7 +40,7 @@ $this->register(
     'Test db plugin',           //Short description
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
-    '0.9.5',                    //Galette compatible version
+    GALETTE_COMPAT_VERSION,     //Galette compatible version
     'plugdb',                   //routing name
     '2015-01-30',               //release date
     [   //Permissions needed

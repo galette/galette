@@ -96,7 +96,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => false,
+            'socials'   => false
         ];
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
@@ -155,7 +156,8 @@ class Adherent extends GaletteTestCase
             'dues'      => false,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => false,
+            'socials'   => false
         ];
         $this->array($adh->deps)->isIdenticalTo($expected);
 
@@ -165,7 +167,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => false,
             'children'  => true,
-            'dynamics'  => true
+            'dynamics'  => true,
+            'socials'   => false
         ];
         $adh
             ->enableDep('dues')
@@ -179,7 +182,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => true
+            'dynamics'  => true,
+            'socials'   => false
         ];
         $adh->disableDep('children');
         $this->array($adh->deps)->isIdenticalTo($expected);
@@ -193,7 +197,8 @@ class Adherent extends GaletteTestCase
             'dues'      => true,
             'parent'    => true,
             'children'  => true,
-            'dynamics'  => true
+            'dynamics'  => true,
+            'socials'   => true
         ];
         $adh->enableAllDeps('children');
         $this->array($adh->deps)->isIdenticalTo($expected);
@@ -228,7 +233,8 @@ class Adherent extends GaletteTestCase
             'dues'      => false,
             'parent'    => false,
             'children'  => false,
-            'dynamics'  => false
+            'dynamics'  => false,
+            'socials'   => false
         ];
         $adh = new \Galette\Entity\Adherent(
             $this->zdb,
@@ -335,20 +341,6 @@ class Adherent extends GaletteTestCase
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
 
-        $data = [
-            'email_adh' => '',
-            'url_adh'   => 'mywebsite'
-        ];
-        $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
-        $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
-
-        $data = ['url_adh' => 'http://'];
-        $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
-        $check = $adh->check($data, [], []);
-        $this->boolean($check)->isTrue($expected);
-        $this->variable($adh->_website)->isIdenticalTo('');
-
         $data = ['login_adh' => 'a'];
         $expected = ['- The username must be composed of at least 2 characters!'];
         $check = $adh->check($data, [], []);
@@ -385,6 +377,34 @@ class Adherent extends GaletteTestCase
         $expected = ['Status #256 does not exists in database.'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
+
+        //tests for group managers
+        $g1 = new \mock\Galette\Entity\Group();
+        $this->calling($g1)->getId = 1;
+        $g2 = new \mock\Galette\Entity\Group();
+        $this->calling($g2)->getId = 2;
+
+        //groups managers must specify a group they manage
+        global $login;
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
+
+        $this->calling($login)->isGroupManager = function ($gid) use ($g1) {
+            return $gid === null || $gid == $g1->getId();
+        };
+
+        $data = ['id_statut' => ''];
+        $check = $adh->check($data, [], []);
+        $expected = ['You have to select a group you own!'];
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['groups_adh' => [$g2->getId()]];
+        $check = $adh->check($data, [], []);
+        $expected = ['You have to select a group you own!'];
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['groups_adh' => [$g1->getId()]];
+        $check = $adh->check($data, [], []);
+        $this->boolean($check)->isTrue();
     }
 
     /**
@@ -434,14 +454,25 @@ class Adherent extends GaletteTestCase
         $g1 = new \mock\Galette\Entity\Group();
         $this->calling($g1)->getId = 1;
         $g2 = new \mock\Galette\Entity\Group();
-        $this->calling($g1)->getId = 2;
+        $this->calling($g2)->getId = 2;
 
         $this->calling($adh)->getGroups = [$g1, $g2];
         $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->boolean($adh->canEdit($login))->isFalse();
 
-        $this->calling($login)->isGroupManager = true;
-        $this->boolean($adh->canEdit($login))->isTrue();
+        $this->calling($login)->isGroupManager = function ($gid) use ($g1) {
+            return $gid === null || $gid == $g1->getId();
+        };
+        $this->boolean($adh->canEdit($login))->isFalse();
+
+        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
+        $canEdit = $adh->canEdit($login);
+        $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
+        $this->boolean($canEdit)->isTrue();
+
+        //groups managers cannot edit members of the groups they do not own
+        $this->calling($adh)->getGroups = [$g2];
+        $this->boolean($adh->canEdit($login))->isFalse();
     }
 
     /**
@@ -622,6 +653,28 @@ class Adherent extends GaletteTestCase
         //logout
         $this->login->logOut();
         $this->boolean($this->login->isLogged())->isFalse();
+
+        //tests for group managers
+        $adh = new \mock\Galette\Entity\Adherent($this->zdb);
+
+        $g1 = new \mock\Galette\Entity\Group();
+        $this->calling($g1)->getId = 1;
+        $g2 = new \mock\Galette\Entity\Group();
+        $this->calling($g2)->getId = 2;
+
+        //groups managers can show members of the groups they own
+        $this->calling($adh)->getGroups = [$g1, $g2];
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
+        $this->boolean($adh->canShow($login))->isFalse();
+
+        $this->calling($login)->isGroupManager = function ($gid) use ($g1) {
+            return $gid === null || $gid == $g1->getId();
+        };
+        $this->boolean($adh->canShow($login))->isTrue();
+
+        //groups managers cannot show members of the groups they do not own
+        $this->calling($adh)->getGroups = [$g2];
+        $this->boolean($adh->canShow($login))->isFalse();
     }
 
     /**

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2021 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     march, 3rd 2009
@@ -49,7 +49,7 @@ use Galette\Repository\Members;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
@@ -149,7 +149,7 @@ class MembersList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[MembersList] Unable to get proprety `' . $name . '`',
+                    '[MembersList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -270,6 +270,7 @@ class MembersList extends Pagination
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),
+            Members::FILTER_NUMBER          => _T("Member number"),
             Members::FILTER_COMPANY_NAME    => _T("Company name"),
             Members::FILTER_ADDRESS         => _T("Address"),
             Members::FILTER_MAIL            => _T("Email,URL,IM"),
@@ -278,7 +279,7 @@ class MembersList extends Pagination
         );
 
         if ($prefs->pref_show_id) {
-            $filter_options[Members::FILTER_NUMBER] = _T("Member number");
+            $filter_options[Members::FILTER_ID] = _T("Member ID");
         }
 
         $view->assign(

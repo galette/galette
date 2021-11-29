@@ -44,19 +44,19 @@
     {/if}
                                 <span class="row-title">
                                     <a href="{path_for name="editTitle" data=["id" => $title->id]}">
-                                        {_T string="%s title" pattern="/%s/" replace=$title->short}
+                                        {_T string="%s title" pattern="/%s/" replace=$title->short|escape}
                                     </a>
                                 </span>
                             </td>
-                            <td class="left" data-title="{_T string="Short form"}">{$title->short}</td>
-                            <td class="left" data-title="{_T string="Long form"}">{$title->long}</td>
+                            <td class="left" data-title="{_T string="Short form"}">{$title->short|escape}</td>
+                            <td class="left" data-title="{_T string="Long form"}">{$title->long|escape}</td>
                             <td class="center actions_row">
                                 <a
                                     href="{path_for name="editTitle" data=["id" => $title->id]}"
                                     class="tooltip action"
                                 >
                                     <i class="fas fa-edit fa-fw"></i>
-                                    <span class="sr-only">{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}</span>
+                                    <span class="sr-only">{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short|escape}</span>
                                 </a>
                 {if $title->id eq 1 or $title->id eq 2}
                                 <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16px" height="16px"/>
@@ -66,7 +66,7 @@
                                     class="delete tooltip"
                                 >
                                     <i class="fa fa-trash fa-fw"></i>
-                                    <span class="sr-only">{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}</span>
+                                    <span class="sr-only">{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short|escape}</span>
                                 </a>
                 {/if}
                             </td>
@@ -74,6 +74,7 @@
             {/foreach}
                     </tbody>
                 </table>
+            {include file="forms_types/csrf.tpl"}
         </form>
 {/block}
 

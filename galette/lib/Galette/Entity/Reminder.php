@@ -111,7 +111,7 @@ class Reminder
         try {
             $select = $zdb->select(self::TABLE);
             $select->limit(1)
-                ->where(self::PK . ' = ' . $id);
+                ->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
             $this->loadFromRs($results->current());

@@ -36,6 +36,8 @@
 
 namespace Galette\Controllers;
 
+use Galette\Filters\ContributionsList;
+use Galette\IO\ContributionsCsv;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\ImportModel;
@@ -710,6 +712,41 @@ class CsvController extends AbstractController
             $this->fields_config
         );
         $csv->exportMembers($filters);
+
+        $filepath = $csv->getPath();
+        $filename = $csv->getFileName();
+
+        return $this->sendResponse($response, $filepath, $filename);
+    }
+
+    /**
+     * Contributions CSV exports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param string   $type     One of 'contributions' or 'transactions'
+     *
+     * @return Response
+     */
+    public function contributionsExport(Request $request, Response $response, string $type): Response
+    {
+        $post = $request->getParsedBody();
+        $get = $request->getQueryParams();
+
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_' . $type;
+
+        if (isset($this->session->$session_var)) {
+            $filters = $this->session->$session_var;
+        } else {
+            $filters = new ContributionsList();
+        }
+
+        $csv = new ContributionsCsv(
+            $this->zdb,
+            $this->login,
+            $type
+        );
+        $csv->exportContributions($filters);
 
         $filepath = $csv->getPath();
         $filename = $csv->getFileName();

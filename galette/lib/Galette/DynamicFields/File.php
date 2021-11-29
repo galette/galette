@@ -58,7 +58,7 @@ class File extends DynamicField
      * Default constructor
      *
      * @param Db  $zdb Database instance
-     * @param int $id  Optionnal field id to load data
+     * @param int $id  Optional field id to load data
      */
     public function __construct(Db $zdb, $id = null)
     {
@@ -72,7 +72,7 @@ class File extends DynamicField
      *
      * @return integer
      */
-    public function getType()
+    public function getType(): int
     {
         return self::FILE;
     }

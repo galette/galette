@@ -252,6 +252,16 @@ abstract class Authentication
     }
 
     /**
+     * Get managed groups
+     *
+     * @return array
+     */
+    public function getManagedGroups(): array
+    {
+        return $this->managed_groups;
+    }
+
+    /**
      * Is user currently up to date?
      * An up to date member is active and either due free, or with up to date
      * subscription

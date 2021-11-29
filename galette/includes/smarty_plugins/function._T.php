@@ -92,9 +92,9 @@ function smarty_function__T($params, &$smarty)
     }
 
     if (isset($escape)) {
-        //replace insecable spaces
+        //replace unbreakable spaces
         $ret = str_replace('&nbsp;', ' ', $ret);
-        //for the moment, only 'js' type is know
+        //for the moment, only 'javascript' type is know. 'js' can also be found in legacy code
         $ret = htmlspecialchars($ret, ENT_QUOTES, 'UTF-8');
     }
 
