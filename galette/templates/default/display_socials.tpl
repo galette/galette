@@ -1,6 +1,12 @@
 {if $socials|@count > 0}
-        <table class="details" id="social">
-            <caption class="ui-state-active ui-corner-top">{_T string="Social networks"}</caption>
+<div class="ui basic fitted segment">
+    <div class="ui styled fluid accordion row">
+        <div class="active title">
+            <i class="icon dropdown"></i>
+            {_T string="Social networks"}
+        </div>
+        <div class="active content field">
+            <table class="ui very basic striped collapsing stackable padded table">
     {foreach item=social from=$socials}
             <tr>
                 <th>{$social->getSystemType($social->type)}</th>
@@ -8,4 +14,7 @@
             </tr>
     {/foreach}
         </table>
+        </div>
+    </div>
+</div>
 {/if}

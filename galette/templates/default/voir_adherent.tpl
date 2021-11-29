@@ -18,6 +18,34 @@
             <div class="ui compact small message {$member->getRowClass()}">
                 <div class="content">
                     {$member->getDues()}
+                    <div class="ui basic buttons">
+                    {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
+                            <a
+                                    href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
+                                    title="{_T string="View contributions"|escape}"
+                                    class="ui icon button"
+                            >
+                                <i class="cookie icon"></i>
+                            </a>
+                    {/if}
+                    {if $login->isAdmin() or $login->isStaff()}
+
+                            <a
+                                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
+                                    class="ui icon button tooltip"
+                                    title="{_T string="Add a membership fee"|escape}"
+                            >
+                                <i class="money bill alternate outline icon"></i>
+                            </a>
+                            <a
+                                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
+                                    class="ui icon button tooltip"
+                                    title="{_T string="Add a donation"|escape}"
+                            >
+                                <i class="gift icon"></i>
+                            </a>
+                    {/if}
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,37 +97,7 @@
                     </a>
                 </div>
 {/if}
-{if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
-                <div class="item">
-                    <a
-                        href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
-                        title="{_T string="View member's contributions"}"
-                        class="ui icon button"
-                    >
-                        <i class="cookie icon"></i>
-                        {_T string="View contributions"}
-                    </a>
-                </div>
-{/if}
 {if $login->isAdmin() or $login->isStaff()}
-                <div class="item">
-                    <a
-                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
-                        class="ui icon button"
-                    >
-                        <i class="money bill alternate outline icon"></i>
-                        {_T string="Add a membership fee"}
-                    </a>
-                </div>
-                <div class="item">
-                    <a
-                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
-                        class="ui icon button"
-                    >
-                        <i class="gift icon"></i>
-                        {_T string="Add a donation"}
-                    </a>
-                </div>
                 <div class="item">
                     <a
                         href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"

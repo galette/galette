@@ -286,7 +286,7 @@ class MembersController extends CrudController
             $response,
             'voir_adherent.tpl',
             array(
-                'page_title'        => _T("Member Profile"),
+                'page_title'        => $member->sfullname, //_T("Member Profile"),
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
