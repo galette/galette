@@ -32,9 +32,9 @@ h1.ui.bgcolor {
   background-color: rgba(255, 182, 25, 0.5) !important;
 }
 
-.toc.bgcolor > div{
+/*.toc.bgcolor > div{
   background-color: white !important;
-}
+}*/
 
 .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header::before {
   content: none;
