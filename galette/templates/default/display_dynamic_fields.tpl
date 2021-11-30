@@ -6,7 +6,7 @@
             {_T string="Additionnal fields:"}
         </div>
         <div class="active content field">
-            <table class="ui very basic striped collapsing stackable padded table">
+            <table class="ui very basic striped stackable padded table">
                 {foreach from=$object->getDynamicFields()->getFields() item=field}
                     {if $field|is_a:'Galette\DynamicFields\Separator'}
                 <tr>
@@ -14,7 +14,7 @@
                 </tr>
                     {else}
                 <tr>
-                    <th>{$field->getName()|escape}</th>
+                    <th class="three wide column">{$field->getName()|escape}</th>
                     <td>
                         {foreach from=$object->getDynamicFields()->getValues($field->getId()) item=field_data}
                             {assign var=value value=$field_data.field_val}

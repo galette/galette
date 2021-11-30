@@ -25,7 +25,15 @@ body.front-page .ui.message {
 
 .bgcolor,
 .ui.bgcolor {
-  background-color: #ddddff !important;
+   background-color: #ddddff !important;
+ }
+
+h1.ui.bgcolor {
+  background-color: rgba(255, 182, 25, 0.5) !important;
+}
+
+.toc.bgcolor > div{
+  background-color: white !important;
 }
 
 .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header::before {
@@ -289,4 +297,32 @@ footer .ui.horizontal.list > .item{
 .note-modal .note-btn {
     margin-bottom: 1rem;
     padding: 10px;
+}
+
+/* Galette theme
+ */
+.ui.styled.accordion .title {
+  background-color: rgba(255, 182, 25, 0.3  );
+}
+.ui.styled.accordion .active.title {
+  background-color: rgba(255, 182, 25, 0.5);
+}
+
+.ui.styled.accordion {
+  box-shadow: 0 1px 2px 0 rgba(255,182,25,1),0 0 0 1px rgba(255,182,25,1);
+}
+
+h1.header nav a.ui.button {
+  background-color: rgba(255, 182, 25, 0.5);
+  color: rgba(107, 107, 107, .8);
+}
+
+h1.header nav a.ui.button.disabled, h1.header nav div.ui.button.disabled {
+  background-color: rgba(255, 182, 25, 0.3);
+  color: rgba(107, 107, 107, .6);
+}
+
+h1.header nav a.ui.button:hover {
+  background-color: rgba(255, 182, 25, 0.8);
+  color: rgba(107, 107, 107, 1);
 }

@@ -2,65 +2,28 @@
 
 {block name="page_title" prepend}
     <div class="right aligned bottom floating ui  {$member->getRowClass()} label">{$member->getDues()}</div>
-    {if isset($navigate) and $navigate|@count != 0}
-        <nav class="ui very mini buttons left floated">
-            <a
-                    href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}"
-                    class="ui icon grey button tooltip{if !isset($navigate.prev)} disabled{/if}"
-                    title="{_T string="Previous"|escape}"
-            >
-                <i class="step backward icon"></i>
-                <span class="sr-only">{_T string="Previous"}</span>
-            </a>
-            <div class="ui middle aligned grey disabled button">{$navigate.pos} / {$navigate.count}</div>
-            <a
-                    href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}"
-                    class="ui right grey icon button tooltip{if !isset($navigate.next)} disabled{/if}"
-                    title="{_T string="Next"|escape}"
-            >
-                <span class="sr-only">{_T string="Next"}</span>
-                <i class="step forward icon"></i>
-            </a>
-        </nav>
-    {/if}
+    {include file="ui_elements/navigate.tpl"}
 {/block}
 
 {block name="content"}
 
     <div class="ui text menu">
             <div class="">
-            {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
+            {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
                     <a
-                            href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}"
-                            title="{_T string="Generate members's card"}"
-                            class="ui icon basic button{if !$member->isUp2Date()} disabled{/if} tooltip"
-                    >
-                        <i class="id badge icon"></i>
-                        {_T string="Generate Member Card"}
-                    </a>
-                    <a
-                            href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}"
+                            href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
+                            id="btn_lostpassword"
+                            title="{_T string="Send member a link to generate a new password, as if had used the 'lost password' functionality."}"
                             class="ui icon basic button"
                     >
-                        <i class="id card icon"></i>
-                        {_T string="Adhesion form"}
+                        <i class="unlock icon"></i>
+                        {_T string="New password"}
                     </a>
-                {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
-                        <a
-                                href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
-                                id="btn_lostpassword"
-                                title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}"
-                                class="ui icon basic button"
-                        >
-                            <i class="unlock icon"></i>
-                            {_T string="New password"}
-                        </a>
-                {/if}
             {/if}
             {if $member->canEdit($login)}
                     <a
                             href="{path_for name="editMember" data=["id" => $member->id]}"
-                            class="ui icon basic button"
+                            class="ui icon basic primary button"
                             title="{_T string="Edit member"}"
                     >
                         <i class="edit icon"></i>
@@ -85,7 +48,25 @@
                 {/foreach}
             {/if}
             </div>
-            <div class="ui menu right basic buttons">
+
+        <div class="ui menu right basic buttons">
+            {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
+                    <a
+                            href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}"
+                            title="{_T string="Generate members's card"}"
+                            class="ui icon button tooltip{if !$member->isUp2Date()} disabled{/if} tooltip"
+                    >
+                        <i class="id badge icon"></i>
+                        <span class="sr-only">{_T string="Generate Member Card"}</span>
+                    </a>
+                    <a
+                            href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}"
+                            class="ui icon button tooltip"
+                    >
+                        <i class="id card icon"></i>
+                        <span class="sr-only">{_T string="Adhesion form"}</span>
+                    </a>
+            {/if}
                 {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
                     <a
                             href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
@@ -93,6 +74,7 @@
                             class="ui icon button"
                     >
                         <i class="cookie icon"></i>
+                        <span class="sr-only">{_T string="View contributions"}</span>
                     </a>
                 {/if}
                 {if $login->isAdmin() or $login->isStaff()}
@@ -103,6 +85,7 @@
                             title="{_T string="Add a membership fee"|escape}"
                     >
                         <i class="money bill alternate outline icon"></i>
+                        <span class="sr-only">{_T string="Add a membership fee"}</span>
                     </a>
                     <a
                             href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
@@ -110,15 +93,13 @@
                             title="{_T string="Add a donation"|escape}"
                     >
                         <i class="gift icon"></i>
+                        <span class="sr-only">{_T string="Add a donation"}</span>
                     </a>
                 {/if}
             </div>
         </div>
-        <div class="ui basic vertically fitted segment">
-            <div class="ui horizontal list">
 
-            </div>
-        </div>
+    {include file="ui_elements/member_card.tpl"}
 
 {if $member->hasParent() or $member->hasChildren()}
     <div class="ui basic fitted segment">
@@ -160,7 +141,7 @@
                 {_T string=$display_element->label}
             </div>
             <div class="active content field">
-                <table class="ui very basic striped collapsing stackable padded table">
+                <table class="ui very basic striped stackable padded table">
             {foreach from=$elements item=element}
                 {if $element->field_id eq 'parent_id'}
                     {continue}
@@ -196,7 +177,7 @@
                     {assign var="value" value=$member->others_infos|escape|nl2br}
                 {/if}
                     <tr>
-                        <th>{$element->label}</th>
+                        <th class="three wide column">{$element->label}</th>
                         <td>
                 {if $element->field_id eq 'nom_adh'}
                     {if $member->isCompany()}
@@ -217,22 +198,10 @@
                                 {$value}
                 {/if}
                         </td>
-                {if $display_element@first and $element@first}
-                    {assign var="mid" value=$member->id}
-                        <td rowspan="{$elements|count}" style="width:{$member->picture->getOptimalWidth()}px;">
-                            <img
-                                src="{path_for name="photo" data=["id" => $mid, "rand" => $time]}"
-                                width="{$member->picture->getOptimalWidth()}"
-                                height="{$member->picture->getOptimalHeight()}"
-                                alt="{_T string="Picture"}"
-                                {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login} title="{_T string="You can drop new image here to get photo changed"}" class="tooltip"{/if}
-                                id="photo_adh"/>
-                        </td>
-                {/if}
                     </tr>
                 {if $display_element@last and $element@last and ($member->getGroups()|@count != 0 || $member->getManagedGroups()|@count != 0)}
                     <tr>
-                        <th>{_T string="Groups:"}</th>
+                        <th class="three wide column">{_T string="Groups:"}</th>
                         <td>
             {foreach from=$groups item=group key=kgroup}
                 {if $member->isGroupMember($group) or $member->isGroupManager($group)}

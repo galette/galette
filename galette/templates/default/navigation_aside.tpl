@@ -1,9 +1,9 @@
                 <aside class="ui computer only toc bgcolor">
-                    <div class="ui basic center aligned fitted segment">
+                    <div class="ui basic center aligned segment">
                         <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{$preferences->pref_nom}" class="icon"/>
-                        <div class="ui large header">
+                        <div class="ui header">
                             {$preferences->pref_nom}
-                            <div class="sub header">{if $preferences->pref_slogan}{$preferences->pref_slogan}{/if}</div>
+                            {if $preferences->pref_slogan}<div class="sub tiny header">{$preferences->pref_slogan}</div>{/if}
                         </div>
                     </div>
 {if $login->isSuperAdmin()}

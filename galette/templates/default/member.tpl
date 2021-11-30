@@ -1,20 +1,11 @@
 {extends file="$parent_tpl"}
 
+{block name="page_title" prepend}
+    {include file="ui_elements/navigate.tpl"}
+{/block}
+
 {block name="content"}
-{if isset($navigate) and $navigate|@count != 0}
-        <nav>
-            <a href="{if isset($navigate.prev)}{path_for name="editMember" data=["id" => $navigate.prev]}{else}#{/if}" class="ui labeled icon button{if !isset($navigate.prev)} disabled{/if}">
-                <i class="step backward icon"></i>
-                {_T string="Previous"}
-            </a>
-            <div class="ui label">{$navigate.pos} / {$navigate.count}</div>
-            <a href="{if isset($navigate.next)}{path_for name="editMember" data=["id" => $navigate.next]}{else}#{/if}" class="ui right labeled icon button{if !isset($navigate.next)} disabled{/if}">
-                {_T string="Next"}
-                <i class="step forward icon"></i>
-            </a>
-        </nav>
-{/if}
-        <div class="ui small red message">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></div>
+        {include file="ui_elements/member_card.tpl"}
         <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
     {if !$self_adh}
             <div class="ui compact segment">
@@ -111,7 +102,7 @@
             </div>
         {/if}
             <div class="ui basic center aligned fitted segment">
-                <button type="submit" name="valid" class="action ui labeled icon big button">
+                <button type="submit" name="valid" class="action ui labeled icon button">
                     <i class="save icon"></i> {_T string="Save"}
                 </button>
             {foreach item=entry from=$hidden_elements}
