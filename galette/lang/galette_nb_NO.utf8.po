@@ -1,13 +1,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021.
 # Allan Nordhøy <epost@anotheragency.no>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
+# Oppo CPH2083 (OPPO_A12) <axl986859@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-12-01 04:52+0000\n"
+"Last-Translator: Oppo CPH2083 (OPPO_A12) <axl986859@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -33,7 +34,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1134
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:101
 msgid "modification"
-msgstr ""
+msgstr "modification"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1136
