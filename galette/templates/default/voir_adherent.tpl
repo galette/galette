@@ -1,121 +1,122 @@
 {extends file="page.tpl"}
 
-{block name="content"}
-{if isset($navigate) and $navigate|@count != 0}
-    <nav>
-        <a href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}" class="ui icon button{if !isset($navigate.prev)} disabled{/if}">
-            <i class="step backward icon"></i>
-            {_T string="Previous"}
-        </a>
-        <div class="ui label">{$navigate.pos} / {$navigate.count}</div>
-        <a href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}" class="ui right icon button{if !isset($navigate.next)} disabled{/if}">
-            {_T string="Next"}
-            <i class="step forward icon"></i>
-        </a>
-    </nav>
-{/if}
-        <div class="ui basic center aligned fitted segment">
-            <div class="ui compact small message {$member->getRowClass()}">
-                <div class="content">
-                    {$member->getDues()}
-                    <div class="ui basic buttons">
-                    {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
-                            <a
-                                    href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
-                                    title="{_T string="View contributions"|escape}"
-                                    class="ui icon button"
-                            >
-                                <i class="cookie icon"></i>
-                            </a>
-                    {/if}
-                    {if $login->isAdmin() or $login->isStaff()}
+{block name="page_title" prepend}
+    <div class="right aligned bottom floating ui  {$member->getRowClass()} label">{$member->getDues()}</div>
+    {if isset($navigate) and $navigate|@count != 0}
+        <nav class="ui very mini buttons left floated">
+            <a
+                    href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}"
+                    class="ui icon grey button tooltip{if !isset($navigate.prev)} disabled{/if}"
+                    title="{_T string="Previous"|escape}"
+            >
+                <i class="step backward icon"></i>
+                <span class="sr-only">{_T string="Previous"}</span>
+            </a>
+            <div class="ui middle aligned grey disabled button">{$navigate.pos} / {$navigate.count}</div>
+            <a
+                    href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}"
+                    class="ui right grey icon button tooltip{if !isset($navigate.next)} disabled{/if}"
+                    title="{_T string="Next"|escape}"
+            >
+                <span class="sr-only">{_T string="Next"}</span>
+                <i class="step forward icon"></i>
+            </a>
+        </nav>
+    {/if}
+{/block}
 
-                            <a
-                                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
-                                    class="ui icon button tooltip"
-                                    title="{_T string="Add a membership fee"|escape}"
-                            >
-                                <i class="money bill alternate outline icon"></i>
-                            </a>
-                            <a
-                                    href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
-                                    class="ui icon button tooltip"
-                                    title="{_T string="Add a donation"|escape}"
-                            >
-                                <i class="gift icon"></i>
-                            </a>
-                    {/if}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui basic vertically fitted segment">
-            <div class="ui horizontal list">
-{if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
-                <div class="item">
+{block name="content"}
+
+    <div class="ui text menu">
+            <div class="">
+            {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
                     <a
-                        href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}"
-                        title="{_T string="Generate members's card"}"
-                        class="ui icon button{if !$member->isUp2Date()} disabled{/if} tooltip"
+                            href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}"
+                            title="{_T string="Generate members's card"}"
+                            class="ui icon basic button{if !$member->isUp2Date()} disabled{/if} tooltip"
                     >
                         <i class="id badge icon"></i>
                         {_T string="Generate Member Card"}
                     </a>
-                </div>
-                <div class="item">
                     <a
-                        href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}"
-                        class="ui icon button"
+                            href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}"
+                            class="ui icon basic button"
                     >
                         <i class="id card icon"></i>
                         {_T string="Adhesion form"}
                     </a>
-                </div>
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
-                <div class="item">
+                {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
+                        <a
+                                href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
+                                id="btn_lostpassword"
+                                title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}"
+                                class="ui icon basic button"
+                        >
+                            <i class="unlock icon"></i>
+                            {_T string="New password"}
+                        </a>
+                {/if}
+            {/if}
+            {if $member->canEdit($login)}
                     <a
-                        href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
-                        id="btn_lostpassword"
-                        title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}"
-                        class="ui icon button"
-                    >
-                        <i class="unlock icon"></i>
-                        {_T string="New password"}
-                    </a>
-                </div>
-    {/if}
-{/if}
-{if $member->canEdit($login)}
-                <div class="item">
-                    <a
-                        href="{path_for name="editMember" data=["id" => $member->id]}"
-                        class="ui icon button"
-                        title="{_T string="Edit member"}"
+                            href="{path_for name="editMember" data=["id" => $member->id]}"
+                            class="ui icon basic button"
+                            title="{_T string="Edit member"}"
                     >
                         <i class="edit icon"></i>
                         {_T string="Modification"}
                     </a>
-                </div>
-{/if}
-{if $login->isAdmin() or $login->isStaff()}
-                <div class="item">
+            {/if}
+            {if $login->isAdmin() or $login->isStaff()}
                     <a
-                        href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
-                        title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sfullname}"
-                        class="ui icon button"
+                            href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
+                            title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sfullname}"
+                            class="ui icon basic button"
                     >
                         <i class="clone icon" aria-hidden="true"></i>
                         {_T string="Duplicate"}
                     </a>
-                </div>
-{/if}
-{* If some additionnals actions should be added from plugins, we load the relevant template file
-We have to use a template file, so Smarty will do its work (like replacing variables). *}
-{if $plugin_detailled_actions|@count != 0}
-  {foreach from=$plugin_detailled_actions key=plugin_name item=action}
-    {include file=$action module_id=$plugin_name|replace:'det_actions_':''}
-  {/foreach}
-{/if}
+            {/if}
+            {* If some additionnals actions should be added from plugins, we load the relevant template file
+            We have to use a template file, so Smarty will do its work (like replacing variables). *}
+            {if $plugin_detailled_actions|@count != 0}
+                {foreach from=$plugin_detailled_actions key=plugin_name item=action}
+                    {include file=$action module_id=$plugin_name|replace:'det_actions_':''}
+                {/foreach}
+            {/if}
+            </div>
+            <div class="ui menu right basic buttons">
+                {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
+                    <a
+                            href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
+                            title="{_T string="View contributions"|escape}"
+                            class="ui icon button"
+                    >
+                        <i class="cookie icon"></i>
+                    </a>
+                {/if}
+                {if $login->isAdmin() or $login->isStaff()}
+
+                    <a
+                            href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
+                            class="ui icon button tooltip"
+                            title="{_T string="Add a membership fee"|escape}"
+                    >
+                        <i class="money bill alternate outline icon"></i>
+                    </a>
+                    <a
+                            href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
+                            class="ui icon button tooltip"
+                            title="{_T string="Add a donation"|escape}"
+                    >
+                        <i class="gift icon"></i>
+                    </a>
+                {/if}
+            </div>
+        </div>
+        <div class="ui basic vertically fitted segment">
+            <div class="ui horizontal list">
+
             </div>
         </div>
 
