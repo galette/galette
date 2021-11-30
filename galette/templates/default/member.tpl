@@ -5,7 +5,9 @@
 {/block}
 
 {block name="content"}
+    {if $member->id}
         {include file="ui_elements/member_card.tpl"}
+    {/if}
         <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
     {if !$self_adh}
             <div class="ui compact segment">
