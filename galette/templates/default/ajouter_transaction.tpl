@@ -2,7 +2,6 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <div class="ui fitted small red message">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></div>
         <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui segment">
             <div class="ui tiny header">

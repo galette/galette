@@ -49,7 +49,6 @@
                 </div>
             </div>
     {/if}
-            <div class="ui fitted small red message">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></div>
             <div class="ui styled fluid accordion field">
                 <div class="active title">
                     <i class="icon dropdown"></i>
