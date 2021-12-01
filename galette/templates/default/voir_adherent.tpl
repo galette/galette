@@ -205,7 +205,7 @@
                         <td>
             {foreach from=$groups item=group key=kgroup}
                 {if $member->isGroupMember($group) or $member->isGroupManager($group)}
-                            <a href="{if $login->isGroupManager($kgroup)}{path_for name="groups" data=["id" => $kgroup]}{else}#{/if}" class="button {if not $login->isGroupManager($kgroup)} notmanaged{/if}">
+                            <a href="{if $login->isGroupManager($kgroup)}{path_for name="groups" data=["id" => $kgroup]}{else}#{/if}" class="ui button {if not $login->isGroupManager($kgroup)} notmanaged{/if}">
                                 {$group}
                     {if $member->isGroupMember($group)}
                                 <i class="ui user icon" title="{_T string="Member of group"}"></i>
