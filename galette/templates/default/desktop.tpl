@@ -3,39 +3,43 @@
     <div class="container">
         <div>
 {if not $hide_telemetry and $GALETTE_MODE neq 'DEMO'}
-            <h3 class="ui top attached header">{_T string="Help us know about you!"}</h3>
-            <div class="ui attached segment">
-                <p>{_T string="Take a moment to share some information with us so we can know better Galette's uses."}</p>
-                <div class="ui two centered stackable cards">
-    {if not $telemetry_sent}
-                    <a id="telemetry" class="ui card" href="#" title="{_T string="Send anonymous and imprecise data about your Galette instance"}">
-                        <div class="content">
-                            <div class="center aligned header">
-                                <i class="ui huge chart bar grey icon"></i>
-                                {_T string="Telemetry"}
-                            </div>
+    <div class="ui info message">
+        <i class="close icon"></i>
+        <div class="header">
+            {_T string="Help us know about you!"}
+        </div>
+        <p>
+            {* TODO: use a trash icon next to close one instead of a checkbox *}
+            {_T string="Take a moment to share some information with us so we can know better Galette's uses."}
+            <span class="ui checkbox" title="{_T string="The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways."}">
+                <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1"{if $hide_telemetry} checked="checked"{/if}/>
+                <label for="hide_telemetry">{_T string="Hide this panel"}</label>
+            </span>
+        </p>
+        <div class="ui two centered stackable cards">
+            {if not $telemetry_sent}
+                <a id="telemetry" class="ui card" href="#" title="{_T string="Send anonymous and imprecise data about your Galette instance"}">
+                    <div class="content">
+                        <div class="center aligned header">
+                            <i class="ui huge chart bar grey icon"></i>
+                            {_T string="Telemetry"}
                         </div>
-                    </a>
+                    </div>
+                </a>
 
-    {/if}
-    {if not $registered}
-                    <a class="ui card" href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$reguuid}" title="{_T string="Register your organization as a Galette user"}" target="_blank">
-                        <div class="content">
-                            <div class="center aligned header">
-                                <i class="ui huge id card outline grey icon"></i>
-                                {_T string="Register"}
-                            </div>
+            {/if}
+            {if not $registered}
+                <a class="ui card" href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$reguuid}" title="{_T string="Register your organization as a Galette user"}" target="_blank">
+                    <div class="content">
+                        <div class="center aligned header">
+                            <i class="ui huge id card outline grey icon"></i>
+                            {_T string="Register"}
                         </div>
-                    </a>
-    {/if}
-                </div>
-            </div>
-            <div class="ui bottom attached segment">
-                <div class="ui toggle checkbox" title="{_T string="The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways."}">
-                    <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1"{if $hide_telemetry} checked="checked"{/if}/>
-                    <label for="hide_telemetry">{_T string="Hide this panel"}</label>
-                </div>
-            </div>
+                    </div>
+                </a>
+            {/if}
+        </div>
+    </div>
 {/if}
             <h3 class="ui top attached header">{_T string="Activities"}</h3>
             <div class="ui attached segment">
