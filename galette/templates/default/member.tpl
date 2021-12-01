@@ -1,14 +1,12 @@
 {extends file="$parent_tpl"}
 
-{block name="page_title" prepend}
-    {include file="ui_elements/navigate.tpl"}
-{/block}
-
 {block name="content"}
     {if $member->id}
+        {include file="ui_elements/navigate.tpl"}
         {include file="ui_elements/member_card.tpl"}
     {/if}
-        <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
+
+    <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
     {if !$self_adh}
             <div class="ui compact segment">
         {if $member->hasParent() && !$member->isDuplicate()}

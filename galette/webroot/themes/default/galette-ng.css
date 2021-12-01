@@ -4,6 +4,7 @@ html {
 
 body {
   font-size: 1rem;
+  /*background-color: #6b6b6b;*/
 }
 
 body.pushable {
@@ -26,6 +27,7 @@ body.front-page .ui.message {
 .bgcolor,
 .ui.bgcolor {
    background-color: #ddddff !important;
+  /*background-color: rgba(99, 107, 112, .8) !important;*/
  }
 
 h1.ui.bgcolor {
@@ -312,17 +314,21 @@ footer .ui.horizontal.list > .item{
   box-shadow: 0 1px 2px 0 rgba(255,182,25,1),0 0 0 1px rgba(255,182,25,1);
 }
 
-h1.header nav a.ui.button {
-  background-color: rgba(255, 182, 25, 0.5);
+nav.item.buttons {
+  margin-top: .5em;
+}
+
+nav.item.buttons a.ui.button {
+  background-color: rgba(255, 182, 25, 0.7);
   color: rgba(107, 107, 107, .8);
 }
 
-h1.header nav a.ui.button.disabled, h1.header nav div.ui.button.disabled {
-  background-color: rgba(255, 182, 25, 0.3);
-  color: rgba(107, 107, 107, .6);
+nav.item.buttons a.ui.button.disabled, nav.item.buttons div.ui.button.disabled {
+  background-color: rgba(255, 182, 25, 0.7);
+  color: rgba(107, 107, 107, .8);
 }
 
-h1.header nav a.ui.button:hover {
-  background-color: rgba(255, 182, 25, 0.8);
+nav.item.buttons a.ui.button:hover {
+  background-color: rgba(255, 182, 25, 0.9);
   color: rgba(107, 107, 107, 1);
 }

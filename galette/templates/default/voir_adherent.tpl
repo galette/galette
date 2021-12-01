@@ -2,106 +2,104 @@
 
 {block name="page_title" prepend}
     <div class="right aligned bottom floating ui  {$member->getRowClass()} label">{$member->getDues()}</div>
-    {include file="ui_elements/navigate.tpl"}
 {/block}
 
 {block name="content"}
 
-    <div class="ui text menu">
-            <div class="">
-            {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
+    <div class="ui vertical compact menu right floated">
+        {if $member->canEdit($login)}
+            <a
+                    href="{path_for name="editMember" data=["id" => $member->id]}"
+                    class="ui item action"
+            >
+                <i class="edit icon"></i>
+                {_T string="Modification"}
+            </a>
+        {/if}
+
+        <div class="ui simple dropdown item">
+            <i class="dropdown icon"></i>
+            ...
+            <div class="menu">
+                {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
                     <a
                             href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
                             id="btn_lostpassword"
                             title="{_T string="Send member a link to generate a new password, as if had used the 'lost password' functionality."}"
-                            class="ui icon basic button"
+                            class="ui item"
                     >
                         <i class="unlock icon"></i>
                         {_T string="New password"}
                     </a>
-            {/if}
-            {if $member->canEdit($login)}
-                    <a
-                            href="{path_for name="editMember" data=["id" => $member->id]}"
-                            class="ui icon basic primary button"
-                            title="{_T string="Edit member"}"
-                    >
-                        <i class="edit icon"></i>
-                        {_T string="Modification"}
-                    </a>
-            {/if}
-            {if $login->isAdmin() or $login->isStaff()}
-                    <a
-                            href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
-                            title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sfullname}"
-                            class="ui icon basic button"
-                    >
-                        <i class="clone icon" aria-hidden="true"></i>
-                        {_T string="Duplicate"}
-                    </a>
-            {/if}
-            {* If some additionnals actions should be added from plugins, we load the relevant template file
-            We have to use a template file, so Smarty will do its work (like replacing variables). *}
-            {if $plugin_detailled_actions|@count != 0}
-                {foreach from=$plugin_detailled_actions key=plugin_name item=action}
-                    {include file=$action module_id=$plugin_name|replace:'det_actions_':''}
-                {/foreach}
-            {/if}
-            </div>
-
-        <div class="ui menu right basic buttons">
-            {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
+                {/if}
+                {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
                     <a
                             href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}"
-                            title="{_T string="Generate members's card"}"
-                            class="ui icon button tooltip{if !$member->isUp2Date()} disabled{/if} tooltip"
+                            class="ui item{if !$member->isUp2Date()} disabled{/if} tooltip"
                     >
                         <i class="id badge icon"></i>
-                        <span class="sr-only">{_T string="Generate Member Card"}</span>
+                        {_T string="Generate Member Card"}
                     </a>
                     <a
                             href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}"
-                            class="ui icon button tooltip"
+                            class="ui item"
                     >
                         <i class="id card icon"></i>
-                        <span class="sr-only">{_T string="Adhesion form"}</span>
+                        {_T string="Adhesion form"}
                     </a>
-            {/if}
+                {/if}
                 {if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
                     <a
                             href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
-                            title="{_T string="View contributions"|escape}"
-                            class="ui icon button"
+                            class="ui item"
                     >
                         <i class="cookie icon"></i>
-                        <span class="sr-only">{_T string="View contributions"}</span>
+                        {_T string="View contributions"}
                     </a>
                 {/if}
                 {if $login->isAdmin() or $login->isStaff()}
 
                     <a
                             href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"
-                            class="ui icon button tooltip"
-                            title="{_T string="Add a membership fee"|escape}"
+                            class="ui item"
                     >
                         <i class="money bill alternate outline icon"></i>
-                        <span class="sr-only">{_T string="Add a membership fee"}</span>
+                        {_T string="Add a membership fee"}
                     </a>
                     <a
                             href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}"
-                            class="ui icon button tooltip"
-                            title="{_T string="Add a donation"|escape}"
+                            class="ui item"
                     >
                         <i class="gift icon"></i>
-                        <span class="sr-only">{_T string="Add a donation"}</span>
+                        {_T string="Add a donation"}
                     </a>
+
+                    {if $login->isAdmin() or $login->isStaff()}
+                        <a
+                                href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
+                                title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sfullname}"
+                                class="ui item"
+                        >
+                            <i class="clone icon" aria-hidden="true"></i>
+                            {_T string="Duplicate"}
+                        </a>
+                    {/if}
+                    {* If some additionnals actions should be added from plugins, we load the relevant template file
+                    We have to use a template file, so Smarty will do its work (like replacing variables). *}
+                    {if $plugin_detailled_actions|@count != 0}
+                        {foreach from=$plugin_detailled_actions key=plugin_name item=action}
+                            {include file=$action module_id=$plugin_name|replace:'det_actions_':''}
+                        {/foreach}
+                    {/if}
+
                 {/if}
             </div>
         </div>
-
+    </div>
+    {include file="ui_elements/navigate.tpl"}
     {include file="ui_elements/member_card.tpl"}
 
-{if $member->hasParent() or $member->hasChildren()}
+    {if $member->hasParent() or $member->hasChildren()}
     <div class="ui basic fitted segment">
         <div class="ui styled fluid accordion row">
             <div class="active title">

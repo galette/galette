@@ -14,11 +14,10 @@
                 id="photo_adh"/>
     </div>
     <div class="content">
-        <div class="header right aligned">
+        <div class="header aligned">
             {$member->sname}
         </div>
-
-        <div class="meta right aligned">
+        <div class="meta aligned">
             <span>{$member->sstatus}</span>
             <span class="ui {$member->getRowClass()} horizontal icon label tooltip" title="{$member->getDues()|escape}">
                     <i class="icon cookie"></i>

@@ -1,5 +1,5 @@
 {if isset($navigate) and $navigate|@count != 0}
-    <nav class="ui very mini buttons left floated">
+    <nav class="ui item very mini buttons right floated">
         <a
                 href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}"
                 class="ui icon button tooltip{if !isset($navigate.prev)} disabled{/if}"
