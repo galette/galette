@@ -26,18 +26,18 @@
                     <div class="{if isset($required.pref_slogan) and $required.pref_slogan eq 1}required {/if} field">
                         <label for="pref_slogan">{_T string="Association's short description:"}</label>
                         <div class="ui right corner labeled input">
-                            <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}"></i>
-                            </div>
                             <input{if isset($required.pref_slogan) and $required.pref_slogan eq 1} required="required"{/if} type="text" name="pref_slogan" id="pref_slogan" value="{$pref.pref_slogan}"/>
+                            <div class="ui basic label">
+                                <a
+                                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_slogan|escape}]}"
+                                        class="ui icon tooltip" title="{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_slogan}"
+                                >
+                                    <i class="language icon"></i>
+                                    <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_slogan}</span>
+                                </a>
+                                <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}"></i>
+                            </div>
                         </div>
-                        <a
-                            href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_slogan|escape}]}"
-                            class="ui icon button tooltip" title="{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_slogan}"
-                        >
-                            <i class="language icon"></i>
-                            <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_slogan}</span>
-                        </a>
                     </div>
                 </div>
                 <div class="column">
@@ -217,22 +217,34 @@
                     </div>
                     <div class="field">
                         <label for="pref_new_contrib_script" class="tooltip">{_T string="Post new contribution script URI"}</label>
-                        <span class="tip">{_T string="Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."}</span>
-                        <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{$pref.pref_new_contrib_script}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."}"></i>
+                            </div>
+                            <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{$pref.pref_new_contrib_script}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required="required"{/if}/>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="pref_rss_url" class="tooltip">{_T string="RSS feed URL"}</label>
-                        <span class="tip">{_T string="Enter the full URL to the RSS feed. It will be displayed on Galette desktop."}</span>
-                        <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_rss_url) and $required.pref_rss_url eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Enter the full URL to the RSS feed. It will be displayed on Galette desktop."}"></i>
+                            </div>
+                            <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_rss_url) and $required.pref_rss_url eq 1} required="required"{/if}/>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="pref_galette_url" class="tooltip">{_T string="Galette base URL"}</label>
-                        <span class="tip">{_T string="Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url" pattern="/%galette_url/" replace=$preferences->getDefaultURL()|cat:{path_for name="preferences"}}</span>
-                        <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{$preferences->getDefaultURL()}" value="{$pref.pref_galette_url}"{if isset($required.pref_galette_url) and $required.pref_galette_url eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url" pattern="/%galette_url/" replace=$preferences->getDefaultURL()|cat:{path_for name="preferences"}}"></i>
+                            </div>
+                            <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{$preferences->getDefaultURL()}" value="{$pref.pref_galette_url}"{if isset($required.pref_galette_url) and $required.pref_galette_url eq 1} required="required"{/if}/>
+                        </div>
                     </div>
                     <div class="field inline">
                         <label for="pref_show_id" class="tooltip">{_T string="Show identifiers"}</label>
-                        <span class="tip">{_T string="Display database identifiers in related windows"}</span>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Display database identifiers in related windows"}"></i>
                         <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required="required"{/if}/>
                     </div>
                 </div>{* /column *}
@@ -247,8 +259,12 @@
                     </div>
                     <div class="field">
                         <label for="pref_membership_ext">{_T string="Default membership extension:"}</label>
-                        <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2"{if isset($required.pref_membership_ext) and $required.pref_membership_ext eq 1} required="required"{/if}/>
-                        <span class="exemple">{_T string="(Months)"}</span>
+                        <div class="ui right labeled input">
+                            <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2"{if isset($required.pref_membership_ext) and $required.pref_membership_ext eq 1} required="required"{/if}/>
+                            <div class="ui basic label">
+                                {_T string="(Months)"}
+                            </div>
+                        </div>
                     </div>
                 </div>{* /column *}
                 <div class="column">
@@ -259,8 +275,12 @@
                     </div>
                     <div class="field">
                         <label for="pref_membership_offermonths">{_T string="Number of months offered:"}</label>
-                        <span class="tip">{_T string="When using the beginning of membership option; you can offer the last months of the year."}<br/>{_T string="Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year."}</span>
-                        <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{$pref.pref_membership_offermonths}" maxlength="5"{if isset($required.pref_membership_offermonths) and $required.pref_membership_offermonths eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="When using the beginning of membership option; you can offer the last months of the year."}<br/>{_T string="Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year."}"></i>
+                            </div>
+                            <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{$pref.pref_membership_offermonths}" maxlength="5"{if isset($required.pref_membership_offermonths) and $required.pref_membership_offermonths eq 1} required="required"{/if}/>
+                        </div>
                     </div>
                 </div>{* /column *}
             </div>{* /column grid *}
@@ -268,29 +288,29 @@
         <div class="ui bottom attached tab segment" data-tab="rights">
             <div class="ui stackable two column grid">
                 <div class="column">
-                    <div class="field">
+                    <div class="field inline">
                         <label for="pref_bool_create_member">{_T string="Can members create child?"}</label>
                         <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {if $pref.pref_bool_create_member eq 1}checked="checked"{/if}{if isset($required.pref_bool_create_member) and $required.pref_bool_create_member eq 1} required="required"{/if}/>
                     </div>
-                    <div class="field">
+                    <div class="field inline">
                         <label for="pref_bool_groupsmanagers_edit_groups">{_T string="Can group managers edit their groups?"}</label>
                         <input type="checkbox" name="pref_bool_groupsmanagers_edit_groups" id="pref_bool_groupsmanagers_edit_groups" value="1" {if $pref.pref_bool_groupsmanagers_edit_groups eq 1}checked="checked"{/if}/>
                     </div>
-                    <div class="field">
+                    <div class="field inline">
                         <label for="pref_bool_groupsmanagers_create_member">{_T string="Can group managers create members?"}</label>
                         <input type="checkbox" name="pref_bool_groupsmanagers_create_member" id="pref_bool_groupsmanagers_create_member" value="1" {if $pref.pref_bool_groupsmanagers_create_member eq 1}checked="checked"{/if}/>
                     </div>
-                    <div class="field">
+                    <div class="field inline">
                         <label for="pref_bool_groupsmanagers_edit_member">{_T string="Can group managers edit members?"}</label>
                         <input type="checkbox" name="pref_bool_groupsmanagers_edit_member" id="pref_bool_groupsmanagers_edit_member" value="1" {if $pref.pref_bool_groupsmanagers_edit_member eq 1}checked="checked"{/if}/>
                     </div>
-                    <div class="field">
+                    <div class="field inline">
                         <label for="pref_bool_groupsmanagers_mailings">{_T string="Can group managers send mailings?"}</label>
                         <input type="checkbox" name="pref_bool_groupsmanagers_mailings" id="pref_bool_groupsmanagers_mailings" value="1" {if $pref.pref_bool_groupsmanagers_mailings eq 1}checked="checked"{/if}/>
                     </div>
-                    <div class="field">
+                    <div class="field inline">
                         <label for="pref_bool_groupsmanagers_exports" class="tooltip">{_T string="Can group managers do exports?"}</label>
-                        <span class="tip">{_T string="Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf"}</span>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf"}"></i>
                         <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" value="1" {if $pref.pref_bool_groupsmanagers_exports eq 1}checked="checked"{/if}/>
                     </div>
                 </div>
@@ -323,8 +343,12 @@
                     </div>
                     <div class="field">
                         <label for="pref_email_reply_to" class="tooltip">{_T string="Reply-To Email:"}</label>
-                        <span class="tip">{_T string="Leave empty to use Sender Email as reply address"}</span>
-                        <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Leave empty to use Sender Email as reply address"}"></i>
+                            </div>
+                            <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required="required"{/if}/>
+                        </div>
                     </div>
                     <div class="field">
         {assign var="pref_email_newadh" value=""}
@@ -337,28 +361,32 @@
         {/foreach}
 
                         <label for="pref_email_newadh" class="tooltip">{_T string="Members administrator's Email:"}</label>
-                        <span class="tip">{_T string="Recipient of new online registation and edition emails"}</span>
-                        <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Recipient of new online registation and edition emails"}"></i>
+                            </div>
+                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
+                        </div>
                         <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
                     </div>
                     <div class="field inline">
                         <label for="pref_bool_mailadh" class="tooltip">{_T string="Send email to administrators?"}</label>
-                        <span class="tip">{_T string="Sends an email each time a new member registers online or edit his/her account"}</span>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Sends an email each time a new member registers online or edit his/her account"}"></i>
                         <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                     </div>
                     <div class="field inline">
                         <label for="pref_bool_wrap_mails" class="tooltip">{_T string="Wrap emails text?"}</label>
-                        <span class="tip">{_T string="Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}"></i>
                         <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {if $pref.pref_bool_wrap_mails eq 1}checked="checked"{/if}{if isset($required.pref_bool_wrap_mails) and $required.pref_bool_wrap_mails eq 1} required="required"{/if}/>
                     </div>
                     <div class="field inline">
                         <label for="pref_bool_mailowner" class="tooltip">{_T string="Send email to members?"}</label>
-                        <span class="tip">{_T string="Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case."}</span>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case."}"></i>
                         <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" value="1" {if $pref.pref_bool_mailowner eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailowner) and $required.pref_bool_mailowner eq 1} required="required"{/if}/>
                     </div>
                     <div class="field inline">
                         <label for="pref_editor_enabled" class="tooltip">{_T string="Activate HTML editor?"}</label>
-                        <span class="tip">{_T string="Should HTML editor be activated on page load ?"}</span>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Should HTML editor be activated on page load ?"}"></i>
                         <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}{if isset($required.pref_editor_enabled) and $required.pref_editor_enabled eq 1} required="required"{/if}/>
                     </div>
                 </div>{* /column *}
@@ -395,8 +423,6 @@
                                 <input type="radio" name="pref_mail_method" id="qmail" value="{Galette\Core\GaletteMail::METHOD_QMAIL}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
                             </div>
                         </div>
-
-
                         <br/>
                         <a
                             href="{path_for name="testEmail"}#mail"
@@ -419,17 +445,17 @@
                         <div class="grouped fields">
                             <div class="field inline">
                                 <label for="pref_mail_smtp_auth" class="tooltip">{_T string="Use SMTP authentication?"}</label>
-                                <span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."}</span>
+                                <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."}"></i>
                                 <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_auth) and $required.pref_mail_smtp_auth eq 1} required="required"{/if}/>
                             </div>
                             <div class="field inline">
                                 <label for="pref_mail_smtp_secure" class="tooltip">{_T string="Use TLS for SMTP?"}</label>
-                                <span class="tip">{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}</span>
+                                <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}"></i>
                                 <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_secure) and $required.pref_mail_smtp_secure eq 1} required="required"{/if}/>
                             </div>
                             <div class="field inline">
                                 <label for="pref_mail_allow_unsecure" class="tooltip">{_T string="Allow unsecure TLS?"}</label>
-                                <span class="tip">{_T string="Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases."}</span>
+                                <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases."}"></i>
                                 <input type="checkbox" name="pref_mail_allow_unsecure" id="pref_mail_allow_unsecure" value="1" {if $pref.pref_mail_allow_unsecure eq 1}checked="checked"{/if}{if isset($required.pref_mail_allow_unsecure) and $required.pref_mail_allow_unsecure eq 1} required="required"{/if}/>
                             </div>
                         </div>
@@ -446,8 +472,11 @@
                     </div>
                     <div class="field mail_sign">
                         <label for="pref_mail_sign" class="tooltip">{_T string="Mail signature"}</label>
-                        <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
-                        <textarea name="pref_mail_sign" id="pref_mail_sign" rows="5">{$pref.pref_mail_sign}</textarea>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label" id="mail_sign">
+                            </div>
+                            <textarea name="pref_mail_sign" id="pref_mail_sign" rows="5">{$pref.pref_mail_sign}</textarea>
+                        </div>
                     </div>
     {/if}
                 </div>{* /column *}
@@ -523,47 +552,51 @@
                 <div class="column">
                     <div class="field">
                         <label for="pref_card_abrev">{_T string="Short Text (Card Center):"}</label>
-                        <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"{if isset($required.pref_card_abrev) and $required.pref_card_abrev eq 1} required="required"{/if}/>
-                        <a
-                            href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_abrev|escape}]}"
-                            class="ui icon button tooltip"
-                        >
-                            <i class="language icon"></i>
-                            <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_abrev}</span>
-                        </a>
+                        <div class="ui action input">
+                            <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"{if isset($required.pref_card_abrev) and $required.pref_card_abrev eq 1} required="required"{/if}/>
+                            <a
+                                href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_abrev|escape}]}"
+                                class="ui icon button tooltip"
+                                data-html="{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_abrev}"
+                            >
+                                <i class="language icon"></i>
+                            </a>
+                        </div>
                         <span class="exemple">{_T string="(10 characters max)"}</span>
                     </div>
                     <div class="field">
                         <label for="pref_card_strip">{_T string="Long Text (Bottom Line):"}</label>
-                        <input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"{if isset($required.pref_card_strip) and $required.pref_card_strip eq 1} required="required"{/if}/>
-                        <a
-                            href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_strip|escape}]}"
-                            class="ui icon button tooltip"
-                        >
-                            <i class="language icon"></i>
-                            <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_strip}</span>
-                        </a>
+                        <div class="ui action input">
+                            <input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"{if isset($required.pref_card_strip) and $required.pref_card_strip eq 1} required="required"{/if}/>
+                            <a
+                                href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_strip|escape}]}"
+                                class="ui icon button tooltip"
+                                data-html="{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_strip}"
+                            >
+                                <i class="language icon"></i>
+                            </a>
+                        </div>
                         <span class="exemple">{_T string="(65 characters max)"}</span>
                     </div>
                     <div class="grouped fields">
                         <div class="field">
                             <label for="pref_card_tcol" class="tooltip">{_T string="Strip Text Color:"}</label>
-                            <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
+                            <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Hexadecimal color notation: #RRGGBB"}"></i>
                             <input type="color" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7"{if isset($required.pref_card_tcol) and $required.pref_card_tcol eq 1} required="required"{/if}/>
                         </div>
                         <div class="field">
                             <label for="pref_card_scol" class="tooltip">{_T string="Active Member Color:"}</label>
-                            <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
+                            <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Hexadecimal color notation: #RRGGBB"}"></i>
                             <input type="color" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7"{if isset($required.pref_card_scol) and $required.pref_card_scol eq 1} required="required"{/if}/>
                         </div>
                         <div class="field">
                             <label for="pref_card_bcol" class="tooltip">{_T string="Board Members Color:"}</label>
-                            <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
+                            <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Hexadecimal color notation: #RRGGBB"}"></i>
                             <input type="color" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7"{if isset($required.pref_card_bcol) and $required.pref_card_bcol eq 1} required="required"{/if}/>
                         </div>
                         <div class="field">
                             <label for="pref_card_hcol" class="tooltip">{_T string="Honor Members Color:"}</label>
-                            <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
+                            <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Hexadecimal color notation: #RRGGBB"}"></i>
                             <input type="color" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7"{if isset($required.pref_card_hcol) and $required.pref_card_hcol eq 1} required="required"{/if}/>
                         </div>
                     </div>{* /group fields *}
@@ -599,8 +632,12 @@
                     </div>
                     <div class="field">
                         <label for="pref_card_year">{_T string="Year:"}</label>
-                        <span class="tip">{_T string="You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline"}</span>
-                        <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline"}"></i>
+                            </div>
+                            <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="pref_card_marges_v">{_T string="Vertical margins:"}</label>
@@ -638,39 +675,50 @@
         <div class="ui bottom attached tab segment" data-tab="security">
                 <div class="field">
                     <label for="pref_password_length" title="{_T string="Minimum password length required for all accounts. Minimal size is 6."}">{_T string="Password length:"}</label>
-                    <span class="tip">{_T string="Minimum password length required for all accounts. Minimal size is 6."}</span>
-                    <input type="number" name="pref_password_length" id="pref_password_length" value="{$pref.pref_password_length}" min="6" size="7" required="required"/>
+                    <div class="ui right corner labeled input">
+                        <div class="ui corner label">
+                            <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Minimum password length required for all accounts. Minimal size is 6."}"></i>
+                        </div>
+                        <input type="number" name="pref_password_length" id="pref_password_length" value="{$pref.pref_password_length}" min="6" size="7" required="required"/>
+                    </div>
                 </div>
-                <div class="field">
+                <div class="field inline">
                     <label for="pref_password_blacklist" title="{_T string="Enable password blacklists"}">{_T string="Enable blacklists:"}</label>
-                    <span class="tip">{_T string="If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns."}</span>
+                    <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns."}"></i>
                     <input type="checkbox" name="pref_password_blacklist" id="pref_password_blacklist" value="1"{if $pref.pref_password_blacklist eq 1} checked="checked"{/if}/>
                 </div>
                 <div class="field">
                     <label for="pref_password_strength" title="{_T string="Enforce password strength"}">{_T string="Password strength:"}</label>
-                    <span class="tip">
-                        {_T string="Enforce minimal password strength for all password."}<br/><br/>
-                        {_T string="Levels are:"}<br/>
-                        <em>* {_T string="None"}</em> {_T string="for no strength enforcement"}<br/>
-                        <em>* {_T string="Weak"}</em> {_T string="require at least one matched rule"}<br/>
-                        <em>* {_T string="Medium"}</em> {_T string="require at least two matched rules"}<br/>
-                        <em>* {_T string="Strong"}</em> {_T string="require at least three matched rules (recommended for most usages)"}<br/>
-                        <em>* {_T string="Very Strong"}</em> {_T string="requires all rules."}<br/><br/>
-                        {_T string="Rules include lower case characters, upper case characters, numbers, and special characters."}<br/><br/>
-                        {_T string="Note that with any enforcement level, user cannot use his personal information (name, login, ...) as password."}
-                    </span>
-                    <select name="pref_password_strength" id="pref_password_strength" class="ui dropdown nochosen">
-                        <option value="{Galette\Core\Preferences::PWD_NONE}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_NONE')} selected="selected"{/if}>{_T string="None (default)"}</option>
-                        <option value="{Galette\Core\Preferences::PWD_WEAK}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_WEAK')} selected="selected"{/if}>{_T string="Weak"}</option>
-                        <option value="{Galette\Core\Preferences::PWD_MEDIUM}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_MEDIUM')} selected="selected"{/if}>{_T string="Medium"}</option>
-                        <option value="{Galette\Core\Preferences::PWD_STRONG}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_STRONG')} selected="selected"{/if}>{_T string="Strong"}</option>
-                        <option value="{Galette\Core\Preferences::PWD_VERY_STRONG}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_VERY_STRONG')} selected="selected"{/if}>{_T string="Very strong"}</option>
-                    </select>
+                    <div class="ui right corner labeled input">
+                        <div class="ui corner label">
+                            <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Enforce minimal password strength for all password."}<br/><br/>
+                                {_T string="Levels are:"}<br/>
+                                <em>* {_T string="None"}</em> {_T string="for no strength enforcement"}<br/>
+                                <em>* {_T string="Weak"}</em> {_T string="require at least one matched rule"}<br/>
+                                <em>* {_T string="Medium"}</em> {_T string="require at least two matched rules"}<br/>
+                                <em>* {_T string="Strong"}</em> {_T string="require at least three matched rules (recommended for most usages)"}<br/>
+                                <em>* {_T string="Very Strong"}</em> {_T string="requires all rules."}<br/><br/>
+                                {_T string="Rules include lower case characters, upper case characters, numbers, and special characters."}<br/><br/>
+                                {_T string="Note that with any enforcement level, user cannot use his personal information (name, login, ...) as password."}"></i>
+                        </div>
+                        <select name="pref_password_strength" id="pref_password_strength" class="ui fluid dropdown nochosen">
+                            <option value="{Galette\Core\Preferences::PWD_NONE}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_NONE')} selected="selected"{/if}>{_T string="None (default)"}</option>
+                            <option value="{Galette\Core\Preferences::PWD_WEAK}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_WEAK')} selected="selected"{/if}>{_T string="Weak"}</option>
+                            <option value="{Galette\Core\Preferences::PWD_MEDIUM}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_MEDIUM')} selected="selected"{/if}>{_T string="Medium"}</option>
+                            <option value="{Galette\Core\Preferences::PWD_STRONG}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_STRONG')} selected="selected"{/if}>{_T string="Strong"}</option>
+                            <option value="{Galette\Core\Preferences::PWD_VERY_STRONG}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_VERY_STRONG')} selected="selected"{/if}>{_T string="Very strong"}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="field">
                     <label for="test_password_strength"" title="{_T string="Test a password with current selected values."}">{_T string="Test a password:"}</label>
-                    <span class="tip">{_T string="Test a password with current selected values."}<br/>{_T string="Do not forget to save your preferences if you're happy with the result ;)"}</span>
-                    <input type="text" id="test_password_strength"/>
+                    <div class="ui right corner labeled input">
+                        <div class="ui corner label">
+                            <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Test a password with current selected values."}<br/>{_T string="Do not forget to save your preferences if you're happy with the result ;)"}"></i>
+                        </div>
+                        <input type="text" id="test_password_strength"/>
+                    </div>
+
                 </div>
         </div>{* /tab segment*}
 {/if}
@@ -732,6 +780,7 @@
                     onChange: function() {
                         $('#smtp_parameters,#smtp_auth').show();
                     }
+                });
 
             $(function(){
                 $('#pref_bool_publicpages').change(function(){

@@ -28,7 +28,7 @@
 <script type="text/javascript">
 
     var _addLegenButton = function(selector) {
-        $(selector).append('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
+        $(selector).append('<a id="btnlegend" class="ui tooltip" data-html="{_T string="Show existing variables" escape="js"}"><i class="circular inverted primary link icon info"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
     };
 
     var _handleLegend = function(selector) {
