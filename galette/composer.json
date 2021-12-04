@@ -59,7 +59,8 @@
         "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "platform-check": false
     },
     "scripts": {
         "post-install-cmd": [
