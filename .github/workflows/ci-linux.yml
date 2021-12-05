@@ -100,7 +100,7 @@ jobs:
 
       - name: Install checker
         working-directory: galette
-        run: composer require maglnet/composer-require-checker
+        run: composer require maglnet/composer-require-checker -W
         if: matrix.php-versions == '7.4'
 
       - name: Check missing symbols
