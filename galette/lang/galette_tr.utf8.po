@@ -4,13 +4,14 @@
 # ibrahimyzr <ibrahimyzr@hotmail.com>, 2021.
 # Ahmet Aylin Öztürk <ahmetaylinozturk@gmail.com>, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021.
+# Boran Roni <boranroniurtekin@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-12-08 12:53+0000\n"
+"Last-Translator: Boran Roni <boranroniurtekin@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -577,29 +578,29 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:409
 msgid "Test message"
-msgstr ""
+msgstr "Test mesajı"
 
 #: ../lib/Galette/Controllers/GaletteController.php:412
 msgid "Galette admin"
-msgstr ""
+msgstr "Galette admini"
 
 #: ../lib/Galette/Controllers/GaletteController.php:415
 msgid "Test message."
-msgstr ""
+msgstr "Test mesajı."
 
 #: ../lib/Galette/Controllers/GaletteController.php:424
 #, php-format
 msgid "An email has been sent to %email"
-msgstr ""
+msgstr "%email'e bir posta gönderildi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:433
 #, php-format
 msgid "No email sent to %email"
-msgstr ""
+msgstr "%email'e posta gönderilmedi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:440
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Geçersiz eposta adresi!"
 
 #: ../lib/Galette/Controllers/GaletteController.php:483
 msgid "Charts"
@@ -631,73 +632,73 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:674
 msgid "Reminders"
-msgstr ""
+msgstr "Hatırlatıcılar"
 
 #: ../lib/Galette/Controllers/GaletteController.php:715
 msgid "No reminder to send for now."
-msgstr ""
+msgstr "Şu anlık herhangi bir hatırlatıcı gönderilmedi."
 
 #: ../lib/Galette/Controllers/GaletteController.php:752
 msgid "There are no member to proceed."
-msgstr ""
+msgstr "Devam edilecek üye yok."
 
 #: ../lib/Galette/Controllers/GaletteController.php:759
 msgid "Reminder has not been sent:"
-msgstr ""
+msgstr "Hatırlatıcı gönderilmedi:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:766
 msgid "Sent reminders:"
-msgstr ""
+msgstr "Hatırlatıcı gönderildi:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:842
 msgid "Download document"
-msgstr ""
+msgstr "Dokümanı indir"
 
 #: ../lib/Galette/Controllers/CrudController.php:289
 #: ../lib/Galette/Controllers/HistoryController.php:208
 #: ../lib/Galette/Controllers/CsvController.php:500
 msgid "Removal has not been confirmed!"
-msgstr ""
+msgstr "Kaldırma onaylanmadı!"
 
 #: ../lib/Galette/Controllers/CrudController.php:299
 msgid "Successfully deleted!"
-msgstr ""
+msgstr "Silme başarılı!"
 
 #: ../lib/Galette/Controllers/CrudController.php:311
 msgid "An error occurred trying to delete :("
-msgstr ""
+msgstr "Silmeye çalışırken bir hata oluştu :("
 
 #: ../lib/Galette/Controllers/PdfController.php:183
 #: ../lib/Galette/Controllers/PdfController.php:255
 #: ../lib/Galette/Controllers/PdfController.php:690
 msgid "Unable to get members list."
-msgstr ""
+msgstr "Üyeler listesi alınamadı."
 
 #: ../lib/Galette/Controllers/PdfController.php:342
 msgid "Attendance sheet configuration"
-msgstr ""
+msgstr "Yoklama belgesi ayarları"
 
 #: ../lib/Galette/Controllers/PdfController.php:378
 #: ../lib/Galette/Controllers/PdfController.php:397
 msgid "No member selected to generate attendance sheet"
-msgstr ""
+msgstr "Yoklama listesi için üye seçilmedi"
 
 #: ../lib/Galette/Controllers/PdfController.php:405
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:142
 msgid "Attendance sheet"
-msgstr ""
+msgstr "Yoklama belgesi"
 
 #: ../lib/Galette/Controllers/PdfController.php:488
 msgid "Unable to get groups list."
-msgstr ""
+msgstr "Grupların listeleri alınamadı."
 
 #: ../lib/Galette/Controllers/PdfController.php:546
 msgid "PDF models"
-msgstr ""
+msgstr "PDF modelleri"
 
 #: ../lib/Galette/Controllers/PdfController.php:574
 msgid "Missing PDF model type!"
-msgstr ""
+msgstr "PDF model tipi eksik!"
 
 #: ../lib/Galette/Controllers/PdfController.php:605
 msgid "Model has been successfully stored!"
@@ -709,14 +710,14 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:650
 msgid "Invalid link!"
-msgstr ""
+msgstr "Geçersiz link!"
 
 #: ../lib/Galette/Controllers/AuthController.php:88
 #: ../lib/Galette/Controllers/AuthController.php:148
 #: ../lib/Galette/Features/Replacements.php:325
 #: ../lib/Galette/Features/Replacements.php:365
 msgid "Login"
-msgstr ""
+msgstr "Üye Girişi"
 
 #: ../lib/Galette/Controllers/AuthController.php:114
 msgid "You must provide both login and password."
@@ -724,19 +725,19 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:143
 msgid "Your password is too weak! Please consider updating it."
-msgstr ""
+msgstr "Şifreniz çok zayıf! Lütfen güçlendirmeyi deneyin."
 
 #: ../lib/Galette/Controllers/AuthController.php:151
 msgid "Login failed."
-msgstr ""
+msgstr "Giriş yapılamadı."
 
 #: ../lib/Galette/Controllers/AuthController.php:152
 msgid "Authentication failed"
-msgstr ""
+msgstr "Kimlik doğrulama başarısız"
 
 #: ../lib/Galette/Controllers/AuthController.php:168
 msgid "Log off"
-msgstr ""
+msgstr "Çıkış yap"
 
 #: ../lib/Galette/Controllers/AuthController.php:193
 #, php-format
@@ -755,26 +756,27 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:261
 #: ../lib/Galette/Controllers/AuthController.php:462
 msgid "Password recovery"
-msgstr ""
+msgstr "Şifremi unuttum"
 
 #: ../lib/Galette/Controllers/AuthController.php:293
 msgid "Email sent is disabled in the preferences. Ask galette admin"
-msgstr ""
+msgstr "Eposta gönderme kapalı. Galette admini ile iletişime geçin"
 
 #: ../lib/Galette/Controllers/AuthController.php:352
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "Şifrenizi sıfırlamak için gerekli link %s adresine gönderilmiştir."
 
 #: ../lib/Galette/Controllers/AuthController.php:356
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
+"Adresinize bir eposta gönderildi. <br> Lütfen gelen kutunuzu kontrol edin."
 
 #: ../lib/Galette/Controllers/AuthController.php:358
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Üyeye bir eposta gönderildi."
 
 #: ../lib/Galette/Controllers/AuthController.php:369
 #, php-format
