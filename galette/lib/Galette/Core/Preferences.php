@@ -1237,7 +1237,7 @@ class Preferences
         $types = $this->getCoreRegisteredTypes() + $social->getSystemTypes(false);
 
         foreach ($types as $type) {
-            $s_patterns['asso_social_' . $type] = [
+            $s_patterns['asso_social_' . strtolower($type)] = [
                 'title' => $social->getSystemType($type),
                 'pattern' => '/{ASSO_SOCIAL_' . strtoupper($type) . '}/'
             ];
