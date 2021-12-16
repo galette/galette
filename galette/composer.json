@@ -59,7 +59,8 @@
         "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "platform-check": false
     },
     "scripts": {
         "post-install-cmd": [
@@ -67,7 +68,8 @@
             "patch -d vendor/smarty/smarty/ -p3 < ../patches/smarty-php81.patch",
             "patch -d vendor/mathmarques/smarty-view/ -p3 < ../patches/smarty-view-php81.patch",
             "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch",
-            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch"
+            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
+            "patch -d vendor/soundasleep/html2text/ -p3 < ../patches/html2text-php80.patch"
         ]
     }
 }

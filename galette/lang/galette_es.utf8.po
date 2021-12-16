@@ -27,13 +27,14 @@
 # felipe <felipecandia@live.com>, 2021.
 # noelia <zizizhuji1@gmail.com>, 2021.
 # KasukeLp <kasukelp23@yahoo.com>, 2021.
+# Germe the fur star <FOSSgerme.deb@tuta.io>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-12-03 01:51+0000\n"
+"Last-Translator: Germe the fur star <FOSSgerme.deb@tuta.io>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -472,11 +473,9 @@ msgid "- Unknown payment type!"
 msgstr "- ¡Tipo de pago desconocido!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No contribution was selected, please check at least one."
 msgstr ""
-"No se ha seleccionado ningún miembro, por favor marque al menos un nombre."
+"No se ha seleccionado ninguna contribución, por favor marque al menos una."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
@@ -1376,7 +1375,7 @@ msgstr "%name de la asociación %status"
 
 #: ../lib/Galette/Core/Preferences.php:1109
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 #: ../lib/Galette/Core/Preferences.php:1147
 msgid "Current cards configuration may exceed page width!"
@@ -1397,7 +1396,7 @@ msgstr "Informacion principal"
 
 #: ../lib/Galette/Core/Preferences.php:1191
 msgid "Social networks"
-msgstr ""
+msgstr "Redes sociales"
 
 #: ../lib/Galette/Core/I18n.php:221
 msgid "Unknown lang (%lang)"
@@ -1998,10 +1997,9 @@ msgid "Form entry for dynamic field \"%s\""
 msgstr "Entrada para el campo dinámico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:136
-#, fuzzy, php-format
-#| msgid "Label for dynamic field \"%s\""
+#, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr "Etiqueta para el campo dinámico \"%s\""
+msgstr "Valor para el campo dinámico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:203
 msgid "Your organisation name"
@@ -2048,7 +2046,7 @@ msgstr "ID de miembro"
 #: ../lib/Galette/Features/Replacements.php:257
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Member number"
-msgstr ""
+msgstr "Número de miembros"
 
 #: ../lib/Galette/Features/Replacements.php:265
 #: ../lib/Galette/Features/Replacements.php:357
@@ -2368,11 +2366,11 @@ msgstr "Inactivo"
 
 #: ../lib/Galette/Entity/Adherent.php:1961
 msgid " (%age years old)"
-msgstr ""
+msgstr " (%age años)"
 
 #: ../lib/Galette/Entity/Adherent.php:2034
 msgid "Duplicated from %name (%id)"
-msgstr ""
+msgstr "Duplicado de %name (%id)"
 
 #: ../lib/Galette/Entity/Transaction.php:117
 msgid "Date:"
@@ -2443,7 +2441,7 @@ msgstr "Comentarios:"
 
 #: ../lib/Galette/Entity/Contribution.php:171
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: ../lib/Galette/Entity/Contribution.php:175
 msgid "Date of contribution:"
@@ -2458,10 +2456,8 @@ msgid "End date of membership:"
 msgstr "Fecha de finalización de membresía:"
 
 #: ../lib/Galette/Entity/Contribution.php:184
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "Transacción"
+msgstr "ID de transacción"
 
 #: ../lib/Galette/Entity/Contribution.php:190
 msgid "Membership extension:"
@@ -2545,11 +2541,11 @@ msgstr "Ajustes del correo"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:349
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: ../lib/Galette/Entity/Social.php:350
 msgid "Facebook"
@@ -2557,7 +2553,7 @@ msgstr "Facebook"
 
 #: ../lib/Galette/Entity/Social.php:351
 msgid "LinkedIn"
-msgstr ""
+msgstr "LinkedIn"
 
 #: ../lib/Galette/Entity/Social.php:352
 msgid "Viadeo"

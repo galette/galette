@@ -105,7 +105,7 @@ class I18n
                         $short_key = explode('_', $lang)[0];
                         if ($short_key == $short_locale) {
                             $dlang = $lang;
-                            break;
+                            break 2;
                         }
                     }
                 }
