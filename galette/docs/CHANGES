@@ -1,6 +1,12 @@
 Changes
 -------
 
+0.9.6 -> 0.9.6.1
+- Fix language detection priority not respected
+- No composer platform check
+- Fix html2text for php 8
+- Fix social networks replacements
+
 0.9.5.2 -> 0.9.6
 - Social networks/contact externalization
 - Add member number
