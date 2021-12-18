@@ -32,7 +32,7 @@
             <div class="header">{_T string="- WARNING -"}</div>
             <ul>
                 {foreach from=$warnings item=warning}
-                    <li>{$error}</li>
+                    <li>{$warning}</li>
                 {/foreach}
             </ul>
         </div>
