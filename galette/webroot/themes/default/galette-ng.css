@@ -341,6 +341,11 @@ nav.item.buttons a.ui.button:hover {
   color: rgba(107, 107, 107, 1);
 }
 
+.ui.menu.bgcolor .item {
+  color: #636B70;
+  background-color: rgba(255,255,255,.6);
+}
+
 .ui.menu .item {
   color: rgba(255, 255, 255, 0.8);
 }
@@ -357,7 +362,6 @@ aside .ui.menu .item {
 .ui.menu .active.item:hover, .ui.vertical.menu .item:hover {
   background-color: #ffb619;
   color: white;
-
 }
 
 .ui.attached.segment {
