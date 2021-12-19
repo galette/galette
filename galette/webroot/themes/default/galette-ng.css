@@ -31,9 +31,9 @@ body.front-page .ui.message {
 
 .bgcolor,
 .ui.bgcolor {
-   background-color: #ddddff !important;
+   /** TODO: external image to put locally */
+   background: url(https://doc.galette.eu/fr/master/_static/images/bg.png) no-repeat rgba(99, 107, 112, .3) !important;
    border: none!important;
-  /*background-color: rgba(99, 107, 112, .8) !important;*/
 }
 
 h1.ui.bgcolor {
