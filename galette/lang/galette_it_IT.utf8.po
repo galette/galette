@@ -9,7 +9,7 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
-# Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020.
+# Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020, 2021.
 # Daeniem Loidlan <daeniem@gmail.com>, 2020.
 # Sylphystia <yuidirnt@gmail.com>, 2020.
 # lesion <lesion@autistici.org>, 2020.
@@ -26,15 +26,15 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-12-20 22:52+0000\n"
+"Last-Translator: Giacomo Alessandroni <g.alessandroni@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -726,7 +726,7 @@ msgstr "Il modello non è stato salvato :("
 
 #: ../lib/Galette/Controllers/PdfController.php:650
 msgid "Invalid link!"
-msgstr "Link invalido!"
+msgstr "Link non valido!"
 
 #: ../lib/Galette/Controllers/AuthController.php:88
 #: ../lib/Galette/Controllers/AuthController.php:148
@@ -960,7 +960,7 @@ msgstr "Traduci etichette"
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
-"Nessuna traduzione per '%s'!<br>Per favore compila ed invia il modulo qui "
+"Nessuna traduzione per '%s'!<br>Per favore compila e invia il modulo qui "
 "sopra per crearla."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:192
@@ -1138,7 +1138,7 @@ msgstr "%version script è stato eseguito :)"
 
 #: ../lib/Galette/Core/Install.php:695
 msgid "Unable to run %version update script :("
-msgstr "Impossibile caricare lo script di aggiornamento per la %version :("
+msgstr "Impossibile caricare lo script di aggiornamento %version :("
 
 #: ../lib/Galette/Core/Install.php:1043
 msgid "Write configuration file"
@@ -1196,7 +1196,7 @@ msgstr "Quanto fa %1$s più %2$s?"
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr "Quanto fa %1$s aggiunto a %2$s?"
+msgstr "Quanto fa %1$s più %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, php-format
@@ -1280,11 +1280,11 @@ msgstr "- Devi indicare il server SMTP che vuoi usare!"
 
 #: ../lib/Galette/Core/Preferences.php:552
 msgid "- You must provide a login for SMTP authentication."
-msgstr ""
+msgstr "- È necessario eseguire il login per l'autenticazione SMTP."
 
 #: ../lib/Galette/Core/Preferences.php:558
 msgid "- You must provide a password for SMTP authentication."
-msgstr ""
+msgstr "- È necessario fornire una password per l'autenticazione SMTP."
 
 #: ../lib/Galette/Core/Preferences.php:570
 msgid ""
@@ -1294,7 +1294,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:579
 msgid "- Offering months is only compatible with beginning of membership."
-msgstr ""
+msgstr "- L'offerta di mesi è compatibile solo con la prima iscrizione."
 
 #: ../lib/Galette/Core/Preferences.php:588
 #: ../lib/Galette/Entity/Adherent.php:1172
@@ -1332,7 +1332,7 @@ msgstr "- I numeri e le misure devono essere interi!"
 
 #: ../lib/Galette/Core/Preferences.php:744
 msgid "- Invalid number of months of membership extension."
-msgstr ""
+msgstr "- Numero di mesi non valido per l'estensione dell'affiliazione."
 
 #: ../lib/Galette/Core/Preferences.php:750
 msgid "- Invalid format of beginning of membership."
@@ -1340,7 +1340,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:754
 msgid "- Invalid date for beginning of membership."
-msgstr ""
+msgstr "- Data non valida per l'inizio dell'iscrizione."
 
 #: ../lib/Galette/Core/Preferences.php:760
 msgid "- Invalid number of offered months."
@@ -1356,33 +1356,36 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:1109
 msgid "Never"
-msgstr ""
+msgstr "Mai"
 
 #: ../lib/Galette/Core/Preferences.php:1147
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
+"La configurazione attuale delle schede può superare la larghezza della "
+"pagina!"
 
 #: ../lib/Galette/Core/Preferences.php:1158
 msgid "Current cards configuration may exceed page height!"
 msgstr ""
+"La configurazione attuale delle schede può superare l'altezza della pagina!"
 
 #: ../lib/Galette/Core/Preferences.php:1184
 #: ../lib/Galette/Features/Replacements.php:784
 msgid "Main information"
-msgstr ""
+msgstr "Informazioni principali"
 
 #: ../lib/Galette/Core/Preferences.php:1191
 msgid "Social networks"
-msgstr ""
+msgstr "Social network"
 
 #: ../lib/Galette/Core/I18n.php:221
 msgid "Unknown lang (%lang)"
-msgstr ""
+msgstr "Lingua sconosciuta (%lang)"
 
 #: ../lib/Galette/Core/CheckModules.php:97
 #, php-format
 msgid "'%s' module"
-msgstr ""
+msgstr "modulo '%s'"
 
 #: ../lib/Galette/Core/CheckModules.php:103
 msgid "either 'mysql' or 'pgsql' PDO driver"
@@ -1398,23 +1401,23 @@ msgstr "Il plugin non può essere disattivato."
 
 #: ../lib/Galette/Core/Plugins.php:298 ../lib/Galette/Core/Plugins.php:302
 msgid "Cannot activate plugin."
-msgstr ""
+msgstr "Non è possibile attivare il plugin."
 
 #: ../lib/Galette/Core/Plugins.php:722 ../lib/Galette/Core/Plugins.php:782
 msgid "Module does not exists!"
-msgstr ""
+msgstr "Il modulo non esiste!"
 
 #: ../lib/Galette/Core/Plugins.php:779
 msgid "File not found!"
-msgstr ""
+msgstr "File non trovato!"
 
 #: ../lib/Galette/Core/Picture.php:857
 msgid "An SQL error has occurred."
-msgstr ""
+msgstr "Si è verificato un errore SQL."
 
 #: ../lib/Galette/Repository/Members.php:330
 msgid "Member Picture deleted"
-msgstr ""
+msgstr "Immagine di profilo cancellata"
 
 #: ../lib/Galette/Repository/Members.php:415
 msgid "Delete members cards, transactions and dues"
@@ -1422,7 +1425,7 @@ msgstr ""
 
 #: ../lib/Galette/Repository/Members.php:430
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
-msgstr ""
+msgstr "Impossibile rimuovere un membro che ha ancora dipendenze (mailing, ...)"
 
 #: ../lib/Galette/Repository/Members.php:1471
 #: ../lib/Galette/Repository/Members.php:1475
@@ -1490,96 +1493,96 @@ msgstr ""
 
 #: ../lib/Galette/Repository/Contributions.php:530
 msgid "Contributions deleted (%list)"
-msgstr ""
+msgstr "Contributi cancellati (%list)"
 
 #: ../lib/Galette/Util/Password.php:87
 msgid "Password is blacklisted!"
-msgstr ""
+msgstr "La password è nella blacklist!"
 
 #: ../lib/Galette/Util/Password.php:97
 #, php-format
 msgid "Too short (%lenght characters minimum, %count found)"
-msgstr ""
+msgstr "Troppo corto (almeno %lenght caratteri, trovati: %count)"
 
 #: ../lib/Galette/Util/Password.php:109
 msgid "Do not use any of your personal information as password!"
-msgstr ""
+msgstr "Non utilizzare informazioni personali nella password!"
 
 #: ../lib/Galette/Util/Password.php:150
 msgid "Does not contains lowercase letters"
-msgstr ""
+msgstr "Non contiene lettere minuscole"
 
 #: ../lib/Galette/Util/Password.php:154
 msgid "Does not contains uppercase letters"
-msgstr ""
+msgstr "Non contiene lettere maiuscole"
 
 #: ../lib/Galette/Util/Password.php:157
 msgid "Does not contains letters"
-msgstr ""
+msgstr "Non contiene lettere"
 
 #: ../lib/Galette/Util/Password.php:163
 msgid "Does not contains numbers"
-msgstr ""
+msgstr "Non contiene numeri"
 
 #: ../lib/Galette/Util/Password.php:169
 msgid "Does not contains special characters"
-msgstr ""
+msgstr "Non contiene caratteri speciali"
 
 #: ../lib/Galette/Util/FakeData.php:104
 msgid "Photo has not been stored!"
-msgstr ""
+msgstr "La fotografia è stata memorizzata!"
 
 #: ../lib/Galette/Util/FakeData.php:111
 msgid "Photo has not been copied!"
-msgstr ""
+msgstr "La fotografia non è stata copiata!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:519
 msgid "User, read/write"
-msgstr ""
+msgstr "Utente, lettura/scrittura"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:520
 msgid "Staff member"
-msgstr ""
+msgstr "Membri dello staff"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Administrator"
-msgstr ""
+msgstr "Amministratore"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 msgid "Group manager"
-msgstr ""
+msgstr "Gruppo manager"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
 msgid "User, read only"
-msgstr ""
+msgstr "Utente, sola lettura"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:535
 msgid "Members"
-msgstr ""
+msgstr "Membri"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:536
 msgid "Contributions"
-msgstr ""
+msgstr "Contributi"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:537
 msgid "Transactions"
-msgstr ""
+msgstr "Transazioni"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:611
 msgid "Missing required field name!"
-msgstr ""
+msgstr "Campo nome obbligatorio mancante!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:620
 msgid "Missing required field permissions!"
-msgstr ""
+msgstr "Campo permessi obbligatorio mancante!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:625
 msgid "Unknown permission!"
-msgstr ""
+msgstr "Permesso sconosciuto!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:631
 msgid "Missing required form!"
-msgstr ""
+msgstr "Manca il modulo richiesto!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:636
 msgid "Unknown form!"
@@ -1587,11 +1590,11 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:644
 msgid "- Field name already used."
-msgstr ""
+msgstr "- Campo nome già usato."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:758
 msgid "An error occurred storing the field."
-msgstr ""
+msgstr "Si è verificato un errore memorizzando il campo."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:779
 msgid "An error occurred creating field values table"
@@ -1603,19 +1606,19 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1023
 msgid "separator"
-msgstr ""
+msgstr "separatore"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1024
 msgid "free text"
-msgstr ""
+msgstr "testo libero"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1025
 msgid "single line"
-msgstr ""
+msgstr "singola linea"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1026
 msgid "choice"
-msgstr ""
+msgstr "scegli"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1027
 msgid "date"
@@ -1623,7 +1626,7 @@ msgstr "data"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1028
 msgid "boolean"
-msgstr ""
+msgstr "booleano"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1029
 msgid "file"
@@ -1635,14 +1638,14 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
-msgstr ""
+msgstr "Membri per gruppo"
 
 #: ../lib/Galette/IO/PdfGroups.php:109
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 #: ../lib/Galette/IO/PdfMembersLabels.php:86
 #: ../lib/Galette/IO/PdfMembersCards.php:105
 msgid "Generated by Galette"
-msgstr ""
+msgstr "Generato da Galette"
 
 #: ../lib/Galette/IO/PdfGroups.php:169
 msgid "Managers:"
@@ -1726,15 +1729,15 @@ msgstr "Firma"
 
 #: ../lib/Galette/IO/Charts.php:142 ../lib/Galette/Filters/MembersList.php:298
 msgid "Staff members"
-msgstr ""
+msgstr "Membri dello staff"
 
 #: ../lib/Galette/IO/Charts.php:180
 msgid "Due free"
-msgstr ""
+msgstr "Importo libero"
 
 #: ../lib/Galette/IO/Charts.php:198
 msgid "Never contribute"
-msgstr ""
+msgstr "Mai contribuito"
 
 #: ../lib/Galette/IO/Charts.php:222
 msgid "Impending due dates"
@@ -1766,12 +1769,12 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:87
 msgid "Labels"
-msgstr ""
+msgstr "Etichetta"
 
 #: ../lib/Galette/IO/CsvIn.php:232
 #, php-format
 msgid "File %filename cannot be open!"
-msgstr ""
+msgstr "Il file %filename non può essere aperto!"
 
 #: ../lib/Galette/IO/CsvIn.php:280
 msgid ""
@@ -4333,12 +4336,12 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:6
 msgid "General"
-msgstr ""
+msgstr "Generale"
 
 #: ../templates/default/preferences.tpl:8
 #: ../templates/default/saved_searches.tpl:11
 msgid "Parameters"
-msgstr ""
+msgstr "Parametri"
 
 #: ../templates/default/preferences.tpl:9
 #: ../templates/default/preferences.tpl:231
@@ -4347,18 +4350,18 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:10
 msgid "E-Mail"
-msgstr ""
+msgstr "Email"
 
 #: ../templates/default/preferences.tpl:14
 msgid "Security"
-msgstr ""
+msgstr "Sicurezza"
 
 #: ../templates/default/preferences.tpl:17
 #: ../templates/default/gestion_adherents.tpl:208
 #: ../templates/default/gestion_adherents.tpl:431
 #: ../templates/default/gestion_adherents.tpl:432
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: ../templates/default/preferences.tpl:21
 msgid "General information"
