@@ -9,6 +9,11 @@ body {
 
 body.pushable {
   background: #fff;
+  color: #636B70;
+}
+
+.ui.header {
+  color: #636B70;
 }
 
 body.pushable:not(.loggedin) > .pusher {
@@ -27,11 +32,12 @@ body.front-page .ui.message {
 .bgcolor,
 .ui.bgcolor {
    background-color: #ddddff !important;
+   border: none!important;
   /*background-color: rgba(99, 107, 112, .8) !important;*/
- }
+}
 
 h1.ui.bgcolor {
-  background-color: rgba(255, 182, 25, 0.5) !important;
+  background-color: rgba(255, 182, 25, 1) !important;
 }
 
 /*.toc.bgcolor > div{
@@ -331,4 +337,36 @@ nav.item.buttons a.ui.button.disabled, nav.item.buttons div.ui.button.disabled {
 nav.item.buttons a.ui.button:hover {
   background-color: rgba(255, 182, 25, 0.9);
   color: rgba(107, 107, 107, 1);
+}
+
+.ui.menu .item {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+aside .ui.menu .item {
+  color: #636b70;
+}
+
+.ui.menu a.item:hover, .ui.menu .active.item, .ui.vertical.menu .active.item {
+  background-color: #ffb619;
+  border-color: #ffb619;
+}
+
+.ui.menu .active.item:hover, .ui.vertical.menu .item:hover {
+  background-color: #ffb619;
+  color: white;
+
+}
+
+.ui.attached.segment {
+  border-color: #636b70;
+}
+
+.ui.menu {
+  background-color: #636B70;
+  border: none!important;
+}
+
+.ui.attached.tab.inverted.red.segment.segment.segment.segment.segment {
+  background-color: rgba(219, 40, 40, .7);
 }
