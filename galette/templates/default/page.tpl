@@ -34,7 +34,7 @@
                         </div>
                     </div>
 {/if}
-                    <h1 class="ui block center aligned header bgcolor" style="position: relative">
+                    <h1 class="ui block center aligned header" style="position: relative">
                         {block name="page_title"}{$page_title}{/block}
             {if $cur_route neq 'mailing' and $existing_mailing eq true}
                         <a
