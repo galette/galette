@@ -44,7 +44,7 @@
                         </div>
                     </div>
 {/if}
-                    <h1 class="ui block center aligned header bgcolor">{$page_title}</h1>
+                    <h1 class="ui block center aligned header">{$page_title}</h1>
                     {*include file="global_messages.tpl"*}
                     {block name="content"}{_T string="Public page content"}{/block}
                     {include file="footer.tpl"}

@@ -1,4 +1,4 @@
-                <aside class="ui computer only toc bgcolor">
+                <aside class="ui computer only toc">
                     <div class="ui basic center aligned segment">
                         <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{$preferences->pref_nom}" class="icon"/>
                         <div class="ui header">
