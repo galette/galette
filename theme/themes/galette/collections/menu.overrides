@@ -1,0 +1,14 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+.ui.tabular.menu .item {
+  background: @solidBorderColor;
+  color: @tabularTextColor;
+}
+
+.ui.tabular.menu .item:hover {
+  background-color: @galetteColor;
+  border-color: @galetteColor;
+  color: @tabularHoveredTextColor;
+}

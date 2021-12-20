@@ -1,0 +1,10 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+@fontName           : 'PT Sans';
+@primaryColor       : @galetteColor;
+@textColor          : #636B70;
+@galetteColor       : #ffb619;
+@solidBorderColor   : #636b70;
+@asideTocBackground : #636b70 url(themes/galette/assets/images/bg.png) no-repeat;
