@@ -8,10 +8,10 @@
       "themes": "src/themes/"
     },
     "output": {
-      "packaged": "../galette/webroot/assets/semantic/",
-      "uncompressed": "dist/components/",
-      "compressed": "dist/components/",
-      "themes": "../galette/webroot/assets/semantic/themes/"
+      "packaged": "../galette/webroot/assets/ui/",
+      "uncompressed": "../galette/webroot/assets/ui/components/",
+      "compressed": "../galette/webroot/assets/ui/components/",
+      "themes": "../galette/webroot/assets/ui/themes/"
     },
     "clean": "dist/"
   },
