@@ -1,4 +1,4 @@
-        <header id="top-navbar" class="ui large top fixed menu bgcolor">
+        <header id="top-navbar" class="ui large top fixed menu">
             <div class="ui fluid container">
                 <a class="toc item">
                     <i class="sidebar icon"></i>

@@ -4,7 +4,6 @@ html {
 
 body {
   font-size: 1rem;
-  /*background-color: #6b6b6b;*/
 }
 
 body.pushable {
@@ -30,21 +29,6 @@ body.front-page .ui.message {
 .sr-only {
   display: none;
 }
-
-.bgcolor,
-.ui.bgcolor {
-   /** TODO: external image to put locally */
-   background: url(images/bg.png) no-repeat rgba(99, 107, 112, .3) !important;
-   border: none!important;
-}
-
-h1.ui.bgcolor {
-  background-color: rgba(255, 182, 25, 1) !important;
-}
-
-/*.toc.bgcolor > div{
-  background-color: white !important;
-}*/
 
 .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header::before {
   content: none;
@@ -309,37 +293,6 @@ footer .ui.horizontal.list > .item{
     padding: 10px;
 }
 
-/* Galette theme
- */
-.ui.styled.accordion .title {
-  background-color: rgba(255, 182, 25, 0.3  );
-}
-.ui.styled.accordion .active.title {
-  background-color: rgba(255, 182, 25, 0.5);
-}
-
-.ui.styled.accordion {
-  box-shadow: 0 1px 2px 0 rgba(255,182,25,1),0 0 0 1px rgba(255,182,25,1);
-}
-
-nav.item.buttons {
-  margin-top: .5em;
-}
-
-nav.item.buttons a.ui.button {
-  background-color: rgba(255, 182, 25, 0.7);
-  color: rgba(107, 107, 107, .8);
-}
-
-nav.item.buttons a.ui.button.disabled, nav.item.buttons div.ui.button.disabled {
-  background-color: rgba(255, 182, 25, 0.7);
-  color: rgba(107, 107, 107, .8);
-}
-
-nav.item.buttons a.ui.button:hover {
-  background-color: rgba(255, 182, 25, 0.9);
-  color: rgba(107, 107, 107, 1);
-}
 
 .ui.menu.bgcolor .item {
   color: #636B70;
