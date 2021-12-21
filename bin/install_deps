@@ -5,3 +5,4 @@ composer install --optimize-autoloader --ignore-platform-reqs
 cd ..
 npm install
 npm run-script gulp
+npm run-script gulp-ui build
