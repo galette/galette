@@ -1,7 +1,9 @@
 /*******************************
-    User Variable Overrides
+    Galette Variable Overrides
 *******************************/
 
 @tabularBorderColor: @solidBorderColor;
 @tabularTextColor: @white;
-@tabularActiveBackground: @galetteColor;
+@tabularActiveBackground: @lightPrimaryColor;
+@tabularActiveColor: @textColor;
+@tabularHoveredTextColor: @white;

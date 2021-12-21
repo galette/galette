@@ -1,7 +1,8 @@
 /*******************************
-         Site Overrides
+         Galette Overrides
 *******************************/
 
+#top-navbar,
 aside.computer.toc {
-  background: @asideTocBackground;
+  background: @galetteNavBackground;
 }

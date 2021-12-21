@@ -1,14 +1,58 @@
 /*******************************
-         Site Overrides
+         Galette Overrides
 *******************************/
+
+
+.ui.fixed.menu .item {
+  background: rgba(255,255,255,.6);
+}
+
+.ui.vertical.menu {
+  border: 1px solid @solidBorderColor;
+}
+
+/*.ui.vertical.menu .item:hover,*/
+.ui.menu:not(.tabular) .active.item,
+.ui.menu:not(.tabular) .active.item:hover,
+.ui.menu:not(.tabular) a.item:hover,
+.ui.menu:not(.tabular) .dropdown.item:hover, {
+  background: @primaryColor;
+  color: @white;
+}
+
+/*.ui.accordion.vertical .item:hover .title:not(.ui),*/
+.ui.accordion.vertical a.item:hover .title:not(.ui),
+.ui.accordion.vertical .active .title:not(.ui),
+.ui.menu:not(.tabular) .active.item i,
+.ui.menu:not(.tabular) a:hover i {
+  color: @white;
+}
+
+.accordion.vertical div.item:hover .title:not(.ui),
+.accordion.vertical div.item:hover i {
+  color: @primaryColor;
+}
+
+.ui.menu:not(.tabular) .ui.basic.primary.button {
+  box-shadow: 0 0 0 1px @textColor inset;
+  color: @textColor;
+}
 
 .ui.tabular.menu .item {
   background: @solidBorderColor;
   color: @tabularTextColor;
 }
 
-.ui.tabular.menu .item:hover {
-  background-color: @galetteColor;
-  border-color: @galetteColor;
+.ui.tabular.menu .item:not(.active):hover {
+  background-color: @primaryColor;
+  border-color: @primaryColor;
   color: @tabularHoveredTextColor;
+}
+
+.ui.tabular.menu .active.item {
+  border-radius: 0 !important;
+}
+
+.ui.top.attached.menu > .item:first-child {
+  border-radius: 0;
 }

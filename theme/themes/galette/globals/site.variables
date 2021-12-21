@@ -1,10 +1,25 @@
 /*******************************
-     User Global Variables
+     Galette Global Variables
 *******************************/
 
-@fontName           : 'PT Sans';
-@primaryColor       : @galetteColor;
-@textColor          : #636B70;
-@galetteColor       : #ffb619;
-@solidBorderColor   : #636b70;
-@asideTocBackground : #636b70 url(themes/galette/assets/images/bg.png) no-repeat;
+@fontName                   : 'PT Sans';
+
+@galetteNavBackground       : rgba(99, 107, 112, .3) url(themes/galette/assets/images/bg.png) no-repeat;
+@galetteColor               : #ffb619;
+@lightGaletteColor          : #ffda8b;
+
+@grey                       : #6b6b6b;
+
+@primaryColor               : @galetteColor;
+@secondaryColor             : @grey;
+
+@lightPrimaryColor          : @lightGaletteColor;
+@lightSecondaryColor        : @lightGrey;
+
+@textColor                  : @grey;
+
+@solidBorderColor           : @textColor;
+
+@inputColor                 : @textColor;
+@inputPlaceholderColor      : lighten(@inputColor, 25);
+@inputPlaceholderFocusColor : lighten(@inputColor, 10);
