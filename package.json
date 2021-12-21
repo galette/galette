@@ -11,7 +11,8 @@
     "build-dist": "webpack --mode=production",
     "watch": "webpack --watch",
     "clean": "rm -rf ./webroot/js/libs/",
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "gulp-ui": "cp -r ./theme/theme* ./semantic/src && cd semantic && gulp"
   },
   "repository": {
     "type": "git",
