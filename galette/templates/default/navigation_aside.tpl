@@ -1,7 +1,7 @@
                 <aside class="ui computer only toc">
                     <div class="ui basic center aligned segment">
                         <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{$preferences->pref_nom}" class="icon"/>
-                        <div class="ui header">
+                        <div class="ui block huge brand header">
                             {$preferences->pref_nom}
                             {if $preferences->pref_slogan}<div class="sub tiny header">{$preferences->pref_slogan}</div>{/if}
                         </div>
