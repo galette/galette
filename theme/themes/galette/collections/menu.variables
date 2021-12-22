@@ -2,8 +2,10 @@
     Galette Variable Overrides
 *******************************/
 
+@border: 1px solid @solidBorderColor;
+
 @tabularBorderColor: @solidBorderColor;
 @tabularTextColor: @white;
 @tabularActiveBackground: @lightPrimaryColor;
-@tabularActiveColor: @textColor;
-@tabularHoveredTextColor: @white;
+@tabularActiveColor: darken(@textColor, 15);
+@tabularHoveredTextColor: darken(@textColor, 15);
