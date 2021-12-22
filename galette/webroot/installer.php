@@ -217,10 +217,10 @@ header('Content-Type: text/html; charset=UTF-8');
         <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
-        <link rel="stylesheet" type="text/css" href="/assets/semantic/semantic.min.css" />
+        <link rel="stylesheet" type="text/css" href="/assets/ui/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="/themes/default/galette-ng.css" />
         <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
-        <script type="text/javascript" src="/assets/semantic/semantic.min.js"></script>
+        <script type="text/javascript" src="/assets/ui/semantic.min.js"></script>
         <script type="text/javascript" src="/js/common-ng.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
