@@ -20,7 +20,7 @@
         <div class="ui simple dropdown item">
             <i class="dropdown icon"></i>
             ...
-            <div class="menu">
+            <div class="left menu">
                 {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
                     <a
                             href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
