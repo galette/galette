@@ -488,7 +488,7 @@
                     </div>
                 </div>
             <div class="ui basic center aligned segment">
-                <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                <input type="submit" class="ui primary button" value="{_T string="Filter"}"/>
                 <input type="hidden" name="advanced_filtering" value="true" />
                 <input type="submit" name="clear_adv_filter" class="ui button" value="{_T string="Clear filter"}"/>
                 {include file="forms_types/csrf.tpl"}

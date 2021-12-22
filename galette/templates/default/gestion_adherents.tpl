@@ -122,7 +122,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </div>
 {else}
             <div class="field">
-                <span class="ui blue ribbon label">{_T string="Advanced search mode"}</span>
+                <span class="ui primary ribbon label">{_T string="Advanced search mode"}</span>
                 <button type="submit" class="tooltip action ui button" title="{_T string="Change search criteria"}" name="adv_criteria">
                     <i class="edit icon"></i>
                     {_T string="Change criteria"}
@@ -337,7 +337,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $nb_members != 0 && ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff())}
         <div class="ui bottom attached segment">
             <div class="ui horizontal list">
-                <span class="ui blue ribbon label">{_T string="For the selection:"}</span>
+                <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
     {if $login->isAdmin() or $login->isStaff()}
                 <div class="item">
                     <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
