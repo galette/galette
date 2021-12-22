@@ -642,9 +642,9 @@ input#btnvalid {
     padding-left:2.4em!important;
 }
 
-footer a, a > i {
+/*footer a, a > i {
     color: rgb(102, 102, 102);
-}
+}*/
 
 a:hover i {
     color: rgba(0, 0, 0, 1);

@@ -60,7 +60,8 @@
   border: 0px;
 }
 
-.ui.pagination.menu .item {
+.ui.pagination.menu .item,
+.ui.ui.pagination.menu .item.disabled {
   color: @tabularTextColor;
 }
 
