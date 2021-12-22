@@ -346,7 +346,7 @@ nav.item.buttons a.ui.button:hover {
   background-color: rgba(255,255,255,.6);
 }
 
-.ui.menu .item {
+.ui.menu.tabs .item {
   color: rgba(255, 255, 255, 0.8);
 }
 
