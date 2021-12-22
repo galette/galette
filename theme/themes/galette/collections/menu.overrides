@@ -12,7 +12,11 @@
 }
 
 .ui.menu:not(.tabular):not(.pagination) .active.item,
-.ui.menu:not(.tabular):not(.pagination) .active.item:hover,
+.ui.menu:not(.tabular):not(.pagination) .active.item:hover {
+  background: @lightPrimaryColor;
+  color: darken(@textColor, 15);
+}
+
 .ui.menu:not(.tabular):not(.pagination) a.item:hover,
 .ui.menu:not(.tabular) .dropdown.item:hover {
   background: @primaryColor;
