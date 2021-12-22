@@ -45,7 +45,7 @@
                     }
                 </div>
                 <div class="flexend center aligned field">
-                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                    <input type="submit" class="ui primary button" value="{_T string="Filter"}"/>
                     <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
                 </div>
             </div>
@@ -59,7 +59,7 @@
     {if $login->isAdmin() or $login->isStaff() or $member->canShow($login)}
         <div class="ui compact vertically fitted segment">
             <div class="ui horizontal list">
-                <span class="ui blue ribbon label">
+                <span class="ui primary ribbon label">
                     <a
                         href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
                         class="tooltip"
@@ -339,7 +339,7 @@
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
         <div class="ui bottom attached segment">
             <div class="ui horizontal list">
-                <span class="ui blue ribbon label">{_T string="For the selection:"}</span>
+                <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
                 <div class="item">
                     <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
                         <i class="trash icon"></i> {_T string="Delete"}

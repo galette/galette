@@ -11,7 +11,7 @@
             <div class="ui compact segment">
         {if $member->hasParent() && !$member->isDuplicate()}
                 <div class="inline field">
-                    <span class="ui blue ribbon label">{_T string="Attached to:"}</span>
+                    <span class="ui primary ribbon label">{_T string="Attached to:"}</span>
                     <a href="{path_for name="member" data=["id" => $member->parent->id]}" class="ui label">{$member->parent->sfullname}</a>
             {if !$member->id}
                     <input type="hidden" name="parent_id" value="{$member->parent->id}"/>
@@ -41,7 +41,7 @@
             {/if}
         {else if $member->hasChildren()}
                 <div class="inline field">
-                    <span class="ui blue ribbon label">{_T string="Parent of:"}</span>
+                    <span class="ui primary ribbon label">{_T string="Parent of:"}</span>
             {foreach from=$member->children item=child}
                     <a href="{path_for name="member" data=["id" => $child->id]}" class="ui label">{$child->sfullname}</a>{if not $child@last}, {/if}
             {/foreach}

@@ -49,7 +49,7 @@
             {/if}
                 </div>
                 <div class="flexend center aligned field">
-                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                    <input type="submit" class="ui primary button" value="{_T string="Filter"}"/>
                     <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
                 </div>
             </div>

@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="flexend center aligned field">
-                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                    <input type="submit" class="ui primary button" value="{_T string="Filter"}"/>
                     <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
                 </div>
             </div>
@@ -34,7 +34,7 @@
     {if $login->isAdmin() or $login->isStaff() or $member->canShow($login)}
         <div class="ui compact vertically fitted segment">
             <div class="ui horizontal list">
-                <span class="ui blue ribbon label">
+                <span class="ui primary ribbon label">
                     <a
                         href="{path_for name="contributions" data=["type" => "transactions", "option" => "member", "value" => "all"]}"
                         class="tooltip"
