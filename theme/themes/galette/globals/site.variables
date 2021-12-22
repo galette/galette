@@ -8,7 +8,8 @@
 @galetteColor               : #ffb619;
 @lightGaletteColor          : #ffda8b;
 
-@grey                       : #6b6b6b;
+@red                        : #e56868;
+@grey                       : #636b70;
 
 @primaryColor               : @galetteColor;
 @secondaryColor             : @grey;
@@ -18,8 +19,12 @@
 
 @textColor                  : @grey;
 
-@solidBorderColor           : @textColor;
+@borderColor                : lighten(@textColor, 30);
+@solidBorderColor           : lighten(@textColor, 30);
+@internalBorderColor        : lighten(@textColor, 40);
 
 @inputColor                 : @textColor;
 @inputPlaceholderColor      : lighten(@inputColor, 25);
 @inputPlaceholderFocusColor : lighten(@inputColor, 10);
+
+@toggleLaneBackground       : rgba(0,0,0,.15);

@@ -1,0 +1,8 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+.ui.primary.labels .label,
+.ui.ui.ui.primary.label {
+    color: darken(@textColor, 15);
+}

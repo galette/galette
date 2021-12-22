@@ -8,38 +8,32 @@
 }
 
 .ui.vertical.menu {
-  border: 1px solid @solidBorderColor;
+  border: @border;
 }
 
-/*.ui.vertical.menu .item:hover,*/
-.ui.menu:not(.tabular) .active.item,
-.ui.menu:not(.tabular) .active.item:hover,
-.ui.menu:not(.tabular) a.item:hover,
-.ui.menu:not(.tabular) .dropdown.item:hover, {
+.ui.menu:not(.tabular):not(.pagination) .active.item,
+.ui.menu:not(.tabular):not(.pagination) .active.item:hover,
+.ui.menu:not(.tabular):not(.pagination) a.item:hover,
+.ui.menu:not(.tabular) .dropdown.item:hover {
   background: @primaryColor;
-  color: @white;
+  color: darken(@textColor, 15);
 }
 
-/*.ui.accordion.vertical .item:hover .title:not(.ui),*/
 .ui.accordion.vertical a.item:hover .title:not(.ui),
 .ui.accordion.vertical .active .title:not(.ui),
-.ui.menu:not(.tabular) .active.item i,
-.ui.menu:not(.tabular) a:hover i {
-  color: @white;
+.ui.menu:not(.tabular) .active.item:not(.dropdown) i,
+.ui.menu.fixed a:hover i,
+.ui.menu.accordion a:hover i {
+  color: darken(@textColor, 15);
 }
 
 .accordion.vertical div.item:hover .title:not(.ui),
 .accordion.vertical div.item:hover i {
-  color: @primaryColor;
-}
-
-.ui.menu:not(.tabular) .ui.basic.primary.button {
-  box-shadow: 0 0 0 1px @textColor inset;
-  color: @textColor;
+  color: darken(@primaryColor, 15);
 }
 
 .ui.tabular.menu .item {
-  background: @solidBorderColor;
+  background: @textColor;
   color: @tabularTextColor;
 }
 
@@ -55,4 +49,28 @@
 
 .ui.top.attached.menu > .item:first-child {
   border-radius: 0;
+}
+
+.ui.pagination.menu {
+  background: @textColor;
+  border: 0px;
+}
+
+.ui.pagination.menu .item {
+  color: @tabularTextColor;
+}
+
+.ui.pagination.menu .item::before {
+  background-color: darken(@textColor, 5);
+}
+
+.ui.pagination.menu .item:not(.active):not(.header):hover {
+  background: @primaryColor;
+  color: @tabularHoveredTextColor;
+}
+
+.ui.pagination.menu .active.item {
+  background: @tabularActiveBackground;
+  color: @tabularActiveColor;
+  font-weight: bold;
 }
