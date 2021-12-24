@@ -3,13 +3,14 @@
 # Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
 # Andrii Leitsius <leits.dev@gmail.com>, 2021.
 # Tymofii Lytvynenko <till.svit@gmail.com>, 2021.
+# Тимур <tucirs@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2021-12-25 11:11+0000\n"
+"Last-Translator: Тимур <tucirs@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2228,10 +2229,8 @@ msgstr "%days днів, що залишилися (закінчується %dat
 
 #: ../lib/Galette/Entity/Adherent.php:1185
 #: ../lib/Galette/Entity/Adherent.php:1190
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a group you own!"
-msgstr "Ви повинні вибрати співробітника"
+msgstr "Ви повинні вибрати групу, яка вам належить!"
 
 #: ../lib/Galette/Entity/Adherent.php:1263
 msgid "- Birthdate must be set in the past!"
@@ -4414,10 +4413,8 @@ msgstr "Параметри"
 
 #: ../templates/default/preferences.tpl:9
 #: ../templates/default/preferences.tpl:231
-#, fuzzy
-#| msgid "Height:"
 msgid "Rights"
-msgstr "Висота:"
+msgstr "Права"
 
 #: ../templates/default/preferences.tpl:10
 msgid "E-Mail"
@@ -4733,27 +4730,23 @@ msgstr "Чи можуть члени створити дочірнє?"
 
 #: ../templates/default/preferences.tpl:237
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "Чи можуть менеджери групи редагувати свої групи?"
 
 #: ../templates/default/preferences.tpl:241
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Can group managers create members?"
-msgstr "Надіслати нагадування спізнілим членам"
+msgstr "Чи можуть менеджери груп створювати учасників?"
 
 #: ../templates/default/preferences.tpl:245
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "Чи можуть менеджери груп редагувати учасників?"
 
 #: ../templates/default/preferences.tpl:249
-#, fuzzy
-#| msgid "Group managers selection"
 msgid "Can group managers send mailings?"
-msgstr "Вибір менеджерів групи"
+msgstr "Чи можуть менеджери груп надсилати листи?"
 
 #: ../templates/default/preferences.tpl:253
 msgid "Can group managers do exports?"
-msgstr ""
+msgstr "Чи можуть менеджери груп здійснювати експорт?"
 
 #: ../templates/default/preferences.tpl:254
 msgid ""
