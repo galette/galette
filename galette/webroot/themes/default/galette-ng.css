@@ -11,12 +11,6 @@ body.pushable {
   color: #636B70;
 }
 
-.ui.header {
-  color: #636B70;
-  background-color: rgba(255,255,255,.6);
-  padding: .5em;
-}
-
 body.pushable:not(.loggedin) > .pusher {
     display: flex;
     justify-content: center;
@@ -329,4 +323,16 @@ aside .ui.menu .item {
 
 .ui.attached.tab.inverted.red.segment.segment.segment.segment.segment {
   background-color: rgba(219, 40, 40, .7);
+}
+
+.accordion.vertical div.item:hover .title:not(.ui), .accordion.vertical div.item:hover i {
+  color: #636B70;
+}
+
+.ui.menu:not(.tabular) .dropdown.item:hover, .ui.menu:not(.tabular):not(.pagination) a.item:hover {
+  color: white;
+}
+
+.ui.tabular.menu .item {
+  border: none;
 }
