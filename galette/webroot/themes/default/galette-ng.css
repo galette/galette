@@ -8,7 +8,6 @@ body {
 
 body.pushable {
   background: #fff;
-  color: #636B70;
 }
 
 body.pushable:not(.loggedin) > .pusher {
@@ -286,53 +285,4 @@ footer .ui.horizontal.list > .item{
 .note-modal .note-btn {
     margin-bottom: 1rem;
     padding: 10px;
-}
-
-
-.ui.menu.bgcolor .item {
-  color: #636B70;
-  background-color: rgba(255,255,255,.6);
-}
-
-.ui.menu.tabs .item {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-aside .ui.menu .item {
-  color: #636b70;
-}
-
-.ui.menu a.item:hover, .ui.menu .active.item, .ui.vertical.menu .active.item {
-  background-color: #ffb619;
-  border-color: #ffb619;
-}
-
-.ui.menu .active.item:hover, .ui.vertical.menu .item:hover {
-  background-color: #ffb619;
-  color: white;
-}
-
-.ui.attached.segment {
-  border-color: #636b70;
-}
-
-.ui.menu {
-  background-color: #636B70;
-  border: none!important;
-}
-
-.ui.attached.tab.inverted.red.segment.segment.segment.segment.segment {
-  background-color: rgba(219, 40, 40, .7);
-}
-
-.accordion.vertical div.item:hover .title:not(.ui), .accordion.vertical div.item:hover i {
-  color: #636B70;
-}
-
-.ui.menu:not(.tabular) .dropdown.item:hover, .ui.menu:not(.tabular):not(.pagination) a.item:hover {
-  color: white;
-}
-
-.ui.tabular.menu .item {
-  border: none;
 }
