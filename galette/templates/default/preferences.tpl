@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 {block name="content"}
         <form action="{path_for name="store-preferences"}" method="post" enctype="multipart/form-data" class="ui form">
-        <div class="ui {if $login->isSuperAdmin()}nine{elseif $login->isAdmin()}eight{else}seven{/if} item top attached stackable inverted tabular menu tabbed">
+        <div class="ui stackable pointing inverted menu tabbed">
             <a class="item active" data-tab="general">{_T string="General"}</a>
             <a class="item" data-tab="social">{_T string="Social networks"}</a>
             <a class="item" data-tab="parameters">{_T string="Parameters"}</a>
@@ -16,7 +16,7 @@
             <a class="item" data-tab="admin">{_T string="Admin"}</a>
 {/if}
         </div>
-        <div class="ui bottom attached active tab segment" data-tab="general">
+        <div class="ui active tab segment" data-tab="general">
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="{if $required.pref_nom eq 1}required {/if} field">
@@ -142,7 +142,7 @@
         </div>{* /tab segment*}
         {assign var="socials" value=$preferences->socials}
         {include file="edit_socials.tpl"}
-        <div class="ui bottom attached tab segment" data-tab="parameters">
+        <div class="ui tab segment" data-tab="parameters">
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field">
@@ -285,7 +285,7 @@
                 </div>{* /column *}
             </div>{* /column grid *}
         </div>{* /tab segment*}
-        <div class="ui bottom attached tab segment" data-tab="rights">
+        <div class="ui tab segment" data-tab="rights">
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field inline">
@@ -316,7 +316,7 @@
                 </div>
             </div>
         </div>{* /tab segment*}
-        <div class="ui bottom attached tab segment" data-tab="mail">
+        <div class="ui tab segment" data-tab="mail">
             <div class="ui stackable two column grid">
                 <div class="column">
     {if $GALETTE_MODE eq 'DEMO'}
@@ -482,7 +482,7 @@
                 </div>{* /column *}
             </div>{* /column grid *}
         </div>{* /tab segment*}
-        <div class="ui bottom attached tab segment" data-tab="labels">
+        <div class="ui tab segment" data-tab="labels">
             <div class="ui two column grid">
                 <div class="column">
                     <div class="field">
@@ -544,7 +544,7 @@
                 </div>{* /column *}
             </div>{* /column grid *}
         </div>{* /tab segment*}
-        <div class="ui bottom attached tab segment" data-tab="cards">
+        <div class="ui tab segment" data-tab="cards">
             <div class="ui message">
                 <p>{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</p>
             </div>
@@ -672,7 +672,7 @@
         </div>{* /tab segment*}
 
 {if $login->isAdmin()}
-        <div class="ui bottom attached tab segment" data-tab="security">
+        <div class="ui tab segment" data-tab="security">
                 <div class="field">
                     <label for="pref_password_length" title="{_T string="Minimum password length required for all accounts. Minimal size is 6."}">{_T string="Password length:"}</label>
                     <div class="ui right corner labeled input">
@@ -723,7 +723,7 @@
         </div>{* /tab segment*}
 {/if}
 {if $login->isSuperAdmin()}
-        <div class="ui bottom attached tab red inverted segment" data-tab="admin">
+        <div class="ui tab red inverted segment" data-tab="admin">
     {if $GALETTE_MODE eq 'DEMO'}
                 <div class="ui negative message">
                     {_T string="Application runs under demo mode. This functionnality is not enabled, sorry."}
