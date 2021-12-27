@@ -2,10 +2,61 @@
     Galette Variable Overrides
 *******************************/
 
-@border: 1px solid @solidBorderColor;
+/*-------------------
+      Collection
+--------------------*/
 
-@tabularBorderColor: @solidBorderColor;
-@tabularTextColor: @white;
+/* Menu */
+@border: @borderWidth solid @solidBorderColor;
+
+/*--------------
+     States
+---------------*/
+
+/* Hovered Item */
+@hoverItemBackground: @primaryColor;
+@hoverItemTextColor: darken(@textColor, 15);
+
+/* Pressed Item */
+@pressedItemBackground: @primaryColor;
+@pressedItemTextColor: @hoverItemTextColor;
+
+
+/* Active Item */
+@activeItemBackground: @lightPrimaryColor;
+@activeItemTextColor: darken(@textColor, 15);
+@activeItemFontWeight: @bold;
+@activeIconOpacity: 1;
+@activeItemBoxShadow: none;
+
+/* Active Hovered Item */
+@activeHoverItemBackground: @lightPrimaryColor;
+@activeHoverItemColor: darken(@textColor, 15);
+
+/*--------------
+     Types
+---------------*/
+
+/* Tabular */
 @tabularActiveBackground: @lightPrimaryColor;
-@tabularActiveColor: darken(@textColor, 15);
-@tabularHoveredTextColor: darken(@textColor, 15);
+
+/*--------------
+   Variations
+---------------*/
+
+/* Inverted */
+@invertedBackground: @textColor;
+
+/* Inverted Hover */
+@invertedHoverBackground: @primaryColor;
+@invertedHoverColor: darken(@textColor, 15);
+
+/* Inverted Active */
+@invertedActiveBackground: @invertedArrowActiveColor;
+@invertedActiveColor: darken(@textColor, 15);
+@invertedArrowActiveColor: @lightPrimaryColor;
+
+/* Inverted Active Hover  */
+@invertedActiveHoverBackground: @invertedActiveBackground;
+@invertedActiveHoverColor: darken(@textColor, 15);
+@invertedArrowActiveHoverColor: @invertedArrowActiveColor;
