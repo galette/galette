@@ -1,5 +1,5 @@
 {if isset($navigate) and $navigate|@count != 0}
-    <nav class="ui mini pagination menu right floated">
+    <nav class="ui mini inverted pagination menu right floated">
         {if isset($navigate.prev)}
                 <a
                         href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}"
@@ -10,7 +10,7 @@
                     <span class="sr-only">{_T string="Previous"}</span>
                 </a>
         {/if}
-        <div class="disabled item">{$navigate.pos} / {$navigate.count}</div>
+        <div class="item">{$navigate.pos} / {$navigate.count}</div>
         {if isset($navigate.next)}
                 <a
                         href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}"

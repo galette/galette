@@ -395,7 +395,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </div>
         </div>
         <div class="ui basic center aligned fitted segment">
-            <div class="ui pagination menu">
+            <div class="ui inverted pagination menu">
                 <div class="header item">
                     {_T string="Pages:"}
                 </div>
