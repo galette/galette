@@ -1,44 +1,50 @@
 {extends file="page.tpl"}
+
+{function name=group_item}
+    <div class="item">
+        <a class="" href="{if $login->isGroupManager($group->getId())}{path_for name="groups" data=["id" => $group->getId()]}{else}#{/if}">
+            {$group->getName()}
+        </a>
+        {if $group->getGroups()|@count > 0}
+            <i class="dropdown icon"></i>
+            <div class="right menu">
+                {foreach item=child_group from=$group->getGroups()}
+                    {group_item group=$child_group}
+                {/foreach}
+            </div>
+        {/if}
+    </div>
+{/function}
+
 {block name="content"}
 
-<div class="ui grid">
+<div class="ui labeled icon dropdown button">
+    <i class="dropdown icon"></i>
+    <span class="text">{$group->getFullName()}</span>
+    <div class="menu">
+    {foreach item=group from=$groups_root}
+        {group_item group=$group}
+    {/foreach}
+    </div>
+</div>
+
 {if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
-    <div class="sixteen wide column">
-            <a href="{path_for name="pdf_groups"}" class="ui icon button tooltip" title="{_T string="Export all groups and their members as PDF"}">
-                <i class="icon file pdf"></i> {_T string="All groups PDF"}
-            </a>
-    </div>
+    <a href="{path_for name="pdf_groups"}" class="ui icon button tooltip" title="{_T string="Export all groups and their members as PDF"}">
+        <i class="icon file pdf"></i> {_T string="All groups PDF"}
+    </a>
+    {if $login->isAdmin() or $login->isStaff()}
+        <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui icon button tooltip">
+            <i class="icon plus" aria-hiddent="true"></i>
+            {_T string="New group"}
+        </a>
+    {/if}
 {/if}
-    <div class="four wide column treemenu boxed">
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="Groups"}
-            </div>
-                <div id="groups_tree">
-                    <ul>
-{foreach item=g from=$groups_root}
-    {include file="group_tree_item.tpl" item=$g}
-{/foreach}
-                    </ul>
-                </div>
-{if $login->isAdmin() or $login->isStaff()}
-            <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui fluid button">
-                <i class="icon plus" aria-hiddent="true"></i>
-                {_T string="New group"}
-            </a>
-{/if}
-        </div>{* /segment *}
-    </div>{* /treemenu boxed column *}
-    <div class="twelve wide column">
-        <div id="group_infos_wrapper">
-{if $group->getId()}
-            {include file="group.tpl" group=$group groups=$groups}
-{else}
-            {_T string="no group"}
-{/if}
-		</div>
-    </div>
-</div>{* /grid *}
+
+    {if $group->getId()}
+        {include file="group.tpl" group=$group groups=$groups}
+    {else}
+        {_T string="no group"}
+    {/if}
 {/block}
 
 {block name="javascripts"}
