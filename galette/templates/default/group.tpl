@@ -1,5 +1,4 @@
 {assign var="canEdit" value=$login->isGroupManager() && $preferences->pref_bool_groupsmanagers_edit_groups || $login->isAdmin() || $login->isStaff()}
-{assign var="canExport" value=$login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
 
 {assign var="managers" value=$group->getManagers()}
 {assign var="members" value=$group->getMembers()}
@@ -9,8 +8,10 @@
     <a class="item" data-tab="group_managers">{_T string="Managers"} ({$managers|@count})</a>
     <a class="item" data-tab="group_members">{_T string="Members"} ({$members|@count})</a>
     {if $login->isAdmin() or $login->isStaff()}
-        <a href="#" class="ui item compact icon button tab-button hidden tooltip" id="btnusers_small"><i class="user icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage members"}</span></a>
-        <a href="#" class="ui item compact icon button tab-button hidden tooltip" id="btnmanagers_small"><i class="user shield icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage managers"}</span></a>
+        <div class="right menu">
+            <a href="#" class="ui item hidden tooltip" id="btnusers_small" title="{_T string="Manage members"}"><i class="user icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage members"}</span></a>
+            <a href="#" class="ui item hidden tooltip" id="btnmanagers_small" title="{_T string="Manage managers"}"><i class="user shield icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage managers"}</span></a>
+        </div>
     {/if}
 </div>
 <form class="ui form" action="{path_for name="doEditGroup" data=["id" => $group->getId()]}" method="post" enctype="multipart/form-data" id="group_form">
@@ -77,7 +78,7 @@
         </div>
     </div>
 
-    <div class="ui basic segment button-container">
+    <div class="ui basic center aligned segment">
         <button type="submit" name="valid" class="ui labeled icon button action">
             {if $canEdit}
             <i class="save icon"></i> {_T string="Save"}
@@ -89,12 +90,6 @@
             <a class="ui labeled icon button delete" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">
                 <i class="trash alt icon"></i>
                 {_T string="Delete"}
-            </a>
-        {/if}
-        {if $canExport}
-            <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="ui labeled icon button tooltip" title="{_T string="Current group (and attached people) as PDF"}">
-                <i class="file pdf icon" aria-hidden="true"></i>
-                {_T string="Group PDF"}
             </a>
         {/if}
     </div>

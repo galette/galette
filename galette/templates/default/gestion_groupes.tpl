@@ -1,5 +1,7 @@
 {extends file="page.tpl"}
 
+{assign var="canExport" value=$login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
+
 {function name=group_item}
     <div class="item">
         <a class="" href="{if $login->isGroupManager($group->getId())}{path_for name="groups" data=["id" => $group->getId()]}{else}#{/if}">
@@ -18,9 +20,11 @@
 
 {block name="content"}
 
-<div class="ui labeled icon dropdown button">
-    <i class="dropdown icon"></i>
-    <span class="text">{$group->getFullName()}</span>
+<div class="ui labeled dropdown button">
+    <a class="ui icon button">
+        <i class="dropdown icon"></i> {_T string="Select a group"}
+    </a>
+    <span class="ui secondary label">{$group->getFullName()}</span>
     <div class="menu">
     {foreach item=group from=$groups_root}
         {group_item group=$group}
@@ -28,12 +32,19 @@
     </div>
 </div>
 
-{if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
-    <a href="{path_for name="pdf_groups"}" class="ui icon button tooltip" title="{_T string="Export all groups and their members as PDF"}">
-        <i class="icon file pdf"></i> {_T string="All groups PDF"}
-    </a>
+{if $canExport}
+    <div class="ui buttons">
+        <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="ui labeled icon button tooltip" title="{_T string="Current group (and attached people) as PDF"}">
+            <i class="file pdf icon" aria-hidden="true"></i>
+            {_T string="Group PDF"}
+        </a>
+        <div class="or" data-text="{_T string="or"}"></div>
+        <a href="{path_for name="pdf_groups"}" class="ui button tooltip" title="{_T string="Export all groups and their members as PDF"}">
+            {_T string="All groups PDF"}
+        </a>
+    </div>
     {if $login->isAdmin() or $login->isStaff()}
-        <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui icon button tooltip">
+        <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui labeled icon button tooltip">
             <i class="icon plus" aria-hiddent="true"></i>
             {_T string="New group"}
         </a>
