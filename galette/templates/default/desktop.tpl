@@ -48,7 +48,7 @@
                     <a class="ui card" href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">
                         <div class="content">
                             <div class="header">
-                                <i class="ui huge user alternate grey icon"></i>
+                                <i class="ui huge users grey icon"></i>
                                 {_T string="Members"}
                             </div>
                         </div>
@@ -56,16 +56,24 @@
                     <a class="ui card" href="{path_for name="groups"}" title="{_T string="View and manage groups"}">
                         <div class="content">
                             <div class="header">
-                                <i class="ui huge users grey icon"></i>
+                                <i class="ui huge users cog grey icon"></i>
                                 {_T string="Groups"}
                             </div>
                         </div>
                     </a>
     {if $login->isAdmin() or $login->isStaff()}
+                    <a class="ui card" href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">
+                        <div class="content">
+                            <div class="header">
+                                <i class="ui huge mail bulk grey icon"></i>
+                                {_T string="Mailings"}
+                            </div>
+                        </div>
+                    </a>
                     <a class="ui card" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">
                         <div class="content">
                             <div class="header">
-                                <i class="ui huge book grey icon"></i>
+                                <i class="ui huge cookie grey icon"></i>
                                 {_T string="Contributions"}
                             </div>
                         </div>
@@ -75,14 +83,6 @@
                             <div class="header">
                                 <i class="ui huge columns grey icon"></i>
                                 {_T string="Transactions"}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge mail bulk grey icon"></i>
-                                {_T string="Mailings"}
                             </div>
                         </div>
                     </a>
@@ -128,7 +128,7 @@
                     <a class="ui card" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}">
                         <div class="content">
                             <div class="header">
-                                <i class="ui huge receipt grey icon"></i>
+                                <i class="ui huge cookie grey icon"></i>
                                 {_T string="Contributions"}
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                     <a class="ui card" href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}">
                         <div class="content">
                             <div class="header">
-                                <i class="ui huge book grey icon"></i>
+                                <i class="ui huge columns grey icon"></i>
                                 {_T string="transactions"}
                             </div>
                         </div>
