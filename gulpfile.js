@@ -50,15 +50,6 @@ var main_assets = [
     }, {
         'src': './galette/webroot/themes/default/images/desktop/*',
         'dest': '/images/desktop/'
-    }, {
-        'src': './node_modules/jstree/dist/themes/default/32px.png',
-        'dest': '/images/'
-    }, {
-        'src': './node_modules/jstree/dist/themes/default/40px.png',
-        'dest': '/images/'
-    }, {
-        'src': './node_modules/jstree/dist/themes/default/throbber.gif',
-        'dest': '/images/'
     }
 ];
 
@@ -85,20 +76,12 @@ function styles() {
     .pipe(concat('galette-main.bundle.min.css'))
     .pipe(gulp.dest(_dir));
 
-  jstree = gulp.src('./node_modules/jstree/dist/themes/default/style.css')
-    .pipe(replace('url("32px', 'url("../images/32px'))
-    .pipe(replace('url("40px', 'url("../images/40px'))
-    .pipe(replace('url("throbber', 'url("../images/throbber'))
-    .pipe(concat('galette-jstree.bundle.min.css'))
-    .pipe(cleanCSS())
-    .pipe(gulp.dest(_dir));
-
   jqplot = gulp.src('./galette/webroot/js/jquery/jqplot-1.0.8r1250/jquery.jqplot.css')
     .pipe(concat('galette-jqplot.bundle.min.css'))
     .pipe(cleanCSS())
     .pipe(gulp.dest(_dir));
 
-  return merge(main, jstree, jqplot);
+  return merge(main, jqplot);
 };
 
 function scripts() {
@@ -106,11 +89,6 @@ function scripts() {
 
   main = gulp.src(main_scripts)
     .pipe(concat('galette-main.bundle.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(_dir));
-
-  jstree = gulp.src('./node_modules/jstree/dist/jstree.min.js')
-    .pipe(concat('galette-jstree.bundle.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest(_dir));
 
@@ -126,7 +104,7 @@ function scripts() {
     .pipe(uglify())
     .pipe(gulp.dest(_dir));
 
-  return merge(main, jstree, jqplot);
+  return merge(main, jqplot);
 };
 
 function assets() {

@@ -18,9 +18,6 @@ Just put a {include file='common_header.tpl'} into the head tag.
     {if $require_charts}
         <link rel="stylesheet" type="text/css" href="{base_url}/assets/css/galette-jqplot.bundle.min.css" />
     {/if}
-    {if $require_tree}
-        <link rel="stylesheet" type="text/css" href="{base_url}/assets/css/galette-jstree.bundle.min.css"/>
-    {/if}
     {if $html_editor}
         <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />

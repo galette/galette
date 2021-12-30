@@ -183,7 +183,6 @@ class GroupsController extends CrudController
             'gestion_groupes.tpl',
             array(
                 'page_title'            => _T("Groups"),
-                'require_tree'          => true,
                 'groups_root'           => $groups_root,
                 'groups'                => $groups_list,
                 'group'                 => $group
