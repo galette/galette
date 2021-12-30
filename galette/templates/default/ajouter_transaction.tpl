@@ -2,11 +2,11 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post" class="ui form">
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="Transaction details"}
-            </div>
+    <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post" class="ui form">
+        <div class="ui top attached header">
+            {_T string="Transaction details"}
+        </div>
+        <div class="ui bottom attached segment">
             <div class="active content field">
                 <div class="field inline">
                     <label for="trans_desc">{_T string="Description:"}</label>
@@ -52,7 +52,7 @@
             </div>
         </div>
     {include file="edit_dynamic_fields.tpl" object=$transaction}
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon button action">
                 <i class="save icon"></i> {_T string="Save"}
             </button>
@@ -60,13 +60,13 @@
             <input type="hidden" name="valid" value="1"/>
             {include file="forms_types/csrf.tpl"}
         </div>
-        </form>
+    </form>
 
     {if $transaction->id}
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="Attached contributions"}
-            </div>
+        <div class="ui top attached header">
+            {_T string="Attached contributions"}
+        </div>
+        <div class="ui bottom attached segment">
             <div class="active content field">
                 <div class="ui basic fitted right aligned segment">
                     {if $transaction->getMissingAmount() > 0}

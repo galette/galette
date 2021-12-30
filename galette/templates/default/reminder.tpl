@@ -2,10 +2,10 @@
 
 {block name="content"}
         <form id="send_reminders" action="{path_for name="doReminders"}" method="post" enctype="multipart/form-data" class="ui form">
-            <div class="ui segment">
-                <div class="ui tiny header">
-                    {_T string="Choose wich reminder(s) you want to send:"}
-                </div>
+            <div class="ui top attached header">
+                {_T string="Choose wich reminder(s) you want to send:"}
+            </div>
+            <div class="ui bottom attached segment">
                 <div class="active content field">
                     <div class="inline field{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled{/if}">
                         <input type="checkbox" name="reminders[]" id="reminder_impending" value="{\Galette\Entity\Reminder::IMPENDING}"{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled="disabled"{/if}/>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="button-container">
+            <div class="ui basic center aligned segment">
                 <button type="submit" name="valid" class="ui labeled icon button">
                     <i class="rocket icon" aria-hidden="true"></i>
                     {_T string="Send"}

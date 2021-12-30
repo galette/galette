@@ -3,18 +3,20 @@
 {block name="content"}
 {if isset($trans) && $trans|@count > 0}
     {if $exists}
-        <form action="{path_for name="dynamicTranslations"}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
-            <div class="ui basic compact segment">
+        <div class="ui top attached header">
+            {_T string="Choose label to translate"}
+        </div>
+        <div class="ui bottom attached segment">
+            <form action="{path_for name="dynamicTranslations"}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
                 <div class="field inline">
-                    <label for="text_orig">{_T string="Choose label to translate"}</label>
                     <select name="text_orig" id="text_orig" class="ui dropdown nochosen">
                         {html_options values=$orig output=$orig selected=$text_orig}
                     </select>
                     <noscript> <span><input type="submit" value="{_T string="Change"}" class="ui button" /></span></noscript>
                     {include file="forms_types/csrf.tpl"}
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     {/if}
 
         <form action="{path_for name="editDynamicTranslation"}" method="post" enctype="multipart/form-data" class="ui equal width form">
@@ -24,10 +26,10 @@
                 <input type="hidden" name="new" value="true"/>
             </div>
     {/if}
-            <div class="ui segment">
-                <div class="ui tiny header">
-                    {_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig|escape}
-                </div>
+            <div class="ui top attached header">
+                {_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig|escape}
+            </div>
+            <div class="ui bottom attached segment">
                 <div class="active content field">
                     <table class="ui striped table">
 {section name="lang" loop=$trans}
@@ -42,7 +44,7 @@
                     </table>
                 </div>
             </div>
-            <div class="button-container">
+            <div class="ui basic center aligned segment">
                 <button type="submit" name="trans" class="ui labeled icon button action">
                     <i class="save icon"></i> {_T string="Save"}
                 </button>

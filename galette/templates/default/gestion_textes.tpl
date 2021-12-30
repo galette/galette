@@ -1,11 +1,11 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <div class="ui segment">
+        <div class="ui top attached header">
+            {_T string="Choose an entry"}
+        </div>
+        <div class="ui bottom attached segment">
             <form action="{path_for name="changeText"}" method="post" enctype="multipart/form-data" class="ui form">
-                <div class="ui tiny header">
-                    {_T string="Choose an entry"}
-                </div>
                 <div class="fields">
                     <div class="inline field">
                         <label for="sel_lang">{_T string="Language:"}</label>
@@ -29,12 +29,12 @@
             </form>
         </div>
 
-        <div class="ui segment">
-            <form action="{path_for name="texts"}" method="post" enctype="multipart/form-data" class="ui form">
-                <div class="ui tiny header">
-                    {$mtxt->tcomment}
-                    <a id="btnlegend" class="tooltip action" title="{_T string="Show existing variables"}"><i class="circular inverted primary small icon info tooltip"></i><span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>
-                </div>
+        <form action="{path_for name="texts"}" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui top attached header">
+                {$mtxt->tcomment}
+                <a id="btnlegend" class="tooltip action" title="{_T string="Show existing variables"}"><i class="circular inverted primary small icon info tooltip"></i><span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>
+            </div>
+            <div class="ui bottom attached segment">
                 <div class="active content field">
                     <div class="field inline">
                         <label for="tsubject">{_T string="Email Subject"}</label>
@@ -45,17 +45,17 @@
                         <textarea name="text_body" id="text_body" cols="64" rows="15">{$mtxt->tbody}</textarea>
                     </div>
                 </div>
-                <div class="button-container">
-                    <input type="hidden" name="cur_lang"  value="{$cur_lang}"/>
-                    <input type="hidden" name="cur_ref" value="{$cur_ref}"/>
-                    <input type="hidden" name="valid" id="valid" value="1"/>
-                    <button type="submit" class="ui labeled icon button action">
-                        <i class="save icon"></i> {_T string="Save"}
-                    </button>
-                    {include file="forms_types/csrf.tpl"}
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="ui basic center aligned segment">
+                <input type="hidden" name="cur_lang"  value="{$cur_lang}"/>
+                <input type="hidden" name="cur_ref" value="{$cur_ref}"/>
+                <input type="hidden" name="valid" id="valid" value="1"/>
+                <button type="submit" class="ui labeled icon button action">
+                    <i class="save icon"></i> {_T string="Save"}
+                </button>
+                {include file="forms_types/csrf.tpl"}
+            </div>
+        </form>
         {include file="replacements_legend.tpl" legends=$texts->getLegend() cur_ref=$cur_ref}
 {/block}
 

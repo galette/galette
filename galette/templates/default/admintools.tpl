@@ -2,10 +2,10 @@
 {block name="content"}
     <form action="{path_for name="doAdminTools"}" method="post" class="ui form">
         <div class="ui orange message">{_T string="Make sure you've done a backup of the database before using any of the following tools!"}</div>
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="Select actions(s)"}
-            </div>
+        <div class="ui top attached header">
+            {_T string="Select actions(s)"}
+        </div>
+        <div class="ui bottom attached segment">
             <div class="active content field">
                 <div class="field">
                     <label for="inittexts" title="{_T string="Reset all emails contents to their default values"}">{_T string="Reset emails contents"}</label>
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon button action">
                 <i class="database icon" aria-hidden="true"></i>
                 {_T string="Go"}

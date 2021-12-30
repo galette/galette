@@ -10,10 +10,10 @@
         <form action="{if $contribution->id}{path_for name="doEditContribution" data=["type" => $type, "id" => $contribution->id]}{else}{path_for name="doAddContribution" data=["type" => $type]}{/if}" enctype="multipart/form-data" method="post" class="ui form">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
-            <div class="ui segment">
-                <div class="ui tiny header">
-                    {_T string="Related transaction information"}
-                </div>
+            <div class="ui top attached header">
+                {_T string="Related transaction information"}
+            </div>
+            <div class="ui bottom attached segment">
                 <div class="active content field">
                     <table id="transaction_detail" class="listing ui celled table">
                         <thead>
@@ -209,7 +209,7 @@
         {/if}
     {/if}
     {if !$require_mass}
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon button action">
                 <i class="save icon"></i> {_T string="Save"}
             </button>

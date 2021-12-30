@@ -8,10 +8,10 @@
 {block name="content"}
 {if $action == "edit"}
     <form action="{path_for name="doEditDynamicField" data=["form_name" => $form_name, "id" => $df->getId()]}" method="post" class="ui form">
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}
-            </div>
+        <div class="ui top attached header">
+            {_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}
+        </div>
+        <div class="ui bottom attached segment">
             <div class="active content field">
                 <div class="inline field">
                     <label for="field_name">{_T string="Name:"}</label>
@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon button action">
                 <i class="save icon"></i> {_T string="Save"}
             </button>
@@ -87,10 +87,10 @@
 {elseif $action == "add"}
     <form action="{path_for name="doAddDynamicField" data=["form_name" => $form_name]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}" class="ui form">
     {if $mode neq 'ajax'}
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="New dynamic field"}
-            </div>
+        <div class="ui top attached header">
+            {_T string="New dynamic field"}
+        </div>
+        <div class="ui bottom attached segment">
             <div class="active content field">
     {else}
         <div class="cssform">
@@ -131,7 +131,7 @@
             </div>
     {/if}
         </div>
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon button action">
                 <i class="plus icon"></i> {_T string="Add"}
             </button>

@@ -6,10 +6,10 @@
 {extends file=$extend}
 {block name="content"}
     <form action="{path_for name="attendance_sheet"}" id="sheet_details_form" method="POST" class="ui form">
-        <div class="ui segment">
-            <div class="ui tiny header">
-                {_T string="Some details about your attendance sheet..."} - <span>{_T string="%s attendees" pattern="/%s/" replace=$selection|@count}</span>
-            </div>
+        <div class="ui top attached header">
+            {_T string="Some details about your attendance sheet..."} - <span>{_T string="%s attendees" pattern="/%s/" replace=$selection|@count}</span>
+        </div>
+        <div class="ui bottom attached segment">
             <div class="active content field">
                 <div class="inline field">
                     <label for="sheet_type">{_T string="Sheet type"}</label>
@@ -39,7 +39,7 @@
             </div>
         </div>
 {if not $ajax}
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon button active">
                 <i class="file pdf icon" aria-hidden="true"></i>
                 {_T string="Generate"}
