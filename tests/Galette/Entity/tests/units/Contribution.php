@@ -291,7 +291,7 @@ class Contribution extends GaletteTestCase
         $this->createContrib($data);
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
-        $this->variable($contrib->amount)->isIdenticalTo(1280);
+        $this->variable($contrib->amount)->isIdenticalTo(1280.00);
 
         //empty amount
         $data = [
@@ -307,7 +307,7 @@ class Contribution extends GaletteTestCase
         $this->createContrib($data);
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
-        $this->variable($contrib->amount)->isIdenticalTo(0);
+        $this->variable($contrib->amount)->isIdenticalTo(0.00);
     }
 
     /**
