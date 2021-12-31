@@ -65,9 +65,9 @@ use Galette\Features\Dynamics;
  * @property DateTime $raw_date
  * @property integer $member
  * @property ContributionsTypes $type
- * @property integer $amount
+ * @property double $amount
  * @property integer $payment_type
- * @property integer $orig_amount
+ * @property double $orig_amount
  * @property string $info
  * @property string $begin_date
  * @property DateTime $raw_begin_date
@@ -351,9 +351,9 @@ class Contribution
         $pk = self::PK;
         $this->_id = (int)$r->$pk;
         $this->_date = $r->date_enreg;
-        $this->_amount = (int)$r->montant_cotis;
+        $this->_amount = (double)$r->montant_cotis;
         //save original amount, we need it for transactions parts calculations
-        $this->_orig_amount = (int)$r->montant_cotis;
+        $this->_orig_amount = (double)$r->montant_cotis;
         $this->_payment_type = $r->type_paiement_cotis;
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
@@ -457,10 +457,10 @@ class Contribution
                         }
                         break;
                     case 'montant_cotis':
+                        $value = strtr($value, ',', '.');
                         if (!empty($value)) {
                             $this->_amount = $value;
                         }
-                        $value = strtr($value, ',', '.');
                         if (!is_numeric($value) && $value !== '') {
                             $this->errors[] = _T("- The amount must be an integer!");
                         }
