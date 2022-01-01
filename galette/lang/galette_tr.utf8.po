@@ -5,13 +5,14 @@
 # Ahmet Aylin Öztürk <ahmetaylinozturk@gmail.com>, 2021.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021.
 # Boran Roni <boranroniurtekin@gmail.com>, 2021.
+# seckiyn <kyofl6@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-12-08 12:53+0000\n"
-"Last-Translator: Boran Roni <boranroniurtekin@gmail.com>\n"
+"PO-Revision-Date: 2022-01-02 16:52+0000\n"
+"Last-Translator: seckiyn <kyofl6@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -54,9 +55,8 @@ msgid "Transaction has been successfully stored"
 msgstr "İşlem başarıyla kaydedildi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:357
-#, fuzzy
 msgid "Unable to attach contribution to transaction"
-msgstr "Katılım işleme eklemlenemedi"
+msgstr "Katılım işleme eklenemedi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
@@ -125,10 +125,8 @@ msgid "Remove group %1$s"
 msgstr "%1$s gurubunu kaldır"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:494
-#, fuzzy
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
-msgstr ""
-"Gurup boş değil, bu yüzden silinemez. Bunun yerine kademeli silmeyi kullanın."
+msgstr "Grup boş değil, silinemez. Bunun yerine kademeli silmeyi kullanın."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:103
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:107
@@ -140,9 +138,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:284
-#, fuzzy
 msgid "No member selected for mailing!"
-msgstr "Mailleşmek için herhangi bir üye seçilmedi!"
+msgstr "E-posta için hiçbir bir üye seçilmedi!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:206
 msgid "Mailing"
@@ -174,7 +171,6 @@ msgid "Remove mailing #%1$s"
 msgstr "#%1$s mailleşmesini kaldır"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:741
-#, fuzzy
 msgid "Mailing preview"
 msgstr "Mailleşme önizlemesi"
 
@@ -251,7 +247,6 @@ msgid "Members list"
 msgstr "Üye listesi"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:368
-#, fuzzy
 msgid "Trombinoscope"
 msgstr "Trombinoscope"
 
