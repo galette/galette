@@ -67,7 +67,7 @@
             <tbody>
     {foreach from=$members item=member name=allmembers}
                 <tr class="{if $smarty.foreach.allmembers.iteration % 2 eq 0}even{else}odd{/if}">
-                    <td class="{$member->getRowClass(true)} nowrap username_row" data-scope="row">
+                    <td class="{$member->getRowClass(true)} username_row" data-scope="row">
                     {if $member->isCompany()}
                         <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
                     {elseif $member->isMan()}
@@ -84,11 +84,11 @@
                         {$member->sfullname}
                     {/if}
                     </td>
-                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Nickname"}">{$member->nickname|htmlspecialchars}</td>
+                    <td class="{$member->getRowClass(true)}" data-title="{_T string="Nickname"}">{$member->nickname|htmlspecialchars}</td>
                     {if $login->isLogged()}
-                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Email"}"><a href="mailto:{$member->email}">{$member->email}</a></td>
+                    <td class="{$member->getRowClass(true)}" data-title="{_T string="Email"}"><a href="mailto:{$member->email}">{$member->email}</a></td>
                     {/if}
-                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Information"}">{$member->others_infos}</td>
+                    <td class="{$member->getRowClass(true)}" data-title="{_T string="Information"}">{$member->others_infos}</td>
                 </tr>
     {/foreach}
             </tbody>

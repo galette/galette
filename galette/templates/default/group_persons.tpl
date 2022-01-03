@@ -15,7 +15,7 @@
                         <tbody>
 {foreach from=$persons item=person name=allpersons}
                             <tr class="{if $smarty.foreach.allpersons.iteration % 2 eq 0}even{else}odd{/if}">
-                                <td class="nowrap username_row">
+                                <td class="username_row">
                                 <input type="hidden" name="{$person_mode}[]" value="{$person->id}"/>
                                 {if $person->isCompany()}
                                     <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
@@ -35,7 +35,7 @@
                                 {/if}
                                 <a href="{path_for name="member" data=["id" => $person->id]}">{$person->sfullname}</a>
                                 </td>
-                                <td class="nowrap">{$person->nickname|htmlspecialchars}</td>
+                                <td class="">{$person->nickname|htmlspecialchars}</td>
     {if $login->isSuperAdmin()}
                                 <td class="actions_row">
                                     <a

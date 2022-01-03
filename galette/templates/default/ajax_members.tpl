@@ -24,7 +24,7 @@
         {assign var=rclass value=$member->getRowClass() }
                 <tr>
                     <td class="{$rclass} right">{$member->id}</td>
-                    <td class="{$rclass} nowrap username_row">
+                    <td class="{$rclass} username_row">
                     {if $member->isCompany()}
                         <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
                     {elseif $member->isMan()}
@@ -43,7 +43,7 @@
                     {/if}
                     <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sfullname}</a>
                     </td>
-                    <td class="{$rclass} nowrap">{$member->zipcode} {$member->town}</td>
+                    <td class="{$rclass}">{$member->zipcode} {$member->town}</td>
                 </tr>
     {/if}
 {foreachelse}

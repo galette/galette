@@ -147,7 +147,7 @@
     {assign var="mid" value=$transaction->member}
     {assign var="cclass" value=$transaction->getRowClass()}
                 <tr>
-                    <td class="{$cclass} nowrap" data-scope="row">
+                    <td class="{$cclass}" data-scope="row">
     {if $preferences->pref_show_id}
                         {$transaction->id}
     {else}
@@ -159,7 +159,7 @@
                             </a>
                         </span>
                     </td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="Date"}">{$transaction->date}</td>
+                    <td class="{$cclass}" data-title="{_T string="Date"}">{$transaction->date}</td>
                     {if (($login->isAdmin() or $login->isStaff()) && !isset($member)) or isset($pmember)}
                         <td class="{$cclass}" data-title="{_T string="Member"}">
                             {if isset($member)}
@@ -183,7 +183,7 @@
                             </a>
                         </td>
                     {/if}
-                    <td class="{$cclass} nowrap" data-title="{_T string="Description"}">{$transaction->description|escape}</td>
+                    <td class="{$cclass}" data-title="{_T string="Description"}">{$transaction->description|escape}</td>
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}" data-title="{_T string="Originator"}">
     {if $filters->filtre_cotis_adh eq ""}
@@ -197,9 +197,9 @@
     {/if}
                     </td>
 {/if}
-                    <td class="{$cclass} nowrap" data-title="{_T string="Amount"}">{$transaction->amount}</td>
+                    <td class="{$cclass}" data-title="{_T string="Amount"}">{$transaction->amount}</td>
 {if $login->isAdmin() or $login->isStaff()}
-                    <td class="{$cclass} center nowrap">
+                    <td class="{$cclass} center">
                         <a
                             href="{path_for name="editTransaction" data=["id" => $transaction->id]}"
                             class="tooltip action"

@@ -23,7 +23,7 @@
                 <td data-title="{_T string="Author"}">{$plugin.author}</td>
                 <td data-title="{_T string="Version"}">{$plugin.version}</td>
                 <td data-title="{_T string="Release date"}">{$plugin.date}</td>
-                <td class="nowrap center actions_row">
+                <td class="center actions_row">
                     <a
                         href="{path_for name="pluginsActivation" data=["action" => "deactivate", "module_id" => $name]}"
                         class="toggleActivation tooltip use"
@@ -74,7 +74,7 @@
                         {_T string="Unknown"}
                     {/if}
                 </td>
-                <td class="nowrap center actions_row">
+                <td class="center actions_row">
                     <a
                         href="{path_for name="pluginsActivation" data=["action" => "activate", "module_id" => $name]}"
                         class="toggleActivation tooltip delete"

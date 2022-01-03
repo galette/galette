@@ -205,7 +205,7 @@
                         {_T string="Duration"}
                     </th>
 {if $mode neq 'ajax'}
-                    <th class="nowrap actions_row">{_T string="Actions"}</th>
+                    <th class="actions_row">{_T string="Actions"}</th>
 {/if}
                 </tr>
             </thead>
@@ -229,7 +229,7 @@
     {/if}
 
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
-                    <td class="{$cclass} nowrap" data-scope="row">
+                    <td class="{$cclass}" data-scope="row">
                         {if ($login->isAdmin() or $login->isStaff()) or $mode eq 'ajax'}
                             <input type="checkbox" name="contrib_sel[]" value="{$contribution->id}"/>
                         {else}
@@ -271,9 +271,9 @@
                             height="16"/>
         {/if}
                     </td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="Date"}">{$contribution->date}</td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="Begin"}">{$contribution->begin_date}</td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="End"}">{$contribution->end_date}</td>
+                    <td class="{$cclass}" data-title="{_T string="Date"}">{$contribution->date}</td>
+                    <td class="{$cclass}" data-title="{_T string="Begin"}">{$contribution->begin_date}</td>
+                    <td class="{$cclass}" data-title="{_T string="End"}">{$contribution->end_date}</td>
     {if (($login->isAdmin() or $login->isStaff()) && !isset($member)) or isset($pmember)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
         {if isset($member)}
@@ -298,11 +298,11 @@
                     </td>
     {/if}
                     <td class="{$cclass}" data-title="{_T string="Type"}">{$contribution->type->libelle}</td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="Amount"}">{$contribution->amount}</td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="Payment type"}">{$contribution->spayment_type}</td>
-                    <td class="{$cclass} nowrap" data-title="{_T string="Duration"}">{$contribution->duration}</td>
+                    <td class="{$cclass}" data-title="{_T string="Amount"}">{$contribution->amount}</td>
+                    <td class="{$cclass}" data-title="{_T string="Payment type"}">{$contribution->spayment_type}</td>
+                    <td class="{$cclass}" data-title="{_T string="Duration"}">{$contribution->duration}</td>
     {if $mode neq 'ajax'}
-                    <td class="{$cclass} center nowrap">
+                    <td class="{$cclass} center">
                         <a
                             href="{path_for name="printContribution" data=["id" => $contribution->id]}"
                             class="tooltip"

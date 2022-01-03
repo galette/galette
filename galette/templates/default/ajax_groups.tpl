@@ -16,16 +16,16 @@
     {assign var="managers" value=$group->getManagers()}
                 <tr>
                     <td class="right">{$group->getId()}</td>
-                    <td class="nowrap username_row">
+                    <td class="username_row">
                         <a href="{path_for name="groups" data=["id" => $group->getId()]}">{$group->getName()}</a>
                     </td>
-                    <td class="nowrap username_row">
+                    <td class="username_row">
     {foreach from=$managers item=manager name="managersiterate"}
         {if not $smarty.foreach.managersiterate.first}, {/if}
                         {$manager->sname}
     {/foreach}
                     </td>
-                    <td class="right nowrap">{_T string="%membercount members" pattern="/%membercount/" replace=$group->getMemberCount(true)}</td>
+                    <td class="right">{_T string="%membercount members" pattern="/%membercount/" replace=$group->getMemberCount(true)}</td>
                 </tr>
 {foreachelse}
                 <tr><td colspan="3" class="emptylist">{_T string="no group"}</td></tr>

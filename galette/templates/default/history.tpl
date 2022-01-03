@@ -150,8 +150,8 @@
                             {_T string="History entry %id" pattern="/%id/" replace=$smarty.foreach.eachlog.iteration}
                         </span>
                     </td>
-                    <td class="nowrap" data-title="{_T string="Date"}">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
-                    <td class="nowrap" data-title="{_T string="IP"}">{$log.ip_log}</td>
+                    <td class="" data-title="{_T string="Date"}">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
+                    <td class="" data-title="{_T string="IP"}">{$log.ip_log}</td>
                     <td data-title="{_T string="User"}">{$log.adh_log}</td>
                     <td data-title="{_T string="Action"}">{$log.action_log|escape}</td>
                     <td data-title="{_T string="Description"}">

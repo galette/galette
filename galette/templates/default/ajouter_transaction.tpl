@@ -129,18 +129,18 @@
                     {assign var="mid" value=$contrib->member}
                     {assign var="cclass" value=$contrib->getRowClass()}
                         <tr>
-                            <td class="{$cclass} center nowrap">
+                            <td class="{$cclass} center">
                                 {$ordre+1}
                             </td>
-                            <td class="{$cclass} center nowrap">{$contrib->date}</td>
-                            <td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
-                            <td class="{$cclass} center nowrap">{$contrib->end_date}</td>
-                            <td class="{$cclass} nowrap">{$contrib->duration}</td>
+                            <td class="{$cclass} center">{$contrib->date}</td>
+                            <td class="{$cclass} center">{$contrib->begin_date}</td>
+                            <td class="{$cclass} center">{$contrib->end_date}</td>
+                            <td class="{$cclass}">{$contrib->duration}</td>
                     {if $login->isAdmin() or $login->isStaff()}
                             <td class="{$cclass}">{memberName id="$mid"}</td>
                     {/if}
                             <td class="{$cclass}">{$contrib->type->libelle}</td>
-                            <td class="{$cclass} nowrap right">{$contrib->amount}</td>
+                            <td class="{$cclass} right">{$contrib->amount}</td>
                     {if $login->isAdmin() or $login->isStaff()}
                             <td class="{$cclass} actions_row">
                                 <a

@@ -2,7 +2,7 @@
 
 
 {function name=draw_actions}
-                    <td class="{$rclass} center nowrap actions_row">
+                    <td class="{$rclass} center actions_row">
 {if $member->canEdit($login)}
                         <a
                             href="{path_for name="editMember" data=["id" => $member->id]}"
@@ -220,7 +220,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {/if}
                         </td>
         {elseif $column->field_id eq 'list_adh_name'}
-                        <td class="{$rclass} nowrap username_row" data-scope="row">
+                        <td class="{$rclass} username_row" data-scope="row">
                             <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
             {if $member->isCompany()}
                             <i class="ui building outline icon tooltip"><span class="sr-only">{_T string="Is a company"}</span></i>
@@ -264,12 +264,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {if $column->field_id eq 'nom_adh'}
                 {assign var="value" value=$member->sfullname}
             {elseif $column->field_id eq 'pseudo_adh'}
-                {assign var="lrclass" value="$rclass nowrap"}
+                {assign var="lrclass" value="$rclass"}
                 {assign var=value value=$member->$propname}
             {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
-                {assign var="lrclass" value="$rclass nowrap"}
+                {assign var="lrclass" value="$rclass"}
             {elseif $column->field_id eq 'id_statut'}
-                {assign var="lrclass" value="$rclass nowrap"}
+                {assign var="lrclass" value="$rclass"}
                 {assign var=value value={statusLabel id=$member->$propname}}
             {elseif $column->field_id eq 'titre_adh'}
                 {if is_object($member->title)}
