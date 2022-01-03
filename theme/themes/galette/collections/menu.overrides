@@ -2,24 +2,50 @@
          Galette Overrides
 *******************************/
 
+/*--------------
+     Header
+---------------*/
 
-.ui.fixed.menu .item {
-  background: rgba(255,255,255,.6);
-}
-.ui.fixed.menu .item.active {
-  background: @activeItemBackground;
-}
-
-.ui.vertical.menu {
-  border: @border;
+.ui.menu .header.item,
+.ui.vertical.menu .header.item {
+  font-weight: @headerWeight;
+  text-align: left;
 }
 
-.ui.accordion.vertical a.item:hover .title:not(.ui),
-.ui.accordion.vertical .active .title:not(.ui) {
-  color: darken(@textColor, 15);
+& when (@variationMenuFixed) {
+  /*--------------
+       Fixed
+  ---------------*/
+  .ui.fixed.menu .item {
+    background: rgba(255,255,255,.6);
+  }
+  .ui.fixed.menu .item.active {
+    background: @activeItemBackground;
+  }
 }
 
-.accordion.vertical div.item:hover .title:not(.ui),
-.accordion.vertical div.item:hover i {
-  color: darken(@primaryColor, 15);
+& when (@variationMenuVertical) {
+  /*--------------
+      Vertical
+  ---------------*/
+
+  .ui.vertical.menu {
+    display: block;
+    flex-direction: column;
+    background: @verticalBackground;
+    box-shadow: @verticalBoxShadow;
+  }
+  .ui.vertical.menu {
+    border: @border;
+  }
+  .ui.vertical.menu .item.button {
+    border: @border;
+    margin: .2rem 0;
+  }
+  .ui.vertical.menu div.item .ui.button {
+    box-shadow: none;
+  }
+  .ui.vertical.menu div.item .item.button::before {
+    content: none;
+  }
 }

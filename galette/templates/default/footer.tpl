@@ -1,4 +1,4 @@
-        <footer class="ui basic segment">
+        <footer class="ui basic center aligned segment">
             <div class="row">
                 <nav class="ui horizontal bulleted link list">
                     <a href="https://galette.eu" class="item">

@@ -26,31 +26,6 @@
  * @since     Available since 0.7dev - 2007-10-06
  */
 
-//set up fieldsets spindowns
-//the function will spin the element just after legend, and will update the icon
-$.fn.spinDown = function() {
-
-    return this.click(function() {
-        var $this = $(this);
-
-        $this.parent('legend').next().slideToggle(100);
-        $this.toggleClass('down').toggleClass('right');
-
-        return false;
-    });
-
-};
-
-//make fieldsets collapsibles. This requires a legend and all the following elements to be grouped (for example in a div element)
-//The function will 'hide'
-var _collapsibleFieldsets = function(){
-    $('legend').each(function(){
-        var _collapse = $('<i class="ui caret down icon"><span class="sr-only">Collapse/Expand</span></i>');
-        $(this).prepend(_collapse);
-        _collapse.spinDown();
-    });
-}
-
 var _fieldsInSortable = function(){
     //so our forms elements continue to work as expected
     $('.fields_list input, .fields_list select').bind(
@@ -73,9 +48,6 @@ var _initSortable = function(){
         items: '.accordion'
     });
 }
-
-/* On document ready
--------------------------------------------------------- */
 
 var _messagesEffects = function(){
     /**
@@ -112,78 +84,6 @@ var _bind_check = function(boxelt){
     });
 };
 
-/*var _bind_legend = function() {
-    $('#legende h1').remove();
-    $('#legende').dialog({
-        autoOpen: false,
-        modal: true,
-        hide: 'fold',
-        width: '40%',
-        create: function (event, ui) {
-            if ($(window ).width() < 767) {
-                $(this).dialog('option', {
-                        'width': '95%',
-                        'draggable': false
-                });
-            }
-        }
-    }).dialog('close');
-
-    $('.show_legend').click(function(e){
-        e.preventDefault();
-        $('#legende').dialog('open');
-    });
-}*/
-
-
-/*$var _initTooltips = function(selector) {
-    if (typeof(selector) == 'undefined') {
-        selector = '';
-    } else {
-        selector = selector + ' ';
-    }
-
-    //for tootltips
-    //first, we hide tooltips in the page
-    $(selector + '.tip').hide();
-    $(selector + ' label.tooltip, ' + selector + ' span.bline.tooltip').each(function() {
-        var __i = $('<i class="fas fa-exclamation-circle"></i>')
-        $(this).append(__i);
-    });
-    //and then, we show them on rollover
-    $(document).tooltip({
-        items: selector + ".tooltip, a[title]",
-        content: function(event, ui) {
-            var _this = $(this);
-            var _content;
-
-            //first, value from @class=tip element
-            var _next = _this.nextAll('.tip');
-            if (_next.length > 0) {
-                _content = _next.html();
-            }
-
-            //and finally, value from @class=sr-only element
-            if (typeof _content == 'undefined') {
-                var _sronly = _this.find('.sr-only');
-                if (_sronly.length > 0) {
-                    _content = _sronly.html();
-                }
-            }
-
-            //second, value from @title
-            if (typeof _content == 'undefined') {
-                var _title = _this.attr('title');
-                if (typeof _title != 'undefined') {
-                    _content = _title;
-                }
-            }
-
-            return _content;
-        }
-    });
-}*/
-
 var _bindNbshow = function(selector) {
     if (typeof(selector) == 'undefined') {
         selector = '';
@@ -193,6 +93,13 @@ var _bindNbshow = function(selector) {
 
     $(selector + '#nbshow').change(function() {
         $(this.form).trigger('submit');
+    });
+}
+
+/* Display tables legends in Fomantic UI modal */
+var _bind_legend = function() {
+    $('.show_legend').click(function(e){
+        $('#legende').modal('show');
     });
 }
 
@@ -207,32 +114,12 @@ $(function() {
 
     $('#login').focus();
 
-    /*_initTooltips();*/
     $('select:not(.nochosen)').selectize({
         maxItems: 1
     });
 
     _bindNbshow();
     $('.nojs').removeClass('nojs');
-    /*$('#menu h1').each(function(){
-        $(this).html('<a href="#">' + $(this).text() + '</a>');
-    });
-
-    if( $('#menu').length > 0 ) {
-        $('#menu').accordion({
-            header: 'h1:not(#logo)',
-            heightStyle: 'content',
-            active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').length
-        });
-    }
-
-    $('input:submit, .button, input:reset, button[type=submit]' ).button({
-        create: function(event, ui) {
-            if ( $(event.target).hasClass('disabled') ) {
-                $(event.target).button('disable');
-            }
-        }
-    });*/
 
     if ( $('#back2top').length > 0 ) {
         if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
@@ -247,23 +134,100 @@ $(function() {
         });
     }
 
-    /*$('select#lang_selector').change(function() {
-        this.form.submit();
-    });*/
+    /* Fomantic UI components */
+    var
+        $sidebar        = $('.ui.sidebar'),
+        $dropdown       = $('.ui.dropdown, select:not(.nochosen)'),
+        $accordion      = $('.ui.accordion'),
+        $checkbox       = $('.ui.checkbox, .ui.radio.checkbox'),
+        $tabulation     = $('.ui.tabbed .item'),
+        $calendar       = $('[id$="rangestart"], [id$="rangeend"]'),
+        $popup          = $('a[title]'),
+        $tooltipPopup   = $('i.tooltip'),
+        $menuPopupRight = $('.ui.vertical.accordion.menu a[title]')
+    ;
 
-    /* Language selector.
-     * Works per default with CSS only, use javascript to replace with a click event,
-     * which is required because of the current way the menu is hidden on mobile devices.
+    $sidebar.sidebar('attach events', '.toc.item');
+
+    $dropdown.dropdown();
+
+    $accordion.accordion();
+
+    $checkbox.checkbox();
+
+    $tabulation.tab();
+
+    $calendar.calendar({
+        type: 'date',
+        firstDayOfWeek: 1,
+        monthFirst: false,
+        /* TODO : Find a way to translate widget content.
+        * https://fomantic-ui.com/modules/calendar.html#language
+        * https://www.php.net/manual/fr/intldateformatter.create.php
+        */
+        text: {
+            days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            now: 'Now',
+        },
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate() + '';
+                if (day.length < 2) {
+                    day = '0' + day;
+                }
+                var month = (date.getMonth() + 1) + '';
+                if (month.length < 2) {
+                    month = '0' + month;
+                }
+                var year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+        }
+    });
+
+    /* Fomantic UI Tooltips */
+    /* Hide all popups when a dropdown is shown. */
+    $.fn.dropdown.settings.onShow = function() {
+        $('body').popup('hide all');
+    };
+    /* Hide all popups when an accordion is opened. */
+    $.fn.accordion.settings.onOpening = function() {
+        $('body').popup('hide all');
+    };
+    /* Default behaviour for each link with a title attribute.
+     * Created next to current element, and not removed from the DOM
+     * after being hidden (inline: true).
      */
-    /*$('#plang_selector').removeClass('onhover');
-    var _langs = $('#plang_selector ul');
-    _langs.hide();
+    $popup
+        .popup({
+            variation: 'inverted',
+            inline: true
+        })
+    ;
+    /* Behaviour for tooltip icons (using <i> tag).
+     * data-html attribute appended to body and removed after being
+     * hidden (inline: false).
+     */
+    $tooltipPopup
+        .popup({
+            variation: 'inverted',
+            inline: false // default value
+        })
+    ;
+    /* Position right on the main accordion menu.
+     */
+    $menuPopupRight
+        .popup({
+            position: 'right center',
+            variation: 'inverted',
+            delay: {
+                show: 500
+            }
+        })
+    ;
 
-    $('#plang_selector > a').on('click', function(event) {
-        event.preventDefault();
-        var _this = $(this);
-        var _open = _this.attr('aria-expanded');
-        _this.attr('aria-expanded', !_open);
-        _langs.toggle();
-    });*/
 });

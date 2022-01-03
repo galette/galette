@@ -40,8 +40,9 @@
                         <a
                             id="recup_mailing"
                             href="{path_for name="mailing"}"
-                            class="ui basic tertiary red huge right floated button tooltip"
+                            class="ui basic tertiary secondary huge right floated button tooltip"
                             title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
+                            data-position="bottom right"
                         >
                             <i class="mail bulk icon"></i>
                             <span class="sr-only">{_T string="Existing mailing"}</span>

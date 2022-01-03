@@ -1,0 +1,14 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+/*--------------
+     Pushable
+---------------*/
+
+body.pushable {
+  background: @white;
+  &.dimmed {
+    background: @canvasBackground;
+  }
+}

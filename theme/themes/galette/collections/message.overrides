@@ -1,0 +1,9 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+.ui.message > .password-lost:first-child,
+.ui.message > .password-lost:last-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}

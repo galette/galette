@@ -2,7 +2,175 @@
          Galette Overrides
 *******************************/
 
+.sr-only {
+  display: none;
+}
+
+#back2top {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  opacity: 0.45;
+}
+
+#back2top:hover {
+  opacity: 1;
+}
+
 #top-navbar,
 aside.computer.toc {
   background: @galetteNavBackground;
+}
+
+#top-navbar.ui.menu .item img.logo {
+  margin-right: 1.5rem;
+  max-height: 2.5rem;
+  width: auto;
+}
+
+#top-navbar div.item a.button:not(:first-child) {
+  margin-left: .5rem;
+}
+
+.language span {
+  text-transform: uppercase;
+}
+
+body.pushable:not(.loggedin) > .pusher {
+    display: flex;
+    justify-content: center;
+}
+
+.ui.fixed.menu + .pusher {
+  padding-top: 4.5rem;
+}
+
+.ui.grid > aside.column:not(.row) {
+  padding-bottom: 2rem;
+}
+
+aside.toc {
+  display: none;
+}
+
+aside .ui.vertical.menu {
+  width: auto;
+  max-width: 100%;
+}
+
+section.content,
+.front-page section:not(.content) {
+  padding: 1.25rem;
+}
+
+#recup_mailing.ui.tertiary.button,
+#recup_mailing.ui.button > .icon {
+  margin: 0 !important;
+}
+
+#filtre .fields .fields {
+  margin: 0;
+}
+
+#filtre .fields .field.flexend {
+  display: flex;
+  align-items: flex-end;
+}
+
+.ui .fields:first-child:last-child {
+  margin-bottom: 0;
+}
+
+footer,
+footer .ui.horizontal.list .list > .item,
+footer .ui.horizontal.list > .item{
+  font-size: .95rem;
+}
+
+@media only screen and (max-width: 991px) {
+  #top-navbar .item:not(.header):not(.toc) {
+    display: none;
+  }
+  .sidebar.uncover + .fixed.menu .toc i::before {
+    content: '\f00d';
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .loggedin .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) {
+    display: none;
+  }
+  .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header,
+  .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.toc {
+    display: none;
+  }
+  .loggedin .ui.fixed.menu + .pusher {
+    padding-top: 0;
+  }
+  .pusher > .full.height {
+    display: flex;
+  }
+  aside.toc {
+    display: block;
+    position: fixed !important;
+    height: 100%;
+    overflow-y: scroll;
+    width: 260px;
+    padding: 1.25rem;
+  }
+  body:not(.front-page) section.content {
+    margin-left: 260px;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+  }
+  section.desktop .container {
+    max-width: 695px;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  aside.toc {
+    width: 350px;
+  }
+  body:not(.front-page) section.content {
+    margin-left: 350px;
+  }
+  section.desktop .container {
+    max-width: 850px;
+  }
+}
+
+/*------------------------------------------------
+    Fix conflicts between SUI and icons classes
+-------------------------------------------------*/
+.ui.card.icon {
+  width: auto;
+  display: inline-block;
+  margin-right: .25rem;
+}
+.ui.grey.card.icon {
+  box-shadow: none;
+}
+
+/*---------------------------------
+    Fix Summernote modal display
+----------------------------------*/
+
+.note-modal-backdrop {
+  display: none !important;
+}
+.note-modal.open {
+  background: rgba(0,0,0,0.5);
+}
+.note-modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.note-modal .note-btn {
+  margin-bottom: 1rem;
+  padding: 10px;
 }
