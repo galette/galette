@@ -337,7 +337,7 @@
         </div>
 {if $nb != 0}
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached segment screen-only">
             <div class="ui horizontal list">
                 <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
                 <div class="item">

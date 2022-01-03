@@ -335,7 +335,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </table>
         </div>
 {if $nb_members != 0 && ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff())}
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached segment screen-only">
             <div class="ui horizontal list">
                 <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
     {if $login->isAdmin() or $login->isStaff()}

@@ -1,58 +1,24 @@
-body {
-	font-family: "Liberation sans", Verdana, Arial, sans-serif;
-	font-size:0.85em;
-	background-color:white;
-	color:black;
+body,
+body.pushable {
+  background: #fff;
 }
 
-/** Hidden elements */
-#content > nav,
-#details_menu,
-#filtre,
-tfoot,
-footer nav,
-#menu > *,
-#historyform,
-input[type=checkbox],
+.ui.fixed.menu + .pusher {
+  padding-top: 0;
+}
+
+.screen-only,
+#top-navbar,
+aside.toc,
+#recup_mailing,
+#filtre .segment:not(.compact):not(.center),
+#filtre .segment.compact .tooltip,
+#filtre .segment.compact .list .item,
+.ui.horizontal.checkboxes.segments,
+table input[type=checkbox],
 .actions_row,
-#copyright,
-#sysinfos {
-    display: none;
-}
-
-#menu > #logo {
-    display: block;
-    text-align: center;
-}
-
-a {
-    color: black;
-    text-decoration: none;
-}
-
-h1, h2, h3, h4, h5, h6,
-footer {
-    text-align: center;
-}
-
-#copyright {
-	color: #CCCCCC;
-	font-style: italic;
-}
-
-#listing {
-    margin: 0 auto;
-}
-
-/** CSS adaptations for print */
-#content{
-        margin: 0em;
-}
-
-#titre {
-    background: none;
-}
-
-#member_stateofdue, .details {
-    width: 100%;
+.ui.pagination.menu,
+section.content > footer,
+#back2top {
+  display: none;
 }
