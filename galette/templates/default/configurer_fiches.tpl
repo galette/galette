@@ -5,10 +5,10 @@
             <a
                 id="addfield"
                 href="{path_for name="addDynamicField" data=["form_name" => $form_name]}"
-                class="ui compact icon button tab-button tooltip"
+                class="ui compact icon green button tab-button tooltip"
                 data-html="{_T string="Add" escape="js"}"
             >
-                <i class="plus square icon"></i>
+                <i class="plus icon"></i>
                 <span class="sr-only">{_T string="Add"}</span>
             </a>
             <ul>

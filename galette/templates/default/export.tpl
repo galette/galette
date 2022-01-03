@@ -32,7 +32,7 @@
                                     <th>{_T string="Name"}</th>
                                     <th>{_T string="Date"}</th>
                                     <th>{_T string="Size"}</th>
-                                    <th class="actions_row"></th>
+                                    <th class="actions_row">{_T string="Actions"}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -79,22 +79,22 @@
                         <table class="listing ui celled table">
                             <thead>
                                 <tr>
-                                    <th class="small_head"/>
                                     <th>{_T string="Name"}</th>
                                     <th>{_T string="Description"}</th>
+                                    <th class="small_head"/>
                                 </tr>
                             </thead>
                             <tbody>
     {foreach item=param from=$parameted name=parameted_list}
                                 <tr class="{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
-                                    <td data-scope="id">
-                                        <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
-                                    </td>
                                     <td data-scope="row">
                                         <label for="{$param.id}">{$param.name}</label>
                                     </td>
                                     <td data-title="{_T string="Description"}">
                                         <label for="{$param.id}">{$param.description}</label>
+                                    </td>
+                                    <td data-scope="id">
+                                        <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
                                     </td>
                                 </tr>
     {/foreach}
@@ -138,7 +138,7 @@
                 </div>
             </div>
             <div class="button-container">
-                <input type="submit" name="valid" value="{_T string="Continue"}" class="ui button"/>
+                <input type="submit" name="valid" value="{_T string="Continue"}" class="ui primary button"/>
                 {include file="forms_types/csrf.tpl"}
             </div>
         </form>

@@ -161,7 +161,7 @@
 <script type="text/javascript">
     {if !$masschange}
     var _addLnk = function(){
-        return $('<a class="ui small compact icon button" href="#"><i class="plus icon" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
+        return $('<a class="ui small compact icon green button" href="#"><i class="plus icon" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
     };
 
     var _lnkEvent = function(_a, _input, _parent) {

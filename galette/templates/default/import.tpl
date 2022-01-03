@@ -31,7 +31,7 @@
                                         <th>{_T string="Name"}</th>
                                         <th>{_T string="Date"}</th>
                                         <th>{_T string="Size"}</th>
-                                        <th class="actions_row"></th>
+                                        <th class="actions_row">{_T string="Actions"}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,8 +63,8 @@
                             <div class="button-container">
                                 <label for="dryrun" title="{_T string="Run the import process, but do *not* store anything in the database"}">{_T string="Dry run"}</label>
                                 <input type="checkbox" name="dryrun" id="dryrun" value="1"{if isset($dryrun) and $dryrun eq true} checked="checked"{/if}/>
-                                <button type="submit" name="import" id="import">
-                                    <i class="ui file import icon"></i>
+                                <button type="submit" name="import" id="import" class="ui labeled icon button">
+                                    <i class="ui file import blue icon"></i>
                                     {_T string="Import"}
                                 </button>
                                 {include file="forms_types/csrf.tpl"}
@@ -90,7 +90,7 @@
                             </div>
                             <div class="button-container">
                                 <button type="submit" name="upload" id="upload" class="ui labeled icon button">
-                                    <i class="upload icon" aria-hidd="true"></i>
+                                    <i class="upload blue icon" aria-hidd="true"></i>
                                     {_T string="Upload file"}
                                 </button>
                                 {include file="forms_types/csrf.tpl"}

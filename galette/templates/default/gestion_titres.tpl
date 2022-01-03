@@ -27,7 +27,7 @@
                             <td class="center actions_row">
                                 <input type="hidden" name="new" value="1" />
                                 <button type="submit" name="valid" class="ui labeled icon button">
-                                    <i class="plus icon" aria-hidden="true"></i>
+                                    <i class="plus green icon" aria-hidden="true"></i>
                                     {_T string="Add"}
                                 </button>
                             </td>
@@ -55,11 +55,11 @@
                                     href="{path_for name="editTitle" data=["id" => $title->id]}"
                                     class="tooltip action"
                                 >
-                                    <i class="ui edit blue icon"></i>
+                                    <i class="ui edit icon"></i>
                                     <span class="sr-only">{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short|escape}</span>
                                 </a>
                 {if $title->id eq 1 or $title->id eq 2}
-                                <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16px" height="16px"/>
+                                <i class="ui icon">&nbsp;</i>
                 {else}
                                 <a
                                     href="{path_for name="removeTitle" data=["id" => $title->id]}"

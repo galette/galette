@@ -31,7 +31,7 @@
     {/foreach}
     </table>
     <div class="button-container">
-        <a class="ui labeled icon button" href="{path_for name="getImportModel"}">
+        <a class="ui labeled icon primary button" href="{path_for name="getImportModel"}">
             <i class="file csv icon" aria-hidden="true"></i>
             {_T string="Generate empty CSV file"}
         </a>
@@ -70,7 +70,7 @@
         {/foreach}
         </table>
         <div class="button-container">
-            <button type="submit" name="upload" class="ui labeled icon button action">
+            <button type="submit" name="upload" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i>
                 {_T string="Store new model"}
             </button>

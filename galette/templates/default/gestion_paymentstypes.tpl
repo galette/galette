@@ -23,7 +23,7 @@
                             <td class="center actions_row">
                                 <input type="hidden" name="new" value="1" />
                                 <button type="submit" name="valid" class="ui labeled icon button">
-                                    <i class="plus icon" aria-disabled="true"></i>
+                                    <i class="plus green icon" aria-disabled="true"></i>
                                     {_T string="Add"}
                                 </button>
                             </td>
@@ -50,14 +50,14 @@
                                     href="{path_for name="editPaymentType" data=["id" => $ptype->id]}"
                                     class="tooltip action"
                                 >
-                                    <i class="ui edit blue icon"></i>
+                                    <i class="ui edit icon"></i>
                                     <span class="sr-only">{_T string="Edit '%s' payment type" pattern="/%s/" replace=$ptype->getName()}</span>
                                 </a>
                                 <a
                                     href="{path_for name="dynamicTranslations" data=["text_orig" => {$ptype->getName(false)|escape}]}"
                                     class="tooltip"
                                 >
-                                    <i class="ui language icon"></i>
+                                    <i class="ui language grey icon"></i>
                                     <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$ptype->getName()}</span>
                                 </a>
                                 </a>

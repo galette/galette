@@ -8,7 +8,7 @@
                             href="{path_for name="editMember" data=["id" => $member->id]}"
                             class="tooltip action"
                         >
-                            <i class="ui user edit blue icon" aria-hidden="true"></i>
+                            <i class="ui user edit icon" aria-hidden="true"></i>
                             <span class="sr-only">{_T string="%membername: edit information" pattern="/%membername/" replace=$member->sname}</span>
                         </a>
 {/if}
@@ -17,7 +17,7 @@
                             href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
                             class="tooltip"
                         >
-                            <i class="ui cookie icon" aria-hidden="true"></i>
+                            <i class="ui cookie green icon" aria-hidden="true"></i>
                             <span class="sr-only">{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}</span>
                         </a>
                         <a
@@ -33,7 +33,7 @@
                             href="{path_for name="impersonate" data=["id" => $member->id]}"
                             class="tooltip"
                         >
-                            <i class="ui user secret icon" aria-hidden="true"></i>
+                            <i class="ui user secret grey icon" aria-hidden="true"></i>
                             <span class="sr-only">{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}</span>
                         </a>
 {/if}
@@ -109,12 +109,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     </div>
                 </div>
                 <div class="right aligned field">
-                    <button type="submit"  class="tooltip action ui button" title="{_T string="Apply filters"}" name="filter">
+                    <button type="submit"  class="tooltip action ui primary button" title="{_T string="Apply filters"}" name="filter">
                         <i class="search icon"></i>
                         {_T string="Filter"}
                     </button>
                     <button type="submit"  class="tooltip action ui button" title="{_T string="Save selected criteria"}" name="savesearch" id="savesearch">
-                        <i class="save icon"></i>
+                        <i class="save blue icon"></i>
                         {_T string="Save"}
                     </button>
                     <input type="submit" name="clear_filter" class="tooltip ui button" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
@@ -123,13 +123,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {else}
             <div class="field">
                 <span class="ui primary ribbon label">{_T string="Advanced search mode"}</span>
-                <button type="submit" class="tooltip action ui button" title="{_T string="Change search criteria"}" name="adv_criteria">
-                    <i class="edit icon"></i>
-                    {_T string="Change criteria"}
-                </button>
-                <button type="submit"  class="tooltip action ui button" title="{_T string="Save current advanced search criteria"}" name="savesearch" id="savesearch">
+                <button type="submit"  class="tooltip action ui primary button" title="{_T string="Save current advanced search criteria"}" name="savesearch" id="savesearch">
                     <i class="save icon"></i>
                     {_T string="Save"}
+                </button>
+                <button type="submit" class="tooltip action ui button" title="{_T string="Change search criteria"}" name="adv_criteria">
+                    <i class="edit blue icon"></i>
+                    {_T string="Change criteria"}
                 </button>
                 <input type="hidden" name="advanced_search" value="1" class="ui button"/>
                 <input type="submit" name="clear_filter" class="tooltip ui button" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
@@ -340,18 +340,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
     {if $login->isAdmin() or $login->isStaff()}
                 <div class="item">
-                    <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
-                        <i class="user times icon"></i> {_T string="Delete"}
-                    </button>
-                </div>
-                <div class="item">
                     <button type="submit" id="masschange" name="masschange" class="action ui labeled icon tiny button">
-                        <i class="user edit icon"></i> {_T string="Mass change"}
+                        <i class="user edit blue icon"></i> {_T string="Mass change"}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="masscontributions" name="masscontributions" class="action ui labeled icon tiny button">
-                        <i class="ui cookie bite icon"></i> {_T string="Mass add contributions"}
+                        <i class="ui cookie bite green icon"></i> {_T string="Mass add contributions"}
+                    </button>
+                </div>
+                <div class="item">
+                    <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
+                        <i class="user times red icon"></i> {_T string="Delete"}
                     </button>
                 </div>
     {/if}
@@ -445,7 +445,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <tbody>
                         <tr>
                             <th class="action">
-                                <i class="ui user edit blue icon"></i>
+                                <i class="ui user edit icon"></i>
                             </th>
                             <td class="back">{_T string="Modification"}</td>
                             <th>

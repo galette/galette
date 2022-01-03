@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="ui basic center aligned segment">
-                <button type="submit" name="valid" class="ui labeled icon button">
+                <button type="submit" name="valid" class="ui labeled icon primary button">
                     <i class="rocket icon" aria-hidden="true"></i>
                     {_T string="Send"}
                 </button>

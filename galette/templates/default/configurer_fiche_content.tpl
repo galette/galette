@@ -30,18 +30,18 @@
                             <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
                         <a
-                            href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName(false)|escape}]}"
-                            class="tooltip"
-                        >
-                            <i class="ui language icon" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
-                        </a>
-                        <a
                             href="{path_for name="removeDynamicField" data=["form_name" => $form_name, "id" => $field->getId()]}"
                             class="delete tooltip"
                         >
                             <i class="ui trash red icon" aria-hidden="true"></i>
                             <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
+                        </a>
+                        <a
+                            href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName(false)|escape}]}"
+                            class="tooltip"
+                        >
+                            <i class="ui language grey icon" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
     {if $field->getIndex() eq 1}
                         <i class="ui icon">&nbsp;</i>
@@ -50,7 +50,7 @@
                             href="{path_for name="moveDynamicField" data=["form_name" => $form_name, "direction" => "up", "id" => $field->getId()]}"
                             class="tooltip action"
                         >
-                            <i class="ui caret up icon"></i>
+                            <i class="ui caret up grey icon"></i>
                             <span class="sr-only">{_T string="Move up '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
     {/if}
@@ -61,7 +61,7 @@
                             href="{path_for name="moveDynamicField" data=["form_name" => $form_name, "direction" => "down", "id" => $field->getId()]}"
                             class="tooltip"
                         >
-                            <i class="ui caret down icon"></i>
+                            <i class="ui caret down grey icon"></i>
                             <span class="sr-only">{_T string="Move down '%s' field" pattern="/%s/" replace=$field->getName()|escape}</span>
                         </a>
     {/if}

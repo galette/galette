@@ -207,9 +207,9 @@
                     <a
                         href="#"
                         id="addbutton_g"
-                        class="ui tiny compact icon button tab-button tooltip"
+                        class="ui tiny compact icon green button tab-button tooltip"
                     >
-                        <i class="plus square icon"></i>
+                        <i class="plus icon"></i>
                         <span class="hidden">{_T string="Add new group search criteria"}</span>
                     </a>
                 </div>
@@ -380,9 +380,9 @@
                         <a
                             href="#"
                             id="addbutton"
-                            class="ui tiny compact icon button tab-button tooltip"
+                            class="ui tiny compact icon green button tab-button tooltip"
                         >
-                            <i class="plus square icon"></i>
+                            <i class="plus icon"></i>
                             <span class="hidden">{_T string="Add new free search criteria"}</span>
                         </a>
                     </div>

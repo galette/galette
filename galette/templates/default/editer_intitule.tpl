@@ -32,7 +32,7 @@
     <input type="hidden" name="class" value="{$class}" />
 
     <div class="button-container">
-        <button type="submit" class="ui labeled icon button action">
+        <button type="submit" class="ui labeled icon primary button action">
             <i class="save icon"></i>
             {_T string="Save"}
         </button>

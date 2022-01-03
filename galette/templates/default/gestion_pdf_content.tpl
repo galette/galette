@@ -1,6 +1,5 @@
         <form action="{path_for name="pdfModels"}" method="post" enctype="multipart/form-data" class="form ui">
-            <fieldset class="cssform">
-                <div class="ui basic segment">
+            <div class="ui basic segment">
 {if $model->id neq 1}
                     <div class="inline field">
                         <label for="title_{$model->id}">{_T string="Title"}</label>
@@ -40,15 +39,14 @@
                         </select>
                     </div>
 {/if}
-                </div>
-            </fieldset>
+            </div>
             <div class="ui basic center aligned segment">
                 <input type="hidden" name="store" value="true"/>
                 <input type="hidden" name="model_id" value="{$model->id}"/>
 {if $model->id lte 4}
                 <input type="hidden" name="model_type" value="{$model->type}"/>
 {/if}
-                <button type="submit" class="ui labeled icon button action">
+                <button type="submit" class="ui labeled icon primary button action">
                     <i class="save icon"></i> {_T string="Save"}
                 </button>
                 {include file="forms_types/csrf.tpl"}

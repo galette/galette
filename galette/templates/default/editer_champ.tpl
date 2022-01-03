@@ -78,7 +78,7 @@
         </div>
 
         <div class="ui basic center aligned segment">
-            <button type="submit" class="ui labeled icon button action">
+            <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {_T string="Save"}
             </button>
             {include file="forms_types/csrf.tpl"}
@@ -132,7 +132,7 @@
     {/if}
         </div>
         <div class="ui basic center aligned segment">
-            <button type="submit" name="valid" class="ui labeled icon button action">
+            <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="plus icon"></i> {_T string="Add"}
             </button>
             <input type="hidden" name="form_name" id="form_name" value="{$form_name}"/>

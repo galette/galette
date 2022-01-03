@@ -42,7 +42,7 @@
                     <input type="hidden" name="new" value="1" />
                     <input type="hidden" name="class" value="{$class}" />
                     <button type="submit" name="valid" class="ui labeled icon button">
-                        <i class="plus icon" aria-hidden="true"></i>
+                        <i class="plus green icon" aria-hidden="true"></i>
                         {_T string="Add"}
                     </button>
                 </td>
@@ -63,9 +63,9 @@
 
                     {if $class == 'Status'}
                         {if $entry.extra < 30}
-                            <img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
+                            <i class="ui id card alternate icon tooltip" data-content="{_T string="Staff member"}"></i>
                         {else}
-                            <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                            <i class="ui icon">&nbsp;</i>
                         {/if}
                     {/if}
                     {$entry.name|escape}
@@ -86,7 +86,7 @@
                         href="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $eid]}"
                         class="action tooltip"
                     >
-                        <i class="ui edit blue icon"></i>
+                        <i class="ui edit icon"></i>
                         <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name|escape}</span>
                     </a>
                     <a

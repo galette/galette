@@ -62,7 +62,7 @@
                         class="ui labeled icon button"
                         href="{path_for name="flushHistory"}"
                     >
-                        <i class="trash icon"></i>
+                        <i class="trash red icon"></i>
                         {_T string="Flush the logs"}
                     </a>
                     <div class="ui label">{_T string="%count entry" plural="%count entries" count=$history->getCount() pattern="/%count/" replace=$history->getCount()}</div>
@@ -90,9 +90,9 @@
                             {_T string="Date"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_DATE')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -102,9 +102,9 @@
                             {_T string="IP"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_IP')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -114,9 +114,9 @@
                             {_T string="User"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_USER')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -126,9 +126,9 @@
                             {_T string="Action"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_ACTION')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -183,7 +183,7 @@
         <script type="text/javascript">
             $(function() {
                 {include file="js_removal.tpl"}
-                var _elt = $('<img src="{base_url}/{$template_subdir}images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');
+                var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" data-html="{_T string="Show associated query"}"></i>');
                 $('.sql_log').hide().parent().prepend(_elt);
                 $('.qryhide').click(function() {
                     $(this).next('.sql_log').show();

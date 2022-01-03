@@ -9,8 +9,8 @@
     <a class="item" data-tab="group_members">{_T string="Members"} ({$members|@count})</a>
     {if $login->isAdmin() or $login->isStaff()}
         <div class="right menu">
-            <a href="#" class="ui item hidden tooltip" id="btnusers_small" title="{_T string="Manage members"}"><i class="user icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage members"}</span></a>
-            <a href="#" class="ui item hidden tooltip" id="btnmanagers_small" title="{_T string="Manage managers"}"><i class="user shield icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage managers"}</span></a>
+            <a href="#" class="ui item hidden tooltip" id="btnusers_small" title="{_T string="Manage members"}" data-position="bottom right"><i class="user icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage members"}</span></a>
+            <a href="#" class="ui item hidden tooltip" id="btnmanagers_small" title="{_T string="Manage managers"}" data-position="bottom right"><i class="user shield icon" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage managers"}</span></a>
         </div>
     {/if}
 </div>
@@ -79,7 +79,7 @@
     </div>
 
     <div class="ui basic center aligned segment">
-        <button type="submit" name="valid" class="ui labeled icon button action">
+        <button type="submit" name="valid" class="ui labeled icon primary button action">
             {if $canEdit}
             <i class="save icon"></i> {_T string="Save"}
         </button>
@@ -88,7 +88,7 @@
         {/if}
         {if $login->isAdmin() or $login->isStaff()}
             <a class="ui labeled icon button delete" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">
-                <i class="trash alt icon"></i>
+                <i class="trash alt red icon"></i>
                 {_T string="Delete"}
             </a>
         {/if}

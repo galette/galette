@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <p class="ui orange center aligned message">{_T string="(at least 4 characters)"}</p>
-                <input type="submit" name="change_passwd" value="{_T string="Change my password"}" class="ui button"/>
+                <input type="submit" name="change_passwd" value="{_T string="Change my password"}" class="ui primary button"/>
                 <input type="hidden" name="hash" value="{$hash}"/>
                 {include file="forms_types/csrf.tpl"}
             </div>

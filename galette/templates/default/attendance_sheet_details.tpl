@@ -40,7 +40,7 @@
         </div>
 {if not $ajax}
         <div class="ui basic center aligned segment">
-            <button type="submit" class="ui labeled icon button active">
+            <button type="submit" class="ui labeled icon primary button">
                 <i class="file pdf icon" aria-hidden="true"></i>
                 {_T string="Generate"}
             </button>

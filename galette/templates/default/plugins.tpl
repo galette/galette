@@ -9,12 +9,12 @@
                 <th class="listing">{_T string="Author"}</th>
                 <th class="listing">{_T string="Version"}</th>
                 <th class="listing">{_T string="Release date"}</th>
-                <th class="listing actions_row"></th>
+                <th class="listing actions_row">{_T string="Actions"}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th colspan="5" class="bgfree center"><strong>{_T string="Active plugins"}</strong></th>
+                <th colspan="6" class="center aligned"><strong>{_T string="Active plugins"}</strong></th>
             </tr>
 {foreach from=$plugins_list key=name item=plugin name=allplugins}
             <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
@@ -23,7 +23,7 @@
                 <td data-title="{_T string="Author"}">{$plugin.author}</td>
                 <td data-title="{_T string="Version"}">{$plugin.version}</td>
                 <td data-title="{_T string="Release date"}">{$plugin.date}</td>
-                <td class="center actions_row">
+                <td class="actions_row">
                     <a
                         href="{path_for name="pluginsActivation" data=["action" => "deactivate", "module_id" => $name]}"
                         class="toggleActivation tooltip use"
@@ -37,27 +37,27 @@
                         id="initdb_{$name}"
                         class="initdb action tooltip"
                     >
-                        <i class="ui database icon"></i>
+                        <i class="ui database blue icon"></i>
                         <span class="sr-only">{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}</span>
                     </a>
     {else}
-                    <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    <i class="ui icon">&nbsp;</i>
     {/if}
                 </td>
             </tr>
 {foreachelse}
             <tr>
-                <td colspan="5">{_T string="No active plugin."}</td>
+                <td colspan="6">{_T string="No active plugin."}</td>
             </tr>
 {/foreach}
             <tr>
-                <th colspan="5" class="bgfree center"><strong>{_T string="Inactive plugins"}</strong></th>
+                <th colspan="6" class="center aligned"><strong>{_T string="Inactive plugins"}</strong></th>
             </tr>
             <thead>
             <tr>
                 <th class="listing">{_T string="Name"}</th>
                 <th class="listing" colspan="4">{_T string="Cause"}</th>
-                <th class="listing actions_row"></th>
+                <th class="listing actions_row">{_T string="Actions"}</th>
             </tr>
             </thead>
 {foreach from=$plugins_disabled_list key=name item=plugin}
@@ -74,12 +74,12 @@
                         {_T string="Unknown"}
                     {/if}
                 </td>
-                <td class="center actions_row">
+                <td class="actions_row">
                     <a
                         href="{path_for name="pluginsActivation" data=["action" => "activate", "module_id" => $name]}"
                         class="toggleActivation tooltip delete"
                     >
-                        <i class="ui toggle on icon"></i>
+                        <i class="ui toggle on grey icon"></i>
                         <span class="sr-only">{_T string="Activate plugin '%name'" pattern="/%name/" replace=$name}</span>
                     </a>
                     <i class="ui icon">&nbsp;</i>

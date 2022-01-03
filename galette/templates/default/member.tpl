@@ -102,7 +102,7 @@
             </div>
         {/if}
             <div class="ui basic center aligned fitted segment">
-                <button type="submit" name="valid" class="action ui labeled icon button">
+                <button type="submit" name="valid" class="action ui labeled icon primary button">
                     <i class="save icon"></i> {_T string="Save"}
                 </button>
             {foreach item=entry from=$hidden_elements}

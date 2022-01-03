@@ -81,9 +81,9 @@
                         <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_ID"|constant]}">#
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_ID')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            <i class="ui angle down icon tooltip"></i>
                             {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -92,9 +92,9 @@
                         <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -104,9 +104,9 @@
                             <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
                                 {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_MEMBER')}
                                     {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
-                                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                                        <i class="ui angle down icon tooltip"></i>
                                     {else}
-                                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                                        <i class="ui angle up icon tooltip"></i>
                                     {/if}
                                 {/if}
                             </a>
@@ -118,9 +118,9 @@
                         <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_MEMBER"|constant]}">{_T string="Originator"}
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_MEMBER')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -130,9 +130,9 @@
                         <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_AMOUNT')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -204,7 +204,7 @@
                             href="{path_for name="editTransaction" data=["id" => $transaction->id]}"
                             class="tooltip action"
                         >
-                            <i class="ui edit blue icon"></i>
+                            <i class="ui edit icon"></i>
                             <span class="sr-only">{_T string="Edit transaction #%id" pattern="/%id/" replace=$transaction->id}</span>
                         </a>
                         <a
@@ -237,11 +237,11 @@
             <div class="content">
                 <table class="ui stripped table">
                     <tr>
-                        <th class="transaction-normal color-sample"><img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+                        <th class="transaction-normal color-sample"><i class="ui icon">&nbsp;</i></th>
                         <td class="back">{_T string="Completely dispatched transaction"}</td>
                     </tr>
                     <tr>
-                        <th class="transaction-uncomplete color-sample"><img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+                        <th class="transaction-uncomplete color-sample"><i class="ui icon">&nbsp;</i></th>
                         <td class="back">{_T string="Uncomplete dispatched transaction"}</td>
                     </tr>
                 </table>

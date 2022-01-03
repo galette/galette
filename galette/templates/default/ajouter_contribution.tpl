@@ -20,11 +20,13 @@
                             <tr>
                                 <th colspan="5">
                                     {$contribution->transaction->description}
-                                    <a href="{path_for name="editTransaction" data=["id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
-                                        <img src="{base_url}/{$template_subdir}images/icon-money.png"
-                                            alt="{_T string="[view]"}"
-                                            width="16"
-                                            height="16"/>
+                                    <a
+                                        href="{path_for name="editTransaction"
+                                        data=["id" => $contribution->transaction->id]}"
+                                        class="ui icon button tooltip"
+                                        title="{_T string="View transaction"}"
+                                    >
+                                        <i class="columns icon"><span class="sr-only">{_T string="View transaction"}</span></i>
                                     </a>
                                 </th>
                             </tr>
@@ -210,7 +212,7 @@
     {/if}
     {if !$require_mass}
         <div class="ui basic center aligned segment">
-            <button type="submit" name="valid" class="ui labeled icon button action">
+            <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {_T string="Save"}
             </button>
             <input type="hidden" name="id_cotis" value="{$contribution->id}"/>

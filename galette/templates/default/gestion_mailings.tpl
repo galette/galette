@@ -66,7 +66,7 @@
                         class="action ui labeled icon button"
                         href="{path_for name="mailing"}?mailing_new=true"
                     >
-                        <i class="mail icon"></i>
+                        <i class="mail green icon"></i>
                         {_T string="Create new mailing"}
                     </a>
                     <div class="ui label">{_T string="%count entry" plural="%count entries" count=$history->getCount() pattern="/%count/" replace=$history->getCount()}</div>
@@ -95,9 +95,9 @@
                             {_T string="Date"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_DATE')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -107,9 +107,9 @@
                             {_T string="Sender"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_SENDER')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -122,9 +122,9 @@
                             {_T string="Subject"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_SUBJECT')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -137,14 +137,14 @@
                             {_T string="Sent"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_SENT')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
                     </th>
-                    <th class="small_head"></th>
+                    <th class="small_head">{_T string="Actions"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -169,7 +169,7 @@
                         {if $log.mailing_sent == 1}
                             <i class="ui thumbs up green icon"></i>
                         {else}
-                            <i class="ui thumbs down icon"></i>
+                            <i class="ui thumbs down red icon"></i>
                         {/if}
                     </td>
                     <td class="center actions_row">
@@ -177,14 +177,14 @@
                             href="{path_for name="mailingPreview" data=["id" => $log.mailing_id]}"
                             class="showdetails tooltip"
                         >
-                            <i class="ui eye blue icon"></i>
+                            <i class="ui eye green icon"></i>
                             <span class="sr-only">{_T string="Display mailing '%subject' details in preview window" pattern="/%subject/" replace=$log.mailing_subject}</span>
                         </a>
                         <a
                             href="{path_for name="mailing"}?from={$log.mailing_id}"
                             class="tooltip"
                         >
-                            <i class="ui clone icon"></i>
+                            <i class="ui clone blue icon"></i>
                             <span class="sr-only">{_T string="Use mailing '%subject' as a template for a new one" pattern="/%subject/" replace=$log.mailing_subject}</span>
                         </a>
                         <a

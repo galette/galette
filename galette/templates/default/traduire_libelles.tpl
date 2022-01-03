@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="ui basic center aligned segment">
-                <button type="submit" name="trans" class="ui labeled icon button action">
+                <button type="submit" name="trans" class="ui labeled icon primary button action">
                     <i class="save icon"></i> {_T string="Save"}
                 </button>
                 {include file="forms_types/csrf.tpl"}

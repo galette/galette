@@ -45,7 +45,7 @@
     </div>
     {if $login->isAdmin() or $login->isStaff()}
         <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui labeled icon button tooltip">
-            <i class="icon plus" aria-hiddent="true"></i>
+            <i class="plus green icon" aria-hiddent="true"></i>
             {_T string="New group"}
         </a>
     {/if}

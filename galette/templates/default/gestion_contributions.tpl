@@ -115,9 +115,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_ID"|constant]}">#
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_ID')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            <i class="ui angle down icon tooltip"></i>
                             {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -126,9 +126,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -137,9 +137,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE"|constant]}">{_T string="Begin"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -148,9 +148,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_END_DATE"|constant]}">{_T string="End"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_END_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -160,9 +160,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_MEMBER')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -172,9 +172,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_TYPE"|constant]}">{_T string="Type"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_TYPE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -183,9 +183,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_AMOUNT')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -194,9 +194,9 @@
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE"|constant]}">{_T string="Payment type"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
-                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <i class="ui angle down icon tooltip"></i>
                             {else}
-                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <i class="ui angle up icon tooltip"></i>
                             {/if}
                         {/if}
                         </a>
@@ -265,10 +265,7 @@
         {/if}
     {/if}
         {if !$contribution->isTransactionPart() }
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png"
-                            alt=""
-                            width="16"
-                            height="16"/>
+                        <i class="ui icon">&nbsp;</i>
         {/if}
                     </td>
                     <td class="{$cclass}" data-title="{_T string="Date"}">{$contribution->date}</td>
@@ -307,7 +304,7 @@
                             href="{path_for name="printContribution" data=["id" => $contribution->id]}"
                             class="tooltip"
                         >
-                            <i class="ui file pdf icon"></i>
+                            <i class="ui file pdf green icon"></i>
                             <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
         {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
@@ -315,7 +312,7 @@
                             href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}"
                             class="tooltip action"
                         >
-                            <i class="ui edit blue icon"></i>
+                            <i class="ui edit icon"></i>
                             <span class="sr-only">{_T string="Edit the contribution"}</span>
                         </a>
                         <a
@@ -342,12 +339,12 @@
                 <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
                 <div class="item">
                     <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
-                        <i class="trash icon"></i> {_T string="Delete"}
+                        <i class="trash red icon"></i> {_T string="Delete"}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="csv" name="csv" class="ui labeled icon tiny button">
-                        <i class="file excel icon"></i> {_T string="Export as CSV"}
+                        <i class="file csv green icon"></i> {_T string="Export as CSV"}
                     </button>
                 </div>
                 {include file="forms_types/csrf.tpl"}

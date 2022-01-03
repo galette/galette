@@ -35,9 +35,9 @@
                             {_T string="Name"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -47,9 +47,9 @@
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            <i class="ui angle down icon tooltip"></i>
                                 {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            <i class="ui angle up icon tooltip"></i>
                                 {/if}
                             {/if}
                         </a>
@@ -69,13 +69,13 @@
                 <tr class="{if $smarty.foreach.allmembers.iteration % 2 eq 0}even{else}odd{/if}">
                     <td class="{$member->getRowClass(true)} username_row" data-scope="row">
                     {if $member->isCompany()}
-                        <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
+                        <i class="ui building outline icon tooltip"><span class="sr-only">{_T string="Is a company"}</span></i>
                     {elseif $member->isMan()}
-                        <img src="{base_url}/{$template_subdir}images/icon-male.png" alt="" width="16" height="16"/>
+                        <i class="ui male icon tooltip"><span class="sr-only">{_T string="Is a man"}</span></i>
                     {elseif $member->isWoman()}
-                        <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="" width="16" height="16"/>
+                        <i class="ui female icon tooltip"><span class="sr-only">{_T string="Is a woman"}</span></i>
                     {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>
+                        <i class="ui icon"></i>
                     {/if}
 
                     {if $member->website ne ''}

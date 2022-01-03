@@ -53,7 +53,7 @@
         </div>
     {include file="edit_dynamic_fields.tpl" object=$transaction}
         <div class="ui basic center aligned segment">
-            <button type="submit" name="valid" class="ui labeled icon button action">
+            <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {_T string="Save"}
             </button>
             <input type="hidden" name="trans_id" value="{$transaction->id}"/>
