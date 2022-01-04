@@ -9,7 +9,7 @@
                 <th class="listing">{_T string="Author"}</th>
                 <th class="listing">{_T string="Version"}</th>
                 <th class="listing">{_T string="Release date"}</th>
-                <th class="listing actions_row">{_T string="Actions"}</th>
+                <th class="listing actions_row"></th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +57,7 @@
             <tr>
                 <th class="listing">{_T string="Name"}</th>
                 <th class="listing" colspan="4">{_T string="Cause"}</th>
-                <th class="listing actions_row">{_T string="Actions"}</th>
+                <th class="listing actions_row"></th>
             </tr>
             </thead>
 {foreach from=$plugins_disabled_list key=name item=plugin}

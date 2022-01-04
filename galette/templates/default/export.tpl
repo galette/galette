@@ -32,7 +32,7 @@
                                     <th>{_T string="Name"}</th>
                                     <th>{_T string="Date"}</th>
                                     <th>{_T string="Size"}</th>
-                                    <th class="actions_row">{_T string="Actions"}</th>
+                                    <th class="actions_row"></th>
                                 </tr>
                             </thead>
                             <tbody>
