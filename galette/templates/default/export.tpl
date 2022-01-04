@@ -79,22 +79,22 @@
                         <table class="listing ui celled table">
                             <thead>
                                 <tr>
+                                    <th class="small_head"/>
                                     <th>{_T string="Name"}</th>
                                     <th>{_T string="Description"}</th>
-                                    <th class="small_head"/>
                                 </tr>
                             </thead>
                             <tbody>
     {foreach item=param from=$parameted name=parameted_list}
                                 <tr class="{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
+                                    <td data-scope="id">
+                                        <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
+                                    </td>
                                     <td data-scope="row">
                                         <label for="{$param.id}">{$param.name}</label>
                                     </td>
                                     <td data-title="{_T string="Description"}">
                                         <label for="{$param.id}">{$param.description}</label>
-                                    </td>
-                                    <td data-scope="id">
-                                        <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
                                     </td>
                                 </tr>
     {/foreach}
@@ -117,18 +117,18 @@
                         <table class="listing same ui celled table">
                             <thead>
                                 <tr>
-                                    <th>{_T string="Table name"}</th>
                                     <th class="small_head"/>
+                                    <th>{_T string="Table name"}</th>
                                 </tr>
                             </thead>
                             <tbody>
     {foreach item=table from=$tables_list name=tables_list}
                                 <tr class="{if $smarty.foreach.tables_list.iteration % 2 eq 0}even{else}odd{/if}">
-                                    <td class="left">
-                                        <label for="{$table}">{$table}</label>
-                                    </td>
                                     <td>
                                         <input type="checkbox" name="export_tables[]" id="{$table}" value="{$table}"/>
+                                    </td>
+                                    <td class="left">
+                                        <label for="{$table}">{$table}</label>
                                     </td>
                                 </tr>
     {/foreach}
