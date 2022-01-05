@@ -297,6 +297,10 @@ trait Replacements
                 'title'     => _T("Address"),
                 'pattern'   => '/{ADDRESS_ADH}/',
             ],
+            'adh_address_multi'    => [
+                'title'     => sprintf('%s (%s)', _T('Address'), _T('with break lines')),
+                'pattern'   => '/{ADDRESS_ADH_MULTI}/',
+            ],
             'adh_zip'           =>  [
                 'title'     => _T("Zipcode"),
                 'pattern'   => '/{ZIP_ADH}/',
@@ -598,6 +602,7 @@ trait Replacements
         global $login;
 
         $address = $member->getAddress();
+        $address_multi = preg_replace("/\n/", "<br>", $address);
 
         if ($member->isMan()) {
             $gender = _T("Man");
@@ -634,6 +639,7 @@ trait Replacements
                 'adh_profession'    => $member->job,
                 'adh_company'       => $member->company_name,
                 'adh_address'       => $address,
+                'adh_address_multi' => $address_multi,
                 'adh_zip'           => $member->getZipcode(),
                 'adh_town'          => $member->getTown(),
                 'adh_country'       => $member->getCountry(),
