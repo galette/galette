@@ -8,13 +8,14 @@
 # Adrián <pico0155@gmail.com>, 2021.
 # Carmella Andrews <26andrewsc@harriscountyschools.org>, 2021.
 # Arnau Isern <arnauisern84@gmail.com>, 2022.
+# Sineline <sineline@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
 "PO-Revision-Date: 2022-01-07 12:52+0000\n"
-"Last-Translator: Arnau Isern <arnauisern84@gmail.com>\n"
+"Last-Translator: Sineline <sineline@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -335,14 +336,12 @@ msgid "An error occurred adding member to its groups."
 msgstr "Hi ha hagut un error en afegir un membre als seus grups."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1677
-#, fuzzy
 msgid "An error occurred adding member to its groups as manager."
-msgstr "Hi ha hagut un error en afegir el membre als seus grups com a gestor."
+msgstr "Hi ha hagut un error afegint el membre als seus grups com a gestor."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1694
 #: ../lib/Galette/Controllers/GaletteController.php:320
 #: ../lib/Galette/Controllers/GaletteController.php:352
-#, fuzzy
 msgid "Delete failed"
 msgstr "Ha fallat la supressió"
 
@@ -352,17 +351,15 @@ msgid "Remove member %1$s"
 msgstr "Elimina el membre %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1872
-#, fuzzy, php-format
+#, php-format
 msgid "You are about to remove %count members."
-msgstr "Esteu a punt d'eliminar a membres del recompte del 5%."
+msgstr "Esteu a punt d'eliminar %count membres."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:111
-#, fuzzy
 msgid "Titles management"
 msgstr "Gestió de títols"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:152
-#, fuzzy
 msgid "Edit title"
 msgstr "Edita el títol"
 
@@ -392,22 +389,18 @@ msgid "Remove title %1$s"
 msgstr "Elimina el títol %1$s"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:120
-#, fuzzy
 msgid "User statuses"
-msgstr "Estat de l'usuari"
+msgstr "Estats de l'usuari"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:126
-#, fuzzy
 msgid "Contribution types"
-msgstr "Tipus de contribucions"
+msgstr "Tipus de contribució"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:191
-#, fuzzy
 msgid "Edit status"
 msgstr "Edita l'estat"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:197
-#, fuzzy
 msgid "Edit contribution type"
 msgstr "Edita el tipus de contribució"
 
@@ -432,42 +425,36 @@ msgid "Remove %type '%label'"
 msgstr "Elimina %type '%label'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:95
-#, fuzzy
 msgid "Membership fee"
 msgstr "Tarifa de pertinença"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:97
 #: ../lib/Galette/Entity/Contribution.php:1116
-#, fuzzy
 msgid "Donation"
 msgstr "Donació"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:238
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:282
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass add contribution on %count members"
-msgstr "Canvi massiu %count membres"
+msgstr "Canvi massiu de %count membres"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:504
-#, fuzzy
 msgid "Contributions management"
 msgstr "Gestió de contribucions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:504
-#, fuzzy
 msgid "Transactions management"
 msgstr "Gestió de transaccions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:602
-#, fuzzy
 msgid "- Unknown payment type!"
 msgstr "- Tipus de pagament desconegut!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
 msgid "No contribution was selected, please check at least one."
-msgstr "No s'ha seleccionat cap membre. Comproveu almenys un nom."
+msgstr ""
+"No s'ha seleccionat cap contribució, si us plau selecciona'n al menys una."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
@@ -476,14 +463,12 @@ msgid "Unable to load contribution #%id!"
 msgstr "No s'ha pogut carregar la contribució #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:794
-#, fuzzy
 msgid "Contribution has been successfully stored"
 msgstr "La contribució s'ha desat correctament"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:798
-#, fuzzy
 msgid "An error occurred while storing the contribution."
-msgstr "S'ha produït un error en emmagatzemar la contribució."
+msgstr "S'ha produït un error emmagatzemant la contribució."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:902
 #, php-format
@@ -491,12 +476,10 @@ msgid "Remove %1$s %2$s"
 msgstr "Elimina %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:904
-#, fuzzy
 msgid "contributions"
 msgstr "contribucions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:904
-#, fuzzy
 msgid "transactions"
 msgstr "transaccions"
 
@@ -507,27 +490,22 @@ msgstr "Elimina %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:909
 #: ../lib/Galette/IO/PdfContribution.php:84
-#, fuzzy
 msgid "contribution"
 msgstr "contribució"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:909
-#, fuzzy
 msgid "transaction"
 msgstr "transacció"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:124
-#, fuzzy
 msgid "An SQL error has occurred while storing search."
 msgstr "S'ha produït un error SQL en emmagatzemar la cerca."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:129
-#, fuzzy
 msgid "This search is already saved."
 msgstr "Aquesta cerca ja està desada."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:135
-#, fuzzy
 msgid "Search has been saved."
 msgstr "S'ha desat la cerca."
 
@@ -536,32 +514,27 @@ msgid "Saved searches"
 msgstr "Recerques guardades"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:299
-#, fuzzy
 msgid "Remove saved search"
 msgstr "Elimina la cerca desada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:306
-#, fuzzy, php-format
+#, php-format
 msgid "You are about to remove %count searches."
-msgstr "Esteu a punt d'eliminar les cerques de percentatges."
+msgstr "Esteu a punt d'eliminar %count cerques."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:355
-#, fuzzy
 msgid "Saved search loaded"
-msgstr "Cerca desada carregada"
+msgstr "S'ha carregat la cerca emmagatzemada."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:360
-#, fuzzy
 msgid "An SQL error has occurred while loading search."
-msgstr "S'ha produït un error SQL en carregar la cerca."
+msgstr "S'ha produït un error SQL durant la carrega de la cerca."
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
-#, fuzzy
 msgid "System information"
 msgstr "Informació del sistema"
 
 #: ../lib/Galette/Controllers/GaletteController.php:128
-#, fuzzy
 msgid "Dashboard"
 msgstr "Tauler"
 
@@ -571,33 +544,28 @@ msgstr "Configuració"
 
 #: ../lib/Galette/Controllers/GaletteController.php:256
 #: ../lib/Galette/Filters/MembersList.php:307
-#, fuzzy
 msgid "All accounts"
 msgstr "Tots els comptes"
 
 #: ../lib/Galette/Controllers/GaletteController.php:257
 #: ../lib/Galette/Filters/MembersList.php:308
-#, fuzzy
 msgid "Active accounts"
 msgstr "Comptes actius"
 
 #: ../lib/Galette/Controllers/GaletteController.php:258
 #: ../lib/Galette/Filters/MembersList.php:309
-#, fuzzy
 msgid "Inactive accounts"
 msgstr "Comptes inactius"
 
 #: ../lib/Galette/Controllers/GaletteController.php:285
-#, fuzzy
 msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
-"S'ha produït un error SQL en desar les preferències. Torneu-ho a provar i "
-"contacteu amb l'administrador si el problema persisteix."
+"S'ha produït un error SQL mentre es desaven les preferències. Torneu-ho a "
+"provar o contacteu amb l'administrador si el problema persisteix."
 
 #: ../lib/Galette/Controllers/GaletteController.php:289
-#, fuzzy
 msgid "Preferences has been saved."
 msgstr "S'han desat les preferències."
 
