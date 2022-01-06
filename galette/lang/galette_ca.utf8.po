@@ -7,13 +7,14 @@
 # mireia monne dominguez <mireiamonnedominguez@gmail.com>, 2021.
 # Adrián <pico0155@gmail.com>, 2021.
 # Carmella Andrews <26andrewsc@harriscountyschools.org>, 2021.
+# Arnau Isern <arnauisern84@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-12-11 01:52+0000\n"
-"Last-Translator: Carmella Andrews <26andrewsc@harriscountyschools.org>\n"
+"PO-Revision-Date: 2022-01-07 12:52+0000\n"
+"Last-Translator: Arnau Isern <arnauisern84@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -179,7 +180,6 @@ msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:76
-#, fuzzy
 msgid "Add field"
 msgstr "Afegeix un camp"
 
@@ -197,7 +197,6 @@ msgid "Dynamic fields configuration"
 msgstr "Configuració de camps dinàmics"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:293
-#, fuzzy
 msgid "Unable to retrieve field information."
 msgstr "No s'ha pogut recuperar la informació del camp."
 
@@ -219,9 +218,8 @@ msgid "Remove dynamic field %1$s"
 msgstr "Elimina el camp dinàmic %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:509
-#, fuzzy
 msgid "Field has been successfully moved"
-msgstr "El camp s'ha mogut correctament"
+msgstr "El camp s'ha mogut exitosament"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:514
 msgid "An error occurred moving field :("
@@ -237,7 +235,6 @@ msgstr "Subscripció"
 #: ../lib/Galette/Controllers/PdfController.php:118
 #: ../lib/Galette/Controllers/PdfController.php:285
 #: ../lib/Galette/Middleware/Authenticate.php:166
-#, fuzzy
 msgid "You do not have permission for requested URL."
 msgstr "No teniu permís per a l'URL sol·licitat."
 
@@ -247,7 +244,6 @@ msgstr "Cap membre #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:288
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1132
-#, fuzzy
 msgid "Member Profile"
 msgstr "Perfil del membre"
 
@@ -278,9 +274,8 @@ msgstr "Cerca avançada"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1040
 #: ../lib/Galette/Controllers/PdfController.php:151
 #: ../lib/Galette/Controllers/PdfController.php:232
-#, fuzzy
 msgid "No member was selected, please check at least one name."
-msgstr "No s'ha seleccionat cap membre. Comproveu almenys un nom."
+msgstr "No s'ha seleccionat cap membre. Seleccioneu almenys un nom."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1246
 #, php-format
@@ -328,17 +323,14 @@ msgid "An email has been sent to you, check your inbox."
 msgstr "S'ha enviat un correu electrònic. Comprova la teva bústia d'entrada."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1648
-#, fuzzy
 msgid "New member has been successfully added."
-msgstr "El nou membre s'ha afegit correctament."
+msgstr "El nou membre s'ha afegit exitosament."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1651
-#, fuzzy
 msgid "Member account has been modified."
-msgstr "S'ha modificat el compte de membre."
+msgstr "S'ha modificat el compte del membre."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1663
-#, fuzzy
 msgid "An error occurred adding member to its groups."
 msgstr "Hi ha hagut un error en afegir un membre als seus grups."
 
@@ -2927,7 +2919,6 @@ msgid "ICQ"
 msgstr "ICQ"
 
 #: ../lib/Galette/Entity/Social.php:355
-#, fuzzy
 msgid "Website"
 msgstr "Lloc web"
 
