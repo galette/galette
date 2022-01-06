@@ -28,13 +28,14 @@
 # noelia <zizizhuji1@gmail.com>, 2021.
 # KasukeLp <kasukelp23@yahoo.com>, 2021.
 # Germe the fur star <FOSSgerme.deb@tuta.io>, 2021.
+# Arnau Isern <arnauisern84@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-12-03 01:51+0000\n"
-"Last-Translator: Germe the fur star <FOSSgerme.deb@tuta.io>\n"
+"PO-Revision-Date: 2022-01-07 12:52+0000\n"
+"Last-Translator: Arnau Isern <arnauisern84@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -42,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2203,7 +2204,7 @@ msgstr "Modificado"
 #. TRANS: see https://www.urbandictionary.com/define.php?term=b-day
 #: ../lib/Galette/Entity/ListsConfig.php:222
 msgid "b-day"
-msgstr "Fecha de Nacimiento"
+msgstr "cumpleaños"
 
 #: ../lib/Galette/Entity/ListsConfig.php:228
 msgid "Public"
