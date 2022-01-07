@@ -136,15 +136,17 @@ $(function() {
 
     /* Fomantic UI components */
     var
-        $sidebar        = $('.ui.sidebar'),
-        $dropdown       = $('.ui.dropdown, select:not(.nochosen)'),
-        $accordion      = $('.ui.accordion'),
-        $checkbox       = $('.ui.checkbox, .ui.radio.checkbox'),
-        $tabulation     = $('.ui.tabbed .item'),
-        $calendar       = $('[id$="rangestart"], [id$="rangeend"]'),
-        $popup          = $('a[title]'),
-        $tooltipPopup   = $('i.tooltip'),
-        $menuPopupRight = $('.ui.vertical.accordion.menu a[title]')
+        $sidebar         = $('.ui.sidebar'),
+        $dropdown        = $('.ui.dropdown, select:not(.nochosen)'),
+        $accordion       = $('.ui.accordion'),
+        $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
+        $tabulation      = $('.ui.tabbed .item'),
+        $calendar        = $('[id$="rangestart"], [id$="rangeend"]'),
+        $popup           = $('a[title]'),
+        $tooltipPopup    = $('i.tooltip'),
+        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title]'),
+        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title]'),
+        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title]')
     ;
 
     $sidebar.sidebar('attach events', '.toc.item');
@@ -225,7 +227,26 @@ $(function() {
             position: 'right center',
             variation: 'inverted',
             delay: {
-                show: 500
+                show: 300
+            }
+        })
+    ;
+    /* Position bottom on the top fixed menu.
+     */
+    $menuPopupBottom
+        .popup({
+            position: 'center bottom',
+            variation: 'inverted'
+        })
+    ;
+    /* Position left on the top right language dropdown menu.
+     */
+    $menuPopupLeft
+        .popup({
+            position: 'left center',
+            variation: 'inverted',
+            delay: {
+                show: 300
             }
         })
     ;
