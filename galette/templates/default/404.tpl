@@ -12,17 +12,17 @@
         </div>
         <![endif]-->
         <div class="ui container">
-            <header>
+            <header class="ui basic center aligned segment">
                 <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             </header>
             <div class="ui red message">
                 <h2 class="ui center aligned header">{_T string="Page not found"}</h2>
             </div>
-            <div class="ui basic center aligned segment">
+            <div class="ui basic fitted center aligned segment">
                 <p class="ui large text">{_T string="Sorry, the page you are looking for could not be found."}</p>
             </div>
-            <nav>
-                <a href="{path_for name="slash"}" class="ui labeled icon button">
+            <nav class="ui basic center aligned segment">
+                <a href="{path_for name="slash"}" class="ui labeled icon primary button">
                     <i class="home icon"></i>
                     {_T string="Home"}
                 </a>
