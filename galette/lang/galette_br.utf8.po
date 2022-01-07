@@ -2,13 +2,14 @@
 # ThonyVezbe <a.guechoum@gmail.com>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021.
 # Egareg JAOUEN <egareg@jaouen.eu>, 2021.
+# Pierre Wani Alan Morvan <allannkorh@yahoo.fr>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2022-01-08 13:56+0000\n"
+"Last-Translator: Pierre Wani Alan Morvan <allannkorh@yahoo.fr>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -20,7 +21,7 @@ msgstr ""
 "&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
 "n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
 "< 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -32,7 +33,7 @@ msgstr "N'eo ket bet kavet ar bajenn"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
-msgstr ""
+msgstr "Trañzaktadenn"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1134
@@ -48,23 +49,23 @@ msgstr "krouadur"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:266
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "C'hoarvezet ez eus ur fazi en ur enrollañ an drañzaktadenn."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:301
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "Enrollet eo bet an drañzaktadenn gant berzh"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:357
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "N'heller ket stagañ ar c'hendaolad d'an drañzaktadenn"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "Ar c'hendaolad a zo bet staget d'an drañzaktadenn red"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:389
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "N'heller ket distagañ ar c'hendaolad diouzh an drañzaktadenn"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:394
 msgid "Contribution has been successfully detached from current transaction"
@@ -175,7 +176,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:76
 msgid "Add field"
-msgstr ""
+msgstr "Ouzhpennañ ur vaezienn"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
@@ -196,7 +197,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:302
 msgid "Edit field"
-msgstr ""
+msgstr "Aozañ ar vaezienn"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:354
 msgid "An error occurred editing dynamic field :("
@@ -259,11 +260,11 @@ msgstr "Merañ an izili"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:775
 msgid "Status label"
-msgstr ""
+msgstr "Tikedenn statud"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:818
 msgid "Advanced search"
-msgstr ""
+msgstr "Klask araokaet"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1040
 #: ../lib/Galette/Controllers/PdfController.php:151
@@ -288,7 +289,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1425
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Mann ebet d'ober!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1450
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1682
@@ -306,11 +307,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1533
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Captcha fall"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1640
 msgid "Your account has been created!"
-msgstr ""
+msgstr "Krouet eo bet ho kont!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1645
 msgid "An email has been sent to you, check your inbox."
@@ -359,22 +360,22 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:205
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "N'eo ket bet ouzhpennet an titl \"%s\"!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "N'eo ket bet kemmet an titl \"%s\"!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "An titl \"%s\" a zo bet ouzhpennet gant berzh."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:236
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "Kemmet eo bet an titl \"%s\" gant berzh."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:287
 #, php-format
@@ -387,15 +388,15 @@ msgstr "Statud izili"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:126
 msgid "Contribution types"
-msgstr ""
+msgstr "Doare kendeurel"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:191
 msgid "Edit status"
-msgstr ""
+msgstr "Aozañ ar statud"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:197
 msgid "Edit contribution type"
-msgstr ""
+msgstr "Aozañ an doare kendeurel"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type has not been added :("
@@ -4017,7 +4018,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:34
 msgid "Navigation"
-msgstr ""
+msgstr "Merdeiñ"
 
 #: ../templates/default/page.tpl:36
 msgid "Go to Galette's dashboard"
