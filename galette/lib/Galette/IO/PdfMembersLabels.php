@@ -160,7 +160,9 @@ class PdfMembersLabels extends Pdf
                 round($this->preferences->pref_etiq_vspace)
             );
             // Draw a frame around the label
-            $this->Rect($x, $y, $this->lw, $this->lh);
+            if ($this->preferences->pref_etiq_border) {
+                $this->Rect($x, $y, $this->lw, $this->lh);
+            }
 
             // Prepare full address
             $full_address_array = array();

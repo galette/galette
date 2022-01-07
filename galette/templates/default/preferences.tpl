@@ -513,6 +513,11 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
+                    <div class="field inline">
+                        <label for="pref_etiq_border" class="tooltip">{_T string="Print border"}</label>
+                        <i class="circular small inverted primary link icon info tooltip" data-html="{_T string="Check this box to print a grey border around each label."}"></i>
+                        <input type="checkbox" name="pref_etiq_border" id="pref_etiq_border" value="1" {if $pref.pref_etiq_border eq 1}checked="checked"{/if}/>
+                    </div>
                 </div>{* /column *}
                 <div class="column">
                     <div class="field">

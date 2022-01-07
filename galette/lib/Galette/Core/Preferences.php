@@ -101,6 +101,7 @@ use Galette\Repository\Members;
  * @property string $pref_etiq_cols
  * @property string $pref_etiq_rows
  * @property string $pref_etiq_corps
+ * @property string $pref_etiq_border
  * @property string $pref_card_abrev
  * @property string $pref_card_strip
  * @property string $pref_card_tcol
@@ -236,6 +237,7 @@ class Preferences
         'pref_etiq_cols'    =>    2,
         'pref_etiq_rows'    =>    7,
         'pref_etiq_corps'    =>    12,
+        'pref_etiq_border'    =>    1,
         /* Preferences for members cards */
         'pref_card_abrev'    =>    'GALETTE',
         'pref_card_strip'    =>    'Gestion d\'Adherents en Ligne Extrêmement Tarabiscotée',
