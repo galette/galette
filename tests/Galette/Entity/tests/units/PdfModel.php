@@ -153,6 +153,7 @@ class PdfModel extends GaletteTestCase
             'adh_profession'    => '/{PROFESSION_ADH}/',
             'adh_company'       => '/{COMPANY_ADH}/',
             'adh_address'       => '/{ADDRESS_ADH}/',
+            'adh_address_multi' => '/{ADDRESS_ADH_MULTI}/',
             'adh_zip'           => '/{ZIP_ADH}/',
             'adh_town'          => '/{TOWN_ADH}/',
             'adh_country'       => '/{COUNTRY_ADH}/',
@@ -384,7 +385,7 @@ Au milieu
 
         $this->array($legend['main']['patterns'])->hasSize(8);
         $this->array($legend['member']['patterns'])
-            ->hasSize(27)
+            ->hasSize(28)
             ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'dynfield_' . $adf->getId() . '_adh']);
         $this->array($legend['contribution']['patterns'])
             ->hasSize(14)
