@@ -138,8 +138,9 @@ class Reminders extends GaletteTestCase
         //create contribution, just about to be impending
         $now = new \DateTime();
         $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1YP1D'));
+        $date_begin->sub(new \DateInterval('P1Y'));
         $date_begin->add(new \DateInterval('P1M'));
+        $date_begin->add(new \DateInterval('P1D'));
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
@@ -157,18 +158,17 @@ class Reminders extends GaletteTestCase
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is up to date, but on last day, one impending reminder to send
+        //member is up to date, but not yet impeding, no reminder to send
         $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
+        $this->array($reminders->getList($this->zdb))->hasSize(0);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(1);
+        $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
 
         //create contribution, just impending
         $date_begin = clone $now;
         $date_begin->sub(new \DateInterval('P1Y'));
         $date_begin->add(new \DateInterval('P1M'));
-        $date_begin->sub(new \DateInterval('P1D'));
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
@@ -289,9 +289,11 @@ class Reminders extends GaletteTestCase
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is up to date, no reminder to send
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->isIdenticalTo([]);
+        //member is not up to date, no reminder to send
+        $this->boolean($this->adh->isUp2Date())->isFalse();
+        $this->array($reminders->getList($this->zdb))->hasSize(0);
+        $this->array($lreminders->getList($this->zdb))->hasSize(0);
+        $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
         //create contribution, just late
         $now = new \DateTime();
