@@ -999,7 +999,7 @@ class Adherent
                 $ech = new \DateTime($this->_due_date);
                 $now = new \DateTime();
                 $now->setTime(0, 0, 0);
-                return $ech >= $now;
+                return $ech > $now;
             }
         }
     }
