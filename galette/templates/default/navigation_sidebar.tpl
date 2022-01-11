@@ -1,4 +1,4 @@
-        <div class="ui left vertical accordion sidebar menu left">
+        <div class="ui simple left vertical menu sidebar">
 {if $login->isLogged()}
             <a href="{path_for name="dashboard"}"
                 title="{_T string="Go to Galette's dashboard"}"
@@ -14,7 +14,7 @@
 {* Dirty trick to set active accordion fold using in_array tests on title and
 content divs. Would be better to assign this array from model *}
 {$management_routes = ['members', 'me', 'advanced-search', 'searches', 'groups', 'contributions', 'addContribution', 'editContribution', 'editMember', 'addMember', 'addTransaction', 'editTransaction', 'reminders', 'history', 'mailings', 'mailing', 'export', 'import', 'importModel', 'charts']}
-            <div class="item">
+            <div class="ui accordion item">
                 <div class="image header title{if $cur_route|in_array:$management_routes} active{/if}">
                     <i class="dharmachakra icon" aria-hidden="true"></i>
                     {_T string="Navigation"}
@@ -54,7 +54,7 @@ content divs. Would be better to assign this array from model *}
 content divs. Would be better to assign this array from model.
 Need to find a way to let plugins declare their own routes *}
 {$public_routes = ['publicList', 'maps_map']}
-            <div class="item" title="{_T string="Public pages"}">
+            <div class="ui accordion item" title="{_T string="Public pages"}">
                 <div class="image header title{if $cur_route|in_array:$public_routes} active{/if}">
                     <i class="icon eye outline" aria-hidden="true"></i>
                     {_T string="Public pages"}
@@ -74,7 +74,7 @@ Need to find a way to let plugins declare their own routes *}
 content divs. Would be better to assign this array from model *}
 {$configuration_routes = ['preferences', 'plugins', 'configureListFields', 'configureCoreFields', 'configureDynamicFields', 'dynamicTranslations', 'entitleds', 'texts', 'titles', 'pdfModels', 'paymentTypes', 'emptyAdhesionForm', 'adminTools']}
     {if $login->isAdmin()}
-            <div class="item" title="{_T string="Configuration"}">
+            <div class="ui accordion item" title="{_T string="Configuration"}">
                 <div class="image header title{if $cur_route|in_array:$configuration_routes} active{/if}">
                     <i class="icon tools" aria-hidden="true"></i>
                     {_T string="Configuration"}
@@ -138,7 +138,7 @@ content divs. Would be better to assign this array from model *}
     {/if}
             </div>
 {/if}
-            <div class="language item" title="{_T string="Choose your language"}">
+            <div class="language ui accordion item" title="{_T string="Choose your language"}">
                 <div class="image header title">
                     <i class="icon language" aria-hidden="true"></i>
                     <span>{$galette_lang}</span>
