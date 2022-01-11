@@ -10,7 +10,7 @@
                 {foreach from=$object->getDynamicFields()->getFields() item=field}
                     {if $field|is_a:'Galette\DynamicFields\Separator'}
                 <tr>
-                    <th class="separator" colspan="2">{$field->getName()|escape}</th>
+                    <td colspan="2"><div class="ui horizontal divider">{$field->getName()|escape}</div></td>
                 </tr>
                     {else}
                 <tr>
