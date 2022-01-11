@@ -113,7 +113,7 @@
 
         {assign var=perm value=$field->getPerm()}
         {if $field|is_a:'Galette\DynamicFields\Separator'}
-        <div class="separator">{$field->getName()|escape}</div>
+        <div class="ui horizontal divider">{$field->getName()|escape}</div>
         {elseif ($field|is_a:'Galette\DynamicFields\File' || $field->isRepeatable())  && $masschange}
             <!-- File and repeatable fields not shown in mass changes form -->
         {else}
