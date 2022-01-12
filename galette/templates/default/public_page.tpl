@@ -11,12 +11,12 @@
 {/if}
     </head>
     <body class="{if isset($body_class) and $body_class eq "front_page"}front-page {/if}pushable{if $login->isLogged()} loggedin{/if}">
-        {include file='navigation_sidebar.tpl' page='public'}
-        {include file='navigation_topbar.tpl'}
+        {include file='navigation/navigation_sidebar.tpl'}
+        {include file='navigation/navigation_topbar.tpl'}
         <div class="pusher">
             <div id="main" class="{if $cur_route eq "login" or $cur_route eq "password-lost"} text{/if}{if !$login->isLogged()}ui container{else} full height{/if}">
 {if $login->isLogged()}
-                {include file="navigation_aside.tpl"}
+                {include file="navigation/navigation_aside.tpl"}
 {/if}
                 <section{if $login->isLogged()} class="content"{/if}>
 {if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}

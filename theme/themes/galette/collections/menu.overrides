@@ -38,11 +38,10 @@
   .ui.vertical.menu {
     border: @border;
   }
-  .ui.vertical.menu .item.button {
-    border: @border;
-    margin: .2rem 0;
-  }
   .ui.vertical.menu div.item .ui.button {
+    width: 100%;
+    border: @border;
+    margin: 0 0 .4rem 0;
     box-shadow: none;
   }
   .ui.vertical.menu div.item .item.button::before {
