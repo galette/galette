@@ -9,13 +9,14 @@
 # Carmella Andrews <26andrewsc@harriscountyschools.org>, 2021.
 # Arnau Isern <arnauisern84@gmail.com>, 2022.
 # Sineline <sineline@gmail.com>, 2022.
+# Queralt Garrigos <garrigosqueralt@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-07 12:52+0000\n"
-"Last-Translator: Sineline <sineline@gmail.com>\n"
+"PO-Revision-Date: 2022-01-12 18:49+0000\n"
+"Last-Translator: Queralt Garrigos <garrigosqueralt@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -1690,7 +1691,7 @@ msgstr "Membre del personal"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Administrator"
-msgstr ""
+msgstr "Administrador"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 #, fuzzy
@@ -2891,8 +2892,9 @@ msgid "Website"
 msgstr "Lloc web"
 
 #: ../lib/Galette/Entity/Social.php:356
+#, fuzzy
 msgid "Blog"
-msgstr ""
+msgstr "Bloc"
 
 #: ../lib/Galette/Entity/PdfModel.php:304
 #, fuzzy, php-format
@@ -3648,7 +3650,7 @@ msgstr "a"
 
 #: ../includes/i18n.inc.php:337
 msgid "Association"
-msgstr ""
+msgstr "Associació"
 
 #: ../includes/dependencies.php:453
 msgid "Failed CSRF check!"
@@ -5170,7 +5172,7 @@ msgstr "Seguretat"
 #: ../templates/default/gestion_adherents.tpl:431
 #: ../templates/default/gestion_adherents.tpl:432
 msgid "Admin"
-msgstr ""
+msgstr "Administrador"
 
 #: ../templates/default/preferences.tpl:21
 #, fuzzy
@@ -5545,8 +5547,9 @@ msgid "Can group managers send mailings?"
 msgstr "Selecció dels gestors de grups"
 
 #: ../templates/default/preferences.tpl:253
+#, fuzzy
 msgid "Can group managers do exports?"
-msgstr ""
+msgstr "Poden fer exportacions els gestors de grups?"
 
 #: ../templates/default/preferences.tpl:254
 msgid ""
@@ -6672,7 +6675,7 @@ msgstr "Amaga aquest plafó"
 
 #: ../templates/default/desktop.tpl:26
 msgid "Activities"
-msgstr ""
+msgstr "Activitats"
 
 #: ../templates/default/desktop.tpl:57
 #, fuzzy
