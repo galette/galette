@@ -2,6 +2,10 @@
          Galette Overrides
 *******************************/
 
+html {
+  overflow: hidden;
+}
+
 .sr-only {
   display: none;
 }
@@ -98,6 +102,10 @@ footer .ui.horizontal.list > .item{
 }
 
 @media only screen and (min-width: 992px) {
+  html {
+      overflow-x: visible;
+      -webkit-overflow-scrolling: auto;
+  }
   .loggedin .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) {
     display: none;
   }
