@@ -156,8 +156,6 @@
                         });
                 });
 
-                _collapsibleFieldsets();
-
                 /*$('#ddn_adh').datepicker({
                     changeMonth: true,
                     changeYear: true,

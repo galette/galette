@@ -147,7 +147,6 @@
 {block name="javascripts"}
         <script type="text/javascript">
             $(function() {
-                _collapsibleFieldsets();
                 {include file="js_removal.tpl"}
             });
         </script>

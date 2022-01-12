@@ -164,7 +164,6 @@
         $(function() {
             $('body').append($('<div id="warnings" title="{_T string="Warning" escape="js"}"><p>{_T string="Some warnings has been thrown:" escape="js"}</p><ul></ul><p>{_T string="Please correct above warnings to continue."}</p></div>').hide());
 
-            _collapsibleFieldsets();
             _bindForm();
 
             _bindCollapse();

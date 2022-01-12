@@ -104,7 +104,6 @@
 {block name="javascripts"}
         <script type="text/javascript">
             $(function() {
-                _collapsibleFieldsets();
                 //bind import click to check if one is selected
                 $('#import').on('click', function(){
                     if ( $('input[name=import_file]:checked').length > 0 ) {

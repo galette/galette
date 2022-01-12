@@ -651,7 +651,6 @@
             }
 
             $(function(){
-                //_collapsibleFieldsets();
                 _initSortable();
                 //_datePickers();
                 _selectize();
