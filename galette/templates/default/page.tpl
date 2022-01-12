@@ -11,12 +11,12 @@
 {/if}
     </head>
     <body id="galette_body" class="pushable dimmable{if $login->isLogged()} loggedin{/if}">
-        {include file="navigation_sidebar.tpl"}
-        {include file="navigation_topbar.tpl"}
+        {include file="navigation/navigation_sidebar.tpl"}
+        {include file="navigation/navigation_topbar.tpl"}
         <div class="pusher">
             <div id="main" class="{if !$login->isLogged()}container{else}full height{/if}">
 {if $login->isLogged()}
-                {include file="navigation_aside.tpl"}
+                {include file="navigation/navigation_aside.tpl"}
 {/if}
                 <section class="content{if $contentcls} {$contentcls}{/if}">
 {if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
