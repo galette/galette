@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-12 18:49+0000\n"
+"PO-Revision-Date: 2022-01-14 12:51+0000\n"
 "Last-Translator: Queralt Garrigos <garrigosqueralt@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -192,7 +192,7 @@ msgstr "S'ha produït un error en afegir un camp dinàmic:("
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:368
 msgid "Dynamic field has been successfully stored!"
-msgstr "El camp dinàmic ha estat emmagatzemat amb èxit."
+msgstr "El camp dinàmic ha estat emmagatzemat amb èxit!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:230
 msgid "Dynamic fields configuration"
@@ -525,7 +525,7 @@ msgstr "Esteu a punt d'eliminar %count cerques."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:355
 msgid "Saved search loaded"
-msgstr "S'ha carregat la cerca emmagatzemada."
+msgstr "S'ha carregat la cerca emmagatzemada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:360
 msgid "An SQL error has occurred while loading search."
@@ -1295,11 +1295,12 @@ msgid "How much is %1$s added to %2$s?"
 msgstr "Quant s'ha afegit el $1 al $2?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
 msgstr ""
+"Tinc %1$s Galettes, un amic me n'ha donat %2$s més. Quantes Galettes tinc?"
 
 #: ../lib/Galette/Core/Gaptcha.php:108
 #, fuzzy, php-format
@@ -2543,9 +2544,8 @@ msgstr "percentdays days restants (fins al dia d'espera)"
 
 #: ../lib/Galette/Entity/Adherent.php:1185
 #: ../lib/Galette/Entity/Adherent.php:1190
-#, fuzzy
 msgid "You have to select a group you own!"
-msgstr "Heu de seleccionar un membre del personal"
+msgstr "Heu de seleccionar un membre del personal!"
 
 #: ../lib/Galette/Entity/Adherent.php:1263
 #, fuzzy
@@ -2855,7 +2855,7 @@ msgstr "Paràmetres del correu"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:349
 #, fuzzy
@@ -3452,8 +3452,9 @@ msgid "Donation in money"
 msgstr "Donació en diners"
 
 #: ../includes/i18n.inc.php:296
+#, fuzzy
 msgid "Partnership"
-msgstr ""
+msgstr "Associació"
 
 #: ../includes/i18n.inc.php:297
 #, fuzzy
@@ -3506,8 +3507,9 @@ msgid "reduced annual fee"
 msgstr "tarifa anual reduïda"
 
 #: ../includes/i18n.inc.php:307
+#, fuzzy
 msgid "Identity"
-msgstr ""
+msgstr "Identitat"
 
 #: ../includes/i18n.inc.php:308
 #, fuzzy
@@ -3535,8 +3537,9 @@ msgid "Miss"
 msgstr "Senyoreta"
 
 #: ../includes/i18n.inc.php:313
+#, fuzzy
 msgid "Identity:"
-msgstr ""
+msgstr "Identitat:"
 
 #: ../includes/i18n.inc.php:314
 #, fuzzy
@@ -3621,8 +3624,9 @@ msgstr ""
 "decidides pel generós donant."
 
 #: ../includes/i18n.inc.php:332
+#, fuzzy
 msgid "Required membership:"
-msgstr ""
+msgstr "Pertinència requerida:"
 
 #: ../includes/i18n.inc.php:333
 #, fuzzy
@@ -3653,8 +3657,9 @@ msgid "Association"
 msgstr "Associació"
 
 #: ../includes/dependencies.php:453
+#, fuzzy
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "Comprovació de CSFR fallida!"
 
 #: ../includes/fields_defs/members_fields.php:42
 #, fuzzy
@@ -3816,8 +3821,9 @@ msgid "Id GNUpg (GPG):"
 msgstr "Id GNUpg (GPG)"
 
 #: ../includes/fields_defs/members_fields.php:307
+#, fuzzy
 msgid "fingerprint:"
-msgstr ""
+msgstr "empremta digital:"
 
 #: ../includes/fields_defs/members_fields.php:315
 #, fuzzy
@@ -4574,12 +4580,11 @@ msgstr ""
 "existents s'eliminaran si continueu utilitzant la base de dades existent!"
 
 #: ../install/steps/db.php:63
-#, fuzzy
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
-"Els permisos necessaris són CREAR ELIMINAR ELIMINAR ACTUALITZAR SELECCIONAR "
-"I INSERIR."
+"Els permisos necessaris són CREAR, TIRAR, ELIMINAR, ACTUALITZAR, SELECCIONAR "
+"i INSERIR."
 
 #: ../install/steps/db.php:68
 #, fuzzy
@@ -4707,8 +4712,9 @@ msgid "Reset all PDF models to their default values"
 msgstr "Restableix tots els models PDF als seus valors predeterminats"
 
 #: ../templates/default/admintools.tpl:22
+#, fuzzy
 msgid "Reinitialize PDF models"
-msgstr ""
+msgstr "Reinicialitzar models PDF"
 
 #: ../templates/default/admintools.tpl:28
 #: ../templates/default/admintools.tpl:29
@@ -4775,7 +4781,7 @@ msgstr "Desa"
 
 #: ../templates/default/editer_intitule.tpl:19
 msgid "Priority:"
-msgstr ""
+msgstr "Prioritat:"
 
 #: ../templates/default/editer_intitule.tpl:21
 #: ../templates/default/gestion_intitule_content.tpl:12
@@ -5526,20 +5532,22 @@ msgstr ""
 #: ../templates/default/preferences.tpl:233
 #, fuzzy
 msgid "Can members create child?"
-msgstr "No hi ha cap membre adjuntat"
+msgstr "No hi ha cap membre adjuntat?"
 
 #: ../templates/default/preferences.tpl:237
+#, fuzzy
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "Els gestors de grups poden editar els seus grups?"
 
 #: ../templates/default/preferences.tpl:241
 #, fuzzy
 msgid "Can group managers create members?"
-msgstr "Envia els recordatoris als membres finals"
+msgstr "Envia els recordatoris als membres finals?"
 
 #: ../templates/default/preferences.tpl:245
+#, fuzzy
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "Els gestors de grup poden editar els seus membres?"
 
 #: ../templates/default/preferences.tpl:249
 #, fuzzy
@@ -5552,10 +5560,13 @@ msgid "Can group managers do exports?"
 msgstr "Poden fer exportacions els gestors de grups?"
 
 #: ../templates/default/preferences.tpl:254
+#, fuzzy
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"Els gestors de grups tindran permís per exportar membres com a cvs, cartes "
+"pdf, assistència i grups pdf"
 
 #: ../templates/default/preferences.tpl:260
 #, fuzzy
@@ -5633,13 +5644,12 @@ msgid "Send email to members?"
 msgstr "Envia els recordatoris als membres finals"
 
 #: ../templates/default/preferences.tpl:299
-#, fuzzy
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
 "Envia un correu electrònic cada vegada que un membre nou es registri en "
-"línia o editi el seu compte"
+"línia o editi el seu compte. Això es pot desactivar per cada cas."
 
 #: ../templates/default/preferences.tpl:303
 #, fuzzy
@@ -6361,8 +6371,9 @@ msgstr "Mostra totes les contribucions dels membres"
 
 #: ../templates/default/gestion_contributions.tpl:251
 #: ../templates/default/gestion_transactions.tpl:148
+#, fuzzy
 msgid "Show '%name' card"
-msgstr ""
+msgstr "Mostra la tarjeta de '%name'"
 
 #: ../templates/default/gestion_contributions.tpl:268
 #, fuzzy
@@ -7827,8 +7838,9 @@ msgid "Information:"
 msgstr "Informació"
 
 #: ../templates/default/editer_champ.tpl:71
+#, fuzzy
 msgid "Extra information displayed along with dynamic field."
-msgstr ""
+msgstr "Informació extra es mostra juntament amb el camp dinàmic."
 
 #: ../templates/default/editer_champ.tpl:84
 #: ../templates/default/editer_champ.tpl:87
@@ -7941,9 +7953,8 @@ msgstr "Objecte"
 
 #: ../templates/default/mailing_adherents.tpl:86
 #: ../templates/default/common_scripts.tpl:88
-#, fuzzy
 msgid "Activate HTML editor"
-msgstr "Activar l'editor HTML?"
+msgstr "Activar l'editor HTML"
 
 #: ../templates/default/mailing_adherents.tpl:93
 #, fuzzy
@@ -8840,7 +8851,7 @@ msgstr "S'ha produït un error en enviar la foto ("
 #: ../templates/default/gestion_intitule_content.tpl:33
 #: ../templates/default/gestion_intitule_content.tpl:75
 msgid "Priority"
-msgstr ""
+msgstr "Prioritat"
 
 #: ../templates/default/gestion_intitule_content.tpl:24
 #, fuzzy
@@ -9040,9 +9051,8 @@ msgid "Add new social network"
 msgstr "Xarxes socials"
 
 #: ../templates/default/edit_socials.tpl:20
-#, fuzzy
 msgid "Choose or enter your own..."
-msgstr "Trieu una entrada"
+msgstr "Trieu una entrada..."
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 #, fuzzy
@@ -9236,7 +9246,7 @@ msgstr "Trieu els recordatoris wich que voleu enviar"
 
 #: ../templates/default/reminder.tpl:12 ../templates/default/reminder.tpl:19
 msgid "preview"
-msgstr ""
+msgstr "previsualitzar"
 
 #: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20
 #, fuzzy, php-format
