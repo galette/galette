@@ -29,13 +29,14 @@
 # KasukeLp <kasukelp23@yahoo.com>, 2021.
 # Germe the fur star <FOSSgerme.deb@tuta.io>, 2021.
 # Arnau Isern <arnauisern84@gmail.com>, 2022.
+# Joel León Alvez <dorayakis07@yahoo.es>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-07 12:52+0000\n"
-"Last-Translator: Arnau Isern <arnauisern84@gmail.com>\n"
+"PO-Revision-Date: 2022-01-14 12:51+0000\n"
+"Last-Translator: Joel León Alvez <dorayakis07@yahoo.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -2231,11 +2232,10 @@ msgstr ""
 "tardía"
 
 #: ../lib/Galette/Entity/Reminder.php:285
-#, fuzzy
 msgid "A problem happened while sending impending membership email"
 msgstr ""
-"Se ha producido un problema mientras se enviaba el correo electronico de "
-"membresia"
+"Se ha producido un problema mientras se enviaba el correo electrónico de "
+"membresía"
 
 #: ../lib/Galette/Entity/Reminder.php:295
 msgid "Unable to send %membership reminder (no email address)."
