@@ -260,10 +260,6 @@ class PluginsController extends AbstractController
                 break;
             case 'i2':
             case 'u2':
-                if (!defined('GALETTE_THEME_DIR')) {
-                    define('GALETTE_THEME_DIR', './themes/default/');
-                }
-
                 $install_plugin = true;
                 //not used here, but from include
                 $zdb = $this->zdb;

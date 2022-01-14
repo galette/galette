@@ -35,7 +35,6 @@
  */
 
 define('GALETTE_ROOT', __DIR__ . '/../');
-define('GALETTE_THEME_DIR', './themes/default/');
 require_once GALETTE_ROOT . '/vendor/autoload.php';
 require_once GALETTE_ROOT . 'config/versions.inc.php';
 require_once GALETTE_ROOT . 'config/paths.inc.php';

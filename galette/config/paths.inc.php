@@ -120,3 +120,7 @@ if (!defined('GALETTE_TEMPIMAGES_PATH')) {
 if (!defined('GALETTE_TELEMETRY_URI')) {
     define('GALETTE_TELEMETRY_URI', 'https://telemetry.galette.eu/');
 }
+
+if (!defined('GALETTE_TPL_THEME_DIR')) {
+    define('GALETTE_TPL_THEME_DIR', GALETTE_ROOT . 'templates/default/');
+}

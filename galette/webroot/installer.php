@@ -58,7 +58,6 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !extension_loaded('int
 //specific logfile for installer
 $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../');
-define('GALETTE_THEME_DIR', './themes/default/');
 
 require_once '../includes/galette.inc.php';
 

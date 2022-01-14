@@ -68,7 +68,7 @@ $container->set(
 );
 $container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
     $view = new \Slim\Views\Smarty(
-        rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
+        GALETTE_TPL_THEME_DIR,
         [
             'cacheDir' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
             'compileDir' => rtrim(GALETTE_COMPILE_DIR, DIRECTORY_SEPARATOR),
