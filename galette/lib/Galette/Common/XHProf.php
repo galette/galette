@@ -72,7 +72,6 @@ use Analog\Analog;
  */
 class XHProf
 {
-
     // this can be overloaded in config/config_path.php
     public const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
     public const XHPROF_URL  = '/xhprof';

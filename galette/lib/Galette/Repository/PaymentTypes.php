@@ -55,7 +55,6 @@ use Galette\Entity\PaymentType;
  */
 class PaymentTypes extends Repository
 {
-
     /**
      * Get payments types
      *

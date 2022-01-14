@@ -66,7 +66,6 @@ require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
 
 class Pdf extends \TCPDF
 {
-
     public const FONT = 'DejaVuSans';
     public const FONT_SIZE = 10;
 

@@ -57,7 +57,6 @@ use Analog\Analog;
 
 class ImagesController extends AbstractController
 {
-
     /**
      * Send response
      *

@@ -62,7 +62,6 @@ use Galette\Core\Pagination;
 
 class TransactionsList extends Pagination
 {
-
     public const ORDERBY_DATE = 0;
     public const ORDERBY_MEMBER = 3;
     public const ORDERBY_AMOUNT = 5;

@@ -101,7 +101,6 @@ use Galette\Repository\PaymentTypes;
 
 class AdvancedMembersList extends MembersList
 {
-
     public const OP_AND = 0;
     public const OP_OR = 1;
 
