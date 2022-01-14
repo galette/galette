@@ -47,6 +47,9 @@ $cm->doCheck(false); //do not load with translations!
     <head>
         <title>Galette compatibility tests</title>
         <link rel="stylesheet" type="text/css" href="themes/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="assets/css/galette-main.bundle.min.css" />
+        <link rel="stylesheet" type="text/css" href="assets/ui/semantic.min.css" />
+
         <style type="text/css">
             h1 {
                 margin-top: .5em;
