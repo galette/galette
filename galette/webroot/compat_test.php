@@ -60,23 +60,13 @@ $cm->doCheck(false); //do not load with translations!
                 text-align: center;
             }
             div {
-                width: 20em;
+                width: 30em;
                 margin: 0 auto;
             }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
             li {
-                clear: right;
-                border-bottom: .1em dotted;
                 padding: .2em 0;
             }
-            li img, span.Missing, span.Ok {
-                font-weight: bold;
-                float: right;
-            }
+
             .Missing {
                 color: red;
             }
@@ -87,29 +77,31 @@ $cm->doCheck(false); //do not load with translations!
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
     <body>
-        <h1>
-            <img src="themes/default/images/galette.png"/>
-            <br/>Compatibility tests
-        </h1>
+        <div class="container">
+        <div class="ui basic center aligned fitted segment">
+            <img class="icon" src="themes/default/images/galette.png"/>
+        </div>
+        <h1 class="ui block center aligned header">Compatibility tests</h1>
     <?php
     if (!$phpok
         || !$cm->isValid()
     ) {
-        echo '<h2 class="Missing">Something is wrong :(</h2>';
+        echo '<h2 class="ui red message center aligned">Something is wrong :(</h2>';
     } else {
-        echo '<h2 class="Ok">Everything is OK :)</h2>';
+        echo '<p class="ui green message center aligned">Everything is OK :)</p>';
     }
     ?>
         <div>
-            <ul>
+            <ul class="leaders">
                 <li>
-                    PHP version:
-                    <span class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></span>
+                    <span>PHP <strong class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></strong></span>
+                    <span><i class="ui <?php echo ($phpok) ? 'green check' : 'red times'; ?> icon"></i></span>
                 </li>
     <?php
     echo $cm->toHtml(false);
     ?>
             </ul>
+        </div>
         </div>
     </body>
 </html>
