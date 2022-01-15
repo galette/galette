@@ -25,13 +25,14 @@
 # TwoB00m <qwertze@gmx.at>, 2021.
 # Harald Wopenka <hwop@wopit.at>, 2021.
 # Phil Clifford <philip.clifford@gmail.com>, 2021.
+# Matthew Machivenyika <accounts@machivenyika.ch>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-18 04:52+0000\n"
-"Last-Translator: Phil Clifford <philip.clifford@gmail.com>\n"
+"PO-Revision-Date: 2022-01-16 06:52+0000\n"
+"Last-Translator: Matthew Machivenyika <accounts@machivenyika.ch>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -39,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1-dev\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2105,10 +2106,8 @@ msgid "Member's groups (as list)"
 msgstr "Gruppen des Mitglieds (als Liste)"
 
 #: ../lib/Galette/Features/Replacements.php:337
-#, fuzzy
-#| msgid "Members by state of dues"
 msgid "Member state of dues"
-msgstr "Mitglieder nach Gebühren"
+msgstr "Mitglieder nach Gebührenbezahlstatus"
 
 #: ../lib/Galette/Features/Replacements.php:341
 msgid "Membership remaining days"
@@ -4798,17 +4797,15 @@ msgstr "Können Mitglieder einen Untergeordneten hinzufügen?"
 
 #: ../templates/default/preferences.tpl:237
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "Können Gruppenmanager ihre Gruppen bearbeiten?"
 
 #: ../templates/default/preferences.tpl:241
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Can group managers create members?"
-msgstr "Erinnerungen an überfällige Mitglieder versenden"
+msgstr "Können Gruppenmanager neue Mitglieder erstellen?"
 
 #: ../templates/default/preferences.tpl:245
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "Können Gruppenmanager Mitglieder bearbeiten?"
 
 #: ../templates/default/preferences.tpl:249
 #, fuzzy
