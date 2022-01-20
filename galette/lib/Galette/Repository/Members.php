@@ -940,7 +940,7 @@ class Members
                 break;
             default:
                 if ($this->canOrderBy($this->filters->orderby, $fields)) {
-                    $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
+                    $order[] = 'a.' . $this->filters->orderby . ' ' . $this->filters->getDirection();
                 }
                 break;
         }
