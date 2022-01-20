@@ -6,13 +6,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021.
 # Boran Roni <boranroniurtekin@gmail.com>, 2021.
 # seckiyn <kyofl6@gmail.com>, 2022.
+# benjamin <itsbenx@outlook.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-02 16:52+0000\n"
-"Last-Translator: seckiyn <kyofl6@gmail.com>\n"
+"PO-Revision-Date: 2022-01-21 13:33+0000\n"
+"Last-Translator: benjamin <itsbenx@outlook.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.11-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -570,6 +571,8 @@ msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 msgstr ""
+"Galette'den test e-postası göndermesinmi istediniz ancak e-posta "
+"tercihlerden devre dışı bırakıldı."
 
 #: ../lib/Galette/Controllers/GaletteController.php:409
 msgid "Test message"
@@ -599,31 +602,31 @@ msgstr "Geçersiz eposta adresi!"
 
 #: ../lib/Galette/Controllers/GaletteController.php:483
 msgid "Charts"
-msgstr ""
+msgstr "Grafikler"
 
 #: ../lib/Galette/Controllers/GaletteController.php:504
 msgid "Fields configuration"
-msgstr ""
+msgstr "Alan yapılandırması"
 
 #: ../lib/Galette/Controllers/GaletteController.php:567
 msgid "Fields configuration has been successfully stored"
-msgstr ""
+msgstr "Alan yapılandırması başarıyla depolandı"
 
 #: ../lib/Galette/Controllers/GaletteController.php:572
 msgid "An error occurred while storing fields configuration :("
-msgstr ""
+msgstr "Alan yapılandırması depo edilirken bir hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:597
 msgid "Lists configuration"
-msgstr ""
+msgstr "Yapılandırmaları listele"
 
 #: ../lib/Galette/Controllers/GaletteController.php:635
 msgid "List configuration has been successfully stored"
-msgstr ""
+msgstr "Yapılandırma listesi başarıyla depo edildi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:640
 msgid "An error occurred while storing list configuration :("
-msgstr ""
+msgstr "Yapılandırma listelemesi depo edilirken bir hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:674
 msgid "Reminders"
@@ -697,11 +700,11 @@ msgstr "PDF model tipi eksik!"
 
 #: ../lib/Galette/Controllers/PdfController.php:605
 msgid "Model has been successfully stored!"
-msgstr ""
+msgstr "Model başarıyla depo edildi!"
 
 #: ../lib/Galette/Controllers/PdfController.php:608
 msgid "Model has not been stored :("
-msgstr ""
+msgstr "Model depo edilmedi :("
 
 #: ../lib/Galette/Controllers/PdfController.php:650
 msgid "Invalid link!"
@@ -716,7 +719,7 @@ msgstr "Üye Girişi"
 
 #: ../lib/Galette/Controllers/AuthController.php:114
 msgid "You must provide both login and password."
-msgstr ""
+msgstr "Giriş ve parola sağlamak zorundasınız."
 
 #: ../lib/Galette/Controllers/AuthController.php:143
 msgid "Your password is too weak! Please consider updating it."
@@ -813,28 +816,28 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:495
 #: ../lib/Galette/Entity/Adherent.php:1387
 msgid "- The passwords don't match!"
-msgstr ""
+msgstr "- Parolalar eşleşmiyor!"
 
 #: ../lib/Galette/Controllers/AuthController.php:501
 msgid "Your password is too weak!"
-msgstr ""
+msgstr "Parolanız çok zayıf!"
 
 #: ../lib/Galette/Controllers/AuthController.php:510
 msgid "An error occurred while updating your password."
-msgstr ""
+msgstr "Parolanız güncellenirken bir hata meydana geldi."
 
 #: ../lib/Galette/Controllers/AuthController.php:516
 #, php-format
 msgid "Password changed for member '%s'."
-msgstr ""
+msgstr "'%s' üyesi için parola değişti."
 
 #: ../lib/Galette/Controllers/AuthController.php:524
 msgid "Your password has been changed!"
-msgstr ""
+msgstr "Parolanız değiştirildi!"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:73
 msgid "Administration tools"
-msgstr ""
+msgstr "Yönetim araçları"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:111
@@ -845,11 +848,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
 msgid "Texts has been successfully reinitialized."
-msgstr ""
+msgstr "Metinler başarıyla yeniden başlatıldı."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:116
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "Metinler yeniden başlatılırken bir hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:125
 msgid "Fields configuration has been successfully reinitialized."
@@ -861,7 +864,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:136
 msgid "PDF models has been successfully reinitialized."
-msgstr ""
+msgstr "PDF modelleri başarıyla yeniden başlatıldı."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:138
 msgid "An error occurred reinitializing PDF models :("
@@ -878,7 +881,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/HistoryController.php:111
 #: ../install/steps/check.php:75
 msgid "Logs"
-msgstr ""
+msgstr "Günlükler"
 
 #: ../lib/Galette/Controllers/HistoryController.php:150
 #: ../lib/Galette/Filters/TransactionsList.php:241
@@ -910,19 +913,19 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PluginsController.php:83
 msgid "Plugins"
-msgstr ""
+msgstr "Eklentiler"
 
 #: ../lib/Galette/Controllers/PluginsController.php:114
 msgid "Plugin %name has been enabled"
-msgstr ""
+msgstr "%name eklentisi etkinleştirildi"
 
 #: ../lib/Galette/Controllers/PluginsController.php:132
 msgid "Plugin %name has been disabled"
-msgstr ""
+msgstr "%name eklentisi devre dışı bırakıldı"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:76
 msgid "Translate labels"
-msgstr ""
+msgstr "Etiketleri çevir"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:119
 #, php-format
@@ -971,7 +974,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:317
 msgid "An error occurred importing the file :("
-msgstr ""
+msgstr "Dosya içe aktarılırken bir hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/CsvController.php:329
 msgid "File '%filename%' has been successfully imported :)"
@@ -979,15 +982,15 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:362
 msgid "Your file has been successfully uploaded!"
-msgstr ""
+msgstr "Dosyanız başarıyla yüklendi!"
 
 #: ../lib/Galette/Controllers/CsvController.php:381
 msgid "No files has been seleted for upload!"
-msgstr ""
+msgstr "Yükleme için hiçbir dosya seçilmedi!"
 
 #: ../lib/Galette/Controllers/CsvController.php:387
 msgid "No files has been uploaded!"
-msgstr ""
+msgstr "Hiçbir dosya yüklenmedi!"
 
 #: ../lib/Galette/Controllers/CsvController.php:460
 #, php-format
@@ -1006,7 +1009,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:595
 msgid "CSV import model"
-msgstr ""
+msgstr "CSV içe aktarma modeli"
 
 #: ../lib/Galette/Controllers/CsvController.php:637
 msgid "galette_import_model.csv"
@@ -1081,11 +1084,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:306
 msgid "End!"
-msgstr ""
+msgstr "Son!"
 
 #: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:155
 msgid "Ok"
-msgstr ""
+msgstr "Tamam"
 
 #: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:146
 msgid "Ko"
@@ -1093,7 +1096,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:325
 msgid "Database type unknown"
-msgstr ""
+msgstr "Veritabanı türü bilinmiyor"
 
 #: ../lib/Galette/Core/Install.php:683
 msgid "%version script has been successfully executed :)"
@@ -1145,7 +1148,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1182
 msgid "Update preferences"
-msgstr ""
+msgstr "Tercihleri güncelle"
 
 #: ../lib/Galette/Core/Install.php:1186
 msgid "Update models"
