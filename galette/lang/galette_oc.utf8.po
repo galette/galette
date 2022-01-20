@@ -1,12 +1,13 @@
 # Quentin PAGÈS <quentinantonin@free.fr>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Pèire Bréchet <charrar@free.fr>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-09-30 09:49+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2022-01-21 13:33+0000\n"
+"Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
 "Language: oc\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.11-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -615,7 +616,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:674
 msgid "Reminders"
-msgstr "Rapèls"
+msgstr "Remembre"
 
 #: ../lib/Galette/Controllers/GaletteController.php:715
 msgid "No reminder to send for now."
@@ -716,7 +717,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:152
 msgid "Authentication failed"
-msgstr "L'autentificacion a fracassat"
+msgstr "L'autentificacion a fralhit"
 
 #: ../lib/Galette/Controllers/AuthController.php:168
 msgid "Log off"
@@ -795,7 +796,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:492
 #: ../webroot/installer.php:125 ../webroot/installer.php:168
 msgid "No password"
-msgstr "Pas cap de senhal"
+msgstr "Ges de senhau"
 
 #: ../lib/Galette/Controllers/AuthController.php:495
 #: ../lib/Galette/Entity/Adherent.php:1387
@@ -1201,7 +1202,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:314
 msgid "All"
-msgstr "Totas"
+msgstr "Tot"
 
 #: ../lib/Galette/Core/Authentication.php:290
 #, php-format
@@ -1302,7 +1303,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:1109
 msgid "Never"
-msgstr "Pas jamai"
+msgstr "Jamai"
 
 #: ../lib/Galette/Core/Preferences.php:1147
 msgid "Current cards configuration may exceed page width!"
@@ -1430,7 +1431,7 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:435
 #: ../lib/Galette/Filters/AdvancedMembersList.php:581
 msgid "Y-m-d"
-msgstr "d/m/Y"
+msgstr "a/m/j"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
@@ -1555,7 +1556,7 @@ msgstr "separador"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1024
 msgid "free text"
-msgstr "txt liure"
+msgstr "tèxte liure"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1025
 msgid "single line"
@@ -1575,7 +1576,7 @@ msgstr "boolean"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1029
 msgid "file"
-msgstr "fichièr"
+msgstr "fichier"
 
 #: ../lib/Galette/IO/PdfGroups.php:72
 msgid "groups_list"
@@ -1609,7 +1610,7 @@ msgstr "Nom"
 #: ../lib/Galette/Features/Replacements.php:321
 #: ../lib/Galette/Features/Replacements.php:369
 msgid "Email"
-msgstr "Adreça electronica"
+msgstr "Adreiça electronica"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Features/Replacements.php:313
@@ -1690,7 +1691,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/Charts.php:240
 msgid "Up to date"
-msgstr "A jorn"
+msgstr "Actualizat"
 
 #: ../lib/Galette/IO/Charts.php:258
 msgid "Late"
@@ -2093,7 +2094,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:614
 #: ../lib/Galette/Features/Replacements.php:615
 msgid "None"
-msgstr "Pas cap"
+msgstr "Degun"
 
 #: ../lib/Galette/Features/Replacements.php:789
 #, fuzzy
@@ -2130,7 +2131,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/ListsConfig.php:228
 msgid "Public"
-msgstr "Publica"
+msgstr "Public"
 
 #: ../lib/Galette/Entity/Reminder.php:268
 msgid "%name <%mail> (%days days)"
@@ -2501,7 +2502,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:433
 msgid "Subtitle"
-msgstr "Sostítol"
+msgstr "Sotatítol"
 
 #: ../lib/Galette/Entity/PdfModel.php:448
 msgid "header and footer should not be empty!"
@@ -2757,7 +2758,7 @@ msgstr ""
 #: ../lib/Galette/Filters/ContributionsList.php:234
 #: ../lib/Galette/Filters/ContributionsList.php:271
 msgid "Y"
-msgstr "Y"
+msgstr "A"
 
 #: ../lib/Galette/Filters/TransactionsList.php:213
 #: ../lib/Galette/Filters/TransactionsList.php:235
@@ -2768,7 +2769,7 @@ msgstr "Y"
 #: ../lib/Galette/Filters/ContributionsList.php:250
 #: ../lib/Galette/Filters/ContributionsList.php:272
 msgid "Y-m"
-msgstr "m-Y"
+msgstr "A-m"
 
 #: ../lib/Galette/Filters/TransactionsList.php:254
 #: ../lib/Galette/Filters/HistoryList.php:254
@@ -3065,7 +3066,7 @@ msgstr "Vila"
 
 #: ../includes/i18n.inc.php:329
 msgid "Zip Code"
-msgstr "Còdi postal"
+msgstr "Còde postal"
 
 #: ../includes/i18n.inc.php:331
 msgid ""
@@ -3152,7 +3153,7 @@ msgstr "Adreça (seguida)"
 
 #: ../includes/fields_defs/members_fields.php:137
 msgid "Zip Code:"
-msgstr "Còdi postal :"
+msgstr "Còde postal :"
 
 #: ../includes/fields_defs/members_fields.php:145
 msgid "City:"
@@ -3172,7 +3173,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:177
 msgid "E-Mail:"
-msgstr "Corrièr electronic:"
+msgstr "Corrier electronic:"
 
 #: ../includes/fields_defs/members_fields.php:185
 msgid "Other information (admin):"
@@ -3535,7 +3536,7 @@ msgstr ""
 #: ../install/steps/db_install.php:77 ../install/steps/galette.php:78
 #: ../install/steps/check.php:158
 msgid "Retry"
-msgstr "Tornar ensajar"
+msgstr "Tornar assajar"
 
 #: ../install/steps/db_install.php:93 ../install/steps/db_select_version.php:61
 #: ../install/steps/db_select_version.php:137
@@ -3717,7 +3718,7 @@ msgstr "Fòtos"
 
 #: ../install/steps/check.php:70
 msgid "Cache"
-msgstr "Cache"
+msgstr "Antememòria"
 
 #: ../install/steps/check.php:71
 msgid "Temporary images"
@@ -3941,7 +3942,7 @@ msgstr "Anar"
 #: ../templates/default/configurer_fiches.tpl:90
 #: ../templates/default/js_loader.tpl:2
 msgid "Loading..."
-msgstr "Cargament..."
+msgstr "Telecargament..."
 
 #: ../templates/default/gestion_pdf.tpl:49
 #: ../templates/default/configurer_fiches.tpl:90
@@ -4918,7 +4919,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:513
 msgid "Year:"
-msgstr "Annada :"
+msgstr "An :"
 
 #: ../templates/default/preferences.tpl:514
 msgid ""
@@ -5119,7 +5120,7 @@ msgstr "Enregistrament"
 #: ../templates/default/gestion_mailings.tpl:6
 #: ../templates/default/history.tpl:6
 msgid "since"
-msgstr "dempuèi"
+msgstr "despuei"
 
 #: ../templates/default/gestion_contributions.tpl:18
 #: ../templates/default/gestion_mailings.tpl:8
@@ -5151,7 +5152,7 @@ msgstr "Filtrar"
 #: ../templates/default/advanced_search.tpl:314
 #: ../templates/default/gestion_transactions.tpl:10
 msgid "Clear filter"
-msgstr "Escafar filtre"
+msgstr "Escafar lo filtre"
 
 #: ../templates/default/gestion_contributions.tpl:40
 msgid "Show all members contributions"
@@ -5455,7 +5456,7 @@ msgstr ""
 
 #: ../templates/default/plugin_initdb.tpl:120
 msgid "Close"
-msgstr "Tampar"
+msgstr "Clavar"
 
 #: ../templates/default/plugin_initdb.tpl:122
 msgid "Back to plugins managment page"
@@ -6099,7 +6100,7 @@ msgstr ""
 #: ../templates/default/export.tpl:30 ../templates/default/export.tpl:46
 #: ../templates/default/import.tpl:27 ../templates/default/import.tpl:41
 msgid "Size"
-msgstr "Talha"
+msgstr "Mesura"
 
 #: ../templates/default/export.tpl:55 ../templates/default/import.tpl:50
 #, php-format
@@ -6421,15 +6422,15 @@ msgstr ""
 
 #: ../templates/default/editer_champ.tpl:34
 msgid "Width:"
-msgstr "Largor :"
+msgstr "Larjor :"
 
 #: ../templates/default/editer_champ.tpl:40
 msgid "Height:"
-msgstr "Nautor :"
+msgstr "Autor :"
 
 #: ../templates/default/editer_champ.tpl:46
 msgid "Size:"
-msgstr "Talha :"
+msgstr "Mesura :"
 
 #: ../templates/default/editer_champ.tpl:49
 msgid "Maximum file size, in Ko."
@@ -6488,7 +6489,7 @@ msgstr "Requesit"
 #: ../templates/default/gestion_paymentstypes.tpl:27
 #: ../templates/default/gestion_titres.tpl:31
 msgid "Add"
-msgstr "Apondre"
+msgstr "Ajustar"
 
 #: ../templates/default/js_chosen_adh.tpl:37
 msgid "Load following members..."
@@ -6672,7 +6673,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf_content.tpl:24
 msgid "Body"
-msgstr "Còs"
+msgstr "Còrs"
 
 #: ../templates/default/gestion_pdf_content.tpl:29
 msgid "CSS styles"
@@ -6748,7 +6749,7 @@ msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:99
 msgid "Reload"
-msgstr "Tornar cargar"
+msgstr "Tornar teledescargar"
 
 #: ../templates/default/ajouter_contribution.tpl:99
 msgid ""
@@ -6769,7 +6770,7 @@ msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:141
 msgid "months"
-msgstr "meses"
+msgstr "mes"
 
 #: ../templates/default/ajouter_contribution.tpl:157
 msgid "Transaction related"
@@ -6853,7 +6854,7 @@ msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:49
 msgid "New password"
-msgstr "Nòu senhal"
+msgstr "Senhal nòu"
 
 #: ../templates/default/voir_adherent.tpl:59
 msgid "Edit member"
@@ -7082,7 +7083,7 @@ msgstr "Tot espandir"
 
 #: ../templates/default/config_fields.tpl:163
 msgid "Warning"
-msgstr "Atencion"
+msgstr "Avís"
 
 #: ../templates/default/config_fields.tpl:163
 msgid "Some warnings has been thrown:"
@@ -7163,7 +7164,7 @@ msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:19
 msgid "New group"
-msgstr "Nòu grop"
+msgstr "Grop nòu"
 
 #: ../templates/default/gestion_groupes.tpl:26
 msgid "Group information"
