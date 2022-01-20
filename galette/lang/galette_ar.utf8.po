@@ -9,12 +9,13 @@
 # Mustafa Wahhudi <mustafawahhudi@gmail.com>, 2021.
 # Moumen Harmoush <momen.harmoush@gmail.com>, 2021.
 # mustapha nhaily <nhaily@gmail.com>, 2021.
+# Menna Ebraheam & Jana hesham <monymenna62@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-11-28 15:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2022-01-21 13:33+0000\n"
+"Last-Translator: Menna Ebraheam & Jana hesham <monymenna62@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.11-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -83,22 +84,22 @@ msgstr "تعديل نوع الدفع"
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:209
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "وسيلة الدفع '٥٪' لم تضاف بعد !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:218
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr ""
+msgstr "وسيلة الدفع 'س٪' لم تعدل بعد"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:231
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "وسيلة الدفع 'س٪' تم اضافتها بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:240
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "وسيلة الدفع'س٪' تم تعديلها بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:303
 #, php-format
@@ -115,11 +116,11 @@ msgstr "الفِرَق"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:365
 msgid "Group `%groupname` has been successfully saved."
-msgstr ""
+msgstr "تم حفظ مجموعة 'اسم المجموعة٪' بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:372
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "حدث خطأ اثناء تخزين المجموعة"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:471
 #, php-format
@@ -128,39 +129,39 @@ msgstr "حذف الفريق %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:494
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
-msgstr ""
+msgstr "المجموعة ليست خالية ، لا يمكنك حذفها. قم بحذف الاعضاء بدلا من ذلك"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:103
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:107
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:259
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:261
 msgid "Trying to load mailing while email is disabled in preferences."
-msgstr ""
+msgstr "حاول اعادة تحميل البريد عندما  لا يعمل البريد بكفائة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:284
 msgid "No member selected for mailing!"
-msgstr ""
+msgstr "لم يتم اختيار اعضاء للمراسلة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:206
 msgid "Mailing"
-msgstr ""
+msgstr "مراسلة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:303
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "من فضلك اكتب حرفا بالرسالة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:309
 msgid "Please enter a message."
-msgstr ""
+msgstr "من فضلك ادخل رسالة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:406
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "تم ارسال البريد بنجاح !"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:429
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "تم حفظ البريد بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:511
 msgid "Mailings"
@@ -169,11 +170,11 @@ msgstr "الرسائل"
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:659
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "تم ازالة البريد #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:741
 msgid "Mailing preview"
-msgstr ""
+msgstr "معاينة البريد"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:76
 msgid "Add field"
@@ -181,20 +182,20 @@ msgstr "إضافة حقل"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "حدث خطأ اثناء اضافة الحقل"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:368
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "تم تخزين الحقل بنجاح !"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:230
 msgid "Dynamic fields configuration"
-msgstr ""
+msgstr "تكوين الحقول الديناميكية"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:293
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "تعذر استرداد معلومات الحقل."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:302
 msgid "Edit field"
@@ -206,20 +207,20 @@ msgstr "وقع هناك خطأ أثناء تعديل الحقل الدينامي
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:453
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "طلب الحقل غير موجود"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:464
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "تم حذف الحقل الديناميكي %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:509
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "تم نقل الحقل بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:514
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "حدث خطأ أثناء نقل الحقل :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:164
 msgid "Subscription"
@@ -232,16 +233,16 @@ msgstr "التسجيل"
 #: ../lib/Galette/Controllers/PdfController.php:285
 #: ../lib/Galette/Middleware/Authenticate.php:166
 msgid "You do not have permission for requested URL."
-msgstr ""
+msgstr "ليس لديك الاذن لعنوان URLالمطلوب"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:269
 msgid "No member #%id."
-msgstr ""
+msgstr "لايوجد عضو #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:288
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1132
 msgid "Member Profile"
-msgstr ""
+msgstr "ملف العضو"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:368
 msgid "Members list"
@@ -249,11 +250,11 @@ msgstr "قائمة الأعضاء"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:368
 msgid "Trombinoscope"
-msgstr ""
+msgstr "منظار الترومبين"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:509
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "الملف غير موجود او لايمكن قرائته"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:572
 msgid "Members management"
@@ -261,7 +262,7 @@ msgstr "إدارة الأعضاء"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:775
 msgid "Status label"
-msgstr ""
+msgstr "عنوان الحالة"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:818
 msgid "Advanced search"
@@ -271,12 +272,12 @@ msgstr "البحث المتقدم"
 #: ../lib/Galette/Controllers/PdfController.php:151
 #: ../lib/Galette/Controllers/PdfController.php:232
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "لم يتم اختيار اي عضو ، من فضلك اختر واحدا علي الاقل"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1246
 #, php-format
 msgid "Mass change %count members"
-msgstr ""
+msgstr "تغيير شامل ٪ عدد الاعضاء"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1276
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1372
