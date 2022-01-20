@@ -153,7 +153,7 @@ $container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
         $now = new \DateTime();
         $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
         $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
-        if ($now > $sent && !$_COOKIE['renew_telemetry']) {
+        if ($now > $sent && !isset($_COOKIE['renew_telemetry'])) {
             $smarty->assign('renew_telemetry', true);
         }
     }
