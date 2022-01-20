@@ -512,7 +512,7 @@ class Members
      * Get list of members that has been selected
      *
      * @param array   $ids         an array of members id that has been selected
-     * @param array   $orderby     SQL order clause (optionnal)
+     * @param array   $orderby     SQL order clause (optional)
      * @param boolean $with_photos Should photos be loaded?
      * @param boolean $as_members  Return Adherent[] or simple ResultSet
      * @param array   $fields      Fields to use
@@ -958,7 +958,7 @@ class Members
     }
 
     /**
-     * Is field allowed to order? it shoulsd be present in
+     * Is field allowed to order? it should be present in
      * provided fields list (those that are SELECT'ed).
      *
      * @param string $field_name Field name to order by
