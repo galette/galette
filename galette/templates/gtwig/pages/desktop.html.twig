@@ -1,180 +1,180 @@
-{extends file="page.tpl"}
-{block name="content"}
+{% extends 'page.html.twig' %}
+
+{% block content %}
     <div class="container">
         <div>
-{if not $hide_telemetry and $GALETTE_MODE neq 'DEMO'}
+    {% if not hide_telemetry and constant('GALETTE_MODE') != 'DEMO' %}
     <div class="ui info message">
         <i class="close icon"></i>
         <div class="header">
-            {_T string="Help us know about you!"}
+            {{ _T("Help us know about you!") }}
         </div>
         <p>
-            {* TODO: use a trash icon next to close one instead of a checkbox *}
-            {_T string="Take a moment to share some information with us so we can know better Galette's uses."}
-            <span class="ui checkbox" title="{_T string="The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways."}">
-                <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1"{if $hide_telemetry} checked="checked"{/if}/>
-                <label for="hide_telemetry">{_T string="Hide this panel"}</label>
+            {# TODO: use a trash icon next to close one instead of a checkbox #}
+            {{ _T("Take a moment to share some information with us so we can know better Galette's uses.") }}
+            <span class="ui checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
+                <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1"{% if hide_telemetry %} checked="checked"{% endif %}/>
+                <label for="hide_telemetry">{{ _T("Hide this panel") }}</label>
             </span>
         </p>
         <div class="ui two centered stackable cards">
-            {if not $telemetry_sent}
-                <a id="telemetry" class="ui card" href="#" title="{_T string="Send anonymous and imprecise data about your Galette instance"}">
+            {% if not telemetry_sent %}
+                <a id="telemetry" class="ui card" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
                     <div class="content">
                         <div class="center aligned header">
                             <i class="ui huge chart bar grey icon"></i>
-                            {_T string="Telemetry"}
+                            {{ _T("Telemetry") }}
                         </div>
                     </div>
                 </a>
-
-            {/if}
-            {if not $registered}
-                <a class="ui card" href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$reguuid}" title="{_T string="Register your organization as a Galette user"}" target="_blank">
+            {% endif %}
+            {% if not registered %}
+                <a class="ui card" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
                     <div class="content">
                         <div class="center aligned header">
                             <i class="ui huge id card outline grey icon"></i>
-                            {_T string="Register"}
+                            {{ _T("Register") }}
                         </div>
                     </div>
                 </a>
-            {/if}
+            {% endif %}
         </div>
     </div>
-{/if}
-            <h3 class="ui top attached header">{_T string="Activities"}</h3>
+    {% endif %}
+            <h3 class="ui top attached header">{{ _T("Activities") }}</h3>
             <div class="ui attached segment">
                 <div class="ui three stackable cards">
-{if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
-                    <a class="ui card" href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">
+{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+                    <a class="ui card" href="{{ path_for('members') }}" title="{{ _T("View, search into and filter member's list") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge users grey icon"></i>
-                                {_T string="Members"}
+                                {{ _T("Members") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card" href="{path_for name="groups"}" title="{_T string="View and manage groups"}">
+                    <a class="ui card" href="{{ path_for('groups') }}" title="{{ _T("View and manage groups") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge users cog grey icon"></i>
-                                {_T string="Groups"}
+                                {{ _T("Groups") }}
                             </div>
                         </div>
                     </a>
-    {if $login->isAdmin() or $login->isStaff()}
-                    <a class="ui card" href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">
+    {% if login.isAdmin() or login.isStaff() %}
+                    <a class="ui card" href="{{ path_for('mailings') }}" title="{{ _T("Manage mailings that has been sent") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge mail bulk grey icon"></i>
-                                {_T string="Mailings"}
+                                {{ _T("Mailings") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">
+                    <a class="ui card" href="{{ path_for('contributions', {'type': 'contribution'}) }}" title="{{ _T("View and filter contributions") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge cookie grey icon"></i>
-                                {_T string="Contributions"}
+                                {{ _T("Contributions") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card" href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}">
+                    <a class="ui card" href="{{ path_for('contributions', {'type': 'transactions'}) }}" title="{{ _T("View and filter transactions") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge columns grey icon"></i>
-                                {_T string="Transactions"}
+                                {{ _T("Transactions") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card"" href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">
+                    <a class="ui card" href="{{ path_for('reminders') }}" title="{{ _T("Send reminders to late members") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge bell grey icon"></i>
-                                {_T string="Reminders"}
+                                {{ _T("Reminders") }}
                             </div>
                         </div>
                     </a>
-    {/if}
-    {if $login->isAdmin()}
-                    <a class="ui card" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">
+    {% endif %}
+    {% if login.isAdmin() %}
+                    <a class="ui card" href="{{ path_for('preferences') }}" title="{{ _T("Set applications preferences (address, website, member's cards configuration, ...)") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge tools grey icon"></i>
-                                {_T string="Settings"}
+                                {{ _T("Settings") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card" href="{path_for name="plugins"}" title="{_T string="Information about available plugins"}">
+                    <a class="ui card" href="{{ path_for('plugins') }}" title="{{ _T("Information about available plugins") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge puzzle piece grey icon"></i>
-                                {_T string="Plugins"}
+                                {{ _T("Plugins") }}
                             </div>
                         </div>
                     </a>
-                    {* Include plugins user dashboard *}
+                    {# Include plugins user dashboard #}
                     {$plugins->getDashboard($tpl)}
-    {/if}
-{else}
-                    {* Single member *}
-                    <a class="ui card" href="{path_for name="me"}" title="{_T string="View my member card"}">
+    {% endif %}
+{% else %}
+                    {# Single member #}
+                    <a class="ui card" href="{{ path_for('me') }}" title="{{ _T("View my member card") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge user alternate grey icon"></i>
-                                {_T string="My information"}
+                                {{ _T("My information") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}">
+                    <a class="ui card" href="{{ path_for('contributions', { 'type': 'contributions'}) }}" title="{{ _T("View and filter all my contributions") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge cookie grey icon"></i>
-                                {_T string="Contributions"}
+                                {{ _T("Contributions") }}
                             </div>
                         </div>
                     </a>
-                    <a class="ui card" href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}">
+                    <a class="ui card" href="{{ path_for('contributions', { 'type': 'transactions'}) }}" title="{{ _T("View and filter all my transactions") }}">
                         <div class="content">
                             <div class="header">
                                 <i class="ui huge columns grey icon"></i>
-                                {_T string="transactions"}
+                                {{ _T("transactions") }}
                             </div>
                         </div>
                     </a>
-                    {* Include plugins user dashboard *}
+                    {# Include plugins user dashboard #}
                     {$plugins->getMemberDashboard($tpl)}
-{/if}
+{% endif %}
                 </div>
             </div>
             <div class="ui basic segment">
                 <div class="ui toggle checkbox">
-                    <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
-                    <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
+                    <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{% if show_dashboard %} checked="checked"{% endif %}/>
+                    <label for="show_dashboard">{{ _T("Show dashboard on login") }}</label>
                 </div>
             </div>
         </div>
-{if $news|@count > 0}
+    {% if news|length > 0 %}
         <div>
-            <h3 class="ui top attached header">{_T string="News"}</h3>
+            <h3 class="ui top attached header">{{ _T("News") }}</h3>
             <div class="ui attached segment">
                 <div class="ui bulleted list">
-    {foreach from=$news item=post}
+        {% for post in news %}
                     <div class="item">
-                        <a href="{$post.url}" target="_blank">{$post.title}</a>
+                        <a href="{{ post.url }}" target="_blank">{{ post.title }}</a>
                     </div>
-    {/foreach}
+        {% endfor %}
                 </div>
             </div>
         </div>
-{/if}
+    {% endif %}
     </div>
 
-{if not $hide_telemetry and not $telemetry_sent}
-    {include file="telemetry.tpl" part="dialog"}
-{/if}
-{/block}
+    {% if not hide_telemetry and not telemetry_sent %}
+        {% include "modals/telemetry.html.twig" with { part: "dialog" } %}
+    {% endif %}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
     <script>
         $(function() {
             $('#show_dashboard').change(function(){
@@ -188,12 +188,12 @@
                         }
                 );
                 if ( !_checked ) {
-                    var _url = '{path_for name="members"}';
+                    var _url = '{{ path_for('members') }}';
                     window.location.replace(_url);
                 }
             });
 
-{if not $hide_telemetry}
+{% if not hide_telemetry %}
             $('#hide_telemetry').change(function(){
                 var _checked = $(this).is(':checked');
                 Cookies.set(
@@ -204,17 +204,17 @@
                             path: '/'
                         }
                 );
-                var _url = '{path_for name="dashboard"}';
+                var _url = '{{ path_for('dashboard') }}';
                 window.location.replace(_url);
             });
 
-    {if not $telemetry_sent}
-        {include file="telemetry.tpl" part="jsdialog" orig="desktop"}
-    {/if}
-    {if not $registered}
-        {include file="telemetry.tpl" part="jsregister" orig="desktop"}
-    {/if}
-{/if}
+    {% if not telemetry_sent %}
+        {% include "modals/telemetry.html.twig" with { part: "jsdialog", orig: "desktop" } %}
+    {% endif %}
+    {% if not registered %}
+        {% include "modals/telemetry.html.twig" with { part: "jsregister", orig: "desktop"} %}
+    {% endif %}
+{% endif %}
         });
     </script>
-{/block}
+{% endblock %}

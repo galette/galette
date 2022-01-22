@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="{{ galette_lang }}" class="public_page{% if additionnal_html_class %} {{ additionnal_html_class }}{% endif %}">
+    <head>
+        {% include 'elements/header.html.twig' %}
+    </head>
+    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() %} loggedin{% endif %}">
+        {% include 'elements/navigation/navigation_sidebar.html.twig' %}
+        {% include 'elements/navigation/navigation_topbar.html.twig' %}
+        <div class="pusher">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" %} text{% endif %}{% if not login.isLogged() %}ui container{% else %} full height{% endif %}">
+{% if login.isLogged() %}
+                {% include "elements/navigation/navigation_aside.html.twig" %}
+{% endif %}
+                <section{% if login.isLogged() %} class="content"{% endif %}>
+{% if constant('GALETTE_MODE') == 'DEMO' %}
+    {% if cur_route != "editMember" %}
+        {% if not login.isLogged() %}
+            {% if cur_route == ("addMember" or "login") or (cur_route == "publicList" and cur_subroute == ("list" or "trombi")) %}
+                    <div class="ui tiny orange message" title="{{ _T("This application runs under DEMO mode, all features may not be available.") }}">
+                        {{ _T("Demonstration") }}
+                    </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+{% if not login.isLogged() %}
+                    <div class="ui basic center aligned fitted segment">
+                        <img src="{{ path_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.__get('pref_nom') }}" class="icon"/>
+                        <div class="ui block huge brand header">
+                            {{ preferences.__get('pref_nom') }}
+                            <div class="sub header">{%  if preferences.__get('pref_slogan') %}{{ preferences.__get('pref_slogan') }}{% endif %}</div>
+                        </div>
+                    </div>
+{% endif %}
+                    <h1 class="ui block center aligned header">{{ page_title }}</h1>
+                    {% block content %}{{ _T("Public page content") }}{%  endblock %}
+                    {% include "elements/footer.html.twig" %}
+                </section>
+            </div>
+        </div>
+
+        <a href="#" id="back2top" class="ui basic icon button">
+            <i class="arrow up icon"></i>
+            {{ _T("Back to top") }}
+        </a>
+        {% include "elements/scripts.html.twig" %}
+        {% include "elements/toasts.html.twig" %}
+        {%  block javascripts %}{%  endblock %}
+</body>
+</html>

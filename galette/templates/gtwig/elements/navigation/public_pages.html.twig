@@ -1,0 +1,49 @@
+{% if preferences.showPublicPages(login) == true %}
+    <a href="{{ path_for("publicList", { "type": "list"}) }}"
+        class="{% if is_current_path('publicList', { 'type': 'list' }) %}active {% endif %}item"
+        title="{{ _T("Members list") }}"
+        {% if tips_position is defined %}data-position="{{ tips_position }}"{% endif %}
+    >
+        <i class="icon address book" aria-hidden="true"></i>
+        {{ _T("Members list") }}
+    </a>
+    <a href="{{ path_for("publicList", { "type": "trombi"}) }}"
+    class="{% if is_current_path('publicList', { 'type': 'trombi' }) %}active {% endif %}item"
+
+        title="{{ _T("Trombinoscope") }}"
+        {% if tips_position is defined %}data-position="{{ tips_position }}"{% endif %}
+    >
+        <i class="icon user friends" aria-hidden="true"></i>
+        {{ _T("Trombinoscope") }}
+    </a>
+{% endif %}
+
+    {# Include plugins menu entries #}
+    {$plugins->getPublicMenus($tpl, true)}
+
+{% if sign_in is defined and sign_in == true %}
+    <div class="{if isset($sign_in_side)}right {/if}item">
+    {% if preferences.__get('pref_bool_selfsubscribe') == true and not cur_route == "subscribe" %}
+        <a
+            href="{{ path_for("subscribe") }}"
+            class="ui basic button"
+            title="{{ _T("Subscribe") }}"
+            data-position="bottom center"
+        >
+            <i class="icon add user" aria-hidden="true"></i>
+            {{ _T("Subscribe") }}
+        </a>
+    {% endif %}
+    {% if not is_current_path("login") %}
+        <a
+            href="{{ path_for("slash") }}"
+            class="ui primary button"
+            title="{{ _T("Login") }}"
+            data-position="bottom center"
+        >
+            <i class="icon sign in alt" aria-hidden="true"></i>
+            {{ _T("Login") }}
+        </a>
+    {% endif %}
+    </div>
+{% endif %}

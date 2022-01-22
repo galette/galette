@@ -92,7 +92,6 @@ $app->add($session);
 
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
-$app->add(new \Galette\Middleware\SmartyCsrf($app->getContainer()));
 $app->add($app->getContainer()->get('csrf'));
 
 if ($needs_update) {
@@ -107,15 +106,12 @@ if ($needs_update) {
     die();
 }
 
-$smarty = $app->getContainer()->get('view')->getSmarty();
-require_once GALETTE_ROOT . 'includes/smarty.inc.php';
-
 /**
  * Authentication middleware
  */
 $authenticate = new \Galette\Middleware\Authenticate($container);
 
-//Maintainance middleware
+//Maintenance middleware
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
         new \Galette\Middleware\UpdateAndMaintenance(
@@ -128,23 +124,23 @@ if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAd
 /**
  * Trailing slash middleware
  */
-$app->add('\Galette\Middleware\TrailingSlash');
+$app->add(\Galette\Middleware\TrailingSlash::class);
 
 /**
  * Change language middleware
  *
  * Require determineRouteBeforeAppMiddleware to be on.
  */
-$app->add('\Galette\Middleware\Language');
+$app->add(\Galette\Middleware\Language::class);
 
 //Telemetry update middleware
-$app->add('\Galette\Middleware\Telemetry');
+$app->add(\Galette\Middleware\Telemetry::class);
 
 /**
  * Check routes ACLs
  * This is important this one to be the last, so it'll be executed first.
  */
-$app->add('\Galette\Middleware\CheckAcls');
+$app->add(\Galette\Middleware\CheckAcls::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';

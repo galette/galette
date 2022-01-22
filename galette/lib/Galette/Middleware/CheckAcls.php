@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -40,6 +40,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Analog\Analog;
 use DI\Container;
+use Slim\Views\Twig;
 
 /**
  * Galette Slim ACLs checks middleware
@@ -48,13 +49,14 @@ use DI\Container;
  * @name      CheckAcls
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
  */
 class CheckAcls
 {
+    /** @var Twig */
     protected $view;
     protected $router;
     protected $flash;
@@ -88,9 +90,9 @@ class CheckAcls
         $route_info = $request->getAttribute('routeInfo');
 
         if ($route != null) {
-            $this->view->getSmarty()->assign('cur_route', $route->getName());
+            $this->view->getEnvironment()->addGlobal('cur_route', $route->getName());
             if ($route_info != null && is_array($route_info[2])) {
-                $this->view->getSmarty()->assign('cur_subroute', array_shift($route_info[2]));
+                $this->view->getEnvironment()->addGlobal('cur_subroute', array_shift($route_info[2]));
             }
         }
 

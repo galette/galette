@@ -1,0 +1,35 @@
+{% if ui is defined %}
+    {% if ui == 'item'%}
+        {% set component_classes = "language item" %}
+        {% set content_classes = "content" %}
+        {% set header = true %}
+    {%  elseif ui == 'dropdown' %}
+        {% set component_classes = "language ui dropdown right-aligned item" %}
+        {% set content_classes = "menu" %}
+        {% set header = false %}
+    {% endif %}
+{% endif %}
+
+<div class="{{ component_classes }}" title="{{ _T("Choose your language") }}">
+{% if header == true %}
+<div class="image header title">
+{% endif %}
+    <i class="icon language" aria-hidden="true"></i>
+    <span>{{ galette_lang }}</span>
+    <i class="dropdown icon"></i>
+{% if header == true %}
+</div>
+{% endif %}
+<div class="{{ content_classes }}">
+    {% for langue in languages %}
+        {% if langue.getAbbrev() != galette_lang %}
+    <a href="?ui_pref_lang={{ langue.getID() }}"
+       title="{{ _T("Switch locale to '%locale'")|replace({ "%locale": langue.getName() }) }}"
+       class="item"
+    >
+        {{ langue.getName() }} <span>({{ langue.getAbbrev() }})</span>
+    </a>
+        {% endif %}
+    {% endfor %}
+</div>
+</div>

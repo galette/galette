@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="{{ galette_lang }}">
+    <head>
+        {% include 'elements/header.html.twig' %}
+    </head>
+    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %}">
+        {% include 'elements/navigation/navigation_sidebar.html.twig' %}
+        {% include 'elements/navigation/navigation_topbar.html.twig' %}
+        <div class="pusher">
+            <div id="main" class="{if !$login->isLogged()}container{else}full height{/if}">
+{%  if login.isLogged() %}
+    {% include 'elements/navigation/navigation_aside.html.twig' %}
+{% endif %}
+                <section class="content{% if contentcls %} {{ contentcls }}{% endif %}">
+{% if not login.isLogged() %}
+                    <div class="ui basic center aligned fitted segment">
+                        <img src="{path_for name="logo"}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.__get('pref_nom') }}" class="icon"/>
+                        <div class="ui large header">
+                            {{ preferences.__get('pref_nom') }}
+                            <div class="sub header">{if preferences.__get('pref_slogan')}{{ preferences.__get('pref_slogan') }}{/if}</div>
+                        </div>
+                    </div>
+{% endif %}
+                    <h1 class="ui block center aligned header" style="position: relative">
+                        {% block page_title %}{{ page_title }}{% endblock %}
+            {% if cur_route != 'mailing' and existing_mailing == true %}
+                        <a
+                            id="recup_mailing"
+                            href="{{ path_for("mailing") }}"
+                            class="ui basic tertiary secondary huge right floated button tooltip"
+                            title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
+                            data-position="bottom right"
+                        >
+                            <i class="mail bulk icon"></i>
+                            <span class="sr-only">{{ _T("Existing mailing") }}</span>
+                        </a>
+            {% endif %}
+                    </h1>
+                    {% include "elements/toasts.html.twig" %}
+                    {% block content %}{{ _T('Page content') }}{% endblock %}
+                    {% include "elements/footer.html.twig" %}
+                </section>
+            </div>
+        </div>
+        <a href="#" id="back2top" class="ui basic icon button">
+            <i class="arrow up icon"></i>
+            {{ _T("Back to top") }}
+        </a>
+        {% include "elements/scripts.html.twig" %}
+        {%  block javascripts %}{%  endblock %}
+    </body>
+</html>

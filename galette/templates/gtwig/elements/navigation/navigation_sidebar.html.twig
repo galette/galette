@@ -1,0 +1,35 @@
+    <div class="ui simple left vertical accordion menu sidebar">
+{% if not login.isLogged() %}
+    {% if cur_route != "login" %}
+        <a href="{{ path_for('slash') }}"
+           title="{{ _T("Go back to Galette homepage") }}"
+           class="{% if is_current_path("login") %}active {% endif %}item"
+        >
+            <i class="icon home" aria-hidden="true"></i>
+            {{ _T("Home") }}
+        </a>
+        {% endif %}
+
+        {% include "elements/navigation/public_pages.html.twig" with {
+                tips_position: "right center",
+                sign_in: true
+            }
+        %}
+
+        {% include "elements/language.html.twig" with {
+                ui: "item"
+            }
+        %}
+{% else %}
+        <div class="item">
+            {% include "elements/modes.html.twig" %}
+        </div>
+
+        {% include "elements/navigation/navigation_items.html.twig" %}
+
+        {% include "elements/logout.html.twig" with {
+                ui: "item"
+            }
+        %}
+{% endif %}
+    </div>

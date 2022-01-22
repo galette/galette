@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Error handler that overrides slim's one
+ * Error handler that overrides Slim's one
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-02-25
@@ -38,7 +38,7 @@ namespace Galette\Handlers;
 
 use Throwable;
 use Analog\Analog;
-use Slim\Views\Smarty;
+use Slim\Views\Twig;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -48,7 +48,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @name      GaletteError
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-02-25
@@ -60,10 +60,10 @@ trait GaletteError
     /**
      * Constructor
      *
-     * @param Smarty $view                View instance
-     * @param bool   $displayErrorDetails Set to true to display full details
+     * @param Twig $view                View instance
+     * @param bool $displayErrorDetails Set to true to display full details
      */
-    public function __construct(Smarty $view, $displayErrorDetails = false)
+    public function __construct(Twig $view, $displayErrorDetails = false)
     {
         $this->view = $view;
         $this->displayErrorDetails = (bool)$displayErrorDetails;

@@ -3,11 +3,11 @@
                 <nav class="ui horizontal bulleted link list">
                     <a href="https://galette.eu" class="item">
                         <i class="icon globe europe"></i>
-                        {_T string="Website"}
+                        {{ _T("Website") }}
                     </a>
                     <a href="https://doc.galette.eu" class="item">
                         <i class="icon book"></i>
-                       {_T string="Documentation"}
+                       {{ _T("Documentation") }}
                     </a>
                     <a href="https://twitter.com/galette_soft" class="item">
                         <i class="icon twitter"></i>
@@ -23,24 +23,24 @@
                 <nav class="ui horizontal bulleted link list">
                     <a id="copyright" href="https://galette.eu/" class="item">
                         <i class="icon cookie bite"></i>
-                        Galette {$smarty.const.GALETTE_DISPLAY_VERSION}
+                        Galette {{ constant('GALETTE_DISPLAY_VERSION') }}
                     </a>
-{if $login->isLogged() &&  ($login->isAdmin() or $login->isStaff())}
-                    <a id="sysinfos" href="{path_for name="sysinfos"}" class="item">
+{% if login.isLogged() and (login.isAdmin() or login.isStaff()) %}
+                    <a id="sysinfos" href="{{ path_for('sysinfos') }}" class="item">
                         <i class="icon cogs"></i>
-                        {_T string="System information"}
+                        {{ _T("System information") }}
                     </a>
-{/if}
+{% endif %}
                 </nav>
             </div>
-{* Display footer line, if it does exists *}
-{if $preferences->pref_footer neq ''}
+{# Display footer line, if it does exists #}
+{% if preferences.__get('pref_footer') != '' %}
             <div class="row">
                 <div class="ui padded grid">
                     <div class="ui sixteen wide column">
-                        {$preferences->pref_footer}
+                        {{ preferences.__get('pref_footer') }}
                     </div>
                 </div>
             </div>
-{/if}
+{% endif %}
         </footer>

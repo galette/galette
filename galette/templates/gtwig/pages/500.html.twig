@@ -1,0 +1,44 @@
+{% extends 'public_page.html.twig' %}
+
+{% macro render_ex(exception) %}
+    <div class="ui segment">
+        <h3>{{ _T("Details") }}</h3>
+        <p>
+            <strong>{{ _T("Type:") }}</strong>
+            {{ get_class(exception) }}
+        </p>
+        <p>
+            <strong>{{ _T("Code:") }}</strong>
+            {{ exception.getCode() }}
+        </p>
+        <p>
+            <strong>{{ _T("Message:") }}</strong>
+            {{ exception.getMessage() }}
+        </p>
+        <p>
+            <strong>{{ _T("File:") }}</strong>
+            {{ exception.getFile() }}
+        </p>
+        <p>
+            <strong>{{ _T("Line:") }}</strong>
+            {{ exception.getLine() }}
+        </p>
+    </div>
+    <div class="ui segment">
+        <h3>{{ _T("Trace") }}</h3>
+        <pre>{{ exception.getTraceAsString() }}</pre>
+    </div>
+    {% if exception.getPrevious() %}
+        {{ _self.render_ex(exception.getPrevious()) }}
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+    <div class="ui red message">
+        <h2 class="ui center aligned header">{{ _T("Application error") }}</h2>
+    </div>
+
+    {% if login.isLogged() and login.isAdmin() or constant('GALETTE_MODE') == 'DEV') %}
+        {{ _self.render_ex(exception) }}
+    {% endif %}
+{% endblock %}

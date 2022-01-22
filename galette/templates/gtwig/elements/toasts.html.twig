@@ -1,0 +1,68 @@
+{# Let's see if there are error messages to show #}
+{% set errors = flash.getMessage('error_detected') %}
+{% if error_detected is defined and error_detected is iterable %}
+    {% for e in error_detected %}
+        {% set errors = errors|merge([e]) %}
+    {% endfor %}
+{% endif %}
+{% if errors is iterable and errors|length > 0 %}
+    <div class="ui negative message">
+        <i class="close icon"></i>
+        <div class="header">{{ _T("- ERROR -") }}</div>
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+{# Let's see if there are warning messages to show #}
+{% set warnings = flash.getMessage('warning_detected') %}
+{% if warning_detected is defined and warning_detected is iterable %}
+    {% for w in warning_detected %}
+        {% set warnings = warnings|merge([w]) %}
+    {% endfor %}
+{% endif %}
+{% if warnings is iterable and warnings|length > 0 %}
+    <div class="ui negative message">
+        <i class="close icon"></i>
+        <div class="header">{{ _T("- WARNING -") }}</div>
+        <ul>
+            {% for warning in warnings %}
+                <li>{{ warning }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{# Let's see if there are success messages to show #}
+{% set successs = flash.getMessage('success_detected') %}
+{% if success_detected is defined and success_detected is iterable %}
+    {% for s in success_detected %}
+        {% set successs = successs|merge([s]) %}
+    {% endfor %}
+{% endif %}
+{% if successs is iterable and successs|length > 0 %}
+    <div class="ui negative message">
+        <i class="close icon"></i>
+        <ul>
+            {% for success in successs %}
+                <li>{{ success }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{# Renew telemetry #}
+{% if renew_telemetry is defined and renew_telemetry %}
+    {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
+    <div class="ui blue message" id="renewbox">
+        {{ _T("Your telemetry data are more than one year old.") }}<br/>
+        {{ _T("Do you want to send it again?") }}<br/>
+        <a href="#" id="telemetry">{{ _T("Yes") }}</a>
+        - <a href="#" id="norenew">{{ _T("No") }}</a>
+        - <a href="#" id="renewlater">{{ _T("Later") }}</a>
+    </div>
+{% endif %}

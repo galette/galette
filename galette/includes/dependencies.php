@@ -36,7 +36,6 @@
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Views\SmartyPlugins;
 
 $container = $app->getContainer();
 
@@ -64,72 +63,94 @@ $container->set('notFoundHandler', function ($c) {
 //TODO: old way - to drop
 $container->set(
     'view',
-    DI\get('Slim\Views\Smarty')
+    DI\get('Slim\Views\Twig')
 );
-$container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
-    $view = new \Slim\Views\Smarty(
-        GALETTE_TPL_THEME_DIR,
+
+$container->set('Slim\Views\Twig', function (ContainerInterface $c) {
+    $view = new \Slim\Views\Twig(
+        GALETTE_ROOT . 'templates/gtwig/', //GALETTE_TPL_THEME_DIR //FIXME
         [
-            'cacheDir' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
-            'compileDir' => rtrim(GALETTE_COMPILE_DIR, DIRECTORY_SEPARATOR),
-            'pluginsDir' => [
-                GALETTE_ROOT . 'includes/smarty_plugins'
-            ]
+            'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
+            'debug' => true //FIXME
         ]
     );
 
-    // Add Slim specific plugins
-    $basepath = str_replace(
-        'index.php',
-        '',
-        $c->get('request')->getUri()->getBasePath()
-    );
-    $smartyPlugins = new SmartyPlugins($c->get('router'), $basepath);
-    $view->registerPlugin('function', 'path_for', [$smartyPlugins, 'pathFor']);
-    $view->registerPlugin('function', 'base_url', [$smartyPlugins, 'baseUrl']);
+    $router = $c->get('router');
+    $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
 
-    $smarty = $view->getSmarty();
-    $smarty->inheritance_merge_compiled_includes = false;
+    //Twig extensions
+    $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+    $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
+    //End Twig extensions
 
-    $smarty->assign('flash', $c->get('flash'));
+    //Twig functions
+    $function = new \Twig\TwigFunction('__', function ($string) {
+        return __($string);
+    });
+    $view->getEnvironment()->addFunction($function);
 
-    $smarty->assign('login', $c->get('login'));
-    $smarty->assign('logo', $c->get('logo'));
-    $smarty->assign('tpl', $smarty);
-    $smarty->assign('headers', $c->get('plugins')->getTplHeaders());
-    $smarty->assign('plugin_actions', $c->get('plugins')->getTplAdhActions());
-    $smarty->assign(
+    $function = new \Twig\TwigFunction('_T', function ($string) {
+        return _T($string);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('file_exists', function ($file) {
+        return file_exists($file);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('get_class', function ($object) {
+        return get_class($object);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
+        extract($params);
+        return Galette\Entity\Adherent::getSName($c->get('zdb'), $id);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('statusLabel', function (...$params) {
+        extract($params);
+        global $statuses_list;
+        return $statuses_list[$id];
+    });
+    $view->getEnvironment()->addFunction($function);
+    //End Twig functions
+
+    //Twig globals
+    //$smarty->assign('flash', $c->get('flash'));
+    $view->getEnvironment()->addGlobal('login', $c->get('login'));
+    $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
+    //$smarty->assign('tpl', $smarty);
+    //$smarty->assign('headers', $c->get('plugins')->getTplHeaders());
+    //$smarty->assign('plugin_actions', $c->get('plugins')->getTplAdhActions());
+    /*$smarty->assign(
         'plugin_batch_actions',
         $c->get('plugins')->getTplAdhBatchActions()
-    );
-    $smarty->assign(
+    );*/
+    /*$smarty->assign(
         'plugin_detailled_actions',
         $c->get('plugins')->getTplAdhDetailledActions()
-    );
-    $smarty->assign('scripts_dir', 'js/');
-    $smarty->assign('jquery_dir', 'js/jquery/');
-    $smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
-    $smarty->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
-    $smarty->assign('galette_base_path', './');
-    $smarty->assign('GALETTE_VERSION', GALETTE_VERSION);
-    $smarty->assign('GALETTE_MODE', GALETTE_MODE);
-    $smarty->assign('_CURRENT_THEME_PATH', _CURRENT_THEME_PATH);
+    );*/
+    //$smarty->assign('scripts_dir', 'js/');
+    //$smarty->assign('jquery_dir', 'js/jquery/');
+    //$smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
+    //$smarty->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
+    //$smarty->assign('galette_base_path', './');
 
-    /*if ($this->parserConfigDir) {
-        $instance->setConfigDir($this->parserConfigDir);
-    }*/
-
-    $smarty->assign('template_subdir', GALETTE_THEME);
-    foreach ($c->get('plugins')->getTplAssignments() as $k => $v) {
+    //$smarty->assign('template_subdir', GALETTE_THEME);
+    /*foreach ($c->get('plugins')->getTplAssignments() as $k => $v) {
         $smarty->assign($k, $v);
-    }
-    /** galette_lang should be removed and languages used instead */
-    $smarty->assign('galette_lang', $c->get('i18n')->getAbbrev());
-    $smarty->assign('galette_lang_name', $c->get('i18n')->getName());
-    $smarty->assign('languages', $c->get('i18n')->getList());
-    $smarty->assign('i18n', $c->get('i18n'));
-    $smarty->assign('plugins', $c->get('plugins'));
-    $smarty->assign('preferences', $c->get('preferences'));
+    }*/
+    // galette_lang should be removed and languages used instead
+    $view->getEnvironment()->addGlobal('galette_lang', $c->get('i18n')->getAbbrev());
+    $view->getEnvironment()->addGlobal('galette_lang_name', $c->get('i18n')->getName());
+    $view->getEnvironment()->addGlobal('languages', $c->get('i18n')->getList());
+    $view->getEnvironment()->addGlobal('i18n', $c->get('i18n'));
+    //$smarty->assign('plugins', $c->get('plugins'));
+    $view->getEnvironment()->addGlobal('preferences', $c->get('preferences'));
+    /*
     $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);
     $smarty->assign('pref_theme', $c->get('preferences')->pref_theme);
     $smarty->assign('pref_statut', $c->get('preferences')->pref_statut);
@@ -163,6 +184,9 @@ $container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
             $module['route']
         );
     }
+    */
+    //End Twig globals
+
     return $view;
 });
 

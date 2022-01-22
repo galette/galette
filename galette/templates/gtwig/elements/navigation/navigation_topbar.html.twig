@@ -1,0 +1,24 @@
+<header id="top-navbar" class="ui large top fixed menu">
+    <div class="ui fluid container">
+        <a class="toc item">
+            <i class="sidebar icon"></i>
+        </a>
+        <div class="header item">
+            <img src="{{ path_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
+            <span>{{ preferences.__get('pref_nom') }}</span>
+        </div>
+
+        {% include "elements/navigation/public_pages.html.twig" with {
+                tips_position: "bottom center",
+                sign_in: true,
+                sign_in_side: 'right'
+            }
+        %}
+
+        {% include "elements/language.html.twig" with {
+                ui: "dropdown"
+            }
+        %}
+
+    </div>
+</header>

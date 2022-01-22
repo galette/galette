@@ -1,0 +1,20 @@
+{% if ui is defined %}
+    {% if ui == 'item' %}
+       {% set component_classes = "item" %}
+    {%  elseif ui == 'segment' %}
+       {% set component_classes = "ui segment" %}
+    {% endif %}
+{% endif %}
+
+<div class="{{ component_classes }}">
+    <div class="ui basic center aligned fitted segment">
+        <span class="ui tiny header">{{ login.loggedInAs()|raw }}</span>
+    </div>
+    <a
+        class="ui fluid red basic button"
+        href="{% if login.isImpersonated() %}{{ path_for("unimpersonate") }}{% else %}{{ path_for("logout") }}{% endif %}"
+    >
+        <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+        {{ _T("Log off") }}
+    </a>
+</div>
