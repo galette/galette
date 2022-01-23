@@ -25,6 +25,6 @@
 }
 <script type="text/javascript">
     $(function() {
-        {include file="js_pwdcheck.tpl" selector="{'#'}{$entry->field_id}"}
+        {% include "elements/js/pwdcheck.html.twig" with { selector: '#' ~ entry.field_id } %}
     });
 </script>

@@ -1,110 +1,111 @@
-{extends file="page.tpl"}
-{block name="content"}
+{% extends 'page.html.twig' %}
+
+{% block content %}
     <table class="listing ui celled table">
-        <!--<caption>{_T string="Active plugins"}</caption>-->
+        <!--<caption>{{ _T('Active plugins') }}</caption>-->
         <thead>
             <tr>
-                <th class="listing">{_T string="Name"}</th>
-                <th class="listing">{_T string="Description"}</th>
-                <th class="listing">{_T string="Author"}</th>
-                <th class="listing">{_T string="Version"}</th>
-                <th class="listing">{_T string="Release date"}</th>
+                <th class="listing">{{ _T('Name') }}</th>
+                <th class="listing">{{ _T('Description') }}</th>
+                <th class="listing">{{ _T('Author') }}</th>
+                <th class="listing">{{ _T('Version') }}</th>
+                <th class="listing">{{ _T('Release date') }}</th>
                 <th class="listing actions_row"></th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th colspan="6" class="center aligned"><strong>{_T string="Active plugins"}</strong></th>
+                <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
-{foreach from=$plugins_list key=name item=plugin name=allplugins}
-            <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
-                <td data-scope="row"><a href="{path_for name=$plugin.route|cat:"Info" data=["plugin" => $name]}">{$plugin.name} ({$name})</a></td>
-                <td data-title="{_T string="Description"}">{$plugin.desc}</td>
-                <td data-title="{_T string="Author"}">{$plugin.author}</td>
-                <td data-title="{_T string="Version"}">{$plugin.version}</td>
-                <td data-title="{_T string="Release date"}">{$plugin.date}</td>
+{% for name, plugin in plugins_list %}
+            <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
+                <td data-scope="row"><a href="{{ path_for(plugin.route ~ "Info", { "plugin": name }) }}">{{ plugin.name }} ({{ name }})</a></td>
+                <td data-title="{{ _T('Description') }}">{{ plugin.desc }}</td>
+                <td data-title="{{ _T('Author') }}">{{ plugin.author }}</td>
+                <td data-title="{{ _T('Version') }}">{{ plugin.version }}</td>
+                <td data-title="{{ _T('Release date') }}">{{ plugin.date }}</td>
                 <td class="actions_row">
                     <a
-                        href="{path_for name="pluginsActivation" data=["action" => "deactivate", "module_id" => $name]}"
+                        href="{{ path_for("pluginsActivation", { "action": "deactivate", "module_id": name }) }}"
                         class="toggleActivation tooltip use"
                     >
                         <i class="ui toggle on red icon"></i>
-                        <span class="sr-only">{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}</span>
+                        <span class="sr-only">{{ _T("Click here to deactivate plugin '%name'")|replace({ "%name": plugin.name}) }}</span>
                     </a>
-    {if $plugins->needsDatabase($name)}
+    {% if plugins.needsDatabase(name) %}
                     <a
-                        href="{path_for name="pluginInitDb" data=["id" => $name]}"
-                        id="initdb_{$name}"
+                        href="{{ path_for("pluginInitDb", { "id": name }) }}"
+                        id="initdb_{{ name }}"
                         class="initdb action tooltip"
                     >
                         <i class="ui database blue icon"></i>
-                        <span class="sr-only">{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}</span>
+                        <span class="sr-only">{{ _T("Initialize '%name' database")|replace({ "%name": plugin.name }) }}</span>
                     </a>
-    {else}
+    {% else %}
                     <i class="ui icon">&nbsp;</i>
-    {/if}
+    {% endif %}
                 </td>
             </tr>
-{foreachelse}
+{% else %}
             <tr>
-                <td colspan="6">{_T string="No active plugin."}</td>
+                <td colspan="6">{{ _T('No active plugin.') }}</td>
             </tr>
-{/foreach}
+{% endfor %}
             <tr>
-                <th colspan="6" class="center aligned"><strong>{_T string="Inactive plugins"}</strong></th>
+                <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
             <thead>
             <tr>
-                <th class="listing">{_T string="Name"}</th>
-                <th class="listing" colspan="4">{_T string="Cause"}</th>
+                <th class="listing">{{ _T('Name') }}</th>
+                <th class="listing" colspan="4">{{ _T('Cause') }}</th>
                 <th class="listing actions_row"></th>
             </tr>
             </thead>
-{foreach from=$plugins_disabled_list key=name item=plugin}
+{% for name, plugin in plugins_disabled_list %}
             <tr>
-                <td data-scope="row">{$name}</td>
-                <td data-title="{_T string="Cause"}" colspan="4">
-                    {if $plugin.cause eq constant('Galette\Core\Plugins::DISABLED_MISS')}
-                        {_T string="A required file is missing"}
-                    {elseif $plugin.cause eq constant('Galette\Core\Plugins::DISABLED_COMPAT')}
-                        {_T string="Incompatible with current version"}
-                    {elseif $plugin.cause eq constant('Galette\Core\Plugins::DISABLED_EXPLICIT')}
-                        {_T string="Explicitely disabled"}
-                    {else}
-                        {_T string="Unknown"}
-                    {/if}
+                <td data-scope="row">{{ name }}</td>
+                <td data-title="{{ _T('Cause') }}" colspan="4">
+                    {% if plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_MISS') %}
+                        {{ _T('A required file is missing') }}
+                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}
+                        {{ _T('Incompatible with current version') }}
+                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_EXPLICIT') %}
+                        {{ _T('Explicitely disabled') }}
+                    {% else %}
+                        {{ _T('Unknown') }}
+                    {% endif %}
                 </td>
                 <td class="actions_row">
                     <a
-                        href="{path_for name="pluginsActivation" data=["action" => "activate", "module_id" => $name]}"
+                        href="{{ path_for("pluginsActivation", { "action": "activate", "module_id": name }) }}"
                         class="toggleActivation tooltip delete"
                     >
                         <i class="ui toggle on grey icon"></i>
-                        <span class="sr-only">{_T string="Activate plugin '%name'" pattern="/%name/" replace=$name}</span>
+                        <span class="sr-only">{{ _T("Activate plugin '%name'")|replace({ "%name": name}) }}</span>
                     </a>
                     <i class="ui icon">&nbsp;</i>
                 </td>
             </tr>
-{foreachelse}
+{% else %}
             <tr>
-                <td colspan="5">{_T string="No inactive plugin."}</td>
+                <td colspan="5">{{ _T('No inactive plugin.') }}</td>
             </tr>
-{/foreach}
+{% endfor %}
         </tbody>
     </table>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
     <script type="text/javascript">
         $(function() {
-    {if $GALETTE_MODE eq 'DEMO'}
+    {% if constant('GALETTE_MODE') == 'DEMO' %}
             $('.initdb, a.toggleActivation').click(function(){
-                alert('{_T string="Application runs under demo mode. This functionnality is not enabled, sorry." escape="js"}');
+                alert('{{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.")|e('js') }}');
                 return false;
             });
-    {else}
+    {% else %}
             var _initdb_dialog = function(res, _plugin){
-                var _title = '{_T string="Plugin database initialization: %name" escape="js"}';
+                var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
                 var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
                 _el.appendTo('body').dialog({
                     modal: true,
@@ -146,12 +147,12 @@
                         url: _url,
                         type: "POST",
                         data: _dataString,
-                        {include file="js_loader.tpl"},
+                        {% include "elements/js/loader.js.twig" %},
                         success: function(res){
                             _initdb_bindings(res);
                         },
                         error: function() {
-                            alert("{_T string="An error occurred displaying plugin database initialization interface :(" escape="js"}");
+                            alert("{{ _T("An error occurred displaying plugin database initialization interface :(")|e('js') }}");
                         }
                     });
                 });
@@ -164,17 +165,17 @@
                 $.ajax({
                     url: _url,
                     type: "GET",
-                    {include file="js_loader.tpl"},
+                    {% include "elements/js/loader.js.twig" %},
                     success: function(res){
                         _initdb_dialog(res, _plugin);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred displaying plugin database initialization interface :(" escape="js"}");
+                        alert("{{ _T("An error occurred displaying plugin database initialization interface :(")|e('js') }}");
                     }
                 });
                 return false;
             })
-    {/if}
+    {% endif %}
         });
     </script>
-{/block}
+{% endblock %}

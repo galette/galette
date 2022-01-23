@@ -14,7 +14,7 @@
                             $.ajax({
                                 url:  '{{ path_for('telemetrySend') }}',
                                 method: 'POST',
-                                {include file="js_loader.tpl"},
+                                {% include "elements/js/loader.js.twig" %},
                                 success: function(data) {
                                     if (data.success) {
                                         $('#telemetry_panel').dialog('close');

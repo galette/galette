@@ -1,0 +1,48 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ name }} <tt>{{ version }} - {{ date }}</tt>
+        <br/><span class="author">
+            {{ _T("By %name")|replace({ "%name": author }) }}
+        </span>
+    </h2>
+    {% if module is defined %}
+    <dl>
+        <dt><strong>{{ _T('Name:') }}</strong></dt>
+        <dd>{{ module.name }}</dd>
+        <dt><strong>{{ _T('Description:') }}</strong></dt>
+        <dd>{{ module.desc }}</dd>
+        <dt><strong>{{ _T('Version:') }}</strong></dt>
+        <dd>{{ module.version }}</dd>
+        <dt><strong>{{ _T('Date:') }}</strong></dt>
+        <dd>{{ module.date }}</dd>
+        <dt><strong>{{ _T('Author:') }}</strong></dt>
+        <dd>{{ module.author }}</dd>
+        <dt><strong>{{ _T('Path:') }}</strong></dt>
+        <dd>{{ module.root }}</dd>
+        <dt><strong>{{ _T('Main route:') }}</strong></dt>
+        <dd>{{ module.route }}</dd>
+        <dt><strong>{{ _T('ACLs') }}</strong>
+        <dd>
+            <table>
+                <thead>
+                    <th>{{ _T('Route') }}</th>
+                    <th>{{ _T('ACL') }}</th>
+                </thead>
+       {% for route, acl in module.acls %}
+                <tr>
+                    <td><tt>{{ route }}</tt></td>
+                    <td><tt>{{ acl }}</tt></td>
+                </tr>
+        {% else %}
+                <td colspan="2"><strong>{{ _T('No ACLs!') }}</strong></td>
+        {% endfor %}
+            </table>
+        </dd>
+    </dl>
+
+    <h3>{{ _T('Raw information') }}</h3>
+    <pre>{{ module|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    {% endif %}
+{% endblock %}

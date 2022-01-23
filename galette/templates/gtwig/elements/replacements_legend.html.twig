@@ -1,39 +1,39 @@
-<div id="legende{$cur_ref}" class="texts_legend ui modal" title="{_T string="Existing variables"}">
-    <div class="header">{_T string="Existing variables"}</div>
+<div id="legende{{ cur_ref }}" class="texts_legend ui modal" title="{{ _T("Existing variables") }}">
+    <div class="header">{{ _T('Existing variables') }}</div>
     <div class="content">
         <table class="ui very basic table">
-    {foreach from=$legends item=legend}
+    {% for legend in legends %}
         <tr>
             <th colspan="4">
-                {$legend.title}
+                {{ legend.title }}
             </th>
         </tr>
-        {foreach from=$legend.patterns item=pattern name=patternloop}
-            {if $smarty.foreach.patternloop.index % 2 == 0}
+        {% for pattern in legend.patterns %}
+            {% if loop.index0 % 2 == 0 %}
                 <tr>
-            {/if}
-            <th><tt>{$pattern.pattern|trim:'/'}</tt></th>
+            {% endif %}
+            <th><tt>{{ pattern.pattern|trim('/') }}</tt></th>
             <td class="back">
-                {if isset($pattern.title)}{$pattern.title}{/if}
+                {% if pattern.title is defined %}{{ pattern.title }}{% endif %}
             </td>
-            {if $smarty.foreach.patternloop.index % 2 != 0}
+            {% if loop.index0 % 2 != 0 %}
                 </tr>
-            {/if}
-        {/foreach}
-    {/foreach}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
         </table>
     </div>
-    <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {_T string="Close"}</div></div>
+    <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T('Close') }}</div></div>
 </div>
 <script type="text/javascript">
 
     var _addLegenButton = function(selector) {
-        $(selector).append('<a id="btnlegend" class="ui tooltip" data-html="{_T string="Show existing variables" escape="js"}"><i class="circular inverted primary link icon info"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
+        $(selector).append('<a id="btnlegend" class="ui tooltip" data-html="{{ _T("Show existing variables")|e('js') }}"><i class="circular inverted primary link icon info"></i> <span class="sr-only">{{ _T("Show existing variables")|e('js') }}</span></a>');
     };
 
     var _handleLegend = function(selector) {
         if (typeof selector == 'undefined') {
-            selector = '{$cur_ref}';
+            selector = '{{ cur_ref }}';
         }
         $('#legende' + selector + ' h1').remove();
         $('#legende' + selector).dialog({

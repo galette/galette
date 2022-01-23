@@ -332,7 +332,7 @@
                     <div class="{% if required.pref_email is defined and required.pref_email == 1 %}required {% endif %}field">
                         <label for="pref_email">{{ _T("Sender Email:") }}</label>
         {% set pref_email = preferences.vpref_email|join(',') %}
-                        <input type="text" name="pref_email" id="pref_email" value="{pref_email}" maxlength="100" size="30"{% if required.pref_email is defined and required.pref_email == 1 %} required="required"{% endif %}/>
+                        <input type="text" name="pref_email" id="pref_email" value="{{ pref_email }}" maxlength="100" size="30"{% if required.pref_email is defined and required.pref_email == 1 %} required="required"{% endif %}/>
                         <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
                     <div class="field">
@@ -351,7 +351,7 @@
                             <div class="ui corner label">
                                 <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Recipient of new online registation and edition emails") }}"></i>
                             </div>
-                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{pref_email_newadh}" maxlength="100" size="30"{% if required.pref_email_newadh is defined and required.pref_email_newadh == 1 %} required="required"{% endif %}/>
+                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref_email_newadh }}" maxlength="100" size="30"{% if required.pref_email_newadh is defined and required.pref_email_newadh == 1 %} required="required"{% endif %}/>
                         </div>
                         <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
@@ -546,9 +546,9 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required="required"{% endif %}/>
                             <a
-                                href="{path_for name="dynamicTranslations" data=["text_orig" => {{ pref.pref_card_abrev|escape }}]}"
+                                href="{{ path_for("dynamicTranslations", { "text_orig": pref.pref_card_abrev|escape }) }}"
                                 class="ui icon button tooltip"
-                                data-html="{_T string="Translate '%s'" pattern="/%s/" replace=pref.pref_card_abrev}"
+                                data-html="{{ _T("Translate '%s'")|replace({ "%s": pref.pref_card_abrev}) }}"
                             >
                                 <i class="language icon"></i>
                             </a>
@@ -560,9 +560,9 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %} required="required"{% endif %}/>
                             <a
-                                href="{path_for name="dynamicTranslations" data=["text_orig" => {{ pref.pref_card_strip|escape }}]}"
+                                href="{{ path_for("dynamicTranslations", { "text_orig": pref.pref_card_strip|escape }) }}"
                                 class="ui icon button tooltip"
-                                data-html="{_T string="Translate '%s'" pattern="/%s/" replace=pref.pref_card_strip}"
+                                data-html="{{ _T("Translate '%s'")|replace({ "%s": pref.pref_card_strip}) }}"
                             >
                                 <i class="language icon"></i>
                             </a>
@@ -750,7 +750,7 @@
         </form>
 
         {% include "modals/telemetry.html.twig" with { part: "dialog" } %}
-        {include file="replacements_legend.tpl" legends=preferences.getLegend() cur_ref='prefs'}
+        {% include "elements/replacements_legend.html.twig" with { legends: preferences.getLegend(), cur_ref: 'prefs' } %}
 {% endblock %}
 
 {% block javascripts %}
@@ -806,7 +806,7 @@
                                     data: {
                                         adress: $('#email_adress').val()
                                     },
-                                    {include file="js_loader.tpl"},
+                                    {% include "elements/js/loader.js.twig" %},
                                     success: function(res) {
                                         console.log(res);
                                         //display message
@@ -830,8 +830,12 @@
                 _addLegenButton('#mail_sign');
                 _handleLegend();
 
-                {include file="js_pwdcheck.tpl" selector="#pref_admin_pass"}
-                {include file="js_pwdcheck.tpl" selector="#test_password_strength" extra_data="pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"}
+                {% include "elements/js/pwdcheck.html.twig" with { selector: "#pref_admin_pass" } %}
+                {% include "elements/js/pwdcheck.html.twig" with {
+                        selector: "#test_password_strength",
+                        extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
+                    }
+                %}
 
                 {% include "modals/telemetry.html.twig" with { part: "jsdialog"} %}
                 {% include "modals/telemetry.html.twig" with { part: "jsregister"} %}

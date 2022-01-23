@@ -101,7 +101,7 @@ $app->group(
                             // display page
                             $this->get('view')->render(
                                 $response,
-                                'plugin_info.tpl',
+                                'pages/plugin_info.html.twig',
                                 $params
                             );
                             return $response;

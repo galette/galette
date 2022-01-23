@@ -1,29 +1,29 @@
 <div class="ui bottom attached tab segment" data-tab="social">
-    {foreach item=social from=$socials}
+    {% for social in socials %}
         <div class="field">
-            <label for="social_{$social->id}">{$social->getSystemType($social->type)}</label>
+            <label for="social_{$social->id}">{{ social.getSystemType(social.type) }}</label>
             <span>
-                <input type="text" name="social_{$social->id}" id="social_{$social->id}" value="{$social->url}" class="large"/>
+                <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
                 <a href="#" class="fright tooltip delete delsocial">
                     <i class="fas fa-trash-alt"></i>
-                    <span class="sr-only">{_T string="Remove %type" pattern="/%type/" replace=$social->getSystemType($social->type)}</span>
+                    <span class="sr-only">{{ _T("Remove %type")|replace({ "%type": social.getSystemType(social.type)}) }}</span>
                 </a>
             </span>
         </div>
-    {/foreach}
+    {% endfor %}
     <div class="field">
-        <span>{_T string="Add new social network"}</span>
+        <span>{{ _T("Add new social network") }}</span>
         <span>
             <select name="social_new_type_1" id="social_new_type_1" class="nochosen socials_selector">
-                <option value="">{_T string="Choose or enter your own..."}</option>
-    {foreach item=social_type from=$osocials->getSystemTypes(false)}
-                <option value="{$social_type}">{$osocials->getSystemType($social_type)}</option>
-    {/foreach}
+                <option value="">{{ _T("Choose or enter your own...") }}</option>
+    {% for social_type in osocials.getSystemTypes(false) %}
+                <option value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</option>
+    {% endfor %}
             </select>
             <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50"/>
             <a href="#" class="fright tooltip action addsocial">
                 <i class="fas fa-plus-square"></i>
-                <span class="sr-only">{_T string="Add"}</span>
+                <span class="sr-only">{{ _T("Add") }}</span>
             </a>
         </span>
         <script type="text/javascript">
