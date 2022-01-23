@@ -317,6 +317,25 @@ abstract class Authentication
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return false|object the called property
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
+        if (isset($this->$name) && !in_array($name, $forbidden)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
      * get user access level
      *
      * @return integer

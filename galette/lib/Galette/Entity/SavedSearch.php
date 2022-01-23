@@ -305,6 +305,33 @@ class SavedSearch
     }
 
     /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function __isset($name)
+    {
+        $forbidden = [];
+        $virtuals = ['sparameters'];
+        if (
+            in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$name)
+        ) {
+            switch ($name) {
+                case 'creation_date':
+                case 'sparameters':
+                    return true;
+                default:
+                    return property_exists($this, $name);
+            }
+        }
+    }
+
+    /**
      * Setter
      *
      * @param string $name  Property name

@@ -571,6 +571,41 @@ class Mailing extends GaletteMail
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('ordered');
+        if (!in_array($name, $forbidden)) {
+            switch ($name) {
+                case 'alt_message':
+                case 'step':
+                case 'subject':
+                case 'message':
+                case 'wrapped_message':
+                case 'html':
+                case 'mail':
+                case '_mail':
+                case 'errors':
+                case 'recipients':
+                case 'tmp_path':
+                case 'attachments':
+                case 'sender_name':
+                case 'sender_address':
+                    return true;
+            }
+            return isset($this->$name);
+        }
+
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to

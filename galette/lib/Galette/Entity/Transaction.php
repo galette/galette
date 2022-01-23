@@ -644,6 +644,26 @@ class Transaction
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
+    public function __isset($name)
+    {
+        $forbidden = array();
+
+        $rname = '_' . $name;
+        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get field label
      *
      * @param string $field Field name

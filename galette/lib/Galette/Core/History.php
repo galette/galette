@@ -440,6 +440,22 @@ class History
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
+    public function __isset($name)
+    {
+        if ($name == 'fdate' || isset($this->$name)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to

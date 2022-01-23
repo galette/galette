@@ -353,6 +353,25 @@ class Reminder
     }
 
     /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'member_id':
+            case 'type':
+            case 'date':
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * Setter
      *
      * @param string $name  Property name

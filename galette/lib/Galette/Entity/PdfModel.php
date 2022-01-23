@@ -389,6 +389,42 @@ abstract class PdfModel
     }
 
     /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function __isset($name)
+    {
+        global $lang;
+
+        switch ($name) {
+            case 'id':
+            case 'name':
+            case 'header':
+            case 'footer':
+            case 'body':
+            case 'title':
+            case 'subtitle':
+            case 'type':
+            case 'styles':
+            case 'patterns':
+            case 'replaces':
+            case 'hstyles':
+            case 'hheader':
+            case 'hfooter':
+            case 'htitle':
+            case 'hsubtitle':
+            case 'hbody':
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Setter
      *
      * @param string $name  Property name

@@ -258,6 +258,30 @@ class Title
     }
 
     /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function __isset($name)
+    {
+        global $lang;
+
+        switch ($name) {
+            case 'id':
+            case 'short':
+            case 'long':
+            case 'tshort':
+            case 'tlong':
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Setter
      *
      * @param string $name  Property name

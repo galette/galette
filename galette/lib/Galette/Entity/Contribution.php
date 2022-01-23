@@ -1257,6 +1257,39 @@ class Contribution
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return false|object the called property
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('is_cotis');
+        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date',
+            'raw_begin_date', 'raw_end_date'
+        );
+
+        $rname = '_' . $name;
+
+        if (in_array($name, $forbidden)) {
+            switch ($name) {
+                case 'is_cotis':
+                    return true;
+            }
+        } elseif (
+            property_exists($this, $rname)
+            || in_array($name, $virtuals)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to

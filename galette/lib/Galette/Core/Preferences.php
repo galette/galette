@@ -959,7 +959,7 @@ class Preferences
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return false|object the called property
      */
@@ -999,6 +999,34 @@ class Preferences
             return explode(',', $this->prefs[$virtual]);
         } elseif ($name === 'socials') {
             return $this->socials;
+        } else {
+            Analog::log(
+                'Preference `' . $name . '` is not set or is forbidden',
+                Analog::INFO
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('defaults');
+        $virtuals = array('vpref_email_newadh');
+
+        if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
+            return true;
+        } elseif (in_array($name, $virtuals)) {
+            return true;
+        } elseif ($name === 'socials') {
+            return true;
         } else {
             Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',

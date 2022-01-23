@@ -660,6 +660,29 @@ abstract class Entitled
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
+    public function __isset($name)
+    {
+        $forbidden = array();
+        $virtuals = array('extension', 'libelle');
+        if (
+            in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$name)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get errors
      *
      * @return array

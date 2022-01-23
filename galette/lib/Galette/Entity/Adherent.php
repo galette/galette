@@ -1826,6 +1826,84 @@ class Adherent
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return mixed
+     */
+    public function __isset(string $name)
+    {
+        $forbidden = array(
+            'admin', 'staff', 'due_free', 'appears_in_list', 'active',
+            'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
+        );
+        if (!defined('GALETTE_TESTS')) {
+            $forbidden[] = 'password'; //keep that for tests only
+        }
+
+        $virtuals = array(
+            'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
+            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
+            'rbirthdate', 'sgender', 'contribstatus',
+        );
+
+        $socials = array('website', 'msn', 'jabber', 'icq');
+
+        if (in_array($name, $forbidden)) {
+            Analog::log(
+                'Calling property "' . $name . '" directly is discouraged.',
+                Analog::WARNING
+            );
+            switch ($name) {
+                case 'admin':
+                case 'staff':
+                case 'due_free':
+                case 'appears_in_list':
+                case 'active':
+                case 'duplicate':
+                case 'groups':
+                case 'managed_groups':
+                    return true;
+            }
+
+            return false;
+        }
+
+        if (in_array($name, $virtuals)) {
+            return true;
+        }
+
+        //for backward compatibility
+        if (in_array($name, $socials)) {
+            return true;
+        }
+
+        if (substr($name, 0, 1) !== '_') {
+            $rname = '_' . $name;
+        } else {
+            $rname = $name;
+        }
+
+        switch ($name) {
+            case 'id':
+            case 'id_statut':
+            case 'address':
+            case 'birthdate':
+            case 'creation_date':
+            case 'modification_date':
+            case 'due_date':
+            case 'parent_id':
+                return true;
+            default:
+                return property_exists($this, $rname);
+        }
+
+        return false;
+    }
+
+    /**
      * Get member email
      * If member does not have an email address, but is attached to
      * another member, we'll take information from its parent.

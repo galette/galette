@@ -157,6 +157,25 @@ class MembersList extends Pagination
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return object the called property
+     */
+    public function __isset($name)
+    {
+        if (in_array($name, $this->pagination_fields)) {
+            return true;
+        } elseif (in_array($name, $this->memberslist_fields)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to

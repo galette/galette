@@ -390,6 +390,32 @@ class AdvancedMembersList extends MembersList
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return object the called property
+     */
+    public function __isset($name)
+    {
+        if (
+            in_array($name, $this->pagination_fields)
+            || in_array($name, $this->memberslist_fields)
+        ) {
+            return true;
+        } else {
+            if (
+                in_array($name, $this->advancedmemberslist_fields)
+                || in_array($name, $this->virtuals_advancedmemberslist_fields)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to

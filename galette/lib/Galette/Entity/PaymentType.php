@@ -216,8 +216,6 @@ class PaymentType
      */
     public function __get($name)
     {
-        global $lang;
-
         switch ($name) {
             case 'id':
             case 'name':
@@ -230,6 +228,25 @@ class PaymentType
                 );
                 break;
         }
+    }
+
+    /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'id':
+            case 'name':
+                return true;
+        }
+
+        return false;
     }
 
     /**

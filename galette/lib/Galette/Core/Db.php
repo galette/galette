@@ -831,6 +831,28 @@ class Db
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the variable we want to retrieve
+     *
+     * @return mixed
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'db':
+            case 'sql':
+            case 'driver':
+            case 'connection':
+            case 'platform':
+            case 'query_string':
+            case 'type_db':
+                return true;
+        }
+    }
+
+    /**
      * Get database information
      *
      * @return array

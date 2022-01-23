@@ -275,6 +275,19 @@ class Social
     }
 
     /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function __isset(string $name)
+    {
+        return property_exists($this, $name);
+    }
+
+    /**
      * Display URL the best way
      *
      * @return string
