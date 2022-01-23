@@ -36,7 +36,7 @@
                     class="{% if is_current_path("me") or cur_route == "member" %}active {% endif %}item"
                     title="{{ _T("View my member card") }}"
                 >{{ _T("My information") }}</a>
-    {% if preferences.__get('pref_bool_create_member') and not login.isSuperAdmin() %}
+    {% if preferences.pref_bool_create_member and not login.isSuperAdmin() %}
                 <a
                     href="{{ path_for('addMemberChild') }}"
                     class="{% if is_current_path("addMemberChild") %}active {% endif %}item"
@@ -63,7 +63,7 @@
                     <a href="{{ path_for('advanced-search') }}" class="{% if is_current_path('advanced-search') %}active {% endif %}item" title="{{ _T("Perform advanced search into members list") }}">{{ _T("Advanced search") }}</a>
                     <a href="{{ path_for('searches') }}" class="{% if is_current_path('searches') %}active {% endif %}item" title="{{ _T("Saved searches") }}">{{ _T("Saved searches") }}</a>
                 {% endif %}
-                {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.__get('pref_bool_groupsmanagers_create_member')) %}
+                {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_member) %}
                     <a href="{{ path_for('addMember') }}" class="{% if cur_route == "editMember" or cur_route == "addMember" %}active {% endif %}item" title="{{ _T("Add new member in database") }}">{{ _T("Add a member") }}</a>
                 {% endif %}
             </div>

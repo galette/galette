@@ -34,11 +34,11 @@
                 </nav>
             </div>
 {# Display footer line, if it does exists #}
-{% if preferences.__get('pref_footer') != '' %}
+{% if preferences.pref_footer != '' %}
             <div class="row">
                 <div class="ui padded grid">
                     <div class="ui sixteen wide column">
-                        {{ preferences.__get('pref_footer') }}
+                        {{ preferences.pref_footer }}
                     </div>
                 </div>
             </div>

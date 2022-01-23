@@ -59,7 +59,7 @@ $container->set('notFoundHandler', function ($c) {
 // Service providers
 // -----------------------------------------------------------------------------
 
-// Register Smarty View helper
+// Register View helper
 //TODO: old way - to drop
 $container->set(
     'view',

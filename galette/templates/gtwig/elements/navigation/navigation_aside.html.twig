@@ -1,9 +1,9 @@
 <aside class="ui computer only toc">
     <div class="ui basic center aligned segment">
-        <img src="{{ path_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.__get('pref_nom') }}" class="icon"/>
+        <img src="{{ path_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
         <div class="ui block huge brand header">
-            {{ preferences.__get('pref_nom') }}
-            {% if preferences.__get('pref_slogan') %}<div class="sub tiny header">{{ preferences.__get('pref_slogan') }}</div>{% endif %}
+            {{ preferences.pref_nom }}
+            {% if preferences.pref_slogan %}<div class="sub tiny header">{{ preferences.pref_slogan }}</div>{% endif %}
         </div>
     </div>
 

@@ -26,10 +26,10 @@
 {% endif %}
 {% if not login.isLogged() %}
                     <div class="ui basic center aligned fitted segment">
-                        <img src="{{ path_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.__get('pref_nom') }}" class="icon"/>
+                        <img src="{{ path_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
                         <div class="ui block huge brand header">
-                            {{ preferences.__get('pref_nom') }}
-                            <div class="sub header">{%  if preferences.__get('pref_slogan') %}{{ preferences.__get('pref_slogan') }}{% endif %}</div>
+                            {{ preferences.pref_nom }}
+                            <div class="sub header">{%  if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
                         </div>
                     </div>
 {% endif %}

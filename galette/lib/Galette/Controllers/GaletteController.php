@@ -103,7 +103,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'sysinfos.tpl',
+            'pages/sysinfos.html.twig',
             array(
                 'page_title'    => _T("System information"),
                 'rawinfos'      => $raw_infos
@@ -236,7 +236,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'preferences.tpl',
+            'pages/preferences.html.twig',
             array(
                 'page_title'            => _T("Settings"),
                 'staff_members'         => $m->getStaffMembersList(true),

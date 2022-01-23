@@ -23,7 +23,7 @@
 
 {% if sign_in is defined and sign_in == true %}
     <div class="{if isset($sign_in_side)}right {/if}item">
-    {% if preferences.__get('pref_bool_selfsubscribe') == true and not cur_route == "subscribe" %}
+    {% if preferences.pref_bool_selfsubscribe == true and not cur_route == "subscribe" %}
         <a
             href="{{ path_for("subscribe") }}"
             class="ui basic button"

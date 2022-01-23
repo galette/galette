@@ -5,7 +5,7 @@
         </a>
         <div class="header item">
             <img src="{{ path_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
-            <span>{{ preferences.__get('pref_nom') }}</span>
+            <span>{{ preferences.pref_nom }}</span>
         </div>
 
         {% include "elements/navigation/public_pages.html.twig" with {
