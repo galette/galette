@@ -146,6 +146,7 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_mailings
  * @property boolean $pref_bool_groupsmanagers_exports
  * @property-read string $vpref_email_newadh Comma separated list of mail senders
+ * @property-read string $vpref_email Comma separated list of mail senders
  */
 class Preferences
 {
@@ -966,7 +967,7 @@ class Preferences
     public function __get($name)
     {
         $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $virtuals = array('vpref_email', 'vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
@@ -987,7 +988,7 @@ class Preferences
                     }
                 }
 
-                if (in_array($name, ['pref_email_newadh'])) {
+                if (in_array($name, ['vpref_email', 'pref_email_newadh'])) {
                     $values = explode(',', $value);
                     $value = $values[0]; //take first as default
                 }
@@ -1019,7 +1020,7 @@ class Preferences
     public function __isset($name)
     {
         $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $virtuals = array('vpref_email', 'vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             return true;

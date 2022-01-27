@@ -1,0 +1,11 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block component %}
+    {% set type = "hidden" %}
+    {% set notag = true %}
+    {% set title = "" %}
+    {% set required = "" %}
+    {% set disabled = "" %}
+    {{ parent() }}
+{% endblock %}
+{% block label %}{% endblock %}

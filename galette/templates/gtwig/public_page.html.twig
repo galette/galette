@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}" class="public_page{% if additionnal_html_class %} {{ additionnal_html_class }}{% endif %}">
+<html lang="{{ galette_lang }}" class="public_page{% if additionnal_html_class is defined %} {{ additionnal_html_class }}{% endif %}">
     <head>
         {% include 'elements/header.html.twig' %}
     </head>

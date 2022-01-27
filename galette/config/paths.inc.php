@@ -122,5 +122,5 @@ if (!defined('GALETTE_TELEMETRY_URI')) {
 }
 
 if (!defined('GALETTE_TPL_THEME_DIR')) {
-    define('GALETTE_TPL_THEME_DIR', GALETTE_ROOT . 'templates/default/');
+    define('GALETTE_TPL_THEME_DIR', GALETTE_ROOT . 'templates/gtwig/'/*'templates/default/'*/);
 }

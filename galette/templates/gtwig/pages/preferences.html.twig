@@ -48,7 +48,7 @@
                         <img src="{{ path_for('logo') }}" class="picture" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ _T("Current logo") }}"/><br/>
                         <label for="del_logo">{{ _T("Delete image") }}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
         {% endif %}
-                        <input type="file" name="logo" id="logo_picture"{% if GALETTE_MODE == 'DEMO' %} disabled="disabled"{% endif %}/>
+                        <input type="file" name="logo" id="logo_picture"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
                     </div>
                 </div>
             </div>
@@ -238,7 +238,7 @@
                         <label for="pref_galette_url" class="tooltip">{{ _T("Galette base URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({ "%galette_url": preferences.getDefaultURL() }) }}"></i> {# |cat:{path_for name="preferences")#}
+                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({ "%galette_url": preferences.getDefaultURL() ~ path_for('preferences') }) }}"></i>
                             </div>
                             <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"{% if required.pref_galette_url is defined and required.pref_galette_url == 1 %} required="required"{% endif %}/>
                         </div>
@@ -320,7 +320,7 @@
         <div class="ui tab segment" data-tab="mail">
             <div class="ui stackable two column grid">
                 <div class="column">
-    {% if constant('GALETTE_MODE') == 'DEMO' %}
+    {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
                     <div class="ui negative message">
                         <p>{{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}</p>
                     </div>
@@ -351,7 +351,7 @@
                             <div class="ui corner label">
                                 <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Recipient of new online registation and edition emails") }}"></i>
                             </div>
-                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref_email_newadh }}" maxlength="100" size="30"{% if required.pref_email_newadh is defined and required.pref_email_newadh == 1 %} required="required"{% endif %}/>
+                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref.pref_email_newadh }}" maxlength="100" size="30"{% if required.pref_email_newadh is defined and required.pref_email_newadh == 1 %} required="required"{% endif %}/>
                         </div>
                         <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
@@ -597,7 +597,7 @@
                         <img src="{{ path_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
                         <label for="del_card_logo">{{ _T("Delete image") }}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
     {% endif %}
-                        <input type="file" name="card_logo" id="card_logo"{% if GALETTE_MODE == 'DEMO' %} disabled="disabled"{% endif %}/>
+                        <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
                     </div>
                 </div>{# /column #}
                 <div class="column">
@@ -715,7 +715,7 @@
 {% endif %}
 {% if login.isSuperAdmin() %}
         <div class="ui tab red inverted segment" data-tab="admin">
-    {% if GALETTE_MODE == 'DEMO' %}
+    {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
                 <div class="ui negative message">
                     {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
                 </div>
@@ -830,8 +830,8 @@
                 _addLegenButton('#mail_sign');
                 _handleLegend();
 
-                {% include "elements/js/pwdcheck.html.twig" with { selector: "#pref_admin_pass" } %}
-                {% include "elements/js/pwdcheck.html.twig" with {
+                {% include "elements/js/pwdcheck.js.twig" with { selector: "#pref_admin_pass" } %}
+                {% include "elements/js/pwdcheck.js.twig" with {
                         selector: "#test_password_strength",
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
                     }

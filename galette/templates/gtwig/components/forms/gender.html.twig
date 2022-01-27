@@ -1,0 +1,31 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block component %}
+    <div class="grouped fields">
+        {% block label %}
+            <label>
+            {% if masschange %}
+                {# Add a checkbox for fields to change on mass edition #}
+                {# FIXME: use SUI capacitie to display that well #}
+                <input type="checkbox" name="mass_{{ entry.field_id }}" class="mass_checkbox"/>
+            {% endif %}
+                {{ label }}
+            </label>
+        {% endblock %}
+
+        {% block element %}
+        <div class="field inline">
+            <input type="radio" name="sexe_adh" id="gender_nc" value="{{ constant("Galette\\Entity\\Adherent::NC") }}"{% if not member.isMan() and not member.isWoman() %} checked="checked"{% endif %}{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}/>
+            <label for="gender_nc">{{ _T("Unspecified") }}</label>
+        </div>
+        <div class="field inline">
+            <input type="radio" name="sexe_adh" id="gender_man" value="{{ constant("Galette\\Entity\\Adherent::MAN") }}"{% if member.isMan() %} checked="checked"{% endif %}{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}/>
+            <label for="gender_man">{{ _T("Man") }}</label>
+        </div>
+        <div class="field inline">
+            <input type="radio" name="sexe_adh" id="gender_woman" value="{{ constant("Galette\\Entity\\Adherent::WOMAN") }}"{% if member.isWoman() %} checked="checked"{% endif %}{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}/>
+            <label for="gender_woman">{{ _T("Woman") }}</label>
+        </div>
+        {% endblock %}
+    </div>
+{% endblock %}

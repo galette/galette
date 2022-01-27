@@ -281,11 +281,11 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Preferences $prefs Preferences instance
-     * @param Smarty      $view  Smarty template reference
+     * @param mixed       $view  Template reference
      *
      * @return void
      */
-    public function setViewCommonsFilters($prefs, \Smarty $view)
+    public function setViewCommonsFilters($prefs, $view)
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),
@@ -301,12 +301,12 @@ class MembersList extends Pagination
             $filter_options[Members::FILTER_ID] = _T("Member ID");
         }
 
-        $view->assign(
+        $view->getEnvironment()->addGlobal(
             'field_filter_options',
             $filter_options
         );
 
-        $view->assign(
+        $view->getEnvironment()->addGlobal(
             'membership_filter_options',
             array(
                 Members::MEMBERSHIP_ALL     => _T("All members"),
@@ -320,7 +320,7 @@ class MembersList extends Pagination
             )
         );
 
-        $view->assign(
+        $view->getEnvironment()->addGlobal(
             'filter_accounts_options',
             array(
                 Members::ALL_ACCOUNTS       => _T("All accounts"),

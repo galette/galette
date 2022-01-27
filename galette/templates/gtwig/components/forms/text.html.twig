@@ -1,0 +1,14 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block component %}
+    {% set type = "text" %}
+    {% if masschange is defined and masschange == true %}
+        {% set component_class = "inline field" %}
+    {% else %}
+        {% set component_class = 'field' %}
+    {% endif %}
+    {% if entry.required %}
+        {% set component_class = component_class ~ ' required' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

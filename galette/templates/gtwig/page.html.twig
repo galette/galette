@@ -12,7 +12,7 @@
 {%  if login.isLogged() %}
     {% include 'elements/navigation/navigation_aside.html.twig' %}
 {% endif %}
-                <section class="content{% if contentcls %} {{ contentcls }}{% endif %}">
+                <section class="content{% if contentcls is defined %} {{ contentcls }}{% endif %}">
 {% if not login.isLogged() %}
                     <div class="ui basic center aligned fitted segment">
                         <img src="{path_for name="logo"}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>

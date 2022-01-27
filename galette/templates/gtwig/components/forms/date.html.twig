@@ -1,0 +1,20 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block component %}
+    {% set type = "text" %}
+    {% set example = _T("(yyyy-mm-dd format)") %}
+    {% if id == 'ddn_adh' %}
+        {% set example = _T("(yyyy-mm-dd format)") ~ "<span id=\"member_age\">" ~ member.getAge() ~ "</span>" %}
+    {% endif %}
+    {% set component_class = "field" %}
+    {{ parent() }}
+{% endblock %}
+
+{% block element %}
+    <div class="ui calendar" id="birth-rangestart">
+        <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            {{ parent() }}
+        </div>
+    </div>
+{% endblock %}

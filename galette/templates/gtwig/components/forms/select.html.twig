@@ -1,0 +1,27 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block component %}
+    {% if masschange is defined and masschange == true %}
+        {% set component_class = "inline field" %}
+    {% else %}
+        {% set component_class = "field" %}
+    {% endif %}
+    {% if entry.required %}
+        {% set component_class = component_class ~ ' required' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block element %}
+    <select
+        name="{{ name }}"
+        id="{{ id }}"
+        {% if required is defined and required == true %} required="required"{% endif %}
+        {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
+        class="ui search dropdown nochosen"
+    >
+    {% for value, label in values %}
+        <option value="{{ value }}">{{ label }}</option>
+    {% endfor %}
+    </select>
+{% endblock %}

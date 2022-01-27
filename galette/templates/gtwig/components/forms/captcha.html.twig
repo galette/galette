@@ -1,0 +1,19 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block component %}
+    {% set required = true %}
+    {% set type = "gaptcha" %}
+    {% set name = "gaptcha" %}
+    {% set id = "gaptcha" %}
+    {% set value = null %}
+    {% set example = _T("(numbers only)") %}
+    {% set tip = _T("This field is required trying to avoid registration spam. We are sorry for the inconvennience.") %}
+    {% set component_class = "field required" %}
+    {{  parent() }}
+{% endblock %}
+
+{% block label %}
+    {% set label = _T("Captcha") %}
+    {{ parent() }}
+    {{ gaptcha.generateQuestion() }}
+{% endblock %}

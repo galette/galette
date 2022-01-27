@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2021 The Galette Team
+ * Copyright © 2019-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -66,7 +66,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -560,15 +560,15 @@ class MembersController extends CrudController
         $groups_list = $groups->getList();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
-        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
+        $filters->setSmartyPagination($this->router, $this->view, false);
+        $filters->setViewCommonsFilters($this->preferences, $this->view);
 
         $this->session->filter_members = $filters;
 
         // display page
         $this->view->render(
             $response,
-            'gestion_adherents.tpl',
+            'pages/members_list.html.twig',
             array(
                 'page_title'            => _T("Members management"),
                 'require_mass'          => true,
@@ -802,7 +802,7 @@ class MembersController extends CrudController
         );
         $ptlist = $ptypes->getList();
 
-        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
+        $filters->setViewCommonsFilters($this->preferences, $this->view);
 
         $social = new Social($this->zdb);
         $types = $member->getMemberRegisteredTypes();
@@ -814,7 +814,7 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'advanced_search.tpl',
+            'pages/advanced_search.html.twig',
             array(
                 'page_title'            => _T("Advanced search"),
                 'filter_groups_options' => $groups_list,
@@ -1239,7 +1239,7 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mass_change_members.tpl',
+            'modals/mass_change_members.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => str_replace(
@@ -1334,7 +1334,7 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mass_change_members.tpl',
+            'modals/mass_change_members.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => str_replace(

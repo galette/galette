@@ -1,0 +1,9 @@
+{% extends "components/forms/select.html.twig" %}
+
+{% block element %}
+    <select name="id_statut" id="id_statut" class="ui dropdown nochosen"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required.id_statut is defined and required.id_statut == 1 %} required="required"{% endif %}>
+        {% for key, value in statuts %}
+            <option value="{{ key }}"{% if key == member.status %} selected="selected"{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+{% endblock %}

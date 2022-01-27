@@ -1,0 +1,242 @@
+{% if object.getDynamicFields() is not empty %}
+    {% set fields = object.getDynamicFields().getFields() %}
+
+    {% if masschange is not defined %}
+        {% set masschange = false %}
+    {% endif %}
+
+    {% if fields is not empty %}
+
+{% macro draw_field(field, field_data, disabled, loop, object, masschange) %}
+    {% set valuedata = field_data.field_val|escape %}
+    {% if get_class(field) == 'Galette\\DynamicFields\\File' %}
+    <label>{{ field.getName()|escape }}</label>
+    {% else %}
+    <label for="info_field_{{ field.getId() }}_{{ loop }}">
+        {% if masschange is defined %}
+            {# Add a checkbox for fields to change on mass edition #}
+            <input type="checkbox" name="mass_info_field_{{ field.getId() }}" class="mass_checkbox"/>
+        {% endif %}
+        {{ field.getName()|escape }}
+    </label>
+    {% endif %}
+    {% if get_class(field) == 'Galette\\DynamicFields\\Text' %}
+        <textarea name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
+            cols="{% if field.getWidth() > 0 %}{{ field.getWidth() }}{else}61{% endif %}"
+            rows="{% if field.getHeight() > 0 %}{{ field.getHeight() }}{else}6{% endif %}"
+            {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
+        {% if not masschange %}
+            {% if field.isRequired() %} required="required"{% endif %}
+        {% endif %}
+            {% if disabled %} disabled="disabled"{% endif %}>{{ valuedata }}</textarea>
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' %}
+        <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
+            {% if field.getWidth() > 0 %}size="{{ field.getWidth() }}"{% endif %}
+            {% if field.getSize() > 0 %}maxlength="{{ field.getSize() }}"{% endif %}
+            value="{{ valuedata }}"
+        {% if not masschange %}
+            {% if field.isRequired() %} required="required"{% endif %}
+        {% endif %}
+            {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
+            {% if disabled %} disabled="disabled"{% endif %}
+        />
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\Choice' %}
+        <select name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
+        {% if not masschange %}
+            {% if field.isRequired() %} required="required"{% endif %}
+        {% endif %}
+            {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
+            {% if disabled %} disabled="disabled"{% endif %}
+            >
+            <!-- If no option is present, page is not XHTML compliant -->
+            <option value="">{{ _T("Select an option") }}</option>
+            {% for key, value in field.getValues() %}
+                <option value="{{ key }}"{% if key == valuedata %} selected="selected"{% endif %}>{{ value }}</option>
+            {% endfor %}
+        </select>
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
+        <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
+            value="{{ valuedata }}" class="dynamic_date modif_date"
+            {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
+        {% if not masschange %}
+            {% if field.isRequired() %} required="required"{% endif %}
+        {% endif %}
+            {% if disabled %} disabled="disabled"{% endif %}
+        />
+        <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
+        <input type="checkbox" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" value="1"
+            {% if valuedata == 1%} checked="checked"{% endif %}
+            {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
+        {% if not masschange %}
+            {% if field.isRequired() %} required="required"{% endif %}
+        {% endif %}
+            {% if disabled %} disabled="disabled"{% endif %}
+        />
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
+        {% if object.id %}
+        <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_new">{{ _T("new") }}</label>
+        {% endif %}
+        <input
+            type="file"
+            name="info_field_{{ field.getId() }}_{{ loop }}"
+            id="info_field_{{ field.getId() }}_{{ loop }}_new"
+            {% if field.isRequired() and valuedata == '' %} required="required"{% endif %}
+            {% if disabled %} disabled="disabled"{% endif %}
+        />
+        {% if object.id %}
+        <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_current">{{ _T("current") }}</label>
+        <a href="{{ path_for("getDynamicFile", { "id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata }) }}">
+            {{ valuedata }}
+        </a>
+        - <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_delete">
+            {{ _T("delete") }}
+        </label>
+        <input
+            type="checkbox"
+            name="info_field_{{ field.getId() }}_{{ loop }}"
+            id="info_field_{{ field.getId() }}_{{ loop }}_delete"
+            onclick="this.form.info_field_{{ field.getId() }}_{{ loop }}_new.disabled = this.checked;"
+        />
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+<div class="ui styled fluid accordion field">
+    <div class="active title">
+        <i class="icon dropdown"></i>
+        {{ _T("Additionnal fields:") }}
+    </div>
+    <div class="active content field">
+    {% set access_level = login.getAccessLevel() %}
+    {% for field in fields %}
+        {% if field.getInformation() %}
+            <div>{{ field.getInformation()|raw }}</div>
+        {% endif %}
+
+        {% set perm = field.getPerm() %}
+        {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
+        <div class="ui horizontal divider">{{ field.getName()|escape }}</div>
+        {% elseif (get_class(field) == 'Galette\\DynamicFields\\File' or field.isRepeatable()) and masschange %}
+            <!-- File and repeatable fields not shown in mass changes form -->
+        {% else %}
+        <div class="field{% if field.isRepeatable() %} repetable{% endif %}">
+            {% set disabled = false %}
+            {% if perm == constant('Galette\\DynamicFields\\DynamicField::PERM_USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
+                {% set disabled = true %}
+            {% endif %}
+            {% set values = object.getDynamicFields().getValues(field.getId()) %}
+            {% set can_add = false %}
+            {% if field.getRepeat() == 0 or values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
+                {% set can_add = true %}
+            {% endif %}
+            {% for field_data in values %}
+                {% if not loop.first %}<br/>{% endif %}
+                {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
+            {% endfor %}
+            {% if values is not iterable or values|length == 0 %}
+                {% set field_data = { 'field_val': ''} %}
+                {% if values is iterable %}
+                    {% set current_count = values|length %}
+                {% else %}
+                    {% set current_count = 0 %}
+                {% endif %}
+                {{ _self.draw_field(field, field_data, disabled, current_count + 1, object, masschange) }}
+            {% endif %}
+        </div>
+            {% if field.isRepeatable() %}
+                {% if field.getRepeat() == 0 %}
+        <p class="exemple" id="repeat_msg">{{ _T("Enter as many occurences you want.") }}</p>
+                {% elseif values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
+                    {% if values is iterable %}
+                        {% set current_count = values|length %}
+                    {% else %}
+                        {% set current_count = 1 %}
+                    {% endif %}
+                    {% set remaining = field.getRepeat() - current_count %}
+        <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurences.")|replace({ "%count": remaining}) }}</p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>
+<script type="text/javascript">
+    {% if not masschange %}
+    var _addLnk = function(){
+        return $('<a class="ui small compact icon green button" href="#"><i class="plus icon" title="{{ _T("New occurrence") }}"></i> <span class="sr-only">{{ _T("New occurrence") }}"</span></a>');
+    };
+
+    var _lnkEvent = function(_a, _input, _parent) {
+        var _vals = _input[0].id.split(/_/);
+        var _total = $(_input[0]).data('maxrepeat'); //max number of occurrences
+        var _current = _vals[_vals.length-1]; //current occurrence
+
+       _a.click(function(e) {
+            var _new = _input.clone();
+
+            var _id = '';
+
+            for ( var i = 0 ; i < _vals.length -1 ; i++ ) {
+                _id += _vals[i] + '_';
+            }
+
+            _current = Number(_current) + 1;
+            _new.attr('id', _id + _current);
+            _new.attr('name', _id + _current);
+            _new.val('');
+            _a.remove();
+            _parent.append('<br/>');
+            _parent.append(_new);
+            _new.focus();
+            if( _total == '0' || _current < _total ) {
+                var _b = _addLnk();
+                _lnkEvent(_b, _new, _parent);
+                _parent.append(_b);
+                if (_current < _total) {
+                    $('#repeat_msg').html('{{ _T("Enter up to %count more occurrences.")|replace({ "%count": "COUNT"})|e('js') }}'.replace(/COUNT/, _total - _current));
+                }
+            } else if (_current == _total) {
+                $('#repeat_msg').remove();
+            }
+            return false;
+        });
+    }
+    {% endif %}
+
+    $(function(){
+    {% if not masschange %}
+        $('.repetable').each(function(){
+            var _total;
+            var _current;
+            var _parent = $(this);
+
+            var _input = $(this).find('input:last');
+            if ( _input.length > 0 ) {
+                while ( $(this).find('input').length > 1 && _input.val() == '' ) {
+                    _input.prev('br').remove();
+                    _input.remove();
+                    _input = $(this).find('input:last')
+                }
+                var _vals = _input[0].id.split(/_/);
+                var _total = $(_input[0]).data('maxrepeat'); //max number of occurrences
+                var _current = _vals[_vals.length-1]; //current occurrence
+
+                if ( _total == '0' || _current < _total ) {
+                    var _a = _addLnk();
+                    $(this).append(_a);
+                    _lnkEvent(_a, _input, _parent);
+                }
+            }
+        });
+    {% endif %}
+        /*$('.dynamic_date').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'button',
+            buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
+        });*/
+    });
+</script>
+    {% endif %}
+{% endif %}

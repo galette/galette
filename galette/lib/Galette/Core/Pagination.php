@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Slim\Router;
 use Slim\Slim;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
@@ -225,16 +226,15 @@ abstract class Pagination
     }
 
     /**
-     * Creates pagination links and assign some usefull variables to the
-     * Smarty template
+     * Creates pagination links and assign some useful variables to the template
      *
      * @param Router  $router     Application instance
-     * @param Smarty  $view       View instance
+     * @param mixed   $view       View instance
      * @param boolean $restricted Do not permit to display all
      *
      * @return void
      */
-    public function setSmartyPagination(\Slim\Router $router, \Smarty $view, $restricted = true)
+    public function setSmartyPagination(Router $router, $view, $restricted = true)
     {
         $paginate = null;
         $this->view = $view;
@@ -314,12 +314,12 @@ abstract class Pagination
             $options[0] = _T("All");
         }
 
-        //Now, we assign common variables to Smarty template
-        $view->assign('nb_pages', $this->pages);
-        $view->assign('page', $this->current_page);
-        $view->assign('numrows', $this->show);
-        $view->assign('pagination', $paginate);
-        $view->assign('nbshow_options', $options);
+        //Now, we assign common variables to template
+        $view->getEnvironment()->addGlobal('nb_pages', $this->pages);
+        $view->getEnvironment()->addGlobal('page', $this->current_page);
+        $view->getEnvironment()->addGlobal('numrows', $this->show);
+        $view->getEnvironment()->addGlobal('pagination', $paginate);
+        $view->getEnvironment()->addGlobal('nbshow_options', $options);
 
         $this->view = null;
         $this->router = null;
@@ -362,12 +362,12 @@ abstract class Pagination
             'value'     => $page
         ];
 
-        if ($this->view->getTemplateVars('cur_subroute')) {
+        if ($this->view->getEnvironment()->getGlobals()['cur_subroute']) {
             $args['type'] = $this->view->getTemplateVars('cur_subroute');
         }
 
         $href = $this->router->pathFor(
-            $this->view->getTemplateVars('cur_route'),
+            $this->view->getEnvironment()->getGlobals()['cur_route'],
             $args
         );
         return $href;

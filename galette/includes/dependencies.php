@@ -67,11 +67,22 @@ $container->set(
 );
 
 $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
+
+    $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
+    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
+        $dir = $module['root'] . '/templates/' . $c->get('preferences')->pref_theme;
+        if (!is_dir($dir)) {
+            continue;
+        }
+        $templates[$module['route']] = $dir;
+    }
+
     $view = new \Slim\Views\Twig(
-        GALETTE_ROOT . 'templates/gtwig/', //GALETTE_TPL_THEME_DIR //FIXME
+        $templates,
         [
             'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
-            'debug' => true //FIXME
+            'debug' => (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV),
+            'strict_variables' => (GALETTE_MODE == \Galette\Core\Galette::MODE_DEV)
         ]
     );
 
@@ -84,13 +95,28 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     //End Twig extensions
 
     //Twig functions
-    $function = new \Twig\TwigFunction('__', function ($string) {
-        return __($string);
+    $function = new \Twig\TwigFunction('__', function ($string, $domain = 'galette') {
+        return __($string, $domain);
     });
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('_T', function ($string) {
-        return _T($string);
+    $function = new \Twig\TwigFunction('_T', function ($string, $domain = 'galette') {
+        return _T($string, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_Tn', function ($singular, $plural, $count, $domain = 'galette') {
+        return _Tn($singular, $plural, $count, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_Tx', function ($context, $string, $domain = 'galette') {
+        return _Tx($context, $string, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_Tnx', function ($context, $singular, $plural, $count, $domain = 'galette') {
+        return _Tnx($context, $singular, $plural, $count, $domain);
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -119,20 +145,21 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     //End Twig functions
 
     //Twig globals
-    //$smarty->assign('flash', $c->get('flash'));
+    $view->getEnvironment()->addGlobal('flash', $c->get('flash'));
     $view->getEnvironment()->addGlobal('login', $c->get('login'));
     $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
+
     //$smarty->assign('tpl', $smarty);
     //$smarty->assign('headers', $c->get('plugins')->getTplHeaders());
-    //$smarty->assign('plugin_actions', $c->get('plugins')->getTplAdhActions());
-    /*$smarty->assign(
+    $view->getEnvironment()->addGlobal('plugin_actions', $c->get('plugins')->getTplAdhActions());
+    $view->getEnvironment()->addGlobal(
         'plugin_batch_actions',
         $c->get('plugins')->getTplAdhBatchActions()
-    );*/
-    /*$smarty->assign(
+    );
+    $view->getEnvironment()->addGlobal(
         'plugin_detailled_actions',
         $c->get('plugins')->getTplAdhDetailledActions()
-    );*/
+    );
     //$smarty->assign('scripts_dir', 'js/');
     //$smarty->assign('jquery_dir', 'js/jquery/');
     //$smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
@@ -148,7 +175,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('galette_lang_name', $c->get('i18n')->getName());
     $view->getEnvironment()->addGlobal('languages', $c->get('i18n')->getList());
     $view->getEnvironment()->addGlobal('i18n', $c->get('i18n'));
-    //$smarty->assign('plugins', $c->get('plugins'));
+    $view->getEnvironment()->addGlobal('plugins', $c->get('plugins'));
     $view->getEnvironment()->addGlobal('preferences', $c->get('preferences'));
     /*
     $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);
@@ -158,18 +185,17 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         'pref_editor_enabled',
         $c->get('preferences')->pref_editor_enabled
     );
-    $smarty->assign('pref_mail_method', $c->get('preferences')->pref_mail_method);
-    $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
-    $smarty->assign('contentcls', null);
-    $smarty->assign('additionnal_html_class', null);
+    $smarty->assign('pref_mail_method', $c->get('preferences')->pref_mail_method);*/
+    $view->getEnvironment()->addGlobal('existing_mailing', $c->get('session')->mailing !== null);
+    /*$smarty->assign('contentcls', null);
     $smarty->assign('error_detected', null);
     $smarty->assign('warning_detected', null);
-    $smarty->assign('success_detected', null);
-    $smarty->assign('html_editor', null);
-    $smarty->assign('require_charts', null);
-    $smarty->assign('require_mass', null);
-    $smarty->assign('autocomplete', null);
-    if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
+    $smarty->assign('success_detected', null);*/
+    $view->getEnvironment()->addGlobal('html_editor', false);
+    $view->getEnvironment()->addGlobal('require_charts', false);
+    $view->getEnvironment()->addGlobal('require_mass', false);
+    $view->getEnvironment()->addGlobal('autocomplete', false);
+    /*if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
         $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
@@ -178,12 +204,6 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         }
     }
 
-    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
-        $smarty->addTemplateDir(
-            $module['root'] . '/templates/' . $c->get('preferences')->pref_theme,
-            $module['route']
-        );
-    }
     */
     //End Twig globals
 

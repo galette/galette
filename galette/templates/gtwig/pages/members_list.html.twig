@@ -1,445 +1,450 @@
-{extends file="page.tpl"}
+{% extends 'page.html.twig' %}
 
-
-{function name=draw_actions}
+{% macro draw_actions(rclass, member, login, plugin_actions) %}
                     <td class="{$rclass} center actions_row">
-{if $member->canEdit($login)}
+    {% if member.canEdit(login) %}
                         <a
-                            href="{path_for name="editMember" data=["id" => $member->id]}"
+                            href="{{ path_for("editMember", { "id": member.id }) }}"
                             class="tooltip action"
                         >
                             <i class="ui user edit icon" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="%membername: edit information" pattern="/%membername/" replace=$member->sname}</span>
+                            <span class="sr-only">{{ _T("%membername: edit information")|replace({ "%membername": member.sname }) }}</span>
                         </a>
-{/if}
-{if $login->isAdmin() or $login->isStaff()}
+    {% endif %}
+    {% if login.isAdmin() or login.isStaff() %}
                         <a
-                            href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
+                            href="{{ path_for("contributions", { "type": "contributions", "option": "member", "value": member.id }) }}"
                             class="tooltip"
                         >
                             <i class="ui cookie green icon" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}</span>
+                            <span class="sr-only">{{ _T("%membername: contributions")|replace({ "%membername": member.sname }) }}</span>
                         </a>
                         <a
-                            href="{path_for name="removeMember" data=["id" => $member->id]}"
+                            href="{{ path_for("removeMember",  { "id": member.id }) }}"
                             class="delete tooltip"
                         >
                             <i class="ui user times red icon" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}</span>
+                            <span class="sr-only">{{ _T("%membername: remove from database")|replace({ "%membername": member.sname }) }}</span>
                         </a>
-{/if}
-{if $login->isSuperAdmin()}
+    {% endif %}
+    {% if login.isSuperAdmin() %}
                         <a
-                            href="{path_for name="impersonate" data=["id" => $member->id]}"
+                            href="{{ path_for("impersonate", { "id": member.id }) }}"
                             class="tooltip"
                         >
                             <i class="ui user secret grey icon" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}</span>
+                            <span class="sr-only">{{ _T("Log in in as %membername")|replace({ "%membername": member.sname }) }}</span>
                         </a>
-{/if}
-{* If some additionnals actions should be added from plugins, we load the relevant template file
-We have to use a template file, so Smarty will do its work (like replacing variables). *}
-{if $plugin_actions|@count != 0}
-    {foreach from=$plugin_actions key=plugin_name item=action}
-        {include file=$action module_id=$plugin_name|replace:'actions_':''}
-    {/foreach}
-{/if}
+    {% endif %}
+    {# If some additionnals actions should be added from plugins, we load the relevant template file
+    We have to use a template file, so Smarty will do its work (like replacing variables). #}
+    {% if plugin_actions|length != 0 %}
+        {% for plugin_name, action in plugin_actions %}
+            {% include action with { module_id: plugin_name|replace({'actions_': ''}) } %}
+        {% endfor %}
+    {% endif %}
                     </td>
-{/function}
+{% endmacro %}
 
-{block name="content"}
-        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre" class="ui form">
+{% block content %}
+        <form action="{{ path_for('filter-memberslist') }}" method="post" id="filtre" class="ui form">
             <div class="ui segment">
-{if !isset($adv_filters) || !$adv_filters}
+{% if adv_filters is not defined or not adv_filters %}
             <div class="five fields">
                 <div class="field">
-                    <label for="filter_str">{_T string="Search:"}</label>
-                    <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>
+                    <label for="filter_str">{{ _T('Search:') }}</label>
+                    <input type="text" name="filter_str" id="filter_str" value="{{ filters.filter_str }}" type="search" placeholder="{{ _T('Enter a value') }}"/>
                 </div>
                 <div class="field">
-                    <label for="field_filter">{_T string="in:"}</label>
-                    <select name="field_filter" id"=field_filter" class="ui search dropdown nochosen">
-                        {html_options options=$field_filter_options selected=$filters->field_filter}
+                    <label for="field_filter">{{ _T('in:') }}</label>
+                    <select name="field_filter" id="field_filter" class="ui search dropdown nochosen">
+    {% for key, value in field_filter_options %}
+                        <option value="{{ key }}"{% if key == filters.field_filter %} selected="selected"{% endif %}>{{ value }}</option>
+    {% endfor %}
                     </select>
                 </div>
                 <div class="field">
-                    <label for="filter_str">{_T string="among:"}</label>
+                    <label for="filter_str">{{ _T('among:') }}</label>
                     <select name="membership_filter" onchange="form.submit()" class="ui search dropdown nochosen">
-                        {html_options options=$membership_filter_options selected=$filters->membership_filter}
+                        {% for key, value in membership_filter_options %}
+                            <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="flexend field">
-                    <label for="filter_account" class="hidden">{_T string="among:"}</label>
+                    <label for="filter_account" class="hidden">{{ _T('among:') }}</label>
                     <select name="filter_account" onchange="form.submit()" class="ui search dropdown nochosen">
-                        {html_options options=$filter_accounts_options selected=$filters->filter_account}
+                        {% for key, value in filter_accounts_options %}
+                            <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="flexend field">
-                    <label for="group_filter" class="hidden">{_T string="among:"}</label>
+                    <label for="group_filter" class="hidden">{{ _T('among:') }}</label>
                     <select name="group_filter" onchange="form.submit()" class="ui search dropdown nochosen">
-                        <option value="0">{_T string="Select a group"}</option>
-    {foreach from=$filter_groups_options item=group}
-                        <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getIndentName()}</option>
-    {/foreach}
+                        <option value="0">{{ _T('Select a group') }}</option>
+    {% for group in filter_groups_options %}
+                        <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getIndentName()|raw }}</option>
+    {% endfor %}
                     </select>
                 </div>
             </div>
             <div class="two fields">
                 <div class="field">
                     <div class="inline fields">
-                        <label for="email_filter">{_T string="Members that have an email address:"}</label>
+                        <label for="email_filter">{{ _T('Members that have an email address:') }}</label>
                         <div class="field inline">
                             <div class="ui radio checkbox">
-                                <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
-                                <label for="filter_dc_email">{_T string="Don't care"}</label>
+                                <input type="radio" name="email_filter" id="filter_dc_email" value="{{ constant('Galette\\Repository\\Members::FILTER_DC_EMAIL') }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_DC_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_dc_email">{{ _T("Don't care") }}</label>
                             </div>
                         </div>
                         <div class="field inline">
                             <div class="ui radio checkbox">
-                                <input type="radio" name="email_filter" id="filter_with_email" value="{Galette\Repository\Members::FILTER_W_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
-                                <label for="filter_with_email">{_T string="With"}</label>
+                                <input type="radio" name="email_filter" id="filter_with_email" value="{{ constant('Galette\\Repository\\Members::FILTER_W_EMAIL') }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_W_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_with_email">{{ _T('With') }}</label>
                             </div>
                         </div>
                         <div class="field inline">
                             <div class="ui radio checkbox">
-                                <input type="radio" name="email_filter" id="filter_without_email" value="{Galette\Repository\Members::FILTER_WO_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
-                                <label for="filter_without_email">{_T string="Without"}</label>
+                                <input type="radio" name="email_filter" id="filter_without_email" value="{{ constant('Galette\\Repository\\Members::FILTER_WO_EMAIL') }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_WO_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_without_email">{{ _T('Without') }}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="right aligned field">
-                    <button type="submit"  class="tooltip action ui primary button" title="{_T string="Apply filters"}" name="filter">
+                    <button type="submit"  class="tooltip action ui primary button" title="{{ _T('Apply filters') }}" name="filter">
                         <i class="search icon"></i>
-                        {_T string="Filter"}
+                        {{ _T('Filter') }}
                     </button>
-                    <button type="submit"  class="tooltip action ui button" title="{_T string="Save selected criteria"}" name="savesearch" id="savesearch">
+                    <button type="submit"  class="tooltip action ui button" title="{{ _T('Save selected criteria') }}" name="savesearch" id="savesearch">
                         <i class="save blue icon"></i>
-                        {_T string="Save"}
+                        {{ _T('Save') }}
                     </button>
-                    <input type="submit" name="clear_filter" class="tooltip ui button" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
+                    <input type="submit" name="clear_filter" class="tooltip ui button" value="{{ _T('Clear filter') }}" title="{{ _T('Reset all filters to defaults') }}"/>
                 </div>
             </div>
-{else}
+{% else %}
             <div class="field">
-                <span class="ui primary ribbon label">{_T string="Advanced search mode"}</span>
-                <button type="submit"  class="tooltip action ui primary button" title="{_T string="Save current advanced search criteria"}" name="savesearch" id="savesearch">
+                <span class="ui primary ribbon label">{{ _T('Advanced search mode') }}</span>
+                <button type="submit"  class="tooltip action ui primary button" title="{{ _T('Save current advanced search criteria') }}" name="savesearch" id="savesearch">
                     <i class="save icon"></i>
-                    {_T string="Save"}
+                    {{ _T('Save') }}
                 </button>
-                <button type="submit" class="tooltip action ui button" title="{_T string="Change search criteria"}" name="adv_criteria">
+                <button type="submit" class="tooltip action ui button" title="{{ _T('Change search criteria') }}" name="adv_criteria">
                     <i class="edit blue icon"></i>
-                    {_T string="Change criteria"}
+                    {{ _T('Change criteria') }}
                 </button>
                 <input type="hidden" name="advanced_search" value="1" class="ui button"/>
-                <input type="submit" name="clear_filter" class="tooltip ui button" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
+                <input type="submit" name="clear_filter" class="tooltip ui button" value="{{ _T('Clear filter') }}" title="{{ _T('Reset all filters to defaults') }}"/>
                 <div class="ui basic fluid accordion">
                     <div class="title">
                         <i class="dropdown icon"></i>
-                        {_T string="Show/hide query"}
+                        {{ _T('Show/hide query') }}
                     </div>
                     <div class="content">
-                        <pre id="sql_qry" class="hidden">{$filters->query}</pre>
+                        <pre id="sql_qry" class="hidden">{{ filters.query }}</pre>
                     </div>
                 </div>
             </div>
-{/if}
-            {include file="forms_types/csrf.tpl"}
+{% endif %}
+            {% include "components/forms/csrf.html.twig" %}
         </div>
-
 
         <div class="infoline">
             <div class="ui basic horizontal segments">
                 <div class="ui basic fitted segment">
-                    <div class="ui label">{_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}</div>
+                    <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({ '%count': nb_members }) }}</div>
                 </div>
                 <div class="ui basic right aligned fitted segment">
                     <div class="inline field">
-                        <label for="nbshow">{_T string="Records per page:"}</label>
+                        <label for="nbshow">{{ _T('Records per page:') }}</label>
                         <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
                             {html_options options=$nbshow_options selected=$numrows}
                         </select>
-                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                        <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
                     </div>
                 </div>
             </div>
         </div>
         </form>
-        <form action="{path_for name="batch-memberslist"}" method="post" id="listform" class="ui form">
+        <form action="{{ path_for('batch-memberslist') }}" method="post" id="listform" class="ui form">
         <div class="ui basic fitted segment">
             <table class="listing ui celled table">
                 <thead>
                     <tr>
-{foreach item=column from=$galette_list}
-    {if $column->field_id eq 'id_adh'}
-        {if $preferences->pref_show_id}
+{% for column in galette_list %}
+    {% if column.field_id == 'id_adh' %}
+        {% if preferences.pref_show_id %}
                         <th class="id_row">
-                            <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
-                            {_T string="Mbr id"}
-                            {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
+                            <a href="{{ path_for("members", { "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_ID") }) }}">
+                            {{ _T('Mbr id') }}
+                            {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_ID') %}
+                                {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
                                 <i class="ui angle down icon tooltip"></i>
-                                {else}
+                                {% else %}
                                 <i class="ui angle up icon tooltip"></i>
-                                {/if}
-                            {/if}
+                                {% endif %}
+                            {% endif %}
                             </a>
                         </th>
-        {else}
+        {% else %}
                         <th class="id_row">#</th>
-        {/if}
-    {else}
+        {% endif %}
+    {% else %}
                         <th class="left">
-                            <a href="{path_for name="members" data=["option" => "order", "value" => $column->field_id]}">
-                            {$column->label}
-                            {if $filters->orderby eq $column->field_id}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
+                            <a href="{{ path_for("members", {"option": "order", "value": column.field_id}) }}">
+                            {{ column.label }}
+                            {% if filters.orderby == column.field_id %}
+                                {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
                                 <i class="ui angle down icon tooltip"></i>
-                                {else}
+                                {% else %}
                                 <i class="ui angle up icon tooltip"></i>
-                                {/if}
-                            {/if}
+                                {% endif %}
+                            {% endif %}
                             </a>
                         </th>
-    {/if}
-{/foreach}
-                        <th class="actions_row">{_T string="Actions"}</th>
+    {% endif %}
+{% endfor %}
+                        <th class="actions_row">{{ _T('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
-{foreach from=$members item=member key=ordre}
-    {assign var=rclass value=$member->getRowClass() }
+{% for ordre, member in members %}
+    {% set rclass = member.getRowClass() %}
                     <tr>
-    {foreach item=column from=$galette_list}
-        {if $column->field_id eq 'id_adh'}
-                        <td class="{$rclass} right" data-scope="id">
-            {if $preferences->pref_show_id}
-                        {$member->id}
-            {else}
-                        {$ordre+1+($filters->current_page - 1)*$numrows}
-            {/if}
+    {% for column in galette_list %}
+        {% if column.field_id == 'id_adh' %}
+                        <td class="{{ rclass }} right" data-scope="id">
+            {% if preferences.pref_show_id %}
+                        {{ member.id }}
+            {% else %}
+                        {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+            {% endif %}
                         </td>
-        {elseif $column->field_id eq 'list_adh_name'}
-                        <td class="{$rclass} username_row" data-scope="row">
+        {% elseif column.field_id == 'list_adh_name' %}
+                        <td class="{{ rclass }} username_row" data-scope="row">
                             <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
-            {if $member->isCompany()}
-                            <i class="ui building outline icon tooltip"><span class="sr-only">{_T string="Is a company"}</span></i>
-            {elseif $member->isMan()}
-                            <i class="ui male icon tooltip"><span class="sr-only">{_T string="Is a man"}</span></i>
-            {elseif $member->isWoman()}
-                            <i class="ui female icon tooltip"><span class="sr-only">{_T string="Is a woman"}</span></i>
-            {else}
+            {% if member.isCompany() %}
+                            <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
+            {%  elseif member.isMan() %}
+                            <i class="ui male icon tooltip"><span class="sr-only">{{ _T('Is a man') }}</span></i>
+            {%  elseif member.isWoman() %}
+                            <i class="ui female icon tooltip"><span class="sr-only">{{ _T('Is a woman') }}</span></i>
+            {% else %}
                             <i class="ui icon"></i>
-            {/if}
-            {if $member->email != ''}
+            {% endif %}
+            {% if member.email != '' %}
                             <a href="mailto:{$member->email}" class="tooltip">
                                 <i class="ui envelope outline teal icon" aria-hidden="true"></i>
-                                <span class="sr-only">{_T string="Mail"}</span>
+                                <span class="sr-only">{{ _T('Mail') }}</span>
                             </a>
-            {else}
+            {% else %}
                             <i class="ui icon"></i>
-            {/if}
-            {if $member->isAdmin()}
+            {% endif %}
+            {% if member.isAdmin() %}
                             <span class="tooltip">
                                 <i class="ui user shield red icon" aria-hidden="true"></i>
-                                <span class="sr-only">{_T string="Admin"}</span>
+                                <span class="sr-only">{{ _T('Admin') }}</span>
                             </span>
-            {elseif $member->isStaff()}
+            {% elseif member.isStaff() %}
                             <span class="tooltip">
                                 <i class="ui id card alternate orange icon" aria-hidden="true"></i>
-                                <span class="sr-only">{_T string="Staff member"}</span>
+                                <span class="sr-only">{{ _T('Staff member') }}</span>
                             </span>
-            {else}
+                {# TODO: display for group managers #}
+            {% else %}
                             <i class="ui icon"></i>
-            {/if}
-                        {assign var="mid" value=$member->id}
-                            <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
+            {% endif %}
+                        {% set mid = member.id %}
+                            <a href="{{ path_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
                         </td>
-        {else}
-            {assign var="lrclass" value=$rclass}
-            {assign var="propname" value=$column->propname}
-            {assign var="propvalue" value=$member->$propname}
-            {assign var="value" value=null}
+        {% else %}
+            {% set lrclass = rclass %}
+            {% set propname = column.propname %}
+            {% set propvalue =  attribute(member, propname) %}
+            {% set value = null %}
 
-            {if $column->field_id eq 'nom_adh'}
-                {assign var="value" value=$member->sfullname}
-            {elseif $column->field_id eq 'pseudo_adh'}
-                {assign var="lrclass" value="$rclass"}
-                {assign var=value value=$member->$propname}
-            {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
-                {assign var="lrclass" value="$rclass"}
-            {elseif $column->field_id eq 'id_statut'}
-                {assign var="lrclass" value="$rclass"}
-                {assign var=value value={statusLabel id=$member->$propname}}
-            {elseif $column->field_id eq 'titre_adh'}
-                {if is_object($member->title)}
-                    {assign var=value value=$member->title->long}
-                {/if}
-            {elseif $column->field_id eq 'pref_lang'}
-                {assign var="value" value=$i18n->getNameFromId($member->language)}
-            {elseif $column->field_id eq 'adresse_adh'}
-                {assign var="value" value=$member->saddress|escape|nl2br}
-                {assign var="escaped" value=true}
-            {elseif $column->field_id eq 'bool_display_info'}
-                {assign var="value" value=$member->sappears_in_list}
-            {elseif $column->field_id eq 'activite_adh'}
-                {assign var="value" value=$member->sactive}
-            {elseif $column->field_id eq 'id_statut'}
-                {assign var="value" value=$member->sstatus}
-            {elseif $column->field_id eq 'bool_admin_adh'}
-                {assign var="value" value=$member->sadmin}
-            {elseif $column->field_id eq 'bool_exempt_adh'}
-                {assign var="value" value=$member->sdue_free}
-            {elseif $column->field_id eq 'sexe_adh'}
-                {assign var="value" value=$member->sgender}
-            {/if}
+            {% if column.field_id == 'nom_adh' %}
+                {% set value = member.sfullname %}
+            {% elseif column.field_id == 'pseudo_adh' %}
+                {% set lrclass = rclass %}
+                {% set value = attribute(member, propname) %}
+            {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
+                {% set lrclass = rclass %}
+            {% elseif column.field_id == 'id_statut' %}
+                {% set lrclass = rclass %}
+                {% set value = member.sstatus %}
+            {% elseif column.field_id == 'titre_adh' %}
+                {% if member.title is iterable %}
+                    {% set value = member.title.long %}
+                {% endif %}
+            {% elseif column.field_id == 'pref_lang' %}
+                {% set value = i18n.getNameFromId(member.language) %}
+            {% elseif column.field_id == 'adresse_adh' %}
+                {% set value = member.saddress|e('html')|nl2br %}
+                {% set escaped = true %}
+            {% elseif column.field_id == 'bool_display_info' %}
+                {% set value = member.sappears_in_list %}
+            {% elseif column.field_id == 'activite_adh' %}
+                {% set value = member.sactive %}
+            {% elseif column.field_id == 'id_statut' %}
+                {% set value = member.sstatus %}
+            {% elseif column.field_id == 'bool_admin_adh' %}
+                {% set value = member.sadmin %}
+            {% elseif column.field_id == 'bool_exempt_adh' %}
+                {% set value = member.sdue_free %}
+            {% elseif column.field_id == 'sexe_adh' %}
+                {% set value = member.sgender %}
+            {% endif %}
 
-            {* If value has not been set, take the generic value *}
-            {if !$value}
-                {if $propvalue}
-                    {assign var=value value=$propvalue|escape}
-                {else}
-                    {assign var=value value=$propvalue}
-                {/if}
-            {elseif !isset($escaped)}
-                {assign var=value value=$value|escape}
-            {/if}
+            {# If value has not been set, take the generic value #}
+            {% if not value %}
+                {% if propvalue %}
+                    {% set value = propvalue|e('html') %}
+                {% else %}
+                    {% set value = propvalue %}
+                {% endif %}
+            {% elseif escaped is not defined %}
+                {% set value = value|e('html') %}
+            {% endif %}
 
-                        <td class="{$lrclass}" data-title="{$column->label}">
-            {* Display column.
+                        <td class="{{ lrclass }}" data-title="{{ column.label }}">
+            {# Display column.
                 A check is done here to adapt display, this is may not the best way to go
-                but for notw, that works as excpected.
-            *}
-            {if not empty($value)}
-                {if $column->field_id eq 'email_adh'}
-                                <a href="mailto:{$value}">{$value}</a>
-                {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
-                                <a href="tel:{$value}">{$value}</a>
-                {elseif $column->field_id eq 'parent_id'}
-                                <a href="{path_for name="member" data=["id" => $member->parent]}">{memberName id=$member->parent}</a>
-                {elseif $column->field_id eq 'ddn_adh'}
-                                {$value} {$member->getAge()}
-                {else}
-                                {$value}
-                {/if}
-            {/if}
+                but for now, that works as expected.
+            #}
+            {% if value %}
+                {% if column.field_id == 'email_adh' %}
+                                <a href="mailto:{{ value }}">{{ value }}</a>
+                {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
+                                <a href="tel:{{ value }}">{{ value }}</a>
+                {% elseif column.field_id == 'parent_id' %}
+                                <a href="{{ path_for("member", {"id": member.parent}) }}">{{ memberName(member.parent) }}</a>
+                {% elseif column.field_id == 'ddn_adh' %}
+                                {{ value }} {{ member.getAge() }}
+                {% else %}
+                                {{ value }}
+                {% endif %}
+            {% endif %}
                         </td>
-        {/if}
-    {/foreach}
-                    {draw_actions class=$rclass member=$member login=$login plugin_actions=$plugin_actions}
+        {% endif %}
+    {% endfor %}
+                    {{ _self.draw_actions(rclass, member, login, plugin_actions) }}
                     </tr>
-{foreachelse}
-                    <tr><td colspan="{$galette_list|count}" class="emptylist">{_T string="No member has been found"}</td></tr>
-{/foreach}
+{% else %}
+                    <tr><td colspan="{{ galette_list|length }}" class="emptylist">{{ _T('No member has been found') }}</td></tr>
+{% endfor %}
                 </tbody>
             </table>
         </div>
-{if $nb_members != 0 && ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff())}
+{% if nb_members != 0 and (login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff()) %}
         <div class="ui bottom attached segment screen-only">
             <div class="ui horizontal list">
-                <span class="ui primary ribbon label">{_T string="For the selection:"}</span>
-    {if $login->isAdmin() or $login->isStaff()}
+                <span class="ui primary ribbon label">{{ _T('For the selection:') }}</span>
+    {% if login.isAdmin() or login.isStaff() %}
                 <div class="item">
                     <button type="submit" id="masschange" name="masschange" class="action ui labeled icon tiny button">
-                        <i class="user edit blue icon"></i> {_T string="Mass change"}
+                        <i class="user edit blue icon"></i> {{ _T('Mass change') }}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="masscontributions" name="masscontributions" class="action ui labeled icon tiny button">
-                        <i class="ui cookie bite green icon"></i> {_T string="Mass add contributions"}
+                        <i class="ui cookie bite green icon"></i> {{ _T('Mass add contributions') }}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
-                        <i class="user times red icon"></i> {_T string="Delete"}
+                        <i class="user times red icon"></i> {{ _T('Delete') }}
                     </button>
                 </div>
-    {/if}
-    {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager() and $preferences->pref_bool_groupsmanagers_mailings}
-        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
+    {% endif %}
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() and preferences.pref_bool_groupsmanagers_mailings %}
+        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
                 <div class="item">
                     <button type="submit" id="sendmail" name="mailing" class="ui labeled icon tiny button">
-                        <i class="mail bulk icon"></i> {_T string="Mail"}
+                        <i class="mail bulk icon"></i> {{ _T('Mail') }}
                     </button>
                 </div>
-        {/if}
-    {/if}
+        {% endif %}
+    {% endif %}
 
-    {if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
+    {% if login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
                 <div class="item">
                     <button type="submit" id="attendance_sheet" name="attendance_sheet" class="ui labeled icon tiny button">
-                        <i class="file alternate icon"></i> {_T string="Attendance sheet"}
+                        <i class="file alternate icon"></i> {{ _T('Attendance sheet') }}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="labels" name="labels" class="ui labeled icon tiny button">
-                        <i class="address card icon"></i> {_T string="Generate labels"}
+                        <i class="address card icon"></i> {{ _T('Generate labels') }}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="cards" name="cards" class="ui labeled icon tiny button">
-                        <i class="id badge icon"></i> {_T string="Generate Member Cards"}
+                        <i class="id badge icon"></i> {{ _T('Generate Member Cards') }}
                     </button>
                 </div>
                 <div class="item">
                     <button type="submit" id="csv" name="csv" class="ui labeled icon tiny button">
-                        <i class="file csv icon"></i> {_T string="Export as CSV"}
+                        <i class="file csv icon"></i> {{ _T('Export as CSV') }}
                     </button>
                 </div>
-    {/if}
-    {if $plugin_batch_actions|@count != 0}
+    {% endif %}
+    {% if plugin_batch_actions|length != 0 %}
         {foreach from=$plugin_batch_actions key=plugin_name item=action}
             {include file=$action module_id=$plugin_name|replace:'batch_action_':''}
         {/foreach}
-    {/if}
+    {% endif %}
             </div>
         </div>
         <div class="ui basic center aligned fitted segment">
             <div class="ui inverted pagination menu">
                 <div class="header item">
-                    {_T string="Pages:"}
+                    {{ _T('Pages:') }}
                 </div>
-                {$pagination}
+                {{ pagination|raw }}
             </div>
         </div>
-{/if}
-            {include file="forms_types/csrf.tpl"}
+{% endif %}
+            {% include "components/forms/csrf.html.twig" %}
         </form>
-{if $nb_members != 0}
-        <div id="legende" title="{_T string="Legend"}" class="ui modal">
-            <div class="header">{_T string="Legend"}</div>
+    {% if nb_members != 0 %}
+        <div id="legende" title="{{ _T('Legend') }}" class="ui modal">
+            <div class="header">{{ _T('Legend') }}</div>
             <div class="content">
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{_T string="Reading the list"}</th>
+                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
-                            <th class="back">{_T string="Name"}</th>
-                            <td class="back">{_T string="Active account"}</td>
-                            <th class="inactif back">{_T string="Name"}</th>
-                            <td class="back">{_T string="Inactive account"}</td>
+                            <th class="back">{{ _T('Name') }}</th>
+                            <td class="back">{{ _T('Active account') }}</td>
+                            <th class="inactif back">{{ _T('Name') }}</th>
+                            <td class="back">{{ _T('Inactive account') }}</td>
                         </tr>
                         <tr>
                             <th class="cotis-ok color-sample">&nbsp;</th>
-                            <td class="back">{_T string="Membership in order"}</td>
+                            <td class="back">{{ _T('Membership in order') }}</td>
                             <th class="cotis-soon color-sample">&nbsp;</th>
-                            <td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
+                            <td class="back">{{ _T('Membership will expire soon (&lt;30d)') }}</td>
                         </tr>
                         <tr>
                             <th class="cotis-never color-sample">&nbsp;</th>
-                            <td class="back">{_T string="Never contributed"}</td>
+                            <td class="back">{{ _T('Never contributed') }}</td>
                             <th class="cotis-late color-sample">&nbsp;</th>
-                            <td class="back">{_T string="Lateness in fee"}</td>
+                            <td class="back">{{ _T('Lateness in fee') }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{_T string="Actions"}</th>
+                            <th class="" colspan="4">{{ _T('Actions') }}</th>
                         </tr>
                     <thead>
                     <tbody>
@@ -447,56 +452,56 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                             <th class="action">
                                 <i class="ui user edit icon"></i>
                             </th>
-                            <td class="back">{_T string="Modification"}</td>
+                            <td class="back">{{ _T('Modification') }}</td>
                             <th>
                                 <i class="ui cookie icon"></i>
                             </th>
-                            <td class="back">{_T string="Contributions"}</td>
+                            <td class="back">{{ _T('Contributions') }}</td>
                         </tr>
                         <tr>
                             <th class="delete">
                                 <i class="ui user times red icon"></i>
                             </th>
-                            <td class="back">{_T string="Deletion"}</td>
+                            <td class="back">{{ _T('Deletion') }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th colspan="4">{_T string="User status/interactions"}</th>
+                            <th colspan="4">{{ _T('User status/interactions') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
                             <th><i class="ui envelope outline teal icon"></i></th>
-                            <td class="back">{_T string="Send an email"}</td>
+                            <td class="back">{{ _T('Send an email') }}</td>
                             <th><i class="ui building icon"></i></th>
-                            <td class="back">{_T string="Is a company"}</td>
+                            <td class="back">{{ _T('Is a company') }}</td>
                         </tr>
 
                         <tr>
                             <th><i class="ui male icon"></i></th>
-                            <td class="back">{_T string="Is a man"}</td>
+                            <td class="back">{{ _T('Is a man') }}</td>
                             <th><i class="ui female icon"></i></th>
-                            <td class="back">{_T string="Is a woman"}</td>
+                            <td class="back">{{ _T('Is a woman') }}</td>
                         </tr>
                         <tr>
                             <th><i class="ui user shield red icon"></i></th>
-                            <td class="back">{_T string="Admin"}</td>
+                            <td class="back">{{ _T('Admin') }}</td>
                             <th><i class="ui id card alternate orange icon"></i></th>
-                            <td class="back">{_T string="Staff member"}</td>
+                            <td class="back">{{ _T('Staff member') }}</td>
 
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {_T string="Close"}</div></div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T('Close') }}</div></div>
         </div>
-{/if}
-{/block}
+    {% endif %}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
         <script type="text/javascript">
 {if $nb_members != 0}
         var _checkselection = function() {
@@ -519,7 +524,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             return true;
         }
 {/if}
-        {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
+        {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
         $(function(){
 {if $nb_members != 0}
             var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment"><a href="#" class="checkall ui blue tertiary button">{_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert ui blue tertiary button">{_T string="Invert selection" escape="js"}</a></div><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{_T string="Show legend" escape="js"}</a></div></div>';
@@ -550,11 +555,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                                 _el.remove();
                             },
                             buttons: {
-                                '{_T string="Resume"}': function() {
+                                '{{ _T('Resume') }}': function() {
                                     $(this).dialog( "close" );
-                                    location.href = '{path_for name="mailing"}';
+                                    location.href = '{{ path_for('mailing') }}';
                                 },
-                                '{_T string="New"}': function() {
+                                '{{ _T('New') }}': function() {
                                     $(this).dialog( "close" );
                                     //add required controls to the form, change its action URI, and send it.
                                     var _form = $('#listform');
@@ -575,7 +580,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     if (this.id == 'masscontributions') {
                         event.preventDefault();
                         $.ajax({
-                            url: '{path_for name="batch-memberslist"}',
+                            url: '{{ path_for('batch-memberslist') }}',
                             type: "POST",
                             data: {
                                 ajax: true,
@@ -637,14 +642,14 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                             var _data = _form.serialize();
                             _data = _data + "&search_title=" + $('#search_title').val();
                             $.ajax({
-                                url: '{path_for name="saveSearch"}',
+                                url: '{{ path_for('saveSearch') }}',
                                 type: "POST",
                                 data: _data,
                                 datatype: 'json',
                                 {include file="js_loader.tpl"},
                                 success: function(res) {
                                     $.ajax({
-                                        url: '{path_for name="ajaxMessages"}',
+                                        url: '{{ path_for('ajaxMessages') }}',
                                         method: "GET",
                                         success: function (message) {
                                             $('#asso_name').after(message);
@@ -665,7 +670,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         });
 {if $nb_members != 0}
         {include file="js_removal.tpl"}
-        {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="batch-memberslist"}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
+        {include file="js_removal.tpl" selector="#delete" deleteurl="'{{ path_for('batch-memberslist') }}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
 
         var _bindmassres = function(res) {
             res.find('#btncancel')
@@ -691,7 +696,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 return false;
             }
             $.ajax({
-                url: '{path_for name="batch-memberslist"}',
+                url: '{{ path_for('batch-memberslist') }}',
                 type: "POST",
                 data: {
                     ajax: true,
@@ -749,7 +754,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                                                 window.location.href = _form.find('input[name=redirect_uri]').val();
                                             } else {
                                                 $.ajax({
-                                                    url: '{path_for name="ajaxMessages"}',
+                                                    url: '{{ path_for('ajaxMessages') }}',
                                                     method: "GET",
                                                     success: function (message) {
                                                         $('#asso_name').after(message);
@@ -791,7 +796,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 _selecteds.push($(this).val());
             });
             $.ajax({
-                url: '{path_for name="attendance_sheet_details"}',
+                url: '{{ path_for('attendance_sheet_details') }}',
                 type: "POST",
                 data: {
                     ajax: true,
@@ -833,4 +838,4 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         }
 {/if}
     </script>
-{/block}
+{% endblock %}
