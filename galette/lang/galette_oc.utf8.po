@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-21 13:33+0000\n"
+"PO-Revision-Date: 2022-01-28 10:56+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -2054,10 +2054,8 @@ msgid "Amount (in letters)"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:403
-#, fuzzy
-#| msgid "date"
 msgid "Full date"
-msgstr "data"
+msgstr "Data"
 
 #: ../lib/Galette/Features/Replacements.php:407
 msgid "Contribution year"
@@ -2097,8 +2095,6 @@ msgid "None"
 msgstr "Degun"
 
 #: ../lib/Galette/Features/Replacements.php:789
-#, fuzzy
-#| msgid "General information"
 msgid "Member information"
 msgstr "Informacions generalas"
 
