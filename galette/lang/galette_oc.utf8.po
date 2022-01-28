@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-28 10:56+0000\n"
+"PO-Revision-Date: 2022-01-29 11:56+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -1315,8 +1315,6 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:1184
 #: ../lib/Galette/Features/Replacements.php:784
-#, fuzzy
-#| msgid "General information"
 msgid "Main information"
 msgstr "Informacions generalas"
 
@@ -1966,8 +1964,6 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:265
 #: ../lib/Galette/Features/Replacements.php:357
-#, fuzzy
-#| msgid "First name"
 msgid "Last name"
 msgstr "Prenom"
 
@@ -1981,10 +1977,8 @@ msgid "Nickname"
 msgstr "Escais"
 
 #: ../lib/Galette/Features/Replacements.php:277
-#, fuzzy
-#| msgid "Reminders"
 msgid "Gender"
-msgstr "Rapèls"
+msgstr "Genre"
 
 #: ../lib/Galette/Features/Replacements.php:281
 msgid "Birth date"
@@ -2185,10 +2179,8 @@ msgid "Late of %days days (since %date)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:809
-#, fuzzy
-#| msgid "members"
 msgid "No longer member"
-msgstr "%count membre"
+msgstr "Plus membre"
 
 #: ../lib/Galette/Entity/Adherent.php:821
 #, php-format
@@ -2361,10 +2353,8 @@ msgid "End date of membership:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:184
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "Transaccion"
+msgstr "ID de Transaccion"
 
 #: ../lib/Galette/Entity/Contribution.php:190
 msgid "Membership extension:"
@@ -2716,10 +2706,8 @@ msgid "Infos"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:282
-#, fuzzy
-#| msgid "Member"
 msgid "Member ID"
-msgstr "Membre"
+msgstr "ID de Membre"
 
 #: ../lib/Galette/Filters/MembersList.php:293
 msgid "All members"
@@ -3102,10 +3090,8 @@ msgid "Failed CSRF check!"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:42
-#, fuzzy
-#| msgid "Member"
 msgid "Member id:"
-msgstr "Membre"
+msgstr "Id. de Membre :"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
@@ -4278,10 +4264,8 @@ msgstr "Paramètres"
 
 #: ../templates/default/preferences.tpl:9
 #: ../templates/default/preferences.tpl:231
-#, fuzzy
-#| msgid "Height:"
 msgid "Rights"
-msgstr "Nautor :"
+msgstr "Drechs"
 
 #: ../templates/default/preferences.tpl:10
 msgid "E-Mail"
@@ -4506,10 +4490,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/preferences.tpl:187
-#, fuzzy
-#| msgid "Default language:"
 msgid "Default payment type:"
-msgstr "Lenga per defaut :"
+msgstr "Pagament per defaut :"
 
 #: ../templates/default/preferences.tpl:193
 msgid "Public pages enabled?"
@@ -4904,10 +4886,8 @@ msgid "Zip - Town"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:508
-#, fuzzy
-#| msgid "Member"
 msgid "Member nubmer"
-msgstr "Membre"
+msgstr "Numèro de Membre"
 
 #: ../templates/default/preferences.tpl:510
 msgid "(Choose address printed below name)"
@@ -5160,12 +5140,11 @@ msgid "See member profile"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:52
-#, fuzzy, php-format
-#| msgid "Contributions"
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "%count contribucion"
-msgstr[1] "%count contribucions"
+msgstr[0] "contribucion de %count"
+msgstr[1] "contribucions de %count"
 
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:31
@@ -5244,10 +5223,8 @@ msgid "Transaction: %s"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:244
-#, fuzzy
-#| msgid "Contributions"
 msgid "Show only '%name' contributions"
-msgstr "%count contribucion"
+msgstr "Veire solament lei contribucions de '%name'"
 
 #: ../templates/default/gestion_contributions.tpl:251
 #: ../templates/default/gestion_transactions.tpl:148
@@ -5519,10 +5496,8 @@ msgid "Show dashboard on login"
 msgstr ""
 
 #: ../templates/default/mass_choose_type.tpl:12
-#, fuzzy
-#| msgid "Contributions"
 msgid "Contribution type"
-msgstr "Contribucions"
+msgstr "Mena de contribucions"
 
 #: ../templates/default/mass_choose_type.tpl:18
 #: ../templates/default/mass_change_members.tpl:49
@@ -5552,8 +5527,8 @@ msgstr ""
 #, php-format
 msgid "%count entry"
 msgid_plural "%count entries"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Percent d’intradas de %count"
+msgstr[1] "Percent d’intradas de %count"
 
 #: ../templates/default/gestion_mailings.tpl:52
 #: ../templates/default/gestion_mailings.tpl:64
@@ -5837,12 +5812,11 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:112
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-#, fuzzy, php-format
-#| msgid "members"
+#, php-format
 msgid "%count member"
 msgid_plural "%count members"
-msgstr[0] "%count membre"
-msgstr[1] "%count membres"
+msgstr[0] "membre de %count"
+msgstr[1] "membres de %count"
 
 #: ../templates/default/gestion_adherents.tpl:132
 msgid "Mbr id"
@@ -5881,10 +5855,8 @@ msgid "Mass change"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:320
-#, fuzzy
-#| msgid "Contributions"
 msgid "Mass add contributions"
-msgstr "Contribucions"
+msgstr "Mei contribucions"
 
 #: ../templates/default/gestion_adherents.tpl:342
 #: ../templates/default/mailing_recipients.tpl:20
@@ -6453,10 +6425,8 @@ msgid "Choice list (one entry per line)."
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:70
-#, fuzzy
-#| msgid "Information"
 msgid "Information:"
-msgstr "Informacions"
+msgstr "Informacions :"
 
 #: ../templates/default/editer_champ.tpl:71
 msgid "Extra information displayed along with dynamic field."
@@ -6967,7 +6937,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
-msgstr "Experimental"
+msgstr "Experimentau"
 
 #: ../templates/default/advanced_search.tpl:104
 msgid "Add new group search criteria"
@@ -7313,12 +7283,11 @@ msgid "Show all members transactions"
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:32
-#, fuzzy, php-format
-#| msgid "Transaction"
+#, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
-msgstr[0] "%count transaccion"
-msgstr[1] "%count transaccions"
+msgstr[0] "Proporcion de transaccion : %count"
+msgstr[1] "Proporcion de transaccions : %count"
 
 #: ../templates/default/gestion_transactions.tpl:86
 #: ../templates/default/gestion_transactions.tpl:156
@@ -7330,10 +7299,8 @@ msgid "Transaction %id"
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:141
-#, fuzzy
-#| msgid "Contributions"
 msgid "Show only '%name' transactions"
-msgstr "%count contribucion"
+msgstr "Veire solament lei contribucions de '%name'"
 
 #: ../templates/default/gestion_transactions.tpl:176
 msgid "Edit transaction #%id"
@@ -7441,16 +7408,12 @@ msgid "An error occurred sending telemetry information :("
 msgstr ""
 
 #: ../templates/default/edit_socials.tpl:11
-#, fuzzy
-#| msgid "Remove"
 msgid "Remove %type"
-msgstr "Levar"
+msgstr "Levar %type"
 
 #: ../templates/default/edit_socials.tpl:17
-#, fuzzy
-#| msgid "Social networks"
 msgid "Add new social network"
-msgstr "Malhums socials"
+msgstr "Ajustar de malhums socials"
 
 #: ../templates/default/edit_socials.tpl:20
 msgid "Choose or enter your own..."
