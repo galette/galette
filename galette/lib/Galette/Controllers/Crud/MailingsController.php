@@ -498,10 +498,10 @@ class MailingsController extends CrudController
         $this->session->filter_mailings = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+        $mailhist->filters->setSmartyPagination($this->router, $this->view);
         $history_list = $mailhist->getHistory();
         //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+        $mailhist->filters->setSmartyPagination($this->router, $this->view);
 
         // display page
         $this->view->render(

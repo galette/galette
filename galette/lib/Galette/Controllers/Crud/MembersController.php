@@ -160,10 +160,10 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'member.tpl',
+            'pages/member_form.html.twig',
             array(
                 'page_title'        => _T("Subscription"),
-                'parent_tpl'        => 'public_page.tpl',
+                'parent_tpl'        => 'public_page.html.twig',
                 'member'            => $member,
                 'self_adh'          => true,
                 'autocomplete'      => true,
@@ -359,7 +359,7 @@ class MembersController extends CrudController
         $this->session->$varname = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+        $filters->setSmartyPagination($this->router, $this->view, false);
 
         // display page
         $this->view->render(
@@ -876,7 +876,7 @@ class MembersController extends CrudController
         }
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+        $filters->setSmartyPagination($this->router, $this->view, false);
 
         $this->session->ajax_members_filters = $filters;
 
@@ -1173,9 +1173,9 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'member.tpl',
+            'pages/member_form.html.twig',
             array(
-                'parent_tpl'        => 'page.tpl',
+                'parent_tpl'        => 'page.html.twig',
                 'autocomplete'      => true,
                 'page_title'        => $title,
                 'member'            => $member,

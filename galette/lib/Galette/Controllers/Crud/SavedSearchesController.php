@@ -191,7 +191,7 @@ class SavedSearchesController extends CrudController
         $list = $searches->getList(true);
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+        $filters->setSmartyPagination($this->router, $this->view, false);
 
         $this->session->filter_savedsearch = $filters;
 

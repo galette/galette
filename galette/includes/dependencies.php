@@ -142,6 +142,20 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         return $statuses_list[$id];
     });
     $view->getEnvironment()->addFunction($function);
+
+    $view->getEnvironment()->addFunction(
+        new \Twig\TwigFunction('callstatic', function ($class, $method, ...$args) {
+            if (!class_exists($class)) {
+                throw new \Exception("Cannot call static method $method on Class $class: Invalid Class");
+            }
+
+            if (!method_exists($class, $method)) {
+                throw new \Exception("Cannot call static method $method on Class $class: Invalid method");
+            }
+
+            return forward_static_call_array([$class, $method], $args);
+        })
+    );
     //End Twig functions
 
     //Twig globals

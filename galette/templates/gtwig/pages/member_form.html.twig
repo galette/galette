@@ -1,140 +1,140 @@
-{extends file="$parent_tpl"}
+{% extends parent_tpl %}
 
-{block name="content"}
-    {if $member->id}
-        {include file="ui_elements/navigate.tpl"}
-        {include file="ui_elements/member_card.tpl"}
-    {/if}
+{% block content %}
+    {% if member.id %}
+        {% include "elements/navigate.html.twig" with { "mpath": "editMember" } %}
+        {% include "elements/member_card.html.twig" %}
+    {% endif %}
 
-    <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
-    {if !$self_adh}
+    <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", { "id": member.id }) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form">
+    {% if not self_adh %}
             <div class="ui compact segment">
-        {if $member->hasParent() && !$member->isDuplicate()}
+        {% if member.hasParent() and not member.isDuplicate() %}
                 <div class="inline field">
-                    <span class="ui primary ribbon label">{_T string="Attached to:"}</span>
-                    <a href="{path_for name="member" data=["id" => $member->parent->id]}" class="ui label">{$member->parent->sfullname}</a>
-            {if !$member->id}
-                    <input type="hidden" name="parent_id" value="{$member->parent->id}"/>
-            {/if}
+                    <span class="ui primary ribbon label">{{ _T("Attached to:") }}</span>
+                    <a href="{{ path_for("member", { "id": member.parent.id }) }}" class="ui label">{{ member.parent.sfullname }}</a>
+            {% if not member.id %}
+                    <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
+            {% endif %}
                 </div>
-            {if $login->isAdmin() or $login->isStaff() && (!isset($addchild) || !$addchild)}
+            {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
                 <div class="inline field">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
-                        <label for="detach_parent">{_T string="Detach?"}</label>
+                        <label for="detach_parent">{{ _T("Detach?") }}</label>
                     </div>
                 </div>
-            {/if}
-        {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren() and isset($members.list)}
-            <input type="checkbox" name="attach" id="attach" value="1"{if $member->isDuplicate()} checked="checked"{/if}/>
-            <label for="attach"><i class="linkify icon"></i> {_T string="Attach member"}<label>
+            {% endif %}
+        {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() and members.list is defined %}
+            <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
+            <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
             <span id="parent_id_elt" class="sr-only">
                 <select name="parent_id" id="parent_id" class="nochosen">
-                    <option value="">{_T string="-- select a name --"}</option>
-                    {foreach $members.list as $k=>$v}
-                        <option value="{$k}"{if $member->isDuplicate() && isset($member->parent) && $member->parent->id eq $k} selected="selected"{/if}>{$v}</option>
-                    {/foreach}
+                    <option value="">{{ _T("-- select a name --") }}</option>
+                    {% for k, v in members.list %}
+                        <option value="{{ k }}"{% if member.isDuplicate() and member.parent is defined and member.parent.id == k %} selected="selected"{% endif %}>{{ v }}</option>
+                    {% endfor %}
                 </select>
             </span>
-            {if $member->isDuplicate()}
+            {% if member.isDuplicate() %}
                 <input type="hidden" name="duplicate" value="1" />
-            {/if}
-        {else if $member->hasChildren()}
+            {% endif %}
+        {% elseif member.hasChildren() %}
                 <div class="inline field">
-                    <span class="ui primary ribbon label">{_T string="Parent of:"}</span>
-            {foreach from=$member->children item=child}
-                    <a href="{path_for name="member" data=["id" => $child->id]}" class="ui label">{$child->sfullname}</a>{if not $child@last}, {/if}
-            {/foreach}
+                    <span class="ui primary ribbon label">{{ _T("Parent of:") }}</span>
+            {% for child in member.children %}
+                    <a href="{{ path_for("member", { "id": child.id }) }}" class="ui label">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
                 </div>
-        {/if}
+        {% endif %}
             </div>
-    {/if}
-            {* Main form entries*}
-            {include file="forms_types.tpl"}
-            {* Dynamic entries *}
-            {include file="edit_dynamic_fields.tpl" object=$member}
-            {include file="edit_socials.tpl" socials=$member->socials social_fieldset_class="galette_form" social_fieldset_legend_class="ui-state-active ui-corner-top"}
+    {% endif %}
+            {# Main form entries #}
+            {% include "components/form.html.twig" %}
+            {# Dynamic entries #}
+            {% include "components/edit_dynamic_fields.html.twig" with { object: member } %}
+            {% include "elements/edit_socials.html.twig" with { socials: member.socials, social_fieldset_class: "galette_form", social_fieldset_legend_class: "ui-state-active ui-corner-top"} %}
 
-    {if !$member->id && !$self_adh}
-        {if ($login->isAdmin() or $login->isStaff())}
+    {% if not member.id and not self_adh %}
+        {% if login.isAdmin() or login.isStaff() %}
             <div class="ui center aligned segment">
                 <div class="inline field">
-                    <label for="redirect_on_create">{_T string="After member creation:"}</label>
+                    <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
                     <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown nochosen">
-                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
-                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
-                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
-                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
-                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
-                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
                     </select>
                 </div>
             </div>
-        {else}
-            <input type="hidden" name="redirect_on_create" value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"/>
-        {/if}
-        {if isset($addchild) && $addchild}
+        {% else %}
+            <input type="hidden" name="redirect_on_create" value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW')}"/>
+        {% endif %}
+        {% if addchild is defined and addchild %}
             <input type="hidden" name="addchild" value="true"/>
-        {/if}
-    {/if}
-        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
+        {% endif %}
+    {% endif %}
+        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff())) %}
             <div class="ui center aligned segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {# if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if#}/>
                         <label for="mail_confirm">
-            {if $member->id}
-                            {_T string="Notify member his account has been modified"}
-            {else}
-                            {_T string="Notify member his account has been created"}
-            {/if}
+            {% if member.id %}
+                            {{ _T("Notify member his account has been modified") }}
+            {% else %}
+                            {{ _T("Notify member his account has been created") }}
+            {% endif %}
                         </label>
                         <br/>
                         <span class="exemple">
-            {if $member->id}
-                            {_T string="Member will be notified by email his account has been modified."}
-            {else}
-                            {_T string="Member will receive his username and password by email, if he has an address."}
-            {/if}
+            {% if member.id %}
+                            {{ _T("Member will be notified by email his account has been modified.") }}
+            {% else %}
+                            {{ _T("Member will receive his username and password by email, if he has an address.") }}
+            {% endif %}
                         </span>
                     </div>
                 </div>
             </div>
-        {/if}
+        {% endif %}
             <div class="ui basic center aligned fitted segment">
                 <button type="submit" name="valid" class="action ui labeled icon primary button">
-                    <i class="save icon"></i> {_T string="Save"}
+                    <i class="save icon"></i> {{ _T("Save") }}
                 </button>
-            {foreach item=entry from=$hidden_elements}
-                {if $entry->field_id neq 'mdp_adh'}
-                    {assign var="title" value=null}
-                    {assign var="tip" value=null}
-                    {assign var="size" value=null}
-                    {assign var="propname" value=$entry->propname}
-                    {if $entry->field_id eq 'activite_adh'}
-                        {assign var="value" value=$member->isActive()}
-                    {else}
-                        {assign var="value" value=$member->$propname}
-                    {/if}
-                    {assign var="checked" value=null}
-                    {assign var="example" value=null}
+            {% for entry in hidden_elements %}
+                {% if entry.field_id != 'mdp_adh' %}
+                    {% set title = null %}
+                    {% set tip = null %}
+                    {% set size = null %}
+                    {% set propname = entry.propname %}
+                    {% if entry.field_id == 'activite_adh' %}
+                        {% set value = member.isActive() %}
+                    {% else%}
+                        {% set value = attribute(member, propname) %}
+                    {% endif %}
+                    {% set checked = null %}
+                    {% set example = null %}
 
-                    {if $value neq '' and $entry->field_id neq 'parent_id'}
-                        {include
-                            file="forms_types/hidden.tpl"
-                            name=$entry->field_id
-                            id=$entry->field_id
-                            value=$value
-                        }
-                    {/if}
-                {/if}
-            {/foreach}
-            {include file="forms_types/csrf.tpl"}
+                    {% if value != '' and entry.field_id != 'parent_id' %}
+                        {% include "components/forms/hidden.html.twig" with {
+                                name: entry.field_id,
+                                id: entry.field_id,
+                                value: value
+                            }
+                        %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% include "components/forms/csrf.html.twig" %}
             </div>
         </form>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
         <script type="text/javascript">
             {include file="js_chosen_adh.tpl" js_chosen_id="#parent_id"}
             $(function() {
@@ -162,7 +162,7 @@
                     showOn: 'button',
                     maxDate: '-0d',
                     yearRange: '-200:+0',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
                 });
                 $('#date_crea_adh').datepicker({
                     changeMonth: true,
@@ -170,11 +170,11 @@
                     showOn: 'button',
                     maxDate: '-0d',
                     yearRange: 'c-10:c+0',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
                 });*/
 
-{if !$self_adh}
-                {* Groups popup *}
+{% if not self_adh %}
+                {# Groups popup #}
                 $('#btngroups, #btnmanagedgroups').click(function(){
                     var _managed = false;
                     if ( $(this).attr('id') == 'btnmanagedgroups' ) {
@@ -190,28 +190,28 @@
                         };
                     });
                     $.ajax({
-                        url: '{path_for name="ajax_groups"}',
+                        url: '{{ path_for("ajax_groups") }}',
                         type: "POST",
                         data: {
                             ajax: true,
                             groups: _groups,
                             managed: _managed
                         },
-                        {include file="js_loader.tpl"},
+                        {% include "elements/js/loader.js.twig" %},
                         success: function(res){
                             _groups_dialog(res, _groups, _managed);
                         },
                         error: function() {
-                            alert("{_T string="An error occurred displaying groups interface :(" escape="js"}");
+                            alert("{{ _T("An error occurred displaying groups interface :(")|e('js') }}");
                         }
                     });
                     return false;
                 });
 
                 var _groups_dialog = function(res, _groups, _managed){
-                    var _title = '{_T string="Groups selection" escape="js"}';
+                    var _title = '{{ _T("Groups selection")|e('js') }}';
                     if ( _managed ) {
-                        _title = '{_T string="Managed groups selection" escape="js"}';
+                        _title = '{{ _T("Managed groups selection")|e('js') }}';
                     }
                     var _el = $('<div id="ajax_groups_list" title="' + _title + '"> </div>');
                     _el.appendTo('body').dialog({
@@ -243,9 +243,9 @@
                         var _groups = new Array();
                         var _groups_str = '<br/><strong>';
                         if ( _managed ) {
-                            _groups_str += '{_T string="Manager for:" escape="js"}';
+                            _groups_str += '{{ _T("Manager for:")|e('js') }}';
                         } else {
-                            _groups_str += '{_T string="Member of:" escape="js"}';
+                            _groups_str += '{{ _T("Member of:")|e('js') }}';
                         }
                         _groups_str += '</strong> ';
 
@@ -299,29 +299,29 @@
 
                 }
 
-    {if !$self_adh and !$member->hasChildren()}
+    {% if not self_adh and not member.hasChildren() %}
                 {* Parent selection *}
                 $('#parent_id_elt').removeClass('sr-only');
-        {if !$member->isDuplicate()}
+        {% if not member.isDuplicate() %}
                 $('#parent_id_elt').hide();
-        {/if}
+        {% endif %}
                 $('#attach').on('click', function() {
                     var _checked = $(this).is(':checked');
                     $('#parent_id_elt').toggle();
                 });
-    {/if}
+    {% endif %}
 
-    {if !$self_adh}
-        {if $parent_fields|@count gt 0}
+    {% if not self_adh %}
+        {% if parent_fields|length > 0 %}
                 $('#detach_parent').on('change', function(){
                     var _checked = $(this).is(':checked');
                     var _changes = '';
-            {foreach item=req from=$parent_fields}
-                    _changes += '#{$req}';
-                {if !$req@last}
+            {% for req in parent_fields %}
+                    _changes += '#{{ req }}';
+                {% if not loop.last %}
                     _changes += ',';
-                {/if}
-            {/foreach}
+                {% endif %}
+            {% endfor %}
                     if (_checked) {
                         $(_changes).attr('required', 'required');
                     } else {
@@ -332,25 +332,25 @@
                 $('#parent_id').on('change', function(){
                     var _hasParent = $(this).attr('value') != '';
                     var _changes = '';
-            {foreach item=req from=$parent_fields}
-                    _changes += '#{$req}';
-                {if !$req@last}
+            {% for req in parent_fields %}
+                    _changes += '#{{ req }}';
+                {% if not loop.last %}
                     _changes += ',';
-                {/if}
-            {/foreach}
+                {% endif %}
+            {% endfor %}
                     if (_hasParent) {
                         $(_changes).removeAttr('required');
                     } else {
                         $(_changes).attr('required', 'required');
                     }
                 });
-        {/if}
-    {/if}
-                {include file="photo_dnd.tpl"}
+        {% endif %}
+    {% endif %}
+                {% include "elements/js/photo_dnd.js.twig" %}
 
                 $('#ddn_adh').on('blur', function() {
                     var _bdate = $(this).val();
-                    if ('{_T string="Y-m-d"}' === 'Y-m-d') {
+                    if ('{{ _T("Y-m-d") }}' === 'Y-m-d') {
                         _bdate = new Date(_bdate);
                     } else {
                         //try for dd/mm/yyyy
@@ -361,12 +361,12 @@
                     if (! isNaN(_bdate.getTime())) {
                         var _today = new Date();
                         var _age = Math.floor((_today-_bdate) / (365.25 * 24 * 60 * 60 * 1000));
-                        $('#member_age').html('{_T string=" (%age years old)"}'.replace(/%age/, _age))
+                        $('#member_age').html('{{ _T(" (%age years old)") }}'.replace(/%age/, _age))
                     } else {
                         $('#member_age').html('');
                     }
                 });
-{/if}
+{% endif %}
             });
         </script>
-{/block}
+{% endblock %}

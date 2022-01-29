@@ -1,4 +1,4 @@
-    {if $member->id}
+    {% if member.id %}
                 //Photo dnd
                 // Check if window.FileReader exists to make
                 // sure the browser supports file uploads
@@ -31,14 +31,14 @@
                             $.ajax({
                                     type: 'POST',
                                     dataType: 'json',
-                                    url : '{path_for name="photoDnd"}',
+                                    url : '{{ path_for("photoDnd") }}',
                                     data: {
-                                        member_id: {$member->id},
+                                        member_id: {{ member.id }},
                                         filename: file.name,
                                         filesize: file.size,
                                         file: evt.target.result
                                     },
-                                    {include file="js_loader.tpl"},
+                                    {% include "elements/js/loader.js.twig" %},
                                     success: function(res){
                                         if ( res.result == true ) {
                                             d = new Date();
@@ -49,7 +49,7 @@
 
                                         //display message
                                         $.ajax({
-                                            url: '{path_for name="ajaxMessages"}',
+                                            url: '{{ path_for("ajaxMessages") }}',
                                             method: "GET",
                                             success: function (message) {
                                                 $('#asso_name').after(message);
@@ -57,10 +57,10 @@
                                         });
                                     },
                                 error: function() {
-                                    alert("{_T string="An error occurred sending photo :(" escape="js"}");
+                                    alert("{{ _T("An error occurred sending photo :(")|e('js') }}");
                                 }
                             });
                         }
                     }
                 }
-    {/if}
+    {% endif %}

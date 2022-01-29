@@ -1,16 +1,16 @@
-{if !isset($show_inline)}
+{% if show_inline is not defined %}
 <div class="field">
-{else}
+{% else %}
 <div class="field inline">
-{/if}
-    <label for="{$varname}">{if isset($label)}{$label}{else}{_T string="Payment type:"}{/if}</label>
-    <select name="{$varname}" id="{$varname}" class="ui search dropdown nochosen">
-{if isset($empty)}
-        <option value="{$empty.value}">{$empty.label}</option>
-{/if}
-{assign var="ptypes" value=\Galette\Repository\PaymentTypes::getAll()}
-{foreach from=$ptypes item=ptype}
-        <option value="{$ptype->id}"{if $current eq $ptype->id} selected="selected"{/if}>{$ptype->getName()}</option>
-{/foreach}
+{% endif %}
+    <label for="{{ varname }}">{% if label is edfined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}</label>
+    <select name="{{ varname }}" id="{{ varname }}" class="ui search dropdown nochosen">
+{% if empty is defined %}
+        <option value="{{ empty.value }}">{{ empty.label }}</option>
+{% endif %}
+{% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll') %}
+{% for ptype in ptypes %}
+        <option value="{{ ptype.id }}"{% if current == ptype.id %} selected="selected"{% endif %}>{{ ptype.getName() }}</option>
+{% endfor %}
     </select>
 </div>

@@ -96,7 +96,7 @@
             </div>
         </div>
     </div>
-    {include file="ui_elements/navigate.tpl"}
+    {% include "elements/navigate.html.twig" with { "mpath": "member" } %}
     {include file="ui_elements/member_card.tpl"}
 
     {if $member->hasParent() or $member->hasChildren()}

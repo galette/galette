@@ -137,7 +137,7 @@ class MembersNavigate
                 }
             }
         }
-        $this->view->getSmarty()->assign('navigate', $navigate);
+        $this->view->getEnvironment()->addGlobal('navigate', $navigate);
 
         return $next($request, $response);
     }

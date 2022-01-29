@@ -1,0 +1,55 @@
+<div class="ui horizontal card">
+    <div class="image">
+        {% if login.isAdmin() or login.isStaff() or login.login == member.login %}
+            <a class="ui right corner inverted label">
+                <i class="upload icon"></i>
+            </a>
+        {% endif %}
+        <img
+                src="{{ path_for("photo", { "id": member.id, "rand": time }) }}"
+                width="{{ member.picture.getOptimalWidth() }}"
+                height="{{ member.picture.getOptimalHeight() }}"
+                alt="{{ _T("Picture") }}"
+                {% if login.isAdmin() or login.isStaff() or login.login == member.login %} title="{{ _T("You can drop new image here to get photo changed") }}" class="tooltip"{% endif %}
+                id="photo_adh"/>
+    </div>
+    <div class="content">
+        <div class="header aligned">
+            {{ member.sname }}
+        </div>
+        <div class="meta aligned">
+            <span>{{ member.sstatus }}</span>
+            <span class="ui {{ member.getRowClass() }} horizontal icon label tooltip" title="{{ member.getDues()|escape }}">
+                    <i class="icon cookie"></i>
+                </span>
+        </div>
+        <div class="description">
+            <div class="ui relaxed divided list">
+                {% if member.phone or member.gsm %}
+                    <div class="item">
+                        <div class="content">
+                            <span class="header">{{ _T("Phone") }}</span>
+                            <div class="description">
+                                {% if member.phone %}
+                                    {{ member.phone }}
+                                {% endif %}
+                                {% if member.gsm %}
+                                    {% if member.phone %}, {% endif %}
+                                    {{ member.gsm }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if member.getEmail() %}
+                    <div class="item">
+                        <div class="content">
+                            <span class="blue header">{{ _T("Email") }}</span>
+                            <div class="description">{{ member.getEMail() }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
