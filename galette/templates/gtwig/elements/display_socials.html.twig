@@ -1,20 +1,20 @@
-{if $socials|@count > 0}
+{% if socials|length > 0 %}
 <div class="ui basic fitted segment">
     <div class="ui styled fluid accordion row">
         <div class="active title">
             <i class="icon dropdown"></i>
-            {_T string="Social networks"}
+            {{ _T("Social networks") }}
         </div>
         <div class="active content field">
             <table class="ui very basic striped collapsing stackable padded table">
-    {foreach item=social from=$socials}
+    {% for social in socials %}
             <tr>
-                <th>{$social->getSystemType($social->type)}</th>
-                <td>{$social->displayUrl()}</td>
+                <th>{{ social.getSystemType(social.type) }}</th>
+                <td>{{ social.displayUrl()|raw }}</td>
             </tr>
-    {/foreach}
+    {% endfor %}
         </table>
         </div>
     </div>
 </div>
-{/if}
+{% endif %}

@@ -284,7 +284,7 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'voir_adherent.tpl',
+            'pages/member_show.html.twig',
             array(
                 'page_title'        => _T("Member Profile"),
                 'member'            => $member,
