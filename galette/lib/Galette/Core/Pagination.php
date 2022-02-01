@@ -363,7 +363,7 @@ abstract class Pagination
         ];
 
         if ($this->view->getEnvironment()->getGlobals()['cur_subroute']) {
-            $args['type'] = $this->view->getTemplateVars('cur_subroute');
+            $args['type'] = $this->view->getEnvironment()->getGlobals()['cur_subroute'];
         }
 
         $href = $this->router->pathFor(

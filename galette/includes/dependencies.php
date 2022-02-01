@@ -131,7 +131,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addFunction($function);
 
     $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
-        extract($params);
+        extract($params[0]);
         return Galette\Entity\Adherent::getSName($c->get('zdb'), $id);
     });
     $view->getEnvironment()->addFunction($function);

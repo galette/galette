@@ -533,7 +533,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_' . $raw_type . '.tpl',
+            'pages/' . $raw_type . '_list.html.twig',
             $tpl_vars
         );
         return $response;

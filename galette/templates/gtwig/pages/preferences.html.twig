@@ -165,7 +165,9 @@
                     <div class="field">
                         <label for="pref_numrows">{{ _T("Lines / Page:") }}</label>
                         <select name="pref_numrows" id="pref_numrows" class="ui search dropdown nochosen">
-                            {html_options options=pref_numrows_options selected=pref.pref_numrows}
+                            {% for key, value in pref_numrows_options %}
+                                <option value="{{ key }}"{% if key == pref.pref_numrows %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="field">
@@ -189,13 +191,17 @@
                     <div class="field">
                         <label for="pref_filter_account">{{ _T("Default account filter:") }}</label>
                         <select name="pref_filter_account" id="pref_filter_account" class="ui search dropdown nochosen">
-                            {html_options options=$accounts_options selected=pref.pref_filter_account}
+                            {% for key, value in accounts_options %}
+                                <option value="{{ key }}"{% if key == pref.pref_filter_account %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="field">
                         <label for="pref_default_paymenttype">{{ _T("Default payment type:") }}</label>
                         <select name="pref_default_paymenttype" id="pref_default_paymenttype" class="ui search dropdown nochosen">
-                            {html_options options=$paymenttypes selected=pref.pref_default_paymenttype}
+                            {% for key, value in paymenttypes %}
+                                <option value="{{ key }}"{% if key == pref.pref_default_paymenttype %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>{# /column #}
@@ -255,7 +261,9 @@
                     <div class="field">
                         <label for="pref_statut">{{ _T("Default membership status:") }}</label>
                         <select name="pref_statut" id="pref_statut" class="ui search dropdown nochosen">
-                            {html_options options=$statuts selected=pref.pref_statut}
+                            {% for key, value in statuts %}
+                                <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="field">
