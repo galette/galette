@@ -17,7 +17,7 @@
 # x <hardwired1.0@protonmail.com>, 2020.
 # Luca De Filippo <luca.defilippo@translationcommons.org>, 2020.
 # Lory ~ <dury.lorenzo@gmail.com>, 2021.
-# Takeçi <polygoat@magamo.ovh>, 2021.
+# Takeçi <polygoat@magamo.ovh>, 2021, 2022.
 # dwe sds <radiancenot@tutanota.com>, 2021.
 # Alessandro Mandelli <mandelli.alessandro@ngi.it>, 2021.
 # Cecilia Frego <cecilia.frego@gmail.com>, 2021.
@@ -26,15 +26,15 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2021-12-20 22:52+0000\n"
-"Last-Translator: Giacomo Alessandroni <g.alessandroni@gmail.com>\n"
+"PO-Revision-Date: 2022-02-04 13:37+0000\n"
+"Last-Translator: Takeçi <polygoat@magamo.ovh>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10\n"
+"X-Generator: Weblate 4.11-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -726,7 +726,7 @@ msgstr "Il modello non è stato salvato :("
 
 #: ../lib/Galette/Controllers/PdfController.php:650
 msgid "Invalid link!"
-msgstr "Link non valido!"
+msgstr "Collegamento invalido!"
 
 #: ../lib/Galette/Controllers/AuthController.php:88
 #: ../lib/Galette/Controllers/AuthController.php:148
