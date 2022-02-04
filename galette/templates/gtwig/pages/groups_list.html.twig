@@ -1,64 +1,64 @@
-{extends file="page.tpl"}
+{% extends "page.html.twig" %}
 
-{assign var="canExport" value=$login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
+{% set canExport = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
 
-{function name=group_item}
+{%  macro group_item(login, group) %}
     <div class="item">
-        <a class="" href="{if $login->isGroupManager($group->getId())}{path_for name="groups" data=["id" => $group->getId()]}{else}#{/if}">
-            {$group->getName()}
+        <a class="" href="{% if login.isGroupManager(group.getId()) %}{{ path_for("groups", { "id": group.getId() }) }}{% else %}#{% endif %}">
+            {{ group.getName() }}
         </a>
-        {if $group->getGroups()|@count > 0}
+        {% if group.getGroups()|length > 0 %}
             <i class="dropdown icon"></i>
             <div class="right menu">
-                {foreach item=child_group from=$group->getGroups()}
-                    {group_item group=$child_group}
-                {/foreach}
+                {% for child_group in group.getGroups() %}
+                    {{ _self.group_item(login, child_group) }}
+                {% endfor %}
             </div>
-        {/if}
+        {% endif %}
     </div>
-{/function}
+{% endmacro %}
 
-{block name="content"}
+{% block content %}
 
 <div class="ui labeled dropdown button">
     <a class="ui icon button">
-        <i class="dropdown icon"></i> {_T string="Select a group"}
+        <i class="dropdown icon"></i> {{ _T("Select a group") }}
     </a>
-    <span class="ui secondary label">{$group->getFullName()}</span>
+    <span class="ui secondary label">{{ group.getFullName() }}</span>
     <div class="menu">
-    {foreach item=group from=$groups_root}
-        {group_item group=$group}
-    {/foreach}
+    {% for group in groups_root %}
+        {{ _self.group_item(login, group) }}
+    {% endfor %}
     </div>
 </div>
 
-{if $canExport}
+{% if canExport %}
     <div class="ui buttons">
-        <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="ui labeled icon button tooltip" title="{_T string="Current group (and attached people) as PDF"}">
+        <a href="{{ path_for("pdf_groups", { "id": group.getId() }) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
             <i class="file pdf icon" aria-hidden="true"></i>
-            {_T string="Group PDF"}
+            {{ _T("Group PDF") }}
         </a>
-        <div class="or" data-text="{_T string="or"}"></div>
-        <a href="{path_for name="pdf_groups"}" class="ui button tooltip" title="{_T string="Export all groups and their members as PDF"}">
-            {_T string="All groups PDF"}
+        <div class="or" data-text="{{ _T("or") }}"></div>
+        <a href="{{ path_for("pdf_groups") }}" class="ui button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
+            {{ _T("All groups PDF") }}
         </a>
     </div>
-    {if $login->isAdmin() or $login->isStaff()}
-        <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui labeled icon button tooltip">
+    {% if login.isAdmin() or login.isStaff() %}
+        <a href="{{ path_for("add_group", { "name": "NAME" }) }}" id="newgroup" class="ui labeled icon button tooltip">
             <i class="plus green icon" aria-hiddent="true"></i>
-            {_T string="New group"}
+            {{ _T("New group") }}
         </a>
-    {/if}
-{/if}
+    {% endif %}
+{% endif %}
 
-    {if $group->getId()}
-        {include file="group.tpl" group=$group groups=$groups}
-    {else}
-        {_T string="no group"}
-    {/if}
-{/block}
+    {% if group.getId() %}
+        {% include "elements/group.html.twig" with { "group": group, "groups": groups } %}
+    {% else %}
+        {{ _T("no group") }}
+    {% endif %}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
 <script type="text/javascript">
     $(function() {
         var _mode;
@@ -66,12 +66,12 @@
         {* New group *}
         $('#newgroup').click(function(){
         var _href = $(this).attr('href');
-            var _el = $('<div id="add_group" class="center" title="{_T string="Add a new group"}"><label for="new_group_name">{_T string="Name:"}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>');
+            var _el = $('<div id="add_group" class="center" title="{{ _T("Add a new group") }}"><label for="new_group_name">{{ _T("Name:") }}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>');
             _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
                 buttons: {
-                    "{_T string="Create" escape="js"}": function() {
+                    "{{ _T("Create")|e('js') }}": function() {
                         var _name = $('#new_group_name').val();
                         if ( _name != '' ) {
                             //check uniqueness
@@ -88,18 +88,18 @@
                                         if (res.message) {
                                             alert(res.message)
                                         } else {
-                                            alert('{_T string="The group name you have requested already exists in the database."}');
+                                            alert('{{ _T("The group name you have requested already exists in the database.") }}');
                                         }
                                     } else {
                                         $(location).attr('href', _href.replace('NAME', _name));
                                     }
                                 },
                                 error: function() {
-                                    alert("{_T string="An error occurred checking name uniqueness :(" escape="js"}");
+                                    alert("{{ _T("An error occurred checking name uniqueness :(")|e('js') }}");
                                 }
                             });
                         } else {
-                            alert('{_T string="Pleade provide a group name" escape="js"}');
+                            alert('{{ _T("Pleade provide a group name")|e('js') }}');
                         }
                     }
                 },
@@ -132,7 +132,7 @@
                         _members_dialog(res, _mode);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
+                        alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
                     }
                 });
                 return false;
@@ -141,9 +141,9 @@
         _btnuser_mapping();
 
         var _members_dialog = function(res, mode){
-            var _title = '{_T string="Group members selection" escape="js"}';
+            var _title = '{{ _T("Group members selection")|e('js') }}';
             if ( mode == 'managers' ) {
-                _title = '{_T string="Group managers selection" escape="js"}';
+                _title = '{{ _T("Group managers selection")|e('js') }}';
             }
             var _el = $('<div id="members_list" title="' + _title  + '"> </div>');
             _el.appendTo('body').dialog({
@@ -192,7 +192,7 @@
                         _container.children('div').append(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
+                        alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
                     }
                 });
             });
@@ -245,7 +245,7 @@
                         _members_ajax_mapper(res, gid, _mode);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
+                        alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
                     }
                 });
                 return false;
@@ -253,4 +253,4 @@
         }
     });
 </script>
-{/block}
+{% endblock %}

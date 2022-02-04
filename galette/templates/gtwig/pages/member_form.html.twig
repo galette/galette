@@ -136,7 +136,7 @@
 
 {% block javascripts %}
         <script type="text/javascript">
-            {include file="js_chosen_adh.tpl" js_chosen_id="#parent_id"}
+            {% include "elements/js/choose_adh.js.twig" with { "js_chosen_id": "#parent_id" } %}
             $(function() {
                 $('#is_company').change(function(){
                     $('#company_field').toggleClass('hidden');
@@ -300,7 +300,7 @@
                 }
 
     {% if not self_adh and not member.hasChildren() %}
-                {* Parent selection *}
+                {# Parent selection #}
                 $('#parent_id_elt').removeClass('sr-only');
         {% if not member.isDuplicate() %}
                 $('#parent_id_elt').hide();

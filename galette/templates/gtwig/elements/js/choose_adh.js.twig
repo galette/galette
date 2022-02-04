@@ -1,12 +1,12 @@
-{if !isset($js_chosen_id)}
-    {assign var="js_chosen_id" value="#id_adh"}
-{/if}
+{% if js_chosen_id is not defined %}
+    {% set js_chosen_id = "#id_adh" %}
+{% endif %}
     var _adhselect;
     var _next;
     var _prev;
-    var _current_page = {$members.filters->current_page|default:1};
+    var _current_page = {{ members.filters.current_page|default(1) }};
     var _membersLoaded = function(members) {
-        var _element = $('{$js_chosen_id}').next('.selectize-control');
+        var _element = $('{{ js_chosen_id }}').next('.selectize-control');
         for (var id in members) {
             var member = members[id];
             _adhselect[0].selectize.addOption({
@@ -19,9 +19,9 @@
     }
 
     var _chosenPages = function(element) {
-    {if isset($members.filters) && $members.filters->pages > $members.filters->current_page}
+    {% if members.filters is defined and members.filters.pages > members.filters.current_page %}
         if (typeof _next !== 'undefined') {
-            if (_current_page >= {$members.filters->pages}) {
+            if (_current_page >= {{ members.filters.pages }}) {
                 _next.hide();
             } else {
                 _next.show();
@@ -34,7 +34,7 @@
                 //not enough entries
                 return;
             }
-            _next = $('<div class="option pagination" id="nextpage">{_T string="Load following members..." escape="js"}&nbsp;<i class="ui forward icon"></i></div>');
+            _next = $('<div class="option pagination" id="nextpage">{{ _T("Load following members...")|e('js') }}&nbsp;<i class="ui forward icon"></i></div>');
             _next.on('click', function (event) {
                 event.preventDefault();
 
@@ -45,23 +45,23 @@
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url : '{path_for name="contributionMembers"}',
+                    url : '{{ path_for("contributionMembers") }}',
                     data: _data,
                     success: function(res){
                         _current_page += 1;
                         _membersLoaded(res.members);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred retrieving members :(" escape="js"}");
+                        alert("{{ _T("An error occurred retrieving members :(")|e('js') }}");
                     }
                 });
             });
             element.append(_next);
         }
-    {/if}
-    {if isset($members.filters->current_page) && $members.filters->current_page > 1}
+    {% endif %}
+    {% if members.filters.current_page is defined and members.filters.current_page > 1 %}
         if (typeof _prev !== 'undefined') {
-            if (_current_page >= {$members.filters->pages}) {
+            if (_current_page >= {{ members.filters.pages }}) {
                 _prev.hide();
             } else {
                 _prev.show();
@@ -74,7 +74,7 @@
                 //not enough entries
                 return;
             }
-            _prev = $('<div class="option pagination" id="prevpage">{_T string="Load previous members..." escape="js"}&nbsp;<i class="ui backward icon"></i></div>');
+            _prev = $('<div class="option pagination" id="prevpage">{{ _T("Load previous members...")|e('js') }}&nbsp;<i class="ui backward icon"></i></div>');
             _prev.on('click', function (event) {
                 event.preventDefault();
 
@@ -85,14 +85,14 @@
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url : '{path_for name="contributionMembers"}',
+                    url : '{{ path_for("contributionMembers") }}',
                     data: _data,
                     success: function(res){
                         _current_page -= 1;
                         _membersLoaded(res.members);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred retrieving members :(" escape="js"}");
+                        alert("{{ _T("An error occurred retrieving members :(")|e('js') }}");
                     }
                 });
             });
@@ -100,11 +100,11 @@
         } else if ($('#prevpage').length > 0) {
             $('#prevpage').remove();
         }
-    {/if}
+    {% endif %}
     }
 
     $(function() {
-        _adhselect = $('{$js_chosen_id}').selectize({
+        _adhselect = $('{{ js_chosen_id }}').selectize({
             maxItems:       1,
             onDropdownOpen: _chosenPages,
             render: {
@@ -118,13 +118,13 @@
                 var _this = $(this);
                 $.ajax({
                     type: 'POST',
-                    url: '{path_for name="contributionMembers" data=["page" => 1, "search" => "PLACEBO"]}'.replace(/PLACEBO/, query),
+                    url: '{{ path_for("contributionMembers", {"page": 1, "search": "PLACEBO" }) }}'.replace(/PLACEBO/, query),
                     dataType: "json",
                     error: function() {
                         callback();
                     },
                     success: function (res) {
-                        var _element = $('{$js_chosen_id}').next('.selectize-control');
+                        var _element = $('{{ js_chosen_id }}').next('.selectize-control');
                         callback(res.members);
                     }
                 });

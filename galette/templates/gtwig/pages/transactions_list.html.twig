@@ -255,7 +255,7 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function(){
-                var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend  ui blue tertiary button">{{ _T("Show legend") }}</a></div></div>';
+                var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend  ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
                 $('.listing').before(_checklinks);
                 $('.listing').after(_checklinks);
 

@@ -190,7 +190,7 @@ class TransactionsController extends ContributionsController
         // display page
         $this->view->render(
             $response,
-            'ajouter_transaction.tpl',
+            'pages/transaction_form.html.twig',
             $params
         );
         return $response;

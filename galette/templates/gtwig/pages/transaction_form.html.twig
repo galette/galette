@@ -1,0 +1,277 @@
+{% extends "page.html.twig" %}
+
+{% block content %}
+{% if members.list is defined %}
+    <form action="{% if transaction.id %}{{ path_for("editTransaction", { "id": transaction.id }) }}{% else %}{{ path_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+        <div class="ui top attached header">
+            {{ _T("Transaction details") }}
+        </div>
+        <div class="ui bottom attached segment">
+            <div class="active content field">
+                <div class="field inline">
+                    <label for="trans_desc">{{ _T("Description:") }}</label>
+                    <input type="text" name="trans_desc" id="trans_desc" value="{{ transaction.description }}" maxlength="150" size="30"{% if required.trans_desc == 1 %} required="required"{% endif %}/>
+                </div>
+                <div class="field inline">
+                    <label for="id_adh" >{{ _T("Originator:") }}</label>
+                    <select name="id_adh" id="id_adh" class="nochosen"{% if required.id_adh == 1 %} required="required"{% endif %}>
+    {% if not transaction.member %}
+                        <option value="">{{ _T("-- select a name --") }}</option>
+    {% endif %}
+    {% for k, v in members.list %}
+                        <option value="{{ k }}"{% if transaction.member == k %} selected="selected"{% endif %}>{{ v }}</option>
+    {% endfor %}
+                    </select>
+                </div>
+                <div class="field inline">
+                    <label for="trans_date">{{ _T("Date:") }}</label>
+                    <div class="ui calendar" id="transaction-rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date == 1 %} required="required"{% endif %}/>
+                        </div>
+                    </div>
+                    <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+                </div>
+                <div class="field inline">
+                    <label for="trans_amount">{{ _T("Amount:") }}</label>
+                    <input type="text" name="trans_amount" id="trans_amount" value="{{ transaction.amount }}" maxlength="10"{% if required.trans_amount == 1 %} required="required"{% endif %}/>
+                </div>
+    {% if transaction.id == null or transaction.getMissingAmount() > 0 %}
+                <div class="field inline">
+                    <label class="inline" title="{{ _T("Select a contribution type to create for dispatch transaction") }}">{{ _T("Dispatch type:") }}</label>
+                    <i class="circular inverted primary small icon info tooltip" data-html="{{ _T("Select a contribution type to create for dispatch transaction") }}"></i>
+                    <div class="field inline">
+                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
+                    </div>
+                    <div class="field inline">
+                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                    </div>
+                </div>
+    {% endif %}
+            </div>
+        </div>
+        {% include "components/edit_dynamic_fields.html.twig" with { 'object': transaction } %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" name="valid" class="ui labeled icon primary button action">
+                <i class="save icon"></i> {{ _T("Save") }}
+            </button>
+            <input type="hidden" name="trans_id" value="{{ transaction.id }}"/>
+            <input type="hidden" name="valid" value="1"/>
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+
+    {% if transaction.id %}
+        <div class="ui top attached header">
+            {{ _T("Attached contributions") }}
+        </div>
+        <div class="ui bottom attached segment">
+            <div class="active content field">
+                <div class="ui basic fitted right aligned segment">
+                    {% if transaction.getMissingAmount() > 0 %}
+                        <a
+                            href="{{ path_for("addContribution", { "type": constant('Galette\\Entity\\Contribution::TYPE_FEE') }) }}?trans_id={{ transaction.id }}"
+                            class="ui icon button tooltip"
+                        >
+                            <i class="user check icon"></i>
+                            <span class="sr-only">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
+                        </a>
+                        <a
+                            href="{{ path_for("addContribution", { "type": constant('Galette\\Entity\\Contribution::TYPE_DONATION') }) }}?trans_id={{ transaction.id }}"
+                            class="ui icon button tooltip"
+                        >
+                            <i class="gift icon"></i>
+                            <span class="sr-only">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
+                        </a>
+                        <a
+                            href="#"
+                            class="ui icon button tooltip"
+                            id="contribslist"
+                        >
+                            <i class="cookie icon"></i>
+                            <span class="sr-only">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
+                        </a>
+                    {% endif %}
+                </div>
+                <table class="listing ui celled table">
+                    <thead>
+                        <tr>
+                            <th class="id_row">#</th>
+                            <th class="left date_row">{{ _T("Date") }}</th>
+                            <th class="left date_row">{{ _T("Begin") }}</th>
+                            <th class="left date_row">{{ _T("End") }}</th>
+                            <th class="left">{{ _T("Duration") }}</th>
+                {% if login.isAdmin() or login.isStaff() %}
+                            <th class="left">{{ _T("Member") }}</th>
+                {% endif %}
+                            <th class="left">{{ _T("Type") }}</th>
+                            <th class="left">{{ _T("Amount") }}</th>
+                {% if login.isAdmin() or login.isStaff() %}
+                            <th class="actions_row"></th>
+                {% endif %}
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
+                            <th class="right bgfree">{{ transaction.getDispatchedAmount() }}</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
+                            <th class="right bgfree">{{ transaction.getMissingAmount() }}</th>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                {% for ordre, contrib in contribs %}
+                    {%set mid = contrib.member %}
+                    {%set cclass = contrib.getRowClass() %}
+                        <tr>
+                            <td class="{{ cclass }} center">
+                                {{ ordre+1 }}
+                            </td>
+                            <td class="{{ cclass }} center">{{ contrib.date }}</td>
+                            <td class="{{ cclass }} center">{{ contrib.begin_date }}</td>
+                            <td class="{{ cclass }} center">{{ contrib.end_date }}</td>
+                            <td class="{{ cclass }}">{{ contrib.duration }}</td>
+                    {% if login.isAdmin() or login.isStaff() %}
+                            <td class="{{ cclass }}">{{ memberName({'id': mid}) }}</td>
+                    {% endif %}
+                            <td class="{{ cclass }}">{{ contrib.type.libelle }}</td>
+                            <td class="{{ cclass }} right">{{ contrib.amount }}</td>
+                    {% if login.isAdmin() or login.isStaff() %}
+                            <td class="{{ cclass }} actions_row">
+                                <a
+                                    href="{{ path_for("detach_contribution", { "id": transaction.id, "cid": contrib.id }) }}"
+                                    class="delete tooltip"
+                                >
+                                    <i class="ui red trash icon"></i>
+                                    <span class="sr-only">{{ _T("Detach contribution from this transaction") }}</span>
+                                </a>
+                            </td>
+                    {% endif %}
+                        </tr>
+                {% else %}
+                        <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}9{% else %}7{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
+                {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% else %} {# No members #}
+    <div class="ui warning message" id="warningbox">
+        <h3>{{ _T("No member registered!") }}</h3>
+        <p>
+            {{ _T("Unfortunately, there is no member in your database yet,") }}
+            <br/>
+            <a href="{{ path_for("addMember") }}">{{ _T("please create a member") }}</a>
+        </p>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    {% include "elements/js/choose_adh.js.twig" %}
+        $(function(){
+{% if transaction.id %}
+            $('#contribslist').click(function(){
+                $.ajax({
+                    url: '{{ path_for("contributions", { "type": "contributions" }) }}',
+                    type: "GET",
+                    data: {
+                        ajax: true,
+                        max_amount: '{{ transaction.getMissingAmount() }}'
+                    },
+                    {% include "elements/js/loader.js.twig" %},
+                    success: function(res){
+                        _contribs_dialog(res);
+                    },
+                    error: function() {
+                        alert("{{ _T("An error occurred displaying members interface :(") }}");
+                    }
+                });
+                return false;
+            });
+
+            var _contribs_dialog = function(res){
+                var _el = $('<div id="contributions_list" title="{{ _T("Contributions selection") }}"> </div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    hide: 'fold',
+                    width: '80%',
+                    height: 500,
+                    close: function(event, ui){
+                        _el.remove();
+                        $("#legende").remove();
+                    }
+                });
+                _contribs_ajax_mapper(res);
+            }
+
+            var _contribs_ajax_mapper = function(res){
+                $('#contributions_list').append( res );
+                $("#contributions_list #legende").remove();
+                $("#contributions_list i.fa-filter").remove();
+
+                //Deactivate contributions list links
+                $('#contributions_list tbody a').click(function(){
+                    //for links in body (members links), we de nothing
+                    return false;
+                });
+                _bindNbshow('#contributions_list #filtre');
+                //Use JS to send form
+                $('#contributions_list #filtre').submit(function(){
+                    $.ajax({
+                        url: this.action,
+                        type: "POST",
+                        data: $("#filtre").serialize(),
+                        {% include "elements/js/loader.js.twig" %},
+                        success: function(res){
+                            $('#contributions_list').empty();
+                            _contribs_ajax_mapper(res);
+                        },
+                        error: function() {
+                            alert("{{ _T("An error occurred displaying contributions :(") }}");
+                        }
+                    });
+                    return false;
+                });
+                //Bind pagination and ordering links
+                $('#contributions_list .pages a, #contributions_list thead a').bind({
+                    click: function(){
+                        $.ajax({
+                            url: this.href.substring(this.href.indexOf('?')) + (this.href.indexOf('?') > -1 ? "&" : "?") + "ajax=true",
+                            type: "GET",
+                            {% include "elements/js/loader.js.twig" %},
+                            success: function(res){
+                                $('#contributions_list').empty();
+                                _contribs_ajax_mapper(res);
+                            },
+                            error: function() {
+                                alert("{{ _T("An error occurred displaying contributions :(") }}");
+                            },
+                        });
+                        return false;
+                    }
+                });
+                //Select a row
+                $('#contributions_list .contribution_row').click(function(){
+                    $('#contributions_list').dialog("close");
+                    var _cid = $(this).find('input[name="contrib_sel[]"]').val();
+                    window.location.href = '{{ path_for("attach_contribution", { "id": transaction.id, "cid": "%cid" }) }}'.replace(/%cid/, _cid);
+                }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
+            }
+{% endif %}
+            /*$('#trans_date').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showOn: 'button',
+                buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
+            });*/
+        });
+    </script>
+{% endblock %}

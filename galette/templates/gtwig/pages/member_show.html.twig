@@ -117,7 +117,7 @@
                     <tr>
                         <th>{{ _T("Parent of:") }}</th>
                         <td>
-                {% for chikd in member.children %}
+                {% for child in member.children %}
                             <a href="{{ path_for("member", { "id": child.id}) }}">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
                 {% endfor %}
                         </td>

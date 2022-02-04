@@ -1,0 +1,64 @@
+                     <table class="listing ui celled table">
+                        <thead>
+                            <tr>
+                                <th class="left">
+                                    {{ _T("Name") }}
+                                </th>
+                                <th class="left">
+                                    {{ _T("Nickname") }}
+                                </th>
+                                {% if login.isSuperAdmin() %}
+                                <th>&nbsp;</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+{% for person in persons %}
+                            <tr class="{if $smarty.foreach.allpersons.iteration % 2 eq 0}even{else}odd{/if}">
+                                <td class="username_row">
+                                <input type="hidden" name="{$person_mode}[]" value="{$person->id}"/>
+                                {% if person.isCompany() %}
+                                    <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("[C]") }}</span></i>
+                                {% elseif person.isMan() %}
+                                    <i class="ui male icon tooltip"><span class="sr-only">{{ _T("[M]") }}</span></i>
+                                {% elseif person.isWoman() %}
+                                    <i class="ui female icon tooltip"><span class="sr-only">{{ _T("[W]") }}</span></i>
+                                {% else %}
+                                    <i class="ui icon"></i>
+                                {% endif %}
+                                {% if person.isAdmin() %}
+                                    <i class="ui user shield red icon"><span class="sr-only">{{ _T("[admin]") }}</span></i>
+                                {% elseif person.isStaff() %}
+                                    <i class="ui id card alternate orange icon"><span class="sr-only">{{ _T("[staff]") }}</span></i>
+                                {% else %}
+                                    <i class="ui icon"></i>
+                                {% endif %}
+                                <a href="{{ path_for("member", { "id": person.id }) }}">{{ person.sfullname }}</a>
+                                </td>
+                                <td class="">{{ person.nickname|escape }}</td>
+    {% if login.isSuperAdmin() %}
+                                <td class="actions_row">
+                                    <a
+                                            href="{{ path_for("impersonate", { "id": person.id }) }}"
+                                            class="tooltip"
+                                    >
+                                        <i class="ui user secret grey icon" aria-hidden="true"></i>
+                                        <span class="sr-only">{{ _T("Log in in as %membername")|replace({ "%membername": person.sname }) }}</span>
+                                    </a>
+                                </td>
+                            </tr>
+    {% endif %}
+{% else %}
+                            <tr>
+                                <td colspan="2">
+    {% if person_mode == 'members' %}
+                                    {{ _T("No member attached") }}
+    {% else %}
+                                    {{ _T("No manager attached") }}
+    {% endif %}
+                                </td>
+                            </tr>
+{% endfor %}
+                        </tbody>
+                    </table>
+

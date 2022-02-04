@@ -669,7 +669,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'reminder.tpl',
+            'pages/reminder.html.twig',
             [
                 'page_title'                => _T("Reminders"),
                 'previews'                  => $previews,

@@ -1,0 +1,129 @@
+{% set canEdit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+
+{% set managers = group.getManagers() %}
+{% set members = group.getMembers() %}
+
+<div class="ui stackable pointing inverted menu tabbed">
+    <a class="item active" data-tab="group_information">{{ _T("Information") }}</a>
+    <a class="item" data-tab="group_managers">{{ _T("Managers") }} ({{ managers|length }})</a>
+    <a class="item" data-tab="group_members">{{ _T("Members") }} ({{ members|length }})</a>
+    {% if login.isAdmin() or login.isStaff() %}
+        <div class="right menu">
+            <a href="#" class="ui item hidden tooltip" id="btnusers_small" title="{{ _T("Manage members") }}" data-position="bottom right"><i class="user icon" aria-hidden="true"></i> <span class="sr-only">{{ _T("Manage members") }}</span></a>
+            <a href="#" class="ui item hidden tooltip" id="btnmanagers_small" title="{{ _T("Manage managers") }}" data-position="bottom right"><i class="user shield icon" aria-hidden="true"></i> <span class="sr-only">{{ _T("Manage managers") }}</span></a>
+        </div>
+    {% endif %}
+</div>
+<form class="ui form" action="{{ path_for("doEditGroup", { "id": group.getId() }) }}" method="post" enctype="multipart/form-data" id="group_form">
+    <div class="ui active tab segment" data-tab="group_information">
+        <div class="ui basic segment">
+            {% if group.getId() %}
+                <div class="inline field">
+                    <label>{{ _T("Creation date:") }}</label>
+                    <span>{{ group.getCreationDate() }}</span>
+                </div>
+            {% endif %}
+            <div class="inline field required">
+            {% if canEdit %}
+                <label for="group_name">{{ _T("Name:") }}</label>
+                <input type="text" name="group_name" id="group_name" value="{{ group.getName() }}" maxlength="20" required/>
+            </div>
+            {% else %}
+                <span class="bline">{{ _T("Name:") }}</span>
+                {{ group.getName() }}
+            {% endif %}
+
+            {% if group.getParentGroup() %}
+                {% set pgroup = group.getParentGroup() %}
+            {% endif %}
+            <div class="inline field">
+                {% if canEdit %}
+                    <label for="parent_group">{{ _T("Parent group:") }}</label>
+                    <select name="parent_group" id="parent_group" class="ui search dropdown nochosen">
+                        <option value="">{{ _T("None") }}</option>
+                        {% for g in groups %}
+                            {% if group.canSetParentGroup(g) %}
+                                <option value="{{ g.getId() }}"{% if pgroup is defined and pgroup.getId() == g.getId() %} selected="selected"{% endif %}>{{ g.getIndentName()|raw }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <span class="bline">{{ _T("Parent group:") }}</span>
+                    <span>
+        {% if pgroup is defined %}
+            {{ pgroup.getName() }}
+            <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
+        {% else %}
+            -
+        {% endif %}
+                            </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tab segment" data-tab="group_managers">
+        <div class="ui basic segment">
+            {% if group %}
+                {% include "elements/group_persons.html.twig" with { 'person_mode': "managers", 'persons': managers } %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="ui tab segment" data-tab="group_members">
+        <div class="ui basic segment">
+            {% if group %}
+                {% include "elements/group_persons.html.twig" with { 'person_mode': "members", 'persons': members } %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="ui basic center aligned segment">
+        <button type="submit" name="valid" class="ui labeled icon primary button action">
+            {% if canEdit %}
+            <i class="save icon"></i> {{ _T("Save") }}
+        </button>
+        <input type="hidden" name="id_group" id="id_group" value="{{ group.getId() }}"/>
+        {% include "components/forms/csrf.html.twig" %}
+        {% endif %}
+        {% if login.isAdmin() or login.isStaff() %}
+            <a class="ui labeled icon button delete" id="delete" href="{{ path_for("removeGroup", { "id": group.getId() }) }}">
+                <i class="trash alt red icon"></i>
+                {{ _T("Delete") }}
+            </a>
+        {% endif %}
+    </div>
+</form>
+<script type="text/javascript">
+    $(function() {
+        {# Tabs #}
+        $('.menu.tabbed .item').tab({
+            onVisible: function(tabPath) {
+{% if login.isAdmin() or login.isStaff() %}
+                var _id = tabPath.substring(6);
+                var _btnuid = '#btnusers_small';
+                var _btnmid = '#btnmanagers_small';
+                if ( _id == 'managers'  ) {
+                    $(_btnmid).removeClass('hidden');
+                    if ( !$(_btnuid).hasClass('hidden') ) {
+                        $(_btnuid).addClass('hidden');
+                    }
+                } else if ( _id == 'members' ) {
+                     $(_btnuid).removeClass('hidden');
+                    if ( !$(_btnmid).hasClass('hidden') ) {
+                        $(_btnmid).addClass('hidden');
+                    }
+               } else {
+                    if ( !$(_btnuid).hasClass('hidden') ) {
+                        $(_btnuid).addClass('hidden');
+                    }
+                    if ( !$(_btnmid).hasClass('hidden') ) {
+                        $(_btnmid).addClass('hidden');
+                    }
+               }
+{% endif %}
+            }
+        });
+        {% include "elements/js/removal.js.twig" %}
+    });
+</script>
