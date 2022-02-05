@@ -1,0 +1,202 @@
+{% extends "page.html.twig" %}
+
+{% block content %}
+    <form action="{{ path_for("history_filter") }}" method="post" id="filtre" class="ui form">
+        <div class="ui segment">
+            <div class="four fields">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{{ _T("since") }}</label>
+                        <div class="ui calendar" id="contrib-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$history->filters->start_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{{ _T("until") }}</label>
+                        <div class="ui calendar" id="contrib-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$history->filters->end_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+            {%set users = history.getUsersList() %}
+            {% if users|length > 0 %}
+                    <label for="user_filter">{{ _T("Member") }}</label>
+                    <select name="user_filter" id="user_filter" class="ui search dropdown nochosen">
+                        <option value="0"{% if history.filters.user_filter == 0 %} selected="selected"{% endif %}>{{ _T("Select an user") }}</option>
+                {% for user in users %}
+                        <option value="{{ user }}"{% if history.filters.user_filter == user %} selected="selected"{% endif %}>{{ user }}</option>
+                {% endfor %}
+                    </select>
+            {% endif %}
+                </div>
+                <div class="field">
+            {%set actions = history.getActionsList() %}
+            {% if actions|length > 0 %}
+                    <label for="action_filter">{{ _T("Action") }}</label>
+                    <select name="action_filter" id="action_filter" class="ui search dropdown nochosen">
+                        <option value="0">{{ _T("Select an action") }}</option>
+                {% for action in actions %}
+                        <option value="{{ action|escape }}"{% if history.filters.action_filter == action %} selected="selected"{% endif %}>{{ action|escape }}</option>
+                {% endfor %}
+                    </select>
+            {% endif %}
+                </div>
+                <div class="flexend center aligned field">
+                    <input type="submit" class="ui primary button" value="{{ _T("Filter") }}"/>
+                    <input type="submit" name="clear_filter" class="ui button" value="{{ _T("Clear filter") }}"/>
+                </div>
+            </div>
+        </div>
+        <div class="infoline">
+            <div class="ui basic horizontal segments">
+                <div class="ui basic fitted segment">
+                    <a
+                        id="delete"
+                        class="ui labeled icon button"
+                        href="{{ path_for("flushHistory") }}"
+                    >
+                        <i class="trash red icon"></i>
+                        {{ _T("Flush the logs") }}
+                    </a>
+                    <div class="ui label">{{ _Tn("%count entry", "%count entries", history.getCount())|replace({ "%count": history.getCount() }) }}</div>
+                </div>
+                <div class="ui basic right aligned fitted segment">
+                    <div class="inline field">
+                        <label for="nbshow">{{ _T("Records per page:") }}</label>
+                        <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
+                            {% for key, value in nbshow_options %}
+                                <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                        <noscript> <span><input type="submit" value="{{ _T("Change") }}" /></span></noscript>
+                        {% include "components/forms/csrf.html.twig" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+        <table class="listing ui celled table">
+            <thead>
+                <tr>
+                    <th class="small_head">#</th>
+                    <th class="left date_row">
+                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_DATE") }) }}">
+                            {{ _T("Date") }}
+                            {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_DATE") %}
+                                {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
+                            <i class="ui angle down icon tooltip"></i>
+                                {% else %}
+                            <i class="ui angle up icon tooltip"></i>
+                                {% endif %}
+                            {% endif %} 
+                        </a>
+                    </th>
+                    <th class="left date_row">
+                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_IP") }) }}">
+                            {{ _T("IP") }}
+                            {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_IP") %}
+                                {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
+                            <i class="ui angle down icon tooltip"></i>
+                                {% else %}
+                            <i class="ui angle up icon tooltip"></i>
+                                {% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th class="left date_row">
+                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_USER") }) }}">
+                            {{ _T("User") }}
+                            {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_USER") %}
+                                {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
+                            <i class="ui angle down icon tooltip"></i>
+                                {% else %}
+                            <i class="ui angle up icon tooltip"></i>
+                                {% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th class="left username_row">
+                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION") }) }}">
+                            {{ _T("Action") }}
+                            {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION") %}
+                                {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
+                            <i class="ui angle down icon tooltip"></i>
+                                {% else %}
+                            <i class="ui angle up icon tooltip"></i>
+                                {% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th class="left">
+                        {{ _T("Description") }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+{% if logs|length == 0 %}
+                <tr><td colspan="6" class="emptylist">{{ _T("No log found") }}</td></tr>
+{% else %}
+    {% for log in logs %}
+                <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+                    <td data-scope="row">
+                        {{ loop.index }}
+                        <span class="row-title">
+                            {{ _T("History entry %id")|replace({ "%id": loop.index}) }}
+                        </span>
+                    </td>
+                    <td class="" data-title="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
+                    <td class="" data-title="{{ _T("IP") }}">{{ log.ip_log }}</td>
+                    <td data-title="{{ _T("User") }}">{{ log.adh_log }}</td>
+                    <td data-title="{{ _T("Action") }}">{{ log.action_log|escape }}</td>
+                    <td data-title="{{ _T("Description") }}">
+                        {{ log.text_log|escape }}
+        {% if log.sql_log %}
+                        <span class="sql_log">{{ log.sql_log|escape }}</span>
+        {% endif %}
+                    </td>
+                </tr>
+    {% else %}
+                <tr><td colspan="6" class="emptylist">{{ _T("logs are empty") }}</td></tr>
+    {% endfor %}
+{% endif %}
+            </tbody>
+        </table>
+{% if logs|length != 0 %}
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui inverted pagination menu">
+                <div class="header item">
+                    {{ _T("Pages:") }}
+                </div>
+                {{ pagination|raw }}
+            </div>
+        </div>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                {% include "elements/js/removal.js.twig" %}
+                var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" data-html="{{ _T("Show associated query")|e('js') }}"></i>');
+                $('.sql_log').hide().parent().prepend(_elt);
+                $('.qryhide').click(function() {
+                    $(this).next('.sql_log').show();
+                });
+            });
+
+            /*$('#start_date_filter, #end_date_filter').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showOn: 'button',
+                buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
+            });*/
+        </script>
+{% endblock %}
