@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-07 16:58+0000\n"
+"PO-Revision-Date: 2022-02-08 17:58+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -67,7 +67,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:116
 msgid "Payment types management"
-msgstr ""
+msgstr "Gestion dei sòrtas de pagament"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:157
 msgid "Edit payment type"
@@ -76,7 +76,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:209
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "S'es pas pogut ajustar la mena de pagament «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:218
 #, php-format
@@ -86,7 +86,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:231
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "La mena de pagament «%s» es estat ajustada."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:240
 #, php-format
@@ -170,11 +170,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:76
 msgid "Add field"
-msgstr ""
+msgstr "Ajustar un camp"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "A pas capitat per ajustar lo camp dinamic :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:368
@@ -250,7 +250,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:572
 msgid "Members management"
-msgstr ""
+msgstr "Gestion de membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:775
 msgid "Status label"
@@ -258,7 +258,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:818
 msgid "Advanced search"
-msgstr ""
+msgstr "Recèrca avançada"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1040
 #: ../lib/Galette/Controllers/PdfController.php:151
@@ -313,7 +313,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1648
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Lo membre novèu es estat ajustat."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1651
 msgid "Member account has been modified."
@@ -321,7 +321,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1663
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Una error a capitat per ajustar lo membre au grop."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1677
 msgid "An error occurred adding member to its groups as manager."
@@ -345,7 +345,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:111
 msgid "Titles management"
-msgstr ""
+msgstr "Gestion de títols"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:152
 msgid "Edit title"
@@ -354,7 +354,7 @@ msgstr "Modificar lo títol"
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:205
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "S'es pas pogut ajustar lo títol «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
 #, php-format
@@ -364,7 +364,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "Lo títol '%s' es estat ajustat."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:236
 #, php-format
@@ -394,7 +394,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type has not been added :("
-msgstr ""
+msgstr "La mena %type es pas estata ajustada :("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type #%id has not been updated"
@@ -402,7 +402,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type has been successfully added!"
-msgstr ""
+msgstr "%type es estat ajustat"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type #%id has been successfully updated!"
@@ -429,11 +429,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:504
 msgid "Contributions management"
-msgstr ""
+msgstr "Gestion de contribucions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:504
 msgid "Transactions management"
-msgstr ""
+msgstr "Gestion de transaccions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:602
 msgid "- Unknown payment type!"
@@ -490,28 +490,28 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:129
 msgid "This search is already saved."
-msgstr ""
+msgstr "Aquesta recèrca es ja enregistrada."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:135
 msgid "Search has been saved."
-msgstr ""
+msgstr "La recèrca es enregistrada."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:203
 msgid "Saved searches"
-msgstr ""
+msgstr "Recèrcas sauvagardadas"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:299
 msgid "Remove saved search"
-msgstr ""
+msgstr "Levar la recèrca enregistrada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:306
 #, php-format
 msgid "You are about to remove %count searches."
-msgstr ""
+msgstr "Siatz a mand de levar %count recèrcas."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:355
 msgid "Saved search loaded"
-msgstr ""
+msgstr "Recèrca cargada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:360
 msgid "An SQL error has occurred while loading search."
@@ -588,7 +588,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:483
 msgid "Charts"
-msgstr ""
+msgstr "Tablèus grafics"
 
 #: ../lib/Galette/Controllers/GaletteController.php:504
 msgid "Fields configuration"
@@ -608,11 +608,11 @@ msgstr "Configuracion dei listas"
 
 #: ../lib/Galette/Controllers/GaletteController.php:635
 msgid "List configuration has been successfully stored"
-msgstr ""
+msgstr "La configuracion dei listas es sauvagardada"
 
 #: ../lib/Galette/Controllers/GaletteController.php:640
 msgid "An error occurred while storing list configuration :("
-msgstr ""
+msgstr "I a agut una error dau temps de la sauvagarda de la lista :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:674
 msgid "Reminders"
@@ -656,7 +656,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:255
 #: ../lib/Galette/Controllers/PdfController.php:690
 msgid "Unable to get members list."
-msgstr ""
+msgstr "Impossible de recuperar la lista dei membres."
 
 #: ../lib/Galette/Controllers/PdfController.php:342
 msgid "Attendance sheet configuration"
@@ -674,7 +674,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:488
 msgid "Unable to get groups list."
-msgstr ""
+msgstr "Impossible de recuperar la lista dei grops."
 
 #: ../lib/Galette/Controllers/PdfController.php:546
 msgid "PDF models"
@@ -756,6 +756,8 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
+"Un messatge electronic es estat mandat a vòstra adreiça.<br>Verificatz la "
+"boita de recepcion e seguissètz leis instruccions."
 
 #: ../lib/Galette/Controllers/AuthController.php:358
 msgid "An email has been sent to the member."
@@ -776,12 +778,12 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:395
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr ""
+msgstr "Vòstre còmpte (%s) contèn ges d'adreiça electronica valida"
 
 #: ../lib/Galette/Controllers/AuthController.php:409
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr ""
+msgstr "L'adreiça electronica %s existís pas"
 
 #: ../lib/Galette/Controllers/AuthController.php:415
 #, php-format
@@ -929,11 +931,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:125
 msgid "CVS database Export"
-msgstr ""
+msgstr "Teledescargar la basa de donadas au format CSC"
 
 #: ../lib/Galette/Controllers/CsvController.php:178
 msgid "Table %table is empty, and has not been exported."
-msgstr ""
+msgstr "La taula %table es vueja, es pas estat exportada."
 
 #: ../lib/Galette/Controllers/CsvController.php:196
 #, php-format
@@ -1147,7 +1149,7 @@ msgstr ""
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Quant fa %1$s amb %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, php-format
@@ -1262,7 +1264,7 @@ msgstr ""
 #: ../lib/Galette/Core/Preferences.php:664
 #, php-format
 msgid "Invalid E-Mail address: %s"
-msgstr ""
+msgstr "Adreiça electronica non valida: %s"
 
 #: ../lib/Galette/Core/Preferences.php:678
 msgid "- The username must be composed of at least 4 characters!"
@@ -1433,15 +1435,15 @@ msgstr "a/m/j"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
-msgstr ""
+msgstr "Recèrca escafada (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:530
 msgid "Contributions deleted (%list)"
-msgstr ""
+msgstr "Contribucions escafadas (%list)"
 
 #: ../lib/Galette/Util/Password.php:87
 msgid "Password is blacklisted!"
-msgstr ""
+msgstr "Lo senhau es dins la lista negra !"
 
 #: ../lib/Galette/Util/Password.php:97
 #, php-format
@@ -1578,7 +1580,7 @@ msgstr "fichier"
 
 #: ../lib/Galette/IO/PdfGroups.php:72
 msgid "groups_list"
-msgstr ""
+msgstr "lista de grop"
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
@@ -1593,7 +1595,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:169
 msgid "Managers:"
-msgstr ""
+msgstr "Gestionaris :"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
@@ -1623,7 +1625,7 @@ msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:84
 msgid "filtered_memberslist"
-msgstr ""
+msgstr "lista de membres filtrada"
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/Features/Replacements.php:606
@@ -1749,7 +1751,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:365
 msgid "Email address %address is already used! (%extra)"
-msgstr ""
+msgstr "L'adreiça de corrier electronic %address es ja utilizada ! (%extra)"
 
 #: ../lib/Galette/IO/CsvIn.php:390
 msgid "Lang %lang does not exists!"
@@ -2001,7 +2003,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:297
 #: ../lib/Galette/Filters/MembersList.php:275
 msgid "Address"
-msgstr "Adreça"
+msgstr "Adreiça"
 
 #: ../lib/Galette/Features/Replacements.php:301
 msgid "Zipcode"
@@ -2202,11 +2204,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1309
 msgid "- Non-valid E-Mail address!"
-msgstr ""
+msgstr "- Adreiça de corrier electronic non valida !"
 
 #: ../lib/Galette/Entity/Adherent.php:1327
 msgid "- This E-Mail address is already used by another member!"
-msgstr ""
+msgstr "- Aquesta adreiça electronica es ja utilizada per un autre membre !"
 
 #: ../lib/Galette/Entity/Adherent.php:1334
 #: ../lib/Galette/Entity/Adherent.php:1376
@@ -2247,11 +2249,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1562
 msgid "Member card added"
-msgstr ""
+msgstr "Carta de membre ajustada"
 
 #: ../lib/Galette/Entity/Adherent.php:1570
 msgid "Fail to add new member."
-msgstr ""
+msgstr "L'enregistrament dau membre novèu a pas capitat."
 
 #: ../lib/Galette/Entity/Adherent.php:1600
 msgid "Member card updated"
@@ -2306,11 +2308,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:445
 msgid "Transaction added"
-msgstr ""
+msgstr "Transaccion ajustada"
 
 #: ../lib/Galette/Entity/Transaction.php:451
 msgid "Fail to add new transaction."
-msgstr ""
+msgstr "La transaccion novèla a pas capitat."
 
 #: ../lib/Galette/Entity/Transaction.php:465
 msgid "Transaction updated"
@@ -2374,11 +2376,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:656
 msgid "Contribution added"
-msgstr ""
+msgstr "Contribucion ajustada"
 
 #: ../lib/Galette/Entity/Contribution.php:662
 msgid "Fail to add new contribution."
-msgstr ""
+msgstr "L'ajustament de la contribucion novèla a pas capitat."
 
 #: ../lib/Galette/Entity/Contribution.php:677
 msgid "Contribution updated"
@@ -2557,11 +2559,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:449
 msgid "Group added"
-msgstr ""
+msgstr "Grop ajustat"
 
 #: ../lib/Galette/Entity/Group.php:454
 msgid "Fail to add new group."
-msgstr ""
+msgstr "L'ajustament dau grop novèu a pas capitat."
 
 #: ../lib/Galette/Entity/Group.php:472
 msgid "Group updated"
@@ -3042,7 +3044,7 @@ msgstr "Identificant"
 
 #: ../includes/i18n.inc.php:326
 msgid "Email address"
-msgstr "Adreça de corrièl"
+msgstr "Adreiça de corrier electronic"
 
 #: ../includes/i18n.inc.php:328
 msgid "City"
@@ -3127,11 +3129,11 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:120
 msgid "Address:"
-msgstr "Adreça :"
+msgstr "Adreiça :"
 
 #: ../includes/fields_defs/members_fields.php:129
 msgid "Address (continuation)"
-msgstr "Adreça (seguida)"
+msgstr "Adreiça (seguida)"
 
 #: ../includes/fields_defs/members_fields.php:137
 msgid "Zip Code:"
@@ -3712,7 +3714,7 @@ msgstr "Configuracion"
 
 #: ../install/steps/check.php:73
 msgid "Exports"
-msgstr ""
+msgstr "Teledescargaments"
 
 #: ../install/steps/check.php:74
 msgid "Imports"
@@ -4036,11 +4038,11 @@ msgstr ""
 
 #: ../templates/default/page.tpl:44 ../templates/default/desktop.tpl:31
 msgid "View and manage groups"
-msgstr ""
+msgstr "Veire e governar lei grops"
 
 #: ../templates/default/page.tpl:44
 msgid "Manage groups"
-msgstr ""
+msgstr "Governar lei grops"
 
 #: ../templates/default/page.tpl:47 ../templates/default/desktop.tpl:33
 msgid "View and filter contributions"
@@ -4060,11 +4062,11 @@ msgstr ""
 
 #: ../templates/default/page.tpl:51
 msgid "Add new member in database"
-msgstr ""
+msgstr "Ajustar un membre novèu dins la basa de donadas"
 
 #: ../templates/default/page.tpl:51
 msgid "Add a member"
-msgstr ""
+msgstr "Ajustar un membre"
 
 #: ../templates/default/page.tpl:54
 msgid "Add new membership fee in database"
@@ -4084,16 +4086,16 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:48
 #: ../templates/default/voir_adherent.tpl:94
 msgid "Add a donation"
-msgstr ""
+msgstr "Ajustar un don"
 
 #: ../templates/default/page.tpl:56
 msgid "Add new transaction in database"
-msgstr ""
+msgstr "Ajustar una transaccion novèla dins la basa de donadas"
 
 #: ../templates/default/page.tpl:56
 #: ../templates/default/gestion_transactions.tpl:28
 msgid "Add a transaction"
-msgstr ""
+msgstr "Ajustar una transaccion"
 
 #: ../templates/default/page.tpl:57 ../templates/default/desktop.tpl:36
 msgid "Send reminders to late members"
@@ -4105,11 +4107,11 @@ msgstr ""
 
 #: ../templates/default/page.tpl:59 ../templates/default/desktop.tpl:35
 msgid "Manage mailings that has been sent"
-msgstr ""
+msgstr "Governar lei messatges mandats"
 
 #: ../templates/default/page.tpl:59
 msgid "Manage mailings"
-msgstr ""
+msgstr "Governar lei messatges en nombre"
 
 #: ../templates/default/page.tpl:60
 msgid "Export some data in various formats"
@@ -4149,7 +4151,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:72
 msgid "Public pages"
-msgstr ""
+msgstr "Paginas publicas"
 
 #: ../templates/default/page.tpl:83 ../templates/default/desktop.tpl:39
 msgid ""
@@ -4180,7 +4182,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:87
 msgid "Manage additional fields for various forms"
-msgstr ""
+msgstr "Governar lei camps suplementaris per lei formularis"
 
 #: ../templates/default/page.tpl:87
 msgid "Dynamic fields"
@@ -4192,15 +4194,15 @@ msgstr ""
 
 #: ../templates/default/page.tpl:89
 msgid "Manage statuses"
-msgstr ""
+msgstr "Governar leis estatuts"
 
 #: ../templates/default/page.tpl:90
 msgid "Manage contributions types"
-msgstr ""
+msgstr "Governar lei sòrtas de contribucions"
 
 #: ../templates/default/page.tpl:91
 msgid "Manage emails texts and subjects"
-msgstr ""
+msgstr "Reglar lo tèxte dei messatges electronics e lei sujèctes"
 
 #: ../templates/default/page.tpl:91
 msgid "Emails content"
@@ -4208,15 +4210,15 @@ msgstr ""
 
 #: ../templates/default/page.tpl:92
 msgid "Manage titles"
-msgstr ""
+msgstr "Governar lei títols"
 
 #: ../templates/default/page.tpl:93
 msgid "Manage PDF models"
-msgstr ""
+msgstr "Governar lei modèles PDF"
 
 #: ../templates/default/page.tpl:94
 msgid "Manage payment types"
-msgstr ""
+msgstr "Governar lei menas de pagament"
 
 #: ../templates/default/page.tpl:94
 msgid "Payment types"
@@ -4339,7 +4341,7 @@ msgstr " (seguida)"
 
 #: ../templates/default/preferences.tpl:71
 msgid "Postal address:"
-msgstr ""
+msgstr "Adreiça postala :"
 
 #: ../templates/default/preferences.tpl:72
 msgid ""
@@ -4495,11 +4497,11 @@ msgstr "Pagament per defaut :"
 
 #: ../templates/default/preferences.tpl:193
 msgid "Public pages enabled?"
-msgstr ""
+msgstr "Paginas publicas activadas ?"
 
 #: ../templates/default/preferences.tpl:197
 msgid "Show public pages for"
-msgstr ""
+msgstr "Monstrar lei paginas publicas per"
 
 #: ../templates/default/preferences.tpl:199
 msgid "Everyone"
@@ -4878,7 +4880,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:502
 msgid "Address type:"
-msgstr ""
+msgstr "Mena d'adreiça :"
 
 #: ../templates/default/preferences.tpl:505
 #: ../templates/default/ajax_members.tpl:9
@@ -5063,7 +5065,7 @@ msgstr ""
 #: ../templates/default/display_dynamic_fields.tpl:3
 #: ../templates/default/edit_dynamic_fields.tpl:103
 msgid "Additionnal fields:"
-msgstr ""
+msgstr "Camp suplementari :"
 
 #: ../templates/default/display_dynamic_fields.tpl:34
 #, php-format
@@ -5273,7 +5275,7 @@ msgstr "Suprimir"
 #: ../templates/default/gestion_contributions.tpl:309
 #: ../templates/default/gestion_adherents.tpl:352
 msgid "Export as CSV"
-msgstr ""
+msgstr "Teledescargar en CSV"
 
 #: ../templates/default/gestion_contributions.tpl:317
 #: ../templates/default/gestion_contributions.tpl:318
@@ -5777,7 +5779,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:83
 msgid "Members that have an email address:"
-msgstr ""
+msgstr "Membres que tènon una adreiça electronica :"
 
 #: ../templates/default/gestion_adherents.tpl:87
 #: ../templates/default/advanced_search.tpl:42
@@ -5791,7 +5793,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:93
 msgid "Advanced search mode"
-msgstr ""
+msgstr "Mòde de recèrca avançat"
 
 #: ../templates/default/gestion_adherents.tpl:94
 msgid "Change search criteria"
@@ -5925,7 +5927,7 @@ msgstr "Novèl"
 
 #: ../templates/default/gestion_adherents.tpl:569
 msgid "Search title"
-msgstr ""
+msgstr "Recercar lo títol"
 
 #: ../templates/default/gestion_adherents.tpl:746
 msgid "Attendance sheet details"
@@ -5945,7 +5947,7 @@ msgstr "Data de creacion"
 
 #: ../templates/default/saved_searches.tpl:27
 msgid "Search parameters"
-msgstr ""
+msgstr "Recercar lei paramètres"
 
 #: ../templates/default/saved_searches.tpl:28
 msgid "Show parameters"
@@ -5953,15 +5955,15 @@ msgstr ""
 
 #: ../templates/default/saved_searches.tpl:43
 msgid "Load saved search"
-msgstr ""
+msgstr "Teledescargar la recèrca enregistrada"
 
 #: ../templates/default/saved_searches.tpl:51
 msgid "Delete saved search"
-msgstr ""
+msgstr "Levar la recèrca enregistrada"
 
 #: ../templates/default/saved_searches.tpl:56
 msgid "no search"
-msgstr ""
+msgstr "ges de recèrca"
 
 #: ../templates/default/500.tpl:6
 msgid "Application error"
@@ -6267,7 +6269,7 @@ msgstr "Informacions"
 
 #: ../templates/default/group.tpl:7 ../templates/default/group.tpl:61
 msgid "Managers"
-msgstr ""
+msgstr "Administrators"
 
 #: ../templates/default/group.tpl:35 ../templates/default/group.tpl:45
 msgid "Parent group:"
@@ -6275,11 +6277,11 @@ msgstr ""
 
 #: ../templates/default/group.tpl:81
 msgid "Manage members"
-msgstr ""
+msgstr "Governar lei membres"
 
 #: ../templates/default/group.tpl:82
 msgid "Manage managers"
-msgstr ""
+msgstr "Governar leis administrators"
 
 #: ../templates/default/group.tpl:100
 msgid "Current group (and attached people) as PDF"
@@ -6480,7 +6482,7 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:20
 msgid "Manage selected members"
-msgstr ""
+msgstr "Governar lei membres seleccionats"
 
 #: ../templates/default/mailing_adherents.tpl:38
 msgid "Existing attachments:"
@@ -6890,7 +6892,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:6
 msgid "Simple search"
-msgstr ""
+msgstr "Recercar simplament"
 
 #: ../templates/default/advanced_search.tpl:17
 msgid "Membership status"
@@ -6933,7 +6935,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Advanced groups search"
-msgstr ""
+msgstr "Recèrca avançada sus lei grops"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
@@ -6962,7 +6964,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:202
 msgid "Free search"
-msgstr ""
+msgstr "Recercar liurament"
 
 #: ../templates/default/advanced_search.tpl:209
 msgid "Add new free search criteria"
@@ -7022,7 +7024,7 @@ msgstr "finís per"
 
 #: ../templates/default/directlink.tpl:6
 msgid "Please confirm your email address:"
-msgstr ""
+msgstr "Siatz pregats de confirmar vòstra adreiça electronica :"
 
 #: ../templates/default/directlink.tpl:9
 msgid "Get my document"
@@ -7159,7 +7161,7 @@ msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:139
 msgid "Add a new group"
-msgstr ""
+msgstr "Ajustar un grop novèu"
 
 #: ../templates/default/gestion_groupes.tpl:144
 msgid "Create"
@@ -7413,7 +7415,7 @@ msgstr "Levar %type"
 
 #: ../templates/default/edit_socials.tpl:17
 msgid "Add new social network"
-msgstr "Ajustar de malhums socials"
+msgstr "Ajustar de malhums sociaus"
 
 #: ../templates/default/edit_socials.tpl:20
 msgid "Choose or enter your own..."
@@ -7421,7 +7423,7 @@ msgstr ""
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
-msgstr ""
+msgstr "Ajustar un mòde de pagament"
 
 #: ../templates/default/gestion_paymentstypes.tpl:20
 msgid "Label"
