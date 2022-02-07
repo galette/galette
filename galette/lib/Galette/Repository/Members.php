@@ -1089,15 +1089,16 @@ class Members
                 switch ($this->filters->membership_filter) {
                     case self::MEMBERSHIP_NEARLY:
                         $now = new \DateTime();
-                        $duedate = new \DateTime();
-                        $duedate->modify('+1 month');
-                        $select->where->greaterThan(
-                            'date_echeance',
-                            $now->format('Y-m-d')
-                        )->lessThanOrEqualTo(
-                            'date_echeance',
-                            $duedate->format('Y-m-d')
-                        );
+                        $due_date = clone $now;
+                        $due_date->modify('+30 days');
+                        $select->where
+                            ->greaterThanOrEqualTo(
+                                'date_echeance',
+                                $now->format('Y-m-d')
+                            )->lessThanOrEqualTo(
+                                'date_echeance',
+                                $due_date->format('Y-m-d')
+                            )->equalTo('bool_exempt_adh', new Expression('false'));
                         break;
                     case self::MEMBERSHIP_LATE:
                         $select->where
@@ -1608,9 +1609,9 @@ class Members
     }
 
     /**
-     * Loads data to produce a Pie chart based on members state of dues
+     * Get reminders count based on members state of dues
      *
-     * @return void
+     * @return array
      */
     public function getRemindersCount()
     {
@@ -1618,11 +1619,7 @@ class Members
 
         $reminders = array();
 
-        $soon_date = new \DateTime();
-        $soon_date->modify('+1 month');
-
-        $now = new \DateTime();
-
+        // Count close to be expired reminders
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
             array(
@@ -1637,15 +1634,20 @@ class Members
             $select::JOIN_LEFT
         );
 
-        $select->where
-            ->lessThan('a.date_echeance', $soon_date->format('Y-m-d'))
-            ->greaterThanOrEqualTo('a.date_echeance', $now->format('Y-m-d'));
         $select
             ->where('a.activite_adh=true')
             ->where('a.bool_exempt_adh=false');
 
-        $select_wo_mail = clone $select;
+        $now = new \DateTime();
+        $due_date = clone $now;
+        $due_date->modify('+30 days');
 
+        $select->where
+            ->greaterThanOrEqualTo('a.date_echeance', $now->format('Y-m-d'))
+            ->lessThanOrEqualTo('a.date_echeance', $due_date->format('Y-m-d'));
+
+        $select_wo_mail = clone $select;
+        //per default, limit to members who have an email address
         $select->where(
             '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')'
         );
@@ -1661,6 +1663,7 @@ class Members
         $res_wo_mail = $results_wo_mail->current();
         $reminders['nomail']['impending'] = $res_wo_mail->cnt;
 
+        // Count late reminders
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
             array(
@@ -1675,18 +1678,18 @@ class Members
             $select::JOIN_LEFT
         );
 
-        $select->where
-            ->lessThan('a.date_echeance', $now->format('Y-m-d'));
         $select
             ->where('a.activite_adh=true')
             ->where('a.bool_exempt_adh=false');
 
-        $select_wo_mail = clone $select;
+        $select->where
+            ->lessThan('a.date_echeance', $now->format('Y-m-d'));
 
+        $select_wo_mail = clone $select;
+        //per default, limit to members who have an email address
         $select->where(
             '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')'
         );
-
         $select_wo_mail->where(
             '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (parent.email_adh = \'\' OR parent.email_adh IS NULL)'
         );

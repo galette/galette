@@ -101,37 +101,41 @@ class Reminders
             ),
             $select::JOIN_LEFT
         )->join(
-            array('p' => PREFIX_DB . Members::TABLE),
-            'a.parent_id=p.' . Members::PK,
+            array('parent' => PREFIX_DB . Members::TABLE),
+            'a.parent_id=parent.' . Members::PK,
             array(),
             $select::JOIN_LEFT
         );
 
         if ($nomail === false) {
             //per default, limit to members who have an email address
-            $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
+            $select->where(
+                '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')'
+            );
         } else {
-            $select->where('(a.email_adh = \'\' OR a.email_adh IS NULL) AND (p.email_adh = \'\' OR p.email_adh IS NULL)');
+            $select->where(
+                '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (parent.email_adh = \'\' OR parent.email_adh IS NULL)'
+            );
         }
 
         $select->where('a.activite_adh=true')
             ->where('a.bool_exempt_adh=false');
 
+        $now = new \DateTime();
+        $due_date = clone $now;
+        $due_date->modify('+30 days');
         if ($type === Reminder::LATE) {
             $select->where->LessThan(
                 'a.date_echeance',
-                date('Y-m-d', time())
+                $now->format('Y-m-d')
             );
         } else {
-            $now = new \DateTime();
-            $duedate = new \DateTime();
-            $duedate->modify('+1 month');
-            $select->where->greaterThan(
+            $select->where->greaterThanOrEqualTo(
                 'a.date_echeance',
                 $now->format('Y-m-d')
             )->lessThanOrEqualTo(
                 'a.date_echeance',
-                $duedate->format('Y-m-d')
+                $due_date->format('Y-m-d')
             );
         }
 
@@ -150,17 +154,16 @@ class Reminders
                 $date_checked = false;
 
                 $due_date = new \DateTime($r->date_echeance);
-                $now = new \DateTime();
 
                 switch ($type) {
                     case Reminder::IMPENDING:
                         //reminders 30 days and 7 days before
                         $first = clone $due_date;
                         $second = clone $due_date;
-                        $first->modify('-1 month');
-                        $second->modify('-7 day');
+                        $first->modify('-30 days');
+                        $second->modify('-7 days');
                         if ($now >= $first || $now >= $second) {
-                            if ($r->last_reminder == '') {
+                            if ($r->last_reminder === null || $r->last_reminder == '') {
                                 $date_checked = true;
                             } else {
                                 $last_reminder = new \DateTime($r->last_reminder);
@@ -174,9 +177,9 @@ class Reminders
                         //reminders 30 days and 60 days after
                         $first = clone $due_date;
                         $second = clone $due_date;
-                        $first->modify('1 month');
-                        $second->modify('2 month');
-                        if ($now >= $second || $now >= $first) {
+                        $first->modify('+30 days');
+                        $second->modify('+60 days');
+                        if ($now >= $first || $now >= $second) {
                             if ($r->last_reminder === null || $r->last_reminder == '') {
                                 $date_checked = true;
                             } else {

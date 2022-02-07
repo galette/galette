@@ -250,12 +250,13 @@ class Contribution extends GaletteTestCase
     {
         $this->getMemberOne();
         //create contribution for member
-        $bdate = new \DateTime(); // 2020-11-07
-        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
-        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
+        $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
-        $edate = clone $bdate;
-        $edate->add(new \DateInterval('P1Y'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -263,9 +264,9 @@ class Contribution extends GaletteTestCase
             'montant_cotis' => 12,
             'type_paiement_cotis' => 3,
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $bdate->format('Y-m-d'),
-            'date_debut_cotis' => $bdate->format('Y-m-d'),
-            'date_fin_cotis' => $edate->format('Y-m-d'),
+            'date_enreg' => $begin_date->format('Y-m-d'),
+            'date_debut_cotis' => $begin_date->format('Y-m-d'),
+            'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
         $this->createContrib($data);
         $this->array($this->contrib->getRequired())->isIdenticalTo([
@@ -284,9 +285,9 @@ class Contribution extends GaletteTestCase
             'montant_cotis' => 1280,
             'type_paiement_cotis' => 4,
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $bdate->format('Y-m-d'),
-            'date_debut_cotis' => $bdate->format('Y-m-d'),
-            'date_fin_cotis' => $edate->format('Y-m-d'),
+            'date_enreg' => $begin_date->format('Y-m-d'),
+            'date_debut_cotis' => $begin_date->format('Y-m-d'),
+            'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
         $this->createContrib($data);
 
@@ -300,9 +301,9 @@ class Contribution extends GaletteTestCase
             'montant_cotis' => '',
             'type_paiement_cotis' => 4,
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $bdate->format('Y-m-d'),
-            'date_debut_cotis' => $bdate->format('Y-m-d'),
-            'date_fin_cotis' => $edate->format('Y-m-d'),
+            'date_enreg' => $begin_date->format('Y-m-d'),
+            'date_debut_cotis' => $begin_date->format('Y-m-d'),
+            'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
         $this->createContrib($data);
 
@@ -330,9 +331,10 @@ class Contribution extends GaletteTestCase
         );
 
         // First, check for 12 months renewal
-        $expected = new \DateTime();
-        $expected->add(new \DateInterval('P1Y'));
-        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
+        $due_date = new \DateTime();
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
+        $this->string($contrib->end_date)->isIdenticalTo($due_date->format('Y-m-d'));
 
         //unset pref_beg_membership and pref_membership_ext
         $preferences->pref_beg_membership = '';
@@ -352,10 +354,10 @@ class Contribution extends GaletteTestCase
 
         // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
-        $expected = new \DateTime();
-        $expected->setDate(date('Y'), 5, 29);
-        if ($expected < new \DateTime()) {
-            $expected->add(new \DateInterval('P1Y'));
+        $due_date = new \DateTime();
+        $due_date->setDate(date('Y'), 5, 28);
+        if ($due_date <= new \DateTime()) {
+            $due_date->add(new \DateInterval('P1Y'));
         }
 
         $contrib = new \Galette\Entity\Contribution(
@@ -363,22 +365,23 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => 1] // annual fee
         );
-        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
+        $this->string($contrib->end_date)->isIdenticalTo($due_date->format('Y-m-d'));
 
-        // Third, test with beginning of membership date and i2 last months offered
-        $beginning = new \DateTime();
-        $beginning->add(new \DateInterval('P1M'));
-        $preferences->pref_beg_membership = $beginning->format('t/m'); // end of next month
+        // Third, test with beginning of membership date and 2 last months offered
+        $begin_date = new \DateTime();
+        $begin_date->add(new \DateInterval('P1M'));
+        $preferences->pref_beg_membership = $begin_date->format('01/m');
         $preferences->pref_membership_offermonths = 2;
-        $expected = clone $beginning;
-        $expected->add(new \DateInterval('P1Y'));
+        $due_date = new \DateTime($begin_date->format('Y-m-01'));
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
             ['type' => 1] // annual fee
         );
-        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-t'));
+        $this->string($contrib->end_date)->isIdenticalTo($due_date->format('Y-m-d'));
 
         //reset
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
@@ -422,8 +425,9 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
         $now = new \DateTime();
-        $end_date = clone $now;
-        $end_date->add(new \DateInterval('P1Y'));
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
             \Galette\Entity\ContributionsTypes::PK  => 1, //annual fee
@@ -431,7 +435,7 @@ class Contribution extends GaletteTestCase
             'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
             'date_debut_cotis'                      => $now->format(_T("Y-m-d")),
-            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d")),
+            'date_fin_cotis'                        => $due_date->format(_T("Y-m-d")),
             'info_cotis'                            => 'FAKER' . $this->seed
         ];
 
@@ -449,18 +453,20 @@ class Contribution extends GaletteTestCase
         $adh = new \Galette\Entity\Adherent($this->zdb, $adh->id);
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
-        $begin = clone $end_date;
-        $begin->sub(new \DateInterval('P3M'));
-        $end_date = clone $begin;
-        $end_date->add(new \DateInterval('P1Y'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P3M'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
-            \Galette\Entity\ContributionsTypes::PK  => 1, //anunal fee
+            \Galette\Entity\ContributionsTypes::PK  => 1, //annual fee
             'montant_cotis'                         => 20,
             'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
-            'date_debut_cotis'                      => $begin->format(_T("Y-m-d")),
-            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d")),
+            'date_debut_cotis'                      => $begin_date->format(_T("Y-m-d")),
+            'date_fin_cotis'                        => $due_date->format(_T("Y-m-d")),
             'info_cotis'                            => 'FAKER' . $this->seed
         ];
 
@@ -605,12 +611,13 @@ class Contribution extends GaletteTestCase
         $cid = $child->id;
 
         //contribution for child
-        $bdate = new \DateTime(); // 2020-11-07
-        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
-        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
+        $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
-        $edate = clone $bdate;
-        $edate->add(new \DateInterval('P1Y'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $data = [
             'id_adh' => $cid,
@@ -618,9 +625,9 @@ class Contribution extends GaletteTestCase
             'montant_cotis' => 25,
             'type_paiement_cotis' => 3,
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $bdate->format('Y-m-d'),
-            'date_debut_cotis' => $bdate->format('Y-m-d'),
-            'date_fin_cotis' => $edate->format('Y-m-d'),
+            'date_enreg' => $begin_date->format('Y-m-d'),
+            'date_debut_cotis' => $begin_date->format('Y-m-d'),
+            'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
         $ccontrib = $this->createContrib($data);
 

@@ -209,16 +209,18 @@ class Contribution
             //calculate begin date for membership fee
             $this->_begin_date = $this->_date;
             if ($this->_is_cotis) {
-                $curend = self::getDueDate($this->zdb, $this->_member);
-                if ($curend != '') {
-                    $dend = new \DateTime($curend);
-                    $now = date('Y-m-d');
-                    $dnow = new \DateTime($now);
-                    if ($dend < $dnow) {
+                $due_date = self::getDueDate($this->zdb, $this->_member);
+                if ($due_date != '') {
+                    $now = new \DateTime();
+                    $due_date = new \DateTime($due_date);
+                    if ($due_date < $now) {
                         // Member didn't renew on time
-                        $this->_begin_date = $now;
+                        $this->_begin_date = $now->format('Y-m-d');
                     } else {
-                        $this->_begin_date = $curend;
+                        // Caution : the next_begin_date is the day after the due_date.
+                        $next_begin_date = clone $due_date;
+                        $next_begin_date->add(new \DateInterval('P1D'));
+                        $this->_begin_date = $next_begin_date->format('Y-m-d');
                     }
                 }
                 $this->retrieveEndDate();
@@ -242,39 +244,46 @@ class Contribution
     {
         global $preferences;
 
-        $bdate = new \DateTime($this->_begin_date);
+        $now = new \DateTime();
+        $begin_date = new \DateTime($this->_begin_date);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
             list($j, $m) = explode('/', $preferences->pref_beg_membership);
-            $edate = new \DateTime($bdate->format('Y') . '-' . $m . '-' . $j);
-            while ($edate <= $bdate) {
-                $edate->modify('+1 year');
+            $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+            while ($next_begin_date <= $begin_date) {
+                $next_begin_date->add(new \DateInterval('P1Y'));
             }
 
             if ($preferences->pref_membership_offermonths > 0) {
-                //count days until end of membership date
-                $diff1 = (int)$bdate->diff($edate)->format('%a');
+                //count days until next membership begin date
+                $diff1 = (int)$now->diff($next_begin_date)->format('%a');
 
-                //count days between end of membership date and offered months
-                $tdate = clone $edate;
-                $tdate->modify('-' . $preferences->pref_membership_offermonths . ' month');
-                $diff2 = (int)$edate->diff($tdate)->format('%a');
+                //count days between next membership begin date and offered months
+                $tdate = clone $next_begin_date;
+                $tdate->sub(new \DateInterval('P' . $preferences->pref_membership_offermonths . 'M'));
+                $diff2 = (int)$next_begin_date->diff($tdate)->format('%a');
 
-                //when number of days until end of membership is less than for offered months, it's free :)
+                //when number of days until next membership begin date is less than or equal to the offered months, it's free :)
                 if ($diff1 <= $diff2) {
-                    $edate->modify('+1 year');
+                    $next_begin_date->add(new \DateInterval('P1Y'));
                 }
             }
 
-            $this->_end_date = $edate->format('Y-m-d');
+            // Caution : the end_date to retrieve is the day before the next_begin_date.
+            $end_date = clone $next_begin_date;
+            $end_date->sub(new \DateInterval('P1D'));
+            $this->_end_date = $end_date->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
             if ($this->_extension == null) {
                 $this->_extension = $preferences->pref_membership_ext;
             }
             $dext = new \DateInterval('P' . $this->_extension . 'M');
-            $edate = $bdate->add($dext);
-            $this->_end_date = $edate->format('Y-m-d');
+            // Caution : the end_date to retrieve is the day before the next_begin_date.
+            $next_begin_date = $begin_date->add($dext);
+            $end_date = clone $next_begin_date;
+            $end_date->sub(new \DateInterval('P1D'));
+            $this->_end_date = $end_date->format('Y-m-d');
         } else {
             throw new \RuntimeException(
                 'Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!'
@@ -357,14 +366,14 @@ class Contribution
         $this->_payment_type = $r->type_paiement_cotis;
         $this->_info = $r->info_cotis;
         $this->_begin_date = $r->date_debut_cotis;
-        $enddate = $r->date_fin_cotis;
+        $end_date = $r->date_fin_cotis;
         //do not work with knows bad dates...
         //the one with BC comes from 0.63/pgsql demo... Why the hell a so
         //strange date? don't know :(
         if (
-            $enddate !== '0000-00-00'
-            && $enddate !== '1901-01-01'
-            && $enddate !== '0001-01-01 BC'
+            $end_date !== '0000-00-00'
+            && $end_date !== '1901-01-01'
+            && $end_date !== '0001-01-01 BC'
         ) {
             $this->_end_date = $r->date_fin_cotis;
         }
@@ -573,10 +582,10 @@ class Contribution
                 ->where(array('cotis_extension' => new Expression('true')))
                 ->where->nest->nest
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
-                ->lessThan('date_debut_cotis', $this->_end_date)
+                ->lessThanOrEqualTo('date_debut_cotis', $this->_end_date)
                 ->unnest
                 ->or->nest
-                ->greaterThan('date_fin_cotis', $this->_begin_date)
+                ->greaterThanOrEqualTo('date_fin_cotis', $this->_begin_date)
                 ->lessThanOrEqualTo('date_fin_cotis', $this->_end_date);
 
             if ($this->id != '') {
@@ -729,14 +738,14 @@ class Contribution
             $due_date = self::getDueDate($this->zdb, $this->_member);
 
             if ($due_date != '') {
-                $date_fin_update = $due_date;
+                $due_date_update = $due_date;
             } else {
-                $date_fin_update = new Expression('NULL');
+                $due_date_update = new Expression('NULL');
             }
 
             $update = $this->zdb->update(Adherent::TABLE);
             $update->set(
-                array('date_echeance' => $date_fin_update)
+                array('date_echeance' => $due_date_update)
             )->where(
                 [Adherent::PK => $this->_member]
             );
@@ -1212,9 +1221,13 @@ class Contribution
                     break;
                 case 'duration':
                     if ($this->_is_cotis) {
-                        $date_end = new \DateTime($this->_end_date);
-                        $date_start = new \DateTime($this->_begin_date);
-                        $diff = $date_end->diff($date_start);
+                        // Caution : the end_date stored is actually the due date.
+                        // Adding a day to compute the next_begin_date is required
+                        // to return the right number of months.
+                        $next_begin_date = new \DateTime($this->_end_date);
+                        $next_begin_date->add(new \DateInterval('P1D'));
+                        $begin_date = new \DateTime($this->_begin_date);
+                        $diff = $next_begin_date->diff($begin_date);
                         return $diff->format('%y') * 12 + $diff->format('%m');
                     } else {
                         return '';

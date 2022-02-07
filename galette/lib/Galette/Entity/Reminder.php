@@ -230,9 +230,12 @@ class Reminder
 
         $this->success = false;
 
+        // When late, the number of days expired is required, not the number of days remaining.
         $type_name = 'late';
+        $days_remaining = $this->dest->days_remaining + 1;
         if ($this->type === self::IMPENDING) {
             $type_name = 'impending';
+            $days_remaining = $this->dest->days_remaining;
         }
 
         if ($this->hasMail()) {
@@ -263,7 +266,7 @@ class Reminder
                 array(
                     $this->dest->sname,
                     $this->dest->getEmail(),
-                    $this->dest->days_remaining
+                    $days_remaining
                 ),
                 _T("%name <%mail> (%days days)")
             );
@@ -303,7 +306,7 @@ class Reminder
                 array(
                     $this->dest->sname,
                     $this->dest->id,
-                    $this->dest->days_remaining
+                    $days_remaining
                 ),
                 _T("%name (#%id - %days days)")
             );

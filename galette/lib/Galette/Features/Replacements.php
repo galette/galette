@@ -652,7 +652,7 @@ trait Replacements
                 'adh_groups'        => $group_list,
                 'adh_dues'          => $member->getDues(),
                 'days_remaining'    => $member->days_remaining,
-                'days_expired'      => ($member->days_remaining * -1),
+                'days_expired'      => $member->days_remaining + 1,
                 //Handle COMPANY_NAME_ADH... https://bugs.galette.eu/issues/1530
                 '_adh_company'      => $member->company_name,
                 //Handle old names for variables ... https://bugs.galette.eu/issues/1393

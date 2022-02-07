@@ -610,12 +610,14 @@ abstract class GaletteTestCase extends atoum
      */
     protected function createContribution()
     {
-        $bdate = new \DateTime(); // 2020-11-07
-        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
-        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
+        $now = new \DateTime(); // 2020-11-07
+        $begin_date = clone $now;
+        $begin_date->sub(new \DateInterval('P5M')); // 2020-06-08
+        $begin_date->add(new \DateInterval('P3D')); // 2020-06-11
 
-        $edate = clone $bdate;
-        $edate->add(new \DateInterval('P1Y'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -623,9 +625,9 @@ abstract class GaletteTestCase extends atoum
             'montant_cotis' => 92,
             'type_paiement_cotis' => 3,
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $bdate->format('Y-m-d'),
-            'date_debut_cotis' => $bdate->format('Y-m-d'),
-            'date_fin_cotis' => $edate->format('Y-m-d'),
+            'date_enreg' => $begin_date->format('Y-m-d'),
+            'date_debut_cotis' => $begin_date->format('Y-m-d'),
+            'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
         $this->createContrib($data);
         $this->checkContribExpected();
@@ -645,9 +647,11 @@ abstract class GaletteTestCase extends atoum
             $contrib = $this->contrib;
         }
 
-        $date_begin = $contrib->raw_begin_date;
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+        $begin_date = $contrib->raw_begin_date;
+
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $this->object($contrib->raw_date)->isInstanceOf('DateTime');
         $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
@@ -659,7 +663,7 @@ abstract class GaletteTestCase extends atoum
             'montant_cotis' => '92',
             'type_paiement_cotis' => '3',
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_fin_cotis' => $date_end->format('Y-m-d'),
+            'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 

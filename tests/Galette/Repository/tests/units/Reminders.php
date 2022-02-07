@@ -135,14 +135,14 @@ class Reminders extends GaletteTestCase
         $this->getMemberTwo();
         $id = $this->adh->id;
 
-        //create contribution, just about to be impending
+        //create a contribution, just before being a close to be expired contribution
         $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->add(new \DateInterval('P1M'));
-        $date_begin->add(new \DateInterval('P1D'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P30D'));
+        $due_date->add(new \DateInterval('P1D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->createContrib([
             'id_adh'                => $id,
@@ -150,27 +150,27 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is up to date, but not yet impeding, no reminder to send
+        //member is up to date, but not yet close to be expired, no reminder to send
         $this->boolean($this->adh->isUp2Date())->isTrue();
         $this->array($reminders->getList($this->zdb))->hasSize(0);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
 
-        //create contribution, just impending
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->add(new \DateInterval('P1M'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+        //create a close to be expired contribution
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P30D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -179,26 +179,27 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is up to date, there is one impending reminder to send
+        //member is up to date, and close to be expired, one impending reminder to send
         $this->boolean($this->adh->isUp2Date())->isTrue();
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(1);
 
-        //create contribution, just impending less than 7 days
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->add(new \DateInterval('P4D'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+
+        //create a close to be expired contribution, 7 days before expiration
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P7D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -207,23 +208,52 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is up to date, there is one impending reminder to send
+        //member is up to date, and close to be expired, one impending reminder to send
         $this->boolean($this->adh->isUp2Date())->isTrue();
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(1);
 
-        //add a sent first impending reminder
-        $send = clone $now;
-        $send->sub(new \DateInterval('P1M'));
+
+        //create a close to be expired contribution, the last day before expiration
+        $due_date = clone $now;
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        $adh = $this->adh;
+        $this->boolean($adh->load($id))->isTrue();
+
+        //member is up to date, and close to be expired, one impending reminder to send
+        $this->boolean($this->adh->isUp2Date())->isTrue();
+        $this->array($reminders->getList($this->zdb))->hasSize(1);
+        $this->array($lreminders->getList($this->zdb))->hasSize(0);
+        $this->array($ireminders->getList($this->zdb))->hasSize(1);
+
+
+        //add a first close to be expired contribution reminder
+        $send = new \DateTime();
+        $send->sub(new \DateInterval('P30D'));
         $data = array(
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
             'reminder_dest'     => $id,
@@ -238,14 +268,15 @@ class Reminders extends GaletteTestCase
         $add = $this->zdb->execute($insert);
         $this->integer($add->count())->isGreaterThan(0);
 
-        //there is still one reminder to send
+        //there is still one impending reminder to send
         $this->boolean($this->adh->isUp2Date())->isTrue();
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(1);
 
-        //add a sent second impending reminder, yesterday
-        $send = clone $now;
+
+        //add a second close to be expired contribution reminder, yesterday
+        $send = new \DateTime();
         $send->sub(new \DateInterval('P1D'));
         $data = array(
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -267,12 +298,13 @@ class Reminders extends GaletteTestCase
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //create contribution, expiration day
-        $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+
+        //create an expired contribution, today
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P1D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -281,27 +313,27 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is not up to date, no reminder to send
+        //member late, but for less than 30 days, no reminder to send
         $this->boolean($this->adh->isUp2Date())->isFalse();
         $this->array($reminders->getList($this->zdb))->hasSize(0);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //create contribution, just late
-        $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->sub(new \DateInterval('P1D'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+
+        //create an expired contribution, 29 days ago
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P29D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -310,56 +342,27 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is not up to date, but less than one month, no reminder to send
+        //member is late, but for less than 30 days, no reminder to send
         $this->boolean($this->adh->isUp2Date())->isFalse();
         $this->array($reminders->getList($this->zdb))->hasSize(0);
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //create contribution, late by 1 month minus 1 day
-        $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->sub(new \DateInterval('P1M'));
-        $date_begin->add(new \DateInterval('P1D'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
 
-        $this->createContrib([
-            'id_adh'                => $id,
-            'id_type_cotis'         => 3,
-            'montant_cotis'         => '111',
-            'type_paiement_cotis'   => '6',
-            'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
-        ]);
-
-        $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
-
-        //member is not up to date, but less than one month, no reminder to send
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(0);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
-        //create contribution, late by 31 days
-        $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->sub(new \DateInterval('P31D'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+        //create an expired contribution, late by 30 days
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P30D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -368,27 +371,27 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is not up to date for one month, one late reminder to send
+        //member is late, one late reminder to send
         $this->boolean($this->adh->isUp2Date())->isFalse();
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(1);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //create contribution, late by 40 days
-        $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->sub(new \DateInterval('P40D'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+
+        //create an expired contribution, late by 40 days
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P40D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -397,21 +400,22 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is not up to date for one month, one late reminder to send
+        //member is late, one late reminder to send
         $this->boolean($this->adh->isUp2Date())->isFalse();
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(1);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //add a sent late reminder, at it should have been
+
+        //add a sent late reminder, as it should have been
         $send = clone $now;
         $send->sub(new \DateInterval('P5D'));
         $data = array(
@@ -434,13 +438,13 @@ class Reminders extends GaletteTestCase
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //create contribution, late by 2 months
-        $now = new \DateTime();
-        $date_begin = clone $now;
-        $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->sub(new \DateInterval('P2M'));
-        $date_end = clone $date_begin;
-        $date_end->add(new \DateInterval('P1Y'));
+
+        //create an expired contribution, 60 days ago
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P60D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->cleanContributions();
         $this->createContrib([
@@ -449,15 +453,15 @@ class Reminders extends GaletteTestCase
             'montant_cotis'         => '111',
             'type_paiement_cotis'   => '6',
             'info_cotis'            => 'FAKER' . $this->seed,
-            'date_fin_cotis'        => $date_end->format('Y-m-d'),
-            'date_enreg'            => $now->format('Y-m-d'),
-            'date_debut_cotis'      => $now->format('Y-m-d')
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
 
         $adh = $this->adh;
         $this->boolean($adh->load($id))->isTrue();
 
-        //member is not up to date for one month, one late reminder to send
+        //member has been late for two months, one late reminder to send
         $this->boolean($this->adh->isUp2Date())->isFalse();
         $this->array($reminders->getList($this->zdb))->hasSize(1);
         $this->array($lreminders->getList($this->zdb))->hasSize(1);

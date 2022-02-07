@@ -142,18 +142,19 @@ class Members extends GaletteTestCase
                 $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
                 $now = new \DateTime();
-                $bdate = clone $now;
-                $bdate->modify('-1 day');
-                $edate = clone $bdate;
-                $edate->modify('+1 year');
+                $begin_date = clone $now;
+                $begin_date->sub(new \DateInterval('P1D'));
+                $due_date = clone $begin_date;
+                $due_date->sub(new \DateInterval('P1D'));
+                $due_date->add(new \DateInterval('P1Y'));
 
                 $cdata = [
                     \Galette\Entity\Adherent::PK    => $member->id,
                     'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
                     'montant_cotis'                 => 20,
-                    'date_enreg'                    => $bdate->format('Y-m-d'),
-                    'date_debut_cotis'              => $bdate->format('Y-m-d'),
-                    'date_fin_cotis'                => $edate->format('Y-m-d'),
+                    'date_enreg'                    => $begin_date->format('Y-m-d'),
+                    'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+                    'date_fin_cotis'                => $due_date->format('Y-m-d'),
                     \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
                 ];
                 $this->boolean($contrib->check($cdata, [], []))->isTrue();
@@ -294,6 +295,7 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->integer($list->count())->isIdenticalTo(3);
+
         //Search on address
         $filters = new \Galette\Filters\MembersList();
         $filters->filter_str = 'avenue';
@@ -318,6 +320,8 @@ class Members extends GaletteTestCase
         $filters->field_filter = \Galette\Repository\Members::FILTER_NAME;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(4);
 
         //search on company
         $filters = new \Galette\Filters\MembersList();
@@ -375,7 +379,7 @@ class Members extends GaletteTestCase
 
         $this->integer($list->count())->isIdenticalTo(8);
 
-        //membership never
+        //membership none
         $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_NONE;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -389,7 +393,7 @@ class Members extends GaletteTestCase
 
         $this->integer($list->count())->isIdenticalTo(0);
 
-        //membership never
+        //membership nearly expired
         $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_NEARLY;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -794,36 +798,48 @@ class Members extends GaletteTestCase
         //create a close to be expired contribution
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $now = new \DateTime();
-        $edate = clone $now;
-        $edate->modify('+6 days');
-        $bdate = clone $edate;
-        $bdate->modify('-1 year');
+        $begin_date = clone $now;
+        $begin_date->add(new \DateInterval('P6D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $cdata = [
             \Galette\Entity\Adherent::PK    => $this->mids[9],
             'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
             'montant_cotis'                 => 20,
-            'date_enreg'                    => $bdate->format('Y-m-d'),
-            'date_debut_cotis'              => $bdate->format('Y-m-d'),
-            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
         ];
         $this->boolean($contrib->check($cdata, [], []))->isTrue();
         $this->boolean($contrib->store())->isTrue();
 
+        $counts = $members->getRemindersCount();
+        $this->array($counts)->hasSize(3)
+            ->hasKeys(['impending', 'nomail', 'late']);
+        $this->integer((int)$counts['impending'])->isIdenticalTo(1);
+        $this->integer((int)$counts['late'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
+
         //create an expired contribution
-        $edate = clone $now;
-        $edate->modify('-6 days');
-        $bdate = clone $edate;
-        $bdate->modify('-1 year');
+        $begin_date = clone $now;
+        $begin_date->sub(new \DateInterval('P30D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $cdata = [
             \Galette\Entity\Adherent::PK    => $this->mids[8],
             'type_paiement_cotis'           => \Galette\Entity\PaymentType::CHECK,
             'montant_cotis'                 => 20,
-            'date_enreg'                    => $bdate->format('Y-m-d'),
-            'date_debut_cotis'              => $bdate->format('Y-m-d'),
-            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
         ];
         $this->boolean($contrib->check($cdata, [], []))->isTrue();
@@ -854,14 +870,14 @@ class Members extends GaletteTestCase
         $this->boolean($nomail->store())->isTrue();
         $nomail_id = $nomail->id;
 
-        //create an expired contribution
+        //create an expired contribution without email
         $cdata = [
             \Galette\Entity\Adherent::PK    => $nomail_id,
             'type_paiement_cotis'           => \Galette\Entity\PaymentType::CHECK,
             'montant_cotis'                 => 20,
-            'date_enreg'                    => $bdate->format('Y-m-d'),
-            'date_debut_cotis'              => $bdate->format('Y-m-d'),
-            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
         ];
         $this->boolean($contrib->check($cdata, [], []))->isTrue();
@@ -880,21 +896,22 @@ class Members extends GaletteTestCase
         $delete->where([\Galette\Entity\Adherent::PK => $nomail_id]);
         $this->zdb->execute($delete);
 
-        //create a close to be expired contribution
+        //create a close to be expired contribution without email
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
-        $now = new \DateTime();
-        $edate = clone $now;
-        $edate->modify('+6 days');
-        $bdate = clone $edate;
-        $bdate->modify('-1 year');
+        $begin_date = clone $now;
+        $begin_date->add(new \DateInterval('P6D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
 
         $cdata = [
             \Galette\Entity\Adherent::PK    => $nomail_id,
             'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
             'montant_cotis'                 => 20,
-            'date_enreg'                    => $bdate->format('Y-m-d'),
-            'date_debut_cotis'              => $bdate->format('Y-m-d'),
-            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
         ];
         $this->boolean($contrib->check($cdata, [], []))->isTrue();

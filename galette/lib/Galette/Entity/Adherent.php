@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-06-02
@@ -58,7 +58,7 @@ use Galette\Features\Dynamics;
  * @name      Adherent
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 02-06-2009
@@ -540,8 +540,8 @@ class Adherent
     private function checkDues(): void
     {
         //how many days since our beloved member has been created
-        $date_now = new \DateTime();
-        $this->_oldness = $date_now->diff(
+        $now = new \DateTime();
+        $this->_oldness = $now->diff(
             new \DateTime($this->_creation_date)
         )->days;
 
@@ -553,21 +553,28 @@ class Adherent
             if ($this->_due_date == '') {
                 $this->_row_classes .= ' cotis-never';
             } else {
-                $date_end = new \DateTime($this->_due_date);
-                $date_diff = $date_now->diff($date_end);
-                $this->_days_remaining = ($date_diff->invert == 1)
-                    ? $date_diff->days * -1
-                    : $date_diff->days;
-
-                if ($this->_days_remaining == 0) {
-                    $this->_row_classes .= ' cotis-lastday';
-                } elseif ($this->_days_remaining < 0) {
+                // To count the days remaining, the next begin date is required.
+                $due_date = new \DateTime($this->_due_date);
+                $next_begin_date = clone $due_date;
+                $next_begin_date->add(new \DateInterval('P1D'));
+                $date_diff = $now->diff($next_begin_date);
+                $this->_days_remaining = $date_diff->days;
+                // Active
+                if ($date_diff->invert == 0 && $date_diff->days >= 0) {
+                    $this->_days_remaining = $date_diff->days;
+                    if ($this->_days_remaining <= 30) {
+                        if ($date_diff->days == 0) {
+                            $this->_row_classes .= ' cotis-lastday';
+                        }
+                        $this->_row_classes .= ' cotis-soon';
+                    } else {
+                        $this->_row_classes .= ' cotis-ok';
+                    }
+                // Expired
+                } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
+                    $this->_days_remaining = $date_diff->days;
                     //check if member is still active
                     $this->_row_classes .= $this->isActive() ? ' cotis-late' : ' cotis-old';
-                } elseif ($this->_days_remaining < 30) {
-                    $this->_row_classes .= ' cotis-soon';
-                } else {
-                    $this->_row_classes .= ' cotis-ok';
                 }
             }
         }
@@ -760,7 +767,15 @@ class Adherent
     public function getDues(): string
     {
         $ret = '';
-        $date_now = new \DateTime();
+        $now = new \DateTime();
+        // To count the days remaining, the next begin date is required.
+        if ($this->_due_date === null) {
+            $this->_due_date = $now->format('Y-m-d');
+        }
+        $due_date = new \DateTime($this->_due_date);
+        $next_begin_date = clone $due_date;
+        $next_begin_date->add(new \DateInterval('P1D'));
+        $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($this->_due_date == '') {
@@ -779,20 +794,32 @@ class Adherent
             } else {
                 $ret = _T("Never contributed");
             }
+        // Last active or first expired day
         } elseif ($this->_days_remaining == 0) {
-            $ddate = new \DateTime($this->_due_date);
-            $date_diff = $date_now->diff($ddate);
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
-        } elseif ($this->_days_remaining < 0) {
-            $ddate = new \DateTime($this->_due_date);
+        // Active
+        } elseif ($date_diff->invert == 0 && $this->_days_remaining > 0) {
             $patterns = array('/%days/', '/%date/');
             $replace = array(
-                $this->_days_remaining * -1,
-                $ddate->format(__("Y-m-d"))
+                $this->_days_remaining,
+                $due_date->format(__("Y-m-d"))
+            );
+            $ret = preg_replace(
+                $patterns,
+                $replace,
+                _T("%days days remaining (ending on %date)")
+            );
+        // Expired
+        } elseif ($date_diff->invert == 1 && $this->_days_remaining > 0) {
+            $patterns = array('/%days/', '/%date/');
+            $replace = array(
+                // We need the number of days expired, not the number of days remaining.
+                $this->_days_remaining + 1,
+                $due_date->format(__("Y-m-d"))
             );
             if ($this->_active) {
                 $ret = preg_replace(
@@ -803,18 +830,6 @@ class Adherent
             } else {
                 $ret = _T("No longer member");
             }
-        } else {
-            $ddate = new \DateTime($this->_due_date);
-            $patterns = array('/%days/', '/%date/');
-            $replace = array(
-                $this->_days_remaining,
-                $ddate->format(__("Y-m-d"))
-            );
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("%days days remaining (ending on %date)")
-            );
         }
         return $ret;
     }
@@ -992,14 +1007,14 @@ class Adherent
             //member is due free, he's up to date.
             return true;
         } else {
-            //let's check from end date, if present
+            //let's check from due date, if present
             if ($this->_due_date == null) {
                 return false;
             } else {
-                $ech = new \DateTime($this->_due_date);
+                $due_date = new \DateTime($this->_due_date);
                 $now = new \DateTime();
                 $now->setTime(0, 0, 0);
-                return $ech > $now;
+                return $due_date >= $now;
             }
         }
     }
