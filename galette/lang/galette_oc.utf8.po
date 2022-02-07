@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-01-29 11:56+0000\n"
+"PO-Revision-Date: 2022-02-07 16:58+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -238,7 +238,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:368
 msgid "Members list"
-msgstr ""
+msgstr "Lista dei membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:368
 msgid "Trombinoscope"
@@ -604,7 +604,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:597
 msgid "Lists configuration"
-msgstr ""
+msgstr "Configuracion dei listas"
 
 #: ../lib/Galette/Controllers/GaletteController.php:635
 msgid "List configuration has been successfully stored"
