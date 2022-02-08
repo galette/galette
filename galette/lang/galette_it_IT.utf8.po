@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-05 13:57+0000\n"
+"PO-Revision-Date: 2022-02-09 22:58+0000\n"
 "Last-Translator: Antonio Bifulco <gighen11@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -1217,12 +1217,12 @@ msgstr "Quanto fa %1$s meno %2$s?"
 #: ../lib/Galette/Core/Gaptcha.php:109
 #, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Quanto costa %1$s su cui ritiriamo %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr ""
+msgstr "Quanto viene ritirato da %2$s a %1$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, php-format
@@ -1264,7 +1264,7 @@ msgstr "Accesso eseguito come: <br/>%login"
 
 #: ../lib/Galette/Core/MailingHistory.php:519
 msgid "Delete mailing entries"
-msgstr ""
+msgstr "Elimina le voci di posta"
 
 #: ../lib/Galette/Core/Preferences.php:527
 msgid "- You must indicate a sender name for emails!"
@@ -1293,6 +1293,7 @@ msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr ""
+"- L'estensione predefinita e l'inizio dell'iscrizione si escludono a vicenda."
 
 #: ../lib/Galette/Core/Preferences.php:579
 msgid "- Offering months is only compatible with beginning of membership."
@@ -1339,6 +1340,8 @@ msgstr "- Numero di mesi non valido per l'estensione dell'affiliazione."
 #: ../lib/Galette/Core/Preferences.php:750
 msgid "- Invalid format of beginning of membership."
 msgstr ""
+"- L'estensione predefinita e l'inizio dell'iscrizione si escludono una "
+"vicenda."
 
 #: ../lib/Galette/Core/Preferences.php:754
 msgid "- Invalid date for beginning of membership."
@@ -1346,7 +1349,7 @@ msgstr "- Data non valida per l'inizio dell'iscrizione."
 
 #: ../lib/Galette/Core/Preferences.php:760
 msgid "- Invalid number of offered months."
-msgstr ""
+msgstr "- Numero di mesi offerti non valido."
 
 #: ../lib/Galette/Core/Preferences.php:765
 msgid "- Invalid year for cards."
@@ -1354,7 +1357,7 @@ msgstr "- Anno per le carte non valido."
 
 #: ../lib/Galette/Core/Preferences.php:882
 msgid "%name association's %status"
-msgstr ""
+msgstr "%status dell'associazione %name"
 
 #: ../lib/Galette/Core/Preferences.php:1109
 msgid "Never"
@@ -1391,7 +1394,7 @@ msgstr "modulo '%s'"
 
 #: ../lib/Galette/Core/CheckModules.php:103
 msgid "either 'mysql' or 'pgsql' PDO driver"
-msgstr ""
+msgstr "driver PDO 'mysql' o 'pgsql'"
 
 #: ../lib/Galette/Core/Plugins.php:272 ../lib/Galette/Core/Plugins.php:294
 msgid "No such module."
@@ -1423,7 +1426,7 @@ msgstr "Immagine di profilo cancellata"
 
 #: ../lib/Galette/Repository/Members.php:415
 msgid "Delete members cards, transactions and dues"
-msgstr ""
+msgstr "Elimina carte membri, transazioni e quote"
 
 #: ../lib/Galette/Repository/Members.php:430
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
@@ -1491,7 +1494,7 @@ msgstr "d/m/Y"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
-msgstr ""
+msgstr "Ricerche eliminate (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:530
 msgid "Contributions deleted (%list)"
@@ -1588,7 +1591,7 @@ msgstr "Manca il modulo richiesto!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:636
 msgid "Unknown form!"
-msgstr ""
+msgstr "Forma sconosciuta!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:644
 msgid "- Field name already used."
@@ -1601,10 +1604,14 @@ msgstr "Si è verificato un errore memorizzando il campo."
 #: ../lib/Galette/DynamicFields/DynamicField.php:779
 msgid "An error occurred creating field values table"
 msgstr ""
+"Si è verificato un errore durante la creazione della tabella dei valori dei "
+"campi"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:813
 msgid "An error occurred storing dynamic field values :("
 msgstr ""
+"Si è verificato un errore durante la memorizzazione dei valori dei campi "
+"dinamici :("
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1023
 msgid "separator"
@@ -1636,7 +1643,7 @@ msgstr "file"
 
 #: ../lib/Galette/IO/PdfGroups.php:72
 msgid "groups_list"
-msgstr ""
+msgstr "lista_gruppi"
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
@@ -1681,7 +1688,7 @@ msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:84
 msgid "filtered_memberslist"
-msgstr ""
+msgstr "lista membri_filtrati"
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/Features/Replacements.php:606
@@ -1719,7 +1726,7 @@ msgstr "No"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:105
 msgid "attendance_sheet"
-msgstr ""
+msgstr "foglio presenze"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:169
 msgid "%A, %B %#d%O %Y"
@@ -1743,15 +1750,15 @@ msgstr "Mai contribuito"
 
 #: ../lib/Galette/IO/Charts.php:222
 msgid "Impending due dates"
-msgstr ""
+msgstr "Scadenze imminenti"
 
 #: ../lib/Galette/IO/Charts.php:240
 msgid "Up to date"
-msgstr ""
+msgstr "Aggiornato"
 
 #: ../lib/Galette/IO/Charts.php:258
 msgid "Late"
-msgstr ""
+msgstr "Tardi"
 
 #: ../lib/Galette/IO/Charts.php:314
 msgid "Individuals"
