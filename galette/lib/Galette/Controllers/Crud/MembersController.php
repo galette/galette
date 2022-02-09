@@ -364,7 +364,7 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            ($type === 'list' ? 'liste_membres' : 'trombinoscope') . '.tpl',
+            ($type === 'list' ? 'liste_membres' : 'pages/members_public_gallery') . '.html.twig',
             array(
                 'page_title'    => ($type === 'list' ? _T("Members list") : _T('Trombinoscope')),
                 'additionnal_html_class'    => ($type === 'list' ? '' : 'trombinoscope'),

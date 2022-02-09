@@ -22,8 +22,8 @@
     {$plugins->getPublicMenus($tpl, true)}
 
 {% if sign_in is defined and sign_in == true %}
-    <div class="{if isset($sign_in_side)}right {/if}item">
-    {% if preferences.pref_bool_selfsubscribe == true and not cur_route == "subscribe" %}
+    <div class="{% if sign_in_side is defined and sign_in_side is not empty %}right {% endif %}item">
+    {% if preferences.pref_bool_selfsubscribe == true and not is_current_path("subscribe") %}
         <a
             href="{{ path_for("subscribe") }}"
             class="ui basic button"
