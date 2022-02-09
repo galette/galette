@@ -83,7 +83,7 @@ class AuthController extends AbstractController
             // display page
             $this->view->render(
                 $response,
-                'index.tpl',
+                'pages/index.html.twig',
                 array(
                     'page_title'    => _T("Login"),
                 )
@@ -256,7 +256,7 @@ class AuthController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'lostpasswd.tpl',
+            'pages/lost_password.html.twig',
             array(
                 'page_title'    => _T("Password recovery")
             )
