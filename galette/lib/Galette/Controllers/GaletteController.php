@@ -478,7 +478,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'charts.tpl',
+            'pages/charts.html.twig',
             array(
                 'page_title'        => _T("Charts"),
                 'charts'            => $charts->getCharts(),

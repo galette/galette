@@ -1,30 +1,31 @@
-{extends file="page.tpl"}
-{block name="content"}
+{% extends 'page.html.twig' %}
+
+{% block content %}
         <div class="ui grid">
                 <div class="sixteen wide mobile eight wide computer five wide widescreen column">
-                        <div id="{\Galette\IO\Charts::MEMBERS_STATUS_PIE}"></div>
+                        <div id="{{constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE')}}"></div>
                 </div>
                 <div class="sixteen wide mobile eight wide computer five wide widescreen column">
-                        <div id="{\Galette\IO\Charts::MEMBERS_STATEDUE_PIE}"></div>
+                        <div id="{{constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE')}}"></div>
                 </div>
                 <div class="sixteen wide mobile eight wide computer five wide widescreen column">
-                        <div id="{\Galette\IO\Charts::CONTRIBS_TYPES_PIE}"></div>
+                        <div id="{{constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE')}}"></div>
                 </div>
                 <div class="sixteen wide mobile eight wide computer five wide widescreen column">
-                        <div id="{\Galette\IO\Charts::COMPANIES_OR_NOT}"></div>
+                        <div id="{{constant('Galette\\IO\\Charts::COMPANIES_OR_NOT')}}"></div>
                 </div>
                 <div class="sixteen wide mobile eleven wide widescreen column">
-                        <div id="{\Galette\IO\Charts::CONTRIBS_ALLTIME}"></div>
+                        <div id="{{constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME')}}"></div>
                 </div>
         </div>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
         <script type="text/javascript">
             $(function(){
-                var _members_status_pie = jQuery.jqplot ('{\Galette\IO\Charts::MEMBERS_STATUS_PIE}', [{$charts.MembersStatusPie}],
+                var _members_status_pie = jQuery.jqplot ('{{constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE')}}', [{{ charts.MembersStatusPie|raw }}],
                     {
-                        title: '{_T string="Members by status" escape="js"}',
+                        title: '{{ _T("Members by status")|e('js') }}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -35,9 +36,9 @@
                     }
                 );
 
-                var _members_statedue_pie = jQuery.jqplot ('{\Galette\IO\Charts::MEMBERS_STATEDUE_PIE}', [{$charts.MembersStateDuePie}],
+                var _members_statedue_pie = jQuery.jqplot ('{{constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE')}}', [{{ charts.MembersStateDuePie|raw }}],
                     {
-                        title: '{_T string="Members by state of dues" escape="js"}',
+                        title: '{{ _T("Members by state of dues")|e('js') }}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -48,9 +49,9 @@
                     }
                 );
 
-                var _contribs_types_pie = jQuery.jqplot ('{\Galette\IO\Charts::CONTRIBS_TYPES_PIE}', [{$charts.ContribsTypesPie}],
+                var _contribs_types_pie = jQuery.jqplot ('{{constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE')}}', [{{ charts.ContribsTypesPie|raw }}],
                     {
-                        title: '{_T string="Contributions types repartition" escape="js"}',
+                        title: '{{ _T("Contributions types repartition")|e('js') }}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -61,9 +62,9 @@
                     }
                 );
 
-                var _companies_individuals = jQuery.jqplot ('{\Galette\IO\Charts::COMPANIES_OR_NOT}', [{$charts.CompaniesOrNot}],
+                var _companies_individuals = jQuery.jqplot ('{{constant('Galette\\IO\\Charts::COMPANIES_OR_NOT')}}', [{{ charts.CompaniesOrNot|raw }}],
                     {
-                        title: '{_T string="Individuals and Companies" escape="js"}',
+                        title: '{{ _T("Individuals and Companies")|e('js') }}',
                         seriesDefaults: {
                             renderer: jQuery.jqplot.PieRenderer,
                             rendererOptions: {
@@ -74,9 +75,9 @@
                     }
                 );
 
-                var _contribs_alltime = jQuery.jqplot ('{\Galette\IO\Charts::CONTRIBS_ALLTIME}', [{$charts.ContribsAllTime}],
+                var _contribs_alltime = jQuery.jqplot ('{{constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME')}}', [{{ charts.ContribsAllTime|raw }}],
                     {
-                        title: '{_T string="Contributions over time" escape="js"}',
+                        title: '{{ _T("Contributions over time")|e('js') }}',
                         seriesDefaults: {
                             renderer:$.jqplot.BarRenderer,
                             renderOptions:{
@@ -98,4 +99,4 @@
             });
         </script>
 
-{/block}
+{% endblock %}
