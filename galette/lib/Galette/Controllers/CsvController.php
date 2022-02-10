@@ -120,7 +120,7 @@ class CsvController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'export.tpl',
+            'pages/export.html.twig',
             array(
                 'page_title'        => _T("CVS database Export"),
                 'tables_list'       => $tables_list,
@@ -260,7 +260,7 @@ class CsvController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'import.tpl',
+            'pages/import.html.twig',
             array(
                 'page_title'        => _T("CSV members import"),
                 'existing'          => $existing,
@@ -590,7 +590,7 @@ class CsvController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'import_model.tpl',
+            'pages/import_model.html.twig',
             array(
                 'page_title'        => _T("CSV import model"),
                 'fields'            => $fields,

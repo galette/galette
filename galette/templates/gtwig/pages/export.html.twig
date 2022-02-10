@@ -1,108 +1,109 @@
-{extends file="page.tpl"}
+{% extends 'page.html.twig' %}
 
-{block name="content"}
+{% block content %}
         <form class="form" action="{path_for name="doExport"}" method="post" enctype="multipart/form-data">
-        <div class="ui orange message">{_T string="Each selected export will be stored into a separate file in the exports directory."}</div>
+        <div class="ui orange message">{{ _T("Each selected export will be stored into a separate file in the exports directory.") }}</div>
 
-{assign var="written_exports" value=$flash->getMessage('written_exports')}
-{if is_array($written_exports) && $written_exports|@count > 0}
+{% set written_exports = flash.getMessage('written_exports') %}
+
+{% if written is iterable and written|length > 0 %}
         <div class="ui success message">
-            <p>{_T string="The following files have been written on disk:"}</p>
+            <p>{{ _T('The following files have been written on disk:') }}</p>
             <ul>
-    {foreach from=$flash->getMessage('written_exports') item=ex}
-                <li>{$ex}</li>
-    {/foreach}
+    {% for ex in written %}
+                <li>{{ ex }}</li>
+    {% endfor %}
             </ul>
         </div>
-{/if}
+{% endif %}
 
-{if $existing|@count gt 0}
+{% if existing|length > 0 %}
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Existing exports"}
+                        {{ _T('Existing exports') }}
                     </div>
                     <div class="active content field">
-                        <p>{_T string="The following exports already seems to exist on the disk:"}</p>
+                        <p>{{ _T('The following exports already seems to exist on the disk:') }}</p>
                         <table class="listing ui celled table">
                             <thead>
                                 <tr>
                                     <th class="id_row">#</th>
-                                    <th>{_T string="Name"}</th>
-                                    <th>{_T string="Date"}</th>
-                                    <th>{_T string="Size"}</th>
+                                    <th>{{ _T('Name') }}</th>
+                                    <th>{{ _T('Date') }}</th>
+                                    <th>{{ _T('Size') }}</th>
                                     <th class="actions_row"></th>
                                 </tr>
                             </thead>
                             <tbody>
-        {foreach item=export from=$existing name=existing_list name=eachexport}
-                                <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+        {% for export in existing %}
+                                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
                                     <td data-scope="id">
-                                        {$smarty.foreach.eachexport.iteration}
+                                        {{ loop.index }}
                                     </td>
                                     <td data-scope="row">
-                                        <a href="{path_for name="getCsv" data=["type" => "export", "file" => $export.name]}">{$export.name}</a>
+                                        <a href="{{ path_for("getCsv", { "type": "export", "file": export.name }) }}">{{ export.name }}</a>
                                     </td>
-                                    <td data-title="{_T string="Date"}">
-                                        {$export.date}
+                                    <td data-title="{{ _T('Date') }}">
+                                        {{ export.date }}
                                     </td>
-                                    <td data-title="{_T string="Size"}">
-                                        {$export.size}
+                                    <td data-title="{{ _T('Size') }}">
+                                        {{ export.size }}
                                     </td>
                                     <td class="actions_row">
                                         <a
-                                            href="{path_for name="removeCsv" data=["type" => "export", "file" => $export.name]}"
+                                            href="{{ path_for("removeCsv", { "type": "export", "file": export.name }) }}"
                                             class="delete tooltip"
                                         >
                                             <i class="ui trash red icon"></i>
-                                            <span class="sr-only">{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}</span>
+                                            <span class="sr-only">{{ _T('Remove %file from disk')|replace({ '%file': export.name }) }}</span>
                                         </a>
                                     </td>
                                 </tr>
-        {/foreach}
+        {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-{/if}
+{% endif %}
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Parameted exports"}
+                        {{ _T('Parameted exports') }}
                     </div>
                     <div class="active content field">
-{if $parameted|@count gt 0}
-                        <p>{_T string="Which parameted export(s) do you want to run?"}</p>
+{% if parameted|length > 0 %}
+                        <p>{{ _T('Which parameted export(s) do you want to run?') }}</p>
                         <table class="listing ui celled table">
                             <thead>
                                 <tr>
                                     <th class="small_head"/>
-                                    <th>{_T string="Name"}</th>
-                                    <th>{_T string="Description"}</th>
+                                    <th>{{ _T('Name') }}</th>
+                                    <th>{{ _T('Description') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-    {foreach item=param from=$parameted name=parameted_list}
-                                <tr class="{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
+    {% for param in parameted %}
+                                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
                                     <td data-scope="id">
-                                        <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
+                                        <input type="checkbox" name="export_parameted[]" id="{{ param.id }}" value="{{ param.id }}"/>
                                     </td>
                                     <td data-scope="row">
-                                        <label for="{$param.id}">{$param.name}</label>
+                                        <label for="{{ param.id }}">{{ param.name }}</label>
                                     </td>
-                                    <td data-title="{_T string="Description"}">
-                                        <label for="{$param.id}">{$param.description}</label>
+                                    <td data-title="{{ _T('Description') }}">
+                                        <label for="{{ param.id }}">{{ param.description }}</label>
                                     </td>
                                 </tr>
-    {/foreach}
+    {% endfor %}
                             </tbody>
                         </table>
 {else}
-                        <p>{_T string="No parameted exports are available."}</p>
-{/if}
+                        <p>{{ _T('No parameted exports are available.') }}</p>
+{% endif %}
                     </div>
                 </div>
             </div>
@@ -110,44 +111,44 @@
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Galette tables exports"}
+                        {{ _T('Galette tables exports') }}
                     </div>
                     <div class="active content field">
-                        <p>{_T string="Additionnaly, which table(s) do you want to export?"}</p>
+                        <p>{{ _T('Additionnaly, which table(s) do you want to export?') }}</p>
                         <table class="listing same ui celled table">
                             <thead>
                                 <tr>
                                     <th class="small_head"/>
-                                    <th>{_T string="Table name"}</th>
+                                    <th>{{ _T('Table name') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-    {foreach item=table from=$tables_list name=tables_list}
-                                <tr class="{if $smarty.foreach.tables_list.iteration % 2 eq 0}even{else}odd{/if}">
+    {% for table in tables_list %}
+                                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
                                     <td>
-                                        <input type="checkbox" name="export_tables[]" id="{$table}" value="{$table}"/>
+                                        <input type="checkbox" name="export_tables[]" id="{{ table }}" value="{{ table }}"/>
                                     </td>
                                     <td class="left">
-                                        <label for="{$table}">{$table}</label>
+                                        <label for="{{ table }}">{{ table }}</label>
                                     </td>
                                 </tr>
-    {/foreach}
+    {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <div class="button-container">
-                <input type="submit" name="valid" value="{_T string="Continue"}" class="ui primary button"/>
-                {include file="forms_types/csrf.tpl"}
+                <input type="submit" name="valid" value="{{ _T('Continue') }}" class="ui primary button"/>
+                {% include "components/forms/csrf.html.twig" %}
             </div>
         </form>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                {include file="js_removal.tpl"}
+                {% include "elements/js/removal.js.twig" %}
             });
         </script>
-{/block}
+{% endblock %}

@@ -1,14 +1,14 @@
-{extends file="page.tpl"}
+{% extends 'page.html.twig' %}
 
-{block name="content"}
+{% block content %}
         <div class="ui basic horizontal segments">
             <div class="ui basic fitted segment">
                 <a
-                    href="{path_for name="importModel"}"
+                    href="{{ path_for('importModel') }}"
                     class="ui icon button"
                 >
                     <i class="cogs icon" aria-hidden="true"></i>
-                    {_T string="Configure import model"}
+                    {{ _T('Configure import model') }}
                 </a>
             </div>
         </div>
@@ -16,62 +16,62 @@
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Existing files"}
+                        {{ _T('Existing files') }}
                     </div>
                     <div class="active content field">
-                        <form class="ui form" action="{path_for name="doImport"}" method="post">
+                        <form class="ui form" action="{{ path_for('doImport') }}" method="post">
                             <div class="ui yellow message">
-                                {_T string="Warning: Don't forget to backup your current database."}
+                                {{ _T("Warning: Don't forget to backup your current database.") }}
                             </div>
-{if $existing|@count gt 0}
-                            <p>{_T string="The following files seems ready to import on the disk:"}</p>
+{% if existing|length > 0 %}
+                            <p>{{ _T('The following files seems ready to import on the disk:') }}</p>
                             <table class="listing ui celled table">
                                 <thead>
                                     <tr>
-                                        <th>{_T string="Name"}</th>
-                                        <th>{_T string="Date"}</th>
-                                        <th>{_T string="Size"}</th>
-                                        <th class="actions_row">{_T string="Actions"}</th>
+                                        <th>{{ _T('Name') }}</th>
+                                        <th>{{ _T('Date') }}</th>
+                                        <th>{{ _T('Size') }}</th>
+                                        <th class="actions_row">{{ _T('Actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-    {foreach item=import from=$existing name=existing_list}
-                                    <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
+    {% for import in existing %}
+                                    <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
                                         <td data-scope="row">
-                                            <input type="radio" name="import_file" id="file{$smarty.foreach.existing_list.iteration}" value="{$import.name}"{if isset($import_file) and $import_file eq $import.name} checked="checked"{/if}/>
-                                            <label for="file{$smarty.foreach.existing_list.iteration}">{$import.name}</label> (<a href="{path_for name="getCsv" data=["type" => "import", "file" => $import.name]}">{_T string="see"}</a>)
+                                            <input type="radio" name="import_file" id="file{{ loop.index }}" value="{{ import.name }}"{% if import_file is defined and import_file == import.name %} checked="checked"{% endif %}/>
+                                            <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ path_for("getCsv", { "type": "import", "file": import.name }) }}">{{ _T('see') }}</a>)
                                         </td>
-                                        <td data-title="{_T string="Date"}">
-                                            {$import.date}
+                                        <td data-title="{{ _T('Date') }}">
+                                            {{ import.date }}
                                         </td>
-                                        <td data-title="{_T string="Size"}">
-                                            {$import.size}
+                                        <td data-title="{{ _T('Size') }}">
+                                            {{ import.size }}
                                         </td>
                                         <td class="actions_row">
                                             <a
-                                                href="{path_for name="removeCsv" data=["type" => "import", "file" => $import.name]}"
+                                                href="{{ path_for("removeCsv", { "type": "import", "file": import.name }) }}"
                                                 class="delete tooltip"
                                             >
                                                 <i class="ui trash red icon"></i>
-                                                <span class="sr-only">{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}</span>
+                                                <span class="sr-only">{{ _T('Remove %file from disk')|replace({ '%file': import.name }) }}</span>
                                             </a>
                                         </td>
                                     </tr>
-    {/foreach}
+    {% endfor %}
                                 </tbody>
                             </table>
                             <div class="button-container">
-                                <label for="dryrun" title="{_T string="Run the import process, but do *not* store anything in the database"}">{_T string="Dry run"}</label>
-                                <input type="checkbox" name="dryrun" id="dryrun" value="1"{if isset($dryrun) and $dryrun eq true} checked="checked"{/if}/>
+                                <label for="dryrun" title="{{ _T('Run the import process, but do *not* store anything in the database') }}">{{ _T('Dry run') }}</label>
+                                <input type="checkbox" name="dryrun" id="dryrun" value="1"{% if dryrun is defined and dryrun == true %} checked="checked"{% endif %}/>
                                 <button type="submit" name="import" id="import" class="ui labeled icon button">
                                     <i class="ui file import blue icon"></i>
-                                    {_T string="Import"}
+                                    {{ _T('Import') }}
                                 </button>
-                                {include file="forms_types/csrf.tpl"}
+                                {% include "components/forms/csrf.html.twig" %}
                             </div>
-{else}
-                            <p>{_T string="No import file actually exists."}<br/>{_T string="Use upload form below to send a new file on server, or copy it directly in the imports directory."}</p>
-{/if}
+{% else %}
+                            <p>{{ _T('No import file actually exists.') }}<br/>{{ _T('Use upload form below to send a new file on server, or copy it directly in the imports directory.') }}</p>
+{% endif %}
                         </form>
                     </div>
                 </div>
@@ -80,28 +80,28 @@
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Upload new file"}
+                        {{ _T('Upload new file') }}
                     </div>
                     <div class="active content field">
-                        <form class="ui form" action="{path_for name="uploadImportFile"}" method="post" enctype="multipart/form-data">
+                        <form class="ui form" action="{{ path_for('uploadImportFile') }}" method="post" enctype="multipart/form-data">
                             <div class="field">
-                                <label for="new_file">{_T string="Select a file:"}</label>
+                                <label for="new_file">{{ _T('Select a file:') }}</label>
                                 <input class="labelalign" type="file" name="new_file" accept="text/csv" id="new_file"/>
                             </div>
                             <div class="button-container">
                                 <button type="submit" name="upload" id="upload" class="ui labeled icon button">
                                     <i class="upload blue icon" aria-hidd="true"></i>
-                                    {_T string="Upload file"}
+                                    {{ _T('Upload file') }}
                                 </button>
-                                {include file="forms_types/csrf.tpl"}
+                                {% include "components/forms/csrf.html.twig" %}
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
         <script type="text/javascript">
             $(function() {
                 //bind import click to check if one is selected
@@ -109,7 +109,7 @@
                     if ( $('input[name=import_file]:checked').length > 0 ) {
                         return true;
                     } else {
-                        var _el = $('<div id="pleaseselect" title="{_T string="No file selected" escape="js"}">{_T string="Please make sure to select one file to import." escape="js"}</div>');
+                        var _el = $('<div id="pleaseselect" title="{{ _T('No file selected')|e('js') }}">{{ _T('Please make sure to select one file to import.')|e('js') }}</div>');
                         _el.appendTo('body').dialog({
                             modal: true,
                             buttons: {
@@ -128,7 +128,7 @@
                 $('#upload').click(function(){
                     var _selected = $('#new_file')[0].files.length;
                     if ( _selected == 0 ) {
-                         var _el = $('<div id="pleaseupload" title="{_T string="No file to upload" escape="js"}">{_T string="Please make sure to select one file to upload." escape="js"}</div>');
+                         var _el = $('<div id="pleaseupload" title="{{ _T('No file to upload')|e('js') }}">{{ _T('Please make sure to select one file to upload.')|e('js') }}</div>');
                         _el.appendTo('body').dialog({
                             modal: true,
                             buttons: {
@@ -146,6 +146,6 @@
                     }
                 });
             });
-            {include file="js_removal.tpl"}
+            {% include "elements/js/removal.js.twig" %}
         </script>
-{/block}
+{% endblock %}

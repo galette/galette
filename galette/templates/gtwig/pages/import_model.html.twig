@@ -1,0 +1,117 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+<div class="ui two item top attached stackable tabs menu tabbed">
+    <a class="item active" data-tab="current">{{ _T('Current model') }}</a>
+    <a class="item" data-tab="change">{{ _T('Change model') }}</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="current">
+    <table class="listing ui celled table">
+        <div class="ui small header">
+            {% if defaults_loaded %}
+                {{ _T('Default fields') }}
+            {% else %}
+                {{ _T('Model parameted on %date')|replace({ '%date': model.getCreationDate() }) }}
+            {% endif %}
+        </div>
+        <thead>
+            <tr>
+                <th>{{ _T('Field') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for field in fields %}
+            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+        {% if members_fields[field] is not defined %}
+                <td>{{ _T('Missing field %field')|replace({ '%field': field }) }}</td>
+        {% else %}
+                <td>{{ members_fields[field]['label']|replace({ ':': ''}) }}</td>
+        {% endif %}
+            </tr>
+    {% endfor %}
+    </table>
+    <div class="button-container">
+        <a class="ui labeled icon primary button" href="{{ path_for('getImportModel') }}">
+            <i class="file csv icon" aria-hidden="true"></i>
+            {{ _T('Generate empty CSV file') }}
+        </a>
+        {% if not defaults_loaded %}
+        <a
+            id="delete"
+            class="ui labeled icon button delete tooltip"
+            href="{{ path_for('importModel') }}?remove=true"
+            title="{{ _T('Remove model and back to defaults') }}"
+        >
+            <i class="trash icon" aria-hiden="true"></i>
+            {{ _T('Remove model') }}
+        </a>
+        {% endif %}
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="change">
+    <form action="{{ path_for('storeImportModel') }}" method="POST" class="ui form">
+        <table class="listing ui celled table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ _T('Field') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for k, field in members_fields %}
+                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                    <td>
+                        <input type="checkbox" name="fields[]" id="field_{{ k }}" value="{{ k }}"{% if k in fields %} checked="checked"{% endif %}/>
+                    </td>
+                    <td>
+                        <label for="field_{{ k }}">{{ field['label']|replace({ ':': ''}) }}</label>
+                    </td>
+                </tr>
+        {% endfor %}
+        </table>
+        <div class="button-container">
+            <button type="submit" name="upload" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i>
+                {{ _T('Store new model') }}
+            </button>
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+</div>
+<div class="button-container">
+    <a
+        class="ui labeled icon button"
+        href="{{ path_for('import') }}"
+    >
+        <i class="arrow left icon" aria-hidden="true"></i>
+        {{ _T('Go back to import page') }}
+    </a>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(function(){
+        //$('#model_tabs').tabs();
+
+        $('input[type="submit"]').click(function(){
+            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
+            if ( _checkeds == 0 ) {
+                var _el = $('<div id="pleaseselect" title="{{ _T('No field selected')|e('js') }}">{{ _T('Please make sure to select at least one field from the list to perform this action.')|e('js') }}</div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $(this).dialog( "close" );
+                        }
+                    },
+                    close: function(event, ui){
+                        _el.remove();
+                    }
+                });
+                return false;
+            }
+        });
+    });
+</script>
+{% endblock %}
