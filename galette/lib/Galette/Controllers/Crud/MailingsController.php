@@ -200,7 +200,7 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mailing_adherents.tpl',
+            'pages/mailing_form.html.twig',
             array_merge(
                 array(
                     'page_title' => _T("Mailing")
@@ -506,11 +506,12 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_mailings.tpl',
+            'pages/mailings_list.html.twig',
             array(
                 'page_title'        => _T("Mailings"),
                 'logs'              => $history_list,
-                'history'           => $mailhist
+                'history'           => $mailhist,
+                'filters'           => $filters
             )
         );
         return $response;
@@ -736,15 +737,15 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mailing_preview.tpl',
+            'modals/mailing_preview.html.twig',
             [
                 'page_title'    => _T("Mailing preview"),
                 'mailing_id'    => $id,
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $mailing->getSenderName() . ' &lt;' .
-                    $mailing->getSenderAddress() . '&gt;',
+                'sender'        => $mailing->getSenderName() . ' <' .
+                    $mailing->getSenderAddress() . '>',
                 'attachments'   => $attachments
 
             ]

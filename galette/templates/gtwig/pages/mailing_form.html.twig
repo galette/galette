@@ -1,69 +1,70 @@
-{extends file="page.tpl"}
-{block name="content"}
-{if $pref_mail_method == constant('Galette\Core\Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
+{% extends 'page.html.twig' %}
+
+{% block content %}
+{% if preferences.pref_mail_method == constant('Galette\\Core\\Mailing::METHOD_DISABLED') and constant('GALETTE_MODE') != 'DEMO' %}
         <div id="errorbox" class="ui red message">
-            <h1>{_T string="- ERROR -"}</h1>
-            <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
+            <h1>{{ _T("- ERROR -") }}</h1>
+            <p>{{ _T("Email sent is disabled in the preferences. Ask galette admin") }}</p>
         </div>
-{elseif !isset($mailing_saved)}
-        <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data" class="ui form">
+{% elseif mailing_saved is not defined %}
+        <form action="{{ path_for('doMailing') }}" id="listform" method="post" enctype="multipart/form-data" class="ui form">
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Mailing information"}
+                        {{ _T("Mailing information") }}
                     </div>
                     <div class="active content field">
-                        {include file="mailing_recipients.tpl"}
-    {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
-        {assign var="path" value={path_for name="members"}}
-        {assign var="text" value={_T string="Go back to members list"}}
-    {else}
-        {assign var="path" value='#'}
-        {assign var="text" value={_T string="Manage selected members"}}
-    {/if}
+                        {% include "elements/mailing_recipients.html.twig" %}
+    {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_SENT') %}
+        {% set path = path_for('members') %}
+        {% set text = _T("Go back to members list") %}
+    {% else %}
+        {% set path = '#' %}
+        {% set text = _T("Manage selected members") %}
+    {% endif %}
                         <a
                             id="btnusers"
-                            href="{$path}"
+                            href="{{ path }}"
                             class="ui labeled icon button"
                         >
                             <i class="users icon"></i>
-                            {$text}
+                            {{ text }}
                         </a>
                     </div>
                 </div>
             </div>
-        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_START')}
+        {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_START') %}
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Attachments"}
+                        {{ _T("Attachments") }}
                     </div>
                     <div class="active content field">
-                        {if $attachments|@count gt 0}
+                        {% if attachments|length > 0 %}
                             <label>
-                                {_T string="Existing attachments:"}
+                                {{ _T("Existing attachments:") }}
                             </label>
                             <ul id="existing_attachments">
-                                {foreach item=attachment from=$attachments}
+                                {% for attachment in attachments %}
                                 <li>
                                     <a
-                                        href="?remove_attachment={$attachment->getFileName()}"
+                                        href="?remove_attachment={{ attachment.getFileName() }}"
                                         class="rm_attachement tooltip delete"
                                     >
                                         <i class="ui trash alt red icon"></i>
-                                        <span class="sr-only">{_T string="Remove attachment"}</span>
+                                        <span class="sr-only">{{ _T("Remove attachment") }}</span>
                                     </a>
-                                    {$attachment->getFileName()}
+                                    {{ attachment.getFileName() }}
                                 </li>
-                                {/foreach}
+                                {% endfor %}
                             </ul>
-                        {/if}
-                        <label for="attachment" title="{_T string="Select attachments"}">{_T string="Add attachment"}</label>
+                        {% endif %}
+                        <label for="attachment" title="{{ _T("Select attachments") }}">{{ _T("Add attachment") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."}"></i>
+                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}"></i>
                             </div>
                             <input type="file" name="attachment[]" id="attachment" multiple="multiple">
                         </div>
@@ -75,41 +76,41 @@
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="icon dropdown"></i>
-                        {_T string="Write your mailing"}
+                        {{ _T("Write your mailing") }}
                     </div>
                     <div class="active content field">
                         <div class="inline field">
-                            <label for="sender">{_T string="Sender"}</label>
+                            <label for="sender">{{ _T("Sender") }}</label>
                             <select name="sender" id="sender" class="ui dropdown nochosen">
-                                <option value="{Galette\Core\GaletteMail::SENDER_PREFS}">{_T string="from preferences"}</option>
-            {if !$login->isSuperAdmin()}
-                                <option value="{Galette\Core\GaletteMail::SENDER_CURRENT}">{_T string="current logged in user"}</option>
-            {/if}
-                                <option value="{Galette\Core\GaletteMail::SENDER_OTHER}">{_T string="other"}</option>
+                                <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}">{{ _T("from preferences") }}</option>
+            {% if not login.isSuperAdmin() %}
+                                <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}">{{ _T("current logged in user") }}</option>
+            {% endif %}
+                                <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_OTHER') }}">{{ _T("other") }}</option>
                             </select>
                         </div>
                         <div class="field required">
-                            <label for="sender_name">{_T string="Name"}</label>
-                            <input type="text" name="sender_name" id="sender_name" value="{$preferences->pref_email_nom}" disabled="disabled"/>
+                            <label for="sender_name">{{ _T("Name") }}</label>
+                            <input type="text" name="sender_name" id="sender_name" value="{{ preferences.pref_email_nom }}" disabled="disabled"/>
                         </div>
                         <div class="field required">
-                            <label for="sender_address">{_T string="Address"}</label>
-                            <input type="text" name="sender_address" id="sender_address" value="{$preferences->pref_email}" disabled="disabled"/>
+                            <label for="sender_address">{{ _T("Address") }}</label>
+                            <input type="text" name="sender_address" id="sender_address" value="{{ preferences.pref_email }}" disabled="disabled"/>
                         </div>
                         <div class="field required">
-                            <label for="mailing_objet">{_T string="Object:"}</label>
-                            <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80" required/>
+                            <label for="mailing_objet">{{ _T("Object:") }}</label>
+                            <input type="text" name="mailing_objet" id="mailing_objet" value="{{ mailing.subject }}" size="80" required/>
                         </div>
                         <div class="field required">
-                            <label for="mailing_corps">{_T string="Message:"}</label>
-                            <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{if $mailing->message}{$mailing->message|escape}{/if}</textarea>
-                            <input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
+                            <label for="mailing_corps">{{ _T("Message:") }}</label>
+                            <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{% if mailing.message %}{{ mailing.message|escape }}{% endif %}</textarea>
+                            <input type="hidden" name="html_editor_active" id="html_editor_active" value="{% if html_editor_active %}1{% else %}0{% endif %}"/>
                         </div>
                         <div id="summernote_toggler" class="ui basic right aligned fitted segment">
-                            <a class="ui blue tertiary button" href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{_T string="Activate HTML editor"}</a>
+                            <a class="ui blue tertiary button" href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{{ _T("Activate HTML editor") }}</a>
                         </div>
                         <div class="inline field">
-                            <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label>
+                            <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {% if mailing.html == 1 or preferences.pref_editor_enabled == 1 %}checked="checked"{% endif %}/><label for="mailing_html">{{ _T("Interpret HTML") }}</label>
                         </div>
                     </div>
                 </div>
@@ -118,65 +119,65 @@
             <div class="button-container">
                 <button type="submit" name="mailing_go" id="btnpreview" class="ui labeled icon button">
                     <i class="eye icon" aria-hidden="true"></i>
-                    {_T string="Preview"}
+                    {{ _T("Preview") }}
                 </button>
                 <button type="submit" name="mailing_save" class="ui labeled icon button action">
                     <i class="save icon" aria-hidden="true"></i>
-                    {_T string="Save"}
+                    {{ _T("Save") }}
                 </button>
-                <button type="submit" name="mailing_confirm" class="ui labeled icon button {if $GALETTE_MODE eq 'DEMO'} disabled" disabled="disabled{/if}">
+                <button type="submit" name="mailing_confirm" class="ui labeled icon button {% if constant('GALETTE_MODE') == 'DEMO' %} disabled" disabled="disabled{% endif %}">
                     <i class="rocket icon" aria-hidden="true"></i>
-                    {_T string="Send"}
+                    {{ _T("Send") }}
                 </button>
                 <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
                     <i class="trash icon" aria-hidden="true"></i>
-                    {_T string="Cancel mailing"}
+                    {{ _T("Cancel mailing") }}
                 </button>
             </div>
-        {/if}
-        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_PREVIEW')}
+        {% endif %}
+        {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_PREVIEW') %}
             <section class="mailing_write" id="mail_preview">
-                <header class="ui-state-default ui-state-active">{_T string="Preview your mailing"}</header>
+                <header class="ui-state-default ui-state-active">{{ _T("Preview your mailing") }}</header>
                 <div>
-                    <p><span class="bline">{_T string="Object:"}</span>{$mailing->subject}</p>
+                    <p><span class="bline">{{ _T("Object:") }}</span>{{ mailing.subject }}</p>
                     <p>
-                        <span class="bline">{_T string="Message:"}</span><br/>
-            {if $mailing->html}
-                    {$mailing->message}
-            {else}
-                        <pre>{$mailing->wrapped_message}</pre>
-            {/if}
+                        <span class="bline">{{ _T("Message:") }}</span><br/>
+            {% if mailing.html %}
+                    {{ mailing.message }}
+            {% else %}
+                        <pre>{{ mailing.wrapped_message }}</pre>
+            {% endif %}
                     </p>
                 </div>
                 <div>
                     <p>
                         <button type="submit" name="mailing_reset" class="ui labeled icon button">
                             <i class="backward icon"></i>
-                            {_T string="Modifiy mailing"}
+                            {{ _T("Modifiy mailing") }}
                         </button>
-                        <button type="submit" name="mailing_confirm"{if $GALETTE_MODE eq 'DEMO'} class="ui labeled icon button disabled" disabled="disabled"{else} class="ui labeled icon button"{/if}>
+                        <button type="submit" name="mailing_confirm"{% if constant('GALETTE_MODE') == 'DEMO' %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
                             <i class="rocket icon" aria-hidden="true"></i>
-                            {_T string="Send"}
+                            {{ _T("Send") }}
                         </button>
                         <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
                             <i class="trash red icon" aria-hidden="true"></i>
-                            {_T string="Cancel mailing"}
+                            {{ _T("Cancel mailing") }}
                         </button>
 
-                        <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
-                        <input type="hidden" name="mailing_corps" value="{if $mailing->message}{$mailing->message|escape}{/if}"/>
+                        <input type="hidden" name="mailing_objet" value="{{ mailing.subject }}"/>
+                        <input type="hidden" name="mailing_corps" value="{% if mailing.message %}{{ mailing.message|escape }}{% endif %}"/>
                     </p>
                 </div>
-            {include file="forms_types/csrf.tpl"}
+            {% include "components/forms/csrf.html.twig" %}
             </section>
-        {/if}
+        {% endif %}
         </form>
-{/if}
-{/block}
+{% endif %}
+{% endblock %}
 
-{block name="javascripts"}
-{if ($pref_mail_method != constant('Galette\Core\Mailing::METHOD_DISABLED') or $GALETTE_MODE eq 'DEMO') and !isset($mailing_saved)}
-    {if $mailing->current_step neq constant('Galette\Core\Mailing::STEP_SENT')}
+{% block javascripts %}
+{% if (preferences.pref_mail_method != constant('Galette\\Core\\Mailing::METHOD_DISABLED') or constant('GALETTE_MODE') != 'DEMO') and mailing_saved is not defined %}
+    {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
 <script type="text/javascript">
     $(function() {
         {* Preview popup *}
@@ -192,7 +193,7 @@
                 _attachments[_attachments.length] = $(this).text();
             });
             $.ajax({
-                url: '{path_for name="mailingPreview"}',
+                url: {{ path_for('mailingPreview') }},
                 type: "POST",
                 data: {
                     sender: _sender,
@@ -203,19 +204,19 @@
                     html: _html,
                     attachments: _attachments
                 },
-                {include file="js_loader.tpl"},
+                {% include "elements/js/loader.js.twig" %},
                 success: function(res){
                     _preview_dialog(res);
                 },
                 error: function() {
-                    alert("{_T string="An error occurred displaying preview :(" escape="js"}");
+                    alert("{{ _T("An error occurred displaying preview :(")|e("js") }}");
                 }
             });
             return false;
         });
 
         var _preview_dialog = function(res){
-            var _el = $('<div id="ajax_preview" title="{_T string="Mailing preview" escape="js"}"> </div>');
+            var _el = $('<div id="ajax_preview" title="{{ _T("Mailing preview")|e("js") }}"> </div>');
             _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
@@ -231,24 +232,24 @@
         {* Members popup *}
         $('#btnusers').click(function(){
             $.ajax({
-                url: '{path_for name="ajaxMembers"}',
+                url: {{ path_for('ajaxMembers') }},
                 type: "POST",
                 data: {
                     multiple: true
                 },
-                {include file="js_loader.tpl"},
+                {% include "elements/js/loader.js.twig" %},
                 success: function(res){
                     _members_dialog(res);
                 },
                 error: function() {
-                    alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
+                    alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
                 }
             });
             return false;
         });
 
         var _members_dialog = function(res){
-            var _el = $('<div id="members_list" title="{_T string="Members selection" escape="js"}"> </div>');
+            var _el = $('<div id="members_list" title="{{ _T("Members selection")|e("js") }}"> </div>');
             _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
@@ -274,12 +275,12 @@
                     _recipients[_recipients.length] = this.id.substring(7, this.id.length);
                 });
                 $.ajax({
-                    url: '{path_for name="mailingRecipients"}',
+                    url: {{ path_for('mailingRecipients') }},
                     type: "POST",
                     data: {
                         recipients: _recipients
                     },
-                    {include file="js_loader.tpl"},
+                    {% include "elements/js/loader.js.twig" %},
                     success: function(res){
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
@@ -287,7 +288,7 @@
                         $('#members_list').dialog("close");
                     },
                     error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
+                        alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
                     }
                 });
             });
@@ -337,13 +338,13 @@
                         members: _members,
                         unreachables: _unreach
                     },
-                    {include file="js_loader.tpl"},
+                    {% include "elements/js/loader.js.twig" %},
                     success: function(res){
                         $('#members_list').empty();
                         _members_ajax_mapper(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
+                        alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
                     }
                 });
                 return false;
@@ -352,7 +353,7 @@
 
         $('.rm_attachement').click(function(){
             var _link = $(this);
-            var _el = $('<div title="{_T string="Remove attachment"}"><p>{_T string="Are you sure you want to remove this attachment?"}</p><p>{_T string="This will immediately remove attachment from disk and cannot be undo."}</p></div>');
+            var _el = $('<div title="{{ _T("Remove attachment") }}"><p>{{ _T("Are you sure you want to remove this attachment?") }}</p><p>{{ _T("This will immediately remove attachment from disk and cannot be undo.") }}</p></div>');
             _el.appendTo('body').dialog({
                 modal: true,
                 hide: 'fold',
@@ -360,9 +361,9 @@
                     Ok: function() {
                         var _this = $(this);
                         _this.dialog( "close" );
-                        window.location.href = '{path_for name="mailing"}' + _link.attr('href');
+                        window.location.href = '{{ path_for('mailing') }}' + _link.attr('href');
                     },
-                    {_T string="Cancel"}: function() {
+                    {{ _T("Cancel") }}: function() {
                          $(this).dialog( "close" );
                     }
                 },
@@ -380,18 +381,18 @@
             var _editable = false;
             var _val = _this.val();
             switch (_val) {
-                case '{Galette\Core\GaletteMail::SENDER_PREFS}':
-                    _sender_name.val('{$preferences->pref_email_nom|escape:"javascript"}');
-                    _sender_address.val('{$preferences->pref_email|escape:"javascript"}');
+                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}':
+                    _sender_name.val('{{ preferences.pref_email_nom|e('js') }}');
+                    _sender_address.val('{{ preferences.pref_email|e('js') }}');
                     break;
 
-        {if (!$login->isSuperAdmin())}
-                case '{Galette\Core\GaletteMail::SENDER_CURRENT}':
-                    _sender_name.val('{$sender_current['name']|escape:"javascript"}');
-                    _sender_address.val('{$sender_current['email']|escape:"javascript"}');
+        {% if not login.isSuperAdmin() %}
+                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}':
+                    _sender_name.val('{{ sender_current['name']|e('js') }}');
+                    _sender_address.val('{{ sender_current['email']|e('js') }}');
                     break;
-        {/if}
-                case '{Galette\Core\GaletteMail::SENDER_OTHER}':
+        {% endif %}
+                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_OTHER') }}':
                     _sender_name.val('');
                     _sender_address.val('');
                     _editable = true;
@@ -410,6 +411,6 @@
         });
     });
 </script>
-    {/if}
-{/if}
-{/block}
+    {% endif %}
+{% endif %}
+{% endblock %}

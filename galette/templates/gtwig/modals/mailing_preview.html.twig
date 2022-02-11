@@ -1,0 +1,42 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+        <section id="mailing_header" class="ajax_mailing_preview">
+            <header class="ui-state-active ui-corner-top">{{ _T("Headers") }}</header>
+            <dl>
+                <dt>{{ _T("From:") }}</dt>
+                <dd>{{ sender }}</dd>
+                <dt>{{ _T("To:") }}</dt>
+                <dd>
+    {% for recipient in recipients %}
+        {% if recipient.email is null and recipient.hasParent() %}
+            {% set email = recipient.parent.email %}
+        {% else %}
+            {% set email = recipient.email %}
+        {% endif %}
+                    <a href="mailto:{{ email }}">{{ recipient.sname }} &lt;{{ email }}&gt;</a>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+                </dd>
+                <dt>{{ _T("Subject:") }}</dt>
+                <dd>{{ mailing.subject }}</dd>
+                <dt>{{ _T("Attachments:") }}</dt>
+                <dd>
+    {% for attachment in attachments %}
+                    <span class="attached"><a target="_blank" href="{{ path_for("previewAttachment", { "id": mailing_id, "pos": loop.index }) }}"><i class="ui link icon"></i>{{ attachment.getFileName() }}</a></span>
+    {% else %}
+                    -
+    {% endfor %}
+                </dd>
+            </dl>
+        </section>
+        <section id="mailing_preview" class="ajax_mailing_preview">
+            <header class="ui-state-active ui-corner-top">{{ _T("Mail body") }}</header>
+            <div>
+    {% if mailing.html %}
+                {{ mailing.message }}
+    {% else %}
+                <pre>{{ mailing.wrapped_message|escape }}</pre>
+    {% endif %}
+            </div>
+        </section>
+{% endblock %}

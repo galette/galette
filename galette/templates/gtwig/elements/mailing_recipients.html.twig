@@ -1,0 +1,22 @@
+    {% set count = mailing.recipients|length %}
+    {% set count_unreachables = mailing.unreachables|length %}
+    {% if count > 0 %}
+        {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_SENT') %}
+                <p>{{ _T("Your message has been sent to <strong>%s members</strong>")|replace({ '%s': count }) }}</p>
+        {% else %}
+                <p id="recipients_count">{{ _T("You are about to send an e-mail to <strong>%s members</strong>")|replace({ '%s': count }) }}</p>
+        {% endif %}
+    {% else %}
+        {% if count_unreachables > 0 %}
+                <p id="recipients_count"><strong>{{ _T("None of the selected members has an email address.") }}</strong></p>
+         {% else %}
+                <p id="recipients_count"><strong>{{ _T("No member selected (yet).") }}</strong></p>
+         {% endif %}
+    {% endif %}
+    {% if count_unreachables > 0 %}
+                <p id="unreachables_count">
+                    <strong>{{ count_unreachables }} {% if count_unreachables != 1 %}{{ _T("unreachable members:") }}{% else %}{{ _T("unreachable member:") }}{% endif %}</strong><br/>
+                    {{ _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") }}
+                    <br/><a class="ui labeled icon button" href="{{ path_for('pdf-members-labels') }}?from=mailing"><i class="address card icon"></i> {{ _T("Generate labels") }}</a>
+                </p>
+    {% endif %}
