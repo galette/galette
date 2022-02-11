@@ -371,7 +371,9 @@ class MembersController extends CrudController
                 'type'          => $type,
                 'members'       => $members,
                 'nb_members'    => $m->getCount(),
-                'filters'       => $filters
+                'filters'       => $filters,
+                // pseudo random int
+                'time'              => time(),
             )
         );
         return $response;

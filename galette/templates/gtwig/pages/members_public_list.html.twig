@@ -5,7 +5,7 @@
         <div class="ui icon yellow small message">
             <i class="info circle icon"></i>
             <div class="content">
-                {{ _T('This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check "Be visible in the members list"') }}
+                {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
             </div>
         </div>
         <form action="{{ path_for("filterPublicList", { "type": "list" }) }}" method="POST" id="filtre" class="ui form">
@@ -88,7 +88,7 @@
                     </td>
                     <td class="{{ rclass }}" data-title="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
                     {% if login.isLogged() %}
-                    <td class="{{ rclass }}" data-title="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+                    <td class="{{ rclass }}" data-title="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
                     {% endif %}
                     <td class="{{ rclass }}" data-title="{{ _T('Information') }}">{{ member.others_infos }}</td>
                 </tr>
