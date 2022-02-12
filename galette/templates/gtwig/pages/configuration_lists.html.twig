@@ -1,0 +1,91 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ path_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
+    <div class="ui segment">
+    <div id="members_tab" class="cssform ui two column centered padded grid">
+        <ul id="listed_fields" class="fields_list notype connectedSortable">
+            <li class="ui block header listing">
+                {{ _T("Fields in list") }}
+                {#<span class="label">{{ _T("Field name") }}</span>
+                <span class="access">{{ _T("Permissions") }}</span>#}
+            </li>
+    {% for col, field in listed_fields %}
+            {% set fid = field.field_id %}
+            <li class="tbl_line_{{ loop.index is odd ? 'odd' : 'even' }}{% if fid == 'id_adh' or fid == 'list_adh_name' %} nosort ui-state-disabled{% endif %}">
+                <span class="label" data-title="{{ _T("Field name") }}">
+                    <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                    {{ field.label }}
+                </span>
+                <span data-title="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({ '%field': field.label }) }}">
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %}{{ _T("Group manager") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %}{{ _T("Read only") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %}{{ _T("Read/Write") }}{% endif %}
+                </span>
+            </li>
+    {% endfor %}
+        </ul>
+        <ul id="remaining_fields" class="fields_list notype connectedSortable">
+            <li class="ui block header listing">
+                {{ _T("Available fields") }}
+                {#<span class="label">{{ _T("Field name") }}</span>
+                <span class="access">{{ _T("Permissions") }}</span>#}
+            </li>
+    {% for col, field in remaining_fields %}
+            {% set fid = field.field_id %}
+            <li class="tbl_line_{{ loop.index is odd ? 'odd' : 'even' }}">
+                <span class="label" data-title="{{ _T("Field name") }}">
+                    <input type="hidden" name="rfields[]" value="{{ fid }}"/>
+                    {{ field.label }}
+                </span>
+                <span data-title="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({ '%field': field.label }) }}">
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %}{{ _T("Group manager") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %}{{ _T("Read only") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %}{{ _T("Read/Write") }}{% endif %}
+                </span>
+            </li>
+    {% endfor %}
+        </ul>
+
+    </div>
+    </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon"></i> {{ _T("Save") }}
+            </button>
+        </div>
+        {% include "components/forms/csrf.html.twig" %}
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var _initSortable = function(){
+            $('.fields_list').sortable({
+                items: 'li:not(.listing,.nosort)',
+                connectWith: '.connectedSortable',
+                update: function(event, ui) {
+                    // When sort is updated, we must check for the newer category item belongs to
+                    var _item = $($(ui.item[0])[0]);
+                    var _parent = _item.parent('ul.fields_list');
+                    var _current = _parent.attr('id');
+                    if (_current == 'remaining_fields') {
+                        _item.find('input[name=fields\\[\\]]').attr('name', 'rfields[]');
+                    } else {
+                        _item.find('input[name=rfields\\[\\]]').attr('name', 'fields[]');
+                    }
+                }
+            }).disableSelection();
+        }
+
+        $(function() {
+            _initSortable();
+        });
+    </script>
+{% endblock %}

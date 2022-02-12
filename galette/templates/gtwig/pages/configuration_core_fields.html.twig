@@ -1,68 +1,69 @@
-{extends file="page.tpl"}
-{block name="content"}
+{% extends 'page.html.twig' %}
+
+{% block content %}
     <div class="ui basic segment">
         <button id="collapse" class="ui labeled icon button">
             <i class="angle double up icon"></i>
-            {_T string="Collapse all"}
+            {{ _T("Collapse all") }}
         </button>
     </div>
-    <form action="{path_for name="configureCoreFields"}" method="post" id="config_fields_form" class="ui form">
+    <form action="{{ path_for('configureCoreFields') }}" method="post" id="config_fields_form" class="ui form">
     <div id="members_tab">
-{foreach item=category from=$categories name=categories_list}
-        <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
-    {assign var='catname' value=$category->category}
-            <input type="hidden" name="categories[]" id="category{$smarty.foreach.categories_list.iteration}" value="{$category->id_field_category}"/>
-            <legend class="ui basic small header segment">{_T string=$catname}</legend>
-            <ul id="sortable_{$smarty.foreach.categories_list.iteration}" class="fields_list connectedSortable">
+{% for category in categories %}
+        <fieldset class="cssform large" id="cat_{{ loop.index }}">
+    {% set catname = category.category %}
+            <input type="hidden" name="categories[]" id="category{{ loop.index }}" value="{{ category.id_field_category }}"/>
+            <legend class="ui basic small header segment">{{ _T(catname) }}</legend>
+            <ul id="sortable_{{ loop.index }}" class="fields_list connectedSortable">
                 <li class="ui block header listing">
-                    <span class="label">{_T string="Field name"}</span>
-                    <span class="yesno">{_T string="Required"}</span>
-                    <span class="access">{_T string="Permissions"}</span>
+                    <span class="label">{{ _T("Field name") }}</span>
+                    <span class="yesno">{{ _T("Required") }}</span>
+                    <span class="access">{{ _T("Permissions") }}</span>
                 </li>
-    {assign var='fs' value=$category->id_field_category}
-    {foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
-        {if ($preferences->pref_show_id or $field.field_id neq 'id_adh') and $field.field_id neq 'parent_id'}
-            {assign var='fid' value=$field.field_id}
-                <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
-                    <span class="label" data-title="{_T string="Field name"}">
-                        <input type="hidden" name="fields[]" value="{$fid}"/>
-                        <input type="hidden" name="{$fid}_category" value="{$category->id_field_category}"/>
-                        <input type="hidden" name="{$fid}_label" value="{$field.label}"/>
-                        {$field.label}
+    {% set fs = category.id_field_category %}
+    {% for col, field in categorized_fields[fs] %}
+        {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
+            {% set fid = field.field_id %}
+                <li class="tbl_line_{{ loop.index is odd ? 'odd' : 'even' }}">
+                    <span class="label" data-title="{{ _T("Field name") }}">
+                        <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                        <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
+                        <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
+                        {{ field.label }}
                     </span>
-                    <span data-title="{_T string="Required"}" class="yesno" title="{if in_array($fid, $non_required)}{_T string="Field '%field' cannot be set as required." pattern="/%field/" replace=$field.label}{else}{_T string="Mark '%field' as (not) required" pattern="/%field/" replace=$field.label}{/if}">
-                        <label for="{$fid}_required_yes">{_T string="Yes"}</label>
-                        <input type="radio" name="{$fid}_required" id="{$fid}_required_yes" value="1"{if $field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
-                        <label for="{$fid}_required_no">{_T string="No"}</label>
-                        <input type="radio" name="{$fid}_required" id="{$fid}_required_no" value="0"{if !$field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
+                    <span data-title="{{ _T("Required") }}" class="yesno" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({ '%field': field.label }) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({ '%field': field.label }) }}{% endif %}">
+                        <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
+                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                        <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
+                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
                     </span>
-                    <span data-title="{_T string="Permissions"}" class="access" title="{_T string="Change '%field' permissions" pattern="/%field/" replace=$field.label}">
-                        <select name="{$fid}_visible" id="{$fid}_visible" class="ui dropdown nochosen">
-                            <option value="{Galette\Entity\FieldsConfig::NOBODY}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::NOBODY')} selected="selected"{/if}>{_T string="Inaccessible"}</option>
-                            <option value="{Galette\Entity\FieldsConfig::ADMIN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} selected="selected"{/if}>{_T string="Administrator"}</option>
-                            <option value="{Galette\Entity\FieldsConfig::STAFF}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::STAFF')} selected="selected"{/if}>{_T string="Staff member"}</option>
-                            <option value="{Galette\Entity\FieldsConfig::MANAGER}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::MANAGER')} selected="selected"{/if}>{_T string="Group manager"}</option>
-                            <option value="{Galette\Entity\FieldsConfig::USER_READ}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::USER_READ')} selected="selected"{/if}>{_T string="Read only"}</option>
-                            <option value="{Galette\Entity\FieldsConfig::USER_WRITE}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::USER_WRITE')} selected="selected"{/if}>{_T string="Read/Write"}</option>
+                    <span data-title="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({ '%field': field.label }) }}">
+                        <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown nochosen">
+                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::STAFF') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %} selected="selected"{% endif %}>{{ _T("Staff member") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::MANAGER') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %} selected="selected"{% endif %}>{{ _T("Group manager") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_READ') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %} selected="selected"{% endif %}>{{ _T("Read only") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_WRITE') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %} selected="selected"{% endif %}>{{ _T("Read/Write") }}</option>
                         </select>
                     </span>
                 </li>
-        {/if}
-    {/foreach}
+        {% endif %}
+    {% endfor %}
             </ul>
         </fieldset>
-{/foreach}
+{% endfor %}
     </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
-                <i class="save icon"></i> {_T string="Save"}
+                <i class="save icon"></i> {{ _T("Save") }}
             </button>
-            {include file="forms_types/csrf.tpl"}
+            {% include "components/forms/csrf.html.twig" %}
         </div>
     </form>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
     <script type="text/javascript">
         var _initSortable = function(){
             $('.fields_list').sortable({
@@ -84,8 +85,8 @@
         var _bindCollapse = function() {
             $('#collapse').click(function(){
                 var _this = $(this);
-                var _expandTxt = '{_T string="Expand all"}';
-                var _collapseTxt = '{_T string="Collapse all"}';
+                var _expandTxt = '{{ _T("Expand all") }}';
+                var _collapseTxt = '{{ _T("Collapse all") }}';
 
                 var _span = _this.children('i');
                 var _isExpand = false;
@@ -162,7 +163,7 @@
         }
 
         $(function() {
-            $('body').append($('<div id="warnings" title="{_T string="Warning" escape="js"}"><p>{_T string="Some warnings has been thrown:" escape="js"}</p><ul></ul><p>{_T string="Please correct above warnings to continue."}</p></div>').hide());
+            $('body').append($('<div id="warnings" title="{{ _T("Warning")|e("js") }}"><p>{{ _T("Some warnings has been thrown:")|e("js") }}</p><ul></ul><p>{{ _T("Please correct above warnings to continue.") }}</p></div>').hide());
 
             _bindForm();
 
@@ -203,4 +204,4 @@
             });
         });
     </script>
-{/block}
+{% endblock %}

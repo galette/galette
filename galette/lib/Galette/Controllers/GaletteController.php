@@ -511,7 +511,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'config_fields.tpl',
+            'pages/configuration_core_fields.html.twig',
             $params
         );
         return $response;
@@ -604,7 +604,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'config_lists.tpl',
+            'pages/configuration_lists.html.twig',
             $params
         );
         return $response;
