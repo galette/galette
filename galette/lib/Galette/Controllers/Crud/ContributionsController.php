@@ -85,6 +85,16 @@ class ContributionsController extends CrudController
         string $type,
         Contribution $contrib
     ): Response {
+        // check for ajax mode
+        $ajax = false;
+        if (
+            $request->isXhr()
+            || isset($post['ajax'])
+            && $post['ajax'] == 'true'
+        ) {
+            $ajax = true;
+        }
+
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
         $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
@@ -137,11 +147,12 @@ class ContributionsController extends CrudController
         }
         $params['pref_membership_ext'] = $ext_membership;
         $params['autocomplete'] = true;
+        $params['mode'] = ($ajax ? 'ajax' : '');
 
         // display page
         $this->view->render(
             $response,
-            'ajouter_contribution.tpl',
+            'pages/contribution_form.html.twig',
             $params
         );
         return $response;
