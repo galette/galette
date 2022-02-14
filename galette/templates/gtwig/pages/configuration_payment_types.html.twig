@@ -1,90 +1,90 @@
-{extends file="page.tpl"}
+{% extends 'page.html.twig' %}
 
-{block name="content"}
-        <form action="{path_for name="paymentTypes"}" method="post" enctype="multipart/form-data" class="ui form">
+{% block content %}
+        <form action="{{ path_for('paymentTypes') }}" method="post" enctype="multipart/form-data" class="ui form">
                 <table class="listing ui celled table">
                     <thead>
                         <tr>
                             <th class="id_row">#</th>
-                            <th>{_T string="Name"}</th>
-                            <th>{_T string="Actions"}</th>
+                            <th>{{ _T("Name") }}</th>
+                            <th>{{ _T("Actions") }}</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <td data-scope="row">
                                 <span class="row-title">
-                                    {_T string="Add payment type"}
+                                    {{ _T("Add payment type") }}
                                 </span>
                             </td>
-                            <td class="left" data-title="{_T string="Label"}">
+                            <td class="left" data-title="{{ _T("Label") }}">
                                 <input size="20" type="text" name="name"/>
                             </td>
                             <td class="center actions_row">
                                 <input type="hidden" name="new" value="1" />
                                 <button type="submit" name="valid" class="ui labeled icon button">
                                     <i class="plus green icon" aria-disabled="true"></i>
-                                    {_T string="Add"}
+                                    {{ _T("Add") }}
                                 </button>
                             </td>
                         </tr>
                     </tfoot>
                     <tbody>
-            {foreach from=$list item=ptype name=alltypes}
-                        <tr class="{if $smarty.foreach.alltypes.iteration % 2 eq 0}even{else}odd{/if}">
+            {% for ptype in list %}
+                        <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                             <td data-scope="row">
-    {if $preferences->pref_show_id}
-                                {$ptype->id}
-    {else}
-                                {$smarty.foreach.alltypes.iteration}
-    {/if}
+                {% if preferences.pref_show_id %}
+                                {{ ptype.__get('id') }}
+                {% else %}
+                                {{ loop.index }}
+                {% endif %}
                                 <span class="row-title">
-                                    <a href="{path_for name="editPaymentType" data=["id" => $ptype->id]}">
-                                        {_T string="%s payment type" pattern="/%s/" replace=$ptype->getName()}
+                                    <a href="{{ path_for('editPaymentType', { 'id': ptype.__get('id') }) }}">
+                                        {{ _T("%s payment type")|replace({ '%s': ptype.getName() }) }}
                                     </a>
                                 </span>
                             </td>
-                            <td class="left" data-title="{_T string="Name"}">{$ptype->getName()}</td>
+                            <td class="left" data-title="{{ _T("Name") }}">{{ ptype.getName() }}</td>
                             <td class="center actions_row">
                                 <a
-                                    href="{path_for name="editPaymentType" data=["id" => $ptype->id]}"
+                                    href="{{ path_for('editPaymentType', { 'id': ptype.__get('id') }) }}"
                                     class="tooltip action"
                                 >
                                     <i class="ui edit icon"></i>
-                                    <span class="sr-only">{_T string="Edit '%s' payment type" pattern="/%s/" replace=$ptype->getName()}</span>
+                                    <span class="sr-only">{{ _T("Edit '%s' payment type")|replace({ '%s': ptype.getName() }) }}</span>
                                 </a>
                                 <a
-                                    href="{path_for name="dynamicTranslations" data=["text_orig" => {$ptype->getName(false)|escape}]}"
+                                    href="{{ path_for('dynamicTranslations', { 'text_orig': ptype.getName(false)|escape }) }}"
                                     class="tooltip"
                                 >
                                     <i class="ui language grey icon"></i>
-                                    <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$ptype->getName()}</span>
+                                    <span class="sr-only">{{ _T("Translate '%s'")|replace({ '%s': ptype.getName() }) }}</span>
                                 </a>
                                 </a>
-                {if $ptype->isSystemType()}
+                {% if ptype.isSystemType() %}
                                 <i class="ui icon">&nbsp;</i>
-                {else}
+                {% else %}
                                 <a
-                                    href="{path_for name="removePaymentType" data=["id" => $ptype->id]}"
+                                    href="{{ path_for('removePaymentType', { 'id': ptype.__get('id') }) }}"
                                     class="delete tooltip"
                                 >
                                     <i class="ui trash red icon"></i>
-                                    <span class="sr-only">{_T string="Delete '%s' payment type" pattern="/%s/" replace=$ptype->getName()}</span>
+                                    <span class="sr-only">{{ _T("Delete '%s' payment type")|replace({ '%s': ptype.getName() }) }}</span>
                                 </a>
-                {/if}
+                {% endif %}
                             </td>
                         </tr>
-            {/foreach}
+            {% endfor %}
                     </tbody>
                 </table>
-            {include file="forms_types/csrf.tpl"}
+            {% include 'components/forms/csrf.html.twig' %}
         </form>
-{/block}
+{% endblock %}
 
-{block name="javascripts"}
+{% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                {include file="js_removal.tpl"}
+                {% include 'elements/js/removal.js.twig' %}
             });
         </script>
-{/block}
+{% endblock %}

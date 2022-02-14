@@ -146,7 +146,7 @@ class EntitledsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_intitules.tpl',
+            'pages/configuration_entitleds.html.twig',
             $params
         );
         return $response;
@@ -208,7 +208,7 @@ class EntitledsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'editer_intitule.tpl',
+            'pages/configuration_entitled_form.html.twig',
             $params
         );
         return $response;

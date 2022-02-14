@@ -1,0 +1,67 @@
+{% extends 'page.html.twig' %}
+
+{% set activetab = '' %}
+{% for m in models %}
+    {% if m.id == model.id %}
+        {% set activetab = loop.index0 %}
+    {% endif %}
+{% endfor %}
+
+{% block content %}
+        <div class="tabbed">
+        <div id="tabs">
+            <ul>
+{% for m in models %}
+                <li{% if m.id == model.id %} class="ui-tabs-selected"{% endif %}><a href="{{ path_for('pdfModels', { 'id': m.id }) }}">{{ m.name }}</a></li>
+{% endfor %}
+            </ul>
+            <div id="ui-tabs-{{ activetab }}">
+{% include 'elements/edit_pdf_models.html.twig' %}
+            </div>
+        </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            _addLegenButton('#tabs');
+
+            $(function(){
+                $('#tabs').tabs({
+                    active: {{ activetab }},
+                    load: function(event, ui) {
+                        $('#tabs input:submit, #tabs .button, #tabs input:reset' ).button();
+                        _handleLegend($(event.currentTarget).attr('href').replace('{{ path_for("pdfModels") }}/', ''));
+                    },
+                    {# Cannot include loader.js.twig here because we need to use beforeSend specificaly... #}
+                    beforeLoad: function(event, ui) {
+                        _tab_name = ui.ajaxSettings.url.split('/');
+                        _tab_name = _tab_name[_tab_name.length-1];
+
+                        _handleLegend({{ model.id }});
+
+                        if ( ui.ajaxSettings.url == '{{ path_for("pdfModels", { "id": model.id }) }}'
+                             ||  ui.ajaxSettings.url == '{{ path_for("pdfModels") }}'
+                        ) {
+                            var _current = $('#ui-tabs-{{ activetab }}');
+                            if (_current) {
+                                $('#'+ui.panel[0].id).append(_current)
+                            }
+                            return false; //avoid reloading first tab onload
+                        }
+
+                        var _dimmer = $('<div id="jsloader" class="ui active page dimmer"><div class="ui text loader">{{ _T("Currently loading...") }}</div><p></p></div>');
+                        $('body').append(_dimmer);
+
+                        ui.jqXHR.always(function(){
+                            $('#jsloader').remove();
+                        });
+
+                        ui.jqXHR.fail(function(){
+                            alert('{{ _T("An error occurred :(")|e("js") }}');
+                        });
+                    }
+                });
+            });
+        </script>
+{% endblock %}

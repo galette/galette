@@ -1,0 +1,25 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ path_for('editPaymentType', { 'id': ptype.__get('id') }) }}" method="post" class="ui form">
+        <div class="ui segment" id="general">
+            <div class="field inline">
+                <label for="name" class="" title="{{ _T("Original string for name, that will be used for translations.") }}">{{ _T("Name:") }}</label>
+                <div class="ui right corner labeled input">
+                    <div class="ui corner label">
+                        <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Original string for name, that will be used for translations.") }}"></i>
+                    </div>
+                    <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" />
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon"></i> {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+            <input type="hidden" name="id" id="id" value="{{ ptype.__get('id') }}"/>
+            {% include 'components/forms/csrf.html.twig' %}
+        </div>
+     </form>
+{% endblock %}

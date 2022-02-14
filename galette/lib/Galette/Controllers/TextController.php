@@ -87,7 +87,7 @@ class TextController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'gestion_textes.tpl',
+            'pages/configuration_texts.html.twig',
             [
                 'page_title'        => _T("Automatic emails texts edition"),
                 'texts'             => $texts,

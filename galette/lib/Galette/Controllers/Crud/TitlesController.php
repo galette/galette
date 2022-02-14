@@ -106,7 +106,7 @@ class TitlesController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_titres.tpl',
+            'pages/configuration_titles.html.twig',
             [
                 'page_title'        => _T("Titles management"),
                 'titles_list'       => $titles
@@ -147,7 +147,7 @@ class TitlesController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'edit_title.tpl',
+            'pages/configuration_title_form.html.twig',
             [
                 'page_title'    => _T("Edit title"),
                 'title'         => $title

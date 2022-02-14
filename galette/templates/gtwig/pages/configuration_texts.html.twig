@@ -1,0 +1,76 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+        <div class="ui top attached header">
+            {{ _T("Choose an entry") }}
+        </div>
+        <div class="ui bottom attached segment">
+            <form action="{{ path_for('changeText') }}" method="post" enctype="multipart/form-data" class="ui form">
+                <div class="fields">
+                    <div class="inline field">
+                        <label for="sel_lang">{{ _T("Language:") }}</label>
+                        <select name="sel_lang" id="sel_lang" class="ui dropdown nochosen lang">
+                            {% for langue in langlist %}
+                                <option value="{{ langue.getID() }}" {% if cur_lang == langue.getID() %}selected="selected"{% endif %}>{{ langue.getName() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="inline field">
+                        <label for="sel_ref">{{ _T("Reference:") }}</label>
+                        <select name="sel_ref" id="sel_ref" class="ui dropdown nochosen">
+                            {% for ref in reflist %}
+                                <option value="{{ ref.tref }}" {% if cur_ref == ref.tref %}selected="selected"{% endif %} >{{ ref.tcomment }}</option>
+                            {% endfor %}
+                        </select>
+                        <noscript> <span><input type="submit" value="{{ _T("Change") }}" /></span></noscript>
+                    </div>
+                    {% include 'components/forms/csrf.html.twig' %}
+                </div>
+            </form>
+        </div>
+
+        <form action="{{ path_for('texts') }}" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui top attached header">
+                {{ mtxt.tcomment }}
+                <a id="btnlegend" class="tooltip action" title="{{ _T("Show existing variables") }}"><i class="circular inverted primary small icon info tooltip"></i><span class="sr-only">{{ _T("Show existing variables")|escape("js") }}</span></a>
+            </div>
+            <div class="ui bottom attached segment">
+                <div class="active content field">
+                    <div class="field inline">
+                        <label for="tsubject">{{ _T("Email Subject") }}</label>
+                        <input type="text" name="text_subject" id="tsubject" value="{{ mtxt.tsubject }}" maxlength="255" size="32"/> <span class="exemple">{{ _T("(Max 255 characters)") }}</span>
+                    </div>
+                    <div class="field">
+                        <label id="body_label" for="text_body">{{ _T("Email Body:") }}</label>
+                        <textarea name="text_body" id="text_body" cols="64" rows="15">{{ mtxt.tbody }}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="ui basic center aligned segment">
+                <input type="hidden" name="cur_lang"  value="{{ cur_lang }}"/>
+                <input type="hidden" name="cur_ref" value="{{ cur_ref }}"/>
+                <input type="hidden" name="valid" id="valid" value="1"/>
+                <button type="submit" class="ui labeled icon primary button action">
+                    <i class="save icon"></i> {{ _T("Save") }}
+                </button>
+                {% include 'components/forms/csrf.html.twig' %}
+            </div>
+        </form>
+        {% include 'elements/replacements_legend.html.twig' with { 'legends': texts.getLegend(), 'cur_ref': cur_ref } %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                $('#sel_ref, #sel_lang').change(function() {
+                    $(':input[type="submit"]').attr('disabled', 'disabled');
+                    //Change the input[@id='value'] ; we do not want to validate, but to change lang/ref
+                    $('#valid').attr('value', (this.id === 'sel_lang') ? 'change_lang' : 'change_text');
+                    this.form.submit();
+                });
+
+                _addLegenButton('fieldset > p:nth-child(2)');
+                _handleLegend();
+            });
+        </script>
+{% endblock %}

@@ -604,7 +604,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_lists.html.twig',
+            'pages/configuration_core_lists.html.twig',
             $params
         );
         return $response;

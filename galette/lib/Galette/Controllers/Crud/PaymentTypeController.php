@@ -111,7 +111,7 @@ class PaymentTypeController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_paymentstypes.tpl',
+            'pages/configuration_payment_types.html.twig',
             [
                 'page_title'        => _T("Payment types management"),
                 'list'              => $list
@@ -152,7 +152,7 @@ class PaymentTypeController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'edit_paymenttype.tpl',
+            'pages/configuration_payment_type_form.html.twig',
             [
                 'page_title'    => _T("Edit payment type"),
                 'ptype'         => $ptype

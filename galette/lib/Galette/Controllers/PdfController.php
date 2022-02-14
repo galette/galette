@@ -539,9 +539,9 @@ class PdfController extends AbstractController
             || (isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true')
         ) {
-            $tpl = 'gestion_pdf_content.tpl';
+            $tpl = 'elements/edit_pdf_models.html.twig';
         } else {
-            $tpl = 'gestion_pdf.tpl';
+            $tpl = 'pages/configuration_pdf_models.html.twig';
             $params += [
                 'page_title'        => _T("PDF models"),
                 'models'            => $models
