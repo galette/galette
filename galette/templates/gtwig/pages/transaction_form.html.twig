@@ -51,7 +51,7 @@
     {% endif %}
             </div>
         </div>
-        {% include "components/edit_dynamic_fields.html.twig" with { 'object': transaction } %}
+        {% include "components/dynamic_fields.html.twig" with { 'object': transaction } %}
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}

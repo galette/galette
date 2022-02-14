@@ -1,31 +1,31 @@
-{if !isset($selector)}
-    {assign var="selector" value=".delete"}
-{/if}
-{if !isset($deleteurl)}
-    {assign var="deleteurl" value="_this.attr('href')"}
-{/if}
+{% if selector is not defined %}
+    {% set selector = '.delete' %}
+{% endif %}
+{% if deleteurl is not defined %}
+    {% set deleteurl = "_this.attr('href')" %}
+{% endif %}
         //handle removals
-        $('{$selector}').off('click').on('click', function(event) {
+        $('{{ selector }}').off('click').on('click', function(event) {
             event.preventDefault();
             var _this = $(this);
 
-{if isset($extra_check)}
-            {$extra_check}
-{/if}
-{if !isset($method)}
-    {assign var="method" value="GET"}
-{/if}
+{% if extra_check is defined %}
+            {{ extra_check }}
+{% endif %}
+{% if method is not defined %}
+    {% set method = 'GET' %}
+{% endif %}
             $.ajax({
-                url: {$deleteurl},
-                type: "{$method}",
+                url: {{ deleteurl|raw }},
+                type: "{{ method }}",
                 data: {
                     ajax: true,
-{if isset($extra_data)}
-                    {$extra_data}
-{/if}
+{% if extra_data is defined %}
+                    {{ extra_data }}
+{% endif %}
                 },
                 datatype: 'json',
-                {include file="js_loader.tpl"},
+                {% include 'elements/js/loader.js.twig' %},
                 success: function(res){
                     var _res = $(res);
                     _res.find('#btncancel')
@@ -47,13 +47,13 @@
                             type: "POST",
                             data: _data,
                             datatype: 'json',
-                            {include file="js_loader.tpl"},
+                            {% include 'elements/js/loader.js.twig' %},
                             success: function(res){
                                 if (res.success) {
                                     window.location.href = _form.find('input[name=redirect_uri]').val();
                                 } else {
                                     $.ajax({
-                                        url: '{path_for name="ajaxMessages"}',
+                                        url: '{{ path_for("ajaxMessages") }}',
                                         method: "GET",
                                         success: function (message) {
                                             $('#asso_name').after(message);
@@ -62,7 +62,7 @@
                                 }
                             },
                             error: function() {
-                                alert("{_T string="An error occurred :(" escape="js"}");
+                                alert('{{ _T("An error occurred :(")|e("js") }}');
                             }
                         });
                     });
@@ -78,7 +78,7 @@
                     });
                 },
                 error: function() {
-                    alert("{_T string="An error occurred :(" escape="js"}");
+                    alert('{{ _T("An error occurred :(")|e("js") }}');
                 }
             });
         });

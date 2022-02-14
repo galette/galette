@@ -9,7 +9,7 @@
         {# Form entries #}
         {% include "components/form.html.twig" with { masschange: true } %}
         {# Dynamic entries #}
-        {% include "components/edit_dynamic_fields.html.twig" with { object: member, masschange: true} %}
+        {% include "components/dynamic_fields.html.twig" with { object: member, masschange: true} %}
     {% else %}
         <p>{{ _T("You are about to proceed following changes for selected members:") }}</p>
         <ul>

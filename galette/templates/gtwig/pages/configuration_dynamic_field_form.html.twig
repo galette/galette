@@ -1,0 +1,165 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+{% if action == 'edit' %}
+    <form action="{{ path_for('doEditDynamicField', { 'form_name': form_name, 'id': df.getId() }) }}" method="post" class="ui form">
+        <div class="ui top attached header">
+            {{ _T("Edit field %field")|replace({ '%field': df.getName() }) }}
+        </div>
+        <div class="ui bottom attached segment">
+            <div class="active content field">
+                <div class="inline field">
+                    <label for="field_name">{{ _T("Name:") }}</label>
+                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{if not $df|is_a:'Galette\DynamicFields\Separator'} required="required"{/if}/>
+                </div>
+                <div class="inline field">
+                    <label for="field_perm">{{ _T("Permissions:") }}</label>
+                    <select name="field_perm" id="field_perm" class="ui dropdown nochosen">
+                        {% for key, value in perm_names %}
+                            <option value="{{ key }}"{% if key == df.getPerm() %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+    {% if df.hasData() %}
+                <div class="inline field">
+                    <label for="field_required">{{ _T("Required:") }}</label>
+                    <select name="field_required" id="field_required" class="ui dropdown nochosen">
+                        <option value="0" {% if not df.isRequired() %}selected="selected"{% endif %}>{{ _T("No") }}</option>
+                        <option value="1" {% if df.isRequired() %}selected="selected"{% endif %}>{{ _T("Yes") }}</option>
+                    </select>
+                </div>
+    {% endif %}
+    {% if df.hasWidth() %}
+                <div class="inline field">
+                    <label for="field_width">{{ _T("Width:") }}</label>
+                    <input type="text" name="field_width" id="field_width" value="{{ df.getWidth() }}" size="3"/>
+                </div>
+    {% endif %}
+    {% if df.hasHeight() %}
+                <div class="inline field">
+                    <label for="field_height">{{ _T("Height:") }}</label>
+                    <input type="text" name="field_height" id="field_height" value="{{ df.getHeight() }}" size="3"/>
+                </div>
+    {% endif %}
+    {% if df.hasSize() %}
+                <div class="inline field">
+                    <label for="field_size">{{ _T("Size:") }}</label>
+                    <input type="text" name="field_size" id="field_size" value="{{ df.getSize() }}" size="3"/>
+        {if $df|is_a:'Galette\DynamicFields\File'}
+                    <span class="exemple">{{ _T("Maximum file size, in Ko.") }}</span>
+        {else}
+                    <span class="exemple">{{ _T("Maximum number of characters.") }}</span>
+        {/if}
+                </div>
+    {% endif %}
+    {% if df.isMultiValued() %}
+                <div class="inline field">
+                    <label for="field_repeat">{{ _T("Repeat:") }}</label>
+                    <input type="text" name="field_repeat" id="field_repeat" value="{{ df.getRepeat() }}" size="3"/>
+                    <span class="exemple">{{ _T("Number of values or zero if infinite.") }}</span>
+                </div>
+    {% endif %}
+    {% if df.hasFixedValues() %}
+                <div class="inline field">
+                    <label for="fixed_values">{{ _T("Values:") }}</label>
+                    <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{{ df.getValues(true) }}</textarea>
+                    <br/><span class="exemple">{{ _T("Choice list (one entry per line).") }}</span>
+                </div>
+    {% endif %}
+                <div class="field">
+                    <label for="field_information">{{ _T("Information:") }}</label>
+                    <textarea name="field_information" id="field_information" cols="20" rows="6">{{ df.getInformation() }}</textarea>
+                    <span class="tip">{{ _T("Extra information displayed along with dynamic field.") }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon"></i> {{ _T("Save") }}
+            </button>
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+     </form>
+{% elseif action == 'add' %}
+    <form action="{{ path_for('doAddDynamicField', { 'form_name': form_name }) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
+    {% if mode != 'ajax' %}
+        <div class="ui top attached header">
+            {{ _T("New dynamic field") }}
+        </div>
+        <div class="ui bottom attached segment">
+            <div class="active content field">
+    {% else %}
+        <div class="cssform">
+    {% endif %}
+                <div class="inline field">
+                    <label for="field_name">{{ _T("Field name") }}</label>
+                    <input size="40" type="text" name="field_name" id="field_name" value="{% if df is defined %}{{ df.getName() }}{% endif %}"/>
+                </div>
+                <div class="inline field">
+                    <label for="field_perm">{{ _T("Visibility") }}</label>
+                    <select name="field_perm" id="field_perm" class="ui dropdown nochosen">
+                        {% set perm = 0 %}
+                        {% if df is defined %}
+                            {% set perm = df.getPerm() %}
+                        {% endif %}
+                        {% for key, value in perm_names %}
+                            <option value="{{ key }}"{% if key == perm %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="inline field">
+                    <label for="field_type">{{ _T("Type") }}</label>
+                    <select name="field_type" id="field_type" class="ui dropdown nochosen">
+                        {% set type = 0 %}
+                        {% if df is defined %}
+                            {% set type = df.getType() %}
+                        {% endif %}
+                        {html_options options=$field_type_names selected=$type}
+                        {% for key, value in field_type_names %}
+                            <option value="{{ key }}"{% if key == type %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="inline field">
+                    <label for="field_required">{{ _T("Required") }}</label>
+                    <select name="field_required" id="field_required" class="ui dropdown nochosen">
+                        <option value="0"{% if df is not defined or not df.isRequired() %} selected="selected"{% endif %}>{{ _T("No") }}</option>
+                        <option value="1"{% if df is defined and df.isRequired() %} selected="selected"{% endif %}>{{ _T("Yes") }}</option>
+                    </select>
+                    {% include "components/forms/csrf.html.twig" %}
+                </div>
+    {% if mode != 'ajax' %}
+            </div>
+    {% endif %}
+        </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" name="valid" class="ui labeled icon primary button action">
+                <i class="plus icon"></i> {{ _T("Add") }}
+            </button>
+            <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
+        </div>
+    </form>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#field_information').summernote({
+            lang: '{{ i18n.getID()|replace({ '_': '-'}) }}',
+            height: 240,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture']],
+                ['view', ['codeview', 'help']]
+            ],
+            styleTags: [
+                'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+            ]
+        });
+        $('#field_information').summernote('focus');
+
+    </script>
+{% endblock %}

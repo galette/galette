@@ -192,7 +192,7 @@
                 </div>
             </div>
     {% endif %}
-        {% include 'components/edit_dynamic_fields.html.twig' with { 'object': contribution } %}
+        {% include 'components/dynamic_fields.html.twig' with { 'object': contribution } %}
     {% if not contribution.id and preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
         {% if not require_mass %}
             <div class="ui center aligned segment">

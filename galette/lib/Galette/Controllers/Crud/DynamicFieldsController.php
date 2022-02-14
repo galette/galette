@@ -89,7 +89,7 @@ class DynamicFieldsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'editer_champ.tpl',
+            'pages/configuration_dynamic_field_form.html.twig',
             $params
         );
         return $response;
@@ -230,7 +230,7 @@ class DynamicFieldsController extends CrudController
             'page_title'        => _T("Dynamic fields configuration")
         ];
 
-        $tpl = 'configurer_fiches.tpl';
+        $tpl = 'pages/configuration_dynamic_fields.html.twig';
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
@@ -238,7 +238,7 @@ class DynamicFieldsController extends CrudController
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
-            $tpl = 'configurer_fiche_content.tpl';
+            $tpl = 'elements/edit_dynamic_fields.html.twig';
         } else {
             $all_forms = DynamicField::getFormsNames();
             $params['all_forms'] = $all_forms;
@@ -310,7 +310,7 @@ class DynamicFieldsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'editer_champ.tpl',
+            'pages/configuration_dynamic_field_form.html.twig',
             $params
         );
         return $response;
