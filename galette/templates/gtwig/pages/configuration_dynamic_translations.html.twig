@@ -1,0 +1,75 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+{% if trans is defined and trans|length > 0 %}
+    {% if exists %}
+        <div class="ui top attached header">
+            {{ _T("Choose label to translate") }}
+        </div>
+        <div class="ui bottom attached segment">
+            <form action="{{ path_for('dynamicTranslations') }}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
+                <div class="field inline">
+                    <select name="text_orig" id="text_orig" class="ui dropdown nochosen">
+                    {% for value in orig %}
+                        <option value="{{ value }}"{% if value == text_orig %} selected="selected"{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                    </select>
+                    <noscript> <span><input type="submit" value="{{ _T("Change") }}" class="ui button" /></span></noscript>
+                    {% include "components/forms/csrf.html.twig" %}
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+        <form action="{{ path_for('editDynamicTranslation') }}" method="post" enctype="multipart/form-data" class="ui equal width form">
+    {% if not exists %}
+            <div class="field">
+                <label>{{ _T("Original text: '%s'")|replace({ '%s': text_orig|escape }) }}</label>
+                <input type="hidden" name="new" value="true"/>
+            </div>
+    {% endif %}
+            <div class="ui top attached header">
+                {{ _T("Translation of '%s' label")|replace({ '%s': text_orig|escape }) }}
+            </div>
+            <div class="ui bottom attached segment">
+                <div class="active content field">
+                    <table class="ui striped table">
+    {% for k, text in trans %}
+                        <tr>
+                            <td class="three wide"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></td>
+                            <td class="thirteen wide">
+                                <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
+                                <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
+                            </td>
+                        </tr>
+    {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="ui basic center aligned segment">
+                <button type="submit" name="trans" class="ui labeled icon primary button action">
+                    <i class="save icon"></i> {{ _T("Save") }}
+                </button>
+                {% include "components/forms/csrf.html.twig" %}
+            </div>
+        </form>
+{% else %}
+        <p>{{ _T("No fields to translate.") }}</p>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+{% if trans is defined and trans|length > 0 %}
+    {% if exists %}
+    <script type="text/javascript">
+        $('#text_orig').change(function(e) {
+            e.preventDefault();
+            var _selected  = $('#text_orig option:selected').val();
+            var _form = $('#select_orig');
+            _form.attr('action', _form.attr('action') + '/' + _selected)
+            $('#select_orig').submit();
+        });
+    </script>
+    {% endif %}
+{% endif %}
+{% endblock %}

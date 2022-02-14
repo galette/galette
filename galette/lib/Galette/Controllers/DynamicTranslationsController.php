@@ -153,7 +153,7 @@ class DynamicTranslationsController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'traduire_libelles.tpl',
+            'pages/configuration_dynamic_translations.html.twig',
             $params
         );
         return $response;
