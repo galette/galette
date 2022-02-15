@@ -10,12 +10,13 @@
 # Moumen Harmoush <momen.harmoush@gmail.com>, 2021.
 # mustapha nhaily <nhaily@gmail.com>, 2021.
 # Menna Ebraheam & Jana hesham <monymenna62@gmail.com>, 2022.
+# Hothaifa Jaber <i74ifa@icloud.com>, 2022.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-01 14:56+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2022-02-17 12:57+0000\n"
+"Last-Translator: Hothaifa Jaber <i74ifa@icloud.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -282,16 +283,16 @@ msgstr "تغيير شامل ٪ عدد الاعضاء"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1276
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1372
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "لم يتم تأكيد التغييرات الجماعية!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1341
 #, php-format
 msgid "Review mass change %count members"
-msgstr ""
+msgstr "مراجعة التغيرات %count الاعضاء"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1425
 msgid "Nothing to do!"
-msgstr ""
+msgstr "لاشي لتفعلة!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1450
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1682
@@ -305,7 +306,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1469
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr ""
+msgstr "%c من الاعضاء قد تم تغييرهم"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1533
 msgid "Invalid captcha"
@@ -329,11 +330,11 @@ msgstr "تم تعديل حساب العضو."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1663
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "حدث خطأ أثناء إضافة عضو إلى مجموعاته."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1677
 msgid "An error occurred adding member to its groups as manager."
-msgstr ""
+msgstr "حدث خطأ أثناء إضافة عضو إلى مجموعات المدير."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1694
 #: ../lib/Galette/Controllers/GaletteController.php:320
@@ -349,7 +350,7 @@ msgstr "إزالة العضو %1$s"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1872
 #, php-format
 msgid "You are about to remove %count members."
-msgstr ""
+msgstr "سوف تحذف %c من الاعضاء."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:111
 msgid "Titles management"
@@ -362,22 +363,22 @@ msgstr "تعديل العنوان"
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:205
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "لم يتم اضافة العنوان '%s'!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:214
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "لم يتم تعديل العنوان '%s'!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:227
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "لقد تم اضافة العنوان '%s'."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:236
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "تم تعديل العنوان '%s' بنجاح."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:287
 #, php-format
@@ -402,23 +403,23 @@ msgstr "تغيير نوع المساهمة"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type has not been added :("
-msgstr ""
+msgstr "%type لم تتم إضافة :("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:269
 msgid "%type #%id has not been updated"
-msgstr ""
+msgstr "%type #%id لم يتم تحديثه"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type has been successfully added!"
-msgstr ""
+msgstr "%type تمت اضافته بنجاح!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:273
 msgid "%type #%id has been successfully updated!"
-msgstr ""
+msgstr "%type #%id تم تحديثة بنجاح!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:353
 msgid "Remove %type '%label'"
-msgstr ""
+msgstr "حذف %type '%label'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:95
 msgid "Membership fee"
@@ -427,7 +428,7 @@ msgstr "مستحقات العضوية"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:97
 #: ../lib/Galette/Entity/Contribution.php:1116
 msgid "Donation"
-msgstr "هبة"
+msgstr "تبرع"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:238
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:282
@@ -448,24 +449,22 @@ msgid "- Unknown payment type!"
 msgstr "- نوع الدفع غير معروف!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
-#| msgid "No contribution selected"
 msgid "No contribution was selected, please check at least one."
-msgstr "–"
+msgstr "لم يتم تحديد أي مساهمة ، يرجى تحديد واحدة على الأقل."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
 #: ../lib/Galette/Controllers/PdfController.php:709
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "تعذر تحميل المساهمة #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:794
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "تم تخزين المساهمة بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:798
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "حدث خطأ أثناء تخزين المساهمة."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:902
 #, php-format
