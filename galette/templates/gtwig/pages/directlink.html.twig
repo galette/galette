@@ -1,0 +1,18 @@
+{% extends 'public_page.html.twig' %}
+
+{% block content %}
+            <form action="{{ path_for('get-directlink', { 'hash': hash }) }}" method="post" enctype="multipart/form-data" class="ui form">
+                <div class="ui segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="envelope icon"></i><span class="hidden"><label for="email">{{ _T("Please confirm your email address:") }}</label></span>
+                            <input type="email" name="email" id="email" maxlength="50" required="required" autofocus placeholder="{{ _T("Please confirm your email address:") }}"/>
+                        </div>
+                    </div>
+                    <input type="submit" class="ui fluid large primary submit button" name="directlink" value="{{ _T("Get my document") }}" />
+                    <input type="hidden" name="valid" value="1"/>
+                    <input type="hidden" name="hash" value="{{ hash} }}"/>
+                    {% include 'components/forms/csrf.html.twig' %}
+                </div>
+            </form>
+{% endblock %}

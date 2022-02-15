@@ -337,7 +337,7 @@ class PdfController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'attendance_sheet_details.tpl',
+            'pages/members_attendance_sheet.tpl',
             [
                 'page_title'    => _T("Attendance sheet configuration"),
                 'ajax'          => $ajax,

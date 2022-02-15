@@ -8,7 +8,7 @@
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <div class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or  cur_route == "password-recovery" %} text{% endif %}{% if not login.isLogged() %}ui container{% else %} full height{% endif %}">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or  cur_route == "password-recovery" or  cur_route == "directlink" %} text{% endif %}{% if not login.isLogged() %}ui container{% else %} full height{% endif %}">
 {% if login.isLogged() %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}

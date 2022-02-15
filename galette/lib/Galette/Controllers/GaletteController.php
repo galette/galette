@@ -836,7 +836,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'directlink.tpl',
+            'pages/directlink.html.twig',
             array(
                 'hash'          => $hash,
                 'page_title'    => _T('Download document')

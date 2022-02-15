@@ -144,7 +144,7 @@ abstract class CrudController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'confirm_removal.tpl',
+            'pages/confirm_removal.html.twig',
             $this->getconfirmDeleteParams($request)
         );
         return $response;
