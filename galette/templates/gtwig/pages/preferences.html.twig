@@ -758,7 +758,7 @@
         </form>
 
         {% include "modals/telemetry.html.twig" with { part: "dialog" } %}
-        {% include "elements/replacements_legend.html.twig" with { legends: preferences.getLegend(), cur_ref: 'prefs' } %}
+        {% include "modals/replacements_legend.html.twig" with { legends: preferences.getLegend(), cur_ref: 'prefs' } %}
 {% endblock %}
 
 {% block javascripts %}

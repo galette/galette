@@ -1,23 +1,29 @@
 {% if part == "dialog" %}
-        <div id="telemetry_panel">
-            <h3>{{ _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent.") }}</h3>
-            <p>{{ _T("Nothing is automated in the process; it's up to you to send (or resend) data.") }}<br/>{{ _T("You can review below the raw data that would be send if you press the 'Send' button.") }}.<br/>{{ _T("Also note tha all data is sent over a <strong>HTTPS secured connection</strong>.") }}</p>
-            <div class="tdata">
+        <div id="telemetry_panel" class="texts_legend ui modal">
+            <div class="header">{{ _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent.") }}</div>
+            <div class="scrolling content">
+                <p>{{ _T("Nothing is automated in the process; it's up to you to send (or resend) data.") }}<br/>{{ _T("You can review below the raw data that would be send if you press the 'Send' button.") }}.<br/>{{ _T("Also note tha all data is sent over a <strong>HTTPS secured connection</strong>.") }}</p>
+                <div class="tdata">
+                </div>
             </div>
         </div>
 {% endif %}
 {% if part == "jsdialog" %}
-                $('#telemetry_panel').dialog({
+                $('#telemetry_panel').modal({
                     title: '{{ _T("Send telemetry information")|e('js') }}',
-                    buttons: {
-                        '{{ _T("Send")|e('js') }}': function() {
+                    class: 'large',
+                    actions: [{
+                        text    : '{{ _T("Send")|e('js') }}',
+                        class   : 'green approve',
+                        icon    : 'share',
+                        click   : function() {
                             $.ajax({
                                 url:  '{{ path_for('telemetrySend') }}',
                                 method: 'POST',
                                 {% include "elements/js/loader.js.twig" %},
                                 success: function(data) {
                                     if (data.success) {
-                                        $('#telemetry_panel').dialog('close');
+                                        $('#telemetry_panel').modal('hide');
     {% if orig is defined and orig == 'desktop' %}
                                         $('#telemetry').remove();
                                         if ($('#share a').length == 0) {
@@ -41,25 +47,15 @@
                                 error: function() {
                                     alert("{{ _T("An error occurred sending telemetry information :(")|e('js') }}");
                                 }
-                            });
-                        },
-                        '{{ _T("Cancel")|e('js') }}': function() {
-                            $(this).dialog('close');
+                            });}
+                    }, {
+                        text    : '{{ _T("Cancel")|e('js') }}',
+                        class   : 'red cancel',
+                        icon    : 'times',
+                        click   : function() {
+                            $(this).find('.tdata').empty();
                         }
-                    },
-                    maxHeight: $(window).height(),
-                    open: function(event, ui) {
-                        $(this).dialog('option', 'maxHeight', $(window).height());
-                        $(this).parent().prev('.ui-widget-overlay');
-                    },
-                    draggable: true,
-                    modal: true,
-                    resizable: true,
-                    width: ($(window).width() > 767 ? '50%' : '100%'),
-                    autoOpen: false,
-                    close: function(){
-                        $(this).find('.tdata').empty();
-                    }
+                    }]
                 });
 
                 $('#telemetry').on('click', function(e) {
@@ -69,7 +65,7 @@
                         url:  '{{ path_for('telemetryInfos') }}',
                         success: function(data) {
                             $('#telemetry_panel .tdata').append(data);
-                            $('#telemetry_panel').dialog('open');
+                            $('#telemetry_panel').modal('show');
                         }
 
                     });

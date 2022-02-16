@@ -112,9 +112,7 @@
             <button id="next" type="ui labeled icon button submit">{{ _T("Next step") }} <i class="forward icon"></i></button>
     {% endif %}
 {% else %}
-    {% if mode == 'ajax' %}
-            <a href="#" class="ui  button" id="btnback">{{ _T("Close") }}</a>
-    {% else %}
+    {% if mode != 'ajax' %}
             <a href="{{ path_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon"></i> {{ _T("Back to plugins managment page") }}</a>
     {% endif %}
 {% endif %}

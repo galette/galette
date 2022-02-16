@@ -106,33 +106,26 @@
     {% else %}
             var _initdb_dialog = function(res, _plugin){
                 var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
-                var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    hide: 'fold',
-                    width: '80%',
-                    height: 500,
-                    create: function (event, ui) {
-                        if ($(window ).width() < 767) {
-                            $(this).dialog('option', {
-                                    'width': '95%',
-                                    'draggable': false
-                            });
-                        }
-                    },
-                    close: function(event, ui){
-                        _el.remove();
-                    }
-                });
+                $('body').modal({
+                    title: _title.replace('%name', _plugin),
+                    class: 'initdb-modal large coupled',
+                    classContent: 'scrolling',
+                    content: res,
+                    actions: [{
+                        text    : '{{ _T("Cancel")|e('js') }}',
+                        class   : 'red cancel',
+                        icon    : 'times'
+                    }]
+                }).modal('show');
                 _initdb_bindings(res);
             };
             var _initdb_bindings = function(res){
-                $('#initdb').empty().append(res);
-                $('#initdb input:submit, #initdb .button, #initdb input:reset' ).button();
+                //$('.initdb-modal' ).empty().append(res);
+                $('.initdb-modal input:submit, .initdb-modal .button, .initdb-modal input:reset' ).button();
                 _messagesEffects();
-                $('#btnback').click(function(){
-                    $('#initdb').dialog('close');
-                });
+                //$('#btnback').click(function(){
+                //    $('#initdb').dialog('close');
+                //});
                 $("#plugins_initdb_form").submit(function(event) {
                     /* stop form from submitting normally */
                     event.preventDefault();

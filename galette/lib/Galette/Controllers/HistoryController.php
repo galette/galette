@@ -264,7 +264,7 @@ class HistoryController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'pages/confirm_removal.html.twig',
+            'modals/confirm_removal.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => _T('Flush the logs'),

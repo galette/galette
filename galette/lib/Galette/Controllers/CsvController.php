@@ -453,7 +453,7 @@ class CsvController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'pages/confirm_removal.html.twig',
+            'modals/confirm_removal.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => sprintf(

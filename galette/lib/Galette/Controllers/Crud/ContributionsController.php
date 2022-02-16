@@ -152,7 +152,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'pages/contribution_form.html.twig',
+            'modals/contribution_form.html.twig',
             $params
         );
         return $response;
@@ -241,7 +241,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'elements/contributions_mass_choose_type.html.twig',
+            'modals/mass_choose_contributions_type.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => str_replace(
@@ -285,7 +285,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'elements/contributions_mass_add.html.twig',
+            'modals/mass_add_contributions.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => str_replace(

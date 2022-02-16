@@ -1,6 +1,6 @@
-<div id="legende{{ cur_ref }}" class="texts_legend ui modal" title="{{ _T("Existing variables") }}">
+<div id="legende{{ cur_ref }}" class="texts_legend ui large modal" title="{{ _T("Existing variables") }}">
     <div class="header">{{ _T('Existing variables') }}</div>
-    <div class="content">
+    <div class="scrolling content">
         <table class="ui very basic table">
     {% for legend in legends %}
         <tr>
@@ -35,24 +35,10 @@
         if (typeof selector == 'undefined') {
             selector = '{{ cur_ref }}';
         }
-        $('#legende' + selector + ' h1').remove();
-        $('#legende' + selector).dialog({
-            autoOpen: false,
-            modal: true,
-            hide: 'fold',
-            width: '60em',
-            create: function (event, ui) {
-                if ($(window ).width() < 767) {
-                    $(this).dialog('option', {
-                        'width': '95%',
-                        'draggable': false
-                    });
-                }
-            }
-        }).dialog('close');
+        $('#legende' + selector).modal().modal('hide');
 
         $('#btnlegend').unbind('click').click(function(){
-            $('#legende' + selector).dialog('open');
+            $('#legende' + selector).modal('show');
             return false;
         });
     };

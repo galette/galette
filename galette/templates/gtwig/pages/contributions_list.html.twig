@@ -1,9 +1,5 @@
-{% if mode == 'ajax' %}
-    {% set extend = 'ajax.html.twig' %}
-{% else %}
-    {% set extend = 'page.html.twig' %}
-{% endif %}
-{% extends extend %}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
 {% block content %}
         <form action="{{ path_for("payments_filter", { "type": "contributions" }) }}" method="post" id="filtre" class="ui form">
         <div class="ui segment">

@@ -89,7 +89,7 @@ class DynamicFieldsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_dynamic_field_form.html.twig',
+            'modals/configuration_dynamic_field_form.html.twig',
             $params
         );
         return $response;
