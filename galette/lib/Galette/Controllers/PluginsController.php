@@ -357,7 +357,7 @@ class PluginsController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'plugin_initdb.tpl',
+            'pages/plugin_initdb.html.twig',
             $params
         );
         return $response;
