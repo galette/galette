@@ -8,13 +8,14 @@
 # seckiyn <kyofl6@gmail.com>, 2022.
 # benjamin <itsbenx@outlook.com>, 2022.
 # Tolga Çağlayan <caglayantolga100@gmail.com>, 2022.
+# Muhammed YILMAZ <yilmazmu15@itu.edu.tr>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-05 13:57+0000\n"
-"Last-Translator: Tolga Çağlayan <caglayantolga100@gmail.com>\n"
+"PO-Revision-Date: 2022-02-17 12:57+0000\n"
+"Last-Translator: Muhammed YILMAZ <yilmazmu15@itu.edu.tr>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -448,10 +449,8 @@ msgid "- Unknown payment type!"
 msgstr "- Bilinmeyen ödeme türü!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:664
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No contribution was selected, please check at least one."
-msgstr "Bir üye seçilmedi, lütfen en azından birini seçiniz."
+msgstr "Hiçbir katkı seçilmedi, lütfen en az birini seçiniz."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:700
 #: ../lib/Galette/Controllers/PdfController.php:445
@@ -779,7 +778,7 @@ msgstr "Üyeye bir eposta gönderildi."
 #: ../lib/Galette/Controllers/AuthController.php:369
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
+msgstr "%s hesabı için parola gönderilirken bir hata meydana geldi"
 
 #: ../lib/Galette/Controllers/AuthController.php:383
 #: ../lib/Galette/Events/MemberListener.php:223
@@ -787,31 +786,35 @@ msgstr ""
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
+"%s için geçici parola saklanırken hatayla karşılaşıldı. Lütfen yöneticiyi "
+"bilgilendiriniz."
 
 #: ../lib/Galette/Controllers/AuthController.php:395
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr ""
+msgstr "Hesabınız (%s) geçerli eposta adresi içermiyor"
 
 #: ../lib/Galette/Controllers/AuthController.php:409
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr ""
+msgstr "%s eposta adresi mevcut değil"
 
 #: ../lib/Galette/Controllers/AuthController.php:415
 #, php-format
 msgid "Login %s does not exist"
-msgstr ""
+msgstr "%s oturumu mevcut değil"
 
 #: ../lib/Galette/Controllers/AuthController.php:446
+#, fuzzy
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
+"Bu bağlantı artık geçerli değil. Şifrenizi tekrar kurtarmak istemelisiniz."
 
 #: ../lib/Galette/Controllers/AuthController.php:492
 #: ../webroot/installer.php:125 ../webroot/installer.php:168
 msgid "No password"
-msgstr ""
+msgstr "Şifre yok"
 
 #: ../lib/Galette/Controllers/AuthController.php:495
 #: ../lib/Galette/Entity/Adherent.php:1387
@@ -856,11 +859,11 @@ msgstr "Metinler yeniden başlatılırken bir hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:125
 msgid "Fields configuration has been successfully reinitialized."
-msgstr ""
+msgstr "Alanların yapılandırması başarıyla yeniden başlatıldı."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:127
 msgid "An error occurred reinitializing fields configuration :("
-msgstr ""
+msgstr "Alanların yapılandırması yeniden başlatılırken hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:136
 msgid "PDF models has been successfully reinitialized."
@@ -868,15 +871,16 @@ msgstr "PDF modelleri başarıyla yeniden başlatıldı."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:138
 msgid "An error occurred reinitializing PDF models :("
-msgstr ""
+msgstr "PDF modelleri yeniden başlatılırken hata meydana geldi :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr ""
+msgstr "Oturum açma bilgileri ve parolalar başarıyla dolduruldu (%i işlendi)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
+#, fuzzy
 msgid "An error occurred filling empty logins and passwords :("
-msgstr ""
+msgstr "Oturum açma bilgileri ve parolalar doldurulurken hata oluştu :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:111
 #: ../install/steps/check.php:75
@@ -889,7 +893,7 @@ msgstr "Günlükler"
 #: ../lib/Galette/Filters/MailingsList.php:235
 #: ../lib/Galette/Filters/ContributionsList.php:278
 msgid "start date filter"
-msgstr ""
+msgstr "başlangıç tarihi filtresi"
 
 #: ../lib/Galette/Controllers/HistoryController.php:154
 #: ../lib/Galette/Filters/TransactionsList.php:244
@@ -897,19 +901,19 @@ msgstr ""
 #: ../lib/Galette/Filters/MailingsList.php:238
 #: ../lib/Galette/Filters/ContributionsList.php:281
 msgid "end date filter"
-msgstr ""
+msgstr "bitiş tarihi filtresi"
 
 #: ../lib/Galette/Controllers/HistoryController.php:220
 msgid "Logs have been flushed!"
-msgstr ""
+msgstr "Günlükler temizlendi!"
 
 #: ../lib/Galette/Controllers/HistoryController.php:232
 msgid "An error occurred trying to flush logs :("
-msgstr ""
+msgstr "Günlükler temizlenirken hata oluştu :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:270
 msgid "Flush the logs"
-msgstr ""
+msgstr "Günlükleri temizle"
 
 #: ../lib/Galette/Controllers/PluginsController.php:83
 msgid "Plugins"
@@ -932,6 +936,7 @@ msgstr "Etiketleri çevir"
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
+"%s için çeviri yok!<br>Lütfen oluşturmak için yukarıdaki formu doldurun."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:192
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:217
@@ -3111,10 +3116,8 @@ msgid "Failed CSRF check!"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:42
-#, fuzzy
-#| msgid "Members list"
 msgid "Member id:"
-msgstr "Üye listesi"
+msgstr "Üye kimliği:"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
@@ -4513,10 +4516,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/preferences.tpl:187
-#, fuzzy
-#| msgid "Edit payment type"
 msgid "Default payment type:"
-msgstr "Ödeme türünü düzenle"
+msgstr "Varsayılan ödeme türü:"
 
 #: ../templates/default/preferences.tpl:193
 msgid "Public pages enabled?"
@@ -6458,10 +6459,8 @@ msgid "Choice list (one entry per line)."
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:70
-#, fuzzy
-#| msgid "System information"
 msgid "Information:"
-msgstr "Bilgisi"
+msgstr "Bilgi:"
 
 #: ../templates/default/editer_champ.tpl:71
 msgid "Extra information displayed along with dynamic field."
