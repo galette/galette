@@ -960,7 +960,7 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'ajax_members.tpl',
+            'elements/ajax_members.html.twig',
             $params
         );
         return $response;

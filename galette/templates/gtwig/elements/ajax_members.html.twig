@@ -1,0 +1,80 @@
+        <table id="listing" class="select_members{% if not multiple %} single{% endif %}">
+            <thead>
+                <tr>
+                    <th class="listing id_row">#</th>
+                    <th class="listing left">
+                        {{ _T("Name") }}
+                    </th>
+                    <th class="listing left">
+                        {{ _T("Zip - Town") }}
+                    </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="center">
+                        {{ _T("Pages:") }}<br/>
+                        <ul class="pages">{{ pagination }}</ul>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+{% for member in members_list %}
+    {% if excluded is not defined or excluded != member.id %}
+        {% set rclass = member.getRowClass() %}
+                <tr>
+                    <td class="{{ rclass }} right">{{ member.id }}</td>
+                    <td class="{{ rclass }} username_row">
+                    {% if member.isCompany() %}
+                        <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("[C]") }}</span></i>
+                    {% elseif member.isMan() %}
+                        <i class="ui male icon tooltip"><span class="sr-only">{{ _T("[M]") }}</span></i>
+                    {% elseif member.isWoman() %}
+                        <i class="ui female icon tooltip"><span class="sr-only">{{ _T("[W]") }}</span></i>
+                    {% else %}
+                        <i class="ui icon"></i>
+                    {% endif %}
+                    {% if member.isAdmin() %}
+                        <i class="ui user shield red icon"><span class="sr-only">{{ _T("[admin]") }}</span></i>
+                    {% elseif member.isStaff() %}
+                        <i class="ui id card alternate orange icon"><span class="sr-only">{{ _T("[staff]") }}</span></i>
+                    {% else %}
+                        <i class="ui icon"></i>
+                    {% endif %}
+                    <a href="{{ path_for('member', { 'id': member.id }) }}">{{ member.sfullname }}</a>
+                    </td>
+                    <td class="{{ rclass }}">{{ member.zipcode }} {{ member.town }}</td>
+                </tr>
+    {% endif %}
+{% else %}
+                <tr><td colspan="3" class="emptylist">{{ _T("no member") }}</td></tr>
+{% endfor %}
+            </tbody>
+        </table>
+{% if multiple %}
+        <section id="selected_members">
+            <header class="ui-state-default ui-state-active"><h3>{{ _T("Selected members") }}</h3></header>
+            <ul>
+    {% for recipient in selected_members %}
+                <li id="member_{{ recipient.id }}">
+                    <i class="ui user minus icon" aria-hidden="true"></i>
+                    {{ recipient.sfullname }}
+                </li>
+    {% else %}
+                <li id="none_selected">{{ _T("No members has been selected yet.") }}</li>
+    {% endfor %}
+    {% if unreachables_members is defined and unreachables_members|length > 0 %}
+        {% for recipient in unreachables_members %}
+                <li id="member_{{ recipient.id }}" class="unreachables">
+                    <i class="ui user minus icon" aria-hidden="true"></i>
+                    {{ recipient.sfullname }}
+                </li>
+        {% endfor %}
+    {% endif %}
+            </ul>
+            <button class="button" id="btnvalid">{{ _T("Validate") }}</button>
+            {% if the_id is defined %}
+                <input type="hidden" name="the_id" id="the_id" value="{{ the_id }}"/>
+            {% endif %}
+        </section>
+{% endif %}

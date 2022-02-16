@@ -215,7 +215,7 @@ class GaletteController extends AbstractController
                 $entry != '.'
                 && $entry != '..'
                 && is_dir($full_entry)
-                && file_exists($full_entry . '/page.tpl')
+                && file_exists($full_entry . '/page.html.twig')
             ) {
                 $themes[] = $entry;
             }

@@ -241,7 +241,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mass_choose_type.tpl',
+            'elements/contributions_mass_choose_type.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => str_replace(
@@ -285,7 +285,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mass_add_contribution.tpl',
+            'elements/contributions_mass_add.html.twig',
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => str_replace(

@@ -810,7 +810,7 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mailing_recipients.tpl',
+            'elements/mailing_recipients.html.twig',
             [
                 'mailing'       => $mailing
 

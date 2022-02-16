@@ -1,0 +1,29 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <div id="mass_contributions"{% if mode != 'ajax' %} class="center"{% else %} title="{{ page_title }}"{% endif %}>
+    <form action="{{ form_url }}" method="post">
+        {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
+        <label for="type">{{ _T("Contribution type") }}</label>
+        <select name="type" id="type">
+            <option value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}">{{ _T("Membership") }}</option>
+            <option value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}">{{ _T("Donation") }}</option>
+        </select>
+        <div class="button-container">
+            <input type="submit" id="masschange" class="button" value="{{ _T("OK") }}"/>
+            <a href="{{ cancel_uri }}" class="button" id="btncancel">{{ _T("Cancel") }}</a>
+            {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
+            {% for key, value in data %}
+                {% if value is iterable %}
+                    {% for val in value %}
+                <input type="hidden" name="{{ key }}[]" value="{{ val }}"/>
+                    {% endfor %}
+                {% else %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                {% endif %}
+            {% endfor %}
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+        <table id="listing" class="select_members">
+            <thead>
+                <tr>
+                    <th class="listing id_row">#</th>
+                    <th class="listing left">
+                        {{ _T("Name") }}
+                    </th>
+                    <th class="listing left">
+                        {{ _T("Manager(s)") }}
+                    </th>
+                    <th class="listing"></th>
+                </tr>
+            </thead>
+            <tbody>
+{% for group in groups_list %}
+    {% set managers = group.getManagers() %}
+                <tr>
+                    <td class="right">{{ group.getId() }}</td>
+                    <td class="username_row">
+                        <a href="{{ path_for('groups', { 'id': group.getId() }) }}">{{ group.getName() }}</a>
+                    </td>
+                    <td class="username_row">
+    {% for manager in managers %}
+        {% if not loop.first %}, {% endif %}
+                        {{ manager.sname }}
+    {% endfor %}
+                    </td>
+                    <td class="right">{{ _T("%membercount members")|replace({ '%membercount': group.getMemberCount(true) }) }}</td>
+                </tr>
+{% else %}
+                <tr><td colspan="3" class="emptylist">{{ _T("no group") }}</td></tr>
+{% endfor %}
+            </tbody>
+        </table>
+        <section id="selected_groups">
+            <header class="ui-state-default ui-state-active"><h3>{{ _T("Selected groups") }}</h3></header>
+            <ul>
+{% for group in selected_groups %}
+                <li id="group_{{ group.id }}">
+                    <i class="ui user minus icon" aria-hidden="true"></i>
+                    {{ group.name }}
+                </li>
+{% else %}
+                <li id="none_selected">{{ _T("No groups has been selected yet.") }}</li>
+{% endfor %}
+            </ul>
+            <button class="button" id="btnvalid">{{ _T("Validate") }}</button>
+        </section>

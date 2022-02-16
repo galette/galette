@@ -210,7 +210,7 @@ class GroupsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'group.tpl',
+            'elements/group.html.twig',
             array(
                 'mode'      => 'ajax',
                 'groups'    => $groups->getList(),
@@ -237,7 +237,7 @@ class GroupsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'ajax_groups.tpl',
+            'elements/ajax_groups.html.twig',
             array(
                 'mode'              => 'ajax',
                 'groups_list'       => $groups->getList(),
@@ -276,7 +276,7 @@ class GroupsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'group_persons.tpl',
+            'elements/group_persons.html.twig',
             [
                 'persons'       => $persons,
                 'person_mode'   => $mode
