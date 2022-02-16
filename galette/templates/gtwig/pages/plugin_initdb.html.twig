@@ -9,7 +9,7 @@
     <form action="{{ path_for('pluginInitDb', { 'id': plugid }) }}" id="plugins_initdb_form" method="post">
         <h2>{{ page_title }}</h2>
 {% if mode == 'ajax' %}
-    {include file="global_messages.tpl"}
+    {% include 'elements/messages_inline.html.twig' %}
 {% endif %}
 
 

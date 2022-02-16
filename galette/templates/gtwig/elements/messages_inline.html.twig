@@ -1,3 +1,22 @@
+{# Let's see if there are loginfault messages to show #}
+{% set loginfaults = flash.getMessage('loginfault') %}
+{% if loginfault_detected is defined and loginfault_detected is iterable %}
+    {% for l in loginfault_detected %}
+        {% set loginfaults = loginfaults|merge([l]) %}
+    {% endfor %}
+{% endif %}
+{% if loginfaults is iterable and loginfaults|length > 0 %}
+    <div class="ui negative message">
+        <i class="close icon"></i>
+        <div class="header">{{ _T("- ERROR -") }}</div>
+        <ul>
+            {% for loginfault in loginfaults %}
+                <li>{{ loginfault }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 {# Let's see if there are error messages to show #}
 {% set errors = flash.getMessage('error_detected') %}
 {% if error_detected is defined and error_detected is iterable %}

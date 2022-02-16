@@ -41,8 +41,11 @@
     {% endif %}
 
     {% if renew_telemetry is defined %}
-        {% include "modals/telemetry.html.twig" with { part: "jsdialog" } %}
+            {% include "modals/telemetry.html.twig" with { part: "jsdialog" } %}
     {% endif %}
+
+            {% include "elements/js/messages_toasts.js.twig" %}
+
             });
         </script>
     {% if require_charts %}

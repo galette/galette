@@ -34,6 +34,7 @@
                     </div>
 {% endif %}
                     <h1 class="ui block center aligned header">{{ page_title }}</h1>
+                    <noscript>{% include "elements/messages_inline.html.twig" %}</noscript>
                     {% block content %}{{ _T("Public page content") }}{%  endblock %}
                     {% include "elements/footer.html.twig" %}
                 </section>
@@ -45,7 +46,6 @@
             {{ _T("Back to top") }}
         </a>
         {% include "elements/scripts.html.twig" %}
-        {% include "elements/toasts.html.twig" %}
         {%  block javascripts %}{%  endblock %}
 </body>
 </html>

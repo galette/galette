@@ -3,9 +3,6 @@
 {% set body_class = "front_page" %}
 
 {% block content %}
-    {if isset($smarty.session['slim.flash']['loginfault'])}
-                <div class="ui error tiny message">{$smarty.session['slim.flash']['loginfault']}</div>
-    {/if}
                 <form action="{{ path_for('dologin') }}" method="post" class="ui form">
     {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
                     <div class="ui segments">
