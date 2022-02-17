@@ -234,18 +234,15 @@
             {% include "elements/js/photo_dnd.js.twig" %}
 
             $('.notmanaged').click(function(){
-                var _el = $('<div id="not_managed_group" title="{{ _T("Not managed group")|e('js') }}">{{ _T("You are not part of managers for the requested group.")|e('js') }}</div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    buttons: {
-                        "{{ _T("Ok")|e('js') }}": function() {
-                            $( this ).dialog( "close" );
-                        }
-                    },
-                    close: function(event, ui){
-                        _el.remove();
-                    }
-                });
+                $('body').modal({
+                    title: '{{ _T("Not managed group")|e('js') }}',
+                    class: 'tiny',
+                    content: '{{ _T("You are not part of managers for the requested group.")|e("js") }}',
+                    actions: [{
+                        text    : '{{ _T("Close")|e('js') }}',
+                        class   : 'cancel'
+                    }]
+                }).modal('show');
                 return false;
             });
         });

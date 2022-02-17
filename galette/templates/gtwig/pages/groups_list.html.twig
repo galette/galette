@@ -63,15 +63,18 @@
     $(function() {
         var _mode;
 
-        {* New group *}
+        {# New group #}
         $('#newgroup').click(function(){
-        var _href = $(this).attr('href');
-            var _el = $('<div id="add_group" class="center" title="{{ _T("Add a new group") }}"><label for="new_group_name">{{ _T("Name:") }}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>');
-            _el.appendTo('body').dialog({
-                modal: true,
-                hide: 'fold',
-                buttons: {
-                    "{{ _T("Create")|e('js') }}": function() {
+            var _href = $(this).attr('href');
+            var _input = '<div class="ui labeled input"><div class="ui label">{{ _T("Name:") }}</div><input type="text" name="new_group_name" id="new_group_name" required/></div>';
+            $('body').modal({
+                title: '{{ _T("Add a new group") }}',
+                class: 'tiny',
+                content: _input,
+                actions: [{
+                    text    : '{{ _T("Create")|e('js') }}',
+                    class   : 'green approve',
+                    click   : function() {
                         var _name = $('#new_group_name').val();
                         if ( _name != '' ) {
                             //check uniqueness
@@ -82,7 +85,7 @@
                                     ajax: true,
                                     gname: _name
                                 },
-                                {include file="js_loader.tpl"},
+                                {% include 'elements/js/loader.js.twig' %},
                                 success: function(res){
                                     if ( res.success == false ) {
                                         if (res.message) {
@@ -102,15 +105,12 @@
                             alert('{{ _T("Pleade provide a group name")|e('js') }}');
                         }
                     }
-                },
-                close: function(event, ui){
-                    _el.remove();
-                }
-            });
+                }]
+            }).modal('show');
             return false;
         });
 
-        {* Members popup *}
+        {# Members popup #}
         var _btnuser_mapping = function(){
             $('#btnusers_small, #btnmanagers_small').click(function(){
                 _mode = ($(this).attr('id') == 'btnusers_small') ? 'members' : 'managers';
@@ -118,7 +118,7 @@
                     return $(this).val();
                 }).get();
                 $.ajax({
-                    url: '{path_for name="ajaxMembers"}',
+                    url: '{{ path_for('ajaxMembers') }}',
                     type: "POST",
                     data: {
                         multiple: true,
@@ -127,7 +127,7 @@
                         mode: _mode,
                         members: _persons
                     },
-                    {include file="js_loader.tpl"},
+                    {% include 'elements/js/loader.js.twig' %},
                     success: function(res){
                         _members_dialog(res, _mode);
                     },
@@ -145,26 +145,20 @@
             if ( mode == 'managers' ) {
                 _title = '{{ _T("Group managers selection")|e('js') }}';
             }
-            var _el = $('<div id="members_list" title="' + _title  + '"> </div>');
-            _el.appendTo('body').dialog({
-                modal: true,
-                hide: 'fold',
-                width: '80%',
-                height: 550,
-                close: function(event, ui){
-                    _el.remove();
-                }
-            });
+            $('body').modal({
+                title: _title,
+                class: 'members-selection fullscreen scrolling',
+                content: res,
+                actions: [{
+                    text    : '{{ _T("Close")|e("js") }}',
+                    class   : 'cancel'
+                }]
+            }).modal('show');
             _members_ajax_mapper(res, $('#group_id').val(), mode);
 
         }
 
         var _members_ajax_mapper = function(res, gid, mode){
-            $('#members_list').append(res);
-            $('#selected_members ul').css(
-                'max-height',
-                $('#members_list').innerHeight() - $('#btnvalid').outerHeight() - $('#selected_members header').outerHeight() - 65 // -65 to fix display; do not know why
-            );
             $('#btnvalid').button().click(function(){
                 //store entities in the original page so they can be saved
                 var _container;
@@ -177,16 +171,16 @@
                 $('li[id^="member_"]').each(function(){
                     _persons[_persons.length] = this.id.substring(7, this.id.length);
                 });
-                $('#members_list').dialog("close");
+                $('.members-selection').modal('hide');
 
                 $.ajax({
-                    url: '{path_for name="ajaxGroupMembers"}',
+                    url: '{{ path_for('ajaxGroupMembers') }}',
                     type: "POST",
                     data: {
                         persons: _persons,
                         person_mode: mode
                     },
-                    {include file="js_loader.tpl"},
+                    {% include 'elements/js/loader.js.twig' %},
                     success: function(res){
                         _container.find('table.listing').remove();
                         _container.children('div').append(res);
@@ -204,7 +198,7 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('#members_list #listing tbody a').click(function(e){
+            $('.members-selection table.listing a').click(function(e){
                 e.preventDefault();
                 var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
@@ -222,7 +216,7 @@
                 return false;
             });
 
-            $('#members_list .pages a').click(function(){
+            $('.members-selection .pages a').click(function(){
                 var gid = $('#the_id').val();
                 var _members = new Array();
                 $('li[id^="member_"]').each(function(){
@@ -239,9 +233,9 @@
                         mode: _mode,
                         multiple: true
                     },
-                    {include file="js_loader.tpl"},
+                    {% include 'elements/js/loader.js.twig' %},
                     success: function(res){
-                        $('#members_list').empty();
+                        $('.members-selection').empty();
                         _members_ajax_mapper(res, gid, _mode);
                     },
                     error: function() {

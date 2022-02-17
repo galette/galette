@@ -52,13 +52,14 @@
                             e.preventDefault();
                         });
 
-                        _res.dialog({
-                            width: '40%',
-                            modal: true,
-                            close: function(event, ui){
-                                $(this).dialog('destroy').remove()
-                            }
-                        });
+                        $('body').modal({
+                            class: 'tiny',
+                            content: _res,
+                            actions: [{
+                                text    : '{{ _T("Close")|e('js') }}',
+                                class   : 'cancel'
+                            }]
+                        }).modal('show');
                     },
                     error: function() {
                         alert("{{ _T("An error occurred :(")|e("js") }}");

@@ -1,26 +1,32 @@
 {% extends 'modals/contribution_form.html.twig' %}
 
 {% block content %}
-    <div id="mass_contributions"{% if mode != 'ajax' %} class="center"{% else %} title="{{ page_title }}"{% endif %}>
-    <form action="{{ form_url }}" method="post">
-        {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
-        <div class="button-container">
-            {{ parent() }}
-            <input type="submit" id="masschange" class="button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
-            <a href="{{ cancel_uri }}" class="button" id="btncancel">{{ _T("Cancel") }}</a>
-            <input type="hidden" name="confirm" value="1"/>
-            {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
-            {% for key, value in data %}
-                {% if value is iterable %}
-                    {% for val in value %}
-                <input type="hidden" name="{{ key }}[]" value="{{ val }}"/>
+    <div id="mass_contributions"{% if mode != 'ajax' %} class="center"{% else %} class="ui modal" title="{{ page_title }}"{% endif %}>
+    {% if mode == 'ajax' %}
+        <div class="fullscreen content scrolling">
+    {% endif %}
+            <form action="{{ form_url }}" method="post">
+                {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
+                <div class="button-container">
+                    {{ parent() }}
+                    <input type="submit" id="masschange" class="button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
+                    <a href="{{ cancel_uri }}" class="button" id="btncancel">{{ _T("Cancel") }}</a>
+                    <input type="hidden" name="confirm" value="1"/>
+                    {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
+                    {% for key, value in data %}
+                        {% if value is iterable %}
+                            {% for val in value %}
+                        <input type="hidden" name="{{ key }}[]" value="{{ val }}"/>
+                            {% endfor %}
+                        {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                        {% endif %}
                     {% endfor %}
-                {% else %}
-                <input type="hidden" name="{{ key }}" value="{{ value }}"/>
-                {% endif %}
-            {% endfor %}
-            {% include "components/forms/csrf.html.twig" %}
+                    {% include "components/forms/csrf.html.twig" %}
+                </div>
+            </form>
+    {% if mode == 'ajax' %}
         </div>
-    </form>
+    {% endif %}
     </div>
 {% endblock %}

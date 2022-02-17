@@ -185,7 +185,7 @@
                             <span class="sr-only">{{ _T("Display mailing '%subject' details in preview window")|replace({ '%subject': log.mailing_subject }) }}</span>
                         </a>
                         <a
-                            href="{{ path_for('mailing') }}?from={$log.mailing_id}"
+                            href="{{ path_for('mailing') }}?from={{ log.mailing_id }}"
                             class="tooltip"
                         >
                             <i class="ui clone blue icon"></i>
@@ -239,17 +239,15 @@
             });
 
             var _preview_dialog = function(res){
-                var _el = $('<div id="ajax_preview" title="{{ _T("Mailing preview")|e("js") }}"> </div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    hide: 'fold',
-                    width: '80%',
-                    height: 500,
-                    close: function(event, ui){
-                        _el.remove();
-                    }
-                });
-                $('#ajax_preview').append( res );
+                $('body').modal({
+                    title: '{{ _T("Mailing preview")|e("js") }}',
+                    class: 'scrolling',
+                    content: res,
+                    actions: [{
+                        text    : '{{ _T("Close")|e("js") }}',
+                        class   : 'cancel'
+                    }]
+                }).modal('show');
             }
 
         </script>

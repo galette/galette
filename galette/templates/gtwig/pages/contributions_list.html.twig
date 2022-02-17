@@ -397,25 +397,23 @@
 
 {% block javascripts %}
         <script type="text/javascript">
-        var _checkselection = function() {
-            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
-            if ( _checkeds == 0 ) {
-                var _el = $('<div id="pleaseselect" title="{{ _T("No contribution selected")|e('js') }}">{{ _T("Please make sure to select at least one contribution from the list to perform this action.")|e('js') }}</div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    buttons: {
-                        Ok: function() {
-                            $(this).dialog( "close" );
-                        }
-                    },
-                    close: function(event, ui){
-                        _el.remove();
-                    }
-                });
-                return false;
+            var _checkselection = function() {
+                var _checked = $('#listform').find('input[type=checkbox]:checked').length;
+                if ( _checked == 0 ) {
+                    $('body').modal({
+                        title: '{{ _T("No contribution selected")|e("js") }}',
+                        class: 'tiny',
+                        content: '{{ _T("Please make sure to select at least one contribution from the list to perform this action.")|e("js") }}',
+                        actions: [{
+                            text    : '{{ _T("Close")|e("js") }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
+                    return false;
+                } else {
+                    return true;
+                }
             }
-            return true;
-        }
             $(function(){
                 var _init_contribs_page = function(res){
     {% if login.isAdmin() or login.isStaff() %}
@@ -437,7 +435,7 @@
                 _init_contribs_page();
 
                 {% include "elements/js/removal.js.twig" %}
-                {% include "elements/js/removal.js.twig" with { selector: "#delete", deleteurl: path_for("batch-contributionslist", { "type": "contributions" }), extra_check: "if (!_checkselection()) {ldelim}return false;{rdelim}", extra_data: "delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST" } %}
+                {% include "elements/js/removal.js.twig" with { selector: "#delete", deleteurl: path_for("batch-contributionslist", { "type": "contributions" }), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST" } %}
             });
         </script>
 {% endblock %}

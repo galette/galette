@@ -49,7 +49,7 @@
     </div>
 </div>
 <div class="ui bottom attached tab segment" data-tab="change">
-    <form action="{{ path_for('storeImportModel') }}" method="POST" class="ui form">
+    <form action="{{ path_for('storeImportModel') }}" method="POST" class="ui form" id="modelform">
         <table class="listing ui celled table">
             <thead>
                 <tr>
@@ -70,7 +70,7 @@
         {% endfor %}
         </table>
         <div class="button-container">
-            <button type="submit" name="upload" class="ui labeled icon primary button action">
+            <button type="submit" name="store-model" id="store-model" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i>
                 {{ _T('Store new model') }}
             </button>
@@ -91,25 +91,22 @@
 
 {% block javascripts %}
 <script type="text/javascript">
-    $(function(){
-        //$('#model_tabs').tabs();
-
-        $('input[type="submit"]').click(function(){
-            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
-            if ( _checkeds == 0 ) {
-                var _el = $('<div id="pleaseselect" title="{{ _T('No field selected')|e('js') }}">{{ _T('Please make sure to select at least one field from the list to perform this action.')|e('js') }}</div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    buttons: {
-                        Ok: function() {
-                            $(this).dialog( "close" );
-                        }
-                    },
-                    close: function(event, ui){
-                        _el.remove();
-                    }
-                });
+    $(function() {
+        $('#store-model').click(function() {
+            var _checked = $('#modelform').find('input[type=checkbox]:checked').length;
+            if ( _checked == 0 ) {
+                $('body').modal({
+                    title: '{{ _T("No field selected")|e("js") }}',
+                    class: 'tiny',
+                    content: '{{ _T("Please make sure to select at least one field from the list to perform this action.")|e("js") }}',
+                    actions: [{
+                        text    : '{{ _T("Close")|e("js") }}',
+                        class   : 'cancel'
+                    }]
+                }).modal('show');
                 return false;
+            } else {
+                return true;
             }
         });
     });

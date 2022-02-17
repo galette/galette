@@ -120,12 +120,8 @@
                 _initdb_bindings(res);
             };
             var _initdb_bindings = function(res){
-                //$('.initdb-modal' ).empty().append(res);
                 $('.initdb-modal input:submit, .initdb-modal .button, .initdb-modal input:reset' ).button();
                 _messagesEffects();
-                //$('#btnback').click(function(){
-                //    $('#initdb').dialog('close');
-                //});
                 $("#plugins_initdb_form").submit(function(event) {
                     /* stop form from submitting normally */
                     event.preventDefault();

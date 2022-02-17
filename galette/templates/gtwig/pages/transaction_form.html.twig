@@ -198,22 +198,19 @@
             });
 
             var _contribs_dialog = function(res){
-                var _el = $('<div id="contributions_list" title="{{ _T("Contributions selection") }}"> </div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    hide: 'fold',
-                    width: '80%',
-                    height: 500,
-                    close: function(event, ui){
-                        _el.remove();
-                        $("#legende").remove();
-                    }
-                });
+                $('body').modal({
+                    title: '{{ _T("Contributions selection")|e("js") }}',
+                    class: 'fullscreen scrolling',
+                    content: res,
+                    actions: [{
+                        text    : '{{ _T("Close")|e("js") }}',
+                        class   : 'cancel'
+                    }]
+                }).modal('show');
                 _contribs_ajax_mapper(res);
             }
 
             var _contribs_ajax_mapper = function(res){
-                $('#contributions_list').append( res );
                 $("#contributions_list #legende").remove();
                 $("#contributions_list i.fa-filter").remove();
 
@@ -260,7 +257,7 @@
                 });
                 //Select a row
                 $('#contributions_list .contribution_row').click(function(){
-                    $('#contributions_list').dialog("close");
+                    $('#contributions_list').modal('hide');
                     var _cid = $(this).find('input[name="contrib_sel[]"]').val();
                     window.location.href = '{{ path_for("attach_contribution", { "id": transaction.id, "cid": "%cid" }) }}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');

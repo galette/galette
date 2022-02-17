@@ -227,7 +227,7 @@
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
                         <td class="{{ rclass }} username_row" data-scope="row">
-                            <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
+                            <input type="checkbox" name="member_sel[]" value="{{ member.__get('id') }}"/>
             {% if member.isCompany() %}
                             <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
             {%  elseif member.isMan() %}
@@ -238,7 +238,7 @@
                             <i class="ui icon"></i>
             {% endif %}
             {% if member.email != '' %}
-                            <a href="mailto:{$member->email}" class="tooltip">
+                            <a href="mailto:{{ member.email }}" class="tooltip">
                                 <i class="ui envelope outline teal icon" aria-hidden="true"></i>
                                 <span class="sr-only">{{ _T('Mail') }}</span>
                             </a>
@@ -509,18 +509,15 @@
         var _checkselection = function() {
             var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
             if ( _checkeds == 0 ) {
-                var _el = $('<div id="pleaseselect" title="{{ _T("No member selected")|e('js') }}">{{ _T("Please make sure to select at least one member from the list to perform this action.")|e('js') }}</div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    buttons: {
-                        Ok: function() {
-                            $(this).dialog( "close" );
-                        }
-                    },
-                    close: function(event, ui){
-                        _el.remove();
-                    }
-                });
+                $('body').modal({
+                    title: '{{ _T("No member selected")|e("js") }}',
+                    class: 'tiny',
+                    content: '{{ _T("Please make sure to select at least one member from the list to perform this action.")|e("js") }}',
+                    actions: [{
+                        text    : '{{ _T("Close")|e("js") }}',
+                        class   : 'cancel'
+                    }]
+                }).modal('show');
                 return false;
             }
             return true;
@@ -547,30 +544,28 @@
                 } else {
     {% if existing_mailing == true %}
                     if (this.id == 'sendmail') {
-                        var _el = $('<div id="existing_mailing" title="{{ _T("Existing mailing")|e('js') }}">{{ _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e('js') }}</div>');
-                        _el.appendTo('body').dialog({
-                            modal: true,
-                            hide: 'fold',
-                            width: '25em',
-                            height: 150,
-                            close: function(event, ui){
-                                _el.remove();
-                            },
-                            buttons: {
-                                '{{ _T('Resume')|e('js') }}': function() {
-                                    $(this).dialog( "close" );
+                        $('body').modal({
+                            title: '{{ _T("Existing mailing")|e('js') }}',
+                            class: 'tiny',
+                            content: '{{ _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e('js') }}',
+                            actions: [{
+                                text    : '{{ _T("Resume")|e('js') }}',
+                                class   : 'blue cancel',
+                                click   : function() {
                                     location.href = '{{ path_for('mailing') }}';
-                                },
-                                '{{ _T('New')|e('js') }}': function() {
-                                    $(this).dialog( "close" );
+                                }
+                            }, {
+                                text    : '{{ _T("New")|e('js') }}',
+                                class   : 'green approve',
+                                click   : function() {
                                     //add required controls to the form, change its action URI, and send it.
                                     var _form = $('#listform');
                                     _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
                                     _form.append($('<input type="hidden" name="mailing" value="true"/>'));
                                     _form.submit();
                                 }
-                            }
-                        });
+                            }]
+                        }).modal('show');
                         return false;
                     }
     {% endif %}
@@ -598,16 +593,14 @@
                                 _bindmassres(_res);
                                 $('body').append(_res);
 
-                                _initTooltips('#mass_contributions');
                                 _massCheckboxes('#mass_contributions');
 
-                                _res.dialog({
-                                    width: 'auto',
-                                    modal: true,
-                                    close: function(event, ui){
-                                        $(this).dialog('destroy').remove()
-                                    }
-                                });
+                                $('#mass_contributions').modal({
+                                    actions: [{
+                                        text    : '{{ _T("Close")|e('js') }}',
+                                        class   : 'cancel'
+                                    }]
+                                }).modal('show');
                             },
                             error: function() {
                                 alert("{{ _T("An error occurred :(")|e('js') }}");
@@ -629,17 +622,14 @@
             $('#savesearch').on('click', function(e) {
                 e.preventDefault();
 
-                var _el = $('<div id="savedsearch_details" title="{{ _T("Search title")|e('js') }}"><input type="text" name="search_title" id="search_title"/></div>');
-                _el.appendTo('body').dialog({
-                    modal: true,
-                    hide: 'fold',
-                    width: '40%',
-                    height: 200,
-                    close: function(event, ui){
-                        _el.remove();
-                    },
-                    buttons: {
-                        '{{ _T("Ok")|e('js') }}': function() {
+                $('body').modal({
+                    title: '{{ _T("Search title")|e('js') }}',
+                    class: 'tiny',
+                    content: '<div class="ui input"><input type="text" name="search_title" id="search_title"/></div>',
+                    actions: [{
+                        text    : '{{ _T("Save")|e('js') }}',
+                        class   : 'green approve',
+                        click   : function() {
                             var _form = $('#filtre');
                             var _data = _form.serialize();
                             _data = _data + "&search_title=" + $('#search_title').val();
@@ -659,27 +649,22 @@
                                     });
                                 }
                             });
-
-                            $(this).dialog( "close" );
-                        },
-                        '{{ _T("Cancel")|e('js') }}': function() {
-                            $(this).dialog( "close" );
                         }
-                    }
-                });
+                    }, {
+                        text    : '{{ _T("Cancel")|e('js') }}',
+                        class   : 'cancel'
+                    }]
+                }).modal('show');
             });
 
         });
 {% if nb_members != 0 %}
-        {% include "elements/js/removal.js.twig" %}
-        {% include "elements/js/removal.js.twig" with { selector: "#delete", deleteurl: "'{{ path_for('batch-memberslist') }}'", extra_check: "if (!_checkselection()) {ldelim}return false;{rdelim}", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST" } %}
-
         var _bindmassres = function(res) {
             res.find('#btncancel')
                 .button()
                 .on('click', function(e) {
                     e.preventDefault();
-                    res.dialog('close');
+                    res.modal('hide');
                 });
 
             res.find('input[type=submit]')
@@ -733,13 +718,12 @@
                                 //_initTooltips('#mass_change');
                                 //_massCheckboxes('#mass_change');
 
-                                _html.dialog({
-                                    width: 'auto',
-                                    modal: true,
-                                    close: function(event, ui){
-                                        $(this).dialog('destroy').remove()
-                                    }
-                                });
+                                $('#mass_change').modal({
+                                    actions: [{
+                                        text    : '{{ _T("Close")|e('js') }}',
+                                        class   : 'cancel'
+                                    }]
+                                }).modal('show');
 
                                 _html.find('form').on('submit', function(e) {
                                     e.preventDefault();
@@ -775,16 +759,14 @@
 
                     $('body').append(_res);
 
-                    //_initTooltips('#mass_change');
                     _massCheckboxes('#mass_change');
 
-                    _res.dialog({
-                        width: 'auto',
-                        modal: true,
-                        close: function(event, ui){
-                            $(this).dialog('destroy').remove()
-                        }
-                    });
+                    $('#mass_change').modal({
+                        actions: [{
+                            text    : '{{ _T("Close")|e('js') }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
                 },
                 error: function() {
                     alert("{{ _T("An error occurred :(")|e('js') }}");
@@ -806,38 +788,30 @@
                 },
                 dataType: 'html',
                 success: function(res){
-                    var _el = $('<div id="attendance_sheet_details" title="{{ _T("Attendance sheet details")|e('js') }}"> </div>');
-                    _el.appendTo('body').dialog({
-                        modal: true,
-                        hide: 'fold',
-                        width: '60%',
-                        height: 400,
-                        close: function(event, ui){
-                            _el.remove();
-                        },
-                        buttons: {
-                            Ok: function() {
+                    $('body').modal({
+                        title: '{{ _T("Attendance sheet details")|e("js") }}',
+                        class: 'tiny',
+                        content: res,
+                        actions: [{
+                            text    : '{{ _T("Continue")|e("js") }}',
+                            class   : 'cancel',
+                            click   : function() {
                                 $('#sheet_details_form').submit();
-                                $(this).dialog( "close" );
-                            },
-                            Cancel: function() {
-                                $(this).dialog( "close" );
                             }
-                        }
-                    }).append(res);
-                    /*$('#sheet_date').datepicker({
-                        changeMonth: true,
-                        changeYear: true,
-                        showOn: 'button',
-                        yearRange: 'c:c+5',
-                        buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                    });*/
+                        }, {
+                            text    : '{{ _T("Cancel")|e("js") }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
                 },
                 error: function() {
                     alert("{{ _T("An error occurred displaying attendance sheet details interface :(")|e('js') }}");
                 }
             });
         }
+
+        {% include "elements/js/removal.js.twig" %}
+        {% include "elements/js/removal.js.twig" with { selector: "#delete", deleteurl: path_for("batch-memberslist"), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST" } %}
 {% endif %}
     </script>
 {% endblock %}

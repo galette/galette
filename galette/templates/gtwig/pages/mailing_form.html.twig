@@ -180,7 +180,7 @@
     {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
 <script type="text/javascript">
     $(function() {
-        {* Preview popup *}
+        {# Preview popup #}
         $('#btnpreview').click(function(){
             var _sender = $('#sender').val();
             var _sender_name = $('#sender_name').val();
@@ -193,7 +193,7 @@
                 _attachments[_attachments.length] = $(this).text();
             });
             $.ajax({
-                url: {{ path_for('mailingPreview') }},
+                url: '{{ path_for('mailingPreview') }}',
                 type: "POST",
                 data: {
                     sender: _sender,
@@ -216,23 +216,21 @@
         });
 
         var _preview_dialog = function(res){
-            var _el = $('<div id="ajax_preview" title="{{ _T("Mailing preview")|e("js") }}"> </div>');
-            _el.appendTo('body').dialog({
-                modal: true,
-                hide: 'fold',
-                width: '80%',
-                height: 500,
-                close: function(event, ui){
-                    _el.remove();
-                }
-            });
-            $('#ajax_preview').append( res );
+            $('body').modal({
+                title: '{{ _T("Mailing preview")|e("js") }}',
+                class: 'scrolling',
+                content: res,
+                actions: [{
+                    text    : '{{ _T("Close")|e('js') }}',
+                    class   : 'cancel'
+                }]
+            }).modal('show');
         }
 
-        {* Members popup *}
+        {# Members popup #}
         $('#btnusers').click(function(){
             $.ajax({
-                url: {{ path_for('ajaxMembers') }},
+                url: '{{ path_for('ajaxMembers') }}',
                 type: "POST",
                 data: {
                     multiple: true
@@ -249,25 +247,19 @@
         });
 
         var _members_dialog = function(res){
-            var _el = $('<div id="members_list" title="{{ _T("Members selection")|e("js") }}"> </div>');
-            _el.appendTo('body').dialog({
-                modal: true,
-                hide: 'fold',
-                width: '80%',
-                height: 500,
-                close: function(event, ui){
-                    _el.remove();
-                }
-            });
+            $('body').modal({
+                title: '{{ _T("Members selection")|e("js") }}',
+                class: 'fullscreen scrolling',
+                content: res,
+                actions: [{
+                    text    : '{{ _T("Close")|e('js') }}',
+                    class   : 'cancel'
+                }]
+            }).modal('show');
             _members_ajax_mapper(res);
         }
 
         var _members_ajax_mapper = function(res){
-            $('#members_list').append(res);
-            $('#selected_members ul').css(
-                'max-height',
-                $('#members_list').innerHeight() - $('#btnvalid').outerHeight() - $('#selected_members header').outerHeight() - 60 // -60 to fix display; do not know why
-            );
             $('#btnvalid').button().click(function(){
                 //first, let's store new recipients in mailing object
                 var _recipients = new Array();
@@ -275,7 +267,7 @@
                     _recipients[_recipients.length] = this.id.substring(7, this.id.length);
                 });
                 $.ajax({
-                    url: {{ path_for('mailingRecipients') }},
+                    url: '{{ path_for('mailingRecipients') }}',
                     type: "POST",
                     data: {
                         recipients: _recipients
@@ -285,7 +277,7 @@
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
                         $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' ).button();
-                        $('#members_list').dialog("close");
+                        $('#members_list').modal('hide');
                     },
                     error: function() {
                         alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
@@ -353,24 +345,21 @@
 
         $('.rm_attachement').click(function(){
             var _link = $(this);
-            var _el = $('<div title="{{ _T("Remove attachment") }}"><p>{{ _T("Are you sure you want to remove this attachment?") }}</p><p>{{ _T("This will immediately remove attachment from disk and cannot be undo.") }}</p></div>');
-            _el.appendTo('body').dialog({
-                modal: true,
-                hide: 'fold',
-                buttons: {
-                    Ok: function() {
-                        var _this = $(this);
-                        _this.dialog( "close" );
+            $('body').modal({
+                title: '{{ _T("Remove attachment") }}',
+                class: 'fullscreen scrolling',
+                content: '{{ _T("Are you sure you want to remove this attachment?") }}<br/>{{ _T("This will immediately remove attachment from disk and cannot be undo.") }}',
+                actions: [{
+                    text    : '{{ _T("Remove")|e('js') }}',
+                    class   : 'red approve',
+                    click   : function() {
                         window.location.href = '{{ path_for('mailing') }}' + _link.attr('href');
-                    },
-                    {{ _T("Cancel") }}: function() {
-                         $(this).dialog( "close" );
                     }
-                },
-                close: function(event, ui){
-                    _el.remove();
-                }
-            });
+                }, {
+                    text    : '{{ _T("Cancel")|e('js') }}',
+                    class   : 'cancel'
+                }]
+            }).modal('show');
             return false;
         });
 

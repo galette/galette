@@ -424,7 +424,7 @@
                             class="ui labeled icon button"
                         >
                             <i class="rocket icon" aria-hidden="true"></i>
-                            {{ _T("Test mail settings") }}
+                            {{ _T("Test email settings") }}
                         </a>
                     </div>
                     <div id="smtp_parameters"{% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %} style="display: none;"{% endif %}>
@@ -667,7 +667,7 @@
                         </div>
                     </div>
                 </div>{# /column #}
-            </div>{* /column grid #}
+            </div>{# /column grid #}
         </div>{# /tab segment #}
 
 {% if login.isAdmin() %}
@@ -790,24 +790,16 @@
                     e.preventDefault();
                     var _this = $(this);
                     var _value = $('#pref_email_newadh').val();
-                    $('body').append('<div id="testEmail" title="{{ _T("Test email settings")|e('js') }}"><label for="email_adress">{{ _T("Enter the email adress")|e('js') }}</label><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>');
-                    $('#testEmail').dialog({
-                        'modal': true,
-                        'hide': 'fold',
-                        'width': '20em',
-                        create: function (event, ui) {
-                            if ($(window ).width() < 767) {
-                                $(this).dialog('option', {
-                                        'width': '95%',
-                                        'draggable': false
-                                });
-                            }
-                        },
-                        close: function(event, ui) {
-                            $('#testEmail').remove();
-                        },
-                        buttons: {
-                            "{{ _T("Send")|e('js') }}": function() {
+                    var _input = '<div class="ui input"><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>';
+                    $('body').modal({
+                        title: '{{ _T("Enter the email adress")|e('js') }}',
+                        class: 'tiny',
+                        content: _input,
+                        actions: [{
+                            text    : '{{ _T("Send")|e('js') }}',
+                            class   : 'green approve',
+                            icon    : 'rocket',
+                            click   : function() {
                                 $.ajax({
                                     url: _this.attr('href'),
                                     type: 'GET',
@@ -816,7 +808,6 @@
                                     },
                                     {% include "elements/js/loader.js.twig" %},
                                     success: function(res) {
-                                        console.log(res);
                                         //display message
                                         $.ajax({
                                             url: '{{ path_for('ajaxMessages') }}',
@@ -831,8 +822,11 @@
                                     }
                                 });
                             }
-                        }
-                    });
+                        }, {
+                            text    : '{{ _T("Cancel")|e('js') }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
                 });
 
                 _addLegenButton('#mail_sign');

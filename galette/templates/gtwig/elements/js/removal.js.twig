@@ -1,9 +1,6 @@
 {% if selector is not defined %}
     {% set selector = '.delete' %}
 {% endif %}
-{% if deleteurl is not defined %}
-    {% set deleteurl = "_this.attr('href')" %}
-{% endif %}
         //handle removals
         $('{{ selector }}').off('click').on('click', function(event) {
             event.preventDefault();
@@ -16,28 +13,18 @@
     {% set method = 'GET' %}
 {% endif %}
             $.ajax({
-                url: {{ deleteurl|raw }},
+                url: {% if deleteurl is not defined %}_this.attr('href'){% else %}'{{ deleteurl|raw }}'{% endif %},
                 type: "{{ method }}",
                 data: {
                     ajax: true,
 {% if extra_data is defined %}
-                    {{ extra_data }}
+                    {{ extra_data|raw }}
 {% endif %}
                 },
                 datatype: 'json',
                 {% include 'elements/js/loader.js.twig' %},
                 success: function(res){
                     var _res = $(res);
-                    _res.find('#btncancel')
-                        .button()
-                        .on('click', function(e) {
-                            e.preventDefault();
-                            _res.dialog('close');
-                        });
-
-                    _res.find('input[type=submit]')
-                        .button();
-
                     _res.find('form').on('submit', function(e) {
                         e.preventDefault();
                         var _form = $(this);
@@ -67,15 +54,20 @@
                         });
                     });
 
-                    $('body').append(_res);
-
-                    _res.dialog({
-                        width: '25em',
-                        modal: true,
-                        close: function(event, ui){
-                            $(this).dialog('destroy').remove()
-                        }
-                    });
+                    $('body').modal({
+                        class: 'tiny',
+                        content: _res,
+                        onApprove: function() {
+                            $('#confirm_removal form').submit();
+                        },
+                        actions: [{
+                            text    : '{{ _T("Remove")|e('js') }}',
+                            class   : 'red approve'
+                        }, {
+                            text    : '{{ _T("Cancel")|e('js') }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
                 },
                 error: function() {
                     alert('{{ _T("An error occurred :(")|e("js") }}');

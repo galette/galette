@@ -36,8 +36,9 @@
             </div>
         </form>
 {% for key, preview in previews %}
-        <div id="{{ key }}_preview" title="{{ preview.tcomment }}" class="preview">
-            <div>
+        <div id="{{ key }}_preview" class="preview ui modal">
+            <div class="header">{{ preview.tcomment }}</div>
+            <div class="scrolling content">
                 <p>
                     <span class="bline">{{ _T("Subject:") }}</span>
                     <span>{{ preview.tsubject }}</span>
@@ -47,6 +48,9 @@
                     <span>{{ preview.tbody|nl2br }}</span>
                 </p>
             </div>
+            <div class="actions">
+                <div class="ui cancel button">{{ _T("Close") }}</div>
+            </div>
         </div>
 {% endfor %}
 {% endblock %}
@@ -54,30 +58,24 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function(){
-                $('.preview').hide().dialog({
-                    autoOpen: false
-                });
+                $('.preview').modal('hide');
                 $('.show_previews').click(function(){
-                    $('#' + $(this).attr('id') + '_preview').dialog('open');
+                    $('#' + $(this).attr('id') + '_preview').modal('show');
                     return false;
                 });
                 $('#send_reminders').submit(function(){
                     var _this = $(this);
-                    var _checkeds = _this.find('input[type=checkbox]:checked').length;
-
-                    if ( _checkeds == 0 ) {
-                        var _el = $('<div id="pleaseselect" title="{{ _T("No reminder selected")|e('js') }}">{{ _T("Please make sure to select at least one reminder.")|e('js') }}</div>');
-                        _el.appendTo('body').dialog({
-                            modal: true,
-                            buttons: {
-                                Ok: function() {
-                                    $(this).dialog( "close" );
-                                }
-                            },
-                            close: function(event, ui){
-                                _el.remove();
-                            }
-                        });
+                    var _checked = _this.find('input[type=checkbox]:checked').length;
+                    if ( _checked == 0 ) {
+                        $('body').modal({
+                            title: '{{ _T("No reminder selected")|e("js") }}',
+                            class: 'tiny',
+                            content: '{{ _T("Please make sure to select at least one reminder.")|e("js") }}',
+                            actions: [{
+                                text    : '{{ _T("Close")|e("js") }}',
+                                class   : 'cancel'
+                            }]
+                        }).modal('show');
                         return false;
                     } else {
                         return true;

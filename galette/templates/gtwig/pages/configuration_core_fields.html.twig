@@ -144,17 +144,16 @@
                     $.each(_warnings, function(i,w){
                         var _val = w.find('.label').text().trim();
                         _w.find('ul').append('<li>' + _val + '</li>');
-                        console.log(w);
                     });
 
-                    _w.dialog({
-                        modal: true,
-                        buttons: {
-                            Ok: function() {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
+                    $('body').modal({
+                        class: 'tiny',
+                        content: _w,
+                        actions: [{
+                            text    : '{{ _T("Close")|e('js') }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
                     return false;
                 } else {
                     return true;

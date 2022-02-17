@@ -40,10 +40,14 @@
     {% else %}
         <div class="button-container">
     {% endif %}
-            <input type="submit" id="delete" value="{{ _T("Remove") }}"{% if mode != 'ajax' %} class="ui primary button action"{% endif %}/>
-            <a href="{{ cancel_uri }}" class="{% if mode != 'ajax' %}ui {% endif %}button" id="btncancel">{{ _T("Cancel") }}</a>
+            {% if mode != 'ajax' %}
+                <input type="submit" id="delete" value="{{ _T("Remove") }}" class="ui primary button action"/>
+                <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
+            {% endif %}
             <input type="hidden" name="confirm" value="1"/>
-            {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
+            {% if mode == 'ajax' %}
+                <input type="hidden" name="ajax" value="true"/>
+            {% endif %}
             {% for key, value in data %}
                 {% if value is iterable %}
                     {% for val in value %}
