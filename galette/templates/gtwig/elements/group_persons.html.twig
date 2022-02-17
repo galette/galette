@@ -14,9 +14,9 @@
                         </thead>
                         <tbody>
 {% for person in persons %}
-                            <tr class="{if $smarty.foreach.allpersons.iteration % 2 eq 0}even{else}odd{/if}">
+                            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                 <td class="username_row">
-                                <input type="hidden" name="{$person_mode}[]" value="{$person->id}"/>
+                                <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
                                 {% if person.isCompany() %}
                                     <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("[C]") }}</span></i>
                                 {% elseif person.isMan() %}

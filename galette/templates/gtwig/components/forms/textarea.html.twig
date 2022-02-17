@@ -22,6 +22,6 @@
         {% if maxlength is defined %} maxlength="{{ maxlength }}"{% endif %}
         {% if elt_class is defined %} class="{{ elt_class }}"{% endif %}
         {% if autocomplete is defined %} autocomplete="{{ autocomplete }}"{% endif %}
-        {% if size is defined %} size="{$size}"{% endif %}
+        {% if size is defined %} size="{{ size }}"{% endif %}
         >{% if value is not same as(null) %}{{ value }}{% endif %}</textarea><br/>
 {% endblock %}

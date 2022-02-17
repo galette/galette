@@ -11,7 +11,7 @@
             </thead>
             <tbody>
 {% for field in fields_list %}
-                <tr class="{if $smarty.foreach.allfields.iteration % 2 eq 0}even{else}odd{/if}">
+                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                     <td>{{ field.getIndex() }}</td>
                     <td class="left">{{ field.getName()|escape }}</td>
                     <td class="left">{{ field.getPermName() }}</td>

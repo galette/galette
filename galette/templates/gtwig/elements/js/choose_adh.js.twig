@@ -30,7 +30,7 @@
 
         if (typeof _next === 'undefined') {
             var _options = $(element).find('.option:not(.pagination)');
-            if (_options.length < {$members.filters->show}) {
+            if (_options.length < {{ members.filters.show }}) {
                 //not enough entries
                 return;
             }
@@ -70,7 +70,7 @@
 
         if (typeof _prev === 'undefined') {
             var _options = $(element).find('.option:not(.pagination)');
-            if (_options.length < {$members.filters->show}) {
+            if (_options.length < {{ members.filters.show }}) {
                 //not enough entries
                 return;
             }
