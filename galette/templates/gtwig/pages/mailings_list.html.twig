@@ -169,7 +169,7 @@
                     <td data-title="{{ _T('Recipients') }}">{{ log.mailing_recipients[2:2]|first }}</td>
                     <td data-title="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
                     <td class="center" data-title="{{ _T('Attachments') }}">{{ log.attachments }}</td>
-                    <td class="center{if $log.mailing_sent == 1} use{/if}" data-title="{{ _T('Sent') }}">
+                    <td class="center{% if log.mailing_sent == 1 %} use{% endif %}" data-title="{{ _T('Sent') }}">
                         {% if log.mailing_sent == 1 %}
                             <i class="ui thumbs up green icon"></i>
                         {% else %}

@@ -8,7 +8,7 @@
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <div class="pusher">
-            <div id="main" class="{if !$login->isLogged()}container{else}full height{/if}">
+            <div id="main" class="{% if not login.isLogged() %}container{% else %} full height{% endif %}">
 {%  if login.isLogged() %}
     {% include 'elements/navigation/navigation_aside.html.twig' %}
 {% endif %}
@@ -18,7 +18,7 @@
                         <img src="{path_for name="logo"}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
                         <div class="ui large header">
                             {{ preferences.pref_nom }}
-                            <div class="sub header">{if preferences.pref_slogan}{{ preferences.pref_slogan }}{/if}</div>
+                            <div class="sub header">{% if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
                         </div>
                     </div>
 {% endif %}

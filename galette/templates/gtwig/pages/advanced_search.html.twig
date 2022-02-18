@@ -85,7 +85,7 @@
                                     <div class="ui calendar" id="birth-rangestart">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_begin}" placeholder="{{ _T('(yyyy-mm-dd format)') }}" />
+                                                <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{{ filters.birth_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                     <div class="ui calendar" id="birth-rangeend">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_end}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{{ filters.birth_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@
                                     <div class="ui calendar" id="creation-rangestart">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_begin}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.creation_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                                     <div class="ui calendar" id="creation-rangeend">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_end}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.creation_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@
                                     <div class="ui calendar" id="modification-rangestart">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_begin}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.modif_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                                     <div class="ui calendar" id="modification-rangeend">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_end}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.modif_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                                     <div class="ui calendar" id="due-rangestart">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_begin}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.due_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                                     <div class="ui calendar" id="due-rangeend">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                                <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_end}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                                <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.due_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -404,8 +404,8 @@
 {% for fs in filters.free_search %}
                             <li>
                                 <select name="free_logical_operator[]" class="operator_selector nochosen">
-                                    <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{if $fs.log_op eq constant("Galette\\Filters\\AdvancedMembersList::OP_AND")} selected="selected"{/if}>{{ _T('and') }}</option>
-                                    <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{if $fs.log_op eq constant("Galette\\Filters\\AdvancedMembersList::OP_OR")} selected="selected"{/if}>{{ _T('or') }}</option>
+                                    <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('and') }}</option>
+                                    <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('or') }}</option>
                                 </select>
                                 <select name="free_field[]" class="field_selector nochosen">
                                     <option value="">{{ _T('Select a field') }}</option>
@@ -453,7 +453,7 @@
     {#  #}
     {% if type is not defined %}{% set type = null %}{% endif %}
                                 <span class="data">
-                                    <input type="hidden" name="free_type[]" value="{if isset($cur_field)}{$cur_field->getType()}{/if}"/>
+                                    <input type="hidden" name="free_type[]" value="{% if cur_field is defined %}{{ cur_field.getType() }}{% endif %}"/>
     {% if cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
                                     <select name="free_query_operator[]" class="free_operator nochosen">
                                         <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>

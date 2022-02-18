@@ -605,7 +605,7 @@
                         <img src="{{ path_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
                         <label for="del_card_logo">{{ _T("Delete image") }}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
     {% endif %}
-                        <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                        <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
                     </div>
                 </div>{# /column #}
                 <div class="column">

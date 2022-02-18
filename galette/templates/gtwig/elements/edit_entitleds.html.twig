@@ -18,11 +18,11 @@
             <tr>
                 <td data-scope="row">
                     <span class="row-title">
-{if $class eq 'Status'}
+{% if class == 'Status' %}
                         {{ _T("New status") }}
-{else}
+{% else %}
                         {{ _T("New contribution type") }}
-{/if}
+{% endif %}
                     </span>
                 </td>
                 <td class="left" data-title="{{ _T("Name") }}">

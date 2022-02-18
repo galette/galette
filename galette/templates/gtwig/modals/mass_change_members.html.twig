@@ -16,30 +16,30 @@
             {% else %}
                 <p>{{ _T("You are about to proceed following changes for selected members:") }}</p>
                 <ul>
-                {foreach $changes as $field => $change}
-                    {assign var="display_value" value=$change.value}
-                    {if $field eq 'id_statut'}
-                        {assign var="display_value" value=$statuts[$display_value]}
-                    {/if}
-                    {if $field eq 'titre_adh'}
-                        {assign var="display_value" value=$titles_list[$display_value]->long}
-                    {/if}
-                    {if $field eq 'sexe_adh'}
-                        {if $display_value eq {Galette\Entity\Adherent::NC}}
-                            {assign var="display_value" value={{ _T("Unspecified") }}}
-                        {/if}
-                        {if $display_value eq {Galette\Entity\Adherent::WOMAN}}
-                            {assign var="display_value" value={{ _T("Woman") }}}
-                        {/if}
-                        {if $display_value eq {Galette\Entity\Adherent::MAN}}
-                            {assign var="display_value" value={{ _T("Man") }}}
-                        {/if}
-                    {/if}
+                {% for field, change in changes %}
+                    {% set display_value = change.value %}
+                    {% if field == 'id_statut' %}
+                        {% set display_value = statuts[display_value] %}
+                    {% endif %}
+                    {% if field == 'titre_adh' %}
+                        {% set display_value = titles_list[display_value].long %}
+                    {% endif %}
+                    {% if field == 'sexe_adh' %}
+                        {% if display_value == constant('Galette\\Entity\\Adherent::NC') %}
+                            {% set display_value = _T("Unspecified") %}
+                        {% endif %}
+                        {% if display_value == constant('Galette\\Entity\\Adherent::WOMAN') %}
+                            {% set display_value = _T("Woman") %}
+                        {% endif %}
+                        {% if display_value == constant('Galette\\Entity\\Adherent::MAN') %}
+                            {% set display_value = _T("Man") %}
+                        {% endif %}
+                    {% endif %}
                     <li>
                         <input type="hidden" name="{{ field }}" value="{{ change.value }}"/>
                         {{ change.label }} {{ display_value }}
                     </li>
-                {/foreach}
+                {% endfor %}
                 </ul>
             {% endif %}
                 <div class="button-container">

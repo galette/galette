@@ -33,9 +33,9 @@
                         <label for="type_{{ model.id }}">{{ _T("Type") }}</label>
                         <select name="model_type" id="type_{{ model.id }}" class="ui dropdown nochosen" required>
                             <option value="">{{ _T("Select") }}</option>
-                            <option value="{Galette\Entity\PdfModel::INVOICE_MODEL}">{{ _T("Invoice") }}</option>
-                            <option value="{Galette\Entity\PdfModel::RECEIPT_MODEL}">{{ _T("Receipt") }}</option>
-                            <option value="{Galette\Entity\PdfModel::ADHESION_FORM_MODEL}">{{ _T("Adhesion Form") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\PdfModel::INVOICE_MODEL') }}">{{ _T("Invoice") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\PdfModel::RECEIPT_MODEL') }}">{{ _T("Receipt") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\PdfModel::ADHESION_FORM_MODEL') }}">{{ _T("Adhesion Form") }}</option>
                         </select>
                     </div>
 {% endif %}

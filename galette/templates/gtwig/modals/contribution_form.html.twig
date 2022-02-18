@@ -198,7 +198,7 @@
             <div class="ui center aligned segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {% if post.mail_confirm is defined and post.mail_confirm != "" %}checked="checked"{% endif %}/>
                         <label for="mail_confirm">
                             {{ _T("Notify member") }}
                         </label>
