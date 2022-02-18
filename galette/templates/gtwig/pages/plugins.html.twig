@@ -115,7 +115,18 @@
                         text    : '{{ _T("Cancel")|e('js') }}',
                         class   : 'red cancel',
                         icon    : 'times'
-                    }]
+                    }, {
+                        text    : '{{ _T("Next step")|e('js') }}',
+                        class   : 'green approve',
+                        icon    : 'forward',
+                        click   : function() {
+                            return false;
+                        }
+                    }],
+                    onApprove : function() {
+                      _initdb_bindings(res);
+                      return false;
+                    }
                 }).modal('show');
                 _initdb_bindings(res);
             };
