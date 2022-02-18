@@ -10,7 +10,7 @@
             <div class="active content field">
                 <div class="inline field">
                     <label for="field_name">{{ _T("Name:") }}</label>
-                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{if not $df|is_a:'Galette\DynamicFields\Separator'} required="required"{/if}/>
+                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{% if df.getType != 0 %} required="required"{% endif %}/>
                 </div>
                 <div class="inline field">
                     <label for="field_perm">{{ _T("Permissions:") }}</label>
@@ -45,11 +45,11 @@
                 <div class="inline field">
                     <label for="field_size">{{ _T("Size:") }}</label>
                     <input type="text" name="field_size" id="field_size" value="{{ df.getSize() }}" size="3"/>
-        {if $df|is_a:'Galette\DynamicFields\File'}
+        {% if df.getType == 6 %}
                     <span class="exemple">{{ _T("Maximum file size, in Ko.") }}</span>
-        {else}
+        {% else %}
                     <span class="exemple">{{ _T("Maximum number of characters.") }}</span>
-        {/if}
+        {% endif %}
                 </div>
     {% endif %}
     {% if df.isMultiValued() %}

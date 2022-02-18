@@ -17,9 +17,9 @@
                     <td class="left">{{ field.getPermName() }}</td>
                     <td class="left">{{ field.getTypeName() }}</td>
                     <td>
-    {if not $field|is_a:'Galette\DynamicFields\Separator'}
+    {% if field.getType != 0 %}
         {% if field.isRequired() %}{{ _T("Yes") }}{% else %}{{ _T("No") }}{% endif %}
-    {/if}
+    {% endif %}
                     </td>
                     <td class="center actions_row">
                         <a
