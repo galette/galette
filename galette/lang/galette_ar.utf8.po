@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-17 12:57+0000\n"
-"Last-Translator: Hothaifa Jaber <i74ifa@icloud.com>\n"
+"PO-Revision-Date: 2022-02-27 19:57+0000\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 4.11.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1808,15 +1808,15 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
 msgid "cards"
-msgstr ""
+msgstr "بطاقات"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
-msgstr ""
+msgstr "بطاقات الأعضاء"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:106
 msgid "Cards"
-msgstr ""
+msgstr "البطاقات"
 
 #: ../lib/Galette/IO/FileTrait.php:477
 msgid "An error occurred."
@@ -2057,11 +2057,11 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:395
 msgid "Amount"
-msgstr ""
+msgstr "المَبلغ"
 
 #: ../lib/Galette/Features/Replacements.php:399
 msgid "Amount (in letters)"
-msgstr ""
+msgstr "المبلغ (بالحروف)"
 
 #: ../lib/Galette/Features/Replacements.php:403
 msgid "Full date"
@@ -2275,7 +2275,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1721
 msgid "Active"
-msgstr ""
+msgstr "نشط"
 
 #: ../lib/Galette/Entity/Adherent.php:1721
 msgid "Inactive"
@@ -2296,7 +2296,7 @@ msgstr "التاريخ:"
 #: ../lib/Galette/Entity/Transaction.php:121
 #: ../lib/Galette/Entity/Contribution.php:159
 msgid "Amount:"
-msgstr ""
+msgstr "المبلغ:"
 
 #: ../lib/Galette/Entity/Transaction.php:125
 msgid "Description:"
@@ -3207,7 +3207,7 @@ msgstr "تاريخ الإنشاء:"
 
 #: ../includes/fields_defs/members_fields.php:233
 msgid "Modification date:"
-msgstr "تعديل التعديل:"
+msgstr "تاريخ التعديل:"
 
 #: ../includes/fields_defs/members_fields.php:243
 msgid "Account:"
@@ -4357,7 +4357,7 @@ msgstr ""
 #: ../templates/default/preferences.tpl:487
 #: ../templates/default/forms_types/picture.tpl:10
 msgid "Delete image"
-msgstr ""
+msgstr "حذف الصورة"
 
 #: ../templates/default/preferences.tpl:55
 msgid " (continuation)"
@@ -4428,7 +4428,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:120
 msgid "Default language:"
-msgstr ""
+msgstr "اللغة الافتراضية:"
 
 #: ../templates/default/preferences.tpl:136
 msgid "Lines / Page:"
@@ -4842,7 +4842,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:437
 msgid "Cards generation parameters"
-msgstr ""
+msgstr "خيارات توليد البطاقات"
 
 #: ../templates/default/preferences.tpl:439
 msgid "Short Text (Card Center):"
@@ -5092,7 +5092,7 @@ msgstr ""
 #: ../templates/default/display_dynamic_fields.tpl:3
 #: ../templates/default/edit_dynamic_fields.tpl:103
 msgid "Additionnal fields:"
-msgstr ""
+msgstr "حقول إضافية:"
 
 #: ../templates/default/display_dynamic_fields.tpl:34
 #, php-format
@@ -5323,7 +5323,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:400
 #: ../templates/default/voir_adherent.tpl:62
 msgid "Modification"
-msgstr ""
+msgstr "تعديل"
 
 #: ../templates/default/gestion_contributions.tpl:331
 #: ../templates/default/gestion_adherents.tpl:410
@@ -5920,11 +5920,11 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:375
 msgid "Active account"
-msgstr ""
+msgstr "حساب نشط"
 
 #: ../templates/default/gestion_adherents.tpl:377
 msgid "Inactive account"
-msgstr ""
+msgstr "الحساب غير نشط"
 
 #: ../templates/default/gestion_adherents.tpl:381
 msgid "Membership in order"
@@ -6807,7 +6807,7 @@ msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:248
 msgid "Contribution amount should be greater than %max"
-msgstr ""
+msgstr "لا يجب أن يكون مبلغ المساهمة أكبر من %max"
 
 #: ../templates/default/liste_membres.tpl:4
 msgid ""
@@ -6968,7 +6968,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:66
 msgid "Modification date"
-msgstr ""
+msgstr "تاريخ التعديل"
 
 #: ../templates/default/advanced_search.tpl:73
 msgid "Due date"
@@ -7381,7 +7381,7 @@ msgstr ""
 
 #: ../templates/default/forms_types/password.tpl:19
 msgid "Password confirmation:"
-msgstr ""
+msgstr "تأكيد كلمة المرور:"
 
 #: ../templates/default/forms_types/company.tpl:6
 msgid "Is company?"
@@ -7471,10 +7471,8 @@ msgid "Remove %type"
 msgstr "إزالة نوع الدفع %1$s"
 
 #: ../templates/default/edit_socials.tpl:17
-#, fuzzy
-#| msgid "Social networks"
 msgid "Add new social network"
-msgstr "الشبكات الاجتماعية"
+msgstr "إضافة شبكة إجتماعية جديدة"
 
 #: ../templates/default/edit_socials.tpl:20
 msgid "Choose or enter your own..."
