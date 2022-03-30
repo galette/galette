@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-27 19:57+0000\n"
+"PO-Revision-Date: 2022-03-31 17:07+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.11.1-dev\n"
+"X-Generator: Weblate 4.12-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -85,22 +85,22 @@ msgstr "تعديل نوع الدفع"
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:209
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr "وسيلة الدفع '٥٪' لم تضاف بعد !"
+msgstr "لم يتم إضافة وسيلة الدفع \"%s\"!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:218
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr "وسيلة الدفع 'س٪' لم تعدل بعد"
+msgstr "وسيلة الدفع '%s' لم تعدل بعد!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:231
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr "وسيلة الدفع 'س٪' تم اضافتها بنجاح"
+msgstr "تمت إضافة وسيلة الدفع \"%s\" بنجاح."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:240
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr "وسيلة الدفع'س٪' تم تعديلها بنجاح"
+msgstr "تم تعديل وسيلة الدفع \"%s\" بنجاح."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:303
 #, php-format
@@ -121,7 +121,7 @@ msgstr "تم حفظ مجموعة 'اسم المجموعة٪' بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:372
 msgid "An error occurred while storing the group."
-msgstr "حدث خطأ اثناء تخزين المجموعة"
+msgstr "حدث خطأ أثناء تخزين الفريق."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:471
 #, php-format
@@ -130,7 +130,7 @@ msgstr "حذف الفريق %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:494
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
-msgstr "المجموعة ليست خالية ، لا يمكنك حذفها. قم بحذف الاعضاء بدلا من ذلك"
+msgstr "المجموعة ليست فارغة، ولا يمكن حذفها. استخدم الحذف المتتالي بدلا من ذلك."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:103
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:107
@@ -149,12 +149,13 @@ msgid "Mailing"
 msgstr "مراسلة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:303
+#, fuzzy
 msgid "Please type an object for the message."
 msgstr "من فضلك اكتب حرفا بالرسالة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:309
 msgid "Please enter a message."
-msgstr "من فضلك ادخل رسالة"
+msgstr "من فضلك أدخل رسالة."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:406
 msgid "Mailing has been successfully sent!"
@@ -162,7 +163,7 @@ msgstr "تم ارسال البريد بنجاح !"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:429
 msgid "Mailing has been successfully saved."
-msgstr "تم حفظ البريد بنجاح"
+msgstr "تم حفظ البريد بنجاح."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:511
 msgid "Mailings"
@@ -208,7 +209,7 @@ msgstr "وقع هناك خطأ أثناء تعديل الحقل الدينامي
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:453
 msgid "Requested field does not exists!"
-msgstr "طلب الحقل غير موجود"
+msgstr "الحقل المطلوب غير موجود!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:464
 #, php-format
@@ -273,12 +274,12 @@ msgstr "البحث المتقدم"
 #: ../lib/Galette/Controllers/PdfController.php:151
 #: ../lib/Galette/Controllers/PdfController.php:232
 msgid "No member was selected, please check at least one name."
-msgstr "لم يتم اختيار اي عضو ، من فضلك اختر واحدا علي الاقل"
+msgstr "لم يتم اختيار أي عضو ، يرجى تحديد اسم واحد على الأقل."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1246
 #, php-format
 msgid "Mass change %count members"
-msgstr "تغيير شامل ٪ عدد الاعضاء"
+msgstr "تغيير جماعي لـ %count من الأعضاء"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1276
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1372
@@ -306,7 +307,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1469
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr "%c من الاعضاء قد تم تغييرهم"
+msgstr "%count من الاعضاء قد تم تغييرهم بنجاح!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1533
 msgid "Invalid captcha"
@@ -314,7 +315,7 @@ msgstr "كابتشا غير صالحة"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1640
 msgid "Your account has been created!"
-msgstr "تم انشاء حسابك"
+msgstr "تم انشاء حسابك!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1645
 msgid "An email has been sent to you, check your inbox."
