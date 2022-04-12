@@ -31,13 +31,14 @@
 # Arnau Isern <arnauisern84@gmail.com>, 2022.
 # Joel León Alvez <dorayakis07@yahoo.es>, 2022.
 # Mateo Iglesias Duarte <iglesiasduartemateo@gmail.com>, 2022.
+# Cow <javier.fserrador@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-04-11 19:11+0000\n"
-"Last-Translator: Mateo Iglesias Duarte <iglesiasduartemateo@gmail.com>\n"
+"PO-Revision-Date: 2022-04-13 18:12+0000\n"
+"Last-Translator: Cow <javier.fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -458,10 +459,9 @@ msgstr "Donación"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:238
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:282
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass add contribution on %count members"
-msgstr "Cambio masivo %count de miembros"
+msgstr "Agregación masiva de contribución en %count miembros"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:504
 msgid "Contributions management"
@@ -1994,10 +1994,9 @@ msgid "Label for dynamic field \"%s\""
 msgstr "Etiqueta para el campo dinámico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:131
-#, fuzzy, php-format
-#| msgid "Input for dynamic field \"%s\""
+#, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr "Entrada para el campo dinámico \"%s\""
+msgstr "Apunte del formulario para el campo dinámico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:136
 #, php-format
@@ -2254,7 +2253,7 @@ msgstr "Libre de cuotas"
 #: ../lib/Galette/Entity/Adherent.php:782
 #, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
-msgstr ""
+msgstr "Nunca contribuido: registrado hace %days días (desde %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:785
 #: ../lib/Galette/Filters/MembersList.php:297
@@ -2266,10 +2265,8 @@ msgid "Last day!"
 msgstr "¡Último día!"
 
 #: ../lib/Galette/Entity/Adherent.php:793
-#, fuzzy
-#| msgid "Last day!"
 msgid "Late since today!"
-msgstr "¡Último día!"
+msgstr "¡Último desde hoy!"
 
 #: ../lib/Galette/Entity/Adherent.php:806
 #, php-format
@@ -2287,10 +2284,8 @@ msgstr "Faltan %days días {se termina el %date}"
 
 #: ../lib/Galette/Entity/Adherent.php:1185
 #: ../lib/Galette/Entity/Adherent.php:1190
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a group you own!"
-msgstr "Tienes que seleccionar a un miembro del personal"
+msgstr "¡Tienes que seleccionar a un grupo del personal!"
 
 #: ../lib/Galette/Entity/Adherent.php:1263
 msgid "- Birthdate must be set in the past!"
@@ -2338,7 +2333,6 @@ msgid "An error has occurred while looking if status does exists."
 msgstr "Ha ocurrido un error al buscar si el estado existe."
 
 #: ../lib/Galette/Entity/Adherent.php:1442
-#, fuzzy
 msgid "Gender %gender does not exists!"
 msgstr "¡El género %gender no existe!"
 
@@ -4388,10 +4382,8 @@ msgstr "Parámetros"
 
 #: ../templates/default/preferences.tpl:9
 #: ../templates/default/preferences.tpl:231
-#, fuzzy
-#| msgid "Height:"
 msgid "Rights"
-msgstr "Altura:"
+msgstr "Derechos"
 
 #: ../templates/default/preferences.tpl:10
 msgid "E-Mail"
@@ -4616,10 +4608,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/preferences.tpl:187
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Default payment type:"
-msgstr "Eliminar tipo de pago «%s»"
+msgstr "Tipo predeterminado del pago:"
 
 #: ../templates/default/preferences.tpl:193
 msgid "Public pages enabled?"
@@ -4764,10 +4754,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/preferences.tpl:298
-#, fuzzy
-#| msgid "Sent reminder email for late membership"
 msgid "Send email to members?"
-msgstr "Mandarme un recordatorio por correo del pago de la membresía"
+msgstr "¿Envío un correo-e a los miembros?"
 
 #: ../templates/default/preferences.tpl:299
 msgid ""
@@ -5779,10 +5767,9 @@ msgid "Field"
 msgstr "Campo"
 
 #: ../templates/default/import_model.tpl:27
-#, fuzzy, php-format
-#| msgid "Missing required field name!"
+#, php-format
 msgid "Missing field '%field'"
-msgstr "Falta campo obligatorio!"
+msgstr "Falta un campo '%filed'"
 
 #: ../templates/default/import_model.tpl:37
 msgid "Generate empty CSV file"
@@ -6571,10 +6558,8 @@ msgid "Choice list (one entry per line)."
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:70
-#, fuzzy
-#| msgid "Information"
 msgid "Information:"
-msgstr "Información"
+msgstr "Información:"
 
 #: ../templates/default/editer_champ.tpl:71
 msgid "Extra information displayed along with dynamic field."
