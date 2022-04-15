@@ -32,13 +32,14 @@
 # Joel León Alvez <dorayakis07@yahoo.es>, 2022.
 # Mateo Iglesias Duarte <iglesiasduartemateo@gmail.com>, 2022.
 # Cow <javier.fserrador@gmail.com>, 2022.
+# ovieyra <ovieyra@proteus.com.mx>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-04-13 18:12+0000\n"
-"Last-Translator: Cow <javier.fserrador@gmail.com>\n"
+"PO-Revision-Date: 2022-04-16 05:12+0000\n"
+"Last-Translator: ovieyra <ovieyra@proteus.com.mx>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -2338,7 +2339,7 @@ msgstr "¡El género %gender no existe!"
 
 #: ../lib/Galette/Entity/Adherent.php:1556
 msgid "Self_subscription as a member: "
-msgstr ""
+msgstr "Auto_subscricion como miembro"
 
 #: ../lib/Galette/Entity/Adherent.php:1562
 msgid "Member card added"
