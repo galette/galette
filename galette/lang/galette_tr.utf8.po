@@ -9,13 +9,14 @@
 # benjamin <itsbenx@outlook.com>, 2022.
 # Tolga Çağlayan <caglayantolga100@gmail.com>, 2022.
 # Muhammed YILMAZ <yilmazmu15@itu.edu.tr>, 2022.
+# Siyabend Ürün <urunsiyabend@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-02-17 12:57+0000\n"
-"Last-Translator: Muhammed YILMAZ <yilmazmu15@itu.edu.tr>\n"
+"PO-Revision-Date: 2022-04-19 17:12+0000\n"
+"Last-Translator: Siyabend Ürün <urunsiyabend@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 4.12-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -63,15 +64,15 @@ msgstr "Katılım işleme eklenemedi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Contribution has been successfully attached to current transaction"
-msgstr "Katılım başarılı bir şekilde işleme eklemlendi"
+msgstr "Katkı, geçerli işleme başarıyla eklendi"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:389
 msgid "Unable to detach contribution from transaction"
-msgstr "Katılım işlemden ayrıştırılamadı"
+msgstr "Katkı işlemden ayrıştırılamadı"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:394
 msgid "Contribution has been successfully detached from current transaction"
-msgstr "Katılım başarılı bir şekilde işlemden ayrıştırıldı"
+msgstr "Katkı geçerli işlemden başarıyla ayrıştırıldı"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:116
 msgid "Payment types management"
@@ -104,7 +105,7 @@ msgstr "Ödeme tpi '%s' başarıyla değiştirildi."
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:303
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr "%1$s ödeme tipini çıkar"
+msgstr "%1$s ödeme tipini sil"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:123
 msgid "Group name is missing!"
@@ -120,7 +121,7 @@ msgstr "`%groupname` grubu başarıyla kaydedildi."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:372
 msgid "An error occurred while storing the group."
-msgstr "Gurubu kaydederken bir hata oluştu."
+msgstr "Grup kaydedilirken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:471
 #, php-format
@@ -158,24 +159,24 @@ msgstr "Lütfen bir mesaj girin."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:406
 msgid "Mailing has been successfully sent!"
-msgstr "Mailleşme başarıyla gönderildi!"
+msgstr "Posta başarıyla gönderildi!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:429
 msgid "Mailing has been successfully saved."
-msgstr "Mailleşme başarıyla kaydedildi."
+msgstr "Posta başarıyla kaydedildi."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:511
 msgid "Mailings"
-msgstr "Mailleşmeler"
+msgstr "Postalar"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:659
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr "#%1$s mailleşmesini kaldır"
+msgstr "#%1$s postasını kaldır"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:741
 msgid "Mailing preview"
-msgstr "Mailleşme önizlemesi"
+msgstr "Posta önizlemesi"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:76
 msgid "Add field"
@@ -183,16 +184,16 @@ msgstr "Alan ekle"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
-msgstr "Değişken alan eklerken bir hata oluştu :("
+msgstr "Dinamik alan eklenirken bir hata oluştu :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:368
 msgid "Dynamic field has been successfully stored!"
-msgstr "Değişken alan başarıyla eklendi!"
+msgstr "Dinamik alan başarıyla kaydedildi!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:230
 msgid "Dynamic fields configuration"
-msgstr "Değişken alan ayarı"
+msgstr "Dinamik alan ayarları"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:293
 msgid "Unable to retrieve field information."
@@ -204,16 +205,16 @@ msgstr "Alanı değiştir"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:354
 msgid "An error occurred editing dynamic field :("
-msgstr "Değişken alanı düzenlerken hata oluştu :("
+msgstr "Dinamik alan düzenlenirken hata oluştu :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:453
 msgid "Requested field does not exists!"
-msgstr "İstenen alan bulunamadı!"
+msgstr "Talep edilen alan mevcut değil!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:464
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr "%1$s değişken alanını çıkar"
+msgstr "%1$s dinamik alanını kaldır"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:509
 msgid "Field has been successfully moved"
@@ -221,7 +222,7 @@ msgstr "Alan başarıyla taşındı"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:514
 msgid "An error occurred moving field :("
-msgstr "Alanı taışrken bir hata oluştu :("
+msgstr "Alan taşınırken bir hata oluştu :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:164
 msgid "Subscription"
@@ -238,7 +239,7 @@ msgstr "Ulaşılmaya çalışılan URL için yetkiniz bulunmamaktadır."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:269
 msgid "No member #%id."
-msgstr "Üye numaraı #%id bulunamadı."
+msgstr "Üye numarası #%id bulunamadı."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:288
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1132
@@ -255,7 +256,7 @@ msgstr "Trombinoscope"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:509
 msgid "The file does not exists or cannot be read :("
-msgstr "Dosya bulunamadı veya okunamıyor :("
+msgstr "Dosya mevcut değil veya okunamıyor :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:572
 msgid "Members management"
@@ -273,7 +274,7 @@ msgstr "Gelişmiş arama"
 #: ../lib/Galette/Controllers/PdfController.php:151
 #: ../lib/Galette/Controllers/PdfController.php:232
 msgid "No member was selected, please check at least one name."
-msgstr "Bir üye seçilmedi, lütfen en azından birini seçiniz."
+msgstr "Hiç üye seçilmedi, lütfen en az bir üye seçiniz."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1246
 #, php-format
@@ -297,11 +298,11 @@ msgstr "Yapılacak bir eylem bulunamadı!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1450
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1682
 msgid "An error occurred while storing the member."
-msgstr "Üyeyi kaydederken bir hata oluştu."
+msgstr "Üye kaydedilirken bir hata oluştu."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1462
 msgid "Something went wront during mass edition!"
-msgstr "Toplu güncelleme yaparken beklenmedik birşeyler oldu!"
+msgstr "Toplu güncelleme yapılırken bir şeyler yanlış gitti!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1469
 #, php-format
@@ -318,11 +319,11 @@ msgstr "Hesabınız oluşturuldu!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1645
 msgid "An email has been sent to you, check your inbox."
-msgstr "E-mail gönderildi, gelen kutusunu kontrol ediniz."
+msgstr "Bir e-mail aldınız, gelen kutusunu kontrol ediniz."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1648
 msgid "New member has been successfully added."
-msgstr "Yeni üye başarıyla eklandi."
+msgstr "Yeni üye başarıyla eklendi."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1651
 msgid "Member account has been modified."
@@ -1926,16 +1927,14 @@ msgid "Label for dynamic field \"%s\""
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:131
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr "%1$s değişken alanını çıkar"
+msgstr "\"%s\" dinamik alanı için form girişi"
 
 #: ../lib/Galette/Features/Replacements.php:136
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr "%1$s değişken alanını çıkar"
+msgstr "\"%s\" dinamik alanı için değerler"
 
 #: ../lib/Galette/Features/Replacements.php:203
 msgid "Your organisation name"
@@ -2375,10 +2374,8 @@ msgid "End date of membership:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:184
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "İşlem"
+msgstr "İşlem Kimliği"
 
 #: ../lib/Galette/Entity/Contribution.php:190
 msgid "Membership extension:"
@@ -2730,10 +2727,8 @@ msgid "Infos"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:282
-#, fuzzy
-#| msgid "Members list"
 msgid "Member ID"
-msgstr "Üye listesi"
+msgstr "Üye Kimliği"
 
 #: ../lib/Galette/Filters/MembersList.php:293
 msgid "All members"
@@ -4912,10 +4907,8 @@ msgid "Zip - Town"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:508
-#, fuzzy
-#| msgid "Members management"
 msgid "Member nubmer"
-msgstr "Üye yönetimi"
+msgstr "Üye numarası"
 
 #: ../templates/default/preferences.tpl:510
 msgid "(Choose address printed below name)"
@@ -5524,10 +5517,8 @@ msgid "Show dashboard on login"
 msgstr ""
 
 #: ../templates/default/mass_choose_type.tpl:12
-#, fuzzy
-#| msgid "Contribution types"
 msgid "Contribution type"
-msgstr "Katılım türü"
+msgstr "Katılım tipi"
 
 #: ../templates/default/mass_choose_type.tpl:18
 #: ../templates/default/mass_change_members.tpl:49
@@ -6294,10 +6285,8 @@ msgstr ""
 #: ../templates/default/group.tpl:6 ../templates/default/group.tpl:11
 #: ../templates/default/liste_membres.tpl:54
 #: ../templates/default/liste_membres.tpl:82
-#, fuzzy
-#| msgid "System information"
 msgid "Information"
-msgstr "Bilgisi"
+msgstr "Bilgi"
 
 #: ../templates/default/group.tpl:7 ../templates/default/group.tpl:61
 msgid "Managers"
@@ -7442,10 +7431,8 @@ msgid "An error occurred sending telemetry information :("
 msgstr ""
 
 #: ../templates/default/edit_socials.tpl:11
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "%type türündeki '%label' başlığını çıkar"
+msgstr "%type tipini sil"
 
 #: ../templates/default/edit_socials.tpl:17
 msgid "Add new social network"
