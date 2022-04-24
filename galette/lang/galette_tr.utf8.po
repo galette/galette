@@ -10,13 +10,14 @@
 # Tolga Çağlayan <caglayantolga100@gmail.com>, 2022.
 # Muhammed YILMAZ <yilmazmu15@itu.edu.tr>, 2022.
 # Siyabend Ürün <urunsiyabend@gmail.com>, 2022.
+# Onur Akkas <jon_onur_akkas@hotmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-04-19 17:12+0000\n"
-"Last-Translator: Siyabend Ürün <urunsiyabend@gmail.com>\n"
+"PO-Revision-Date: 2022-04-24 15:13+0000\n"
+"Last-Translator: Onur Akkas <jon_onur_akkas@hotmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12-dev\n"
+"X-Generator: Weblate 4.12.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -749,7 +750,7 @@ msgstr "%id kimliği taklit edilemiyor"
 #: ../lib/Galette/Controllers/AuthController.php:231
 #: ../lib/Galette/Controllers/AuthController.php:236
 msgid "Impersonating ended"
-msgstr ""
+msgstr "Kimliklenme sona erdi"
 
 #: ../lib/Galette/Controllers/AuthController.php:261
 #: ../lib/Galette/Controllers/AuthController.php:462
