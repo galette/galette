@@ -33,13 +33,14 @@
 # Mateo Iglesias Duarte <iglesiasduartemateo@gmail.com>, 2022.
 # Cow <javier.fserrador@gmail.com>, 2022.
 # ovieyra <ovieyra@proteus.com.mx>, 2022.
+# Nolan <nolanwelch@outlook.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-04-16 05:12+0000\n"
-"Last-Translator: ovieyra <ovieyra@proteus.com.mx>\n"
+"PO-Revision-Date: 2022-04-25 22:12+0000\n"
+"Last-Translator: Nolan <nolanwelch@outlook.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -47,7 +48,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12-dev\n"
+"X-Generator: Weblate 4.12.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2286,7 +2287,7 @@ msgstr "Faltan %days días {se termina el %date}"
 #: ../lib/Galette/Entity/Adherent.php:1185
 #: ../lib/Galette/Entity/Adherent.php:1190
 msgid "You have to select a group you own!"
-msgstr "¡Tienes que seleccionar a un grupo del personal!"
+msgstr "¡Tiene que seleccionar a un grupo del personal!"
 
 #: ../lib/Galette/Entity/Adherent.php:1263
 msgid "- Birthdate must be set in the past!"
@@ -2294,7 +2295,7 @@ msgstr "- ¡Fecha de cumpleaños debe estar en el pasado!"
 
 #: ../lib/Galette/Entity/Adherent.php:1271
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "¡Los miembros deben tener menos de 200 años (ahora % años)!"
+msgstr "¡Los miembros deben tener menos de 200 años (ahora %years)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1309
 msgid "- Non-valid E-Mail address!"
@@ -2327,7 +2328,7 @@ msgstr "La contraseña no se ha repetido igual: "
 
 #: ../lib/Galette/Entity/Adherent.php:1426
 msgid "Status #%id does not exists in database."
-msgstr "El estado n.º %id no existe en la base de datos."
+msgstr "El estado #%id no existe en la base de datos."
 
 #: ../lib/Galette/Entity/Adherent.php:1435
 msgid "An error has occurred while looking if status does exists."
