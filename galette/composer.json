@@ -68,8 +68,8 @@
             "patch -d vendor/smarty/smarty/ -p3 < ../patches/smarty-php81.patch",
             "patch -d vendor/mathmarques/smarty-view/ -p3 < ../patches/smarty-view-php81.patch",
             "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch",
-            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
             "patch -d vendor/soundasleep/html2text/ -p3 < ../patches/html2text-php80.patch",
+            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
             "patch -d vendor/slim/twig-view/ -p3 < ../patches/twig-view-php81.patch"
         ]
     }
