@@ -266,7 +266,7 @@ class GaletteMail
             $this->mail->IsHTML(true);
         } else {
             //the email is plaintext :)
-            $this->mail->AltBody = null;
+            $this->mail->AltBody = '';
             $this->mail->IsHTML(false);
         }
 
