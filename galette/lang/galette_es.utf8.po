@@ -39,8 +39,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-04-25 22:12+0000\n"
-"Last-Translator: Nolan <nolanwelch@outlook.com>\n"
+"PO-Revision-Date: 2022-05-13 15:18+0000\n"
+"Last-Translator: Cow <javier.fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -48,7 +48,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12.1-dev\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -369,7 +369,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:320
 #: ../lib/Galette/Controllers/GaletteController.php:352
 msgid "Delete failed"
-msgstr "Falló la eliminación"
+msgstr "Eliminación errónea"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1863
 #, php-format
