@@ -39,7 +39,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-05-14 18:18+0000\n"
+"PO-Revision-Date: 2022-05-17 20:19+0000\n"
 "Last-Translator: Cow <javier.fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -674,7 +674,7 @@ msgstr "No hay elementos para proceder."
 
 #: ../lib/Galette/Controllers/GaletteController.php:759
 msgid "Reminder has not been sent:"
-msgstr "No se ha establecido el recordatorio:"
+msgstr "Recordatorio no ha sido enviado:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:766
 msgid "Sent reminders:"
@@ -2099,7 +2099,7 @@ msgstr "Código postal"
 
 #: ../lib/Galette/Features/Replacements.php:305
 msgid "Town"
-msgstr "Ciudad"
+msgstr "Pueblo"
 
 #: ../lib/Galette/Features/Replacements.php:309 ../includes/i18n.inc.php:327
 msgid "Country"
@@ -2356,11 +2356,11 @@ msgstr "Tarjeta de miembro actualizada"
 
 #: ../lib/Galette/Entity/Adherent.php:1721
 msgid "Active"
-msgstr "Activo"
+msgstr "Activa"
 
 #: ../lib/Galette/Entity/Adherent.php:1721
 msgid "Inactive"
-msgstr "Inactivo"
+msgstr "Inactiva"
 
 #: ../lib/Galette/Entity/Adherent.php:1961
 msgid " (%age years old)"
@@ -2471,7 +2471,7 @@ msgstr "- ¡el duracion nesesitan ser un integro positivo!"
 
 #: ../lib/Galette/Entity/Contribution.php:587
 msgid "- Membership period overlaps period starting at "
-msgstr ""
+msgstr "- Periodo de afiliación supera el periodo de comienzo en "
 
 #: ../lib/Galette/Entity/Contribution.php:656
 msgid "Contribution added"
@@ -2570,8 +2570,9 @@ msgid "Website"
 msgstr "Sitio web"
 
 #: ../lib/Galette/Entity/Social.php:356
+#, fuzzy
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ../lib/Galette/Entity/PdfModel.php:304
 #, php-format
@@ -2767,7 +2768,7 @@ msgstr "El script de contribución posterior configurada ha fallado."
 
 #: ../lib/Galette/Events/ContribListener.php:353
 msgid "You can find contribution information and script output below."
-msgstr ""
+msgstr "Puede encontrar información de contribución y salida script debajo."
 
 #: ../lib/Galette/Events/ContribListener.php:361
 msgid "Post contribution script has failed."
@@ -2811,7 +2812,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:276
 msgid "Email,URL,IM"
-msgstr ""
+msgstr "Corre-e,URL,IM"
 
 #: ../lib/Galette/Filters/MembersList.php:277
 msgid "Job"
@@ -2858,7 +2859,7 @@ msgstr "No miembros"
 #: ../lib/Galette/Filters/ContributionsList.php:234
 #: ../lib/Galette/Filters/ContributionsList.php:271
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:213
 #: ../lib/Galette/Filters/TransactionsList.php:235
@@ -3046,11 +3047,11 @@ msgstr "Consorcio"
 
 #: ../includes/i18n.inc.php:297
 msgid "french"
-msgstr ""
+msgstr "francés"
 
 #: ../includes/i18n.inc.php:298
 msgid "english"
-msgstr ""
+msgstr "inglés"
 
 #: ../includes/i18n.inc.php:299
 msgid "spanish"
@@ -3339,7 +3340,7 @@ msgstr "Cumpleaños:"
 
 #: ../includes/fields_defs/members_fields.php:299
 msgid "Id GNUpg (GPG):"
-msgstr ""
+msgstr "Id GNUpg (GPG):"
 
 #: ../includes/fields_defs/members_fields.php:307
 msgid "fingerprint:"
@@ -3409,7 +3410,7 @@ msgstr "Recibo enviado para nueva contribución"
 
 #: ../includes/fields_defs/texts_fields.php:64
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Registro nuevo desde {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:65
 msgid ""
@@ -3420,11 +3421,11 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "New user registration (sent to admin)"
-msgstr ""
+msgstr "Registro de usuario nuevo (envíe al admin)"
 
 #: ../includes/fields_defs/texts_fields.php:72
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Contribución nueva para {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:73
 msgid ""
@@ -3470,7 +3471,7 @@ msgstr "Informa al usuario que esta cuenta ha sido modificada"
 
 #: ../includes/fields_defs/texts_fields.php:96
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[{ASSO_NAME}] Su afiliación está apunto de caducar"
 
 #: ../includes/fields_defs/texts_fields.php:97
 msgid ""
@@ -3481,11 +3482,11 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:99
 msgid "Impending due date"
-msgstr ""
+msgstr "Impidiendo fecha de vencimiento"
 
 #: ../includes/fields_defs/texts_fields.php:104
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] Su afiliación ha vencido"
 
 #: ../includes/fields_defs/texts_fields.php:105
 msgid ""
@@ -3495,7 +3496,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:107
 msgid "Late due date"
-msgstr ""
+msgstr "Última fecha de vencimiento"
 
 #: ../includes/fields_defs/texts_fields.php:112
 msgid "[{ASSO_NAME}] Your donation"
@@ -3514,13 +3515,15 @@ msgstr "Recibo enviado para donaciones nuevas"
 
 #: ../includes/fields_defs/texts_fields.php:120
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Donación nueva para {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:121
 msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Estimado Administrador,{NEWLINE}Ha sido registrada una donación desde "
+"{NAME_ADH} {BR}{CONTRIB_INFO}{NEWLINE}Sinceramente, su {BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:123
 msgid "New donation (sent to admin)"
@@ -3574,7 +3577,7 @@ msgstr "Archivo %file no ha sido trasladado :-/"
 #: ../install/scripts/upgrade-to-0.8.php:202
 #, php-format
 msgid "Directory %dir has been moved!"
-msgstr "Directorio %dir ha sido trasladado."
+msgstr "Su directorio %dir ha sido trasladado."
 
 #: ../install/scripts/upgrade-to-0.8.php:214
 #, php-format
@@ -3625,7 +3628,7 @@ msgstr "Contraseña no coincidente"
 
 #: ../install/steps/db_install.php:46
 msgid "Database has not been installed!"
-msgstr "¡La BsD no ha sido instalada!"
+msgstr "¡La BdD no ha sido instalada!"
 
 #: ../install/steps/db_install.php:48
 msgid "Database has not been upgraded!"
@@ -3790,7 +3793,7 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:206
 msgid "Database exists and connection parameters are OK."
-msgstr ""
+msgstr "La base de datos existe y los parámetros de conexión son CORRECTOS."
 
 #: ../install/steps/db_checks.php:207
 msgid "Permissions on the base"
@@ -3809,11 +3812,11 @@ msgstr ""
 
 #: ../install/steps/galette.php:55
 msgid "Configuration file created!"
-msgstr ""
+msgstr "Archivo de configuración creado."
 
 #: ../install/steps/galette.php:56
 msgid "Data initialized."
-msgstr ""
+msgstr "Datos inicializados."
 
 #: ../install/steps/galette.php:58
 msgid "An error occurred :("
@@ -3821,11 +3824,11 @@ msgstr "Se produjo un error :("
 
 #: ../install/steps/check.php:38
 msgid "Welcome to the Galette Install!"
-msgstr ""
+msgstr "¡Bienvenido a la Instalación de Galette!"
 
 #: ../install/steps/check.php:68
 msgid "Compilation"
-msgstr ""
+msgstr "Compilación"
 
 #: ../install/steps/check.php:69
 msgid "Photos"
@@ -3833,19 +3836,19 @@ msgstr "Fotografías"
 
 #: ../install/steps/check.php:70
 msgid "Cache"
-msgstr ""
+msgstr "Tampón"
 
 #: ../install/steps/check.php:71
 msgid "Temporary images"
-msgstr ""
+msgstr "Imágenes temporales"
 
 #: ../install/steps/check.php:72
 msgid "Configuration"
-msgstr ""
+msgstr "Configuración"
 
 #: ../install/steps/check.php:73
 msgid "Exports"
-msgstr ""
+msgstr "Exportaciones"
 
 #: ../install/steps/check.php:74
 msgid "Imports"
@@ -3920,6 +3923,8 @@ msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
 msgstr ""
+"Bajo Windows, compruebe que estos directorios no estén en modo Solo-Lectura "
+"en su panel de propiedades."
 
 #: ../install/steps/db.php:44
 msgid "If it hadn't been made, create a database and a user for Galette."
@@ -4253,7 +4258,7 @@ msgstr "Gestionar correspondencia masiva"
 
 #: ../templates/default/page.tpl:60
 msgid "Export some data in various formats"
-msgstr ""
+msgstr "Exporta algunos datos en varios formatos"
 
 #: ../templates/default/page.tpl:61
 msgid "Import members from CSV files"
@@ -4269,7 +4274,7 @@ msgstr "Mostrar y filtrar todas mis contribuciones"
 
 #: ../templates/default/page.tpl:65 ../templates/default/desktop.tpl:47
 msgid "My contributions"
-msgstr ""
+msgstr "Mis contribuciones"
 
 #: ../templates/default/page.tpl:66 ../templates/default/desktop.tpl:48
 msgid "View and filter all my transactions"
@@ -4475,11 +4480,11 @@ msgstr "Borrar imagen"
 
 #: ../templates/default/preferences.tpl:55
 msgid " (continuation)"
-msgstr ""
+msgstr " (continuación)"
 
 #: ../templates/default/preferences.tpl:71
 msgid "Postal address:"
-msgstr ""
+msgstr "Dirección postal:"
 
 #: ../templates/default/preferences.tpl:72
 msgid ""
@@ -4726,7 +4731,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:260
 msgid "Mail settings"
-msgstr ""
+msgstr "Opciones de correo"
 
 #: ../templates/default/preferences.tpl:262
 #: ../templates/default/preferences.tpl:586
@@ -4767,7 +4772,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:293
 msgid "Send email to administrators?"
-msgstr ""
+msgstr "¿Enviar correo-e a los administradores?"
 
 #: ../templates/default/preferences.tpl:294
 msgid ""
@@ -4814,7 +4819,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:320
 msgid "PHP mail() function"
-msgstr ""
+msgstr "Función mail() en *.php."
 
 #: ../templates/default/preferences.tpl:323
 msgid "Using a SMTP server (slower)"
@@ -4843,7 +4848,7 @@ msgstr "Servidor SMTP:"
 
 #: ../templates/default/preferences.tpl:351
 msgid "SMTP port:"
-msgstr ""
+msgstr "Puerto SMTP:"
 
 #: ../templates/default/preferences.tpl:355
 msgid "Use SMTP authentication?"
@@ -4901,7 +4906,7 @@ msgstr ""
 #: ../templates/default/preferences.tpl:391
 #: ../templates/default/preferences.tpl:519
 msgid "Vertical margins:"
-msgstr ""
+msgstr "Márgenes verticales:"
 
 #: ../templates/default/preferences.tpl:393
 #: ../templates/default/preferences.tpl:398
@@ -4916,7 +4921,7 @@ msgstr ""
 #: ../templates/default/preferences.tpl:531
 #: ../templates/default/preferences.tpl:536
 msgid "(Integer)"
-msgstr ""
+msgstr "(Entero)"
 
 #: ../templates/default/preferences.tpl:396
 #: ../templates/default/preferences.tpl:524
@@ -5006,7 +5011,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:494
 msgid "(Members will be able to generate their own member card)"
-msgstr ""
+msgstr "(Miembros serán capaces de generar sus propia tarjeta de miembro)"
 
 #: ../templates/default/preferences.tpl:497
 msgid "Show title ?"
@@ -5401,7 +5406,7 @@ msgstr ""
 #: ../templates/default/trombinoscope.tpl:29
 #: ../templates/default/gestion_transactions.tpl:195
 msgid "Pages:"
-msgstr ""
+msgstr "Páginas:"
 
 #: ../templates/default/gestion_contributions.tpl:301
 #: ../templates/default/gestion_adherents.tpl:306
@@ -5441,7 +5446,7 @@ msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:336
 msgid "Contribution"
-msgstr ""
+msgstr "Contribución"
 
 #: ../templates/default/gestion_contributions.tpl:340
 msgid "Gift"
@@ -6179,7 +6184,7 @@ msgstr ""
 #: ../templates/default/config_lists.tpl:43
 #: ../templates/default/config_fields.tpl:39
 msgid "Inaccessible"
-msgstr ""
+msgstr "No accesible"
 
 #: ../templates/default/config_lists.tpl:23
 #: ../templates/default/config_lists.tpl:47
@@ -6601,7 +6606,7 @@ msgstr ""
 #: ../templates/default/config_fields.tpl:17
 #: ../templates/default/config_fields.tpl:31
 msgid "Required"
-msgstr ""
+msgstr "Requerido"
 
 #: ../templates/default/editer_champ.tpl:125
 #: ../templates/default/configurer_fiches.tpl:11
@@ -6909,7 +6914,7 @@ msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:233
 msgid "An error occurred retrieving dates :("
-msgstr ""
+msgstr "Ha ocurrido un error mientras obtenía datos :("
 
 #: ../templates/default/ajouter_contribution.tpl:248
 msgid "Contribution amount should be greater than %max"
@@ -7244,7 +7249,7 @@ msgstr "Inicializar base de datos «%name»"
 
 #: ../templates/default/plugins.tpl:50
 msgid "No active plugin."
-msgstr ""
+msgstr "Ningún complemento activo."
 
 #: ../templates/default/plugins.tpl:54
 msgid "Inactive plugins"
