@@ -40,7 +40,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-05-18 10:19+0000\n"
+"PO-Revision-Date: 2022-05-19 11:14+0000\n"
 "Last-Translator: Dragos <dragos@duckly.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -2773,7 +2773,7 @@ msgstr "Puede encontrar información de contribución y salida script debajo."
 
 #: ../lib/Galette/Events/ContribListener.php:361
 msgid "Post contribution script has failed."
-msgstr ""
+msgstr "El script post contribución ha fallado."
 
 #: ../lib/Galette/Events/MemberListener.php:254
 #, php-format
@@ -3016,7 +3016,7 @@ msgstr "Miembro fundador"
 
 #: ../includes/i18n.inc.php:289
 msgid "Old-timer"
-msgstr ""
+msgstr "Veterano"
 
 #: ../includes/i18n.inc.php:290
 msgid "Legal entity"
