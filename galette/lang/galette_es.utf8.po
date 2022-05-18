@@ -34,13 +34,14 @@
 # Cow <javier.fserrador@gmail.com>, 2022.
 # ovieyra <ovieyra@proteus.com.mx>, 2022.
 # Nolan <nolanwelch@outlook.com>, 2022.
+# Dragos <dragos@duckly.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-05-17 20:19+0000\n"
-"Last-Translator: Cow <javier.fserrador@gmail.com>\n"
+"PO-Revision-Date: 2022-05-18 10:19+0000\n"
+"Last-Translator: Dragos <dragos@duckly.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -2555,7 +2556,7 @@ msgstr "LinkedIn"
 
 #: ../lib/Galette/Entity/Social.php:352
 msgid "Viadeo"
-msgstr ""
+msgstr "Viadeo"
 
 #: ../lib/Galette/Entity/Social.php:353
 msgid "Jabber"
