@@ -64,7 +64,8 @@ class CheckModules
         'mbstring'  => true,
         'openssl'   => false,
         'intl'      => true,
-        'session'   => true
+        'session'   => true,
+        'yaml'      => true
     ];
 
 

@@ -4,7 +4,7 @@
 
     "ctype", "date", "fileinfo", "filter", "iconv", "json", "pcre", "reflection", "session", "simplexml", "spl", "xml",
 
-    "curl", "gd", "intl", "mbstring", "mysqli", "zlib", "pdo", "pgsql", "gettext",
+    "curl", "gd", "intl", "mbstring", "mysqli", "zlib", "pdo", "pgsql", "gettext", "yaml",
 
     "exif", "pcntl"
   ],
