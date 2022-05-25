@@ -124,13 +124,6 @@ if (!isset($_COOKIE['show_galette_dashboard'])) {
     );
 }
 
-if (!defined('GALETTE_DISPLAY_ERRORS')) {
-    if (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV) {
-        define('GALETTE_DISPLAY_ERRORS', 1);
-    } else {
-        define('GALETTE_DISPLAY_ERRORS', 0);
-    }
-}
 ini_set('display_errors', (defined('GALETTE_TESTS') ? '1' : '0'));
 
 /*------------------------------------------------------------------------------

@@ -19,11 +19,6 @@
                 {include file="navigation/navigation_aside.tpl"}
 {/if}
                 <section{if $login->isLogged()} class="content"{/if}>
-{if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
-                    <div class="ui tiny red message">
-                        {_T string="Galette is configured to display errors. This must be avoided in production environments."}
-                    </div>
-{/if}
 {if $GALETTE_MODE eq 'DEMO'}
     {if $cur_route neq "editMember"}
         {if !$login->isLogged()}

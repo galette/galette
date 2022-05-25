@@ -33,9 +33,6 @@
  * @link      http://galette.eu
  */
 
-//change this *ONLY* for debug purposes!
-//define('GALETTE_DISPLAY_ERRORS', true);
-
 /* Uncomment and tune to read user IP addresses from the X-Forwarded-For header
  *
  * This is for applications sitting behind one or several proxies.

@@ -19,12 +19,6 @@
                 {include file="navigation/navigation_aside.tpl"}
 {/if}
                 <section class="content{if $contentcls} {$contentcls}{/if}">
-{if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
-                    <div class="ui tiny red message">
-                        {_T string="Galette is configured to display errors. This must be avoided in production environments."}
-                    </div>
-{/if}
-
 {if !$login->isLogged()}
                     <div class="ui basic center aligned fitted segment">
                         <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{$preferences->pref_nom}" class="icon"/>
