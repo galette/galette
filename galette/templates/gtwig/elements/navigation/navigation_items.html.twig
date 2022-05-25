@@ -1,3 +1,5 @@
+{% import "elements/navigation/menus_macros.twig" as menus_macros %}
+
 {% if login.isLogged() %}
         <a href="{{ path_for('dashboard') }}"
             title="{{ _T("Go to Galette's dashboard") }}"
@@ -10,162 +12,13 @@
         </a>
 {% endif %}
 
-{% if not login.isSuperAdmin() %}
-    {# Dirty trick to set active accordion fold using in_array tests on title and
-       content divs. Would be better to assign this array from model #}
-    {%  set my_routes = ['me', 'addMemberChild'] %}
-        <div class="item">
-            <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
-                <i class="user icon"></i>
-                {{ _T("My Account") }}
-                <i class="dropdown icon"></i>
-            </div>
-            <div class="content{% if cur_route in my_routes %} active{% endif %}">
-                <a
-                    href="{{ path_for("contributions", { "type": "contributions" }) }}"
-                    class="{% if is_current_path('contributions', { 'type': 'contributions' }) %}active {% endif %}item"
-                    title="{{ _T("View and filter all my contributions") }}"
-                >{{ _T("My contributions") }}</a>
-                <a
-                    href="{{ path_for('contributions', { 'type': 'transactions' }) }}"
-                    class="{% if is_current_path('contributions', { 'type': 'transactions' }) %}active {% endif %}item"
-                    title="{{ _T("View and filter all my transactions") }}"
-                >{{ _T("My transactions") }}</a>
-                <a
-                    href="{{ path_for('me') }}"
-                    class="{% if is_current_path("me") or cur_route == "member" %}active {% endif %}item"
-                    title="{{ _T("View my member card") }}"
-                >{{ _T("My information") }}</a>
-    {% if preferences.pref_bool_create_member and not login.isSuperAdmin() %}
-                <a
-                    href="{{ path_for('addMemberChild') }}"
-                    class="{% if is_current_path("addMemberChild") %}active {% endif %}item"
-                    title="{{ _T("Add new child member in database") }}"
-                >{{ _T("Add a child member") }}</a>
-    {% endif %}
+{%  set menus = callstatic('\\Galette\\Core\\Galette', 'getMenus') %}
+{% for menu in menus %}
+    {{ menus_macros.renderMenu(menu.title, menu.icon, menu.items) }}
+{% endfor %}
 
-            </div>
-        </div>
-{% endif %}
-
-{# Dirty trick to set active accordion fold using in_array tests on title and
-   content divs. Would be better to assign this array from model #}
-    {%  set members_routes = ['members', 'member', 'advanced-search', 'searches', 'editMember', 'addMember'] %}
-        <div class="item">
-            <div class="image header title{% if cur_route in members_routes %} active{% endif %}">
-                <i class="users icon"></i>
-                {{ _T("Members") }}
-                <i class="dropdown icon"></i>
-            </div>
-            <div class="content{% if cur_route in members_routes %} active{% endif %}">
-                {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                    <a href="{{ path_for('members') }}" class="{% if is_current_path("members") or cur_route == "member" %}active {% endif %}item" title="{{ _T("View, search into and filter member's list") }}">{{ _T("List of members") }}</a>
-                    <a href="{{ path_for('advanced-search') }}" class="{% if is_current_path('advanced-search') %}active {% endif %}item" title="{{ _T("Perform advanced search into members list") }}">{{ _T("Advanced search") }}</a>
-                    <a href="{{ path_for('searches') }}" class="{% if is_current_path('searches') %}active {% endif %}item" title="{{ _T("Saved searches") }}">{{ _T("Saved searches") }}</a>
-                {% endif %}
-                {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_member) %}
-                    <a href="{{ path_for('addMember') }}" class="{% if cur_route == "editMember" or cur_route == "addMember" %}active {% endif %}item" title="{{ _T("Add new member in database") }}">{{ _T("Add a member") }}</a>
-                {% endif %}
-            </div>
-        </div>
-
-{# Dirty trick to set active accordion fold using in_array tests on title and
-   content divs. Would be better to assign this array from model #}
-    {%  set contributions_routes = ['contributions', 'addContribution', 'addTransaction', 'reminders'] %}
-        <div class="item">
-            <div class="image header title{% if cur_route in contributions_routes %} active{% endif %}">
-                <i class="cookie icon"></i>
-                {{ _T("Contributions") }}
-                <i class="dropdown icon"></i>
-            </div>
-            <div class="content{% if cur_route in contributions_routes %} active{% endif %}">
-                {% if login.isAdmin() or login.isStaff() %}
-                    <a href="{{ path_for('contributions', { 'type': 'contributions'}) }}" class="{% if is_current_path('contributions', { 'type': 'contributions' }) %}active {% endif %}item" title="{{ _T("View and filter contributions") }}">{{ _T("List of contributions") }}</a>
-                    <a href="{{ path_for('contributions', { 'type': 'transactions'}) }}" class="{% if is_current_path('contributions', { 'type': 'transactions' }) %}active {% endif %}item" title="{{ _T("View and filter transactions") }}">{{ _T("List of transactions") }}</a>
-                    <a href="{{ path_for('addContribution', { 'type': 'fee'}) }}" class="{% if is_current_path('addContribution', { 'type': 'fee' }) %}active {% endif %}item" title="{{ _T("Add new membership fee in database") }}">{{ _T("Add a membership fee") }}</a>
-                    <a href="{{ path_for('addContribution', { 'type': 'donation'}) }}" class="{% if is_current_path('addContribution', { 'type': 'donation' }) %}active {% endif %}item" title="{{ _T("Add new donation in database") }}">{{ _T("Add a donation") }}</a>
-                    <a href="{{ path_for('addTransaction') }}" title="{{ _T("Add new transaction in database") }}" class="{% if is_current_path("addTransaction") or cur_route == "editTransaction" %}active {% endif %}item">{{ _T("Add a transaction") }}</a>
-                    <a href="{{ path_for('reminders') }}" class="{% if is_current_path('reminders') %}active {% endif %}item" title="{{ _T("Send reminders to late members") }}">{{ _T("Reminders") }}</a>
-                {% endif %}
-            </div>
-        </div>
-
-{# Dirty trick to set active accordion fold using in_array tests on title and
-   content divs. Would be better to assign this array from model #}
-    {% set management_routes = ['groups', 'history', 'mailings', 'export', 'import', 'charts'] %}
-        <div class="item">
-            <div class="image header title{% if cur_route in management_routes %} active{% endif %}">
-                <i class="dharmachakra icon"></i>
-                {{ _T("Management") }}
-                <i class="dropdown icon"></i>
-            </div>
-            <div class="content{% if cur_route in management_routes %} active{% endif %}">
-                {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                    <a href="{{ path_for('groups') }}" class="{% if is_current_path('groups') %}active {% endif %}item" title="{{ _T("View and manage groups") }}">{{ _T("Manage groups") }}</a>
-                {% endif %}
-                {% if login.isAdmin() or login.isStaff() %}
-                    <a href="{{ path_for('history') }}" class="{% if is_current_path('history') %}active {% endif %}item" title="{{ _T("View application's logs") }}">{{ _T("Logs") }}</a>
-                    <a href="{{ path_for('mailings') }}" class="{% if is_current_path('mailings') or cur_route == "mailing" %}active {% endif %}item" title="{{ _T("Manage mailings that has been sent") }}">{{ _T("Manage mailings") }}</a>
-                    <a href="{{ path_for('export') }}" class="{% if is_current_path('export') %}active {% endif %}item" title="{{ _T("Export some data in various formats") }}">{{ _T("Exports") }}</a>
-                    <a href="{{ path_for('import') }}" class="{% if is_current_path('import') or is_current_path('importModel') %}active {% endif %}item" title="{{ _T("Import members from CSV files") }}">{{ _T("Imports") }}</a>
-                    <a href="{{ path_for('charts') }}" class="{% if is_current_path('charts') %}active {% endif %}item" title="{{ _T("Various charts") }}">{{ _T("Charts") }}</a>
-                {% endif %}
-            </div>
-        </div>
-
-{% if preferences.showPublicPages(login) == true %}
-{# Dirty trick to set active accordion fold using in_array tests on title and
-   content divs. Would be better to assign this array from model.
-   Need to find a way to let plugins declare their own routes #}
-    {% set public_routes = ['publicList', 'maps_map'] %}
-        <div class="item">
-            <div class="image header title{% if cur_route in public_routes %} active{% endif %}">
-                <i class="eye outline icon"></i>
-                {{ _T("Public pages") }}
-                <i class="dropdown icon"></i>
-            </div>
-            <div class="content{% if cur_route in public_routes %} active{% endif %}">
-                {% include "elements/navigation/public_pages.html.twig" with {
-                        sign_in: false
-                    }
-                %}
-            </div>
-        </div>
-{% endif %}
-
-        {# Include plugins menu entries #}
-        {$plugins->getMenus($tpl)}
-
-{# Dirty trick to set active accordion fold using in_array tests on title and
-   content divs. Would be better to assign this array from model #}
-    {% set configuration_routes = ['preferences', 'plugins', 'configureListFields', 'configureCoreFields', 'configureDynamicFields', 'dynamicTranslations', 'entitleds', 'texts', 'titles', 'pdfModels', 'paymentTypes', 'emptyAdhesionForm', 'adminTools'] %}
-{% if login.isAdmin() %}
-        <div class="item">
-            <div class="image header title{% if cur_route in configuration_routes %} active{% endif %}">
-                <i class="tools icon"></i>
-                {{ _T("Configuration") }}
-                <i class="dropdown icon"></i>
-            </div>
-            <div class="content{% if cur_route in configuration_routes %} active{% endif %}">
-                    <a href="{{ path_for('preferences') }}" title="{{ _T("Set applications preferences (address, website, member's cards configuration, ...)") }}" class="{% if is_current_path("preferences") %}active {% endif %}item">{{ _T("Settings") }}</a>
-                    <a href="{{ path_for('plugins') }}" title="{{ _T("Informations about available plugins") }}" class="{% if is_current_path("plugins") %}active {% endif %}item">{{ _T("Plugins") }}</a>
-                    <a href="{{ path_for("configureListFields", { 'table': 'adherents' }) }}" title="{{ _T("Customize lists fields and order") }}" class="{% if is_current_path("configureListFields", { 'table': 'adherents' }) %}active {% endif %}item">{{ _T("Core lists") }}</a>
-                    <a href="{{ path_for('configureCoreFields') }}" title="{{ _T("Customize fields order, set which are required, and for who they're visibles") }}" class="{% if is_current_path("configureCoreFields") %}active {% endif %}item">{{ _T("Core fields") }}</a>
-                    <a href="{{ path_for('configureDynamicFields') }}" title="{{ _T("Manage additional fields for various forms") }}" class="{% if is_current_path("configureDynamicFields")  or cur_route == 'editDynamicField' %}active {% endif %}item">{{ _T("Dynamic fields") }}</a>
-                    <a href="{{ path_for('dynamicTranslations') }}" title="{{ _T("Translate additionnals fields labels") }}" class="{% if is_current_path("dynamicTranslations") %}active {% endif %}item">{{ _T("Translate labels") }}</a>
-                    <a href="{{ path_for("entitleds", { "class": "status"}) }}" title="{{ _T("Manage statuses") }}" class="{% if is_current_path("entitleds", { "class": "status"}) %}active {% endif %}item">{{ _T("Manage statuses") }}</a>
-                    <a href="{{ path_for("entitleds", { "class": "contributions-types"}) }}" title="{{ _T("Manage contributions types") }}" class="{% if is_current_path("entitleds", { "class": "contributions-types"}) %}active {% endif %}item">{{ _T("Contributions types") }}</a>
-                    <a href="{{ path_for('texts') }}" title="{{ _T("Manage emails texts and subjects") }}" class="{% if is_current_path("texts") %}active {% endif %}item">{{ _T("Emails content") }}</a>
-                    <a href="{{ path_for('titles') }}" title="{{ _T("Manage titles") }}" class="{% if is_current_path("titles") %}active {% endif %}item">{{ _T("Titles") }}</a>
-                    <a href="{{ path_for('pdfModels') }}" title="{{ _T("Manage PDF models") }}" class="{% if is_current_path("pdfModels") %}active {% endif %}item">{{ _T("PDF models") }}</a>
-                    <a href="{{ path_for('paymentTypes') }}" title="{{ _T("Manage payment types") }}" class="{% if is_current_path("paymentTypes") %}active {% endif %}item">{{ _T("Payment types") }}</a>
-                    <a href="{{ path_for('emptyAdhesionForm') }}" title="{{ _T("Download empty adhesion form") }}" class="item">{{ _T("Empty adhesion form") }}</a>
-    {% if login.isSuperAdmin() %}
-                    <a href="{{ path_for('adminTools') }}" title="{{ _T("Various administrative tools") }}" class="{% if is_current_path("adminTools") %}active {% endif %}item">{{ _T("Admin tools") }}</a>
-    {% endif %}
-            </div>
-        </div>
-{% endif %}
+{# Include plugins menu entries #}
+{#{ plugins.getMenus(view) }#}
 
 {% include "elements/language.html.twig" with {
         ui: "item"

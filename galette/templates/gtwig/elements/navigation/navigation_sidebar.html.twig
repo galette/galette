@@ -4,6 +4,7 @@
         <a href="{{ path_for('slash') }}"
            title="{{ _T("Go back to Galette homepage") }}"
            class="{% if is_current_path("login") %}active {% endif %}item"
+           data-position="right center"
         >
             <i class="icon home" aria-hidden="true"></i>
             {{ _T("Home") }}
