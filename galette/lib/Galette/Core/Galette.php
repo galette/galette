@@ -89,6 +89,11 @@ class Galette
         return $galette_version;
     }
 
+    /**
+     * Get menus
+     *
+     * @return array
+     */
     public static function getMenus(): array
     {
         /** @var Login $login */
@@ -96,6 +101,7 @@ class Galette
 
         $menus = [];
 
+        if ($login->isLogged()) {
             if (!$login->isSuperAdmin()) {
                 //member menu
                 $menus['myaccount'] = [
@@ -244,7 +250,6 @@ class Galette
                         ]
                     ]
                 ];
-
             } //admin or staff
 
             if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
@@ -429,6 +434,11 @@ class Galette
         return $menus;
     }
 
+    /**
+     * Get public menus
+     *
+     * @return array
+     */
     public static function getPublicMenus(): array
     {
         global $preferences, $login;
