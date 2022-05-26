@@ -1,26 +1,26 @@
     <div class="ui simple left vertical accordion menu sidebar">
 {% if not login.isLogged() %}
     {% if cur_route != "login" %}
-        <a href="{{ path_for('slash') }}"
-           title="{{ _T("Go back to Galette homepage") }}"
-           class="{% if is_current_path("login") %}active {% endif %}item"
-           data-position="right center"
-        >
-            <i class="icon home" aria-hidden="true"></i>
-            {{ _T("Home") }}
-        </a>
-        {% endif %}
+        {% import "elements/navigation/menus_macros.twig" as menus_macros %}
+        {% set item = {
+            'label': _T("Home"),
+            'title': _T("Go back to Galette homepage"),
+            'route': {'name': 'slash', 'alias': 'login'},
+            'icon': 'home'
+        } %}
+        {{ menus_macros.renderMenuItem(item.label, item.title, item.route, item.icon, null, 'right center') }}
+    {% endif %}
 
-        {% include "elements/navigation/public_pages.html.twig" with {
-                tips_position: "right center",
-                sign_in: true
-            }
-        %}
+    {% include "elements/navigation/public_pages.html.twig" with {
+            tips_position: "right center",
+            sign_in: true
+        }
+    %}
 
-        {% include "elements/language.html.twig" with {
-                ui: "item"
-            }
-        %}
+    {% include "elements/language.html.twig" with {
+            ui: "item"
+        }
+    %}
 {% else %}
         <div class="item">
             {% include "elements/modes.html.twig" %}
