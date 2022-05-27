@@ -4,7 +4,7 @@
 {% if members.list is defined or require_mass %}
         <form action="{% if contribution.id %}{{ path_for("doEditContribution", { "type": type, "id": contribution.id }) }}{% else %}{{ path_for("doAddContribution", { "type": type }) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
     {% if contribution.isTransactionPart() %}
-        {assign var="mid" value=$contribution->transaction->member}
+        {% set mid = contribution.transaction.member %}
             <div class="ui top attached header">
                 {{ _T("Related transaction information") }}
             </div>
@@ -36,7 +36,7 @@
                             <tr>
                                 <td>{{ contribution.transaction.id }}</td>
                                 <td>{{ contribution.transaction.date }}</td>
-                                <td>{ memberName id="$mid"}</td>
+                                <td>{{ memberName({'id': mid}) }}</td>
                                 <td class="right">{{ contribution.transaction.amount }}</td>
                                 <td class="right">{{ contribution.transaction.getMissingAmount() }}</td>
                             </tr>
