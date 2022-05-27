@@ -381,13 +381,6 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Emails content"),
-                                'title' => _T("Manage emails texts and subjects"),
-                                'route' => [
-                                    'name' => 'texts'
-                                ]
-                            ],
-                            [
                                 'label' => _T("Titles"),
                                 'title' => _T("Manage titles"),
                                 'route' => [
