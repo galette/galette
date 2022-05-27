@@ -1173,7 +1173,6 @@ class Contribution
             switch ($name) {
                 case 'is_cotis':
                     return $this->isFee();
-                    break;
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
@@ -1232,20 +1231,16 @@ class Contribution
                     } else {
                         return '';
                     }
-                    break;
                 case 'spayment_type':
                     return $this->getPaymentType(true);
-                    break;
                 case 'model':
                     if ($this->_is_cotis === null) {
                         return null;
                     }
                     return ($this->isFee()) ?
                         PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
-                    break;
                 default:
                     return $this->$rname;
-                    break;
             }
         } else {
             Analog::log(
