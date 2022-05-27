@@ -165,7 +165,7 @@
                         </span>
                     </td>
                     <td class="" data-title="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
-                    <td data-title="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
+                    <td data-title="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
                     <td data-title="{{ _T('Recipients') }}">{{ log.mailing_recipients[2:2]|first }}</td>
                     <td data-title="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
                     <td class="center" data-title="{{ _T('Attachments') }}">{{ log.attachments }}</td>
