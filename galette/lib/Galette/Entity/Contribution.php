@@ -1186,7 +1186,7 @@ class Contribution
                 case 'raw_begin_date':
                 case 'raw_end_date':
                     $rname = '_' . substr($name, 4);
-                    if ($this->$rname != '') {
+                    if ($this->$rname !== null && $this->$rname != '') {
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d;
@@ -1204,7 +1204,7 @@ class Contribution
                 case 'date':
                 case 'begin_date':
                 case 'end_date':
-                    if ($this->$rname != '') {
+                    if ($this->$rname !== null && $this->$rname != '') {
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d->format(__("Y-m-d"));
