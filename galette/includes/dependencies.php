@@ -92,6 +92,9 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     //Twig extensions
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
+    if (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV) {
+        $view->addExtension(new \Twig\Extension\DebugExtension());
+    }
     //End Twig extensions
 
     //Twig functions
