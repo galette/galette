@@ -5,13 +5,14 @@
 # Tymofii Lytvynenko <till.svit@gmail.com>, 2021.
 # Тимур <tucirs@gmail.com>, 2021.
 # Ostap <ostapbataj79@gmail.com>, 2022.
+# Artem <artem@molotov.work>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-03-21 09:57+0000\n"
-"Last-Translator: Ostap <ostapbataj79@gmail.com>\n"
+"PO-Revision-Date: 2022-05-29 11:19+0000\n"
+"Last-Translator: Artem <artem@molotov.work>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.12-dev\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -4754,6 +4755,8 @@ msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"Менеджерам груп буде дозволено експортувати учасників у форматі CSV, карток "
+"PDF, аркушів супроводу та груп PDF"
 
 #: ../templates/default/preferences.tpl:260
 msgid "Mail settings"
@@ -6667,7 +6670,7 @@ msgstr "Відомості:"
 
 #: ../templates/default/editer_champ.tpl:71
 msgid "Extra information displayed along with dynamic field."
-msgstr ""
+msgstr "Додаткова інформація відображається разом із динамічним полем."
 
 #: ../templates/default/editer_champ.tpl:84
 #: ../templates/default/editer_champ.tpl:87
