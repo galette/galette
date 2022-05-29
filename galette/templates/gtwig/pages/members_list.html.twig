@@ -1,48 +1,13 @@
 {% extends 'page.html.twig' %}
 
-{% macro draw_actions(rclass, member, login, plugin_actions) %}
+{% import "macros.twig" as macros %}
+
+{% macro draw_actions(rclass, member, login) %}
                     <td class="{{ rclass }} center actions_row">
-    {% if member.canEdit(login) %}
-                        <a
-                            href="{{ path_for("editMember", { "id": member.id }) }}"
-                            class="tooltip action"
-                        >
-                            <i class="ui user edit icon" aria-hidden="true"></i>
-                            <span class="sr-only">{{ _T("%membername: edit information")|replace({ "%membername": member.sname }) }}</span>
-                        </a>
-    {% endif %}
-    {% if login.isAdmin() or login.isStaff() %}
-                        <a
-                            href="{{ path_for("contributions", { "type": "contributions", "option": "member", "value": member.id }) }}"
-                            class="tooltip"
-                        >
-                            <i class="ui cookie green icon" aria-hidden="true"></i>
-                            <span class="sr-only">{{ _T("%membername: contributions")|replace({ "%membername": member.sname }) }}</span>
-                        </a>
-                        <a
-                            href="{{ path_for("removeMember",  { "id": member.id }) }}"
-                            class="delete tooltip"
-                        >
-                            <i class="ui user times red icon" aria-hidden="true"></i>
-                            <span class="sr-only">{{ _T("%membername: remove from database")|replace({ "%membername": member.sname }) }}</span>
-                        </a>
-    {% endif %}
-    {% if login.isSuperAdmin() %}
-                        <a
-                            href="{{ path_for("impersonate", { "id": member.id }) }}"
-                            class="tooltip"
-                        >
-                            <i class="ui user secret grey icon" aria-hidden="true"></i>
-                            <span class="sr-only">{{ _T("Log in in as %membername")|replace({ "%membername": member.sname }) }}</span>
-                        </a>
-    {% endif %}
-    {# If some additionnals actions should be added from plugins, we load the relevant template file
-    We have to use a template file, so Smarty will do its work (like replacing variables). #}
-    {% if plugin_actions|length != 0 %}
-        {% for plugin_name, action in plugin_actions %}
-            {% include action with { module_id: plugin_name|replace({'actions_': ''}) } %}
-        {% endfor %}
-    {% endif %}
+    {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
+    {% for action in actions %}
+        {{ macros.drawListAction(action.label, action.route, action.icon) }}
+    {% endfor %}
                     </td>
 {% endmacro %}
 
@@ -333,7 +298,7 @@
                         </td>
         {% endif %}
     {% endfor %}
-                    {{ _self.draw_actions(rclass, member, login, plugin_actions) }}
+                    {{ _self.draw_actions(rclass, member, login) }}
                     </tr>
 {% else %}
                     <tr><td colspan="{{ galette_list|length }}" class="emptylist">{{ _T('No member has been found') }}</td></tr>
@@ -394,11 +359,11 @@
                     </button>
                 </div>
     {% endif %}
-    {% if plugin_batch_actions|length != 0 %}
-        {% for plugin_name, action in plugin_batch_actions %}
-            {% include action with { module_id: plugin_name|replace({ 'batch_action_': '' }) } %}
-        {% endfor %}
-    {% endif %}
+
+    {% set batch_actions = callstatic('\\Galette\\Core\\Galette', 'getBatchActions') %}
+    {% for batch_action in batch_actions %}
+        {{ macros.drawBatchAction(action.label, action.route, action.icon) }}
+    {% endfor %}
             </div>
         </div>
         <div class="ui basic center aligned fitted segment">

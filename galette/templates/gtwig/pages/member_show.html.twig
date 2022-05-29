@@ -1,5 +1,7 @@
 {% extends "page.html.twig" %}
 
+{% import "macros.twig" as macros %}
+
 {% block page_title %}
     <div class="right aligned bottom floating ui {{ member.getRowClass() }} label">{{ member.getDues() }}</div>
     {{ parent() }}
@@ -84,13 +86,11 @@
                             {{ _T("Duplicate") }}
                         </a>
                     {% endif %}
-                    {# If some additionnals actions should be added from plugins, we load the relevant template file
-                    We have to use a template file, so Smarty will do its work (like replacing variables). #}
-                    {% if plugin_detailled_actions|length != 0 %}
-                        {% for plugin_name, action in plugin_detailled_actions %}
-                            {% include action with { module_id: plugin_name|replace({ 'det_actions_': '' }) } %}
-                        {% endfor %}
-                    {% endif %}
+
+                    {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
+                    {% for action in actions %}
+                        {{ macros.drawDetailedAction(action.label, action.title, action.route, action.icon) }}
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>

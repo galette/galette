@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
@@ -48,7 +48,7 @@ use Galette\Core\Preferences;
  * @name      Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
@@ -70,7 +70,6 @@ class Plugins
 
     protected $preferences;
     protected $autoload = false;
-
 
     /**
      * Register autoloaders for all plugins
@@ -345,7 +344,7 @@ class Plugins
     }
 
     /**
-     * Loads smarties specific (headers, assigments and so on)
+     * Loads smarties specific (headers, assignments and so on)
      *
      * @param string $id Module ID
      *
@@ -386,7 +385,7 @@ class Plugins
      * Returns all modules associative array or only one module if <var>$id</var>
      * is present.
      *
-     * @param string $id Optionnal module ID
+     * @param string $id Optional module ID
      *
      * @return array
      */
@@ -454,105 +453,6 @@ class Plugins
     }
 
     /**
-     * Search and load menu templates from plugins.
-     * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
-     *
-     * @param Smarty $tpl Smarty template
-     *
-     * @return void
-     */
-    public function getMenus($tpl)
-    {
-        $modules = $this->getModules();
-        foreach (array_keys($this->getModules()) as $r) {
-            $menu_path = $this->getTemplatesPath($r) . '/menu.tpl';
-            if ($tpl->templateExists($menu_path)) {
-                $name2path = strtolower(
-                    str_replace(' ', '_', $modules[$r]['name'])
-                );
-                $tpl->assign(
-                    'galette_' . $name2path . '_path',
-                    'plugins/' . $r . '/'
-                );
-                $tpl->display($menu_path);
-            }
-        }
-    }
-
-    /**
-     * Search and load public menu templates from plugins.
-     * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
-     *
-     * @param Smarty  $tpl         Smarty template
-     * @param boolean $public_page Called from a public page
-     *
-     * @return void
-     */
-    public function getPublicMenus($tpl, $public_page = false)
-    {
-        $modules = $this->getModules();
-        foreach (array_keys($this->getModules()) as $r) {
-            $menu_path = $this->getTemplatesPath($r) . '/public_menu.tpl';
-            if ($tpl->templateExists($menu_path)) {
-                $name2path = strtolower(
-                    str_replace(' ', '_', $modules[$r]['name'])
-                );
-                $tpl->assign(
-                    'galette_' . $name2path . '_path',
-                    'plugins/' . $r . '/'
-                );
-                $tpl->assign(
-                    'public_page',
-                    $public_page
-                );
-                $tpl->display($menu_path);
-            }
-        }
-    }
-
-    /**
-     * Get plugins dashboard entries.
-     *
-     * @param Smarty $tpl Smarty template
-     *
-     * @return void
-     */
-    public function getDashboard($tpl)
-    {
-        $modules = $this->getModules();
-        foreach (array_keys($this->getModules()) as $r) {
-            $dash_path = $this->getTemplatesPath($r) . '/dashboard.tpl';
-            if ($tpl->templateExists($dash_path)) {
-                $name2path = strtolower(
-                    str_replace(' ', '_', $modules[$r]['name'])
-                );
-                $tpl->display($dash_path);
-            }
-        }
-    }
-
-    /**
-     * Get plugins single member dashboard entries.
-     *
-     * @param Smarty $tpl Smarty template
-     *
-     * @return void
-     */
-    public function getMemberDashboard($tpl)
-    {
-        $modules = $this->getModules();
-        foreach (array_keys($this->getModules()) as $r) {
-            $dash_path = $this->getTemplatesPath($r) . '/dashboard_member.tpl';
-            if ($tpl->templateExists($dash_path)) {
-                $name2path = strtolower(
-                    str_replace(' ', '_', $modules[$r]['name'])
-                );
-                $tpl->display($dash_path);
-            }
-        }
-    }
-
-    /**
      * Sort modules
      *
      * @param array $a A module
@@ -600,79 +500,26 @@ class Plugins
     }
 
     /**
-     * For each module, returns the headers.tpl full path, if present.
+     * For each module, returns the headers template file namespaced path, if present.
      *
      * @return array of headers to include for all modules
      */
-    public function getTplHeaders()
+    public function getTplHeaders(): array
     {
         $_headers = array();
-        foreach (array_keys($this->modules) as $key) {
-            $headers_path = $this->getTemplatesPath($key) . '/headers.tpl';
+        foreach ($this->modules as $key => $module) {
+            $headers_path = $this->getTemplatesPath($key) . '/headers.html.twig';
             if (file_exists($headers_path)) {
-                $_headers[$key] = $headers_path;
+                $_headers[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'headers');
             }
         }
         return $_headers;
     }
 
     /**
-     * For each module, return the adh_actions.tpl full path, if present.
+     * For each module, gets templates assignments ; and replace some path variables
      *
-     * @return array of adherent actions to include on member list for all modules
-     */
-    public function getTplAdhActions()
-    {
-        $_actions = array();
-        foreach (array_keys($this->modules) as $key) {
-            $actions_path = $this->getTemplatesPath($key) . '/adh_actions.tpl';
-            if (file_exists($actions_path)) {
-                $_actions['actions_' . $key] = $actions_path;
-            }
-        }
-        return $_actions;
-    }
-
-    /**
-     * For each module, return the adh_batch_action.tpl full path, if present.
-     *
-     * @return array of adherents batch actions to include on members list
-     * all modules
-     */
-    public function getTplAdhBatchActions()
-    {
-        $_actions = array();
-        foreach (array_keys($this->modules) as $key) {
-            $actions_path = $this->getTemplatesPath($key) . '/adh_batch_action.tpl';
-            if (file_exists($actions_path)) {
-                $_actions['batch_action_' . $key] = $actions_path;
-            }
-        }
-        return $_actions;
-    }
-
-    /**
-     * For each module, return the adh_fiche_action.tpl full path, if present.
-     *
-     * @return array of adherent actions to include on member detailled view for
-     * all modules
-     */
-    public function getTplAdhDetailledActions()
-    {
-        $_actions = array();
-        foreach (array_keys($this->modules) as $key) {
-            $actions_path = $this->getTemplatesPath($key) . '/adh_fiche_action.tpl';
-            if (file_exists($actions_path)) {
-                $_actions['det_actions_' . $key] = $actions_path;
-            }
-        }
-        return $_actions;
-    }
-
-    /**
-     * For each module, gets templates assignements ; and replace some path variables
-     *
-     * @return array of Smarty templates assignement for all modules
+     * @return array of Smarty templates assignment for all modules
      */
     public function getTplAssignments()
     {
@@ -763,7 +610,7 @@ class Plugins
     }
 
     /**
-     * Retrieve a file that should be publically exposed
+     * Retrieve a file that should be publicly exposed
      *
      * @param int    $id   Module id
      * @param string $path File path
@@ -812,6 +659,22 @@ class Plugins
     public function getNamespace($id)
     {
         return str_replace(' ', '', $this->modules[$id]['name']);
+    }
+
+    /**
+     * Get module class name
+     *
+     * @param integer $id Module ID
+     *
+     * @return string
+     */
+    public function getClassName($id, $full = false)
+    {
+        $class = sprintf('PluginGalette%1$s', ucfirst($this->modules[$id]['route']));
+        if ($full === true) {
+            return sprintf('%s\%s', $this->getNamespace($id), $class);
+        }
+        return $class;
     }
 
     /**

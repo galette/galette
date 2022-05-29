@@ -36,6 +36,8 @@
 
 namespace Galette\Core;
 
+use Galette\Entity\Adherent;
+
 /**
  * Galette application instance
  *
@@ -90,14 +92,30 @@ class Galette
     }
 
     /**
-     * Get menus
+     * Get all menus
      *
      * @return array
      */
-    public static function getMenus(): array
+    public static function getAllMenus(): array
     {
-        /** @var Login $login */
-        global $login, $preferences;
+        return static::getMenus(true);
+    }
+
+    /**
+     * Get menus
+     *
+     * @param bool $public Include public menus. Defaults to false
+     *
+     * @return array
+     */
+    public static function getMenus(bool $public = false): array
+    {
+        /**
+         * @var Login $login
+         * @var Preferences $preferences
+         * @var Plugins $plugins
+         */
+        global $login, $preferences, $plugins;
 
         $menus = [];
 
@@ -424,6 +442,29 @@ class Galette
             }
         } // /isLogged
 
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                $plugin = new $plugin_class();
+                $menus = array_merge_recursive(
+                    $menus,
+                    $plugin->getMenus()
+                );
+            }
+        }
+
+        if ($public) {
+            $menus += static::getPublicMenus();
+        }
+
+        //cleanup empty entries (no items)
+        foreach ($menus as $key => $menu) {
+            if (!count($menu['items'])) {
+                unset($menus[$key]);
+            }
+        }
+
         return $menus;
     }
 
@@ -434,7 +475,12 @@ class Galette
      */
     public static function getPublicMenus(): array
     {
-        global $preferences, $login;
+        /**
+         * @var Preferences $preferences
+         * @var Login $login
+         * @var Plugins $plugins
+         */
+        global $preferences, $login, $plugins;
 
         $menus = [];
         if ($preferences->showPublicPages($login)) {
@@ -462,8 +508,339 @@ class Galette
                     ]
                 ]
             ];
+
+            foreach (array_keys($plugins->getModules()) as $module_id) {
+                //get plugins public menus entries
+                $plugin_class = $plugins->getClassName($module_id, true);
+                if (class_exists($plugin_class)) {
+                    $plugin = new $plugin_class();
+                    $menus['public']['items'] = array_merge(
+                        $menus['public']['items'],
+                        $plugin->getPublicMenuItems()
+                    );
+                }
+            }
+
         }
 
         return $menus;
+    }
+
+    public static function getDashboards(): array
+    {
+        /**
+         * @var Login $login
+         * @var Plugins $plugins
+         */
+        global $login, $plugins;
+
+        $dashboards = [];
+
+        if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("Members"),
+                        'title' => _T("View, search into and filter member's list"),
+                        'route' => [
+                            'name' => 'members'
+                        ],
+                        'icon' => 'users'
+                    ],
+                    [
+                        'label' => _T("Groups"),
+                        'title' => _T("View and manage groups"),
+                        'route' => [
+                            'name' => 'groups'
+                        ],
+                        'icon' => 'users cog'
+                    ],
+                ]
+            );
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("Mailings"),
+                        'title' => _T("Manage mailings that has been sent"),
+                        'route' => [
+                            'name' => 'mailings'
+                        ],
+                        'icon' => 'mail bulk'
+                    ],
+                    [
+                        'label' => _T("Contributions"),
+                        'title' => _T("View and filter contributions"),
+                        'route' => [
+                            'name' => 'contributions',
+                            'args' => ['type' => 'contributions']
+                        ],
+                        'icon' => 'users cog'
+                    ],
+                    [
+                        'label' => _T("Transactions"),
+                        'title' => _T("View and filter transactions"),
+                        'route' => [
+                            'name' => 'contributions',
+                            'args' => ['type' => 'transactions']
+                        ],
+                        'icon' => 'columns'
+                    ],
+                    [
+                        'label' => _T("Reminders"),
+                        'title' => _T("Send reminders to late members"),
+                        'route' => [
+                            'name' => 'reminders'
+                        ],
+                        'icon' => 'bell'
+                    ],
+                ]
+            );
+        }
+
+        if ($login->isAdmin()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("Settings"),
+                        'title' => _T("Set applications preferences (address, website, member's cards configuration, ...)"),
+                        'route' => [
+                            'name' => 'preferences'
+                        ],
+                        'icon' => 'tools'
+                    ],
+                    [
+                        'label' => _T("Plugins"),
+                        'title' => _T("Information about available plugins"),
+                        'route' => [
+                            'name' => 'plugins'
+                        ],
+                        'icon' => 'puzzle piece'
+                    ],
+                ]
+            );
+        }
+
+        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager()) {
+            // Single member
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("My information"),
+                        'title' => _T("View my member card"),
+                        'route' => [
+                            'name' => 'me'
+                        ],
+                        'icon' => 'user alternate'
+                    ],
+                    [
+                        'label' => _T("My contributions"),
+                        'title' => _T("View and filter all my contributions"),
+                        'route' => [
+                            'name' => 'contributions',
+                            'args' => ['type' => 'contributions']
+                        ],
+                        'icon' => 'cookie'
+                    ],
+                    [
+                        'label' => _T("My transactions"),
+                        'title' => _T("View and filter all my transactions"),
+                        'route' => [
+                            'name' => 'contributions',
+                            'args' => ['type' => 'transactions']
+                        ],
+                        'icon' => 'columns'
+                    ],
+
+                ]
+            );
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = new $plugin_class();
+                $dashboards = array_merge_recursive(
+                    $dashboards,
+                    $plugin->getDashboards()
+                );
+            }
+        }
+
+        return $dashboards;
+    }
+
+    public static function getListActions(Adherent $member): array
+    {
+        /**
+         * @var Login $login
+         * @var Plugins $plugins
+         */
+        global $login, $plugins;
+
+        $actions = [];
+
+        if ($member->canEdit($login)) {
+            $actions[] = [
+                'label' => str_replace(
+                    "%membername",
+                    $member->sname,
+                    _T("%membername: edit information")
+                ),
+                'title' => str_replace(
+                    "%membername",
+                    $member->sname,
+                    _T("%membername: edit information")
+                ),
+                'route' => [
+                    'name' => 'editMember',
+                    'args' => ['id' => $member->id]
+                ],
+                'icon' => 'user edit'
+            ];
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            $actions = array_merge($actions, [
+                [
+                    'label' => str_replace(
+                        "%membername",
+                        $member->sname,
+                        _T("%membername: contributions")
+                    ),
+                    'title' => str_replace(
+                        "%membername",
+                        $member->sname,
+                        _T("%membername: contributions")
+                    ),
+                    'route' => [
+                        'name' => 'contributions',
+                        'args' => [
+                            "type" => "contributions",
+                            "option" => "member",
+                            'value' => $member->id
+                        ]
+                    ],
+                    'icon' => 'cookie green'
+                ],
+                [
+                    'label' => str_replace(
+                        "%membername",
+                        $member->sname,
+                        _T("%membername: remove from database")
+                    ),
+                    'title' => str_replace(
+                        "%membername",
+                        $member->sname,
+                        _T("%membername: remove from database")
+                    ),
+                    'route' => [
+                        'name' => 'removeMember',
+                        'args' => [
+                            'id' => $member->id
+                        ]
+                    ],
+                    'icon' => 'user times red'
+                ]
+            ]);
+        }
+
+        if ($login->isSuperAdmin()) {
+            $actions[] = [
+                'label' => str_replace(
+                    "%membername",
+                    $member->sname,
+                    _T("Log in in as %membername")
+                ),
+                'title' => str_replace(
+                    "%membername",
+                    $member->sname,
+                    _T("Log in in as %membername")
+                ),
+                'route' => [
+                    'name' => 'impersonate',
+                    'args' => [
+                        'id' => $member->id
+                    ]
+                ],
+                'icon' => 'user secret grey'
+            ];
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = new $plugin_class();
+                $actions = array_merge_recursive(
+                    $actions,
+                    $plugin->getListActions($member)
+                );
+            }
+        }
+        return $actions;
+    }
+
+    public static function getDetailedActions(Adherent $member): array
+    {
+        /**
+         * @var Login $login
+         * @var Plugins $plugins
+         */
+        global $login, $plugins;
+
+        $actions = [];
+
+        //TODO: add core detailled actions
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = new $plugin_class();
+                $actions = array_merge_recursive(
+                    $actions,
+                    $plugin->getDetailedActions($member)
+                );
+            }
+        }
+        return $actions;
+    }
+
+    public static function getBatchActions(): array
+    {
+        /**
+         * @var Login $login
+         * @var Plugins $plugins
+         */
+        global $login, $plugins;
+
+        $actions = [];
+
+        //TODO: add core batch actions
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = new $plugin_class();
+                $actions = array_merge_recursive(
+                    $actions,
+                    $plugin->getBatchActions()
+                );
+            }
+        }
+        return $actions;
     }
 }

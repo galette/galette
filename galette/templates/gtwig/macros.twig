@@ -1,0 +1,79 @@
+{%  macro renderMenu(title, icon, items) %}
+    {%  set my_routes = [] %}
+    {% for item in items %}
+        {%  set my_routes = my_routes|merge([item.route.name]) %}
+    {% endfor %}
+    <div class="item">
+        <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
+            <i class="{{ icon }} icon"></i>
+            {{ title }}
+            <i class="dropdown icon"></i>
+        </div>
+        <div class="content{% if cur_route in my_routes %} active{% endif %}">
+            {% for item in items %}
+                {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null) }}
+            {% endfor %}
+        </div>
+    </div>
+{%  endmacro %}
+
+{%  macro renderMenuItem(label, title, route, icon, class, tips_position) %}
+    {% if class is empty %}
+        {% if is_current_path(route.name, route.args|default([])) %}
+            {% set class = "active item" %}
+        {% else %}
+            {% set class = "item" %}
+        {% endif %}
+    {% endif %}
+    <a
+            href="{{ path_for(route.name, route.args|default([])) }}"
+            class="{{ class }}"
+            title="{{ title }}"
+            {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
+    >
+        {{ label }}
+        {% if icon %}
+            <i class="{{  icon }} icon" aria-hidden="true"></i>
+        {% endif %}
+    </a>
+{% endmacro %}
+
+{%  macro dashboardCard(label, title, route, icon) %}
+    <a class="ui card" href="{{ path_for(route.name, route.args|default([])) }}" title="{{ title }}">
+        <div class="content">
+            <div class="header">
+                <i class="ui huge {{ icon }} grey icon"></i>
+                {{ label }}
+            </div>
+        </div>
+    </a>
+{%  endmacro %}
+
+{% macro drawListAction(title, route, icon) %}
+    <a
+            href="{{ path_for(route.name, route.args|default([])) }}"
+            class="{# delete #} tooltip"
+    >
+        <i class="ui {{ icon }} icon" aria-hidden="true"></i>
+        <span class="sr-only">{{ title }}</span>
+    </a>
+{% endmacro %}
+
+{% macro drawDetailedAction(label, title, route, icon) %}
+    <a
+        href="{{ path_for(route.name, route.args|default([])) }}"
+        title="{{ title }}"
+        class="ui item"
+    >
+        <i class="{{ icon }} icon" aria-hidden="true"></i>
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro drawBatchAction(name, title, icon) %}
+    <div class="item">
+        <button type="submit" id="{{ name }}" name="{{ name }}" class="ui labeled icon tiny button">
+            <i class="file csv icon"></i> {{ title }}
+        </button>
+    </div>
+{% endmacro %}

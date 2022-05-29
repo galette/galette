@@ -2,7 +2,7 @@
 {#$plugins->getPublicMenus($tpl, true)#}
 
 {% if sign_in is defined and sign_in == true %}
-    {% import "elements/navigation/menus_macros.twig" as menus_macros %}
+    {% import "macros.twig" as menus_macros %}
 
     {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
     {% for public_menu in public_menus %}

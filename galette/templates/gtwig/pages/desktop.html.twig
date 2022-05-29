@@ -1,5 +1,7 @@
 {% extends 'page.html.twig' %}
 
+{% import "macros.twig" as macros %}
+
 {% block content %}
     <div class="container">
         <div>
@@ -44,106 +46,15 @@
             <h3 class="ui top attached header">{{ _T("Activities") }}</h3>
             <div class="ui attached segment">
                 <div class="ui three stackable cards">
-{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                    <a class="ui card" href="{{ path_for('members') }}" title="{{ _T("View, search into and filter member's list") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge users grey icon"></i>
-                                {{ _T("Members") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('groups') }}" title="{{ _T("View and manage groups") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge users cog grey icon"></i>
-                                {{ _T("Groups") }}
-                            </div>
-                        </div>
-                    </a>
-    {% if login.isAdmin() or login.isStaff() %}
-                    <a class="ui card" href="{{ path_for('mailings') }}" title="{{ _T("Manage mailings that has been sent") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge mail bulk grey icon"></i>
-                                {{ _T("Mailings") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('contributions', {'type': 'contribution'}) }}" title="{{ _T("View and filter contributions") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge cookie grey icon"></i>
-                                {{ _T("Contributions") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('contributions', {'type': 'transactions'}) }}" title="{{ _T("View and filter transactions") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge columns grey icon"></i>
-                                {{ _T("Transactions") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('reminders') }}" title="{{ _T("Send reminders to late members") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge bell grey icon"></i>
-                                {{ _T("Reminders") }}
-                            </div>
-                        </div>
-                    </a>
-    {% endif %}
-    {% if login.isAdmin() %}
-                    <a class="ui card" href="{{ path_for('preferences') }}" title="{{ _T("Set applications preferences (address, website, member's cards configuration, ...)") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge tools grey icon"></i>
-                                {{ _T("Settings") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('plugins') }}" title="{{ _T("Information about available plugins") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge puzzle piece grey icon"></i>
-                                {{ _T("Plugins") }}
-                            </div>
-                        </div>
-                    </a>
-                    {# Include plugins user dashboard #}
-                    {$plugins->getDashboard($tpl)}
-    {% endif %}
-{% else %}
-                    {# Single member #}
-                    <a class="ui card" href="{{ path_for('me') }}" title="{{ _T("View my member card") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge user alternate grey icon"></i>
-                                {{ _T("My information") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('contributions', { 'type': 'contributions'}) }}" title="{{ _T("View and filter all my contributions") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge cookie grey icon"></i>
-                                {{ _T("Contributions") }}
-                            </div>
-                        </div>
-                    </a>
-                    <a class="ui card" href="{{ path_for('contributions', { 'type': 'transactions'}) }}" title="{{ _T("View and filter all my transactions") }}">
-                        <div class="content">
-                            <div class="header">
-                                <i class="ui huge columns grey icon"></i>
-                                {{ _T("transactions") }}
-                            </div>
-                        </div>
-                    </a>
-                    {# Include plugins user dashboard #}
-                    {$plugins->getMemberDashboard($tpl)}
-{% endif %}
+                    {% set dashboard_entries = callstatic('\\Galette\\Core\\Galette', 'getDashboards') %}
+                    {% for dashboard_entry in dashboard_entries %}
+                        {{ macros.dashboardCard(
+                            dashboard_entry.label,
+                            dashboard_entry.title,
+                            dashboard_entry.route,
+                            dashboard_entry.icon,
+                        ) }}
+                    {% endfor %}
                 </div>
             </div>
             <div class="ui basic segment">

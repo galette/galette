@@ -78,4 +78,16 @@ trait PluginControllerTrait
     {
         return $this->module_info['module']['route'];
     }
+
+    /**
+     * Get plugin template name for Twig
+     *
+     * @param $name Template name
+     *
+     * @return string
+     */
+    protected function getTemplate($name): string
+    {
+        return sprintf('@%s/%s.html.twig', $this->plugins->getClassName($this->getModuleId()), $name);
+    }
 }

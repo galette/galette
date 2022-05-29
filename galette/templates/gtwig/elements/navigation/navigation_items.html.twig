@@ -1,4 +1,4 @@
-{% import "elements/navigation/menus_macros.twig" as menus_macros %}
+{% import "macros.twig" as menus_macros %}
 
 {% if login.isLogged() %}
         <a href="{{ path_for('dashboard') }}"
@@ -12,7 +12,7 @@
         </a>
 {% endif %}
 
-{%  set menus = callstatic('\\Galette\\Core\\Galette', 'getMenus') %}
+{% set menus = callstatic('\\Galette\\Core\\Galette', 'getAllMenus') %}
 {% for menu in menus %}
     {{ menus_macros.renderMenu(menu.title, menu.icon, menu.items) }}
 {% endfor %}

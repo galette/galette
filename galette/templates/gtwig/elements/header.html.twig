@@ -21,12 +21,11 @@
         <link rel="stylesheet" type="text/css" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}/galette_print_local.css" media="print" />
     {% endif %}
         <link rel="shortcut icon" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}images/favicon.png" />
-{#
-{* If some additional headers should be added from plugins, we load the relevant template file
-   We have to use a template file, so Twig will do its work (like replacing variables). *}
-{if $headers|@count != 0}
-    {foreach from=$headers item=header key=mid}
-        {include file=$header module_id=$mid}
-    {/foreach}
-{/if}
-#}
+
+{# If some additional headers should be added from plugins, we load the relevant template file
+   We have to use a template file, so Twig will do its work (like replacing variables). #}
+{% if plugin_headers|length != 0 %}
+    {% for mid, header in plugin_headers %}
+        {% include header with {'module_id': mid} %}
+    {% endfor %}
+{% endif %}

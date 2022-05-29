@@ -1,7 +1,7 @@
     <div class="ui simple left vertical accordion menu sidebar">
 {% if not login.isLogged() %}
     {% if cur_route != "login" %}
-        {% import "elements/navigation/menus_macros.twig" as menus_macros %}
+        {% import "macros.twig" as menus_macros %}
         {% set item = {
             'label': _T("Home"),
             'title': _T("Go back to Galette homepage"),

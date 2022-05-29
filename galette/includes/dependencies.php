@@ -74,7 +74,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         if (!is_dir($dir)) {
             continue;
         }
-        $templates[$module['route']] = $dir;
+        $templates[$c->get('plugins')->getClassName($module_id)] = $dir;
     }
 
     $view = new \Slim\Views\Twig(
@@ -166,17 +166,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('login', $c->get('login'));
     $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
 
-    //$smarty->assign('tpl', $smarty);
-    //$smarty->assign('headers', $c->get('plugins')->getTplHeaders());
-    $view->getEnvironment()->addGlobal('plugin_actions', $c->get('plugins')->getTplAdhActions());
-    $view->getEnvironment()->addGlobal(
-        'plugin_batch_actions',
-        $c->get('plugins')->getTplAdhBatchActions()
-    );
-    $view->getEnvironment()->addGlobal(
-        'plugin_detailled_actions',
-        $c->get('plugins')->getTplAdhDetailledActions()
-    );
+    $view->getEnvironment()->addGlobal('plugin_headers', $c->get('plugins')->getTplHeaders());
     //$smarty->assign('scripts_dir', 'js/');
     //$smarty->assign('jquery_dir', 'js/jquery/');
     //$smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
