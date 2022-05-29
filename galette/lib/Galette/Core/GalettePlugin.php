@@ -153,8 +153,6 @@ abstract class GalettePlugin
     /**
      * Get member batch actions
      *
-     * @param Adherent $member Current member
-     *
      * @return array|array[]
      */
     public static function getBatchActions(): array
@@ -179,5 +177,12 @@ abstract class GalettePlugin
      */
     abstract public static function getBatchActionsContents(): array;
 
+    /**
+     * Get detailed actions contents
+     *
+     * @param Adherent $member Current member
+     *
+     * @return array|array[]
+     */
     abstract public static function getDetailedActionsContents(Adherent $member): array;
 }

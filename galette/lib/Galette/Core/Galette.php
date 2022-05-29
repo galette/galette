@@ -520,12 +520,16 @@ class Galette
                     );
                 }
             }
-
         }
 
         return $menus;
     }
 
+    /**
+     * Get dashboards
+     *
+     * @return array
+     */
     public static function getDashboards(): array
     {
         /**
@@ -678,6 +682,13 @@ class Galette
         return $dashboards;
     }
 
+    /**
+     * Get members list actions
+     *
+     * @param Adherent $member Current member
+     *
+     * @return array
+     */
     public static function getListActions(Adherent $member): array
     {
         /**
@@ -790,6 +801,13 @@ class Galette
         return $actions;
     }
 
+    /**
+     * Get member show actions
+     *
+     * @param Adherent $member Current member
+     *
+     * @return array
+     */
     public static function getDetailedActions(Adherent $member): array
     {
         /**
@@ -817,6 +835,11 @@ class Galette
         return $actions;
     }
 
+    /**
+     * Get members list batch actions
+     *
+     * @return array
+     */
     public static function getBatchActions(): array
     {
         /**
