@@ -53,6 +53,7 @@
     <a
             href="{{ path_for(route.name, route.args|default([])) }}"
             class="{# delete #} tooltip"
+            title="{{ title }}"
     >
         <i class="ui {{ icon }} icon" aria-hidden="true"></i>
         <span class="sr-only">{{ title }}</span>
@@ -73,7 +74,7 @@
 {% macro drawBatchAction(name, title, icon) %}
     <div class="item">
         <button type="submit" id="{{ name }}" name="{{ name }}" class="ui labeled icon tiny button">
-            <i class="file csv icon"></i> {{ title }}
+            <i class="{{ icon }} icon"></i> {{ title }}
         </button>
     </div>
 {% endmacro %}

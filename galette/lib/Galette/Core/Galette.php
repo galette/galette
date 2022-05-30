@@ -740,7 +740,7 @@ class Galette
                             'value' => $member->id
                         ]
                     ],
-                    'icon' => 'cookie green'
+                    'icon' => 'cookie yellow'
                 ],
                 [
                     'label' => str_replace(

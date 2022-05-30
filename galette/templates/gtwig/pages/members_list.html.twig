@@ -318,7 +318,7 @@
                 </div>
                 <div class="item">
                     <button type="submit" id="masscontributions" name="masscontributions" class="action ui labeled icon tiny button">
-                        <i class="ui cookie bite green icon"></i> {{ _T('Mass add contributions') }}
+                        <i class="ui cookie bite yellow icon"></i> {{ _T('Mass add contributions') }}
                     </button>
                 </div>
                 <div class="item">
@@ -362,7 +362,7 @@
 
     {% set batch_actions = callstatic('\\Galette\\Core\\Galette', 'getBatchActions') %}
     {% for batch_action in batch_actions %}
-        {{ macros.drawBatchAction(action.label, action.route, action.icon) }}
+        {{ macros.drawBatchAction(batch_action.label, batch_action.title, batch_action.icon) }}
     {% endfor %}
             </div>
         </div>
