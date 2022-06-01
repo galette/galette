@@ -28,13 +28,14 @@
 # Matthew Machivenyika <accounts@machivenyika.ch>, 2022.
 # Sven Kislig <seven7kislig@gmail.com>, 2022.
 # Marvin <wile.e.coyote@keemail.me>, 2022.
+# Der_Unterhaendler <Lukas.Engelschalk@gmx.de>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-04-09 14:09+0000\n"
-"Last-Translator: Marvin <wile.e.coyote@keemail.me>\n"
+"PO-Revision-Date: 2022-06-01 08:12+0000\n"
+"Last-Translator: Der_Unterhaendler <Lukas.Engelschalk@gmx.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -42,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12-dev\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -73,7 +74,6 @@ msgid "An error occurred while storing the transaction."
 msgstr "Beim Speichern der Transaktion ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:301
-#, fuzzy
 msgid "Transaction has been successfully stored"
 msgstr "Die Transaktion wurde erfolgreich gespeichert"
 
@@ -2528,7 +2528,6 @@ msgid "Mail specific"
 msgstr "Mailspezifisch"
 
 #: ../lib/Galette/Entity/Social.php:348
-#, fuzzy
 msgid "Mastodon"
 msgstr "Mastodon"
 
@@ -5150,8 +5149,6 @@ msgid "Zip - Town"
 msgstr "Postleitzahl - Stadt"
 
 #: ../templates/default/preferences.tpl:508
-#, fuzzy
-#| msgid "Member number"
 msgid "Member nubmer"
 msgstr "Mitgliedsnummer"
 
@@ -6156,8 +6153,6 @@ msgid "Mass change"
 msgstr "Massenänderung"
 
 #: ../templates/default/gestion_adherents.tpl:320
-#, fuzzy
-#| msgid "My contributions"
 msgid "Mass add contributions"
 msgstr "Massenbeiträge"
 
@@ -7753,8 +7748,6 @@ msgid "Remove %type"
 msgstr "%type entfernen"
 
 #: ../templates/default/edit_socials.tpl:17
-#, fuzzy
-#| msgid "Social networks"
 msgid "Add new social network"
 msgstr "Neues Soziales Netzwerk hinzufügen"
 
