@@ -201,8 +201,7 @@ class Galette
             }
 
             if (
-                !$login->isSuperAdmin()
-                && $login->isAdmin()
+                $login->isAdmin()
                 || $login->isStaff()
                 || ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_member)
             ) {
