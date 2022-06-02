@@ -31,9 +31,9 @@
             title="{{ title }}"
             {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
     >
-        {{ label }}
         {% if icon %}
             <i class="{{  icon }} icon" aria-hidden="true"></i>
         {% endif %}
+        {{ label }}
     </a>
 {% endmacro %}
