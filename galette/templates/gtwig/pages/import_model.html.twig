@@ -23,7 +23,7 @@
     {% for field in fields %}
             <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
         {% if members_fields[field] is not defined %}
-                <td>{{ _T('Missing field %field')|replace({ '%field': field }) }}</td>
+                <td>{{ _T('Missing field \'%field\'')|replace({ '%field': field }) }}</td>
         {% else %}
                 <td>{{ members_fields[field]['label']|replace({ ':': ''}) }}</td>
         {% endif %}

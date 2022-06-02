@@ -26,18 +26,18 @@
                     <td class="{{ rclass }} right">{{ member.id }}</td>
                     <td class="{{ rclass }} username_row">
                     {% if member.isCompany() %}
-                        <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("[C]") }}</span></i>
+                        <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("Company") }}</span></i>
                     {% elseif member.isMan() %}
-                        <i class="ui male icon tooltip"><span class="sr-only">{{ _T("[M]") }}</span></i>
+                        <i class="ui male icon tooltip"><span class="sr-only">{{ _T("Man") }}</span></i>
                     {% elseif member.isWoman() %}
-                        <i class="ui female icon tooltip"><span class="sr-only">{{ _T("[W]") }}</span></i>
+                        <i class="ui female icon tooltip"><span class="sr-only">{{ _T("Woman") }}</span></i>
                     {% else %}
                         <i class="ui icon"></i>
                     {% endif %}
                     {% if member.isAdmin() %}
-                        <i class="ui user shield red icon"><span class="sr-only">{{ _T("[admin]") }}</span></i>
+                        <i class="ui user shield red icon"><span class="sr-only">{{ _T("Administrator") }}</span></i>
                     {% elseif member.isStaff() %}
-                        <i class="ui id card alternate orange icon"><span class="sr-only">{{ _T("[staff]") }}</span></i>
+                        <i class="ui id card alternate orange icon"><span class="sr-only">{{ _T("Saff member") }}</span></i>
                     {% else %}
                         <i class="ui icon"></i>
                     {% endif %}
