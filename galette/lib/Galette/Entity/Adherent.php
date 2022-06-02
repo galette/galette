@@ -767,10 +767,12 @@ class Adherent
     public function getDues(): string
     {
         $ret = '';
+        $never_contributed = false;
         $now = new \DateTime();
         // To count the days remaining, the next begin date is required.
         if ($this->_due_date === null) {
             $this->_due_date = $now->format('Y-m-d');
+            $never_contributed = true;
         }
         $due_date = new \DateTime($this->_due_date);
         $next_begin_date = clone $due_date;
@@ -778,7 +780,7 @@ class Adherent
         $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
-        } elseif ($this->_due_date == '') {
+        } elseif ($never_contributed === true) {
             $patterns = array('/%days/', '/%date/');
             $cdate = new \DateTime($this->_creation_date);
             $replace = array(
