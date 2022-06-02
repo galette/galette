@@ -4,7 +4,7 @@
     <div class="ui red message">
         <h2 class="ui center aligned header">{_T string="Application error"}</h2>
     </div>
-    {if $login->isLogged() and $login->isAdmin() or $GALETTE_MODE eq 'DEV')}
+    {if $login->isLogged() and $login->isAdmin() or $GALETTE_MODE eq 'DEV'}
         {function name=render_ex}
     <div class="ui segment">
         <h3>{_T string="Details"}</h3>
