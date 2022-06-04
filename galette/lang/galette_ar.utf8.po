@@ -11,12 +11,13 @@
 # mustapha nhaily <nhaily@gmail.com>, 2021.
 # Menna Ebraheam & Jana hesham <monymenna62@gmail.com>, 2022.
 # Hothaifa Jaber <i74ifa@icloud.com>, 2022.
+# AOSUS <aosus@protonmail.com>, 2022.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-03-31 17:07+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2022-06-05 17:19+0000\n"
+"Last-Translator: AOSUS <aosus@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -24,11 +25,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.12-dev\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
-msgstr "خطأ في النظام"
+msgstr "خطأ في غاليت"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
