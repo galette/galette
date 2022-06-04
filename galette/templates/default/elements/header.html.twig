@@ -10,9 +10,6 @@
         <link rel="stylesheet" type="text/css" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}/galette_local.css" />
     {% endif %}
         <script type="text/javascript" src="{{ base_url() }}/assets/js/galette-main.bundle.min.js"></script>
-    {% if require_charts %}
-        <link rel="stylesheet" type="text/css" href="{{ base_url() }}/assets/css/galette-jqplot.bundle.min.css" />
-    {% endif %}
         <script type="text/javascript" src="{{ base_url() }}/assets/ui/semantic.min.js"></script>
         <link rel="stylesheet" type="text/css" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}galette_print.css" media="print" />
     {# Let's see if a local print CSS exists and include it #}

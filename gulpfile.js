@@ -76,12 +76,7 @@ function styles() {
     .pipe(concat('galette-main.bundle.min.css'))
     .pipe(gulp.dest(_dir));
 
-  jqplot = gulp.src('./galette/webroot/js/jquery/jqplot-1.0.8r1250/jquery.jqplot.css')
-    .pipe(concat('galette-jqplot.bundle.min.css'))
-    .pipe(cleanCSS())
-    .pipe(gulp.dest(_dir));
-
-  return merge(main, jqplot);
+  return merge(main);
 };
 
 function scripts() {
@@ -92,19 +87,15 @@ function scripts() {
     .pipe(uglify())
     .pipe(gulp.dest(_dir));
 
-  //use local lib, npm one is missing plugins :/
-  jqplot = gulp.src([
-        './galette/webroot/js/jquery/jqplot-1.0.8r1250/jquery.jqplot.min.js',
-        './galette/webroot/js/jquery/jqplot-1.0.8r1250/plugins/jqplot.barRenderer.min.js',
-        './galette/webroot/js/jquery/jqplot-1.0.8r1250/plugins/jqplot.categoryAxisRenderer.min.js',
-        './galette/webroot/js/jquery/jqplot-1.0.8r1250/plugins/jqplot.pieRenderer.min.js',
-        './galette/webroot/js/jquery/jqplot-1.0.8r1250/plugins/jqplot.pointLabels.min.js',
+  chartjs = gulp.src([
+        './node_modules/chart.js/dist/chart.min.js',
+        './node_modules/chartjs-plugin-autocolors/dist/chartjs-plugin-autocolors.min.js',
+        './node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js'
   ])
-    .pipe(concat('galette-jqplot.bundle.min.js'))
-    .pipe(uglify())
+    .pipe(concat('galette-chartjs.bundle.min.js'))
     .pipe(gulp.dest(_dir));
 
-  return merge(main, jqplot);
+  return merge(main, chartjs);
 };
 
 function assets() {

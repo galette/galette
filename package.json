@@ -35,6 +35,9 @@
     "uglify-js": "^3.9.1"
   },
   "dependencies": {
+    "chart.js": "^3.8.0",
+    "chartjs-plugin-autocolors": "^0.0.5",
+    "chartjs-plugin-datalabels": "^2.0.0",
     "fomantic-ui": "^2.8.8",
     "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
