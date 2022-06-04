@@ -46,7 +46,7 @@
             });
         </script>
     {if $require_charts}
-        <script type="text/javascript" src="{base_url}/assets/js/galette-jqplot.bundle.min.js"></script>
+        <script type="module" src="{base_url}/assets/js/galette-chartjs.bundle.min.js"></script>
     {/if}
     {if $require_mass}
         <script type="text/javascript" src="{base_url}/{$scripts_dir}mass_changes.js"></script>

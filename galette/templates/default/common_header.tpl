@@ -14,9 +14,6 @@ Just put a {include file='common_header.tpl'} into the head tag.
             <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}/galette_local.css" />
         {/if}
         <script type="text/javascript" src="{base_url}/assets/js/galette-main.bundle.min.js"></script>
-    {if $require_charts}
-        <link rel="stylesheet" type="text/css" href="{base_url}/assets/css/galette-jqplot.bundle.min.css" />
-    {/if}
         <script type="text/javascript" src="{base_url}/assets/ui/semantic.min.js"></script>
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette_print.css" media="print" />
     {assign var="localprintstylesheet" value="`$_CURRENT_THEME_PATH`galette_print_local.css"}
