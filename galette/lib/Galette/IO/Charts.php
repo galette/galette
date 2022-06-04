@@ -138,20 +138,22 @@ class Charts
 
         $results = $zdb->execute($select);
 
-        $chart = array();
-        $staff = array(_T("Staff members"), 0);
+        $chart_labels = array();
+        $chart_data = array();
+        $staff_label = _T("Staff members");
+        $staff_data = 0;
         foreach ($results as $r) {
             if ($r->priority >= Members::NON_STAFF_MEMBERS) {
-                $chart[] = array(
-                    _T($r->status),
-                    (int)$r->cnt
-                );
+                $chart_labels[] = _T($r->status);
+                $chart_data[] = (int)$r->cnt;
             } else {
-                $staff[1] += $r->cnt;
+                $staff_data += $r->cnt;
             }
         }
-        $chart[] = $staff;
-        $this->charts[self::MEMBERS_STATUS_PIE] = json_encode($chart);
+        $chart_labels[] = $staff_label;
+        $chart_data[] = $staff_data;
+        $this->charts[self::MEMBERS_STATUS_PIE . 'Labels'] = json_encode($chart_labels);
+        $this->charts[self::MEMBERS_STATUS_PIE . 'Data'] = json_encode($chart_data);
     }
 
     /**
@@ -163,7 +165,8 @@ class Charts
     {
         global $zdb;
 
-        $chart = array();
+        $chart_labels = array();
+        $chart_data = array();
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
             array(
@@ -176,10 +179,8 @@ class Charts
         $results = $zdb->execute($select);
         $result = $results->current();
 
-        $chart[] = array(
-            _T("Due free"),
-            (int)$result->cnt
-        );
+        $chart_labels[] = _T("Due free");
+        $chart_data[] = (int)$result->cnt;
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
@@ -194,10 +195,8 @@ class Charts
         $results = $zdb->execute($select);
         $result = $results->current();
 
-        $chart[] = array(
-            _T("Never contribute"),
-            (int)$result->cnt
-        );
+        $chart_labels[] = _T("Never contribute");
+        $chart_data[] = (int)$result->cnt;
 
         $soon_date = new \DateTime();
         $soon_date->modify('+30 day');
@@ -218,10 +217,8 @@ class Charts
         $results = $zdb->execute($select);
         $result = $results->current();
 
-        $chart[] = array(
-            _T("Impending due dates"),
-            (int)$result->cnt
-        );
+        $chart_labels[] = _T("Impending due dates");
+        $chart_data[] = (int)$result->cnt;
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
@@ -236,10 +233,8 @@ class Charts
         $results = $zdb->execute($select);
         $result = $results->current();
 
-        $chart[] = array(
-            _T("Up to date"),
-            (int)$result->cnt
-        );
+        $chart_labels[] = _T("Up to date");
+        $chart_data[] = (int)$result->cnt;
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
@@ -254,12 +249,11 @@ class Charts
         $results = $zdb->execute($select);
         $result = $results->current();
 
-        $chart[] = array(
-            _T("Late"),
-            (int)$result->cnt
-        );
+        $chart_labels[] = _T("Late");
+        $chart_data[] = (int)$result->cnt;
 
-        $this->charts[self::MEMBERS_STATEDUE_PIE] = json_encode($chart);
+        $this->charts[self::MEMBERS_STATEDUE_PIE . 'Labels'] = json_encode($chart_labels);
+        $this->charts[self::MEMBERS_STATEDUE_PIE . 'Data'] = json_encode($chart_data);
     }
 
     /**
@@ -309,17 +303,16 @@ class Charts
             $companies = $next->cnt;
         }
 
-        $chart = array(
-            array(
-                _T("Individuals"),
-                (int)$individuals
-            ),
-            array(
-                _T("Companies"),
-                (int)$companies
-            )
-        );
-        $this->charts[self::COMPANIES_OR_NOT] = json_encode($chart);
+        $chart_labels = [
+            _T("Individuals"),
+            _T("Companies")
+        ];
+        $chart_data = [
+            (int)$individuals,
+            (int)$companies
+        ];
+        $this->charts[self::COMPANIES_OR_NOT . 'Labels'] = json_encode($chart_labels);
+        $this->charts[self::COMPANIES_OR_NOT . 'Data'] = json_encode($chart_data);
     }
 
     /**
@@ -348,14 +341,14 @@ class Charts
 
         $results = $zdb->execute($select);
 
-        $chart = array();
+        $chart_labels = array();
+        $chart_data = array();
         foreach ($results as $r) {
-            $chart[] = array(
-                _T($r->label),
-                (int)$r->cnt
-            );
+            $chart_labels[] = _T($r->label);
+            $chart_data[] = (int)$r->cnt;
         }
-        $this->charts[self::CONTRIBS_TYPES_PIE] = json_encode($chart);
+        $this->charts[self::CONTRIBS_TYPES_PIE . 'Labels'] = json_encode($chart_labels);
+        $this->charts[self::CONTRIBS_TYPES_PIE . 'Data'] = json_encode($chart_data);
     }
 
     /**
@@ -387,14 +380,14 @@ class Charts
 
         $results = $zdb->execute($select);
 
-        $chart = array();
+        $chart_labels = [];
+        $chart_data = [];
         foreach ($results as $r) {
             $d = new \DateTime($r->date);
-            $chart[] = array(
-                $d->format('Y-m'),
-                (float)$r->amount
-            );
+            $chart_labels[] = $d->format('Y-m');
+            $chart_data[] = (float)$r->amount;
         }
-        $this->charts[self::CONTRIBS_ALLTIME] = json_encode($chart);
+        $this->charts[self::CONTRIBS_ALLTIME . 'Labels'] = json_encode($chart_labels);
+        $this->charts[self::CONTRIBS_ALLTIME . 'Data'] = json_encode($chart_data);
     }
 }
