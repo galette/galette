@@ -587,6 +587,10 @@ class ContributionsController extends CrudController
                 $filters->show = $post['nbshow'];
             }
 
+            if (isset($post['date_field'])) {
+                $filters->date_field = $post['date_field'];
+            }
+
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
                 try {
                     if (isset($post['start_date_filter'])) {
