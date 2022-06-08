@@ -85,6 +85,8 @@ class ContributionsController extends CrudController
         string $type,
         Contribution $contrib
     ): Response {
+        $post = $request->getParsedBody();
+
         // check for ajax mode
         $ajax = false;
         if (
