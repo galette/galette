@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2020 The Galette Team
+ * Copyright © 2010-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2020 The Galette Team
+ * @copyright 2010-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-03
@@ -49,7 +49,7 @@ use Laminas\Db\Sql\Select;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
@@ -133,10 +133,10 @@ abstract class Pagination
     {
         $actual = $this->ordered;
         if ($actual == self::ORDER_ASC) {
-                $this->ordered = self::ORDER_DESC;
+            $this->ordered = self::ORDER_DESC;
         }
         if ($actual == self::ORDER_DESC) {
-                $this->ordered = self::ORDER_ASC;
+            $this->ordered = self::ORDER_ASC;
         }
     }
 
@@ -228,13 +228,29 @@ abstract class Pagination
     /**
      * Creates pagination links and assign some useful variables to the template
      *
+     * @param Router $router Application instance
+     * @param mixed $view View instance
+     * @param boolean $restricted Do not permit to display all
+     *
+     * @return void
+     *
+     * @deprecated 1.0.0 use setViewPagination
+     */
+    public function setSmartyPagination(Router $router, $view, $restricted = true)
+    {
+        return $this->setViewPagination($router, $view, $restricted);
+    }
+
+    /**
+     * Creates pagination links and assign some useful variables to the template
+     *
      * @param Router  $router     Application instance
      * @param mixed   $view       View instance
      * @param boolean $restricted Do not permit to display all
      *
      * @return void
      */
-    public function setSmartyPagination(Router $router, $view, $restricted = true)
+    public function setViewPagination(Router $router, $view, $restricted = true)
     {
         $paginate = null;
         $this->view = $view;

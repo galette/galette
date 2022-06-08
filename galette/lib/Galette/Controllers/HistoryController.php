@@ -101,7 +101,7 @@ class HistoryController extends AbstractController
         $logs = $this->history->getHistory();
 
         //assign pagination variables to the template and add pagination links
-        $this->history->filters->setSmartyPagination($this->router, $this->view);
+        $this->history->filters->setViewPagination($this->router, $this->view);
 
         // display page
         $this->view->render(

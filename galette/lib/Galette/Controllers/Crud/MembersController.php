@@ -359,7 +359,7 @@ class MembersController extends CrudController
         $this->session->$varname = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view, false);
+        $filters->setViewPagination($this->router, $this->view, false);
 
         // display page
         $this->view->render(
@@ -562,7 +562,7 @@ class MembersController extends CrudController
         $groups_list = $groups->getList();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view, false);
+        $filters->setViewPagination($this->router, $this->view, false);
         $filters->setViewCommonsFilters($this->preferences, $this->view);
 
         $this->session->filter_members = $filters;
@@ -878,7 +878,7 @@ class MembersController extends CrudController
         }
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view, false);
+        $filters->setViewPagination($this->router, $this->view, false);
 
         $this->session->ajax_members_filters = $filters;
 
