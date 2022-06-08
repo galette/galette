@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-08 20:17+0200\n"
-"PO-Revision-Date: 2022-06-08 18:18+0000\n"
+"PO-Revision-Date: 2022-06-08 18:21+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -5434,7 +5434,7 @@ msgstr "Supprimer"
 #: ../../tempcache/elements/scripts.html.twig:162
 #: ../../tempcache/elements/scripts.html.twig:200
 msgid "Deactivate HTML editor"
-msgstr "Déssctiver l’éditeur HTML"
+msgstr "Désactiver l’éditeur HTML"
 
 #: ../../tempcache/elements/scripts.html.twig:189
 #: ../../tempcache/pages/mailing_form.html.twig:294
