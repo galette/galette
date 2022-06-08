@@ -228,8 +228,8 @@ abstract class Pagination
     /**
      * Creates pagination links and assign some useful variables to the template
      *
-     * @param Router $router Application instance
-     * @param mixed $view View instance
+     * @param Router  $router     Application instance
+     * @param mixed   $view       View instance
      * @param boolean $restricted Do not permit to display all
      *
      * @return void
