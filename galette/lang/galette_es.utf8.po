@@ -38,8 +38,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2022-06-08 20:05+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-08 20:17+0200\n"
 "PO-Revision-Date: 2022-06-08 18:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -488,53 +488,53 @@ msgstr "Gestión de contribuciones"
 msgid "Transactions management"
 msgstr "Gestión de transacciones"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:616
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:620
 msgid "- Unknown payment type!"
 msgstr "- ¡Tipo de pago desconocido!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:678
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:682
 msgid "No contribution was selected, please check at least one."
 msgstr ""
 "No se ha seleccionado ninguna contribución, por favor marque al menos una."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:714
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:718
 #: ../lib/Galette/Controllers/PdfController.php:445
 #: ../lib/Galette/Controllers/PdfController.php:709
 msgid "Unable to load contribution #%id!"
 msgstr "¡No se ha podido cargar la contribución #%id!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:808
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:812
 msgid "Contribution has been successfully stored"
 msgstr "Se almacenó la contribución correctamente"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:812
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:816
 msgid "An error occurred while storing the contribution."
 msgstr "Se produjo un error al almacenar la contribución."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:916
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:920
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Eliminar %1$s %2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:918
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
 msgid "contributions"
 msgstr "contribuciones"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:918
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
 msgid "transactions"
 msgstr "Transacciones"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:926
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr "Eliminar %1$s #%2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:923
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:927
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
 msgstr "contribución"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:923
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:927
 msgid "transaction"
 msgstr "transacción"
 
@@ -1891,6 +1891,7 @@ msgstr "Usuario, leer/escribir"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:520
 #: ../../tempcache/elements/edit_entitleds.html.twig:210
+#: ../../tempcache/elements/ajax_members.html.twig:137
 #: ../../tempcache/pages/members_list.html.twig:605
 #: ../../tempcache/pages/members_list.html.twig:1156
 #: ../../tempcache/pages/configuration_core_fields.html.twig:263
@@ -2063,6 +2064,7 @@ msgstr "Lista filtrada de miembros"
 #: ../lib/Galette/Entity/Adherent.php:1761
 #: ../../tempcache/modals/mass_change_members.html.twig:152
 #: ../../tempcache/elements/ajax_members.html.twig:110
+#: ../../tempcache/elements/group_persons.html.twig:105
 #: ../../tempcache/pages/advanced_search.html.twig:1057
 #: ../../tempcache/pages/advanced_search.html.twig:1565
 #: ../../tempcache/components/forms/gender.html.twig:129
@@ -2074,6 +2076,7 @@ msgstr "Hombre"
 #: ../lib/Galette/Entity/Adherent.php:1763
 #: ../../tempcache/modals/mass_change_members.html.twig:143
 #: ../../tempcache/elements/ajax_members.html.twig:117
+#: ../../tempcache/elements/group_persons.html.twig:112
 #: ../../tempcache/pages/advanced_search.html.twig:1057
 #: ../../tempcache/pages/advanced_search.html.twig:1565
 #: ../../tempcache/components/forms/gender.html.twig:146
@@ -5173,16 +5176,11 @@ msgid "Pages:"
 msgstr "Páginas:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:103
+#: ../../tempcache/elements/group_persons.html.twig:98
 #, fuzzy
 #| msgid "Company:"
 msgid "Company"
 msgstr "Persona moral:"
-
-#: ../../tempcache/elements/ajax_members.html.twig:137
-#, fuzzy
-#| msgid "Staff member"
-msgid "Saff member"
-msgstr "Miembro del personal"
 
 #: ../../tempcache/elements/ajax_members.html.twig:168
 msgid "no member"
@@ -5396,18 +5394,6 @@ msgstr ""
 #: ../../tempcache/public_page.html.twig:116
 msgid "Demonstration"
 msgstr "Demostración"
-
-#: ../../tempcache/elements/group_persons.html.twig:98
-msgid "[C]"
-msgstr ""
-
-#: ../../tempcache/elements/group_persons.html.twig:105
-msgid "[M]"
-msgstr ""
-
-#: ../../tempcache/elements/group_persons.html.twig:112
-msgid "[W]"
-msgstr ""
 
 #: ../../tempcache/elements/group_persons.html.twig:125
 msgid "[admin]"
@@ -8116,6 +8102,11 @@ msgstr ""
 #: ../../tempcache/page.html.twig:192
 msgid "Page content"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Staff member"
+#~ msgid "Saff member"
+#~ msgstr "Miembro del personal"
 
 #~ msgid "Address (continuation)"
 #~ msgstr "Dirección (continuación)"

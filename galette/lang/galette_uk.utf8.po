@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2022-06-08 20:05+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-08 20:17+0200\n"
 "PO-Revision-Date: 2022-06-08 18:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -457,52 +457,52 @@ msgstr "Управління внесками"
 msgid "Transactions management"
 msgstr "Управління переказами"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:616
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:620
 msgid "- Unknown payment type!"
 msgstr "- Невідомий вид оплати!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:678
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:682
 msgid "No contribution was selected, please check at least one."
 msgstr "Жодного внеску не вибрано. Помітьте принаймні один."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:714
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:718
 #: ../lib/Galette/Controllers/PdfController.php:445
 #: ../lib/Galette/Controllers/PdfController.php:709
 msgid "Unable to load contribution #%id!"
 msgstr "Не вдається завантажити внесок #%id!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:808
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:812
 msgid "Contribution has been successfully stored"
 msgstr "Внесок успішно збережено"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:812
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:816
 msgid "An error occurred while storing the contribution."
 msgstr "Під час зберігання внеску сталася помилка."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:916
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:920
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Вилучити %1$s %2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:918
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
 msgid "contributions"
 msgstr "внески"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:918
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
 msgid "transactions"
 msgstr "перекази"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:926
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr "Вилучити %1$s #%2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:923
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:927
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
 msgstr "внесок"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:923
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:927
 msgid "transaction"
 msgstr "переказ"
 
@@ -1839,6 +1839,7 @@ msgstr "Користувач, читання/запис"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:520
 #: ../../tempcache/elements/edit_entitleds.html.twig:210
+#: ../../tempcache/elements/ajax_members.html.twig:137
 #: ../../tempcache/pages/members_list.html.twig:605
 #: ../../tempcache/pages/members_list.html.twig:1156
 #: ../../tempcache/pages/configuration_core_fields.html.twig:263
@@ -2011,6 +2012,7 @@ msgstr "filtered_memberslist"
 #: ../lib/Galette/Entity/Adherent.php:1761
 #: ../../tempcache/modals/mass_change_members.html.twig:152
 #: ../../tempcache/elements/ajax_members.html.twig:110
+#: ../../tempcache/elements/group_persons.html.twig:105
 #: ../../tempcache/pages/advanced_search.html.twig:1057
 #: ../../tempcache/pages/advanced_search.html.twig:1565
 #: ../../tempcache/components/forms/gender.html.twig:129
@@ -2022,6 +2024,7 @@ msgstr "Чоловік"
 #: ../lib/Galette/Entity/Adherent.php:1763
 #: ../../tempcache/modals/mass_change_members.html.twig:143
 #: ../../tempcache/elements/ajax_members.html.twig:117
+#: ../../tempcache/elements/group_persons.html.twig:112
 #: ../../tempcache/pages/advanced_search.html.twig:1057
 #: ../../tempcache/pages/advanced_search.html.twig:1565
 #: ../../tempcache/components/forms/gender.html.twig:146
@@ -5180,16 +5183,11 @@ msgid "Pages:"
 msgstr "Сторінки:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:103
+#: ../../tempcache/elements/group_persons.html.twig:98
 #, fuzzy
 #| msgid "Company:"
 msgid "Company"
 msgstr "Компанія:"
-
-#: ../../tempcache/elements/ajax_members.html.twig:137
-#, fuzzy
-#| msgid "Staff member"
-msgid "Saff member"
-msgstr "Співробітник"
 
 #: ../../tempcache/elements/ajax_members.html.twig:168
 msgid "no member"
@@ -5402,20 +5400,6 @@ msgstr ""
 #: ../../tempcache/public_page.html.twig:116
 msgid "Demonstration"
 msgstr "Показ"
-
-#: ../../tempcache/elements/group_persons.html.twig:98
-#, fuzzy
-#| msgid "[W]"
-msgid "[C]"
-msgstr "[ЖІН]"
-
-#: ../../tempcache/elements/group_persons.html.twig:105
-msgid "[M]"
-msgstr "[ЧОЛ]"
-
-#: ../../tempcache/elements/group_persons.html.twig:112
-msgid "[W]"
-msgstr "[ЖІН]"
 
 #: ../../tempcache/elements/group_persons.html.twig:125
 msgid "[admin]"
@@ -8218,6 +8202,22 @@ msgstr ""
 #: ../../tempcache/page.html.twig:192
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#, fuzzy
+#~| msgid "Staff member"
+#~ msgid "Saff member"
+#~ msgstr "Співробітник"
+
+#, fuzzy
+#~| msgid "[W]"
+#~ msgid "[C]"
+#~ msgstr "[ЖІН]"
+
+#~ msgid "[M]"
+#~ msgstr "[ЧОЛ]"
+
+#~ msgid "[W]"
+#~ msgstr "[ЖІН]"
 
 #~ msgid "Address (continuation)"
 #~ msgstr "Адреса (продовження)"
