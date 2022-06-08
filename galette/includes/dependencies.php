@@ -167,16 +167,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
 
     $view->getEnvironment()->addGlobal('plugin_headers', $c->get('plugins')->getTplHeaders());
-    //$smarty->assign('scripts_dir', 'js/');
-    //$smarty->assign('jquery_dir', 'js/jquery/');
-    //$smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
-    //$smarty->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
-    //$smarty->assign('galette_base_path', './');
 
-    //$smarty->assign('template_subdir', GALETTE_THEME);
-    /*foreach ($c->get('plugins')->getTplAssignments() as $k => $v) {
-        $smarty->assign($k, $v);
-    }*/
     // galette_lang should be removed and languages used instead
     $view->getEnvironment()->addGlobal('galette_lang', $c->get('i18n')->getAbbrev());
     $view->getEnvironment()->addGlobal('galette_lang_name', $c->get('i18n')->getName());
@@ -184,34 +175,19 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('i18n', $c->get('i18n'));
     $view->getEnvironment()->addGlobal('plugins', $c->get('plugins'));
     $view->getEnvironment()->addGlobal('preferences', $c->get('preferences'));
-    /*
-    $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);
-    $smarty->assign('pref_theme', $c->get('preferences')->pref_theme);
-    $smarty->assign('pref_statut', $c->get('preferences')->pref_statut);
-    $smarty->assign(
-        'pref_editor_enabled',
-        $c->get('preferences')->pref_editor_enabled
-    );
-    $smarty->assign('pref_mail_method', $c->get('preferences')->pref_mail_method);*/
     $view->getEnvironment()->addGlobal('existing_mailing', $c->get('session')->mailing !== null);
-    /*$smarty->assign('contentcls', null);
-    $smarty->assign('error_detected', null);
-    $smarty->assign('warning_detected', null);
-    $smarty->assign('success_detected', null);*/
     $view->getEnvironment()->addGlobal('html_editor', false);
     $view->getEnvironment()->addGlobal('require_charts', false);
     $view->getEnvironment()->addGlobal('require_mass', false);
     $view->getEnvironment()->addGlobal('autocomplete', false);
-    /*if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
+    if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
         $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
         if ($now > $sent && !isset($_COOKIE['renew_telemetry'])) {
-            $smarty->assign('renew_telemetry', true);
+            $view->getEnvironment()->addGlobal('renew_telemetry', true);
         }
     }
-
-    */
     //End Twig globals
 
     return $view;
@@ -289,11 +265,6 @@ $container->set('Galette\Core\Login', function (ContainerInterface $c) {
     }
     return $login;
 });
-
-/*$container->set('session', function (ContainerInterface $c) {
-    $session = new \RKA\Session();
-    return $session;
-});*/
 
 //TODO: old way - to drop
 $container->set(
