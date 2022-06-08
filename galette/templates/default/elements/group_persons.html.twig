@@ -18,11 +18,11 @@
                                 <td class="username_row">
                                 <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
                                 {% if person.isCompany() %}
-                                    <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("[C]") }}</span></i>
+                                    <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T("Company") }}</span></i>
                                 {% elseif person.isMan() %}
-                                    <i class="ui male icon tooltip"><span class="sr-only">{{ _T("[M]") }}</span></i>
+                                    <i class="ui male icon tooltip"><span class="sr-only">{{ _T("Man") }}</span></i>
                                 {% elseif person.isWoman() %}
-                                    <i class="ui female icon tooltip"><span class="sr-only">{{ _T("[W]") }}</span></i>
+                                    <i class="ui female icon tooltip"><span class="sr-only">{{ _T("Woman") }}</span></i>
                                 {% else %}
                                     <i class="ui icon"></i>
                                 {% endif %}
