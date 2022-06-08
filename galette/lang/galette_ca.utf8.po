@@ -1,6 +1,6 @@
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
@@ -13,10 +13,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-08 20:05+0200\n"
-"PO-Revision-Date: 2022-01-14 12:51+0000\n"
-"Last-Translator: Queralt Garrigos <garrigosqueralt@gmail.com>\n"
+"PO-Revision-Date: 2022-06-08 18:18+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -8915,10 +8915,6 @@ msgid "Original string for name, that will be used for translations."
 msgstr "Cadena original per al nom que s'utilitzarà per a les traduccions."
 
 #: ../../tempcache/pages/member_show.html.twig:110
-#, fuzzy
-#| msgid ""
-#| "Send member a link to generate a new passord, as if had used the 'lost "
-#| "password' functionnality."
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -9563,14 +9559,13 @@ msgstr "Introduïu fins a un percentatge més d'aparició."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:270
 #: ../../tempcache/components/dynamic_fields.html.twig:272
-#, fuzzy
 msgid "New occurrence"
 msgstr "Nova aparició"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:305
 #, fuzzy, php-format
 msgid "Enter up to %count more occurrences."
-msgstr "Introduïu fins a un percentatge més d'aparició."
+msgstr "Introduïu fins %count més d'aparició."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:569
 #, fuzzy
