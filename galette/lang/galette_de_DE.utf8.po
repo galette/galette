@@ -7,7 +7,7 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # aschlager <andreas.schlager@be-x.at>, 2020.
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
@@ -33,10 +33,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-08 20:05+0200\n"
-"PO-Revision-Date: 2022-06-08 18:06+0000\n"
-"Last-Translator: Moritz Walter Ott <moritzwott@gmail.com>\n"
+"PO-Revision-Date: 2022-06-08 18:18+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -7718,10 +7718,6 @@ msgstr ""
 "Originalzeichenkette für Namen, die für die Übersetzung verwendet wird."
 
 #: ../../tempcache/pages/member_show.html.twig:110
-#, fuzzy
-#| msgid ""
-#| "Send member a link to generate a new passord, as if had used the 'lost "
-#| "password' functionnality."
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -8252,14 +8248,11 @@ msgstr "Gib bis zu %count Wiederholungen ein."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:270
 #: ../../tempcache/components/dynamic_fields.html.twig:272
-#, fuzzy
-#| msgid "New occurence"
 msgid "New occurrence"
 msgstr "Neue Instanz"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:305
-#, fuzzy, php-format
-#| msgid "Enter up to %count more occurences."
+#, php-format
 msgid "Enter up to %count more occurrences."
 msgstr "Gib bis zu %count Wiederholungen ein."
 
