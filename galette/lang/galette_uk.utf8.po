@@ -1,5 +1,5 @@
 # Tymofij Lytvynenko <till.svit@gmail.com>, 2020, 2021.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022.
 # Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
 # Andrii Leitsius <leits.dev@gmail.com>, 2021.
 # Tymofii Lytvynenko <till.svit@gmail.com>, 2021.
@@ -9,10 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-08 20:05+0200\n"
-"PO-Revision-Date: 2022-05-29 11:19+0000\n"
-"Last-Translator: Artem <artem@molotov.work>\n"
+"PO-Revision-Date: 2022-06-08 18:18+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -7641,10 +7641,6 @@ msgstr ""
 "Оригінальний рядок для імені, який буде використовуватися для перекладів."
 
 #: ../../tempcache/pages/member_show.html.twig:110
-#, fuzzy
-#| msgid ""
-#| "Send member a link to generate a new passord, as if had used the 'lost "
-#| "password' functionnality."
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -8175,14 +8171,11 @@ msgstr "Уведіть до %count зустрічей."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:270
 #: ../../tempcache/components/dynamic_fields.html.twig:272
-#, fuzzy
-#| msgid "New occurence"
 msgid "New occurrence"
 msgstr "Новий випадок"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:305
-#, fuzzy, php-format
-#| msgid "Enter up to %count more occurences."
+#, php-format
 msgid "Enter up to %count more occurrences."
 msgstr "Уведіть до %count зустрічей."
 
