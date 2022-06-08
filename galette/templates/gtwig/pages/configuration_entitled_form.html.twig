@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <input type="hidden" name="mod" id="mod" value="{$entry->$id}"/>
+        <input type="hidden" name="mod" id="mod" value="{% if class == 'Status' %}{{ entry.id_statut }}{% else %}{{ entry.id_type_cotis }}{% endif %}"/>
         <input type="hidden" name="class" value="{{ class }}" />
 
         <div class="button-container">

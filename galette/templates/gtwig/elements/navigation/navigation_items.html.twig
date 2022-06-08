@@ -22,9 +22,6 @@
     {{ menus_macros.renderMenu(public_menu.title, public_menu.icon, public_menu.items) }}
 {% endfor %}
 
-{# Include plugins menu entries #}
-{#{ plugins.getMenus(view) }#}
-
 {% include "elements/language.html.twig" with {
         ui: "item"
     }
