@@ -59,7 +59,7 @@ function getTwigCacheHandler(string $directory): CacheInterface
     };
 }
 
-$directory = sprintf('%s/../galette/templates/gtwig', __DIR__);
+$directory = sprintf('%s/../galette/templates/default', __DIR__);
 $cache_dir = sprintf('%s/../tempcache', __DIR__);
 $cache     = getTwigCacheHandler($cache_dir);
 if (file_exists($cache_dir)) {
