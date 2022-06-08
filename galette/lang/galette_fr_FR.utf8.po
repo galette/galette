@@ -5,7 +5,7 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-08 20:05+0200\n"
-"PO-Revision-Date: 2021-11-27 10:09+0000\n"
+"PO-Revision-Date: 2022-06-08 18:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.10-dev\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -1301,10 +1301,8 @@ msgid "Delete mailing entries"
 msgstr "Supprimer les entrées envoyées"
 
 #: ../lib/Galette/Core/Galette.php:126
-#, fuzzy
-#| msgid "Account:"
 msgid "My Account"
-msgstr "Compte :"
+msgstr "Mon compte"
 
 #: ../lib/Galette/Core/Galette.php:130 ../lib/Galette/Core/Galette.php:646
 msgid "My contributions"
@@ -1420,10 +1418,8 @@ msgid "Send reminders to late members"
 msgstr "Envoyer un rappel aux adhérents retardataires"
 
 #: ../lib/Galette/Core/Galette.php:274
-#, fuzzy
-#| msgid "Members management"
 msgid "Management"
-msgstr "Gestion des membres"
+msgstr "Gestion"
 
 #: ../lib/Galette/Core/Galette.php:278
 msgid "Manage groups"
@@ -5125,10 +5121,8 @@ msgstr ""
 "Une erreur est survenue lors de l'envoi des informations de télémétrie :("
 
 #: ../../tempcache/elements/language.html.twig:72
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose your language"
-msgstr "Changer la langue"
+msgstr "Choisissez votre langue"
 
 #: ../../tempcache/elements/language.html.twig:113
 #, php-format
@@ -5199,10 +5193,8 @@ msgid "Home"
 msgstr "Accueil"
 
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
-#, fuzzy
-#| msgid "Go back to import page"
 msgid "Go back to Galette homepage"
-msgstr "Retour à la page d’import"
+msgstr "Retour à la page d'accueil de Galette"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:87
 msgid "Subscribe"
@@ -5259,10 +5251,8 @@ msgid "Pages:"
 msgstr "Pages :"
 
 #: ../../tempcache/elements/ajax_members.html.twig:103
-#, fuzzy
-#| msgid "Company:"
 msgid "Company"
-msgstr "Personne morale :"
+msgstr "Personne morale"
 
 #: ../../tempcache/elements/ajax_members.html.twig:137
 #, fuzzy
@@ -7334,11 +7324,11 @@ msgstr "Espacement vertical :"
 
 #: ../../tempcache/pages/preferences.html.twig:1551
 msgid "Print border"
-msgstr ""
+msgstr "Bordure d'impression"
 
 #: ../../tempcache/pages/preferences.html.twig:1555
 msgid "Check this box to print a grey border around each label."
-msgstr ""
+msgstr "Cocher cette case pour imprimer une bordure autour de chaque étiquette."
 
 #: ../../tempcache/pages/preferences.html.twig:1570
 msgid "Label width:"
@@ -7734,10 +7724,6 @@ msgid "Original string for name, that will be used for translations."
 msgstr "Chaîne originale, qui sera utilisée pour les traductions."
 
 #: ../../tempcache/pages/member_show.html.twig:110
-#, fuzzy
-#| msgid ""
-#| "Send member a link to generate a new passord, as if had used the 'lost "
-#| "password' functionnality."
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
@@ -8252,7 +8238,7 @@ msgstr ""
 
 #: ../../tempcache/components/forms/captcha.html.twig:87
 msgid "Captcha"
-msgstr ""
+msgstr "Captcha"
 
 #: ../../tempcache/components/forms/titles.html.twig:67
 msgid "Not supplied"
@@ -8273,14 +8259,11 @@ msgstr "Entrez encore jusque %count occurrences."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:270
 #: ../../tempcache/components/dynamic_fields.html.twig:272
-#, fuzzy
-#| msgid "New occurence"
 msgid "New occurrence"
 msgstr "Nouvelle occurrence"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:305
-#, fuzzy, php-format
-#| msgid "Enter up to %count more occurences."
+#, php-format
 msgid "Enter up to %count more occurrences."
 msgstr "Entrez encore jusque %count occurrences."
 
