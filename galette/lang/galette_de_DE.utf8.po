@@ -29,13 +29,14 @@
 # Sven Kislig <seven7kislig@gmail.com>, 2022.
 # Marvin <wile.e.coyote@keemail.me>, 2022.
 # Der_Unterhaendler <Lukas.Engelschalk@gmx.de>, 2022.
+# Moritz Walter Ott <moritzwott@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2021-11-20 09:27+0100\n"
-"PO-Revision-Date: 2022-06-01 08:12+0000\n"
-"Last-Translator: Der_Unterhaendler <Lukas.Engelschalk@gmx.de>\n"
+"PO-Revision-Date: 2022-06-08 18:06+0000\n"
+"Last-Translator: Moritz Walter Ott <moritzwott@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1233,9 +1234,9 @@ msgid "How much is %1$s on which we retire %2$s?"
 msgstr "Wie viel ist %1$s, worauf wir uns mit %2$s zurückziehen?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
-#, fuzzy, php-format
+#, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr "Wie viel ist %2$s auf %1$s zurückgegacht?"
+msgstr "Wie viel ist %2$s auf %1$s zurückgebucht?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, php-format
