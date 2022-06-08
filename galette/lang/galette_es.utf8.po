@@ -1,4 +1,4 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
@@ -38,10 +38,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-08 20:05+0200\n"
-"PO-Revision-Date: 2022-05-19 11:14+0000\n"
-"Last-Translator: Dragos <dragos@duckly.com>\n"
+"PO-Revision-Date: 2022-06-08 18:18+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -8071,8 +8071,6 @@ msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:270
 #: ../../tempcache/components/dynamic_fields.html.twig:272
-#, fuzzy
-#| msgid "New occurence"
 msgid "New occurrence"
 msgstr "Ocurrencia nueva"
 
