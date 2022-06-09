@@ -17,11 +17,6 @@
     {{ menus_macros.renderMenu(menu.title, menu.icon, menu.items) }}
 {% endfor %}
 
-{% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
-{% for public_menu in public_menus %}
-    {{ menus_macros.renderMenu(public_menu.title, public_menu.icon, public_menu.items) }}
-{% endfor %}
-
 {% include "elements/language.html.twig" with {
         ui: "item"
     }
