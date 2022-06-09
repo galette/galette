@@ -79,7 +79,7 @@
                         if ( _name != '' ) {
                             //check uniqueness
                             $.ajax({
-                                url: '{path_for name="ajax_groupname_unique"}',
+                                url: '{{ path_for("ajax_groupname_unique") }}',
                                 type: "POST",
                                 data: {
                                     ajax: true,

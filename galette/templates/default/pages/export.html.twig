@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <form class="form" action="{path_for name="doExport"}" method="post" enctype="multipart/form-data">
+        <form class="form" action="{{ path_for("doExport") }}" method="post" enctype="multipart/form-data">
         <div class="ui orange message">{{ _T("Each selected export will be stored into a separate file in the exports directory.") }}</div>
 
 {% set written_exports = flash.getMessage('written_exports') %}
