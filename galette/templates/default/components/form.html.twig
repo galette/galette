@@ -80,7 +80,7 @@
                         {% set checked = member.appearsInMembersList() %}
                     {% endif %}
                     {% if entry.field_id == 'login_adh' %}
-                        {% set example = _T("(at least %i characters)")|replace({ "%i": 2}) %}
+                        {% set example = _T("(at least %i characters)")|replace({"%i": 2}) %}
                     {% endif %}
 
                     {% if entry.field_id == 'bool_admin_adh' %}
@@ -119,12 +119,11 @@
                             compile_id: "input_" ~ entry.field_id,
                             checked: checked,
                             masschange: masschange
-                        }
-                    %}
+                    } %}
                 {% endfor %}
                 {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
                     {% include "components/forms/groups.html.twig" %}
-                {% endif  %}
+                {% endif %}
                 </div>
             </div>
             {% endfor %}

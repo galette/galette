@@ -8,7 +8,7 @@
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <div class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or  cur_route == "password-recovery" or  cur_route == "directlink" %} text{% endif %}{% if not login.isLogged() %}ui container{% else %} full height{% endif %}">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %} text{% endif %}{% if not login.isLogged() %}ui container{% else %} full height{% endif %}">
 {% if login.isLogged() %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
@@ -35,7 +35,7 @@
 {% endif %}
                     <h1 class="ui block center aligned header">{{ page_title }}</h1>
                     <noscript>{% include "elements/messages_inline.html.twig" %}</noscript>
-                    {% block content %}{{ _T("Public page content") }}{%  endblock %}
+                    {% block content %}{{ _T("Public page content") }}{% endblock %}
                     {% include "elements/footer.html.twig" %}
                 </section>
             </div>
@@ -46,6 +46,6 @@
             {{ _T("Back to top") }}
         </a>
         {% include "elements/scripts.html.twig" %}
-        {%  block javascripts %}{%  endblock %}
+        {% block javascripts %}{% endblock %}
 </body>
 </html>

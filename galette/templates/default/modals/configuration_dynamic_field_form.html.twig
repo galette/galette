@@ -2,9 +2,9 @@
 
 {% block content %}
 {% if action == 'edit' %}
-    <form action="{{ path_for('doEditDynamicField', { 'form_name': form_name, 'id': df.getId() }) }}" method="post" class="ui form">
+    <form action="{{ path_for('doEditDynamicField', {'form_name': form_name, 'id': df.getId()}) }}" method="post" class="ui form">
         <div class="ui top attached header">
-            {{ _T("Edit field %field")|replace({ '%field': df.getName() }) }}
+            {{ _T("Edit field %field")|replace({'%field': df.getName()}) }}
         </div>
         <div class="ui bottom attached segment">
             <div class="active content field">
@@ -82,7 +82,7 @@
         </div>
      </form>
 {% elseif action == 'add' %}
-    <form action="{{ path_for('doAddDynamicField', { 'form_name': form_name }) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
+    <form action="{{ path_for('doAddDynamicField', {'form_name': form_name}) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
     {% if mode != 'ajax' %}
         <div class="ui top attached header">
             {{ _T("New dynamic field") }}
@@ -146,7 +146,7 @@
 {% block javascripts %}
     <script>
         $('#field_information').summernote({
-            lang: '{{ i18n.getID()|replace({ '_': '-'}) }}',
+            lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
             height: 240,
             toolbar: [
                 ['style', ['style']],

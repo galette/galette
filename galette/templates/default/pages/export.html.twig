@@ -38,12 +38,12 @@
                             </thead>
                             <tbody>
         {% for export in existing %}
-                                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
+                                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                     <td data-scope="id">
                                         {{ loop.index }}
                                     </td>
                                     <td data-scope="row">
-                                        <a href="{{ path_for("getCsv", { "type": "export", "file": export.name }) }}">{{ export.name }}</a>
+                                        <a href="{{ path_for("getCsv", {"type": "export", "file": export.name}) }}">{{ export.name }}</a>
                                     </td>
                                     <td data-title="{{ _T('Date') }}">
                                         {{ export.date }}
@@ -53,11 +53,11 @@
                                     </td>
                                     <td class="actions_row">
                                         <a
-                                            href="{{ path_for("removeCsv", { "type": "export", "file": export.name }) }}"
+                                            href="{{ path_for("removeCsv", {"type": "export", "file": export.name}) }}"
                                             class="delete tooltip"
                                         >
                                             <i class="ui trash red icon"></i>
-                                            <span class="sr-only">{{ _T('Remove \'%file\' from disk')|replace({ '%file': export.name }) }}</span>
+                                            <span class="sr-only">{{ _T('Remove \'%file\' from disk')|replace({'%file': export.name}) }}</span>
                                         </a>
                                     </td>
                                 </tr>
@@ -87,7 +87,7 @@
                             </thead>
                             <tbody>
     {% for param in parameted %}
-                                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
+                                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                     <td data-scope="id">
                                         <input type="checkbox" name="export_parameted[]" id="{{ param.id }}" value="{{ param.id }}"/>
                                     </td>
@@ -124,7 +124,7 @@
                             </thead>
                             <tbody>
     {% for table in tables_list %}
-                                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
+                                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                     <td>
                                         <input type="checkbox" name="export_tables[]" id="{{ table }}" value="{{ table }}"/>
                                     </td>

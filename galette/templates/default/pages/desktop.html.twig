@@ -81,7 +81,7 @@
     </div>
 
     {% if not hide_telemetry and not telemetry_sent %}
-        {% include "modals/telemetry.html.twig" with { part: "dialog" } %}
+        {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
     {% endif %}
 {% endblock %}
 
@@ -120,10 +120,10 @@
             });
 
     {% if not telemetry_sent %}
-        {% include "modals/telemetry.html.twig" with { part: "jsdialog", orig: "desktop" } %}
+        {% include "modals/telemetry.html.twig" with {part: "jsdialog", orig: "desktop"} %}
     {% endif %}
     {% if not registered %}
-        {% include "modals/telemetry.html.twig" with { part: "jsregister", orig: "desktop"} %}
+        {% include "modals/telemetry.html.twig" with {part: "jsregister", orig: "desktop"} %}
     {% endif %}
 {% endif %}
         });

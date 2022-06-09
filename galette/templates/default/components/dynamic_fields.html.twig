@@ -86,7 +86,7 @@
         />
         {% if object.id %}
         <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_current">{{ _T("current") }}</label>
-        <a href="{{ path_for("getDynamicFile", { "id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata }) }}">
+        <a href="{{ path_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
             {{ valuedata }}
         </a>
         - <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_delete">
@@ -126,16 +126,16 @@
                 {% set disabled = true %}
             {% endif %}
             {% set values = object.getDynamicFields().getValues(field.getId()) %}
-            {% set can_add = false %}
+            {#% set can_add = false %}
             {% if field.getRepeat() == 0 or values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
                 {% set can_add = true %}
-            {% endif %}
+            {% endif %#}
             {% for field_data in values %}
                 {% if not loop.first %}<br/>{% endif %}
                 {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
             {% endfor %}
             {% if values is not iterable or values|length == 0 %}
-                {% set field_data = { 'field_val': ''} %}
+                {% set field_data = {'field_val': ''} %}
                 {% if values is iterable %}
                     {% set current_count = values|length %}
                 {% else %}
@@ -154,7 +154,7 @@
                         {% set current_count = 1 %}
                     {% endif %}
                     {% set remaining = field.getRepeat() - current_count %}
-        <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurences.")|replace({ "%count": remaining}) }}</p>
+        <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurences.")|replace({"%count": remaining}) }}</p>
                 {% endif %}
             {% endif %}
         {% endif %}
@@ -194,7 +194,7 @@
                 _lnkEvent(_b, _new, _parent);
                 _parent.append(_b);
                 if (_current < _total) {
-                    $('#repeat_msg').html('{{ _T("Enter up to %count more occurrences.")|replace({ "%count": "COUNT"})|e('js') }}'.replace(/COUNT/, _total - _current));
+                    $('#repeat_msg').html('{{ _T("Enter up to %count more occurrences.")|replace({"%count": "COUNT"})|e('js') }}'.replace(/COUNT/, _total - _current));
                 }
             } else if (_current == _total) {
                 $('#repeat_msg').remove();
