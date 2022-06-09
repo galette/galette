@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 20:17+0200\n"
+"POT-Creation-Date: 2022-06-09 07:30+0200\n"
 "PO-Revision-Date: 2021-12-01 04:52+0000\n"
 "Last-Translator: Oppo CPH2083 (OPPO_A12) <axl986859@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
@@ -2027,7 +2027,7 @@ msgstr ""
 #: ../../tempcache/pages/mailings_list.html.twig:138
 #: ../../tempcache/pages/advanced_search.html.twig:469
 #: ../../tempcache/pages/advanced_search.html.twig:1321
-#: ../../tempcache/pages/advanced_search.html.twig:1717
+#: ../../tempcache/pages/advanced_search.html.twig:1713
 msgid "Yes"
 msgstr ""
 
@@ -2048,7 +2048,7 @@ msgstr ""
 #: ../../tempcache/pages/mailings_list.html.twig:154
 #: ../../tempcache/pages/advanced_search.html.twig:485
 #: ../../tempcache/pages/advanced_search.html.twig:1329
-#: ../../tempcache/pages/advanced_search.html.twig:1723
+#: ../../tempcache/pages/advanced_search.html.twig:1715
 msgid "No"
 msgstr ""
 
@@ -4707,7 +4707,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:741
 #: ../../tempcache/pages/advanced_search.html.twig:758
 #: ../../tempcache/pages/advanced_search.html.twig:1297
-#: ../../tempcache/pages/advanced_search.html.twig:1751
+#: ../../tempcache/pages/advanced_search.html.twig:1743
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:635
@@ -4766,7 +4766,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:712
 #: ../../tempcache/pages/advanced_search.html.twig:1665
 #: ../../tempcache/pages/advanced_search.html.twig:1675
-#: ../../tempcache/pages/advanced_search.html.twig:1823
+#: ../../tempcache/pages/advanced_search.html.twig:1815
 #: ../../tempcache/components/dynamic_fields.html.twig:355
 msgid "Select a date"
 msgstr ""
