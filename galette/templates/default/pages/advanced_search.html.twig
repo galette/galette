@@ -659,7 +659,7 @@
                         case '{{ constant('Galette\\DynamicFields\\DynamicField::BOOLEAN') }}':
                             _html  = _getOperatorSelector(['op_equals']);
 
-                            _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"{% if fs.search == 1 %} checked="checked"{% endif %}/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"{% if fs.search == 0 %} checked="checked"{% endif %}/><label for="free_text_no">{{ _T('No') }}</label>';
+                            _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"/><label for="free_text_no">{{ _T('No') }}</label>';
                             break;
                         case '{{ constant('Galette\\DynamicFields\\DynamicField::CHOICE') }}':
                             _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
