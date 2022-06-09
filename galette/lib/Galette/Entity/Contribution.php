@@ -1223,7 +1223,7 @@ class Contribution
                         // Caution : the end_date stored is actually the due date.
                         // Adding a day to compute the next_begin_date is required
                         // to return the right number of months.
-                        $next_begin_date = new \DateTime($this->_end_date);
+                        $next_begin_date = new \DateTime($this->_end_date ?? $this->_begin_date);
                         $next_begin_date->add(new \DateInterval('P1D'));
                         $begin_date = new \DateTime($this->_begin_date);
                         $diff = $next_begin_date->diff($begin_date);
