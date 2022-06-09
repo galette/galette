@@ -582,7 +582,7 @@ class Galette
                             'name' => 'contributions',
                             'args' => ['type' => 'contributions']
                         ],
-                        'icon' => 'users cog'
+                        'icon' => 'cookie'
                     ],
                     [
                         'label' => _T("Transactions"),
