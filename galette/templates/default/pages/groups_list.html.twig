@@ -4,7 +4,7 @@
 
 {%  macro group_item(login, group) %}
     <div class="item">
-        <a class="" href="{% if login.isGroupManager(group.getId()) %}{{ path_for("groups", { "id": group.getId() }) }}{% else %}#{% endif %}">
+        <a class="ui label" href="{% if login.isGroupManager(group.getId()) %}{{ path_for("groups", { "id": group.getId() }) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
         {% if group.getGroups()|length > 0 %}
@@ -20,7 +20,7 @@
 
 {% block content %}
 
-<div class="ui labeled dropdown button">
+<div class="ui floating compact labeled dropdown button">
     <a class="ui icon button">
         <i class="dropdown icon"></i> {{ _T("Select a group") }}
     </a>
