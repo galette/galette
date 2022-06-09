@@ -31,19 +31,21 @@
             title="{{ title }}"
             {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
     >
-        {{ label }}
         {% if icon %}
             <i class="{{  icon }} icon" aria-hidden="true"></i>
         {% endif %}
+        {{ label }}
     </a>
 {% endmacro %}
 
 {%  macro dashboardCard(label, title, route, icon) %}
     <a class="ui card" href="{{ path_for(route.name, route.args|default([])) }}" title="{{ title }}">
         <div class="content">
-            <div class="header">
+            <div class="ui header">
                 <i class="ui huge {{ icon }} grey icon"></i>
-                {{ label }}
+                <div class="content">
+                    {{ label }}
+                </div>
             </div>
         </div>
     </a>

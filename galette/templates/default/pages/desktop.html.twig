@@ -3,48 +3,44 @@
 {% import "macros.twig" as macros %}
 
 {% block content %}
-    <div class="container">
-        <div>
-    {% if not hide_telemetry and constant('GALETTE_MODE') != 'DEMO' %}
-    <div class="ui info message">
-        <i class="close icon"></i>
-        <div class="header">
-            {{ _T("Help us know about you!") }}
-        </div>
-        <p>
-            {# TODO: use a trash icon next to close one instead of a checkbox #}
-            {{ _T("Take a moment to share some information with us so we can know better Galette's uses.") }}
-            <span class="ui checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
-                <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1"{% if hide_telemetry %} checked="checked"{% endif %}/>
-                <label for="hide_telemetry">{{ _T("Hide this panel") }}</label>
-            </span>
-        </p>
-        <div class="ui two centered stackable cards">
-            {% if not telemetry_sent %}
-                <a id="telemetry" class="ui card" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
-                    <div class="content">
-                        <div class="center aligned header">
-                            <i class="ui huge chart bar grey icon"></i>
+    <div class="ui grid">
+{% if not hide_telemetry and constant('GALETTE_MODE') != 'DEMO' %}
+        <div class="sixteen wide column">
+            <div class="ui yellow message">
+                <div class="header">{{ _T("Help us know about you!") }}</div>
+                <div class="ui stackable grid">
+                    <div class="sixteen wide column">
+                        <p>
+                            {{ _T("Take a moment to share some information with us so we can know better Galette's uses.") }}
+                        </p>
+                    </div>
+                    <div class="sixteen wide column">
+        {% if not telemetry_sent %}
+                        <a id="telemetry" class="large ui orange button" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
+                            <i class="chart bar icon"></i>
                             {{ _T("Telemetry") }}
-                        </div>
-                    </div>
-                </a>
-            {% endif %}
-            {% if not registered %}
-                <a class="ui card" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
-                    <div class="content">
-                        <div class="center aligned header">
-                            <i class="ui huge id card outline grey icon"></i>
+                        </a>
+        {% endif %}
+        {% if not registered %}
+                        <a class="large ui orange button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
+                            <i class="id card icon"></i>
                             {{ _T("Register") }}
+                        </a>
+        {% endif %}
+                        <div class="ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
+                            <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1" {% if hide_telemetry %} checked="checked"{% endif %} />
+                            <label for="hide_telemetry">{{ _T("Hide this panel") }}</label>
                         </div>
                     </div>
-                </a>
-            {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
-    {% endif %}
-            <h3 class="ui top attached header">{{ _T("Activities") }}</h3>
-            <div class="ui attached segment">
+{% endif %}
+        <div class="sixteen wide{% if news|length > 0 %} tablet ten wide computer{% endif %} column">
+            <div class="ui attached yellow segment">
+                <div class="ui medium header">{{ _T("Activities") }}</div>
+            </div>
+            <div id="main-activities" class="ui bottom attached segment">
                 <div class="ui three stackable cards">
                     {% set dashboard_entries = callstatic('\\Galette\\Core\\Galette', 'getDashboards') %}
                     {% for dashboard_entry in dashboard_entries %}
@@ -55,29 +51,33 @@
                             dashboard_entry.icon,
                         ) }}
                     {% endfor %}
+                 </div>
+             </div>
+        </div>
+{% if news|length > 0 %}
+        <div class="sixteen wide tablet six wide computer column">
+            <div class="ui attached yellow segment">
+                <div class="ui medium header">{{ _T("News") }}</div>
+            </div>
+            <div class="ui bottom attached segment">
+                <div class="ui bulleted list">
+    {% for post in news %}
+                    <div class="item">
+                        <a href="{{ post.url }}" target="_blank">{{ post.title }}</a>
+                    </div>
+    {% endfor %}
                 </div>
             </div>
-            <div class="ui basic segment">
+        </div>
+{% endif %}
+        <div class="sixteen wide column">
+            <div class="ui basic vertically fitted segment">
                 <div class="ui toggle checkbox">
                     <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{% if show_dashboard %} checked="checked"{% endif %}/>
                     <label for="show_dashboard">{{ _T("Show dashboard on login") }}</label>
                 </div>
             </div>
         </div>
-    {% if news|length > 0 %}
-        <div>
-            <h3 class="ui top attached header">{{ _T("News") }}</h3>
-            <div class="ui attached segment">
-                <div class="ui bulleted list">
-        {% for post in news %}
-                    <div class="item">
-                        <a href="{{ post.url }}" target="_blank">{{ post.title }}</a>
-                    </div>
-        {% endfor %}
-                </div>
-            </div>
-        </div>
-    {% endif %}
     </div>
 
     {% if not hide_telemetry and not telemetry_sent %}

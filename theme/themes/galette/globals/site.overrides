@@ -73,6 +73,19 @@ section.content,
   margin: 0 !important;
 }
 
+#main-activities a i {
+  opacity: .6;
+}
+
+#main-activities a:hover i {
+  opacity: 1;
+  color: @primaryColor;
+}
+
+#main-activities .header {
+  color: @textColor;
+}
+
 #filtre .fields .fields {
   margin: 0;
 }
