@@ -95,6 +95,10 @@ jobs:
         run: |
           galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/fields_defs/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php
 
+      - name: Twig CS
+        run: |
+          galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
+
       - name: Install checker
         working-directory: galette
         run: composer require maglnet/composer-require-checker -W
