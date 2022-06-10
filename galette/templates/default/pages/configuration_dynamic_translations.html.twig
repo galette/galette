@@ -24,12 +24,12 @@
         <form action="{{ path_for('editDynamicTranslation') }}" method="post" enctype="multipart/form-data" class="ui equal width form">
     {% if not exists %}
             <div class="field">
-                <label>{{ _T("Original text: '%s'")|replace({ '%s': text_orig|escape }) }}</label>
+                <label>{{ _T("Original text: '%s'")|replace({'%s': text_orig|escape}) }}</label>
                 <input type="hidden" name="new" value="true"/>
             </div>
     {% endif %}
             <div class="ui top attached header">
-                {{ _T("Translation of '%s' label")|replace({ '%s': text_orig|escape }) }}
+                {{ _T("Translation of '%s' label")|replace({'%s': text_orig|escape}) }}
             </div>
             <div class="ui bottom attached segment">
                 <div class="active content field">

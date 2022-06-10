@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <form action="{{ path_for('editPaymentType', { 'id': ptype.__get('id') }) }}" method="post" class="ui form">
+    <form action="{{ path_for('editPaymentType', {'id': ptype.__get('id')}) }}" method="post" class="ui form">
         <div class="ui segment" id="general">
             <div class="field inline">
                 <label for="name" class="" title="{{ _T("Original string for name, that will be used for translations.") }}">{{ _T("Name:") }}</label>

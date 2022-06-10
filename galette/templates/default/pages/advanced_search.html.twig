@@ -378,7 +378,7 @@
                         <select name="cdsc_{{ field.getId() }}[]" id="cdsc_{{ field.getId() }}" multiple="multiple" class="ui dropdown nochosen">
                             <option value="">{{ _T('Select') }}</option>
         {% for k, choice in field.getValues() %}
-                            <option value="{{ k }}"{% if cds.field is defined and  cds.field == rid %} selected="selected"{% endif %}>{{ choice }}</option>
+                            <option value="{{ k }}"{% if cds.field is defined and cds.field == rid %} selected="selected"{% endif %}>{{ choice }}</option>
         {% endfor %}
                         </select>
     {% endif %}
@@ -422,8 +422,7 @@
                         (constant("Galette\\Entity\\Adherent::NC")): _T('Unspecified'),
                         (constant("Galette\\Entity\\Adherent::MAN")): _T('Man'),
                         (constant("Galette\\Entity\\Adherent::WOMAN")): _T('Woman')
-                    }
-                %}
+                } %}
             {% else %}
                 {% set type = constant("Galette\\DynamicFields\\DynamicField::LINE") %}
             {% endif %}
@@ -521,35 +520,35 @@
         <script type="text/javascript">
             var _operators = {
                 op_equals: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }},
                     name: "{{ _T('is') }}"
                 },
                 op_contains: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") }},
                     name: "{{ _T('contains') }}"
                 },
                 op_not_equals: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }},
                     name: "{{ _T('is not') }}"
                 },
                 op_not_contains: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") }},
                     name: "{{ _T('do not contains') }}"
                 },
                 op_starts_with: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") }},
                     name: "{{ _T('starts with') }}"
                 },
                 op_ends_with: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") }},
                     name: "{{ _T('ends with') }}"
                 },
                 op_before: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }},
                     name: "{{ _T('before') }}"
                 },
                 op_after: {
-                    id: {{ constant ("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }},
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }},
                     name: "{{ _T('after') }}"
                 },
             };
@@ -567,8 +566,7 @@
                 (constant("Galette\\Entity\\Adherent::NC")): _T('Unspecified'),
                 (constant("Galette\\Entity\\Adherent::MAN")): _T('Man'),
                 (constant("Galette\\Entity\\Adherent::WOMAN")): _T('Woman')
-            }
-        %}
+        } %}
     {% else %}
         {% set type = constant("Galette\\DynamicFields\\DynamicField::LINE") %}
     {% endif %}

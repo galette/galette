@@ -79,7 +79,7 @@
                     {% if login.isAdmin() or login.isStaff() %}
                         <a
                                 href="{{ path_for("duplicateMember", {"id_adh": member.id}) }}"
-                                title="{{ _T("Create a new member with %name information.")|replace({ "%name": member.sfullname }) }}"
+                                title="{{ _T("Create a new member with %name information.")|replace({"%name": member.sfullname}) }}"
                                 class="ui item"
                         >
                             <i class="clone icon" aria-hidden="true"></i>
@@ -95,7 +95,7 @@
             </div>
         </div>
     </div>
-    {% include "elements/navigate.html.twig" with { "mpath": "member" } %}
+    {% include "elements/navigate.html.twig" with {"mpath": "member"} %}
     {% include "elements/member_card.html.twig" %}
 
     {% if member.hasParent() or member.hasChildren() %}
@@ -110,7 +110,7 @@
             {% if member.hasParent() %}
                     <tr>
                         <th>{{ _T("Attached to:") }}</th>
-                        <td><a href="{{ path_for("member", { "id": member.parent.id }) }}">{{ member.parent.sfullname }}</a></td>
+                        <td><a href="{{ path_for("member", {"id": member.parent.id}) }}">{{ member.parent.sfullname }}</a></td>
                     </tr>
             {% endif %}
             {% if member.hasChildren() %}
@@ -118,7 +118,7 @@
                         <th>{{ _T("Parent of:") }}</th>
                         <td>
                 {% for child in member.children %}
-                            <a href="{{ path_for("member", { "id": child.id}) }}">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
+                            <a href="{{ path_for("member", {"id": child.id}) }}">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
                 {% endfor %}
                         </td>
                     </tr>
@@ -201,7 +201,7 @@
                         <td>
             {% for kgroup, group in groups %}
                 {% if member.isGroupMember(group) or member.isGroupManager(group) %}
-                            <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", { "id": kgroup }) }}{% else %}#{% endif %}" class="ui button {% if not login.isGroupManager(kgroup) %} notmanaged{% endif %}">
+                            <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui button {% if not login.isGroupManager(kgroup) %} notmanaged{% endif %}">
                                 {{ group }}
                     {% if member.isGroupMember(group) %}
                                 <i class="ui user icon" title="{{ _T("Member of group") }}"></i>
@@ -222,8 +222,8 @@
     </div>
 {% endfor %}
 
-{% include "elements/display_dynamic_fields.html.twig" with { object: member } %}
-{% include "elements/display_socials.html.twig" with { socials: member.socials } %}
+{% include "elements/display_dynamic_fields.html.twig" with {object: member} %}
+{% include "elements/display_socials.html.twig" with {socials: member.socials} %}
 
 {% endblock %}
 

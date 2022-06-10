@@ -8,11 +8,11 @@
                 {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
             </div>
         </div>
-        <form action="{{ path_for("filterPublicList", { "type": "list" }) }}" method="POST" id="filtre" class="ui form">
+        <form action="{{ path_for("filterPublicList", {"type": "list"}) }}" method="POST" id="filtre" class="ui form">
             <div class="infoline">
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">
-                        <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({ '%count': nb_members }) }}</div>
+                        <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}) }}</div>
                     </div>
                     <div class="ui basic right aligned fitted segment">
                         <div class="inline field">
@@ -33,7 +33,7 @@
             <thead>
                 <tr>
                     <th class="left">
-                        <a href="{{ path_for("publicList", { "type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NAME") }) }}" class="listing">
+                        <a href="{{ path_for("publicList", {"type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NAME")}) }}" class="listing">
                             {{ _T('Name') }}
                             {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_NAME') %}
                                 {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
@@ -45,7 +45,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{{ path_for("publicList", { "type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NICKNAME") }) }}" class="listing">
+                        <a href="{{ path_for("publicList", {"type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")}) }}" class="listing">
                             {{ _T('Nickname') }}
                             {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_NICKNAME') %}
                                 {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
@@ -69,7 +69,7 @@
             <tbody>
     {% for member in members %}
         {% set rclass = member.getRowClass() %}
-                <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
+                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                     <td class="{{ rclass }} username_row" data-scope="row">
                     {% if member.isCompany() %}
                         <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
@@ -81,7 +81,7 @@
                         <i class="ui icon"></i>
                     {% endif %}
                     {% if member.website != '' %}
-                        <a href="{{ member.website }}">{{ member.sfullname }}</a>
+                        <a href="{{ member.website }}">{{ member.sfullname }}</a>
                     {% else %}
                         {{ member.sfullname }}
                     {% endif %}

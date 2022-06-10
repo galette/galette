@@ -1,6 +1,6 @@
 {% extends "page.html.twig" %}
 {% block content %}
-        <form action="{{ path_for("payments_filter", { "type": "transactions" }) }}" method="post" id="filtre" class="ui form">
+        <form action="{{ path_for("payments_filter", {"type": "transactions"}) }}" method="post" id="filtre" class="ui form">
         <div class="ui segment">
             <div class="two fields">
                 <div class="two fields">
@@ -36,7 +36,7 @@
             <div class="ui horizontal list">
                 <span class="ui primary ribbon label">
                     <a
-                        href="{{ path_for("contributions", { "type": "transactions", "option": "member", "value": "all" }) }}"
+                        href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
                         class="tooltip"
                     >
                         <i class="icon eraser"></i>
@@ -47,7 +47,7 @@
                 </span>
     {% if login.isAdmin() or login.isStaff() %}
                 <div class="item">
-                    <a href="{{ path_for("member", { "id": member.id }) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
+                    <a href="{{ path_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
                 </div>
                 <div class="item">
                     <a href="{{ path_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny button">{{ _T("Add a transaction") }}</a>
@@ -59,7 +59,7 @@
         <div class="infoline">
             <div class="ui basic horizontal segments">
                 <div class="ui basic fitted segment">
-                    <div class="ui label">{{ _Tn("%count transaction",  "%count transactions", nb)|replace({ "%count": nb }) }}</div>
+                    <div class="ui label">{{ _Tn("%count transaction", "%count transactions", nb)|replace({"%count": nb}) }}</div>
                 </div>
                 <div class="ui basic right aligned fitted segment">
                     <div class="inline field">
@@ -80,7 +80,7 @@
             <thead>
                 <tr>
                     <th class="id_row">
-                        <a href="{{ path_for("contributions", { "type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_ID") }) }}">#
+                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_ID")}) }}">#
                         {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_ID') %}
                             {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
                             <i class="ui angle down icon tooltip"></i>
@@ -91,7 +91,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{{ path_for("contributions", { "type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE") }) }}">{{ _T("Date") }}
+                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE")}) }}">{{ _T("Date") }}
                         {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_DATE') %}
                             {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
                         <i class="ui angle down icon tooltip"></i>
@@ -103,7 +103,7 @@
                     </th>
                     {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
                         <th class="left">
-                            <a href="{{ path_for("contributions", { "type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER") }) }}">{{ _T("Member") }}
+                            <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}) }}">{{ _T("Member") }}
                                 {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_MEMBER') %}
                                     {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
                                         <i class="ui angle down icon tooltip"></i>
@@ -117,7 +117,7 @@
                     <th class="left">{{ _T("Description") }}</th>
 {% if login.isAdmin() or login.isStaff() %}
                     <th class="left">
-                        <a href="{{ path_for("contributions", { "type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER") }) }}">{{ _T("Originator") }}
+                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}) }}">{{ _T("Originator") }}
                         {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_MEMBER') %}
                             {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
                         <i class="ui angle down icon tooltip"></i>
@@ -129,7 +129,7 @@
                     </th>
 {% endif %}
                     <th class="left">
-                        <a href="{{ path_for("contributions", { "type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT") }) }}">{{ _T("Amount") }}
+                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT")}) }}">{{ _T("Amount") }}
                         {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT') %}
                             {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
                         <i class="ui angle down icon tooltip"></i>
@@ -156,8 +156,8 @@
                         {{ ordre + 1 + (filters.current_page - 1) * numrows }}
     {% endif %}
                         <span class="row-title">
-                            <a href="{{ path_for("editTransaction", { "id": transaction.id }) }}">
-                                {{ _T("Transaction %id")|replace({ "%id": transaction.id }) }}
+                            <a href="{{ path_for("editTransaction", {"id": transaction.id}) }}">
+                                {{ _T("Transaction %id")|replace({"%id": transaction.id}) }}
                             </a>
                         </span>
                     </td>
@@ -167,19 +167,19 @@
                             {% if member is defined %}
                                 {% set mname = member.sname %}
                             {% else %}
-                                {% set mname = memberName({ id: mid }) %}
+                                {% set mname = memberName({id: mid}) %}
                             {% endif %}
                             {% if filters.filtre_cotis_adh == "" %}
                                 <a
-                                        href="{{ path_for("contributions", { "type": "transactions", "option": "member", "value": mid }) }}"
-                                        title="{{ _T("Show only '%name' transactions")|replace({ "%name": mname }) }}"
+                                        href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
+                                        title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
                                 >
                                     <i class="fa fa-filter"></i>
                                 </a>
                             {% endif %}
                             <a
-                                    href="{{ path_for("member", { "id": mid }) }}"
-                                    title="{{ _T("Show '%name' card")|replace({ "%name": mname }) }}"
+                                    href="{{ path_for("member", {"id": mid}) }}"
+                                    title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
                             >
                                 {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                             </a>
@@ -189,11 +189,11 @@
 {% if login.isAdmin() or login.isStaff() %}
                     <td class="{{ cclass }}" data-title="{{ _T("Originator") }}">
     {% if filters.filtre_cotis_adh == "" %}
-                        <a href="{{ path_for("contributions", { "type": "transactions", "option": "member", "value": mid }) }}">
+                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}">
                             {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                         </a>
     {% else %}
-                        <a href="{{ path_for("member", { "id": mid }) }}">
+                        <a href="{{ path_for("member", {"id": mid}) }}">
                             {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                         </a>
     {% endif %}
@@ -203,18 +203,18 @@
 {% if login.isAdmin() or login.isStaff() %}
                     <td class="{{ cclass }} center">
                         <a
-                            href="{{ path_for("editTransaction", { "id": transaction.id }) }}"
+                            href="{{ path_for("editTransaction", {"id": transaction.id}) }}"
                             class="tooltip action"
                         >
                             <i class="ui edit icon"></i>
-                            <span class="sr-only">{{ _T("Edit transaction #%id")|replace({ "%id": transaction.id }) }}</span>
+                            <span class="sr-only">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
                         </a>
                         <a
-                            href="{{ path_for("removeContribution", { "type": "transactions", "id": transaction.id }) }}"
+                            href="{{ path_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                             class="delete tooltip"
                         >
                             <i class="ui trash red icon"></i>
-                            <span class="sr-only">{{ _T("Remove transaction #%id")|replace({ "%id": transaction.id }) }}</span>
+                            <span class="sr-only">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
                         </a>
                     </td>
 {% endif %}

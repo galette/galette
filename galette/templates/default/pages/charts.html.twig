@@ -4,23 +4,23 @@
         <div class="ui centered grid">
                 <div class="eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Members by status") }}</h2>
-                        <canvas id="{{constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE')}}" width="640" height="640"></canvas>
+                        <canvas id="{{ constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE') }}" width="640" height="640"></canvas>
                 </div>
                 <div class="eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Members by state of dues") }}</h2>
-                        <canvas id="{{constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE')}}" width="640" height="640"></canvas>
+                        <canvas id="{{ constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE') }}" width="640" height="640"></canvas>
                 </div>
                 <div class="eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Contributions types repartition") }}</h2>
-                        <canvas id="{{constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE')}}" width="640" height="640"></canvas>
+                        <canvas id="{{ constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE') }}" width="640" height="640"></canvas>
                 </div>
                 <div class="eight wide mobile four wide computer column">
                         <h2 class="ui center aligned header">{{ _T("Individuals and Companies") }}</h2>
-                        <canvas id="{{constant('Galette\\IO\\Charts::COMPANIES_OR_NOT')}}" width="320" height="320"></canvas>
+                        <canvas id="{{ constant('Galette\\IO\\Charts::COMPANIES_OR_NOT') }}" width="320" height="320"></canvas>
                 </div>
                 <div class="sixteen wide mobile twelve wide computer column">
                         <h2 class="ui center aligned header">{{ _T("Contributions over time") }}</h2>
-                        <canvas id="{{constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME')}}" width="960" height="320"></canvas>
+                        <canvas id="{{ constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME') }}" width="960" height="320"></canvas>
                 </div>
         </div>
 {% endblock %}
@@ -37,7 +37,7 @@
             Chart.defaults.font.color = 'rgb(99, 107, 112)';
             Chart.defaults.backgroundColor = 'rgb(158, 226, 226)';
 
-            const _members_status_pie_ctx = document.getElementById('{{constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE')}}').getContext('2d');
+            const _members_status_pie_ctx = document.getElementById('{{ constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE') }}').getContext('2d');
             let _members_status_pie_total = {{ charts.MembersStatusPieData }}.reduce(getSum, 0);
             const _members_status_pie = new Chart(_members_status_pie_ctx, {
                 type: 'pie',
@@ -88,7 +88,7 @@
                 }
             });
 
-            const _members_statedue_pie_ctx = document.getElementById('{{constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE')}}').getContext('2d');
+            const _members_statedue_pie_ctx = document.getElementById('{{ constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE') }}').getContext('2d');
             let _members_statedue_pie_total = {{ charts.MembersStateDuePieData }}.reduce(getSum, 0);
             const _members_statedue_pie = new Chart(_members_statedue_pie_ctx, {
                 type: 'pie',
@@ -138,7 +138,7 @@
                 }
             });
 
-            const _contribs_types_pie_ctx = document.getElementById('{{constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE')}}').getContext('2d');
+            const _contribs_types_pie_ctx = document.getElementById('{{ constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE') }}').getContext('2d');
             let _contribs_types_pie_total = {{ charts.ContribsTypesPieData }}.reduce(getSum, 0);
             const _contribs_types_pie_pie = new Chart(_contribs_types_pie_ctx, {
                 type: 'pie',
@@ -188,7 +188,7 @@
                 }
             });
 
-            const _companies_individuals_ctx = document.getElementById('{{constant('Galette\\IO\\Charts::COMPANIES_OR_NOT')}}').getContext('2d');
+            const _companies_individuals_ctx = document.getElementById('{{ constant('Galette\\IO\\Charts::COMPANIES_OR_NOT') }}').getContext('2d');
             let _companies_individuals_total = {{ charts.CompaniesOrNotData }}.reduce(getSum, 0);
             const _companies_individuals = new Chart(_companies_individuals_ctx, {
                 type: 'doughnut',
@@ -238,7 +238,7 @@
                 }
             });
 
-            const _contribs_alltime_ctx = document.getElementById('{{constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME')}}').getContext('2d');
+            const _contribs_alltime_ctx = document.getElementById('{{ constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME') }}').getContext('2d');
             const _contribs_alltime = new Chart(_contribs_alltime_ctx, {
                 type: 'bar',
                 data: {

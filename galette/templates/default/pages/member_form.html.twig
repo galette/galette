@@ -2,17 +2,17 @@
 
 {% block content %}
     {% if member.id %}
-        {% include "elements/navigate.html.twig" with { "mpath": "editMember" } %}
+        {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
         {% include "elements/member_card.html.twig" %}
     {% endif %}
 
-    <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", { "id": member.id }) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form">
+    <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form">
     {% if not self_adh %}
             <div class="ui compact segment">
         {% if member.hasParent() and not member.isDuplicate() %}
                 <div class="inline field">
                     <span class="ui primary ribbon label">{{ _T("Attached to:") }}</span>
-                    <a href="{{ path_for("member", { "id": member.parent.id }) }}" class="ui label">{{ member.parent.sfullname }}</a>
+                    <a href="{{ path_for("member", {"id": member.parent.id}) }}" class="ui label">{{ member.parent.sfullname }}</a>
             {% if not member.id %}
                     <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
             {% endif %}
@@ -43,7 +43,7 @@
                 <div class="inline field">
                     <span class="ui primary ribbon label">{{ _T("Parent of:") }}</span>
             {% for child in member.children %}
-                    <a href="{{ path_for("member", { "id": child.id }) }}" class="ui label">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
+                    <a href="{{ path_for("member", {"id": child.id}) }}" class="ui label">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
             {% endfor %}
                 </div>
         {% endif %}
@@ -52,8 +52,8 @@
             {# Main form entries #}
             {% include "components/form.html.twig" %}
             {# Dynamic entries #}
-            {% include "components/dynamic_fields.html.twig" with { object: member } %}
-            {% include "elements/edit_socials.html.twig" with { socials: member.socials, social_fieldset_class: "galette_form", social_fieldset_legend_class: "ui-state-active ui-corner-top"} %}
+            {% include "components/dynamic_fields.html.twig" with {object: member} %}
+            {% include "elements/edit_socials.html.twig" with {socials: member.socials, social_fieldset_class: "galette_form", social_fieldset_legend_class: "ui-state-active ui-corner-top"} %}
 
     {% if not member.id and not self_adh %}
         {% if login.isAdmin() or login.isStaff() %}
@@ -61,12 +61,12 @@
                 <div class="inline field">
                     <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
                     <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown nochosen">
-                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
-                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
-                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
-                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
-                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
-                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if preferences.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
                     </select>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                     {% set propname = entry.propname %}
                     {% if entry.field_id == 'activite_adh' %}
                         {% set value = member.isActive() %}
-                    {% else%}
+                    {% else %}
                         {% set value = attribute(member, propname) %}
                     {% endif %}
                     {% set checked = null %}
@@ -124,8 +124,7 @@
                                 name: entry.field_id,
                                 id: entry.field_id,
                                 value: value
-                            }
-                        %}
+                        } %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
@@ -136,7 +135,7 @@
 
 {% block javascripts %}
         <script type="text/javascript">
-            {% include "elements/js/choose_adh.js.twig" with { "js_chosen_id": "#parent_id" } %}
+            {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
             $(function() {
                 $('#is_company').change(function(){
                     $('#company_field').toggleClass('hidden');

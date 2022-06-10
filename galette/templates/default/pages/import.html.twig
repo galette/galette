@@ -36,7 +36,7 @@
                                 </thead>
                                 <tbody>
     {% for import in existing %}
-                                    <tr class="{{ loop.index is odd ? 'odd' : 'even'}}">
+                                    <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                         <td data-scope="row">
                                             <input type="radio" name="import_file" id="file{{ loop.index }}" value="{{ import.name }}"{% if import_file is defined and import_file == import.name %} checked="checked"{% endif %}/>
                                             <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ path_for("getCsv", { "type": "import", "file": import.name }) }}">{{ _T('see') }}</a>)
