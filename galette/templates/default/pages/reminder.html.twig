@@ -11,15 +11,15 @@
                         <input type="checkbox" name="reminders[]" id="reminder_impending" value="{{ constant("Galette\\Entity\\Reminder::IMPENDING") }}"{% if count_impending == 0 and count_impending_nomail == 0 %} disabled="disabled"{% endif %}/>
                         <label for="reminder_impending">{{ _T("Impending due date") }}</label>
                         <a class="show_previews" id="impending" href="#impending_preview">({{ _T("preview") }})</a> -
-                        <a href="{{ path_for("reminders-filter", { "membership": "nearly", "mail": "withmail" }) }}">{{ _T("%s members with an email address")|replace({ "%s": count_impending }) }}</a>
-                        <a href="{{ path_for("reminders-filter", {"membership": "nearly", "mail": "withoutmail" }) }}">{{ _T("%s members without email address")|replace({ "%s": count_impending_nomail }) }}</a>
+                        <a href="{{ path_for("reminders-filter", {"membership": "nearly", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_impending}) }}</a>
+                        <a href="{{ path_for("reminders-filter", {"membership": "nearly", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_impending_nomail}) }}</a>
                     </div>
                     <div class="inline field{% if count_late == 0 and count_late_nomail == 0 %} disabled{% endif %}">
                         <input type="checkbox" name="reminders[]" id="reminder_late" value="{{ constant("Galette\\Entity\\Reminder::LATE") }}"{% if count_late == 0 and count_late_nomail == 0 %} disabled="disabled"{% endif %}/>
                         <label for="reminder_late">{{ _T("Late") }}</label>
                         <a class="show_previews" id="late" href="#impending_preview">({{ _T("preview") }})</a> -
-                        <a href="{{ path_for("reminders-filter", { "membership": "late", "mail": "withmail" }) }}">{{ _T("%s members with an email address")|replace({ "%s": count_late }) }}</a>
-                        <a href="{{ path_for("reminders-filter", {"membership": "late", "mail": "withoutmail" }) }}">{{ _T("%s members without email address")|replace({ "%s": count_late_nomail }) }}</a>
+                        <a href="{{ path_for("reminders-filter", {"membership": "late", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_late}) }}</a>
+                        <a href="{{ path_for("reminders-filter", {"membership": "late", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_late_nomail}) }}</a>
                     </div>
                     <div class="inline field{% if count_impending_nomail == 0 and count_late_nomail == 0 %} disabled{% endif %}">
                         <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{% if count_impending_nomail == 0 and count_late_nomail == 0 %} disabled="disabled"{% endif %}/>

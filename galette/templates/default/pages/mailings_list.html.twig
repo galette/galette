@@ -69,7 +69,7 @@
                         <i class="mail green icon"></i>
                         {{ _T('Create new mailing') }}
                     </a>
-                    <div class="ui label">{{ _Tn("%count entry", "%count entries", history.getCount())|replace({ '%count': history.getCount() }) }}</div>
+                    <div class="ui label">{{ _Tn("%count entry", "%count entries", history.getCount())|replace({'%count': history.getCount()}) }}</div>
 
                 </div>
                 <div class="ui basic right aligned fitted segment">
@@ -94,7 +94,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{{ path_for("mailings", { "option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_DATE") }) }}">
+                        <a href="{{ path_for("mailings", {"option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_DATE")}) }}">
                             {{ _T('Date') }}
                             {% if filters.orderby == constant("Galette\\Filters\\MailingsList::ORDERBY_DATE") %}
                                 {% if filters.ordered == constant("Galette\\Filters\\MailingsList::ORDER_ASC") %}
@@ -106,7 +106,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{{ path_for("mailings", { "option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER") }) }}">
+                        <a href="{{ path_for("mailings", {"option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")}) }}">
                             {{ _T('Sender') }}
                             {% if filters.orderby == constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER") %}
                                 {% if filters.ordered == constant("Galette\Filters\MailingsList::ORDER_ASC") %}
@@ -121,7 +121,7 @@
                         {{ _T('Recipients') }}
                     </th>
                     <th class="left">
-                        <a href="{{ path_for("mailings", { "option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT") }) }}">
+                        <a href="{{ path_for("mailings", {"option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")}) }}">
                             {{ _T('Subject') }}
                             {% if filters.orderby == constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT") %}
                                 {% if filters.ordered == constant("Galette\Filters\MailingsList::ORDER_ASC") %}
@@ -136,7 +136,7 @@
                         {{ _T('Att.') }}
                     </th>
                     <th class="left right small_head">
-                        <a href="{{ path_for("mailings", { "option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_SENT") }) }}">
+                        <a href="{{ path_for("mailings", {"option": "order", "value": constant("Galette\\Filters\\MailingsList::ORDERBY_SENT")}) }}">
                             {{ _T('Sent') }}
                             {% if filters.orderby == constant("Galette\\Filters\\MailingsList::ORDERBY_SENT") %}
                                 {% if filters.ordered == constant("Galette\Filters\MailingsList::ORDER_ASC") %}
@@ -161,7 +161,7 @@
                         {{ loop.index }}
     {% endif %}
                         <span class="row-title">
-                            {{ _T('Mailing entry %id')|replace({ '%id': log.mailing_id }) }}
+                            {{ _T('Mailing entry %id')|replace({'%id': log.mailing_id}) }}
                         </span>
                     </td>
                     <td class="" data-title="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
@@ -178,25 +178,25 @@
                     </td>
                     <td class="center actions_row">
                         <a
-                            href="{{ path_for("mailingPreview", { "id": log.mailing_id }) }}"
+                            href="{{ path_for("mailingPreview", {"id": log.mailing_id}) }}"
                             class="showdetails tooltip"
                         >
                             <i class="ui eye green icon"></i>
-                            <span class="sr-only">{{ _T("Display mailing '%subject' details in preview window")|replace({ '%subject': log.mailing_subject }) }}</span>
+                            <span class="sr-only">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
                         </a>
                         <a
                             href="{{ path_for('mailing') }}?from={{ log.mailing_id }}"
                             class="tooltip"
                         >
                             <i class="ui clone blue icon"></i>
-                            <span class="sr-only">{{ _T("Use mailing '%subject' as a template for a new one")|replace({ '%subject': log.mailing_subject }) }}</span>
+                            <span class="sr-only">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
                         </a>
                         <a
-                            href="{{ path_for("removeMailing", { "id": log.mailing_id }) }}"
+                            href="{{ path_for("removeMailing", {"id": log.mailing_id}) }}"
                             class="delete tooltip"
                         >
                             <i class="ui trash red icon"></i>
-                            <span class="sr-only">{{ _T("Delete mailing '%subject'")|replace({ '%subject': log.mailing_subject }) }}</span>
+                            <span class="sr-only">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
                         </a>
                     </td>
                 </tr>

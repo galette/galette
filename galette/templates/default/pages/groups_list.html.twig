@@ -1,10 +1,10 @@
 {% extends "page.html.twig" %}
 
-{% set canExport = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
+{% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
 
-{%  macro group_item(login, group) %}
+{% macro group_item(login, group) %}
     <div class="item">
-        <a class="ui label" href="{% if login.isGroupManager(group.getId()) %}{{ path_for("groups", { "id": group.getId() }) }}{% else %}#{% endif %}">
+        <a class="ui label" href="{% if login.isGroupManager(group.getId()) %}{{ path_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
         {% if group.getGroups()|length > 0 %}
@@ -32,9 +32,9 @@
     </div>
 </div>
 
-{% if canExport %}
+{% if can_export %}
     <div class="ui buttons">
-        <a href="{{ path_for("pdf_groups", { "id": group.getId() }) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
+        <a href="{{ path_for("pdf_groups", {"id": group.getId()}) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
             <i class="file pdf icon" aria-hidden="true"></i>
             {{ _T("Group PDF") }}
         </a>
@@ -44,7 +44,7 @@
         </a>
     </div>
     {% if login.isAdmin() or login.isStaff() %}
-        <a href="{{ path_for("add_group", { "name": "NAME" }) }}" id="newgroup" class="ui labeled icon button tooltip">
+        <a href="{{ path_for("add_group", {"name": "NAME"}) }}" id="newgroup" class="ui labeled icon button tooltip">
             <i class="plus green icon" aria-hiddent="true"></i>
             {{ _T("New group") }}
         </a>
@@ -52,7 +52,7 @@
 {% endif %}
 
     {% if group.getId() %}
-        {% include "elements/group.html.twig" with { "group": group, "groups": groups } %}
+        {% include "elements/group.html.twig" with {"group": group, "groups": groups} %}
     {% else %}
         {{ _T("no group") }}
     {% endif %}

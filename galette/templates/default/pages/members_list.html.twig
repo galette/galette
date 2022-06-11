@@ -120,7 +120,7 @@
         <div class="infoline">
             <div class="ui basic horizontal segments">
                 <div class="ui basic fitted segment">
-                    <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({ '%count': nb_members }) }}</div>
+                    <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}) }}</div>
                 </div>
                 <div class="ui basic right aligned fitted segment">
                     <div class="inline field">
@@ -145,7 +145,7 @@
     {% if column.field_id == 'id_adh' %}
         {% if preferences.pref_show_id %}
                         <th class="id_row">
-                            <a href="{{ path_for("members", { "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_ID") }) }}">
+                            <a href="{{ path_for("members", {"option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_ID")}) }}">
                             {{ _T('Mbr id') }}
                             {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_ID') %}
                                 {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
@@ -230,7 +230,7 @@
         {% else %}
             {% set lrclass = rclass %}
             {% set propname = column.propname %}
-            {% set propvalue =  attribute(member, propname) %}
+            {% set propvalue = attribute(member, propname) %}
             {% set value = null %}
 
             {% if column.field_id == 'nom_adh' %}
@@ -776,7 +776,7 @@
         }
 
         {% include "elements/js/removal.js.twig" %}
-        {% include "elements/js/removal.js.twig" with { selector: "#delete", deleteurl: path_for("batch-memberslist"), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST" } %}
+        {% include "elements/js/removal.js.twig" with {selector: "#delete", deleteurl: path_for("batch-memberslist"), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
 {% endif %}
     </script>
 {% endblock %}

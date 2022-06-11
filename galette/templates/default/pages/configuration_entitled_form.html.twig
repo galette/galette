@@ -4,7 +4,7 @@
 {% set name = fields.libelle %}
 {% set id = fields.id %}
 {% set field = fields.third %}
-    <form action="{% if class == 'Status' %}{{ path_for('editEntitled', { 'class': url_class , 'action': 'edit', 'id': entry.id_statut }) }}{% else %}{{ path_for('editEntitled', { 'class': url_class , 'action': 'edit', 'id': entry.id_type_cotis }) }}{% endif %}" method="post" class="ui form">
+    <form action="{% if class == 'Status' %}{{ path_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_statut}) }}{% else %}{{ path_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_type_cotis}) }}{% endif %}" method="post" class="ui form">
         <div class="ui segment">
             <div class="field inline">
                 <label for="{{ name }}">{{ _T("Name:") }}</label>
@@ -20,7 +20,7 @@
                 </label>
 {% if class == 'Status' %}
                 <input type="text" size="4" name="{{ field }}" id="{{ field }}" value="{{ entry.priorite_statut }}" />
-                <span class="exemple">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({ '%priority': non_staff_priority }) }}</span>
+                <span class="exemple">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</span>
 {% elseif class == 'ContributionsTypes' %}
                 <input type="checkbox" name="{{ field }}" id="{{ field }}" value="1"{% if entry.cotis_extension == 1 %} checked="checked"{% endif %} />
 {% endif %}

@@ -12,7 +12,7 @@
         <div id="tabs">
             <ul>
 {% for m in models %}
-                <li{% if m.id == model.id %} class="ui-tabs-selected"{% endif %}><a href="{{ path_for('pdfModels', { 'id': m.id }) }}">{{ m.name }}</a></li>
+                <li{% if m.id == model.id %} class="ui-tabs-selected"{% endif %}><a href="{{ path_for('pdfModels', {'id': m.id}) }}">{{ m.name }}</a></li>
 {% endfor %}
             </ul>
             <div id="ui-tabs-{{ activetab }}">
@@ -40,7 +40,7 @@
 
                         _handleLegend({{ model.id }});
 
-                        if ( ui.ajaxSettings.url == '{{ path_for("pdfModels", { "id": model.id }) }}'
+                        if ( ui.ajaxSettings.url == '{{ path_for("pdfModels", {"id": model.id}) }}'
                              ||  ui.ajaxSettings.url == '{{ path_for("pdfModels") }}'
                         ) {
                             var _current = $('#ui-tabs-{{ activetab }}');

@@ -11,7 +11,7 @@
             {% if defaults_loaded %}
                 {{ _T('Default fields') }}
             {% else %}
-                {{ _T('Model parameted on %date')|replace({ '%date': model.getCreationDate() }) }}
+                {{ _T('Model parameted on %date')|replace({'%date': model.getCreationDate()}) }}
             {% endif %}
         </div>
         <thead>
@@ -23,9 +23,9 @@
     {% for field in fields %}
             <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
         {% if members_fields[field] is not defined %}
-                <td>{{ _T('Missing field \'%field\'')|replace({ '%field': field }) }}</td>
+                <td>{{ _T('Missing field \'%field\'')|replace({'%field': field}) }}</td>
         {% else %}
-                <td>{{ members_fields[field]['label']|replace({ ':': ''}) }}</td>
+                <td>{{ members_fields[field]['label']|replace({':': ''}) }}</td>
         {% endif %}
             </tr>
     {% endfor %}
@@ -64,7 +64,7 @@
                         <input type="checkbox" name="fields[]" id="field_{{ k }}" value="{{ k }}"{% if k in fields %} checked="checked"{% endif %}/>
                     </td>
                     <td>
-                        <label for="field_{{ k }}">{{ field['label']|replace({ ':': ''}) }}</label>
+                        <label for="field_{{ k }}">{{ field['label']|replace({':': ''}) }}</label>
                     </td>
                 </tr>
         {% endfor %}

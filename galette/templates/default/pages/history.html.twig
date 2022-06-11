@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="field">
-            {%set users = history.getUsersList() %}
+            {% set users = history.getUsersList() %}
             {% if users|length > 0 %}
                     <label for="user_filter">{{ _T("Member") }}</label>
                     <select name="user_filter" id="user_filter" class="ui search dropdown nochosen">
@@ -37,7 +37,7 @@
             {% endif %}
                 </div>
                 <div class="field">
-            {%set actions = history.getActionsList() %}
+            {% set actions = history.getActionsList() %}
             {% if actions|length > 0 %}
                     <label for="action_filter">{{ _T("Action") }}</label>
                     <select name="action_filter" id="action_filter" class="ui search dropdown nochosen">
@@ -65,7 +65,7 @@
                         <i class="trash red icon"></i>
                         {{ _T("Flush the logs") }}
                     </a>
-                    <div class="ui label">{{ _Tn("%count entry", "%count entries", history.getCount())|replace({ "%count": history.getCount() }) }}</div>
+                    <div class="ui label">{{ _Tn("%count entry", "%count entries", history.getCount())|replace({"%count": history.getCount()}) }}</div>
                 </div>
                 <div class="ui basic right aligned fitted segment">
                     <div class="inline field">
@@ -88,7 +88,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_DATE") }) }}">
+                        <a href="{{ path_for("history", {"option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_DATE")}) }}">
                             {{ _T("Date") }}
                             {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_DATE") %}
                                 {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
@@ -96,11 +96,11 @@
                                 {% else %}
                             <i class="ui angle up icon tooltip"></i>
                                 {% endif %}
-                            {% endif %} 
+                            {% endif %}
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_IP") }) }}">
+                        <a href="{{ path_for("history", {"option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_IP")}) }}">
                             {{ _T("IP") }}
                             {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_IP") %}
                                 {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
@@ -112,7 +112,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_USER") }) }}">
+                        <a href="{{ path_for("history", {"option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_USER")}) }}">
                             {{ _T("User") }}
                             {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_USER") %}
                                 {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
@@ -124,7 +124,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{{ path_for("history", { "option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION") }) }}">
+                        <a href="{{ path_for("history", {"option": "order", "value": constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION")}) }}">
                             {{ _T("Action") }}
                             {% if history.filters.orderby == constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION") %}
                                 {% if history.filters.ordered == constant("Galette\\Filters\\HistoryList::ORDER_ASC") %}
@@ -149,7 +149,7 @@
                     <td data-scope="row">
                         {{ loop.index }}
                         <span class="row-title">
-                            {{ _T("History entry %id")|replace({ "%id": loop.index}) }}
+                            {{ _T("History entry %id")|replace({"%id": loop.index}) }}
                         </span>
                     </td>
                     <td class="" data-title="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>

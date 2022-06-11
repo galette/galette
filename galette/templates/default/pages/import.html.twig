@@ -39,7 +39,7 @@
                                     <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                         <td data-scope="row">
                                             <input type="radio" name="import_file" id="file{{ loop.index }}" value="{{ import.name }}"{% if import_file is defined and import_file == import.name %} checked="checked"{% endif %}/>
-                                            <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ path_for("getCsv", { "type": "import", "file": import.name }) }}">{{ _T('see') }}</a>)
+                                            <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ path_for("getCsv", {"type": "import", "file": import.name}) }}">{{ _T('see') }}</a>)
                                         </td>
                                         <td data-title="{{ _T('Date') }}">
                                             {{ import.date }}
@@ -49,11 +49,11 @@
                                         </td>
                                         <td class="actions_row">
                                             <a
-                                                href="{{ path_for("removeCsv", { "type": "import", "file": import.name }) }}"
+                                                href="{{ path_for("removeCsv", {"type": "import", "file": import.name}) }}"
                                                 class="delete tooltip"
                                             >
                                                 <i class="ui trash red icon"></i>
-                                                <span class="sr-only">{{ _T('Remove \'%file\' from disk')|replace({ '%file': import.name }) }}</span>
+                                                <span class="sr-only">{{ _T('Remove \'%file\' from disk')|replace({'%file': import.name}) }}</span>
                                             </a>
                                         </td>
                                     </tr>

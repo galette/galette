@@ -39,37 +39,37 @@
                                 {{ loop.index }}
                 {% endif %}
                                 <span class="row-title">
-                                    <a href="{{ path_for('editPaymentType', { 'id': ptype.__get('id') }) }}">
-                                        {{ _T("%s payment type")|replace({ '%s': ptype.getName() }) }}
+                                    <a href="{{ path_for('editPaymentType', {'id': ptype.__get('id')}) }}">
+                                        {{ _T("%s payment type")|replace({'%s': ptype.getName()}) }}
                                     </a>
                                 </span>
                             </td>
                             <td class="left" data-title="{{ _T("Name") }}">{{ ptype.getName() }}</td>
                             <td class="center actions_row">
                                 <a
-                                    href="{{ path_for('editPaymentType', { 'id': ptype.__get('id') }) }}"
+                                    href="{{ path_for('editPaymentType', {'id': ptype.__get('id')}) }}"
                                     class="tooltip action"
                                 >
                                     <i class="ui edit icon"></i>
-                                    <span class="sr-only">{{ _T("Edit '%s' payment type")|replace({ '%s': ptype.getName() }) }}</span>
+                                    <span class="sr-only">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                                 <a
-                                    href="{{ path_for('dynamicTranslations', { 'text_orig': ptype.getName(false)|escape }) }}"
+                                    href="{{ path_for('dynamicTranslations', {'text_orig': ptype.getName(false)|escape}) }}"
                                     class="tooltip"
                                 >
                                     <i class="ui language grey icon"></i>
-                                    <span class="sr-only">{{ _T("Translate '%s'")|replace({ '%s': ptype.getName() }) }}</span>
+                                    <span class="sr-only">{{ _T("Translate '%s'")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                                 </a>
                 {% if ptype.isSystemType() %}
                                 <i class="ui icon">&nbsp;</i>
                 {% else %}
                                 <a
-                                    href="{{ path_for('removePaymentType', { 'id': ptype.__get('id') }) }}"
+                                    href="{{ path_for('removePaymentType', {'id': ptype.__get('id')}) }}"
                                     class="delete tooltip"
                                 >
                                     <i class="ui trash red icon"></i>
-                                    <span class="sr-only">{{ _T("Delete '%s' payment type")|replace({ '%s': ptype.getName() }) }}</span>
+                                    <span class="sr-only">{{ _T("Delete '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                 {% endif %}
                             </td>

@@ -30,7 +30,7 @@
                             <input{% if required.pref_slogan is defined and required.pref_slogan == 1 %} required="required"{% endif %} type="text" name="pref_slogan" id="pref_slogan" value="{{ pref.pref_slogan }}"/>
                             <div class="ui basic label">
                                 <a
-                                        href="{{ path_for("dynamicTranslations", { "text_orig": pref.pref_slogan|escape }) }}"
+                                        href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
                                         class="ui icon tooltip" title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"
                                 >
                                     <i class="language icon"></i>
@@ -173,12 +173,12 @@
                     <div class="field">
                         <label for="pref_redirect_on_create">{{ _T("After member creation:") }}</label>
                         <select name="pref_redirect_on_create" id="pref_redirect_on_create" class="ui search dropdown nochosen">
-                            <option value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT')}"{% if pref.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
-                            <option value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS')}"{% if pref.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
-                            <option value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW')}"{% if pref.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
-                            <option value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW')}"{% if pref.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
-                            <option value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST')}"{% if pref.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
-                            <option value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME')}"{% if pref.pref_redirect_on_create  == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
                         </select>
                     </div>
                     <div class="field">
@@ -244,7 +244,7 @@
                         <label for="pref_galette_url" class="tooltip">{{ _T("Galette base URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({ "%galette_url": preferences.getDefaultURL() ~ path_for('preferences') }) }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ path_for('preferences')}) }}"></i>
                             </div>
                             <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"{% if required.pref_galette_url is defined and required.pref_galette_url == 1 %} required="required"{% endif %}/>
                         </div>
@@ -554,9 +554,9 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required="required"{% endif %}/>
                             <a
-                                href="{{ path_for("dynamicTranslations", { "text_orig": pref.pref_card_abrev|escape }) }}"
+                                href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
                                 class="ui icon button tooltip"
-                                data-html="{{ _T("Translate '%s'")|replace({ "%s": pref.pref_card_abrev}) }}"
+                                data-html="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"
                             >
                                 <i class="language icon"></i>
                             </a>
@@ -568,9 +568,9 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %} required="required"{% endif %}/>
                             <a
-                                href="{{ path_for("dynamicTranslations", { "text_orig": pref.pref_card_strip|escape }) }}"
+                                href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
                                 class="ui icon button tooltip"
-                                data-html="{{ _T("Translate '%s'")|replace({ "%s": pref.pref_card_strip}) }}"
+                                data-html="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"
                             >
                                 <i class="language icon"></i>
                             </a>
@@ -757,8 +757,8 @@
         {% include "components/forms/csrf.html.twig" %}
         </form>
 
-        {% include "modals/telemetry.html.twig" with { part: "dialog" } %}
-        {% include "modals/replacements_legend.html.twig" with { legends: preferences.getLegend(), cur_ref: 'prefs' } %}
+        {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
+        {% include "modals/replacements_legend.html.twig" with {legends: preferences.getLegend(), cur_ref: 'prefs'} %}
 {% endblock %}
 
 {% block javascripts %}
@@ -832,15 +832,14 @@
                 _addLegenButton('#mail_sign');
                 _handleLegend();
 
-                {% include "elements/js/pwdcheck.js.twig" with { selector: "#pref_admin_pass" } %}
+                {% include "elements/js/pwdcheck.js.twig" with {selector: "#pref_admin_pass"} %}
                 {% include "elements/js/pwdcheck.js.twig" with {
                         selector: "#test_password_strength",
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
-                    }
-                %}
+                } %}
 
-                {% include "modals/telemetry.html.twig" with { part: "jsdialog"} %}
-                {% include "modals/telemetry.html.twig" with { part: "jsregister"} %}
+                {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
+                {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
 
             });
         </script>

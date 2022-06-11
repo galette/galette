@@ -43,8 +43,8 @@
                             {{ loop.index }}
             {% endif %}
                             <span class="row-title">
-                                <a href="{{ path_for('editTitle', { 'id': title.id }) }}">
-                                    {{ _T("%s title")|replace({ '%s': title.short|escape }) }}
+                                <a href="{{ path_for('editTitle', {'id': title.id}) }}">
+                                    {{ _T("%s title")|replace({'%s': title.short|escape}) }}
                                 </a>
                             </span>
                         </td>
@@ -52,21 +52,21 @@
                         <td class="left" data-title="{{ _T("Long form") }}">{{ title.long|escape }}</td>
                         <td class="center actions_row">
                             <a
-                                href="{{ path_for('editTitle', { 'id': title.id }) }}"
+                                href="{{ path_for('editTitle', {'id': title.id}) }}"
                                 class="tooltip action"
                             >
                                 <i class="ui edit icon"></i>
-                                <span class="sr-only">{{ _T("Edit '%s' title")|replace({ '%s': title.short|escape }) }}</span>
+                                <span class="sr-only">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% if title.id == 1 or title.id == 2 %}
                             <i class="ui icon">&nbsp;</i>
             {% else %}
                             <a
-                                href="{{ path_for('removeTitle', { 'id': title.id }) }}"
+                                href="{{ path_for('removeTitle', {'id': title.id}) }}"
                                 class="delete tooltip"
                             >
                                 <i class="ui trash red icon"></i>
-                                <span class="sr-only">{{ _T("Delete '%s' title")|replace({ '%s': title.short|escape }) }}</span>
+                                <span class="sr-only">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% endif %}
                         </td>
