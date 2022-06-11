@@ -22,7 +22,7 @@
                 <dt>{{ _T("Attachments:") }}</dt>
                 <dd>
     {% for attachment in attachments %}
-                    <span class="attached"><a target="_blank" href="{{ path_for("previewAttachment", { "id": mailing_id, "pos": loop.index }) }}"><i class="ui link icon"></i>{{ attachment.getFileName() }}</a></span>
+                    <span class="attached"><a target="_blank" href="{{ path_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}"><i class="ui link icon"></i>{{ attachment.getFileName() }}</a></span>
     {% else %}
                     -
     {% endfor %}

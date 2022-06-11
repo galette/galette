@@ -6,7 +6,7 @@
             </a>
         {% endif %}
         <img
-                src="{{ path_for("photo", { "id": member.id, "rand": time }) }}"
+                src="{{ path_for("photo", {"id": member.id, "rand": time}) }}"
                 width="{{ member.picture.getOptimalWidth() }}"
                 height="{{ member.picture.getOptimalHeight() }}"
                 alt="{{ _T("Picture") }}"

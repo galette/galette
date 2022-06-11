@@ -24,7 +24,7 @@
     {% for langue in languages %}
         {% if langue.getAbbrev() != galette_lang %}
     <a href="?ui_pref_lang={{ langue.getID() }}"
-       title="{{ _T("Switch locale to '%locale'")|replace({ "%locale": langue.getName() }) }}"
+       title="{{ _T("Switch locale to '%locale'")|replace({"%locale": langue.getName()}) }}"
        class="item"
     >
         {{ langue.getName() }} <span>({{ langue.getAbbrev() }})</span>

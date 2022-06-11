@@ -118,7 +118,7 @@
                 var _this = $(this);
                 $.ajax({
                     type: 'POST',
-                    url: '{{ path_for("contributionMembers", {"page": 1, "search": "PLACEBO" }) }}'.replace(/PLACEBO/, query),
+                    url: '{{ path_for("contributionMembers", {"page": 1, "search": "PLACEBO"}) }}'.replace(/PLACEBO/, query),
                     dataType: "json",
                     error: function() {
                         callback();

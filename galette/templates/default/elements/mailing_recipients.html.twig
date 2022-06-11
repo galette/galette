@@ -2,9 +2,9 @@
     {% set count_unreachables = mailing.unreachables|length %}
     {% if count > 0 %}
         {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_SENT') %}
-                <p>{{ _T("Your message has been sent to <strong>%s members</strong>")|replace({ '%s': count }) }}</p>
+                <p>{{ _T("Your message has been sent to <strong>%s members</strong>")|replace({'%s': count}) }}</p>
         {% else %}
-                <p id="recipients_count">{{ _T("You are about to send an e-mail to <strong>%s members</strong>")|replace({ '%s': count }) }}</p>
+                <p id="recipients_count">{{ _T("You are about to send an e-mail to <strong>%s members</strong>")|replace({'%s': count}) }}</p>
         {% endif %}
     {% else %}
         {% if count_unreachables > 0 %}

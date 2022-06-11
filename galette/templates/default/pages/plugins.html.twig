@@ -19,27 +19,27 @@
             </tr>
 {% for name, plugin in plugins_list %}
             <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
-                <td data-scope="row"><a href="{{ path_for(plugin.route ~ "Info", { "plugin": name }) }}">{{ plugin.name }} ({{ name }})</a></td>
+                <td data-scope="row"><a href="{{ path_for(plugin.route ~ "Info", {"plugin": name}) }}">{{ plugin.name }} ({{ name }})</a></td>
                 <td data-title="{{ _T('Description') }}">{{ plugin.desc }}</td>
                 <td data-title="{{ _T('Author') }}">{{ plugin.author }}</td>
                 <td data-title="{{ _T('Version') }}">{{ plugin.version }}</td>
                 <td data-title="{{ _T('Release date') }}">{{ plugin.date }}</td>
                 <td class="actions_row">
                     <a
-                        href="{{ path_for("pluginsActivation", { "action": "deactivate", "module_id": name }) }}"
+                        href="{{ path_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
                         class="toggleActivation tooltip use"
                     >
                         <i class="ui toggle on red icon"></i>
-                        <span class="sr-only">{{ _T("Click here to deactivate plugin '%name'")|replace({ "%name": plugin.name}) }}</span>
+                        <span class="sr-only">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
                     </a>
     {% if plugins.needsDatabase(name) %}
                     <a
-                        href="{{ path_for("pluginInitDb", { "id": name }) }}"
+                        href="{{ path_for("pluginInitDb", {"id": name}) }}"
                         id="initdb_{{ name }}"
                         class="initdb action tooltip"
                     >
                         <i class="ui database blue icon"></i>
-                        <span class="sr-only">{{ _T("Initialize '%name' database")|replace({ "%name": plugin.name }) }}</span>
+                        <span class="sr-only">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
                     </a>
     {% else %}
                     <i class="ui icon">&nbsp;</i>
@@ -77,11 +77,11 @@
                 </td>
                 <td class="actions_row">
                     <a
-                        href="{{ path_for("pluginsActivation", { "action": "activate", "module_id": name }) }}"
+                        href="{{ path_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
                         class="toggleActivation tooltip delete"
                     >
                         <i class="ui toggle on grey icon"></i>
-                        <span class="sr-only">{{ _T("Activate plugin '%name'")|replace({ "%name": name}) }}</span>
+                        <span class="sr-only">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
                     </a>
                     <i class="ui icon">&nbsp;</i>
                 </td>

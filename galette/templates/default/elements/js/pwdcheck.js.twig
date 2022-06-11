@@ -1,5 +1,5 @@
 {% if extra_data is not defined %}
-    {%  set extra_data = '' %}
+    {% set extra_data = '' %}
 {% endif %}
 $('{{ selector }}').parent('p').append($('<meter max="4" class="password-strength-meter"></meter><span class="password-strength-text"></span>'));
 $('{{ selector }}').on('keyup', function() {

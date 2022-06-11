@@ -1,5 +1,5 @@
 {% if class == 'Status' %}
-    <div class="ui blue message">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({ '%priority': non_staff_priority }) }}</div>
+    <div class="ui blue message">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</div>
 {% endif %}
     <table class="listing ui celled table">
         <thead>
@@ -54,8 +54,8 @@
                 <td data-scope="row">
                     {{ eid }}
                     <span class="row-title">
-                        <a href="{{ path_for('editEntitled', { 'class': url_class , 'action': 'edit', 'id': eid }) }}">
-                            {{ _T("%s field")|replace({ '%s': entry.name|escape }) }}
+                        <a href="{{ path_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}">
+                            {{ _T("%s field")|replace({'%s': entry.name|escape}) }}
                         </a>
                     </span>
                 </td>
@@ -83,18 +83,18 @@
                 </td>
                 <td class="center actions_row">
                     <a
-                        href="{{ path_for('editEntitled', { 'class': url_class , 'action': 'edit', 'id': eid }) }}"
+                        href="{{ path_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}"
                         class="action tooltip"
                     >
                         <i class="ui edit icon"></i>
-                        <span class="sr-only">{{ _T("Edit '%s' field")|replace({ '%s': entry.name|escape }) }}</span>
+                        <span class="sr-only">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                     <a
-                        href="{{ path_for('removeEntitled', { 'class': url_class , 'id': eid }) }}"
+                        href="{{ path_for('removeEntitled', {'class': url_class, 'id': eid}) }}"
                         class="delete tooltip"
                     >
                         <i class="ui trash red icon"></i>
-                        <span class="sr-only">{{ _T("Delete '%s' field")|replace({ '%s': entry.name|escape }) }}</span>
+                        <span class="sr-only">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                 </td>
             </tr>

@@ -3,10 +3,10 @@
 {% block content %}
 <section id="plugin_install">
     <header>
-        <h1>{{ _T("%plugin plugin installation")|replace({ '%plugin': plugin.name }) }}</h1>
+        <h1>{{ _T("%plugin plugin installation")|replace({'%plugin': plugin.name}) }}</h1>
     </header>
     <div>
-    <form action="{{ path_for('pluginInitDb', { 'id': plugid }) }}" id="plugins_initdb_form" method="post">
+    <form action="{{ path_for('pluginInitDb', {'id': plugid}) }}" id="plugins_initdb_form" method="post">
         <h2>{{ page_title }}</h2>
 {% if mode == 'ajax' %}
     {% include 'elements/messages_inline.html.twig' %}
@@ -22,8 +22,8 @@
                     <label for="install">{{ _T("New installation") }}</label>
                 </h3>
                 <ul>
-                    <li>{{ _T("you're installing %name for the first time")|replace({ '%name': plugin.name }) }},</li>
-                    <li>{{ _T("you wish to erase an older version of of %name without keeping your data")|replace({ '%name': plugin.name }) }}.</li>
+                    <li>{{ _T("you're installing %name for the first time")|replace({'%name': plugin.name}) }},</li>
+                    <li>{{ _T("you wish to erase an older version of of %name without keeping your data")|replace({'%name': plugin.name}) }}.</li>
                 </ul>
             </article>
     {% if update_scripts is defined and update_scripts|length > 0 %}
@@ -33,7 +33,7 @@
                     <label for="update">{{ _T("Update") }}</label>
                 </h3>
                 <ul>
-                <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({ '%name': plugin.name }) }}.</li>
+                <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
                 </ul>
                 <p id="warningbox">{{ _T("Warning: Don't forget to backup your current database.") }}</span>
             </article>
@@ -45,7 +45,7 @@
 {% endif %}
 {% if step == 'u3' %}
         <fieldset class="cssform">
-            <legend class="ui-state-active ui-corner-top">{{ _T("You current %name version is...")|replace({ '%name': plugin.name }) }}</legend>
+            <legend class="ui-state-active ui-corner-top">{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</legend>
             <ul class="leaders">
     {% set last = 0.00 %}
     {% for k, val in update_scripts %}
@@ -54,7 +54,7 @@
                         <label for="upgrade-{{ val }}">
 
         {% if last == 0.00 %}
-            {{ _T("older than %version")|replace({ '%version': val }) }}
+            {{ _T("older than %version")|replace({'%version': val}) }}
         {% elseif last != val %}
             {{ _T("comprised between") }} {{ last }} {{ _T("and") }} {{ val }}
         {% else %}
@@ -85,12 +85,12 @@
         </p>
     {% endif %}
 {% endif %}
-{% if step == 'i5' or step =='u5' %}
+{% if step == 'i5' or step == 'u5' %}
         <p>
             {% if step == 'i5' %}
-                {{ _T("Plugin '%name' has been successfully installed!")|replace({ '%name': plugin.name }) }}
+                {{ _T("Plugin '%name' has been successfully installed!")|replace({'%name': plugin.name}) }}
             {% else %}
-                {{ _T("Plugin '%name' has been successfully updated!")|replace({ '%name': plugin.name }) }}
+                {{ _T("Plugin '%name' has been successfully updated!")|replace({'%name': plugin.name}) }}
             {% endif %}
         </p>
 {% endif %}

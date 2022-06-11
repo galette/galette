@@ -6,7 +6,7 @@
                 <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
                 <a href="#" class="fright tooltip delete delsocial">
                     <i class="fas fa-trash-alt"></i>
-                    <span class="sr-only">{{ _T("Remove %type")|replace({ "%type": social.getSystemType(social.type)}) }}</span>
+                    <span class="sr-only">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}</span>
                 </a>
             </span>
         </div>

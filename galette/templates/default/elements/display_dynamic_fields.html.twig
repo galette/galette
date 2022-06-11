@@ -33,11 +33,11 @@
                         {{ _T("No") }}
                                 {% endif %}
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
-                        <a href="{{ path_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop.index, "name": value }) }}">{{ value }}</a>
+                        <a href="{{ path_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop.index, "name": value}) }}">{{ value }}</a>
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isValidEmail", value) %}
                                 <a href="mailto:{{ value }}">{{ value }}</a>
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isUrl", value) %}
-                                <a href="{{ value }}" target="_blank" title="{{ _T("Open '%s' in a new window")|replace({ "%s": value }) }}">{{ value }}</a>
+                                <a href="{{ value }}" target="_blank" title="{{ _T("Open '%s' in a new window")|replace({"%s": value}) }}">{{ value }}</a>
                             {% else %}
                         {{ value|nl2br|default("") }}
                             {% endif %}

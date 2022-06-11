@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if members.list is defined %}
-    <form action="{% if transaction.id %}{{ path_for("editTransaction", { "id": transaction.id }) }}{% else %}{{ path_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+    <form action="{% if transaction.id %}{{ path_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ path_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui top attached header">
             {{ _T("Transaction details") }}
         </div>
@@ -51,7 +51,7 @@
     {% endif %}
             </div>
         </div>
-        {% include "components/dynamic_fields.html.twig" with { 'object': transaction } %}
+        {% include "components/dynamic_fields.html.twig" with {'object': transaction} %}
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
@@ -71,14 +71,14 @@
                 <div class="ui basic fitted right aligned segment">
                     {% if transaction.getMissingAmount() > 0 %}
                         <a
-                            href="{{ path_for("addContribution", { "type": constant('Galette\\Entity\\Contribution::TYPE_FEE') }) }}?trans_id={{ transaction.id }}"
+                            href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ transaction.id }}"
                             class="ui icon button tooltip"
                         >
                             <i class="user check icon"></i>
                             <span class="sr-only">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
                         </a>
                         <a
-                            href="{{ path_for("addContribution", { "type": constant('Galette\\Entity\\Contribution::TYPE_DONATION') }) }}?trans_id={{ transaction.id }}"
+                            href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ transaction.id }}"
                             class="ui icon button tooltip"
                         >
                             <i class="gift icon"></i>
@@ -126,11 +126,11 @@
                     </tfoot>
                     <tbody>
                 {% for ordre, contrib in contribs %}
-                    {%set mid = contrib.member %}
-                    {%set cclass = contrib.getRowClass() %}
+                    {% set mid = contrib.member %}
+                    {% set cclass = contrib.getRowClass() %}
                         <tr>
                             <td class="{{ cclass }} center">
-                                {{ ordre+1 }}
+                                {{ ordre + 1 }}
                             </td>
                             <td class="{{ cclass }} center">{{ contrib.date }}</td>
                             <td class="{{ cclass }} center">{{ contrib.begin_date }}</td>
@@ -144,7 +144,7 @@
                     {% if login.isAdmin() or login.isStaff() %}
                             <td class="{{ cclass }} actions_row">
                                 <a
-                                    href="{{ path_for("detach_contribution", { "id": transaction.id, "cid": contrib.id }) }}"
+                                    href="{{ path_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
                                     class="delete tooltip"
                                 >
                                     <i class="ui red trash icon"></i>
@@ -180,7 +180,7 @@
 {% if transaction.id %}
             $('#contribslist').click(function(){
                 $.ajax({
-                    url: '{{ path_for("contributions", { "type": "contributions" }) }}',
+                    url: '{{ path_for("contributions", {"type": "contributions"}) }}',
                     type: "GET",
                     data: {
                         ajax: true,
@@ -259,7 +259,7 @@
                 $('#contributions_list .contribution_row').click(function(){
                     $('#contributions_list').modal('hide');
                     var _cid = $(this).find('input[name="contrib_sel[]"]').val();
-                    window.location.href = '{{ path_for("attach_contribution", { "id": transaction.id, "cid": "%cid" }) }}'.replace(/%cid/, _cid);
+                    window.location.href = '{{ path_for("attach_contribution", {"id": transaction.id, "cid": "%cid"}) }}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
             }
 {% endif %}

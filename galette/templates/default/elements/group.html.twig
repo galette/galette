@@ -1,4 +1,4 @@
-{% set canEdit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+{% set can_edit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
 
 {% set managers = group.getManagers() %}
 {% set members = group.getMembers() %}
@@ -14,7 +14,7 @@
         </div>
     {% endif %}
 </div>
-<form class="ui form" action="{{ path_for("doEditGroup", { "id": group.getId() }) }}" method="post" enctype="multipart/form-data" id="group_form">
+<form class="ui form" action="{{ path_for("doEditGroup", {"id": group.getId()}) }}" method="post" enctype="multipart/form-data" id="group_form">
     <div class="ui active tab segment" data-tab="group_information">
         <div class="ui basic segment">
             {% if group.getId() %}
@@ -24,7 +24,7 @@
                 </div>
             {% endif %}
             <div class="inline field required">
-            {% if canEdit %}
+            {% if can_edit %}
                 <label for="group_name">{{ _T("Name:") }}</label>
                 <input type="text" name="group_name" id="group_name" value="{{ group.getName() }}" maxlength="20" required/>
             </div>
@@ -37,7 +37,7 @@
                 {% set pgroup = group.getParentGroup() %}
             {% endif %}
             <div class="inline field">
-                {% if canEdit %}
+                {% if can_edit %}
                     <label for="parent_group">{{ _T("Parent group:") }}</label>
                     <select name="parent_group" id="parent_group" class="ui search dropdown nochosen">
                         <option value="">{{ _T("None") }}</option>
@@ -65,7 +65,7 @@
     <div class="ui tab segment" data-tab="group_managers">
         <div class="ui basic segment">
             {% if group %}
-                {% include "elements/group_persons.html.twig" with { 'person_mode': "managers", 'persons': managers } %}
+                {% include "elements/group_persons.html.twig" with {'person_mode': "managers", 'persons': managers} %}
             {% endif %}
         </div>
     </div>
@@ -73,21 +73,21 @@
     <div class="ui tab segment" data-tab="group_members">
         <div class="ui basic segment">
             {% if group %}
-                {% include "elements/group_persons.html.twig" with { 'person_mode': "members", 'persons': members } %}
+                {% include "elements/group_persons.html.twig" with {'person_mode': "members", 'persons': members} %}
             {% endif %}
         </div>
     </div>
 
     <div class="ui basic center aligned segment">
         <button type="submit" name="valid" class="ui labeled icon primary button action">
-            {% if canEdit %}
+            {% if can_edit %}
             <i class="save icon"></i> {{ _T("Save") }}
         </button>
         <input type="hidden" name="id_group" id="id_group" value="{{ group.getId() }}"/>
         {% include "components/forms/csrf.html.twig" %}
         {% endif %}
         {% if login.isAdmin() or login.isStaff() %}
-            <a class="ui labeled icon button delete" id="delete" href="{{ path_for("removeGroup", { "id": group.getId() }) }}">
+            <a class="ui labeled icon button delete" id="delete" href="{{ path_for("removeGroup", {"id": group.getId()}) }}">
                 <i class="trash alt red icon"></i>
                 {{ _T("Delete") }}
             </a>

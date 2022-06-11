@@ -2,7 +2,7 @@
     <nav class="ui mini inverted pagination menu right floated">
         {% if navigate.prev is defined %}
                 <a
-                        href="{{ path_for(mpath, {"id": navigate.prev }) }}"
+                        href="{{ path_for(mpath, {"id": navigate.prev}) }}"
                         class="item"
                         title="{{ _T("Previous")|escape }}"
                 >
@@ -13,7 +13,7 @@
         <div class="item">{{ navigate.pos }} / {{ navigate.count }}</div>
         {% if navigate.next is defined %}
                 <a
-                        href="{{ path_for(mpath, { "id": navigate.next }) }}"
+                        href="{{ path_for(mpath, {"id": navigate.next}) }}"
                         class="item"
                         title="{{ _T("Next")|escape }}"
                 >

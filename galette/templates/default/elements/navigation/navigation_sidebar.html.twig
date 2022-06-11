@@ -14,13 +14,11 @@
     {% include "elements/navigation/public_pages.html.twig" with {
             tips_position: "right center",
             sign_in: true
-        }
-    %}
+    } %}
 
     {% include "elements/language.html.twig" with {
             ui: "item"
-        }
-    %}
+    } %}
 {% else %}
         <div class="item">
             {% include "elements/modes.html.twig" %}
@@ -30,7 +28,6 @@
 
         {% include "elements/logout.html.twig" with {
                 ui: "item"
-            }
-        %}
+        } %}
 {% endif %}
     </div>

@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if members.list is defined or require_mass %}
-        <form action="{% if contribution.id %}{{ path_for("doEditContribution", { "type": type, "id": contribution.id }) }}{% else %}{{ path_for("doAddContribution", { "type": type }) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+        <form action="{% if contribution.id %}{{ path_for("doEditContribution", {"type": type, "id": contribution.id}) }}{% else %}{{ path_for("doAddContribution", {"type": type}) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
     {% if contribution.isTransactionPart() %}
         {% set mid = contribution.transaction.member %}
             <div class="ui top attached header">
@@ -16,7 +16,7 @@
                                 <th colspan="5">
                                     {{ contribution.transaction.description }}
                                     <a
-                                        href="{{ path_for("editTransaction", { "id": contribution.transaction.id }) }}"
+                                        href="{{ path_for("editTransaction", {"id": contribution.transaction.id}) }}"
                                         class="ui icon button tooltip"
                                         title="{{ _T("View transaction") }}"
                                     >
@@ -55,14 +55,14 @@
     {% endif %}
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() > 0 %}
                     <a
-                        href="{{ path_for("addContribution", { "type": constant('Galette\\Entity\\Contribution::TYPE_FEE') }) }}?trans_id={{ contribution.transaction.id }}"
+                        href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
                         class="ui icon button fright tooltip"
                         title="{{ _T("Create a new fee that will be attached to the current transaction") }}">
                         <i class="user check icon"></i>
                         <span class="sr-only">{{ _T("New attached fee") }}</span>
                     </a>
                     <a
-                        href="{{ path_for("addContribution", { "type": "donation" }) }}?trans_id={{ contribution.transaction.id }}"
+                        href="{{ path_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
                         class="ui icon button fright tooltip"
                         title="{{ _T("Create a new donation that will be attached to the current transaction") }}">
                         <i class="gift icon"></i>
@@ -78,7 +78,7 @@
                             {% if adh_selected == 0 %}
                             <option value="">{{ _T("Search for name or ID and pick member") }}</option>
                             {% endif %}
-                            {% for k,v in members.list %}
+                            {% for k, v in members.list %}
                                 <option value="{{ k }}"{% if contribution.member == k %} selected="selected"{% endif %}>{{ v }}</option>
                             {% endfor %}
                         </select>
@@ -127,7 +127,7 @@
                     {% if ptype == null %}
                         {% set ptype = constant('Galette\\Entity\\PaymentType::CHECK') %}
                     {% endif %}
-                    {% include 'components/forms/payment_types.html.twig' with { 'current': ptype, 'varname': 'type_paiement_cotis', 'show_inline': true } %}
+                    {% include 'components/forms/payment_types.html.twig' with {'current': ptype, 'varname': 'type_paiement_cotis', 'show_inline': true} %}
                     <div class="field inline">
                         <label for="date_enreg">
                             {{ _T("Record date:") }}
@@ -192,7 +192,7 @@
                 </div>
             </div>
     {% endif %}
-        {% include 'components/dynamic_fields.html.twig' with { 'object': contribution } %}
+        {% include 'components/dynamic_fields.html.twig' with {'object': contribution} %}
     {% if not contribution.id and preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
         {% if not require_mass %}
             <div class="ui center aligned segment">
@@ -256,7 +256,7 @@
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : '{{ path_for ("contributionDates") }}',
+                url : '{{ path_for("contributionDates") }}',
                 data: {
                     member_id: _member,
                     fee_id: _fee
@@ -282,7 +282,7 @@
             if (_current < _amount) {
                 $('#transaction_related').show();
             } else if (_current > _amount) {
-                alert('{{ _T("Contribution amount should be greater than %max")|replace({ '%max': contribution.transaction.getMissingAmount() })|e("js") }}');
+                alert('{{ _T("Contribution amount should be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js") }}');
             } else {
                 $('#transaction_related').hide();
             }
