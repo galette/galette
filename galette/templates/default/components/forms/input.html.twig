@@ -11,6 +11,7 @@
             {{ label }}
         </label>
     {% endblock %}
+    {% if type is defined and type == 'password' %}<div class="ui input">{% endif %}
     {% block element %}<input
         type="{{ type }}"
         name="{{ name }}"
@@ -27,6 +28,7 @@
         {% if checked is defined and checked == true %} checked="checked"{% endif %}
         />
     {% endblock %}
+    {% if type is defined and type == 'password' %}</div>{% endif %}
     {% if tip is defined %}<i class="circular inverted primary small icon info tooltip" data-html="{{ tip }}"></i>{% endif %}
     {% if example is defined %}<span class="exemple">{{ example }}</span>{% endif %}
 {% if notag is not defined %}
