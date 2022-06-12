@@ -734,7 +734,9 @@
                 </div>
                 <div class="field">
                     <label for="pref_admin_pass">{{ _T("Password:") }}</label>
-                    <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"{% if required.pref_admin_pass is defined and required.pref_admin_pass == 1 %} required="required"{% endif %}/>
+                    <div class="ui input">
+                        <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"{% if required.pref_admin_pass is defined and required.pref_admin_pass == 1 %} required="required"{% endif %}/>
+                    </div>
                 </div>
                 <div class="field">
                     <label for="pref_admin_pass_check">{{ _T("Retype password:") }}</label>
@@ -743,14 +745,14 @@
     {% endif %}
         </div>{# /tab segment #}
 {% endif %}
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="pref_theme" value="default"/>
             <input type="hidden" name="pref_telemetry_date" value="{{ pref.pref_telemetry_date }}"/>
             <input type="hidden" name="pref_instance_uuid" value="{{ pref.pref_instance_uuid }}"/>
             <input type="hidden" name="pref_registration_date" value="{{ pref.pref_registration_date }}"/>
             <input type="hidden" name="pref_registration_uuid" value="{{ pref.pref_registration_uuid }}"/>
-            <button type="submit" class="ui labeled icon button action">
+            <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
             </button>
         </div>
@@ -832,9 +834,13 @@
                 _addLegenButton('#mail_sign');
                 _handleLegend();
 
-                {% include "elements/js/pwdcheck.js.twig" with {selector: "#pref_admin_pass"} %}
+                {% include "elements/js/pwdcheck.js.twig" with {
+                        selector: "#pref_admin_pass",
+                        loader: "inline mini"
+                } %}
                 {% include "elements/js/pwdcheck.js.twig" with {
                         selector: "#test_password_strength",
+                        loader: "inline mini",
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
                 } %}
 
