@@ -54,7 +54,8 @@ $app->group(
                     'png'   => 'image/png',
                     'jpg'   => 'image/jpg',
                     'jpeg'  => 'image/jpg',
-                    'gif'   => 'image/gif'
+                    'gif'   => 'image/gif',
+                    'svg'   => 'image/svg+xml'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
                     $file = $this->get('plugins')->getFile(
