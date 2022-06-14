@@ -709,8 +709,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="field">
-                    <label for="test_password_strength"" title="{{ _T("Test a password with current selected values.") }}">{{ _T("Test a password:") }}</label>
+                <div id="test_password_strength_field" class="field">
+                    <label for="test_password_strength" title="{{ _T("Test a password with current selected values.") }}">{{ _T("Test a password:") }}</label>
                     <div class="ui right corner labeled input">
                         <div class="ui corner label">
                             <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Test a password with current selected values.") }}<br/>{{ _T("Do not forget to save your preferences if you're happy with the result ;)") }}"></i>
@@ -732,7 +732,7 @@
                     <label for="pref_admin_login">{{ _T("Username:") }}</label>
                     <input type="text" name="pref_admin_login" id="pref_admin_login" value="{{ pref.pref_admin_login }}" maxlength="20"{% if required.pref_admin_login is defined and required.pref_admin_login == 1 %} required="required"{% endif %}/>
                 </div>
-                <div class="field">
+                <div id="pref_admin_pass_field" class="field">
                     <label for="pref_admin_pass">{{ _T("Password:") }}</label>
                     <div class="ui input">
                         <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"{% if required.pref_admin_pass is defined and required.pref_admin_pass == 1 %} required="required"{% endif %}/>
@@ -808,7 +808,10 @@
                                     data: {
                                         adress: $('#email_adress').val()
                                     },
-                                    {% include "elements/js/loader.js.twig" %},
+                                    {% include "elements/js/loader.js.twig" with {
+                                        selector: '#btnmail',
+                                        loader: 'button'
+                                    } %},
                                     success: function(res) {
                                         //display message
                                         $.ajax({

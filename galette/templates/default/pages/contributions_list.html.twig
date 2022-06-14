@@ -440,7 +440,7 @@
                 _init_contribs_page();
 
                 {% include "elements/js/removal.js.twig" %}
-                {% include "elements/js/removal.js.twig" with {selector: "#delete", deleteurl: path_for("batch-contributionslist", {"type": "contributions"}), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
+                {% include "elements/js/removal.js.twig" with {selector: "#delete", loader: "button", deleteurl: path_for("batch-contributionslist", {"type": "contributions"}), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
             });
         </script>
 {% endblock %}

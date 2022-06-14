@@ -190,7 +190,10 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                {% include "elements/js/removal.js.twig" %}
+                {% include "elements/js/removal.js.twig" with {
+                    selector: "#delete",
+                    loader: "button"
+                } %}
                 var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" data-html="{{ _T("Show associated query")|e('js') }}"></i>');
                 $('.sql_log').hide().parent().prepend(_elt);
                 $('.qryhide').click(function() {

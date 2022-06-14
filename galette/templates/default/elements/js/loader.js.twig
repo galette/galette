@@ -1,11 +1,40 @@
-    {% set loader_parent = (loader is defined and loader starts with 'inline') ? '.js-loader' : 'body' %}
-    {% set loader_type = (loader is defined) ? loader ~ ' loader' : 'page dimmer' %}
-        beforeSend: function() {
-            var _loader = $('<div class="jsloader ui active {{ loader_type }}"><div class="ui text loader">{{ _T("Currently loading...")|e('js') }}</div></div>');
-            $('{{ loader_parent }} .jsloader').remove();
-            $('{{ loader_parent }}').append(_loader);
-        },
-        complete: function() {
-            $('{{ loader_parent }} .jsloader').remove();
-        }
+{% if (loader is not defined) %}
+    {% set loader = (selector is not defined) ? 'dimmer' : 'inverted dimmer' %}
+    {% set loader_parent = (selector is not defined) ? 'body' : selector %}
+    {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
+{% elseif (loader == 'button') %}
+    {% set loader_parent = (selector is defined) ? selector %}
+    {% set loader = loader %}
+{% else %}
+    {% set loader_parent = (selector is defined) ? selector %}
+    {% set loader = loader ~ ' loader' %}
+{% endif %}
 
+    beforeSend: function() {
+        var _loader = $('<div class="ui active {{ loader }}"><div class="ui{% if (loader_text is defined) %} text{% endif %} loader">{% if (loader_text is defined) %}{{ loader_text|e('js') }}{% endif %}</div></div>');
+
+{% if (loader == 'button') %}
+        $('{{ loader_parent }}').addClass('loading');
+{% else %}
+    {% if (loader ends with 'dimmer') %}
+        $('{{ loader_parent }} .dimmer:not(.modals)').remove();
+    {% elseif (loader ends with 'loader') %}
+        $('{{ loader_parent }} .loader').remove();
+    {% endif %}
+    $('{{ loader_parent }}').append(_loader);
+{% endif %}
+
+    },
+    complete: function() {
+
+{% if (loader == 'button') %}
+        $('{{ loader_parent }}').removeClass('loading');
+{% else %}
+    {% if (loader ends with 'dimmer') %}
+        $('{{ loader_parent }} .dimmer:not(.modals)').remove();
+    {% elseif (loader ends with 'loader') %}
+        $('{{ loader_parent }} .loader').remove();
+    {% endif %}
+{% endif %}
+
+    }

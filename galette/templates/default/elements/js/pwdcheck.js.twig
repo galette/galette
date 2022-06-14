@@ -3,7 +3,7 @@
 {% set extra_data = (extra_data is defined) ? extra_data : '' %}
 
 
-$('{{ selector }}').parent('.input').parent('.field').append($('<meter max="4" class="password-strength-meter"></meter><span class="password-strength-text"></span><span class="js-loader"></span>'));
+$('{{ selector }}').parent('.input').parent('{{ selector ~ '_field'|e('js') }}').append($('<meter max="4" class="password-strength-meter"></meter><span class="password-strength-text"></span>'));
 $('{{ selector }}').on('keyup', function() {
     var _this = $(this);
     $.ajax({
@@ -14,11 +14,11 @@ $('{{ selector }}').on('keyup', function() {
             {{ extra_data|raw }}
         },
         {% include "elements/js/loader.js.twig" with {
-                selector: selector,
+                selector: selector ~ '_field',
                 loader: loader
         } %},
         success: function(res) {
-            var _field = _this.parent('.input').parent('.field');
+            var _field = _this.parent('.input').parent('{{ selector ~ '_field'|e('js') }}');
             var _meter = _field.find('.password-strength-meter');
 
             _meter.val(res.score);

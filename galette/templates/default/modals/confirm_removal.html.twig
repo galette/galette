@@ -2,22 +2,19 @@
 
 {% block content %}
     <div id="confirm_removal"{% if mode == 'ajax' %} class="center"{% else %} title="{{ page_title }}"{% endif %}>
-    <form action="{{ form_url }}" method="post">
+    {% if mode == 'ajax' %}<div class="header">{{ page_title }}</div>{% endif %}
+    <form action="{{ form_url }}" method="post" class="ui form">
     {% if mode != 'ajax' %}
         <div class="ui segment">
             <div class="content">
-        {% if with_cascade is defined %}
-                <div class="field inline">
-        {% endif %}
     {% endif %}
     {% if with_cascade is defined %}
+                <div class="field inline">
                     <label for="cascade">{{ _T("Cascade delete") }}</label>
                     <input type="checkbox" name="cascade" id="cascade" value="true" title="{{ _T("Delete all associated data") }}"/>
+                </div>
     {% endif %}
     {% if mode != 'ajax' %}
-        {% if with_cascade is defined %}
-                </div>
-        {% endif %}
         {% if message is defined %}
                 <div class="ui warning message">
         {% endif %}

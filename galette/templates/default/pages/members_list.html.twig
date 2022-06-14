@@ -6,7 +6,7 @@
                     <td class="{{ rclass }} center actions_row">
     {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
     {% for action in actions %}
-        {{ macros.drawListAction(action.label, action.route, action.icon) }}
+        {{ macros.drawListAction(action.label, action.route, action.icon, action.extra_class ?? null) }}
     {% endfor %}
                     </td>
 {% endmacro %}
@@ -782,7 +782,7 @@
         }
 
         {% include "elements/js/removal.js.twig" %}
-        {% include "elements/js/removal.js.twig" with {selector: "#delete", deleteurl: path_for("batch-memberslist"), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
+        {% include "elements/js/removal.js.twig" with {selector: "#delete", loader: "button", deleteurl: path_for("batch-memberslist"), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
 {% endif %}
     </script>
 {% endblock %}

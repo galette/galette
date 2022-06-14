@@ -51,10 +51,10 @@
     </a>
 {% endmacro %}
 
-{% macro drawListAction(title, route, icon) %}
+{% macro drawListAction(title, route, icon, extra_class) %}
     <a
             href="{{ path_for(route.name, route.args|default([])) }}"
-            class="{# delete #} tooltip"
+            class="{{ extra_class|default('') }} tooltip"
             title="{{ title }}"
     >
         <i class="ui {{ icon }} icon" aria-hidden="true"></i>

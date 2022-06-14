@@ -54,8 +54,11 @@
                         });
                     });
 
+                    var _title = _res.find('.header');
+
                     $('body').modal({
                         class: 'tiny',
+                        title: _title,
                         content: _res,
                         onApprove: function() {
                             $('#confirm_removal form').submit();
@@ -66,7 +69,12 @@
                         }, {
                             text    : '{{ _T("Cancel")|e('js') }}',
                             class   : 'cancel'
-                        }]
+                        }],
+                        className: {
+                            'title': 'center aligned header',
+                            'content': 'center aligned content',
+                            'actions': 'center aligned actions'
+                        },
                     }).modal('show');
                 },
                 error: function() {

@@ -758,7 +758,8 @@ class Galette
                             'id' => $member->id
                         ]
                     ],
-                    'icon' => 'user times red'
+                    'icon' => 'user times red',
+                    'extra_class' => 'delete'
                 ]
             ]);
         }
