@@ -1,0 +1,94 @@
+{% extends (mode|default('') == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+{% import "macros.twig" as macros %}
+
+{% block content %}
+    {% block search %}{% endblock %}
+    {% block infoline %}
+        <form action="{{ path_for(infoline.route.name, infoline.route.args|default([])) }}" method="post" id="filtre">
+            <div class="infoline">
+                <div class="ui basic horizontal segments">
+                    <div class="ui basic fitted segment">
+                        <div class="ui label">{{ infoline.label }}</div>
+                    </div>
+                    <div class="ui basic right aligned fitted segment">
+                        <div class="inline field">
+                            <label for="nbshow">{{ _T('Records per page:') }}</label>
+                            <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
+                                {% for key, value in nbshow_options %}
+                                    <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                            <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include "components/forms/csrf.html.twig" %}
+        </form>
+    {% endblock %}
+    <form action="{%  if form is defined %}{{ path_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
+        <div class="ui basic fitted segment">
+        <table class="listing ui celled table">
+            <thead>
+            <tr>
+                {% block header %}
+                    {% for column in columns %}
+                        <th class="left">
+                            {% if column.order is defined %}
+                            <a href="{{ path_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
+                                {{ column.label }}
+                                {% if filters.orderby == column.order %}
+                                    {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
+                                        <i class="ui angle down icon tooltip"></i>
+                                    {% else %}
+                                        <i class="ui angle up icon tooltip"></i>
+                                    {% endif %}
+                                {% endif %}
+                            </a>
+                            {% else %}
+                                {{ column.label }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                    {% if mode != 'ajax' %}
+                    <th class="actions_row">{{ _T('Actions') }}</th>
+                    {% endif %}
+                {% endblock %}
+            </tr>
+            </thead>
+            <tbody>
+                {% block body %}{% endblock %}
+            </tbody>
+            <tfoot>
+                {% block footer %}{% endblock %}
+            </tfoot>
+        </table>
+        </div>
+
+        {% if batch_actions is defined and batch_actions|length > 0 %}
+            <div class="ui bottom attached segment screen-only">
+                <div class="ui horizontal list">
+                    <span class="ui primary ribbon label">{{ _T('For the selection:') }}</span>
+                    {% for batch_action in batch_actions %}
+                        {{ macros.drawBatchAction(batch_action.name, batch_action.label, batch_action.icon) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if is_paginated %}
+            <div class="ui basic center aligned fitted segment">
+                <div class="ui inverted pagination menu">
+                    <div class="header item">
+                        {{ _T('Pages:') }}
+                    </div>
+                    {{ pagination|raw }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% block extra_form %}{% endblock %}
+        {% include "components/forms/csrf.html.twig" %}
+    </form>
+    {% block legend %}{% endblock %}
+{% endblock %}
