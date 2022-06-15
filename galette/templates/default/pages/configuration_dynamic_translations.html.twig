@@ -3,10 +3,10 @@
 {% block content %}
 {% if trans is defined and trans|length > 0 %}
     {% if exists %}
-        <div class="ui top attached header">
+        <div class="ui top attached accordion-styled header">
             {{ _T("Choose label to translate") }}
         </div>
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached accordion-styled segment">
             <form action="{{ path_for('dynamicTranslations') }}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
                 <div class="field inline">
                     <select name="text_orig" id="text_orig" class="ui dropdown nochosen">
@@ -28,10 +28,10 @@
                 <input type="hidden" name="new" value="true"/>
             </div>
     {% endif %}
-            <div class="ui top attached header">
+            <div class="ui top attached accordion-styled header">
                 {{ _T("Translation of '%s' label")|replace({'%s': text_orig|escape}) }}
             </div>
-            <div class="ui bottom attached segment">
+            <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">
                     <table class="ui striped table">
     {% for k, text in trans %}

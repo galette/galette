@@ -3,10 +3,10 @@
 {% block content %}
 {% if action == 'edit' %}
     <form action="{{ path_for('doEditDynamicField', {'form_name': form_name, 'id': df.getId()}) }}" method="post" class="ui form">
-        <div class="ui top attached header">
+        <div class="ui top attached accordion-styled header">
             {{ _T("Edit field %field")|replace({'%field': df.getName()}) }}
         </div>
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
                 <div class="inline field">
                     <label for="field_name">{{ _T("Name:") }}</label>
@@ -84,10 +84,10 @@
 {% elseif action == 'add' %}
     <form action="{{ path_for('doAddDynamicField', {'form_name': form_name}) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
     {% if mode != 'ajax' %}
-        <div class="ui top attached header">
+        <div class="ui top attached accordion-styled header">
             {{ _T("New dynamic field") }}
         </div>
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
     {% else %}
         <div class="cssform">

@@ -2,10 +2,10 @@
 
 {% block content %}
         <form id="send_reminders" action="{{ path_for("doReminders") }}" method="post" enctype="multipart/form-data" class="ui form">
-            <div class="ui top attached header">
+            <div class="ui top attached accordion-styled header">
                 {{ _T("Choose wich reminder(s) you want to send:") }}
             </div>
-            <div class="ui bottom attached segment">
+            <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">
                     <div class="inline field{% if count_impending == 0 and count_impending_nomail == 0 %} disabled{% endif %}">
                         <input type="checkbox" name="reminders[]" id="reminder_impending" value="{{ constant("Galette\\Entity\\Reminder::IMPENDING") }}"{% if count_impending == 0 and count_impending_nomail == 0 %} disabled="disabled"{% endif %}/>

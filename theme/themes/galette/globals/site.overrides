@@ -108,6 +108,19 @@ section.content,
   margin-bottom: 0;
 }
 
+.ui.attached.accordion-styled.header,
+.ui.attached.accordion-styled.segment {
+  border: 1px solid @primaryColor;
+}
+.ui.attached.accordion-styled.header {
+  background: @lightPrimaryColor;
+  color: darken(@textColor, 15);
+  border-bottom: none;
+}
+.ui.attached.accordion-styled.segment {
+  border-top: none;
+}
+
 footer,
 footer .ui.horizontal.list .list > .item,
 footer .ui.horizontal.list > .item{
