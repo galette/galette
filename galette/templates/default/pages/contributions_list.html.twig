@@ -89,11 +89,6 @@
             </div>
         </div>
     </div>
-    {% if member is defined %}
-        <div class="{{ member.getRowClass() }}{% if not member.isActive() %} inactive{% endif %} ui center aligned segment">
-            {{ member.getDues() }}
-        </div>
-    {% endif %}
     {% if member is defined and mode != 'ajax' %}
         {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
             <div class="ui compact vertically fitted segment">
@@ -123,10 +118,17 @@
         </div>
         </div>
     {% endif %}
+    {% if member is defined %}
+        <div class="{{ member.getRowClass() }}{% if not member.isActive() %} inactive{% endif %} ui center aligned segment">
+            {{ member.getDues() }}
+        </div>
+    {% endif %}
+
     {% if mode == 'ajax'%}
         <input type="hidden" name="ajax" value="true"/>
         <input type="hidden" name="max_amount" value="{{ filters.max_amount }}"/>
     {% endif %}
+    {% include "components/forms/csrf.html.twig" %}
     </form>
 {% endblock %}
 
