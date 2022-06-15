@@ -57,7 +57,7 @@
 
     {% if not member.id and not self_adh %}
         {% if login.isAdmin() or login.isStaff() %}
-            <div class="ui center aligned segment">
+            <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
                     <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown nochosen">
@@ -78,7 +78,7 @@
         {% endif %}
     {% endif %}
         {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff())) %}
-            <div class="ui center aligned segment">
+            <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {# if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if#}/>
