@@ -1,4 +1,5 @@
-{% extends (mode|default('') == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+{% set mode = mode|default('') %}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 {% import "macros.twig" as macros %}
 
 {% block content %}

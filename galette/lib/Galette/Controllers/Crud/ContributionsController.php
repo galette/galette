@@ -654,12 +654,7 @@ class ContributionsController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
-            if (isset($this->session->$filter_name)) {
-                $filters = $this->session->$filter_name;
-            } else {
-                $filters = new ContributionsList();
-            }
-
+            $filters = $this->session->$filter_name ?? new ContributionsList();
             $filters->selected = $post['entries_sel'];
             $this->session->$filter_name = $filters;
 
