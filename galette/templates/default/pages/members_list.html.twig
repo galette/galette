@@ -78,38 +78,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="right aligned field">
-                    <button type="submit"  class="tooltip action ui primary button" title="{{ _T('Apply filters') }}" name="filter">
+                <div class="ui right aligned basic fitted segment field flexend">
+                    <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
                         <i class="search icon"></i>
                         {{ _T('Filter') }}
                     </button>
-                    <button type="submit"  class="tooltip action ui button" title="{{ _T('Save selected criteria') }}" name="savesearch" id="savesearch">
+                    <button type="submit"  class="tooltip action ui labeled icon button" title="{{ _T('Save selected criteria') }}" name="savesearch" id="savesearch">
                         <i class="save blue icon"></i>
                         {{ _T('Save') }}
                     </button>
-                    <input type="submit" name="clear_filter" class="tooltip ui button" value="{{ _T('Clear filter') }}" title="{{ _T('Reset all filters to defaults') }}"/>
+                    <button type="submit" name="clear_filter" class="ui labeled icon button delete" title="{{ _T('Reset all filters to defaults') }}">
+                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        {{ _T('Clear filter') }}
+                    </button>
                 </div>
             </div>
 {% else %}
             <div class="field">
                 <span class="ui primary ribbon label">{{ _T('Advanced search mode') }}</span>
-                <button type="submit"  class="tooltip action ui primary button" title="{{ _T('Save current advanced search criteria') }}" name="savesearch" id="savesearch">
+                <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Save current advanced search criteria') }}" name="savesearch" id="savesearch">
                     <i class="save icon"></i>
                     {{ _T('Save') }}
                 </button>
-                <button type="submit" class="tooltip action ui button" title="{{ _T('Change search criteria') }}" name="adv_criteria">
+                <button type="submit" class="tooltip action ui labeled icon button" title="{{ _T('Change search criteria') }}" name="adv_criteria">
                     <i class="edit blue icon"></i>
                     {{ _T('Change criteria') }}
                 </button>
                 <input type="hidden" name="advanced_search" value="1" class="ui button"/>
-                <input type="submit" name="clear_filter" class="tooltip ui button" value="{{ _T('Clear filter') }}" title="{{ _T('Reset all filters to defaults') }}"/>
+                <button type="submit" name="clear_filter" class="ui labeled icon button delete" title="{{ _T('Reset all filters to defaults') }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
                 <div class="ui basic fluid accordion">
                     <div class="title">
                         <i class="dropdown icon"></i>
                         {{ _T('Show/hide query') }}
                     </div>
                     <div class="content">
-                        <pre id="sql_qry" class="hidden">{{ filters.query }}</pre>
+                        <div id="sql_qry" class="ui grey inverted segment hidden">{{ filters.query }}</div>
                     </div>
                 </div>
             </div>
