@@ -508,9 +508,15 @@
                     </div>
                 </div>
             <div class="ui basic center aligned segment">
-                <input type="submit" class="ui primary button" value="{{ _T('Filter') }}"/>
+                <button type="submit" class="ui labeled icon primary button action">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T('Filter') }}
+                </button>
                 <input type="hidden" name="advanced_filtering" value="true" />
-                <input type="submit" name="clear_adv_filter" class="ui button" value="{{ _T('Clear filter') }}"/>
+                <button type="submit" name="clear_adv_filter" class="ui labeled icon button delete">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
                 {% include "components/forms/csrf.html.twig" %}
             </div>
         </form>

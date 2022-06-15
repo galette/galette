@@ -5,7 +5,7 @@
             <div class="ui basic fitted segment">
                 <a
                     href="{{ path_for('importModel') }}"
-                    class="ui icon button"
+                    class="ui labeled icon button"
                 >
                     <i class="cogs icon" aria-hidden="true"></i>
                     {{ _T('Configure import model') }}
@@ -60,7 +60,7 @@
     {% endfor %}
                                 </tbody>
                             </table>
-                            <div class="button-container">
+                            <div class="ui basic center aligned segment">
                                 <label for="dryrun" title="{{ _T('Run the import process, but do *not* store anything in the database') }}">{{ _T('Dry run') }}</label>
                                 <input type="checkbox" name="dryrun" id="dryrun" value="1"{% if dryrun is defined and dryrun == true %} checked="checked"{% endif %}/>
                                 <button type="submit" name="import" id="import" class="ui labeled icon button">
@@ -88,7 +88,7 @@
                                 <label for="new_file">{{ _T('Select a file:') }}</label>
                                 <input class="labelalign" type="file" name="new_file" accept="text/csv" id="new_file"/>
                             </div>
-                            <div class="button-container">
+                            <div class="ui basic center aligned segment">
                                 <button type="submit" name="upload" id="upload" class="ui labeled icon button">
                                     <i class="upload blue icon" aria-hidd="true"></i>
                                     {{ _T('Upload file') }}

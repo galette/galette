@@ -30,7 +30,7 @@
         <input type="hidden" name="mod" id="mod" value="{% if class == 'Status' %}{{ entry.id_statut }}{% else %}{{ entry.id_type_cotis }}{% endif %}"/>
         <input type="hidden" name="class" value="{{ class }}" />
 
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i>
                 {{ _T("Save") }}
