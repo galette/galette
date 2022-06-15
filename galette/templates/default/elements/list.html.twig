@@ -135,7 +135,7 @@
 
                 $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(event) {
                     //mass removal is handled from 2 steps removal
-                    {%  set batch_excludes = ['delete']|merge(batch_excludes|default([])) %}
+                    {% set batch_excludes = ['delete']|merge(batch_excludes|default([])) %}
                     if (
                         {% for batch_exclude in batch_excludes %}
                             {% if not loop.first %} || {% endif %}this.id == '{{ batch_exclude }}'
