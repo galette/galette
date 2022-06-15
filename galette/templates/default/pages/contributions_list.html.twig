@@ -10,7 +10,31 @@
         'args': {"type": "contributions"}
     }
 } %}
-{% set is_paginated = nb > 0 %}
+
+{% if nb != 0 and (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+    {% set batch = {
+        'route': {
+            'name': 'batch-contributionslist',
+            'args': {"type": "contributions"}
+        },
+        'modal': {
+            'title': _T("No contribution selected"),
+            'content': _T("Please make sure to select at least one contribution from the list to perform this action.")
+        }
+    } %}
+    {% set batch_actions = [
+        {
+            'name': 'delete',
+            'label': _T("Delete"),
+            'icon': 'trash red'
+        },
+        {
+            'name': 'csv',
+            'label': _T("Export as CSV"),
+            'icon': 'file csv green'
+        }
+    ] %}
+{% endif %}
 
 {% block search %}
     <form action="{{ path_for("payments_filter", {"type": "contributions"}) }}" method="post" id="filtre" class="ui form">
@@ -297,28 +321,3 @@
         <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T("Close") }}</div></div>
     </div>
 {% endblock %}
-
-{% if nb != 0 and (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-    {% set batch = {
-        'route': {
-            'name': 'batch-contributionslist',
-            'args': {"type": "contributions"}
-        },
-        'modal': {
-            'title': _T("No contribution selected"),
-            'content': _T("Please make sure to select at least one contribution from the list to perform this action.")
-        }
-    } %}
-    {% set batch_actions = [
-        {
-            'name': 'delete',
-            'label': _T("Delete"),
-            'icon': 'trash red'
-        },
-        {
-            'name': 'csv',
-            'label': _T("Export as CSV"),
-            'icon': 'file csv green'
-        }
-    ] %}
-{% endif %}

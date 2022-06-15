@@ -1,4 +1,6 @@
 {% set mode = mode|default('') %}
+{% set is_paginated = is_paginated|default(nb > 0) %}
+
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 {% import "macros.twig" as macros %}
 
@@ -10,6 +12,7 @@
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">
                         <div class="ui label">{{ infoline.label }}</div>
+                        {% block infoline_actions %}{% endblock %}
                     </div>
                     <div class="ui basic right aligned fitted segment">
                         <div class="inline field">
@@ -91,8 +94,10 @@
         {% block extra_form %}{% endblock %}
         {% include "components/forms/csrf.html.twig" %}
     </form>
-    {% block legend %}{% set no_legend = true %}{% endblock %}
+    {% block legend %}{% endblock %}
 {% endblock %}
+
+{% set _legend_block = block('legend') %}
 
 {% block javascripts %}
     {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
@@ -121,7 +126,7 @@
                 var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment">' +
                     '<a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a>' +
                     ' | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a></div>';
-            {% if no_legend is not defined %}
+            {% if _legend_block is not empty %}
                 _checklinks += '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
             {% endif %}
 
@@ -129,7 +134,7 @@
                 $('.listing').after(_checklinks);
                 _bind_check('entries_sel');
         {% endif %}
-        {% if no_legend is not defined %}
+        {% if _legend_block is not empty %}
                 _bind_legend();
         {% endif %}
 
