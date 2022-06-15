@@ -313,7 +313,7 @@
             </table>
         </div>
 {% if nb_members != 0 and (login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff()) %}
-        <div class="ui bottom attached segment screen-only">
+        <div class="ui bottom attached segment screen-only selection_menu">
             <div class="ui horizontal list">
                 <span class="ui primary ribbon label">{{ _T('For the selection:') }}</span>
     {% if login.isAdmin() or login.isStaff() %}
