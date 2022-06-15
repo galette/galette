@@ -3,10 +3,10 @@
 {% block content %}
 {% if members.list is defined %}
     <form action="{% if transaction.id %}{{ path_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ path_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
-        <div class="ui top attached header">
+        <div class="ui top attached accordion-styled header">
             {{ _T("Transaction details") }}
         </div>
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
                 <div class="field inline">
                     <label for="trans_desc">{{ _T("Description:") }}</label>
@@ -63,10 +63,10 @@
     </form>
 
     {% if transaction.id %}
-        <div class="ui top attached header">
+        <div class="ui top attached accordion-styled header">
             {{ _T("Attached contributions") }}
         </div>
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
                 <div class="ui basic fitted right aligned segment">
                     {% if transaction.getMissingAmount() > 0 %}

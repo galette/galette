@@ -2,10 +2,10 @@
 
 {% block content %}
     <form action="{{ path_for('attendance_sheet') }}" id="sheet_details_form" method="POST" class="ui form">
-        <div class="ui top attached header">
+        <div class="ui top attached accordion-styled header">
             {{ _T("Some details about your attendance sheet...") }} - <span>{{ _T("%s attendees")|replace({'%s': selection|length}) }}</span>
         </div>
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
                 <div class="inline field">
                     <label for="sheet_type">{{ _T("Sheet type") }}</label>

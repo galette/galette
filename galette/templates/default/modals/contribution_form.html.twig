@@ -5,10 +5,10 @@
         <form action="{% if contribution.id %}{{ path_for("doEditContribution", {"type": type, "id": contribution.id}) }}{% else %}{{ path_for("doAddContribution", {"type": type}) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
     {% if contribution.isTransactionPart() %}
         {% set mid = contribution.transaction.member %}
-            <div class="ui top attached header">
+            <div class="ui top attached accordion-styled header">
                 {{ _T("Related transaction information") }}
             </div>
-            <div class="ui bottom attached segment">
+            <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">
                     <table id="transaction_detail" class="listing ui celled table">
                         <thead>
