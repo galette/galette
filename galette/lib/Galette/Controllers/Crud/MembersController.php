@@ -1833,7 +1833,7 @@ class MembersController extends CrudController
      *
      * In simple cases, we get the ID in the route arguments; but for
      * batchs, it should be found elsewhere.
-     * In post values, we look for id key, as well as all {sthing}_sel keys (like members_sel or contrib_sel)
+     * In post values, we look for id key, as well as all entries_sel keys
      *
      * @param array $args Request arguments
      * @param array $post POST values

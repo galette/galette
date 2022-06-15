@@ -180,7 +180,7 @@ abstract class CrudController extends AbstractController
      *
      * In simple cases, we get the ID in the route arguments; but for
      * batchs, it should be found elsewhere.
-     * In post values, we look for id key, as well as all {sthing}_sel keys (like members_sel or contrib_sel)
+     * In post values, we look for id key, as well as all entries_sel keys
      *
      * @param array $args Request arguments
      * @param array $post POST values
@@ -197,6 +197,7 @@ abstract class CrudController extends AbstractController
         }
 
         //look for {sthing}_sel as multiple ids selection (members_sel, contrib_sel, and so on)
+        //@deprecated using elements/list.html.twig assumes key is named entries_sel
         if (is_array($post) && count($post)) {
             $selecteds = preg_grep('/.+_sel$/', array_keys($post));
             if (count($selecteds) == 1 && !isset($args['id'])) {

@@ -258,7 +258,7 @@
                 //Select a row
                 $('#contributions_list .contribution_row').click(function(){
                     $('#contributions_list').modal('hide');
-                    var _cid = $(this).find('input[name="contrib_sel[]"]').val();
+                    var _cid = $(this).find('input[name="entries_sel[]"]').val();
                     window.location.href = '{{ path_for("attach_contribution", {"id": transaction.id, "cid": "%cid"}) }}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
             }

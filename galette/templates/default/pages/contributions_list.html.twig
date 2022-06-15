@@ -165,7 +165,7 @@
         <tr{% if mode == 'ajax' %} class="contribution_row" id="row_{{ contribution.id }}"{% endif %}>
             <td class="{{ cclass }}" data-scope="row">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
-                    <input type="checkbox" name="contrib_sel[]" value="{{ contribution.id }}"/>
+                    <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
                 {% else %}
                     <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
                 {% endif %}
@@ -314,48 +314,3 @@
         }
     ] %}
 {% endif %}
-
-{% block javascripts %}
-        <script type="text/javascript">
-            var _checkselection = function() {
-                var _checked = $('#listform').find('input[type=checkbox]:checked').length;
-                if ( _checked == 0 ) {
-                    $('body').modal({
-                        title: '{{ _T("No contribution selected")|e("js") }}',
-                        class: 'tiny',
-                        content: '{{ _T("Please make sure to select at least one contribution from the list to perform this action.")|e("js") }}',
-                        actions: [{
-                            text    : '{{ _T("Close")|e("js") }}',
-                            class   : 'cancel'
-                        }]
-                    }).modal('show');
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-            $(function(){
-                var _init_contribs_page = function(res){
-    {% if login.isAdmin() or login.isStaff() %}
-                    var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment"><a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a> | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a></div><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
-
-                    $('.listing').before(_checklinks);
-                    $('.listing').after(_checklinks);
-                    _bind_check('contrib_sel');
-    {% endif %}
-                    _bind_legend();
-
-                    /*$('#start_date_filter, #end_date_filter').datepicker({
-                        changeMonth: true,
-                        changeYear: true,
-                        showOn: 'button',
-                        buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                    });*/
-                }
-                _init_contribs_page();
-
-                {% include "elements/js/removal.js.twig" %}
-                {% include "elements/js/removal.js.twig" with {selector: "#delete", loader: "button", deleteurl: path_for("batch-contributionslist", {"type": "contributions"}), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
-            });
-        </script>
-{% endblock %}
