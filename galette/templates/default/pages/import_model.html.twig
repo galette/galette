@@ -30,7 +30,7 @@
             </tr>
     {% endfor %}
     </table>
-    <div class="button-container">
+    <div class="ui basic center aligned segment">
         <a class="ui labeled icon primary button" href="{{ path_for('getImportModel') }}">
             <i class="file csv icon" aria-hidden="true"></i>
             {{ _T('Generate empty CSV file') }}
@@ -69,7 +69,7 @@
                 </tr>
         {% endfor %}
         </table>
-        <div class="button-container">
+        <div class="ui basic center aligned segment">
             <button type="submit" name="store-model" id="store-model" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i>
                 {{ _T('Store new model') }}
@@ -78,7 +78,7 @@
         </div>
     </form>
 </div>
-<div class="button-container">
+<div class="ui basic center aligned segment">
     <a
         class="ui labeled icon button"
         href="{{ path_for('import') }}"

@@ -138,8 +138,11 @@
                     </div>
                 </div>
             </div>
-            <div class="button-container">
-                <input type="submit" name="valid" value="{{ _T('Continue') }}" class="ui primary button"/>
+            <div class="ui basic center aligned segment">
+                <button type="submit" name="valid" class="ui labeled icon primary button">
+                    <i class="download icon"></i>
+                    {{ _T('Continue') }}
+                </button>
                 {% include "components/forms/csrf.html.twig" %}
             </div>
         </form>
