@@ -7,13 +7,14 @@
 {% block content %}
     {% block search %}{% endblock %}
     {% block infoline %}
-        <form action="{{ path_for(infoline.route.name, infoline.route.args|default([])) }}" method="post" id="filtre">
+        <form action="{% if infoname.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" id="filtre">
             <div class="infoline">
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">
                         <div class="ui label">{{ infoline.label }}</div>
                         {% block infoline_actions %}{% endblock %}
                     </div>
+        {% if infoname.route is defined %}
                     <div class="ui basic right aligned fitted segment">
                         <div class="inline field">
                             <label for="nbshow">{{ _T('Records per page:') }}</label>
@@ -25,6 +26,7 @@
                             <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
                         </div>
                     </div>
+        {% endif %}
                 </div>
             </div>
             {% include "components/forms/csrf.html.twig" %}
