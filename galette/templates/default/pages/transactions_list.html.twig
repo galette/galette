@@ -1,6 +1,20 @@
-{% extends "page.html.twig" %}
-{% block content %}
-        <form action="{{ path_for("payments_filter", {"type": "transactions"}) }}" method="post" id="filtre" class="ui form">
+{% extends 'elements/list.html.twig' %}
+
+{% set form = {
+    'route': {
+        'name': 'payments_filter',
+        'args': {
+            'type': 'transactions'
+        }
+    },
+    'order': {
+        'name': "contributions",
+        'args': {"type": "transactions"}
+    }
+} %}
+
+{% block search %}
+    <form action="{{ path_for("payments_filter", {"type": "transactions"}) }}" method="post" id="filtre" class="ui form">
         <div class="ui segment">
             <div class="two fields">
                 <div class="two fields">
@@ -36,210 +50,156 @@
                 </div>
             </div>
         </div>
-{% if member is defined %}
-    {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
-        <div class="ui compact vertically fitted segment">
-            <div class="ui horizontal list">
+        {% if member is defined %}
+            {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
+                <div class="ui compact vertically fitted segment">
+                <div class="ui horizontal list">
                 <span class="ui primary ribbon label">
-                    <a
+                <a
                         href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
                         class="tooltip"
-                    >
+                >
                         <i class="icon eraser"></i>
                         <span class="hidden">{{ _T("Show all members transactions") }}</span>
                     </a>
-    {% endif %}
-                    {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
-                </span>
-    {% if login.isAdmin() or login.isStaff() %}
+            {% endif %}
+            {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
+            </span>
+            {% if login.isAdmin() or login.isStaff() %}
                 <div class="item">
                     <a href="{{ path_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
                 </div>
                 <div class="item">
                     <a href="{{ path_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny button">{{ _T("Add a transaction") }}</a>
                 </div>
-    {% endif %}
+            {% endif %}
             </div>
-        </div>
-{% endif %}
-        <div class="infoline">
-            <div class="ui basic horizontal segments">
-                <div class="ui basic fitted segment">
-                    <div class="ui label">{{ _Tn("%count transaction", "%count transactions", nb)|replace({"%count": nb}) }}</div>
-                </div>
-                <div class="ui basic right aligned fitted segment">
-                    <div class="inline field">
-                        <label for="nbshow">{{ _T("Records per page:") }}</label>
-                        <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
-                            {% for key, value in nbshow_options %}
-                                <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
-                            {% endfor %}
-                        </select>
-                        <noscript> <span><input type="submit" value="{{ _T("Change") }}" /></span></noscript>
-                    </div>
-                    {% include "components/forms/csrf.html.twig" %}
-                </div>
             </div>
-        </div>
-        </form>
-        <table class="listing ui celled table">
-            <thead>
-                <tr>
-                    <th class="id_row">
-                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_ID")}) }}">#
-                        {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_ID') %}
-                            {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
-                            <i class="ui angle down icon tooltip"></i>
-                            {% else %}
-                            <i class="ui angle up icon tooltip"></i>
-                            {% endif %}
-                        {% endif %}
-                        </a>
-                    </th>
-                    <th class="left date_row">
-                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE")}) }}">{{ _T("Date") }}
-                        {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_DATE') %}
-                            {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
-                        <i class="ui angle down icon tooltip"></i>
-                            {% else %}
-                        <i class="ui angle up icon tooltip"></i>
-                            {% endif %}
-                        {% endif %}
-                        </a>
-                    </th>
-                    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-                        <th class="left">
-                            <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}) }}">{{ _T("Member") }}
-                                {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_MEMBER') %}
-                                    {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
-                                        <i class="ui angle down icon tooltip"></i>
-                                    {% else %}
-                                        <i class="ui angle up icon tooltip"></i>
-                                    {% endif %}
-                                {% endif %}
-                            </a>
-                        </th>
-                    {% endif %}
-                    <th class="left">{{ _T("Description") }}</th>
-{% if login.isAdmin() or login.isStaff() %}
-                    <th class="left">
-                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}) }}">{{ _T("Originator") }}
-                        {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_MEMBER') %}
-                            {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
-                        <i class="ui angle down icon tooltip"></i>
-                            {% else %}
-                        <i class="ui angle up icon tooltip"></i>
-                            {% endif %}
-                        {% endif %}
-                        </a>
-                    </th>
-{% endif %}
-                    <th class="left">
-                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "order", "value": constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT")}) }}">{{ _T("Amount") }}
-                        {% if filters.orderby == constant('Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT') %}
-                            {% if filters.ordered == constant('Galette\\Filters\\TransactionsList::ORDER_ASC') %}
-                        <i class="ui angle down icon tooltip"></i>
-                            {% else %}
-                        <i class="ui angle up icon tooltip"></i>
-                            {% endif %}
-                        {% endif %}
-                        </a>
-                    </th>
-{% if login.isAdmin() or login.isStaff() %}
-                    <th class="actions_row">{{ _T("Actions") }}</th>
-{% endif %}
-                </tr>
-            </thead>
-            <tbody>
-{% for ordre, transaction in list %}
-    {% set mid = transaction.member %}
-    {% set cclass = transaction.getRowClass() %}
-                <tr>
-                    <td class="{{ cclass }}" data-scope="row">
-    {% if preferences.pref_show_id %}
-                        {{ transaction.id }}
-    {% else %}
-                        {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+        {% endif %}
+    </form>
+{% endblock %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count transaction", "%count transactions", nb)|replace({"%count": nb}),
+        'route': {
+            'name': 'payments_filter',
+            'args': {
+                'type': 'transactions'
+            }
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID")},
+        {'label': _T("Date"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE")}
+    ] %}
+
+    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
     {% endif %}
-                        <span class="row-title">
+
+    {% set columns = columns|merge([
+        {'label': _T("Description")}
+    ]) %}
+
+    {% if login.isAdmin() or login.isStaff() %}
+        {% set columns = columns|merge([
+            {'label': _T("Originator")}
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT")}
+    ]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% for ordre, transaction in list %}
+        {% set mid = transaction.member %}
+        {% set cclass = transaction.getRowClass() %}
+        <tr>
+            <td class="{{ cclass }}" data-scope="row">
+                {% if preferences.pref_show_id %}
+                    {{ transaction.id }}
+                {% else %}
+                    {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+                {% endif %}
+                <span class="row-title">
                             <a href="{{ path_for("editTransaction", {"id": transaction.id}) }}">
                                 {{ _T("Transaction %id")|replace({"%id": transaction.id}) }}
                             </a>
                         </span>
-                    </td>
-                    <td class="{{ cclass }}" data-title="{{ _T("Date") }}">{{ transaction.date }}</td>
-                    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-                        <td class="{{ cclass }}" data-title="{{ _T("Member") }}">
-                            {% if member is defined %}
-                                {% set mname = member.sname %}
-                            {% else %}
-                                {% set mname = memberName({id: mid}) %}
-                            {% endif %}
-                            {% if filters.filtre_cotis_adh == "" %}
-                                <a
-                                        href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
-                                        title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
-                                >
-                                    <i class="fa fa-filter"></i>
-                                </a>
-                            {% endif %}
-                            <a
-                                    href="{{ path_for("member", {"id": mid}) }}"
-                                    title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
-                            >
-                                {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
-                            </a>
-                        </td>
+            </td>
+            <td class="{{ cclass }}" data-title="{{ _T("Date") }}">{{ transaction.date }}</td>
+            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+                <td class="{{ cclass }}" data-title="{{ _T("Member") }}">
+                    {% if member is defined %}
+                        {% set mname = member.sname %}
+                    {% else %}
+                        {% set mname = memberName({id: mid}) %}
                     {% endif %}
-                    <td class="{{ cclass }}" data-title="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
-{% if login.isAdmin() or login.isStaff() %}
-                    <td class="{{ cclass }}" data-title="{{ _T("Originator") }}">
-    {% if filters.filtre_cotis_adh == "" %}
+                    {% if filters.filtre_cotis_adh == "" %}
+                        <a
+                                href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
+                                title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
+                        >
+                            <i class="fa fa-filter"></i>
+                        </a>
+                    {% endif %}
+                    <a
+                            href="{{ path_for("member", {"id": mid}) }}"
+                            title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                    >
+                        {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
+                    </a>
+                </td>
+            {% endif %}
+            <td class="{{ cclass }}" data-title="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
+            {% if login.isAdmin() or login.isStaff() %}
+                <td class="{{ cclass }}" data-title="{{ _T("Originator") }}">
+                    {% if filters.filtre_cotis_adh == "" %}
                         <a href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}">
                             {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                         </a>
-    {% else %}
+                    {% else %}
                         <a href="{{ path_for("member", {"id": mid}) }}">
                             {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                         </a>
-    {% endif %}
-                    </td>
-{% endif %}
-                    <td class="{{ cclass }}" data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
-{% if login.isAdmin() or login.isStaff() %}
-                    <td class="{{ cclass }} center">
-                        <a
+                    {% endif %}
+                </td>
+            {% endif %}
+            <td class="{{ cclass }}" data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
+            {% if login.isAdmin() or login.isStaff() %}
+                <td class="{{ cclass }} center">
+                    <a
                             href="{{ path_for("editTransaction", {"id": transaction.id}) }}"
                             class="tooltip action"
-                        >
-                            <i class="ui edit icon"></i>
-                            <span class="sr-only">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
-                        </a>
-                        <a
+                    >
+                        <i class="ui edit icon"></i>
+                        <span class="sr-only">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                    </a>
+                    <a
                             href="{{ path_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                             class="delete tooltip"
-                        >
-                            <i class="ui trash red icon"></i>
-                            <span class="sr-only">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
-                        </a>
-                    </td>
-{% endif %}
-                </tr>
-{% else %}
-                <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}" class="emptylist">{{ _T("no transaction") }}</td></tr>
-{% endfor %}
-            </tbody>
-        </table>
-{% if nb != 0 %}
-        <div class="ui basic center aligned fitted segment">
-            <div class="ui inverted pagination menu">
-                <div class="header item">
-                    {{ _T("Pages:") }}
-                </div>
-                {{ pagination|raw }}
-            </div>
-        </div>
-{% endif %}
+                    >
+                        <i class="ui trash red icon"></i>
+                        <span class="sr-only">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                    </a>
+                </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}" class="emptylist">{{ _T("no transaction") }}</td></tr>
+    {% endfor %}
+{% endblock %}
+
+{% block legend %}
         <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
             <div class="header">{{ _T("Legend") }}</div>
             <div class="content">
