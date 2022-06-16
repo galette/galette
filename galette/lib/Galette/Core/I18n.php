@@ -309,11 +309,13 @@ class I18n
                 $langs[$real_lang] = [
                     'long'      => $lang,
                     'shortname' => $parsed_lang['language'] ?? '',
-                    'longname'  => ucfirst(
+                    'longname'  => mb_convert_case(
                         \Locale::getDisplayLanguage(
                             $lang,
                             $real_lang
-                        )
+                        ),
+                        MB_CASE_TITLE,
+                        'UTF-8'
                     )
                 ];
             }
