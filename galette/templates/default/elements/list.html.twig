@@ -7,14 +7,14 @@
 {% block content %}
     {% block search %}{% endblock %}
     {% block infoline %}
-        <form action="{% if infoname.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" id="filtre">
+        <form action="{% if infoline.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" id="filtre">
             <div class="infoline">
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">
                         <div class="ui label">{{ infoline.label }}</div>
                         {% block infoline_actions %}{% endblock %}
                     </div>
-        {% if infoname.route is defined %}
+        {% if infoline.route is defined %}
                     <div class="ui basic right aligned fitted segment">
                         <div class="inline field">
                             <label for="nbshow">{{ _T('Records per page:') }}</label>
@@ -32,7 +32,7 @@
             {% include "components/forms/csrf.html.twig" %}
         </form>
     {% endblock %}
-    <form action="{%  if form is defined %}{{ path_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
+    <form action="{%  if form.route is defined %}{{ path_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
         <div class="ui basic fitted segment">
         <table class="listing ui celled table">
             <thead>
@@ -56,7 +56,7 @@
                             {% endif %}
                         </th>
                     {% endfor %}
-                    {% if mode != 'ajax' %}
+                    {% if mode != 'ajax' and no_action is not defined or no_action == false %}
                     <th class="actions_row">{{ _T('Actions') }}</th>
                     {% endif %}
                 {% endblock %}
