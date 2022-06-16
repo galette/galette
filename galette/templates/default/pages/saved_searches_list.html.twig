@@ -1,64 +1,65 @@
-{% extends "page.html.twig" %}
+{% extends 'elements/list.html.twig' %}
 
-{% block content %}
-        <form action="{{ path_for("searches") }}" method="post" enctype="multipart/form-data">
-                <table class="listing ui celled table">
-                    <thead>
-                        <tr>
-                            <th class="id_row">#</th>
-                            <th>{{ _T("Creation date") }}</th>
-                            <th>{{ _T("Name") }}</th>
-                            <th>{{ _T("Parameters") }}</th>
-                            <th>{{ _T("Actions") }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-{% for search in searches %}
-                        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
-                            <td data-scope="row">
-    {% if preferences.pref_show_id %}
-                                {{ search.id }}
-    {% else %}
-                                {{ loop.index1 }}
-    {% endif %}
-                            </td>
-                            <td class="left" data-title="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
-                            <td class="left" data-title="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
-                            <td class="left" data-title="{{ _T("Search parameters") }}">
-                                <a href="#" class="searchparams" title="{{ _T("Show parameters") }}">
-                                    <i class="ui info circle primary icon"></i>
-                                    <span class="sr-only">
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count search", "%count searches", nb)|replace({"%count": nb}),
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#'},
+        {'label': _T("Creation date")},
+        {'label': _T("Name")},
+        {'label': _T("Parameters")}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% for search in searches %}
+        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+            <td data-scope="row">
+                {% if preferences.pref_show_id %}
+                    {{ search.id }}
+                {% else %}
+                    {{ loop.index1 }}
+                {% endif %}
+            </td>
+            <td class="left" data-title="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
+            <td class="left" data-title="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
+            <td class="left" data-title="{{ _T("Search parameters") }}">
+                <a href="#" class="searchparams" title="{{ _T("Show parameters") }}">
+                    <i class="ui info circle primary icon"></i>
+                    <span class="sr-only">
         {% for key, parameter in search.sparameters %}
-                                    <strong>{{ key }}:</strong> {{ parameter }}{% if not loop.last %}<br />{% endif %}
+            <strong>{{ key }}:</strong> {{ parameter }}{% if not loop.last %}<br />{% endif %}
         {% endfor %}
                                     </span>
-                                </a>
-                            </td>
-                            <td class="center actions_row">
-                                <a
-                                    href="{{ path_for("loadSearch", {"id": search.id}) }}"
-                                    class="tooltip"
-                                >
-                                    <i class="ui search icon"></i>
-                                    <span class="sr-only">{{ _T("Load saved search") }}</span>
-                                </a>
+                </a>
+            </td>
+            <td class="center actions_row">
+                <a
+                        href="{{ path_for("loadSearch", {"id": search.id}) }}"
+                        class="tooltip"
+                >
+                    <i class="ui search icon"></i>
+                    <span class="sr-only">{{ _T("Load saved search") }}</span>
+                </a>
 
-                                <a
-                                    href="{{ path_for("removeSearch", {"id": search.id}) }}"
-                                    class="delete tooltip"
-                                >
-                                    <i class="ui trash red icon"></i>
-                                    <span class="sr-only">{{ _T("Delete saved search") }}</span>
-                                </a>
-                            </td>
-                        </tr>
-{% else %}
-                <tr><td colspan="5" class="emptylist">{{ _T("no search") }}</td></tr>
-{% endfor %}
-                    </tbody>
-                </table>
-                {% include "components/forms/csrf.html.twig" %}
-        </form>
+                <a
+                        href="{{ path_for("removeSearch", {"id": search.id}) }}"
+                        class="delete tooltip"
+                >
+                    <i class="ui trash red icon"></i>
+                    <span class="sr-only">{{ _T("Delete saved search") }}</span>
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="emptylist">{{ _T("no search") }}</td></tr>
+    {% endfor %}
 {% endblock %}
 
 {% block javascripts %}
