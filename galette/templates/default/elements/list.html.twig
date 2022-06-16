@@ -166,7 +166,8 @@
                 deleteurl: path_for(batch.route.name, batch.route.args|default([])),
                 extra_check: "if (!_checkselection()) { return false; }",
                 extra_data: "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()",
-                method: "POST"
+                method: "POST",
+                loader: "button"
             } %}
         });
     </script>
