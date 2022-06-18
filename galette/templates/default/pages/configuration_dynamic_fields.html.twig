@@ -1,36 +1,32 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <section class="tabbed">
-        <div id="configfiches_tabs">
+    <div class="ui three item top attached stackable tabs menu">
+{% for key, form in all_forms %}
+        <a href="{{ path_for('configureDynamicFields', {'form_name': key}) }}" class="item{% if form_name == key %} active{% endif %}" data-tab="{{ loop.index }}">{{ form }}</a>
+{% endfor %}
+    </div>
+{% for key, form in all_forms %}
+    <div class="ui bottom attached{% if form_name == key %} active{% endif %} tab segment" data-tab="{{ loop.index }}">
+    {% if form_name == key %}
+        {% include 'elements/edit_dynamic_fields.html.twig' %}
+        <div class="ui basic fitted segment">
             <a
                 id="addfield"
                 href="{{ path_for('addDynamicField', {'form_name': form_name}) }}"
-                class="ui compact icon green button tab-button tooltip"
+                class="ui labeled icon primary button tooltip"
                 data-html="{{ _T("Add")|e("js") }}"
             >
                 <i class="plus icon"></i>
-                <span class="sr-only">{{ _T("Add") }}</span>
+                {{ _T("Add") }}
             </a>
-            <ul>
-{% for key, form in all_forms %}
-                <li{% if form_name == key %} class="ui-tabs-selected {{ loop.index0 }}"{% endif %}><a href="{{ path_for('configureDynamicFields', {'form_name': key}) }}">{{ form }}</a></li>
-{% endfor %}
-            </ul>
-            <div id="ui-tabs-{{ form_name }}">
-                {% include 'elements/edit_dynamic_fields.html.twig' %}
-            </div>
         </div>
-    </section>
+    {% endif %}
+    </div>
+{% endfor %}
 {% endblock %}
 
 {% block javascripts %}
-{% set activetab = "" %}
-{% for key, form in all_forms %}
-    {% if form_name == key %}
-        {% set activetab = loop.index0 %}
-    {% endif %}
-{% endfor %}
         <script type="text/javascript">
             var _form_name;
             $('#addfield').click(function(e){
@@ -65,38 +61,6 @@
                         alert("{{ _T("An error occurred :(")|e("js") }}");
                     }
                 });
-            });
-
-            $('#configfiches_tabs').tabs({
-                active: {{ activetab }},
-                load: function(event, ui) {
-                    $('#configfiches_tabs input:submit, #configfiches_tabs .button, #configfiches_tabs input:reset').button();
-                },
-                beforeLoad: function(event, ui) {
-                    _form_name = ui.ajaxSettings.url.split('/');
-                    _form_name = _form_name[_form_name.length-1]
-
-                    if ( ui.ajaxSettings.url == '{{ path_for('configureDynamicFields', {'form_name': form_name}) }}'
-                        ||  ui.ajaxSettings.url == '{{ path_for('configureDynamicFields') }}'
-                    ) {
-                        var _current = $('#ui-tabs-{{ form_name }}');
-                        if (_current) {
-                            $('#'+ui.panel[0].id).append(_current)
-                        }
-                        return false; //avoid reloading first tab onload
-                    }
-
-                    var _dimmer = $('<div id="jsloader" class="ui active page dimmer"><div class="ui text loader">{{ _T("Currently loading...") }}</div><p></p></div>');
-                    $('body').append(_dimmer);
-
-                    ui.jqXHR.always(function(){
-                        $('#jsloader').remove();
-                    });
-
-                    ui.jqXHR.fail(function(){
-                        alert('{{ _T("An error occurred :(")|e("js") }}');
-                    });
-                }
             });
         </script>
 {% endblock %}
