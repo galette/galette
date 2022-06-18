@@ -183,13 +183,12 @@
                     _w.find('li').remove();
                     $.each(_warnings, function(i,w){
                         var _val = w[0].getElementsByClassName('fieldname')[0].textContent.trim();
-                        console.log(_val);
                         _w.find('ul').append('<li>' + _val + '</li>');
-                        console.log(_w.find('li'));
                     });
 
                     $('body').modal({
                         class: 'tiny',
+                        title: _w.find('.header'),
                         content: _w.find('.content'),
                         actions: [{
                             text    : '{{ _T("Close")|e('js') }}',
@@ -204,7 +203,7 @@
         }
 
         $(function() {
-            $('body').append($('<div id="warnings" title="{{ _T("Warning")|e("js") }}"><div class="content"><p>{{ _T("Some warnings has been thrown:")|e("js") }}</p><ul></ul><p>{{ _T("Please correct above warnings to continue.") }}</p></div></div>').hide());
+            $('body').append($('<div id="warnings" title="{{ _T("Warning")|e("js") }}"><div class="header">{{ _T("Some warnings has been thrown:")|e("js") }}</div><div class="content"><ul></ul><p class="center aligned">{{ _T("Please correct above warnings to continue.") }}</p></div></div>').hide());
 
             _bindForm();
 
