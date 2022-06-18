@@ -38,23 +38,31 @@
                     url: _href,
                     type: "GET",
                     datatype: 'json',
-                    {% include "elements/js/loader.js.twig" %},
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: '#addfield',
+                        loader: 'button'
+                    }%},
                     success: function(res){
                         var _res = $(res);
-                        _res.find('input[type=submit]')
-                            .button();
-
-                        _res.find('form').on('submit', function(e) {
-                            e.preventDefault();
-                        });
 
                         $('body').modal({
                             class: 'tiny',
+                            title: '{{ _T("New dynamic field") }}',
                             content: _res,
+                            onApprove: function() {
+                                $('form').submit();
+                            },
                             actions: [{
+                                text    : '{{ _T("Add") }}',
+                                class   : 'green approve'
+                            }, {
                                 text    : '{{ _T("Close")|e('js') }}',
                                 class   : 'cancel'
-                            }]
+                            }],
+                            className: {
+                                'title': 'center aligned header',
+                                'actions': 'center aligned actions'
+                            },
                         }).modal('show');
                     },
                     error: function() {

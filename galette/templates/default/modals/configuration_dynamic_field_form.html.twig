@@ -89,8 +89,6 @@
         </div>
         <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
-    {% else %}
-        <div class="cssform">
     {% endif %}
                 <div class="inline field">
                     <label for="field_name">{{ _T("Field name") }}</label>
@@ -131,14 +129,19 @@
                 </div>
     {% if mode != 'ajax' %}
             </div>
-    {% endif %}
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="plus icon"></i> {{ _T("Add") }}
             </button>
+    {% endif %}
             <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
+    {% if mode == 'ajax' %}
+            <input type="hidden" name="ajax" value="true"/>
+    {% endif %}
+    {% if mode != 'ajax' %}
         </div>
+    {% endif %}
     </form>
 {% endif %}
 {% endblock %}
