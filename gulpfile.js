@@ -95,6 +95,12 @@ function scripts() {
     .pipe(concat('galette-chartjs.bundle.min.js'))
     .pipe(gulp.dest(_dir));
 
+  sortablejs = gulp.src([
+        './node_modules/sortablejs/Sortable.min.js',
+  ])
+    .pipe(concat('galette-sortablejs.bundle.min.js'))
+    .pipe(gulp.dest(_dir));
+
   return merge(main, chartjs);
 };
 

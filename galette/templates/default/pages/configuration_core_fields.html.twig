@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <div class="ui basic segment">
+    <div class="ui basic fitted segment">
         <button id="collapse" class="ui labeled icon button">
             <i class="angle double up icon"></i>
             {{ _T("Collapse all") }}
@@ -10,48 +10,75 @@
     <form action="{{ path_for('configureCoreFields') }}" method="post" id="config_fields_form" class="ui form">
     <div id="members_tab">
 {% for category in categories %}
-        <fieldset class="cssform large" id="cat_{{ loop.index }}">
     {% set catname = category.category %}
-            <input type="hidden" name="categories[]" id="category{{ loop.index }}" value="{{ category.id_field_category }}"/>
-            <legend class="ui basic small header segment">{{ _T(catname) }}</legend>
-            <ul id="sortable_{{ loop.index }}" class="fields_list connectedSortable">
-                <li class="ui block header listing">
-                    <span class="label">{{ _T("Field name") }}</span>
-                    <span class="yesno">{{ _T("Required") }}</span>
-                    <span class="access">{{ _T("Permissions") }}</span>
-                </li>
+        <div class="galetteform ui styled fluid accordion field">
+            <div class="active ui title">
+                <i class="dropdown icon"></i>
+                {{ _T(catname) }}
+                <i class="arrows alternate icon"></i>
+            </div>
+            <div class="active content">
+                <div class="ui basic fitted segment">
+                    <div class="ui three column stackable grid">
+                        <div class="middle aligned row">
+                            <div class="column">
+                                <span class="ui label">{{ _T("Field name") }}</span>
+                            </div>
+                            <div class="column">
+                                <span class="ui label">{{ _T("Required") }}</span>
+                            </div>
+                            <div class="column">
+                                <span class="ui label">{{ _T("Permissions") }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul id="sortable_{{ loop.index }}" class="fields_list notype">
     {% set fs = category.id_field_category %}
     {% for col, field in categorized_fields[fs] %}
         {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
             {% set fid = field.field_id %}
-                <li class="tbl_line_{{ loop.index is odd ? 'odd' : 'even' }}">
-                    <span class="label" data-title="{{ _T("Field name") }}">
-                        <input type="hidden" name="fields[]" value="{{ fid }}"/>
-                        <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
-                        <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
-                        {{ field.label }}
-                    </span>
-                    <span data-title="{{ _T("Required") }}" class="yesno" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
-                        <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
-                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
-                        <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
-                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
-                    </span>
-                    <span data-title="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
-                        <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown nochosen">
-                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
-                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>
-                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::STAFF') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %} selected="selected"{% endif %}>{{ _T("Staff member") }}</option>
-                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::MANAGER') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %} selected="selected"{% endif %}>{{ _T("Group manager") }}</option>
-                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_READ') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %} selected="selected"{% endif %}>{{ _T("Read only") }}</option>
-                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_WRITE') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %} selected="selected"{% endif %}>{{ _T("Read/Write") }}</option>
-                        </select>
-                    </span>
-                </li>
+                    <li class="tbl_line_even ui segment">
+                        <div class="ui three column stackable grid">
+                            <div class="middle aligned row">
+                                <div class="column">
+                                    <i class="arrows alternate icon"></i>
+                                    <span data-title="{{ _T("Field name") }}" class="fieldname">
+                                        <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                                        <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
+                                        <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
+                                        {{ field.label }}
+                                    </span>
+                                </div>
+                                <div class="column">
+                                    <span data-title="{{ _T("Required") }}" class="yesno" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
+                                        <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
+                                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                                        <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
+                                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                                    </span>
+                                </div>
+                                <div class="column">
+                                    <span data-title="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                                        <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown nochosen">
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::STAFF') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %} selected="selected"{% endif %}>{{ _T("Staff member") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::MANAGER') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %} selected="selected"{% endif %}>{{ _T("Group manager") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_READ') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %} selected="selected"{% endif %}>{{ _T("Read only") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_WRITE') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %} selected="selected"{% endif %}>{{ _T("Read/Write") }}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
         {% endif %}
     {% endfor %}
-            </ul>
-        </fieldset>
+                </ul>
+            </div>
+            <input type="hidden" name="categories[]" id="category{{ loop.index }}" value="{{ category.id_field_category }}"/>
+        </div>
 {% endfor %}
     </div>
         <div class="ui basic center aligned segment">
@@ -64,23 +91,43 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript">
-        var _initSortable = function(){
-            $('.fields_list').sortable({
-                items: 'li:not(.listing)',
-                connectWith: '.connectedSortable',
-                update: function(event, ui) {
-                    // When sort is updated, we must check for the newer category item belongs to
-                    var _item = $(ui.item[0]);
-                    var _category = _item.parent().prevAll('input[name^=categories]').attr('value');
-                    _item.find('input[name$=category]').attr('value', _category);
-                }
-            }).disableSelection();
+    <script type="module">
 
-            $('#members_tab').sortable({
-                items: 'fieldset'
+        var _initSortable = function(){
+            var _listed = document.getElementsByClassName('fields_list')[0];
+            var _categories = document.getElementById('members_tab');
+
+            var _nestedSortables = [].slice.call(document.querySelectorAll('.fields_list'));
+            for (var i = 0; i < _nestedSortables.length; i++) {
+                new Sortable(_nestedSortables[i], {
+                    group: 'nested',
+                    animation: 150,
+                    ghostClass: 'yellow',
+                    fallbackOnBody: true,
+                    swapThreshold: 0.65,
+                    onAdd: function (evt) {
+                        var _item = evt.item;
+                        var _category = _item.parentElement.parentElement.parentElement.querySelectorAll('input[name^=categories]')[0].attributes.value.nodeValue;
+                        _item.classList.add('yellow');
+                        _item.querySelectorAll('input[name$=category]')[0].setAttribute('value', _category);
+                    },
+                    onUpdate: function (evt) {
+                        var _item = evt.item;
+                        _item.classList.add('yellow');
+                    }
+                });
+            }
+
+            new Sortable(_categories, {
+                animation: 150,
+                ghostClass: 'yellow',
+                onUpdate: function (evt) {
+                    var _item = evt.item;
+                    _item.classList.add('yellow');
+                }
             });
         }
+
 
         var _bindCollapse = function() {
             $('#collapse').click(function(){
@@ -103,14 +150,7 @@
 
                 _child.toggleClass('down').toggleClass('up');
 
-                $('legend i').each(function(){
-                    var _visible = $(this).parent('legend').parent('fieldset').children('ul').is(':visible');
-                    if( _isExpand && _visible ) {
-                        $(this).click();
-                    } else if( !_isExpand && !_visible){
-                        $(this).click();
-                    }
-                });
+                $('#config_fields_form .accordion .content').toggleClass('active');
             });
         }
 
@@ -124,7 +164,7 @@
 
 
                 if ( _required === 1 && _accessible === 0 ) {
-                    _elt.find('.label').addClass('warnings');
+                    _elt.addClass('red');
                     _warnings[_warnings.length] = _elt;
                 }
             }
@@ -134,7 +174,7 @@
             $('#config_fields_form').submit(function(){
 
                 _warnings = [];
-                $('.warnings').removeClass('warnings');
+                $('#members_tab .segment').removeClass('red');
                 $('.fields_list li').each(_checkCoherence);
 
                 if ( _warnings.length > 0 ) {
@@ -142,13 +182,15 @@
 
                     _w.find('li').remove();
                     $.each(_warnings, function(i,w){
-                        var _val = w.find('.label').text().trim();
+                        var _val = w[0].getElementsByClassName('fieldname')[0].textContent.trim();
+                        console.log(_val);
                         _w.find('ul').append('<li>' + _val + '</li>');
+                        console.log(_w.find('li'));
                     });
 
                     $('body').modal({
                         class: 'tiny',
-                        content: _w,
+                        content: _w.find('.content'),
                         actions: [{
                             text    : '{{ _T("Close")|e('js') }}',
                             class   : 'cancel'
@@ -162,7 +204,7 @@
         }
 
         $(function() {
-            $('body').append($('<div id="warnings" title="{{ _T("Warning")|e("js") }}"><p>{{ _T("Some warnings has been thrown:")|e("js") }}</p><ul></ul><p>{{ _T("Please correct above warnings to continue.") }}</p></div>').hide());
+            $('body').append($('<div id="warnings" title="{{ _T("Warning")|e("js") }}"><div class="content"><p>{{ _T("Some warnings has been thrown:")|e("js") }}</p><ul></ul><p>{{ _T("Please correct above warnings to continue.") }}</p></div></div>').hide());
 
             _bindForm();
 

@@ -856,34 +856,8 @@ label.simplelabel {
     background-color: transparent!important;
 }
 
-.fields_list span.label{
-    display:inline-block;
-    width: 33%;
-}
-
-.fields_list span.yesno{
-    margin-right:.2em;
-    display:inline-block;
-    text-align:center;
-    width: 18%;
-}
-.fields_list span.access{
-    margin-right:.2em;
-    min-width:25em;
-    width:33%;
-    display:inline-block;
-    text-align:center;
-}
-
 .fields_list .selectize-input {
     min-width: auto;
-}
-
-#listed_fields, #remaining_fields {
-    min-width: 39em;
-    width: 49%;
-    display: inline-block;
-    vertical-align: top;
 }
 
 #member_stateofdue {
