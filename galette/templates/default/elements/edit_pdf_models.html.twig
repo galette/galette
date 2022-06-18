@@ -40,7 +40,7 @@
                     </div>
 {% endif %}
             </div>
-            <div class="ui basic center aligned segment">
+            <div class="ui basic fitted segment">
                 <input type="hidden" name="store" value="true"/>
                 <input type="hidden" name="model_id" value="{{ model.id }}"/>
 {% if model.id <= 4 %}
@@ -49,6 +49,7 @@
                 <button type="submit" class="ui labeled icon primary button action">
                     <i class="save icon"></i> {{ _T("Save") }}
                 </button>
+                <span id="legend-container"></span>
                 {% include 'components/forms/csrf.html.twig' %}
             </div>
         </form>
