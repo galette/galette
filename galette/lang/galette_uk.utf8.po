@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-16 22:26+0200\n"
-"PO-Revision-Date: 2022-06-11 15:05+0000\n"
+"PO-Revision-Date: 2022-06-19 21:20+0000\n"
 "Last-Translator: Artem <artem@molotov.work>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.13-dev\n"
+"X-Generator: Weblate 4.13.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -7518,13 +7518,12 @@ msgid "Available fields"
 msgstr "Доступні поля"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
-#, fuzzy, php-format
-#| msgid "no search"
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "немає пошуку"
-msgstr[1] "немає пошуку"
-msgstr[2] "немає пошуку"
+msgstr[0] "%count пошук"
+msgstr[1] "%count пошуки"
+msgstr[2] "%count пошуків"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
@@ -7790,10 +7789,8 @@ msgid "Contributions over time"
 msgstr "Внески з часом"
 
 #: ../../tempcache/pages/charts.html.twig:397
-#, fuzzy
-#| msgid "Detach contribution from this transaction"
 msgid "Total contributions for the month"
-msgstr "Відлучити внесок від цього переказу"
+msgstr "Всього внесків за місяць"
 
 #: ../../tempcache/pages/members_public_list.html.twig:57
 #: ../../tempcache/pages/members_public_gallery.html.twig:57
