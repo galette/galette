@@ -33,12 +33,12 @@
                         </div>
                     </div>
                 </div>
-                <ul id="sortable_{{ loop.index }}" class="fields_list notype">
+                <ul id="sortable_{{ loop.index }}" class="sortable-items">
     {% set fs = category.id_field_category %}
     {% for col, field in categorized_fields[fs] %}
         {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
             {% set fid = field.field_id %}
-                    <li class="tbl_line_even ui segment">
+                    <li class="ui segment">
                         <div class="ui three column stackable grid">
                             <div class="middle aligned row">
                                 <div class="column">

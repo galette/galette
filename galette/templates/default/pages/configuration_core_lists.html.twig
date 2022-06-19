@@ -20,10 +20,10 @@
                             </div>
                         </div>
                     </div>
-                    <ul id="listed_fields" class="fields_list notype">
+                    <ul id="listed_fields" class="sortable-items">
     {% for col, field in listed_fields %}
             {% set fid = field.field_id %}
-                        <li class="tbl_line_even{% if fid == 'id_adh' or fid == 'list_adh_name' %} nosort ui-state-disabled{% endif %} ui segment">
+                        <li class="{% if fid == 'id_adh' or fid == 'list_adh_name' %}nosort ui-state-disabled {% endif %}ui segment">
                             <div class="ui two column stackable grid">
                                 <div class="middle aligned row">
                                     <div class="column">
@@ -67,10 +67,10 @@
                             </div>
                         </div>
                     </div>
-                    <ul id="remaining_fields" class="fields_list notype connectedSortable">
+                    <ul id="remaining_fields" class="sortable-items">
     {% for col, field in remaining_fields %}
             {% set fid = field.field_id %}
-                        <li class="tbl_line_even ui segment">
+                        <li class="ui segment">
                             <div class="ui two column stackable grid">
                                 <div class="middle aligned row">
                                     <div class="column">

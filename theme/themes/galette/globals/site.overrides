@@ -121,6 +121,22 @@ section.content,
   border-top: none;
 }
 
+ul.sortable-items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.sortable-items {
+  .ui.segment {
+    cursor: move;
+    background-color: @evenLineBackgroundColor;
+
+    &:hover {
+      background-color: @activeLineBackgroundColor;
+    }
+  }
+}
+
 footer,
 footer .ui.horizontal.list .list > .item,
 footer .ui.horizontal.list > .item{
