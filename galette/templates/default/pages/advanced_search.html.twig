@@ -15,7 +15,7 @@
                         </div>
                         <div class="field">
                             <label for="field_filter">{{ _T('in:') }}</label>
-                            <select name="field_filter" class="ui search dropdown nochosen">
+                            <select name="field_filter" class="ui search dropdown origselect nochosen">
     {% for key, value in field_filter_options %}
                                 <option value="{{ key }}"{% if key == filters.field_filter %} selected="selected"{% endif %}>{{ value }}</option>
     {% endfor %}
@@ -23,7 +23,7 @@
                         </div>
                         <div class="field">
                             <label for="membership_filter">{{ _T('Membership status') }}</label>
-                            <select id="membership_filter" name="membership_filter" class="ui search dropdown nochosen">
+                            <select id="membership_filter" name="membership_filter" class="ui search dropdown origselect nochosen">
     {% for key, value in membership_filter_options %}
                                     <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
     {% endfor %}
@@ -31,7 +31,7 @@
                         </div>
                         <div class="field">
                             <label for="filter_account">{{ _T('Account activity') }}</label>
-                            <select id="filter_account" name="filter_account" class="ui search dropdown nochosen">
+                            <select id="filter_account" name="filter_account" class="ui search dropdown origselect nochosen">
     {% for key, value in filter_accounts_options %}
                                     <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
     {% endfor %}
@@ -39,7 +39,7 @@
                         </div>
                         <div class="field">
                             <label for="group_filter">{{ _T('Member of group') }}</label>
-                            <select name="group_filter" id="group_filter" class="ui search dropdown nochosen">
+                            <select name="group_filter" id="group_filter" class="ui search dropdown origselect nochosen">
                                 <option value="0">{{ _T('Select a group') }}</option>
 {% for group in filter_groups_options %}
                                 <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getIndentName()|raw }}</option>
@@ -198,7 +198,7 @@
                         </div>
                         <div class="field">
                             <label for="status">{{ _T('Status') }}</label>
-                            <select name="status[]" id="status" multiple="" class="ui search dropdown nochosen">
+                            <select name="status[]" id="status" multiple="" class="ui search dropdown origselect nochosen">
                                 <option value="">{{ _T('Status') }}</option>
     {% for key, value in statuts %}
                                     <option value="{{ key }}"{% if key == filters.status %} selected="selected"{% endif %}>{{ value }}</option>
@@ -223,7 +223,7 @@
                 </div>
                 <div class="active content">
                     <div class="field">
-                        <select name="groups_logical_operator" class="operator_selector ui search dropdown nochosen">
+                        <select name="groups_logical_operator" class="operator_selector ui search dropdown origselect nochosen">
                           <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if filters.groups_search_log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('In all selected groups') }}</option>
                           <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if filters.groups_search_log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('In any of selected groups') }}</option>
                         </select>
@@ -236,7 +236,7 @@
                                     <i class="arrows alternate icon"></i>
                                 </div>
                                 <div>
-                                    <select name="groups_search[]" class="group_selector nochosen">
+                                    <select name="groups_search[]" class="group_selector ui search dropdown origselect nochosen">
                                         <option value="">{{ _T('Select a group') }}</option>
                         {% for group in filter_groups_options %}
                                         <option value="{{ group.getId() }}"{% if gs.group == group.getId() %} selected="selected"{% endif %}>{{ group.getName() }}</option>
@@ -417,11 +417,11 @@
                                         <i class="arrows alternate icon"></i>
                                     </div>
                                     <div>
-                                        <select name="free_logical_operator[]" class="operator_selector nochosen">
+                                        <select name="free_logical_operator[]" class="operator_selector ui search dropdown origselect nochosen">
                                             <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('and') }}</option>
                                             <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('or') }}</option>
                                         </select>
-                                        <select name="free_field[]" class="field_selector nochosen">
+                                        <select name="free_field[]" class="field_selector ui search dropdown origselect nochosen">
                                             <option value="">{{ _T('Select a field') }}</option>
     {% for key, field in search_fields %}
         {% if fs.field == key %}
@@ -468,11 +468,11 @@
                                         <span class="data">
                                             <input type="hidden" name="free_type[]" value="{% if cur_field is defined %}{{ cur_field.getType() }}{% endif %}"/>
     {% if cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
-                                            <select name="free_query_operator[]" class="free_operator nochosen">
+                                            <select name="free_query_operator[]" class="free_operator ui search dropdown origselect nochosen">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
                                             </select>
-                                            <select name="free_text[]" class="free_text nochosen">
+                                            <select name="free_text[]" class="free_text ui search dropdown origselect nochosen">
         {% if cur_field is defined and get_class(cur_field) == "Galette\\DynamicFields\\Choice" %}
             {% for key, value in cur_field.getValues() %}
                                                 <option value="{{ key }}"{% if key == fs.search %} selected="selected"{% endif %}>{{ value }}</option>
@@ -484,7 +484,7 @@
         {% endif %}
                                             </select>
     {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Date" or type == constant("Galette\\DynamicFields\\DynamicField::DATE")) %}
-                                            <select name="free_query_operator[]" class="free_operator nochosen">
+                                            <select name="free_query_operator[]" class="free_operator ui search dropdown origselect nochosen">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") %} selected="selected"{% endif %}>{{ _T('before') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") %} selected="selected"{% endif %}>{{ _T('after') }}</option>
@@ -492,13 +492,13 @@
                                             <input type="text" name="free_text[]" value="{{ fs.search|date(_T('Y-m-d')) }}" class="modif_date" maxlength="10" size="10"/>
                                             <span class="exemple">{{ _T('(yyyy-mm-dd format)') }}</span>
     {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Boolean" or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN")) %}
-                                            <select name="free_query_operator[]" class="free_operator nochosen">
+                                            <select name="free_query_operator[]" class="free_operator ui search dropdown origselect nochosen">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                             </select>
                                             <input type="radio" name="free_text[]" id="free_text_yes" value="1"{% if fs.search == 1 %} checked="checked"{% endif %}/><label for="free_text_yes">{{ _T('Yes') }}</label>
                                             <input type="radio" name="free_text[]" id="free_text_no" value="0"{% if fs.search == 0 %} checked="checked"{% endif %}/><label for="free_text_no">{{ _T('No') }}</label>
     {% else %}
-                                            <select name="free_query_operator[]" class="free_operator nochosen">
+                                            <select name="free_query_operator[]" class="free_operator ui search dropdown origselect nochosen">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") %} selected="selected"{% endif %}>{{ _T('contains') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
@@ -606,10 +606,97 @@
 {% endfor %}
             };
 
+            var _fs_calendar = function() {
+                $('.fs-calendar').calendar({
+                    type: 'date',
+                    firstDayOfWeek: 1,
+                    monthFirst: false,
+                    /* TODO : Find a way to translate widget content.
+                    * https://fomantic-ui.com/modules/calendar.html#language
+                    * https://www.php.net/manual/fr/intldateformatter.create.php
+                    */
+                    text: {
+                        days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+                        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        today: 'Today',
+                        now: 'Now',
+                    },
+                    formatter: {
+                        date: function (date, settings) {
+                            if (!date) return '';
+                            var day = date.getDate() + '';
+                            if (day.length < 2) {
+                                day = '0' + day;
+                            }
+                            var month = (date.getMonth() + 1) + '';
+                            if (month.length < 2) {
+                                month = '0' + month;
+                            }
+                            var year = date.getFullYear();
+                            return day + '/' + month + '/' + year;
+                        }
+                    }
+                });
+            }
+
+            var _fs_dropdown = function(selector) {
+                if ( !selector ) {
+                    selector = '.origselect';
+                }
+
+                $(selector).dropdown({
+                    onChange: function(value, text, option) {
+                        var _field = _fields[value];
+                        var _type = _field.type;
+                        var _html;
+                        switch(_type) {
+                            /* FIXME */
+                            case '{{ constant('Galette\\DynamicFields\\DynamicField::BOOLEAN') }}':
+                                _html  = _getOperatorSelector(['op_equals']);
+                                _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"/><label for="free_text_no">{{ _T('No') }}</label>';
+                                break;
+                            case '{{ constant('Galette\\DynamicFields\\DynamicField::CHOICE') }}':
+                                _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
+                                var _options = '';
+                                if (Array.isArray(_field.values)) {
+                                    for (var i = 0; i < _field.values.length; i++) {
+                                        _options += '<option value="' + i + '">' + _field.values[i] + '</option>';
+                                    }
+                                } else {
+                                    for (key in _field.values) {
+                                        _options += '<option value="' + key + '">' + _field.values[key] + '</option>';
+                                    }
+                                }
+                                _html += '<select name="free_text[]" class="ui search dropdown origselect nochosen newselect">' + _options + '</select>';
+                                break;
+                            case '{{ constant('Galette\\DynamicFields\\DynamicField::DATE') }}':
+                                _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
+                                _html += '<div class="ui calendar fs-calendar">'
+                                _html += '<div class="ui input left icon">'
+                                _html += '<i class="calendar icon"></i>'
+                                _html += '<input type="text" name="free_text[]" class="modif_date" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>';
+                                _html += '</div>'
+                                _html += '</div>'
+                                break;
+                            default:
+                                _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
+                                _html += '<input type="text" name="free_text[]"/>';
+                                break;
+
+                        }
+                        _html += '<input type="hidden" name="free_type[]" value="' + _type + '"/>';
+                        option.parent().parent().parent().find('span.data').html(_html);
+                        _fs_calendar();
+                        _fs_dropdown('.newselect');
+                        $('.newselect').removeClass('newselect');
+                    }
+                });
+            }
+
             var _newFilter = function(elt) {
-                elt.find('span').html('');
-                elt.find('select.operator_selector').val(0);
-                elt.find('select.field_selector').val('');
+                elt.find('span.data').html('');
+                elt.find('.item.active.selected').removeClass('active').removeClass('selected');
             }
             var _rmFilter = function(elt) {
                 if ( !elt ) {
@@ -631,93 +718,9 @@
                     var _operator = _operators[list[i]];
                     _options += '<option value="' + _operator.id + '">' + _operator.name + '</option>';
                 }
-                return '<select name="free_query_operator[]" class="free_operator newselectize">' + _options + '</select>';
-            }
-
-            /*var _datePickers = function() {
-                $('.modif_date').datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    showOn: 'button',
-                    maxDate: '-0d',
-                    yearRange: 'c-10:c+0',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                });
-                $('.due_date').datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    showOn: 'button',
-                    yearRange: 'c-10:c+5',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                });
-            }*/
-
-            var _selectize = function(selector) {
-                if ( !selector ) {
-                    selector = '.operator_selector:not(.ui),.field_selector,.free_operator,.free_text,.group_selector';
-                }
-
-                $(selector).selectize({
-                    maxItems: 1
-                });
-            }
-
-            var _initFieldSelector = function(parent) {
-                if (typeof parent == 'undefined') {
-                    parent = '';
-                }
-                $(parent + '.field_selector').change(function () {
-                    var _field_id = $(this).val();
-                    var _field    = _fields[_field_id];
-                    var _type     = _field.type;
-
-                    if (!_type) {
-                        return false;
-                    }
-
-                    var _html;
-                    switch(_type) {
-                        case '{{ constant('Galette\\DynamicFields\\DynamicField::BOOLEAN') }}':
-                            _html  = _getOperatorSelector(['op_equals']);
-
-                            _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"/><label for="free_text_no">{{ _T('No') }}</label>';
-                            break;
-                        case '{{ constant('Galette\\DynamicFields\\DynamicField::CHOICE') }}':
-                            _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
-                            var _options = '';
-                            if (Array.isArray(_field.values)) {
-                                for (var i = 0; i < _field.values.length; i++) {
-                                    _options += '<option value="' + i + '">' + _field.values[i] + '</option>';
-                                }
-                            } else {
-                                for (key in _field.values) {
-                                    _options += '<option value="' + key + '">' + _field.values[key] + '</option>';
-                                }
-                            }
-                            _html += '<select name="free_text[]" class="newselectize">' + _options + '</select>';
-                            break;
-                        case '{{ constant('Galette\\DynamicFields\\DynamicField::DATE') }}':
-                            _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
-                            _html += '<input type="text" name="free_text[]" class="modif_date" maxlength="10" size="10"/>';
-                            _html += '<span class="exemple">{{ _T('(yyyy-mm-dd format)') }}</span>';
-                            break;
-                        default:
-                            _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
-                            _html += '<input type="text" name="free_text[]"';
-                            if (_type == 'text') {
-                                _html += ' class="large"';
-                            }
-                            _html += '/>';
-                            break;
-
-                    }
-                    _html += '<input type="hidden" name="free_type[]" value="' + _type + '"/>';
-                    $(this).parent().find('span.data').html(_html);
-                    _selectize('.newselectize');
-                    $('.newselectize').removeClass('newselectize');
-                    //_datePickers();
-                });
-                _rmFilter();
+                return '<select name="free_query_operator[]" class="free_operator ui search dropdown origselect nochosen newselect">' + _options + '</select>';
+                _fs_dropdown('.newselect');
+                $('.newselect').removeClass('newselect');
             }
 
             var _initSortable = function(){
@@ -747,52 +750,26 @@
 
             $(function(){
                 _initSortable();
-                //_datePickers();
-                _selectize();
+                _fs_dropdown();
+                _rmFilter();
 
                $('#addbutton_g').click(function(){
-                    $('.operator_selector,.group_selector').each(function(){ // do this for every select with the 'combobox' class
-                        if ($(this)[0].selectize) { // requires [0] to select the proper object
-                            var value = $(this).val(); // store the current value of the select/input
-                            $(this)[0].selectize.destroy(); // destroys selectize()
-                            $(this).val(value);  // set back the value of the select/input
-                        }
-                    });
-
                     $('#gs_sortable li:first')
                             .clone() // copy
                             .insertAfter('#gs_sortable li:last'); // where
-                    _selectize();
+                    _fs_dropdown();
+                    _rmFilter();
                     return false;
                 });
 
                 $('#addbutton').click(function(){
-                    $('.operator_selector,.field_selector,.free_operator').each(function(){ // do this for every select with the 'combobox' class
-                        if ($(this)[0].selectize) { // requires [0] to select the proper object
-                            var value = $(this).val(); // store the current value of the select/input
-                            $(this)[0].selectize.destroy(); // destroys selectize()
-                            $(this).val(value);  // set back the value of the select/input
-                        }
-                    });
                     $('#fs_sortable li:first')
                             .clone() // copy
                             .insertAfter('#fs_sortable li:last'); // where
-                    _selectize();
-                    //_datePickers();
-                    _initFieldSelector();
+                    _fs_dropdown();
+                    _rmFilter();
                     return false;
                 });
-
-                _initFieldSelector();
-
-                /*$('.birth_date').datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    showOn: 'button',
-                    maxDate: '-0d',
-                    yearRange: '-200:+0',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                });*/
             });
         </script>
 {% endblock %}
