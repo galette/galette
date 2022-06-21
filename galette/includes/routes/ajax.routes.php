@@ -288,15 +288,14 @@ $app->group('/ajax', function () use ($authenticate) {
             if (count($list_members) > 0) {
                 foreach ($list_members as $pk => $member) {
                     $members[] = [
-                        'value' => $pk,
-                        'text'  => $member
+                        'name'  => $member,
+                        'value' => $pk
                     ];
                 }
             }
 
             return $response->withJson([
-                'members'   => $members,
-                'count'     => count($members)
+                'results'   => $members
             ]);
         }
     )->setName('contributionMembers')->add($authenticate);
