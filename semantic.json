@@ -18,6 +18,6 @@
   "permission": "644",
   "autoInstall": true,
   "rtl": "both",
-  "components": ["reset", "site", "button", "container", "divider", "header", "icon", "input", "label", "list", "loader", "segment", "step", "form", "grid", "menu", "message", "table", "card", "item", "accordion", "checkbox", "dimmer", "dropdown", "popup", "sidebar", "tab", "transition", "text", "calendar", "toast", "modal"],
+  "components": ["reset", "site", "button", "container", "divider", "header", "icon", "input", "label", "list", "loader", "segment", "step", "form", "grid", "menu", "message", "table", "card", "item", "accordion", "checkbox", "dimmer", "dropdown", "popup", "sidebar", "tab", "transition", "text", "calendar", "toast", "modal", "api"],
   "version": "2.8.8"
 }
