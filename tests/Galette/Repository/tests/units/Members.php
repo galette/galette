@@ -945,7 +945,7 @@ class Members extends GaletteTestCase
         $members = new \Galette\Repository\Members();
         $this->logSuperAdmin();
         $dropdown = $members->getDropdownMembers($this->zdb, $this->login);
-        $this->array($selectized)->hasSize(10);
+        $this->array($dropdown)->hasSize(10);
     }
 
     /**
