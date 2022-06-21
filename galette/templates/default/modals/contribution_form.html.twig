@@ -71,17 +71,16 @@
     {% endif %}
                 </div>
     {% if not require_mass %}
-                <div class="active content field">
+                <div class="active content">
                     <div class="field inline">
                         <label for="id_adh">{{ _T("Contributor:") }}</label>
-                        <select name="id_adh" id="id_adh" class="nochosen">
-                            {% if adh_selected == 0 %}
-                            <option value="">{{ _T("Search for name or ID and pick member") }}</option>
-                            {% endif %}
-                            {% for k, v in members.list %}
-                                <option value="{{ k }}"{% if contribution.member == k %} selected="selected"{% endif %}>{{ v }}</option>
-                            {% endfor %}
-                        </select>
+                        <div id="id_adh" class="ui search selection dropdown nochosen">
+                            <input type="hidden" name="id_adh">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
+                            <div class="menu"></div>
+                        </div>
+                        <div class="ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
                     </div>
     {% endif %}
                     <div class="field inline">
@@ -118,60 +117,62 @@
     {% endif %}
                 </div>
                 <div class="active content field">
-                    <div class="field inline">
-                        <label for="montant_cotis">{{ _T("Amount:") }}</label>
-                        <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis == 1 %} required="required"{% endif %}/>
-                    </div>
+                    <div id="contribdetails" class="ui basic fitted segment">
+                        <div class="field inline">
+                            <label for="montant_cotis">{{ _T("Amount:") }}</label>
+                            <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis == 1 %} required="required"{% endif %}/>
+                        </div>
                     {# payment type #}
                     {% set ptype = contribution.payment_type %}
                     {% if ptype == null %}
                         {% set ptype = constant('Galette\\Entity\\PaymentType::CHECK') %}
                     {% endif %}
                     {% include 'components/forms/payment_types.html.twig' with {'current': ptype, 'varname': 'type_paiement_cotis', 'show_inline': true} %}
-                    <div class="field inline">
-                        <label for="date_enreg">
-                            {{ _T("Record date:") }}
-                        </label>
-                        <div class="ui calendar" id="contribution-rangestart">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg == 1 %} required="required"{% endif %}>
+                        <div class="field inline">
+                            <label for="date_enreg">
+                                {{ _T("Record date:") }}
+                            </label>
+                            <div class="ui calendar" id="contribution-rangestart">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg == 1 %} required="required"{% endif %}>
+                                </div>
                             </div>
+                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                         </div>
-                        <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
-                    </div>
-                    <div class="field inline">
-                        <label for="date_debut_cotis">
+                        <div class="field inline">
+                            <label for="date_debut_cotis">
                             {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                                 {{ _T("Start date of membership:") }}
                             {% else %}
                                 {{ _T("Date of contribution:") }}
                             {% endif %}
-                        </label>
-                        <div class="ui calendar" id="contribution-rangeend">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %}/>
+                            </label>
+                            <div class="ui calendar" id="contribution-rangeend">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %}/>
+                                </div>
                             </div>
+                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                         </div>
-                        <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
-                    </div>
             {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
-                    <div class="field inline">
+                        <div class="field inline">
                 {% if preferences.pref_membership_ext != "" %}
-                        <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
-                        <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis == 1%} required="required"{% endif %}/>
-                        <span class="exemple">{{ _T("months") }}</span>
+                            <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
+                            <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis == 1%} required="required"{% endif %}/>
+                            <span class="exemple">{{ _T("months") }}</span>
                 {% else %}
-                        <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
-                        <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis == 1 %} required="required"{% endif %}/>
-                        <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+                            <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
+                            <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis == 1 %} required="required"{% endif %}/>
+                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                 {% endif %}
-                    </div>
+                        </div>
             {% endif %}
-                    <div class="field inline">
-                        <label for="info_cotis">{{ _T("Comments:") }}</label>
-                        <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{% if required.info_cotis is defined and required.info_cotis == 1 %} required="required"{% endif %}>{{ contribution.info }}</textarea>
+                        <div class="field inline">
+                            <label for="info_cotis">{{ _T("Comments:") }}</label>
+                            <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{% if required.info_cotis is defined and required.info_cotis == 1 %} required="required"{% endif %}>{{ contribution.info }}</textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -240,12 +241,6 @@
     {% include "elements/js/choose_adh.js.twig" %}
 
     $(function() {
-        /*$('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showOn: 'button',
-            buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e("js") }}</span>'
-        });*/
 
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') and not contribution.id %}
         $('#id_adh, #id_type_cotis').on('change', function() {
@@ -261,7 +256,9 @@
                     member_id: _member,
                     fee_id: _fee
                 },
-                {% include "elements/js/loader.js.twig" %},
+                {% include "elements/js/loader.js.twig" with {
+                    selector: '#contribdetails'
+                } %},
                 success: function(res){
                     $('#date_debut_cotis').val(res.date_debut_cotis);
                     $('#date_fin_cotis').val(res.date_fin_cotis);

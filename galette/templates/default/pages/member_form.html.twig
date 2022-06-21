@@ -29,12 +29,13 @@
             <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
             <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
             <span id="parent_id_elt" class="sr-only">
-                <select name="parent_id" id="parent_id" class="nochosen">
-                    <option value="">{{ _T("-- select a name --") }}</option>
-                    {% for k, v in members.list %}
-                        <option value="{{ k }}"{% if member.isDuplicate() and member.parent is defined and member.parent.id == k %} selected="selected"{% endif %}>{{ v }}</option>
-                    {% endfor %}
-                </select>
+                <div id="parent_id" class="ui search selection dropdown nochosen">
+                    <input type="hidden" name="parent_id">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">{{ _T("-- select a name --") }}</div>
+                    <div class="menu"></div>
+                </div>
+                <div class="ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
             </span>
             {% if member.isDuplicate() %}
                 <input type="hidden" name="duplicate" value="1" />
@@ -154,23 +155,6 @@
                             );
                         });
                 });
-
-                /*$('#ddn_adh').datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    showOn: 'button',
-                    maxDate: '-0d',
-                    yearRange: '-200:+0',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                });
-                $('#date_crea_adh').datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    showOn: 'button',
-                    maxDate: '-0d',
-                    yearRange: 'c-10:c+0',
-                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-                });*/
 
 {% if not self_adh %}
                 {# Groups popup #}

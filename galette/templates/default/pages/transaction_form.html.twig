@@ -14,14 +14,13 @@
                 </div>
                 <div class="field inline">
                     <label for="id_adh" >{{ _T("Originator:") }}</label>
-                    <select name="id_adh" id="id_adh" class="nochosen"{% if required.id_adh == 1 %} required="required"{% endif %}>
-    {% if not transaction.member %}
-                        <option value="">{{ _T("-- select a name --") }}</option>
-    {% endif %}
-    {% for k, v in members.list %}
-                        <option value="{{ k }}"{% if transaction.member == k %} selected="selected"{% endif %}>{{ v }}</option>
-    {% endfor %}
-                    </select>
+                    <div id="id_adh" class="ui search selection dropdown nochosen"{% if required.id_adh == 1 %} required="required"{% endif %}>
+                        <input type="hidden" name="id_adh">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">{% if not transaction.member %}{{ _T("-- select a name --") }}{% endif %}</div>
+                        <div class="menu"></div>
+                    </div>
+                    <div class="ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
                 </div>
                 <div class="field inline">
                     <label for="trans_date">{{ _T("Date:") }}</label>
@@ -263,12 +262,6 @@
                 }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
             }
 {% endif %}
-            /*$('#trans_date').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                showOn: 'button',
-                buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{{ _T("Select a date")|e('js') }}</span>'
-            });*/
         });
     </script>
 {% endblock %}
