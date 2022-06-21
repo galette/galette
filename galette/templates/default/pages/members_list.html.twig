@@ -632,18 +632,10 @@
 {% if nb_members != 0 %}
         var _bindmassres = function(res) {
             res.find('#btncancel')
-                .button()
                 .on('click', function(e) {
                     e.preventDefault();
                     res.modal('hide');
                 });
-
-            res.find('input[type=submit]')
-                .button();
-
-            res.find('select:not(.nochosen)').selectize({
-                maxItems: 1
-            });
         }
 
         $('#masschange').off('click').on('click', function(event) {

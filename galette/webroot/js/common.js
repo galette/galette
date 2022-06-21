@@ -91,10 +91,6 @@ $(function() {
 
     $('#login').focus();
 
-    $('select:not(.nochosen)').selectize({
-        maxItems: 1
-    });
-
     _bindNbshow();
     $('.nojs').removeClass('nojs');
 
