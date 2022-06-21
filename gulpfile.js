@@ -101,7 +101,7 @@ function scripts() {
     .pipe(concat('galette-sortablejs.bundle.min.js'))
     .pipe(gulp.dest(_dir));
 
-  return merge(main, chartjs);
+  return merge(main, chartjs, sortablejs);
 };
 
 function assets() {
