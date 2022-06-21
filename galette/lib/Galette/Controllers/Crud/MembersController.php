@@ -138,7 +138,7 @@ class MembersController extends CrudController
 
         // members
         $m = new Members();
-        $members = $m->getSelectizedMembers(
+        $members = $m->getDropdownMembers(
             $this->zdb,
             $this->login,
             $member->hasParent() ? $member->parent->id : null
@@ -1157,7 +1157,7 @@ class MembersController extends CrudController
         if ($member->hasParent()) {
             $pid = ($member->parent instanceof Adherent ? $member->parent->id : $member->parent);
         }
-        $members = $m->getSelectizedMembers(
+        $members = $m->getDropdownMembers(
             $this->zdb,
             $this->login,
             $pid

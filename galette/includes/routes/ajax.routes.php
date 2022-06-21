@@ -282,7 +282,7 @@ $app->group('/ajax', function () use ($authenticate) {
             }
 
             $m = new Members($filters);
-            $list_members = $m->getSelectizedMembers($this->get('zdb'), $this->get('login'));
+            $list_members = $m->getDropdownMembers($this->get('zdb'), $this->get('login'));
 
             $members = [];
             if (count($list_members) > 0) {

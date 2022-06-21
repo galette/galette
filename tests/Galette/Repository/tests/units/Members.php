@@ -936,15 +936,15 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Test selectized members
+     * Test dropdown members
      *
      * @return void
      */
-    public function testGetSelectizedMembers()
+    public function testGetDropdownMembers()
     {
         $members = new \Galette\Repository\Members();
         $this->logSuperAdmin();
-        $selectized = $members->getSelectizedMembers($this->zdb, $this->login);
+        $dropdown = $members->getDropdownMembers($this->zdb, $this->login);
         $this->array($selectized)->hasSize(10);
     }
 

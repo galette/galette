@@ -1767,7 +1767,7 @@ class Members
      *
      * @return array
      */
-    public function getSelectizedMembers(Db $zdb, Login $login, $current = null)
+    public function getDropdownMembers(Db $zdb, Login $login, $current = null)
     {
         $members = [];
         $required_fields = array(
