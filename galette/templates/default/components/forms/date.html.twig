@@ -3,7 +3,7 @@
 {% block component %}
     {% set type = "text" %}
     {% set example = _T("(yyyy-mm-dd format)") %}
-    {% if id == 'ddn_adh' %}
+    {% if id == 'ddn_adh' and member.id != '' and member.birthdate != '' %}
         {% set example = _T("(yyyy-mm-dd format)") ~ "<span id=\"member_age\">" ~ member.getAge() ~ "</span>" %}
     {% endif %}
     {{ parent() }}

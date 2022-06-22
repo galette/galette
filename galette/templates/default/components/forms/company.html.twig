@@ -7,10 +7,13 @@
         title: _T("Is member a company?"),
         tip: _T("Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."),
         checked: member.isCompany(),
-        component_class: "field"
     }
 %}
     <div class="field">
+
+{% if not member.isCompany() %}
+    {% set component_class = component_class ?? 'inline field' ~ ' hidden' %}
+{% endif %}
 {% include "components/forms/text.html.twig" with {
         name: entry.field_id,
         id: entry.field_id,
@@ -19,7 +22,7 @@
         disabled: entry.disabled,
         label: entry.label,
         component_id: "company_field",
-        component_class: "{% if not member.isCompany() %}hidden{% endif %}"
+        component_class: component_class ?? 'inline field'
     }
 %}
     </div>

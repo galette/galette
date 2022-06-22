@@ -15,7 +15,6 @@
                     {% set size = null %}
                     {% set propname = entry.propname %}
                     {% set value = null %}
-                    {% set checked = null %}
                     {% set example = null %}
 
                     {% if entry.type == constant('Galette\\Entity\\FieldsConfig::TYPE_BOOL') %}
@@ -101,10 +100,6 @@
                         {% set value = attribute(member, propname) %}
                     {% endif %}
 
-                    {% if masschange is not defined %}
-                       {% set masschange = false %}
-                    {% endif %}
-
                     {% include "components/forms/" ~ template with {
                             name: entry.field_id,
                             id: entry.field_id,
@@ -117,8 +112,8 @@
                             size: size,
                             tip: tip,
                             compile_id: "input_" ~ entry.field_id,
-                            checked: checked,
-                            masschange: masschange
+                            checked: checked ?? false,
+                            masschange: masschange ?? false
                     } %}
                 {% endfor %}
                 {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
