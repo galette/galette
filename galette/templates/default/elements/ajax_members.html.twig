@@ -1,4 +1,6 @@
-        <table id="listing" class="select_members{% if not multiple %} single{% endif %}">
+<div class="ui stackable grid align-items-center">
+    <div class="eleven wide column">
+        <table id="listing" class="select_members{% if not multiple %} single{% endif %} ui celled table">
             <thead>
                 <tr>
                     <th class="listing id_row">#</th>
@@ -13,8 +15,14 @@
             <tfoot>
                 <tr>
                     <td colspan="3" class="center">
-                        {{ _T("Pages:") }}<br/>
-                        <ul class="pages">{{ pagination|raw }}</ul>
+                        <div class="ui basic left aligned fitted segment">
+                            <div class="ui inverted pagination menu">
+                                <div class="header item">
+                                    {{ _T('Pages:') }}
+                                </div>
+                                {{ pagination|raw }}
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </tfoot>
@@ -51,30 +59,44 @@
 {% endfor %}
             </tbody>
         </table>
+    </div>
 {% if multiple %}
-        <section id="selected_members">
-            <header class="ui-state-default ui-state-active"><h3>{{ _T("Selected members") }}</h3></header>
-            <ul>
+    <div class="five wide column">
+        <section id="selected_members" class="ui basic fitted segment">
+            <div class="ui top attached accordion-styled header">
+                {{ _T("Selected members") }}
+            </div>
+            <div class="ui bottom attached accordion-styled segment">
     {% for recipient in selected_members %}
-                <li id="member_{{ recipient.id }}">
-                    <i class="ui user minus icon" aria-hidden="true"></i>
-                    {{ recipient.sfullname }}
-                </li>
     {% else %}
-                <li id="none_selected">{{ _T("No members has been selected yet.") }}</li>
+                <p id="none_selected">{{ _T("No members has been selected yet.") }}</p>
+    {% endfor %}
+                <ul class="ui middle aligned relaxed divided selection list">
+    {% for recipient in selected_members %}
+                    <li id="member_{{ recipient.id }}" class="item">
+                        <i class="ui user minus icon" aria-hidden="true"></i>
+                        <span class="ui content">{{ recipient.sfullname }}</span>
+                    </li>
     {% endfor %}
     {% if unreachables_members is defined and unreachables_members|length > 0 %}
         {% for recipient in unreachables_members %}
-                <li id="member_{{ recipient.id }}" class="unreachables">
-                    <i class="ui user minus icon" aria-hidden="true"></i>
-                    {{ recipient.sfullname }}
-                </li>
+                    <li id="member_{{ recipient.id }}" class="item">
+                        <i class="icons">
+                            <i class="dont disabled icon"></i>
+                            <i class="top right corner minus icon"></i>
+                        </i>
+                        <span class="ui disabled content">{{ recipient.sfullname }}</span>
+                    </li>
         {% endfor %}
     {% endif %}
-            </ul>
-            <button class="button" id="btnvalid">{{ _T("Validate") }}</button>
-            {% if the_id is defined %}
-                <input type="hidden" name="the_id" id="the_id" value="{{ the_id }}"/>
-            {% endif %}
+                </ul>
+            </div>
+            <div class="ui basic center aligned fitted segment">
+                <button class="ui fluid primary button" id="btnvalid">{{ _T("Validate") }}</button>
+                {% if the_id is defined %}
+                    <input type="hidden" name="the_id" id="the_id" value="{{ the_id }}"/>
+                {% endif %}
+            </div>
         </section>
+    </div>
 {% endif %}

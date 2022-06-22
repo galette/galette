@@ -180,7 +180,9 @@
                             groups: _groups,
                             managed: _managed
                         },
-                        {% include "elements/js/loader.js.twig" %},
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#groups_field'
+                        } %},
                         success: function(res){
                             _groups_dialog(res, _groups, _managed);
                         },
@@ -258,7 +260,7 @@
                         var _gname = $(this).text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
-                            var _li = '<li id="group_' + _gid + '"><i class="ui user minus icon"></i> ' + _gname + '</li>';
+                            var _li = '<li id="group_' + _gid + '" class="item"><i class="user minus icon"></i><span class="ui content">' + _gname + '</span></li>';
                             $('#selected_groups ul').append(_li);
                             $('#group_' + _gid).click(function(){
                                 $(this).remove();

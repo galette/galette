@@ -235,7 +235,10 @@
                 data: {
                     multiple: true
                 },
-                {% include "elements/js/loader.js.twig" %},
+                {% include "elements/js/loader.js.twig" with {
+                    selector: '#btnusers',
+                    loader: 'button'
+                } %},
                 success: function(res){
                     _members_dialog(res);
                 },
@@ -260,7 +263,7 @@
         }
 
         var _members_ajax_mapper = function(res){
-            $('#btnvalid').button().click(function(){
+            $('#btnvalid').click(function(){
                 //first, let's store new recipients in mailing object
                 var _recipients = new Array();
                 $('li[id^="member_"]').each(function(){
@@ -272,7 +275,10 @@
                     data: {
                         recipients: _recipients
                     },
-                    {% include "elements/js/loader.js.twig" %},
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: '#btnvalid',
+                        loader: 'button'
+                    } %},
                     success: function(res){
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
@@ -298,7 +304,7 @@
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '">' + _mname + '</li>';
+                    var _li = '<li id="member_' + _mid + '" class="item"><i class="user minus icon"></i><span class="ui content">' + _mname + '</span></li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();
@@ -330,7 +336,9 @@
                         members: _members,
                         unreachables: _unreach
                     },
-                    {% include "elements/js/loader.js.twig" %},
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: '#members_list'
+                    } %},
                     success: function(res){
                         $('#members_list').empty();
                         _members_ajax_mapper(res);
