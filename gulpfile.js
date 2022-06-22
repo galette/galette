@@ -17,7 +17,6 @@ var main_styles = [
     './galette/webroot/themes/default/galette.css',
     './node_modules/jquery-ui-dist/jquery-ui.css',
     './galette/webroot/themes/default/jquery-ui/jquery-ui-1.12.1.custom.css',
-    './node_modules/selectize/dist/css/selectize.default.css',
     './node_modules/summernote/dist/summernote-lite.min.css',
 ];
 
@@ -26,9 +25,6 @@ var main_scripts = [
     './node_modules/jquery-ui-dist/jquery-ui.js',
     './node_modules/jquery-ui/ui/i18n/*',
     './node_modules/js-cookie/dist/js.cookie.min.js',
-    './node_modules/microplugin/src/microplugin.js',
-    './node_modules/sifter/sifter.js',
-    './node_modules/selectize/dist/js/selectize.min.js',
     './galette/webroot/js/jquery/jquery.bgFade.js',
     './node_modules/summernote/dist/summernote-lite.min.js',
     './galette/webroot/js/common.js',
