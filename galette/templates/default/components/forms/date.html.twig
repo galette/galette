@@ -6,7 +6,6 @@
     {% if id == 'ddn_adh' %}
         {% set example = _T("(yyyy-mm-dd format)") ~ "<span id=\"member_age\">" ~ member.getAge() ~ "</span>" %}
     {% endif %}
-    {% set component_class = "field" %}
     {{ parent() }}
 {% endblock %}
 

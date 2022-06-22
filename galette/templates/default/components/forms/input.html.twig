@@ -1,6 +1,6 @@
 {% block component %}
 {% if notag is not defined %}
-<div{% if component_id is defined %} id="{{ component_id }}"{% endif %}{% if component_class is defined %} class="{{ component_class }}"{% endif %}>
+<div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'inline field' }}">
 {% endif %}
     {% block label %}
         <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>

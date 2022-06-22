@@ -3,10 +3,5 @@
 
 {% block component %}
     {% set type = "checkbox" %}
-    {% if masschange is defined and masschange == true %}
-        {% set component_class = "inline field" %}
-    {% else %}
-        {% set component_class = "field" %}
-    {% endif %}
     {{ parent() }}
 {% endblock %}
