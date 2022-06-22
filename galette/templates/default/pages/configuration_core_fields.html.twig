@@ -94,10 +94,9 @@
     <script type="module">
 
         var _initSortable = function(){
-            var _listed = document.getElementsByClassName('fields_list')[0];
             var _categories = document.getElementById('members_tab');
 
-            var _nestedSortables = [].slice.call(document.querySelectorAll('.fields_list'));
+            var _nestedSortables = [].slice.call(document.querySelectorAll('.sortable-items'));
             for (var i = 0; i < _nestedSortables.length; i++) {
                 new Sortable(_nestedSortables[i], {
                     group: 'nested',
