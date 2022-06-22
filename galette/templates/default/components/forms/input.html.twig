@@ -4,7 +4,7 @@
 {% endif %}
     {% block label %}
         <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
-        {% if masschange %}
+        {% if masschange ?? false %}
             {# Add a checkbox for fields to change on mass edition #}
             <input type="checkbox" name="mass_{{ entry.field_id }}" class="mass_checkbox"/>
         {% endif %}
