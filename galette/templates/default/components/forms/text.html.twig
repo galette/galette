@@ -7,7 +7,7 @@
     {% else %}
         {% set component_class = 'field' %}
     {% endif %}
-    {% if entry.required %}
+    {% if entry.required ?? false %}
         {% set component_class = component_class ~ ' required' %}
     {% endif %}
     {{ parent() }}
