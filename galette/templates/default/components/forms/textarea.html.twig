@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block label %}
-    {# assign var="labelclass" value="vtop" #}
     {{ parent() }}
 {% endblock %}
 
@@ -14,8 +13,8 @@
     <textarea
         name="{{ name }}"
         id="{{ id }}"
-        cols="50"
-        rows="6"
+        cols="{{ cols ?? 50 }}"
+        rows="{{ rows ?? 6 }}"
         {% if required is defined and required == true %} required="required"{% endif %}
         {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
         {% if title is defined %} title="{{ title }}"{% endif %}
