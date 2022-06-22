@@ -127,7 +127,9 @@
                         mode: _mode,
                         members: _persons
                     },
-                    {% include 'elements/js/loader.js.twig' %},
+                    {% include 'elements/js/loader.js.twig' with {
+                        selector: '.tab.segment.active'
+                    } %},
                     success: function(res){
                         _members_dialog(res, _mode);
                     },

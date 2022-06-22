@@ -1,4 +1,6 @@
-        <table id="listing" class="select_members">
+<div class="ui stackable grid align-items-center">
+    <div class="eleven wide column">
+        <table id="listing" class="select_members ui celled table">
             <thead>
                 <tr>
                     <th class="listing id_row">#</th>
@@ -32,17 +34,34 @@
 {% endfor %}
             </tbody>
         </table>
-        <section id="selected_groups">
-            <header class="ui-state-default ui-state-active"><h3>{{ _T("Selected groups") }}</h3></header>
-            <ul>
+    </div>
+    <div class="five wide column">
+        <section id="selected_groups" class="ui basic fitted segment">
+            <div class="ui top attached accordion-styled header">
+                {{ _T("Selected groups") }}
+            </div>
+            <div class="ui bottom attached accordion-styled segment">
 {% for group in selected_groups %}
-                <li id="group_{{ group.id }}">
-                    <i class="ui user minus icon" aria-hidden="true"></i>
-                    {{ group.name }}
-                </li>
 {% else %}
-                <li id="none_selected">{{ _T("No groups has been selected yet.") }}</li>
+                <p id="none_selected">{{ _T("No groups has been selected yet.") }}</p>
 {% endfor %}
-            </ul>
-            <button class="button" id="btnvalid">{{ _T("Validate") }}</button>
+                <ul class="ui middle aligned relaxed divided selection list">
+{% for group in selected_groups %}
+                    <li id="group_{{ group.id }}" class="item">
+                        <i class="icons">
+                            <i class="users icon"></i>
+                            <i class="top right corner minus icon"></i>
+                        </i>
+                        {{ group.name }}
+                    </li>
+{% endfor %}
+                </ul>
+            </div>
+            <div class="ui basic center aligned fitted segment">
+                <button class="ui fluid primary button" id="btnvalid">{{ _T("Validate") }}</button>
+                {% if the_id is defined %}
+                    <input type="hidden" name="the_id" id="the_id" value="{{ the_id }}"/>
+                {% endif %}
+            </div>
         </section>
+    </div>
