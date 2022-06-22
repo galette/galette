@@ -3,7 +3,6 @@
  *
  * == Forms elements
  * == Main Galette styles
- * == Ajax member selection
  * == Plugins installation
  * == Old styles
  */
@@ -180,75 +179,6 @@ legend .tab-button {
 }
 
 /* =/ Main Galette styles */
-
-/* == Ajax member selection */
-#members_list {
-    padding-top: 1em;
-}
-
-.select_members {
-    padding-right: 1em;
-}
-.select_members,
-#selected_members,
-#selected_groups {
-    display:table-cell;
-    vertical-align: top;
-}
-
-.select_members.single {
-    display: block;
-}
-
-.select_members th.left {
-    width:50%;
-}
-
-#selected_members header,
-#selected_groups header {
-    padding-top: 0;
-    -moz-border-radius: 10px 10px 0 0;
-    -webkit-border-radius: 10px 10px 0 0;
-    border-radius: 10px 10px 0 0;
-}
-
-#selected_members,
-#selected_groups {
-    min-width: 25em!important;
-    margin-left:.5em!important;
-    text-align: center;
-}
-
-#selected_members ul,
-#selected_groups ul {
-    text-align: left;
-    list-style-type: none;
-    cursor: pointer;
-    overflow: auto;
-}
-
-#selected_members ul i,
-#selected_groups ul i {
-    margin-right: .2em;
-}
-
-#selected_members ul #none_selected,
-#selected_groups ul #none_selected {
-    cursor: auto;
-}
-
-#selected_members .unreachables {
-    text-decoration: line-through;
-    color: red;
-}
-
-#selected_members h3,
-#selected_groups h3 {
-    margin:0;
-    font-size: 1em;
-}
-
-/* =/ Ajax member selection */
 
 /* == Plugins installation */
 #plugin_install {
@@ -492,78 +422,6 @@ table.listing.single {
 
 .infoline2 {
     margin-top: 2px;
-}
-
-.mailing,
-#selected_members,
-#selected_groups {
-    width: 60%;
-    margin:0 auto;
-    min-width: 60em;
-    background-repeat: no-repeat;
-    background-position: center 1.5em;
-    padding-bottom: .3em;
-    -moz-border-radius: 10px 10px 0px 0px;
-    -webkit-border-radius: 10px 10px 0px 0px;
-    border-radius: 10px 10px 10px 10px;
-    -moz-box-shadow: 1px 1px 12px #555;
-    -webkitbox-shadow: 1px 1px 12px #555;
-    box-shadow: 1px 1px 12px #555;
-}
-
-.mailing section {
-    padding-top:1em;
-}
-.mailing section:first-child {
-    padding-top:0em;
-}
-
-.mailing_write > div,
-.mailing_preview,
-.mailing_attachments div{
-    margin:.5em 1em;
-}
-
-.mailing_infos header{
-    -moz-border-radius: 10px 10px 0px 0px;
-    -webkit-border-radius: 10px 10px 0px 0px;
-    border-radius: 10px 10px 0px 0px;
-}
-
-.mailing_infos p{
-    width: 50%;
-    display: table-cell;
-    padding: .5em;
-    vertical-align: middle;
-    text-align: right;
-}
-
-.mailing_infos p:nth-child(2){
-    text-align: left;
-}
-
-#mailing_objet, #mailing_corps{
-    width:99%;
-}
-
-.ajax_mailing_preview header {
-    padding:.2em 0;
-    font-weight: bold!important;
-    text-align: center;
-}
-
-#mailing_header dt,
-#mailing_header dd {
-    display: inline-block;
-    padding:.2em .5em;
-    margin:0;
-}
-#mailing_header dt {
-    font-weight: bold;
-    width: 18%;
-}
-#mailing_header dd {
-    width: 80%;
 }
 
 #input-table{

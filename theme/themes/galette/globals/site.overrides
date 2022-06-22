@@ -143,6 +143,17 @@ footer .ui.horizontal.list > .item{
   font-size: .95rem;
 }
 
+#selected_members {
+  .bottom.segment {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+}
+
+.ui.grid.align-items-center {
+  align-items: center;
+}
+
 @media only screen and (max-width: 991px) {
   #top-navbar .item:not(.header):not(.toc) {
     display: none;
