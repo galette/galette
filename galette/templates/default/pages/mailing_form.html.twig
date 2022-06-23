@@ -282,7 +282,7 @@
                     success: function(res){
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
-                        $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' ).button();
+                        $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' );
                         $('#members_list').modal('hide');
                     },
                     error: function() {

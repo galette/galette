@@ -15,15 +15,11 @@ var galette = {
 
 var main_styles = [
     './galette/webroot/themes/default/galette.css',
-    './node_modules/jquery-ui-dist/jquery-ui.css',
-    './galette/webroot/themes/default/jquery-ui/jquery-ui-1.12.1.custom.css',
     './node_modules/summernote/dist/summernote-lite.min.css',
 ];
 
 var main_scripts = [
     './node_modules/jquery/dist/jquery.js',
-    './node_modules/jquery-ui-dist/jquery-ui.js',
-    './node_modules/jquery-ui/ui/i18n/*',
     './node_modules/js-cookie/dist/js.cookie.min.js',
     './node_modules/summernote/dist/summernote-lite.min.js',
     './galette/webroot/js/common.js',
@@ -31,17 +27,11 @@ var main_scripts = [
 
 var main_assets = [
     {
-        'src': './node_modules/jquery-ui-dist/images/*',
-        'dest': '/images/'
-    }, {
         'src': './node_modules/summernote/dist/font/*',
         'dest': '/webfonts/'
     }, {
         'src': './node_modules/summernote/dist/lang/*.min.js',
         'dest': '/js/lang/'
-    }, {
-        'src': './galette/webroot/themes/default/jquery-ui/images/*',
-        'dest': '/images/'
     }, {
         'src': './galette/webroot/themes/default/images/desktop/*',
         'dest': '/images/desktop/'
@@ -63,8 +53,6 @@ function styles() {
   var _dir = galette.public + '/css/';
 
   main = gulp.src(main_styles)
-    .pipe(replace('jquery-ui/images/', '../images/'))
-    .pipe(replace('("images/ui', '("../images/ui')) //
     .pipe(replace('url(images/', 'url(../images/'))
     .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())

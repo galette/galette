@@ -18,13 +18,6 @@
                     }
                 });
 
-                $.datepicker.setDefaults($.datepicker.regional['{{ galette_lang }}']);
-    {% if galette_lang == 'en' %}
-                $.datepicker.setDefaults({
-                    dateFormat: 'yy-mm-dd'
-                });
-    {% endif %}
-
     {% if autocomplete %}
                 $('#ville_adh, #lieu_naissance').autocomplete({
                     source: function (request, response) {
