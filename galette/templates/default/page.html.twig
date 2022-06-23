@@ -4,7 +4,7 @@
     <head>
         {% include 'elements/header.html.twig' %}
     </head>
-    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %}">
+    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %} nojs">
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <div class="pusher">

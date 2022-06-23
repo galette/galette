@@ -2,8 +2,17 @@
          Galette Overrides
 *******************************/
 
-.ui.message > .password-lost:first-child,
-.ui.message > .password-lost:last-child {
+body.nojs .ui.message > .close.icon {
+  display: none;
+}
+
+.ui.message > .password-lost:first-child:last-child,
+.column > .ui.message:first-child:last-child {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.ui.message:first-child:last-child {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
