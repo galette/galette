@@ -32,9 +32,6 @@ var main_assets = [
     }, {
         'src': './node_modules/summernote/dist/lang/*.min.js',
         'dest': '/js/lang/'
-    }, {
-        'src': './galette/webroot/themes/default/images/desktop/*',
-        'dest': '/images/desktop/'
     }
 ];
 
