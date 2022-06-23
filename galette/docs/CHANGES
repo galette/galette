@@ -1,6 +1,8 @@
 Changes
 -------
 
+0.9.6.1 -> 1.0.0
+
 0.9.6 -> 0.9.6.1
 - Fix language detection priority not respected
 - No composer platform check

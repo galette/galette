@@ -1,6 +1,6 @@
 {
   "name": "Galette",
-  "version": "0.9.3",
+  "version": "1.0.0",
   "description": "[Galette](https://galette.eu) is a Free/Libre Open Source membership management web application dedicated towards non profit organizations.",
   "main": "galette-main.js",
   "directories": {
