@@ -6,14 +6,23 @@
     {% endfor %}
 {% endif %}
 {% if loginfaults is iterable and loginfaults|length > 0 %}
-    <div class="ui negative message">
-        <i class="close icon"></i>
-        <div class="header">{{ _T("- ERROR -") }}</div>
-        <ul>
-            {% for loginfault in loginfaults %}
-                <li>{{ loginfault }}</li>
-            {% endfor %}
-        </ul>
+    <div class="ui error icon message with-transition">
+        <i class="times icon"></i>
+        <i class="window close outline icon"></i>
+        <div class="content">
+            <div class="header">{{ _T("- ERROR -") }}</div>
+            {% if loginfaults|length > 1 %}
+                <ul="list">
+                {% for loginfault in loginfaults %}
+                    <li>{{ loginfault }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                {% for loginfault in loginfaults %}
+                    <p>{{ loginfault }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 {% endif %}
 
@@ -25,14 +34,23 @@
     {% endfor %}
 {% endif %}
 {% if errors is iterable and errors|length > 0 %}
-    <div class="ui negative message">
-        <i class="close icon"></i>
-        <div class="header">{{ _T("- ERROR -") }}</div>
-        <ul>
-            {% for error in errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+    <div class="ui error icon message with-transition">
+        <i class="times icon"></i>
+        <i class="window close outline icon"></i>
+        <div class="content">
+            <div class="header">{{ _T("- ERROR -") }}</div>
+            {% if errors|length > 1 %}
+                <ul="list">
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 {% endif %}
 
@@ -44,14 +62,23 @@
     {% endfor %}
 {% endif %}
 {% if warnings is iterable and warnings|length > 0 %}
-    <div class="ui negative message">
-        <i class="close icon"></i>
-        <div class="header">{{ _T("- WARNING -") }}</div>
-        <ul>
-            {% for warning in warnings %}
-                <li>{{ warning }}</li>
-            {% endfor %}
-        </ul>
+    <div class="ui warning icon message with-transition">
+        <i class="exclamation icon"></i>
+        <i class="window close outline icon"></i>
+        <div class="content">
+            <div class="header">{{ _T("- WARNING -") }}</div>
+            {% if warnings|length > 1 %}
+                <ul="list">
+                {% for warning in warnings %}
+                    <li>{{ warning }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                {% for warning in warnings %}
+                    <p>{{ warning }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 {% endif %}
 
@@ -63,24 +90,40 @@
     {% endfor %}
 {% endif %}
 {% if successs is iterable and successs|length > 0 %}
-    <div class="ui negative message">
-        <i class="close icon"></i>
-        <ul>
-            {% for success in successs %}
-                <li>{{ success }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+    <noscript>
+        <div class="ui success icon message">
+            <i class="check circle outline icon"></i>
+            <i class="window close outline icon"></i>
+            <div class="content">
+            {% if successs|length > 1 %}
+                <ul="list">
+                {% for success in successs %}
+                    <li>{{ success }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                {% for success in successs %}
+                    <p>{{ success }}</p>
+                {% endfor %}
+            {% endif %}
+            </div>
+        </div>
+    </noscript>
 {% endif %}
 
 {# Renew telemetry #}
 {% if renew_telemetry is defined and renew_telemetry %}
     {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
-    <div class="ui blue message" id="renewbox">
-        {{ _T("Your telemetry data are more than one year old.") }}<br/>
-        {{ _T("Do you want to send it again?") }}<br/>
-        <a href="#" id="telemetry">{{ _T("Yes") }}</a>
-        - <a href="#" id="norenew">{{ _T("No") }}</a>
-        - <a href="#" id="renewlater">{{ _T("Later") }}</a>
-    </div>
+    <noscript>
+        <div class="ui info icon message" id="renewbox">
+            <i class="info icon"></i>
+            <div class="content">
+                <div class="header">{{ _T("Your telemetry data are more than one year old.") }}</div>
+                <p>{{ _T("Do you want to send it again?") }}</p>
+                <a href="#" id="telemetry" class="ui large green button">{{ _T("Yes") }}</a>
+                <a href="#" id="norenew" class="ui large red button">{{ _T("No") }}</a>
+                <a href="#" id="renewlater" class="ui large blue button">{{ _T("Later") }}</a>
+            </div>
+        </div>
+    </noscript>
 {% endif %}

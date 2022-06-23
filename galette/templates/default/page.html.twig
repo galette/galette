@@ -37,7 +37,7 @@
                         </a>
             {% endif %}
                     </h1>
-                    <noscript>{% include "elements/messages_inline.html.twig" %}</noscript>
+                    {% include "elements/messages_inline.html.twig" %}
                     {% block content %}{{ _T('Page content') }}{% endblock %}
                     {% include "elements/footer.html.twig" %}
                 </section>
