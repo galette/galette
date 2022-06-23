@@ -6,7 +6,7 @@
 
 {% block element %}
     <textarea
-        name="{{ name }}"
+        name="{{ name ?? id }}"
         id="{{ id }}"
         cols="{{ cols ?? 50 }}"
         rows="{{ rows ?? 6 }}"

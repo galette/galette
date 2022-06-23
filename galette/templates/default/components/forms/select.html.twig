@@ -1,22 +1,15 @@
 {% extends "components/forms/input.html.twig" %}
 
-{% block component %}
-    {% if entry.required %}
-        {% set component_class = component_class ?? 'inline field' ~ ' required' %}
-    {% endif %}
-    {{ parent() }}
-{% endblock %}
-
 {% block element %}
     <select
-        name="{{ name }}"
+        name="{{ name ?? id }}"
         id="{{ id }}"
         {% if required is defined and required == true %} required="required"{% endif %}
         {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
         class="ui search dropdown nochosen"
     >
-    {% for value, label in values %}
-        <option value="{{ value }}">{{ label }}</option>
+    {% for option_value, option_label in values %}
+        <option value="{{ option_value }}"{% if option_value == value %} selected="selected"{% endif %}>{{ option_label }}</option>
     {% endfor %}
     </select>
 {% endblock %}

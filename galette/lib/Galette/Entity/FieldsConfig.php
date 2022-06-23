@@ -237,7 +237,6 @@ class FieldsConfig
      */
     protected function buildLists()
     {
-
         $this->categorized_fields = [];
         $this->all_required = [];
         $this->all_visibles = [];

@@ -1,6 +1,6 @@
 {% block component %}
 {% if notag is not defined %}
-<div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'inline field' }}">
+<div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'inline field' }}{% if required is defined and required == true %} required{% endif %}">
 {% endif %}
     {% block label %}
         <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
@@ -14,7 +14,7 @@
     {% if type is defined and type == 'password' %}<div class="ui input">{% endif %}
     {% block element %}<input
         type="{{ type }}"
-        name="{{ name }}"
+        name="{{ name ?? id }}"
         id="{{ id }}"
         value="{% if value is not same as null %}{{ value }}{% endif %}"
         {% if required is defined and required == true %} required="required"{% endif %}
@@ -24,6 +24,7 @@
         {% if maxlength is defined %} maxlength="{{ maxlength }}"{% endif %}
         {% if elt_class is defined %} class="{{ elt_class }}"{% endif %}
         {% if autocomplete is defined %} autocomplete="{{ autocomplete }}"{% endif %}
+        {% if autofocus is defined %} autofocus{% endif %}
         {% if size is defined %} size="{{ size }}"{% endif %}
         {% if checked is defined and checked == true %} checked="checked"{% endif %}
         />
