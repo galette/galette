@@ -1,72 +1,3 @@
-{# Let's see if there are loginfault messages to show #}
-{% set loginfaults = flash.getMessage('loginfault') %}
-{% if loginfault_detected is defined and loginfault_detected is iterable %}
-    {% for l in loginfault_detected %}
-        {% set loginfaults = loginfaults|merge([l]) %}
-    {% endfor %}
-{% endif %}
-{% if loginfaults is iterable and loginfaults|length > 0 %}
-    {% for loginfault in loginfaults %}
-        $('body')
-          .toast({
-            displayTime: 0,
-            closeIcon: true,
-            message: "{{ loginfault|e('js') }}",
-            class: 'red',
-            className: {
-                toast: 'ui message'
-            }
-          })
-        ;
-    {% endfor %}
-{% endif %}
-
-{# Let's see if there are error messages to show #}
-{% set errors = flash.getMessage('error_detected') %}
-{% if error_detected is defined and error_detected is iterable %}
-    {% for e in error_detected %}
-        {% set errors = errors|merge([e]) %}
-    {% endfor %}
-{% endif %}
-{% if errors is iterable and errors|length > 0 %}
-    {% for error in errors %}
-        $('body')
-          .toast({
-            displayTime: 0,
-            closeIcon: true,
-            message: "{{ error|e('js') }}",
-            class: 'red',
-            className: {
-                toast: 'ui message'
-            }
-          })
-        ;
-    {% endfor %}
-{% endif %}
-
-{# Let's see if there are warning messages to show #}
-{% set warnings = flash.getMessage('warning_detected') %}
-{% if warning_detected is defined and warning_detected is iterable %}
-    {% for w in warning_detected %}
-        {% set warnings = warnings|merge([w]) %}
-    {% endfor %}
-{% endif %}
-{% if warnings is iterable and warnings|length > 0 %}
-    {% for warning in warnings %}
-        $('body')
-          .toast({
-            displayTime: 0,
-            closeIcon: true,
-            message: "{{ warning|e('js') }}",
-            class: 'orange',
-            className: {
-                toast: 'ui message'
-            }
-          })
-        ;
-    {% endfor %}
-{% endif %}
-
 {# Let's see if there are success messages to show #}
 {% set successes = flash.getMessage('success_detected') %}
 {% if success_detected is defined and success_detected is iterable %}
@@ -78,13 +9,11 @@
     {% for success in successes %}
         $('body')
           .toast({
-            displayTime: 0,
-            closeIcon: true,
-            message: "{{ success|e('js') }}",
-            class: 'green',
-            className: {
-                toast: 'ui message'
-            }
+            displayTime: 'auto',
+            position: 'bottom right',
+            message: '{{ success|e('js') }}',
+            showIcon: 'check circle outline',
+            class: 'success'
           })
         ;
     {% endfor %}
@@ -95,10 +24,8 @@
     $('body')
       .toast({
         displayTime: 0,
+        position: 'bottom right',
         message: "{{ _T("Your telemetry data are more than one year old.") }} {{ _T("Do you want to send it again?") }}",
-        className: {
-            toast: 'ui message'
-        },
         classActions: 'bottom attached',
         actions:    [{
           text: "{{ _T("Yes") }}",
