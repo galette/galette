@@ -1,3 +1,18 @@
+{# Enable dismissable messages #}
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+
+{# Apply transitions on inline messages #}
+$('.message.with-transition')
+  .transition('flash')
+;
+
 {# Let's see if there are success messages to show #}
 {% set successes = flash.getMessage('success_detected') %}
 {% if success_detected is defined and success_detected is iterable %}

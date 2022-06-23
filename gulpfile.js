@@ -25,7 +25,6 @@ var main_scripts = [
     './node_modules/jquery-ui-dist/jquery-ui.js',
     './node_modules/jquery-ui/ui/i18n/*',
     './node_modules/js-cookie/dist/js.cookie.min.js',
-    './galette/webroot/js/jquery/jquery.bgFade.js',
     './node_modules/summernote/dist/summernote-lite.min.js',
     './galette/webroot/js/common.js',
 ];

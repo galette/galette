@@ -26,21 +26,6 @@
  * @since     Available since 0.7dev - 2007-10-06
  */
 
-var _messagesEffects = function(){
-    /**
-    * Errorbox animation
-    */
-    $('#errorbox').backgroundFade({sColor:'#ffffff',eColor:'#ff9999',steps:50},function() {
-        $(this).backgroundFade({sColor:'#ff9999',eColor:'#ffffff'});
-    });
-    $('#warningbox').backgroundFade({sColor:'#ffffff',eColor:'#FFB619',steps:50},function() {
-        $(this).backgroundFade({sColor:'#FFB619',eColor:'#ffffff'});
-    });
-    $('#infobox, #successbox').backgroundFade({sColor:'#ffffff',eColor:'#99FF99',steps:50},function() {
-        $(this).backgroundFade({sColor:'#99FF99',eColor:'#ffffff'});
-    });
-}
-
 var _bind_check = function(boxelt){
     if (typeof(boxelt) == 'undefined') {
         boxelt = 'member_sel'
@@ -81,7 +66,6 @@ var _bind_legend = function() {
 }
 
 $(function() {
-    _messagesEffects();
     $('.debuginfos span').hide();
     /** TODO: find a way to translate this message ==> ajax ? */
     $('.debuginfos').attr('title', 'Click to get more details.');
