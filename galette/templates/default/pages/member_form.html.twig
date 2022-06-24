@@ -54,7 +54,7 @@
             {% include "components/form.html.twig" %}
             {# Dynamic entries #}
             {% include "components/dynamic_fields.html.twig" with {object: member} %}
-            {% include "elements/edit_socials.html.twig" with {socials: member.socials, social_fieldset_class: "galette_form", social_fieldset_legend_class: "ui-state-active ui-corner-top"} %}
+            {% include "elements/edit_socials.html.twig" with {socials: member.socials} %}
 
     {% if not member.id and not self_adh %}
         {% if login.isAdmin() or login.isStaff() %}

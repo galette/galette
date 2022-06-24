@@ -1,75 +1,91 @@
+{% if tabbed ?? false == true %}
 <div id="social" class="ui bottom attached tab segment" data-tab="social">
-    {% for social in socials %}
-        <div class="field stored">
-            <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
-            <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
-            <a href="#" class="ui tiny compact icon red button tooltip delete delsocial">
-                <i class="trash icon"></i>
-                <span class="hidden">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}</span>
-            </a>
-        </div>
-    {% endfor %}
-        <div class="ui yellow segment">
-            <div class="ui tiny header">{{ _T("Add new social network") }}</div>
-            <div class="combo-social field">
-                <div class="field">
-                    <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
-                        <option value="">{{ _T("Choose or enter your own...") }}</option>
-    {% for social_type in osocials.getSystemTypes(false) %}
-                        <option value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</option>
-    {% endfor %}
-                    </select>
+    {% block social_edit %}
+        <div id="social" class="ui bottom attached{% if tabbed ?? false == true %}tab {% endif %}segment" data-tab="social">
+            {% for social in socials %}
+                <div class="field stored">
+                    <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
+                    <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
+                    <a href="#" class="ui tiny compact icon red button tooltip delete delsocial">
+                        <i class="trash icon"></i>
+                        <span class="hidden">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}</span>
+                    </a>
                 </div>
-                <div class="field">
-                    <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50"/>
+            {% endfor %}
+            <div class="ui yellow segment">
+                <div class="ui tiny header">{{ _T("Add new social network") }}</div>
+                <div class="combo-social field">
+                    <div class="field">
+                        <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
+                            <option value="">{{ _T("Choose or enter your own...") }}</option>
+                            {% for social_type in osocials.getSystemTypes(false) %}
+                                <option value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50"/>
+                    </div>
                 </div>
+                <a href="#" class="ui tiny compact icon green button tooltip action addsocial">
+                    <i class="plus icon"></i>
+                    <span class="hidden">{{ _T("Add") }}</span>
+                </a>
             </div>
-            <a href="#" class="ui tiny compact icon green button tooltip action addsocial">
-                <i class="plus icon"></i>
-                <span class="hidden">{{ _T("Add") }}</span>
-            </a>
-        </div>
-        <script type="text/javascript">
-            var _dropdown = function(selector) {
-                if ( !selector ) {
-                    selector = '.socials_dropdown';
+            <script type="text/javascript">
+                var _dropdown = function(selector) {
+                    if ( !selector ) {
+                        selector = '.socials_dropdown';
+                    }
+
+                    $(selector).dropdown({
+                        allowAdditions: true
+                    });
                 }
 
-                $(selector).dropdown({
-                    allowAdditions: true
-                });
-            }
-
-            var _rmFilter = function(elt) {
-                if ( typeof elt == 'undefined') {
-                    elt = $('#social .stored');
+                var _rmFilter = function(elt) {
+                    if ( typeof elt == 'undefined') {
+                        elt = $('#social .stored');
+                    }
+                    elt.find('.delsocial').click(function(e){
+                        e.preventDefault();
+                        var _this = $(this);
+                        _this.parents('.field').remove();
+                    });
                 }
-                elt.find('.delsocial').click(function(e){
-                    e.preventDefault();
-                    var _this = $(this);
-                    _this.parents('.field').remove();
-                });
-            }
 
-            $(function(){
-                _rmFilter();
-                _dropdown();
-
-                $('.addsocial').click(function(e){
-                    e.preventDefault();
-
-                    var _newindex = $(this).parents('.segment').find('.combo-social:last select').attr('id').replace('social_new_type_', '');
-                    ++_newindex;
-                    console.log(_newindex);
-                    $(this).parents('.segment').find ('.combo-social:last')
-                        .clone() // copy
-                        .insertAfter('#social .combo-social:last') // where
-                        .find('select').attr('id', 'social_new_type_' + _newindex).attr('name', 'social_new_type_' + _newindex)
-                        .parent().parent().parent().find('input').attr('id', 'social_new_value_' + _newindex).attr('name', 'social_new_value_' + _newindex)
-                    ;
-
+                $(function(){
+                    _rmFilter();
                     _dropdown();
+
+                    $('.addsocial').click(function(e){
+                        e.preventDefault();
+
+                        var _newindex = $(this).parents('.segment').find('.combo-social:last select').attr('id').replace('social_new_type_', '');
+                        ++_newindex;
+                        console.log(_newindex);
+                        $(this).parents('.segment').find ('.combo-social:last')
+                            .clone() // copy
+                            .insertAfter('#social .combo-social:last') // where
+                            .find('select').attr('id', 'social_new_type_' + _newindex).attr('name', 'social_new_type_' + _newindex)
+                            .parent().parent().parent().find('input').attr('id', 'social_new_value_' + _newindex).attr('name', 'social_new_value_' + _newindex)
+                        ;
+
+                        _dropdown();
+                    });
                 });
-            });
-        </script>
+            </script>
+        </div>
+    {% endblock %}
 </div>
+{% else %}
+    <div id="social" class="ui styled fluid accordion field">
+        <div class="active title">
+            <i class="icon dropdown"></i>
+            {{ _T("Social networks") }}
+        </div>
+        <div class="active content field">
+            {{ block('social_edit') }}
+        </div>
+    </div>
+{% endif %}

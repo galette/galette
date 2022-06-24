@@ -142,7 +142,7 @@
             </div>{# /column grid #}
         </div>{# /tab segment #}
         {% set socials = preferences.socials %}
-        {% include "elements/edit_socials.html.twig" %}
+        {% include "elements/edit_socials.html.twig" with {tabbed: true} %}
         <div class="ui tab segment" data-tab="parameters">
             <div class="ui stackable two column grid">
                 <div class="column">
