@@ -114,8 +114,8 @@ $app->group('/ajax', function () use ($authenticate) {
     )->setName('photoDnd');
 
     $this->post(
-        '/suggest/towns',
-        function ($request, $response) {
+        '/suggest/towns/{term}',
+        function ($request, $response, string $term) {
             $post = $request->getParsedBody();
 
             $ret = [];
@@ -123,11 +123,11 @@ $app->group('/ajax', function () use ($authenticate) {
             try {
                 $select1 = $this->get('zdb')->select(Adherent::TABLE);
                 $select1->columns(['ville_adh']);
-                $select1->where->like('ville_adh', '%' . html_entity_decode($post['term']) . '%');
+                $select1->where->like('ville_adh', '%' . html_entity_decode($term) . '%');
 
                 $select2 = $this->get('zdb')->select(Adherent::TABLE);
                 $select2->columns(['lieu_naissance']);
-                $select2->where->like('lieu_naissance', '%' . html_entity_decode($post['term']) . '%');
+                $select2->where->like('lieu_naissance', '%' . html_entity_decode($term) . '%');
 
                 $select1->combine($select2);
 
@@ -138,10 +138,11 @@ $app->group('/ajax', function () use ($authenticate) {
 
                 $towns = $this->get('zdb')->execute($select);
 
+                $ret['success'] = true;
+                $ret['results'] = [];
                 foreach ($towns as $town) {
-                    $ret[] = [
-                        'id'    => $town->ville_adh,
-                        'label' => $town->ville_adh
+                    $ret['results'][] = [
+                        'title' => $town->ville_adh
                     ];
                 }
             } catch (Throwable $e) {

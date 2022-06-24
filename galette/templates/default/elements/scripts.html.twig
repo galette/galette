@@ -20,7 +20,20 @@
                 });
 
     {% if autocomplete %}
-                console.log('Autocompletion has to be reworked.');
+                $('#ville_adh, #lieu_naissance').search({
+                    minCharacters : 2,
+                    debug: true,
+                    verbose: true,
+                    searchFields: [
+                        'title'
+                    ],
+                }).api({
+                    url: '{{ path_for('suggestTown', {'term': '{value}'}) }}',
+                    method: 'post',
+                    onFailure: function(response, element, xhr) {
+                        console.log(response);
+                    }
+                });
                 {#$('#ville_adh, #lieu_naissance').autocomplete({
                     source: function (request, response) {
                         $.post('{{ path_for('suggestTown') }}', request, response);
