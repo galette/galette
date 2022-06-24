@@ -1,3 +1,13 @@
+/*
+ * Set the URL of your local instance of Galette here.
+ * Then run "gulp serve".
+ * This is for local development purpose only.
+ * Don't commit this change in the repository.
+ */
+const localServer = {
+  url: 'http://galette.localhost/'
+}
+
 var gulp = require('gulp'),
   del = require('del'),
   uglify = require('gulp-uglify'),
@@ -5,6 +15,7 @@ var gulp = require('gulp'),
   merge = require('merge-stream'),
   concat = require('gulp-concat'),
   replace = require('gulp-replace'),
+  browserSync = require('browser-sync').create(),
   build = require('./semantic/tasks/build'),
   buildJS = require('./semantic/tasks/build/javascript'),
   buildCSS = require('./semantic/tasks/build/css'),
@@ -20,6 +31,10 @@ var paths = {
   galette: {
     modules: './node_modules/',
     semantic: './semantic/',
+    ui: {
+      css: './galette/webroot/assets/ui/semantic.min.css',
+      js: './galette/webroot/assets/ui/semantic.min.js'
+    },
     public: './galette/webroot/assets/'
   },
   css: {
@@ -52,7 +67,12 @@ var paths = {
       src: './node_modules/summernote/dist/lang/*.min.js',
       dest: '/js/lang/'
     }
-  ]
+  ],
+  src: {
+    theme: './theme/themes/galette/**/*',
+    css: './galette/webroot/themes/**/*.css',
+    js: './galette/webroot/js/*.js'
+  }
 };
 
 function theme() {
@@ -62,13 +82,15 @@ function theme() {
   config = gulp.src([
     './theme/theme.config'
   ])
-    .pipe(gulp.dest(_dir));
+    .pipe(gulp.dest(_dir))
+    .pipe(browserSync.stream());
 
   theme =  gulp.src([
     './theme/themes/galette/*',
     './theme/themes/galette/**/*.*'
   ])
-    .pipe(gulp.dest(_themes));
+    .pipe(gulp.dest(_themes))
+    .pipe(browserSync.stream());
 
   return merge(config, theme);
 }
@@ -85,7 +107,8 @@ function styles() {
     .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
     .pipe(concat('galette-main.bundle.min.css'))
-    .pipe(gulp.dest(_dir));
+    .pipe(gulp.dest(_dir))
+    .pipe(browserSync.stream());
 
   return merge(main);
 }
@@ -96,15 +119,18 @@ function scripts() {
   main = gulp.src(paths.js.main)
     .pipe(concat('galette-main.bundle.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(_dir));
+    .pipe(gulp.dest(_dir))
+    .pipe(browserSync.stream());
 
   chartjs = gulp.src(paths.js.chartjs)
     .pipe(concat('galette-chartjs.bundle.min.js'))
-    .pipe(gulp.dest(_dir));
+    .pipe(gulp.dest(_dir))
+    .pipe(browserSync.stream());
 
   sortablejs = gulp.src(paths.js.sortablejs)
     .pipe(concat('galette-sortablejs.bundle.min.js'))
-    .pipe(gulp.dest(_dir));
+    .pipe(gulp.dest(_dir))
+    .pipe(browserSync.stream());
 
   return merge(main, chartjs, sortablejs);
 }
@@ -112,11 +138,23 @@ function scripts() {
 function extras() {
   main = paths.extras.map(function (extra) {
     return gulp.src(extra.src)
-      .pipe(gulp.dest(paths.galette.public + extra.dest));
+      .pipe(gulp.dest(paths.galette.public + extra.dest))
+      .pipe(browserSync.stream());
     }
   );
 
   return merge(main);
+}
+
+function watch() {
+  browserSync.init({
+    proxy: localServer.url
+  })
+
+  gulp.watch([paths.src.theme], gulp.series(theme, 'build-css')).on('change', browserSync.reload)
+  gulp.watch([paths.src.css], gulp.series(styles)).on('change', browserSync.reload)
+  gulp.watch([paths.src.js], gulp.series(scripts)).on('change', browserSync.reload)
+  gulp.watch([paths.galette.ui.css, paths.galette.ui.js]).on('change', browserSync.reload)
 }
 
 exports.clean = clean;
@@ -124,6 +162,7 @@ exports.theme = theme;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.extras = extras;
+exports.watch = watch;
 
 var build = gulp.series(theme, clean, styles, scripts, extras, 'build ui');
 exports.default = build;
