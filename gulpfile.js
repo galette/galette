@@ -4,12 +4,22 @@ var gulp = require('gulp'),
   cleanCSS = require('gulp-clean-css'),
   merge = require('merge-stream'),
   concat = require('gulp-concat'),
-  replace = require('gulp-replace')
+  replace = require('gulp-replace'),
+  build = require('./semantic/tasks/build'),
+  buildJS = require('./semantic/tasks/build/javascript'),
+  buildCSS = require('./semantic/tasks/build/css'),
+  buildAssets = require('./semantic/tasks/build/assets')
 ;
+
+gulp.task('build ui', build);
+gulp.task('build-css', buildCSS);
+gulp.task('build-javascript', buildJS);
+gulp.task('build-assets', buildAssets);
 
 var paths = {
   galette: {
     modules: './node_modules/',
+    semantic: './semantic/',
     public: './galette/webroot/assets/'
   },
   css: {
@@ -44,6 +54,24 @@ var paths = {
     }
   ]
 };
+
+function theme() {
+  var _dir = paths.galette.semantic + 'src/';
+  var _themes = paths.galette.semantic + 'src/themes/galette';
+
+  config = gulp.src([
+    './theme/theme.config'
+  ])
+    .pipe(gulp.dest(_dir));
+
+  theme =  gulp.src([
+    './theme/themes/galette/*',
+    './theme/themes/galette/**/*.*'
+  ])
+    .pipe(gulp.dest(_themes));
+
+  return merge(config, theme);
+}
 
 function clean() {
   return del([paths.galette.public]);
@@ -92,9 +120,10 @@ function extras() {
 }
 
 exports.clean = clean;
+exports.theme = theme;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.extras = extras;
 
-var build = gulp.series(clean, styles, scripts, extras);
+var build = gulp.series(theme, clean, styles, scripts, extras, 'build ui');
 exports.default = build;
