@@ -154,7 +154,7 @@
                             <a href="{{ path_for("members", {"option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_ID")}) }}">
                             {{ _T('Mbr id') }}
                             {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_ID') %}
-                                {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
+                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
                                 <i class="ui angle down icon tooltip"></i>
                                 {% else %}
                                 <i class="ui angle up icon tooltip"></i>
@@ -170,7 +170,7 @@
                             <a href="{{ path_for("members", {"option": "order", "value": column.field_id}) }}">
                             {{ column.label }}
                             {% if filters.orderby == column.field_id %}
-                                {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
+                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
                                 <i class="ui angle down icon tooltip"></i>
                                 {% else %}
                                 <i class="ui angle up icon tooltip"></i>

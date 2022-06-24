@@ -36,7 +36,7 @@
                         <a href="{{ path_for("publicList", {"type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NAME")}) }}" class="listing">
                             {{ _T('Name') }}
                             {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_NAME') %}
-                                {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
+                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
                             <i class="ui angle down icon tooltip"></i>
                                 {% else %}
                             <i class="ui angle up icon tooltip"></i>
@@ -48,7 +48,7 @@
                         <a href="{{ path_for("publicList", {"type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")}) }}" class="listing">
                             {{ _T('Nickname') }}
                             {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_NICKNAME') %}
-                                {% if filters.ordered == constant('Galette\Filters\MembersList::ORDER_ASC') %}
+                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
                             <i class="ui angle down icon tooltip"></i>
                                 {% else %}
                             <i class="ui angle up icon tooltip"></i>
