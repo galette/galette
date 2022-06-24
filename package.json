@@ -7,12 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "webpack",
-    "build-dist": "webpack --mode=production",
-    "watch": "webpack --watch",
-    "clean": "rm -rf ./webroot/js/libs/",
-    "gulp": "gulp",
-    "gulp-ui": "cp -r ./theme/theme* ./semantic/src && cd semantic && gulp"
+    "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets",
+    "install-deps": "npm run clean && cd galette && composer install -o && cd .. && npm install",
+    "build": "gulp",
+    "rebuild": "npm run install-deps && gulp",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",
