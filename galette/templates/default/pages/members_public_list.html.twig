@@ -1,116 +1,97 @@
-{% extends 'public_page.html.twig' %}
+{% extends 'elements/list.html.twig' %}
 
-{% block content %}
-{% if members|length > 0 %}
-        <div class="ui icon yellow small message">
-            <i class="info circle icon"></i>
-            <div class="content">
-                {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
-            </div>
+{% set nb = members|length %}
+{% set no_action = true %}
+{% set is_public = not login.isLogged() %}
+
+{% set form = {
+    'order': {
+        'name': 'publicList',
+        'args': {
+            "type": "list"
+        }
+    }
+} %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filterPublicList',
+            'args': {
+                "type": "list"
+            }
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
+        {'label': _T("Nickname"), order: constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")},
+    ] %}
+
+    {% if login.isLogged() %}
+        {% set columns = columns|merge([
+            {'label': _T("Email")}
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T("Information")}
+    ]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <div class="ui icon yellow small message">
+        <i class="info circle icon"></i>
+        <div class="content">
+            {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
         </div>
-        <form action="{{ path_for("filterPublicList", {"type": "list"}) }}" method="POST" id="filtre" class="ui form">
-            <div class="infoline">
-                <div class="ui basic horizontal segments">
-                    <div class="ui basic fitted segment">
-                        <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}) }}</div>
-                    </div>
-                    <div class="ui basic right aligned fitted segment">
-                        <div class="inline field">
-                            <label for="nbshow">{{ _T('Records per page:') }}</label>
-                            <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
-                                {% for key, value in nbshow_options %}
-                                    <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
-                                {% endfor %}
-                            </select>
-                            <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
-                            {% include "components/forms/csrf.html.twig" %}
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% for member in members %}
+        {% set rclass = member.getRowClass() %}
+        <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+            <td class="{{ rclass }} username_row" data-scope="row">
+                {% if member.isCompany() %}
+                    <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
+                {%  elseif member.isMan() %}
+                    <i class="ui male icon tooltip"><span class="sr-only">{{ _T('Is a man') }}</span></i>
+                {%  elseif member.isWoman() %}
+                    <i class="ui female icon tooltip"><span class="sr-only">{{ _T('Is a woman') }}</span></i>
+                {% else %}
+                    <i class="ui icon"></i>
+                {% endif %}
+                {% if member.website != '' %}
+                    <a href="{{ member.website }}">{{ member.sfullname }}</a>
+                {% else %}
+                    {{ member.sfullname }}
+                {% endif %}
+            </td>
+            <td class="{{ rclass }}" data-title="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
+            {% if login.isLogged() %}
+                <td class="{{ rclass }}" data-title="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+            {% endif %}
+            <td class="{{ rclass }}" data-title="{{ _T('Information') }}">{{ member.others_infos }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">
+                <div class="ui icon info small message">
+                    <i class="info icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            {{ _T('No member to show') }}
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
-        <table class="ui celled table">
-            <thead>
-                <tr>
-                    <th class="left">
-                        <a href="{{ path_for("publicList", {"type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NAME")}) }}" class="listing">
-                            {{ _T('Name') }}
-                            {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_NAME') %}
-                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
-                            <i class="ui angle down icon tooltip"></i>
-                                {% else %}
-                            <i class="ui angle up icon tooltip"></i>
-                                {% endif %}
-                            {% endif %}
-                        </a>
-                    </th>
-                    <th class="left">
-                        <a href="{{ path_for("publicList", {"type": "list", "option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")}) }}" class="listing">
-                            {{ _T('Nickname') }}
-                            {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_NICKNAME') %}
-                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
-                            <i class="ui angle down icon tooltip"></i>
-                                {% else %}
-                            <i class="ui angle up icon tooltip"></i>
-                                {% endif %}
-                            {% endif %}
-                        </a>
-                    </th>
-                    {% if login.isLogged() %}
-                    <th class="left">
-                        {{ _T('Email') }}
-                    </th>
-                    {% endif %}
-                    <th class="left">
-                        {{ _T('Information') }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-    {% for member in members %}
-        {% set rclass = member.getRowClass() %}
-                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
-                    <td class="{{ rclass }} username_row" data-scope="row">
-                    {% if member.isCompany() %}
-                        <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
-                    {%  elseif member.isMan() %}
-                        <i class="ui male icon tooltip"><span class="sr-only">{{ _T('Is a man') }}</span></i>
-                    {%  elseif member.isWoman() %}
-                        <i class="ui female icon tooltip"><span class="sr-only">{{ _T('Is a woman') }}</span></i>
-                    {% else %}
-                        <i class="ui icon"></i>
-                    {% endif %}
-                    {% if member.website != '' %}
-                        <a href="{{ member.website }}">{{ member.sfullname }}</a>
-                    {% else %}
-                        {{ member.sfullname }}
-                    {% endif %}
-                    </td>
-                    <td class="{{ rclass }}" data-title="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
-                    {% if login.isLogged() %}
-                    <td class="{{ rclass }}" data-title="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
-                    {% endif %}
-                    <td class="{{ rclass }}" data-title="{{ _T('Information') }}">{{ member.others_infos }}</td>
-                </tr>
+            </td>
+        </tr>
     {% endfor %}
-            </tbody>
-        </table>
-        <div class="ui basic center aligned fitted segment">
-            <div class="ui inverted pagination menu">
-                <div class="header item">
-                    {{ _T('Pages:') }}
-                </div>
-                {{ pagination|raw }}
-            </div>
-        </div>
-{% else %}
-    <div class="ui icon info small message">
-        <i class="info icon"></i>
-        <div class="content">
-            <div class="header">
-                {{ _T('No member to show') }}
-            </div>
-        </div>
-    </div>
-{% endif %}
 {% endblock %}
