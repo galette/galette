@@ -101,7 +101,7 @@ var paths = {
 };
 
 function galette() {
-  faviconpng = gulp.src(paths.src.favicon)
+  favicon = gulp.src(paths.src.favicon)
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
