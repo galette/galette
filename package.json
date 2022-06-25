@@ -6,8 +6,9 @@
   "directories": {
     "lib": "lib"
   },
+
   "scripts": {
-    "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets && rm -rf galette/webroot/themes && rm galette/webroot/favicon.ico",
+    "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets && rm -rf galette/webroot/themes",
     "install-deps": "npm run clean && cd galette && composer install -o && cd .. && npm install",
     "build": "gulp",
     "rebuild": "npm run install-deps && gulp",

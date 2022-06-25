@@ -50,8 +50,7 @@ var paths = {
     ],
     css: './ui/css/**/*.css',
     js: './ui/js/*.js',
-    favicon:'./ui/images/favicon.ico',
-    faviconpng:'./ui/images/favicon.png',
+    favicon:'./ui/images/favicon.png',
     logo: './ui/images/galette.png',
     photo:'./ui/images/default.png'
   },
@@ -102,11 +101,7 @@ var paths = {
 };
 
 function galette() {
-  favicon = gulp.src(paths.src.favicon)
-    .pipe(gulp.dest(paths.webroot))
-    .pipe(browserSync.stream());
-
-  faviconpng = gulp.src(paths.src.faviconpng)
+  faviconpng = gulp.src(paths.src.favicon)
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
@@ -187,7 +182,7 @@ function watch() {
     proxy: localServer.url
   })
 
-  gulp.watch([paths.src.favicon, paths.src.faviconpng, paths.src.logo, paths.src.photo], gulp.series(galette)).on('change', browserSync.reload)
+  gulp.watch([paths.src.favicon, paths.src.logo, paths.src.photo], gulp.series(galette)).on('change', browserSync.reload)
   gulp.watch([paths.src.theme, paths.src.config], gulp.series(theme, 'build-css')).on('change', browserSync.reload)
   gulp.watch([paths.src.css], gulp.series(styles)).on('change', browserSync.reload)
   gulp.watch([paths.src.js], gulp.series(scripts)).on('change', browserSync.reload)
