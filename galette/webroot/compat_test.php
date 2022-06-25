@@ -46,62 +46,42 @@ $cm->doCheck(false); //do not load with translations!
 <html>
     <head>
         <title>Galette compatibility tests</title>
-        <link rel="stylesheet" type="text/css" href="themes/default/galette.css"/>
-        <link rel="stylesheet" type="text/css" href="assets/css/galette-main.bundle.min.css" />
-        <link rel="stylesheet" type="text/css" href="assets/ui/semantic.min.css" />
-
-        <style type="text/css">
-            h1 {
-                margin-top: .5em;
-                text-align: center;
-            }
-            h2 {
-                font-size: 1.2em;
-                text-align: center;
-            }
-            div {
-                width: 30em;
-                margin: 0 auto;
-            }
-            li {
-                padding: .2em 0;
-            }
-
-            .Missing {
-                color: red;
-            }
-            .Ok {
-                color: green;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
+        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic.min.css" />
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
-    <body>
-        <div class="container">
-        <div class="ui basic center aligned fitted segment">
-            <img class="icon" src="themes/default/images/galette.png"/>
-        </div>
-        <h1 class="ui block center aligned header">Compatibility tests</h1>
-    <?php
-    if (!$phpok
-        || !$cm->isValid()
-    ) {
-        echo '<h2 class="ui red message center aligned">Something is wrong :(</h2>';
-    } else {
-        echo '<p class="ui green message center aligned">Everything is OK :)</p>';
-    }
-    ?>
-        <div>
-            <ul class="leaders">
-                <li>
-                    <span>PHP <strong class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></strong></span>
-                    <span><i class="ui <?php echo ($phpok) ? 'green check' : 'red times'; ?> icon"></i></span>
-                </li>
-    <?php
-    echo $cm->toHtml(false);
-    ?>
-            </ul>
-        </div>
+    <body class="pushable">
+        <div class="pusher">
+            <div id="main" class="ui container">
+                <div class="ui basic segment">
+                    <div class="ui basic center aligned fitted segment">
+                        <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.png"/>
+                    </div>
+                    <h1 class="ui block center aligned header">Compatibility tests</h1>
+                    <div class="ui segment">
+                        <div id="main" class="text ui container">
+                <?php
+                if (!$phpok
+                    || !$cm->isValid()
+                ) {
+                    echo '<p class="ui red center aligned message">Something is wrong :(</p>';
+                } else {
+                    echo '<p class="ui green center aligned message">Everything is OK :)</p>';
+                }
+                ?>
+                            <ul class="leaders">
+                                <li>
+                                    <span>PHP <strong class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></strong></span>
+                                    <span><i class="ui <?php echo ($phpok) ? 'green check' : 'red times'; ?> icon"></i></span>
+                                </li>
+                <?php
+                echo $cm->toHtml(false);
+                ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

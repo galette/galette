@@ -138,20 +138,28 @@ class UpdateAndMaintenance
             $path .= '/';
         }
 
-        $css_path = $path . GALETTE_THEME;
+        $theme_path = $path . GALETTE_THEME;
 
         $body = "<!DOCTYPE html>
-<html lang=\"" . $this->i18n->getAbbrev() . "\">
+<html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
     <head>
         <title>" . _T("Galette needs update!") . "</title>
         <meta charset=\"UTF-8\"/>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css_path . "galette.css\"/>
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "../../assets/css/galette-main.bundle.min.css\"/>
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "ui/semantic.min.css\"/>
+        <link rel=\"shortcut icon\" href=\"" . $theme_path . "images/favicon.png\"/>
     </head>
-    <body class=\"notup2date\">
-        <p class=\"center\">
-            <img src=\"" . $css_path . "images/galette.png\" alt=\"\"/>
-        </p>
-        <div id=\"errorbox\">" . $contents . "</div>
+    <body class=\"notup2date pushable\">
+        <div class=\"pusher\">
+            <div id=\"main\" class=\"ui container\">
+                <div class=\"ui basic segment\">
+                    <div class=\"ui basic center aligned fitted segment\">
+                        <img src=\"" . $theme_path . "images/galette.png\" alt=\"[ Galette ]\"/>
+                    </div>
+                    <div class=\"ui center aligned message\">" . $contents . "</div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>";
         return $body;
@@ -166,7 +174,7 @@ class UpdateAndMaintenance
      */
     private function maintenancePage(Request $request)
     {
-        $contents = "<h1>" . _T("Galette is currently under maintenance!") . "</h1>
+        $contents = "<div class=\"header\">" . _T("Galette is currently under maintenance!") . "</div>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
         return $this->renderPage($request, $contents);
     }

@@ -77,7 +77,11 @@ tests/mageekguy.atoum.phar
 galette/vendor/
 node_modules/
 galette/webroot/assets/*
+galette/webroot/themes/*
+
+# Semantic UI
 semantic
+!ui/semantic
 
 # API documentation
 apidocs/

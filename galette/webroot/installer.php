@@ -215,19 +215,14 @@ header('Content-Type: text/html; charset=UTF-8');
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
+        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
-        <link rel="stylesheet" type="text/css" href="./assets/ui/semantic.min.css" />
-        <link rel="stylesheet" type="text/css" href="./themes/default/galette-ng.css" />
-        <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
-        <script type="text/javascript" src="./assets/ui/semantic.min.js"></script>
-        <script type="text/javascript" src="./js/common-ng.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
     <body class="pushable">
         <header id="top-navbar" class="ui fixed menu bgcolor">
             <div class="ui container">
                 <div class="header item">
-                    <!-- <img src="/logo" width="129" height="60" alt="[ Galette ]" class="logo" /> -->
                     <span><?php echo _T("Galette installation") ?></span>
                 </div>
                 <div class="language ui dropdown right item">
@@ -249,6 +244,12 @@ foreach ($i18n->getList() as $langue) {
         <div class="pusher">
             <div id="main" class="ui container">
                 <div class="ui basic segment">
+                    <div class="ui basic center aligned fitted segment">
+                        <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.png"/>
+                    </div>
+                    <h1 class="ui block center aligned header">
+                        <?php echo $install->getStepTitle(); ?>
+                    </h1>
 <?php
 if (count($error_detected) > 0) {
     ?>
@@ -267,9 +268,6 @@ if (count($error_detected) > 0) {
     <?php
 }
 ?>
-                    <h1 class="ui block center aligned header">
-                        <?php echo $install->getStepTitle(); ?>
-                    </h1>
 <?php
 if ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/check.php';
@@ -399,6 +397,8 @@ if (!$install->isUpgrade()) {
                 </div>
             </footer>
         </div>
+        <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
+        <script type="text/javascript" src="./themes/default/ui/semantic.min.js"></script>
     </body>
 </html>
 <?php

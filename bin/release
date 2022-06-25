@@ -336,9 +336,9 @@ def add_libs(rel_name, galette_archive):
     #node modules are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
 
-    #fomantic-ui and theme sources are no longer needed
+    #UI sources are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'semantic'))
-    shutil.rmtree(os.path.join(npm_dir, 'theme'))
+    shutil.rmtree(os.path.join(npm_dir, 'ui'))
 
     #install php dependencies
     composer_cmd = 'composer install --no-dev'

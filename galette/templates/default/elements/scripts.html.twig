@@ -1,3 +1,5 @@
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/galette-main.bundle.min.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
         <script type="text/javascript">
             function csrfSafeMethod(method) {
                 // these HTTP methods do not require CSRF protection
@@ -46,7 +48,7 @@
         <script type="module" src="{{ base_url() }}/assets/js/galette-chartjs.bundle.min.js"></script>
     {% endif %}
     {% if require_mass %}
-        <script type="text/javascript" src="{{ base_url() }}/js/mass_changes.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/mass_changes.js"></script>
     {% endif %}
     {% if html_editor %}
         <script src="{{ base_url() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
@@ -106,5 +108,5 @@
     {% endif %}
     {% set localjstracking = constant('_CURRENT_THEME_PATH') ~ "tracking.js" %}
     {% if file_exists(localjstracking) %}
-        <script type="text/javascript" src="{{ base_url() }}/{{ constant('GALETTE_THEME') }}/tracking.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/{{ constant('GALETTE_THEME') }}tracking.js"></script>
     {% endif %}

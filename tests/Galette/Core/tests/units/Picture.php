@@ -155,7 +155,7 @@ class Picture extends atoum
         $this->variable($url)->isNotFalse();
         $this->variable($this->picture->getMimeType($url))->isIdenticalTo('image/png');
 
-        $url = realpath(GALETTE_ROOT . '../galette/webroot/themes/default/images/test.gif');
+        $url = realpath(GALETTE_ROOT . '../tests/test.gif');
         $this->variable($url)->isNotFalse();
         $this->variable($this->picture->getMimeType($url))->isIdenticalTo('image/gif');
 
