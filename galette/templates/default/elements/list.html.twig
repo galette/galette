@@ -103,8 +103,8 @@
 {% set _legend_block = block('legend') %}
 
 {% block javascripts %}
-    {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
     <script type="text/javascript">
+    {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
         var _checkselection = function() {
             var _checked = $('#listform').find('input[type=checkbox]:checked').length;
             if ( _checked == 0 ) {
@@ -122,7 +122,9 @@
                 return true;
             }
         }
+    {% endif %}
         $(function(){
+    {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
             var _init_page = function(res){
         {% if login.isAdmin() or login.isStaff() %}
                 {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
@@ -136,9 +138,6 @@
                 $('.listing').before(_checklinks);
                 $('.listing').after(_checklinks);
                 _bind_check('entries_sel');
-        {% endif %}
-        {% if _legend_block is not empty %}
-                _bind_legend();
         {% endif %}
 
                 $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(event) {
@@ -161,7 +160,6 @@
             }
             _init_page();
 
-            {% include "elements/js/removal.js.twig" %}
             {% include "elements/js/removal.js.twig" with {
                 selector: "#delete",
                 deleteurl: path_for(batch.route.name, batch.route.args|default([])),
@@ -170,7 +168,11 @@
                 method: "POST",
                 loader: "button"
             } %}
+    {% endif %}
+    {% if _legend_block is not empty %}
+            _bind_legend();
+    {% endif %}
+            {% include "elements/js/removal.js.twig" %}
         });
     </script>
-    {% endif %}
 {% endblock %}
