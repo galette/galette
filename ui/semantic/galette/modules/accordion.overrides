@@ -1,0 +1,8 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+.ui.styled.accordion .title,
+.ui.styled.accordion .accordion .title {
+  background: @styledTitleBackground;
+}

@@ -1,0 +1,10 @@
+/**********************************
+     Galette Variable Overrides
+**********************************/
+
+/*-------------------
+       Variations
+--------------------*/
+
+/* Inverted */
+@invertedBackground: @grey;
