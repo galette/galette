@@ -8,10 +8,10 @@
       "themes": "src/themes/"
     },
     "output": {
-      "packaged": "../galette/webroot/assets/ui/",
-      "uncompressed": "../galette/webroot/assets/ui/components/",
-      "compressed": "../galette/webroot/assets/ui/components/",
-      "themes": "../galette/webroot/assets/ui/themes/"
+      "packaged": "../galette/webroot/themes/default/ui/",
+      "uncompressed": "../galette/webroot/themes/default/ui/components/",
+      "compressed": "../galette/webroot/themes/default/ui/components/",
+      "themes": "../galette/webroot/themes/default/ui/themes/"
     },
     "clean": "dist/"
   },

@@ -28,27 +28,49 @@ gulp.task('build-javascript', buildJS);
 gulp.task('build-assets', buildAssets);
 
 var paths = {
-  galette: {
-    modules: './node_modules/',
-    semantic: './semantic/',
-    ui: {
-      css: './galette/webroot/assets/ui/semantic.min.css',
-      js: './galette/webroot/assets/ui/semantic.min.js'
-    },
-    public: './galette/webroot/assets/'
+  webroot: './galette/webroot/',
+  assets: {
+    public: './galette/webroot/assets/',
+    css: './galette/webroot/assets/css/',
+    js: './galette/webroot/assets/js/',
+    webfonts: './galette/webroot/assets/webfonts/',
+    theme: {
+      public: './galette/webroot/themes/default/',
+      css: './galette/webroot/themes/default/ui/semantic.min.css',
+      js: './galette/webroot/themes/default/ui/semantic.min.js',
+      images: './galette/webroot/themes/default/images/'
+    }
   },
-  css: {
+  src: {
+    theme: './ui/semantic/galette/**/*',
+    config: './ui/semantic/theme*',
+    files: [
+      './ui/semantic/galette/*',
+      './ui/semantic/galette/**/*.*'
+    ],
+    css: './ui/css/**/*.css',
+    js: './ui/js/*.js',
+    favicon:'./ui/images/favicon.ico',
+    faviconpng:'./ui/images/favicon.png',
+    logo: './ui/images/galette.png',
+    photo:'./ui/images/default.png'
+  },
+  semantic: {
+    src: './semantic/src/',
+    theme: './semantic/src/themes/galette/'
+  },
+  styles: {
     main: [
-      './galette/webroot/themes/default/galette.css',
+      './ui/css/galette.css',
       './node_modules/summernote/dist/summernote-lite.min.css'
     ]
   },
-  js: {
+  scripts: {
     main: [
       './node_modules/jquery/dist/jquery.js',
       './node_modules/js-cookie/dist/js.cookie.min.js',
       './node_modules/summernote/dist/summernote-lite.min.js',
-      './galette/webroot/js/common.js'
+      './ui/js/common.js'
     ],
     chartjs: [
       './node_modules/chart.js/dist/chart.min.js',
@@ -61,75 +83,89 @@ var paths = {
   },
   extras: [
     {
+      src: './ui/css/galette_print.css',
+      dest: 'css/'
+    }, {
+      src: './ui/css/install.css',
+      dest: 'css/'
+    }, {
+      src: './ui/js/mass_changes.js',
+      dest: 'js/'
+    }, {
       src: './node_modules/summernote/dist/font/*',
-      dest: '/webfonts/'
+      dest: 'webfonts/'
     }, {
       src: './node_modules/summernote/dist/lang/*.min.js',
-      dest: '/js/lang/'
+      dest: 'js/lang/'
     }
-  ],
-  src: {
-    theme: './theme/themes/galette/**/*',
-    css: './galette/webroot/themes/**/*.css',
-    js: './galette/webroot/js/*.js'
-  }
+  ]
 };
 
-function theme() {
-  var _dir = paths.galette.semantic + 'src/';
-  var _themes = paths.galette.semantic + 'src/themes/galette';
-
-  config = gulp.src([
-    './theme/theme.config'
-  ])
-    .pipe(gulp.dest(_dir))
+function galette() {
+  favicon = gulp.src(paths.src.favicon)
+    .pipe(gulp.dest(paths.webroot))
     .pipe(browserSync.stream());
 
-  theme =  gulp.src([
-    './theme/themes/galette/*',
-    './theme/themes/galette/**/*.*'
-  ])
-    .pipe(gulp.dest(_themes))
+  faviconpng = gulp.src(paths.src.faviconpng)
+    .pipe(gulp.dest(paths.assets.theme.images))
+    .pipe(browserSync.stream());
+
+  logo =  gulp.src(paths.src.logo)
+    .pipe(gulp.dest(paths.assets.theme.images))
+    .pipe(browserSync.stream());
+
+  photo =  gulp.src(paths.src.photo)
+    .pipe(gulp.dest(paths.assets.theme.images))
+    .pipe(browserSync.stream());
+
+  return merge(favicon, logo, photo);
+}
+
+function theme() {
+  config = gulp.src(paths.src.config)
+    .pipe(gulp.dest(paths.semantic.src))
+    .pipe(browserSync.stream());
+
+  theme =  gulp.src(paths.src.files)
+    .pipe(gulp.dest(paths.semantic.theme))
     .pipe(browserSync.stream());
 
   return merge(config, theme);
 }
 
 function clean() {
-  return del([paths.galette.public]);
+  return del([
+    paths.assets.public,
+    paths.assets.theme.public,
+  ]);
 }
 
 function styles() {
-  var _dir = paths.galette.public + '/css/';
-
-  main = gulp.src(paths.css.main)
-    .pipe(replace('url(images/', 'url(../images/'))
+  main = gulp.src(paths.styles.main)
     .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
     .pipe(concat('galette-main.bundle.min.css'))
-    .pipe(gulp.dest(_dir))
+    .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
   return merge(main);
 }
 
 function scripts() {
-  var _dir = paths.galette.public + '/js/';
-
-  main = gulp.src(paths.js.main)
+  main = gulp.src(paths.scripts.main)
     .pipe(concat('galette-main.bundle.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(_dir))
+    .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  chartjs = gulp.src(paths.js.chartjs)
+  chartjs = gulp.src(paths.scripts.chartjs)
     .pipe(concat('galette-chartjs.bundle.min.js'))
-    .pipe(gulp.dest(_dir))
+    .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  sortablejs = gulp.src(paths.js.sortablejs)
+  sortablejs = gulp.src(paths.scripts.sortablejs)
     .pipe(concat('galette-sortablejs.bundle.min.js'))
-    .pipe(gulp.dest(_dir))
+    .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
   return merge(main, chartjs, sortablejs);
@@ -138,7 +174,7 @@ function scripts() {
 function extras() {
   main = paths.extras.map(function (extra) {
     return gulp.src(extra.src)
-      .pipe(gulp.dest(paths.galette.public + extra.dest))
+      .pipe(gulp.dest(paths.assets.public + extra.dest))
       .pipe(browserSync.stream());
     }
   );
@@ -151,18 +187,20 @@ function watch() {
     proxy: localServer.url
   })
 
-  gulp.watch([paths.src.theme], gulp.series(theme, 'build-css')).on('change', browserSync.reload)
+  gulp.watch([paths.src.favicon, paths.src.faviconpng, paths.src.logo, paths.src.photo], gulp.series(galette)).on('change', browserSync.reload)
+  gulp.watch([paths.src.theme, paths.src.config], gulp.series(theme, 'build-css')).on('change', browserSync.reload)
   gulp.watch([paths.src.css], gulp.series(styles)).on('change', browserSync.reload)
   gulp.watch([paths.src.js], gulp.series(scripts)).on('change', browserSync.reload)
-  gulp.watch([paths.galette.ui.css, paths.galette.ui.js]).on('change', browserSync.reload)
+  gulp.watch([paths.assets.theme.css, paths.assets.theme.js, paths.assets.theme.images]).on('change', browserSync.reload)
 }
 
-exports.clean = clean;
+exports.galette = galette;
 exports.theme = theme;
+exports.clean = clean;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.extras = extras;
 exports.watch = watch;
 
-var build = gulp.series(theme, clean, styles, scripts, extras, 'build ui');
+var build = gulp.series(theme, clean, styles, scripts, extras, 'build ui', galette);
 exports.default = build;

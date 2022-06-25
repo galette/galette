@@ -1,6 +1,0 @@
-/*******************************
-    Galette Variable Overrides
-*******************************/
-
-@blockBackground: @primaryColor url(themes/galette/assets/images/bg.png) no-repeat;
-@blockBorder: 0px;
