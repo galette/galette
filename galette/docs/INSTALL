@@ -3,3 +3,36 @@ Installation
 
 See online manual:
 https://doc.galette.eu/en/master/installation/
+
+Development version from git
+============================
+
+Using npm, only 2 commands are now required to build the assets after running composer :
+
+    npm install
+    npm run build
+
+Once these commands have been run, here is the list of useful commands in the development process :
+
+    npm run clean (removes every dependencies, including composer ones)
+    npm run install-deps (install all dependencies, including composer ones, and cleaning first)
+    npm run build (build the assets without installing the dependencies ; shorter equivalent is gulp)
+    npm run rebuild (all the tasks above at once)
+    npm run watch (launch the required tasks automatically when modifying the corresponding files, and syncs the changes in the browser when build is done ; shorter equivalent is gulp watch)
+
+Gulp tasks can still be run individually if required :
+
+    gulp clean (clean the assets only)
+    gulp theme (copy Galette's semantic theme in Semantic's src folder ; required before using Semantic's tasks)
+    gulp styles (build CSS bundles ; only one for the moment)
+    gulp scripts (build JS bundles)
+    gulp extras (copy required extra assets)
+    gulp (all the tasks above at once and shorter equivalent of npm run build)
+    gulp watch (shorter equivalent of npm run watch)
+
+And Semantic/Fomantic's tasks can be launched from the root of the repository too (their names must not be modified) :
+
+    gulp build-css
+    gulp build-javascript
+    gulp build-assets
+    gulp 'build ui' (all the tasks above at once)
