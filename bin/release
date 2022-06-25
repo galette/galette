@@ -356,6 +356,7 @@ def add_libs(rel_name, galette_archive):
         'package-lock.json',
         'phpcs-rules.xml',
         'composer.lock',
+        '.composer-require-checker.config.json',
         'semantic.json',
         os.path.join('galette', 'composer.json'),
         os.path.join('galette', 'composer.lock'),
@@ -367,6 +368,12 @@ def add_libs(rel_name, galette_archive):
 
     if os.path.exists(os.path.join(src_dir, rel_name, 'patches')):
         shutil.rmtree(os.path.join(src_dir, rel_name, 'patches'))
+
+    if os.path.exists(os.path.join(src_dir, rel_name, 'tests')):
+        shutil.rmtree(os.path.join(src_dir, rel_name, 'tests'))
+
+    if os.path.exists(os.path.join(src_dir, rel_name, '.github')):
+        shutil.rmtree(os.path.join(src_dir, rel_name, '.github'))
 
     #cleanup vendors
     for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):
