@@ -422,7 +422,7 @@ abstract class Pagination
         if (in_array($name, $this->pagination_fields)) {
             return true;
         }
-        return false;
+        return property_exists($this, $name);
     }
 
     /**
