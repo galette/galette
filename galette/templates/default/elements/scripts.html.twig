@@ -20,7 +20,8 @@
                 });
 
     {% if autocomplete %}
-                $('#ville_adh, #lieu_naissance').autocomplete({
+                console.log('Autocompletion has to be reworked.');
+                {#$('#ville_adh, #lieu_naissance').autocomplete({
                     source: function (request, response) {
                         $.post('{{ path_for('suggestTown') }}', request, response);
                     },
@@ -31,7 +32,7 @@
                         $.post('{{ path_for('suggestCountry') }}', request, response);
                     },
                     minLength: 2
-                });
+                });#}
     {% endif %}
 
     {% if renew_telemetry is defined %}
