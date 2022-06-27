@@ -41,7 +41,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-16 22:26+0200\n"
-"PO-Revision-Date: 2022-06-27 09:16+0000\n"
+"PO-Revision-Date: 2022-06-28 10:15+0000\n"
 "Last-Translator: Javier <javier.fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -515,7 +515,7 @@ msgstr "Se produjo un error al almacenar la contribución."
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:915
 #, php-format
 msgid "Remove %1$s %2$s"
-msgstr "Eliminar %1$s %2$s"
+msgstr "Retirar %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:917
 msgid "contributions"
