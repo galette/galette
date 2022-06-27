@@ -20,19 +20,17 @@
                 });
 
     {% if autocomplete %}
-                $('#ville_adh, #lieu_naissance').search({
+                $('#ville_adh_field, #lieu_naissance_field').search({
+                    apiSettings: {
+                        url: '{{ path_for('suggestTown', {'term': '{query}'}) }}',
+                        method: 'post',
+                        onFailure: function(response, element, xhr) {
+                            console.log(response);
+                        }
+                    },
                     minCharacters : 2,
                     debug: true,
-                    verbose: true,
-                    searchFields: [
-                        'title'
-                    ],
-                }).api({
-                    url: '{{ path_for('suggestTown', {'term': '{value}'}) }}',
-                    method: 'post',
-                    onFailure: function(response, element, xhr) {
-                        console.log(response);
-                    }
+                    verbose: true
                 });
                 {#$('#ville_adh, #lieu_naissance').autocomplete({
                     source: function (request, response) {

@@ -63,6 +63,9 @@
                     {% if entry.field_id == 'id_statut' %}
                         {% set template = "status.html.twig" %}
                     {% endif %}
+                    {% if entry.field_id == 'ville_adh' or entry.field_id == 'lieu_naissance' %}
+                        {% set template = "search.html.twig" %}
+                    {% endif %}
 
                     {% if entry.field_id == 'gpgid' %}
                         {% set size = "8" %}

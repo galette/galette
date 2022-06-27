@@ -12,6 +12,7 @@
         </label>
     {% endblock %}
     {% if type is defined and type == 'password' %}<div class="ui input">{% endif %}
+    {% if component_class is defined and component_class starts with 'ui search' %}<div class="ui icon input">{% endif %}
     {% block element %}<input
         type="{{ type }}"
         name="{{ name ?? id }}"
@@ -29,6 +30,7 @@
         {% if checked is defined and checked == true %} checked="checked"{% endif %}
         />
     {% endblock %}
+    {% if component_class is defined and component_class starts with 'ui search' %}<i class="search icon"></i></div>{% endif %}
     {% if type is defined and type == 'password' %}</div>{% endif %}
     {% if tip is defined and tip != '' %}<i class="circular inverted primary small icon info tooltip" data-html="{{ tip }}"></i>{% endif %}
     {% if example is defined %}<span class="exemple">{{ example }}</span>{% endif %}
