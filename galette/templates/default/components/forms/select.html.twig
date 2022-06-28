@@ -1,5 +1,7 @@
 {% extends "components/forms/input.html.twig" %}
 
+{% set raw_labels = raw_labels ?? false %}
+
 {% block element %}
     <select
         name="{{ name ?? id }}"
@@ -9,7 +11,16 @@
         class="ui search dropdown nochosen"
     >
     {% for option_value, option_label in values %}
-        <option value="{{ option_value }}"{% if option_value == value %} selected="selected"{% endif %}>{{ option_label }}</option>
+        <option
+            value="{{ option_value }}"
+            {% if option_value == value %} selected="selected"{% endif %}
+        >
+            {% if raw_labels == true %}
+                {{ option_label|raw }}
+            {% else %}
+                {{ option_label }}
+            {% endif %}
+        </option>
     {% endfor %}
     </select>
 {% endblock %}
