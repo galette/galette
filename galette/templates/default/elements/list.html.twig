@@ -1,5 +1,5 @@
 {% set mode = mode|default('') %}
-{% set is_paginated = is_paginated|default(nb > 0) %}
+{% set is_paginated = is_paginated ?? (nb > 0) %}
 {% set is_public = is_public ?? false %}
 
 {% extends (mode == 'ajax') ? "ajax.html.twig" : is_public ? "public_page.html.twig" : "page.html.twig" %}
