@@ -8,7 +8,7 @@
 {% block content %}
     {% block search %}{% endblock %}
     {% block infoline %}
-        <form action="{% if infoline.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" id="filtre">
+        <form action="{% if infoline.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" id="filtre" class="ui form">
             <div class="infoline">
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">

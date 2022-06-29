@@ -28,7 +28,7 @@
 
 var _bind_check = function(boxelt){
     if (typeof(boxelt) == 'undefined') {
-        boxelt = 'member_sel'
+        boxelt = 'entries_sel'
     }
     var _is_checked = true;
     $('.checkall').click(function(){

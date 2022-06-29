@@ -978,14 +978,14 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        if (isset($post['member_sel'])) {
+        if (isset($post['entries_sel'])) {
             if (isset($this->session->filter_members)) {
                 $filters = $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
 
-            $filters->selected = $post['member_sel'];
+            $filters->selected = $post['entries_sel'];
             $this->session->filter_members = $filters;
 
             if (isset($post['cards'])) {

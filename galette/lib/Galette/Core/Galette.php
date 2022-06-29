@@ -845,12 +845,84 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
+         * @var Preferences $preferences
          */
-        global $login, $plugins;
+        global $login, $plugins, $preferences;
 
         $actions = [];
 
-        //TODO: add core batch actions
+        if (
+            $login->isAdmin()
+            || $login->isStaff()
+        ) {
+            $actions = array_merge(
+                $actions,
+                [
+                    [
+                        'name' => 'masschange',
+                        'label' => _T('Mass change'),
+                        'icon' => 'user edit blue'
+                    ],
+                    [
+                        'name' => 'masscontributions',
+                        'label' => _T('Mass add contributions'),
+                        'icon' => 'cookie bite yellow'
+                    ],
+                    [
+                        'name' => 'delete',
+                        'label' => _T('Delete'),
+                        'icon' => 'user times red'
+                    ]
+                ]
+            );
+        }
+
+        if (
+            ($login->isAdmin()
+            || $login->isStaff()
+            || $login->isGroupManager()
+            && $preferences->pref_bool_groupsmanagers_mailings)
+            && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
+        ) {
+            $actions[] = [
+                'name' => 'sendmail',
+                'label' => _T('Mail'),
+                'icon' => 'mail bulk'
+            ];
+        }
+
+        if (
+            $login->isGroupManager()
+            && $preferences->pref_bool_groupsmanagers_exports
+            || $login->isAdmin()
+            || $login->isStaff()
+        ) {
+            $actions = array_merge(
+                $actions,
+                [
+                    [
+                        'name' => 'attendance_sheet',
+                        'label' => _T('Attendance sheet'),
+                        'icon' => 'file alternate'
+                    ],
+                    [
+                        'name' => 'labels',
+                        'label' => _T('Generate labels'),
+                        'icon' => 'address card'
+                    ],
+                    [
+                        'name' => 'cards',
+                        'label' => _T('Generate Member Cards'),
+                        'icon' => 'id badge'
+                    ],
+                    [
+                        'name' => 'csv',
+                        'label' => _T('Export as CSV'),
+                        'icon' => 'file csv'
+                    ],
+                ]
+            );
+        }
 
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries

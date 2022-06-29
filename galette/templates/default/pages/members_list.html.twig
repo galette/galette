@@ -1,6 +1,17 @@
-{% extends 'page.html.twig' %}
+{% extends 'elements/list.html.twig' %}
 
 {% import "macros.twig" as macros %}
+
+{% set nb = nb_members %}
+
+{% set form = {
+    'order': {
+        'name': 'members'
+    },
+    'route': {
+        'name': 'batch-memberslist'
+    }
+} %}
 
 {% macro draw_actions(rclass, member, login) %}
                     <td class="{{ rclass }} center actions_row">
@@ -11,9 +22,48 @@
                     </td>
 {% endmacro %}
 
-{% block content %}
-        <form action="{{ path_for('filter-memberslist') }}" method="post" id="filtre" class="ui form">
-            <div class="ui segment">
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filter-memberslist'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [] %}
+    {% for column in galette_list %}
+        {% if column.field_id == 'id_adh' %}
+            {% if preferences.pref_show_id %}
+                {% set columns = columns|merge([
+                    {
+                        label: _T('Mbr id'),
+                        order: constant("Galette\\Repository\\Members::ORDERBY_ID")
+                    }
+                ]) %}
+            {% else %}
+                {% set columns = columns|merge([
+                    {label: '#'}
+                ]) %}
+            {% endif %}
+        {% else %}
+            {% set columns = columns|merge([
+                {
+                    label: column.label,
+                    order: column.field_id
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <form action="{{ path_for('filter-memberslist') }}" method="post" id="filtre" class="ui form">
+        <div class="ui segment">
 {% if adv_filters is not defined or not adv_filters %}
             <div class="five fields">
                 <div class="field">
@@ -122,68 +172,102 @@
 {% endif %}
             {% include "components/forms/csrf.html.twig" %}
         </div>
+    </form>
+{% endblock %}
 
-        <div class="infoline">
-            <div class="ui basic horizontal segments">
-                <div class="ui basic fitted segment">
-                    <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}) }}</div>
-                </div>
-                <div class="ui basic right aligned fitted segment">
-                    <div class="inline field">
-                        <label for="nbshow">{{ _T('Records per page:') }}</label>
-                        <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
-                            {% for key, value in nbshow_options %}
-                                <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
-                            {% endfor %}
-                        </select>
-                        <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
-                    </div>
-                </div>
+{% block legend %}
+    {% if nb_members != 0 %}
+        <div id="legende" title="{{ _T('Legend') }}" class="ui modal">
+            <div class="header">{{ _T('Legend') }}</div>
+            <div class="content">
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th class="back">{{ _T('Name') }}</th>
+                            <td class="back">{{ _T('Active account') }}</td>
+                            <th class="inactif back">{{ _T('Name') }}</th>
+                            <td class="back">{{ _T('Inactive account') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="cotis-ok color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Membership in order') }}</td>
+                            <th class="cotis-soon color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Membership will expire soon (&lt;30d)') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="cotis-never color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Never contributed') }}</td>
+                            <th class="cotis-late color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Lateness in fee') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th class="" colspan="4">{{ _T('Actions') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th class="action">
+                                <i class="ui user edit icon"></i>
+                            </th>
+                            <td class="back">{{ _T('Modification') }}</td>
+                            <th>
+                                <i class="ui cookie icon"></i>
+                            </th>
+                            <td class="back">{{ _T('Contributions') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="delete">
+                                <i class="ui user times red icon"></i>
+                            </th>
+                            <td class="back">{{ _T('Deletion') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th colspan="4">{{ _T('User status/interactions') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th><i class="ui envelope outline teal icon"></i></th>
+                            <td class="back">{{ _T('Send an email') }}</td>
+                            <th><i class="ui building icon"></i></th>
+                            <td class="back">{{ _T('Is a company') }}</td>
+                        </tr>
+
+                        <tr>
+                            <th><i class="ui male icon"></i></th>
+                            <td class="back">{{ _T('Is a man') }}</td>
+                            <th><i class="ui female icon"></i></th>
+                            <td class="back">{{ _T('Is a woman') }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="ui user shield red icon"></i></th>
+                            <td class="back">{{ _T('Admin') }}</td>
+                            <th><i class="ui id card alternate orange icon"></i></th>
+                            <td class="back">{{ _T('Staff member') }}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T('Close') }}</div></div>
         </div>
-        </form>
-        <form action="{{ path_for('batch-memberslist') }}" method="post" id="listform" class="ui form">
-        <div class="ui basic fitted segment">
-            <table class="listing ui celled table">
-                <thead>
-                    <tr>
-{% for column in galette_list %}
-    {% if column.field_id == 'id_adh' %}
-        {% if preferences.pref_show_id %}
-                        <th class="id_row">
-                            <a href="{{ path_for("members", {"option": "order", "value": constant("Galette\\Repository\\Members::ORDERBY_ID")}) }}">
-                            {{ _T('Mbr id') }}
-                            {% if filters.orderby == constant('Galette\\Repository\\Members::ORDERBY_ID') %}
-                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
-                                <i class="ui angle down icon tooltip"></i>
-                                {% else %}
-                                <i class="ui angle up icon tooltip"></i>
-                                {% endif %}
-                            {% endif %}
-                            </a>
-                        </th>
-        {% else %}
-                        <th class="id_row">#</th>
-        {% endif %}
-    {% else %}
-                        <th class="left">
-                            <a href="{{ path_for("members", {"option": "order", "value": column.field_id}) }}">
-                            {{ column.label }}
-                            {% if filters.orderby == column.field_id %}
-                                {% if filters.ordered == constant('Galette\\Filters\\MembersList::ORDER_ASC') %}
-                                <i class="ui angle down icon tooltip"></i>
-                                {% else %}
-                                <i class="ui angle up icon tooltip"></i>
-                                {% endif %}
-                            {% endif %}
-                            </a>
-                        </th>
     {% endif %}
-{% endfor %}
-                        <th class="actions_row">{{ _T('Actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
+{% endblock %}
+
+{% block body %}
 {% for ordre, member in members %}
     {% set rclass = member.getRowClass() %}
                     <tr>
@@ -198,7 +282,7 @@
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
                         <td class="{{ rclass }} username_row" data-scope="row">
-                            <input type="checkbox" name="member_sel[]" value="{{ member.__get('id') }}"/>
+                            <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
             {% if member.isCompany() %}
                             <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
             {%  elseif member.isMan() %}
@@ -309,210 +393,22 @@
 {% else %}
                     <tr><td colspan="{{ galette_list|length + 1 }}" class="emptylist">{{ _T('No member has been found') }}</td></tr>
 {% endfor %}
-                </tbody>
-            </table>
-        </div>
-{% if nb_members != 0 and (login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff()) %}
-        <div class="ui bottom attached segment screen-only selection_menu">
-            <div class="ui horizontal list">
-                <span class="ui primary ribbon label">{{ _T('For the selection:') }}</span>
-    {% if login.isAdmin() or login.isStaff() %}
-                <div class="item">
-                    <button type="submit" id="masschange" name="masschange" class="action ui labeled icon tiny button">
-                        <i class="user edit blue icon"></i> {{ _T('Mass change') }}
-                    </button>
-                </div>
-                <div class="item">
-                    <button type="submit" id="masscontributions" name="masscontributions" class="action ui labeled icon tiny button">
-                        <i class="ui cookie bite yellow icon"></i> {{ _T('Mass add contributions') }}
-                    </button>
-                </div>
-                <div class="item">
-                    <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
-                        <i class="user times red icon"></i> {{ _T('Delete') }}
-                    </button>
-                </div>
-    {% endif %}
-    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() and preferences.pref_bool_groupsmanagers_mailings %}
-        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
-                <div class="item">
-                    <button type="submit" id="sendmail" name="mailing" class="ui labeled icon tiny button">
-                        <i class="mail bulk icon"></i> {{ _T('Mail') }}
-                    </button>
-                </div>
-        {% endif %}
-    {% endif %}
-
-    {% if login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
-                <div class="item">
-                    <button type="submit" id="attendance_sheet" name="attendance_sheet" class="ui labeled icon tiny button">
-                        <i class="file alternate icon"></i> {{ _T('Attendance sheet') }}
-                    </button>
-                </div>
-                <div class="item">
-                    <button type="submit" id="labels" name="labels" class="ui labeled icon tiny button">
-                        <i class="address card icon"></i> {{ _T('Generate labels') }}
-                    </button>
-                </div>
-                <div class="item">
-                    <button type="submit" id="cards" name="cards" class="ui labeled icon tiny button">
-                        <i class="id badge icon"></i> {{ _T('Generate Member Cards') }}
-                    </button>
-                </div>
-                <div class="item">
-                    <button type="submit" id="csv" name="csv" class="ui labeled icon tiny button">
-                        <i class="file csv icon"></i> {{ _T('Export as CSV') }}
-                    </button>
-                </div>
-    {% endif %}
-
-    {% set batch_actions = callstatic('\\Galette\\Core\\Galette', 'getBatchActions') %}
-    {% for batch_action in batch_actions %}
-        {{ macros.drawBatchAction(batch_action.label, batch_action.title, batch_action.icon) }}
-    {% endfor %}
-            </div>
-        </div>
-        <div class="ui basic center aligned fitted segment">
-            <div class="ui inverted pagination menu">
-                <div class="header item">
-                    {{ _T('Pages:') }}
-                </div>
-                {{ pagination|raw }}
-            </div>
-        </div>
-{% endif %}
-            {% include "components/forms/csrf.html.twig" %}
-        </form>
-    {% if nb_members != 0 %}
-        <div id="legende" title="{{ _T('Legend') }}" class="ui modal">
-            <div class="header">{{ _T('Legend') }}</div>
-            <div class="content">
-                <table class="ui stripped table">
-                    <thead>
-                        <tr>
-                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
-                        </tr>
-                    <thead>
-                    <tbody>
-                        <tr>
-                            <th class="back">{{ _T('Name') }}</th>
-                            <td class="back">{{ _T('Active account') }}</td>
-                            <th class="inactif back">{{ _T('Name') }}</th>
-                            <td class="back">{{ _T('Inactive account') }}</td>
-                        </tr>
-                        <tr>
-                            <th class="cotis-ok color-sample">&nbsp;</th>
-                            <td class="back">{{ _T('Membership in order') }}</td>
-                            <th class="cotis-soon color-sample">&nbsp;</th>
-                            <td class="back">{{ _T('Membership will expire soon (&lt;30d)') }}</td>
-                        </tr>
-                        <tr>
-                            <th class="cotis-never color-sample">&nbsp;</th>
-                            <td class="back">{{ _T('Never contributed') }}</td>
-                            <th class="cotis-late color-sample">&nbsp;</th>
-                            <td class="back">{{ _T('Lateness in fee') }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="ui stripped table">
-                    <thead>
-                        <tr>
-                            <th class="" colspan="4">{{ _T('Actions') }}</th>
-                        </tr>
-                    <thead>
-                    <tbody>
-                        <tr>
-                            <th class="action">
-                                <i class="ui user edit icon"></i>
-                            </th>
-                            <td class="back">{{ _T('Modification') }}</td>
-                            <th>
-                                <i class="ui cookie icon"></i>
-                            </th>
-                            <td class="back">{{ _T('Contributions') }}</td>
-                        </tr>
-                        <tr>
-                            <th class="delete">
-                                <i class="ui user times red icon"></i>
-                            </th>
-                            <td class="back">{{ _T('Deletion') }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="ui stripped table">
-                    <thead>
-                        <tr>
-                            <th colspan="4">{{ _T('User status/interactions') }}</th>
-                        </tr>
-                    <thead>
-                    <tbody>
-                        <tr>
-                            <th><i class="ui envelope outline teal icon"></i></th>
-                            <td class="back">{{ _T('Send an email') }}</td>
-                            <th><i class="ui building icon"></i></th>
-                            <td class="back">{{ _T('Is a company') }}</td>
-                        </tr>
-
-                        <tr>
-                            <th><i class="ui male icon"></i></th>
-                            <td class="back">{{ _T('Is a man') }}</td>
-                            <th><i class="ui female icon"></i></th>
-                            <td class="back">{{ _T('Is a woman') }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="ui user shield red icon"></i></th>
-                            <td class="back">{{ _T('Admin') }}</td>
-                            <th><i class="ui id card alternate orange icon"></i></th>
-                            <td class="back">{{ _T('Staff member') }}</td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T('Close') }}</div></div>
-        </div>
-    {% endif %}
 {% endblock %}
 
-{% block javascripts %}
-        <script type="text/javascript">
-{% if nb_members != 0 %}
-        var _checkselection = function() {
-            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
-            if ( _checkeds == 0 ) {
-                $('body').modal({
-                    title: '{{ _T("No member selected")|e("js") }}',
-                    class: 'tiny',
-                    content: '{{ _T("Please make sure to select at least one member from the list to perform this action.")|e("js") }}',
-                    actions: [{
-                        text    : '{{ _T("Close")|e("js") }}',
-                        class   : 'cancel'
-                    }]
-                }).modal('show');
-                return false;
-            }
-            return true;
+{% if nb_members != 0 and (login.isGroupManager() and (preferences.pref_bool_groupsmanagers_exports or preferences.pref_bool_groupsmanagers_mailings) or login.isAdmin() or login.isStaff()) %}
+    {% set batch = {
+        'route': {
+            'name': 'batch-memberslist'
+        },
+        'modal': {
+            'title': _T("No member selected"),
+            'content': _T("Please make sure to select at least one member from the list to perform this action.")
         }
+    } %}
+    {% set batch_actions = callstatic('\\Galette\\Core\\Galette', 'getBatchActions') %}
 {% endif %}
-        {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
-        $(function(){
-{% if nb_members != 0 %}
-            var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment"><a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a> | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a></div><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
-            $('.listing').before(_checklinks);
-            $('.listing').after(_checklinks);
-            _bind_check();
-            _bind_legend();
 
-            $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(event){
-                if ( this.id == 'delete' || this.id == 'masschange' ) {
-                    //mass removal is handled from 2 steps removal
-                    //mass change is specifically handled below
-                    return;
-                }
-
-                if (!_checkselection()) {
-                    return false;
-                } else {
+{% block batch_selection %}
     {% if existing_mailing == true %}
                     if (this.id == 'sendmail') {
                         $('body').modal({
@@ -553,7 +449,7 @@
                             data: {
                                 ajax: true,
                                 masscontributions: true,
-                                member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                                entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
                                     return $(this).val();
                                 }).get()
                             },
@@ -580,9 +476,14 @@
                     }
 
                     return true;
-                }
-            });
-{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% set batch_excludes = ['masschange'] %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
+        $(function(){
             if ( _shq = $('#showhideqry') ) {
                 _shq.click(function(){
                     $('#sql_qry').toggleClass('hidden');
@@ -651,7 +552,7 @@
                 data: {
                     ajax: true,
                     masschange: true,
-                    member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                    entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
                         return $(this).val();
                     }).get()
                 },
@@ -772,9 +673,6 @@
                 }
             });
         }
-
-        {% include "elements/js/removal.js.twig" %}
-        {% include "elements/js/removal.js.twig" with {selector: "#delete", loader: "button", deleteurl: path_for("batch-memberslist"), extra_check: "if (!_checkselection()) { return false; }", extra_data: "delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()", method: "POST"} %}
 {% endif %}
     </script>
 {% endblock %}
