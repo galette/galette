@@ -1,9 +1,6 @@
 {% if object.getDynamicFields() is not empty %}
     {% set fields = object.getDynamicFields().getFields() %}
-
-    {% if masschange is not defined %}
-        {% set masschange = false %}
-    {% endif %}
+    {% set masschange = masschange ?? false %}
 
     {% if fields is not empty %}
 
@@ -13,7 +10,7 @@
     <label>{{ field.getName()|escape }}</label>
     {% else %}
     <label for="info_field_{{ field.getId() }}_{{ loop }}">
-        {% if masschange is defined %}
+        {% if masschange %}
             {# Add a checkbox for fields to change on mass edition #}
             <input type="checkbox" name="mass_info_field_{{ field.getId() }}" class="mass_checkbox"/>
         {% endif %}
