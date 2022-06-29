@@ -2,6 +2,10 @@
          Galette Overrides
 *******************************/
 
+.ui.form .field.search {
+  margin: 0;
+}
+
 /*-------------------------------------------
     Fix display in styled accordions
 --------------------------------------------*/
@@ -17,12 +21,19 @@
   }
 }
 
-/*-----------------------------------------------------
-    Do not display full width when not in inline field
-------------------------------------------------------*/
-.ui.form .ui.search.field .ui.input {
+/*----------------------------------------------------------
+    Do not display full width when not inline with label
+-----------------------------------------------------------*/
+.ui.form .ui.search .ui.input {
   width: auto;
   input {
     flex-grow: 0;
   }
+}
+
+/*----------------------------------------------------------
+    No margin around prompt when inline with label
+-----------------------------------------------------------*/
+.ui.form .inline.field .ui.search .prompt {
+  margin: 0;
 }
