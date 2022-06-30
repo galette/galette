@@ -5,29 +5,9 @@
         {% set loginfaults = loginfaults|merge([l]) %}
     {% endfor %}
 {% endif %}
-{% if loginfaults is iterable and loginfaults|length > 0 %}
-    <div class="ui error icon message with-transition">
-        <i class="times icon"></i>
-        <i class="window close outline icon"></i>
-        <div class="content">
-            <div class="header">{{ _T("- ERROR -") }}</div>
-            {% if loginfaults|length > 1 %}
-                <ul="list">
-                {% for loginfault in loginfaults %}
-                    <li>{{ loginfault }}</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                {% for loginfault in loginfaults %}
-                    <p>{{ loginfault }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-{% endif %}
 
 {# Let's see if there are error messages to show #}
-{% set errors = flash.getMessage('error_detected') %}
+{% set errors = flash.getMessage('error_detected') ?? []|merge(flash.getMessage('error') ?? [])|merge(loginfaults ?? []) %}
 {% if error_detected is defined and error_detected is iterable %}
     {% for e in error_detected %}
         {% set errors = errors|merge([e]) %}
@@ -40,7 +20,7 @@
         <div class="content">
             <div class="header">{{ _T("- ERROR -") }}</div>
             {% if errors|length > 1 %}
-                <ul="list">
+                <ul class="list">
                 {% for error in errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
@@ -55,7 +35,7 @@
 {% endif %}
 
 {# Let's see if there are warning messages to show #}
-{% set warnings = flash.getMessage('warning_detected') %}
+{% set warnings = flash.getMessage('warning_detected') ?? []|merge(flash.getMessage('warning') ?? []) %}
 {% if warning_detected is defined and warning_detected is iterable %}
     {% for w in warning_detected %}
         {% set warnings = warnings|merge([w]) %}
@@ -68,7 +48,7 @@
         <div class="content">
             <div class="header">{{ _T("- WARNING -") }}</div>
             {% if warnings|length > 1 %}
-                <ul="list">
+                <ul class="list">
                 {% for warning in warnings %}
                     <li>{{ warning }}</li>
                 {% endfor %}
@@ -83,7 +63,7 @@
 {% endif %}
 
 {# Let's see if there are success messages to show #}
-{% set successs = flash.getMessage('success_detected') %}
+{% set successs = flash.getMessage('success_detected') ?? []|merge(flash.getMessage('success') ?? []) %}
 {% if success_detected is defined and success_detected is iterable %}
     {% for s in success_detected %}
         {% set successs = successs|merge([s]) %}
@@ -96,7 +76,7 @@
             <i class="window close outline icon"></i>
             <div class="content">
             {% if successs|length > 1 %}
-                <ul="list">
+                <ul class="list">
                 {% for success in successs %}
                     <li>{{ success }}</li>
                 {% endfor %}
