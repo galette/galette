@@ -181,10 +181,12 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('require_mass', false);
     $view->getEnvironment()->addGlobal('autocomplete', false);
     if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
-        $now = new \DateTime();
-        $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
-        if ($now > $sent && !isset($_COOKIE['renew_telemetry'])) {
+        $telemetry = new \Galette\Util\Telemetry(
+            $c->get('zdb'),
+            $c->get('preferences'),
+            $c->get('plugins')
+        );
+        if ($telemetry->shouldRenew()) {
             $view->getEnvironment()->addGlobal('renew_telemetry', true);
         }
     }
