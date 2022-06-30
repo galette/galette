@@ -1,7 +1,7 @@
 {% macro renderMenu(title, icon, items) %}
     {% set my_routes = [] %}
     {% for item in items %}
-        {% set my_routes = my_routes|merge([item.route.name]) %}
+        {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
     {% endfor %}
     <div class="item">
         <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
@@ -19,7 +19,7 @@
 
 {% macro renderMenuItem(label, title, route, icon, class, tips_position) %}
     {% if class is empty %}
-        {% if is_current_path(route.name, route.args|default([])) %}
+        {% if is_current_path(route.name, route.args|default([])) or (cur_route in route.aliases ?? [] and route.sub_select ?? true == true) %}
             {% set class = "active item" %}
         {% else %}
             {% set class = "item" %}

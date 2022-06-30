@@ -178,23 +178,21 @@ class Galette
                         'title' => _T("View, search into and filter member's list"),
                         'route' => [
                             'name' => 'members',
-                            'args' => []
+                            'aliases' => ['editMember']
                         ]
                     ],
                     [
                         'label' => _T("Advanced search"),
                         'title' => _T("Perform advanced search into members list"),
                         'route' => [
-                            'name' => 'advanced-search',
-                            'args' => []
+                            'name' => 'advanced-search'
                         ]
                     ],
                     [
                         'label' => _T("Saved searches"),
                         'title' => _T("Saved searches"),
                         'route' => [
-                            'name' => 'searches',
-                            'args' => []
+                            'name' => 'searches'
                         ]
                     ]
                 ];
@@ -224,7 +222,8 @@ class Galette
                             'title' => _T("View and filter contributions"),
                             'route' => [
                                 'name' => 'contributions',
-                                'args' => ['type' => 'contributions']
+                                'args' => ['type' => 'contributions'],
+                                'aliases' => ['editContribution']
                             ]
                         ],
                         [
@@ -232,7 +231,8 @@ class Galette
                             'title' => _T("View and filter transactions"),
                             'route' => [
                                 'name' => 'contributions',
-                                'args' => ['type' => 'transactions']
+                                'args' => ['type' => 'transactions'],
+                                'aliases' => ['editTransaction']
                             ]
                         ],
                         [
@@ -297,8 +297,7 @@ class Galette
                             'label' => _T("Manage mailings"),
                             'title' => _T("Manage mailings that has been sent"),
                             'route' => [
-                                'name' => 'mailings',
-                                'aliases' => ['mailing']
+                                'name' => 'mailings'
                             ]
                         ],
                         [
@@ -312,7 +311,8 @@ class Galette
                             'label' => _T("Imports"),
                             'title' => _T("Import members from CSV files"),
                             'route' => [
-                                'name' => 'import'
+                                'name' => 'import',
+                                'aliases' => ['importModel']
                             ]
                         ],
                         [
@@ -364,7 +364,7 @@ class Galette
                                 'title' => _T("Manage additional fields for various forms"),
                                 'route' => [
                                     'name' => 'configureDynamicFields',
-                                    'alias' => 'editDynamicField'
+                                    'aliases' => ['editDynamicField'],
                                 ]
                             ],
                             [
@@ -379,7 +379,9 @@ class Galette
                                 'title' => _T("Manage statuses"),
                                 'route' => [
                                     'name' => 'entitleds',
-                                    'args' => ['class' => 'status']
+                                    'args' => ['class' => 'status'],
+                                    'aliases' => ['editEntitled'],
+                                    'sub_select' => false
                                 ]
                             ],
                             [
@@ -401,7 +403,8 @@ class Galette
                                 'label' => _T("Titles"),
                                 'title' => _T("Manage titles"),
                                 'route' => [
-                                    'name' => 'titles'
+                                    'name' => 'titles',
+                                    'aliases' => ['editTitle']
                                 ]
                             ],
                             [
@@ -415,7 +418,8 @@ class Galette
                                 'label' => _T("Payment types"),
                                 'title' => _T("Manage payment types"),
                                 'route' => [
-                                    'name' => 'paymentTypes'
+                                    'name' => 'paymentTypes',
+                                    'aliases' => ['editPaymentType']
                                 ]
                             ],
                             [
