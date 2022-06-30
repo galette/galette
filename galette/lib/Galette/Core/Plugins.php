@@ -175,7 +175,6 @@ class Plugins
         // Load translation, _prepend and ns_file
         foreach ($this->modules as $id => $m) {
             $this->loadModuleL10N($id, $lang);
-            $this->loadSmarties($id);
             $this->loadEventProviders($id);
             $this->overridePrefs($id);
         }
