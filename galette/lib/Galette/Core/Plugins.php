@@ -139,7 +139,7 @@ class Plugins
                         } else {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                'Plugin ' . $entry . ' is explicitely disabled',
+                                'Plugin ' . $entry . ' is explicitly disabled',
                                 Analog::INFO
                             );
                             $this->setDisabled(self::DISABLED_EXPLICIT);
@@ -344,24 +344,6 @@ class Plugins
     }
 
     /**
-     * Loads smarties specific (headers, assignments and so on)
-     *
-     * @param string $id Module ID
-     *
-     * @return void
-     */
-    public function loadSmarties($id)
-    {
-        $f = $this->modules[$id]['root'] . '/_smarties.php';
-        if (file_exists($f)) {
-            include_once $f;
-            if (isset($_tpl_assignments)) {
-                $this->modules[$id]['tpl_assignments'] = $_tpl_assignments;
-            }
-        }
-    }
-
-    /**
      * Loads event provider
      *
      * @param string $id Module ID
@@ -514,40 +496,6 @@ class Plugins
             }
         }
         return $_headers;
-    }
-
-    /**
-     * For each module, gets templates assignments ; and replace some path variables
-     *
-     * @return array of Smarty templates assignment for all modules
-     */
-    public function getTplAssignments()
-    {
-        $_assign = array();
-        foreach ($this->modules as $key => $module) {
-            if (isset($module['tpl_assignments'])) {
-                foreach ($module['tpl_assignments'] as $k => $v) {
-                    $v = str_replace(
-                        '__plugin_dir__',
-                        'plugins/' . $key . '/',
-                        $v
-                    );
-                    $v = str_replace(
-                        '__plugin_include_dir__',
-                        'plugins/' . $key . '/includes/',
-                        $v
-                    );
-                    $v = str_replace(
-                        '__plugin_templates_dir__',
-                        'plugins/' . $key . '/templates/' .
-                        $this->preferences->pref_theme . '/',
-                        $v
-                    );
-                    $_assign[$k] = $v;
-                }
-            }
-        }
-        return $_assign;
     }
 
     /**
