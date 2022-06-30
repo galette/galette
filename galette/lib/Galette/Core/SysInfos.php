@@ -62,8 +62,15 @@ class SysInfos
     public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins)
     {
         $telemetry = new \Galette\Util\Telemetry($zdb, $prefs, $plugins);
-        $infos = $telemetry->getTelemetryInfos();
 
+        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
+
+        if (GALETTE_MODE == \Galette\Core\Galette::MODE_DEMO) {
+            $str .= $this->getPluginsInfo($plugins);
+            return $str;
+        }
+
+        $infos = $telemetry->getTelemetryInfos();
         $db_infos = $infos['system']['db'];
         $db_version = TYPE_DB;
         $db_version .= sprintf(
@@ -72,13 +79,12 @@ class SysInfos
             $db_infos['version'] ?? 'not found'
         );
 
-        $php_infos = $telemetry->grabPhpInfos();
+        $php_infos = $infos['system']['php'];
         $php_conf = '';
         foreach ($php_infos['setup'] as $key => $value) {
             $php_conf .= str_pad("\n  $key:", 25, '.') . ' ' . $value;
         }
 
-        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
         $str .= str_pad('PHP version:', 20, '.') . ' ' . PHP_VERSION . " " . php_sapi_name() . "\n";
         $str .= 'PHP config:' . $php_conf . "\n";
         $str .= str_pad('Database:', 20, '.') . ' ' . $db_version . "\n";
@@ -103,11 +109,7 @@ class SysInfos
             $str .= '    ' . stripslashes($m) . "\n";
         }
 
-        $str .= "\n" . 'Plugins:' . "\n";
-        foreach ($plugins->getModules() as $p) {
-            $str .= '  ' . $p['name'] . ' ' . $p['version'] .
-                ' (' . $p['author'] . ")\n";
-        }
+        $str .= $this->getPluginsInfo($plugins);
 
         $str .= "\n" . 'PHP loaded modules:';
         $i = 0;
@@ -119,6 +121,23 @@ class SysInfos
             ++$i;
         }
 
+        return $str;
+    }
+
+    /**
+     * Get plugins information
+     *
+     * @param Plugins $plugins Plugins
+     *
+     * @return string
+     */
+    private function getPluginsInfo(Plugins $plugins): string
+    {
+        $str = "\n" . 'Plugins:' . "\n";
+        foreach ($plugins->getModules() as $p) {
+            $str .= '  ' . $p['name'] . ' ' . $p['version'] .
+                ' (' . $p['author'] . ")\n";
+        }
         return $str;
     }
 }
