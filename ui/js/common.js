@@ -65,6 +65,10 @@ var _bind_legend = function() {
     });
 }
 
+if (!("ontouchstart" in document.documentElement)) {
+    document.documentElement.className += " no-touch";
+}
+
 $(function() {
     $('.debuginfos span').hide();
     /** TODO: find a way to translate this message ==> ajax ? */
@@ -99,11 +103,11 @@ $(function() {
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
         $calendar        = $('[id$="rangestart"], [id$="rangeend"]'),
-        $popup           = $('a[title]'),
+        $popup           = $('.no-touch a[title]'),
         $tooltipPopup    = $('i.tooltip'),
-        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title]'),
-        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title]'),
-        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title]')
+        $menuPopupRight  = $('.no-touch .ui.vertical.accordion.menu a[title]'),
+        $menuPopupBottom = $('.no-touch .ui.top.fixed.menu a.item[title]'),
+        $menuPopupLeft   = $('.no-touch .ui.dropdown.right-aligned a[title]')
     ;
 
     $sidebar.sidebar('attach events', '.toc.item');
