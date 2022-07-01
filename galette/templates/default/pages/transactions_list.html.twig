@@ -93,6 +93,18 @@
     {{ parent() }}
 {% endblock %}
 
+{% block infoline_actions %}
+    {% if login.isAdmin() or login.isStaff() %}
+        <a
+                class="button"
+                href="{{ path_for("addTransaction") }}"
+        >
+            <i class="ui plus circle icon" aria-hidden="true"></i>
+            {{ _T("Add a transaction") }}
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block header %}
     {% set columns = [
         {'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID")},

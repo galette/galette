@@ -32,6 +32,18 @@
     {{ parent() }}
 {% endblock %}
 
+{% block infoline_actions %}
+    {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_member) %}
+        <a
+                class="button"
+                href="{{ path_for("addMember") }}"
+        >
+            <i class="ui plus circle icon" aria-hidden="true"></i>
+            {{ _T("Add a member") }}
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block header %}
     {% set columns = [] %}
     {% for column in galette_list %}

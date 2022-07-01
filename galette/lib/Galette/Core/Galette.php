@@ -240,7 +240,7 @@ class Galette
                             'title' => _T("Add new membership fee in database"),
                             'route' => [
                                 'name' => 'addContribution',
-                                'args' => ['type' => 'fee']
+                                'args' => ['type' => \Galette\Entity\Contribution::TYPE_FEE]
                             ]
                         ],
                         [
@@ -248,7 +248,7 @@ class Galette
                             'title' => _T("Add new donation in database"),
                             'route' => [
                                 'name' => 'addContribution',
-                                'args' => ['type' => 'donation']
+                                'args' => ['type' => \Galette\Entity\Contribution::TYPE_DONATION]
                             ]
                         ],
                         [
