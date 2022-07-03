@@ -154,7 +154,7 @@ class ContributionsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'modals/contribution_form.html.twig',
+            'pages/contribution_form.html.twig',
             $params
         );
         return $response;
