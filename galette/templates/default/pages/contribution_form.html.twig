@@ -279,7 +279,7 @@
             if (_current < _amount) {
                 $('#transaction_related').show();
             } else if (_current > _amount) {
-                alert('{{ _T("Contribution amount should be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js") }}');
+                alert('{{ _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js") }}');
             } else {
                 $('#transaction_related').hide();
             }
