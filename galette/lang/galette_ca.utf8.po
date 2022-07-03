@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: 2022-06-08 18:18+0000\n"
+"PO-Revision-Date: 2022-07-03 20:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13-dev\n"
+"X-Generator: Weblate 4.13.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -7623,7 +7623,7 @@ msgstr "Hi ha hagut un error en recuperar les dates ("
 #: ../../tempcache/pages/contribution_form.html.twig:702
 #, fuzzy
 msgid "Contribution amount should not be greater than %max"
-msgstr "L'import de la contribució hauria de ser superior al màxim d'un 5%"
+msgstr "L'import de la contribució hauria de ser superior al màxim d'un %max"
 
 #: ../../tempcache/pages/mailing_form.html.twig:76
 #, fuzzy
