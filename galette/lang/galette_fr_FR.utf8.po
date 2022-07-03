@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: 2022-07-03 08:46+0000\n"
+"PO-Revision-Date: 2022-07-03 20:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -5558,7 +5558,7 @@ msgstr "-- sélectionner un nom --"
 #: ../../tempcache/pages/contribution_form.html.twig:235
 #: ../../tempcache/pages/member_form.html.twig:144
 msgid "Reset"
-msgstr ""
+msgstr "Réinitialiser"
 
 #: ../../tempcache/pages/transaction_form.html.twig:152
 #: ../../tempcache/pages/transaction_form.html.twig:158
