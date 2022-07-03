@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-06-16 22:26+0200\n"
-"PO-Revision-Date: 2022-06-08 18:21+0000\n"
+"PO-Revision-Date: 2022-07-03 08:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.13-dev\n"
+"X-Generator: Weblate 4.13.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -7611,12 +7611,11 @@ msgid "Available fields"
 msgstr "Champs disponibles"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
-#, fuzzy, php-format
-#| msgid "no search"
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "pas de recherches"
-msgstr[1] "pas de recherches"
+msgstr[0] "%count recherche"
+msgstr[1] "%count recherches"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
@@ -7882,10 +7881,8 @@ msgid "Contributions over time"
 msgstr "Contributions de par les âges"
 
 #: ../../tempcache/pages/charts.html.twig:397
-#, fuzzy
-#| msgid "%count contributions created"
 msgid "Total contributions for the month"
-msgstr "%count contributions créées"
+msgstr "Total des contributions pour le mois"
 
 #: ../../tempcache/pages/members_public_list.html.twig:57
 #: ../../tempcache/pages/members_public_gallery.html.twig:57
