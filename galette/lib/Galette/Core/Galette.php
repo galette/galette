@@ -178,7 +178,7 @@ class Galette
                         'title' => _T("View, search into and filter member's list"),
                         'route' => [
                             'name' => 'members',
-                            'aliases' => ['editMember']
+                            'aliases' => ['editMember', 'member']
                         ]
                     ],
                     [
