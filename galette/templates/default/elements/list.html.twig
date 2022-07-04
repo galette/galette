@@ -77,7 +77,7 @@
                 <div class="ui horizontal list">
                     <span class="ui primary ribbon label">{{ _T('For the selection:') }}</span>
                     {% for batch_action in batch_actions %}
-                        {{ macros.drawBatchAction(batch_action.name, batch_action.label, batch_action.icon) }}
+                        {{ macros.drawBatchAction(batch_action.name, batch_action.label, batch_action.icon, batch_action.title ?? null) }}
                     {% endfor %}
                 </div>
             </div>

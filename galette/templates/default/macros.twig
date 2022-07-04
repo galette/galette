@@ -73,9 +73,9 @@
     </a>
 {% endmacro %}
 
-{% macro drawBatchAction(name, label, icon) %}
+{% macro drawBatchAction(name, label, icon, title) %}
     <div class="item">
-        <button type="submit" id="{{ name }}" name="{{ name }}" class="ui labeled icon tiny button">
+        <button type="submit" id="{{ name }}" name="{{ name }}" class="ui labeled icon tiny button"{% if title %} title="{{ title }}"{% endif %}>
             <i class="{{ icon }} icon"></i> {{ label }}
         </button>
     </div>
