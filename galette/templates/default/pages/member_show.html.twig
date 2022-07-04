@@ -201,7 +201,7 @@
                         <td>
             {% for kgroup, group in groups %}
                 {% if member.isGroupMember(group) or member.isGroupManager(group) %}
-                            <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui button {% if not login.isGroupManager(kgroup) %} notmanaged{% endif %}">
+                            <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui button{% if not login.isGroupManager(kgroup) %} disabled notmanaged{% endif %}">
                                 {{ group }}
                     {% if member.isGroupMember(group) %}
                                 <i class="ui user icon" title="{{ _T("Member of group") }}"></i>
