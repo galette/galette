@@ -79,8 +79,8 @@
     </div>
 
     <div class="ui basic center aligned segment">
+        {% if can_edit %}
         <button type="submit" name="valid" class="ui labeled icon primary button action">
-            {% if can_edit %}
             <i class="save icon"></i> {{ _T("Save") }}
         </button>
         <input type="hidden" name="id_group" id="id_group" value="{{ group.getId() }}"/>
