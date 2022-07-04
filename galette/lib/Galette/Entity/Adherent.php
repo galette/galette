@@ -1192,7 +1192,7 @@ class Adherent
             $this->_parent = null;
         }
 
-        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff()) {
+        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $login->id != $this->parent_id) {
             if (!isset($values['groups_adh'])) {
                 $this->errors[] = _T('You have to select a group you own!');
             } else {
