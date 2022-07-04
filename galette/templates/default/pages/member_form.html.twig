@@ -1,5 +1,10 @@
 {% extends parent_tpl %}
 
+{% block page_title %}
+    <div class="right aligned bottom floating ui {{ member.getRowClass() }} label">{{ member.getDues() }}</div>
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
     {% if member.id %}
         {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
