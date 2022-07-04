@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: 2022-07-03 20:46+0000\n"
+"PO-Revision-Date: 2022-07-04 07:19+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -6635,8 +6635,6 @@ msgid "An error occurred retrieving dates :("
 msgstr "Une erreur est survenue lors de la récupération des dates :("
 
 #: ../../tempcache/pages/contribution_form.html.twig:702
-#, fuzzy
-#| msgid "Contribution amount should be greater than %max"
 msgid "Contribution amount should not be greater than %max"
 msgstr "Le montant de la contribution ne devrait pas être supérieur à %max"
 
