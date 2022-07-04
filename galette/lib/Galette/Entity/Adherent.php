@@ -1196,11 +1196,15 @@ class Adherent
             if (!isset($values['groups_adh'])) {
                 $this->errors[] = _T('You have to select a group you own!');
             } else {
+                $owned_group = false;
                 foreach ($values['groups_adh'] as $group) {
                     list($gid) = explode('|', $group);
-                    if (!$login->isGroupManager($gid)) {
-                        $this->errors[] = _T('You have to select a group you own!');
+                    if ($login->isGroupManager($gid)) {
+                        $owned_group = true;
                     }
+                }
+                if ($owned_group === false) {
+                    $this->errors[] = _T('You have to select a group you own!');
                 }
             }
         }
