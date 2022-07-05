@@ -39,7 +39,7 @@ use Slim\Http\Response;
 
 $app->group(
     '/plugins',
-    function () use ($authenticate) {
+    function () use ($authenticate, $showPublicPages) {
         $container = $this->getContainer();
         $modules = $container->get('plugins')->getModules();
 
@@ -84,7 +84,7 @@ $app->group(
             $this->group(
                 '/' . $module['route'],
                 //$module_id may be used in included _routes.php from plugin.
-                function () use ($module, $module_id, $authenticate) {
+                function () use ($module, $module_id, $authenticate, $showPublicPages) {
                     //Plugin home: give information
                     $this->get(
                         '',

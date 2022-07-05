@@ -36,24 +36,6 @@
 
 use Galette\Controllers\Crud;
 
-$showPublicPages = function ($request, $response, $next) use ($container) {
-    $login = $container->get('login');
-    $preferences = $container->get('preferences');
-
-    if (!$preferences->showPublicPages($login)) {
-        $this->get('flash')->addMessage('error', _T("Unauthorized"));
-
-        return $response
-            ->withStatus(403)
-            ->withHeader(
-                'Location',
-                $this->get('router')->pathFor('slash')
-            );
-    }
-
-    return $next($request, $response);
-};
-
 $app->group('/public', function () {
     //public members list
     $this->get(

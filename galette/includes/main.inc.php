@@ -111,6 +111,34 @@ if ($needs_update) {
  */
 $authenticate = new \Galette\Middleware\Authenticate($container);
 
+/**
+ * Show public pages middleware
+ *
+ * @param $request
+ * @param $response
+ * @param $next
+ * @return mixed
+ * @throws \Psr\Container\ContainerExceptionInterface
+ * @throws \Psr\Container\NotFoundExceptionInterface
+ */
+$showPublicPages = function ($request, $response, $next) use ($container) {
+    $login = $container->get('login');
+    $preferences = $container->get('preferences');
+
+    if (!$preferences->showPublicPages($login)) {
+        $this->get('flash')->addMessage('error', _T("Unauthorized"));
+
+        return $response
+            ->withStatus(403)
+            ->withHeader(
+                'Location',
+                $this->get('router')->pathFor('slash')
+            );
+    }
+
+    return $next($request, $response);
+};
+
 //Maintenance middleware
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
