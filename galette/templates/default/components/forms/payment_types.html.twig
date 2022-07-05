@@ -1,7 +1,7 @@
 {% if show_inline is not defined %}
 <div class="field">
 {% else %}
-<div class="field inline">
+<div class="field">
 {% endif %}
     <label for="{{ varname }}">{% if label is defined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}</label>
     <select name="{{ varname }}" id="{{ varname }}" class="ui search dropdown nochosen">
