@@ -1,7 +1,9 @@
 {% extends parent_tpl %}
 
 {% block page_title %}
-    <div class="right aligned bottom floating ui {{ member.getRowClass() }} label">{{ member.getDues() }}</div>
+    {% if member.id %}
+        <div class="right aligned bottom floating ui {{ member.getRowClass() }} label">{{ member.getDues() }}</div>
+    {% endif %}
     {{ parent() }}
 {% endblock %}
 
