@@ -351,7 +351,7 @@ class CsvOut extends Csv
             }
         }
 
-        if (!isset($export['inactive']) || $export['inactive']) {
+        if ($export['inactive'] ?? false) {
             return false;
         }
 
