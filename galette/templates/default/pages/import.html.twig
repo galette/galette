@@ -61,8 +61,10 @@
                                 </tbody>
                             </table>
                             <div class="ui basic center aligned segment">
-                                <label for="dryrun" title="{{ _T('Run the import process, but do *not* store anything in the database') }}">{{ _T('Dry run') }}</label>
-                                <input type="checkbox" name="dryrun" id="dryrun" value="1"{% if dryrun is defined and dryrun == true %} checked="checked"{% endif %}/>
+                                <div class="ui tooltip toggle checkbox">
+                                    <label for="dryrun" title="{{ _T('Run the import process, but do *not* store anything in the database') }}">{{ _T('Dry run') }}</label>
+                                    <input type="checkbox" name="dryrun" id="dryrun" value="1"{% if dryrun is defined and dryrun == true %} checked="checked"{% endif %}/>
+                                </div>
                                 <button type="submit" name="import" id="import" class="ui labeled icon button">
                                     <i class="ui file import blue icon"></i>
                                     {{ _T('Import') }}
