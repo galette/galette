@@ -43,7 +43,7 @@
                                         url: '{{ path_for("ajaxMessages") }}',
                                         method: "GET",
                                         success: function (message) {
-                                            $('#asso_name').after(message);
+                                            $('h1.header').after(message);
                                         }
                                     });
                                 }
