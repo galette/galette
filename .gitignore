@@ -12,6 +12,7 @@ nbproject
 /galette/data/cache/*
 !/galette/data/cache/readme.txt
 !/galette/data/cache/.htaccess
+tempcache/
 
 .vimfiles*
 .exvim*
@@ -93,4 +94,3 @@ build/
 #Working stuff
 dbs/
 dist/
-.zanata-cache/
