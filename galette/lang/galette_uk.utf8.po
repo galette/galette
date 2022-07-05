@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: 2022-06-19 21:20+0000\n"
+"PO-Revision-Date: 2022-07-06 20:15+0000\n"
 "Last-Translator: Artem <artem@molotov.work>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -5476,7 +5476,7 @@ msgstr "- виберіть ім'я -"
 #: ../../tempcache/pages/contribution_form.html.twig:235
 #: ../../tempcache/pages/member_form.html.twig:144
 msgid "Reset"
-msgstr ""
+msgstr "Скинути"
 
 #: ../../tempcache/pages/transaction_form.html.twig:152
 #: ../../tempcache/pages/transaction_form.html.twig:158
@@ -6546,10 +6546,8 @@ msgid "An error occurred retrieving dates :("
 msgstr "Під час отримання дат сталася помилка :("
 
 #: ../../tempcache/pages/contribution_form.html.twig:702
-#, fuzzy
-#| msgid "Contribution amount should be greater than %max"
 msgid "Contribution amount should not be greater than %max"
-msgstr "Сума внеску повинна бути більшою за %max"
+msgstr "Сума внеску повинна бути меншою, ніж %max"
 
 #: ../../tempcache/pages/mailing_form.html.twig:76
 msgid "Mailing information"
