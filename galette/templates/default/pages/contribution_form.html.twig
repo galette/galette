@@ -75,10 +75,14 @@
                     <div class="field inline">
                         <label for="id_adh">{{ _T("Contributor:") }}</label>
                         <div id="id_adh" class="ui search selection dropdown nochosen">
-                            <input type="hidden" name="id_adh">
+                            <input type="hidden" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}">
                             <i class="dropdown icon"></i>
                             <div class="default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                            <div class="menu"></div>
+                            <div class="menu">
+                    {% for k, v in members.list %}
+                                <div class="item" data-value="{{ k }}">{{ v }}</div>
+                    {% endfor %}
+                            </div>
                         </div>
                         <div class="ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
                     </div>
