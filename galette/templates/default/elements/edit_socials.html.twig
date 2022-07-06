@@ -5,11 +5,12 @@
             {% for social in socials %}
                 <div class="field stored">
                     <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
-                    <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
-                    <a href="#" class="ui tiny compact icon red button tooltip delete delsocial">
-                        <i class="trash icon"></i>
-                        <span class="hidden">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}</span>
-                    </a>
+                    <div class="ui right action input">
+                        <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
+                        <a href="#" class="ui icon red button tooltip delete delsocial">
+                            <i class="trash icon" data-html="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}|e()"></i>
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
             <div class="ui yellow segment">
@@ -50,7 +51,7 @@
                     elt.find('.delsocial').click(function(e){
                         e.preventDefault();
                         var _this = $(this);
-                        _this.parents('.field').remove();
+                        _this.parents('.field.stored').remove();
                     });
                 }
 
