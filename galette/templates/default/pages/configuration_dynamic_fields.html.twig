@@ -1,13 +1,13 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <div class="ui three item top attached stackable tabs menu">
+    <div class="ui stackable pointing inverted menu">
 {% for key, form in all_forms %}
-        <a href="{{ path_for('configureDynamicFields', {'form_name': key}) }}" class="item{% if form_name == key %} active{% endif %}" data-tab="{{ loop.index }}">{{ form }}</a>
+        <a href="{{ path_for('configureDynamicFields', {'form_name': key}) }}" class="item{% if form_name == key %} active{% endif %}" data-tab="{{ key }}">{{ form }}</a>
 {% endfor %}
     </div>
 {% for key, form in all_forms %}
-    <div class="ui bottom attached{% if form_name == key %} active{% endif %} tab segment" data-tab="{{ loop.index }}">
+    <div class="ui{% if form_name == key %} active{% endif %} tab segment" data-tab="{{ key }}">
     {% if form_name == key %}
         {% include 'elements/edit_dynamic_fields.html.twig' %}
         <div class="ui basic fitted segment">
@@ -28,6 +28,13 @@
 
 {% block javascripts %}
         <script type="text/javascript">
+            $(function() {
+                $('.pointing.menu .item').tab({
+                    auto: true,
+                    path: '{{ path_for('configureDynamicFields', {'form_name': ''}) }}'
+                });
+            });
+
             var _form_name;
             $('#addfield').click(function(e){
                 e.preventDefault();
