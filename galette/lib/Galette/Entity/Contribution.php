@@ -1406,7 +1406,7 @@ class Contribution
      *
      * @return Contribution
      */
-    public function setSendmail($send = true)
+    public function setSendmail(bool $send = true)
     {
         $this->sendmail = $send;
         return $this;

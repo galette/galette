@@ -113,7 +113,6 @@
                         {% if df is defined %}
                             {% set type = df.getType() %}
                         {% endif %}
-                        {html_options options=$field_type_names selected=$type}
                         {% for key, value in field_type_names %}
                             <option value="{{ key }}"{% if key == type %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}

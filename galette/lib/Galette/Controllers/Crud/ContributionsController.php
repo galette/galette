@@ -793,12 +793,13 @@ class ContributionsController extends CrudController
             $error_detected = array_merge($error_detected, $valid);
         }
 
+        // send email to member
+        if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+            $contrib->setSendmail(); //flag to send creation email
+        }
+
         //all goes well, we can proceed
         if (count($error_detected) == 0) {
-            // send email to member
-            if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
-                $contrib->setSendmail(); //flag to send creation email
-            }
 
             $store = $contrib->store();
             if ($store === true) {

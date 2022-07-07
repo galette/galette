@@ -1614,6 +1614,11 @@ class MembersController extends CrudController
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
+        // send email to member
+        if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+            $member->setSendmail(); //flag to send creation email
+        }
+
         // Validation
         $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
         if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
@@ -1629,11 +1634,6 @@ class MembersController extends CrudController
                 $new = false;
                 if ($member->id == '') {
                     $new = true;
-                }
-
-                // send email to member
-                if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
-                    $member->setSendmail(); //flag to send creation email
                 }
 
                 $store = $member->store();

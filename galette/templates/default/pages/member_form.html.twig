@@ -83,7 +83,7 @@
                 </div>
             </div>
         {% else %}
-            <input type="hidden" name="redirect_on_create" value="{constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW')}"/>
+            <input type="hidden" name="redirect_on_create" value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"/>
         {% endif %}
         {% if addchild is defined and addchild %}
             <input type="hidden" name="addchild" value="true"/>
@@ -93,7 +93,7 @@
             <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {# if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if#}/>
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1"{% if member.sendEMail() %} checked="checked"{% endif %}/>
                         <label for="mail_confirm">
             {% if member.id %}
                             {{ _T("Notify member his account has been modified") }}
