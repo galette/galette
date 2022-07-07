@@ -178,9 +178,6 @@ footer .ui.horizontal.list > .item{
   .loggedin .ui.fixed.menu + .pusher {
     padding-top: 0;
   }
-  .pusher > .full.height {
-    display: flex;
-  }
   aside.toc {
     display: block;
     position: fixed !important;
@@ -197,6 +194,19 @@ footer .ui.horizontal.list > .item{
   section.desktop .container {
     max-width: 695px;
     margin: 0 auto;
+  }
+  /*
+   * .pusher doesn't play well with sticky position children.
+   * It is required for sidebars, which are only used at the moment on
+   * lower resolutions. So it is safe to reset its overflow property.
+   *
+   */
+  body.pushable > .pusher {
+    overflow: unset;
+  }
+  .position-sticky {
+    position: sticky;
+    top: 10px;
   }
 }
 
