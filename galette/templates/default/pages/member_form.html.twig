@@ -40,7 +40,7 @@
             <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
             <span id="parent_id_elt" class="sr-only">
                 <div id="parent_id" class="ui search selection dropdown nochosen">
-                    <input type="hidden" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined ? member.parent.id }}">
+                    <input type="hidden" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}">
                     <i class="dropdown icon"></i>
                     <div class="default text">{{ _T("-- select a name --") }}</div>
                     <div class="menu">
