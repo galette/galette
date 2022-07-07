@@ -1,5 +1,5 @@
 {% if navigate is defined and navigate|length != 0 %}
-    <nav class="ui mini inverted pagination menu right floated">
+    <nav class="ui mini inverted pagination menu">
         <a
             {% if navigate.prev is defined %}href="{{ path_for(mpath, {"id": navigate.prev}) }}"{% endif %}
             class="item{% if navigate.prev is not defined %} disabled{% endif %}"
