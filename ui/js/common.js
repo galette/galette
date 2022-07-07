@@ -112,6 +112,10 @@ $(function() {
 
     $sidebar.sidebar('attach events', '.toc.item');
 
+    /* Make all dropdowns clickable when js is enabled for UX consistency.
+     * Keep them hoverable only when js is disabled.
+     */
+    $('.simple.dropdown').removeClass('simple');
     $dropdown.dropdown();
 
     $accordion.accordion();
