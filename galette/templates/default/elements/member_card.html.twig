@@ -1,4 +1,4 @@
-<div class="ui horizontal card">
+<div class="ui horizontal fluid card">
     <div class="image">
         {% if login.isAdmin() or login.isStaff() or login.login == member.login %}
             <a class="ui right corner inverted label">
@@ -19,9 +19,6 @@
         </div>
         <div class="meta aligned">
             <span>{{ member.sstatus }}</span>
-            <span class="ui {{ member.getRowClass() }} horizontal icon label tooltip" title="{{ member.getDues()|escape }}">
-                    <i class="icon cookie"></i>
-                </span>
         </div>
         <div class="description">
             <div class="ui relaxed divided list">
@@ -51,5 +48,9 @@
                 {% endif %}
             </div>
         </div>
+    </div>
+    <div class="extra {{ member.getRowClass() }} content">
+        <i class="icon cookie"></i>
+        {{ member.getDues()|escape }}
     </div>
 </div>
