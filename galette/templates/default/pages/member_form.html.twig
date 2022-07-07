@@ -1,16 +1,19 @@
 {% extends parent_tpl %}
 
-{% block page_title %}
-    {% if member.id %}
-        <div class="right aligned bottom floating ui {{ member.getRowClass() }} label">{{ member.getDues() }}</div>
-    {% endif %}
-    {{ parent() }}
-{% endblock %}
-
 {% block content %}
     {% if member.id %}
-        {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
-        {% include "elements/member_card.html.twig" %}
+<div class="ui stackable grid">
+    <div class="row">
+        <div class="sixteen wide tablet six wide computer five wide widescreen column">
+            <div class="position-sticky">
+                <div class="ui basic fitted segment">
+                    {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
+                </div>
+                {% include "elements/member_card.html.twig" %}
+            </div>
+        </div>
+
+        <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
     {% endif %}
 
     <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form">
@@ -143,6 +146,12 @@
             {% include "components/forms/csrf.html.twig" %}
             </div>
         </form>
+
+    {% if member.id %}
+        </div>
+    </div>
+</div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
