@@ -800,7 +800,6 @@ class ContributionsController extends CrudController
 
         //all goes well, we can proceed
         if (count($error_detected) == 0) {
-
             $store = $contrib->store();
             if ($store === true) {
                 $this->flash->addMessage(
