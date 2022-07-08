@@ -255,3 +255,10 @@ footer .ui.horizontal.list > .item{
   margin-bottom: 1rem;
   padding: 10px;
 }
+
+/*-------------
+     No JS
+--------------*/
+.nojs select[multiple].ui.dropdown {
+  height: 7rem;
+}
