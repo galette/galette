@@ -207,6 +207,7 @@ footer .ui.horizontal.list > .item{
   .position-sticky {
     position: sticky;
     top: 10px;
+    z-index: 1;
   }
 }
 
