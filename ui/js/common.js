@@ -70,6 +70,11 @@ if (!("ontouchstart" in document.documentElement)) {
 }
 
 $(function() {
+    $('.nojs').removeClass('nojs').addClass('jsenabled');
+    /* Display/enable elements required only when javascript is active */
+    $('.jsenabled .jsonly.hidden').removeClass('hidden');
+    $('.jsenabled .jsonly.disabled').removeClass('disabled');
+
     $('.debuginfos span').hide();
     /** TODO: find a way to translate this message ==> ajax ? */
     $('.debuginfos').attr('title', 'Click to get more details.');
@@ -80,7 +85,6 @@ $(function() {
     $('#login').focus();
 
     _bindNbshow();
-    $('.nojs').removeClass('nojs');
 
     if ( $('#back2top').length > 0 ) {
         if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {

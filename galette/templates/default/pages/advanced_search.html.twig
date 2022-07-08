@@ -4,7 +4,7 @@
         <form action="{{ path_for('filter-memberslist') }}" method="post" id="filtre" class="ui form">
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="dropdown icon"></i>
+                    <i class="jsonly hidden dropdown icon"></i>
                     {{ _T('Simple search') }}
                 </div>
                 <div class="active content">
@@ -72,7 +72,7 @@
             </div>
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="dropdown icon"></i>
+                    <i class="jsonly hidden dropdown icon"></i>
                     {{ _T('Advanced search') }}
                 </div>
                 <div class="active content">
@@ -208,9 +208,10 @@
                     </div>
                 </div>
             </div>
-            <div class="galetteform ui styled fluid accordion field">
+            <noscript><div class="ui message">{{ _T("This function requires javascript.") }}</div></noscript>
+            <div class="jsonly disabled galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="dropdown icon"></i>
+                    <i class="jsonly hidden dropdown icon"></i>
                     {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
                     <a
                         href="#"
@@ -259,7 +260,7 @@
 
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="dropdown icon"></i>
+                    <i class="jsonly hidden dropdown icon"></i>
                     {{ _T('Within contributions') }}
                 </div>
                 <div class="active content">
@@ -395,9 +396,10 @@
 {% endfor %}
                 </div>
             </div>
-                <div class="galetteform ui styled fluid accordion field">
+                <noscript><div class="ui message">{{ _T("This function requires javascript.") }}</div></noscript>
+                <div class="jsonly disabled galetteform ui styled fluid accordion field">
                     <div class="active ui title">
-                        <i class="dropdown icon"></i>
+                        <i class="jsonly hidden dropdown icon"></i>
                         {{ _T('Free search') }}
                         <a
                             href="#"
