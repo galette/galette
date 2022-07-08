@@ -1,13 +1,26 @@
-<div class="field">
-    <label>{{ _T("Picture:") }}</label>
+<div class="field ui items">
+    <label for="photo">{{ _T("Picture:") }}</label>
+    <div class="item">
+        <div class="image">
     {% if member.id %}
         {% set photo_id = member.id %}
     {% else %}
         {% set photo_id = 0 %}
     {% endif %}
-    <img id="photo_adh" src="{{ path_for("photo", {"id": photo_id, "rand": time}) }}" class="picture" width="{{ member.picture.getOptimalWidth() }}" height="{{ member.picture.getOptimalHeight() }}" alt="{{ _T("Picture") }}"/><br/>
-{% if member.hasPicture() == 1 %}
-    <label for="del_photo" class="labelalign">{{ _T("Delete image") }}</label> <input type="checkbox" name="del_photo" id="del_photo" value="1"/><br/>
-{% endif %}
-    <input class="labelalign" type="file" name="photo"/>
+            <img id="photo_adh" src="{{ path_for("photo", {"id": photo_id, "rand": time}) }}" class="picture" width="{{ member.picture.getOptimalWidth() }}" height="{{ member.picture.getOptimalHeight() }}" alt="{{ _T("Picture") }}"/>
+        </div>
+        <div class="content">
+            <div class="description">
+                <input class="labelalign" type="file" name="photo"/>
+            </div>
+            <div class="extra">
+    {% if member.hasPicture() == 1 %}
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" name="del_photo" id="del_photo" value="1"/>
+                    <label for="del_photo" class="labelalign">{{ _T("Delete image") }}</label>
+                </div>
+    {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
