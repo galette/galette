@@ -24,7 +24,7 @@
                                     <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
                                 {% endfor %}
                             </select>
-                            <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
+                            <noscript><span><input type="submit" value="{{ _T('Change') }}" class="ui button" /></span></noscript>
                         </div>
                     </div>
         {% endif %}
