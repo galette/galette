@@ -74,6 +74,7 @@ $(function() {
     /* Display/enable elements required only when javascript is active */
     $('.jsenabled .jsonly.hidden').removeClass('hidden');
     $('.jsenabled .jsonly.disabled').removeClass('disabled');
+    $('.jsenabled .jsonly.read-only').removeClass('read-only');
 
     $('.debuginfos span').hide();
     /** TODO: find a way to translate this message ==> ajax ? */

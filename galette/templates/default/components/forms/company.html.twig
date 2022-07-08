@@ -12,7 +12,7 @@
     <div class="field">
 
 {% if not member.isCompany() %}
-    {% set component_class = component_class ?? 'inline field' ~ ' hidden' %}
+    {% set component_class = component_class ?? 'inline field' ~ ' nocompany' %}
 {% endif %}
 {% include "components/forms/text.html.twig" with {
         name: entry.field_id,

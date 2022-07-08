@@ -36,9 +36,11 @@
                 </div>
             {% endif %}
         {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() and members.list is defined %}
-            <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
-            <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
-            <span id="parent_id_elt" class="sr-only">
+            <div id="attach-checkbox" class="ui jsonly read-only{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
+                <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
+                <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
+            </div>
+            <span id="parent_id_elt" class="">
                 <div id="parent_id" class="ui search selection dropdown nochosen">
                     <input type="hidden" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}">
                     <i class="dropdown icon"></i>
@@ -54,6 +56,7 @@
             {% if member.isDuplicate() %}
                 <input type="hidden" name="duplicate" value="1" />
             {% endif %}
+                <noscript><div class="ui message">{{ _T("This function requires javascript.") }}</div></noscript>
         {% elseif member.hasChildren() %}
                 <div class="inline field">
                     <span class="ui primary ribbon label">{{ _T("Parent of:") }}</span>
@@ -158,6 +161,7 @@
         <script type="text/javascript">
             {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
             $(function() {
+                $('#company_field.nocompany').addClass('hidden');
                 $('#is_company').change(function(){
                     $('#company_field').toggleClass('hidden');
                     $('#company_field').backgroundFade(
@@ -296,13 +300,16 @@
 
     {% if not self_adh and not member.hasChildren() %}
                 {# Parent selection #}
-                $('#parent_id_elt').removeClass('sr-only');
         {% if not member.isDuplicate() %}
-                $('#parent_id_elt').hide();
+                $('#parent_id_elt').addClass('hidden');
         {% endif %}
-                $('#attach').on('click', function() {
-                    var _checked = $(this).is(':checked');
-                    $('#parent_id_elt').toggle();
+                $('#attach-checkbox').checkbox({
+                    onChecked: function() {
+                        $('#parent_id_elt').removeClass('hidden');
+                    },
+                    onUnchecked: function() {
+                        $('#parent_id_elt').addClass('hidden');
+                    }
                 });
     {% endif %}
 

@@ -1,16 +1,19 @@
 <div id="groups_field" class="field">
     <label>{{ _T("Groups:") }}</label>
     {% if login.isGroupManager() %}
-    <a class="ui icon button" id="btngroups">
+    <a class="jsonly disabled ui icon button" id="btngroups">
         <i class="user tag icon" aria-hidden="true"></i>
         {{ _T("Manage user's groups") }}
     </a>
     {% endif %}
     {% if login.isAdmin() or login.isStaff() %}
-    <a class="ui icon button" id="btnmanagedgroups">
+    <a class="jsonly disabled ui icon button" id="btnmanagedgroups">
         <i class="user shield icon" aria-hidden="true"></i>
         {{ _T("Manage user's managed groups") }}
     </a>
+    {% endif %}
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+    <noscript><div class="ui message">{{ _T("This function requires javascript.") }}</div></noscript>
     {% endif %}
     <span id="usergroups_form">
     {% if member.id %}
