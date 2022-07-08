@@ -6,3 +6,10 @@
 .ui.styled.accordion .accordion .title {
   background: @styledTitleBackground;
 }
+
+/*-------------
+     No JS
+--------------*/
+.nojs .ui.accordion.menu:not(.styled) .title ~ .content:not(.ui) {
+   display:block;
+}
