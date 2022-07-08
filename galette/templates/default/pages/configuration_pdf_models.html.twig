@@ -1,13 +1,13 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <div class="ui four item top attached stackable tabs menu">
+        <div class="ui stackable pointing inverted menu">
 {% for m in models %}
             <a href="{{ path_for('pdfModels', {'id': m.id}) }}" class="item{% if m.id == model.id %} active{% endif %}" data-tab="{{ m.id }}">{{ m.name }}</a>
 {% endfor %}
         </div>
 {% for m in models %}
-        <div class="ui bottom attached{% if m.id == model.id %} active{% endif %} tab segment" data-tab="{{ loop.index }}">
+        <div class="ui {% if m.id == model.id %} active{% endif %} tab segment" data-tab="{{ loop.index }}">
     {% if m.id == model.id %}
         {% include 'elements/edit_pdf_models.html.twig' %}
     {% endif %}
@@ -17,6 +17,13 @@
 
 {% block javascripts %}
         <script type="text/javascript">
+            $(function() {
+                $('.pointing.menu .item').tab({
+                    auto: true,
+                    path: '{{ path_for('pdfModels', {'id': ''}) }}'
+                });
+            });
+
             _addLegendButton('#legend-container');
             _handleLegend();
         </script>
