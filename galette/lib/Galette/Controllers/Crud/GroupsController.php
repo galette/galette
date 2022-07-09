@@ -177,6 +177,14 @@ class GroupsController extends CrudController
             }
         }
 
+        //Active tab on page
+        $tab_param = $request->getQueryParam('tab', $default = null);
+        if (isset($tab_param)) {
+            $tab = $tab_param;
+        } else {
+            $tab = 'group_information';
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -185,7 +193,8 @@ class GroupsController extends CrudController
                 'page_title'            => _T("Groups"),
                 'groups_root'           => $groups_root,
                 'groups'                => $groups_list,
-                'group'                 => $group
+                'group'                 => $group,
+                'tab'                   => $tab
             )
         );
         return $response;
@@ -378,9 +387,14 @@ class GroupsController extends CrudController
             );
         }
 
+        if (isset($post['tab']) && $post['tab'] != 'general') {
+            $tab = '?tab=' . $post['tab'];
+        } else {
+            $tab = '';
+        }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $group->getId()]));
+            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $group->getId()]) . $tab);
     }
 
     /**
