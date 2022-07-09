@@ -555,9 +555,9 @@ class ContributionsController extends CrudController
     /**
      * List page for logged-in member
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $type     One of 'transactions' or 'contributions'
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param string   $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
