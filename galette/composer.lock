@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "798d53476018ef8c4b49e9b8af88a3c2",
+    "content-hash": "82ed253a26a520803bdb9ab0be2dc267",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -3041,26 +3041,26 @@
         },
         {
             "name": "soundasleep/html2text",
-            "version": "1.1.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/soundasleep/html2text.git",
-                "reference": "3243a7107878a61685d2eccf99918d6479e039fc"
+                "reference": "aa214620d7beecd5cef8b1c32102a9204edb82f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/soundasleep/html2text/zipball/3243a7107878a61685d2eccf99918d6479e039fc",
-                "reference": "3243a7107878a61685d2eccf99918d6479e039fc",
+                "url": "https://api.github.com/repos/soundasleep/html2text/zipball/aa214620d7beecd5cef8b1c32102a9204edb82f5",
+                "reference": "aa214620d7beecd5cef8b1c32102a9204edb82f5",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "php": ">=7.0"
+                "php": "^7.0|^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~7.0",
-                "soundasleep/component-tests": "~0.2"
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "soundasleep/component-tests": "^0.2"
             },
             "type": "library",
             "autoload": {
@@ -3090,9 +3090,9 @@
             "support": {
                 "email": "support@jevon.org",
                 "issues": "https://github.com/soundasleep/html2text/issues",
-                "source": "https://github.com/soundasleep/html2text/tree/master"
+                "source": "https://github.com/soundasleep/html2text/tree/2.0.0"
             },
-            "time": "2019-02-15T01:44:54+00:00"
+            "time": "2022-01-29T19:05:09+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

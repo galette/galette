@@ -38,7 +38,7 @@
         "akrabat/rka-slim-session-middleware": "^2.0",
         "laminas/laminas-i18n": "^2.11",
         "laminas/laminas-cache": "^2.10",
-        "soundasleep/html2text": "^1.1",
+        "soundasleep/html2text": "^2.0",
         "aneek/slim-event-dispatcher": "^1.0",
         "slim/flash": "^0.4.0",
         "league/event": "^2.1",
@@ -66,7 +66,6 @@
         "post-install-cmd": [
             "patch -d vendor/slim/slim/ -p3 < ../patches/slim-php81.patch",
             "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch",
-            "patch -d vendor/soundasleep/html2text/ -p3 < ../patches/html2text-php80.patch",
             "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
             "patch -d vendor/slim/twig-view/ -p3 < ../patches/twig-view-php81.patch"
         ]
