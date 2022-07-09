@@ -553,6 +553,30 @@ class ContributionsController extends CrudController
     }
 
     /**
+     * List page for logged-in member
+     *
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $type     One of 'transactions' or 'contributions'
+     *
+     * @return Response
+     */
+    public function myList(Request $request, Response $response, string $type = null): Response
+    {
+        return $this->list(
+            $request->withQueryParams(
+                $request->getQueryParams() + [
+                    Adherent::PK => $this->login->id
+                ]
+            ),
+            $response,
+            null,
+            null,
+            $type
+        );
+    }
+
+        /**
      * Filtering
      *
      * @param Request     $request  PSR Request
