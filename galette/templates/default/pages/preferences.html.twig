@@ -2,22 +2,22 @@
 
 {% block content %}
         <form action="{{ path_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
-        <div class="ui stackable pointing inverted menu tabbed">
-            <a class="item active" data-tab="general">{{ _T("General") }}</a>
-            <a class="item" data-tab="social">{{ _T("Social networks") }}</a>
-            <a class="item" data-tab="parameters">{{ _T("Parameters") }}</a>
-            <a class="item" data-tab="rights">{{ _T("Rights") }}</a>
-            <a class="item" data-tab="mail">{{ _T("E-Mail") }}</a>
-            <a class="item" data-tab="labels">{{ _T("Labels") }}</a>
-            <a class="item" data-tab="cards">{{ _T("Cards") }}</a>
+        <div class="ui stackable pointing inverted menu">
+            <a href="{{ path_for('preferences') }}?tab=general" class="item{{ tab == 'general' ? ' active' }}" data-tab="general">{{ _T("General") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=social" class="item{{ tab == 'social' ? ' active' }}" data-tab="social">{{ _T("Social networks") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=parameters" class="item{{ tab == 'parameters' ? ' active' }}" data-tab="parameters">{{ _T("Parameters") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=rights" class="item{{ tab == 'rights' ? ' active' }}" data-tab="rights">{{ _T("Rights") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=mail" class="item{{ tab == 'mail' ? ' active' }}" data-tab="mail">{{ _T("E-Mail") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=labels" class="item{{ tab == 'labels' ? ' active' }}" data-tab="labels">{{ _T("Labels") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=cards" class="item{{ tab == 'cards' ? ' active' }}" data-tab="cards">{{ _T("Cards") }}</a>
 {% if login.isAdmin() %}
-            <a class="item" data-tab="security">{{ _T("Security parameters") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=security" class="item{{ tab == 'security' ? ' active' }}" data-tab="security">{{ _T("Security parameters") }}</a>
 {% endif %}
 {% if login.isSuperAdmin() %}
-            <a class="item" data-tab="admin">{{ _T("Admin") }}</a>
+            <a href="{{ path_for('preferences') }}?tab=admin" class="item{{ tab == 'admin' ? ' active' }}" data-tab="admin">{{ _T("Admin") }}</a>
 {% endif %}
         </div>
-        <div class="ui active tab segment" data-tab="general">
+        <div class="ui{{ tab == 'general' ? ' active' }} tab segment" data-tab="general">
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="{% if required.pref_nom == 1 %}required {% endif %} field">
@@ -143,7 +143,7 @@
         </div>{# /tab segment #}
         {% set socials = preferences.socials %}
         {% include "elements/edit_socials.html.twig" with {tabbed: true} %}
-        <div class="ui tab segment" data-tab="parameters">
+        <div class="ui{{ tab == 'parameters' ? ' active' }} tab segment" data-tab="parameters">
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field">
@@ -294,7 +294,7 @@
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}
-        <div class="ui tab segment" data-tab="rights">
+        <div class="ui{{ tab == 'rights' ? ' active' }} tab segment" data-tab="rights">
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field inline">
@@ -325,7 +325,7 @@
                 </div>
             </div>
         </div>{# /tab segment #}
-        <div class="ui tab segment" data-tab="mail">
+        <div class="ui{{ tab == 'mail' ? ' active' }} tab segment" data-tab="mail">
             <div class="ui stackable two column grid">
                 <div class="column">
     {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
@@ -476,7 +476,7 @@
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}
-        <div class="ui tab segment" data-tab="labels">
+        <div class="ui{{ tab == 'labels' ? ' active' }} tab segment" data-tab="labels">
             <div class="ui two column grid">
                 <div class="column">
                     <div class="field">
@@ -543,7 +543,7 @@
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}
-        <div class="ui tab segment" data-tab="cards">
+        <div class="ui{{ tab == 'cards' ? ' active' }} tab segment" data-tab="cards">
             <div class="ui message">
                 <p>{{ _T("Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)") }}</p>
             </div>
@@ -671,7 +671,7 @@
         </div>{# /tab segment #}
 
 {% if login.isAdmin() %}
-        <div class="ui tab segment" data-tab="security">
+        <div class="ui{{ tab == 'security' ? ' active' }} tab segment" data-tab="security">
                 <div class="field">
                     <label for="pref_password_length" title="{{ _T("Minimum password length required for all accounts. Minimal size is 6.") }}">{{ _T("Password length:") }}</label>
                     <div class="ui right corner labeled input">
@@ -722,7 +722,7 @@
         </div>{# /tab segment #}
 {% endif %}
 {% if login.isSuperAdmin() %}
-        <div class="ui tab red inverted segment" data-tab="admin">
+        <div class="ui{{ tab == 'admin' ? ' active' }} tab red inverted segment" data-tab="admin">
     {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
                 <div class="ui negative message">
                     {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
@@ -752,6 +752,7 @@
             <input type="hidden" name="pref_instance_uuid" value="{{ pref.pref_instance_uuid }}"/>
             <input type="hidden" name="pref_registration_date" value="{{ pref.pref_registration_date }}"/>
             <input type="hidden" name="pref_registration_uuid" value="{{ pref.pref_registration_uuid }}"/>
+            <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
             </button>
@@ -777,13 +778,19 @@
                 $('#smtp_auth').show();
             });
 
-                $('#smtp,#gmail').checkbox({
-                    onChange: function() {
-                        $('#smtp_parameters,#smtp_auth').show();
+            $('#smtp,#gmail').checkbox({
+                onChange: function() {
+                    $('#smtp_parameters,#smtp_auth').show();
+                }
+            });
+
+            $(function(){
+                $('.pointing.menu .item').tab({
+                    onVisible: function(tabPath) {
+                        document.getElementById('tab').value = tabPath;
                     }
                 });
 
-            $(function(){
                 $('#pref_bool_publicpages').change(function(){
                     $('#publicpages_visibility').toggleClass('hidden');
                 });

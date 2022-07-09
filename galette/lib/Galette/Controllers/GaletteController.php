@@ -233,6 +233,14 @@ class GaletteController extends AbstractController
         $m = new Members();
         $s = new Status($this->zdb);
 
+        //Active tab on page
+        $tab_param = $request->getQueryParam('tab', $default = null);
+        if (isset($tab_param)) {
+            $tab = $tab_param;
+        } else {
+            $tab = 'general';
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -258,7 +266,8 @@ class GaletteController extends AbstractController
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
                 ),
                 'paymenttypes'          => $ptlist,
-                'osocials'              => new Social($this->zdb)
+                'osocials'              => new Social($this->zdb),
+                'tab'                   => $tab
             )
         );
         return $response;
@@ -379,10 +388,14 @@ class GaletteController extends AbstractController
                 }
             }
         }
-
+        if (isset($post['tab']) && $post['tab'] != 'general') {
+            $tab = '?tab=' . $post['tab'];
+        } else {
+            $tab = '';
+        }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('preferences'));
+            ->withHeader('Location', $this->router->pathFor('preferences') . $tab);
     }
 
     /**

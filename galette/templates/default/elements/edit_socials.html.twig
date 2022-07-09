@@ -1,5 +1,5 @@
 {% if tabbed ?? false == true %}
-<div id="social" class="ui bottom attached tab segment" data-tab="social">
+<div id="social" class="ui{{ tab == 'social' ? ' active' }} bottom attached tab segment" data-tab="social">
     {% block social_edit %}
         <div id="social" class="ui bottom attached{% if tabbed ?? false == true %}tab {% endif %}segment" data-tab="social">
             {% for social in socials %}
