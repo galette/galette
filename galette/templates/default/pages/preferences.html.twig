@@ -2,7 +2,7 @@
 
 {% block content %}
         <form action="{{ path_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
-        <div class="ui stackable pointing inverted menu">
+        <div class="ui stackable pointing inverted menu tabbed">
             <a href="{{ path_for('preferences') }}?tab=general" class="item{{ tab == 'general' ? ' active' }}" data-tab="general">{{ _T("General") }}</a>
             <a href="{{ path_for('preferences') }}?tab=social" class="item{{ tab == 'social' ? ' active' }}" data-tab="social">{{ _T("Social networks") }}</a>
             <a href="{{ path_for('preferences') }}?tab=parameters" class="item{{ tab == 'parameters' ? ' active' }}" data-tab="parameters">{{ _T("Parameters") }}</a>
