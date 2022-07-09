@@ -43,6 +43,7 @@
     "GALETTE_VERSION",
     "GALETTE_X_FORWARDED_FOR_INDEX",
     "_CURRENT_THEME_PATH",
+    "GALETTE_URI",
 
     "// Galette db constants (not detected as they are dynamically declared)",
     "HOST_DB",

@@ -1118,6 +1118,10 @@ class Preferences
      */
     public function getDefaultURL()
     {
+        if (defined('GALETTE_CRON')) {
+            return GALETTE_URI;
+        }
+
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
         $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
         return $uri;

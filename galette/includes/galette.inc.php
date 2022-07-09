@@ -72,7 +72,7 @@ if (!$installed && !$installer) {
 
 if (
     file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
-    && !defined('GALETTE_TESTS') && !$cron
+    && !defined('GALETTE_TESTS')
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
