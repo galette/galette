@@ -36,27 +36,26 @@
                 </div>
             {% endif %}
         {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() and members.list is defined %}
-            <div id="attach-checkbox" class="ui jsonly read-only{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
+            <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
                 <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
                 <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
             </div>
             <span id="parent_id_elt" class="">
-                <div id="parent_id" class="ui search selection dropdown nochosen">
-                    <input type="hidden" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">{{ _T("-- select a name --") }}</div>
-                    <div class="menu">
+                <div id="parent_id" class="jsonly search-dropdown ui input nochosen">
+                    <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Members' ID") }}">
+                    <i class="jsonly hidden dropdown icon"></i>
+                    <div class="jsonly hidden default text">{{ _T("-- select a name --") }}</div>
+                    <div class="jsonly hidden menu">
             {% for k, v in members.list %}
                         <div class="item" data-value="{{ k }}">{{ v }}</div>
             {% endfor %}
                     </div>
                 </div>
-                <div class="ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
+                <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
             </span>
             {% if member.isDuplicate() %}
                 <input type="hidden" name="duplicate" value="1" />
             {% endif %}
-                <noscript><div class="ui message">{{ _T("This function requires javascript.") }}</div></noscript>
         {% elseif member.hasChildren() %}
                 <div class="inline field">
                     <span class="ui primary ribbon label">{{ _T("Parent of:") }}</span>
@@ -160,6 +159,9 @@
 {% block javascripts %}
         <script type="text/javascript">
             {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
+
+            document.getElementById('parent_id_input').type = 'hidden';
+
             $(function() {
                 $('#company_field.nocompany').addClass('hidden');
                 $('#is_company').change(function(){

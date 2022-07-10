@@ -75,6 +75,7 @@ $(function() {
     $('.jsenabled .jsonly.hidden').removeClass('hidden');
     $('.jsenabled .jsonly.disabled').removeClass('disabled');
     $('.jsenabled .jsonly.read-only').removeClass('read-only');
+    $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown');
 
     $('.debuginfos span').hide();
     /** TODO: find a way to translate this message ==> ajax ? */

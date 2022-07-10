@@ -47,7 +47,7 @@
     {% endif %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="icon dropdown"></i>
+                    <i class="jsonly hidden icon dropdown"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Select contributor and membership fee type") }}
     {% else %}
@@ -74,17 +74,17 @@
                 <div class="active content">
                     <div class="field inline">
                         <label for="id_adh">{{ _T("Contributor:") }}</label>
-                        <div id="id_adh" class="ui search selection dropdown nochosen">
-                            <input type="hidden" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                            <div class="menu">
+                        <div id="id_adh" class="jsonly search-dropdown ui input nochosen">
+                            <input type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Members' ID") }}">
+                            <i class="jsonly hidden dropdown icon"></i>
+                            <div class="jsonly hidden default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
+                            <div class="jsonly hidden menu">
                     {% for k, v in members.list %}
                                 <div class="item" data-value="{{ k }}">{{ v }}</div>
                     {% endfor %}
                             </div>
                         </div>
-                        <div class="ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
+                        <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
                     </div>
     {% endif %}
                     <div class="field inline">
@@ -102,7 +102,7 @@
                     </div>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     <noscript>
-                        <div class="button-container" id="reloadcont">
+                        <div class="ui basic fitted segment" id="reloadcont">
                             <input type="submit" id="btnreload" name="btnreload" value="{{ _T("Reload") }}" title="{{ _T("Reload date information according to selected member and contribution type") }}" class="ui button"/>
                         </div>
                     </noscript>
@@ -112,7 +112,7 @@
 
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="icon dropdown"></i>
+                    <i class="jsonly hidden icon dropdown"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Details of membership fee") }}
     {% else %}
@@ -183,7 +183,7 @@
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="icon dropdown"></i>
+                    <i class="jsonly hidden icon dropdown"></i>
                     {{ _T("Transaction related") }}
                 </div>
                 <div class="active content field">
