@@ -25,30 +25,44 @@
                         <input{% if required.pref_nom == 1 %} required="required"{% endif %} type="text" name="pref_nom" id="pref_nom" value="{{ pref.pref_nom }}" maxlength="190"/>
                     </div>
                     <div class="{% if required.pref_slogan is defined and required.pref_slogan == 1 %}required {% endif %} field">
-                        <label for="pref_slogan">{{ _T("Association's short description:") }}</label>
-                        <div class="ui right corner labeled input">
+                        <label for="pref_slogan">{{ _T("Association's short description:") }}
+                            <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Enter here a short description for your association, it will be displayed on the index page and into pages' title.") }}"></i>
+                        </label>
+                        <div class="ui action input">
                             <input{% if required.pref_slogan is defined and required.pref_slogan == 1 %} required="required"{% endif %} type="text" name="pref_slogan" id="pref_slogan" value="{{ pref.pref_slogan }}"/>
-                            <div class="ui basic label">
-                                <a
-                                        href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
-                                        class="ui icon tooltip" title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"
-                                >
-                                    <i class="language icon"></i>
-                                    <span class="sr-only">{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}</span>
-                                </a>
-                                <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Enter here a short description for your association, it will be displayed on the index page and into pages' title.") }}"></i>
-                            </div>
+                            <a
+                                href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
+                                class="ui icon button"
+                            >
+                                <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"></i>
+                                <span class="sr-only">{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="column">
-                    <div class="field">
+                    <div class="field ui items">
                         <label for="logo_picture">{{ _T("Logo:") }}</label>
+                        <div class="item">
         {% if logo.isCustom() %}
-                        <img src="{{ path_for('logo') }}" class="picture" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ _T("Current logo") }}"/><br/>
-                        <label for="del_logo">{{ _T("Delete image") }}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
+                            <div class="image">
+                                <img src="{{ path_for('logo') }}" class="picture" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ _T("Current logo") }}"/>
+                            </div>
         {% endif %}
-                        <input type="file" name="logo" id="logo_picture"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                            <div class="content">
+                                <div class="description">
+                                    <input type="file" name="logo" id="logo_picture"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                                </div>
+                                <div class="extra">
+        {% if logo.isCustom() %}
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" name="del_logo" id="del_logo" value="1"/>
+                                        <label for="del_logo" class="labelalign">{{ _T("Delete image") }}</label>
+                                    </div>
+        {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,7 +97,7 @@
                     <div class="field">
                         <label>
                             {{ _T("Postal address:") }}
-                            <i class="circular inverted primary small icon info tooltip" data-html="{{ _T("Use either the address setted below or select a staff member to retrieve he's address.") }}"></i>
+                            <i class="circular inverted primary small icon info tooltip" title="{{ _T("Use either the address setted below or select a staff member to retrieve he's address.") }}"></i>
                         </label>
                         <div class="inline fields">
                             <div class="field">
@@ -107,7 +121,7 @@
                         <label for="pref_footer">{{ _T("Footer text:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter a text (HTML allowed) that will be displayed in the footer of every page") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enter a text (HTML allowed) that will be displayed in the footer of every page") }}"></i>
                             </div>
                             <textarea name="pref_footer" id="pref_footer" rows="2">{{ pref.pref_footer }}</textarea>
                         </div>
@@ -115,7 +129,7 @@
                     <div class="field">
                         <label>
                             {{ _T("Telemetry date:") }}
-                            <i class="circular inverted primary small icon info tooltip" data-html="{{ _T("Last telemetry sent date.") }}"></i>
+                            <i class="circular inverted primary small icon info tooltip" title="{{ _T("Last telemetry sent date.") }}"></i>
                         </label>
                         <span>
                             {{ preferences.getTelemetryDate() }}
@@ -125,7 +139,7 @@
                     <div class="field">
                         <label>
                             {{ _T("Registration date:") }}
-                            <i class="circular inverted primary small icon info tooltip" data-html="{{ _T("Date on which you registered your Galette instance.") }}"></i>
+                            <i class="circular inverted primary small icon info tooltip" title="{{ _T("Date on which you registered your Galette instance.") }}"></i>
                         </label>
                         <span>
                             {% if pref.pref_registration_date %}
@@ -207,8 +221,10 @@
                 </div>{# /column #}
                 <div class="column">
                     <div class="field inline">
-                        <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
-                        <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {% if pref.pref_bool_publicpages %} checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {% if pref.pref_bool_publicpages %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
+                        </div>
                     </div>
                     <div class="field" id="publicpages_visibility"{% if not pref.pref_bool_publicpages %} class="hidden"{% endif %}>
                         <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
@@ -219,14 +235,16 @@
                         </select>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
-                        <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="pref_new_contrib_script" class="tooltip">{{ _T("Post new contribution script URI") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases).") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases).") }}"></i>
                             </div>
                             <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{{ pref.pref_new_contrib_script }}"/>
                         </div>
@@ -235,7 +253,7 @@
                         <label for="pref_rss_url" class="tooltip">{{ _T("RSS feed URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter the full URL to the RSS feed. It will be displayed on Galette desktop.") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enter the full URL to the RSS feed. It will be displayed on Galette desktop.") }}"></i>
                             </div>
                             <input type="text" name="pref_rss_url" id="pref_rss_url" value="{{ pref.pref_rss_url }}"{% if required.pref_rss_url is defined and required.pref_rss_url == 1 %} required="required"{% endif %}/>
                         </div>
@@ -244,15 +262,17 @@
                         <label for="pref_galette_url" class="tooltip">{{ _T("Galette base URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ path_for('preferences')}) }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ path_for('preferences')}) }}"></i>
                             </div>
                             <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"{% if required.pref_galette_url is defined and required.pref_galette_url == 1 %} required="required"{% endif %}/>
                         </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_show_id" class="tooltip">{{ _T("Show identifiers") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Display database identifiers in related windows") }}"></i>
-                        <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {% if pref.pref_show_id %} checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {% if pref.pref_show_id %} checked="checked"{% endif %}/>
+                            <label for="pref_show_id" class="tooltip">{{ _T("Show identifiers") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Display database identifiers in related windows") }}"></i>
                     </div>
                 </div>{# /column #}
             </div>{# /column grid #}
@@ -286,7 +306,7 @@
                         <label for="pref_membership_offermonths">{{ _T("Number of months offered:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}"></i>
                             </div>
                             <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{{ pref.pref_membership_offermonths }}" maxlength="5"{% if required.pref_membership_offermonths is defined and required.pref_membership_offermonths == 1 %} required="required"{% endif %}/>
                         </div>
@@ -298,29 +318,41 @@
             <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field inline">
-                        <label for="pref_bool_create_member">{{ _T("Can members create child?") }}</label>
-                        <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {% if pref.pref_bool_create_member == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_create_member" id="pref_bool_create_member" value="1" {% if pref.pref_bool_create_member == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_create_member">{{ _T("Can members create child?") }}</label>
+                        </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_groupsmanagers_edit_groups">{{ _T("Can group managers edit their groups?") }}</label>
-                        <input type="checkbox" name="pref_bool_groupsmanagers_edit_groups" id="pref_bool_groupsmanagers_edit_groups" value="1" {% if pref.pref_bool_groupsmanagers_edit_groups == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_edit_groups" id="pref_bool_groupsmanagers_edit_groups" value="1" {% if pref.pref_bool_groupsmanagers_edit_groups == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_edit_groups">{{ _T("Can group managers edit their groups?") }}</label>
+                        </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_groupsmanagers_create_member">{{ _T("Can group managers create members?") }}</label>
-                        <input type="checkbox" name="pref_bool_groupsmanagers_create_member" id="pref_bool_groupsmanagers_create_member" value="1" {% if pref.pref_bool_groupsmanagers_create_member == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_create_member" id="pref_bool_groupsmanagers_create_member" value="1" {% if pref.pref_bool_groupsmanagers_create_member == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_create_member">{{ _T("Can group managers create members?") }}</label>
+                        </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_groupsmanagers_edit_member">{{ _T("Can group managers edit members?") }}</label>
-                        <input type="checkbox" name="pref_bool_groupsmanagers_edit_member" id="pref_bool_groupsmanagers_edit_member" value="1" {% if pref.pref_bool_groupsmanagers_edit_member == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_edit_member" id="pref_bool_groupsmanagers_edit_member" value="1" {% if pref.pref_bool_groupsmanagers_edit_member == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_edit_member">{{ _T("Can group managers edit members?") }}</label>
+                        </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_groupsmanagers_mailings">{{ _T("Can group managers send mailings?") }}</label>
-                        <input type="checkbox" name="pref_bool_groupsmanagers_mailings" id="pref_bool_groupsmanagers_mailings" value="1" {% if pref.pref_bool_groupsmanagers_mailings == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_mailings" id="pref_bool_groupsmanagers_mailings" value="1" {% if pref.pref_bool_groupsmanagers_mailings == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_mailings">{{ _T("Can group managers send mailings?") }}</label>
+                        </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_groupsmanagers_exports" class="tooltip">{{ _T("Can group managers do exports?") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf") }}"></i>
-                        <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" value="1" {% if pref.pref_bool_groupsmanagers_exports == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_exports" id="pref_bool_groupsmanagers_exports" value="1" {% if pref.pref_bool_groupsmanagers_exports == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_exports" class="tooltip">{{ _T("Can group managers do exports?") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf") }}"></i>
                     </div>
                 </div>
             </div>
@@ -347,7 +379,7 @@
                         <label for="pref_email_reply_to" class="tooltip">{{ _T("Reply-To Email:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Leave empty to use Sender Email as reply address") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Leave empty to use Sender Email as reply address") }}"></i>
                             </div>
                             <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{{ pref.pref_email_reply_to }}" maxlength="100" size="30"{% if required.pref_email_reply_to is defined and required.pref_email_reply_to == 1 %} required="required"{% endif %}/>
                         </div>
@@ -357,31 +389,47 @@
                         <label for="pref_email_newadh" class="tooltip">{{ _T("Members administrator's Email:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Recipient of new online registation and edition emails") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Recipient of new online registation and edition emails") }}"></i>
                             </div>
                             <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref.pref_email_newadh }}" maxlength="100" size="30"{% if required.pref_email_newadh is defined and required.pref_email_newadh == 1 %} required="required"{% endif %}/>
                         </div>
                         <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_mailadh" class="tooltip">{{ _T("Send email to administrators?") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Sends an email each time a new member registers online or edit his/her account") }}"></i>
-                        <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {% if pref.pref_bool_mailadh == 1 %}checked="checked"{% endif %}{% if required.pref_bool_mailadh is defined and required.pref_bool_mailadh == 1 %} required="required"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {% if pref.pref_bool_mailadh == 1 %}checked="checked"{% endif %}{% if required.pref_bool_mailadh is defined and required.pref_bool_mailadh == 1 %} required="required"{% endif %}/>
+                            <label for="pref_bool_mailadh" class="tooltip">{{ _T("Send email to administrators?") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Sends an email each time a new member registers online or edit his/her account") }}"></i>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_wrap_mails" class="tooltip">{{ _T("Wrap emails text?") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change.") }}"></i>
-                        <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {% if pref.pref_bool_wrap_mails == 1 %}checked="checked"{% endif %}{% if required.pref_bool_wrap_mails is defined and required.pref_bool_wrap_mails == 1 %} required="required"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {% if pref.pref_bool_wrap_mails == 1 %}checked="checked"{% endif %}{% if required.pref_bool_wrap_mails is defined and required.pref_bool_wrap_mails == 1 %} required="required"{% endif %}/>
+                            <label for="pref_bool_wrap_mails" class="tooltip">{{ _T("Wrap emails text?") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change.") }}"></i>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_mailowner" class="tooltip">{{ _T("Send email to members?") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case.") }}"></i>
-                        <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" value="1" {% if pref.pref_bool_mailowner == 1 %}checked="checked"{% endif %}{% if required.pref_bool_mailowner is defined and required.pref_bool_mailowner == 1 %} required="required"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_mailowner" id="pref_bool_mailowner" value="1" {% if pref.pref_bool_mailowner == 1 %}checked="checked"{% endif %}{% if required.pref_bool_mailowner is defined and required.pref_bool_mailowner == 1 %} required="required"{% endif %}/>
+                            <label for="pref_bool_mailowner" class="tooltip">{{ _T("Send email to members?") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Sends an email each time a member card or a contribution has been added or edited. This can be disabled for each case.") }}"></i>
                     </div>
                     <div class="field inline">
-                        <label for="pref_editor_enabled" class="tooltip">{{ _T("Activate HTML editor?") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Should HTML editor be activated on page load ?") }}"></i>
-                        <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {% if pref.pref_editor_enabled == 1 %}checked="checked"{% endif %}{% if required.pref_editor_enabled is defined and required.pref_editor_enabled == 1 %} required="required"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {% if pref.pref_editor_enabled == 1 %}checked="checked"{% endif %}{% if required.pref_editor_enabled is defined and required.pref_editor_enabled == 1 %} required="required"{% endif %}/>
+                            <label for="pref_editor_enabled" class="tooltip">{{ _T("Activate HTML editor?") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Should HTML editor be activated on page load ?") }}"></i>
+                    </div>
+                    <div class="field mail_sign">
+                        <label for="pref_mail_sign" class="tooltip">{{ _T("Mail signature") }}</label>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label" id="mail_sign">
+                            </div>
+                            <textarea name="pref_mail_sign" id="pref_mail_sign" rows="5">{{ pref.pref_mail_sign }}</textarea>
+                        </div>
                     </div>
                 </div>{# /column #}
                 <div class="column">
@@ -427,7 +475,7 @@
                             {{ _T("Test email settings") }}
                         </a>
                     </div>
-                    <div id="smtp_parameters"{% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %} style="display: none;"{% endif %}>
+                    <div id="smtp_parameters" class="field">
                         <div class="field">
                             <label for="pref_mail_smtp_host">{{ _T("SMTP server:") }}</label>
                             <input type="text" name="pref_mail_smtp_host" id="pref_mail_smtp_host" value="{{ pref.pref_mail_smtp_host }}" maxlength="100" size="30"{% if required.pref_mail_smtp_host is defined and required.pref_mail_smtp_host == 1 %} required="required"{% endif %}/>
@@ -438,23 +486,29 @@
                         </div>
                         <div class="grouped fields">
                             <div class="field inline">
-                                <label for="pref_mail_smtp_auth" class="tooltip">{{ _T("Use SMTP authentication?") }}</label>
-                                <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on.") }}"></i>
-                                <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {% if pref.pref_mail_smtp_auth == 1 %}checked="checked"{% endif %}{% if required.pref_mail_smtp_auth is defined and required.pref_mail_smtp_auth == 1 %} required="required"{% endif %}/>
+                                <div class="ui right aligned toggle checkbox">
+                                    <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {% if pref.pref_mail_smtp_auth == 1 %}checked="checked"{% endif %}{% if required.pref_mail_smtp_auth is defined and required.pref_mail_smtp_auth == 1 %} required="required"{% endif %}/>
+                                    <label for="pref_mail_smtp_auth" class="tooltip">{{ _T("Use SMTP authentication?") }}</label>
+                                </div>
+                                <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on.") }}"></i>
                             </div>
                             <div class="field inline">
-                                <label for="pref_mail_smtp_secure" class="tooltip">{{ _T("Use TLS for SMTP?") }}</label>
-                                <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on.") }}"></i>
-                                <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {% if pref.pref_mail_smtp_secure == 1 %}checked="checked"{% endif %}{% if required.pref_mail_smtp_secure is defined and required.pref_mail_smtp_secure == 1 %} required="required"{% endif %}/>
+                                <div class="ui right aligned toggle checkbox">
+                                    <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {% if pref.pref_mail_smtp_secure == 1 %}checked="checked"{% endif %}{% if required.pref_mail_smtp_secure is defined and required.pref_mail_smtp_secure == 1 %} required="required"{% endif %}/>
+                                    <label for="pref_mail_smtp_secure" class="tooltip">{{ _T("Use TLS for SMTP?") }}</label>
+                                </div>
+                                <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on.") }}"></i>
                             </div>
                             <div class="field inline">
-                                <label for="pref_mail_allow_unsecure" class="tooltip">{{ _T("Allow unsecure TLS?") }}</label>
-                                <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases.") }}"></i>
-                                <input type="checkbox" name="pref_mail_allow_unsecure" id="pref_mail_allow_unsecure" value="1" {% if pref.pref_mail_allow_unsecure == 1 %}checked="checked"{% endif %}{% if required.pref_mail_allow_unsecure is defined and required.pref_mail_allow_unsecure == 1 %} required="required"{% endif %}/>
+                                <div class="ui right aligned toggle checkbox">
+                                    <input type="checkbox" name="pref_mail_allow_unsecure" id="pref_mail_allow_unsecure" value="1" {% if pref.pref_mail_allow_unsecure == 1 %}checked="checked"{% endif %}{% if required.pref_mail_allow_unsecure is defined and required.pref_mail_allow_unsecure == 1 %} required="required"{% endif %}/>
+                                    <label for="pref_mail_allow_unsecure" class="tooltip">{{ _T("Allow unsecure TLS?") }}</label>
+                                </div>
+                                <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases.") }}"></i>
                             </div>
                         </div>
                     </div>
-                    <div id="smtp_auth"{% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') and pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %} style="display: none;"{% endif %}>
+                    <div id="smtp_auth" class="field">
                         <div class="field">
                             <label for="pref_mail_smtp_user">{{ _T("SMTP (or GMail) user:") }}</label>
                             <input type="text" name="pref_mail_smtp_user" id="pref_mail_smtp_user" value="{{ pref.pref_mail_smtp_user }}" maxlength="100" size="30"{% if required.pref_mail_smtp_user is defined and required.pref_mail_smtp_user == 1 %} required="required"{% endif %}/>
@@ -462,14 +516,6 @@
                         <div class="field">
                             <label for="pref_mail_smtp_password">{{ _T("SMTP (or GMail) password:") }}</label>
                             <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"{% if required.pref_mail_smtp_password is defined and required.pref_mail_smtp_password == 1 %} required="required"{% endif %}/>
-                        </div>
-                    </div>
-                    <div class="field mail_sign">
-                        <label for="pref_mail_sign" class="tooltip">{{ _T("Mail signature") }}</label>
-                        <div class="ui right corner labeled input">
-                            <div class="ui corner label" id="mail_sign">
-                            </div>
-                            <textarea name="pref_mail_sign" id="pref_mail_sign" rows="5">{{ pref.pref_mail_sign }}</textarea>
                         </div>
                     </div>
     {% endif %}
@@ -508,9 +554,11 @@
                         </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_etiq_border" class="tooltip">{{ _T("Print border") }}</label>
-                        <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Check this box to print a grey border around each label.") }}"></i>
-                        <input type="checkbox" name="pref_etiq_border" id="pref_etiq_border" value="1" {% if pref.pref_etiq_border == 1 %}checked="checked"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_etiq_border" id="pref_etiq_border" value="1" {% if pref.pref_etiq_border == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_etiq_border" class="tooltip">{{ _T("Print border") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Check this box to print a grey border around each label.") }}"></i>
                     </div>
                 </div>{# /column #}
                 <div class="column">
@@ -555,10 +603,10 @@
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required="required"{% endif %}/>
                             <a
                                 href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
-                                class="ui icon button tooltip"
-                                data-html="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"
+                                class="ui icon button"
                             >
-                                <i class="language icon"></i>
+                                <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"></i>
+                                <span class="hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_abrev}) }}</span>
                             </a>
                         </div>
                         <span class="exemple">{{ _T("(10 characters max)") }}</span>
@@ -569,54 +617,73 @@
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %} required="required"{% endif %}/>
                             <a
                                 href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
-                                class="ui icon button tooltip"
-                                data-html="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"
+                                class="ui icon button "
                             >
-                                <i class="language icon"></i>
+                                <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"></i>
+                                <span class="hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_strip}) }}</span>
                             </a>
                         </div>
                         <span class="exemple">{{ _T("(65 characters max)") }}</span>
                     </div>
                     <div class="grouped fields">
-                        <div class="field">
+                        <div class="inline field">
                             <label for="pref_card_tcol" class="tooltip">{{ _T("Strip Text Color:") }}</label>
-                            <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                             <input type="color" name="pref_card_tcol" id="pref_card_tcol" value="{{ pref.pref_card_tcol }}" size="7" maxlength="7"{% if required.pref_card_tcol is defined and required.pref_card_tcol == 1 %} required="required"{% endif %}/>
+                            <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                         </div>
-                        <div class="field">
+                        <div class="inline field">
                             <label for="pref_card_scol" class="tooltip">{{ _T("Active Member Color:") }}</label>
-                            <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                             <input type="color" name="pref_card_scol" id="pref_card_scol" value="{{ pref.pref_card_scol }}" size="7" maxlength="7"{% if required.pref_card_scol is defined and required.pref_card_scol == 1 %} required="required"{% endif %}/>
+                            <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                         </div>
-                        <div class="field">
+                        <div class="inline field">
                             <label for="pref_card_bcol" class="tooltip">{{ _T("Board Members Color:") }}</label>
-                            <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                             <input type="color" name="pref_card_bcol" id="pref_card_bcol" value="{{ pref.pref_card_bcol }}" size="7" maxlength="7"{% if required.pref_card_bcol is defined and required.pref_card_bcol == 1 %} required="required"{% endif %}/>
+                            <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                         </div>
-                        <div class="field">
+                        <div class="inline field">
                             <label for="pref_card_hcol" class="tooltip">{{ _T("Honor Members Color:") }}</label>
-                            <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                             <input type="color" name="pref_card_hcol" id="pref_card_hcol" value="{{ pref.pref_card_hcol }}" size="7" maxlength="7"{% if required.pref_card_hcol is defined and required.pref_card_hcol == 1 %} required="required"{% endif %}/>
+                            <i class="circular small inverted primary link icon info tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                         </div>
                     </div>{# /group fields #}
-                    <div class="field">
+                    <div class="field ui items">
                         <label for="card_logo"{% if required.card_logo is defined and required.card_logo == 1 %} required="required"{% endif %}>{{ _T("Logo:") }}</label>
+                        <div class="item">
     {% if print_logo.isCustom() %}
-                        <img src="{{ path_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
-                        <label for="del_card_logo">{{ _T("Delete image") }}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
+                            <div class="image">
+                                <img src="{{ path_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
+                            </div>
     {% endif %}
-                        <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                            <div class="content">
+                                <div class="description">
+                                    <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                                </div>
+                                <div class="extra">
+    {% if print_logo.isCustom() %}
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" />
+                                        <label for="del_card_logo">{{ _T("Delete image") }}</label>
+                                    </div>
+    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="field inline">
-                        <label for="pref_card_self">{{ _T("Allow members to print card ?") }}</label>
-                        <input type="checkbox" name="pref_card_self" id="pref_card_self" value="1" {% if pref.pref_card_self == 1 %}checked="checked"{% endif %}{% if required.pref_bool_display_title is defined and required.pref_bool_display_title == 1 %} required="required"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_card_self" id="pref_card_self" value="1" {% if pref.pref_card_self == 1 %}checked="checked"{% endif %}{% if required.pref_bool_display_title is defined and required.pref_bool_display_title == 1 %} required="required"{% endif %}/>
+                            <label for="pref_card_self">{{ _T("Allow members to print card ?") }}</label>
+                        </div>
                     </div>
                     <div class="field inline">
-                        <label for="pref_bool_display_title" class="tooltip">{{ _T("Show title ?") }}</label>
-                        <span class="tip">{{ _T("(Show or not title in front of name)") }}</span>
-                        <input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" value="1" {% if pref.pref_bool_display_title == 1 %}checked="checked"{% endif %}{% if required.pref_bool_display_title is defined and required.pref_bool_display_title == 1 %} required="required"{% endif %}/>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_display_title" id="pref_bool_display_title" value="1" {% if pref.pref_bool_display_title == 1 %}checked="checked"{% endif %}{% if required.pref_bool_display_title is defined and required.pref_bool_display_title == 1 %} required="required"{% endif %}/>
+                            <label for="pref_bool_display_title" class="tooltip">{{ _T("Show title ?") }}</label>
+                        </div>
+                        <i class="circular small inverted primary link icon info tooltip" title="{{ _T("(Show or not title in front of name)") }}"></i>
                     </div>
                     <div class="field">
                         <label for="pref_card_address">{{ _T("Address type:") }}</label>
@@ -633,7 +700,7 @@
                         <label for="pref_card_year">{{ _T("Year:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline") }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline") }}"></i>
                             </div>
                             <input type="text" name="pref_card_year" id="pref_card_year" value="{{ pref.pref_card_year }}" maxlength="9"{% if required.pref_card_year is defined and required.pref_card_year == 1 %} required="required"{% endif %}/>
                         </div>
@@ -672,25 +739,27 @@
 
 {% if login.isAdmin() %}
         <div class="ui{{ tab == 'security' ? ' active' }} tab segment" data-tab="security">
-                <div class="field">
+                <div class="inline field">
                     <label for="pref_password_length" title="{{ _T("Minimum password length required for all accounts. Minimal size is 6.") }}">{{ _T("Password length:") }}</label>
                     <div class="ui right corner labeled input">
                         <div class="ui corner label">
-                            <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Minimum password length required for all accounts. Minimal size is 6.") }}"></i>
+                            <i class="circular inverted primary link icon info tooltip" title="{{ _T("Minimum password length required for all accounts. Minimal size is 6.") }}"></i>
                         </div>
                         <input type="number" name="pref_password_length" id="pref_password_length" value="{{ pref.pref_password_length }}" min="6" size="7" required="required"/>
                     </div>
                 </div>
-                <div class="field inline">
-                    <label for="pref_password_blacklist" title="{{ _T("Enable password blacklists") }}">{{ _T("Enable blacklists:") }}</label>
-                    <i class="circular small inverted primary link icon info tooltip" data-html="{{ _T("If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns.") }}"></i>
-                    <input type="checkbox" name="pref_password_blacklist" id="pref_password_blacklist" value="1"{% if pref.pref_password_blacklist == 1 %} checked="checked"{% endif %}/>
+                <div class="inline field">
+                    <div class="ui right aligned toggle checkbox">
+                        <input type="checkbox" name="pref_password_blacklist" id="pref_password_blacklist" value="1"{% if pref.pref_password_blacklist == 1 %} checked="checked"{% endif %}/>
+                        <label for="pref_password_blacklist" title="{{ _T("Enable password blacklists") }}">{{ _T("Enable blacklists:") }}</label>
+                    </div>
+                    <i class="circular small inverted primary link icon info tooltip" title="{{ _T("If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns.") }}"></i>
                 </div>
-                <div class="field">
+                <div class="inline field">
                     <label for="pref_password_strength" title="{{ _T("Enforce password strength") }}">{{ _T("Password strength:") }}</label>
                     <div class="ui right corner labeled input">
                         <div class="ui corner label">
-                            <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Enforce minimal password strength for all password.") }}<br/><br/>
+                            <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enforce minimal password strength for all password.") }}<br/><br/>
                                 {{ _T("Levels are:") }}<br/>
                                 <em>* {{ _T("None") }}</em> {{ _T("for no strength enforcement") }}<br/>
                                 <em>* {{ _T("Weak") }}</em> {{ _T("require at least one matched rule") }}<br/>
@@ -709,11 +778,11 @@
                         </select>
                     </div>
                 </div>
-                <div id="test_password_strength_field" class="field">
+                <div id="test_password_strength_field" class="inline field">
                     <label for="test_password_strength" title="{{ _T("Test a password with current selected values.") }}">{{ _T("Test a password:") }}</label>
                     <div class="ui right corner labeled input">
                         <div class="ui corner label">
-                            <i class="circular inverted primary link icon info tooltip" data-html="{{ _T("Test a password with current selected values.") }}<br/>{{ _T("Do not forget to save your preferences if you're happy with the result ;)") }}"></i>
+                            <i class="circular inverted primary link icon info tooltip" title="{{ _T("Test a password with current selected values.") }}<br/>{{ _T("Do not forget to save your preferences if you're happy with the result ;)") }}"></i>
                         </div>
                         <input type="text" id="test_password_strength"/>
                     </div>
@@ -722,23 +791,23 @@
         </div>{# /tab segment #}
 {% endif %}
 {% if login.isSuperAdmin() %}
-        <div class="ui{{ tab == 'admin' ? ' active' }} tab red inverted segment" data-tab="admin">
+        <div class="ui{{ tab == 'admin' ? ' active' }} tab red segment" data-tab="admin">
     {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
                 <div class="ui negative message">
                     {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
                 </div>
     {% else %}
-                <div class="field">
+                <div class="inline field">
                     <label for="pref_admin_login">{{ _T("Username:") }}</label>
                     <input type="text" name="pref_admin_login" id="pref_admin_login" value="{{ pref.pref_admin_login }}" maxlength="20"{% if required.pref_admin_login is defined and required.pref_admin_login == 1 %} required="required"{% endif %}/>
                 </div>
-                <div id="pref_admin_pass_field" class="field">
+                <div id="pref_admin_pass_field" class="inline field">
                     <label for="pref_admin_pass">{{ _T("Password:") }}</label>
                     <div class="ui input">
                         <input type="password" name="pref_admin_pass" id="pref_admin_pass" value="" maxlength="20" autocomplete="off"{% if required.pref_admin_pass is defined and required.pref_admin_pass == 1 %} required="required"{% endif %}/>
                     </div>
                 </div>
-                <div class="field">
+                <div class="inline field">
                     <label for="pref_admin_pass_check">{{ _T("Retype password:") }}</label>
                     <input type="password" name="pref_admin_pass_check" id="pref_admin_pass_check" value="" maxlength="20"{% if required.pref_admin_pass_check is defined and required.pref_admin_pass_check == 1 %} required="required"{% endif %}/>
                 </div>
@@ -766,25 +835,37 @@
 
 {% block javascripts %}
         <script type="text/javascript">
-
-            $('#no,#php,#qmail').click(function(){
-                $('#smtp_parameters,#smtp_auth').hide();
-            });
-            $('#smtp,#gmail').click(function(){
-                $('#smtp_parameters,#smtp_auth').show();
-            });
-            $('#gmail').click(function(){
-                $('#smtp_parameters').hide();
-                $('#smtp_auth').show();
-            });
-
-            $('#smtp,#gmail').checkbox({
-                onChange: function() {
-                    $('#smtp_parameters,#smtp_auth').show();
-                }
-            });
-
             $(function(){
+    {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %}
+                $('#smtp_parameters').addClass('hidden');
+    {% endif %}
+    {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') and pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}
+                $('#smtp_auth').addClass('hidden');
+    {% endif %}
+                $('.ui.radio.checkbox').checkbox({
+                    onChange: function() {
+                        var _checked = $(this).closest('input').attr('id');
+                        var _smtp_parameters = $(this).closest('.checkbox').parent().parent().siblings('#smtp_parameters');
+                        var _smtp_auth = $(this).closest('.checkbox').parent().parent().siblings('#smtp_auth');
+                        if ( _checked == 'smtp' ) {
+                            _smtp_parameters.removeClass('hidden');
+                            _smtp_auth.removeClass('hidden');
+                        } else if ( _checked == 'gmail' ) {
+                            _smtp_parameters.addClass('hidden');
+                            _smtp_auth.removeClass('hidden');
+                        } else {
+                            _smtp_parameters.addClass('hidden');
+                            _smtp_auth.addClass('hidden');
+                        }
+                    }
+                });
+                /*$('#smtp, #gmail').checkbox({
+                    onChecked: function() {
+                        console.log($(this).closest('#smtp_parameters'));
+                        //$('#smtp_parameters, #smtp_auth').toggleClass('hidden');
+                    }
+                });*/
+
                 $('.pointing.menu .item').tab({
                     onVisible: function(tabPath) {
                         document.getElementById('tab').value = tabPath;

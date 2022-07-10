@@ -1,0 +1,9 @@
+/*******************************
+       Galette Overrides
+*******************************/
+
+.ui.form .inline.field > input[type=color] {
+  padding: 0;
+  width: 4rem;
+  height: 2rem;
+}
