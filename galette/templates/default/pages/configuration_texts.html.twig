@@ -22,7 +22,7 @@
                                 <option value="{{ ref.tref }}" {% if cur_ref == ref.tref %}selected="selected"{% endif %} >{{ ref.tcomment }}</option>
                             {% endfor %}
                         </select>
-                        <noscript> <span><input type="submit" value="{{ _T("Change") }}" /></span></noscript>
+                        <noscript><span><input type="submit" value="{{ _T("Change") }}" class="ui button" /></span></noscript>
                     </div>
                     {% include 'components/forms/csrf.html.twig' %}
                 </div>
