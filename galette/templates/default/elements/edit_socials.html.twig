@@ -1,5 +1,5 @@
 {% if tabbed ?? false == true %}
-<div id="social" class="ui{{ tab == 'social' ? ' active' }} bottom attached tab segment" data-tab="social">
+<div id="social" class="ui{{ tab == 'social' ? ' active' }} tab segment" data-tab="social">
     {% block social_edit %}
         <div id="social" class="ui bottom attached{% if tabbed ?? false == true %}tab {% endif %}segment" data-tab="social">
             {% for social in socials %}
@@ -82,7 +82,7 @@
 {% else %}
     <div id="social" class="ui styled fluid accordion field">
         <div class="active title">
-            <i class="icon dropdown"></i>
+            <i class="jsonly hidden icon dropdown"></i>
             {{ _T("Social networks") }}
         </div>
         <div class="active content field">

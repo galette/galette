@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <div class="ui basic fitted segment">
+    <div class="jsonly hidden ui basic fitted segment">
         <button id="collapse" class="ui labeled icon button">
             <i class="angle double up icon"></i>
             {{ _T("Collapse all") }}
@@ -13,9 +13,9 @@
     {% set catname = category.category %}
         <div class="galetteform ui styled fluid accordion field">
             <div class="active ui title">
-                <i class="dropdown icon"></i>
+                <i class="jsonly hidden dropdown icon"></i>
                 {{ _T(catname) }}
-                <i class="arrows alternate icon"></i>
+                <i class="jsonly hidden arrows alternate icon"></i>
             </div>
             <div class="active content">
                 <div class="ui basic fitted segment">
@@ -42,7 +42,7 @@
                         <div class="ui three column stackable grid">
                             <div class="middle aligned row">
                                 <div class="column">
-                                    <i class="arrows alternate icon"></i>
+                                    <i class="jsonly hidden arrows alternate icon"></i>
                                     <span data-title="{{ _T("Field name") }}" class="fieldname">
                                         <input type="hidden" name="fields[]" value="{{ fid }}"/>
                                         <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
@@ -149,7 +149,11 @@
 
                 _child.toggleClass('down').toggleClass('up');
 
-                $('#config_fields_form .accordion .content').toggleClass('active');
+                if (_isExpand == true) {
+                    $('.ui.accordion.galetteform').accordion('close', 0);
+                } else {
+                    $('.ui.accordion.galetteform').accordion('open', 0);
+                }
             });
         }
 
