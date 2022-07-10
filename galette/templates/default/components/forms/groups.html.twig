@@ -13,7 +13,7 @@
     </a>
     {% endif %}
     {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-    <noscript><div class="ui message">{{ _T("This function requires javascript.") }}</div></noscript>
+    <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
     {% endif %}
     <span id="usergroups_form">
     {% if member.id %}

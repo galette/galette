@@ -1,13 +1,18 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
+    <noscript>
+        <div class="ui basic fitted center aligned segment">
+            <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
+        </div>
+    </noscript>
     <form action="{{ path_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
         <div id="members_tab" class="cssform ui grid">
             <div class="eight wide column">
                 <div class="ui top attached accordion-styled header">
                     {{ _T("Fields in list") }}
                 </div>
-                <div class="ui bottom attached accordion-styled segment">
+                <div class="jsonly disabled ui bottom attached accordion-styled segment">
                     <div class="ui basic fitted segment">
                         <div class="ui two column stackable grid">
                             <div class="middle aligned row">
@@ -54,7 +59,7 @@
                 <div class="ui top attached accordion-styled header">
                     {{ _T("Available fields") }}
                 </div>
-                <div class="ui bottom attached accordion-styled segment">
+                <div class="jsonly disabled ui bottom attached accordion-styled segment">
                     <div class="ui basic fitted segment">
                         <div class="ui two column stackable grid">
                             <div class="middle aligned row">
