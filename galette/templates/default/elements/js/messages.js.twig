@@ -40,25 +40,47 @@ $('.message.with-transition')
       .toast({
         displayTime: 0,
         position: 'bottom right',
-        message: "{{ _T("Your telemetry data are more than one year old.") }} {{ _T("Do you want to send it again?") }}",
+        message: "{{ _T("Your telemetry data are more than one year old.")|e('js') }} {{ _T("Do you want to send it again?")|e('js') }}",
         classActions: 'bottom attached',
         actions:    [{
-          text: "{{ _T("Yes") }}",
+          text: "{{ _T("Yes")|e('js') }}",
           class: 'green',
           click: function() {
-            $('body').toast({message:'TODO: bind telemetry action'});
+              $.ajax({
+                  url:  '{{ path_for('telemetryInfos') }}',
+                  success: function(data) {
+                      $('#telemetry_panel .tdata').append(data);
+                      $('#telemetry_panel').modal('show');
+                  }
+              });
           }
         },{
           text: "{{ _T("No") }}",
           class: 'red',
           click: function() {
-            $(this).toast('close');
+              Cookies.set(
+                  'renew_telemetry',
+                  1,
+                  {
+                      expires: 365,
+                      path: '/'
+                  }
+              );
+              $(this).toast('close');
           }
         },{
           text: "{{ _T("Later") }}",
           class: 'blue',
           click: function() {
-            $('body').toast({message:'TODO: bind telemetry action'});
+              Cookies.set(
+                  'renew_telemetry',
+                  1,
+                  {
+                      expires: 182,
+                      path: '/'
+                  }
+              );
+              $(this).toast('close');
           }
         }]
       })
