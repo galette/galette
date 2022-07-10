@@ -1,11 +1,11 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-<div class="ui two item top attached stackable tabs menu tabbed">
-    <a class="item active" data-tab="current">{{ _T('Current model') }}</a>
-    <a class="item" data-tab="change">{{ _T('Change model') }}</a>
+<div class="ui stackable pointing inverted menu tabbed">
+    <a href="{{ path_for('importModel') }}?tab=current" class="item{{ tab == 'current' ? ' active' }}" data-tab="current">{{ _T('Current model') }}</a>
+    <a href="{{ path_for('importModel') }}?tab=change" class="item{{ tab == 'change' ? ' active' }}" data-tab="change">{{ _T('Change model') }}</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="current">
+<div class="ui{{ tab == 'current' ? ' active' }} tab segment" data-tab="current">
     <table class="listing ui celled table">
         <div class="ui small header">
             {% if defaults_loaded %}
@@ -48,7 +48,7 @@
         {% endif %}
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="change">
+<div class="ui{{ tab == 'change' ? ' active' }} tab segment" data-tab="change">
     <form action="{{ path_for('storeImportModel') }}" method="POST" class="ui form" id="modelform">
         <table class="listing ui celled table">
             <thead>

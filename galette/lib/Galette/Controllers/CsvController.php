@@ -587,6 +587,14 @@ class CsvController extends AbstractController
         unset($import_fields['id_adh']);
         $import_fields += $dynamic_import_fields;
 
+        //Active tab on page
+        $tab_param = $request->getQueryParam('tab', $default = null);
+        if (isset($tab_param)) {
+            $tab = $tab_param;
+        } else {
+            $tab = 'current';
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -597,7 +605,8 @@ class CsvController extends AbstractController
                 'model'             => $model,
                 'defaults'          => $defaults,
                 'members_fields'    => $import_fields,
-                'defaults_loaded'   => $defaults_loaded
+                'defaults_loaded'   => $defaults_loaded,
+                'tab'               => $tab
             )
         );
         return $response;
