@@ -341,7 +341,7 @@ def add_libs(rel_name, galette_archive):
     shutil.rmtree(os.path.join(npm_dir, 'ui'))
 
     #install php dependencies
-    composer_cmd = 'composer install --no-dev'
+    composer_cmd = 'composer install --ignore-platform-reqs --no-dev'
     composer_dir = os.path.join(src_dir, rel_name, 'galette')
     print(composer_dir)
     p1 = subprocess.Popen(composer_cmd, shell=True, cwd=composer_dir)
