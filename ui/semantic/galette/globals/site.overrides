@@ -262,3 +262,6 @@ footer .ui.horizontal.list > .item{
 .nojs select[multiple].ui.dropdown {
   height: 7rem;
 }
+.nojs .sortable-items .ui.segment {
+  cursor: auto;
+}
