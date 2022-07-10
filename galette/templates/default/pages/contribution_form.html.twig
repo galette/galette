@@ -189,7 +189,7 @@
                 <div class="active content field">
                     <div class="field inline">
                         <label>{{ _T("Dispatch type:") }}</label>
-                        <i class="circular inverted primary small icon info tooltip" data-html="{{ _T("Select a contribution type to create for dispatch transaction") }}"></i>
+                        <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}"></i>
                         <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}" checked="checked"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
                         <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
                     </div>

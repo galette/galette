@@ -139,7 +139,7 @@
                     selector: "#delete",
                     loader: "button"
                 } %}
-                var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" data-html="{{ _T("Show associated query")|e('js') }}"></i>');
+                var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" title="{{ _T("Show associated query")|e('js') }}"></i>');
                 $('.sql_log').hide().parent().prepend(_elt);
                 $('.qryhide').click(function() {
                     $(this).next('.sql_log').show();
