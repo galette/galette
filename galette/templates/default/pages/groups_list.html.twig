@@ -187,12 +187,12 @@
                         if ( res != 0 ) {
                             _container.find('table.listing').remove();
                             _container.children('.segment').append(res);
-                            _container.children('.segment').append(_modified);
+                            _container.children('#group_' + mode + ' .segment').append(_modified);
                         } else {
                             var _emptyselection = '<tbody><tr><td colspan="2">{{ _T("No member attached")|e('js') }}</td></tr></tbody>';
                             _container.find('table.listing tbody').remove();
                             _container.find('table.listing').append(_emptyselection);
-                            _container.children('.segment').append(_modified);
+                            _container.children('#group_' + mode + ' .segment').append(_modified);
                         }
                         $('.members-selection').modal('hide');
                         $('.message.with-transition').transition('flash');
@@ -246,10 +246,13 @@
                         mode: _mode,
                         multiple: true
                     },
-                    {% include 'elements/js/loader.js.twig' %},
+                    {% include 'elements/js/loader.js.twig' with {
+                        loader: '#listing'
+                    } %},
                     success: function(res){
-                        $('.members-selection').empty();
-                        _members_ajax_mapper(res, gid, _mode);
+                        $('#listing').empty();
+                        //_members_ajax_mapper(res, gid, _mode);
+                        alert('TODO');
                     },
                     error: function() {
                         alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
