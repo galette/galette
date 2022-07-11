@@ -226,7 +226,7 @@
                     }
                     $('body').modal({
                         title: _title,
-                        class: 'fullscreen scrolling',
+                        class: 'groups-selection fullscreen scrolling',
                         content: res,
                         actions: [{
                             text    : '{{ _T("Close")|e('js') }}',
@@ -267,7 +267,7 @@
                             _groups_str += _gname;
                         });
                         $('#' + _form + 'groups').html(_groups_str);
-                        $('#ajax_groups_list').modal('hide');
+                        $('.groups-selection').modal('hide');
                     });
                     //Remap links
                     var _none = $('#none_selected').clone();
