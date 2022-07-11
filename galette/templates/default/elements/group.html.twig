@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div class="ui{{ tab == 'group_managers' ? ' active' }} tab segment" data-tab="group_managers">
+    <div id="group_managers" class="ui{{ tab == 'group_managers' ? ' active' }} tab segment" data-tab="group_managers">
         <div class="ui basic segment">
             {% if group %}
                 {% include "elements/group_persons.html.twig" with {'person_mode': "managers", 'persons': managers} %}
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <div class="ui{{ tab == 'group_members' ? ' active' }} tab segment" data-tab="group_members">
+    <div id="group_members" class="ui{{ tab == 'group_members' ? ' active' }} tab segment" data-tab="group_members">
         <div class="ui basic segment">
             {% if group %}
                 {% include "elements/group_persons.html.twig" with {'person_mode': "members", 'persons': members} %}

@@ -167,8 +167,9 @@
                 $('li[id^="member_"]').each(function(){
                     _persons[_persons.length] = this.id.substring(7, this.id.length);
                 });
-                $('.members-selection').modal('hide');
-
+                if ( _persons.length == 0 ) {
+                    var _persons = '';
+                }
                 $.ajax({
                     url: '{{ path_for('ajaxGroupMembers') }}',
                     type: "POST",
@@ -176,10 +177,26 @@
                         persons: _persons,
                         person_mode: mode
                     },
-                    {% include 'elements/js/loader.js.twig' %},
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: '#btnvalid',
+                        loader: 'button'
+                    } %},
                     success: function(res){
-                        _container.find('table.listing').remove();
-                        _container.children('div').append(res);
+                        var _modified = '<div class="ui orange message with-transition"><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
+                        _container.find('.message').remove();
+                        if ( res != 0 ) {
+                            _container.find('table.listing').remove();
+                            _container.children('.segment').append(res);
+                            _container.children('.segment').append(_modified);
+                        } else {
+                            var _emptyselection = '<tbody><tr><td colspan="2">{{ _T("No member attached")|e('js') }}</td></tr></tbody>';
+                            _container.find('table.listing tbody').remove();
+                            _container.find('table.listing').append(_emptyselection);
+                            _container.children('.segment').append(_modified);
+                        }
+                        $('.members-selection').modal('hide');
+                        $('.message.with-transition').transition('flash');
+;
                     },
                     error: function() {
                         alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
@@ -194,13 +211,13 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('.members-selection table.listing a').click(function(e){
+            $('.members-selection a.choice').click(function(e){
                 e.preventDefault();
                 var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '"><i class="ui user minus icon"></i> ' + _mname + '</li>';
+                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon"></i><span class="ui content">' + _mname + '</span></li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();
@@ -212,7 +229,7 @@
                 return false;
             });
 
-            $('.members-selection .pages a').click(function(){
+            $('.members-selection .pagination a').click(function(){
                 var gid = $('#the_id').val();
                 var _members = new Array();
                 $('li[id^="member_"]').each(function(){
