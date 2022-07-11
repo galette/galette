@@ -543,6 +543,11 @@ class ContributionsController extends CrudController
             $tpl_vars['pmember'] = $member;
         }
 
+        // hide column action in ajax mode
+        if ($ajax === true) {
+            $tpl_vars['no_action'] = true;
+        }
+
         // display page
         $this->view->render(
             $response,

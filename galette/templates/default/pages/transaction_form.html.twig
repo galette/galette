@@ -190,12 +190,15 @@
                         ajax: true,
                         max_amount: '{{ transaction.getMissingAmount() }}'
                     },
-                    {% include "elements/js/loader.js.twig" %},
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: '#contribslist',
+                        loader: 'button'
+                    } %},
                     success: function(res){
                         _contribs_dialog(res);
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(") }}");
+                        alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
                     }
                 });
                 return false;
@@ -204,7 +207,7 @@
             var _contribs_dialog = function(res){
                 $('body').modal({
                     title: '{{ _T("Contributions selection")|e("js") }}',
-                    class: 'fullscreen scrolling',
+                    class: 'contributions-selection fullscreen scrolling',
                     content: res,
                     actions: [{
                         text    : '{{ _T("Close")|e("js") }}',
@@ -215,53 +218,54 @@
             }
 
             var _contribs_ajax_mapper = function(res){
-                $("#contributions_list #legende").remove();
-                $("#contributions_list i.fa-filter").remove();
+                $(".contributions-selection .infoline .button").remove();
 
                 //Deactivate contributions list links
-                $('#contributions_list tbody a').click(function(){
+                $('.contributions-selection tbody a').click(function(){
                     //for links in body (members links), we de nothing
                     return false;
                 });
-                _bindNbshow('#contributions_list #filtre');
+                _bindNbshow('.contributions-selection #filtre');
                 //Use JS to send form
-                $('#contributions_list #filtre').submit(function(){
+                $('.contributions-selection #filtre').submit(function(){
                     $.ajax({
-                        url: this.action,
+                        url: $(this).action,
                         type: "POST",
                         data: $("#filtre").serialize(),
                         {% include "elements/js/loader.js.twig" %},
                         success: function(res){
-                            $('#contributions_list').empty();
-                            _contribs_ajax_mapper(res);
+                            $('.contributions-selection div.content').empty();
+                            //_contribs_ajax_mapper(res);
+                            alert('TODO');
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred displaying contributions :(") }}");
+                            alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
                         }
                     });
                     return false;
                 });
                 //Bind pagination and ordering links
-                $('#contributions_list .pages a, #contributions_list thead a').bind({
+                $('.contributions-selection .pagination a, .contributions-selection thead a').bind({
                     click: function(){
                         $.ajax({
                             url: this.href.substring(this.href.indexOf('?')) + (this.href.indexOf('?') > -1 ? "&" : "?") + "ajax=true",
                             type: "GET",
                             {% include "elements/js/loader.js.twig" %},
                             success: function(res){
-                                $('#contributions_list').empty();
-                                _contribs_ajax_mapper(res);
+                                $('.contributions-selection div.content').empty();
+                                //_contribs_ajax_mapper(res);
+                                alert('TODO');
                             },
                             error: function() {
-                                alert("{{ _T("An error occurred displaying contributions :(") }}");
+                                alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
                             },
                         });
                         return false;
                     }
                 });
                 //Select a row
-                $('#contributions_list .contribution_row').click(function(){
-                    $('#contributions_list').modal('hide');
+                $('.contributions-selection .contribution_row').click(function(){
+                    $('.contributions-selection').modal('hide');
                     var _cid = $(this).find('input[name="entries_sel[]"]').val();
                     window.location.href = '{{ path_for("attach_contribution", {"id": transaction.id, "cid": "%cid"}) }}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
