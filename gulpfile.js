@@ -149,7 +149,7 @@ function styles() {
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
-  summernote = gulp.src(paths.styles.main)
+  summernote = gulp.src(paths.styles.summernote)
     .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
     .pipe(concat('summernote.min.css'))
