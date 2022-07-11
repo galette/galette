@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).

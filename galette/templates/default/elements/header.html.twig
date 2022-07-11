@@ -4,6 +4,11 @@
         <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" type="text/css" href="{{ base_url() }}/assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.css" />
+
+    {% if html_editor %}
+        <link rel="stylesheet" type="text/css" href="{{ base_url() }}/assets/css/summernote.min.css" />
+    {% endif %}
+
     {# Let's see if a local CSS exists and include it #}
     {% set localstylesheet = constant('_CURRENT_THEME_PATH') ~ "galette_local.css" %}
     {% if file_exists(localstylesheet) %}
@@ -16,7 +21,8 @@
         <link rel="stylesheet" type="text/css" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}galette_print_local.css" media="print" />
     {% endif %}
         <link rel="shortcut icon" href="{{ base_url() }}/{{ constant('GALETTE_THEME') }}images/favicon.png" />
-        <script type="text/javascript" src="{{ base_url() }}/assets/js/galette-main.bundle.min.js"></script>
+
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/jquery.min.js"></script>
 
 {# If some additional headers should be added from plugins, we load the relevant template file
    We have to use a template file, so Twig will do its work (like replacing variables). #}

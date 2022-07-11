@@ -1,4 +1,6 @@
         <script type="text/javascript" src="{{ base_url() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/galette-main.bundle.min.js"></script>
+
         <script type="text/javascript">
             function csrfSafeMethod(method) {
                 // these HTTP methods do not require CSRF protection
@@ -54,15 +56,18 @@
 
             });
         </script>
-        <script type="module" src="{{ base_url() }}/assets/js/galette-sortablejs.bundle.min.js"></script>
+    {% if login.isLogged() %}
+        <script type="module" src="{{ base_url() }}/assets/js/sortable.min.js"></script>
+    {% endif %}
     {% if require_charts %}
-        <script type="module" src="{{ base_url() }}/assets/js/galette-chartjs.bundle.min.js"></script>
+        <script type="module" src="{{ base_url() }}/assets/js/chartjs.min.js"></script>
     {% endif %}
     {% if require_mass %}
-        <script type="text/javascript" src="{{ base_url() }}/assets/js/mass_changes.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/masschanges.min.js"></script>
     {% endif %}
     {% if html_editor %}
-        <script src="{{ base_url() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/summernote.min.js"></script>
+        <script type="text/javascript" src="{{ base_url() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
         <script language="javascript">
             function activateMailingEditor(id) {
                 if(!$('#mailing_html').attr('checked')){

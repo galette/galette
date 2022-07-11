@@ -42,6 +42,7 @@ var paths = {
     }
   },
   src: {
+    semantic: './semantic.json',
     theme: './ui/semantic/galette/**/*',
     config: './ui/semantic/theme*',
     files: [
@@ -60,16 +61,19 @@ var paths = {
   },
   styles: {
     main: [
-      './ui/css/galette.css',
+      './ui/css/galette.css'
+    ],
+    summernote: [
       './node_modules/summernote/dist/summernote-lite.min.css'
     ]
   },
   scripts: {
     main: [
-      './node_modules/jquery/dist/jquery.js',
-      './node_modules/js-cookie/dist/js.cookie.min.js',
-      './node_modules/summernote/dist/summernote-lite.min.js',
+      './node_modules/js-cookie/dist/js.cookie.js',
       './ui/js/common.js'
+    ],
+    masschanges: [
+      './ui/js/masschanges.js'
     ],
     chartjs: [
       './node_modules/chart.js/dist/chart.min.js',
@@ -78,6 +82,9 @@ var paths = {
     ],
     sortablejs: [
       './node_modules/sortablejs/Sortable.min.js'
+    ],
+    summernote: [
+      './node_modules/summernote/dist/summernote-lite.min.js'
     ]
   },
   extras: [
@@ -88,14 +95,14 @@ var paths = {
       src: './ui/css/install.css',
       dest: 'css/'
     }, {
-      src: './ui/js/mass_changes.js',
-      dest: 'js/'
-    }, {
       src: './node_modules/summernote/dist/font/*',
       dest: 'webfonts/'
     }, {
       src: './node_modules/summernote/dist/lang/*.min.js',
       dest: 'js/lang/'
+    }, {
+      src: './node_modules/jquery/dist/jquery.min.js',
+      dest: 'js/'
     }
   ]
 };
@@ -137,33 +144,58 @@ function clean() {
 
 function styles() {
   main = gulp.src(paths.styles.main)
-    .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
     .pipe(concat('galette-main.bundle.min.css'))
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
-  return merge(main);
+  summernote = gulp.src(paths.styles.main)
+    .pipe(replace('url(font/', 'url(../webfonts/'))
+    .pipe(cleanCSS())
+    .pipe(concat('summernote.min.css'))
+    .pipe(gulp.dest(paths.assets.css))
+    .pipe(browserSync.stream());
+
+  return merge(main, summernote);
 }
 
 function scripts() {
   main = gulp.src(paths.scripts.main)
     .pipe(concat('galette-main.bundle.min.js'))
-    .pipe(uglify())
+    .pipe(uglify({
+      output: {
+        comments: /^!/
+      }
+    }))
+    .pipe(gulp.dest(paths.assets.js))
+    .pipe(browserSync.stream());
+
+  masschanges = gulp.src(paths.scripts.masschanges)
+    .pipe(concat('masschanges.min.js'))
+    .pipe(uglify({
+      output: {
+        comments: /^!/
+      }
+    }))
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
   chartjs = gulp.src(paths.scripts.chartjs)
-    .pipe(concat('galette-chartjs.bundle.min.js'))
+    .pipe(concat('chartjs.min.js'))
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
   sortablejs = gulp.src(paths.scripts.sortablejs)
-    .pipe(concat('galette-sortablejs.bundle.min.js'))
+    .pipe(concat('sortable.min.js'))
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  return merge(main, chartjs, sortablejs);
+  summernote = gulp.src(paths.scripts.summernote)
+    .pipe(concat('summernote.min.js'))
+    .pipe(gulp.dest(paths.assets.js))
+    .pipe(browserSync.stream());
+
+  return merge(main, masschanges, chartjs, sortablejs, summernote);
 }
 
 function extras() {
@@ -183,6 +215,7 @@ function watch() {
   })
 
   gulp.watch([paths.src.favicon, paths.src.logo, paths.src.photo], gulp.series(galette)).on('change', browserSync.reload)
+  gulp.watch([paths.src.semantic], gulp.series(theme, 'build ui')).on('change', browserSync.reload)
   gulp.watch([paths.src.theme, paths.src.config], gulp.series(theme, 'build-css')).on('change', browserSync.reload)
   gulp.watch([paths.src.css], gulp.series(styles)).on('change', browserSync.reload)
   gulp.watch([paths.src.js], gulp.series(scripts)).on('change', browserSync.reload)
