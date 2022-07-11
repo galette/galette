@@ -255,7 +255,7 @@
         var _members_dialog = function(res){
             $('body').modal({
                 title: '{{ _T("Members selection")|e("js") }}',
-                class: 'fullscreen scrolling',
+                class: 'members-selection fullscreen scrolling',
                 content: res,
                 actions: [{
                     text    : '{{ _T("Close")|e('js') }}',
@@ -285,8 +285,7 @@
                     success: function(res){
                         $('#unreachables_count').remove();
                         $('#recipients_count').replaceWith(res);
-                        $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' );
-                        $('#members_list').modal('hide');
+                        $('.members-selection').modal('hide');
                     },
                     error: function() {
                         alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
@@ -301,7 +300,7 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('#listing tbody a').click(function(e){
+            $('.members-selection a.choice').click(function(e){
                 e.preventDefault();
                 var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
@@ -319,7 +318,7 @@
                 return false;
             });
 
-            $('#members_list .pages a').click(function(){
+            $('.members-selection .pagination a').click(function(){
                 var _members = new Array();
                 var _unreach = new Array();
                 $('li[id^="member_"]').each(function(){
@@ -340,11 +339,12 @@
                         unreachables: _unreach
                     },
                     {% include "elements/js/loader.js.twig" with {
-                        loader: '#members_list'
+                        loader: '#listing'
                     } %},
                     success: function(res){
-                        $('#members_list').empty();
-                        _members_ajax_mapper(res);
+                        $('#listing').empty();
+                        //_members_ajax_mapper(res);
+                        alert('TODO');
                     },
                     error: function() {
                         alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
