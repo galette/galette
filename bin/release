@@ -336,9 +336,16 @@ def add_libs(rel_name, galette_archive):
     #node modules are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
 
-    #UI sources are no longer needed
+    #UI sources and some built assets are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'semantic'))
     shutil.rmtree(os.path.join(npm_dir, 'ui'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/components'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/themes/basic'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/themes/github'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/themes/material'))
+    os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.js'))
+    os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.css'))
+    os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.rtl.css'))
 
     #install php dependencies
     composer_cmd = 'composer install --ignore-platform-reqs --no-dev'
