@@ -170,6 +170,13 @@
         </p>
     </div>
 {% endif %}
+    <div id="contributions-modal" class="ui modal">
+        <div class="header"></div>
+        <div class="content"></div>
+        <div class="actions">
+            <button class="ui cancel button">{{ _T("Close")|e("js") }}</button>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -205,38 +212,62 @@
             });
 
             var _contribs_dialog = function(res){
-                $('body').modal({
+                $('#contributions-modal').modal({
                     title: '{{ _T("Contributions selection")|e("js") }}',
                     class: 'contributions-selection fullscreen scrolling',
                     content: res,
-                    actions: [{
-                        text    : '{{ _T("Close")|e("js") }}',
-                        class   : 'cancel'
-                    }]
+                    autofocus: false
                 }).modal('show');
                 _contribs_ajax_mapper(res);
             }
 
             var _contribs_ajax_mapper = function(res){
-                $(".contributions-selection .infoline .button").remove();
+                $('.contributions-selection .filter.icon').remove();
+                $('.contributions-selection .infoline .button').remove();
+                $('.contributions-selection .contribution_row input[type=checkbox]').hide();
+
+                //Apply dropdowns style
+                $('.contributions-selection .dropdown').dropdown();
 
                 //Deactivate contributions list links
                 $('.contributions-selection tbody a').click(function(){
                     //for links in body (members links), we de nothing
                     return false;
                 });
-                _bindNbshow('.contributions-selection #filtre');
-                //Use JS to send form
+
+                //Use JS to send forms
                 $('.contributions-selection #filtre').submit(function(){
                     $.ajax({
                         url: $(this).action,
                         type: "POST",
-                        data: $("#filtre").serialize(),
+                        data: $('.contributions-selection #filtre').serialize(),
                         {% include "elements/js/loader.js.twig" %},
                         success: function(res){
-                            $('.contributions-selection div.content').empty();
-                            //_contribs_ajax_mapper(res);
-                            alert('TODO');
+                            $('#contributions-modal').modal({
+                                content: res
+                            }).modal('show');
+                            _contribs_ajax_mapper(res);
+                        },
+                        error: function() {
+                            alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
+                            console.log(this.url);
+                        }
+                    });
+                    return false;
+                });
+
+                _bindNbshow('.contributions-selection #filtre_records');
+                $('.contributions-selection #filtre_records').submit(function(){
+                    $.ajax({
+                        url: $(this).action,
+                        type: "POST",
+                        data: $('.contributions-selection #filtre_records').serialize(),
+                        {% include "elements/js/loader.js.twig" %},
+                        success: function(res){
+                            $('#contributions-modal').modal({
+                                content: res
+                            }).modal('show');
+                            _contribs_ajax_mapper(res);
                         },
                         error: function() {
                             alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
@@ -252,9 +283,10 @@
                             type: "GET",
                             {% include "elements/js/loader.js.twig" %},
                             success: function(res){
-                                $('.contributions-selection div.content').empty();
-                                //_contribs_ajax_mapper(res);
-                                alert('TODO');
+                                $('#contributions-modal').modal({
+                                    content: res
+                                }).modal('show');
+                                _contribs_ajax_mapper(res);
                             },
                             error: function() {
                                 alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
