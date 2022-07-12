@@ -226,8 +226,9 @@
                 $('.contributions-selection .infoline .button').remove();
                 $('.contributions-selection .contribution_row input[type=checkbox]').hide();
 
-                //Apply dropdowns style
-                $('.contributions-selection .dropdown').dropdown();
+                //Initialize Fomantic components
+                $('.contributions-selection .dropdown').dropdown()
+                $('[id$="rangestart"], [id$="rangeend"]').calendar();
 
                 //Deactivate contributions list links
                 $('.contributions-selection tbody a').click(function(){
@@ -238,10 +239,12 @@
                 //Use JS to send forms
                 $('.contributions-selection #filtre').submit(function(){
                     $.ajax({
-                        url: $(this).action,
+                        url: $(this).attr('action'),
                         type: "POST",
                         data: $('.contributions-selection #filtre').serialize(),
-                        {% include "elements/js/loader.js.twig" %},
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#contributions-modal'
+                        } %},
                         success: function(res){
                             $('#contributions-modal').modal({
                                 content: res
@@ -250,7 +253,6 @@
                         },
                         error: function() {
                             alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
-                            console.log(this.url);
                         }
                     });
                     return false;
@@ -259,10 +261,12 @@
                 _bindNbshow('.contributions-selection #filtre_records');
                 $('.contributions-selection #filtre_records').submit(function(){
                     $.ajax({
-                        url: $(this).action,
+                        url: $(this).attr('action'),
                         type: "POST",
                         data: $('.contributions-selection #filtre_records').serialize(),
-                        {% include "elements/js/loader.js.twig" %},
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#contributions-modal'
+                        } %},
                         success: function(res){
                             $('#contributions-modal').modal({
                                 content: res
@@ -279,9 +283,11 @@
                 $('.contributions-selection .pagination a, .contributions-selection thead a').bind({
                     click: function(){
                         $.ajax({
-                            url: this.href.substring(this.href.indexOf('?')) + (this.href.indexOf('?') > -1 ? "&" : "?") + "ajax=true",
+                            url: $(this).attr('href').substring($(this).attr('href').indexOf('?')) + ($(this).attr('href').indexOf('?') > -1 ? "&" : "?") + "ajax=true",
                             type: "GET",
-                            {% include "elements/js/loader.js.twig" %},
+                            {% include "elements/js/loader.js.twig" with {
+                                selector: '#contributions-modal'
+                            } %},
                             success: function(res){
                                 $('#contributions-modal').modal({
                                     content: res
