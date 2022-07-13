@@ -168,9 +168,9 @@
                         <input type="hidden" name="mailing_corps" value="{% if mailing.message %}{{ mailing.message|escape }}{% endif %}"/>
                     </p>
                 </div>
-            {% include "components/forms/csrf.html.twig" %}
             </section>
         {% endif %}
+            {% include "components/forms/csrf.html.twig" %}
         </form>
 {% endif %}
 {% endblock %}
