@@ -234,11 +234,12 @@
                 });
 
                 //Use JS to send forms
-                $('.contributions-selection #filtre').submit(function(){
+                $('.contributions-selection form').submit(function(){
+                    var _this = $(this);
                     $.ajax({
-                        url: $(this).attr('action'),
+                        url: _this.attr('action'),
                         type: "POST",
-                        data: $('.contributions-selection #filtre').serialize(),
+                        data: _this.serialize(),
                         {% include "elements/js/loader.js.twig" with {
                             selector: '#contributions-modal'
                         } %},
@@ -255,27 +256,8 @@
                     return false;
                 });
 
-                _bindNbshow('.contributions-selection #filtre_records');
-                $('.contributions-selection #filtre_records').submit(function(){
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: "POST",
-                        data: $('.contributions-selection #filtre_records').serialize(),
-                        {% include "elements/js/loader.js.twig" with {
-                            selector: '#contributions-modal'
-                        } %},
-                        success: function(res){
-                            $('#contributions-modal').modal({
-                                content: res
-                            }).modal('show');
-                            _contribs_ajax_mapper(res);
-                        },
-                        error: function() {
-                            alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
-                        }
-                    });
-                    return false;
-                });
+                _bindNbshow('.contributions-selection form');
+
                 //Bind pagination and ordering links
                 $('.contributions-selection .pagination a, .contributions-selection thead a').bind({
                     click: function(){
