@@ -15,9 +15,9 @@
                 <div class="field inline">
                     <label for="id_adh" >{{ _T("Originator:") }}</label>
                     <div id="id_adh" class="jsonly search-dropdown ui input nochosen"{% if required.id_adh == 1 %} required="required"{% endif %}>
-                        <input type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Members' ID") }}">
+                        <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
                         <i class="jsonly hidden dropdown icon"></i>
-                        <div class="jsonly hidden default text">{% if not transaction.member %}{{ _T("-- select a name --") }}{% endif %}</div>
+                        <div class="jsonly hidden default text">{% if not transaction.member %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
                         <div class="jsonly hidden menu">
     {% for k, v in members.list %}
                             <div class="item" data-value="{{ k }}">{{ v }}</div>
@@ -182,12 +182,9 @@
 {% block javascripts %}
     <script type="text/javascript">
         {% include "elements/js/choose_adh.js.twig" %}
-        $(function(){
-            document.getElementById('id_adh').type = 'hidden';
-            document.getElementById('id_adh').removeClass('input');
-            document.getElementById('id_adh').removeClass('search-dropdown');
-            document.getElementById('id_adh').addClass('search selection dropdown');
+        document.getElementById('id_adh_input').type = 'hidden';
 
+        $(function(){
 {% if transaction.id %}
             $('#contribslist').click(function(){
                 $.ajax({
