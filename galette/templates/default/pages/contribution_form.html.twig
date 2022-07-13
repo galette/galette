@@ -75,7 +75,7 @@
                     <div class="field inline">
                         <label for="id_adh">{{ _T("Contributor:") }}</label>
                         <div id="id_adh" class="jsonly search-dropdown ui input nochosen">
-                            <input type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Members' ID") }}">
+                            <input id="id_adh_input" type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
                             <i class="jsonly hidden dropdown icon"></i>
                             <div class="jsonly hidden default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
                             <div class="jsonly hidden menu">
@@ -242,6 +242,7 @@
 {% block javascripts %}
 <script type="text/javascript">
     {% include "elements/js/choose_adh.js.twig" %}
+    document.getElementById('id_adh_input').type = 'hidden';
 
     $(function() {
 
