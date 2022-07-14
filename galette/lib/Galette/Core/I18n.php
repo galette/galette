@@ -142,19 +142,14 @@ class I18n
 
         setlocale(LC_ALL, $this->getLongID());
 
-        if (
-            putenv("LANG=" . $this->getLongID())
-            or putenv("LANGUAGE=" . $this->getLongID())
-            or putenv("LC_ALL=" . $this->getLongID())
-        ) {
-            $textdomain = realpath(GALETTE_ROOT . 'lang');
-            //main translation domain
-            $domain = 'galette';
-            bindtextdomain($domain, $textdomain);
-            //set default translation domain and encoding
-            textdomain($domain);
-            bind_textdomain_codeset($domain, 'UTF-8');
-        }
+        $textdomain = realpath(GALETTE_ROOT . 'lang');
+        //main translation domain
+        $domain = 'galette';
+        bindtextdomain($domain, $textdomain);
+        //set default translation domain and encoding
+        textdomain($domain);
+        bind_textdomain_codeset($domain, 'UTF-8');
+
         if ($translator) {
             $translator->setLocale($this->getLongID());
         }
