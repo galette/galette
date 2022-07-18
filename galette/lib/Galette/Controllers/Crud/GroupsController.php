@@ -213,6 +213,9 @@ class GroupsController extends CrudController
         $post = $request->getParsedBody();
         $id = $post['id_group'];
         $group = new Group((int)$id);
+        if (!$group->canEdit($this->login)) {
+            throw new \RuntimeException('Trying to edit group without appropriate permissions');
+        }
 
         $groups = new Groups($this->zdb, $this->login);
 
@@ -337,6 +340,9 @@ class GroupsController extends CrudController
     {
         $post = $request->getParsedBody();
         $group = new Group($id);
+        if (!$group->canEdit($this->login)) {
+            throw new \RuntimeException('Trying to edit group without appropriate permissions');
+        }
 
         $group->setName($post['group_name']);
         try {

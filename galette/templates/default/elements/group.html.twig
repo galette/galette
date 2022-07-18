@@ -1,4 +1,4 @@
-{% set can_edit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+{% set can_edit = group.canEdit(login) %}
 
 {% set managers = group.getManagers() %}
 {% set members = group.getMembers() %}

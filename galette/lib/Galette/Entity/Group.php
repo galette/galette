@@ -904,4 +904,28 @@ class Group
         $this->login = $login;
         return $this;
     }
+
+    /**
+     * Can current logged-in user edit group
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit(Login $login): bool
+    {
+        global $preferences;
+
+        //admin and staff users can edit
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //group managers can edit groups they manage when pref is on
+        if ($preferences->pref_bool_groupsmanagers_edit_member && $this->isManager($login)) {
+            return true;
+        }
+
+        return false;
+    }
 }
