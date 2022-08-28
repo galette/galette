@@ -31,7 +31,7 @@
             <div class="inline field required">
             {% if can_edit %}
                 <label for="group_name">{{ _T("Name:") }}</label>
-                <input type="text" name="group_name" id="group_name" value="{{ group.getName() }}" maxlength="20" required/>
+                <input type="text" name="group_name" id="group_name" value="{{ group.getName() }}" maxlength="250" required/>
             </div>
             {% else %}
                 <span class="bline">{{ _T("Name:") }}</span>
