@@ -149,7 +149,7 @@ class CsvOut extends Csv
                     $elts[] = $this->quote . str_replace(
                         $this->quote,
                         $this->escaped,
-                        $v
+                        $v ?? ''
                     ) . $this->quote;
                 }
 
