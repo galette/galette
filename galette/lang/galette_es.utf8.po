@@ -43,7 +43,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
 "PO-Revision-Date: 2022-10-06 15:19+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"Last-Translator: Javier <javier.fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -4350,7 +4350,7 @@ msgstr "La base de datos existe y los parámetros de conexión son CORRECTOS."
 
 #: ../install/steps/db_checks.php:207
 msgid "Permissions on the base"
-msgstr ""
+msgstr "Permisos en la base"
 
 #: ../install/steps/db_checks.php:214
 msgid ""
