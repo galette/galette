@@ -36,13 +36,14 @@
 # Nolan <nolanwelch@outlook.com>, 2022.
 # Dragos <dragos@duckly.com>, 2022.
 # Javier <javier.fserrador@gmail.com>, 2022.
+# gallegonovato <fran-carro@hotmail.es>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: 2022-06-28 10:15+0000\n"
-"Last-Translator: Javier <javier.fserrador@gmail.com>\n"
+"PO-Revision-Date: 2022-10-06 15:19+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -50,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1-dev\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -581,7 +582,7 @@ msgstr "Información del sistema"
 #: ../lib/Galette/Controllers/GaletteController.php:128
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:62
 msgid "Dashboard"
-msgstr "Tablero"
+msgstr "Tablero de mandos"
 
 #: ../lib/Galette/Controllers/GaletteController.php:241
 #: ../lib/Galette/Core/Galette.php:334 ../lib/Galette/Core/Galette.php:617
@@ -1321,10 +1322,8 @@ msgid "Delete mailing entries"
 msgstr "Borrar entradas de correo"
 
 #: ../lib/Galette/Core/Galette.php:126
-#, fuzzy
-#| msgid "Account:"
 msgid "My Account"
-msgstr "Cuenta:"
+msgstr "Mi cuenta"
 
 #: ../lib/Galette/Core/Galette.php:130 ../lib/Galette/Core/Galette.php:650
 msgid "My contributions"
@@ -1351,10 +1350,8 @@ msgid "View my member card"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:158
-#, fuzzy
-#| msgid "Add a member"
 msgid "Add a child member"
-msgstr "Añadir miembro"
+msgstr "Agregar un miembro secundario"
 
 #: ../lib/Galette/Core/Galette.php:159
 msgid "Add new child member in database"
@@ -1435,7 +1432,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:175
 #: ../../tempcache/pages/transactions_list.html.twig:226
 msgid "Add a transaction"
-msgstr ""
+msgstr "Agregar una transacción"
 
 #: ../lib/Galette/Core/Galette.php:256
 msgid "Add new transaction in database"
@@ -1446,10 +1443,8 @@ msgid "Send reminders to late members"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:274
-#, fuzzy
-#| msgid "Members management"
 msgid "Management"
-msgstr "Gestión de miembros"
+msgstr "Administración"
 
 #: ../lib/Galette/Core/Galette.php:278
 msgid "Manage groups"
@@ -1613,10 +1608,8 @@ msgid "Mass change"
 msgstr "Cambio masivo"
 
 #: ../lib/Galette/Core/Galette.php:872
-#, fuzzy
-#| msgid "List of contributions"
 msgid "Mass add contributions"
-msgstr "Lista de contribuciones"
+msgstr "Añadir contribuciones en masa"
 
 #: ../lib/Galette/Core/Galette.php:877
 #: ../../tempcache/elements/group.html.twig:280
@@ -2700,8 +2693,8 @@ msgstr ""
 #: ../lib/Galette/Entity/Reminder.php:288
 msgid "A problem happened while sending impending membership email"
 msgstr ""
-"Se ha producido un problema mientras se enviaba el correo electrónico de "
-"membresía"
+"Se ha producido un problema al enviar el correo electrónico de adhesión "
+"inminente"
 
 #: ../lib/Galette/Entity/Reminder.php:298
 msgid "Unable to send %membership reminder (no email address)."
@@ -2760,7 +2753,7 @@ msgstr "- ¡Fecha de cumpleaños debe estar en el pasado!"
 
 #: ../lib/Galette/Entity/Adherent.php:1283
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "¡Los miembros deben tener menos de 200 años (ahora %years)!"
+msgstr "- ¡Los miembros deben tener menos de 200 años (actualmente % años)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1321
 msgid "- Non-valid E-Mail address!"
@@ -3056,7 +3049,7 @@ msgstr "LinkedIn"
 
 #: ../lib/Galette/Entity/Social.php:365
 msgid "Viadeo"
-msgstr "Viadeo"
+msgstr "Red Social Viadeo"
 
 #: ../lib/Galette/Entity/Social.php:366
 msgid "Jabber"
@@ -3072,7 +3065,6 @@ msgid "Website"
 msgstr "Sitio web"
 
 #: ../lib/Galette/Entity/Social.php:369
-#, fuzzy
 msgid "Blog"
 msgstr "Blog"
 
@@ -3088,7 +3080,7 @@ msgstr "¡El campo %field no puede estar vacío!"
 
 #: ../lib/Galette/Entity/PdfModel.php:451
 msgid "Unknown type %type!"
-msgstr "Tipo %type desconocido."
+msgstr "¡Tipo desconocido %type!"
 
 #: ../lib/Galette/Entity/PdfModel.php:469
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:82
@@ -3177,7 +3169,7 @@ msgstr "Se ha actualizado el grupo"
 #: ../lib/Galette/Entity/Group.php:709
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr "El grupo «%1$s» no puede ser fijado como antecesor."
+msgstr "¡El grupo `%1$s` no se puede establecer como padre!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:132
 #: ../lib/Galette/Middleware/CheckAcls.php:179
@@ -3194,7 +3186,7 @@ msgstr "Acceso requerido"
 
 #: ../lib/Galette/Middleware/Authenticate.php:154
 msgid "Unknown ACL rule '%acl'!"
-msgstr "Regla ACL «%acl» desconocida."
+msgstr "¡Regla ACL desconocida '%acl'!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:146
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:191
@@ -3454,11 +3446,11 @@ msgstr "Desautorizado"
 
 #: ../includes/routes/plugins.routes.php:74
 msgid "Invalid extension!"
-msgstr "Extensión no válida"
+msgstr "¡Extensión no válida!"
 
 #: ../includes/routes/ajax.routes.php:69
 msgid "Required argument not present!"
-msgstr "Requería un argumento no presente."
+msgstr "¡El argumento requerido no está presente!"
 
 #: ../includes/routes/ajax.routes.php:108
 msgid "Member photo has been changed."
@@ -3718,7 +3710,7 @@ msgstr "Asociación"
 
 #: ../includes/dependencies.php:489
 msgid "Failed CSRF check!"
-msgstr "Comprobación CSRF errónea"
+msgstr "¡Comprobación CSRF fallida!"
 
 #: ../includes/fields_defs/members_fields.php:42
 msgid "Member id:"
@@ -3895,6 +3887,13 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hola:{NEWLINE}Te acabas de suscribir al sistema de gestión de miembros de "
+"{ASSO_NAME}.{NEWLINE}Ahora es posible seguir en tiempo real el estado de tu "
+"suscripción y actualizar tus preferencias desde la interfaz web.{NEWLINE} }"
+"Inicie sesión en esta dirección para configurar su nueva "
+"contraseña:{BR}{CHG_PWD_URI}{NEWLINE}Nombre de usuario: {LOGIN}{BR}El enlace "
+"anterior será válido hasta el {LINK_VALIDITY}.{NEWLINE}¡Hasta "
+"pronto!{NEWLINE} (este correo fue enviado automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:43
 msgid "New user registration"
@@ -4085,7 +4084,7 @@ msgstr "Correo-e para contraseña olvidada (desactivada)"
 
 #: ../install/scripts/upgrade-to-0.8.php:93
 msgid "Unable to create main datadir in %path!"
-msgstr "Imposible crear datadir princial en %path"
+msgstr "¡No se puede crear el directorio de datos principal en %path!"
 
 #: ../install/scripts/upgrade-to-0.8.php:109
 #, php-format
@@ -4100,7 +4099,7 @@ msgstr "Archivo %file no ha sido trasladado :-/"
 #: ../install/scripts/upgrade-to-0.8.php:202
 #, php-format
 msgid "Directory %dir has been moved!"
-msgstr "Su directorio %dir ha sido trasladado."
+msgstr "¡El directorio %dir se ha movido!"
 
 #: ../install/scripts/upgrade-to-0.8.php:214
 #, php-format
@@ -4366,7 +4365,7 @@ msgstr ""
 
 #: ../install/steps/galette.php:55
 msgid "Configuration file created!"
-msgstr "Archivo de configuración creado."
+msgstr "¡Archivo de configuración creado!"
 
 #: ../install/steps/galette.php:56
 msgid "Data initialized."
@@ -4932,7 +4931,7 @@ msgstr ""
 
 #: ../../tempcache/modals/telemetry.html.twig:65
 msgid "Send telemetry information"
-msgstr ""
+msgstr "Enviar información de la telemetría"
 
 #: ../../tempcache/modals/telemetry.html.twig:71
 #: ../../tempcache/pages/reminder.html.twig:156
@@ -4947,10 +4946,8 @@ msgid "An error occurred sending telemetry information :("
 msgstr "Se produjo un error al enviar información de telemetría :("
 
 #: ../../tempcache/elements/language.html.twig:72
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose your language"
-msgstr "Cambiar idioma"
+msgstr "Elige tu idioma"
 
 #: ../../tempcache/elements/language.html.twig:113
 #, php-format
@@ -5019,10 +5016,8 @@ msgid "Home"
 msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
-#, fuzzy
-#| msgid "Go back to import page"
 msgid "Go back to Galette homepage"
-msgstr "Volver a la página de importaciones"
+msgstr "Volver a la página de inicio de Galette"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:87
 msgid "Subscribe"
@@ -5073,10 +5068,8 @@ msgstr "Páginas:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:112
 #: ../../tempcache/elements/group_persons.html.twig:98
-#, fuzzy
-#| msgid "Company:"
 msgid "Company"
-msgstr "Persona moral:"
+msgstr "Compañía"
 
 #: ../../tempcache/elements/ajax_members.html.twig:177
 msgid "no member"
@@ -5237,17 +5230,13 @@ msgstr "Grupo primario:"
 
 #: ../../tempcache/elements/scripts.html.twig:155
 #: ../../tempcache/elements/scripts.html.twig:193
-#, fuzzy
-#| msgid "(De)Activate HTML editor"
 msgid "Deactivate HTML editor"
-msgstr "(Des)activar editor de HTML"
+msgstr "Desactivar el editor HTML"
 
 #: ../../tempcache/elements/scripts.html.twig:182
 #: ../../tempcache/pages/mailing_form.html.twig:294
-#, fuzzy
-#| msgid "(De)Activate HTML editor"
 msgid "Activate HTML editor"
-msgstr "(Des)activar editor de HTML"
+msgstr "Activar el editor HTML"
 
 #: ../../tempcache/elements/messages_inline.html.twig:164
 msgid "- WARNING -"
@@ -5363,10 +5352,8 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/elements/edit_socials.html.twig:103
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "Remover %type '%label'"
+msgstr "Quitar %tipo"
 
 #: ../../tempcache/elements/edit_socials.html.twig:116
 msgid "Add new social network"
@@ -5741,10 +5728,8 @@ msgid "Transaction: %s"
 msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:604
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show only '%name' contributions"
-msgstr "Mostrar contribuciones de todos los miembros"
+msgstr "Mostrar solo las contribuciones de '%name'"
 
 #: ../../tempcache/pages/contributions_list.html.twig:619
 #: ../../tempcache/pages/transactions_list.html.twig:389
@@ -7040,7 +7025,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1261
 msgid "PHP mail() function"
-msgstr "Función mail() en *.php."
+msgstr "Función de correo PHP ()"
 
 #: ../../tempcache/pages/preferences.html.twig:1275
 msgid "Using a SMTP server (slower)"
@@ -7419,13 +7404,11 @@ msgid "Available fields"
 msgstr "Campos disponibles"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
-#, fuzzy, php-format
-#| msgid "%count member"
-#| msgid_plural "%count members"
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "%count miembro"
-msgstr[1] "%count miembros"
+msgstr[0] "%búsqueda de conteo"
+msgstr[1] "%recuento de búsquedas"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
@@ -7620,10 +7603,8 @@ msgid "Transaction %id"
 msgstr ""
 
 #: ../../tempcache/pages/transactions_list.html.twig:374
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show only '%name' transactions"
-msgstr "Mostrar contribuciones de todos los miembros"
+msgstr "Mostrar solo transacciones '%name'"
 
 #: ../../tempcache/pages/transactions_list.html.twig:483
 msgid "Edit transaction #%id"
@@ -7688,10 +7669,8 @@ msgid "Contributions over time"
 msgstr ""
 
 #: ../../tempcache/pages/charts.html.twig:397
-#, fuzzy
-#| msgid "Contribution information"
 msgid "Total contributions for the month"
-msgstr "Información sobre la contribución"
+msgstr "Aportes totales del mes"
 
 #: ../../tempcache/pages/members_public_list.html.twig:114
 #: ../../tempcache/pages/members_public_gallery.html.twig:57
