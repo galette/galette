@@ -2,20 +2,23 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Andrei Guliaikin <like427@gmail.com>, 2022.
+# Evgeniy Khramov <thejenjagamertjg@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2022-12-09 16:50+0000\n"
+"Last-Translator: Evgeniy Khramov <thejenjagamertjg@gmail.com>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
+"ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.15-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -28,19 +31,19 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
-msgstr ""
+msgstr "Транзакция"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1137
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
 msgid "modification"
-msgstr ""
+msgstr "модификация"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1139
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:115
 msgid "creation"
-msgstr ""
+msgstr "создание"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:267
 msgid "An error occurred while storing the transaction."
@@ -106,7 +109,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:185
 #: ../lib/Galette/Core/Galette.php:559
 msgid "Groups"
-msgstr ""
+msgstr "Группы"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:364
 msgid "Group `%groupname` has been successfully saved."
@@ -139,7 +142,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:206
 msgid "Mailing"
-msgstr ""
+msgstr "Почтовая рассылка"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:303
 msgid "Please type an object for the message."
@@ -160,7 +163,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:511
 #: ../lib/Galette/Core/Galette.php:575
 msgid "Mailings"
-msgstr ""
+msgstr "Рассылки"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:660
 #, php-format
@@ -221,7 +224,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:165
 msgid "Subscription"
-msgstr ""
+msgstr "Подписка"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:255
 #: ../lib/Galette/Controllers/Crud/MembersController.php:459
@@ -249,7 +252,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:369
 #: ../lib/Galette/Core/Galette.php:504 ../lib/Galette/Core/Galette.php:505
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Тромбиноскоп"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:512
 msgid "The file does not exists or cannot be read :("
@@ -340,7 +343,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:320
 #: ../lib/Galette/Controllers/GaletteController.php:352
 msgid "Delete failed"
-msgstr ""
+msgstr "Удалить не удалось"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1867
 #, php-format
@@ -433,7 +436,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:173
 #: ../../tempcache/pages/contribution_form.html.twig:526
 msgid "Donation"
-msgstr ""
+msgstr "Пожертвование"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:252
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
@@ -478,11 +481,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:917
 msgid "contributions"
-msgstr ""
+msgstr "вклады"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:917
 msgid "transactions"
-msgstr ""
+msgstr "транзакции"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:921
 #, php-format
@@ -492,11 +495,11 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
 #: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
-msgstr ""
+msgstr "вклад"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:922
 msgid "transaction"
-msgstr ""
+msgstr "транзакция"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:124
 msgid "An SQL error has occurred while storing search."
@@ -540,12 +543,12 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:128
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:62
 msgid "Dashboard"
-msgstr ""
+msgstr "Приборная панель"
 
 #: ../lib/Galette/Controllers/GaletteController.php:241
 #: ../lib/Galette/Core/Galette.php:334 ../lib/Galette/Core/Galette.php:617
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 #: ../lib/Galette/Controllers/GaletteController.php:256
 #: ../lib/Galette/Filters/MembersList.php:326
@@ -607,7 +610,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:483
 #: ../lib/Galette/Core/Galette.php:319
 msgid "Charts"
-msgstr ""
+msgstr "Графики"
 
 #: ../lib/Galette/Controllers/GaletteController.php:504
 msgid "Fields configuration"
@@ -636,7 +639,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:674
 #: ../lib/Galette/Core/Galette.php:262 ../lib/Galette/Core/Galette.php:601
 msgid "Reminders"
-msgstr ""
+msgstr "Напоминания"
 
 #: ../lib/Galette/Controllers/GaletteController.php:715
 msgid "No reminder to send for now."
@@ -726,7 +729,7 @@ msgstr ""
 #: ../../tempcache/elements/navigation/public_pages.html.twig:96
 #: ../../tempcache/pages/index.html.twig:91
 msgid "Login"
-msgstr ""
+msgstr "Логин"
 
 #: ../lib/Galette/Controllers/AuthController.php:114
 msgid "You must provide both login and password."
@@ -893,7 +896,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/HistoryController.php:111
 #: ../lib/Galette/Core/Galette.php:290 ../install/steps/check.php:74
 msgid "Logs"
-msgstr ""
+msgstr "Логи"
 
 #: ../lib/Galette/Controllers/HistoryController.php:150
 #: ../lib/Galette/Filters/TransactionsList.php:259
@@ -927,7 +930,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PluginsController.php:83
 #: ../lib/Galette/Core/Galette.php:341 ../lib/Galette/Core/Galette.php:625
 msgid "Plugins"
-msgstr ""
+msgstr "Плагины"
 
 #: ../lib/Galette/Controllers/PluginsController.php:114
 msgid "Plugin %name has been enabled"
@@ -1028,7 +1031,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:637
 msgid "galette_import_model.csv"
-msgstr ""
+msgstr "galette_import_model.csv"
 
 #: ../lib/Galette/Controllers/CsvController.php:673
 msgid "Import model has been successfully stored :)"
@@ -1062,7 +1065,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:296
 msgid "Checks"
-msgstr ""
+msgstr "Проверки"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:302
 #: ../../tempcache/modals/plugin_initdb.html.twig:358
@@ -1071,7 +1074,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:308
 msgid "Database"
-msgstr ""
+msgstr "База данных"
 
 #: ../lib/Galette/Core/Install.php:131
 msgid "Database access and permissions"
@@ -1100,15 +1103,15 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:364
 #: ../../tempcache/modals/plugin_initdb.html.twig:400
 msgid "End!"
-msgstr ""
+msgstr "Конец!"
 
 #: ../lib/Galette/Core/Install.php:165 ../lib/Galette/Core/CheckModules.php:148
 msgid "Ok"
-msgstr ""
+msgstr "Хорошо"
 
 #: ../lib/Galette/Core/Install.php:165 ../lib/Galette/Core/CheckModules.php:140
 msgid "Ko"
-msgstr ""
+msgstr "Ко"
 
 #: ../lib/Galette/Core/Install.php:324
 msgid "Database type unknown"
@@ -1136,7 +1139,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1151
 msgid "Preferences"
-msgstr ""
+msgstr "Предпочтения"
 
 #: ../lib/Galette/Core/Install.php:1155 ../lib/Galette/Core/Galette.php:388
 msgid "Contributions types"
@@ -1146,7 +1149,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:494
 #: ../../tempcache/pages/advanced_search.html.twig:499
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: ../lib/Galette/Core/Install.php:1163
 msgid "Fields config and categories"
@@ -1158,7 +1161,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1171 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
-msgstr ""
+msgstr "Названия"
 
 #: ../lib/Galette/Core/Install.php:1175
 msgid "PDF Models"
@@ -1235,7 +1238,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:330
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 #: ../lib/Galette/Core/Authentication.php:290
 #, php-format
@@ -1286,7 +1289,7 @@ msgstr ""
 #: ../lib/Galette/DynamicFields/DynamicField.php:535
 #: ../../tempcache/elements/group.html.twig:60
 msgid "Members"
-msgstr ""
+msgstr "Пользователи"
 
 #: ../lib/Galette/Core/Galette.php:177
 msgid "List of members"
@@ -1313,7 +1316,7 @@ msgstr ""
 #: ../lib/Galette/DynamicFields/DynamicField.php:536
 #: ../../tempcache/pages/members_list.html.twig:559
 msgid "Contributions"
-msgstr ""
+msgstr "Взносы"
 
 #: ../lib/Galette/Core/Galette.php:221
 msgid "List of contributions"
@@ -1369,7 +1372,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:274
 msgid "Management"
-msgstr ""
+msgstr "Менеджмент"
 
 #: ../lib/Galette/Core/Galette.php:278
 msgid "Manage groups"
@@ -1393,7 +1396,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:304 ../install/steps/check.php:72
 msgid "Exports"
-msgstr ""
+msgstr "Экспорт"
 
 #: ../lib/Galette/Core/Galette.php:305
 msgid "Export some data in various formats"
@@ -1401,7 +1404,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:311 ../install/steps/check.php:73
 msgid "Imports"
-msgstr ""
+msgstr "Импорт"
 
 #: ../lib/Galette/Core/Galette.php:312
 msgid "Import members from CSV files"
@@ -1413,7 +1416,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:330 ../install/steps/check.php:71
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация"
 
 #: ../lib/Galette/Core/Galette.php:335 ../lib/Galette/Core/Galette.php:618
 msgid ""
@@ -1509,7 +1512,7 @@ msgstr ""
 #: ../lib/Galette/Core/Galette.php:592
 #: ../lib/Galette/DynamicFields/DynamicField.php:537
 msgid "Transactions"
-msgstr ""
+msgstr "Транзакции"
 
 #: ../lib/Galette/Core/Galette.php:710 ../lib/Galette/Core/Galette.php:715
 msgid "%membername: edit information"
@@ -1540,12 +1543,12 @@ msgstr ""
 #: ../../tempcache/elements/group.html.twig:280
 #: ../../tempcache/pages/contributions_list.html.twig:54
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: ../lib/Galette/Core/Galette.php:893
 #: ../../tempcache/pages/members_list.html.twig:724
 msgid "Mail"
-msgstr ""
+msgstr "Почта"
 
 #: ../lib/Galette/Core/Galette.php:914
 #: ../../tempcache/elements/mailing_recipients.html.twig:104
@@ -1651,7 +1654,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:1138
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 #: ../lib/Galette/Core/Preferences.php:1176
 msgid "Current cards configuration may exceed page width!"
@@ -1782,7 +1785,7 @@ msgstr ""
 #: ../../tempcache/pages/member_form.html.twig:799
 #: ../../tempcache/pages/advanced_search.html.twig:1307
 msgid "Y-m-d"
-msgstr ""
+msgstr "Г-м-д"
 
 #: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
@@ -1855,7 +1858,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:129
 #: ../../tempcache/pages/configuration_core_lists.html.twig:236
 msgid "Administrator"
-msgstr ""
+msgstr "Администратор"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 #: ../../tempcache/pages/configuration_core_fields.html.twig:273
@@ -1907,7 +1910,7 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1023
 msgid "separator"
-msgstr ""
+msgstr "разделитель"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1024
 msgid "free text"
@@ -1919,23 +1922,23 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1026
 msgid "choice"
-msgstr ""
+msgstr "выбор"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1027
 msgid "date"
-msgstr ""
+msgstr "дата"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1028
 msgid "boolean"
-msgstr ""
+msgstr "логический"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1029
 msgid "file"
-msgstr ""
+msgstr "файл"
 
 #: ../lib/Galette/IO/PdfGroups.php:72
 msgid "groups_list"
-msgstr ""
+msgstr "список_групп"
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
@@ -1950,7 +1953,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:169
 msgid "Managers:"
-msgstr ""
+msgstr "Менеджеры:"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
@@ -1979,7 +1982,7 @@ msgstr ""
 #: ../../tempcache/pages/export.html.twig:119
 #: ../../tempcache/pages/export.html.twig:248
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 #: ../lib/Galette/IO/PdfGroups.php:180
 #: ../lib/Galette/Features/Replacements.php:325
@@ -1989,23 +1992,23 @@ msgstr ""
 #: ../../tempcache/pages/members_public_list.html.twig:86
 #: ../../tempcache/pages/members_public_list.html.twig:216
 msgid "Email"
-msgstr ""
+msgstr "Электронная почта"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Features/Replacements.php:317
 #: ../lib/Galette/Entity/ListsConfig.php:224
 #: ../../tempcache/elements/member_card.html.twig:107
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
 #: ../lib/Galette/IO/PdfGroups.php:182
 #: ../lib/Galette/Features/Replacements.php:321
 msgid "GSM"
-msgstr ""
+msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:84
 msgid "filtered_memberslist"
-msgstr ""
+msgstr "отфильтрованный список членов"
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/Features/Replacements.php:608
@@ -2017,7 +2020,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1588
 #: ../../tempcache/components/forms/gender.html.twig:129
 msgid "Man"
-msgstr ""
+msgstr "Мужчина"
 
 #: ../lib/Galette/IO/MembersCsv.php:231
 #: ../lib/Galette/Features/Replacements.php:610
@@ -2029,7 +2032,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1588
 #: ../../tempcache/components/forms/gender.html.twig:146
 msgid "Woman"
-msgstr ""
+msgstr "Женщина"
 
 #: ../lib/Galette/IO/MembersCsv.php:234
 #: ../lib/Galette/Features/Replacements.php:612
@@ -2039,7 +2042,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1588
 #: ../../tempcache/components/forms/gender.html.twig:112
 msgid "Unspecified"
-msgstr ""
+msgstr "Неуказанный"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
@@ -2060,7 +2063,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1335
 #: ../../tempcache/pages/advanced_search.html.twig:1704
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
@@ -2081,11 +2084,11 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1343
 #: ../../tempcache/pages/advanced_search.html.twig:1706
 msgid "No"
-msgstr ""
+msgstr "Нет"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:105
 msgid "attendance_sheet"
-msgstr ""
+msgstr "табель посещаемости"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:169
 msgid "%A, %B %#d%O %Y"
@@ -2093,7 +2096,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:187
 msgid "Signature"
-msgstr ""
+msgstr "Подпись"
 
 #: ../lib/Galette/IO/Charts.php:143 ../lib/Galette/Filters/MembersList.php:317
 msgid "Staff members"
@@ -2118,19 +2121,19 @@ msgstr ""
 #: ../lib/Galette/IO/Charts.php:252
 #: ../../tempcache/pages/reminder.html.twig:113
 msgid "Late"
-msgstr ""
+msgstr "Поздно"
 
 #: ../lib/Galette/IO/Charts.php:307
 msgid "Individuals"
-msgstr ""
+msgstr "Индивидуалки"
 
 #: ../lib/Galette/IO/Charts.php:308
 msgid "Companies"
-msgstr ""
+msgstr "Компании"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:73
 msgid "labels_print_filename"
-msgstr ""
+msgstr "labels_print_имя_файла"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:85
 msgid "Member's Labels"
