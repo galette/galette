@@ -39,7 +39,7 @@
     "chart.js": "^3.8.0",
     "chartjs-plugin-autocolors": "^0.0.5",
     "chartjs-plugin-datalabels": "^2.0.0",
-    "fomantic-ui": "^2.8.8",
+    "fomantic-ui": "^2.9.0",
     "jquery": "^3.5.0",
     "js-cookie": "^3.0.1",
     "sortablejs": "^1.15.0",
