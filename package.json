@@ -9,7 +9,9 @@
 
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets && rm -rf galette/webroot/themes",
-    "install-deps": "npm run clean && cd galette && composer install -o && cd .. && npm install",
+    "fomantic-install": "cd node_modules/fomantic-ui && npx gulp install",
+    "install-deps": "npm run clean && cd galette && composer install -o && cd .. && npm install && npm run fomantic-install",
+    "first-build": "npm run fomantic-install && gulp",
     "build": "gulp",
     "rebuild": "npm run install-deps && gulp",
     "watch": "gulp watch"

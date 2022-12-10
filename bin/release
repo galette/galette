@@ -329,7 +329,7 @@ def add_libs(rel_name, galette_archive):
     p1.wait()
 
     #build the UI assets
-    wp_cmd = 'npm run build'
+    wp_cmd = 'npm run first-build'
     p1 = subprocess.Popen(wp_cmd, shell=True, cwd=npm_dir)
     p1.wait()
 
