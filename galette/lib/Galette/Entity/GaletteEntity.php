@@ -36,7 +36,6 @@
 
 namespace Galette\Entity;
 
-
 /**
  * Entity abstract class for Galette
  *
