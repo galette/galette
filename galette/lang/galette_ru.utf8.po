@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2022-07-03 10:45+0200\n"
-"PO-Revision-Date: 2022-12-09 16:50+0000\n"
+"PO-Revision-Date: 2022-12-15 11:47+0000\n"
 "Last-Translator: Evgeniy Khramov <thejenjagamertjg@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
@@ -2142,7 +2142,7 @@ msgstr ""
 #: ../lib/Galette/IO/PdfMembersLabels.php:87
 #: ../../tempcache/pages/preferences.html.twig:77
 msgid "Labels"
-msgstr ""
+msgstr "Метки"
 
 #: ../lib/Galette/IO/CsvIn.php:232
 #, php-format
@@ -2223,7 +2223,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
 msgid "cards"
-msgstr ""
+msgstr "карты"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
@@ -2232,7 +2232,7 @@ msgstr ""
 #: ../lib/Galette/IO/PdfMembersCards.php:106
 #: ../../tempcache/pages/preferences.html.twig:81
 msgid "Cards"
-msgstr ""
+msgstr "Карты"
 
 #: ../lib/Galette/IO/FileTrait.php:477
 msgid "An error occurred."
