@@ -207,7 +207,7 @@ class I18n extends atoum
     public function testSeemUtf8()
     {
         $is_utf = $this->i18n->seemUtf8('HéhéHÉHÉâ-ôß¬- ©»«<ëßßä€êþÿûîœô');
-        $is_iso = $this->i18n->seemUtf8(utf8_decode('Héhé'));
+        $is_iso = $this->i18n->seemUtf8(mb_convert_encoding('Héhé', 'ISO-8859-1'));
 
         $this->boolean($is_utf)->isTrue();
         $this->boolean($is_iso)->isFalse();
