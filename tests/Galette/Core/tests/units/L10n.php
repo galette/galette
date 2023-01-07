@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2020-07-05
@@ -45,7 +45,7 @@ use atoum;
  * @name      L10n
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-07-05
@@ -115,7 +115,7 @@ class L10n extends atoum
 
         $this->boolean($this->l10n->addDynamicTranslation('A text for test'))->isTrue();
 
-        $langs = array_keys($this->i18n->langs);
+        $langs = array_keys($this->i18n->getArrayList());
 
         $results = $this->zdb->execute($select);
         $this->integer($results->count())->isIdenticalTo(count($langs));
@@ -142,7 +142,7 @@ class L10n extends atoum
 
         $this->boolean($this->l10n->addDynamicTranslation('Un texte de test'))->isTrue();
 
-        $langs = array_keys($this->i18n->langs);
+        $langs = array_keys($this->i18n->getArrayList());
 
         $results = $this->zdb->execute($select);
         $this->integer($results->count())->isIdenticalTo(count($langs));

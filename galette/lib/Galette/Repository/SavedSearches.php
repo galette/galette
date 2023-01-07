@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2021 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2019-09-21
@@ -53,7 +53,7 @@ use Galette\Entity\Adherent;
  * @name      SavedSearches
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2019-09-21
@@ -63,6 +63,9 @@ class SavedSearches
     public const TABLE = SavedSearch::TABLE;
     public const PK = SavedSearch::PK;
 
+    private $filters = false;
+    private $zdb;
+    private $login;
     private $count = null;
 
     /**

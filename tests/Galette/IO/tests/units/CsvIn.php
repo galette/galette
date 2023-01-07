@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -49,7 +49,7 @@ use Galette\GaletteTestCase;
  * @name      CsvIn
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-05-11
@@ -290,7 +290,7 @@ class CsvIn extends GaletteTestCase
      */
     protected function checkDynamicTranslation($text_orig, $lang = 'fr_FR.utf8')
     {
-        $langs = array_keys($this->i18n->langs);
+        $langs = array_keys($this->i18n->getArrayList());
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->columns([
             'text_locale',

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2020 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2020 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -51,7 +51,7 @@ use RKA\Session;
  * @name      Login
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -219,7 +219,6 @@ class Login extends Authentication
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
         $this->id = $row->id_adh;
         $this->login = $row->login_adh;
-        $this->passe = $row->mdp_adh;
         $this->admin = $row->bool_admin_adh;
         $this->name = $row->nom_adh;
         $this->surname = $row->prenom_adh;

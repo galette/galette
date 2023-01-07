@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2021 The Galette Team
+ * Copyright © 2010-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2021 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -57,7 +57,7 @@ use Laminas\Db\Sql\Select;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -66,8 +66,11 @@ class Contributions
     public const TABLE = Contribution::TABLE;
     public const PK = Contribution::PK;
 
+    private $filters = false;
     private $count = null;
 
+    private $zdb;
+    private $login;
     private $sum;
     private $current_selection;
 
