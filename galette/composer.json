@@ -37,7 +37,6 @@
         "tecnickcom/tcpdf": "^6.3",
         "akrabat/rka-slim-session-middleware": "^2.0",
         "laminas/laminas-i18n": "^2.11",
-        "laminas/laminas-cache": "^2.10",
         "soundasleep/html2text": "^2.0",
         "aneek/slim-event-dispatcher": "^1.0",
         "slim/flash": "^0.4.0",
@@ -65,7 +64,6 @@
     "scripts": {
         "post-install-cmd": [
             "patch -d vendor/slim/slim/ -p3 < ../patches/slim-php81.patch",
-            "patch -d vendor/laminas/ -p2 < ../patches/laminas-php81.patch",
             "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
             "patch -d vendor/slim/twig-view/ -p3 < ../patches/twig-view-php81.patch"
         ]

@@ -377,31 +377,6 @@ $container->set('Galette\Entity\ListsConfig', function (ContainerInterface $c) {
     return $fc;
 });
 
-$container->set('cache', function (ContainerInterface $c) {
-    $adapter = null;
-    if (function_exists('wincache_ucache_add')) {
-        //since APCu is not known to work on windows
-        $adapter = 'wincache';
-    } elseif (function_exists('apcu_fetch')) {
-        $adapter = 'apcu';
-    }
-    if ($adapter !== null) {
-        $uuid = $c->get('galette.mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
-        $cache = Laminas\Cache\StorageFactory::factory([
-            'adapter'   => $adapter,
-            'options'   => [
-                'namespace' => str_replace(
-                    ['%version', '%uuid'],
-                    [GALETTE_VERSION, $uuid],
-                    'galette_%version_%uuid'
-                )
-            ]
-        ]);
-        return $cache;
-    }
-    return null;
-});
-
 //TODO: old way - to drop
 $container->set(
     'translator',
@@ -430,13 +405,6 @@ $container->set('Galette\Core\Translator', function (ContainerInterface $c) {
     }
 
     $translator->setLocale($c->get('i18n')->getLongID());
-    if (
-        !$c->has('galette.mode')
-        || $c->get('galette.mode') !== 'INSTALL'
-        && $c->get('galette.mode') !== 'NEED_UPDATE'
-    ) {
-        $translator->setCache($c->get('cache'));
-    }
     return $translator;
 });
 
