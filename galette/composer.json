@@ -54,7 +54,7 @@
         "slim/twig-view": "^2"
     },
     "require-dev": {
-        "atoum/atoum": "dev-master",
+        "atoum/atoum": "dev-main",
         "squizlabs/php_codesniffer": "^3.5",
         "friendsoftwig/twigcs": "^6.0"
     },
