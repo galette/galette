@@ -38,7 +38,7 @@
 namespace Galette\Entity\test\units;
 
 use atoum;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Saved search tests
@@ -100,7 +100,7 @@ class SavedSearch extends atoum
     {
         $this->zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\SavedSearch::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
     }
 

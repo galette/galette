@@ -155,7 +155,7 @@ class Login extends GaletteTestCase
     {
         $zdb = new \mock\Galette\Core\Db();
         $this->calling($zdb)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
+            if ($o instanceof \Laminas\Db\Sql\Select) {
                 throw new \LogicException('Error executing query!', 123);
             }
         };
@@ -209,7 +209,7 @@ class Login extends GaletteTestCase
     {
         $zdb = new \mock\Galette\Core\Db();
         $this->calling($zdb)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
+            if ($o instanceof \Laminas\Db\Sql\Select) {
                 throw new \LogicException('Error executing query!', 123);
             }
         };

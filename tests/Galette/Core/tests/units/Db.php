@@ -204,7 +204,7 @@ class Db extends atoum
         //test insert failing
         $this->db = new \mock\Galette\Core\Db();
         $this->calling($this->db)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Insert) {
+            if ($o instanceof \Laminas\Db\Sql\Insert) {
                 throw new \LogicException('Error executing query!', 123);
             }
         };
@@ -222,10 +222,10 @@ class Db extends atoum
 
         //test select failing
         $this->calling($this->db)->execute = function ($o) use ($atoum) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
+            if ($o instanceof \Laminas\Db\Sql\Select) {
                 throw new \LogicException('Error executing query!', 123);
             } else {
-                $rs = new \mock\Zend\Db\ResultSet();
+                $rs = new \mock\Laminas\Db\ResultSet();
                 $atoum->calling($rs)->count = 1;
                 return $rs;
             }
@@ -244,10 +244,10 @@ class Db extends atoum
 
         //test update failing
         $this->calling($this->db)->execute = function ($o) use ($atoum) {
-            if ($o instanceof \Zend\Db\Sql\Update) {
+            if ($o instanceof \Laminas\Db\Sql\Update) {
                 throw new \LogicException('Error executing query!', 123);
             } else {
-                $rs = new \mock\Zend\Db\ResultSet();
+                $rs = new \mock\Laminas\Db\ResultSet();
                 $atoum->calling($rs)->count = 1;
                 return $rs;
             }
@@ -266,10 +266,10 @@ class Db extends atoum
 
         //test delete failing
         $this->calling($this->db)->execute = function ($o) use ($atoum) {
-            if ($o instanceof \Zend\Db\Sql\Delete) {
+            if ($o instanceof \Laminas\Db\Sql\Delete) {
                 throw new \LogicException('Error executing query!', 123);
             } else {
-                $rs = new \mock\Zend\Db\ResultSet();
+                $rs = new \mock\Laminas\Db\ResultSet();
                 $atoum->calling($rs)->count = 1;
                 return $rs;
             }
@@ -329,18 +329,18 @@ class Db extends atoum
         }
 
         $db = $this->db->db;
-        $this->object($db)->isInstanceOf('Zend\Db\Adapter\Adapter');
+        $this->object($db)->isInstanceOf('Laminas\Db\Adapter\Adapter');
 
         $sql = $this->db->sql;
-        $this->object($sql)->isInstanceOf('Zend\Db\Sql\Sql');
+        $this->object($sql)->isInstanceOf('Laminas\Db\Sql\Sql');
 
         $connection = $this->db->connection;
         $this->object($connection)
-            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
+            ->isInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Connection');
 
         $driver = $this->db->driver;
         $this->object($driver)
-            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
+            ->isInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Pdo');
     }
 
     /**
@@ -376,7 +376,7 @@ class Db extends atoum
     public function testSelectAll()
     {
         $all = $this->db->selectAll('preferences');
-        $this->object($all)->isInstanceOf('Zend\Db\ResultSet\ResultSet');
+        $this->object($all)->isInstanceOf('Laminas\Db\ResultSet\ResultSet');
     }
 
     /**
@@ -625,7 +625,7 @@ class Db extends atoum
         $results = $this->db->execute($select);
 
         $this->object($results)
-            ->isInstanceOf('\Zend\Db\ResultSet\ResultSet');
+            ->isInstanceOf('\Laminas\Db\ResultSet\ResultSet');
     }
 
     /**

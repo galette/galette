@@ -87,7 +87,7 @@ class DynamicField extends atoum
             if (str_starts_with($table, 'galette_field_contents_')) {
                 $this->zdb->db->query(
                     'DROP TABLE ' . $table,
-                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
             }
         }

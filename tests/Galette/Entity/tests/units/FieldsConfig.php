@@ -346,11 +346,11 @@ class FieldsConfig extends atoum
     {
         $this->zdb->db->query(
             'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
         $this->zdb->db->query(
             'DELETE FROM ' . PREFIX_DB . \Galette\Entity\FieldsCategories::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
 
         //new object instanciation should add missing fieldis and categories

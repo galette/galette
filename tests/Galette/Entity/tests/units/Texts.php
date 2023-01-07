@@ -39,7 +39,7 @@ namespace Galette\Entity\test\units;
 
 use atoum;
 use Galette\GaletteTestCase;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Text tests

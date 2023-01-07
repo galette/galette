@@ -39,7 +39,7 @@ namespace Galette\Entity\test\units;
 
 use atoum;
 use Galette\GaletteTestCase;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Group tests
@@ -87,7 +87,7 @@ class Group extends GaletteTestCase
         //Clean logs
         $this->zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
     }
 
