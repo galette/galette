@@ -85,7 +85,7 @@
                         </div>
                         <div class="ui celled list">
             {% for child in member.children %}
-                            <a href="{{ path_for("member", {"id": child.id}) }}" class="item">{{ child.sfullname }}</a>
+                            <a href="{{ url_for("member", {"id": child.id}) }}" class="item">{{ child.sfullname }}</a>
             {% endfor %}
                         </div>
                     </div>
@@ -233,7 +233,7 @@
                         };
                     });
                     $.ajax({
-                        url: '{{ path_for("ajax_groups") }}',
+                        url: '{{ url_for("ajax_groups") }}',
                         type: "POST",
                         data: {
                             ajax: true,

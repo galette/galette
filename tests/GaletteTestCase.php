@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-27
@@ -44,6 +44,7 @@ use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Middleware\Authenticate;
 
 /**
  * Galette tests case main class
@@ -52,7 +53,7 @@ use Galette\Entity\Contribution;
  * @name      GaletteTestCase
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-27
@@ -80,36 +81,29 @@ abstract class GaletteTestCase extends atoum
     protected Contribution $contrib;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
-    /** @var \mock\Slim\Router */
-    protected \mock\Slim\Router $mocked_router;
     /** @var array */
     protected array $flash_data;
     /** @var \Slim\Flash\Messages */
     protected \Slim\Flash\Messages $flash;
     protected \DI\Container $container;
-    protected \Slim\Http\Request $request;
-    protected \SLim\Http\Response $response;
     protected int $seed;
     protected array $excluded_after_methods = [];
 
     /**
      * Set up tests
      *
-     * @param stgring $method Method tested
+     * @param string $method Method tested
      *
      * @return void
      */
     public function beforeTestMethod($method)
     {
-        $this->mocked_router = new \mock\Slim\Router();
-        $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
-            return $name;
-        };
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
 
-        $app =  new \Galette\Core\SlimApp();
+        $gapp =  new \Galette\Core\SlimApp();
+        $app = $gapp->getApp();
         $plugins = new \Galette\Core\Plugins();
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
@@ -117,8 +111,8 @@ abstract class GaletteTestCase extends atoum
 
         $container->set('flash', $this->flash);
         $container->set(Slim\Flash\Messages::class, $this->flash);
-        $container->set('router', $this->mocked_router);
-        $container->set(Slim\Router::class, $this->mocked_router);
+
+        $app->addRoutingMiddleware();
 
         $this->container = $container;
 
@@ -129,8 +123,6 @@ abstract class GaletteTestCase extends atoum
         $this->history = $container->get('history');
         $this->members_fields = $container->get('members_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
-        $this->request = $container->get('request');
-        $this->response = $container->get('response');
         $this->session = $container->get('session');
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var; // globals :(
@@ -140,6 +132,21 @@ abstract class GaletteTestCase extends atoum
         $i18n = $this->i18n;
         $container = $this->container;
         $galette_log_var = $this->logger_storage;
+
+        $authenticate = new Authenticate($container);
+        $showPublicPages = function (\Slim\Psr7\Request $request, \Psr\Http\Server\RequestHandlerInterface $handler) {
+            return $handler->handle($request);
+        };
+
+        require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
     }
 
     /**

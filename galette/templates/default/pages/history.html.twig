@@ -24,7 +24,7 @@
     <a
         id="delete"
         class="ui tiny labeled icon button"
-        href="{{ path_for("flushHistory") }}"
+        href="{{ url_for("flushHistory") }}"
     >
         <i class="trash red icon"></i>
         {{ _T("Flush the logs") }}
@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block search %}
-<form action="{{ path_for("history_filter") }}" method="post" class="ui form filters">
+<form action="{{ url_for("history_filter") }}" method="post" class="ui form filters">
     <div class="ui secondary yellow segment">
         <div class="four fields">
             <div class="two fields">

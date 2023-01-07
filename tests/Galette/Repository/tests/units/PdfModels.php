@@ -131,7 +131,7 @@ class PdfModels extends GaletteTestCase
                      *
                      * @return string
                      */
-                    public function pathFor($name)
+                    public function urlFor($name)
                     {
                         return '';
                     }

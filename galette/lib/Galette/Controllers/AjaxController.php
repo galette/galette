@@ -43,8 +43,8 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Galette\Util\Password;
 use Galette\Util\Telemetry;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Throwable;
 
 /**
@@ -102,7 +102,7 @@ class AjaxController extends AbstractController
                 'error_detected',
                 _T("Required argument not present!")
             );
-            return $response->withJson($ret);
+            return $this->withJson($response, $ret);
         }
 
         $mid = $post['member_id'];
@@ -143,7 +143,7 @@ class AjaxController extends AbstractController
             );
         }
 
-        return $response->withJson($ret);
+        return $this->withJson($response, $ret);
     }
 
     /**
@@ -192,7 +192,7 @@ class AjaxController extends AbstractController
             throw $e;
         }
 
-        return $response->withJson($ret);
+        return $this->withJson($response, $ret);
     }
 
     /**
@@ -232,7 +232,7 @@ class AjaxController extends AbstractController
             throw $e;
         }
 
-        return $response->withJson($ret);
+        return $this->withJson($response, $ret);
     }
 
     /**
@@ -283,7 +283,7 @@ class AjaxController extends AbstractController
                 'message'   => $e->getMessage()
             ];
         }
-        return $response->withJson($result);
+        return $this->withJson($response, $result);
     }
 
     /**
@@ -298,7 +298,7 @@ class AjaxController extends AbstractController
     {
         $this->get('preferences')->pref_registration_date = date('Y-m-d H:i:s');
         $this->get('preferences')->store();
-        return $response->withJson(['message' => _T('Thank you for registering!')]);
+        return $this->withJson($response, ['message' => _T('Thank you for registering!')]);
     }
 
     /**
@@ -322,10 +322,13 @@ class AjaxController extends AbstractController
             ]
         );
 
-        return $response->withJson([
-            'date_debut_cotis'  => $contrib->begin_date,
-            'date_fin_cotis'    => $contrib->end_date
-        ]);
+        return $this->withJson(
+            $response,
+            [
+                'date_debut_cotis'  => $contrib->begin_date,
+                'date_fin_cotis'    => $contrib->end_date
+            ]
+        );
     }
 
     /**
@@ -371,9 +374,12 @@ class AjaxController extends AbstractController
             }
         }
 
-        return $response->withJson([
-            'results'   => $members
-        ]);
+        return $this->withJson(
+            $response,
+            [
+                'results'   => $members
+            ]
+        );
     }
 
     /**
@@ -404,7 +410,8 @@ class AjaxController extends AbstractController
         $pass = new Password($this->preferences);
         $valid = $pass->isValid($post['value']);
 
-        return $response->withJson(
+        return $this->withJson(
+            $response,
             [
                 'valid'     => $valid,
                 'score'     => $pass->getStrenght(),

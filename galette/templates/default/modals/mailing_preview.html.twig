@@ -33,7 +33,7 @@
                         <th>{{ _T("Attachments:") }}</th>
                         <td>
     {% for attachment in attachments %}
-                            <span class="attached"><a target="_blank" href="{{ path_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}"><i class="ui paperclip icon"></i>{{ attachment.getFileName() }}</a></span>
+                            <span class="attached"><a target="_blank" href="{{ url_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}"><i class="ui paperclip icon"></i>{{ attachment.getFileName() }}</a></span>
     {% else %}
                     -
     {% endfor %}

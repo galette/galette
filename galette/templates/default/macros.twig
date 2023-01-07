@@ -19,14 +19,14 @@
 
 {% macro renderMenuItem(label, title, route, icon, class, tips_position) %}
     {% if class is empty %}
-        {% if is_current_path(route.name, route.args|default([])) or (cur_route in route.aliases ?? [] and route.sub_select ?? true == true) %}
+        {% if is_current_url(route.name, route.args|default([])) or (cur_route in route.aliases ?? [] and route.sub_select ?? true == true) %}
             {% set class = "active item" %}
         {% else %}
             {% set class = "item" %}
         {% endif %}
     {% endif %}
     <a
-            href="{{ path_for(route.name, route.args|default([])) }}"
+            href="{{ url_for(route.name, route.args|default([])) }}"
             class="{{ class }}"
             title="{{ title }}"
             {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
@@ -39,7 +39,7 @@
 {% endmacro %}
 
 {% macro dashboardCard(label, title, route, icon) %}
-    <a class="ui card" href="{{ path_for(route.name, route.args|default([])) }}" title="{{ title }}">
+    <a class="ui card" href="{{ url_for(route.name, route.args|default([])) }}" title="{{ title }}">
         <div class="content">
             <div class="ui header">
                 <i class="ui big {{ icon }} grey icon"></i>
@@ -53,7 +53,7 @@
 
 {% macro drawListAction(title, route, icon, extra_class) %}
     <a
-            href="{{ path_for(route.name, route.args|default([])) }}"
+            href="{{ url_for(route.name, route.args|default([])) }}"
             class="{{ extra_class|default('') }} tooltip"
             title="{{ title }}"
     >
@@ -64,7 +64,7 @@
 
 {% macro drawDetailedAction(label, title, route, icon) %}
     <a
-        href="{{ path_for(route.name, route.args|default([])) }}"
+        href="{{ url_for(route.name, route.args|default([])) }}"
         title="{{ title }}"
         class="ui item"
     >

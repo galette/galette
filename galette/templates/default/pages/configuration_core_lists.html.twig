@@ -6,7 +6,7 @@
             <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
         </div>
     </noscript>
-    <form action="{{ path_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
+    <form action="{{ url_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
         <div id="members_tab" class="cssform ui grid">
             <div class="eight wide column">
                 <div class="ui top attached accordion-styled header">

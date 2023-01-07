@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Analog\Analog;
 
 /**
@@ -48,7 +48,7 @@ use Analog\Analog;
  * @name      CrudController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -167,7 +167,7 @@ abstract class CrudController extends AbstractController
         ];
 
         return [
-            'mode'          => $request->isXhr() ? 'ajax' : '',
+            'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
             'page_title'    => $this->confirmRemoveTitle($args),
             'form_url'      => $this->formUri($args),
             'cancel_uri'    => $this->cancelUri($args),
@@ -321,11 +321,7 @@ abstract class CrudController extends AbstractController
                 ->withStatus(301)
                 ->withHeader('Location', $uri);
         } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
+            return $this->withJson($response, ['success'   => $success]);
         }
     }
 

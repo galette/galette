@@ -4,7 +4,7 @@
         <div class="ui basic horizontal segments">
             <div class="ui basic fitted segment">
                 <a
-                    href="{{ path_for('importModel') }}"
+                    href="{{ url_for('importModel') }}"
                     class="ui labeled icon button"
                 >
                     <i class="cogs icon" aria-hidden="true"></i>
@@ -19,7 +19,7 @@
                         {{ _T('Existing files') }}
                     </div>
                     <div class="active content field">
-                        <form class="ui form" action="{{ path_for('doImport') }}" method="post">
+                        <form class="ui form" action="{{ url_for('doImport') }}" method="post">
                             <div class="ui yellow message">
                                 {{ _T("Warning: Don't forget to backup your current database.") }}
                             </div>
@@ -39,7 +39,7 @@
                                     <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                                         <td data-scope="row">
                                             <input type="radio" name="import_file" id="file{{ loop.index }}" value="{{ import.name }}"{% if import_file is defined and import_file == import.name %} checked="checked"{% endif %}/>
-                                            <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ path_for("getCsv", {"type": "import", "file": import.name}) }}">{{ _T('see') }}</a>)
+                                            <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ url_for("getCsv", {"type": "import", "file": import.name}) }}">{{ _T('see') }}</a>)
                                         </td>
                                         <td data-title="{{ _T('Date') }}">
                                             {{ import.date }}
@@ -49,7 +49,7 @@
                                         </td>
                                         <td class="actions_row">
                                             <a
-                                                href="{{ path_for("removeCsv", {"type": "import", "file": import.name}) }}"
+                                                href="{{ url_for("removeCsv", {"type": "import", "file": import.name}) }}"
                                                 class="delete tooltip"
                                             >
                                                 <i class="ui trash red icon"></i>
@@ -85,7 +85,7 @@
                         {{ _T('Upload new file') }}
                     </div>
                     <div class="active content field">
-                        <form class="ui form" action="{{ path_for('uploadImportFile') }}" method="post" enctype="multipart/form-data">
+                        <form class="ui form" action="{{ url_for('uploadImportFile') }}" method="post" enctype="multipart/form-data">
                             <div class="field">
                                 <label for="new_file">{{ _T('Select a file:') }}</label>
                                 <input class="labelalign" type="file" name="new_file" accept="text/csv" id="new_file"/>

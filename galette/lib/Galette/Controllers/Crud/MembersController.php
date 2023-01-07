@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -38,8 +38,8 @@ namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
 use Galette\Core\Gaptcha;
 use Galette\Entity\Adherent;
@@ -66,7 +66,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -118,7 +118,7 @@ class MembersController extends CrudController
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('slash'));
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
 
         if ($this->session->member !== null) {
@@ -227,7 +227,7 @@ class MembersController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('addMember'));
+            ->withHeader('Location', $this->routeparser->urlFor('addMember'));
     }
 
     // /CRUD - Create
@@ -259,7 +259,7 @@ class MembersController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('me')
+                    $this->routeparser->urlFor('me')
                 );
         }
 
@@ -273,7 +273,7 @@ class MembersController extends CrudController
             return $response
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('slash')
+                    $this->routeparser->urlFor('slash')
                 );
         }
 
@@ -293,7 +293,8 @@ class MembersController extends CrudController
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
                 'display_elements'  => $display_elements,
-                'osocials'          => new Social($this->zdb)
+                'osocials'          => new Social($this->zdb),
+                'navigate'          => $this->handleNavigationLinks($member->id)
             )
         );
         return $response;
@@ -312,7 +313,7 @@ class MembersController extends CrudController
         if ($this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('slash'));
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
         return $this->show($request, $response, $this->login->id);
     }
@@ -359,7 +360,7 @@ class MembersController extends CrudController
         $this->session->$varname = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $filters->setViewPagination($this->router, $this->view, false);
+        $filters->setViewPagination($this->routeparser, $this->view, false);
 
         // display page
         $this->view->render(
@@ -413,7 +414,7 @@ class MembersController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('publicList', ['type' => $type]));
+            ->withHeader('Location', $this->routeparser->urlFor('publicList', ['type' => $type]));
     }
 
     /**
@@ -462,7 +463,7 @@ class MembersController extends CrudController
             return $response
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         'member',
                         ['id' => $id]
                     )
@@ -499,7 +500,7 @@ class MembersController extends CrudController
             fwrite($stream, file_get_contents(GALETTE_FILES_PATH . $filename));
             rewind($stream);
 
-            return $response->withBody(new \Slim\Http\Stream($stream));
+            return $response->withBody(new \Slim\Psr7\Stream($stream));
         } else {
             Analog::log(
                 'A request has been made to get a dynamic file named `' .
@@ -515,7 +516,7 @@ class MembersController extends CrudController
             return $response
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('member', ['id' => $id])
+                    $this->routeparser->urlFor('member', ['id' => $id])
                 );
         }
     }
@@ -562,7 +563,7 @@ class MembersController extends CrudController
         $groups_list = $groups->getList();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setViewPagination($this->router, $this->view, false);
+        $filters->setViewPagination($this->routeparser, $this->view, false);
         $filters->setViewCommonsFilters($this->preferences, $this->view);
 
         $this->session->filter_members = $filters;
@@ -612,11 +613,11 @@ class MembersController extends CrudController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('advanced-search'));
+                ->withHeader('Location', $this->routeparser->urlFor('advanced-search'));
         } elseif (isset($post['adv_criteria'])) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('advanced-search'));
+                ->withHeader('Location', $this->routeparser->urlFor('advanced-search'));
         } else {
             //string to filter
             if (isset($post['filter_str'])) { //filter search string
@@ -731,7 +732,7 @@ class MembersController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         'saveSearch',
                         $post
                     )
@@ -742,7 +743,7 @@ class MembersController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('members'));
+            ->withHeader('Location', $this->routeparser->urlFor('members'));
     }
 
     /**
@@ -878,7 +879,7 @@ class MembersController extends CrudController
         }
 
         //assign pagination variables to the template and add pagination links
-        $filters->setViewPagination($this->router, $this->view, false);
+        $filters->setViewPagination($this->routeparser, $this->view, false);
 
         $this->session->ajax_members_filters = $filters;
 
@@ -991,49 +992,49 @@ class MembersController extends CrudController
             if (isset($post['cards'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('pdf-members-cards'));
+                    ->withHeader('Location', $this->routeparser->urlFor('pdf-members-cards'));
             }
 
             if (isset($post['labels'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
+                    ->withHeader('Location', $this->routeparser->urlFor('pdf-members-labels'));
             }
 
             if (isset($post['sendmail'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('mailing') . '?mailing_new=new');
+                    ->withHeader('Location', $this->routeparser->urlFor('mailing') . '?mailing_new=new');
             }
 
             if (isset($post['attendance_sheet'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('attendance_sheet_details'));
+                    ->withHeader('Location', $this->routeparser->urlFor('attendance_sheet_details'));
             }
 
             if (isset($post['csv'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
+                    ->withHeader('Location', $this->routeparser->urlFor('csv-memberslist'));
             }
 
             if (isset($post['delete'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('removeMembers'));
+                    ->withHeader('Location', $this->routeparser->urlFor('removeMembers'));
             }
 
             if (isset($post['masschange'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
+                    ->withHeader('Location', $this->routeparser->urlFor('masschangeMembers'));
             }
 
             if (isset($post['masscontributions'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('massAddContributionsChooseType'));
+                    ->withHeader('Location', $this->routeparser->urlFor('massAddContributionsChooseType'));
             }
 
             throw new \RuntimeException('Does not know what to batch :(');
@@ -1045,7 +1046,7 @@ class MembersController extends CrudController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
     }
 
@@ -1096,7 +1097,7 @@ class MembersController extends CrudController
             return $response
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('me')
+                    $this->routeparser->urlFor('me')
                 );
         }
 
@@ -1172,6 +1173,10 @@ class MembersController extends CrudController
             $route_params['members']['list'] = $members;
         }
 
+        if ($action === 'edit') {
+            $route_params['navigate'] = $this->handleNavigationLinks($member->id);
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -1225,7 +1230,7 @@ class MembersController extends CrudController
 
         $data = [
             'id'            => $filters->selected,
-            'redirect_uri'  => $this->router->pathFor('members')
+            'redirect_uri'  => $this->routeparser->urlFor('members')
         ];
 
         $fc = $this->fields_config;
@@ -1243,14 +1248,14 @@ class MembersController extends CrudController
             $response,
             'modals/mass_change_members.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
                     count($data['id']),
                     _T('Mass change %count members')
                 ),
-                'form_url'      => $this->router->pathFor('masschangeMembersReview'),
-                'cancel_uri'    => $this->router->pathFor('members'),
+                'form_url'      => $this->routeparser->urlFor('masschangeMembersReview'),
+                'cancel_uri'    => $this->routeparser->urlFor('members'),
                 'data'          => $data,
                 'member'        => $member,
                 'fieldsets'     => $form_elements['fieldsets'],
@@ -1327,7 +1332,7 @@ class MembersController extends CrudController
         $filters = $this->session->filter_members;
         $data = [
             'id'            => $filters->selected,
-            'redirect_uri'  => $this->router->pathFor('members')
+            'redirect_uri'  => $this->routeparser->urlFor('members')
         ];
 
         //Status
@@ -1338,14 +1343,14 @@ class MembersController extends CrudController
             $response,
             'modals/mass_change_members.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
                     count($data['id']),
                     _T('Review mass change %count members')
                 ),
-                'form_url'      => $this->router->pathFor('massstoremembers'),
-                'cancel_uri'    => $this->router->pathFor('members'),
+                'form_url'      => $this->routeparser->urlFor('massstoremembers'),
+                'cancel_uri'    => $this->routeparser->urlFor('members'),
                 'data'          => $data,
                 'titles_list'   => Titles::getList($this->zdb),
                 'statuts'       => $statuts->getList(),
@@ -1484,14 +1489,15 @@ class MembersController extends CrudController
             }
         }
 
-        if (!$request->isXhr()) {
+        if (!($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $redirect_url);
         } else {
-            return $response->withJson(
+            return $this->withJson(
+                $response,
                 [
-                    'success'   => count($error_detected) === 0
+                    'success' => count($error_detected) === 0
                 ]
             );
         }
@@ -1510,7 +1516,7 @@ class MembersController extends CrudController
         if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('slash'));
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
 
         $post = $request->getParsedBody();
@@ -1620,7 +1626,7 @@ class MembersController extends CrudController
         }
 
         // Validation
-        $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+        $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
         if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
             // regular fields
             $valid = $member->check($post, $required, $disabled);
@@ -1709,7 +1715,7 @@ class MembersController extends CrudController
                 foreach ($error_detected as $error) {
                     if (strpos($error, '%member_url_') !== false) {
                         preg_match('/%member_url_(\d+)/', $error, $matches);
-                        $url = $this->router->pathFor('member', ['id' => $matches[1]]);
+                        $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
                         $error = str_replace(
                             '%member_url_' . $matches[1],
                             $url,
@@ -1742,50 +1748,50 @@ class MembersController extends CrudController
 
             if (count($error_detected) === 0) {
                 if ($this->isSelfMembership()) {
-                    $redirect_url = $this->router->pathFor('login');
+                    $redirect_url = $this->routeparser->urlFor('login');
                 } elseif (
                     isset($post['redirect_on_create'])
                     && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
                 ) {
                     switch ($post['redirect_on_create']) {
                         case Adherent::AFTER_ADD_TRANS:
-                            $redirect_url = $this->router->pathFor('addTransaction');
+                            $redirect_url = $this->routeparser->urlFor('addTransaction');
                             break;
                         case Adherent::AFTER_ADD_NEW:
-                            $redirect_url = $this->router->pathFor('addMember');
+                            $redirect_url = $this->routeparser->urlFor('addMember');
                             break;
                         case Adherent::AFTER_ADD_SHOW:
-                            $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                            $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
                             break;
                         case Adherent::AFTER_ADD_LIST:
-                            $redirect_url = $this->router->pathFor('members');
+                            $redirect_url = $this->routeparser->urlFor('members');
                             break;
                         case Adherent::AFTER_ADD_HOME:
-                            $redirect_url = $this->router->pathFor('slash');
+                            $redirect_url = $this->routeparser->urlFor('slash');
                             break;
                     }
                 } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
-                    $redirect_url = $this->router->pathFor(
+                    $redirect_url = $this->routeparser->urlFor(
                         'addContribution',
                         ['type' => 'fee']
                     ) . '?id_adh=' . $member->id;
                 } else {
-                    $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                    $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
                 }
             } else {
                 //store entity in session
                 $this->session->member = $member;
 
                 if ($this->isSelfMembership()) {
-                    $redirect_url = $this->router->pathFor('subscribe');
+                    $redirect_url = $this->routeparser->urlFor('subscribe');
                 } else {
                     if ($member->id) {
-                        $redirect_url = $this->router->pathFor(
+                        $redirect_url = $this->routeparser->urlFor(
                             'editMember',
                             ['id'    => $member->id]
                         );
                     } else {
-                        $redirect_url = $this->router->pathFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
+                        $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
                     }
                 }
             }
@@ -1809,7 +1815,7 @@ class MembersController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('members');
+        return $this->routeparser->urlFor('members');
     }
 
     /**
@@ -1821,7 +1827,7 @@ class MembersController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveMember',
             $args
         );
@@ -1925,5 +1931,61 @@ class MembersController extends CrudController
     private function isSelfMembership(): bool
     {
         return $this->is_self_membership;
+    }
+
+    /**
+     * Handle navigation links
+     *
+     * @param int $id_adh Current member ID
+     *
+     * @return array
+     */
+    private function handleNavigationLinks(int $id_adh): array
+    {
+        $navigate = array();
+
+        if (isset($this->session->filter_members)) {
+            $filters = $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+        //we must navigate between all members
+        $filters->show = 0;
+
+        if (
+            $this->login->isAdmin()
+            || $this->login->isStaff()
+            || $this->login->isGroupManager()
+        ) {
+            $m = new Members($filters);
+
+            $ids = array();
+            $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
+            if ($this->login->isAdmin() || $this->login->isStaff()) {
+                $ids = $m->getMembersList(false, $fields);
+            } else {
+                $ids = $m->getManagedMembersList(false, $fields);
+            }
+
+            $ids = $ids->toArray();
+            foreach ($ids as $k => $m) {
+                if ($m['id_adh'] == $id_adh) {
+                    $navigate = array(
+                        'cur'  => $m['id_adh'],
+                        'count' => $filters->counter,
+                        'pos' => $k + 1
+                    );
+                    if ($k > 0) {
+                        $navigate['prev'] = $ids[$k - 1]['id_adh'];
+                    }
+                    if ($k < count($ids) - 1) {
+                        $navigate['next'] = $ids[$k + 1]['id_adh'];
+                    }
+                    break;
+                }
+            }
+        }
+
+        return $navigate;
     }
 }

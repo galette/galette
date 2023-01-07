@@ -14,7 +14,7 @@
         </div>
         <div class="content scrolling">
     {% endif %}
-            <form action="{{ path_for('attendance_sheet') }}" id="sheet_details_form" method="POST" class="ui form">
+            <form action="{{ url_for('attendance_sheet') }}" id="sheet_details_form" method="POST" class="ui form">
                 <div class="ui top attached accordion-styled header">
                     {{ _T("Some details about your attendance sheet...") }} - <span>{{ _T("%s attendees")|replace({'%s': data|length}) }}</span>
                 </div>

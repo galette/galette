@@ -114,7 +114,7 @@
         {% endif %}
     {% else %}
         {% if mode != 'ajax' %}
-                <a href="{{ path_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon"></i> {{ _T("Back to plugins managment page") }}</a>
+                <a href="{{ url_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon"></i> {{ _T("Back to plugins managment page") }}</a>
         {% endif %}
     {% endif %}
         {% if mode != 'ajax' %}

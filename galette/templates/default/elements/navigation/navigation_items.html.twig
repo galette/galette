@@ -1,7 +1,7 @@
 {% import "macros.twig" as menus_macros %}
 
 {% if login.isLogged() %}
-        <a href="{{ path_for('dashboard') }}"
+        <a href="{{ url_for('dashboard') }}"
             title="{{ _T("Go to Galette's dashboard") }}"
             class="{% if cur_route == "dashboard" %}active {% endif %}item"
         >

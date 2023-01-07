@@ -3,7 +3,7 @@
 {% block content %}
         <div class="ui stackable pointing inverted menu">
 {% for m in models %}
-            <a href="{{ path_for('pdfModels', {'id': m.id}) }}" class="item{% if m.id == model.id %} active{% endif %}" data-tab="{{ m.id }}">{{ m.name }}</a>
+            <a href="{{ url_for('pdfModels', {'id': m.id}) }}" class="item{% if m.id == model.id %} active{% endif %}" data-tab="{{ m.id }}">{{ m.name }}</a>
 {% endfor %}
         </div>
 {% for m in models %}
@@ -20,7 +20,7 @@
             $(function() {
                 $('.pointing.menu .item').tab({
                     auto: true,
-                    path: '{{ path_for('pdfModels', {'id': ''}) }}'
+                    path: '{{ url_for('pdfModels', {'id': ''}) }}'
                 });
             });
 

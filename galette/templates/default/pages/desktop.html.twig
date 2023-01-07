@@ -101,7 +101,7 @@
                         }
                 );
                 if ( !_checked ) {
-                    var _url = '{{ path_for('members') }}';
+                    var _url = '{{ url_for('members') }}';
                     window.location.replace(_url);
                 }
             });
@@ -117,7 +117,7 @@
                             path: '/'
                         }
                 );
-                var _url = '{{ path_for('dashboard') }}';
+                var _url = '{{ url_for('dashboard') }}';
                 window.location.replace(_url);
             });
 

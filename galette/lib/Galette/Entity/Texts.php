@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2021 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Avaialble since 0.7dev - 2007-07-16
@@ -39,12 +39,12 @@ namespace Galette\Entity;
 
 use Galette\Core\I18n;
 use Galette\Features\Replacements;
+use Slim\Routing\RouteParser;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Password;
 use Galette\Core\Preferences;
-use Slim\Router;
 
 /**
  * Texts class for galette
@@ -54,10 +54,10 @@ use Slim\Router;
  * @package   Galette
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     Avaialble since 0.7dev - 2007-07-16
+ * @since     Available since 0.7dev - 2007-07-16
  */
 class Texts
 {
@@ -76,20 +76,20 @@ class Texts
     /**
      * Main constructor
      *
-     * @param Preferences $preferences Galette's preferences
-     * @param Router|null $router      Router instance
+     * @param Preferences      $preferences Galette's preferences
+     * @param RouteParser|null $routeparser RouteParser instance
      */
-    public function __construct(Preferences $preferences, Router $router = null)
+    public function __construct(Preferences $preferences, RouteParser $routeparser = null)
     {
         global $zdb, $login, $container;
         $this->preferences = $preferences;
-        if ($router === null) {
-            $router = $container->get('router');
+        if ($routeparser === null) {
+            $routeparser = $container->get(RouteParser::class);
         }
         if ($login === null) {
             $login = $container->get('login');
         }
-        $this->router = $router;
+        $this->routeparser = $routeparser;
         $this
             ->setDb($zdb)
             ->setLogin($login);
@@ -192,7 +192,7 @@ class Texts
     {
         $this->setReplacements([
             'change_pass_uri'   => $this->preferences->getURL() .
-                $this->router->pathFor(
+                $this->routeparser->urlFor(
                     'password-recovery',
                     ['hash' => base64_encode($password->getHash())]
                 )

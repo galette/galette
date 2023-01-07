@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <form action="{{ path_for('paymentTypes') }}" method="post" enctype="multipart/form-data" class="ui form">
+        <form action="{{ url_for('paymentTypes') }}" method="post" enctype="multipart/form-data" class="ui form">
                 <table class="listing ui celled table">
                     <thead>
                         <tr>
@@ -39,7 +39,7 @@
                                 {{ loop.index }}
                 {% endif %}
                                 <span class="row-title">
-                                    <a href="{{ path_for('editPaymentType', {'id': ptype.__get('id')}) }}">
+                                    <a href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}">
                                         {{ _T("%s payment type")|replace({'%s': ptype.getName()}) }}
                                     </a>
                                 </span>
@@ -47,14 +47,14 @@
                             <td class="left" data-title="{{ _T("Name") }}">{{ ptype.getName() }}</td>
                             <td class="center actions_row">
                                 <a
-                                    href="{{ path_for('editPaymentType', {'id': ptype.__get('id')}) }}"
+                                    href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}"
                                     class="tooltip action"
                                 >
                                     <i class="ui edit icon"></i>
                                     <span class="sr-only">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                                 <a
-                                    href="{{ path_for('dynamicTranslations', {'text_orig': ptype.getName(false)|escape}) }}"
+                                    href="{{ url_for('dynamicTranslations', {'text_orig': ptype.getName(false)|escape}) }}"
                                     class="tooltip"
                                 >
                                     <i class="ui language grey icon"></i>
@@ -65,7 +65,7 @@
                                 <i class="ui icon">&nbsp;</i>
                 {% else %}
                                 <a
-                                    href="{{ path_for('removePaymentType', {'id': ptype.__get('id')}) }}"
+                                    href="{{ url_for('removePaymentType', {'id': ptype.__get('id')}) }}"
                                     class="delete tooltip"
                                 >
                                     <i class="ui trash red icon"></i>

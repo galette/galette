@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if members.list is defined %}
-    <form action="{% if transaction.id %}{{ path_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ path_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+    <form action="{% if transaction.id %}{{ url_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui top attached accordion-styled header">
             {{ _T("Transaction details") }}
         </div>
@@ -70,14 +70,14 @@
                 <div class="ui basic fitted right aligned segment">
                     {% if transaction.getMissingAmount() > 0 %}
                         <a
-                            href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ transaction.id }}"
+                            href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ transaction.id }}"
                             class="ui icon button tooltip"
                         >
                             <i class="user check icon"></i>
                             <span class="sr-only">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
                         </a>
                         <a
-                            href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ transaction.id }}"
+                            href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ transaction.id }}"
                             class="ui icon button tooltip"
                         >
                             <i class="gift icon"></i>
@@ -143,7 +143,7 @@
                     {% if login.isAdmin() or login.isStaff() %}
                             <td class="{{ cclass }} actions_row">
                                 <a
-                                    href="{{ path_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
+                                    href="{{ url_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
                                     class="delete tooltip"
                                 >
                                     <i class="ui red trash icon"></i>
@@ -166,7 +166,7 @@
         <p>
             {{ _T("Unfortunately, there is no member in your database yet,") }}
             <br/>
-            <a href="{{ path_for("addMember") }}">{{ _T("please create a member") }}</a>
+            <a href="{{ url_for("addMember") }}">{{ _T("please create a member") }}</a>
         </p>
     </div>
 {% endif %}
@@ -190,7 +190,7 @@
             var _btnuser_mapping = function(){
                 $('#contribslist').click(function(){
                     $.ajax({
-                        url: '{{ path_for("contributions", {"type": "contributions"}) }}',
+                        url: '{{ url_for("contributions", {"type": "contributions"}) }}',
                         type: "GET",
                         data: {
                             ajax: true,
@@ -314,7 +314,7 @@
                 $('.contributions-selection .contribution_row').click(function(){
                     $('.contributions-selection').modal('hide');
                     var _cid = $(this).find('input[name="entries_sel[]"]').val();
-                    window.location.href = '{{ path_for("attach_contribution", {"id": transaction.id, "cid": "%cid"}) }}'.replace(/%cid/, _cid);
+                    window.location.href = '{{ url_for("attach_contribution", {"id": transaction.id, "cid": "%cid"}) }}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
             }
 {% endif %}

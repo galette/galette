@@ -4,7 +4,7 @@
 {% set name = fields.libelle %}
 {% set id = fields.id %}
 {% set field = fields.third %}
-    <form action="{% if class == 'Status' %}{{ path_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_statut}) }}{% else %}{{ path_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_type_cotis}) }}{% endif %}" method="post" class="ui form">
+    <form action="{% if class == 'Status' %}{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_statut}) }}{% else %}{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_type_cotis}) }}{% endif %}" method="post" class="ui form">
         <div class="ui segment">
             <div class="field inline">
                 <label for="{{ name }}">{{ _T("Name:") }}</label>

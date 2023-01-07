@@ -19,14 +19,14 @@
             </tr>
 {% for name, plugin in plugins_list %}
             <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
-                <td data-scope="row"><a href="{{ path_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
+                <td data-scope="row"><a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
                 <td data-title="{{ _T('Description') }}">{{ plugin.desc }}</td>
                 <td data-title="{{ _T('Author') }}">{{ plugin.author }}</td>
                 <td data-title="{{ _T('Version') }}">{{ plugin.version }}</td>
                 <td data-title="{{ _T('Release date') }}">{{ plugin.date }}</td>
                 <td class="actions_row">
                     <a
-                        href="{{ path_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
+                        href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
                         class="toggleActivation tooltip use"
                     >
                         <i class="ui toggle on red icon"></i>
@@ -34,7 +34,7 @@
                     </a>
     {% if plugins.needsDatabase(name) %}
                     <a
-                        href="{{ path_for("pluginInitDb", {"id": name}) }}"
+                        href="{{ url_for("pluginInitDb", {"id": name}) }}"
                         id="initdb_{{ name }}"
                         class="initdb action tooltip"
                     >
@@ -77,7 +77,7 @@
                 </td>
                 <td class="actions_row">
                     <a
-                        href="{{ path_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
+                        href="{{ url_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
                         class="toggleActivation tooltip delete"
                     >
                         <i class="ui toggle on grey icon"></i>

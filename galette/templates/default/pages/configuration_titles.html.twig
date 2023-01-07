@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <form action="{{ path_for('titles') }}" method="post" enctype="multipart/form-data" class="ui form">
+    <form action="{{ url_for('titles') }}" method="post" enctype="multipart/form-data" class="ui form">
             <table class="listing ui celled table">
                 <thead>
                     <tr>
@@ -43,7 +43,7 @@
                             {{ loop.index }}
             {% endif %}
                             <span class="row-title">
-                                <a href="{{ path_for('editTitle', {'id': title.id}) }}">
+                                <a href="{{ url_for('editTitle', {'id': title.id}) }}">
                                     {{ _T("%s title")|replace({'%s': title.short|escape}) }}
                                 </a>
                             </span>
@@ -52,7 +52,7 @@
                         <td class="left" data-title="{{ _T("Long form") }}">{{ title.long|escape }}</td>
                         <td class="center actions_row">
                             <a
-                                href="{{ path_for('editTitle', {'id': title.id}) }}"
+                                href="{{ url_for('editTitle', {'id': title.id}) }}"
                                 class="tooltip action"
                             >
                                 <i class="ui edit icon"></i>
@@ -62,7 +62,7 @@
                             <i class="ui icon">&nbsp;</i>
             {% else %}
                             <a
-                                href="{{ path_for('removeTitle', {'id': title.id}) }}"
+                                href="{{ url_for('removeTitle', {'id': title.id}) }}"
                                 class="delete tooltip"
                             >
                                 <i class="ui trash red icon"></i>

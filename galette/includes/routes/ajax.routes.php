@@ -40,54 +40,55 @@ use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/ajax', function () use ($authenticate) {
-    $this->get(
+$app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate) {
+    $app->get(
         '/messages',
         [AjaxController::class, 'messages']
     )->setName('ajaxMessages');
 
-    $this->post(
+    $app->post(
         'photo',
         [AjaxController::class, 'photo']
     )->setName('photoDnd');
 
-    $this->post(
+    $app->post(
         '/suggest/towns/{term}',
         [AjaxController::class, 'suggestTowns']
     )->setName('suggestTown');
 
-    $this->post(
+    $app->post(
         '/suggest/countries/{term}',
         [AjaxController::class, 'suggestCountries']
     )->setName('suggestCountry');
 
-    $this->get(
+    $app->get(
         '/telemetry/infos',
         [AjaxController::class, 'telemetryInfos']
     )->setName('telemetryInfos')->add($authenticate);
 
-    $this->post(
+    $app->post(
         '/telemetry/send',
         [AjaxController::class, 'telemetrySend']
     )->setName('telemetrySend')->add($authenticate);
 
-    $this->get(
+    $app->get(
         '/telemetry/registered',
         [AjaxController::class, 'telemetryRegistered']
     )->setName('setRegistered')->add($authenticate);
 
-    $this->post(
+    $app->post(
         '/contribution/dates',
         [AjaxController::class, 'contributionDates']
     )->setName('contributionDates')->add($authenticate);
 
-    $this->post(
+    $app->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
         [AjaxController::class, 'contributionMembers']
     )->setName('contributionMembers')->add($authenticate);
 
-    $this->post(
+    $app->post(
         '/password/strength',
         [AjaxController::class, 'passwordStrength']
     )->setName('checkPassword');

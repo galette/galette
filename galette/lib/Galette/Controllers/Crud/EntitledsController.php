@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Status;
 use Galette\Repository\Members;
@@ -286,7 +286,7 @@ class EntitledsController extends CrudController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor(
+                $this->routeparser->urlFor(
                     'entitleds',
                     ['class' => $class]
                 )
@@ -306,7 +306,7 @@ class EntitledsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('entitleds', ['class' => $args['class']]);
+        return $this->routeparser->urlFor('entitleds', ['class' => $args['class']]);
     }
 
     /**
@@ -318,7 +318,7 @@ class EntitledsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveEntitled',
             [
                 'class' => $args['class'],

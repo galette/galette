@@ -16,11 +16,11 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '7.4', '8.0', '8.1', '8.2' ]
+        php-versions: [ '8.0', '8.1', '8.2' ]
         coverage: ['none']
         db-image: ['mysql:5.7', 'mysql:8.0', 'mariadb:10.2', 'mariadb:10.6', 'postgres:10', 'postgres:14']
         include:
-          - php-versions: '7.4'
+          - php-versions: '8.1'
             coverage: 'xdebug'
             db-image: 'postgres:14'
       fail-fast: false
@@ -75,6 +75,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
       - name: Get composer cache directory
         id: composer-cache
@@ -98,16 +100,17 @@ jobs:
       - name: Twig CS
         run: |
           galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
+        if: matrix.php-versions == '8.1'
 
       - name: Install checker
         working-directory: galette
         run: composer require maglnet/composer-require-checker -W
-        if: matrix.php-versions == '7.4'
+        if: matrix.php-versions == '8.1'
 
       - name: Check missing symbols
         run: |
           galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
-        if: matrix.php-versions == '7.4'
+        if: matrix.php-versions == '8.1'
 
       - name: Init for PostgreSQL (update)
         env:
@@ -151,8 +154,10 @@ jobs:
 
       - name: Upload code coverage (scrutinizer)
         run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml
+          cd galette
+          composer require scrutinizer/ocular
+          cd ..
+          php galette/vendor/bin/ocular code-coverage:upload --format=php-clover tests/clover.xml
         if: matrix.coverage == 'xdebug'
 
       - name: Upload code coverage (codecov)

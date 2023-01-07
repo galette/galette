@@ -36,7 +36,7 @@
 
 namespace Galette\Core;
 
-use Slim\Router;
+use Slim\Routing\RouteParser;
 use Slim\Slim;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
@@ -70,7 +70,7 @@ abstract class Pagination
     private $pages = 1;
     private $counter = null;
     protected $view;
-    protected $router;
+    protected $routeparser;
 
     public const ORDER_ASC = 'ASC';
     public const ORDER_DESC = 'DESC';
@@ -228,33 +228,33 @@ abstract class Pagination
     /**
      * Creates pagination links and assign some useful variables to the template
      *
-     * @param Router  $router     Application instance
-     * @param mixed   $view       View instance
-     * @param boolean $restricted Do not permit to display all
+     * @param RouteParser $routeparser Application instance
+     * @param mixed       $view        View instance
+     * @param boolean     $restricted  Do not permit to display all
      *
      * @return void
      *
      * @deprecated 1.0.0 use setViewPagination
      */
-    public function setSmartyPagination(Router $router, $view, $restricted = true)
+    public function setSmartyPagination(RouteParser $routeparser, $view, $restricted = true)
     {
-        return $this->setViewPagination($router, $view, $restricted);
+        return $this->setViewPagination($routeparser, $view, $restricted);
     }
 
     /**
      * Creates pagination links and assign some useful variables to the template
      *
-     * @param Router  $router     Application instance
-     * @param mixed   $view       View instance
-     * @param boolean $restricted Do not permit to display all
+     * @param RouteParser $routeparser Application instance
+     * @param mixed       $view        View instance
+     * @param boolean     $restricted  Do not permit to display all
      *
      * @return void
      */
-    public function setViewPagination(Router $router, $view, $restricted = true)
+    public function setViewPagination(RouteParser $routeparser, $view, $restricted = true)
     {
         $paginate = null;
         $this->view = $view;
-        $this->router = $router;
+        $this->routeparser = $routeparser;
 
         //Create pagination links
         if ($this->current_page < 11) {
@@ -338,7 +338,7 @@ abstract class Pagination
         $view->getEnvironment()->addGlobal('nbshow_options', $options);
 
         $this->view = null;
-        $this->router = null;
+        $this->routeparser = null;
     }
 
     /**
@@ -382,7 +382,7 @@ abstract class Pagination
             $args['type'] = $this->view->getEnvironment()->getGlobals()['cur_subroute'];
         }
 
-        $href = $this->router->pathFor(
+        $href = $this->routeparser->urlFor(
             $this->view->getEnvironment()->getGlobals()['cur_route'],
             $args
         );

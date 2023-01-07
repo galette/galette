@@ -144,7 +144,12 @@ class CsvIn extends GaletteTestCase
 
         //get csv model file to add data in
         $controller = new \Galette\Controllers\CsvController($this->container);
-        $response = $controller->getImportModel($this->request, $this->response);
+
+        $rfactory = new \Slim\Psr7\Factory\RequestFactory();
+        $request = $rfactory->createRequest('GET', 'http://localhost/models/csv');
+        $response = new \Slim\Psr7\Response();
+
+        $response = $controller->getImportModel($request, $response);
         $csvin = new \Galette\IO\CsvIn($this->container->get('zdb'));
 
         $this->integer($response->getStatusCode())->isIdenticalTo(200);
@@ -180,10 +185,10 @@ class CsvIn extends GaletteTestCase
             'import_file'   => $file_name
         ];
 
-        $request = clone $this->request;
+        $request = clone $request;
         $request = $request->withParsedBody($post);
 
-        $response = $controller->doImports($request, $this->response);
+        $response = $controller->doImports($request, $response);
         $this->integer($response->getStatusCode())->isIdenticalTo(301);
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo($flash_messages);
         $this->flash->clearMessages();

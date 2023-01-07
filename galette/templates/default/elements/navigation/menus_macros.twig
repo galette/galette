@@ -19,14 +19,14 @@
 
 {% macro renderMenuItem(label, title, route, icon, class, tips_position) %}
     {% if class is empty %}
-        {% if is_current_path(route.name, route.args|default([])) %}
+        {% if is_current_url(route.name, route.args|default([])) %}
             {% set class = "active item" %}
         {% else %}
             {% set class = "item" %}
         {% endif %}
     {% endif %}
     <a
-            href="{{ path_for(route.name, route.args|default([])) }}"
+            href="{{ url_for(route.name, route.args|default([])) }}"
             class="{{ class }}"
             title="{{ title }}"
             {% if tips_position %}data-position="{{ tips_position }}"{% endif %}

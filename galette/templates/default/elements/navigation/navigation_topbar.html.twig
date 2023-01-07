@@ -4,7 +4,7 @@
             <i class="sidebar icon"></i>
         </a>
         <div class="header item">
-            <img src="{{ path_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
+            <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
             <span>{{ preferences.pref_nom }}</span>
         </div>
 

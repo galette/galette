@@ -14,7 +14,7 @@
 } %}
 
 {% block search %}
-    <form action="{{ path_for("payments_filter", {"type": "transactions"}) }}" method="post" class="ui form filters">
+    <form action="{{ url_for("payments_filter", {"type": "transactions"}) }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
             <div class="two fields">
                 <div class="two fields">
@@ -56,7 +56,7 @@
                 <div class="ui horizontal list">
                 <span class="ui primary ribbon label">
                 <a
-                        href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
+                        href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
                         class="tooltip"
                 >
                         <i class="icon eraser"></i>
@@ -67,10 +67,10 @@
             </span>
             {% if login.isAdmin() or login.isStaff() %}
                 <div class="item">
-                    <a href="{{ path_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
+                    <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
                 </div>
                 <div class="item">
-                    <a href="{{ path_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny button">{{ _T("Add a transaction") }}</a>
+                    <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny button">{{ _T("Add a transaction") }}</a>
                 </div>
             {% endif %}
             </div>
@@ -97,7 +97,7 @@
     {% if login.isAdmin() or login.isStaff() %}
         <a
                 class="ui tiny labeled icon button"
-                href="{{ path_for("addTransaction") }}"
+                href="{{ url_for("addTransaction") }}"
         >
             <i class="ui plus circle green icon" aria-hidden="true"></i>
             {{ _T("Add a transaction") }}
@@ -144,7 +144,7 @@
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
                 <span class="row-title">
-                            <a href="{{ path_for("editTransaction", {"id": transaction.id}) }}">
+                            <a href="{{ url_for("editTransaction", {"id": transaction.id}) }}">
                                 {{ _T("Transaction %id")|replace({"%id": transaction.id}) }}
                             </a>
                         </span>
@@ -159,14 +159,14 @@
                     {% endif %}
                     {% if filters.filtre_cotis_adh == "" %}
                         <a
-                                href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
+                                href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
                                 title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
                         >
                             <i class="fa fa-filter"></i>
                         </a>
                     {% endif %}
                     <a
-                            href="{{ path_for("member", {"id": mid}) }}"
+                            href="{{ url_for("member", {"id": mid}) }}"
                             title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
                     >
                         {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
@@ -177,11 +177,11 @@
             {% if login.isAdmin() or login.isStaff() %}
                 <td class="{{ cclass }}" data-title="{{ _T("Originator") }}">
                     {% if filters.filtre_cotis_adh == "" %}
-                        <a href="{{ path_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}">
+                        <a href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}">
                             {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                         </a>
                     {% else %}
-                        <a href="{{ path_for("member", {"id": mid}) }}">
+                        <a href="{{ url_for("member", {"id": mid}) }}">
                             {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
                         </a>
                     {% endif %}
@@ -191,14 +191,14 @@
             {% if login.isAdmin() or login.isStaff() %}
                 <td class="{{ cclass }} center">
                     <a
-                            href="{{ path_for("editTransaction", {"id": transaction.id}) }}"
+                            href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
                             class="tooltip action"
                     >
                         <i class="ui edit icon"></i>
                         <span class="sr-only">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                     <a
-                            href="{{ path_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
+                            href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                             class="delete tooltip"
                     >
                         <i class="ui trash red icon"></i>

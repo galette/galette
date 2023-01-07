@@ -11,7 +11,7 @@
     {% endif %}
     {% block search %}{% endblock %}
     {% block infoline %}
-        <form action="{% if infoline.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" class="ui form">
+        <form action="{% if infoline.route is defined %}{{ url_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" class="ui form">
             <div class="infoline">
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">
@@ -38,7 +38,7 @@
             {% endif %}
         </form>
     {% endblock %}
-    <form action="{%  if form.route is defined %}{{ path_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
+    <form action="{%  if form.route is defined %}{{ url_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
         <div class="ui basic fitted segment">
 
         {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
@@ -52,7 +52,7 @@
                     {% for column in columns %}
                         <th class="left">
                             {% if column.order is defined %}
-                            <a href="{{ path_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
+                            <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
                                 {{ column.label }}
                                 {% if filters.orderby == column.order %}
                                     {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
@@ -157,7 +157,7 @@
                         } else if (value == 'delete') {
                             {% include "elements/js/removal.js.twig" with {
                                 selector: ".batch-delete",
-                                deleteurl: path_for(batch.route.name, batch.route.args|default([])),
+                                deleteurl: url_for(batch.route.name, batch.route.args|default([])),
                                 extra_data: "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()",
                                 method: "POST",
                                 loader: "button",

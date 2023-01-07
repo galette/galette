@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2022 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\History;
 use Galette\Filters\HistoryList;
 use Analog\Analog;
@@ -50,7 +50,7 @@ use Analog\Analog;
  * @name      HistoryController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -101,7 +101,7 @@ class HistoryController extends AbstractController
         $logs = $this->history->getHistory();
 
         //assign pagination variables to the template and add pagination links
-        $this->history->filters->setViewPagination($this->router, $this->view);
+        $this->history->filters->setViewPagination($this->routeparser, $this->view);
 
         // display page
         $this->view->render(
@@ -182,7 +182,7 @@ class HistoryController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('history'));
+            ->withHeader('Location', $this->routeparser->urlFor('history'));
     }
 
     /**
@@ -200,7 +200,7 @@ class HistoryController extends AbstractController
         $success = false;
 
         $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] : $this->router->pathFor('slash');
+            $post['redirect_uri'] : $this->routeparser->urlFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -239,7 +239,8 @@ class HistoryController extends AbstractController
                 ->withStatus(301)
                 ->withHeader('Location', $uri);
         } else {
-            return $response->withJson(
+            return $this->withJson(
+                $response,
                 [
                     'success'   => $success
                 ]
@@ -258,7 +259,7 @@ class HistoryController extends AbstractController
     public function confirmHistoryFlush(Request $request, Response $response): Response
     {
         $data = [
-            'redirect_uri'  => $this->router->pathFor('history')
+            'redirect_uri'  => $this->routeparser->urlFor('history')
         ];
 
         // display page
@@ -266,9 +267,9 @@ class HistoryController extends AbstractController
             $response,
             'modals/confirm_removal.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => _T('Flush the logs'),
-                'form_url'      => $this->router->pathFor('doFlushHistory'),
+                'form_url'      => $this->routeparser->urlFor('doFlushHistory'),
                 'cancel_uri'    => $data['redirect_uri'],
                 'data'          => $data
             )

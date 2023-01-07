@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-05
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Analog\Analog;
 use Galette\Core\Links;
 use Galette\Core\Login;
@@ -63,7 +63,7 @@ use Galette\Repository\PdfModels;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-05
@@ -81,10 +81,11 @@ class PdfController extends AbstractController
      */
     protected function sendResponse(Response $response, Pdf $pdf): Response
     {
-        return $response
+        $response = $response
             ->withHeader('Content-type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"')
-            ->write($pdf->download());
+            ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->getBody()->write($pdf->download() ?? '');
+        return $response;
     }
 
     /**
@@ -121,7 +122,7 @@ class PdfController extends AbstractController
                 return $response
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('me')
+                        $this->routeparser->urlFor('me')
                     );
             }
 
@@ -134,7 +135,7 @@ class PdfController extends AbstractController
                     );
                     return $response
                         ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('slash'));
+                        ->withHeader('Location', $this->routeparser->urlFor('slash'));
                 }
             }
 
@@ -153,7 +154,7 @@ class PdfController extends AbstractController
 
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
+                    ->withHeader('Location', $this->routeparser->urlFor('members'));
             }
         }
 
@@ -185,7 +186,7 @@ class PdfController extends AbstractController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $pdf = new PdfMembersCards($this->preferences);
@@ -234,7 +235,7 @@ class PdfController extends AbstractController
 
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
+                    ->withHeader('Location', $this->routeparser->urlFor('members'));
             }
 
             $m = new Members();
@@ -257,7 +258,7 @@ class PdfController extends AbstractController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $pdf = new PdfMembersLabels($this->preferences);
@@ -288,7 +289,7 @@ class PdfController extends AbstractController
             return $response
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('me')
+                    $this->routeparser->urlFor('me')
                 );
         }
 
@@ -319,7 +320,7 @@ class PdfController extends AbstractController
         // check for ajax mode
         $ajax = false;
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || (isset($post['mode'])
             && $post['mode'] == 'ajax')
         ) {
@@ -380,7 +381,7 @@ class PdfController extends AbstractController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $m = new Members();
@@ -399,7 +400,7 @@ class PdfController extends AbstractController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $doc_title = _T("Attendance sheet");
@@ -447,7 +448,7 @@ class PdfController extends AbstractController
             );
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor(
+                ->withHeader('Location', $this->routeparser->urlFor(
                     'contributions',
                     ['type' => 'contributions']
                 ));
@@ -490,7 +491,7 @@ class PdfController extends AbstractController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('groups'));
+                ->withHeader('Location', $this->routeparser->urlFor('groups'));
         }
 
         $pdf = new PdfGroups($this->preferences);
@@ -535,7 +536,7 @@ class PdfController extends AbstractController
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || (isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true')
         ) {
@@ -623,7 +624,7 @@ class PdfController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id ?? null]));
+            ->withHeader('Location', $this->routeparser->urlFor('pdfModels', ['id' => $model->id ?? null]));
     }
 
 
@@ -651,7 +652,7 @@ class PdfController extends AbstractController
             );
 
             return $response->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('directlink', ['hash' => $hash]));
+                ->withHeader('Location', $this->routeparser->urlFor('directlink', ['hash' => $hash]));
         }
 
         $target = $valid[0];
@@ -692,7 +693,7 @@ class PdfController extends AbstractController
 
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('directlink', ['hash' => $hash]));
+                    ->withHeader('Location', $this->routeparser->urlFor('directlink', ['hash' => $hash]));
             }
 
             $pdf = new PdfMembersCards($this->preferences);
@@ -711,7 +712,7 @@ class PdfController extends AbstractController
                 );
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor(
+                    ->withHeader('Location', $this->routeparser->urlFor(
                         'directlink',
                         ['hash' => $hash]
                     ));

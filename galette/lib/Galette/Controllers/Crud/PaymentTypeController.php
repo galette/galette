@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Repository\PaymentTypes;
 use Galette\Entity\PaymentType;
 use Analog\Analog;
@@ -219,7 +219,7 @@ class PaymentTypeController extends CrudController
                     )
                 );
                 //redirect to payment type edition
-                $redirect_uri = $this->router->pathFor('editPaymentType', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => $id]);
             }
         } else {
             if ($id === null) {
@@ -271,7 +271,7 @@ class PaymentTypeController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('paymentTypes');
+        return $this->routeparser->urlFor('paymentTypes');
     }
 
     /**
@@ -283,7 +283,7 @@ class PaymentTypeController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemovePaymentType',
             ['id' => $args['id'] ?? null]
         );

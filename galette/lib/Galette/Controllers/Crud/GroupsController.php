@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2022 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -38,8 +38,8 @@ namespace Galette\Controllers\Crud;
 
 use Throwable;
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
@@ -53,7 +53,7 @@ use Analog\Analog;
  * @name      GroupsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -99,7 +99,7 @@ class GroupsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $id]));
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $id]));
     }
 
 
@@ -119,12 +119,19 @@ class GroupsController extends CrudController
                 'Trying to check if group name is unique without name specified',
                 Analog::INFO
             );
-            return $response->withJson(
-                ['success' => false, 'message' => htmlentities(_T("Group name is missing!"))]
+            return $this->withJson(
+                $response,
+                [
+                    'success' => false,
+                    'message' => htmlentities(_T("Group name is missing!"))
+                ]
             );
         } else {
-            return $response->withJson(
-                ['success' => Groups::isUnique($this->zdb, $post['gname'])]
+            return $this->withJson(
+                $response,
+                [
+                    'success' => Groups::isUnique($this->zdb, $post['gname'])
+                ]
             );
         }
     }
@@ -178,12 +185,7 @@ class GroupsController extends CrudController
         }
 
         //Active tab on page
-        $tab_param = $request->getQueryParam('tab', $default = null);
-        if (isset($tab_param)) {
-            $tab = $tab_param;
-        } else {
-            $tab = 'group_information';
-        }
+        $tab = $request->getQueryParams['tab'] ?? 'group_information';
 
         // display page
         $this->view->render(
@@ -308,6 +310,7 @@ class GroupsController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filters
+        return $response;
     }
 
     // /CRUD - Read
@@ -325,6 +328,7 @@ class GroupsController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -400,7 +404,7 @@ class GroupsController extends CrudController
         }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $group->getId()]) . $tab);
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $group->getId()]) . $tab);
     }
 
     /**
@@ -439,7 +443,8 @@ class GroupsController extends CrudController
             $result = $group->store();
         }
 
-        return $response->withJson(
+        return $this->withJson(
+            $response,
             [
                 'success'   =>  $result
             ]
@@ -458,7 +463,7 @@ class GroupsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('groups');
+        return $this->routeparser->urlFor('groups');
     }
 
     /**
@@ -470,7 +475,7 @@ class GroupsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveGroup',
             ['id' => (int)$args['id']]
         );

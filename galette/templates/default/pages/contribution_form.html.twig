@@ -3,7 +3,7 @@
 {% block content %}
 {% if members.list is defined or require_mass %}
     {% if mode != 'ajax' %}
-        <form action="{% if contribution.id %}{{ path_for("doEditContribution", {"type": type, "id": contribution.id}) }}{% else %}{{ path_for("doAddContribution", {"type": type}) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+        <form action="{% if contribution.id %}{{ url_for("doEditContribution", {"type": type, "id": contribution.id}) }}{% else %}{{ url_for("doAddContribution", {"type": type}) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
     {% endif %}
     {% if contribution.isTransactionPart() %}
         {% set mid = contribution.transaction.member %}
@@ -18,7 +18,7 @@
                                 <th colspan="5">
                                     {{ contribution.transaction.description }}
                                     <a
-                                        href="{{ path_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                                        href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                                         class="ui icon button tooltip"
                                         title="{{ _T("View transaction") }}"
                                     >
@@ -57,14 +57,14 @@
     {% endif %}
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() > 0 %}
                     <a
-                        href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
+                        href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
                         class="ui icon button fright tooltip"
                         title="{{ _T("Create a new fee that will be attached to the current transaction") }}">
                         <i class="user check icon"></i>
                         <span class="sr-only">{{ _T("New attached fee") }}</span>
                     </a>
                     <a
-                        href="{{ path_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
+                        href="{{ url_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
                         class="ui icon button fright tooltip"
                         title="{{ _T("Create a new donation that will be attached to the current transaction") }}">
                         <i class="gift icon"></i>
@@ -237,7 +237,7 @@
         <p>
             {{ _T("Unfortunately, there is no member in your database yet,") }}
             <br/>
-            <a href="{{ path_for("addMember") }}">{{ _T("please create a member") }}</a>
+            <a href="{{ url_for("addMember") }}">{{ _T("please create a member") }}</a>
         </p>
     </div>
 {% endif %}
@@ -259,7 +259,7 @@
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url : '{{ path_for("contributionDates") }}',
+                url : '{{ url_for("contributionDates") }}',
                 data: {
                     member_id: _member,
                     fee_id: _fee

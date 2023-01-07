@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -38,8 +38,8 @@ namespace Galette\Controllers;
 
 use Galette\Filters\ContributionsList;
 use Galette\IO\ContributionsCsv;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\ImportModel;
 use Galette\Filters\MembersList;
 use Galette\IO\Csv;
@@ -56,7 +56,7 @@ use Analog\Analog;
  * @name      CsvController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -89,15 +89,17 @@ class CsvController extends AbstractController
             fwrite($stream, file_get_contents($filepath));
             rewind($stream);
 
-            return $response->withBody(new \Slim\Http\Stream($stream));
+            return $response->withBody(new \Slim\Psr7\Stream($stream));
         } else {
             Analog::log(
                 'A request has been made to get a CSV file named `' .
                 $filename . '` that does not exists (' . $filepath . ').',
                 Analog::WARNING
             );
-            $notFound = $this->notFoundHandler;
-            return $notFound($request, $response);
+            //FIXME: use a proper error page
+            /*$notFound = $this->notFoundHandler;
+            return $notFound($request, $response);*/
+            return $response->withStatus(404);
         }
     }
 
@@ -230,7 +232,7 @@ class CsvController extends AbstractController
 
         if (count($written)) {
             foreach ($written as $ex) {
-                $path = $this->router->pathFor('getCsv', ['type' => 'export', 'file' => $ex['file']]);
+                $path = $this->routeparser->urlFor('getCsv', ['type' => 'export', 'file' => $ex['file']]);
                 $this->flash->addMessage(
                     'written_exports',
                     '<a href="' . $path . '">' . $ex['name'] . ' (' . $ex['file'] . ')</a>'
@@ -240,7 +242,7 @@ class CsvController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('export'));
+            ->withHeader('Location', $this->routeparser->urlFor('export'));
     }
 
     /**
@@ -332,7 +334,7 @@ class CsvController extends AbstractController
         }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('import'));
+            ->withHeader('Location', $this->routeparser->urlFor('import'));
     }
 
     /**
@@ -390,7 +392,7 @@ class CsvController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('import'));
+            ->withHeader('Location', $this->routeparser->urlFor('import'));
     }
 
     /**
@@ -447,7 +449,7 @@ class CsvController extends AbstractController
         $data = [
             'type' => $type,
             'file' => $file,
-            'redirect_uri'  => $this->router->pathFor($type)
+            'redirect_uri'  => $this->routeparser->urlFor($type)
         ];
 
         // display page
@@ -455,13 +457,13 @@ class CsvController extends AbstractController
             $response,
             'modals/confirm_removal.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove %1$s file %2$s'),
                     $type,
                     $file
                 ),
-                'form_url'      => $this->router->pathFor(
+                'form_url'      => $this->routeparser->urlFor(
                     'doRemoveCsv',
                     [
                         'type' => $type,
@@ -492,7 +494,7 @@ class CsvController extends AbstractController
         $success = false;
 
         $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] : $this->router->pathFor('slash');
+            $post['redirect_uri'] : $this->routeparser->urlFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -531,7 +533,8 @@ class CsvController extends AbstractController
                 ->withStatus(301)
                 ->withHeader('Location', $uri);
         } else {
-            return $response->withJson(
+            return $this->withJson(
+                $response,
                 [
                     'success'   => $success
                 ]
@@ -588,12 +591,7 @@ class CsvController extends AbstractController
         $import_fields += $dynamic_import_fields;
 
         //Active tab on page
-        $tab_param = $request->getQueryParam('tab', $default = null);
-        if (isset($tab_param)) {
-            $tab = $tab_param;
-        } else {
-            $tab = 'current';
-        }
+        $tab = $request->getQueryParams()['tab'] ?? 'current';
 
         // display page
         $this->view->render(
@@ -658,7 +656,7 @@ class CsvController extends AbstractController
         fwrite($stream, $res);
         rewind($stream);
 
-        return $response->withBody(new \Slim\Http\Stream($stream));
+        return $response->withBody(new \Slim\Psr7\Stream($stream));
     }
 
     /**
@@ -690,7 +688,7 @@ class CsvController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('importModel'));
+            ->withHeader('Location', $this->routeparser->urlFor('importModel'));
     }
 
     /**

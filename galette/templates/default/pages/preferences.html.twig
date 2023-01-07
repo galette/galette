@@ -1,20 +1,20 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <form action="{{ path_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
+        <form action="{{ url_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
         <div class="ui stackable pointing inverted menu tabbed">
-            <a href="{{ path_for('preferences') }}?tab=general" class="item{{ tab == 'general' ? ' active' }}" data-tab="general">{{ _T("General") }}</a>
-            <a href="{{ path_for('preferences') }}?tab=social" class="item{{ tab == 'social' ? ' active' }}" data-tab="social">{{ _T("Social networks") }}</a>
-            <a href="{{ path_for('preferences') }}?tab=parameters" class="item{{ tab == 'parameters' ? ' active' }}" data-tab="parameters">{{ _T("Parameters") }}</a>
-            <a href="{{ path_for('preferences') }}?tab=rights" class="item{{ tab == 'rights' ? ' active' }}" data-tab="rights">{{ _T("Rights") }}</a>
-            <a href="{{ path_for('preferences') }}?tab=mail" class="item{{ tab == 'mail' ? ' active' }}" data-tab="mail">{{ _T("E-Mail") }}</a>
-            <a href="{{ path_for('preferences') }}?tab=labels" class="item{{ tab == 'labels' ? ' active' }}" data-tab="labels">{{ _T("Labels") }}</a>
-            <a href="{{ path_for('preferences') }}?tab=cards" class="item{{ tab == 'cards' ? ' active' }}" data-tab="cards">{{ _T("Cards") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=general" class="item{{ tab == 'general' ? ' active' }}" data-tab="general">{{ _T("General") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=social" class="item{{ tab == 'social' ? ' active' }}" data-tab="social">{{ _T("Social networks") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=parameters" class="item{{ tab == 'parameters' ? ' active' }}" data-tab="parameters">{{ _T("Parameters") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=rights" class="item{{ tab == 'rights' ? ' active' }}" data-tab="rights">{{ _T("Rights") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=mail" class="item{{ tab == 'mail' ? ' active' }}" data-tab="mail">{{ _T("E-Mail") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=labels" class="item{{ tab == 'labels' ? ' active' }}" data-tab="labels">{{ _T("Labels") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=cards" class="item{{ tab == 'cards' ? ' active' }}" data-tab="cards">{{ _T("Cards") }}</a>
 {% if login.isAdmin() %}
-            <a href="{{ path_for('preferences') }}?tab=security" class="item{{ tab == 'security' ? ' active' }}" data-tab="security">{{ _T("Security parameters") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=security" class="item{{ tab == 'security' ? ' active' }}" data-tab="security">{{ _T("Security parameters") }}</a>
 {% endif %}
 {% if login.isSuperAdmin() %}
-            <a href="{{ path_for('preferences') }}?tab=admin" class="item{{ tab == 'admin' ? ' active' }}" data-tab="admin">{{ _T("Admin") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=admin" class="item{{ tab == 'admin' ? ' active' }}" data-tab="admin">{{ _T("Admin") }}</a>
 {% endif %}
         </div>
         <div class="ui{{ tab == 'general' ? ' active' }} tab segment" data-tab="general">
@@ -31,7 +31,7 @@
                         <div class="ui action input">
                             <input{% if required.pref_slogan is defined and required.pref_slogan == 1 %} required="required"{% endif %} type="text" name="pref_slogan" id="pref_slogan" value="{{ pref.pref_slogan }}"/>
                             <a
-                                href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
+                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
                                 class="ui icon button"
                             >
                                 <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"></i>
@@ -46,7 +46,7 @@
                         <div class="item">
         {% if logo.isCustom() %}
                             <div class="image">
-                                <img src="{{ path_for('logo') }}" class="picture" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ _T("Current logo") }}"/>
+                                <img src="{{ url_for('logo') }}" class="picture" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ _T("Current logo") }}"/>
                             </div>
         {% else %}
                             <label for="logo_picture" class="ui labeled icon button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
@@ -267,7 +267,7 @@
                         <label for="pref_galette_url" class="tooltip">{{ _T("Galette base URL") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
-                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ path_for('preferences')}) }}"></i>
+                                <i class="circular inverted primary link icon info tooltip" title="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ url_for('preferences')}) }}"></i>
                             </div>
                             <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"{% if required.pref_galette_url is defined and required.pref_galette_url == 1 %} required="required"{% endif %}/>
                         </div>
@@ -472,7 +472,7 @@
                         </div>
                         <br/>
                         <a
-                            href="{{ path_for('testEmail') }}#mail"
+                            href="{{ url_for('testEmail') }}#mail"
                             id="btnmail"
                             class="ui labeled icon button"
                         >
@@ -607,7 +607,7 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required="required"{% endif %}/>
                             <a
-                                href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
+                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
                                 class="ui icon button"
                             >
                                 <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"></i>
@@ -621,7 +621,7 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %} required="required"{% endif %}/>
                             <a
-                                href="{{ path_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
+                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
                                 class="ui icon button "
                             >
                                 <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"></i>
@@ -657,7 +657,7 @@
                         <div class="item">
     {% if print_logo.isCustom() %}
                             <div class="image">
-                                <img src="{{ path_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
+                                <img src="{{ url_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
                             </div>
     {% else %}
                             <label for="card_logo" class="ui labeled icon button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
@@ -913,7 +913,7 @@
                                     success: function(res) {
                                         //display message
                                         $.ajax({
-                                            url: '{{ path_for('ajaxMessages') }}',
+                                            url: '{{ url_for('ajaxMessages') }}',
                                             method: "GET",
                                             success: function (message) {
                                                 $('#testEmail').prepend(message);

@@ -4,7 +4,7 @@
 
 {% macro group_item(login, group) %}
     <div class="item">
-        <a class="ui label" href="{% if login.isGroupManager(group.getId()) %}{{ path_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
+        <a class="ui label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
         {% if group.getGroups()|length > 0 %}
@@ -34,17 +34,17 @@
 
 {% if can_export %}
     <div class="ui buttons">
-        <a href="{{ path_for("pdf_groups", {"id": group.getId()}) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
+        <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
             <i class="file pdf red icon" aria-hidden="true"></i>
             {{ _T("Group PDF") }}
         </a>
         <div class="or" data-text="{{ _T("or") }}"></div>
-        <a href="{{ path_for("pdf_groups") }}" class="ui button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
+        <a href="{{ url_for("pdf_groups") }}" class="ui button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
             {{ _T("All groups PDF") }}
         </a>
     </div>
     {% if login.isAdmin() or login.isStaff() %}
-    <a href="{{ path_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon button tooltip" id="newgroup" title="{{ _T("New group") }}">
+    <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon button tooltip" id="newgroup" title="{{ _T("New group") }}">
         <i class="plus circle green icon" aria-hidden="true"></i>
         {{ _T("New group") }}
     </a>
@@ -76,7 +76,7 @@
                     if ( _name != '' ) {
                         //check uniqueness
                         $.ajax({
-                            url: '{{ path_for("ajax_groupname_unique") }}',
+                            url: '{{ url_for("ajax_groupname_unique") }}',
                             type: "POST",
                             data: {
                                 ajax: true,
@@ -122,7 +122,7 @@
                     return $(this).val();
                 }).get();
                 $.ajax({
-                    url: '{{ path_for('ajaxMembers') }}',
+                    url: '{{ url_for('ajaxMembers') }}',
                     type: "POST",
                     data: {
                         multiple: true,
@@ -181,7 +181,7 @@
                     var _persons = '';
                 }
                 $.ajax({
-                    url: '{{ path_for('ajaxGroupMembers') }}',
+                    url: '{{ url_for('ajaxGroupMembers') }}',
                     type: "POST",
                     data: {
                         persons: _persons,

@@ -43,7 +43,7 @@
                                     window.location.href = _form.find('input[name=redirect_uri]').val();
                                 } else {
                                     $.ajax({
-                                        url: '{{ path_for("ajaxMessages") }}',
+                                        url: '{{ url_for("ajaxMessages") }}',
                                         method: "GET",
                                         success: function (message) {
                                             $('h1.header').after(message);

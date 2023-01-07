@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -36,8 +36,10 @@
 
 namespace Galette\Middleware;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response;
 
 /**
  * Galette Slim middleware to handle trailing slash in URLs
@@ -46,7 +48,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  * @name      TrailingSlash
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -56,28 +58,34 @@ class TrailingSlash
     /**
      * Middleware invokable class
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
-     * @param  \Psr\Http\Message\ResponseInterface      $response PSR7 response
-     * @param  callable                                 $next     Next middleware
+     * @param  Request        $request PSR7 request
+     * @param  RequestHandler $handler Request handler
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return Response
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function __invoke(Request $request, RequestHandler $handler): Response
     {
         $uri = $request->getUri();
         $path = $uri->getPath();
+
         if ($path != '/' && substr($path, -1) == '/') {
+            // recursively remove slashes when its more than 1 slash
+            $path = rtrim($path, '/');
+
             // permanently redirect paths with a trailing slash
             // to their non-trailing counterpart
-            $uri = $uri->withPath(substr($path, 0, -1));
+            $uri = $uri->withPath($path);
 
             if ($request->getMethod() == 'GET') {
-                return $response->withRedirect((string)$uri, 301);
+                $response = new Response();
+                return $response
+                    ->withHeader('Location', (string) $uri)
+                    ->withStatus(301);
             } else {
-                return $next($request->withUri($uri), $response);
+                $request = $request->withUri($uri);
             }
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

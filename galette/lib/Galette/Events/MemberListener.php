@@ -48,7 +48,7 @@ use Analog\Analog;
 use League\Event\ListenerRegistry;
 use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
-use Slim\Router;
+use Slim\Routing\RouteParser;
 
 /**
  * Event listener for members
@@ -66,8 +66,8 @@ class MemberListener implements ListenerSubscriber
 {
     /** @var Preferences */
     private $preferences;
-    /** @var Router */
-    private $router;
+    /** @var RouteParser */
+    private $routeparser;
     /** @var History */
     private $history;
     /** @var Messages */
@@ -81,7 +81,7 @@ class MemberListener implements ListenerSubscriber
      * Constructor
      *
      * @param Preferences $preferences Preferences instance
-     * @param Router      $router      Router instance
+     * @param RouteParser $routeparser RouteParser instance
      * @param History     $history     History instance
      * @param Messages    $flash       Messages instance
      * @param Login       $login       Login instance
@@ -89,14 +89,14 @@ class MemberListener implements ListenerSubscriber
      */
     public function __construct(
         Preferences $preferences,
-        Router $router,
+        RouteParser $routeparser,
         History $history,
         Messages $flash,
         Login $login,
         Db $zdb
     ) {
         $this->preferences = $preferences;
-        $this->router = $router;
+        $this->routeparser = $routeparser;
         $this->history = $history;
         $this->flash = $flash;
         $this->login = $login;
@@ -201,7 +201,7 @@ class MemberListener implements ListenerSubscriber
         // Get email text in database
         $texts = new Texts(
             $this->preferences,
-            $this->router
+            $this->routeparser
         );
 
         $texts->setMember($member)->setNoContribution();
@@ -284,7 +284,7 @@ class MemberListener implements ListenerSubscriber
 
         $texts = new Texts(
             $this->preferences,
-            $this->router
+            $this->routeparser
         );
         $texts->setMember($member)->setNoContribution();
 

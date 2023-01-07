@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <form action="{{ path_for('doAddEntitled', {'class': url_class}) }}" method="post" class="tabbed ui form">
+    <form action="{{ url_for('doAddEntitled', {'class': url_class}) }}" method="post" class="tabbed ui form">
         <div id="intitules_tabs">
             {% include 'elements/edit_entitleds.html.twig' %}
             {% include 'components/forms/csrf.html.twig' %}

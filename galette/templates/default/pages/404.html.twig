@@ -6,7 +6,7 @@
     <body>
         <div class="ui container">
             <header class="ui basic center aligned segment">
-                <img src="{{ path_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" />
+                <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" />
             </header>
             <div class="ui red message">
                 <h2 class="ui center aligned header">{{ _T("Page not found") }}</h2>
@@ -15,7 +15,7 @@
                 <p class="ui large text">{{ _T("Sorry, the page you are looking for could not be found.") }}</p>
             </div>
             <nav class="ui basic center aligned segment">
-                <a href="{{ path_for('slash') }}" class="ui labeled icon primary button">
+                <a href="{{ url_for('slash') }}" class="ui labeled icon primary button">
                     <i class="home icon"></i>
                     {{ _T("Home") }}
                 </a>

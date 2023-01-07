@@ -7,7 +7,7 @@
             {{ _T("Collapse all") }}
         </button>
     </div>
-    <form action="{{ path_for('configureCoreFields') }}" method="post" id="config_fields_form" class="ui form">
+    <form action="{{ url_for('configureCoreFields') }}" method="post" id="config_fields_form" class="ui form">
     <div id="members_tab">
 {% for category in categories %}
     {% set catname = category.category %}

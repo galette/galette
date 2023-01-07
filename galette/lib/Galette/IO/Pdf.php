@@ -10,7 +10,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,7 +32,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-21
@@ -43,6 +43,7 @@ namespace Galette\IO;
 use Galette\Core\Preferences;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
+use Slim\Routing\RouteParser;
 
 /*
  * TCPDF configuration file for Galette
@@ -58,7 +59,7 @@ require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
  * @abstract  Class for expanding TCPDF.
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-21
@@ -168,7 +169,7 @@ class Pdf extends \TCPDF
         );
 
         $redirect = (isset($_SERVER['HTTP_REFERER']) ?
-            $_SERVER['HTTP_REFERER'] : $container->get('router')->pathFor('slash'));
+            $_SERVER['HTTP_REFERER'] : $container->get(RouteParser::class)->urlFor('slash'));
         header('Location: ' . $redirect);
         die();
     }

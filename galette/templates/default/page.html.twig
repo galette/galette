@@ -15,7 +15,7 @@
                 <section class="content{% if contentcls is defined %} {{ contentcls }}{% endif %}">
 {% if not login.isLogged() %}
                     <div class="ui basic center aligned fitted segment">
-                        <img src="{{ path_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
+                        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
                         <div class="ui large header">
                             {{ preferences.pref_nom }}
                             <div class="sub header">{% if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
@@ -27,7 +27,7 @@
             {% if cur_route != 'mailing' and existing_mailing == true %}
                         <a
                             id="recup_mailing"
-                            href="{{ path_for("mailing") }}"
+                            href="{{ url_for("mailing") }}"
                             class="ui basic tertiary secondary huge right floated button tooltip"
                             title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
                             data-position="bottom right"

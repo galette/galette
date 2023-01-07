@@ -10,7 +10,7 @@
 
     {% set public_items = [] %}
     <div class="{% if sign_in_side is defined and sign_in_side is not empty %}right {% endif %}item">
-    {% if preferences.pref_bool_selfsubscribe == true and not is_current_path("subscribe") %}
+    {% if preferences.pref_bool_selfsubscribe == true and not is_current_url("subscribe") %}
         {% set public_items = public_items|merge([{
             'label': _T("Subscribe"),
             'title': _T("Subscribe"),
@@ -19,7 +19,7 @@
             'class': 'ui basic button'
         }]) %}
     {% endif %}
-    {% if not is_current_path("login") %}
+    {% if not is_current_url("login") %}
         {% set public_items = public_items|merge([{
             'label': _T("Login"),
             'title': _T("Login"),

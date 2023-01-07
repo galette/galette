@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2022 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-08
@@ -40,8 +40,8 @@ use Galette\Filters\ContributionsList;
 use Throwable;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
@@ -56,7 +56,7 @@ use Galette\Repository\PaymentTypes;
  * @name      ContributionsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -90,7 +90,7 @@ class ContributionsController extends CrudController
         // check for ajax mode
         $ajax = false;
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -237,7 +237,7 @@ class ContributionsController extends CrudController
         $filters = $this->session->filter_members;
         $data = [
             'id'            => $filters->selected,
-            'redirect_uri'  => $this->router->pathFor('members')
+            'redirect_uri'  => $this->routeparser->urlFor('members')
         ];
 
         // display page
@@ -245,15 +245,15 @@ class ContributionsController extends CrudController
             $response,
             'modals/mass_choose_contributions_type.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
                     count($data['id']),
                     _T('Mass add contribution on %count members')
                 ),
                 'data'          => $data,
-                'form_url'      => $this->router->pathFor('massAddContributions'),
-                'cancel_uri'    => $this->router->pathFor('members')
+                'form_url'      => $this->routeparser->urlFor('massAddContributions'),
+                'cancel_uri'    => $this->routeparser->urlFor('members')
             )
         );
         return $response;
@@ -276,7 +276,7 @@ class ContributionsController extends CrudController
         $type = $post['type'];
         $data = [
             'id'            => $filters->selected,
-            'redirect_uri'  => $this->router->pathFor('members'),
+            'redirect_uri'  => $this->routeparser->urlFor('members'),
             'type'          => $type
         ];
 
@@ -289,14 +289,14 @@ class ContributionsController extends CrudController
             $response,
             'modals/mass_add_contributions.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
                     count($data['id']),
                     _T('Mass add contribution on %count members')
                 ),
-                'form_url'      => $this->router->pathFor('doMassAddContributions'),
-                'cancel_uri'    => $this->router->pathFor('members'),
+                'form_url'      => $this->routeparser->urlFor('doMassAddContributions'),
+                'cancel_uri'    => $this->routeparser->urlFor('members'),
                 'data'          => $data,
                 'contribution'  => $contribution,
                 'type'          => $type,
@@ -355,11 +355,11 @@ class ContributionsController extends CrudController
         }
 
         if (count($error_detected) == 0) {
-            $redirect_url = $this->router->pathFor('members');
+            $redirect_url = $this->routeparser->urlFor('members');
         } else {
             //something went wrong.
             //store entity in session
-            $redirect_url = $this->router->pathFor('massAddContributions');
+            $redirect_url = $this->routeparser->urlFor('massAddContributions');
             //report errors
             foreach ($error_detected as $error) {
                 $this->flash->addMessage(
@@ -395,7 +395,7 @@ class ContributionsController extends CrudController
         $get = $request->getQueryParams();
 
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
@@ -418,7 +418,7 @@ class ContributionsController extends CrudController
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('me')
+                        $this->routeparser->urlFor('me')
                     );
         }
 
@@ -497,7 +497,7 @@ class ContributionsController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('me')
+                    $this->routeparser->urlFor('me')
                 );
         }
 
@@ -511,7 +511,7 @@ class ContributionsController extends CrudController
         }
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view);
+        $filters->setSmartyPagination($this->routeparser, $this->view);
 
         $tpl_vars = [
             'page_title'        => $raw_type === 'contributions' ?
@@ -665,7 +665,7 @@ class ContributionsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $type]));
+            ->withHeader('Location', $this->routeparser->urlFor('contributions', ['type' => $type]));
     }
 
     /**
@@ -690,13 +690,13 @@ class ContributionsController extends CrudController
             if (isset($post['csv'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('csv-contributionslist', ['type' => $type]));
+                    ->withHeader('Location', $this->routeparser->urlFor('csv-contributionslist', ['type' => $type]));
             }
 
             if (isset($post['delete'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('removeContributions'));
+                    ->withHeader('Location', $this->routeparser->urlFor('removeContributions'));
             }
 
             throw new \RuntimeException('Does not know what to batch :(');
@@ -708,7 +708,7 @@ class ContributionsController extends CrudController
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $type]));
+                ->withHeader('Location', $this->routeparser->urlFor('contributions', ['type' => $type]));
         }
     }
 
@@ -744,7 +744,7 @@ class ContributionsController extends CrudController
                 );
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor(
+                    ->withHeader('Location', $this->routeparser->urlFor(
                         'contributions',
                         ['type' => 'contributions']
                     ));
@@ -792,7 +792,7 @@ class ContributionsController extends CrudController
         }
 
         if ($action == 'edit' && isset($post['btnreload'])) {
-            $redirect_url = $this->router->pathFor($action . 'Contribution', $args);
+            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $args);
             $redirect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
                 ContributionsTypes::PK . '=' . $post[ContributionsTypes::PK] . '&' .
                 'montant_cotis=' . $post['montant_cotis'];
@@ -852,7 +852,7 @@ class ContributionsController extends CrudController
             $this->session->contribution = null;
             if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
                 //new contribution
-                $redirect_url = $this->router->pathFor(
+                $redirect_url = $this->routeparser->urlFor(
                     'addContribution',
                     [
                         'type'      => $post['contrib_type']
@@ -861,7 +861,7 @@ class ContributionsController extends CrudController
                 '&' . Adherent::PK . '=' . $contrib->member;
             } else {
                 //contributions list for member
-                $redirect_url = $this->router->pathFor(
+                $redirect_url = $this->routeparser->urlFor(
                     'contributions',
                     [
                         'type'      => 'contributions'
@@ -872,7 +872,7 @@ class ContributionsController extends CrudController
             //something went wrong.
             //store entity in session
             $this->session->contribution = $contrib;
-            $redirect_url = $this->router->pathFor($action . 'Contribution', $args);
+            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $args);
 
             //report errors
             foreach ($error_detected as $error) {
@@ -901,7 +901,7 @@ class ContributionsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('contributions', ['type' => $args['type']]);
+        return $this->routeparser->urlFor('contributions', ['type' => $args['type']]);
     }
 
     /**
@@ -913,7 +913,7 @@ class ContributionsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveContribution',
             $args
         );

@@ -43,7 +43,7 @@
             </td>
             <td class="center actions_row">
                 <a
-                        href="{{ path_for("loadSearch", {"id": search.id}) }}"
+                        href="{{ url_for("loadSearch", {"id": search.id}) }}"
                         class="tooltip"
                 >
                     <i class="ui search icon"></i>
@@ -51,7 +51,7 @@
                 </a>
 
                 <a
-                        href="{{ path_for("removeSearch", {"id": search.id}) }}"
+                        href="{{ url_for("removeSearch", {"id": search.id}) }}"
                         class="delete tooltip"
                 >
                     <i class="ui trash red icon"></i>

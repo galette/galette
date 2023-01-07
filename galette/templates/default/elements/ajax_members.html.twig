@@ -49,7 +49,7 @@
                     {% else %}
                         <i class="ui icon"></i>
                     {% endif %}
-                    <a href="{{ path_for('member', {'id': member.id}) }}" class="choice">{{ member.sfullname }}</a>
+                    <a href="{{ url_for('member', {'id': member.id}) }}" class="choice">{{ member.sfullname }}</a>
                     </td>
                     <td class="{{ rclass }}">{{ member.zipcode }} {{ member.town }}</td>
                 </tr>

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2021 The Galette Team
+ * Copyright © 2014-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,28 +28,29 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2021 The Galette Team
+ * @copyright 2014-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
  */
 
 use Galette\Controllers\Crud;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/public', function () {
+$app->group('/public', function (RouteCollectorProxy $app) {
     //public members list
-    $this->get(
+    $app->get(
         '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',
         [Crud\MembersController::class, 'publicList']
     )->setName('publicList');
 
     //members list filtering
-    $this->post(
+    $app->post(
         '/{type:list|trombi}/filter[/{from}]',
         [Crud\MembersController::class, 'filterPublicList']
     )->setName('filterPublicList');
 
-    $this->get(
+    $app->get(
         '/members[/{option:page|order}/{value:\d+|\w+}]',
         function ($request, $response, string $option = null, string $value = null) {
             $args = ['type' => 'list'];
@@ -63,7 +64,7 @@ $app->group('/public', function () {
         }
     );
 
-    $this->get(
+    $app->get(
         '/trombinoscope',
         function ($request, $response) {
             $args = ['type' => 'trombi'];

@@ -85,7 +85,8 @@ $session = new \RKA\SessionMiddleware([
 ]);
 $session->start();
 
-$app =  new \Galette\Core\SlimApp();
+$gapp =  new \Galette\Core\SlimApp();
+$app = $gapp->getApp();
 $app->add($session);
 
 require_once GALETTE_BASE_PATH . '/includes/dependencies.php';

@@ -307,7 +307,7 @@ class Picture implements FileInterface
      *
      * @return object the binary file
      */
-    public function display(\Slim\Http\Response $response)
+    public function display(\Slim\Psr7\Response $response)
     {
         $response = $response->withHeader('Content-Type', $this->mime)
             ->withHeader('Content-Transfer-Encoding', 'binary')
@@ -319,7 +319,7 @@ class Picture implements FileInterface
         fwrite($stream, file_get_contents($this->file_path));
         rewind($stream);
 
-        return $response->withBody(new \Slim\Http\Stream($stream));
+        return $response->withBody(new \Slim\Psr7\Stream($stream));
     }
 
     /**

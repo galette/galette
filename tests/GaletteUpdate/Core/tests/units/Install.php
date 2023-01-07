@@ -56,7 +56,6 @@ class Install extends atoum
     private \Galette\Core\Db $zdb;
     private array $flash_data;
     private \Slim\Flash\Messages $flash;
-    private \mock\Slim\Router $mocked_router;
     private \DI\Container $container;
 
     /**
@@ -70,15 +69,12 @@ class Install extends atoum
     {
         setlocale(LC_ALL, 'en_US');
 
-        $this->mocked_router = new \mock\Slim\Router();
-        $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
-            return $name;
-        };
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
 
-        $app =  new \Galette\Core\SlimApp();
+        $gapp =  new \Galette\Core\SlimApp();
+        $app = $gapp->getApp();
         $plugins = new \Galette\Core\Plugins();
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
@@ -86,8 +82,6 @@ class Install extends atoum
 
         $container->set('flash', $this->flash);
         $container->set(Slim\Flash\Messages::class, $this->flash);
-        $container->set('router', $this->mocked_router);
-        $container->set(Slim\Router::class, $this->mocked_router);
 
         $this->container = $container;
 

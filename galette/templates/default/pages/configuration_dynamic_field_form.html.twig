@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if action == 'edit' %}
-    <form action="{{ path_for('doEditDynamicField', {'form_name': form_name, 'id': df.getId()}) }}" method="post" class="ui form">
+    <form action="{{ url_for('doEditDynamicField', {'form_name': form_name, 'id': df.getId()}) }}" method="post" class="ui form">
         <div class="ui top attached accordion-styled header">
             {{ _T("Edit field %field")|replace({'%field': df.getName()}) }}
         </div>
@@ -82,7 +82,7 @@
         </div>
      </form>
 {% elseif action == 'add' %}
-    <form action="{{ path_for('doAddDynamicField', {'form_name': form_name}) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
+    <form action="{{ url_for('doAddDynamicField', {'form_name': form_name}) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">
     {% if mode != 'ajax' %}
         <div class="ui top attached accordion-styled header">
             {{ _T("New dynamic field") }}

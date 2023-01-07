@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-20
@@ -50,7 +50,7 @@ use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
-use Slim\Router;
+use Slim\Routing\RouteParser;
 
 /**
  * Replacements feature
@@ -59,7 +59,7 @@ use Slim\Router;
  * @name      Replacements
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-20
@@ -72,27 +72,27 @@ trait Replacements
     private $dynamic_patterns = [];
 
     /**
-     * @Inject("zdb")
      * @var Db
      */
+    #[Inject("zdb")]
     protected $zdb;
 
     /**
-     * @Inject("login")
      * @var Login
      */
+    #[Inject("login")]
     protected $login;
 
     /**
-     * @Inject("preferences")
      * @var Preferences
      */
+    #[Inject("preferences")]
     protected $preferences;
 
     /**
-     * @var Router
+     * @var RouteParser
      */
-    protected $router;
+    protected $routeparser;
 
     /**
      * Get dynamic patterns
@@ -481,7 +481,7 @@ trait Replacements
 
         $logo = new Logo();
         $logo_elt = '<img' .
-            ' src="' . $this->preferences->getURL() . $this->router->pathFor('logo') . '"' .
+            ' src="' . $this->preferences->getURL() . $this->routeparser->urlFor('logo') . '"' .
             ' width="' . $logo->getOptimalWidth() . '"' .
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
@@ -495,7 +495,7 @@ trait Replacements
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
                 'date_now'           => date(_T('Y-m-d')),
-                'login_uri'          => $this->preferences->getURL() . $this->router->pathFor('login'),
+                'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
             )
         );
 
@@ -746,7 +746,7 @@ trait Replacements
                             $value .= sprintf(
                                 $spattern,
                                 $this->preferences->getURL(),
-                                $this->router->pathFor(
+                                $this->routeparser->urlFor(
                                     'getDynamicFile',
                                     [
                                         'id' => $object->id,
@@ -846,15 +846,15 @@ trait Replacements
     }
 
     /**
-     * Set Router dependency
+     * Set RouteParser dependency
      *
-     * @param Router $router Router instance
+     * @param RouteParser $routeparser RouteParser instance
      *
      * @return $this
      */
-    public function setRouter(Router $router): self
+    public function setRouteparser(RouteParser $routeparser): self
     {
-        $this->router = $router;
+        $this->routeparser = $routeparser;
         return $this;
     }
 

@@ -38,6 +38,8 @@
 namespace Galette\Core\test\units;
 
 use atoum;
+use Galette\Middleware\Authenticate;
+use Slim\Routing\RouteParser;
 
 /**
  * Preferences tests class
@@ -56,7 +58,6 @@ class Preferences extends atoum
     private ?\Galette\Core\Preferences $preferences = null;
     private \Galette\Core\Db $zdb;
     private \Galette\Core\Login $login;
-    private \mock\Slim\Router $mocked_router;
 
     /**
      * Set up tests
@@ -67,12 +68,10 @@ class Preferences extends atoum
      */
     public function beforeTestMethod($method)
     {
-        $this->mocked_router = new \mock\Slim\Router();
-        $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
-            return $name;
-        };
+        $gapp =  new \Galette\Core\SlimApp();
+        $app = $gapp->getApp();
+        $app->addRoutingMiddleware();
 
-        $app =  new \Galette\Core\SlimApp();
         $plugins = new \Galette\Core\Plugins();
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
@@ -81,11 +80,13 @@ class Preferences extends atoum
         $this->zdb = $container->get('zdb');
         $this->login = $container->get('login');
         $this->preferences = $container->get('preferences');
-        $container->set('router', $this->mocked_router);
-        $container->set(Slim\Router::class, $this->mocked_router);
 
-        global $router;
-        $router = $this->mocked_router;
+        global $routeparser;
+        $routeparser = $container->get(RouteParser::class);
+
+        $authenticate = new Authenticate($container);
+        require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+        require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
     }
 
     /**

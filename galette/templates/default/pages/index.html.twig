@@ -3,7 +3,7 @@
 {% set body_class = "front_page" %}
 
 {% block content %}
-                <form action="{{ path_for('dologin') }}" method="post" class="ui form">
+                <form action="{{ url_for('dologin') }}" method="post" class="ui form">
     {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
                     <div class="ui segments">
     {% endif %}
@@ -27,7 +27,7 @@
     {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
                         <div class="ui center aligned secondary segment">
                             <a
-                                href="{{ path_for('password-lost') }}"
+                                href="{{ url_for('password-lost') }}"
                                 class="password-lost"
                                 title="{{ _T("Lost your password?") }}"
                             >

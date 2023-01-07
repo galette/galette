@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,8 +37,9 @@
 
 namespace Galette\Core;
 
-use DI\Bridge\Slim;
+use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
+use Slim\App;
 
 /**
  * Slim application
@@ -47,27 +48,24 @@ use DI\ContainerBuilder;
  * @name      Db
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
  * @since     Available since 0.9.5dev
  */
-class SlimApp extends \DI\Bridge\Slim\App
+class SlimApp
 {
+    /** @var App  */
+    private App $app;
+
     /**
-     * Configure the container builder.
-     *
-     * @param ContainerBuilder $builder Builder to configure
-     *
-     * @return void
+     * Create a new Slim application
      */
-    protected function configureContainer(ContainerBuilder $builder)
+    public function __construct()
     {
-        $builder->useAnnotations(true);
+        $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
-            'settings.determineRouteBeforeAppMiddleware' => true, //required for ACLs to work
-            'settings.displayErrorDetails'               => (GALETTE_MODE === 'DEV'),
-            'settings.addContentLengthHeader'            => false,
             'galette'                           => [
                 'mode'  => GALETTE_MODE,
                 'logger'                            => [
@@ -80,5 +78,18 @@ class SlimApp extends \DI\Bridge\Slim\App
             'galette.mode'      => GALETTE_MODE,
             'session'           => \DI\autowire('\RKA\Session')
         ]);
+        $container = $builder->build();
+
+        $this->app = Bridge::create($container);
+    }
+
+    /**
+     * Get Slim application
+     *
+     * @return App
+     */
+    public function getApp(): App
+    {
+        return $this->app;
     }
 }

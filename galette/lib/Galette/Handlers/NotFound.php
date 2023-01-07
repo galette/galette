@@ -39,6 +39,7 @@ namespace Galette\Handlers;
 use Slim\Handlers\NotFound as SlimNotFound;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 /**
  * Error handler
@@ -52,20 +53,19 @@ use Psr\Http\Message\ServerRequestInterface;
  * @link      http://galette.tuxfamily.org
  * @since     2017-02-25
  */
-class NotFound extends SlimNotFound
+class NotFound implements \Slim\Interfaces\ErrorRendererInterface
 {
     use GaletteHandler;
 
     /**
      * Invoke not found handler
      *
-     * @param  ServerRequestInterface $request  The most recent Request object
-     * @param  ResponseInterface      $response The most recent Response object
+     * @param Throwable $exception           The exception
+     * @param bool      $displayErrorDetails Should we display the error details
      *
-     * @return ResponseInterface
-     * @throws UnexpectedValueException
+     * @return string
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(Throwable $exception, bool $displayErrorDetails): string
     {
         $response = parent::__invoke($request, $response);
 

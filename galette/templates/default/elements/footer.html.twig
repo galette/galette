@@ -26,7 +26,7 @@
                         Galette {{ constant('GALETTE_DISPLAY_VERSION') }}
                     </a>
 {% if login.isLogged() and (login.isAdmin() or login.isStaff()) %}
-                    <a id="sysinfos" href="{{ path_for('sysinfos') }}" class="item">
+                    <a id="sysinfos" href="{{ url_for('sysinfos') }}" class="item">
                         <i class="icon cogs"></i>
                         {{ _T("System information") }}
                     </a>

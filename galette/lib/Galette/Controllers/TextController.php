@@ -37,8 +37,8 @@
 
 namespace Galette\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Texts;
 use Analog\Analog;
 
@@ -78,7 +78,7 @@ class TextController extends AbstractController
 
         $texts = new Texts(
             $this->preferences,
-            $this->router
+            $this->routeparser
         );
 
         $texts->setCurrent($ref);
@@ -116,7 +116,7 @@ class TextController extends AbstractController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor(
+                $this->routeparser->urlFor(
                     'texts',
                     [
                         'lang'  => $post['sel_lang'],
@@ -137,14 +137,14 @@ class TextController extends AbstractController
     public function edit(Request $request, Response $response)
     {
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->routeparser);
 
         //set the language
         $cur_lang = $post['cur_lang'];
         //set the text entry
         $cur_ref = $post['cur_ref'];
 
-        $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->router);
+        $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->routeparser);
         $res = $texts->setTexts(
             $cur_ref,
             $cur_lang,
@@ -176,7 +176,7 @@ class TextController extends AbstractController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor(
+                $this->routeparser->urlFor(
                     'texts',
                     [
                         'lang'  => $cur_lang,

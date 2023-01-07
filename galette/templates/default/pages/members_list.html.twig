@@ -36,7 +36,7 @@
     {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_member) %}
         <a
                 class="ui tiny labeled icon button"
-                href="{{ path_for("addMember") }}"
+                href="{{ url_for("addMember") }}"
         >
             <i class="plus circle green icon" aria-hidden="true"></i>
             {{ _T("Add a member") }}
@@ -74,7 +74,7 @@
 {% endblock %}
 
 {% block search %}
-    <form action="{{ path_for('filter-memberslist') }}" method="post" id="members_list_search_filter" class="ui form filters">
+    <form action="{{ url_for('filter-memberslist') }}" method="post" id="members_list_search_filter" class="ui form filters">
         <div class="ui secondary yellow segment">
 {% if adv_filters is not defined or not adv_filters %}
             <div class="five fields">
@@ -327,7 +327,7 @@
                             <i class="ui icon"></i>
             {% endif %}
                         {% set mid = member.id %}
-                            <a href="{{ path_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
+                            <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
                         </td>
         {% else %}
             {% set lrclass = rclass %}
@@ -390,7 +390,7 @@
                 {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
                                 <a href="tel:{{ value }}">{{ value }}</a>
                 {% elseif column.field_id == 'parent_id' %}
-                                <a href="{{ path_for("member", {"id": member.parent}) }}">{{ memberName(member.parent) }}</a>
+                                <a href="{{ url_for("member", {"id": member.parent}) }}">{{ memberName(member.parent) }}</a>
                 {% elseif column.field_id == 'ddn_adh' %}
                                 {{ value }} {{ member.getAge() }}
                 {% else %}
@@ -522,7 +522,7 @@
         }
         var _attendance_sheet_details = function(){
             $.ajax({
-                url: '{{ path_for('attendance_sheet_details') }}',
+                url: '{{ url_for('attendance_sheet_details') }}',
                 type: "POST",
                 data: {
                     ajax: true,
@@ -664,7 +664,7 @@
         }
         var _masschange = function(){
             $.ajax({
-                url: '{{ path_for('batch-memberslist') }}',
+                url: '{{ url_for('batch-memberslist') }}',
                 type: "POST",
                 data: {
                     ajax: true,

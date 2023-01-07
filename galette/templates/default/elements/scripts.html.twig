@@ -1,5 +1,5 @@
-        <script type="text/javascript" src="{{ base_url() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
-        <script type="text/javascript" src="{{ base_url() }}/assets/js/galette-main.bundle.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
 
         <script type="text/javascript">
             function csrfSafeMethod(method) {
@@ -24,7 +24,7 @@
     {% if autocomplete %}
                 $('#ville_adh_field, #lieu_naissance_field').search({
                     apiSettings: {
-                        url: '{{ path_for('suggestTown', {'term': '{query}'}) }}',
+                        url: '{{ url_for('suggestTown', {'term': '{query}'}) }}',
                         method: 'post',
                         onFailure: function(response, element, xhr) {
                             console.log(response);
@@ -36,7 +36,7 @@
                 });
                 $('#pays_adh_field').search({
                     apiSettings: {
-                        url: '{{ path_for('suggestCountry', {'term': '{query}'}) }}',
+                        url: '{{ url_for('suggestCountry', {'term': '{query}'}) }}',
                         method: 'post',
                         onFailure: function(response, element, xhr) {
                             console.log(response);
@@ -59,17 +59,17 @@
             });
         </script>
     {% if login.isLogged() %}
-        <script type="module" src="{{ base_url() }}/assets/js/sortable.min.js"></script>
+        <script type="module" src="{{ base_path() }}/assets/js/sortable.min.js"></script>
     {% endif %}
     {% if require_charts %}
-        <script type="module" src="{{ base_url() }}/assets/js/chartjs.min.js"></script>
+        <script type="module" src="{{ base_path() }}/assets/js/chartjs.min.js"></script>
     {% endif %}
     {% if require_mass %}
-        <script type="text/javascript" src="{{ base_url() }}/assets/js/masschanges.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/masschanges.min.js"></script>
     {% endif %}
     {% if html_editor %}
-        <script type="text/javascript" src="{{ base_url() }}/assets/js/summernote.min.js"></script>
-        <script type="text/javascript" src="{{ base_url() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
         <script language="javascript">
             function activateMailingEditor() {
                 if(!$('#mailing_html').attr('checked')){
@@ -117,5 +117,5 @@
     {% endif %}
     {% set localjstracking = constant('_CURRENT_THEME_PATH') ~ "tracking.js" %}
     {% if file_exists(localjstracking) %}
-        <script type="text/javascript" src="{{ base_url() }}/{{ constant('GALETTE_THEME') }}tracking.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}tracking.js"></script>
     {% endif %}

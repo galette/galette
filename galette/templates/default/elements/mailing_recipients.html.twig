@@ -17,6 +17,6 @@
                 <p id="unreachables_count">
                     <strong>{{ count_unreachables }} {% if count_unreachables != 1 %}{{ _T("unreachable members:") }}{% else %}{{ _T("unreachable member:") }}{% endif %}</strong><br/>
                     {{ _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") }}
-                    <br/><a class="ui labeled icon button" href="{{ path_for('pdf-members-labels') }}?from=mailing"><i class="address card icon"></i> {{ _T("Generate labels") }}</a>
+                    <br/><a class="ui labeled icon button" href="{{ url_for('pdf-members-labels') }}?from=mailing"><i class="address card icon"></i> {{ _T("Generate labels") }}</a>
                 </p>
     {% endif %}

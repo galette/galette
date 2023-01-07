@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -39,6 +39,8 @@ namespace Galette\Controllers\test\units;
 
 use atoum;
 use Galette\GaletteTestCase;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Request;
 
 /**
  * PDF controller tests
@@ -47,7 +49,7 @@ use Galette\GaletteTestCase;
  * @name      PdfController
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-12-06
@@ -109,30 +111,27 @@ class PdfController extends GaletteTestCase
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->string($model->title)->isIdenticalTo('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}');
 
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/models/pdf'
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
 
-        $body = new \Slim\Http\RequestBody();
-        $body->write(
-            json_encode([
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('http://localhost/models/pdf'),
+            new Headers(['Content-Type' => ['application/json']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+        $request = $request->withParsedBody(
+            [
                 'store' => true,
                 'models_id' => \Galette\Entity\PdfModel::INVOICE_MODEL,
                 'model_type' => \Galette\Entity\PdfModel::INVOICE_MODEL,
                 'model_title' => 'DaTitle'
-            ])
+            ]
         );
 
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $response = new \Slim\Http\Response();
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         $test_response = $controller->storeModels($request, $response);
@@ -154,28 +153,26 @@ class PdfController extends GaletteTestCase
     public function testMembersCards()
     {
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/members/card/' . $this->adh->id
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'text/html');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/card/' . $this->adh->id),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test with non-logged-in user
         $test_response = $controller->membersCards($request, $response, $this->adh->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['me']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(302);
-        $this->boolean($test_response->isServerError())->isFalse();
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/member/me']]);
+        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'You do not have permission for requested URL.'
@@ -194,16 +191,14 @@ class PdfController extends GaletteTestCase
             )->isNotEmpty();
 
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="cards.pdf"');
 
         //test no selection
         $test_response = null;
         $test_response = $controller->membersCards($request, $response);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/members']]);
         $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'No member was selected, please check at least one name.'
@@ -225,7 +220,6 @@ class PdfController extends GaletteTestCase
 
         unset($this->session->filter_members);
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="cards.pdf"');
     }
@@ -239,28 +233,26 @@ class PdfController extends GaletteTestCase
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/members/labels'
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'text/html');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/labels'),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test with non-logged-in user
         $test_response = $controller->membersLabels($request, $response, $this->adh->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/members']]);
         $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'No member was selected, please check at least one name.'
@@ -281,7 +273,6 @@ class PdfController extends GaletteTestCase
             )->isNotEmpty();
 
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="labels_print_filename.pdf"');
         unset($this->session->filter_members);
@@ -291,9 +282,8 @@ class PdfController extends GaletteTestCase
         //test no selection
         $test_response = null;
         $test_response = $controller->membersCards($request, $response);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/members']]);
         $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'No member was selected, please check at least one name.'
@@ -314,7 +304,6 @@ class PdfController extends GaletteTestCase
             )->isNotEmpty();
 
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="cards.pdf"');
     }
@@ -328,28 +317,26 @@ class PdfController extends GaletteTestCase
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/members/labels'
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'text/html');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/labels'),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test with non-logged-in user
         $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['me']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(302);
-        $this->boolean($test_response->isServerError())->isFalse();
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/member/me']]);
+        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'You do not have permission for requested URL.'
@@ -368,7 +355,6 @@ class PdfController extends GaletteTestCase
             )->isNotEmpty();
 
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="adherent_form.' . $this->adh->id . '.pdf"');
     }
@@ -381,30 +367,27 @@ class PdfController extends GaletteTestCase
     public function testAttendanceSheet()
     {
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/attendance-sheet'
-            ]
+
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/attendance-sheet'),
+            new Headers(['Content-Type' => ['application/json']]),
+            [],
+            [],
+            $sfactory->createStream()
         );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $response = new \Slim\Http\Response();
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test no selection
         $test_response = null;
         $test_response = $controller->membersCards($request, $response);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/members']]);
         $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'No member was selected, please check at least one name.'
@@ -413,15 +396,12 @@ class PdfController extends GaletteTestCase
         $this->flash_data = [];
 
         //test with selection
-        $body = new \Slim\Http\RequestBody();
-        $body->write(
-            json_encode([
+        $request = $request->withParsedBody(
+            [
                 'selection' => [$this->adh->id]
-            ])
+            ]
         );
 
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
         $test_response = null;
         $this
             ->output(
@@ -431,7 +411,6 @@ class PdfController extends GaletteTestCase
             )->isNotEmpty();
 
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="attendance_sheet.pdf"');
     }
@@ -445,28 +424,26 @@ class PdfController extends GaletteTestCase
     {
         $this->getMemberOne();
         $this->createContribution();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/contribution/print/' . $this->contrib->id
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/contribution/print/' . $this->contrib->id),
+            new Headers(['Content-Type' => ['application/json']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test not logged
         $test_response = $controller->contribution($request, $response, $this->contrib->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['contributions']]);
+        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['/contributions']]);
         $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
             'error_detected' => [
                 'Unable to load contribution #' . $this->contrib->id . '!'
@@ -476,9 +453,6 @@ class PdfController extends GaletteTestCase
 
         //test superadmin
         $this->logSuperAdmin();
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
         $test_response = null;
         $this
             ->output(
@@ -488,7 +462,6 @@ class PdfController extends GaletteTestCase
             )->isNotEmpty();
 
         $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
         $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
         $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="contribution_' . $this->contrib->id . '_invoice.pdf"');
     }

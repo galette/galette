@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
@@ -289,7 +289,7 @@ class TransactionsController extends ContributionsController
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor(
+                        $this->routeparser->urlFor(
                             'addContribution',
                             $rparams
                         ) . '?' . Transaction::PK . '=' . $trans->id .
@@ -307,7 +307,7 @@ class TransactionsController extends ContributionsController
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('contributions', ['type' => 'transactions'])
+                        $this->routeparser->urlFor('contributions', ['type' => 'transactions'])
                     );
             }
         } else {
@@ -332,7 +332,7 @@ class TransactionsController extends ContributionsController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         ($action == 'add' ? 'addTransaction' : 'editTransaction'),
                         $args
                     )
@@ -366,7 +366,7 @@ class TransactionsController extends ContributionsController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor(
+            ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
                 ['id' => $id]
             ));
@@ -398,7 +398,7 @@ class TransactionsController extends ContributionsController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor(
+            ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
                 ['id' => $id]
             ));

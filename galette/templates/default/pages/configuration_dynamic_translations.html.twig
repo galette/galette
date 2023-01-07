@@ -7,7 +7,7 @@
             {{ _T("Choose label to translate") }}
         </div>
         <div class="ui bottom attached accordion-styled segment">
-            <form action="{{ path_for('dynamicTranslations') }}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
+            <form action="{{ url_for('dynamicTranslations') }}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
                 <div class="field inline">
                     <select name="text_orig" id="text_orig" class="ui dropdown nochosen">
                     {% for value in orig %}
@@ -21,7 +21,7 @@
         </div>
     {% endif %}
 
-        <form action="{{ path_for('editDynamicTranslation') }}" method="post" enctype="multipart/form-data" class="ui equal width form">
+        <form action="{{ url_for('editDynamicTranslation') }}" method="post" enctype="multipart/form-data" class="ui equal width form">
     {% if not exists %}
             <div class="field">
                 <label>{{ _T("Original text: '%s'")|replace({'%s': text_orig|escape}) }}</label>

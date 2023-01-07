@@ -118,7 +118,7 @@ trait GaletteError
      */
     protected function determineContentType(ServerRequestInterface $request)
     {
-        if ($request->isXhr()) {
+        if (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
             //get error as JSON for XHR request; more lisible
             return 'application/json';
         }

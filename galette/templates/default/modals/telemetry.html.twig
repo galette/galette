@@ -18,7 +18,7 @@
                         icon    : 'share',
                         click   : function() {
                             $.ajax({
-                                url:  '{{ path_for('telemetrySend') }}',
+                                url:  '{{ url_for('telemetrySend') }}',
                                 method: 'POST',
                                 {% include "elements/js/loader.js.twig" with {
                                     loader: 'button',
@@ -78,7 +78,7 @@
                     e.preventDefault();
 
                     $.ajax({
-                        url:  '{{ path_for('telemetryInfos') }}',
+                        url:  '{{ url_for('telemetryInfos') }}',
                         success: function(data) {
                             $('#telemetry_panel .tdata').append(data);
                             $('#telemetry_panel').modal('show');
@@ -114,7 +114,7 @@
 {% if part == "jsregister" %}
             $('#register').on('click', function(e) {
                 $.ajax({
-                    url:  '{{ path_for('setRegistered') }}',
+                    url:  '{{ url_for('setRegistered') }}',
                     success: function(data) {
     {%  if orig is defined and orig == 'desktop' %}
                         $('#register').remove();

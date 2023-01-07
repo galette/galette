@@ -6,7 +6,7 @@
             match: 'text',
             placeholder: '{{ _T("Search for name or ID and pick member") }}',
             apiSettings: {
-                url: '{{ path_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
+                url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
                 onError: function(errorMessage, element, xhr) {
                     alert(errorMessage);

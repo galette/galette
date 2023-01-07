@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2022 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,8 +37,9 @@
 
 namespace Galette\Core;
 
-use DI\Bridge\Slim;
+use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
+use Slim\App;
 
 /**
  * Light Slim application
@@ -47,35 +48,27 @@ use DI\ContainerBuilder;
  * @name      LightSlimApp
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
  * @since     Available since 0.9.5dev - 2020-12-12
  */
-class LightSlimApp extends \DI\Bridge\Slim\App
+class LightSlimApp
 {
     private string $mode;
+    /** @var App  */
+    private App $app;
 
     /**
-     * Default constructor
+     * Create a new Slim application
      *
      * @param string $mode Galette mode
      */
     public function __construct($mode = 'NEED_UPDATE')
     {
         $this->mode = $mode;
-        parent::__construct();
-    }
 
-    /**
-     * Configure the container builder.
-     *
-     * @param ContainerBuilder $builder Builder to configure
-     *
-     * @return void
-     */
-    protected function configureContainer(ContainerBuilder $builder)
-    {
+        $builder = new ContainerBuilder();
         $builder->useAnnotations(true);
         $builder->addDefinitions([
             'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
@@ -93,5 +86,18 @@ class LightSlimApp extends \DI\Bridge\Slim\App
             'galette.mode'  => $this->mode,
             'session'       => \DI\autowire('\RKA\Session')
         ]);
+        $container = $builder->build();
+
+        $this->app = Bridge::create($container);
+    }
+
+    /**
+     * Get Slim application
+     *
+     * @return App
+     */
+    public function getApp(): App
+    {
+        return $this->app;
     }
 }

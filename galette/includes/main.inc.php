@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2021 The Galette Team
+ * Copyright © 2012-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,14 +28,25 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2021 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-10
  */
 
+use Galette\Middleware\Authenticate;
+use Galette\Middleware\Language;
+use Galette\Middleware\Telemetry;
+use Galette\Middleware\TrailingSlash;
+use Galette\Middleware\UpdateAndMaintenance;
+use RKA\SessionMiddleware;
+use Slim\Routing\RouteContext;
 use Slim\Slim;
 use Galette\Core\Galette;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 if (!defined('GLOB_BRACE')) {
     define('GLOB_BRACE', 0);
@@ -60,10 +71,11 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 //Galette needs database update!
 if ($needs_update) {
     define('GALETTE_THEME', 'themes/default/');
-    $app = new \Galette\Core\LightSlimApp();
+    $gapp = new \Galette\Core\LightSlimApp();
 } else {
-    $app = new \Galette\Core\SlimApp();
+    $gapp = new \Galette\Core\SlimApp();
 }
+$app = $gapp->getApp();
 
 //CONFIGURE AND START SESSION
 
@@ -82,7 +94,7 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = PREFIX_DB . '_' . NAME_DB . '_' . str_replace('.', '_', GALETTE_VERSION);
 }
 $session_name = 'galette_' . $session_name;
-$session = new \RKA\SessionMiddleware([
+$session = new SessionMiddleware([
     'name'      => $session_name,
     'lifetime'  => GALETTE_TIMEOUT
 ]);
@@ -96,9 +108,9 @@ $app->add($app->getContainer()->get('csrf'));
 
 if ($needs_update) {
     $app->add(
-        new \Galette\Middleware\UpdateAndMaintenance(
+        new UpdateAndMaintenance(
             $container->get('i18n'),
-            \Galette\Middleware\UpdateAndMaintenance::NEED_UPDATE
+            UpdateAndMaintenance::NEED_UPDATE
         )
     );
 
@@ -109,7 +121,12 @@ if ($needs_update) {
 /**
  * Authentication middleware
  */
-$authenticate = new \Galette\Middleware\Authenticate($container);
+$authenticate = new Authenticate($container);
+
+/**
+ * Twig-View Middleware
+ */
+$app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 
 /**
  * Show public pages middleware
@@ -118,10 +135,9 @@ $authenticate = new \Galette\Middleware\Authenticate($container);
  * @param $response
  * @param $next
  * @return mixed
- * @throws \Psr\Container\ContainerExceptionInterface
- * @throws \Psr\Container\NotFoundExceptionInterface
  */
-$showPublicPages = function ($request, $response, $next) use ($container) {
+$showPublicPages = function (Request $request, RequestHandler $handler) use ($container) {
+    $response = $handler->handle($request);
     $login = $container->get('login');
     $preferences = $container->get('preferences');
 
@@ -136,15 +152,15 @@ $showPublicPages = function ($request, $response, $next) use ($container) {
             );
     }
 
-    return $next($request, $response);
+    return $response;
 };
 
 //Maintenance middleware
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
-        new \Galette\Middleware\UpdateAndMaintenance(
+        new UpdateAndMaintenance(
             $i18n,
-            \Galette\Middleware\UpdateAndMaintenance::MAINTENANCE
+            UpdateAndMaintenance::MAINTENANCE
         )
     );
 }
@@ -152,23 +168,17 @@ if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAd
 /**
  * Trailing slash middleware
  */
-$app->add(\Galette\Middleware\TrailingSlash::class);
+$app->add(TrailingSlash::class);
 
 /**
  * Change language middleware
  *
  * Require determineRouteBeforeAppMiddleware to be on.
  */
-$app->add(\Galette\Middleware\Language::class);
+$app->add(Language::class);
 
 //Telemetry update middleware
-$app->add(\Galette\Middleware\Telemetry::class);
-
-/**
- * Check routes ACLs
- * This is important this one to be the last, so it'll be executed first.
- */
-$app->add(\Galette\Middleware\CheckAcls::class);
+$app->add(Telemetry::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
@@ -179,6 +189,30 @@ require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
+
+// Via this middleware you could access the route and routing results from the resolved route
+$app->add(function (Request $request, RequestHandler $handler) use ($container) {
+    $routeContext = RouteContext::fromRequest($request);
+    $route = $routeContext->getRoute();
+
+    // return NotFound for non-existent route
+    if (empty($route)) {
+        throw new \Slim\Exception\HttpNotFoundException($request);
+    }
+
+    $name = $route->getName();
+    $arguments = $route->getArguments();
+
+    $view = $container->get(Twig::class);
+    $view->getEnvironment()->addGlobal('cur_route', $name);
+    $view->getEnvironment()->addGlobal('cur_subroute', array_shift($arguments));
+    // ... do something with the data ...
+
+    return $handler->handle($request);
+});
+
+// Add Routing Middleware - required for ACLs to work
+$app->addRoutingMiddleware();
 
 $app->run();
 

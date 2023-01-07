@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Repository\Titles;
 use Galette\Entity\Title;
 use Analog\Analog;
@@ -215,7 +215,7 @@ class TitlesController extends CrudController
                     )
                 );
 
-                $redirect_uri = $this->router->pathFor('editTitle', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => $id]);
             }
         } else {
             if ($id === null) {
@@ -255,7 +255,7 @@ class TitlesController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('titles');
+        return $this->routeparser->urlFor('titles');
     }
 
     /**
@@ -267,7 +267,7 @@ class TitlesController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveTitle',
             ['id' => $args['id']]
         );

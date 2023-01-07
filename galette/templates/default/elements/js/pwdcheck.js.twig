@@ -7,7 +7,7 @@ $('{{ selector }}').parent('.input').parent('{{ selector ~ '_field'|e('js') }}')
 $('{{ selector }}').on('keyup', function() {
     var _this = $(this);
     $.ajax({
-        url: '{{ path_for("checkPassword") }}',
+        url: '{{ url_for("checkPassword") }}',
         type: 'POST',
         data: {
             value: $('{{ selector }}').val(),

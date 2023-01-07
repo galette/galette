@@ -31,7 +31,7 @@
                             $.ajax({
                                     type: 'POST',
                                     dataType: 'json',
-                                    url : '{{ path_for("photoDnd") }}',
+                                    url : '{{ url_for("photoDnd") }}',
                                     data: {
                                         member_id: {{ member.id }},
                                         filename: file.name,
@@ -49,7 +49,7 @@
 
                                         //display message
                                         $.ajax({
-                                            url: '{{ path_for("ajaxMessages") }}',
+                                            url: '{{ url_for("ajaxMessages") }}',
                                             method: "GET",
                                             success: function (message) {
                                                 $('#asso_name').after(message);

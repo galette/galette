@@ -47,7 +47,7 @@ $('.message.with-transition')
           class: 'green',
           click: function() {
               $.ajax({
-                  url:  '{{ path_for('telemetryInfos') }}',
+                  url:  '{{ url_for('telemetryInfos') }}',
                   success: function(data) {
                       $('#telemetry_panel .tdata').append(data);
                       $('#telemetry_panel').modal('show');

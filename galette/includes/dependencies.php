@@ -34,16 +34,67 @@
  */
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Routing\RouteParser;
+use Slim\Views\Twig;
 
 $container = $app->getContainer();
+
+$routeParser = $app->getRouteCollector()->getRouteParser();
+$container->set(RouteParser::class, $routeParser);
 
 // -----------------------------------------------------------------------------
 // Error handling
 // -----------------------------------------------------------------------------
 
-$container->set('errorHandler', function ($c) {
+/**
+ * Add Error Handling Middleware
+ *
+ * @param bool $displayErrorDetails -> Should be set to false in production
+ * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
+ * @param bool $logErrorDetails -> Display error details in error log
+ * which can be replaced by a callable of your choice.
+
+ * Note: This middleware should be added last. It will not handle any exceptions/errors
+ * for middleware added after it.
+ */
+$errorMiddleware = $app->addErrorMiddleware(
+    (GALETTE_MODE === 'DEV'),
+    true,
+    true
+);
+
+$errorHandler = $errorMiddleware->getDefaultErrorHandler();
+//$errorHandler->registerErrorRenderer('text/html', Galette\Handlers\NotFound::class);
+
+// Set the Not Found Handler
+/*$notfoundhandler = new Galette\Handlers\NotFound($container->get('view'));*/
+/*
+$errorMiddleware->setErrorHandler(
+    HttpNotFoundException::class,
+    function (ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails) {
+        $response = new Response();
+        $response->getBody()->write('404 NOT FOUND');
+
+        return $response->withStatus(404);
+    });
+*/
+
+// Set the Not Allowed Handler
+/*
+$errorMiddleware->setErrorHandler(
+    HttpMethodNotAllowedException::class,
+    function (ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails) {
+        $response = new Response();
+        $response->getBody()->write('405 NOT ALLOWED');
+
+        return $response->withStatus(405);
+    });
+*/
+/*$container->set('errorHandler', function ($c) {
     return new Galette\Handlers\Error($c->get('view'), true);
 });
 
@@ -53,19 +104,20 @@ $container->set('phpErrorHandler', function ($c) {
 
 $container->set('notFoundHandler', function ($c) {
     return new Galette\Handlers\NotFound($c->get('view'));
-});
+});*/
 
 // -----------------------------------------------------------------------------
 // Service providers
 // -----------------------------------------------------------------------------
 
-// Register View helper
-//TODO: old way - to drop
 $container->set(
-    'view',
-    DI\get('Slim\Views\Twig')
+    \Slim\Routing\RouteCollector::class,
+    function () use ($app) {
+        return $app->getRouteCollector();
+    }
 );
 
+// Register View helper
 $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
 
     $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
@@ -77,7 +129,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         $templates[$c->get('plugins')->getClassName($module_id)] = $dir;
     }
 
-    $view = new \Slim\Views\Twig(
+    $view = Twig::create(
         $templates,
         [
             'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
@@ -86,11 +138,11 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         ]
     );
 
-    $router = $c->get('router');
-    $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+    //$router = $c->get(\Slim\Routing\RouteParser::class);
+    //$uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
 
     //Twig extensions
-    $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+    //$view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
     if (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
@@ -190,6 +242,10 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
             $view->getEnvironment()->addGlobal('renew_telemetry', true);
         }
     }
+
+    $view->getEnvironment()->addGlobal('cur_route', null);
+    $view->getEnvironment()->addGlobal('cur_subroute', null);
+    $view->getEnvironment()->addGlobal('navigate', null);
     //End Twig globals
 
     return $view;
@@ -431,9 +487,11 @@ $container->set(
 
 $container->set(
     'csrf',
-    function (ContainerInterface $c) {
+    function (ContainerInterface $c) use ($app) {
+        $responseFactory = $app->getResponseFactory();
         $storage = null;
         $guard = new \Slim\Csrf\Guard(
+            $responseFactory,
             'csrf',
             $storage,
             null,
@@ -443,11 +501,13 @@ $container->set(
         );
 
         $exclusions = $c->get('CsrfExclusions');
-        $guard->setFailureCallable(function (ServerRequestInterface $request, ResponseInterface $response, $next) use ($exclusions) {
+        $guard->setFailureHandler(function (ServerRequestInterface $request, RequestHandler $handler) use ($exclusions) {
+            $response = $handler->handle($request);
+
             foreach ($exclusions as $exclusion) {
                 if (preg_match($exclusion, $request->getAttribute('route')->getname())) {
                     //route is excluded form CSRF checks
-                    return $next($request, $response);
+                    return $response;
                 }
             }
             Analog::log(
@@ -475,7 +535,7 @@ if (
     $hist = $container->get('history');
     $l10n = $container->get('l10n');
     $emitter = $container->get('event_manager');
-    $router = $container->get('router');
+    $routeparser = $container->get(RouteParser::class);
 }
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');

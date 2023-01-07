@@ -85,7 +85,7 @@
         />
         {% if object.id %}
         <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_current">{{ _T("current") }}</label>
-        <a href="{{ path_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
+        <a href="{{ url_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
             {{ valuedata }}
         </a>
         - <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_delete">

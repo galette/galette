@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2022 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @category  Core
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2022 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -53,7 +53,7 @@ use Galette\Repository\Members;
  * @name      Preferences
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2022 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -1236,7 +1236,7 @@ class Preferences
      */
     public function getMailSignature(): string
     {
-        global $router;
+        global $routeparser;
 
         $signature = $this->pref_mail_sign;
 
@@ -1244,7 +1244,7 @@ class Preferences
             return '';
         }
 
-        $this->setPreferences($this)->setRouter($router);
+        $this->setPreferences($this)->setRouteparser($routeparser);
         $this->setPatterns(
             $this->getMainPatterns() + $this->getSignaturePatterns()
         );

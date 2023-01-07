@@ -36,8 +36,8 @@
 
 namespace Galette\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
@@ -115,7 +115,7 @@ class AuthController extends AbstractController
             );
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('login'));
+                ->withHeader('Location', $this->routeparser->urlFor('login'));
         }
 
         if ($nick === $this->preferences->pref_admin_login) {
@@ -150,7 +150,7 @@ class AuthController extends AbstractController
         } else {
             $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
-            return $response->withStatus(301)->withHeader('Location', $this->router->pathFor('login'));
+            return $response->withStatus(301)->withHeader('Location', $this->routeparser->urlFor('login'));
         }
     }
 
@@ -169,7 +169,7 @@ class AuthController extends AbstractController
         \RKA\Session::destroy();
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->routeparser->urlFor('slash'));
     }
 
     /**
@@ -213,7 +213,7 @@ class AuthController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->routeparser->urlFor('slash'));
     }
 
     /**
@@ -237,7 +237,7 @@ class AuthController extends AbstractController
         );
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->routeparser->urlFor('slash'));
     }
 
     /**
@@ -276,10 +276,10 @@ class AuthController extends AbstractController
     public function retrievePassword(Request $request, Response $response, int $id_adh = null): Response
     {
         $from_admin = false;
-        $redirect_url = $this->router->pathFor('slash');
+        $redirect_url = $this->routeparser->urlFor('slash');
         if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
             $from_admin = true;
-            $redirect_url = $this->router->pathFor('member', ['id' => $id_adh]);
+            $redirect_url = $this->routeparser->urlFor('member', ['id' => $id_adh]);
         }
 
         if (
@@ -312,7 +312,7 @@ class AuthController extends AbstractController
         if ($adh->id != '') {
             //account has been found, proceed
             if (GaletteMail::isValidEmail($adh->email)) {
-                $texts = new Texts($this->preferences, $this->router);
+                $texts = new Texts($this->preferences, $this->routeparser);
                 $texts
                     ->setMember($adh)
                     ->setNoContribution();
@@ -449,7 +449,7 @@ class AuthController extends AbstractController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('password-lost')
+                    $this->routeparser->urlFor('password-lost')
                 );
         }
 
@@ -483,7 +483,7 @@ class AuthController extends AbstractController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('password-recovery', ['hash' => $post['hash']])
+                    $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
                 );
         }
 
@@ -527,7 +527,7 @@ class AuthController extends AbstractController
                             ->withStatus(301)
                             ->withHeader(
                                 'Location',
-                                $this->router->pathFor('slash')
+                                $this->routeparser->urlFor('slash')
                             );
                     }
                 }
@@ -545,7 +545,7 @@ class AuthController extends AbstractController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor('password-recovery', ['hash' => $post['hash']])
+                $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
             );
     }
 }

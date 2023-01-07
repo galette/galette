@@ -5,7 +5,7 @@
             {{ _T("Choose an entry") }}
         </div>
         <div class="ui bottom attached accordion-styled segment">
-            <form action="{{ path_for('changeText') }}" method="post" enctype="multipart/form-data" class="ui form">
+            <form action="{{ url_for('changeText') }}" method="post" enctype="multipart/form-data" class="ui form">
                 <div class="fields">
                     <div class="inline field">
                         <label for="sel_lang">{{ _T("Language:") }}</label>
@@ -29,7 +29,7 @@
             </form>
         </div>
 
-        <form action="{{ path_for('texts') }}" method="post" enctype="multipart/form-data" class="ui form">
+        <form action="{{ url_for('texts') }}" method="post" enctype="multipart/form-data" class="ui form">
             <div class="ui top attached accordion-styled header">
                 {{ mtxt.tcomment }}
                 <a id="btnlegend" class="tooltip action" title="{{ _T("Show existing variables") }}"><i class="circular inverted primary small icon info tooltip"></i><span class="sr-only">{{ _T("Show existing variables")|escape("js") }}</span></a>

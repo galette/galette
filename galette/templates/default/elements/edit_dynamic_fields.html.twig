@@ -33,21 +33,21 @@
                     </td>
                     <td class="center actions_row">
                         <a
-                            href="{{ path_for('editDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
+                            href="{{ url_for('editDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
                             class="tooltip action"
                         >
                             <i class="ui user edit blue icon" aria-hidden="true"></i>
                             <span class="sr-only">{{ _T("Edit '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
                         <a
-                            href="{{ path_for('removeDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
+                            href="{{ url_for('removeDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
                             class="delete tooltip"
                         >
                             <i class="ui trash red icon" aria-hidden="true"></i>
                             <span class="sr-only">{{ _T("Delete '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
                         <a
-                            href="{{ path_for('dynamicTranslations', {'text_orig': field.getName(false)|escape}) }}"
+                            href="{{ url_for('dynamicTranslations', {'text_orig': field.getName(false)|escape}) }}"
                             class="tooltip"
                         >
                             <i class="ui language grey icon" aria-hidden="true"></i>
@@ -57,7 +57,7 @@
                         <i class="ui icon">&nbsp;</i>
     {% else %}
                         <a
-                            href="{{ path_for('moveDynamicField', {'form_name': form_name, 'direction': 'up', 'id': field.getId()}) }}"
+                            href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'up', 'id': field.getId()}) }}"
                             class="tooltip action"
                         >
                             <i class="ui caret up grey icon"></i>
@@ -68,7 +68,7 @@
                         <i class="ui icon">&nbsp;</i>
     {% else %}
                         <a
-                            href="{{ path_for('moveDynamicField', {'form_name': form_name, 'direction': 'down', 'id': field.getId()}) }}"
+                            href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'down', 'id': field.getId()}) }}"
                             class="tooltip"
                         >
                             <i class="ui caret down grey icon"></i>

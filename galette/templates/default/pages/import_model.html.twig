@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="ui stackable pointing inverted menu tabbed">
-    <a href="{{ path_for('importModel') }}?tab=current" class="item{{ tab == 'current' ? ' active' }}" data-tab="current">{{ _T('Current model') }}</a>
-    <a href="{{ path_for('importModel') }}?tab=change" class="item{{ tab == 'change' ? ' active' }}" data-tab="change">{{ _T('Change model') }}</a>
+    <a href="{{ url_for('importModel') }}?tab=current" class="item{{ tab == 'current' ? ' active' }}" data-tab="current">{{ _T('Current model') }}</a>
+    <a href="{{ url_for('importModel') }}?tab=change" class="item{{ tab == 'change' ? ' active' }}" data-tab="change">{{ _T('Change model') }}</a>
 </div>
 <div class="ui{{ tab == 'current' ? ' active' }} tab segment" data-tab="current">
     <table class="listing ui celled table">
@@ -31,7 +31,7 @@
     {% endfor %}
     </table>
     <div class="ui basic center aligned segment">
-        <a class="ui labeled icon primary button" href="{{ path_for('getImportModel') }}">
+        <a class="ui labeled icon primary button" href="{{ url_for('getImportModel') }}">
             <i class="file csv icon" aria-hidden="true"></i>
             {{ _T('Generate empty CSV file') }}
         </a>
@@ -39,7 +39,7 @@
         <a
             id="delete"
             class="ui labeled icon button delete tooltip"
-            href="{{ path_for('importModel') }}?remove=true"
+            href="{{ url_for('importModel') }}?remove=true"
             title="{{ _T('Remove model and back to defaults') }}"
         >
             <i class="trash icon" aria-hiden="true"></i>
@@ -49,7 +49,7 @@
     </div>
 </div>
 <div class="ui{{ tab == 'change' ? ' active' }} tab segment" data-tab="change">
-    <form action="{{ path_for('storeImportModel') }}" method="POST" class="ui form" id="modelform">
+    <form action="{{ url_for('storeImportModel') }}" method="POST" class="ui form" id="modelform">
         <table class="listing ui celled table">
             <thead>
                 <tr>
@@ -81,7 +81,7 @@
 <div class="ui basic center aligned segment">
     <a
         class="ui labeled icon button"
-        href="{{ path_for('import') }}"
+        href="{{ url_for('import') }}"
     >
         <i class="arrow left icon" aria-hidden="true"></i>
         {{ _T('Go back to import page') }}

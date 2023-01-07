@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <form action="{{ path_for('doAdminTools') }}" method="post" class="ui form">
+    <form action="{{ url_for('doAdminTools') }}" method="post" class="ui form">
         <div class="ui orange message">{{ _T("Make sure you've done a backup of the database before using any of the following tools!") }}</div>
         <div class="ui top attached accordion-styled header">
             {{ _T('Select actions(s)') }}

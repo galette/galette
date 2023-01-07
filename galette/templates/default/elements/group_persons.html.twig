@@ -33,13 +33,13 @@
                                 {% else %}
                                     <i class="ui icon"></i>
                                 {% endif %}
-                                <a href="{{ path_for("member", {"id": person.id}) }}">{{ person.sfullname }}</a>
+                                <a href="{{ url_for("member", {"id": person.id}) }}">{{ person.sfullname }}</a>
                                 </td>
                                 <td class="">{{ person.nickname|escape }}</td>
     {% if login.isSuperAdmin() %}
                                 <td class="actions_row">
                                     <a
-                                            href="{{ path_for("impersonate", {"id": person.id}) }}"
+                                            href="{{ url_for("impersonate", {"id": person.id}) }}"
                                             class="tooltip"
                                     >
                                         <i class="ui user secret grey icon" aria-hidden="true"></i>

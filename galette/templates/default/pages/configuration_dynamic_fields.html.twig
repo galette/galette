@@ -3,7 +3,7 @@
 {% block content %}
     <div class="ui stackable pointing inverted menu">
 {% for key, form in all_forms %}
-        <a href="{{ path_for('configureDynamicFields', {'form_name': key}) }}" class="item{% if form_name == key %} active{% endif %}" data-tab="{{ key }}">{{ form }}</a>
+        <a href="{{ url_for('configureDynamicFields', {'form_name': key}) }}" class="item{% if form_name == key %} active{% endif %}" data-tab="{{ key }}">{{ form }}</a>
 {% endfor %}
     </div>
 {% for key, form in all_forms %}
@@ -20,7 +20,7 @@
             $(function() {
                 $('.pointing.menu .item').tab({
                     auto: true,
-                    path: '{{ path_for('configureDynamicFields', {'form_name': ''}) }}',
+                    path: '{{ url_for('configureDynamicFields', {'form_name': ''}) }}',
                     onLoad: function(tabPath, parameterArray, historyEvent) {
                         _addDynField();
                         _removeItems();

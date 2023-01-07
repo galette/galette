@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <form class="form" action="{{ path_for("doExport") }}" method="post" enctype="multipart/form-data">
+        <form class="form" action="{{ url_for("doExport") }}" method="post" enctype="multipart/form-data">
         <div class="ui orange message">{{ _T("Each selected export will be stored into a separate file in the exports directory.") }}</div>
 
 {% set written_exports = flash.getMessage('written_exports') %}
@@ -43,7 +43,7 @@
                                         {{ loop.index }}
                                     </td>
                                     <td data-scope="row">
-                                        <a href="{{ path_for("getCsv", {"type": "export", "file": export.name}) }}">{{ export.name }}</a>
+                                        <a href="{{ url_for("getCsv", {"type": "export", "file": export.name}) }}">{{ export.name }}</a>
                                     </td>
                                     <td data-title="{{ _T('Date') }}">
                                         {{ export.date }}
@@ -53,7 +53,7 @@
                                     </td>
                                     <td class="actions_row">
                                         <a
-                                            href="{{ path_for("removeCsv", {"type": "export", "file": export.name}) }}"
+                                            href="{{ url_for("removeCsv", {"type": "export", "file": export.name}) }}"
                                             class="delete tooltip"
                                         >
                                             <i class="ui trash red icon"></i>

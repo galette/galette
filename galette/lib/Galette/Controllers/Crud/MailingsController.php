@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -39,8 +39,8 @@ namespace Galette\Controllers\Crud;
 use Throwable;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
@@ -57,7 +57,7 @@ use Analog\Analog;
  * @name      MailingsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -108,7 +108,7 @@ class MailingsController extends CrudController
             );
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('slash'));
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         } else {
             if (isset($this->session->filter_mailing)) {
                 $filters = $this->session->filter_mailing;
@@ -156,7 +156,7 @@ class MailingsController extends CrudController
                     }
 
                     $redirect_url = ($this->session->redirect_mailing !== null) ?
-                        $this->session->redirect_mailing : $this->router->pathFor('members');
+                        $this->session->redirect_mailing : $this->routeparser->urlFor('members');
 
                     return $response
                         ->withStatus(301)
@@ -225,8 +225,8 @@ class MailingsController extends CrudController
         $error_detected = [];
         $success_detected = [];
 
-        $goto = $this->router->pathFor('mailings');
-        $redirect_url = $this->session->redirect_mailing ?? $this->router->pathFor('members');
+        $goto = $this->routeparser->urlFor('mailings');
+        $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
 
         //We're done :-)
         if (
@@ -259,7 +259,7 @@ class MailingsController extends CrudController
                 _T("Trying to load mailing while email is disabled in preferences.")
             );
             $error_detected[] = _T("Trying to load mailing while email is disabled in preferences.");
-            $goto = $this->router->pathFor('slash');
+            $goto = $this->routeparser->urlFor('slash');
         } else {
             if (isset($this->session->filter_members)) {
                 $filters = $this->session->filter_members;
@@ -373,7 +373,7 @@ class MailingsController extends CrudController
                     $mailing->current_step = Mailing::STEP_START;
                 }
                 //until mail is sent (above), we redirect to mailing page
-                $goto = $this->router->pathFor('mailing');
+                $goto = $this->routeparser->urlFor('mailing');
             }
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
@@ -429,7 +429,7 @@ class MailingsController extends CrudController
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
                     $this->session->redirect_mailing = null;
-                    $goto = $this->router->pathFor('mailings');
+                    $goto = $this->routeparser->urlFor('mailings');
                 }
             }
         }
@@ -498,10 +498,10 @@ class MailingsController extends CrudController
         $this->session->filter_mailings = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setViewPagination($this->router, $this->view);
+        $mailhist->filters->setViewPagination($this->routeparser, $this->view);
         $history_list = $mailhist->getHistory();
         //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setViewPagination($this->router, $this->view);
+        $mailhist->filters->setViewPagination($this->routeparser, $this->view);
 
         // display page
         $this->view->render(
@@ -586,7 +586,7 @@ class MailingsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('mailings'));
+            ->withHeader('Location', $this->routeparser->urlFor('mailings'));
     }
 
     /**
@@ -629,7 +629,7 @@ class MailingsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('mailings');
+        return $this->routeparser->urlFor('mailings');
     }
 
     /**
@@ -641,7 +641,7 @@ class MailingsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveMailing',
             ['id' => $args['id'] ?? null]
         );
@@ -693,7 +693,7 @@ class MailingsController extends CrudController
         // check for ajax mode
         $ajax = false;
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {

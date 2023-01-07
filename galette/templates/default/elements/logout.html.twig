@@ -13,7 +13,7 @@
         </div>
         <a
             class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
-            href="{% if login.isImpersonated() %}{{ path_for("unimpersonate") }}{% else %}{{ path_for("logout") }}{% endif %}"
+            href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
         >
             <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
             {% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}

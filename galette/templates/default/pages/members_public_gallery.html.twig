@@ -8,7 +8,7 @@
                 {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
             </div>
         </div>
-        <form action="{{ path_for("filterPublicList", {"type": "trombi"}) }}" method="POST" class="ui form">
+        <form action="{{ url_for("filterPublicList", {"type": "trombi"}) }}" method="POST" class="ui form">
             <div class="infoline">
                 <div class="ui basic horizontal segments">
                     <div class="ui basic fitted segment">
@@ -35,7 +35,7 @@
                 {% set mid = member.id %}
                 <div class="image">
                     <img
-                        src="{{ path_for("photo", {"id": member.id, "rand": time}) }}"
+                        src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
                         width="{{ member.picture.getOptimalWidth() }}"
                         height="{{ member.picture.getOptimalHeight() }}"
                         alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"

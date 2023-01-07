@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2015-2020 The Galette Team
+ * Copyright © 2015-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,23 +28,23 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2020 The Galette Team
+ * @copyright 2015-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.9dev 2015-10-28
  */
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 
 $app->group(
     '/plugins',
-    function () use ($authenticate, $showPublicPages) {
-        $container = $this->getContainer();
+    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate, $showPublicPages) {
+        $container = $app->getContainer();
         $modules = $container->get('plugins')->getModules();
 
         //Global route to access plugin resources (CSS, JS, images, ...)
-        $this->get(
+        $app->get(
             '/{plugin}/res/{path:.*}',
             function (Request $request, Response $response, $plugin, $path) {
                 $ext = pathinfo($path)['extension'];
@@ -81,12 +81,12 @@ $app->group(
         foreach ($modules as $module_id => $module) {
             $container->set('Plugin ' . $module['name'], ['module' => $module, 'module_id' => $module_id]);
 
-            $this->group(
+            $app->group(
                 '/' . $module['route'],
                 //$module_id may be used in included _routes.php from plugin.
-                function () use ($module, $module_id, $authenticate, $showPublicPages) {
+                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $showPublicPages) {
                     //Plugin home: give information
-                    $this->get(
+                    $app->get(
                         '',
                         function ($request, $response) use ($module) {
                             $params = [
@@ -100,7 +100,7 @@ $app->group(
                                 $params['module'] = $module;
                             }
                             // display page
-                            $this->get('view')->render(
+                            $this->get(\Slim\Views\Twig::class)->render(
                                 $response,
                                 'pages/plugin_info.html.twig',
                                 $params

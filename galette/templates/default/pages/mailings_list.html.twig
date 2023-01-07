@@ -21,7 +21,7 @@
 {% block infoline_actions %}
     <a
         class="action ui tiny labeled icon button"
-        href="{{ path_for('mailing') }}?mailing_new=true"
+        href="{{ url_for('mailing') }}?mailing_new=true"
     >
         <i class="plus circle green icon"></i>
         {{ _T('Create new mailing') }}
@@ -42,7 +42,7 @@
 {% endblock %}
 
 {% block search %}
-    <form action="{{ path_for('mailings_filter') }}" method="post" class="ui form filters">
+    <form action="{{ url_for('mailings_filter') }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
             <div class="three fields">
                 <div class="two fields">
@@ -136,21 +136,21 @@
             </td>
             <td class="center actions_row">
                 <a
-                        href="{{ path_for("mailingPreview", {"id": log.mailing_id}) }}"
+                        href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
                         class="showdetails tooltip"
                 >
                     <i class="ui eye green icon"></i>
                     <span class="sr-only">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
-                        href="{{ path_for('mailing') }}?from={{ log.mailing_id }}"
+                        href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
                         class="tooltip"
                 >
                     <i class="ui clone blue icon"></i>
                     <span class="sr-only">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
-                        href="{{ path_for("removeMailing", {"id": log.mailing_id}) }}"
+                        href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
                         class="delete tooltip"
                 >
                     <i class="ui trash red icon"></i>

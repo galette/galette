@@ -36,8 +36,8 @@
 
 namespace Galette\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\CheckModules;
 use Galette\Entity\Texts;
 use Galette\Repository\Members;
@@ -175,6 +175,6 @@ class AdminToolsController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('adminTools'));
+            ->withHeader('Location', $this->routeparser->urlFor('adminTools'));
     }
 }
