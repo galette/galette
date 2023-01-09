@@ -252,7 +252,7 @@ class Transaction
                 $this->zdb->connection->commit();
             }
 
-            $emitter->emit('transaction.remove', $this);
+            $emitter->dispatch('transaction.remove', $this);
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
@@ -479,7 +479,7 @@ class Transaction
 
             //send event at the end of process, once all has been stored
             if ($event !== null) {
-                $emitter->emit($event, $this);
+                $emitter->dispatch($event, $this);
             }
 
             return true;

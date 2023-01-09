@@ -408,7 +408,7 @@ class Members
             $zdb->connection->commit();
 
             foreach ($processed as $p) {
-                $emitter->emit('member.remove', $p);
+                $emitter->dispatch('member.remove', $p);
             }
 
             //add an history entry

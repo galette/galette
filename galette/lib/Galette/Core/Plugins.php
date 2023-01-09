@@ -358,7 +358,7 @@ class Plugins
             class_exists($providerClassName)
             && method_exists($providerClassName, 'provideListeners')
         ) {
-            $emitter->useListenerProvider(new $providerClassName());
+            $emitter->subscribeListenersFrom(new $providerClassName());
         }
     }
 

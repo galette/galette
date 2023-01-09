@@ -48,8 +48,8 @@ use Galette\Entity\Contribution;
 use Galette\Entity\Texts;
 use Analog\Analog;
 use League\Event\Event;
-use League\Event\ListenerAcceptorInterface;
-use League\Event\ListenerProviderInterface;
+use League\Event\ListenerRegistry;
+use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
 use Slim\Router;
 
@@ -65,7 +65,7 @@ use Slim\Router;
  * @link      https://galette.eu
  * @since     Available since 2020-08-25
  */
-class ContribListener implements ListenerProviderInterface
+class ContribListener implements ListenerSubscriber
 {
     /** @var Preferences */
     private $preferences;
@@ -109,13 +109,13 @@ class ContribListener implements ListenerProviderInterface
     /**
      * Set up contribution listeners
      *
-     * @param ListenerAcceptorInterface $acceptor Listener
+     * @param ListenerRegistry $acceptor Listener
      *
      * @return void
      */
-    public function provideListeners(ListenerAcceptorInterface $acceptor)
+    public function subscribeListeners(ListenerRegistry $acceptor): void
     {
-        $acceptor->addListener(
+        $acceptor->subscribeTo(
             'contribution.add',
             function ($event, $contrib) {
                 $this->contributionAdded($event, $contrib);

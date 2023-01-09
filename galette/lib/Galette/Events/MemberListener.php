@@ -46,8 +46,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Analog\Analog;
 use League\Event\Event;
-use League\Event\ListenerAcceptorInterface;
-use League\Event\ListenerProviderInterface;
+use League\Event\ListenerRegistry;
+use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
 use Slim\Router;
 
@@ -63,7 +63,7 @@ use Slim\Router;
  * @link      https://galette.eu
  * @since     Available since 2020-07-14
  */
-class MemberListener implements ListenerProviderInterface
+class MemberListener implements ListenerSubscriber
 {
     /** @var Preferences */
     private $preferences;
@@ -107,20 +107,20 @@ class MemberListener implements ListenerProviderInterface
     /**
      * Set up member listeners
      *
-     * @param ListenerAcceptorInterface $acceptor Listener
+     * @param ListenerRegistry $acceptor Listener
      *
      * @return void
      */
-    public function provideListeners(ListenerAcceptorInterface $acceptor)
+    public function subscribeListeners(ListenerRegistry $acceptor): void
     {
-        $acceptor->addListener(
+        $acceptor->subscribeTo(
             'member.add',
             function ($event, $member) {
                 $this->memberAdded($event, $member);
             }
         );
 
-        $acceptor->addListener(
+        $acceptor->subscribeTo(
             'member.edit',
             function ($event, $member) {
                 $this->memberEdited($event, $member);

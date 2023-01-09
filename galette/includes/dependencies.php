@@ -411,13 +411,13 @@ $container->set('Galette\Core\Translator', function (ContainerInterface $c) {
 // Add Event manager to dependency.
 $container->set(
     'event_manager',
-    DI\create('Slim\Event\SlimEventManager')
+    DI\create(\League\Event\EventDispatcher::class)
         ->method(
-            'useListenerProvider',
+            'subscribeListenersFrom',
             DI\get('Galette\Events\MemberListener')
         )
         ->method(
-            'useListenerProvider',
+            'subscribeListenersFrom',
             DI\get('Galette\Events\ContribListener')
         )
 );
