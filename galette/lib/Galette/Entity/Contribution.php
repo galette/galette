@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2022 The Galette Team
+ * Copyright © 2010-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2022 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Events\GaletteEvent;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -55,7 +56,7 @@ use Galette\Features\Dynamics;
  * @name      Contribution
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2022 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -715,7 +716,7 @@ class Contribution
 
             //send event at the end of process, once all has been stored
             if ($event !== null) {
-                $emitter->emit($event, $this);
+                $emitter->dispatch(new GaletteEvent($event, $this));
             }
 
             return true;
@@ -794,7 +795,7 @@ class Contribution
             if ($transaction) {
                 $this->zdb->connection->commit();
             }
-            $emitter->emit('contribution.remove', $this);
+            $emitter->dispatch(new GaletteEvent('contribution.remove', $this));
             return true;
         } catch (Throwable $e) {
             if ($transaction) {

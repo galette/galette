@@ -38,6 +38,7 @@ namespace Galette\Repository;
 
 use Galette\Core\Login;
 use Galette\Entity\Social;
+use Galette\Events\GaletteEvent;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
@@ -408,10 +409,10 @@ class Members
             $zdb->connection->commit();
 
             foreach ($processed as $p) {
-                $emitter->emit('member.remove', $p);
+                $emitter->dispatch(new GaletteEvent('member.remove', $p));
             }
 
-            //add an history entry
+            //add a history entry
             $hist->add(
                 _T("Delete members cards, transactions and dues"),
                 $infos
@@ -419,7 +420,9 @@ class Members
 
             return true;
         } catch (Throwable $e) {
-            $zdb->connection->rollBack();
+            if ($zdb->connection->inTransaction()) {
+                $zdb->connection->rollBack();
+            }
             if ($e->getCode() == 23000) {
                 Analog::log(
                     'Member still have existing dependencies in the ' .

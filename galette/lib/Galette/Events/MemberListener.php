@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 2020-07-14
@@ -45,9 +45,8 @@ use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Analog\Analog;
-use League\Event\Event;
-use League\Event\ListenerAcceptorInterface;
-use League\Event\ListenerProviderInterface;
+use League\Event\ListenerRegistry;
+use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
 use Slim\Router;
 
@@ -58,12 +57,12 @@ use Slim\Router;
  * @name      MemberListener
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 2020-07-14
  */
-class MemberListener implements ListenerProviderInterface
+class MemberListener implements ListenerSubscriber
 {
     /** @var Preferences */
     private $preferences;
@@ -107,36 +106,35 @@ class MemberListener implements ListenerProviderInterface
     /**
      * Set up member listeners
      *
-     * @param ListenerAcceptorInterface $acceptor Listener
+     * @param ListenerRegistry $acceptor Listener
      *
      * @return void
      */
-    public function provideListeners(ListenerAcceptorInterface $acceptor)
+    public function subscribeListeners(ListenerRegistry $acceptor): void
     {
-        $acceptor->addListener(
+        $acceptor->subscribeTo(
             'member.add',
-            function ($event, $member) {
-                $this->memberAdded($event, $member);
+            function (GaletteEvent $event) {
+                $this->memberAdded($event->getObject());
             }
         );
 
-        $acceptor->addListener(
+        $acceptor->subscribeTo(
             'member.edit',
-            function ($event, $member) {
-                $this->memberEdited($event, $member);
+            function (GaletteEvent $event) {
+                $this->memberEdited($event->getObject());
             }
         );
     }
 
     /**
-     * Memebr added listener
+     * Member added listener
      *
-     * @param Event    $event  Raised event
      * @param Adherent $member Added member
      *
      * @return void
      */
-    public function memberAdded(Event $event, Adherent $member)
+    public function memberAdded(Adherent $member)
     {
         Analog::log(
             '[' . get_class($this) . '] Event member.add emitted for ' . $member->sfullname,
@@ -151,14 +149,13 @@ class MemberListener implements ListenerProviderInterface
     }
 
     /**
-     * Memebr edited listener
+     * Member edited listener
      *
-     * @param Event    $event  Raised event
      * @param Adherent $member Added member
      *
      * @return void
      */
-    public function memberEdited(Event $event, Adherent $member)
+    public function memberEdited(Adherent $member)
     {
         Analog::log(
             '[' . get_class($this) . '] Event member.edit emitted for ' . $member->sfullname,

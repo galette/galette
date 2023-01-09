@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2022 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2022 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
@@ -48,7 +48,7 @@ use Galette\Core\Preferences;
  * @name      Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2022 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
@@ -358,7 +358,7 @@ class Plugins
             class_exists($providerClassName)
             && method_exists($providerClassName, 'provideListeners')
         ) {
-            $emitter->useListenerProvider(new $providerClassName());
+            $emitter->subscribeListenersFrom(new $providerClassName());
         }
     }
 
