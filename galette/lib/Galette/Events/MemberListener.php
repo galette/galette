@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 2020-07-14
@@ -45,7 +45,6 @@ use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Analog\Analog;
-use League\Event\Event;
 use League\Event\ListenerRegistry;
 use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
@@ -58,7 +57,7 @@ use Slim\Router;
  * @name      MemberListener
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 2020-07-14
@@ -115,28 +114,28 @@ class MemberListener implements ListenerSubscriber
     {
         $acceptor->subscribeTo(
             'member.add',
-            function ($event, $member) {
+            function (object $event, $member) {
                 $this->memberAdded($event, $member);
             }
         );
 
         $acceptor->subscribeTo(
             'member.edit',
-            function ($event, $member) {
+            function (object $event, $member) {
                 $this->memberEdited($event, $member);
             }
         );
     }
 
     /**
-     * Memebr added listener
+     * Member added listener
      *
-     * @param Event    $event  Raised event
+     * @param object   $event  Raised event
      * @param Adherent $member Added member
      *
      * @return void
      */
-    public function memberAdded(Event $event, Adherent $member)
+    public function memberAdded(object $event, Adherent $member)
     {
         Analog::log(
             '[' . get_class($this) . '] Event member.add emitted for ' . $member->sfullname,
@@ -151,14 +150,14 @@ class MemberListener implements ListenerSubscriber
     }
 
     /**
-     * Memebr edited listener
+     * Member edited listener
      *
-     * @param Event    $event  Raised event
+     * @param object   $event  Raised event
      * @param Adherent $member Added member
      *
      * @return void
      */
-    public function memberEdited(Event $event, Adherent $member)
+    public function memberEdited(object $event, Adherent $member)
     {
         Analog::log(
             '[' . get_class($this) . '] Event member.edit emitted for ' . $member->sfullname,
