@@ -80,6 +80,7 @@
 
                 $('#mailing_corps').summernote({
                     lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
+                    disableDragAndDrop: true,
                     height: 240,
                     toolbar: [
                         ['style', ['style']],
@@ -105,6 +106,8 @@
                 $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{{ _T("Deactivate HTML editor") }}</a>');
 
                 $('#mailing_corps').summernote({
+                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
+                    disableDragAndDrop: true,
                     height: 240,
                     toolbar: [
                         ['style', ['style']],
