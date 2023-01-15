@@ -239,21 +239,33 @@ footer .ui.horizontal.list > .item{
     Fix Summernote modal display
 ----------------------------------*/
 
-.note-modal-backdrop {
+.note-modal-backdrop,
+.note-modal .note-group-select-from-files {
   display: none !important;
 }
 .note-modal.open {
   background: rgba(0,0,0,0.5);
 }
-.note-modal-content {
+.note-modal .note-modal-content {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  margin: 30px 0;
+}
+:not(.selectize-input).required .note-editable {
+  font-weight: normal;
+}
+.note-modal .note-modal-footer {
+  height: 62px;
 }
 .note-modal .note-btn {
-  margin-bottom: 1rem;
   padding: 10px;
+}
+@media only screen and (min-width: 768px) {
+  .note-modal-content {
+    margin: 0;
+  }
 }
 
 /*-------------
