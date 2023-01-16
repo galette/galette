@@ -69,14 +69,14 @@
         <script type="text/javascript" src="{{ base_url() }}/assets/js/summernote.min.js"></script>
         <script type="text/javascript" src="{{ base_url() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
         <script language="javascript">
-            function activateMailingEditor(id) {
+            function activateMailingEditor() {
                 if(!$('#mailing_html').attr('checked')){
                     $('#mailing_html').attr('checked', true);
                 }
 
                 $('input#html_editor_active').attr('value', '1');
                 $('#activate_editor').remove();
-                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{{ _T("Deactivate HTML editor") }}</a>');
+                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor();" id="deactivate_editor">{{ _T("Deactivate HTML editor") }}</a>');
 
                 $('#mailing_corps').summernote({
                     lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
@@ -101,32 +101,14 @@
                 });
                 $('#mailing_corps').summernote('focus');
             }
-            function deactivateMailingEditor(id) {
+            function deactivateMailingEditor() {
                 $('#mailing_corps').summernote('destroy');
                 $('#deactivate_editor').remove();
-                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:activateMailingEditor(\'mailing_corps\');" id="activate_editor">{{ _T("Activate HTML editor") }}</a>');
+                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:activateMailingEditor();" id="activate_editor">{{ _T("Activate HTML editor") }}</a>');
             }
         {% if html_editor_active == 1 %}
             $(function(){
-                $('#activate_editor').remove();
-                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{{ _T("Deactivate HTML editor") }}</a>');
-
-                $('#mailing_corps').summernote({
-                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
-                    disableDragAndDrop: true,
-                    height: 240,
-                    toolbar: [
-                        ['style', ['style']],
-                        ['font', ['bold', 'italic', 'strikethrough', 'clear']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['link', 'picture']],
-                        ['view', ['codeview', 'help']]
-                    ],
-                    styleTags: [
-                        'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-                    ]
-                });
-                $('#mailing_corps').summernote('focus');
+                activateMailingEditor();
             });
         {% endif %}
         </script>
