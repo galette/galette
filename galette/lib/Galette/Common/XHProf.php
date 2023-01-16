@@ -131,7 +131,7 @@ class XHProf
      */
     public function stop()
     {
-        if (self::$run) {
+        if (self::$run && function_exists('xhprof_disable')) {
             $data = xhprof_disable();
 
             $incl = (defined('GALETTE_XHPROF_PATH') ? GALETTE_XHPROF_PATH : self::XHPROF_PATH);
