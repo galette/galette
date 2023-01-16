@@ -1000,7 +1000,7 @@ class MembersController extends CrudController
                     ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
             }
 
-            if (isset($post['mailing'])) {
+            if (isset($post['sendmail'])) {
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('mailing') . '?mailing_new=new');
