@@ -724,9 +724,9 @@ class Picture implements FileInterface
 
             // calculate image size according to ratio
             if ($cur_width > $cur_height) {
-                $h = $w / $ratio;
+                $h = round($w / $ratio);
             } else {
-                $w = $h * $ratio;
+                $w = round($h * $ratio);
             }
 
             $thumb = imagecreatetruecolor($w, $h);
