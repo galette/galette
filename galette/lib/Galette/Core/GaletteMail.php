@@ -212,26 +212,31 @@ class GaletteMail
             $this->initMailer();
         }
 
-        $this->recipients = array();
-        foreach ($recipients as $mail => $name) {
-            if (self::isValidEmail($mail)) {
-                $this->recipients[$mail] = $name;
-                $this->mail->AddBCC($mail, $name);
-            } else {
-                //one of addresses is not valid :
-                //- set $res to false
-                //- clear BCCs
-                //- log an INFO
-                $res = false;
-                Analog::log(
-                    '[' . get_class($this) .
-                    '] One of recipients address is not valid.',
-                    Analog::INFO
-                );
-                $this->mail->ClearBCCs();
-                break;
+        if (!empty($post['recipients'])) {
+            $this->recipients = array();
+            foreach ($recipients as $mail => $name) {
+                if (self::isValidEmail($mail)) {
+                    $this->recipients[$mail] = $name;
+                    $this->mail->AddBCC($mail, $name);
+                } else {
+                    //one of addresses is not valid :
+                    //- set $res to false
+                    //- clear BCCs
+                    //- log an INFO
+                    $res = false;
+                    Analog::log(
+                        '[' . get_class($this) .
+                        '] One of recipients address is not valid.',
+                        Analog::INFO
+                    );
+                    $this->mail->ClearBCCs();
+                    break;
+                }
             }
+        } else {
+            $this->mail->ClearBCCs();
         }
+
         return $res;
     }
 

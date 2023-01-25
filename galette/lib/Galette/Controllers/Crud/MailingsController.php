@@ -792,17 +792,20 @@ class MailingsController extends CrudController
         $mailing = $this->session->mailing;
 
         $m = new Members();
+        $members = [];
 
-        $members = $m->getArrayList(
-            $post['recipients'],
-            null,
-            false,
-            true,
-            null,
-            false,
-            false,
-            true
-        );
+        if (isset($post['recipients'])) {
+            $members = $m->getArrayList(
+                $post['recipients'],
+                null,
+                false,
+                true,
+                null,
+                false,
+                false,
+                true
+            );
+        }
         $mailing->setRecipients($members);
 
         $this->session->mailing = $mailing;
