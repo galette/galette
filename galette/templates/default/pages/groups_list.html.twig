@@ -35,7 +35,7 @@
 {% if can_export %}
     <div class="ui buttons">
         <a href="{{ path_for("pdf_groups", {"id": group.getId()}) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
-            <i class="file pdf icon" aria-hidden="true"></i>
+            <i class="file pdf red icon" aria-hidden="true"></i>
             {{ _T("Group PDF") }}
         </a>
         <div class="or" data-text="{{ _T("or") }}"></div>
@@ -65,41 +65,46 @@
                 title: '{{ _T("Add a new group") }}',
                 class: 'tiny',
                 content: _input,
+                onApprove: function() {
+                    var _name = $('#new_group_name').val();
+                    console.log(_name);
+                    if ( _name != '' ) {
+                        //check uniqueness
+                        $.ajax({
+                            url: '{{ path_for("ajax_groupname_unique") }}',
+                            type: "POST",
+                            data: {
+                                ajax: true,
+                                gname: _name
+                            },
+                            {% include 'elements/js/loader.js.twig' %},
+                            success: function(res){
+                                if ( res.success == false ) {
+                                    if (res.message) {
+                                        alert(res.message)
+                                    } else {
+                                        alert('{{ _T("The group name you have requested already exists in the database.") }}');
+                                    }
+                                } else {
+                                    $(location).attr('href', _href.replace('NAME', _name));
+                                }
+                            },
+                            error: function() {
+                                alert("{{ _T("An error occurred checking name uniqueness :(")|e('js') }}");
+                            }
+                        });
+                    } else {
+                        alert('{{ _T("Pleade provide a group name")|e('js') }}');
+                        return false;
+                    }
+                },
                 actions: [{
                     text    : '{{ _T("Create")|e('js') }}',
-                    class   : 'green approve',
-                    click   : function() {
-                        var _name = $('#new_group_name').val();
-                        if ( _name != '' ) {
-                            //check uniqueness
-                            $.ajax({
-                                url: '{{ path_for("ajax_groupname_unique") }}',
-                                type: "POST",
-                                data: {
-                                    ajax: true,
-                                    gname: _name
-                                },
-                                {% include 'elements/js/loader.js.twig' %},
-                                success: function(res){
-                                    if ( res.success == false ) {
-                                        if (res.message) {
-                                            alert(res.message)
-                                        } else {
-                                            alert('{{ _T("The group name you have requested already exists in the database.") }}');
-                                        }
-                                    } else {
-                                        $(location).attr('href', _href.replace('NAME', _name));
-                                    }
-                                },
-                                error: function() {
-                                    alert("{{ _T("An error occurred checking name uniqueness :(")|e('js') }}");
-                                }
-                            });
-                        } else {
-                            alert('{{ _T("Pleade provide a group name")|e('js') }}');
-                        }
-                    }
-                }]
+                    class   : 'green approve'
+                },{
+                    text    : '{{ _T("Close")|e('js') }}',
+                    class   : 'deny'
+                },]
             }).modal('show');
             return false;
         });
