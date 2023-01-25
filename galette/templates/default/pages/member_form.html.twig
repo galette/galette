@@ -159,7 +159,10 @@
 {% block javascripts %}
         <script type="text/javascript">
             {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
-            document.getElementById('parent_id_input').type = 'hidden';
+            var _parent_id_input = document.getElementById('parent_id_input');
+            if ( typeof(_parent_id_input) != 'undefined' && _parent_id_input != null ) {
+                document.getElementById('parent_id_input').type = 'hidden';
+            }
 
             $(function() {
                 $('#company_field.nocompany').addClass('hidden');
