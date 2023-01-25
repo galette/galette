@@ -162,20 +162,22 @@ class PdfMembersCards extends Pdf
         $print_logo = new PrintLogo();
         $this->logofile = $print_logo->getPath();
 
-        // Set logo size to max width 30 mm or max height 25 mm
+        // Set logo size to max width 30mm (113px) or max height 17mm (64px)
         $ratio = $print_logo->getWidth() / $print_logo->getHeight();
-        if ($ratio < 1) {
-            if ($print_logo->getHeight() > 16) {
-                $this->hlogo = 20;
+        if ($ratio < 1.71) {
+            if ($print_logo->getHeight() > 64) {
+                $this->hlogo = 17;
             } else {
-                $this->hlogo = $print_logo->getHeight();
+                // Convert original pixels size to millimeters
+                $this->hlogo = $print_logo->getHeight() / 3.78;
             }
             $this->wlogo = round($this->hlogo * $ratio);
         } else {
-            if ($print_logo->getWidth() > 16) {
+            if ($print_logo->getWidth() > 113) {
                 $this->wlogo = 30;
             } else {
-                $this->wlogo = $print_logo->getWidth();
+                // Convert original pixels size to millimeters
+                $this->wlogo = $print_logo->getWidth() / 3.78;
             }
             $this->hlogo = round($this->wlogo / $ratio);
         }
