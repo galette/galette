@@ -230,8 +230,6 @@ footer .ui.horizontal.list > .item{
   width: auto;
   display: inline-block;
   margin-right: .25rem;
-}
-.ui.grey.card.icon {
   box-shadow: none;
 }
 
