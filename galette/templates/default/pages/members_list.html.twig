@@ -510,30 +510,30 @@
                     title: '{{ _T("Search title")|e('js') }}',
                     class: 'tiny',
                     content: '<div class="ui input"><input type="text" name="search_title" id="search_title"/></div>',
+                    onApprove: function() {
+                        var _form = $('#members_list_search_filter');
+                        var _data = _form.serialize();
+                        _data = _data + "&search_title=" + $('#search_title').val();
+                        $.ajax({
+                            url: '{{ path_for('saveSearch') }}',
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {% include "elements/js/loader.js.twig" %},
+                            success: function(res) {
+                                $.ajax({
+                                    url: '{{ path_for('ajaxMessages') }}',
+                                    method: "GET",
+                                    success: function (message) {
+                                        $('#asso_name').after(message);
+                                    }
+                                });
+                            }
+                        });
+                    },
                     actions: [{
                         text    : '{{ _T("Save")|e('js') }}',
-                        class   : 'green approve',
-                        click   : function() {
-                            var _form = $('#members_list_search_filter');
-                            var _data = _form.serialize();
-                            _data = _data + "&search_title=" + $('#search_title').val();
-                            $.ajax({
-                                url: '{{ path_for('saveSearch') }}',
-                                type: "POST",
-                                data: _data,
-                                datatype: 'json',
-                                {% include "elements/js/loader.js.twig" %},
-                                success: function(res) {
-                                    $.ajax({
-                                        url: '{{ path_for('ajaxMessages') }}',
-                                        method: "GET",
-                                        success: function (message) {
-                                            $('#asso_name').after(message);
-                                        }
-                                    });
-                                }
-                            });
-                        }
+                        class   : 'green approve'
                     }, {
                         text    : '{{ _T("Cancel")|e('js') }}',
                         class   : 'cancel'
