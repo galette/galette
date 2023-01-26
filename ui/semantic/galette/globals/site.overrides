@@ -121,6 +121,11 @@ section.content,
   border-top: none;
 }
 
+details.ui.basic.styled.accordion .title {
+  background: transparent;
+  color: @textColor;
+}
+
 ul.sortable-items {
   list-style-type: none;
   margin: 0;

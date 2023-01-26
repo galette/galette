@@ -30,14 +30,16 @@
             <td class="left" data-title="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
             <td class="left" data-title="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
             <td class="left" data-title="{{ _T("Search parameters") }}">
-                <a href="#" class="searchparams" title="{{ _T("Show parameters") }}">
-                    <i class="ui info circle primary icon"></i>
-                    <span class="sr-only">
+                <details class="ui basic styled accordion">
+                    <summary class="title">
+                        <i class="info circle primary icon"></i> {{ _T("Show parameters") }}
+                    </summary>
+                    <div class="content">
         {% for key, parameter in search.sparameters %}
-            <strong>{{ key }}:</strong> {{ parameter }}{% if not loop.last %}<br />{% endif %}
+                        <strong>{{ key }}:</strong> {{ parameter }}{% if not loop.last %}<br />{% endif %}
         {% endfor %}
-                                    </span>
-                </a>
+                    </div>
+                </details>
             </td>
             <td class="center actions_row">
                 <a
@@ -68,9 +70,8 @@
                 {% include "elements/js/removal.js.twig" %}
 
                 if ( _shq = $('.searchparams') ) {
-                    _shq.click(function(e){
-                        e.preventDefault();
-                        return false;
+                    _shq.popup({
+                        inline: true
                     });
                 }
 
