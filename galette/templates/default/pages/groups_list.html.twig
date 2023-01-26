@@ -43,6 +43,12 @@
             {{ _T("All groups PDF") }}
         </a>
     </div>
+    {% if login.isAdmin() or login.isStaff() %}
+    <a href="{{ path_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon button tooltip" id="newgroup" title="{{ _T("New group") }}">
+        <i class="plus circle green icon" aria-hidden="true"></i>
+        {{ _T("New group") }}
+    </a>
+    {% endif %}
 {% endif %}
 
     {% if group.getId() %}

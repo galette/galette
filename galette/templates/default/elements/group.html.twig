@@ -7,17 +7,6 @@
     <a href="{{ path_for('groups', {'id': group.getId()}) }}?tab=group_information" class="item{{ tab == 'group_information' ? ' active' }}" data-tab="group_information">{{ _T("Information") }}</a>
     <a href="{{ path_for('groups', {'id': group.getId()}) }}?tab=group_managers" class="item{{ tab == 'group_managers' ? ' active' }}" data-tab="group_managers">{{ _T("Managers") }} ({{ managers|length }})</a>
     <a href="{{ path_for('groups', {'id': group.getId()}) }}?tab=group_members" class="item{{ tab == 'group_members' ? ' active' }}" data-tab="group_members">{{ _T("Members") }} ({{ members|length }})</a>
-    {% if login.isAdmin() or login.isStaff() %}
-        <div class="right menu">
-            <div class="ui item">
-        {% if can_export %}
-                <a href="{{ path_for("add_group", {"name": "NAME"}) }}" class="ui tiny icon green button" id="newgroup" title="{{ _T("New group") }}" data-position="bottom right"><i class="plus icon" aria-hidden="true"></i><span class="hidden">{{ _T("New group") }}</span></a>
-        {% endif %}
-                <a href="#" class="jsonly disabled ui tiny icon button" id="btnmanagers_small" title="{{ _T("Manage managers") }}" data-position="bottom right"><i class="user shield icon" aria-hidden="true"></i><span class="hidden">{{ _T("Manage managers") }}</span></a>
-                <a href="#" class="jsonly disabled ui tiny icon button" id="btnusers_small" title="{{ _T("Manage members") }}" data-position="bottom right"><i class="user icon" aria-hidden="true"></i><span class="hidden">{{ _T("Manage members") }}</span></a>
-            </div>
-        </div>
-    {% endif %}
 </div>
 <form class="ui form" action="{{ path_for("doEditGroup", {"id": group.getId()}) }}" method="post" enctype="multipart/form-data" id="group_form">
     <div class="ui{{ tab == 'group_information' ? ' active' }} tab segment" data-tab="group_information">
@@ -70,6 +59,12 @@
     <div id="group_managers" class="ui{{ tab == 'group_managers' ? ' active' }} tab segment" data-tab="group_managers">
         <div class="ui basic segment">
             {% if group %}
+                {% if login.isAdmin() or login.isStaff() %}
+                <a href="#" class="jsonly disabled ui labeled icon button" id="btnmanagers_small">
+                    <i class="user shield icon" aria-hidden="true"></i>
+                    {{ _T("Manage managers") }}
+                </a>
+                {% endif %}
                 {% include "elements/group_persons.html.twig" with {'person_mode': "managers", 'persons': managers} %}
             {% endif %}
         </div>
@@ -78,6 +73,12 @@
     <div id="group_members" class="ui{{ tab == 'group_members' ? ' active' }} tab segment" data-tab="group_members">
         <div class="ui basic segment">
             {% if group %}
+                {% if login.isAdmin() or login.isStaff() %}
+                <a href="#" class="jsonly disabled ui labeled icon button" id="btnusers_small">
+                    <i class="user icon" aria-hidden="true"></i>
+                    {{ _T("Manage members") }}
+                </a>
+                {% endif %}
                 {% include "elements/group_persons.html.twig" with {'person_mode': "members", 'persons': members} %}
             {% endif %}
         </div>

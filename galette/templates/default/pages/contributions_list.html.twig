@@ -31,7 +31,7 @@
         {
             'name': 'csv',
             'label': _T("Export as CSV"),
-            'icon': 'file csv green'
+            'icon': 'file csv'
         }
     ] %}
 {% endif %}
@@ -148,17 +148,17 @@
 {% block infoline_actions %}
     {% if login.isAdmin() or login.isStaff() %}
         <a
-            class="button"
+            class="ui tiny labeled icon button"
             href="{{ path_for("addContribution", {type: constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}"
         >
-            <i class="ui cookie circle icon" aria-hidden="true"></i>
+            <i class="ui cookie circle green icon" aria-hidden="true"></i>
             {{ _T("Add a membership fee") }}
         </a>
         <a
-            class="button"
+            class="ui tiny labeled icon button"
             href="{{ path_for("addContribution", {type: constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}"
         >
-            <i class="ui gift circle icon" aria-hidden="true"></i>
+            <i class="ui gift circle green icon" aria-hidden="true"></i>
             {{ _T("Add a donation") }}
         </a>
 
