@@ -96,10 +96,10 @@
 {% block infoline_actions %}
     {% if login.isAdmin() or login.isStaff() %}
         <a
-                class="button"
+                class="ui tiny labeled icon button"
                 href="{{ path_for("addTransaction") }}"
         >
-            <i class="ui plus circle icon" aria-hidden="true"></i>
+            <i class="ui plus circle green icon" aria-hidden="true"></i>
             {{ _T("Add a transaction") }}
         </a>
     {% endif %}
