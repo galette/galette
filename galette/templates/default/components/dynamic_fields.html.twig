@@ -62,14 +62,16 @@
         />
         <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
     {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
-        <input type="checkbox" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" value="1"
-            {% if valuedata == 1%} checked="checked"{% endif %}
-            {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
-        {% if not masschange %}
-            {% if field.isRequired() %} required="required"{% endif %}
-        {% endif %}
-            {% if disabled %} disabled="disabled"{% endif %}
-        />
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" value="1"
+                {% if valuedata == 1%} checked="checked"{% endif %}
+                {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
+            {% if not masschange %}
+                {% if field.isRequired() %} required="required"{% endif %}
+            {% endif %}
+                {% if disabled %} disabled="disabled"{% endif %}
+            />
+        </div>
     {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
         {% if object.id %}
         <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_new">{{ _T("new") }}</label>
