@@ -42,7 +42,7 @@
 {% endblock %}
 
 {% block search %}
-    <form action="{{ path_for('mailings_filter') }}" method="post" class="ui form">
+    <form action="{{ path_for('mailings_filter') }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
             <div class="three fields">
                 <div class="two fields">
@@ -69,11 +69,9 @@
                     <label for="subject_filter">{{ _T('Subject') }}</label>
                     <input type="text" name="subject_filter" id="subject_filter" value="{{ history.filters.subject_filter }}"/>
                 </div>
-            </div>
-            <div class="two fields">
                 <div class="field">
-                    <div class="inline fields">
                         <label for="sent_filter">{{ _T('Sent mailings:') }}</label>
+                    <div class="inline fields">
                         <div class="field">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="sent_filter" id="filter_dc_sent" value="{{ constant("Galette\\Core\\MailingHistory::FILTER_DC_SENT") }}"{% if history.filters.sent_filter == constant("Galette\\Core\\MailingHistory::FILTER_DC_SENT") %} checked="checked"{% endif %}>
@@ -94,16 +92,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui right aligned basic fitted segment field flexend">
-                    <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                        <i class="search icon"></i>
-                        {{ _T('Filter') }}
-                    </button>
-                    <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
-                        <i class="trash alt red icon" aria-hidden="true"></i>
-                        {{ _T('Clear filter') }}
-                    </button>
-                </div>
+            </div>
+            <div class="ui right aligned basic fitted segment field flexend">
+                <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                    <i class="search icon"></i>
+                    {{ _T('Filter') }}
+                </button>
+                <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
             </div>
         </div>
         {% include "components/forms/csrf.html.twig" %}

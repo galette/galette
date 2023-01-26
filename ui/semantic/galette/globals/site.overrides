@@ -95,11 +95,11 @@ section.content,
   }
 }
 
-#filtre .fields .fields {
+.filters .fields .fields {
   margin: 0;
 }
 
-#filtre .fields .field.flexend {
+.filters .fields .field.flexend {
   display: flex;
   align-items: flex-end;
 }
