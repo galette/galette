@@ -148,7 +148,7 @@ class PdfMembersLabels extends Pdf
 
             // Compute label position
             $col = $nb_etiq % $this->preferences->pref_etiq_cols;
-            $row = ($nb_etiq / $this->preferences->pref_etiq_cols)
+            $row = (int)($nb_etiq / $this->preferences->pref_etiq_cols)
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
             $x = $this->xorigin + $col * (
