@@ -373,8 +373,8 @@ class Contribution extends GaletteTestCase
         $preferences->pref_beg_membership = $begin_date->format('01/m');
         $preferences->pref_membership_offermonths = 2;
         $due_date = new \DateTime($begin_date->format('Y-m-01'));
-        $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
+        $due_date->sub(new \DateInterval('P1D'));
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
