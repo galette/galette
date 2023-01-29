@@ -56,7 +56,7 @@ use Galette\GaletteTestCase;
  */
 class CsvIn extends GaletteTestCase
 {
-    private $contents_table = null;
+    private ?string $contents_table = null;
 
     /**
      * Set up tests

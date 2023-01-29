@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016-2021 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2021 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,17 +46,17 @@ use atoum;
  * @name      FieldsConfig
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2021 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-09-24
  */
 class FieldsConfig extends atoum
 {
-    private $fields_config = null;
-    private $zdb;
-    private $members_fields;
-    private $members_fields_cats;
+    private ?\Galette\Entity\FieldsConfig $fields_config = null;
+    private \Galette\Core\Db $zdb;
+    private array $members_fields;
+    private array $members_fields_cats;
 
     /**
      * Set up tests

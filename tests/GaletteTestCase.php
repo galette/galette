@@ -60,37 +60,37 @@ use Galette\Entity\Contribution;
 abstract class GaletteTestCase extends atoum
 {
     /** @var Db */
-    protected $zdb;
-    protected $members_fields;
-    protected $members_fields_cats;
+    protected \Galette\Core\Db $zdb;
+    protected array $members_fields;
+    protected array $members_fields_cats;
     /** @var I18n */
-    protected $i18n;
+    protected \Galette\Core\I18n $i18n;
     /** @var Preferences */
-    protected $preferences;
-    protected $session;
+    protected \Galette\Core\Preferences $preferences;
+    protected \RKA\Session $session;
     /** @var Login */
-    protected $login;
+    protected \Galette\Core\Login $login;
     /** @var History */
-    protected $history;
+    protected \Galette\Core\History $history;
     protected $logger_storage = '';
 
     /** @var Adherent */
-    protected $adh;
+    protected Adherent $adh;
     /** @var Contribution */
-    protected $contrib;
-    protected $adh_ids = [];
-    protected $contrib_ids = [];
+    protected Contribution $contrib;
+    protected array $adh_ids = [];
+    protected array $contrib_ids = [];
     /** @var \mock\Slim\Router */
-    protected $mocked_router;
+    protected \mock\Slim\Router $mocked_router;
     /** @var array */
-    protected $flash_data;
+    protected array $flash_data;
     /** @var \Slim\Flash\Messages */
-    protected $flash;
-    protected $container;
-    protected $request;
-    protected $response;
-    protected $seed;
-    protected $excluded_after_methods = [];
+    protected \Slim\Flash\Messages $flash;
+    protected \DI\Container $container;
+    protected \Slim\Http\Request $request;
+    protected \SLim\Http\Response $response;
+    protected int $seed;
+    protected array $excluded_after_methods = [];
 
     /**
      * Set up tests

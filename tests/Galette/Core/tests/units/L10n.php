@@ -52,9 +52,9 @@ use atoum;
  */
 class L10n extends atoum
 {
-    private $zdb;
-    private $i18n;
-    private $l10n;
+    private \Galette\Core\Db $zdb;
+    private \Galette\Core\I18n $i18n;
+    private \Galette\Core\L10n $l10n;
 
     /**
      * Set up tests

@@ -55,8 +55,8 @@ use Galette\GaletteTestCase;
  */
 class PdfModel extends GaletteTestCase
 {
-    private $remove = [];
-    protected $seed = 95842354;
+    private array $remove = [];
+    protected int $seed = 95842354;
 
     /**
      * Set up tests

@@ -54,7 +54,7 @@ use Galette\GaletteTestCase;
  */
 class PdfController extends GaletteTestCase
 {
-    protected $seed = 58144569971203;
+    protected int $seed = 58144569971203;
 
     /**
      * Set up tests
