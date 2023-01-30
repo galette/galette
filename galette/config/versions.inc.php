@@ -36,4 +36,3 @@
  */
 
 define('GALETTE_PHP_MIN', '7.3');
-define('JQUERY_MARKITUP_VERSION', '1.1.14');
