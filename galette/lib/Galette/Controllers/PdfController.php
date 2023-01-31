@@ -320,18 +320,18 @@ class PdfController extends AbstractController
         $ajax = false;
         if (
             $request->isXhr()
-            || (isset($post['ajax'])
-            && $post['ajax'] == 'true')
+            || (isset($post['mode'])
+            && $post['mode'] == 'ajax')
         ) {
             $ajax = true;
 
             //retrieve selected members
-            $selection = $post['selection'] ?? array();
+            $data = $post['selection'] ?? array();
 
-            $filters->selected = $selection;
+            $filters->selected = $data;
             $this->session->filter_members = $filters;
         } else {
-            $selection = $filters->selected;
+            $data = $filters->selected;
         }
 
         // display page
@@ -340,8 +340,8 @@ class PdfController extends AbstractController
             'modals/members_attendance_sheet.html.twig',
             [
                 'page_title'    => _T("Attendance sheet configuration"),
-                'ajax'          => $ajax,
-                'selection'     => $selection
+                'mode'          => $ajax,
+                'data'          => $data
             ]
         );
         return $response;

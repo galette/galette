@@ -39,9 +39,20 @@ var _bind_check = function(boxelt){
         return false;
     });
     $('.checkinvert').click(function(){
+        var _haschecked = false;
         $('table.listing :checkbox[name="' + boxelt + '[]"]').each(function(){
-            this.checked = !$(this).is(':checked');
+            if ($(this).is(':checked')) {
+                this.checked = false;
+            } else {
+                this.checked = true;
+                _haschecked = true;
+            }
         });
+        if (!_haschecked) {
+            _is_checked = true;
+        } else {
+            _is_checked = false;
+        }
         return false;
     });
 };

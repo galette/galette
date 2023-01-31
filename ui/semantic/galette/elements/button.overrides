@@ -11,3 +11,7 @@ a.ui.button:hover i.icon {
 .ui.primary.buttons .button {
     color: darken(@textColor, 15);
 }
+
+.ui.upward.dropdown.button:not(.pointing):not(.floating).batch-select-action.active {
+    border-radius: 0;
+}

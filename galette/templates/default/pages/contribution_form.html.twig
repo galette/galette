@@ -2,7 +2,9 @@
 
 {% block content %}
 {% if members.list is defined or require_mass %}
+    {% if mode != 'ajax' %}
         <form action="{% if contribution.id %}{{ path_for("doEditContribution", {"type": type, "id": contribution.id}) }}{% else %}{{ path_for("doAddContribution", {"type": type}) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+    {% endif %}
     {% if contribution.isTransactionPart() %}
         {% set mid = contribution.transaction.member %}
             <div class="ui top attached accordion-styled header">
@@ -70,8 +72,8 @@
                     </a>
     {% endif %}
                 </div>
-    {% if not require_mass %}
                 <div class="active content">
+    {% if not require_mass %}
                     <div class="field inline">
                         <label for="id_adh">{{ _T("Contributor:") }}</label>
                         <div id="id_adh" class="jsonly search-dropdown ui input nochosen">
@@ -225,9 +227,11 @@
             <input type="hidden" name="trans_id" value="{% if contribution.transaction != NULL %}{{ contribution.transaction.id }}{% endif %}"/>
         </div>
     {% endif %}
+    {% if mode != 'ajax' %}
             {% include "components/forms/csrf.html.twig" %}
         </form>
-{% else %} {# No members #}
+    {% endif %}
+{% elseif mode != 'ajax' %} {# No members #}
     <div class="ui warning message" id="warningbox">
         <h3>{{ _T("No member registered!") }}</h3>
         <p>

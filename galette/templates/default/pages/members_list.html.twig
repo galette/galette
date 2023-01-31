@@ -421,88 +421,32 @@
 {% endif %}
 
 {% block batch_selection %}
+                    else if (value == 'sendmail') {
     {% if existing_mailing == true %}
-                    if (this.id == 'sendmail') {
-                        $('body').modal({
-                            title: '{{ _T("Existing mailing")|e('js') }}',
-                            class: 'tiny',
-                            content: '{{ _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e('js') }}',
-                            actions: [{
-                                text    : '{{ _T("Resume")|e('js') }}',
-                                class   : 'blue cancel',
-                                click   : function() {
-                                    location.href = '{{ path_for('mailing') }}';
-                                }
-                            }, {
-                                text    : '{{ _T("New")|e('js') }}',
-                                class   : 'green approve',
-                                click   : function() {
-                                    //add required controls to the form, change its action URI, and send it.
-                                    var _form = $('#listform');
-                                    _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
-                                    _form.append($('<input type="hidden" name="mailing" value="true"/>'));
-                                    _form.submit();
-                                }
-                            }]
-                        }).modal('show');
-                        return false;
-                    }
+                        _sendmail(true);
+    {% else %}
+                        _sendmail();
     {% endif %}
-                    if (this.id == 'attendance_sheet') {
+                    }
+                    else if (value == 'attendance_sheet') {
                         _attendance_sheet_details();
-                        return false;
                     }
 
-                    if (this.id == 'masscontributions') {
-                        event.preventDefault();
-                        $.ajax({
-                            url: '{{ path_for('batch-memberslist') }}',
-                            type: "POST",
-                            data: {
-                                ajax: true,
-                                masscontributions: true,
-                                entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
-                                    return $(this).val();
-                                }).get()
-                            },
-                            datatype: 'json',
-                            {% include "elements/js/loader.js.twig" %},
-                            success: function(res){
-                                var _res = $(res);
-                                _bindmassres(_res);
-                                $('body').append(_res);
-
-                                _massCheckboxes('#mass_contributions');
-
-                                $('#mass_contributions').modal({
-                                    actions: [{
-                                        text    : '{{ _T("Close")|e('js') }}',
-                                        class   : 'cancel'
-                                    }]
-                                }).modal('show');
-                            },
-                            error: function() {
-                                alert("{{ _T("An error occurred :(")|e('js') }}");
-                            }
-                        });
+                    else if (value == 'masscontributions') {
+                        _masscontributions();
                     }
 
-                    return true;
+                    else if (value == 'masschange') {
+                        _masschange();
+                    }
 {% endblock %}
 
 {% block javascripts %}
-    {% set batch_excludes = ['masschange'] %}
+    {% set batch_selection = ['masschange', 'masscontributions', 'sendmail', 'attendance_sheet_details'] %}
     {{ parent() }}
     <script type="text/javascript">
         {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
         $(function(){
-            if ( _shq = $('#showhideqry') ) {
-                _shq.click(function(){
-                    $('#sql_qry').toggleClass('hidden');
-                    return false;
-                });
-            }
-
             $('#savesearch').on('click', function(e) {
                 e.preventDefault();
 
@@ -543,21 +487,182 @@
 
         });
 {% if nb_members != 0 %}
-        var _bindmassres = function(res) {
-            res.find('#btncancel')
-                .on('click', function(e) {
-                    e.preventDefault();
-                    res.modal('hide');
-                });
-        }
+        var _sendmail = function(existing){
+            var _form = $('#listform');
+                _form.append($('<input type="hidden" name="sendmail" value="true"/>'));
+                _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
+                _form.append($('<input type="hidden" name="mailing" value="true"/>'));
+            var _redirect = '{{ path_for('mailing') }}';
 
-        $('#masschange').off('click').on('click', function(event) {
-            event.preventDefault();
-            var _this = $(this);
-
-            if (!_checkselection()) {
-                return false;
+            if (existing) {
+                $('body').modal({
+                    title: '{{ _T("Existing mailing")|e('js') }}',
+                    class: 'tiny',
+                    content: '{{ _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e('js') }}',
+                    actions: [{
+                        text    : '{{ _T("Resume")|e('js') }}',
+                        class   : 'blue',
+                        click   : function() {
+                            location.href = _redirect;
+                        }
+                    }, {
+                        text    : '{{ _T("New")|e('js') }}',
+                        class   : 'green',
+                        click   : function() {
+                            _form.submit();
+                        }
+                    }, {
+                        text    : '{{ _T("Cancel")|e('js') }}',
+                        class   : 'deny'
+                    }]
+                }).modal('show');
+            } else {
+                _form.submit();
             }
+        }
+        var _attendance_sheet_details = function(){
+            $.ajax({
+                url: '{{ path_for('attendance_sheet_details') }}',
+                type: "POST",
+                data: {
+                    ajax: true,
+                    selection: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                        return $(this).val();
+                    }).get()
+                },
+                dataType: 'html',
+                {% include "elements/js/loader.js.twig" %},
+                success: function(res){
+                    var _res = $(res);
+
+                    $('body').append(_res);
+
+                    $('#attendance_sheet_details').modal({
+                        class: 'tiny',
+                        onApprove : function() {
+                            $('#attendance_sheet_details form').submit();
+                        },
+                        onDeny: function() {
+                            $(this).remove();
+                            $('body').dimmer('hide');
+                        },
+                        actions: [{
+                            text    : '{{ _T("Continue")|e("js") }}',
+                            class   : 'blue approve'
+                        }, {
+                            text    : '{{ _T("Cancel")|e("js") }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
+                },
+                error: function() {
+                    alert("{{ _T("An error occurred displaying attendance sheet details interface :(")|e('js') }}");
+                }
+            });
+        }
+        var _masscontributions = function(){
+            $.ajax({
+                url: '{{ path_for('batch-memberslist') }}',
+                type: "POST",
+                data: {
+                    ajax: true,
+                    masscontributions: true,
+                    entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                        return $(this).val();
+                    }).get()
+                },
+                datatype: 'html',
+                {% include "elements/js/loader.js.twig" %},
+                success: function(res){
+                    var _res = $(res);
+
+                    $('body').append(_res);
+
+                    _res.find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {% include "elements/js/loader.js.twig" %},
+                            success: function(data, status, xhr) {
+                                var _res = $(data);
+
+                                $('#mass_contributions').remove();
+                                $('body').append(_res);
+
+                                _res.find('form').on('submit', function(e) {
+                                    e.preventDefault();
+                                    var _form = $(this);
+                                    var _data = _form.serialize();
+                                    $.ajax({
+                                        url: _form.attr('action'),
+                                        type: "POST",
+                                        data: _data,
+                                        datatype: 'json',
+                                        {% include "elements/js/loader.js.twig" %},
+                                        success: function(res) {
+                                            window.location.href = _form.find('input[name=redirect_uri]').val();
+                                        },
+                                        error: function() {
+                                            alert("{{ _T("An error occurred :(")|e('js') }}");
+                                        }
+                                    });
+                                });
+
+                                $('#mass_contributions').modal({
+                                    onApprove: function() {
+                                        $('#mass_contributions form').submit();
+                                    },
+                                    onDeny: function() {
+                                        $(this).remove();
+                                        $('body').dimmer('hide');
+                                    },
+                                    actions: [{
+                                        text    : '{{ _T("Continue")|e('js') }}',
+                                        class   : 'blue approve'
+                                    }, {
+                                        text    : '{{ _T("Cancel")|e('js') }}',
+                                        class   : 'cancel'
+                                    }]
+                                }).modal('show');
+                            },
+                            error: function() {
+                                alert("{{ _T("An error occurred :(")|e('js') }}");
+                            }
+                        });
+                    });
+
+                    $('#mass_contributions').modal({
+                        class: 'tiny',
+                        onApprove : function() {
+                            $('#mass_contributions form').submit();
+                        },
+                        onDeny: function() {
+                            $(this).remove();
+                            $('body').dimmer('hide');
+                        },
+                        actions: [{
+                            text    : '{{ _T("Continue")|e("js") }}',
+                            class   : 'blue approve'
+                        }, {
+                            text    : '{{ _T("Cancel")|e("js") }}',
+                            class   : 'cancel'
+                        }]
+                    }).modal('show');
+
+                    _massCheckboxes('#mass_contributions');
+                },
+                error: function() {
+                    alert("{{ _T("An error occurred :(")|e('js') }}");
+                }
+            });
+        }
+        var _masschange = function(){
             $.ajax({
                 url: '{{ path_for('batch-memberslist') }}',
                 type: "POST",
@@ -572,7 +677,8 @@
                 {% include "elements/js/loader.js.twig" %},
                 success: function(res){
                     var _res = $(res);
-                    _bindmassres(_res);
+
+                    $('body').append(_res);
 
                     _res.find('form').on('submit', function(e) {
                         e.preventDefault();
@@ -584,24 +690,30 @@
                             data: _data,
                             datatype: 'json',
                             {% include "elements/js/loader.js.twig" %},
-                            success: function(html) {
-                                var _html = $(html);
-                                _bindmassres(_html);
+                            success: function(data, status, xhr) {
+                                var _res = $(data);
 
                                 $('#mass_change').remove();
-                                $('body').append(_html);
-
-                                //_initTooltips('#mass_change');
-                                //_massCheckboxes('#mass_change');
+                                $('body').append(_res);
 
                                 $('#mass_change').modal({
+                                    onApprove: function() {
+                                        $('#mass_change form').submit();
+                                    },
+                                    onDeny: function() {
+                                        $(this).remove();
+                                        $('body').dimmer('hide');
+                                    },
                                     actions: [{
-                                        text    : '{{ _T("Close")|e('js') }}',
+                                        text    : '{{ _T("Continue")|e('js') }}',
+                                        class   : 'blue approve'
+                                    }, {
+                                        text    : '{{ _T("Cancel")|e('js') }}',
                                         class   : 'cancel'
                                     }]
                                 }).modal('show');
 
-                                _html.find('form').on('submit', function(e) {
+                                _res.find('form').on('submit', function(e) {
                                     e.preventDefault();
                                     var _form = $(this);
                                     var _data = _form.serialize();
@@ -612,17 +724,10 @@
                                         datatype: 'json',
                                         {% include "elements/js/loader.js.twig" %},
                                         success: function(res) {
-                                            if (res.success) {
-                                                window.location.href = _form.find('input[name=redirect_uri]').val();
-                                            } else {
-                                                $.ajax({
-                                                    url: '{{ path_for('ajaxMessages') }}',
-                                                    method: "GET",
-                                                    success: function (message) {
-                                                        $('#asso_name').after(message);
-                                                    }
-                                                });
-                                            }
+                                            window.location.href = _form.find('input[name=redirect_uri]').val();
+                                        },
+                                        error: function() {
+                                            alert("{{ _T("An error occurred :(")|e('js') }}");
                                         }
                                     });
                                 });
@@ -633,55 +738,27 @@
                         });
                     });
 
-                    $('body').append(_res);
-
-                    _massCheckboxes('#mass_change');
-
                     $('#mass_change').modal({
+                        onApprove: function() {
+                            $('#mass_change form').submit();
+                        },
+                        onDeny: function() {
+                            $(this).remove();
+                            $('body').dimmer('hide');
+                        },
                         actions: [{
-                            text    : '{{ _T("Close")|e('js') }}',
+                            text    : '{{ _T("Continue")|e('js') }}',
+                            class   : 'blue approve'
+                        }, {
+                            text    : '{{ _T("Cancel")|e('js') }}',
                             class   : 'cancel'
                         }]
                     }).modal('show');
+
+                    _massCheckboxes('#mass_change');
                 },
                 error: function() {
                     alert("{{ _T("An error occurred :(")|e('js') }}");
-                }
-            });
-        });
-
-        var _attendance_sheet_details = function(){
-            var _selecteds = [];
-            $('table.listing').find('input[type=checkbox]:checked').each(function(){
-                _selecteds.push($(this).val());
-            });
-            $.ajax({
-                url: '{{ path_for('attendance_sheet_details') }}',
-                type: "POST",
-                data: {
-                    ajax: true,
-                    selection: _selecteds
-                },
-                dataType: 'html',
-                success: function(res){
-                    $('body').modal({
-                        title: '{{ _T("Attendance sheet details")|e("js") }}',
-                        class: 'tiny',
-                        content: res,
-                        actions: [{
-                            text    : '{{ _T("Continue")|e("js") }}',
-                            class   : 'cancel',
-                            click   : function() {
-                                $('#sheet_details_form').submit();
-                            }
-                        }, {
-                            text    : '{{ _T("Cancel")|e("js") }}',
-                            class   : 'cancel'
-                        }]
-                    }).modal('show');
-                },
-                error: function() {
-                    alert("{{ _T("An error occurred displaying attendance sheet details interface :(")|e('js') }}");
                 }
             });
         }

@@ -1,12 +1,20 @@
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
-    <div id="mass_change"{% if mode != 'ajax' %} class="center"{% else %} class="ui modal" title="{{ page_title }}"{% endif %}>
+    <div id="mass_change"{% if mode != 'ajax' %} class="center"{% else %} class="ui modal"{% endif %}>
     {% if mode == 'ajax' %}
+        <div class="header">
+    {% else %}
+        <h2>
+    {% endif %}
+            {{ page_title }}
+    {% if mode != 'ajax' %}
+        </h2>
+    {% else %}
+        </div>
         <div class="content scrolling">
     {% endif %}
             <form action="{{ form_url }}" method="post" class="ui form">
-                {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
             {% if changes is not defined %}
                 <p>{{ _T("Only checked fields will be updated.") }}</p>
                 {# Form entries #}
@@ -43,8 +51,10 @@
                 </ul>
             {% endif %}
                 <div class="button-container">
-                    <input type="submit" id="masschange" class="ui button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
-                    <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
+                    {% if mode != 'ajax' %}
+                        <input type="submit" id="masschange" class="ui button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
+                        <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
+                    {% endif %}
                     <input type="hidden" name="confirm" value="1"/>
                     {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
                     {% for key, value in data %}

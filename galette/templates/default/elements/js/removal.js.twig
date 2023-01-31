@@ -2,10 +2,11 @@
     {% set selector = '.delete' %}
 {% endif %}
         //handle removals
+{% if single_action is defined %}
         $('{{ selector }}').off('click').on('click', function(event) {
             event.preventDefault();
             var _this = $(this);
-
+{% endif %}
 {% if extra_check is defined %}
             {{ extra_check }}
 {% endif %}
@@ -81,4 +82,6 @@
                     alert('{{ _T("An error occurred :(")|e("js") }}');
                 }
             });
+{% if single_action is defined %}
         });
+{% endif %}

@@ -73,10 +73,25 @@
     </a>
 {% endmacro %}
 
-{% macro drawBatchAction(name, label, icon, title) %}
-    <div class="item">
-        <button type="submit" id="{{ name }}" name="{{ name }}" class="ui labeled icon tiny button"{% if title %} title="{{ title }}"{% endif %}>
-            <i class="{{ icon }} icon"></i> {{ label }}
-        </button>
+{% macro drawBatchActionsList(batch_actions) %}
+    <div class="checkboxes ui basic horizontal segments">
+        <div class="ui basic fitted segment batch-selection">
+            <div class="ui blue tertiary dropdown icon button batch-select-action">
+                <i class="tasks icon"></i>
+                {{ _T('For the selection:') }}
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                {% for batch_action in batch_actions %}
+                    {{ _self.drawBatchAction(batch_action.name, batch_action.label, batch_action.icon, batch_action.title ?? null) }}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
+{% endmacro %}
+
+{% macro drawBatchAction(name, label, icon, title) %}
+    <span class="ui item batch-action batch-{{ name }}" data-value="{{ name }}"{% if title %} title="{{ title }}"{% endif %}>
+        <i class="{{ icon }} icon"></i> {{ label }}
+    </span>
 {% endmacro %}

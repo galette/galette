@@ -35,9 +35,14 @@
     {% endblock %}
     <form action="{%  if form.route is defined %}{{ path_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
         <div class="ui basic fitted segment">
-        <table class="listing ui celled table">
-            <thead>
-            <tr>
+
+        {% if batch_actions is defined and batch_actions|length > 0 %}
+            {{ macros.drawBatchActionsList(batch_actions) }}
+        {% endif %}
+
+            <table class="listing ui celled table">
+                <thead>
+                    <tr>
                 {% block header %}
                     {% for column in columns %}
                         <th class="left">
@@ -58,40 +63,34 @@
                         </th>
                     {% endfor %}
                     {% if mode != 'ajax' and no_action is not defined or no_action == false %}
-                    <th class="actions_row">{{ _T('Actions') }}</th>
+                        <th class="actions_row">{{ _T('Actions') }}</th>
                     {% endif %}
                 {% endblock %}
-            </tr>
-            </thead>
-            <tbody>
-                {% block body %}{% endblock %}
-            </tbody>
-            <tfoot>
-                {% block footer %}{% endblock %}
-            </tfoot>
-        </table>
-        </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% block body %}{% endblock %}
+                </tbody>
+                <tfoot>
+                    {% block footer %}{% endblock %}
+                </tfoot>
+            </table>
 
         {% if batch_actions is defined and batch_actions|length > 0 %}
-            <div class="ui bottom attached segment screen-only selection_menu">
-                <div class="ui horizontal list">
-                    <span class="ui primary ribbon label">{{ _T('For the selection:') }}</span>
-                    {% for batch_action in batch_actions %}
-                        {{ macros.drawBatchAction(batch_action.name, batch_action.label, batch_action.icon, batch_action.title ?? null) }}
-                    {% endfor %}
-                </div>
-            </div>
+            {{ macros.drawBatchActionsList(batch_actions) }}
         {% endif %}
 
+        </div>
+
         {% if is_paginated %}
-            <div class="ui basic center aligned fitted segment">
-                <div class="ui inverted pagination menu">
-                    <div class="header item">
-                        {{ _T('Pages:') }}
-                    </div>
-                    {{ pagination|raw }}
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui inverted pagination menu">
+                <div class="header item">
+                    {{ _T('Pages:') }}
                 </div>
+                {{ pagination|raw }}
             </div>
+        </div>
         {% endif %}
 
         {% block extra_form %}{% endblock %}
@@ -127,52 +126,54 @@
     {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
             var _init_page = function(res){
         {% if login.isAdmin() or login.isStaff() %}
-                {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
-                var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment">' +
-                    '<a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a>' +
-                    ' | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a></div>';
+                {# Use of Javascript to draw specific elements that are not relevant if JS is inactive #}
+                var _checklinks = '<a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a>' +
+                    ' | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a> | ';
             {% if _legend_block is not empty %}
-                _checklinks += '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
+                var _legendlink = '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
             {% endif %}
-
-                $('.listing').before(_checklinks);
-                $('.listing').after(_checklinks);
-                _bind_check('entries_sel');
-        {% endif %}
-
-                $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(event) {
-                    //mass removal is handled from 2 steps removal
-                    {% set batch_excludes = ['delete']|merge(batch_excludes|default([])) %}
-                    if (
-                        {% for batch_exclude in batch_excludes %}
-                            {% if not loop.first %} || {% endif %}this.id == '{{ batch_exclude }}'
-                        {% endfor %}
-                    ) {
-                        return;
-                    }
-
-                    if (!_checkselection()) {
-                        return false;
-                    } else {
+                $('.batch-select-action').before(_checklinks);
+                $('.batch-select-action').dropdown({
+                    onChange: function(value, text, $selectedItem) {
+                        if (!_checkselection()) {
+                            return false;
+                        }
+                        // Handle direct download actions.
+                        if (value.endsWith('__directdownload')) {
+                            const _value = value.split('__');
+                            var value = _value[0];
+                            var _form = $('#listform');
+                                _form.append($('<input type="hidden" name="' + value + '" value="true"/>'));
+                            _form.submit();
+                        // Handle delete.
+                        } else if (value == 'delete') {
+                            {% include "elements/js/removal.js.twig" with {
+                                selector: ".batch-delete",
+                                deleteurl: path_for(batch.route.name, batch.route.args|default([])),
+                                extra_data: "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()",
+                                method: "POST",
+                                loader: "button",
+                                loader_parent: ".batch-select-action"
+                            } %}
+                        }
+                        // Handle other custom list actions.
+                {% if batch_selection is defined %}
                         {% block batch_selection %}{% endblock %}
+                {% endif %}
                     }
                 });
+                $('.batch-selection').after(_legendlink);
+                _bind_check('entries_sel');
+        {% endif %}
             }
             _init_page();
-
-            {% include "elements/js/removal.js.twig" with {
-                selector: "#delete",
-                deleteurl: path_for(batch.route.name, batch.route.args|default([])),
-                extra_check: "if (!_checkselection()) { return false; }",
-                extra_data: "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()",
-                method: "POST",
-                loader: "button"
-            } %}
     {% endif %}
     {% if _legend_block is not empty %}
             _bind_legend();
     {% endif %}
-            {% include "elements/js/removal.js.twig" %}
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
         });
     </script>
 {% endblock %}

@@ -910,17 +910,17 @@ class Galette
                         'icon' => 'file alternate'
                     ],
                     [
-                        'name' => 'labels',
+                        'name' => 'labels__directdownload',
                         'label' => _T('Generate labels'),
                         'icon' => 'address card'
                     ],
                     [
-                        'name' => 'cards',
+                        'name' => 'cards__directdownload',
                         'label' => _T('Generate Member Cards'),
                         'icon' => 'id badge'
                     ],
                     [
-                        'name' => 'csv',
+                        'name' => 'csv__directdownload',
                         'label' => _T('Export as CSV'),
                         'icon' => 'file csv'
                     ],
