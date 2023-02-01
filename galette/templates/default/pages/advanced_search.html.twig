@@ -418,7 +418,7 @@
                                     <div class="ui image">
                                         <i class="arrows alternate icon"></i>
                                     </div>
-                                    <div>
+                                    <div class="inline fields">
                                         <select name="free_logical_operator[]" class="operator_selector ui search dropdown origselect nochosen">
                                             <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('and') }}</option>
                                             <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('or') }}</option>
@@ -467,7 +467,7 @@
     {# may not be defined #}
     {#  #}
     {% if type is not defined %}{% set type = null %}{% endif %}
-                                        <span class="data">
+                                        <span class="data fields">
                                             <input type="hidden" name="free_type[]" value="{% if cur_field is defined %}{{ cur_field.getType() }}{% endif %}"/>
     {% if cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
                                             <select name="free_query_operator[]" class="free_operator ui search dropdown origselect nochosen">

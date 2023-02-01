@@ -15,7 +15,7 @@
             {% endfor %}
             <div class="ui yellow segment">
                 <div class="ui tiny header">{{ _T("Add new social network") }}</div>
-                <div class="combo-social field">
+                <div class="combo-social fields">
                     <div class="field">
                         <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
                             <option value="">{{ _T("Choose or enter your own...") }}</option>
@@ -28,9 +28,9 @@
                         <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50"/>
                     </div>
                 </div>
-                <a href="#" class="ui tiny compact icon green button tooltip action addsocial">
+                <a href="#" class="ui tiny green labeled icon button action addsocial">
                     <i class="plus icon"></i>
-                    <span class="hidden">{{ _T("Add") }}</span>
+                    {{ _T("Add") }}
                 </a>
             </div>
             <script type="text/javascript">

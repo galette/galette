@@ -285,10 +285,16 @@
                     $('#listing a').click(function(e){
                         e.preventDefault();
                         var _gid = this.href.match(/.*\/(\d+)$/)[1];
+                        var _gicon = _managed ? 'shield' : 'tag';
                         var _gname = $(this).text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
-                            var _li = '<li id="group_' + _gid + '" class="item"><i class="user minus icon"></i><span class="ui content">' + _gname + '</span></li>';
+                            var _li = '<li id="group_'
+                                    + _gid
+                                    + '" class="item"><i class="icons"><i class="'
+                                    + _gicon
+                                    + ' icon"><i class="top right corner minus icon"></i></i></i><span class="ui content">'
+                                    + _gname + '</span></li>';
                             $('#selected_groups ul').append(_li);
                             $('#group_' + _gid).click(function(){
                                 $(this).remove();

@@ -9,9 +9,13 @@ a.ui.button:hover i.icon {
 
 .ui.primary.button,
 .ui.primary.buttons .button {
-    color: darken(@textColor, 15);
+  color: darken(@textColor, 15);
 }
 
 .ui.upward.dropdown.button:not(.pointing):not(.floating).batch-select-action.active {
-    border-radius: 0;
+  border-radius: 0;
+}
+
+.ui.compact.button.delcriteria {
+  margin-left: 1rem;
 }
