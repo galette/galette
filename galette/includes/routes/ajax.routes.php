@@ -44,7 +44,7 @@ use Galette\Filters\MembersList;
 $app->group('/ajax', function () use ($authenticate) {
     $this->get(
         '/messages',
-        [AajxController::class, 'messages']
+        [AjaxController::class, 'messages']
     )->setName('ajaxMessages');
 
     $this->post(
