@@ -63,7 +63,7 @@
                     {% if entry.field_id == 'id_statut' %}
                         {% set template = "status.html.twig" %}
                     {% endif %}
-                    {% if entry.field_id == 'ville_adh' or entry.field_id == 'lieu_naissance' %}
+                    {% if entry.field_id == 'ville_adh' or entry.field_id == 'lieu_naissance' or entry.field_id == 'pays_adh' %}
                         {% set template = "search.html.twig" %}
                     {% endif %}
 

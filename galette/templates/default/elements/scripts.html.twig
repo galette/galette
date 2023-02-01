@@ -34,18 +34,18 @@
                     debug: true,
                     verbose: true
                 });
-                {#$('#ville_adh, #lieu_naissance').autocomplete({
-                    source: function (request, response) {
-                        $.post('{{ path_for('suggestTown') }}', request, response);
+                $('#pays_adh_field').search({
+                    apiSettings: {
+                        url: '{{ path_for('suggestCountry', {'term': '{query}'}) }}',
+                        method: 'post',
+                        onFailure: function(response, element, xhr) {
+                            console.log(response);
+                        }
                     },
-                    minLength: 2
+                    minCharacters : 2,
+                    debug: true,
+                    verbose: true
                 });
-                $('#pays_adh').autocomplete({
-                    source: function (request, response) {
-                        $.post('{{ path_for('suggestCountry') }}', request, response);
-                    },
-                    minLength: 2
-                });#}
     {% endif %}
 
     {% if renew_telemetry is defined %}
