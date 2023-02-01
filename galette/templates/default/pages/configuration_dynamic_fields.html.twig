@@ -10,17 +10,6 @@
     <div class="ui{% if form_name == key %} active{% endif %} tab segment" data-tab="{{ key }}">
     {% if form_name == key %}
         {% include 'elements/edit_dynamic_fields.html.twig' %}
-        <div class="ui basic fitted segment">
-            <a
-                id="addfield"
-                href="{{ path_for('addDynamicField', {'form_name': form_name}) }}"
-                class="ui labeled icon primary button tooltip"
-                title="{{ _T("Add")|e("js") }}"
-            >
-                <i class="plus icon"></i>
-                {{ _T("Add") }}
-            </a>
-        </div>
     {% endif %}
     </div>
 {% endfor %}
@@ -36,7 +25,7 @@
             });
 
             var _form_name;
-            $('#addfield').click(function(e){
+            $('.addfield').click(function(e){
                 e.preventDefault();
                 var _this = $(this);
                 var _href = '{{ path_for('addDynamicField', {'form_name': form_name}) }}';
@@ -46,7 +35,7 @@
                     type: "GET",
                     datatype: 'json',
                     {% include "elements/js/loader.js.twig" with {
-                        selector: '#addfield',
+                        selector: '.addfield',
                         loader: 'button'
                     } %},
                     success: function(res){

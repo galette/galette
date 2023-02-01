@@ -1,3 +1,13 @@
+        <div class="ui basic fitted segment">
+            <a
+                href="{{ path_for('addDynamicField', {'form_name': form_name}) }}"
+                class="ui labeled icon button tooltip addfield"
+                title="{{ _T("Add")|e("js") }}"
+            >
+                <i class="plus green icon"></i>
+                {{ _T("Add") }}
+            </a>
+        </div>
         <table class="listing ui celled table">
             <thead>
                 <tr>
