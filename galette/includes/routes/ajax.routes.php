@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2022 The Galette Team
+ * Copyright © 2014-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,12 +28,13 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2022 The Galette Team
+ * @copyright 2014-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
  */
 
+use Galette\Controllers\AjaxController;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
@@ -43,293 +44,51 @@ use Galette\Filters\MembersList;
 $app->group('/ajax', function () use ($authenticate) {
     $this->get(
         '/messages',
-        function ($request, $response) {
-            $this->get('view')->render(
-                $response,
-                'elements/ajax_messages.html.twig'
-            );
-            return $response;
-        }
+        [AajxController::class, 'messages']
     )->setName('ajaxMessages');
 
     $this->post(
         'photo',
-        function ($request, $response) {
-            $post = $request->getParsedBody();
-            $ret = ['result' => false];
-
-            if (
-                !isset($post['member_id'])
-                || !isset($post['file'])
-                || !isset($post['filename'])
-                || !isset($post['filesize'])
-            ) {
-                $this->get('flash')->addMessage(
-                    'error_detected',
-                    _T("Required argument not present!")
-                );
-                return $response->withJson($ret);
-            }
-
-            $mid = $post['member_id'];
-            $fsize = $post['filesize'];
-            $fname = $post['filename'];
-            $tmpname = GALETTE_TEMPIMAGES_PATH . 'ajax_upload_' . $fname;
-
-            $temp = explode('base64,', $post['file']);
-            $raw_file = base64_decode($temp[1]);
-
-            //write temporary file
-            $fp = fopen($tmpname, 'w');
-            fwrite($fp, $raw_file);
-            fclose($fp);
-
-            $adh = new Adherent($this->get('zdb'), (int)$mid);
-
-            $res = $adh->picture->store(
-                array(
-                    'name'      => $fname,
-                    'tmp_name'  => $tmpname,
-                    'size'      => $fsize
-                ),
-                true
-            );
-
-            if ($res < 0) {
-                $ret['message'] = $adh->picture->getErrorMessage($res);
-                $this->get('flash')->addMessage(
-                    'error_detected',
-                    $ret['message']
-                );
-            } else {
-                $ret['result'] = true;
-                $this->get('flash')->addMessage(
-                    'success_detected',
-                    _T('Member photo has been changed.')
-                );
-            }
-
-            return $response->withJson($ret);
-        }
+        [AjaxController::class, 'photo']
     )->setName('photoDnd');
 
     $this->post(
         '/suggest/towns/{term}',
-        function ($request, $response, string $term) {
-            $post = $request->getParsedBody();
-
-            $ret = [];
-
-            try {
-                $select1 = $this->get('zdb')->select(Adherent::TABLE);
-                $select1->columns(['ville_adh']);
-                $select1->where->like('ville_adh', '%' . html_entity_decode($term) . '%');
-
-                $select2 = $this->get('zdb')->select(Adherent::TABLE);
-                $select2->columns(['lieu_naissance']);
-                $select2->where->like('lieu_naissance', '%' . html_entity_decode($term) . '%');
-
-                $select1->combine($select2);
-
-                $select = $this->get('zdb')->sql->select();
-                $select->from(['sub' => $select1])
-                    ->order('ville_adh ASCC')
-                    ->limit(10);
-
-                $towns = $this->get('zdb')->execute($select);
-
-                $ret['success'] = true;
-                $ret['results'] = [];
-                foreach ($towns as $town) {
-                    $ret['results'][] = [
-                        'title' => $town->ville_adh
-                    ];
-                }
-            } catch (Throwable $e) {
-                Analog::log(
-                    'Something went wrong is towns suggestion: ' . $e->getMessage(),
-                    Analog::WARNING
-                );
-                throw $e;
-            }
-
-            return $response->withJson($ret);
-        }
+        [AjaxController::class, 'suggestTowns']
     )->setName('suggestTown');
 
     $this->post(
-        '/suggest/countries',
-        function ($request, $response) {
-            $post = $request->getParsedBody();
-
-            $ret = [];
-
-            try {
-                $select = $this->get('zdb')->select(Adherent::TABLE);
-                $select->columns(['pays_adh']);
-                $select->where->like('pays_adh', '%' . html_entity_decode($post['term']) . '%');
-                $select->limit(10);
-                $select->order(['pays_adh ASC']);
-
-                $towns = $this->get('zdb')->execute($select);
-
-                foreach ($towns as $town) {
-                    $ret[] = [
-                        'id'    => $town->pays_adh,
-                        'label' => $town->pays_adh
-                    ];
-                }
-            } catch (Throwable $e) {
-                Analog::log(
-                    'Something went wrong is countries suggestion: ' . $e->getMessage(),
-                    Analog::WARNING
-                );
-                throw $e;
-            }
-
-            return $response->withJson($ret);
-        }
+        '/suggest/countries/{term}',
+        [AjaxController::class, 'suggestCountries']
     )->setName('suggestCountry');
 
     $this->get(
         '/telemetry/infos',
-        function ($request, $response) {
-            $telemetry = new \Galette\Util\Telemetry(
-                $this->get('zdb'),
-                $this->get('preferences'),
-                $this->get('plugins')
-            );
-            $body = $response->getBody();
-            $body->write('<pre>' . json_encode($telemetry->getTelemetryInfos(), JSON_PRETTY_PRINT) . '</pre>');
-            return $response;
-        }
+        [AjaxController::class, 'telemetryInfos']
     )->setName('telemetryInfos')->add($authenticate);
 
     $this->post(
         '/telemetry/send',
-        function ($request, $response) {
-            $telemetry = new \Galette\Util\Telemetry(
-                $this->get('zdb'),
-                $this->get('preferences'),
-                $this->get('plugins')
-            );
-            try {
-                $telemetry->send();
-                $message = _T('Telemetry information has been sent. Thank you!');
-                $result = [
-                    'success'   => true,
-                    'message'   => $message
-                ];
-            } catch (Throwable $e) {
-                $result = [
-                    'success'   => false,
-                    'message'   => $e->getMessage()
-                ];
-            }
-            return $response->withJson($result);
-        }
+        [AjaxController::class, 'telemetrySend']
     )->setName('telemetrySend')->add($authenticate);
 
     $this->get(
         '/telemetry/registered',
-        function ($request, $response) {
-            $this->get('preferences')->pref_registration_date = date('Y-m-d H:i:s');
-            $this->get('preferences')->store();
-            return $response->withJson(['message' => _T('Thank you for registering!')]);
-        }
+        [AjaxController::class, 'telemetryRegistered']
     )->setName('setRegistered')->add($authenticate);
 
     $this->post(
         '/contribution/dates',
-        function ($request, $response) {
-            $post = $request->getParsedBody();
-
-            $contrib = new Contribution(
-                $this->get('zdb'),
-                $this->get('login'),
-                [
-                    'type'  => (int)$post['fee_id'],
-                    'adh'   => (int)$post['member_id']
-                ]
-            );
-            $contribution['duree_mois_cotis'] = $this->get('preferences')->pref_membership_ext;
-
-            return $response->withJson([
-                'date_debut_cotis'  => $contrib->begin_date,
-                'date_fin_cotis'    => $contrib->end_date
-            ]);
-        }
+        [AjaxController::class, 'contributionDates']
     )->setName('contributionDates')->add($authenticate);
 
     $this->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
-        function ($request, $response, int $page = null, $search = null) {
-            $post = $request->getParsedBody();
-            $filters = new MembersList();
-            if (isset($post['page'])) {
-                $filters->current_page = (int)$post['page'];
-            } elseif ($page !== null) {
-                $filters->current_page = $page;
-            }
-
-            if (isset($post['search'])) {
-                $search = $post['search'];
-            }
-            if ($search !== null) {
-                $filters->filter_str = $search;
-                if (is_numeric($search)) {
-                    $filters->field_filter = Members::FILTER_ID;
-                }
-            }
-
-            $m = new Members($filters);
-            $list_members = $m->getDropdownMembers($this->get('zdb'), $this->get('login'));
-
-            $members = [];
-            if (count($list_members) > 0) {
-                foreach ($list_members as $pk => $member) {
-                    $members[] = [
-                        'name'  => $member,
-                        'value' => $pk
-                    ];
-                }
-            }
-
-            return $response->withJson([
-                'results'   => $members
-            ]);
-        }
+        [AjaxController::class, 'contributionMembers']
     )->setName('contributionMembers')->add($authenticate);
 
     $this->post(
         '/password/strength',
-        function ($request, $response) {
-            //post params may be passed from security tab test password
-            $post = $request->getParsedBody();
-
-            if (isset($post['pref_password_length'])) {
-                $this->get('preferences')->pref_password_length = $post['pref_password_length'];
-            }
-
-            if (isset($post['pref_password_strength'])) {
-                $this->get('preferences')->pref_password_strength = $post['pref_password_strength'];
-            }
-
-            if (isset($post['pref_password_blacklist'])) {
-                $this->get('preferences')->pref_password_blacklist = $post['pref_password_blacklist'];
-            }
-
-            $pass = new \Galette\Util\Password($this->get('preferences'));
-            $valid = $pass->isValid($post['value']);
-
-            return $response->withJson(
-                [
-                    'valid'     => $valid,
-                    'score'     => $pass->getStrenght(),
-                    'errors'    => $pass->getErrors(),
-                    'warnings'  => ($valid ? $pass->getStrenghtErrors() : null)
-                ]
-            );
-        }
+        [AjaxController::class, 'passwordStrength']
     )->setName('checkPassword');
 });
