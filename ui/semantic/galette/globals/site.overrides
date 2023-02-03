@@ -206,7 +206,7 @@ footer .ui.horizontal.list > .item{
    * lower resolutions. So it is safe to reset its overflow property.
    *
    */
-  body.pushable > .pusher {
+  body.pushable > .pusher:not(.overflowing) {
     overflow: unset;
   }
   .position-sticky {
