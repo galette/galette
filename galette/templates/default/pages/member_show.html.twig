@@ -7,6 +7,7 @@
     <div class="row">
         <div class="sixteen wide tablet six wide computer five wide widescreen column">
             <div class="position-sticky">
+            <div class="ui basic clearing horizontally fitted segment">
 
                 <div class="ui left floated basic fitted segment">
                     {% include "elements/navigate.html.twig" with {"mpath": "member"} %}
@@ -97,43 +98,45 @@
                         </div>
                     </div>
                 </div>
+                </div>
+            </div>
 
                 {% include "elements/member_card.html.twig" %}
-            </div>
+
+                {% if member.hasParent() or member.hasChildren() %}
+                <div class="ui basic fitted segment">
+                    <div class="ui styled fluid accordion row">
+                        <div class="active title">
+                            <i class="jsonly hidden icon dropdown"></i>
+                            {{ _T("Family") }}
+                        </div>
+                        <div class="active content field">
+                            <table class="ui very basic striped collapsing stackable padded table">
+                {% if member.hasParent() %}
+                                <tr>
+                                    <th>{{ _T("Attached to:") }}</th>
+                                    <td><a href="{{ path_for("member", {"id": member.parent.id}) }}">{{ member.parent.sfullname }}</a></td>
+                                </tr>
+                {% endif %}
+                {% if member.hasChildren() %}
+                                <tr>
+                                    <th>{{ _T("Parent of:") }}</th>
+                                    <td>
+                    {% for child in member.children %}
+                                        <a href="{{ path_for("member", {"id": child.id}) }}">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                                    </td>
+                                </tr>
+                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
         </div>
 
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
 
-    {% if member.hasParent() or member.hasChildren() %}
-            <div class="ui basic fitted segment">
-                <div class="ui styled fluid accordion row">
-                    <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
-                        {{ _T("Family") }}
-                    </div>
-                    <div class="active content field">
-                        <table class="ui very basic striped collapsing stackable padded table">
-            {% if member.hasParent() %}
-                            <tr>
-                                <th>{{ _T("Attached to:") }}</th>
-                                <td><a href="{{ path_for("member", {"id": member.parent.id}) }}">{{ member.parent.sfullname }}</a></td>
-                            </tr>
-            {% endif %}
-            {% if member.hasChildren() %}
-                            <tr>
-                                <th>{{ _T("Parent of:") }}</th>
-                                <td>
-                {% for child in member.children %}
-                                    <a href="{{ path_for("member", {"id": child.id}) }}">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
-                {% endfor %}
-                                </td>
-                            </tr>
-            {% endif %}
-                        </table>
-                    </div>
-                </div>
-            </div>
-    {% endif %}
 {% for display_element in display_elements %}
     {% set elements = display_element.elements %}
             <div class="ui basic fitted segment">

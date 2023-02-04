@@ -1,34 +1,58 @@
 {% extends parent_tpl %}
 
 {% block content %}
+<form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
     {% if member.id %}
 <div class="ui stackable grid">
     <div class="row">
         <div class="sixteen wide tablet six wide computer five wide widescreen column">
             <div class="position-sticky">
-                <div class="ui basic fitted segment">
+            <div class="ui basic clearing horizontally fitted segment">
+
+                <div class="ui left floated basic fitted segment">
                     {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
                 </div>
-                {% include "elements/member_card.html.twig" %}
-            </div>
-        </div>
 
-        <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
+                <div class="ui right floated basic fitted segment">
+                    <div class="ui small spaced buttons">
+                {% if member.id %}
+                        <button type="submit" name="valid" class="action ui labeled icon primary button">
+                            <i class="save icon"></i> {{ _T("Save") }}
+                        </button>
+                {% endif %}
+                        <a
+                            href="{{ path_for("member", {"id": member.id}) }}"
+                            class="ui basic labeled icon button"
+                        >
+                            <i class="eye outline icon"></i>
+                            {{ _T("Display") }}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+
+        {% include "elements/member_card.html.twig" %}
     {% endif %}
 
-    <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
     {% if not self_adh %}
-            <div class="ui compact segment">
+            <div class="ui{% if not member.id %} compact{% endif %} segment">
         {% if member.hasParent() and not member.isDuplicate() %}
-                <div class="inline field">
-                    <span class="ui primary ribbon label">{{ _T("Attached to:") }}</span>
-                    <a href="{{ path_for("member", {"id": member.parent.id}) }}" class="ui label">{{ member.parent.sfullname }}</a>
+                <div class="field">
+                    <div class="ui label">
+                        <i class="linkify icon"></i>
+                        {{ _T("Attached to:") }}
+                    </div>
+                    <div class="ui celled list">
+                        <a href="{{ path_for("member", {"id": member.parent.id}) }}" class="item">{{ member.parent.sfullname }}</a>
+                    </div>
             {% if not member.id %}
                     <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
             {% endif %}
                 </div>
             {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
-                <div class="inline field">
+                <div class="field">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
                         <label for="detach_parent">{{ _T("Detach?") }}</label>
@@ -57,14 +81,24 @@
                 <input type="hidden" name="duplicate" value="1" />
             {% endif %}
         {% elseif member.hasChildren() %}
-                <div class="inline field">
-                    <span class="ui primary ribbon label">{{ _T("Parent of:") }}</span>
+                <div class="field">
+                    <div class="ui label">
+                        <i class="linkify icon"></i>
+                        {{ _T("Parent of:") }}
+                    </div>
+                    <div class="ui celled list">
             {% for child in member.children %}
-                    <a href="{{ path_for("member", {"id": child.id}) }}" class="ui label">{{ child.sfullname }}</a>{% if not loop.last %}, {% endif %}
+                        <a href="{{ path_for("member", {"id": child.id}) }}" class="item">{{ child.sfullname }}</a>
             {% endfor %}
+                    </div>
                 </div>
         {% endif %}
             </div>
+    {% endif %}
+
+    {% if member.id %}
+        </div>
+        <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
     {% endif %}
             {# Main form entries #}
             {% include "components/form.html.twig" %}

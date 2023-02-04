@@ -211,8 +211,11 @@ footer .ui.horizontal.list > .item{
   }
   .position-sticky {
     position: sticky;
-    top: 10px;
-    z-index: 1;
+    top: 0px;
+    z-index: 10;
+    margin: -1px -2px 0 -2px;
+    background-color: @white;
+    border-bottom: 1px solid @primaryColor;
   }
 }
 
