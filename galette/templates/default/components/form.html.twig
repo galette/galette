@@ -9,6 +9,9 @@
                     {% include "components/forms/picture.html.twig" %}
                 {% endif %}
                 {% for entry in fieldset.elements %}
+                    {% if loop.index0 % 3 == 0 %}
+                        <div class="three fields">
+                    {% endif %}
                     {% set template = "text.html.twig" %}
                     {% set title = null %}
                     {% set tip = null %}
@@ -118,6 +121,9 @@
                             checked: checked ?? false,
                             masschange: masschange ?? false
                     } %}
+                    {% if loop.index0 % 3 == 2 or loop.last %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
                 {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
                     {% include "components/forms/groups.html.twig" %}

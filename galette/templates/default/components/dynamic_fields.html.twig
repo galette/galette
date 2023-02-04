@@ -109,6 +109,9 @@
     <div class="active content field">
     {% set access_level = login.getAccessLevel() %}
     {% for field in fields %}
+        {% if loop.index0 % 3 == 0 %}
+            <div class="three fields">
+        {% endif %}
         {% if field.getInformation() %}
             <div>{{ field.getInformation()|raw }}</div>
         {% endif %}
@@ -157,6 +160,9 @@
                 {% endif %}
             {% endif %}
         {% endif %}
+    {% if loop.index0 % 3 == 2 or loop.last %}
+        </div>
+    {% endif %}
     {% endfor %}
     </div>
 </div>
