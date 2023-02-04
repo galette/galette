@@ -16,7 +16,7 @@
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
     {% endif %}
 
-    <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form">
+    <form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
     {% if not self_adh %}
             <div class="ui compact segment">
         {% if member.hasParent() and not member.isDuplicate() %}

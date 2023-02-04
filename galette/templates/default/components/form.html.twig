@@ -1,5 +1,5 @@
             {% for fieldset in fieldsets %}
-            <div class="galetteform ui styled fluid accordion field">
+            <div class="galetteform fieldset-{{ fieldset.id }} ui styled fluid accordion field">
                 <div class="active title">
                     <i class="jsonly hidden dropdown icon"></i>
                     {{ _T(fieldset.label) }}
