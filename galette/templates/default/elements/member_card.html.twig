@@ -4,8 +4,7 @@
                 src="{{ path_for("photo", {"id": member.id, "rand": time}) }}"
                 width="{{ member.picture.getOptimalWidth() }}"
                 height="{{ member.picture.getOptimalHeight() }}"
-                alt="{{ _T("Picture") }}"
-                {% if login.isAdmin() or login.isStaff() or login.login == member.login %} title="{{ _T("You can drop new image here to get photo changed") }}" class="tooltip"{% endif %}/>
+                alt="{{ _T("Picture") }}">
     </div>
     <div class="content">
         <div class="header aligned">
