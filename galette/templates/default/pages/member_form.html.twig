@@ -68,9 +68,6 @@
     {% endif %}
             {# Main form entries #}
             {% include "components/form.html.twig" %}
-            {# Dynamic entries #}
-            {% include "components/dynamic_fields.html.twig" with {object: member} %}
-            {% include "elements/edit_socials.html.twig" with {socials: member.socials} %}
 
     {% if not member.id and not self_adh %}
         {% if login.isAdmin() or login.isStaff() %}

@@ -130,4 +130,10 @@
                 {% endif %}
                 </div>
             </div>
+
+                {# Dynamic entries #}
+                {% if fieldset.id == 3 %}
+                    {% include "elements/edit_socials.html.twig" with {socials: member.socials} %}
+                    {% include "components/dynamic_fields.html.twig" with {object: member} %}
+                {% endif %}
             {% endfor %}
