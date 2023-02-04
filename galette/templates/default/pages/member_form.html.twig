@@ -7,96 +7,94 @@
     <div class="row">
         <div class="sixteen wide tablet six wide computer five wide widescreen column order-2">
             <div class="position-sticky">
-            <div class="ui basic clearing horizontally fitted segment">
+                <div class="ui basic clearing horizontally fitted segment">
 
-                <div class="ui left floated basic fitted segment">
-                    {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
-                </div>
+                    <div class="ui left floated basic fitted segment">
+                        {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
+                    </div>
 
-                <div class="ui right floated basic fitted segment">
-                    <div class="ui small spaced buttons">
-                {% if member.id %}
-                        <button type="submit" name="valid" class="action ui labeled icon primary button">
-                            <i class="save icon"></i> {{ _T("Save") }}
-                        </button>
-                {% endif %}
-                        <a
-                            href="{{ path_for("member", {"id": member.id}) }}"
-                            class="ui basic labeled icon button"
-                        >
-                            <i class="eye outline icon"></i>
-                            {{ _T("Display") }}
-                        </a>
+                    <div class="ui right floated basic fitted segment">
+                        <div class="ui small spaced buttons">
+                    {% if member.id %}
+                            <button type="submit" name="valid" class="action ui labeled icon primary button">
+                                <i class="save icon"></i> {{ _T("Save") }}
+                            </button>
+                    {% endif %}
+                            <a
+                                href="{{ path_for("member", {"id": member.id}) }}"
+                                class="ui basic labeled icon button"
+                            >
+                                <i class="eye outline icon"></i>
+                                {{ _T("Display") }}
+                            </a>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            </div>
-
-        {% include "elements/member_card.html.twig" %}
+                {% include "elements/member_card.html.twig" %}
     {% endif %}
 
     {% if not self_adh %}
-            <div class="ui{% if not member.id %} compact{% endif %} segment">
+                <div class="ui{% if not member.id %} compact{% endif %} segment">
         {% if member.hasParent() and not member.isDuplicate() %}
-                <div class="field">
-                    <div class="ui label">
-                        <i class="linkify icon"></i>
-                        {{ _T("Attached to:") }}
-                    </div>
-                    <div class="ui celled list">
-                        <a href="{{ path_for("member", {"id": member.parent.id}) }}" class="item">{{ member.parent.sfullname }}</a>
-                    </div>
+                    <div class="field">
+                        <div class="ui label">
+                            <i class="linkify icon"></i>
+                            {{ _T("Attached to:") }}
+                        </div>
+                        <div class="ui celled list">
+                            <a href="{{ path_for("member", {"id": member.parent.id}) }}" class="item">{{ member.parent.sfullname }}</a>
+                        </div>
             {% if not member.id %}
-                    <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
+                        <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
             {% endif %}
-                </div>
-            {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
-                <div class="field">
-                    <div class="ui toggle checkbox">
-                        <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
-                        <label for="detach_parent">{{ _T("Detach?") }}</label>
                     </div>
-                </div>
+            {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+                            <label for="detach_parent">{{ _T("Detach?") }}</label>
+                        </div>
+                    </div>
             {% endif %}
         {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() and members.list is defined %}
-            <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
-                <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
-                <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
-            </div>
-            <span id="parent_id_elt" class="">
-                <div id="parent_id" class="jsonly search-dropdown ui input nochosen">
-                    <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
-                    <i class="jsonly hidden dropdown icon"></i>
-                    <div class="jsonly hidden default text">{{ _T("Search for name or ID and pick member") }}</div>
-                    <div class="jsonly hidden menu">
-            {% for k, v in members.list %}
-                        <div class="item" data-value="{{ k }}">{{ v }}</div>
-            {% endfor %}
+                    <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
+                        <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
+                        <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
                     </div>
-                </div>
-                <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
-            </span>
+                    <span id="parent_id_elt" class="">
+                        <div id="parent_id" class="jsonly search-dropdown ui input nochosen">
+                            <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
+                            <i class="jsonly hidden dropdown icon"></i>
+                            <div class="jsonly hidden default text">{{ _T("Search for name or ID and pick member") }}</div>
+                            <div class="jsonly hidden menu">
+            {% for k, v in members.list %}
+                                <div class="item" data-value="{{ k }}">{{ v }}</div>
+            {% endfor %}
+                            </div>
+                        </div>
+                        <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
+                    </span>
             {% if member.isDuplicate() %}
-                <input type="hidden" name="duplicate" value="1" />
+                    <input type="hidden" name="duplicate" value="1" />
             {% endif %}
         {% elseif member.hasChildren() %}
-                <div class="field">
-                    <div class="ui label">
-                        <i class="linkify icon"></i>
-                        {{ _T("Parent of:") }}
-                    </div>
-                    <div class="ui celled list">
+                    <div class="field">
+                        <div class="ui label">
+                            <i class="linkify icon"></i>
+                            {{ _T("Parent of:") }}
+                        </div>
+                        <div class="ui celled list">
             {% for child in member.children %}
-                        <a href="{{ path_for("member", {"id": child.id}) }}" class="item">{{ child.sfullname }}</a>
+                            <a href="{{ path_for("member", {"id": child.id}) }}" class="item">{{ child.sfullname }}</a>
             {% endfor %}
+                        </div>
                     </div>
-                </div>
         {% endif %}
-            </div>
+                </div>
     {% endif %}
 
     {% if member.id %}
+            </div>
         </div>
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
     {% endif %}
@@ -125,30 +123,30 @@
             <input type="hidden" name="addchild" value="true"/>
         {% endif %}
     {% endif %}
-        {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff())) %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff())) %}
             <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1"{% if member.sendEMail() %} checked="checked"{% endif %}/>
                         <label for="mail_confirm">
-            {% if member.id %}
+        {% if member.id %}
                             {{ _T("Notify member his account has been modified") }}
-            {% else %}
+        {% else %}
                             {{ _T("Notify member his account has been created") }}
-            {% endif %}
+        {% endif %}
                         </label>
                         <br/>
                         <span class="exemple">
-            {% if member.id %}
+        {% if member.id %}
                             {{ _T("Member will be notified by email his account has been modified.") }}
-            {% else %}
+        {% else %}
                             {{ _T("Member will receive his username and password by email, if he has an address.") }}
-            {% endif %}
+        {% endif %}
                         </span>
                     </div>
                 </div>
             </div>
-        {% endif %}
+    {% endif %}
             <div class="ui basic center aligned fitted segment">
                 <button type="submit" name="valid" class="action ui labeled icon primary button">
                     <i class="save icon"></i> {{ _T("Save") }}
@@ -316,16 +314,12 @@
                     $('#listing a').click(function(e){
                         e.preventDefault();
                         var _gid = this.href.match(/.*\/(\d+)$/)[1];
-                        var _gicon = _managed ? 'shield' : 'tag';
                         var _gname = $(this).text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
-                            var _li = '<li id="group_'
-                                    + _gid
-                                    + '" class="item"><i class="icons"><i class="'
-                                    + _gicon
-                                    + ' icon"><i class="top right corner minus icon"></i></i></i><span class="ui content">'
-                                    + _gname + '</span></li>';
+                            var _li = '<li id="group_' + _gid + '" class="item">'
+                                    + '<i class="icons"><i class="users icon"><i class="top right corner minus icon"></i></i></i>'
+                                    + '<span class="ui content">' + _gname + '</span></li>';
                             $('#selected_groups ul').append(_li);
                             $('#group_' + _gid).click(function(){
                                 $(this).remove();
