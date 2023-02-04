@@ -1,8 +1,10 @@
 {% if selector is not defined %}
     {% set selector = '.delete' %}
 {% endif %}
-        //handle removals
+
+    //handle removals
 {% if single_action is defined %}
+    var _removeItems = function() {
         $('{{ selector }}').off('click').on('click', function(event) {
             event.preventDefault();
             var _this = $(this);
@@ -84,4 +86,6 @@
             });
 {% if single_action is defined %}
         });
+    }
+    _removeItems();
 {% endif %}

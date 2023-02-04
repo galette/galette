@@ -20,51 +20,58 @@
             $(function() {
                 $('.pointing.menu .item').tab({
                     auto: true,
-                    path: '{{ path_for('configureDynamicFields', {'form_name': ''}) }}'
-                });
-            });
-
-            var _form_name;
-            $('.addfield').click(function(e){
-                e.preventDefault();
-                var _this = $(this);
-                var _href = '{{ path_for('addDynamicField', {'form_name': form_name}) }}';
-
-                $.ajax({
-                    url: _href,
-                    type: "GET",
-                    datatype: 'json',
-                    {% include "elements/js/loader.js.twig" with {
-                        selector: '.addfield',
-                        loader: 'button'
-                    } %},
-                    success: function(res){
-                        var _res = $(res);
-
-                        $('body').modal({
-                            class: 'tiny',
-                            title: '{{ _T("New dynamic field") }}',
-                            content: _res,
-                            onApprove: function() {
-                                $('form').submit();
-                            },
-                            actions: [{
-                                text    : '{{ _T("Add") }}',
-                                class   : 'green approve'
-                            }, {
-                                text    : '{{ _T("Close")|e('js') }}',
-                                class   : 'cancel'
-                            }],
-                            className: {
-                                'title': 'center aligned header',
-                                'actions': 'center aligned actions'
-                            },
-                        }).modal('show');
-                    },
-                    error: function() {
-                        alert("{{ _T("An error occurred :(")|e("js") }}");
+                    path: '{{ path_for('configureDynamicFields', {'form_name': ''}) }}',
+                    onLoad: function(tabPath, parameterArray, historyEvent) {
+                        _addDynField();
+                        _removeItems();
                     }
                 });
             });
+
+            var _addDynField = function() {
+                var _form_name;
+                $('.addfield').click(function(e){
+                    e.preventDefault();
+                    var _this = $(this);
+                    var _href = _this.attr('href');
+
+                    $.ajax({
+                        url: _href,
+                        type: "GET",
+                        datatype: 'json',
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '.addfield',
+                            loader: 'button'
+                        } %},
+                        success: function(res){
+                            var _res = $(res);
+
+                            $('body').modal({
+                                class: 'tiny',
+                                title: '{{ _T("New dynamic field") }}',
+                                content: _res,
+                                onApprove: function() {
+                                    $('form').submit();
+                                },
+                                actions: [{
+                                    text    : '{{ _T("Add") }}',
+                                    class   : 'green approve'
+                                }, {
+                                    text    : '{{ _T("Close")|e('js') }}',
+                                    class   : 'cancel'
+                                }],
+                                className: {
+                                    'title': 'center aligned header',
+                                    'actions': 'center aligned actions'
+                                },
+                            }).modal('show');
+                        },
+                        error: function() {
+                            alert("{{ _T("An error occurred :(")|e("js") }}");
+                        }
+                    });
+                });
+            }
+            _addDynField();
         </script>
 {% endblock %}
