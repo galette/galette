@@ -1,4 +1,4 @@
-{% if object.getDynamicFields() is not empty %}
+{% if object.getDynamicFields() is not empty and object.getDynamicFields().getFields()|length > 0 %}
 <div class="ui basic fitted segment">
     <div class="ui styled fluid accordion row">
         <div class="active title">
