@@ -1,6 +1,6 @@
 {% block component %}
 {% if notag is not defined %}
-<div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'inline field' }}{% if required is defined and required == true %} required{% endif %}">
+<div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'field' }}{% if required is defined and required == true %} required{% endif %}">
 {% endif %}
     {% if type is defined and type == 'checkbox' %}
         <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
