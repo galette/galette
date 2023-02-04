@@ -5,88 +5,88 @@
 {% block content %}
 <div class="ui stackable grid">
     <div class="row">
-        <div class="sixteen wide tablet six wide computer five wide widescreen column">
+        <div class="sixteen wide tablet six wide computer five wide widescreen column order-2">
             <div class="position-sticky">
-            <div class="ui basic clearing horizontally fitted segment">
+                <div class="ui basic clearing horizontally fitted segment">
 
-                <div class="ui left floated basic fitted segment">
-                    {% include "elements/navigate.html.twig" with {"mpath": "member"} %}
-                </div>
+                    <div class="ui left floated basic fitted segment">
+                        {% include "elements/navigate.html.twig" with {"mpath": "member"} %}
+                    </div>
 
-                <div class="ui right floated basic fitted segment">
-                    <div class="ui primary small buttons">
-        {% if member.canEdit(login) %}
-                        <a
-                            href="{{ path_for("editMember", {"id": member.id}) }}"
-                            class="ui labeled icon button"
-                        >
-                            <i class="user edit icon"></i>
-                            {{ _T("Modification") }}
-                        </a>
-        {% endif %}
-                        <div class="ui combo top right pointing simple dropdown icon button">
-                            <i class="dropdown icon"></i>
-                            <div class="menu">
+                    <div class="ui right floated basic fitted segment">
+                        <div class="ui primary small buttons">
+                {% if member.canEdit(login) %}
+                            <a
+                                href="{{ path_for("editMember", {"id": member.id}) }}"
+                                class="ui labeled icon button"
+                            >
+                                <i class="user edit icon"></i>
+                                {{ _T("Modification") }}
+                            </a>
+                {% endif %}
+                            <div class="ui combo top right pointing simple dropdown icon button">
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
                 {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
-                                <a
-                                    href="{{ path_for("retrieve-pass", {"id_adh": member.id}) }}"
-                                    id="btn_lostpassword"
-                                    title="{{ _T("Send member a link to generate a new password, as if had used the 'lost password' functionality.") }}"
-                                        class="ui item"
-                                >
-                                    <i class="unlock icon"></i>
-                                    {{ _T("New password") }}
-                                </a>
+                                    <a
+                                        href="{{ path_for("retrieve-pass", {"id_adh": member.id}) }}"
+                                        id="btn_lostpassword"
+                                        title="{{ _T("Send member a link to generate a new password, as if had used the 'lost password' functionality.") }}"
+                                            class="ui item"
+                                    >
+                                        <i class="unlock icon"></i>
+                                        {{ _T("New password") }}
+                                    </a>
                 {% endif %}
                 {% if (preferences.pref_card_self == 1) or (login.isAdmin() or login.isStaff()) %}
-                                <a
-                                    href="{% if member.isUp2Date() %}{{ path_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
-                                    class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
-                                >
-                                    <i class="id badge icon"></i>
-                                    {{ _T("Generate Member Card") }}
-                                </a>
-                                <a
-                                    href="{{ path_for("adhesionForm", {"id_adh": member.id}) }}"
-                                    class="ui item"
-                                >
-                                    <i class="id card icon"></i>
-                                    {{ _T("Adhesion form") }}
-                                </a>
+                                    <a
+                                        href="{% if member.isUp2Date() %}{{ path_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
+                                        class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
+                                    >
+                                        <i class="id badge icon"></i>
+                                        {{ _T("Generate Member Card") }}
+                                    </a>
+                                    <a
+                                        href="{{ path_for("adhesionForm", {"id_adh": member.id}) }}"
+                                        class="ui item"
+                                    >
+                                        <i class="id card icon"></i>
+                                        {{ _T("Adhesion form") }}
+                                    </a>
                 {% endif %}
                 {% if login.isAdmin() or login.isStaff() or login.id == member.id or (member.hasParent() and member.parent.id == login.id) %}
-                                <a
-                                    href="{{ path_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
-                                    class="ui item"
-                                >
-                                    <i class="cookie icon"></i>
-                                    {{ _T("View contributions") }}
-                                </a>
+                                    <a
+                                        href="{{ path_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
+                                        class="ui item"
+                                    >
+                                        <i class="cookie icon"></i>
+                                        {{ _T("View contributions") }}
+                                    </a>
                 {% endif %}
                 {% if login.isAdmin() or login.isStaff() %}
-                                <a
-                                    href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
-                                    class="ui item"
-                                >
-                                    <i class="money bill alternate outline icon"></i>
-                                    {{ _T("Add a membership fee") }}
-                                </a>
-                                <a
-                                    href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?id_adh={{ member.id }}"
-                                    class="ui item"
-                                >
-                                    <i class="gift icon"></i>
-                                    {{ _T("Add a donation") }}
-                                </a>
+                                    <a
+                                        href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
+                                        class="ui item"
+                                    >
+                                        <i class="money bill alternate outline icon"></i>
+                                        {{ _T("Add a membership fee") }}
+                                    </a>
+                                    <a
+                                        href="{{ path_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?id_adh={{ member.id }}"
+                                        class="ui item"
+                                    >
+                                        <i class="gift icon"></i>
+                                        {{ _T("Add a donation") }}
+                                    </a>
                     {% if login.isAdmin() or login.isStaff() %}
-                                <a
-                                    href="{{ path_for("duplicateMember", {"id_adh": member.id}) }}"
-                                    title="{{ _T("Create a new member with %name information.")|replace({"%name": member.sfullname}) }}"
-                                    class="ui item"
-                                >
-                                    <i class="clone icon" aria-hidden="true"></i>
-                                    {{ _T("Duplicate") }}
-                                </a>
+                                    <a
+                                        href="{{ path_for("duplicateMember", {"id_adh": member.id}) }}"
+                                        title="{{ _T("Create a new member with %name information.")|replace({"%name": member.sfullname}) }}"
+                                        class="ui item"
+                                    >
+                                        <i class="clone icon" aria-hidden="true"></i>
+                                        {{ _T("Duplicate") }}
+                                    </a>
                     {% endif %}
 
                     {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
@@ -94,16 +94,15 @@
                                 {{ macros.drawDetailedAction(action.label, action.title, action.route, action.icon) }}
                     {% endfor %}
                 {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
 
-                {% include "elements/member_card.html.twig" %}
+            {% include "elements/member_card.html.twig" %}
 
-                {% if member.hasParent() or member.hasChildren() %}
+        {% if member.hasParent() or member.hasChildren() %}
                 <div class="ui basic fitted segment">
                     <div class="ui styled fluid accordion row">
                         <div class="active title">
@@ -132,14 +131,15 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
+        {% endif %}
+            </div>
         </div>
 
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
 
 {% for display_element in display_elements %}
     {% set elements = display_element.elements %}
-            <div class="ui basic fitted segment">
+            <div class="fieldset-{{ display_element.id }} ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
                         <i class="jsonly hidden icon dropdown"></i>
@@ -181,6 +181,28 @@
                 {% elseif element.field_id == 'info_public_adh' %}
                     {% set value = member.others_infos|escape|nl2br %}
                 {% endif %}
+                {% if loop.first and loop.parent.loop.last and (member.getGroups()|length != 0 or member.getManagedGroups()|length != 0) %}
+                            <tr>
+                                <th class="three wide column">{{ _T("Groups:") }}</th>
+                                <td>
+                                    <div class="ui large labels">
+            {% for kgroup, group in groups %}
+                {% if member.isGroupMember(group) or member.isGroupManager(group) %}
+                                        <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui label{% if not login.isGroupManager(kgroup) %} disabled notmanaged{% endif %}">
+                    {% if member.isGroupMember(group) %}
+                                            <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}"></i>
+                    {% endif %}
+                    {% if member.isGroupManager(group) %}
+                                            <i class="ui shield icon tooltip" title="{{ _T("Group manager") }}"></i>
+                    {% endif %}
+                                            {{ group }}
+                                        </a>
+                {% endif %}
+            {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                {% endif %}
                             <tr>
                                 <th class="three wide column">{{ element.label }}</th>
                                 <td>
@@ -204,35 +226,16 @@
                 {% endif %}
                                 </td>
                             </tr>
-                {% if loop.last and loop.parent.loop.last and (member.getGroups()|length != 0 or member.getManagedGroups()|length != 0) %}
-                            <tr>
-                                <th class="three wide column">{{ _T("Groups:") }}</th>
-                                <td>
-            {% for kgroup, group in groups %}
-                {% if member.isGroupMember(group) or member.isGroupManager(group) %}
-                                    <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui button{% if not login.isGroupManager(kgroup) %} disabled notmanaged{% endif %}">
-                                {{ group }}
-                    {% if member.isGroupMember(group) %}
-                                        <i class="ui user icon" title="{{ _T("Member of group") }}"></i>
-                    {% endif %}
-                    {% if member.isGroupManager(group) %}
-                                        <i class="ui user tie icon" title="{{ _T("Group manager") }}"></i>
-                    {% endif %}
-                                    </a>
-                {% endif %}
-            {% endfor %}
-                                </td>
-                            </tr>
-                {% endif %}
     {% endfor %}
                         </table>
                     </div>
                 </div>
             </div>
-{% endfor %}
-
-            {% include "elements/display_dynamic_fields.html.twig" with {object: member} %}
+    {% if display_element.id == '3'  %}
             {% include "elements/display_socials.html.twig" with {socials: member.socials} %}
+            {% include "elements/display_dynamic_fields.html.twig" with {object: member} %}
+    {% endif %}
+{% endfor %}
         </div>
     </div>
 </div>

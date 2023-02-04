@@ -5,8 +5,11 @@
                     {{ _T(fieldset.label) }}
                 </div>
                 <div class="active content field">
-                {% if masschange is not defined and not self_adh and loop.first %}
+                {% if masschange is not defined and not self_adh and fieldset.id == '1' %}
                     {% include "components/forms/picture.html.twig" %}
+                {% endif %}
+                {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
+                    {% include "components/forms/groups.html.twig" %}
                 {% endif %}
                 {% for entry in fieldset.elements %}
                     {% if loop.index0 % 3 == 0 %}
@@ -125,9 +128,6 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
-                    {% include "components/forms/groups.html.twig" %}
-                {% endif %}
                 </div>
             </div>
 

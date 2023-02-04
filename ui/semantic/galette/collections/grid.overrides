@@ -1,0 +1,9 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+@media only screen and (min-width: 992px) {
+   .order-2 {
+      order: 2;
+   }
+}

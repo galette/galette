@@ -5,7 +5,7 @@
     {% if member.id %}
 <div class="ui stackable grid">
     <div class="row">
-        <div class="sixteen wide tablet six wide computer five wide widescreen column">
+        <div class="sixteen wide tablet six wide computer five wide widescreen column order-2">
             <div class="position-sticky">
             <div class="ui basic clearing horizontally fitted segment">
 
@@ -178,13 +178,13 @@
             {% endfor %}
             {% include "components/forms/csrf.html.twig" %}
             </div>
-        </form>
 
     {% if member.id %}
         </div>
     </div>
 </div>
     {% endif %}
+</form>
 {% endblock %}
 
 {% block javascripts %}
