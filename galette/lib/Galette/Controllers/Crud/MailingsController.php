@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -57,7 +57,7 @@ use Analog\Analog;
  * @name      MailingsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -150,10 +150,6 @@ class MailingsController extends CrudController
                         'error_detected',
                         _T('No member selected for mailing!')
                     );
-
-                    if (isset($profiler)) {
-                        $profiler->stop();
-                    }
 
                     $redirect_url = ($this->session->redirect_mailing !== null) ?
                         $this->session->redirect_mailing : $this->router->pathFor('members');
@@ -601,6 +597,7 @@ class MailingsController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -615,6 +612,7 @@ class MailingsController extends CrudController
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
+        return $response;
     }
 
     // /CRUD - Update

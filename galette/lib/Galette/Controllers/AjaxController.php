@@ -296,8 +296,8 @@ class AjaxController extends AbstractController
      */
     public function telemetryRegistered(Request $request, Response $response): Response
     {
-        $this->get('preferences')->pref_registration_date = date('Y-m-d H:i:s');
-        $this->get('preferences')->store();
+        $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
+        $this->preferences->store();
         return $response->withJson(['message' => _T('Thank you for registering!')]);
     }
 

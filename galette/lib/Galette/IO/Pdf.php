@@ -6,11 +6,10 @@
  * PDF class for galette
  * Traps tcpdf errors by overloading tcpdf::error method
  * Adds convenient method to convert color html codes
- * Adds a _parsegif function to convert gif to png
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,7 +31,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-21
@@ -58,7 +57,7 @@ require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
  * @abstract  Class for expanding TCPDF.
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-21
@@ -189,44 +188,6 @@ class Pdf extends \TCPDF
             "B" => hexdec(substr($hex6, 5, 2))
         );
         return $dec;
-    }
-
-    /** FIXME: is this function used somewhere? */
-    /**
-     * Extract info from a GIF file
-     * (In fact: converts gif image to png and feeds it to _parsepng)
-     *
-     * @param string $file path to the gif file
-     *
-     * @return void
-     * @access protected
-     */
-    protected function parsegif($file)
-    {
-        $a = getimagesize($file);
-        if (empty($a)) {
-            $this->Error(_T("Missing or incorrect image file ") . $file);
-        }
-        if ($a[2] != 1) {
-            $this->Error(_T("Not a GIF file ") . $file);
-        }
-
-        // Tentative d'ouverture du fichier
-        if (function_exists('gd_info')) {
-            $data = @imagecreatefromgif($file);
-
-            // Test d'échec & Affichage d'un message d'erreur
-            if (!$data) {
-                    $this->Error(_T("Error loading ") . $file);
-            }
-            if (imagepng($data, GALETTE_ROOT . 'tempimages/gif2png.png')) {
-                return $this->_parsepng(GALETTE_ROOT . 'tempimages/gif2png.png');
-            } else {
-                $this->Error(_T("Error creating temporary png file from ") . $file);
-            }
-        } else {
-            $this->Error(_T("Unable to convert GIF file ") . $file);
-        }
     }
 
     /**
@@ -511,7 +472,7 @@ class Pdf extends \TCPDF
     /**
      * Download PDF from browser
      *
-     * @return string
+     * @return void
      */
     public function download()
     {

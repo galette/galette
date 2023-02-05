@@ -193,7 +193,7 @@ class CsvOut extends Csv
      *
      * @param string $id Parameted export identifier
      *
-     * @return string
+     * @return ?string
      */
     public function getParamedtedExportName($id)
     {

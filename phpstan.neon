@@ -6,3 +6,5 @@ parameters:
         - galette/lib/
     scanDirectories:
         - galette/includes/
+    ignoreErrors:
+        - '/Instantiated class XHProfRuns_Default not found/'
