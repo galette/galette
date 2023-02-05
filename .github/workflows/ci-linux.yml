@@ -109,6 +109,11 @@ jobs:
           galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
         if: matrix.php-versions == '7.4'
 
+      - name: PHPStan checks
+        run: |
+          galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
+        if: matrix.php-versions == '7.4'
+
       - name: Init for PostgreSQL (update)
         env:
           POSTGRES_HOST: localhost

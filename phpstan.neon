@@ -1,0 +1,8 @@
+parameters:
+    parallel:
+        maximumNumberOfProcesses: 2
+    level: 0
+    paths:
+        - galette/lib/
+    scanDirectories:
+        - galette/includes/
