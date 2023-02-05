@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -49,7 +49,7 @@ use Analog\Analog;
  * @name      SavedSearch
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -280,6 +280,7 @@ class SavedSearch
                     $parameters = [];
                     foreach ((array)$this->parameters as $key => $parameter) {
                         if (isset($members_fields[$key])) {
+                            //@phpstan-ignore-next-line
                             $key = $members_fields[$key]['label'];
                         }
                         if (is_array($parameter) || is_object($parameter)) {
@@ -329,6 +330,7 @@ class SavedSearch
                     return property_exists($this, $name);
             }
         }
+        return false;
     }
 
     /**

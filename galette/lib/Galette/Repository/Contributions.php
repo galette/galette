@@ -341,7 +341,7 @@ class Contributions
      *
      * @param Select $select Original select
      *
-     * @return string SQL WHERE clause
+     * @return void
      */
     private function buildWhereClause(Select $select)
     {

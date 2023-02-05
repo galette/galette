@@ -169,24 +169,6 @@ class ContributionsCsv extends CsvOut
             if (isset($contribution->{Adherent::PK})) {
                 $contribution->{Adherent::PK} = Adherent::getSName($this->zdb, $contribution->{Adherent::PK});
             }
-
-            //handle booleans
-            if (isset($member->activite_adh)) {
-                $member->activite_adh
-                    = ($member->activite_adh) ? _T("Yes") : _T("No");
-            }
-            /*if (isset($member->bool_admin_adh)) {
-                $member->bool_admin_adh
-                    = ($member->bool_admin_adh) ? _T("Yes") : _T("No");
-            }
-            if (isset($member->bool_exempt_adh)) {
-                $member->bool_exempt_adh
-                    = ($member->bool_exempt_adh) ? _T("Yes") : _T("No");
-            }
-            if (isset($member->bool_display_info)) {
-                $member->bool_display_info
-                    = ($member->bool_display_info) ? _T("Yes") : _T("No");
-            }*/
         }
 
         $fp = fopen($this->path, 'w');

@@ -518,6 +518,7 @@ class Texts
             );
             throw $e;
         }
+        return false;
     }
 
     /**
@@ -602,6 +603,7 @@ class Texts
         include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         $texts = [];
 
+        //@phpstan-ignore-next-line
         foreach ($texts_fields as $text_field) {
             unset($text_field['tid']);
             $text_field['tlang'] = $lang;

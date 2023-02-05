@@ -264,6 +264,7 @@ class DynamicFieldsController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filtering
+        return $response;
     }
 
     // /CRUD - Read
@@ -452,12 +453,7 @@ class DynamicFieldsController extends CrudController
                 'error_detected',
                 _T("Requested field does not exists!")
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $args['form_name']])
-                );
+            return _T("Requested field does not exists!");
         }
 
         return sprintf(
