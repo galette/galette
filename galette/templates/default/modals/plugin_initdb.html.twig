@@ -1,137 +1,161 @@
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
-<section id="plugin_install">
-    <header>
-        <h1>{{ _T("%plugin plugin installation")|replace({'%plugin': plugin.name}) }}</h1>
-    </header>
-    <div>
-    <form action="{{ path_for('pluginInitDb', {'id': plugid}) }}" id="plugins_initdb_form" method="post">
-        <h2>{{ page_title }}</h2>
-{% if mode == 'ajax' %}
-    {% include 'elements/messages_inline.html.twig' %}
-{% endif %}
-
-
-
-{% if step == 1 %}
-        <div id="installation_mode">
-            <article id="mode_new" class="installation_mode">
-                <h3>
-                    <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::INSTALL') }}" checked="checked" id="install"/>
-                    <label for="install">{{ _T("New installation") }}</label>
-                </h3>
-                <ul>
-                    <li>{{ _T("you're installing %name for the first time")|replace({'%name': plugin.name}) }},</li>
-                    <li>{{ _T("you wish to erase an older version of of %name without keeping your data")|replace({'%name': plugin.name}) }}.</li>
-                </ul>
-            </article>
-    {% if update_scripts is defined and update_scripts|length > 0 %}
-            <article id="mode_update" class="installation_mode">
-                <h3>
-                    <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::UPDATE') }}" id="update"/>
-                    <label for="update">{{ _T("Update") }}</label>
-                </h3>
-                <ul>
-                <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
-                </ul>
-                <p id="warningbox">{{ _T("Warning: Don't forget to backup your current database.") }}</span>
-            </article>
-    {% endif %}
-        </div>
-{% endif %}
-{% if step == 'i2' or step == 'u2' %}
-    {{ results }}
-{% endif %}
-{% if step == 'u3' %}
-        <fieldset class="cssform">
-            <legend class="ui-state-active ui-corner-top">{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</legend>
-            <ul class="leaders">
-    {% set last = 0.00 %}
-    {% for k, val in update_scripts %}
-                <li>
-                    <span>
-                        <label for="upgrade-{{ val }}">
-
-        {% if last == 0.00 %}
-            {{ _T("older than %version")|replace({'%version': val}) }}
-        {% elseif last != val %}
-            {{ _T("comprised between") }} {{ last }} {{ _T("and") }} {{ val }}
-        {% else %}
-            {{ val }}
-        {% endif %}
-        {% set last = val %}
-                        </label>
-                    </span>
-                    <span>
-                        <input type="radio" name="previous_version" value="{{ val }}" id="upgrade-{{ val }}" required/>
-                    </span>
-                </li>
-    {% endfor %}
-            </ul>
-        </fieldset>
-{% endif %}
-{% if step == 'i4' or step == 'u4' %}
-        <p>{{ _T("(Errors on DROP and RENAME operations can be ignored)") }}</p>
-    {% if error_detected|length > 0 %}
-        <p id="errorbox">
-        {% if step == 'i3' %}
-            {{ _T("The tables are not totally created, it may be a permission problem.") }}
-        {% else %}
-            {{ _T("The tables have not been totally created, it may be a permission problem.") }}
-            <br/>
-            {{ _T("Your database is maybe not usable, try to restore the older version.") }}
-        {% endif %}
-        </p>
-    {% endif %}
-{% endif %}
-{% if step == 'i5' or step == 'u5' %}
-        <p>
-            {% if step == 'i5' %}
-                {{ _T("Plugin '%name' has been successfully installed!")|replace({'%name': plugin.name}) }}
-            {% else %}
-                {{ _T("Plugin '%name' has been successfully updated!")|replace({'%name': plugin.name}) }}
+    <div id="plugins_initdb_ajax">
+        <form action="{{ path_for('pluginInitDb', {'id': plugid}) }}" id="plugins_initdb_form" method="post" class="ui form">
+            {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
+            {% if mode == 'ajax' %}
+                {% include 'elements/messages_inline.html.twig' %}
             {% endif %}
-        </p>
-{% endif %}
-{% if istep < 5 %}
-        <p id="btn_box">
-            <input type="hidden" name="plugid" value="{{ plugid }}"/>
-    {% if istep > 1 and install_type is defined %}
-            <input type="hidden" name="install_type" value="{{ install_type }}"/>
-    {% endif %}
-    {% if error_detected|length == 0 and istep >= 2 or istep > 2 %}
-            <input type="hidden" name="install_dbperms_ok" value="1"/>
-    {% endif %}
-    {% if error_detected|length == 0 and istep >= 4 or istep > 4 %}
-            <input type="hidden" name="install_dbwrite_ok" value="1"/>
-    {% endif %}
-    {% if error_detected|length > 0 %}
-            <input type="submit" value="{{ _T("Retry") }}"/>
-    {% else %}
-            <button id="next" type="ui labeled icon button submit">{{ _T("Next step") }} <i class="forward icon"></i></button>
-    {% endif %}
-{% else %}
-    {% if mode != 'ajax' %}
-            <a href="{{ path_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon"></i> {{ _T("Back to plugins managment page") }}</a>
-    {% endif %}
-{% endif %}
-            {% include 'components/forms/csrf.html.twig' %}
-        </p>
-    </form>
-    </div>
-    <footer>
-        <p>{{ _T("Steps:") }}</p>
-        <ol>
-            <li{% if step == 1 %} class="current"{% endif %}>{{ _T("Installation mode") }} - </li>
-            <li{% if step == 'i2' or step == 'u2' %} class="current"{% endif %}>{{ _T("Access permissions to database") }} - </li>
-        {% if install_type is defined and install_type == 'upgrade' %}
-            <li{% if step == 'u3' %} class="current"{% endif %}>{{ _T("Version selection") }} - </li>
-            </li>
+    {% if step == 1 %}
+            {% if update_scripts is defined and update_scripts|length > 0 %}<div class="ui two stackable cards">{% endif %}
+                <div id="mode_new" class="ui fluid card">
+                    <div class="content">
+                        <h3>
+                            <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::INSTALL') }}" checked="checked" id="install"/>
+                            <label for="install">{{ _T("New installation") }}</label>
+                        </h3>
+                        <ul>
+                            <li>{{ _T("you're installing %name for the first time")|replace({'%name': plugin.name}) }},</li>
+                            <li>{{ _T("you wish to erase an older version of of %name without keeping your data")|replace({'%name': plugin.name}) }}.</li>
+                        </ul>
+                    </div>
+                </div>
+        {% if update_scripts is defined and update_scripts|length > 0 %}
+                <div id="mode_update" class="ui fluid card">
+                    <div class="content">
+                        <h3>
+                            <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::UPDATE') }}" id="update"/>
+                            <label for="update">{{ _T("Update") }}</label>
+                        </h3>
+                        <ul>
+                            <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
+                        </ul>
+                        <p class="ui orange message">{{ _T("Warning: Don't forget to backup your current database.") }}</p>
+                    </div>
+                </div>
+            </div>
         {% endif %}
-            <li{% if step == 'i4' or step == 'u4' %} class="current"{% endif %}>{% if install_type is not defined or install_type == 'install' %}{{ _T("Database installation") }}{% else %}{{ _T("Database upgrade") }}{% endif %} - </li>
-            <li{% if step == 'i5' or step == 'u5' %} class="current"{% endif %}>{{ _T("End!") }}</li>
-        </ol>
-    </footer>
-</section>
+    {% endif %}
+
+
+    {% if step == 'i2' or step == 'u2' %}
+        {{ results|raw }}
+    {% endif %}
+    {% if step == 'u3' %}
+            <fieldset class="cssform">
+                <legend class="ui-state-active ui-corner-top">{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</legend>
+                <ul class="leaders">
+        {% set last = 0.00 %}
+        {% for k, val in update_scripts %}
+                    <li>
+                        <span>
+                            <label for="upgrade-{{ val }}">
+
+            {% if last == 0.00 %}
+                {{ _T("older than %version")|replace({'%version': val}) }}
+            {% elseif last != val %}
+                {{ _T("comprised between") }} {{ last }} {{ _T("and") }} {{ val }}
+            {% else %}
+                {{ val }}
+            {% endif %}
+            {% set last = val %}
+                            </label>
+                        </span>
+                        <span>
+                            <input type="radio" name="previous_version" value="{{ val }}" id="upgrade-{{ val }}" required/>
+                        </span>
+                    </li>
+        {% endfor %}
+                </ul>
+            </fieldset>
+    {% endif %}
+    {% if step == 'i4' or step == 'u4' %}
+            <p>{{ _T("(Errors on DROP and RENAME operations can be ignored)") }}</p>
+        {% if error_detected|length > 0 %}
+            <p id="errorbox">
+            {% if step == 'i3' %}
+                {{ _T("The tables are not totally created, it may be a permission problem.") }}
+            {% else %}
+                {{ _T("The tables have not been totally created, it may be a permission problem.") }}
+                <br/>
+                {{ _T("Your database is maybe not usable, try to restore the older version.") }}
+            {% endif %}
+            </p>
+        {% endif %}
+    {% endif %}
+    {% if step == 'i5' or step == 'u5' %}
+            <p>
+                {% if step == 'i5' %}
+                    {{ _T("Plugin '%name' has been successfully installed!")|replace({'%name': plugin.name}) }}
+                {% else %}
+                    {{ _T("Plugin '%name' has been successfully updated!")|replace({'%name': plugin.name}) }}
+                {% endif %}
+            </p>
+    {% endif %}
+            <div class="ui basic fitted right aligned segment form-actions">
+    {% if istep < 5 %}
+                <input type="hidden" name="plugid" value="{{ plugid }}"/>
+        {% if istep > 1 and install_type is defined %}
+                <input type="hidden" name="install_type" value="{{ install_type }}"/>
+        {% endif %}
+        {% if error_detected|length == 0 and istep >= 2 or istep > 2 %}
+                <input type="hidden" name="install_dbperms_ok" value="1"/>
+        {% endif %}
+        {% if error_detected|length == 0 and istep >= 4 or istep > 4 %}
+                <input type="hidden" name="install_dbwrite_ok" value="1"/>
+        {% endif %}
+        {% if mode != 'ajax' %}
+            {% if error_detected|length > 0 %}
+                <input type="submit" class="ui button" value="{{ _T("Retry") }}"/>
+            {% else %}
+                <button id="next" class="ui labeled icon button" type="submit"><i class="forward icon"></i> {{ _T("Next step") }}</button>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if mode != 'ajax' %}
+                <a href="{{ path_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon"></i> {{ _T("Back to plugins managment page") }}</a>
+        {% endif %}
+    {% endif %}
+        {% if mode != 'ajax' %}
+                {% include 'components/forms/csrf.html.twig' %}
+        {% endif %}
+            </div>
+        {# _T("Steps:") #}
+            <div class="ui mini mobile stackable fluid steps">
+                <div class="step{% if step == 1 %} active{% endif %}">
+                    <i class="question icon"></i>
+                    <div class="content">
+                        <div class="title">{{ _T("Installation mode") }}</div>
+                    </div>
+                </div>
+                <div class="step{% if step == 'i2' or step == 'u2' %} active{% endif %}">
+                    <i class="key icon"></i>
+                    <div class="content">
+                        <div class="title">{{ _T("Access permissions to database") }}</div>
+                    </div>
+                </div>
+    {% if install_type is defined and install_type == 'upgrade' %}
+                <div class="step{% if step == 'u3' %} active{% endif %}">
+                    <i class="code branch icon"></i>
+                    <div class="content">
+                        <div class="title">{{ _T("Version selection") }}</div>
+                    </div>
+                </div>
+    {% endif %}
+                <div class="step{% if step == 'i4' or step == 'u4' %} active{% endif %}">
+                    <i class="database icon"></i>
+                    <div class="content">
+                        <div class="title">{% if install_type is not defined or install_type == 'install' %}{{ _T("Database installation") }}{% else %}{{ _T("Database upgrade") }}{% endif %}</div>
+                    </div>
+                </div>
+                <div class="step{% if step == 'i5' or step == 'u5' %} active{% endif %}">
+                    <i class="flag checkered icon"></i>
+                    <div class="content">
+                        <div class="title">{{ _T("End!") }}</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

@@ -104,50 +104,71 @@
                 return false;
             });
     {% else %}
-            var _initdb_dialog = function(res, _plugin){
-                var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
-                $('body').modal({
-                    title: _title.replace('%name', _plugin),
-                    class: 'initdb-modal large coupled',
-                    classContent: 'scrolling',
-                    content: res,
-                    actions: [{
-                        text    : '{{ _T("Cancel")|e('js') }}',
-                        class   : 'red cancel',
-                        icon    : 'times'
-                    }, {
-                        text    : '{{ _T("Next step")|e('js') }}',
-                        class   : 'green approve',
-                        icon    : 'forward',
-                        click   : function() {
-                            return false;
-                        }
-                    }],
-                    onApprove : function() {
-                      _initdb_bindings(res);
-                      return false;
-                    }
-                }).modal('show');
-                _initdb_bindings(res);
-            };
-            var _initdb_bindings = function(res){
-                $('.initdb-modal input:submit, .initdb-modal .button, .initdb-modal input:reset' );
-                $("#plugins_initdb_form").submit(function(event) {
-                    /* stop form from submitting normally */
-                    event.preventDefault();
-
-                    var $form = $(this);
-                    var _url = $form.attr('action');
-
-                    var _dataString = $form.serialize();
-                    _dataString += '&ajax=true';
-
+            {# Plugin init popup #}
+            var _btnuser_mapping = function(){
+                $('.initdb').click(function(){
+                    var _plugin = this.id.substring(7);
+                    var _url = $(this).attr('href');
                     $.ajax({
                         url: _url,
-                        type: "POST",
-                        data: _dataString,
+                        type: "GET",
                         {% include "elements/js/loader.js.twig" %},
                         success: function(res){
+                            _initdb_dialog(res, _plugin);
+                        },
+                        error: function() {
+                            alert("{{ _T("An error occurred displaying plugin database initialization interface :(")|e('js') }}");
+                        }
+                    });
+                    return false;
+                });
+            }
+            _btnuser_mapping();
+
+            var _initdb_dialog = function(res, plugin) {
+                var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
+                $('body').modal({
+                    title: _title.replace('%name', plugin),
+                    class: 'initdb-modal large',
+                    classContent: 'scrolling',
+                    observeChanges: true,
+                    content: res,
+                    onApprove : function() {
+                      $('#plugins_initdb_form').submit();
+                      return false;
+                    },
+                    actions: [{
+                        text    : '{{ _T("Next step")|e('js') }}',
+                        class   : 'blue labeled icon approve',
+                        icon    : 'forward'
+                    }, {
+                        text    : '{{ _T("Close")|e('js') }}',
+                        class   : 'labeled icon cancel',
+                        icon    : 'times'
+                    }]
+                }).modal('show');
+                _initdb_bindings(res, plugin);
+            };
+
+            var _initdb_bindings = function(res, plugin){
+                //$('.initdb-modal input:submit, .initdb-modal .button, .initdb-modal input:reset' );
+                $('#plugins_initdb_form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                        _data += '&ajax=true&next=true';
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: "POST",
+                        data: _data,
+                        datatype: 'json',
+                        {% include "elements/js/loader.js.twig" %},
+                        success: function(res) {
+                            $('#plugins_initdb_form').remove();
+                            $('#plugins_initdb_ajax').append(res);
+                            if (!$.trim($('#plugins_initdb_form .form-actions').html())){
+                                $('.initdb-modal .approve').remove();
+                            }
                             _initdb_bindings(res);
                         },
                         error: function() {
@@ -156,24 +177,6 @@
                     });
                 });
             };
-
-            $('.initdb').click(function(){
-                var _plugin = this.id.substring(7);
-                var _url = $(this).attr('href');
-
-                $.ajax({
-                    url: _url,
-                    type: "GET",
-                    {% include "elements/js/loader.js.twig" %},
-                    success: function(res){
-                        _initdb_dialog(res, _plugin);
-                    },
-                    error: function() {
-                        alert("{{ _T("An error occurred displaying plugin database initialization interface :(")|e('js') }}");
-                    }
-                });
-                return false;
-            })
     {% endif %}
         });
     </script>
