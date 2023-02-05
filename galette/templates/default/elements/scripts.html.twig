@@ -48,6 +48,8 @@
                 });
     {% endif %}
 
+            {% include "elements/js/calendar.js.twig" %}
+
     {% if renew_telemetry is defined %}
             {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
     {% endif %}

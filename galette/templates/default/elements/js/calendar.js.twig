@@ -1,0 +1,78 @@
+{% if selector is not defined %}
+    {% set selector = "[id$='rangestart'], [id$='rangeend']" %}
+{% endif %}
+
+    function _cleanUntranslated(elt) {
+        if (Array.isArray(elt)) {
+            var _cleaned = [];
+            for (var i = 0; i < elt.length; i++) {
+                var a = elt[i].replace(/\s\(not translated\)/, '');
+                _cleaned.push(a);
+            }
+        } else {
+            var _cleaned = elt.replace(/\s\(not translated\)/, '');
+        }
+        return _cleaned;
+    }
+
+    var _calendarDays = '{{ _T("S,M,T,W,T,F,S") }}';
+    var _calendarMonths = [
+        '{{ _T("January") }}',
+        '{{ _T("February") }}',
+        '{{ _T("March") }}',
+        '{{ _T("April") }}',
+        '{{ _T("May") }}',
+        '{{ _T("June") }}',
+        '{{ _T("July") }}',
+        '{{ _T("August") }}',
+        '{{ _T("September") }}',
+        '{{ _T("October") }}',
+        '{{ _T("November") }}',
+        '{{ _T("December") }}'
+    ];
+    var _calendarMonthsShort = [
+        '{{ _T("Jan") }}',
+        '{{ _T("Feb") }}',
+        '{{ _T("Mar") }}',
+        '{{ _T("Apr") }}',
+        '{{ _T("May") }}',
+        '{{ _T("Jun") }}',
+        '{{ _T("Jul") }}',
+        '{{ _T("Aug") }}',
+        '{{ _T("Sep") }}',
+        '{{ _T("Oct") }}',
+        '{{ _T("Nov") }}',
+        '{{ _T("Dec") }}'
+    ];
+    var _calendarToday = '{{ _T("Today") }}';
+    var _calendarNow = '{{ _T("Now") }}';
+    function _calendarWidget(selector) {
+        $(selector).calendar({
+            type: 'date',
+            firstDayOfWeek: 1,
+            monthFirst: false,
+            text: {
+                days: _cleanUntranslated(_calendarDays).split(','),
+                months: _cleanUntranslated(_calendarMonths),
+                monthsShort: _cleanUntranslated(_calendarMonthsShort),
+                today: _cleanUntranslated(_calendarToday),
+                now: _cleanUntranslated(_calendarNow),
+            },
+            formatter: {
+                date: function (date, settings) {
+                    if (!date) return '';
+                    var day = date.getDate() + '';
+                    if (day.length < 2) {
+                        day = '0' + day;
+                    }
+                    var month = (date.getMonth() + 1) + '';
+                    if (month.length < 2) {
+                        month = '0' + month;
+                    }
+                    var year = date.getFullYear();
+                    return day + '/' + month + '/' + year;
+                }
+            }
+        });
+    };
+    _calendarWidget("{{ selector|raw }}");

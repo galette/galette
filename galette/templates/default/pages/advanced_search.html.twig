@@ -608,39 +608,7 @@
 {% endfor %}
             };
 
-            var _fs_calendar = function() {
-                $('.fs-calendar').calendar({
-                    type: 'date',
-                    firstDayOfWeek: 1,
-                    monthFirst: false,
-                    /* TODO : Find a way to translate widget content.
-                    * https://fomantic-ui.com/modules/calendar.html#language
-                    * https://www.php.net/manual/fr/intldateformatter.create.php
-                    */
-                    text: {
-                        days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-                        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                        monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        today: 'Today',
-                        now: 'Now',
-                    },
-                    formatter: {
-                        date: function (date, settings) {
-                            if (!date) return '';
-                            var day = date.getDate() + '';
-                            if (day.length < 2) {
-                                day = '0' + day;
-                            }
-                            var month = (date.getMonth() + 1) + '';
-                            if (month.length < 2) {
-                                month = '0' + month;
-                            }
-                            var year = date.getFullYear();
-                            return day + '/' + month + '/' + year;
-                        }
-                    }
-                });
-            }
+            {% include "elements/js/calendar.js.twig" with {selector: '.fs-calendar'} %}
 
             var _fs_dropdown = function(selector) {
                 if ( !selector ) {
@@ -689,7 +657,7 @@
                         }
                         _html += '<input type="hidden" name="free_type[]" value="' + _type + '"/>';
                         option.parent().parent().parent().find('span.data').html(_html);
-                        _fs_calendar();
+                        _calendarWidget('.fs-calendar');
                         _fs_dropdown('.newselect');
                         $('.newselect').removeClass('newselect');
                     }

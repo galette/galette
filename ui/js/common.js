@@ -119,7 +119,6 @@ $(function() {
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
-        $calendar        = $('[id$="rangestart"], [id$="rangeend"]'),
         $popup           = $('.no-touch a[title]'),
         $tooltipPopup    = $('i.tooltip'),
         $menuPopupRight  = $('.no-touch .ui.vertical.accordion.menu a[title]'),
@@ -140,38 +139,6 @@ $(function() {
     $checkbox.checkbox();
 
     $tabulation.tab();
-
-    $calendar.calendar({
-        type: 'date',
-        firstDayOfWeek: 1,
-        monthFirst: false,
-        /* TODO : Find a way to translate widget content.
-        * https://fomantic-ui.com/modules/calendar.html#language
-        * https://www.php.net/manual/fr/intldateformatter.create.php
-        */
-        text: {
-            days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            today: 'Today',
-            now: 'Now',
-        },
-        formatter: {
-            date: function (date, settings) {
-                if (!date) return '';
-                var day = date.getDate() + '';
-                if (day.length < 2) {
-                    day = '0' + day;
-                }
-                var month = (date.getMonth() + 1) + '';
-                if (month.length < 2) {
-                    month = '0' + month;
-                }
-                var year = date.getFullYear();
-                return day + '/' + month + '/' + year;
-            }
-        }
-    });
 
     /* Fomantic UI Tooltips */
     /* Hide all popups when a dropdown is shown. */
