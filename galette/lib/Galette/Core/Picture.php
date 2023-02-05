@@ -226,6 +226,7 @@ class Picture implements FileInterface
         } catch (Throwable $e) {
             return false;
         }
+        return false;
     }
 
     /**

@@ -594,7 +594,7 @@ class Transaction
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {

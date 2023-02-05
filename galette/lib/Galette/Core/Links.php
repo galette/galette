@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4 - 2020-03-11
@@ -50,7 +50,7 @@ use Galette\Entity\Contribution;
  * @name      Links
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4 - 2020-03-11
@@ -105,6 +105,7 @@ class Links
                     Analog::DEBUG
                 );
             }
+            return $del;
         } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred removing old temporary link ' .
@@ -113,6 +114,7 @@ class Links
             );
             throw $e;
         }
+        return false;
     }
 
     /**

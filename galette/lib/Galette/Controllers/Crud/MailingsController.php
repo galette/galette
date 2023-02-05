@@ -151,10 +151,6 @@ class MailingsController extends CrudController
                         _T('No member selected for mailing!')
                     );
 
-                    if (isset($profiler)) {
-                        $profiler->stop();
-                    }
-
                     $redirect_url = ($this->session->redirect_mailing !== null) ?
                         $this->session->redirect_mailing : $this->routeparser->urlFor('members');
 
@@ -601,6 +597,7 @@ class MailingsController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -615,6 +612,7 @@ class MailingsController extends CrudController
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
+        return $response;
     }
 
     // /CRUD - Update

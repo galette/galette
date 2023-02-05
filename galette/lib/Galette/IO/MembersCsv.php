@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4-dev - 2019-12-03
@@ -55,7 +55,7 @@ use Galette\Filters\MembersList;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4-dev - 2019-12-03
@@ -102,6 +102,7 @@ class MembersCsv extends CsvOut
         $export_fields = null;
         if (file_exists(GALETTE_CONFIG_PATH . 'local_export_fields.inc.php')) {
             include_once GALETTE_CONFIG_PATH . 'local_export_fields.inc.php';
+            //@phpstan-ignore-next-line
             $export_fields = $fields;
         }
 

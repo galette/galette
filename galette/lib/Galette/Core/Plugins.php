@@ -471,13 +471,13 @@ class Plugins
      */
     public function getTemplatesPathFromName($name)
     {
-        $id = null;
         foreach (array_keys($this->getModules()) as $r) {
             $mod = $this->getModules($r);
             if ($mod['name'] === $name) {
                 return $this->getTemplatesPath($r);
             }
         }
+        return '';
     }
 
     /**
@@ -533,6 +533,7 @@ class Plugins
         if (file_exists($f)) {
             include_once $f;
             if (isset($_preferences)) {
+                //@phpstan-ignore-next-line
                 foreach ($_preferences as $k => $v) {
                     if (in_array($k, $overridables)) {
                         $this->preferences->$k = $v;

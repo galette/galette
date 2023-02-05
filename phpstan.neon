@@ -1,0 +1,12 @@
+parameters:
+    parallel:
+        maximumNumberOfProcesses: 2
+    level: 0
+    paths:
+        - galette/lib/
+    scanDirectories:
+        - galette/includes/
+    ignoreErrors:
+        - '/Instantiated class XHProfRuns_Default not found/'
+        - '/Attribute class .*\\Inject does not exist./'
+

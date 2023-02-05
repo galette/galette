@@ -77,7 +77,7 @@ class Install
         '0.704' => '0.76'
     );
 
-    private $_step;
+    protected $_step;
     private $_mode;
     private $_version;
     private $_installed_version;
@@ -312,7 +312,7 @@ class Install
      * @param string $type Database type
      * @param array  $errs Errors array
      *
-     * @return boolean
+     * @return Install
      */
     public function setDbType($type, &$errs)
     {
@@ -324,6 +324,7 @@ class Install
             default:
                 $errs[] = _T("Database type unknown");
         }
+        return $this;
     }
 
     /**
@@ -1128,7 +1129,9 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $fc = new \Galette\Entity\FieldsConfig(
                 $zdb,
                 \Galette\Entity\Adherent::TABLE,
+                //@phpstan-ignore-next-line
                 $members_fields,
+                //@phpstan-ignore-next-line
                 $members_fields_cats,
                 true
             );
@@ -1191,6 +1194,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
 
             return true;
         }
+        return false;
     }
 
     /**
