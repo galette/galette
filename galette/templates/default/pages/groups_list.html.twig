@@ -260,9 +260,10 @@
                         loader: '#listing'
                     } %},
                     success: function(res){
-                        $('#listing').empty();
-                        //_members_ajax_mapper(res, gid, _mode);
-                        alert('TODO');
+                        $('#listing').remove();
+                        var _listing = $($.parseHTML(res)).find('#listing');
+                        $('.members-selection .eleven.wide.column').append(_listing);
+                        _members_ajax_mapper(res, gid, _mode);
                     },
                     error: function() {
                         alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
