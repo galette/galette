@@ -38,7 +38,7 @@
             {% endif %}
                     </h1>
                     {% include "elements/messages_inline.html.twig" %}
-                    {% block content %}{{ _T('Page content') }}{% endblock %}
+                    <div class="main-content">{% block content %}{{ _T('Page content') }}{% endblock %}</div>
                     {% include "elements/footer.html.twig" %}
                 </section>
             </div>

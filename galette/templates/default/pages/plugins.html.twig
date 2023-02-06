@@ -19,7 +19,7 @@
             </tr>
 {% for name, plugin in plugins_list %}
             <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
-                <td data-scope="row"><a href="{{ path_for(plugin.route ~ "Info", {"plugin": name}) }}">{{ plugin.name }} ({{ name }})</a></td>
+                <td data-scope="row"><a href="{{ path_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
                 <td data-title="{{ _T('Description') }}">{{ plugin.desc }}</td>
                 <td data-title="{{ _T('Author') }}">{{ plugin.author }}</td>
                 <td data-title="{{ _T('Version') }}">{{ plugin.version }}</td>
@@ -177,6 +177,35 @@
                     });
                 });
             };
+
+            $('.info-plugin').click(function(event){
+                event.preventDefault();
+                var _this = $(this);
+                var _url = _this.attr('href');
+                $.ajax({
+                    url: _url,
+                    type: "GET",
+                    datatype: 'json',
+                    {% include "elements/js/loader.js.twig" %},
+                    success: function(res) {
+                        var _content = $($.parseHTML(res)).find('div.main-content').children();
+                        $('body').modal({
+                            title: _this.html(),
+                            class: 'large',
+                            classContent: 'scrolling',
+                            content: _content,
+                            actions: [{
+                                text    : '{{ _T("Close")|e('js') }}',
+                                class   : 'labeled icon cancel',
+                                icon    : 'times'
+                            }]
+                        }).modal('show');
+                    },
+                    error: function() {
+                        alert("{{ _T("An error occurred :(")|e('js') }}");
+                    }
+                });
+            });
     {% endif %}
         });
     </script>
