@@ -422,11 +422,12 @@ class CsvController extends AbstractController
                 $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
-            $error = $this->errorHandler;
+            /*$error = $this->errorHandler;
             return $error(
                 $request,
                 $response->withStatus(403)
-            );
+            );*/
+            return $response->withStatus(403);
         }
     }
 
