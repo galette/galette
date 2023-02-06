@@ -7,6 +7,12 @@
   background: @styledTitleBackground;
 }
 
+.listing td .ui.accordion {
+   width: 100%;
+   max-height: 200px;
+   overflow: auto
+}
+
 /*-------------
      No JS
 --------------*/
