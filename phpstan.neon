@@ -9,4 +9,5 @@ parameters:
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Attribute class .*\\Inject does not exist./'
-
+    excludePaths:
+        - galette/lib/Galette/Handlers/*.php
