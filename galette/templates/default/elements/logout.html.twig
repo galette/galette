@@ -1,20 +1,42 @@
 {% if ui is defined %}
     {% if ui == 'item' %}
        {% set component_classes = "item" %}
-    {%  elseif ui == 'segment' %}
-       {% set component_classes = "ui segment" %}
+    {%  elseif ui == 'menu' %}
+       {% set component_classes = "ui text compact small fluid menu" %}
     {% endif %}
 {% endif %}
 
-<div class="{{ component_classes }}">
-    <div class="ui basic center aligned fitted segment">
-        <span class="ui tiny header">{{ login.loggedInAs()|raw }}</span>
+{% if ui == 'item' %}
+    <div class="{{ component_classes }}">
+        <div class="ui basic center aligned fitted segment">
+            <span class="ui tiny header">{{ login.loggedInAs()|raw }}</span>
+        </div>
+        <a
+            class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
+            href="{% if login.isImpersonated() %}{{ path_for("unimpersonate") }}{% else %}{{ path_for("logout") }}{% endif %}"
+        >
+            <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+            {% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}
+        </a>
     </div>
-    <a
-        class="ui fluid red basic button"
-        href="{% if login.isImpersonated() %}{{ path_for("unimpersonate") }}{% else %}{{ path_for("logout") }}{% endif %}"
-    >
-        <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
-        {{ _T("Log off") }}
-    </a>
-</div>
+{% else %}
+    <div class="{{ component_classes }}">
+        <div class="ui item">
+            <i class="user circle big icon"></i>
+            {{ login.loggedInAs()|raw }}
+        </div>
+        <div class="right menu">
+            <div class="item">
+                <a
+                    class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
+                    href="{% if login.isImpersonated() %}{{ path_for("unimpersonate") }}{% else %}{{ path_for("logout") }}{% endif %}"
+                    title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
+                    data-position="bottom right"
+                >
+                    <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+                    <span class="sr-only">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
