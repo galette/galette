@@ -8,12 +8,13 @@
     {% set value = null %}
     {% set example = _T("(numbers only)") %}
     {% set tip = _T("This field is required trying to avoid registration spam. We are sorry for the inconvennience.") %}
-    {% set component_class = "field required" %}
+    {% set component_class = "field" %}
+    {% set elt_class = "required" %}
     {{ parent() }}
 {% endblock %}
 
 {% block label %}
     {% set label = _T("Captcha") %}
     {{ parent() }}
-    {{ gaptcha.generateQuestion() }}
+    <p><span class="ui medium red text">{{ gaptcha.generateQuestion() }}</span></p>
 {% endblock %}

@@ -1,0 +1,32 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+
+/*--------------------
+    Gaptcha Input
+---------------------*/
+
+.ui.form input[type="gaptcha"] {
+  width: 100px;
+  vertical-align: top;
+}
+
+.ui.form input[type="gaptcha"] {
+  font-family: @inputFont;
+  margin: 0;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+
+  line-height: @inputLineHeight;
+  padding: @inputPadding;
+  font-size: @inputFontSize;
+
+  background: @inputBackground;
+  border: @inputBorder;
+  color: @inputColor;
+  border-radius: @inputBorderRadius;
+  box-shadow: @inputBoxShadow;
+  transition: @inputTransition;
+}
