@@ -7,3 +7,20 @@
   width: 4rem;
   height: 2rem;
 }
+
+.ui.form .galetteform .ui.search .ui.input {
+  &,
+  & input {
+    width: 100%;
+  }
+}
+
+.ui.form .galetteform .grouped.fields {
+  padding-left: .5em;
+  padding-right: .5em;
+
+  &,
+  & .field {
+    margin: 0;
+  }
+}

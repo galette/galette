@@ -3,6 +3,7 @@
 {% include "components/forms/textarea.html.twig" with {
         name: entry.field_id,
         id: entry.field_id,
+        rows: 2,
         value: member.address|escape,
         required: entry.required,
         disabled: entry.disabled,
