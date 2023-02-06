@@ -39,6 +39,7 @@ namespace Galette\Repository;
 use Galette\Core\Login;
 use Galette\Entity\Social;
 use Galette\Events\GaletteEvent;
+use Laminas\Db\Sql\Predicate\IsNull;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
@@ -1536,13 +1537,23 @@ class Members
             $select->columns(
                 array('id_adh', 'login_adh', 'mdp_adh')
             )->where(
-                array(
-                    'login_adh' => new Expression('NULL'),
-                    'login_adh' => '',
-                    'mdp_adh'   => new Expression('NULL'),
-                    'mdp_adh'   => ''
-                ),
-                PredicateSet::OP_OR
+                new PredicateSet(
+                    array(
+                        new Operator(
+                            'login_adh',
+                            '=',
+                            ''
+                        ),
+                        new IsNull('login_adh'),
+                        new Operator(
+                            'mdp_adh',
+                            '=',
+                            ''
+                        ),
+                        new IsNull('mdp_adh'),
+                    ),
+                    PredicateSet::OP_OR
+                )
             );
 
             $results = $zdb->execute($select);
