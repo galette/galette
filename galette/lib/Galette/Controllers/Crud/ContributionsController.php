@@ -424,7 +424,7 @@ class ContributionsController extends CrudController
 
         $filter_name = 'filter_' . $raw_type;
 
-        if (isset($this->session->$filter_name) && $ajax === false) {
+        if (isset($this->session->$filter_name)) {
             $filters = $this->session->$filter_name;
         } else {
             $filter_class = '\\Galette\\Filters\\' . ucwords($raw_type . 'List');

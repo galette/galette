@@ -82,7 +82,7 @@
                         <i class="search icon"></i>
                         {{ _T("Filter") }}
                     </button>
-                    <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                    <button type="submit" id="clear_filter" name="clear_filter" class="ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
                         <i class="trash alt red icon" aria-hidden="true"></i>
                         {{ _T("Clear filter") }}
                     </button>
@@ -127,8 +127,9 @@
     {% if mode == 'ajax'%}
         <input type="hidden" name="ajax" value="true"/>
         <input type="hidden" name="max_amount" value="{{ filters.max_amount }}"/>
+    {% else %}
+        {% include "components/forms/csrf.html.twig" %}
     {% endif %}
-    {% include "components/forms/csrf.html.twig" %}
     </form>
 {% endblock %}
 

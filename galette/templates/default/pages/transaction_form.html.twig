@@ -186,39 +186,42 @@
 
         $(function(){
 {% if transaction.id %}
-            $('#contribslist').click(function(){
-                $.ajax({
-                    url: '{{ path_for("contributions", {"type": "contributions"}) }}',
-                    type: "GET",
-                    data: {
-                        ajax: true,
-                        max_amount: '{{ transaction.getMissingAmount() }}'
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        selector: '#contribslist',
-                        loader: 'button'
-                    } %},
-                    success: function(res){
-                        _contribs_dialog(res);
-                    },
-                    error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
-                    }
+            {# Contributions popup #}
+            var _btnuser_mapping = function(){
+                $('#contribslist').click(function(){
+                    $.ajax({
+                        url: '{{ path_for("contributions", {"type": "contributions"}) }}',
+                        type: "GET",
+                        data: {
+                            ajax: true,
+                            max_amount: '{{ transaction.getMissingAmount() }}'
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#contribslist',
+                            loader: 'button'
+                        } %},
+                        success: function(res){
+                            _contribs_dialog(res, '{{ transaction.getMissingAmount() }}');
+                        },
+                        error: function() {
+                            alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
+                        }
+                    });
                 });
-                return false;
-            });
+            }
+            _btnuser_mapping();
 
-            var _contribs_dialog = function(res){
+            var _contribs_dialog = function(res, max_amount){
                 $('#contributions-modal').modal({
                     title: '{{ _T("Contributions selection")|e("js") }}',
                     class: 'contributions-selection fullscreen scrolling',
                     content: res,
                     autofocus: false
                 }).modal('show');
-                _contribs_ajax_mapper(res);
+                _contribs_ajax_mapper(res, max_amount);
             }
 
-            var _contribs_ajax_mapper = function(res){
+            var _contribs_ajax_mapper = function(res, max_amount){
                 $('.contributions-selection .filter.icon').remove();
                 $('.contributions-selection .infoline .button').remove();
                 $('.contributions-selection .contribution_row input[type=checkbox]').hide();
@@ -234,20 +237,19 @@
                 });
 
                 //Use JS to send forms
-                $('.contributions-selection form').submit(function(){
-                    var _this = $(this);
+                $('.contributions-selection form').on('submit', function(){
+                    var _form = $(this);
                     $.ajax({
-                        url: _this.attr('action'),
+                        url: _form.attr('action'),
                         type: "POST",
-                        data: _this.serialize(),
+                        data: _form.serialize(),
                         {% include "elements/js/loader.js.twig" with {
                             selector: '#contributions-modal'
                         } %},
                         success: function(res){
-                            $('#contributions-modal').modal({
-                                content: res
-                            }).modal('show');
-                            _contribs_ajax_mapper(res);
+                            $('#main-container').remove();
+                            $('#contributions-modal .content').append(res);
+                            _contribs_ajax_mapper(res, max_amount);
                         },
                         error: function() {
                             alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
@@ -259,27 +261,55 @@
                 _bindNbshow('.contributions-selection form');
 
                 //Bind pagination and ordering links
-                $('.contributions-selection .pagination a, .contributions-selection thead a').bind({
-                    click: function(){
+                $('.contributions-selection .pagination a, .contributions-selection thead a').click(function() {
+                    $.ajax({
+                        url: this.href,
+                        type: "GET",
+                        data: {
+                            ajax: true,
+                            max_amount: max_amount
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#contributions-modal'
+                        } %},
+                        success: function(res){
+                            $('#main-container').remove();
+                            $('#contributions-modal .content').append(res);
+                            _contribs_ajax_mapper(res, max_amount);
+                        },
+                        error: function() {
+                            alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
+                        },
+                    });
+                    return false;
+                });
+
+                //Bind reset filters button
+                $('#clear_filter').click(function(event) {
+                    var _this = $(this);
+                    _this.closest('form').submit(function(event) {
+                        var _form = $(this);
                         $.ajax({
-                            url: $(this).attr('href').substring($(this).attr('href').indexOf('?')) + ($(this).attr('href').indexOf('?') > -1 ? "&" : "?") + "ajax=true",
-                            type: "GET",
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: {
+                                clear_filter: true
+                            },
                             {% include "elements/js/loader.js.twig" with {
                                 selector: '#contributions-modal'
                             } %},
                             success: function(res){
-                                $('#contributions-modal').modal({
-                                    content: res
-                                }).modal('show');
-                                _contribs_ajax_mapper(res);
+                                $('#main-container').remove();
+                                $('#contributions-modal .content').append(res);
+                                _contribs_ajax_mapper(res, max_amount);
                             },
                             error: function() {
                                 alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
-                            },
+                            }
                         });
-                        return false;
-                    }
+                    });
                 });
+
                 //Select a row
                 $('.contributions-selection .contribution_row').click(function(){
                     $('.contributions-selection').modal('hide');

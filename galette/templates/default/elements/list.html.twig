@@ -6,6 +6,9 @@
 {% import "macros.twig" as macros %}
 
 {% block content %}
+    {% if mode == 'ajax' %}
+        <div id="main-container">
+    {% endif %}
     {% block search %}{% endblock %}
     {% block infoline %}
         <form action="{% if infoline.route is defined %}{{ path_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" class="ui form">
@@ -30,13 +33,15 @@
         {% endif %}
                 </div>
             </div>
-            {% include "components/forms/csrf.html.twig" %}
+            {% if mode != 'ajax' %}
+                {% include "components/forms/csrf.html.twig" %}
+            {% endif %}
         </form>
     {% endblock %}
     <form action="{%  if form.route is defined %}{{ path_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
         <div class="ui basic fitted segment">
 
-        {% if batch_actions is defined and batch_actions|length > 0 %}
+        {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
             {{ macros.drawBatchActionsList(batch_actions) }}
         {% endif %}
 
@@ -76,7 +81,7 @@
                 </tfoot>
             </table>
 
-        {% if batch_actions is defined and batch_actions|length > 0 %}
+        {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
             {{ macros.drawBatchActionsList(batch_actions) }}
         {% endif %}
 
@@ -96,7 +101,10 @@
         {% block extra_form %}{% endblock %}
         {% include "components/forms/csrf.html.twig" %}
     </form>
-    {% block legend %}{% endblock %}
+    {% if mode == 'ajax' %}
+        {% block legend %}{% endblock %}
+    </div>
+    {% endif %}
 {% endblock %}
 
 {% set _legend_block = block('legend') %}
