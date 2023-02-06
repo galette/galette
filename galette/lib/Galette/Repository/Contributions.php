@@ -276,8 +276,9 @@ class Contributions
 
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
-
-            $this->sum = round($result->contribsum, 2);
+            if ($result->contribsum) {
+                $this->sum = round($result->contribsum, 2);
+            }
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
