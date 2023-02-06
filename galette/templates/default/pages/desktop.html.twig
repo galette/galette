@@ -15,18 +15,20 @@
                         </p>
                     </div>
                     <div class="sixteen wide column">
-        {% if not telemetry_sent %}
-                        <a id="telemetry" class="large ui orange button" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
-                            <i class="chart bar icon"></i>
-                            {{ _T("Telemetry") }}
-                        </a>
-        {% endif %}
-        {% if not registered %}
-                        <a class="large ui orange button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
-                            <i class="id card icon"></i>
-                            {{ _T("Register") }}
-                        </a>
-        {% endif %}
+                        <div class="ui wrapping spaced buttons">
+            {% if not telemetry_sent %}
+                            <a id="telemetry" class="large ui orange button" href="#" title="{{ _T("Send anonymous and imprecise data about your Galette instance") }}">
+                                <i class="chart bar icon"></i>
+                                {{ _T("Telemetry") }}
+                            </a>
+            {% endif %}
+            {% if not registered %}
+                            <a class="large ui orange button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
+                                <i class="id card icon"></i>
+                                {{ _T("Register") }}
+                            </a>
+            {% endif %}
+                        </div>
                         <div class="jsonly hidden ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
                             <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1" {% if hide_telemetry %} checked="checked"{% endif %} />
                             <label for="hide_telemetry">{{ _T("Hide this panel") }}</label>
