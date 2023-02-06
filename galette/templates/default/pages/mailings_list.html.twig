@@ -165,7 +165,9 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        {% include "elements/js/removal.js.twig" %}
+        {% include "elements/js/removal.js.twig" with {
+            single_action: "true"
+        } %}
 
         {# Preview popup #}
         $('.showdetails').click(function(){
