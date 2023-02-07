@@ -150,6 +150,8 @@ class DynamicTranslationsController extends AbstractController
 
         $params['text_orig'] = $text_orig;
 
+        $params['mode'] = $request->isXhr() ? 'ajax' : '';
+
         // display page
         $this->view->render(
             $response,
@@ -171,8 +173,10 @@ class DynamicTranslationsController extends AbstractController
     {
         $post = $request->getParsedBody();
         $post['text_orig'] = htmlspecialchars($post['text_orig'], ENT_QUOTES);
+        $redirect_url = $post['redirect_uri'];
         $error_detected = [];
 
+        unset($post['redirect_uri']);
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($post['new']) && $post['new'] == 'true') {
                 //create translation if it does not exists yet
@@ -235,11 +239,17 @@ class DynamicTranslationsController extends AbstractController
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor(
-                'dynamicTranslations',
-                ['text_orig' => $post['text_orig']]
-            ));
+        if (!$redirect_url) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor(
+                    'dynamicTranslations',
+                    ['text_orig' => $post['text_orig']]
+                ));
+        } else {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $redirect_url);
+        }
     }
 }

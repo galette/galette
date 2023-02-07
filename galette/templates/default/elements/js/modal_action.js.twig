@@ -1,8 +1,11 @@
 {% if selector is not defined %}
-    {% set selector = '.single-action' %}
+    {% set selector = '.single-custom-action' %}
 {% endif %}
 {% if method is not defined %}
     {% set method = 'GET' %}
+{% endif %}
+{% if datatype is not defined %}
+    {% set datatype = 'html' %}
 {% endif %}
             $('{{ selector }}').click(function(event) {
                 event.preventDefault();
@@ -11,15 +14,23 @@
                 $.ajax({
                     url: {% if actionurl is not defined %}_url{% else %}'{{ actionurl|raw }}'{% endif %},
                     type: "{{ method }}",
+                    datatype: "{{ datatype }}",
                     {% include "elements/js/loader.js.twig" %},
                     success: function(res) {
+{% if extra_success is defined %}
+                        {{ extra_success|raw }}
+{% endif %}
                         $.modal({
                             title: '{{ modaltitle }}',
                             class: 'modal-form{% if modal_class is defined %} {{ modal_class }}{% endif %}',
                             classContent: '{% if modalcontent_class is defined %}{{ modalcontent_class }}{% endif %}',
                             content: res,
                             onApprove: function() {
+{% if modalapprove is defined %}
+                                {{ modalapprove|raw }}
+{% else %}
                                 $('.modal-form form').submit();
+{% endif %}
                             },
                             actions: [{
                                 text    : '{% if approve_text is not defined %}{{ _T("Save")|e("js") }}{% else %}{{ approve_text }}{% endif %}',

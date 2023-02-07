@@ -48,6 +48,7 @@
                         </a>
                         <a
                             href="{{ url_for('dynamicTranslations', {'text_orig': field.getName(false)|escape}) }}"
+                            class="action single-translate"
                         >
                             <i class="ui language grey icon" aria-hidden="true"></i>
                             <span class="sr-only">{{ _T("Translate '%s' field")|replace({'%s': field.getName()|escape}) }}</span>

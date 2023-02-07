@@ -74,10 +74,33 @@
             }
             _addDynField();
 
-            {% include "elements/js/simple_modal_action.js.twig" with {
-                modaltitle: _T("Edit field")|e("js"),
+            {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
+                modaltitle: _T("Edit field")|e("js"),
                 modal_class: "mini",
+            } %}
+
+            {% set extra_success = "
+                $('.modal-form form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: 'POST',
+                        datatype: 'json',
+                        data: _data,
+                        error: function() {
+                            alert('{{ _T(\"An error occurred :(\")|e(\"js\") }}');
+                        }
+                    });
+                });
+            " %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-translate",
+                extra_success: extra_success,
+                modaltitle: _T("Translate labels")|e("js"),
+                modalcontent_class: "scrolling"
             } %}
         </script>
 {% endblock %}
