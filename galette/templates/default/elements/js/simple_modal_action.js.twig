@@ -1,0 +1,37 @@
+{% if selector is not defined %}
+    {% set selector = '.single-action' %}
+{% endif %}
+{% if method is not defined %}
+    {% set method = 'GET' %}
+{% endif %}
+            $('{{ selector }}').click(function(event) {
+                event.preventDefault();
+                var _this = $(this);
+                var _url = _this.attr('href');
+                $.ajax({
+                    url: {% if actionurl is not defined %}_url{% else %}'{{ actionurl|raw }}'{% endif %},
+                    type: "{{ method }}",
+                    {% include "elements/js/loader.js.twig" %},
+                    success: function(res) {
+                        $.modal({
+                            title: '{{ modaltitle }}',
+                            class: 'modal-form{% if modal_class is defined %} {{ modal_class }}{% endif %}',
+                            classContent: '{% if modalcontent_class is defined %}{{ modalcontent_class }}{% endif %}',
+                            content: res,
+                            onApprove: function() {
+                                $('.modal-form form').submit();
+                            },
+                            actions: [{
+                                text    : '{% if approve_text is not defined %}{{ _T("Save")|e("js") }}{% else %}{{ approve_text }}{% endif %}',
+                                class   : 'blue approve'
+                            }, {
+                                text    : '{{ _T("Close")|e("js") }}',
+                                class   : 'cancel'
+                            }]
+                        }).modal('show');
+                    },
+                    error: function() {
+                        alert("{{ _T("An error occurred :(")|e("js") }}");
+                    }
+                });
+            });
