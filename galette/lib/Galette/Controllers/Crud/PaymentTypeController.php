@@ -150,6 +150,8 @@ class PaymentTypeController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ptype = new PaymentType($this->zdb, $id);
+        $mode = ($request->isXhr() ? 'ajax' : '');
+
 
         // display page
         $this->view->render(
@@ -157,7 +159,8 @@ class PaymentTypeController extends CrudController
             'pages/configuration_payment_type_form.html.twig',
             [
                 'page_title'    => _T("Edit payment type"),
-                'ptype'         => $ptype
+                'ptype'         => $ptype,
+                'mode'         => $mode
             ]
         );
         return $response;

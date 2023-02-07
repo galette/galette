@@ -53,7 +53,7 @@
                         <td class="center actions_row">
                             <a
                                 href="{{ url_for('editTitle', {'id': title.id}) }}"
-                                class="tooltip action"
+                                class="action single-edit"
                             >
                                 <i class="ui edit icon"></i>
                                 <span class="sr-only">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
@@ -63,7 +63,7 @@
             {% else %}
                             <a
                                 href="{{ url_for('removeTitle', {'id': title.id}) }}"
-                                class="delete tooltip"
+                                class="delete "
                             >
                                 <i class="ui trash red icon"></i>
                                 <span class="sr-only">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
@@ -81,6 +81,38 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
+            $('.single-edit').click(function(event){
+                event.preventDefault();
+                var _this = $(this);
+                var _url = _this.attr('href');
+                $.ajax({
+                    url: _url,
+                    type: "GET",
+                    {% include "elements/js/loader.js.twig" %},
+                    success: function(res){
+                        $.modal({
+                            title: '{{ _T("Edit title") }}',
+                            class: 'modal-form tiny',
+                            classContent: 'scrolling',
+                            content: res,
+                            onApprove: function() {
+                                $('.modal-form form').submit();
+                            },
+                            actions: [{
+                                text    : '{{ _T("Save")|e("js") }}',
+                                class   : 'blue approve'
+                            }, {
+                                text    : '{{ _T("Close")|e("js") }}',
+                                class   : 'cancel'
+                            }]
+                        }).modal('show');
+                    },
+                    error: function() {
+                        alert("{{ _T("An error occurred :(")|e("js") }}");
+                    }
+                });
+            });
+
             {% include "elements/js/removal.js.twig" with {
                 single_action: "true"
             } %}

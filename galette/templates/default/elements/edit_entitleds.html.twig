@@ -84,14 +84,14 @@
                 <td class="center actions_row">
                     <a
                         href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}"
-                        class="action tooltip"
+                        class="action single-edit"
                     >
                         <i class="ui edit icon"></i>
                         <span class="sr-only">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                     <a
                         href="{{ url_for('removeEntitled', {'class': url_class, 'id': eid}) }}"
-                        class="delete tooltip"
+                        class="delete"
                     >
                         <i class="ui trash red icon"></i>
                         <span class="sr-only">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>

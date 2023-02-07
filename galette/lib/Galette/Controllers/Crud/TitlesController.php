@@ -145,6 +145,7 @@ class TitlesController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $title = new Title($id);
+        $mode = ($request->isXhr() ? 'ajax' : '');
 
         // display page
         $this->view->render(
@@ -152,7 +153,8 @@ class TitlesController extends CrudController
             'pages/configuration_title_form.html.twig',
             [
                 'page_title'    => _T("Edit title"),
-                'title'         => $title
+                'title'         => $title,
+                'mode'         => $mode
             ]
         );
         return $response;

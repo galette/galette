@@ -12,6 +12,47 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
+            $('.single-edit').click(function(event){
+                event.preventDefault();
+                var _this = $(this);
+                var _url = _this.attr('href');
+                var _type = _url.split('/').slice(1, 2)[0];
+                switch (_type) {
+                    case 'status':
+                        _title = '{{ _T("Edit status") }}';
+                        break;
+                    case 'contributions-types':
+                        _title = '{{ _T("Edit contribution type") }}';
+                        break;
+                }
+                $.ajax({
+                    url: _url,
+                    type: "GET",
+                    {% include "elements/js/loader.js.twig" %},
+                    success: function(res){
+                        $.modal({
+                            title: _title,
+                            class: 'modal-form tiny',
+                            classContent: 'scrolling',
+                            content: res,
+                            onApprove: function() {
+                                $('.modal-form form').submit();
+                            },
+                            actions: [{
+                                text    : '{{ _T("Save")|e("js") }}',
+                                class   : 'blue approve'
+                            }, {
+                                text    : '{{ _T("Close")|e("js") }}',
+                                class   : 'cancel'
+                            }]
+                        }).modal('show');
+                    },
+                    error: function() {
+                        alert("{{ _T("An error occurred :(")|e("js") }}");
+                    }
+                });
+            });
+
             {% include "elements/js/removal.js.twig" with {
                 single_action: "true"
             } %}
