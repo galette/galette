@@ -12,46 +12,17 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
-            $('.single-edit').click(function(event){
-                event.preventDefault();
-                var _this = $(this);
-                var _url = _this.attr('href');
-                var _type = _url.split('/').slice(1, 2)[0];
-                switch (_type) {
-                    case 'status':
-                        _title = '{{ _T("Edit status")|e("js") }}';
-                        break;
-                    case 'contributions-types':
-                        _title = '{{ _T("Edit contribution type")|e("js") }}';
-                        break;
-                }
-                $.ajax({
-                    url: _url,
-                    type: "GET",
-                    {% include "elements/js/loader.js.twig" %},
-                    success: function(res){
-                        $.modal({
-                            title: _title,
-                            class: 'modal-form mini',
-                            classContent: 'scrolling',
-                            content: res,
-                            onApprove: function() {
-                                $('.modal-form form').submit();
-                            },
-                            actions: [{
-                                text    : '{{ _T("Save")|e("js") }}',
-                                class   : 'blue approve'
-                            }, {
-                                text    : '{{ _T("Close")|e("js") }}',
-                                class   : 'cancel'
-                            }]
-                        }).modal('show');
-                    },
-                    error: function() {
-                        alert("{{ _T("An error occurred :(")|e("js") }}");
-                    }
-                });
-            });
+            {% set type = path_for("doAddEntitled", {"class": url_class})|split("/")|slice(1, 2)[0] %}
+            {% if type == "status" %}
+                {% set modaltitle = _T("Edit status")|e("js") %}
+            {% elseif type == "contributions-types" %}
+                {% set modaltitle = _T("Edit contribution type")|e("js") %}
+            {% endif %}
+            {% include "elements/js/simple_modal_action.js.twig" with {
+                modaltitle: modaltitle,
+                selector: ".single-edit",
+                modal_class: "mini",
+            } %}
 
             {% include "elements/js/removal.js.twig" with {
                 single_action: "true"
