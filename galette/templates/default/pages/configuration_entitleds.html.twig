@@ -14,7 +14,7 @@
         $(function() {
             {% if url_class == "status" %}
                 {% set modaltitle = _T("Edit status")|e("js") %}
-            {% elseif type == "contributions-types" %}
+            {% elseif url_class == "contributions-types" %}
                 {% set modaltitle = _T("Edit contribution type")|e("js") %}
             {% endif %}
             {% include "elements/js/modal_action.js.twig" with {
