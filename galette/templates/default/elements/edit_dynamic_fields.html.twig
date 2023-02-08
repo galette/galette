@@ -40,18 +40,18 @@
                             <span class="sr-only">{{ _T("Edit '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
                         <a
-                            href="{{ url_for('removeDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
-                            class="delete"
-                        >
-                            <i class="ui trash red icon" aria-hidden="true"></i>
-                            <span class="sr-only">{{ _T("Delete '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
-                        </a>
-                        <a
                             href="{{ url_for('dynamicTranslations', {'text_orig': field.getName(false)|escape}) }}"
                             class="action single-translate"
                         >
                             <i class="ui language grey icon" aria-hidden="true"></i>
                             <span class="sr-only">{{ _T("Translate '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                        </a>
+                        <a
+                            href="{{ url_for('removeDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
+                            class="delete"
+                        >
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                            <span class="sr-only">{{ _T("Delete '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
     {% if field.getIndex() == 1 %}
                         <i class="ui icon">&nbsp;</i>
