@@ -12,8 +12,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
-            {% set type = path_for("doAddEntitled", {"class": url_class})|split("/")|slice(1, 2)[0] %}
-            {% if type == "status" %}
+            {% if url_class == "status" %}
                 {% set modaltitle = _T("Edit status")|e("js") %}
             {% elseif type == "contributions-types" %}
                 {% set modaltitle = _T("Edit contribution type")|e("js") %}
