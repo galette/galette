@@ -35,4 +35,4 @@
  * @since     Available since 0.7dev - 2009-03-13
  */
 
-define('GALETTE_PHP_MIN', '8.0');
+define('GALETTE_PHP_MIN', '8.1');
