@@ -101,6 +101,9 @@
             {# Main form entries #}
             {% include "components/form.html.twig" %}
 
+            {# Dynamic entries #}
+            {% include "components/dynamic_fields.html.twig" with {object: member} %}
+
     {% if not member.id and not self_adh %}
         {% if login.isAdmin() or login.isStaff() %}
             <div class="ui center aligned yellow segment">
