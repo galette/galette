@@ -1,4 +1,66 @@
 /* == Old styles */
+
+.inactif, .inactive {
+    color: #777777;
+    font-style: italic;
+}
+
+.cssform p,
+.cssform div.p {
+    clear: left;
+    margin: 0;
+    padding: 5px 0;
+    padding-left: 22em; /*width of left column containing the label elements plus 1*/
+    border-top: 1px dashed gray;
+    height: 1%;
+}
+
+/* no border on the first 'p' child */
+.cssform p:nth-child(2), #addfield p:first-child, .cssform legend+p/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/ {
+    border-top:none;
+}
+/* If there is a div, the preceding rules does not apply to the correct element :( */
+.cssform div p:nth-child(2) {
+    border-top:1px dashed gray;
+}
+/* But w do not whant border on the first element thought :) */
+.cssform div p:nth-child(1) {
+    border-top:none;
+}
+
+.bline {
+    font-weight: bold;
+    background-color: #DDDDFF;
+    padding:0.1em 0.3em;
+    margin-bottom:1em;
+    display:block;
+    vertical-align:top;
+    padding:3px;
+}
+
+.cssform .bline {
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0 0 0 -22em;
+    width: 19.9em;
+}
+
+.infoline{
+    vertical-align: top;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.infoline td {
+    vertical-align: bottom;
+    width: 33%;
+}
+
+.infoline ul {
+    margin: 0px;
+    list-style-type: none;
+}
+
 .debuginfos span{
     display: block;
     font-family: monospace;
@@ -41,30 +103,6 @@ ul.leaders span + span {
     right: 0;
 }
 
-.emptylist {
-    background-color: #EEEEEE;
-    text-align: center;
-    font-style: italic;
-}
-
-.inactif, .inactive {
-    color: #777777;
-    font-style: italic;
-}
-
-.acronyme {
-    color: #AAAAAA;
-    font-style: italic;
-}
-
-.note {
-    margin:0;
-}
-
-.exemple, .disabled, .disabled a {
-    color: #999999;
-}
-
 #legende {
     border: 1px #7777FF solid;
     width:40%;
@@ -91,67 +129,10 @@ ul.leaders span + span {
 #legende td, #legende th {
     padding-left: 2px;
 }
-
-.ui-dialog > #legende {
-    border:none;
-    margin:0;
-}
-
-.color-sample {
+#legende .color-sample {
     border-color: #AAAAAA;
     border-width: 1px;
     border-style: solid;
-}
-
-#listfilter form {
-    margin-bottom: 0px;
-}
-
-.infoline{
-    vertical-align: top;
-    width: 100%;
-    margin-bottom: 1em;
-}
-
-.infoline td {
-    vertical-align: bottom;
-    width: 33%;
-}
-
-.infoline ul {
-    margin: 0px;
-    list-style-type: none;
-}
-
-.infoline2 {
-    margin-top: 2px;
-}
-
-#input-table{
-    margin:0.5em 1em;
-    background-color:white;
-}
-
-#input-table .libelle {
-    font-size: 11px;
-    text-align: left;
-    background-color: #DDDDFF;
-    font-weight: normal;
-}
-
-#input-table .header {
-    text-align: left;
-    font-weight: bold;
-}
-
-#input-table tr:hover {
-    background-color: #EEEEEE;
-}
-
-#tables_list{
-    width:25em;
-    margin-left:auto;
-    margin-right:auto;
 }
 
 .sql_log {
@@ -164,234 +145,19 @@ ul.leaders span + span {
     background-color: rgba(221,221,255,0.5);
 }
 
-.mail_preview {
-    height: 230px;
-    vertical-align: top;
-    padding: 5px;
-}
-
-.mailing_write p {
-    display:block!important;
-}
-
-#mail_preview div:nth-child(2) {
-    max-height: 20em;
-    overflow: auto;
-}
-
-.button-container
-{
-    text-align: center;
-}
-
-.bigtable
-{
-    text-align: center;
-}
-.bigtable table
-{
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #BBBBBB;
-}
-.bigtable th
-{
-    font-weight: normal;
-    text-align: left;
-    vertical-align: top;
-    background-color: #DDDDFF;
-    padding: 0px 5px 0px 5px;
-}
-.bigtable td
-{
-    background-color: #EEEEEE;
-    padding: 0px 5px 0px 5px;
-    text-align: left;
-}
-.bigtable .separator
-{
-    padding:.3em 0 .1em;
-    background-color: #FFFFFF;
-    font-weight: bold;
-    text-align: center;
-}
-.bigtable .subtitle
-{
-    color:#0C0CC0;
-    padding: 1em 5px 0.5em 5px;
-    font-weight:bold;
-    border-top:1px solid;
-}
-
-.required{
-    color:#FF0000;
-    font-weight:bold;
-}
-
-/** Accessibility **/
-fieldset{
-    border: 1px solid #BBBBBB;
-    margin:0 1em 1em;
-    text-align:left;
-    position:relative;
-    padding:.5em;
-}
-fieldset.large{
-    margin:0 1% 1em 1%;
-    clear:right;
-}
-fieldset ul, ul.notype{
-    list-style-type:none;
-    margin:0;
-    padding:0;
-}
-fieldset li{
-    margin:0.1em 0;
-    clear:left;
-}
-
-.cssform, .galette_form { background-color:white; }
-.cssform ul, .galette_form ul {
-    padding:0;
-}
-.cssform li, .galette_form li {
-    clear:none;
-}
-.cssform p, .cssform div.p,
-.galette_form p, .galette_form div.p {
-    clear: left;
-    margin: 0;
-    padding: 5px 0;
-    padding-left: 22em; /*width of left column containing the label elements plus 1*/
-    border-top: 1px dashed gray;
-    height: 1%;
-}
-
-/* no border on the first 'p' child */
-.cssform p:nth-child(2), #addfield p:first-child, .cssform legend+p/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/
-.galette_form p:nth-child(2), .galette_form+p, .galette_form legend+p {
-    border-top:none;
-}
-/* If there is a div, the preceding rules does not apply to the correct element :( */
-.cssform div p:nth-child(2),
-.galette_form div p:nth-child(2) {
-    border-top:1px dashed gray;
-}
-/* But w do not whant border on the first element thought :) */
-.cssform div p:nth-child(1),
-.galette_form div p:nth-child(1) {
-    border-top:none;
-}
-
-.cssform p.exemple {
-    border: none!important;
-}
-
-.cssform p.notform{
-    padding-left:0;
-    border:none;
-    height:auto;
-}
-
-.bline,
-.galette_form label {
-    font-weight: bold;
-    background-color: #DDDDFF;
-    padding:0.1em 0.3em;
-    margin-bottom:1em;
-    display:block;
-    vertical-align:top;
-    padding:3px;
-}
-
-th.bline, td.bline{
-    font-weight: bold;
-    background-color: #DDDDFF;
-    padding:0.1em 0.3em;
-    margin-bottom:0;
-    display:block;
-    text-align:left;
-}
-
-.cssform .bline, .galette_form label, .galette_form .bline {
-    vertical-align: middle;
-    display: inline-block;
-    margin: 0 0 0 -22em;
-    width: 19.9em;
-}
-
-#rights .bline, #rights.galette_form label, #rights.galette_form .bline {
-    margin: 0 0 0 -22em;
-    width: 30em;
-}
-
-.galette_form .radios label,
-.galette_form label.labelalign {
-    width: auto;
-    background: none;
-    margin: 0;
-    padding: 0;
-    font-weight: normal;
-}
-
-label.simplelabel {
-    margin: 0;
-    display: inline;
-    width: auto;
-    vertical-align: baseline;
-    background: inherit;
-    font-weight: inherit;
-}
-
-.galette_form textarea,
-.cssform textarea{
-    width:90%;
-    height: 150px;
-    padding-right: 8px;
-}
-
-.cssform .ui-button-text-only .ui-button-text {
-    padding: .1em 1em;
-}
-
-.galette_form img.mdp_img {
-    vertical-align: top;
-}
-
-.picker{
-    padding:0 1em;
-}
-
-.cssform > .fields_list {
-    display: block;
-}
-.fields_list li{
-    line-height:1.5em;
-    margin-top:.3em;
-    padding:.1em .2em;
-    vertical-align: middle;
-    cursor: move;
-}
-
 .yesno > input, .yesnoadmin > input {
     margin: 0.2em;
     vertical-align: bottom;
 }
 
-.fields_list label {
-    padding:0 .5em 0 .1em;
+.exemple,
+.disabled,
+.disabled a {
+    color: #999999;
 }
 
-#member_stateofdue {
-    margin: 0 auto .5em;
-    width: 85%;
-    padding: .1em 0;
-    border-radius: 6px;
+.button-container {
     text-align: center;
-}
-
-#ContribsAllTime {
-    width: 800px;
 }
 
 /* =/ Old styles */
