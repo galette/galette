@@ -2,7 +2,34 @@
        Galette Overrides
 *******************************/
 
+/*--------------------------
+     Ajax select members
+---------------------------*/
+#selected_members .bottom.segment {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/*------------------------------------------------
+     Actions buttons' container on member page
+-------------------------------------------------*/
 .ui.right.floated.segment {
   margin-top: 0;
   margin-right:0;
+}
+
+/*------------------------------------------------
+     Segment with accordion style
+     To use attached with a top header
+-------------------------------------------------*/
+.ui.attached.accordion-styled.segment {
+  border: 1px solid @primaryColor;
+  border-top: none;
+}
+
+/*-------------
+     No JS
+--------------*/
+.nojs .sortable-items .ui.segment {
+  cursor: auto;
 }

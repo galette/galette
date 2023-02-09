@@ -2,24 +2,32 @@
          Galette Overrides
 *******************************/
 
-html {
-  overflow: hidden;
-}
-
+/*---------------
+     Global
+----------------*/
 .displaynone {
   display: none !important;
 }
 
-#back2top {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  opacity: 0.45;
+.language span {
+  text-transform: uppercase;
 }
 
-#back2top:hover {
-  opacity: 1;
+/*--------------------------------
+     Base layout and navigation
+---------------------------------*/
+html {
+  overflow: hidden;
+}
+
+body.pushable:not(.loggedin) > .pusher {
+    display: flex;
+    justify-content: center;
+}
+
+section.content,
+.front-page section:not(.content) {
+  padding: 1.25rem;
 }
 
 #top-navbar,
@@ -37,21 +45,16 @@ aside.computer.toc {
   margin-left: .5rem;
 }
 
-.language span {
-  text-transform: uppercase;
-}
-
-body.pushable:not(.loggedin) > .pusher {
-    display: flex;
-    justify-content: center;
-}
-
-.ui.fixed.menu + .pusher {
-  padding-top: 4.5rem;
+.ui.grid.align-items-center {
+  align-items: center;
 }
 
 .ui.grid > aside.column:not(.row) {
   padding-bottom: 2rem;
+}
+
+.ui.fixed.menu + .pusher {
+  padding-top: 4.5rem;
 }
 
 aside.toc {
@@ -63,100 +66,10 @@ aside .ui.vertical.menu {
   max-width: 100%;
 }
 
-section.content,
-.front-page section:not(.content) {
-  padding: 1.25rem;
-}
-
-#recup_mailing.ui.tertiary.button,
-#recup_mailing.ui.button > .icon {
-  margin: 0 !important;
-}
-
-#main-activities a i {
-  opacity: .6;
-}
-
-#main-activities a:hover i {
-  opacity: 1;
-  color: @primaryColor;
-}
-
-#main-activities .header {
-  color: @textColor;
-}
-
-.ui.floating.compact.labeled.dropdown.button {
-  .menu {
-    min-width: auto;
-  }
-  .label + .dropdown.icon {
-    margin-top: .4em;
-  }
-}
-
-.filters .fields .fields {
-  margin: 0;
-}
-
-.filters .fields .field.flexend {
-  display: flex;
-  align-items: flex-end;
-}
-
-.ui .fields:first-child:last-child {
-  margin-bottom: 0;
-}
-
-.ui.attached.accordion-styled.header,
-.ui.attached.accordion-styled.segment {
-  border: 1px solid @primaryColor;
-}
-.ui.attached.accordion-styled.header {
-  background: @lightPrimaryColor;
-  color: darken(@textColor, 15);
-  border-bottom: none;
-}
-.ui.attached.accordion-styled.segment {
-  border-top: none;
-}
-
-details.ui.basic.styled.accordion .title {
-  background: transparent;
-  color: @textColor;
-}
-
-ul.sortable-items {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-.sortable-items {
-  .ui.segment {
-    cursor: move;
-    background-color: @evenLineBackgroundColor;
-
-    &:hover {
-      background-color: @activeLineBackgroundColor;
-    }
-  }
-}
-
 footer,
 footer .ui.horizontal.list .list > .item,
 footer .ui.horizontal.list > .item{
   font-size: .95rem;
-}
-
-#selected_members {
-  .bottom.segment {
-    max-height: 320px;
-    overflow-y: auto;
-  }
-}
-
-.ui.grid.align-items-center {
-  align-items: center;
 }
 
 @media only screen and (max-width: 991px) {
@@ -173,9 +86,7 @@ footer .ui.horizontal.list > .item{
       overflow-x: visible;
       -webkit-overflow-scrolling: auto;
   }
-  .loggedin .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) {
-    display: none;
-  }
+  .loggedin .ui.top.menu:not(.vertical):not(.tabular):not(.tabs),
   .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header,
   .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.toc {
     display: none;
@@ -183,6 +94,7 @@ footer .ui.horizontal.list > .item{
   .loggedin .ui.fixed.menu + .pusher {
     padding-top: 0;
   }
+
   aside.toc {
     display: block;
     position: fixed !important;
@@ -191,15 +103,18 @@ footer .ui.horizontal.list > .item{
     width: 260px;
     padding: 1.25rem;
   }
+
   body:not(.front-page) section.content {
     margin-left: 260px;
     flex: 1 1 auto;
     padding: 1.25rem;
   }
+
   section.desktop .container {
     max-width: 695px;
     margin: 0 auto;
   }
+
   /*
    * .pusher doesn't play well with sticky position children.
    * It is required for sidebars, which are only used at the moment on
@@ -220,12 +135,65 @@ footer .ui.horizontal.list > .item{
   aside.toc {
     width: 350px;
   }
+
   body:not(.front-page) section.content {
     margin-left: 350px;
   }
+
   section.desktop .container {
     max-width: 850px;
   }
+}
+
+/*---------------------------------
+    Desktop main activities
+----------------------------------*/
+#main-activities a i {
+  opacity: .6;
+}
+
+#main-activities a:hover i {
+  opacity: 1;
+  color: @primaryColor;
+}
+
+#main-activities .header {
+  color: @textColor;
+}
+
+/*-----------------------
+    Sortable items
+------------------------*/
+ul.sortable-items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sortable-items {
+  .ui.segment {
+    cursor: move;
+    background-color: @evenLineBackgroundColor;
+
+    &:hover {
+      background-color: @activeLineBackgroundColor;
+    }
+  }
+}
+
+/*-------------------------
+    Back top top button
+--------------------------*/
+#back2top {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  opacity: 0.45;
+}
+
+#back2top:hover {
+  opacity: 1;
 }
 
 /*------------------------------------------------
@@ -246,9 +214,11 @@ footer .ui.horizontal.list > .item{
 .note-modal .note-group-select-from-files {
   display: none !important;
 }
+
 .note-modal.open {
   background: rgba(0,0,0,0.5);
 }
+
 .note-modal .note-modal-content {
   position: fixed;
   top: 50%;
@@ -256,27 +226,21 @@ footer .ui.horizontal.list > .item{
   transform: translateX(-50%) translateY(-50%);
   margin: 30px 0;
 }
+
 .required .note-editable {
   font-weight: normal;
 }
+
 .note-modal .note-modal-footer {
   height: 62px;
 }
+
 .note-modal .note-btn {
   padding: 10px;
 }
+
 @media only screen and (min-width: 768px) {
   .note-modal-content {
     margin: 0;
   }
-}
-
-/*-------------
-     No JS
---------------*/
-.nojs select[multiple].ui.dropdown {
-  height: 7rem;
-}
-.nojs .sortable-items .ui.segment {
-  cursor: auto;
 }

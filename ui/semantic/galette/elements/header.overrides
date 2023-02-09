@@ -2,12 +2,29 @@
          Galette Overrides
 *******************************/
 
+/*--------------------------
+     Page's main title
+---------------------------*/
 h1.ui.block.header {
   color: darken(@textColor, 15);
 }
 
+/*-------------------------------------------------------
+     Brand block on top of public pages and main menu
+--------------------------------------------------------*/
 .ui.block.brand.header {
   background: rgba(255,255,255,.6);
   box-shadow: @blockBoxShadow;
   border: 0px;
+}
+
+/*------------------------------------------------
+     Header with accordion style
+     To use attached with a segment
+-------------------------------------------------*/
+.ui.attached.accordion-styled.header {
+  background: @lightPrimaryColor;
+  color: darken(@textColor, 15);
+  border: 1px solid @primaryColor;
+  border-bottom: none;
 }

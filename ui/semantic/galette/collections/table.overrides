@@ -20,6 +20,11 @@ table.listing tbody tr.even > td {
 table.listing tbody tr:hover > td {
     background-color: @activeLineBackgroundColor !important;
 }
+td.emptylist {
+    background-color: #eeeeee;
+    text-align: center;
+    font-style: italic;
+}
 
 /*-------------------------
      Membership status

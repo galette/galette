@@ -2,11 +2,9 @@
          Galette Overrides
 *******************************/
 
-
 /*--------------------
     Gaptcha Input
 ---------------------*/
-
 .ui.form input[type="gaptcha"] {
   width: 100px;
   vertical-align: top;
@@ -29,4 +27,23 @@
   border-radius: @inputBorderRadius;
   box-shadow: @inputBoxShadow;
   transition: @inputTransition;
+}
+
+/*--------------------
+      Field
+---------------------*/
+.ui .fields:first-child:last-child {
+  margin-bottom: 0;
+}
+
+/*-------------------------
+      Filters' fields
+--------------------------*/
+.filters .fields .fields {
+  margin: 0;
+}
+
+.filters .fields .field.flexend {
+  display: flex;
+  align-items: flex-end;
 }

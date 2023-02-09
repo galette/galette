@@ -2,20 +2,50 @@
          Galette Overrides
 *******************************/
 
+/*----------------------------------------------
+     Reset color of simple buttons with icon
+-----------------------------------------------*/
 a.ui.button i.icon,
 a.ui.button:hover i.icon {
   color: inherit;
 }
 
+/*-----------------------------------------------------------------
+     Darken default primary color (orange) on buttons
+------------------------------------------------------------------*/
 .ui.primary.button,
 .ui.primary.buttons .button {
   color: darken(@textColor, 15);
 }
 
+/*-----------------------------------------------------------------
+     Remove border radius on dropdown button when opened upward
+     Used for the batch actions menu
+------------------------------------------------------------------*/
 .ui.upward.dropdown.button:not(.pointing):not(.floating).batch-select-action.active {
   border-radius: 0;
 }
 
 .ui.compact.button.delcriteria {
   margin-left: 1rem;
+}
+
+/*-------------------------------------------------
+     Dropdown actions button on member pages
+--------------------------------------------------*/
+.ui.floating.compact.labeled.dropdown.button {
+  .menu {
+    min-width: auto;
+  }
+  .label + .dropdown.icon {
+    margin-top: .4em;
+  }
+}
+
+/*----------------------------------------------
+     Resume existing email button
+-----------------------------------------------*/
+#recup_mailing.ui.tertiary.button,
+#recup_mailing.ui.button > .icon {
+  margin: 0 !important;
 }
