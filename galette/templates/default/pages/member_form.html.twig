@@ -64,15 +64,15 @@
                     <span id="parent_id_elt" class="">
                         <div id="parent_id" class="jsonly search-dropdown ui input nochosen">
                             <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
-                            <i class="jsonly hidden dropdown icon"></i>
-                            <div class="jsonly hidden default text">{{ _T("Search for name or ID and pick member") }}</div>
-                            <div class="jsonly hidden menu">
+                            <i class="jsonly displaynone dropdown icon"></i>
+                            <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
+                            <div class="jsonly displaynone menu">
             {% for k, v in members.list %}
                                 <div class="item" data-value="{{ k }}">{{ v }}</div>
             {% endfor %}
                             </div>
                         </div>
-                        <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
+                        <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                     </span>
             {% if member.isDuplicate() %}
                     <input type="hidden" name="duplicate" value="1" />
@@ -197,9 +197,9 @@
             }
 
             $(function() {
-                $('#company_field.nocompany').addClass('hidden');
+                $('#company_field.nocompany').addClass('displaynone');
                 $('#is_company').change(function(){
-                    $('#company_field').toggleClass('hidden');
+                    $('#company_field').toggleClass('displaynone');
                     $('#company_field').backgroundFade(
                         {
                             sColor:'#ffffff',
@@ -339,14 +339,14 @@
     {% if not self_adh and not member.hasChildren() %}
                 {# Parent selection #}
         {% if not member.isDuplicate() %}
-                $('#parent_id_elt').addClass('hidden');
+                $('#parent_id_elt').addClass('displaynone');
         {% endif %}
                 $('#attach-checkbox').checkbox({
                     onChecked: function() {
-                        $('#parent_id_elt').removeClass('hidden');
+                        $('#parent_id_elt').removeClass('displaynone');
                     },
                     onUnchecked: function() {
-                        $('#parent_id_elt').addClass('hidden');
+                        $('#parent_id_elt').addClass('displaynone');
                     }
                 });
     {% endif %}

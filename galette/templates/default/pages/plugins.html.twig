@@ -30,7 +30,7 @@
                         class="toggleActivation tooltip use"
                     >
                         <i class="ui toggle on red icon"></i>
-                        <span class="sr-only">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
+                        <span class="displaynone">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
                     </a>
     {% if plugins.needsDatabase(name) %}
                     <a
@@ -39,7 +39,7 @@
                         class="initdb action tooltip"
                     >
                         <i class="ui database blue icon"></i>
-                        <span class="sr-only">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
+                        <span class="displaynone">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
                     </a>
     {% else %}
                     <i class="ui icon">&nbsp;</i>
@@ -81,7 +81,7 @@
                         class="toggleActivation tooltip delete"
                     >
                         <i class="ui toggle on grey icon"></i>
-                        <span class="sr-only">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
+                        <span class="displaynone">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
                     </a>
                     <i class="ui icon">&nbsp;</i>
                 </td>

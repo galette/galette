@@ -6,8 +6,8 @@ html {
   overflow: hidden;
 }
 
-.sr-only {
-  display: none;
+.displaynone {
+  display: none !important;
 }
 
 #back2top {

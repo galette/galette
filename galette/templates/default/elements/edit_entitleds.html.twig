@@ -17,7 +17,7 @@
         <tfoot>
             <tr>
                 <td data-scope="row">
-                    <span class="sr-only">
+                    <span class="displaynone">
 {% if class == 'Status' %}
                         {{ _T("New status") }}
 {% else %}
@@ -53,7 +53,7 @@
             <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                 <td data-scope="row">
                     {{ eid }}
-                    <span class="sr-only">
+                    <span class="displaynone">
                         <a href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}">
                             {{ _T("%s field")|replace({'%s': entry.name|escape}) }}
                         </a>
@@ -87,14 +87,14 @@
                         class="action single-edit"
                     >
                         <i class="ui edit icon"></i>
-                        <span class="sr-only">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                        <span class="displaynone">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                     <a
                         href="{{ url_for('removeEntitled', {'class': url_class, 'id': eid}) }}"
                         class="delete"
                     >
                         <i class="ui trash red icon"></i>
-                        <span class="sr-only">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                        <span class="displaynone">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                 </td>
             </tr>

@@ -60,7 +60,7 @@
                         class="tooltip"
                 >
                         <i class="icon eraser"></i>
-                        <span class="hidden">{{ _T("Show all members transactions") }}</span>
+                        <span class="displaynone">{{ _T("Show all members transactions") }}</span>
                     </a>
             {% endif %}
             {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
@@ -143,7 +143,7 @@
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
-                <span class="sr-only">
+                <span class="displaynone">
                             <a href="{{ url_for("editTransaction", {"id": transaction.id}) }}">
                                 {{ _T("Transaction %id")|replace({"%id": transaction.id}) }}
                             </a>
@@ -195,14 +195,14 @@
                             class="tooltip action"
                     >
                         <i class="ui edit icon"></i>
-                        <span class="sr-only">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <span class="displaynone">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                     <a
                             href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                             class="delete tooltip"
                     >
                         <i class="ui trash red icon"></i>
-                        <span class="sr-only">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <span class="displaynone">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                 </td>
             {% endif %}

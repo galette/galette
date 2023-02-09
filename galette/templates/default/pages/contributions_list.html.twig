@@ -99,7 +99,7 @@
                     class="tooltip"
             >
                         <i class="icon eraser"></i>
-                        <span class="hidden">{{ _T("Show all members contributions") }}</span>
+                        <span class="displaynone">{{ _T("Show all members contributions") }}</span>
                     </a>
         {% endif %}
         {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
@@ -221,7 +221,7 @@
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
-                    <span class="sr-only">
+                    <span class="displaynone">
                             <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
                                 {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
                             </a>
@@ -232,16 +232,16 @@
                                 class="tooltip"
                         >
                             <i class="ui link icon"></i>
-                            <span class="sr-only">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                            <span class="displaynone">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                         </a>
                     {% endif %}
                 {% else %}
-                    <span class="sr-only">
+                    <span class="displaynone">
                             {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
                         </span>
                     {% if contribution.isTransactionPart() %}
                         <i class="ui link icon"></i>
-                        <span class="sr-only">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                        <span class="displaynone">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                     {% endif %}
                 {% endif %}
                 {% if not contribution.isTransactionPart() %}
@@ -286,7 +286,7 @@
                             class="tooltip"
                     >
                         <i class="ui file pdf green icon"></i>
-                        <span class="sr-only">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
+                        <span class="displaynone">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
                     </a>
                     {% if (login.isAdmin() or login.isStaff()) %}
                         <a
@@ -294,14 +294,14 @@
                                 class="tooltip action"
                         >
                             <i class="ui edit icon"></i>
-                            <span class="sr-only">{{ _T("Edit the contribution") }}</span>
+                            <span class="displaynone">{{ _T("Edit the contribution") }}</span>
                         </a>
                         <a
                                 href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
                                 class="tooltip delete"
                         >
                             <i class="ui trash red icon"></i>
-                            <span class="sr-only">{{ _T("Delete the contribution") }}</span>
+                            <span class="displaynone">{{ _T("Delete the contribution") }}</span>
                         </a>
                     {% endif %}
                 </td>

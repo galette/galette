@@ -16,15 +16,15 @@
                     <label for="id_adh" >{{ _T("Originator:") }}</label>
                     <div id="id_adh" class="jsonly search-dropdown ui input nochosen"{% if required.id_adh == 1 %} required="required"{% endif %}>
                         <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
-                        <i class="jsonly hidden dropdown icon"></i>
-                        <div class="jsonly hidden default text">{% if not transaction.member %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                        <div class="jsonly hidden menu">
+                        <i class="jsonly displaynone dropdown icon"></i>
+                        <div class="jsonly displaynone default text">{% if not transaction.member %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
+                        <div class="jsonly displaynone menu">
     {% for k, v in members.list %}
                             <div class="item" data-value="{{ k }}">{{ v }}</div>
     {% endfor %}
                         </div>
                     </div>
-                    <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
+                    <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                 </div>
                 <div class="field inline">
                     <label for="trans_date">{{ _T("Date:") }}</label>
@@ -74,14 +74,14 @@
                             class="ui icon button tooltip"
                         >
                             <i class="user check icon"></i>
-                            <span class="sr-only">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
+                            <span class="displaynone">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
                         </a>
                         <a
                             href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ transaction.id }}"
                             class="ui icon button tooltip"
                         >
                             <i class="gift icon"></i>
-                            <span class="sr-only">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
+                            <span class="displaynone">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
                         </a>
                         <a
                             href="#"
@@ -89,7 +89,7 @@
                             id="contribslist"
                         >
                             <i class="cookie icon"></i>
-                            <span class="sr-only">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
+                            <span class="displaynone">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
                         </a>
                     {% endif %}
                 </div>
@@ -147,7 +147,7 @@
                                     class="delete tooltip"
                                 >
                                     <i class="ui red trash icon"></i>
-                                    <span class="sr-only">{{ _T("Detach contribution from this transaction") }}</span>
+                                    <span class="displaynone">{{ _T("Detach contribution from this transaction") }}</span>
                                 </a>
                             </td>
                     {% endif %}

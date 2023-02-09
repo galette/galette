@@ -7,23 +7,23 @@
                         <div class="ui message">{{ _T("This feature requires javascript.") }}</div>
                     </div>
                 </noscript>
-                <div class="jsonly hidden eight wide mobile five wide computer column">
+                <div class="jsonly displaynone eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Members by status") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::MEMBERS_STATUS_PIE') }}" width="640" height="640"></canvas>
                 </div>
-                <div class="jsonly hidden eight wide mobile five wide computer column">
+                <div class="jsonly displaynone eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Members by state of dues") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::MEMBERS_STATEDUE_PIE') }}" width="640" height="640"></canvas>
                 </div>
-                <div class="jsonly hidden eight wide mobile five wide computer column">
+                <div class="jsonly displaynone eight wide mobile five wide computer column">
                         <h2 class="uid header">{{ _T("Contributions types repartition") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::CONTRIBS_TYPES_PIE') }}" width="640" height="640"></canvas>
                 </div>
-                <div class="jsonly hidden eight wide mobile four wide computer column">
+                <div class="jsonly displaynone eight wide mobile four wide computer column">
                         <h2 class="ui center aligned header">{{ _T("Individuals and Companies") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::COMPANIES_OR_NOT') }}" width="320" height="320"></canvas>
                 </div>
-                <div class="jsonly hidden sixteen wide mobile twelve wide computer column">
+                <div class="jsonly displaynone sixteen wide mobile twelve wide computer column">
                         <h2 class="ui center aligned header">{{ _T("Contributions over time") }}</h2>
                         <canvas id="{{ constant('Galette\\IO\\Charts::CONTRIBS_ALLTIME') }}" width="960" height="320"></canvas>
                 </div>

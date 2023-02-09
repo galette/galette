@@ -99,7 +99,7 @@
                     </select>
                 </div>
                 <div class="flexend field">
-                    <label for="filter_account" class="hidden">{{ _T('among:') }}</label>
+                    <label for="filter_account" class="displaynone">{{ _T('among:') }}</label>
                     <select name="filter_account" onchange="form.submit()" class="ui search dropdown nochosen">
                         {% for key, value in filter_accounts_options %}
                             <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
@@ -107,7 +107,7 @@
                     </select>
                 </div>
                 <div class="flexend field">
-                    <label for="group_filter" class="hidden">{{ _T('among:') }}</label>
+                    <label for="group_filter" class="displaynone">{{ _T('among:') }}</label>
                     <select name="group_filter" onchange="form.submit()" class="ui search dropdown nochosen">
                         <option value="0">{{ _T('Select a group') }}</option>
     {% for group in filter_groups_options %}
@@ -177,7 +177,7 @@
                         {{ _T('Show/hide query') }}
                     </div>
                     <div class="content">
-                        <div id="sql_qry" class="ui grey inverted segment hidden">{{ filters.query }}</div>
+                        <div id="sql_qry" class="ui grey inverted segment">{{ filters.query }}</div>
                     </div>
                 </div>
             </div>
@@ -296,18 +296,18 @@
                         <td class="{{ rclass }} username_row" data-scope="row">
                             <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
             {% if member.isCompany() %}
-                            <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
+                            <i class="ui building outline icon tooltip"><span class="displaynone">{{ _T('Is a company') }}</span></i>
             {%  elseif member.isMan() %}
-                            <i class="ui male icon tooltip"><span class="sr-only">{{ _T('Is a man') }}</span></i>
+                            <i class="ui male icon tooltip"><span class="displaynone">{{ _T('Is a man') }}</span></i>
             {%  elseif member.isWoman() %}
-                            <i class="ui female icon tooltip"><span class="sr-only">{{ _T('Is a woman') }}</span></i>
+                            <i class="ui female icon tooltip"><span class="displaynone">{{ _T('Is a woman') }}</span></i>
             {% else %}
                             <i class="ui icon"></i>
             {% endif %}
             {% if member.email != '' %}
                             <a href="mailto:{{ member.email }}" class="tooltip">
                                 <i class="ui envelope outline teal icon" aria-hidden="true"></i>
-                                <span class="sr-only">{{ _T('Mail') }}</span>
+                                <span class="displaynone">{{ _T('Mail') }}</span>
                             </a>
             {% else %}
                             <i class="ui icon"></i>
@@ -315,12 +315,12 @@
             {% if member.isAdmin() %}
                             <span class="tooltip">
                                 <i class="ui user shield red icon" aria-hidden="true"></i>
-                                <span class="sr-only">{{ _T('Admin') }}</span>
+                                <span class="displaynone">{{ _T('Admin') }}</span>
                             </span>
             {% elseif member.isStaff() %}
                             <span class="tooltip">
                                 <i class="ui id card alternate orange icon" aria-hidden="true"></i>
-                                <span class="sr-only">{{ _T('Staff member') }}</span>
+                                <span class="displaynone">{{ _T('Staff member') }}</span>
                             </span>
                 {# TODO: display for group managers #}
             {% else %}

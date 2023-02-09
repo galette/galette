@@ -60,11 +60,11 @@
         <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
             <td class="{{ rclass }} username_row" data-scope="row">
                 {% if member.isCompany() %}
-                    <i class="ui building outline icon tooltip"><span class="sr-only">{{ _T('Is a company') }}</span></i>
+                    <i class="ui building outline icon tooltip"><span class="displaynone">{{ _T('Is a company') }}</span></i>
                 {%  elseif member.isMan() %}
-                    <i class="ui male icon tooltip"><span class="sr-only">{{ _T('Is a man') }}</span></i>
+                    <i class="ui male icon tooltip"><span class="displaynone">{{ _T('Is a man') }}</span></i>
                 {%  elseif member.isWoman() %}
-                    <i class="ui female icon tooltip"><span class="sr-only">{{ _T('Is a woman') }}</span></i>
+                    <i class="ui female icon tooltip"><span class="displaynone">{{ _T('Is a woman') }}</span></i>
                 {% else %}
                     <i class="ui icon"></i>
                 {% endif %}

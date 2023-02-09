@@ -83,7 +83,7 @@ if (!("ontouchstart" in document.documentElement)) {
 $(function() {
     $('.nojs').removeClass('nojs').addClass('jsenabled');
     /* Display/enable elements required only when javascript is active */
-    $('.jsenabled .jsonly.hidden').removeClass('hidden');
+    $('.jsenabled .jsonly.displaynone').removeClass('displaynone');
     $('.jsenabled .jsonly.disabled').removeClass('disabled');
     $('.jsenabled .jsonly.read-only').removeClass('read-only');
     $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search selection dropdown');

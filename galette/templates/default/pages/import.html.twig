@@ -15,7 +15,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown"></i>
                         {{ _T('Existing files') }}
                     </div>
                     <div class="active content field">
@@ -53,7 +53,7 @@
                                                 class="delete tooltip"
                                             >
                                                 <i class="ui trash red icon"></i>
-                                                <span class="sr-only">{{ _T('Remove \'%file\' from disk')|replace({'%file': import.name}) }}</span>
+                                                <span class="displaynone">{{ _T('Remove \'%file\' from disk')|replace({'%file': import.name}) }}</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -81,7 +81,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown"></i>
                         {{ _T('Upload new file') }}
                     </div>
                     <div class="active content field">

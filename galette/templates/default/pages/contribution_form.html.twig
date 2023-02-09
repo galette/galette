@@ -22,7 +22,7 @@
                                         class="ui icon button tooltip"
                                         title="{{ _T("View transaction") }}"
                                     >
-                                        <i class="columns icon"><span class="sr-only">{{ _T("View transaction") }}</span></i>
+                                        <i class="columns icon"><span class="displaynone">{{ _T("View transaction") }}</span></i>
                                     </a>
                                 </th>
                             </tr>
@@ -49,7 +49,7 @@
     {% endif %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly hidden icon dropdown"></i>
+                    <i class="jsonly displaynone icon dropdown"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Select contributor and membership fee type") }}
     {% else %}
@@ -61,14 +61,14 @@
                         class="ui icon button fright tooltip"
                         title="{{ _T("Create a new fee that will be attached to the current transaction") }}">
                         <i class="user check icon"></i>
-                        <span class="sr-only">{{ _T("New attached fee") }}</span>
+                        <span class="displaynone">{{ _T("New attached fee") }}</span>
                     </a>
                     <a
                         href="{{ url_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
                         class="ui icon button fright tooltip"
                         title="{{ _T("Create a new donation that will be attached to the current transaction") }}">
                         <i class="gift icon"></i>
-                        <span class="sr-only">{{ _T("New attached donation") }}</span>
+                        <span class="displaynone">{{ _T("New attached donation") }}</span>
                     </a>
     {% endif %}
                 </div>
@@ -78,15 +78,15 @@
                         <label for="id_adh">{{ _T("Contributor:") }}</label>
                         <div id="id_adh" class="jsonly search-dropdown ui input nochosen">
                             <input id="id_adh_input" type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
-                            <i class="jsonly hidden dropdown icon"></i>
-                            <div class="jsonly hidden default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                            <div class="jsonly hidden menu">
+                            <i class="jsonly displaynone dropdown icon"></i>
+                            <div class="jsonly displaynone default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
+                            <div class="jsonly displaynone menu">
                     {% for k, v in members.list %}
                                 <div class="item" data-value="{{ k }}">{{ v }}</div>
                     {% endfor %}
                             </div>
                         </div>
-                        <div class="jsonly hidden ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="hidden">{{ _T("Reset") }}</span></div>
+                        <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                     </div>
     {% endif %}
                     <div class="field inline">
@@ -114,7 +114,7 @@
 
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly hidden icon dropdown"></i>
+                    <i class="jsonly displaynone icon dropdown"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Details of membership fee") }}
     {% else %}
@@ -185,7 +185,7 @@
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly hidden icon dropdown"></i>
+                    <i class="jsonly displaynone icon dropdown"></i>
                     {{ _T("Transaction related") }}
                 </div>
                 <div class="active content field">

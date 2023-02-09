@@ -4,7 +4,7 @@
         <form action="{{ url_for('filter-memberslist') }}" method="post" class="ui form advanced-search">
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly hidden dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon"></i>
                     {{ _T('Simple search') }}
                 </div>
                 <div class="active content">
@@ -72,7 +72,7 @@
             </div>
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly hidden dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon"></i>
                     {{ _T('Advanced search') }}
                 </div>
                 <div class="active content">
@@ -211,7 +211,7 @@
             <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
             <div class="jsonly disabled galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly hidden dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon"></i>
                     {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
                     <a
                         href="#"
@@ -219,7 +219,7 @@
                         class="ui tiny compact icon green button tooltip"
                     >
                         <i class="plus icon"></i>
-                        <span class="hidden">{{ _T('Add new group search criteria') }}</span>
+                        <span class="displaynone">{{ _T('Add new group search criteria') }}</span>
                     </a>
                 </div>
                 <div class="active content">
@@ -248,7 +248,7 @@
                                         class="ui small compact red icon button filtered fright tooltip delete delcriteria"
                                     >
                                         <i class="trash alt icon"></i>
-                                        <span class="sr-only">{{ _T('Remove criteria') }}</span>
+                                        <span class="displaynone">{{ _T('Remove criteria') }}</span>
                                     </a>
                                 </div>
                             </div>
@@ -260,7 +260,7 @@
 
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly hidden dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon"></i>
                     {{ _T('Within contributions') }}
                 </div>
                 <div class="active content">
@@ -399,7 +399,7 @@
                 <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
                 <div class="jsonly disabled galetteform ui styled fluid accordion field">
                     <div class="active ui title">
-                        <i class="jsonly hidden dropdown icon"></i>
+                        <i class="jsonly displaynone dropdown icon"></i>
                         {{ _T('Free search') }}
                         <a
                             href="#"
@@ -407,7 +407,7 @@
                             class="ui tiny compact icon green button tooltip"
                         >
                             <i class="plus icon"></i>
-                            <span class="hidden">{{ _T('Add new free search criteria') }}</span>
+                            <span class="displaynone">{{ _T('Add new free search criteria') }}</span>
                         </a>
                     </div>
                     <div class="active content">
@@ -516,7 +516,7 @@
                                             class="ui small compact red icon button filtered fright tooltip delete delcriteria"
                                         >
                                             <i class="trash alt icon"></i>
-                                            <span class="sr-only">{{ _T('Remove criteria') }}</span>
+                                            <span class="displaynone">{{ _T('Remove criteria') }}</span>
                                         </a>
 
                                     </div>

@@ -1,8 +1,4 @@
 /* == Old styles */
-.hidden {
-  display: none !important;
-}
-
 .debuginfos span{
     display: block;
     font-family: monospace;

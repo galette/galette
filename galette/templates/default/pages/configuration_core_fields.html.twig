@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <div class="jsonly hidden ui basic fitted segment">
+    <div class="jsonly displaynone ui basic fitted segment">
         <button id="collapse" class="ui labeled icon button">
             <i class="angle double up icon"></i>
             {{ _T("Collapse all") }}
@@ -13,9 +13,9 @@
     {% set catname = category.category %}
         <div class="galetteform ui styled fluid accordion field">
             <div class="active ui title">
-                <i class="jsonly hidden dropdown icon"></i>
+                <i class="jsonly displaynone dropdown icon"></i>
                 {{ _T(catname) }}
-                <i class="jsonly hidden arrows alternate icon"></i>
+                <i class="jsonly displaynone arrows alternate icon"></i>
             </div>
             <div class="active content">
                 <div class="ui basic fitted segment">
@@ -42,7 +42,7 @@
                         <div class="ui three column stackable grid">
                             <div class="middle aligned row">
                                 <div class="column">
-                                    <i class="jsonly hidden arrows alternate icon"></i>
+                                    <i class="jsonly displaynone arrows alternate icon"></i>
                                     <span data-title="{{ _T("Field name") }}" class="fieldname">
                                         <input type="hidden" name="fields[]" value="{{ fid }}"/>
                                         <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>

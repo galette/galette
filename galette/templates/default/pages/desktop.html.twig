@@ -29,7 +29,7 @@
                             </a>
             {% endif %}
                         </div>
-                        <div class="jsonly hidden ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
+                        <div class="jsonly displaynone ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
                             <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1" {% if hide_telemetry %} checked="checked"{% endif %} />
                             <label for="hide_telemetry">{{ _T("Hide this panel") }}</label>
                         </div>
@@ -72,7 +72,7 @@
             </div>
         </div>
 {% endif %}
-        <div class="jsonly hidden sixteen wide column">
+        <div class="jsonly displaynone sixteen wide column">
             <div class="ui basic vertically fitted segment">
                 <div class="ui toggle checkbox">
                     <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{% if show_dashboard %} checked="checked"{% endif %}/>

@@ -103,7 +103,7 @@
 
 <div class="ui styled fluid accordion field">
     <div class="active title">
-        <i class="jsonly hidden icon dropdown"></i>
+        <i class="jsonly displaynone icon dropdown"></i>
         {{ _T("Additionnal fields:") }}
     </div>
     <div class="active content field">
@@ -169,7 +169,7 @@
 <script type="text/javascript">
     {% if not masschange %}
     var _addLnk = function(){
-        return $('<a class="ui small compact icon green button" href="#"><i class="plus icon" title="{{ _T("New occurrence") }}"></i> <span class="sr-only">{{ _T("New occurrence") }}"</span></a>');
+        return $('<a class="ui small compact icon green button" href="#"><i class="plus icon" title="{{ _T("New occurrence") }}"></i> <span class="displaynone">{{ _T("New occurrence") }}"</span></a>');
     };
 
     var _lnkEvent = function(_a, _input, _parent) {

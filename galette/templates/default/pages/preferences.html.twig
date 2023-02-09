@@ -35,7 +35,7 @@
                                 class="ui icon button"
                             >
                                 <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"></i>
-                                <span class="sr-only">{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}</span>
+                                <span class="displaynone">{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}</span>
                             </a>
                         </div>
                     </div>
@@ -231,7 +231,7 @@
                             <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
                         </div>
                     </div>
-                    <div class="field" id="publicpages_visibility"{% if not pref.pref_bool_publicpages %} class="hidden"{% endif %}>
+                    <div class="field" id="publicpages_visibility"{% if not pref.pref_bool_publicpages %} class="displaynone"{% endif %}>
                         <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
                         <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown nochosen">
                             <option value=" {{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
@@ -611,7 +611,7 @@
                                 class="ui icon button"
                             >
                                 <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"></i>
-                                <span class="hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_abrev}) }}</span>
+                                <span class="displaynone">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_abrev}) }}</span>
                             </a>
                         </div>
                         <span class="exemple">{{ _T("(10 characters max)") }}</span>
@@ -625,7 +625,7 @@
                                 class="ui icon button "
                             >
                                 <i class="language icon tooltip" title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"></i>
-                                <span class="hidden">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_strip}) }}</span>
+                                <span class="displaynone">{{ _T("Translate '%s'")|replace({'%s': pref.pref_card_strip}) }}</span>
                             </a>
                         </div>
                         <span class="exemple">{{ _T("(65 characters max)") }}</span>
@@ -847,10 +847,10 @@
         <script type="text/javascript">
             $(function(){
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %}
-                $('#smtp_parameters').addClass('hidden');
+                $('#smtp_parameters').addClass('displaynone');
     {% endif %}
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') and pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}
-                $('#smtp_auth').addClass('hidden');
+                $('#smtp_auth').addClass('displaynone');
     {% endif %}
                 $('.ui.radio.checkbox').checkbox({
                     onChange: function() {
@@ -858,21 +858,21 @@
                         var _smtp_parameters = $(this).closest('.checkbox').parent().parent().siblings('#smtp_parameters');
                         var _smtp_auth = $(this).closest('.checkbox').parent().parent().siblings('#smtp_auth');
                         if ( _checked == 'smtp' ) {
-                            _smtp_parameters.removeClass('hidden');
-                            _smtp_auth.removeClass('hidden');
+                            _smtp_parameters.removeClass('displaynone');
+                            _smtp_auth.removeClass('displaynone');
                         } else if ( _checked == 'gmail' ) {
-                            _smtp_parameters.addClass('hidden');
-                            _smtp_auth.removeClass('hidden');
+                            _smtp_parameters.addClass('displaynone');
+                            _smtp_auth.removeClass('displaynone');
                         } else {
-                            _smtp_parameters.addClass('hidden');
-                            _smtp_auth.addClass('hidden');
+                            _smtp_parameters.addClass('displaynone');
+                            _smtp_auth.addClass('displaynone');
                         }
                     }
                 });
                 /*$('#smtp, #gmail').checkbox({
                     onChecked: function() {
                         console.log($(this).closest('#smtp_parameters'));
-                        //$('#smtp_parameters, #smtp_auth').toggleClass('hidden');
+                        //$('#smtp_parameters, #smtp_auth').toggleClass('displaynone');
                     }
                 });*/
 
@@ -883,7 +883,7 @@
                 });
 
                 $('#pref_bool_publicpages').change(function(){
-                    $('#publicpages_visibility').toggleClass('hidden');
+                    $('#publicpages_visibility').toggleClass('displaynone');
                 });
 
                 $('#btnmail').on('click', function(e) {

@@ -32,7 +32,7 @@
         <form action="{{ url_for('texts') }}" method="post" enctype="multipart/form-data" class="ui form">
             <div class="ui top attached accordion-styled header">
                 {{ mtxt.tcomment }}
-                <a id="btnlegend" class="tooltip action" title="{{ _T("Show existing variables") }}"><i class="circular inverted primary small icon info tooltip"></i><span class="sr-only">{{ _T("Show existing variables")|escape("js") }}</span></a>
+                <a id="btnlegend" class="tooltip action" title="{{ _T("Show existing variables") }}"><i class="circular inverted primary small icon info tooltip"></i><span class="displaynone">{{ _T("Show existing variables")|escape("js") }}</span></a>
             </div>
             <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">

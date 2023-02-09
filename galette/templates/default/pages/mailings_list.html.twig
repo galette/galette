@@ -118,7 +118,7 @@
                 {% else %}
                     {{ loop.index }}
                 {% endif %}
-                <span class="sr-only">
+                <span class="displaynone">
                             {{ _T('Mailing entry %id')|replace({'%id': log.mailing_id}) }}
                         </span>
             </td>
@@ -140,21 +140,21 @@
                         class="showdetails tooltip"
                 >
                     <i class="ui eye green icon"></i>
-                    <span class="sr-only">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <span class="displaynone">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
                         class="tooltip"
                 >
                     <i class="ui clone blue icon"></i>
-                    <span class="sr-only">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <span class="displaynone">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
                         class="delete tooltip"
                 >
                     <i class="ui trash red icon"></i>
-                    <span class="sr-only">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <span class="displaynone">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
             </td>
         </tr>

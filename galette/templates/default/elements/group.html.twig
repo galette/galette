@@ -112,14 +112,14 @@
             onFirstLoad: function(tabPath) {
 {% if login.isAdmin() or login.isStaff() %}
                 if (tabPath == 'group_managers') {
-                    $(_btnaid).addClass('hidden');
-                    $(_btnuid).addClass('hidden');
+                    $(_btnaid).addClass('displaynone');
+                    $(_btnuid).addClass('displaynone');
                 } else if ( tabPath == 'group_members' ) {
-                    $(_btnaid).addClass('hidden');
-                    $(_btnmid).addClass('hidden');
+                    $(_btnaid).addClass('displaynone');
+                    $(_btnmid).addClass('displaynone');
                 } else if ( tabPath == 'group_information' ) {
-                    $(_btnuid).addClass('hidden');
-                    $(_btnmid).addClass('hidden');
+                    $(_btnuid).addClass('displaynone');
+                    $(_btnmid).addClass('displaynone');
                 }
 {% endif %}
             },
@@ -127,21 +127,21 @@
                 document.getElementById('tab').value = tabPath;
 {% if login.isAdmin() or login.isStaff() %}
                 if ( tabPath == 'group_managers'  ) {
-                    $(_btnmid).removeClass('hidden');
-                    $(_btnaid).addClass('hidden');
-                    if ( !$(_btnuid).hasClass('hidden') ) {
-                        $(_btnuid).addClass('hidden');
+                    $(_btnmid).removeClass('displaynone');
+                    $(_btnaid).addClass('displaynone');
+                    if ( !$(_btnuid).hasClass('displaynone') ) {
+                        $(_btnuid).addClass('displaynone');
                     }
                 } else if ( tabPath == 'group_members' ) {
-                    $(_btnuid).removeClass('hidden');
-                    $(_btnaid).addClass('hidden');
-                    if ( !$(_btnmid).hasClass('hidden') ) {
-                        $(_btnmid).addClass('hidden');
+                    $(_btnuid).removeClass('displaynone');
+                    $(_btnaid).addClass('displaynone');
+                    if ( !$(_btnmid).hasClass('displaynone') ) {
+                        $(_btnmid).addClass('displaynone');
                     }
                 } else if ( tabPath == 'group_information' ) {
-                    $(_btnaid).removeClass('hidden');
-                    $(_btnuid).addClass('hidden');
-                    $(_btnmid).addClass('hidden');
+                    $(_btnaid).removeClass('displaynone');
+                    $(_btnuid).addClass('displaynone');
+                    $(_btnmid).addClass('displaynone');
                 }
 {% endif %}
             }

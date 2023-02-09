@@ -11,7 +11,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown"></i>
                         {{ _T("Mailing information") }}
                     </div>
                     <div class="active content field">
@@ -41,7 +41,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown"></i>
                         {{ _T("Attachments") }}
                     </div>
                     <div class="active content field">
@@ -57,7 +57,7 @@
                                         class="rm_attachement tooltip delete"
                                     >
                                         <i class="ui trash alt red icon"></i>
-                                        <span class="sr-only">{{ _T("Remove attachment") }}</span>
+                                        <span class="displaynone">{{ _T("Remove attachment") }}</span>
                                     </a>
                                     {{ attachment.getFileName() }}
                                 </li>
@@ -78,7 +78,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown"></i>
                         {{ _T("Write your mailing") }}
                     </div>
                     <div class="active content field">
@@ -109,7 +109,7 @@
                             <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{% if mailing.message %}{{ mailing.message|escape }}{% endif %}</textarea>
                             <input type="hidden" name="html_editor_active" id="html_editor_active" value="{% if html_editor_active %}1{% else %}0{% endif %}"/>
                         </div>
-                        <div id="summernote_toggler" class="jsonly hidden ui basic right aligned fitted segment">
+                        <div id="summernote_toggler" class="jsonly displaynone ui basic right aligned fitted segment">
                             <a class="ui blue tertiary button" href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{{ _T("Activate HTML editor") }}</a>
                         </div>
                         <div class="inline field">

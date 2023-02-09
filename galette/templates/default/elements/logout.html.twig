@@ -34,7 +34,7 @@
                     data-position="bottom right"
                 >
                     <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
-                    <span class="sr-only">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
+                    <span class="displaynone">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
                 </a>
             </div>
         </div>

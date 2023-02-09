@@ -34,7 +34,7 @@
         {% if checked is defined and checked == true %} checked{% endif %}
         />
     {% endblock %}
-    {% if search_id is defined %}<i class="jsonly hidden search icon"></i></div></div>{% endif %}
+    {% if search_id is defined %}<i class="jsonly displaynone search icon"></i></div></div>{% endif %}
     {% if type is defined and type == 'password' %}</div>{% endif %}
     {% if type is defined and type == 'checkbox' %}
     {% block label_after %}
