@@ -256,7 +256,7 @@ footer .ui.horizontal.list > .item{
   transform: translateX(-50%) translateY(-50%);
   margin: 30px 0;
 }
-:not(.selectize-input).required .note-editable {
+.required .note-editable {
   font-weight: normal;
 }
 .note-modal .note-modal-footer {

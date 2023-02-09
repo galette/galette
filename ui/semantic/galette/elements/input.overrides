@@ -2,12 +2,18 @@
        Galette Overrides
 *******************************/
 
+/*----------------------
+     Color type input
+-----------------------*/
 .ui.form .inline.field > input[type=color] {
   padding: 0;
   width: 4rem;
   height: 2rem;
 }
 
+/*----------------------
+     Search input
+-----------------------*/
 .ui.form .galetteform .ui.search .ui.input {
   &,
   & input {
@@ -15,6 +21,9 @@
   }
 }
 
+/*----------------------
+     Grouped fields
+-----------------------*/
 .ui.form .galetteform .grouped.fields {
   padding-left: .5em;
   padding-right: .5em;
@@ -24,3 +33,35 @@
     margin: 0;
   }
 }
+
+/*----------------------
+     Password meter
+-----------------------*/
+.password-strength-text {
+    vertical-align: middle;
+    padding-left: .2em;
+}
+meter {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Applicable only to Firefox */
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+meter::-webkit-meter-bar {
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+/* Webkit based browsers */
+meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
+meter[value="3"]::-webkit-meter-optimum-value { background: yellow; }
+meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+/* Gecko based browsers */
+meter[value="1"]::-moz-meter-bar { background: red; }
+meter[value="2"]::-moz-meter-bar { background: orange; }
+meter[value="3"]::-moz-meter-bar { background: yellow}
+meter[value="4"]::-moz-meter-bar { background: green ; }

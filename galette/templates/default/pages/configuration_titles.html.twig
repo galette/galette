@@ -14,7 +14,7 @@
                 <tfoot>
                     <tr>
                         <td data-scope="row">
-                            <span class="row-title">
+                            <span class="sr-only">
                                 {{ _T("Add title") }}
                             </span>
                         </td>
@@ -42,7 +42,7 @@
             {% else %}
                             {{ loop.index }}
             {% endif %}
-                            <span class="row-title">
+                            <span class="sr-only">
                                 <a href="{{ url_for('editTitle', {'id': title.id}) }}">
                                     {{ _T("%s title")|replace({'%s': title.short|escape}) }}
                                 </a>

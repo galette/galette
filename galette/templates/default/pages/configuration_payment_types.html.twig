@@ -13,7 +13,7 @@
                     <tfoot>
                         <tr>
                             <td data-scope="row">
-                                <span class="row-title">
+                                <span class="sr-only">
                                     {{ _T("Add payment type") }}
                                 </span>
                             </td>
@@ -38,7 +38,7 @@
                 {% else %}
                                 {{ loop.index }}
                 {% endif %}
-                                <span class="row-title">
+                                <span class="sr-only">
                                     <a href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}">
                                         {{ _T("%s payment type")|replace({'%s': ptype.getName()}) }}
                                     </a>

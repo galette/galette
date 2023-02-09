@@ -17,7 +17,7 @@
         <tfoot>
             <tr>
                 <td data-scope="row">
-                    <span class="row-title">
+                    <span class="sr-only">
 {% if class == 'Status' %}
                         {{ _T("New status") }}
 {% else %}
@@ -53,7 +53,7 @@
             <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                 <td data-scope="row">
                     {{ eid }}
-                    <span class="row-title">
+                    <span class="sr-only">
                         <a href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}">
                             {{ _T("%s field")|replace({'%s': entry.name|escape}) }}
                         </a>

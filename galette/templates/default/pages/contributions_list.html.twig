@@ -221,7 +221,7 @@
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
-                    <span class="row-title">
+                    <span class="sr-only">
                             <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
                                 {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
                             </a>
@@ -236,7 +236,7 @@
                         </a>
                     {% endif %}
                 {% else %}
-                    <span class="row-title">
+                    <span class="sr-only">
                             {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
                         </span>
                     {% if contribution.isTransactionPart() %}

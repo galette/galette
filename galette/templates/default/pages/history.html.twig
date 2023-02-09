@@ -112,7 +112,7 @@
         <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
             <td data-scope="row">
                 {{ loop.index }}
-                <span class="row-title">
+                <span class="sr-only">
                         {{ _T("History entry %id")|replace({"%id": loop.index}) }}
                     </span>
             </td>

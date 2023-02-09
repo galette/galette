@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-    <table class="listing ui celled table">
+    <table class="listing ui celled striped table">
         <!--<caption>{{ _T('Active plugins') }}</caption>-->
         <thead>
             <tr>
@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             <tr>
-                <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
+                <th colspan="6" class="center aligned plugins"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
             <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
@@ -52,7 +52,7 @@
             </tr>
 {% endfor %}
             <tr>
-                <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
+                <th colspan="6" class="center aligned inactives plugins"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
             <thead>
             <tr>

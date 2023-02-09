@@ -1,270 +1,12 @@
-/*
- * == Summary
- *
- * == Forms elements
- * == Main Galette styles
- * == Plugins installation
- * == Old styles
- */
-
-/* == Forms elements */
-#galette_body .selectize-input.required {
-    border-color:green;
-}
-
-#galette_body .selectize-input.required.invalid {
-    border:1px red solid;
-}
-
-.password-strength-text {
-    vertical-align: middle;
-    padding-left: .2em;
-}
-
-meter {
-    /* Reset the default appearance */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    /* Applicable only to Firefox */
-    background: none;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-meter::-webkit-meter-bar {
-    background: none;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Webkit based browsers */
-meter[value="1"]::-webkit-meter-optimum-value { background: red; }
-meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
-meter[value="3"]::-webkit-meter-optimum-value { background: yellow; }
-meter[value="4"]::-webkit-meter-optimum-value { background: green; }
-
-/* Gecko based browsers */
-meter[value="1"]::-moz-meter-bar { background: red; }
-meter[value="2"]::-moz-meter-bar { background: orange; }
-meter[value="3"]::-moz-meter-bar { background: yellow}
-meter[value="4"]::-moz-meter-bar { background: green ; }
-
-#telemetry_panel {
-    display: none; /* Start hidden */
-}
-
-/* =/ Forms elements */
-
-/* == Main Galette styles */
+/* == Old styles */
 .hidden {
   display: none !important;
-}
-
-.selectize-control {
-    display: inline-block;
-    min-width: 10em;
-    text-align: left;
-}
-
-.selectize-control.single .selectize-input::after {
-    right: 10px!important;
-}
-
-.cssform .selectize-input {
-    margin-right: 2em;
-    min-width: 25em;
-}
-
-#galette_body .selectize-input, .public_page .selectize-input {
-    padding: .1em 20px .1em 8px;
-    overflow: unset;
-}
-
-#galette_body .selectize-dropdown .option, .public_page .selectize-dropdown .option {
-    cursor: pointer;
-}
-
-#galette_body .selectize-dropdown .active, .public_page .selectize-dropdown .active  {
-    background-color: #DDDDFF;
-}
-#galette_body .selectize-dropdown .option, #galette_body .selectize-dropdown .optgroup-header,
-.public_page .selectize-dropdown .option, .public_page .selectize-dropdown .optgroup-header {
-    padding: .2em .5em;
-}
-
-.ui-tabs .tab-button {
-    position: absolute!important; /* used along with .button */
-    right: .5em;
-    top: .5em;
-}
-
-legend .tab-button {
-    position: absolute!important; /* used along with .button */
-    right: 2.5em;
-}
-
-/* loading animation */
-#loading {
-    position:fixed;
-    top:0;
-    left: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    background-color:rgba(0, 0, 0, 0.5);
-    z-index: 100000;
-}
-#loading p {
-    position: fixed;
-    top:45%;
-    left: 50%;
-    transform: translateY(-50%);
-    transform: translateX(-50%);
-    width: 20%;
-    background-color: rgba(255,255,255,.8);
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    padding: 1em 0;
-    -moz-box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
-    -webkitbox-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
-    box-shadow: 1px 1px 12px rgba(255, 255, 255, 0.4);
-}
-
-.cotis-ok {
-    background-color: #DDFFDD!important;
-    vertical-align: top;
-}
-
-.cotis-never {
-    background-color: #EEEEEE!important;
-    vertical-align: top;
-}
-
-.cotis-exempt {
-    background-color: #DDFFDD!important;
-    vertical-align: top;
-}
-
-.cotis-soon {
-    background-color: #FFE9AB!important;
-    vertical-align: top;
-}
-
-.cotis-late, .transaction-uncomplete {
-    background-color: #FFDDDD!important;
-    vertical-align: top;
-}
-
-.cotis-lastday {
-    background-color: #FFD9AB!important;
-    vertical-align: top;
-}
-
-.cotis-normal, .transaction-normal {
-    background-color: #DDFFDD!important;
-    vertical-align: top;
-}
-
-.cotis-give {
-    background-color: #FFDDDD!important;
-    vertical-align: top;
 }
 
 .debuginfos span{
     display: block;
     font-family: monospace;
     font-size:1.1em;
-}
-
-/* =/ Main Galette styles */
-
-/* == Plugins installation */
-#plugin_install {
-    background: #DDDDFF;
-    border-radius: 6px;
-    padding: 1em;
-}
-
-#plugin_install footer {
-    margin:.5em 0 0;
-    padding: .1em .5em;
-    text-align: center;
-    font-size: 0.85em;
-    border: 1px rgba(255, 255, 255, 0.5) solid;
-    -moz-border-radius: 10px 10px 10px 10px;
-    -webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 10px 10px 10px 10px;
-}
-
-#plugin_install footer p{
-    margin:.5em .5em 0;
-    color: #666666;
-    font-size: 1.2em;
-    font-weight:bold;
-}
-
-#plugin_install footer ol{
-    color:#999;
-    padding:0;
-    margin:0 0.5em 0.5em 0.5em;
-    list-style-type:none;
-}
-#plugin_install footer li{
-    line-height:1.7em;
-    display:inline;
-    margin: .1em;
-    padding: 0;
-}
-
-#plugin_install footer .current{
-    color:black;
-    font-weight:bold;
-}
-
-#btn_box{
-    text-align: right;
-    margin:0;
-}
-
-#plugin_install > div {
-    padding: .2em;
-    background-color: white;
-    border-radius: 6px;
-}
-
-#plugin_install h2{
-    margin: .5em 0 0;
-    font-size:1.2em;
-    text-align: center;
-}
-
-#installation_mode {
-    display: table;
-    table-layout: fixed;
-    border-spacing: .5em;
-    border-collapse: separate;
-}
-
-.installation_mode {
-    display: table-cell;
-    width: 10%;
-    border-radius: 6px;
-    -moz-box-shadow: 0px 1px 2px #555;
-    -webkitbox-shadow: 0px 1px 2px #555;
-    box-shadow: 0px 1px 2px #555;
-}
-
-#plugin_install h3 {
-    font-size: 1.1em;
-    margin: .2em 0 0;
-    color: #666666;
-    text-align: center;
-}
-
-#plugin_install ul {
-    margin: 0 auto .7em!important;
 }
 
 ul.leaders {
@@ -301,31 +43,6 @@ ul.leaders span + span {
     position: absolute;
     background: white;
     right: 0;
-}
-
-/* =/ Plugins installation */
-
-/* == Old styles */
-table.listing .row-title {
-    display: none;
-}
-
-table.listing th a,
-a.listing {
-    color: #212121;
-    vertical-align: middle;
-}
-
-table.listing td {
-    line-height:1.5em;
-    margin-top:.3em;
-    padding:.1em .2em;
-    vertical-align: middle;
-}
-
-table.listing th a:hover,
-a.listing:hover {
-    color: #666!important;
 }
 
 .emptylist {
@@ -390,16 +107,6 @@ a.listing:hover {
     border-style: solid;
 }
 
-#listing,
-table.listing {
-    width: 100%;
-}
-
-#listing.single,
-table.listing.single {
-    display: table;
-}
-
 #listfilter form {
     margin-bottom: 0px;
 }
@@ -449,18 +156,6 @@ table.listing.single {
     width:25em;
     margin-left:auto;
     margin-right:auto;
-}
-
-#listing td,
-table.listing td,
-#listing input,
-table.listing input{
-    vertical-align: middle;
-}
-
-td img, a img {
-    vertical-align: middle;
-    max-width: none;
 }
 
 .sql_log {
@@ -532,7 +227,7 @@ td img, a img {
     border-top:1px solid;
 }
 
-:not(.selectize-input).required{
+.required{
     color:#FF0000;
     font-weight:bold;
 }
@@ -671,18 +366,6 @@ label.simplelabel {
     padding:0 1em;
 }
 
-.tbl_line_even,
-.even > td {
-    background-color: #EEEEEE!important;
-    vertical-align: top;
-}
-
-.tbl_line_odd,
-.odd > td {
-    background-color: #E2E5EE!important;
-    vertical-align: top;
-}
-
 .cssform > .fields_list {
     display: block;
 }
@@ -703,31 +386,12 @@ label.simplelabel {
     padding:0 .5em 0 .1em;
 }
 
-.listing tr:hover td,
-.fields_list li:hover,
-.odd:hover > td,
-.even:hover > td {
-    background-color: #DDDDFF!important;
-}
-
-.listing tfoot tr:hover td, tr.checkboxes:hover td {
-    background-color: transparent!important;
-}
-
-.fields_list .selectize-input {
-    min-width: auto;
-}
-
 #member_stateofdue {
     margin: 0 auto .5em;
     width: 85%;
     padding: .1em 0;
     border-radius: 6px;
     text-align: center;
-}
-
-.jqplot-target {
-    display: inline-block;
 }
 
 #ContribsAllTime {

@@ -1,0 +1,67 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+/*----------------------
+     Listing tables
+-----------------------*/
+table.listing td {
+    line-height:1.5em;
+    padding:.1em .2em;
+}
+table.listing.tbl_line_odd,
+table.listing tr.odd > td {
+    background-color: #e2e5ee;
+}
+table.listing tbody .tbl_line_even,
+table.listing tbody tr.even > td {
+    background-color: #eeeeee;
+}
+table.listing tbody tr:hover > td {
+    background-color: @activeLineBackgroundColor !important;
+}
+
+/*-------------------------
+     Membership status
+--------------------------*/
+.ui.ui.table.listing tbody tr > td.cotis-ok {
+    background-color: #DDFFDD;
+}
+.ui.ui.table.listing tbody tr > td.cotis-never {
+    background-color: #EEEEEE;
+}
+.ui.ui.table.listing tbody tr > td.cotis-exempt {
+    background-color: #DDFFDD;
+}
+.ui.ui.table.listing tbody tr > td.cotis-soon {
+    background-color: #FFE9AB;
+}
+.ui.ui.table.listing tbody tr > td.cotis-late,
+.ui.ui.table.listing tbody tr > td.transaction-uncomplete {
+    background-color: #FFDDDD;
+}
+.ui.ui.table.listing tbody tr > td.cotis-lastday {
+    background-color: #FFD9AB;
+}
+.ui.ui.table.listing tbody tr > td.cotis-normal,
+.ui.ui.table.listing tbody tr > td.transaction-normal {
+    background-color: #DDFFDD;
+}
+.ui.ui.table.listing tbody tr > td.cotis-give {
+    background-color: #FFDDDD;
+}
+
+/*------------------
+     Plugins list
+-------------------*/
+th.plugins {
+   padding-top: 1rem;
+   padding-bottom: 1rem;
+   background: #d9f7d8;
+}
+
+th.inactives.plugins {
+    background: #ffead8;
+    border-top: @rowBorder;
+    border-bottom: @rowBorder;
+}
