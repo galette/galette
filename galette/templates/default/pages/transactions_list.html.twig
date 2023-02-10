@@ -187,7 +187,7 @@
                     {% endif %}
                 </td>
             {% endif %}
-            <td class="{{ cclass }}" data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
+            <td class="actions_row {{ cclass }}" data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             {% if login.isAdmin() or login.isStaff() %}
                 <td class="{{ cclass }} center">
                     <a

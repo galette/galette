@@ -280,7 +280,7 @@
             <td class="{{ cclass }}" data-title="{{ _T("Payment type") }}">{{ contribution.spayment_type }}</td>
             <td class="{{ cclass }}" data-title="{{ _T("Duration") }}">{{ contribution.duration }}</td>
             {% if mode != 'ajax' %}
-                <td class="{{ cclass }} center">
+                <td class="actions_row {{ cclass }} center">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
                             class="tooltip"

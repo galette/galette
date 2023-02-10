@@ -244,3 +244,43 @@ ul.sortable-items {
     margin: 0;
   }
 }
+
+/*-------------------------
+    Print stylesheet
+--------------------------*/
+@media print {
+  html,
+  body.pushable,
+  body.pushable > .pusher {
+    overflow: unset;
+  }
+
+  body,
+  body.pushable {
+    background: #fff;
+  }
+
+  .ui.fixed.menu + .pusher {
+    padding-top: 0;
+  }
+
+  table.listing tbody tr:hover > td {
+    background-color: inherit !important;
+  }
+
+  .displaynone,
+  #top-navbar,
+  aside.toc,
+  #recup_mailing,
+  form.filters,
+  .ui.horizontal.checkboxes.segments,
+  table input[type=checkbox],
+  .infoline .button,
+  .infoline .right.aligned.segment,
+  .actions_row,
+  .ui.pagination.menu,
+  section.content > footer,
+  #back2top {
+    display: none !important;
+  }
+}
