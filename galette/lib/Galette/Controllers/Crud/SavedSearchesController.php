@@ -88,7 +88,7 @@ class SavedSearchesController extends CrudController
      */
     public function doAdd(Request $request, Response $response): Response
     {
-        if ($request->isPost()) {
+        if ($request->getMethod() === 'POST') {
             $post = $request->getParsedBody();
         } else {
             $post = $request->getQueryParams();
@@ -146,7 +146,7 @@ class SavedSearchesController extends CrudController
             }
         }
 
-        if ($request->isGet()) {
+        if ($request->getMethod() === 'GET') {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('members'));

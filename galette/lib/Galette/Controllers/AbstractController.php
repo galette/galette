@@ -254,13 +254,15 @@ abstract class AbstractController
      */
     private function getGaletteBaseUrl(Request $request)
     {
+        $routeContext = RouteContext::fromRequest($request);
+
         $url = preg_replace(
             [
                 '|index\.php|',
                 '|https?://' . $_SERVER['HTTP_HOST'] . '(:\d+)?' . '|'
             ],
             ['', ''],
-            $request->getUri()->getBaseUrl()
+            $routeContext->getBasePath()
         );
         if (strlen($url) && substr($url, -1) !== '/') {
             $url .= '/';

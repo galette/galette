@@ -113,7 +113,7 @@ class Authenticate
         $response = $handler->handle($request);
 
         if (!$this->login || !$this->login->isLogged()) {
-            if ($request->isGet()) {
+            if ($request->getMethod() === 'GET') {
                 $this->session->urlRedirect = $request->getUri()->getPath();
             }
             Analog::log(
