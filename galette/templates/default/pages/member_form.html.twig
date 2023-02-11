@@ -1,7 +1,7 @@
 {% extends parent_tpl %}
 
 {% block content %}
-<form action="{% if self_adh %}{{ path_for("storeselfmembers") }}{% elseif not member.id %}{{ path_for("doAddMember") }}{% else %}{{ path_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
+<form action="{% if self_adh %}{{ url_for("storeselfmembers") }}{% elseif not member.id %}{{ url_for("doAddMember") }}{% else %}{{ url_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
     {% if member.id %}
 <div class="ui stackable grid">
     <div class="row">
@@ -21,7 +21,7 @@
                             </button>
                     {% endif %}
                             <a
-                                href="{{ path_for("member", {"id": member.id}) }}"
+                                href="{{ url_for("member", {"id": member.id}) }}"
                                 class="ui basic labeled icon button"
                             >
                                 <i class="eye outline icon"></i>
@@ -42,7 +42,7 @@
                             {{ _T("Attached to:") }}
                         </div>
                         <div class="ui celled list">
-                            <a href="{{ path_for("member", {"id": member.parent.id}) }}" class="item">{{ member.parent.sfullname }}</a>
+                            <a href="{{ url_for("member", {"id": member.parent.id}) }}" class="item">{{ member.parent.sfullname }}</a>
                         </div>
             {% if not member.id %}
                         <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>

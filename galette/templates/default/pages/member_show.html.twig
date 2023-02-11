@@ -188,7 +188,7 @@
                                     <div class="ui large labels">
             {% for kgroup, group in groups %}
                 {% if member.isGroupMember(group) or member.isGroupManager(group) %}
-                                        <a href="{% if login.isGroupManager(kgroup) %}{{ path_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui label{% if not login.isGroupManager(kgroup) %} disabled notmanaged{% endif %}">
+                                        <a href="{% if login.isGroupManager(kgroup) %}{{ url_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui label{% if not login.isGroupManager(kgroup) %} disabled notmanaged{% endif %}">
                     {% if member.isGroupMember(group) %}
                                             <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}"></i>
                     {% endif %}

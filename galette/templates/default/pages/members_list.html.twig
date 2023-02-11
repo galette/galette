@@ -459,14 +459,14 @@
                         var _data = _form.serialize();
                         _data = _data + "&search_title=" + $('#search_title').val();
                         $.ajax({
-                            url: '{{ path_for('saveSearch') }}',
+                            url: '{{ url_for('saveSearch') }}',
                             type: "POST",
                             data: _data,
                             datatype: 'json',
                             {% include "elements/js/loader.js.twig" %},
                             success: function(res) {
                                 $.ajax({
-                                    url: '{{ path_for('ajaxMessages') }}',
+                                    url: '{{ url_for('ajaxMessages') }}',
                                     method: "GET",
                                     success: function (message) {
                                         $('#asso_name').after(message);
@@ -492,7 +492,7 @@
                 _form.append($('<input type="hidden" name="sendmail" value="true"/>'));
                 _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
                 _form.append($('<input type="hidden" name="mailing" value="true"/>'));
-            var _redirect = '{{ path_for('mailing') }}';
+            var _redirect = '{{ url_for('mailing') }}';
 
             if (existing) {
                 $('body').modal({
@@ -562,7 +562,7 @@
         }
         var _masscontributions = function(){
             $.ajax({
-                url: '{{ path_for('batch-memberslist') }}',
+                url: '{{ url_for('batch-memberslist') }}',
                 type: "POST",
                 data: {
                     ajax: true,

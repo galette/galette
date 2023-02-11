@@ -29,7 +29,7 @@
             <div class="item">
                 <a
                     class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
-                    href="{% if login.isImpersonated() %}{{ path_for("unimpersonate") }}{% else %}{{ path_for("logout") }}{% endif %}"
+                    href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
                     title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
                     data-position="bottom right"
                 >

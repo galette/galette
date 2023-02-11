@@ -2,7 +2,7 @@
 
 {% block content %}
     <div id="plugins_initdb_ajax">
-        <form action="{{ path_for('pluginInitDb', {'id': plugid}) }}" id="plugins_initdb_form" method="post" class="ui form">
+        <form action="{{ url_for('pluginInitDb', {'id': plugid}) }}" id="plugins_initdb_form" method="post" class="ui form">
             {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
             {% if mode == 'ajax' %}
                 {% include 'elements/messages_inline.html.twig' %}
