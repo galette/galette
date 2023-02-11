@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use Symfony\Component\Yaml\Yaml;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -198,7 +199,7 @@ class CsvOut extends Csv
     public function getParamedtedExportName($id)
     {
         //check first in YAML configuration file
-        $data = yaml_parse_file($this->parameted_file);
+        $data = Yaml::parseFile($this->parameted_file);
         foreach ($data as $export) {
             if (!isset($export['inactive']) || $export['inactive']) {
                 $keys = array_keys($export);
@@ -245,7 +246,7 @@ class CsvOut extends Csv
         }
 
         //then, load config from YAML file
-        $data = yaml_parse_file($this->parameted_file);
+        $data = Yaml::parseFile($this->parameted_file);
         foreach ($data as $export) {
             if (!isset($export['inactive']) || $export['inactive']) {
                 $keys = array_keys($export);
@@ -339,7 +340,7 @@ class CsvOut extends Csv
     {
         global $zdb;
 
-        $data = yaml_parse_file($this->parameted_file);
+        $data = Yaml::parseFile($this->parameted_file);
         foreach ($data as $anexport) {
             if (!isset($anexport['inactive']) || $anexport['inactive']) {
                 $keys = array_keys($anexport);
