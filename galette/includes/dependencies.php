@@ -38,6 +38,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpMethodNotAllowedException;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
 
@@ -503,9 +504,11 @@ $container->set(
         $exclusions = $c->get('CsrfExclusions');
         $guard->setFailureHandler(function (ServerRequestInterface $request, RequestHandler $handler) use ($exclusions) {
             $response = $handler->handle($request);
+            $routeContext = RouteContext::fromRequest($request);
+            $route = $routeContext->getRoute();
 
             foreach ($exclusions as $exclusion) {
-                if (preg_match($exclusion, $request->getAttribute('route')->getname())) {
+                if (preg_match($exclusion, $route->getname())) {
                     //route is excluded form CSRF checks
                     return $response;
                 }

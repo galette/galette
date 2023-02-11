@@ -110,7 +110,7 @@ class Authenticate
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        $response = $handler->handle($request);
+        $response = new \Slim\Psr7\Response();
 
         if (!$this->login || !$this->login->isLogged()) {
             if ($request->getMethod() === 'GET') {
@@ -122,7 +122,10 @@ class Authenticate
             );
             $this->flash->addMessage('error_detected', _T("Login required"));
             return $response
-                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                )->withStatus(302);
         } else {
             //check for ACLs
             $routeContext = RouteContext::fromRequest($request);
@@ -189,11 +192,12 @@ class Authenticate
                     _T("You do not have permission for requested URL.")
                 );
                 return $response
-                    ->withHeader('Location', $this->routeparser->urlFor('slash'));
+                    ->withHeader('Location', $this->routeparser->urlFor('slash'))
+                    ->withStatus(302);;
             }
         }
 
-        return $response;
+        return $handler->handle($request);;
     }
 
 

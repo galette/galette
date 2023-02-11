@@ -40,6 +40,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use DI\Container;
+use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 
 /**
@@ -87,7 +88,8 @@ class Language
         $get = $request->getQueryParams();
 
         if (isset($get['ui_pref_lang'])) {
-            $route = $request->getAttribute('route');
+            $routeContext = RouteContext::fromRequest($request);
+            $route = $routeContext->getRoute();
 
             $route_name = $route->getName();
             $arguments = $route->getArguments();
@@ -95,13 +97,16 @@ class Language
             $this->i18n->changeLanguage($get['ui_pref_lang']);
             $this->session->i18n = $this->i18n;
 
-            return $response->withRedirect(
-                $this->routeparser->urlFor(
-                    $route_name,
-                    $arguments
-                ),
-                301
-            );
+            $response = new \Slim\Psr7\Response();
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor(
+                        $route_name,
+                        $arguments
+                    )
+                )
+                ->withStatus(301);
         }
         return $response;
     }
