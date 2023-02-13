@@ -193,13 +193,12 @@ class Authenticate
                 );
                 return $response
                     ->withHeader('Location', $this->routeparser->urlFor('slash'))
-                    ->withStatus(302);;
+                    ->withStatus(302);
             }
         }
 
-        return $handler->handle($request);;
+        return $handler->handle($request);
     }
-
 
     /**
      * Get ACL for route name
