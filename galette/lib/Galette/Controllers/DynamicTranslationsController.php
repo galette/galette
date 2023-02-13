@@ -150,7 +150,7 @@ class DynamicTranslationsController extends AbstractController
 
         $params['text_orig'] = $text_orig;
 
-        $params['mode'] = $request->isXhr() ? 'ajax' : '';
+        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         // display page
         $this->view->render(
