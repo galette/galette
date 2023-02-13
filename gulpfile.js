@@ -89,9 +89,6 @@ var paths = {
   },
   extras: [
     {
-      src: './ui/css/galette_print.css',
-      dest: 'css/'
-    }, {
       src: './ui/css/install.css',
       dest: 'css/'
     }, {
