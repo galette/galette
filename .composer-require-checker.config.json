@@ -85,16 +85,8 @@
     "DI\\Container",
     "DI\\ContainerBuilder",
 
-    "//PHP8 functions",
-    "str_contains",
-
     "// Not detected, do not know why.",
-    "Psr\\Http\\Server\\RequestHandlerInterface",
-    "Rka\\Session",
-    "Slim\\Handlers\\Error",
-    "Slim\\Handlers\\PhpError",
-    "Slim\\Http\\Body",
-    "Slim\\Http\\Stream"
+    "Psr\\Http\\Server\\RequestHandlerInterface"
   ],
   "scan-files": [
     "galette/*.php",

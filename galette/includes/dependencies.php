@@ -48,66 +48,6 @@ $routeParser = $app->getRouteCollector()->getRouteParser();
 $container->set(RouteParser::class, $routeParser);
 
 // -----------------------------------------------------------------------------
-// Error handling
-// -----------------------------------------------------------------------------
-
-/**
- * Add Error Handling Middleware
- *
- * @param bool $displayErrorDetails -> Should be set to false in production
- * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
- * @param bool $logErrorDetails -> Display error details in error log
- * which can be replaced by a callable of your choice.
-
- * Note: This middleware should be added last. It will not handle any exceptions/errors
- * for middleware added after it.
- */
-$errorMiddleware = $app->addErrorMiddleware(
-    (GALETTE_MODE === 'DEV'),
-    true,
-    true
-);
-
-$errorHandler = $errorMiddleware->getDefaultErrorHandler();
-//$errorHandler->registerErrorRenderer('text/html', Galette\Handlers\NotFound::class);
-
-// Set the Not Found Handler
-/*$notfoundhandler = new Galette\Handlers\NotFound($container->get('view'));*/
-/*
-$errorMiddleware->setErrorHandler(
-    HttpNotFoundException::class,
-    function (ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails) {
-        $response = new Response();
-        $response->getBody()->write('404 NOT FOUND');
-
-        return $response->withStatus(404);
-    });
-*/
-
-// Set the Not Allowed Handler
-/*
-$errorMiddleware->setErrorHandler(
-    HttpMethodNotAllowedException::class,
-    function (ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails) {
-        $response = new Response();
-        $response->getBody()->write('405 NOT ALLOWED');
-
-        return $response->withStatus(405);
-    });
-*/
-/*$container->set('errorHandler', function ($c) {
-    return new Galette\Handlers\Error($c->get('view'), true);
-});
-
-$container->set('phpErrorHandler', function ($c) {
-    return new Galette\Handlers\PhpError($c->get('view'), true);
-});
-
-$container->set('notFoundHandler', function ($c) {
-    return new Galette\Handlers\NotFound($c->get('view'));
-});*/
-
-// -----------------------------------------------------------------------------
 // Service providers
 // -----------------------------------------------------------------------------
 
@@ -139,11 +79,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         ]
     );
 
-    //$router = $c->get(\Slim\Routing\RouteParser::class);
-    //$uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
-
     //Twig extensions
-    //$view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
     if (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV) {
         $view->addExtension(new \Twig\Extension\DebugExtension());

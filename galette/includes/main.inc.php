@@ -125,11 +125,6 @@ if ($needs_update) {
 $authenticate = new Authenticate($container);
 
 /**
- * Twig-View Middleware
- */
-$app->add(TwigMiddleware::createFromContainer($app, Twig::class));
-
-/**
  * Show public pages middleware
  *
  * @param $request
@@ -214,6 +209,32 @@ $app->add(function (Request $request, RequestHandler $handler) use ($container) 
 
 // Add Routing Middleware - required for ACLs to work
 $app->addRoutingMiddleware();
+
+/**
+ * Add Error Handling Middleware
+ *
+ * @param bool $displayErrorDetails -> Should be set to false in production
+ * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
+ * @param bool $logErrorDetails -> Display error details in error log
+ * which can be replaced by a callable of your choice.
+
+ * Note: This middleware should be added last. It will not handle any exceptions/errors
+ * for middleware added after it.
+ */
+$errorMiddleware = $app->addErrorMiddleware(
+    (GALETTE_MODE === 'DEV'),
+    true,
+    true
+);
+
+$errorHandler = $errorMiddleware->getDefaultErrorHandler();
+$errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
+
+/**
+ * Twig-View Middleware
+ * At the end, so it can be used to render errors
+ */
+$app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 
 $app->run();
 

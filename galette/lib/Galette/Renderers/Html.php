@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2022 The Galette Team
+ * Copyright © 2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -24,41 +24,51 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Handlers
+ * @category  Renderers
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2022 The Galette Team
+ * @copyright 2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-02-25
+ * @link      https://galette.eu
+ * @since     2023-02-11
  */
 
-namespace Galette\Handlers;
+namespace Galette\Renderers;
 
-use Slim\Handlers\NotFound as SlimNotFound;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Interfaces\ErrorRendererInterface;
+use Slim\Views\Twig;
 use Throwable;
 
 /**
- * Error handler
+ * HMTL error renderer
  *
- * @category  Handlers
- * @name      Error
+ * @category  Renderers
+ * @name      Html
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2022 The Galette Team
+ * @copyright 2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-02-25
+ * @link      http://galette.eu
+ * @since     2023-02-11
  */
-class NotFound implements \Slim\Interfaces\ErrorRendererInterface
+class Html implements ErrorRendererInterface
 {
-    use GaletteHandler;
+    protected Twig $view;
 
     /**
-     * Invoke not found handler
+     * Constructor
+     *
+     * @param Twig $view View instance
+     */
+    public function __construct(Twig $view)
+    {
+        $this->view = $view;
+    }
+
+    /**
+     * Invoke renderer
      *
      * @param Throwable $exception           The exception
      * @param bool      $displayErrorDetails Should we display the error details
@@ -67,20 +77,23 @@ class NotFound implements \Slim\Interfaces\ErrorRendererInterface
      */
     public function __invoke(Throwable $exception, bool $displayErrorDetails): string
     {
-        $response = parent::__invoke($request, $response);
-
-        if ($response->getHeaderLine('Content-Type') == 'text/html') {
-            $response->getBody()->rewind();
-
-            $this->view->render(
-                $response,
-                'pages/404.html.twig',
-                [
-                    'page_title'    => __('Page not found')
-                ]
-            );
+        $code = 500;
+        $title = __('Galette error');
+        if ($exception instanceof HttpNotFoundException) {
+            $code = 404;
+            $title = __('Page not found');
         }
 
-        return $response;
+        $response = (new \Slim\Psr7\Response())->withStatus($code);
+        $response = $this->view->render(
+            $response,
+            'pages/' . (string)$code . '.html.twig',
+            [
+                'page_title'    => $title,
+                'exception'     => $exception
+            ]
+        );
+
+        return $response->getBody();
     }
 }
