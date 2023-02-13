@@ -853,4 +853,17 @@ class GaletteController extends AbstractController
         );
         return $response;
     }
+
+    /**
+     * Main route
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function favicon(Request $request, Response $response): Response
+    {
+        return $response;
+    }
 }

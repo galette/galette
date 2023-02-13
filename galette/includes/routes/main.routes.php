@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2020 The Galette Team
+ * Copyright © 2014-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2020 The Galette Team
+ * @copyright 2014-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
@@ -42,6 +42,11 @@ $app->get(
     '/',
     [GaletteController::class, 'slash']
 )->setName('slash');
+
+$app->get(
+    '/favicon.ico',
+    [GaletteController::class, 'favicon']
+);
 
 //logo route
 $app->get(
