@@ -67,42 +67,6 @@
     font-size:1.1em;
 }
 
-ul.leaders {
-    display: block!important;
-    max-width: 40em;
-    padding: 0;
-    overflow-x: hidden;
-    list-style: none;
-    overflow: hidden;
-}
-
-ul.leaders li {
-    position: relative;
-}
-
-ul.leaders li:before {
-    float: left;
-    width: 0;
-    white-space: nowrap;
-    content:
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
-}
-
-ul.leaders span:first-child {
-    padding-right: 0.33em;
-    background: white
-}
-
-ul.leaders span + span {
-    padding-left: 0.33em;
-    position: absolute;
-    background: white;
-    right: 0;
-}
-
 #legende {
     border: 1px #7777FF solid;
     width:40%;

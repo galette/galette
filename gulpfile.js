@@ -89,9 +89,6 @@ var paths = {
   },
   extras: [
     {
-      src: './ui/css/install.css',
-      dest: 'css/'
-    }, {
       src: './node_modules/summernote/dist/font/*',
       dest: 'webfonts/'
     }, {

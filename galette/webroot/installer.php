@@ -217,8 +217,8 @@ header('Content-Type: text/html; charset=UTF-8');
         <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic.min.css" />
-        <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
+        <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
     </head>
     <body class="pushable">
         <header id="top-navbar" class="ui fixed menu bgcolor">
@@ -298,7 +298,7 @@ if ($install->isCheckStep()) {
                         </div>
                     </div>
                     <div class="step<?php if ($install->isTypeStep()) echo ' active'; ?>">
-                        <i class="check double icon"></i>
+                        <i class="question icon"></i>
                         <div class="content">
                             <div class="title"><?php echo _T("Installation mode"); ?></div>
                         </div>
@@ -310,7 +310,7 @@ if ($install->isCheckStep()) {
                         </div>
                     </div>
                     <div class="step<?php if ($install->isDbCheckStep()) echo ' active'; ?>">
-                        <i class="shield alt icon"></i>
+                        <i class="key icon"></i>
                         <div class="content">
                             <div class="title"><?php echo _T("Database access/permissions"); ?></div>
                         </div>
