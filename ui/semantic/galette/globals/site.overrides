@@ -118,7 +118,6 @@ footer .ui.horizontal.list > .item{
   body:not(.front-page) section.content {
     margin-left: 260px;
     flex: 1 1 auto;
-    padding: 1.25rem;
   }
 
   section.desktop .container {

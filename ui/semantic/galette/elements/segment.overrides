@@ -2,6 +2,21 @@
        Galette Overrides
 *******************************/
 
+/*-----------------------------
+     Private pages title
+------------------------------*/
+.ui.horizontal.segments.header {
+  color: darken(@textColor, 15);
+  background: @primaryColor url(themes/galette/assets/images/bg.png) no-repeat;
+  margin: 0;
+
+  & > .segment {
+    background: transparent;
+    border-left: none;
+    padding: .8em;
+  }
+}
+
 /*--------------------------
      Ajax select members
 ---------------------------*/

@@ -21,24 +21,40 @@
                             <div class="sub header">{% if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
                         </div>
                     </div>
-{% endif %}
                     <h1 class="ui block center aligned header" style="position: relative">
-                        {% block page_title %}{{ page_title }}{% endblock %}
+{% else %}
+                    <div class="ui horizontal basic segments header">
+                        <div class="ui left aligned segment">
+                        </div>
+                        <div class="ui center aligned segment">
+                            <h1>
+{% endif %}
+                                {% block page_title %}{{ page_title }}{% endblock %}
+                            </h1>
+{% if login.isLogged() %}
+                        </div>
+                        <div class="ui right aligned segment">
             {% if cur_route != 'mailing' and existing_mailing == true %}
-                        <a
-                            id="recup_mailing"
-                            href="{{ url_for("mailing") }}"
-                            class="ui basic tertiary secondary huge right floated button tooltip"
-                            title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
-                            data-position="bottom right"
-                        >
-                            <i class="mail bulk icon"></i>
-                            <span class="displaynone">{{ _T("Existing mailing") }}</span>
-                        </a>
+                            <div class="ui compact tiny menu">
+                                <a
+                                    id="recup_mailing"
+                                    href="{{ url_for("mailing") }}"
+                                    class="ui blue tooltip item"
+                                    title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
+                                    data-position="bottom right"
+                                >
+                                    <i class="paper plane outline blue icon"></i>
+                                    <span class="sr-only">{{ _T("Existing mailing") }}</span>
+                                </a>
+                            </div>
             {% endif %}
-                    </h1>
-                    {% include "elements/messages_inline.html.twig" %}
-                    <div class="main-content">{% block content %}{{ _T('Page content') }}{% endblock %}</div>
+                        </div>
+                    </div>
+{% endif %}
+                    <div class="main-content">
+                        {% include "elements/messages_inline.html.twig" %}
+                        {% block content %}{{ _T('Page content') }}{% endblock %}
+                    </div>
                     {% include "elements/footer.html.twig" %}
                 </section>
             </div>
