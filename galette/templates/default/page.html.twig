@@ -34,8 +34,8 @@
 {% if login.isLogged() %}
                         </div>
                         <div class="ui right aligned segment">
-            {% if cur_route != 'mailing' and existing_mailing == true %}
                             <div class="ui compact tiny menu">
+            {% if cur_route != 'mailing' and existing_mailing == true %}
                                 <a
                                     id="recup_mailing"
                                     href="{{ url_for("mailing") }}"
@@ -46,8 +46,11 @@
                                     <i class="paper plane outline blue icon"></i>
                                     <span class="sr-only">{{ _T("Existing mailing") }}</span>
                                 </a>
-                            </div>
             {% endif %}
+                                {% include "elements/language.html.twig" with {
+                                        ui: "dropdown"
+                                } %}
+                            </div>
                         </div>
                     </div>
 {% endif %}
