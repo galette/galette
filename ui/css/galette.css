@@ -1,12 +1,6 @@
 /* == Old styles */
 
-.inactif, .inactive {
-    color: #777777;
-    font-style: italic;
-}
-
-.cssform p,
-.cssform div.p {
+.cssform p {
     clear: left;
     margin: 0;
     padding: 5px 0;
@@ -14,17 +8,8 @@
     border-top: 1px dashed gray;
     height: 1%;
 }
-
 /* no border on the first 'p' child */
-.cssform p:nth-child(2), #addfield p:first-child, .cssform legend+p/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/ {
-    border-top:none;
-}
-/* If there is a div, the preceding rules does not apply to the correct element :( */
-.cssform div p:nth-child(2) {
-    border-top:1px dashed gray;
-}
-/* But w do not whant border on the first element thought :) */
-.cssform div p:nth-child(1) {
+.cssform p:nth-child(2) {
     border-top:none;
 }
 
@@ -38,46 +23,15 @@
     padding:3px;
 }
 
-.cssform .bline {
-    vertical-align: middle;
-    display: inline-block;
-    margin: 0 0 0 -22em;
-    width: 19.9em;
-}
-
-.infoline{
-    vertical-align: top;
-    width: 100%;
-    margin-bottom: 1em;
-}
-
-.infoline td {
-    vertical-align: bottom;
-    width: 33%;
-}
-
-.infoline ul {
-    margin: 0px;
-    list-style-type: none;
-}
-
-.debuginfos span{
-    display: block;
-    font-family: monospace;
-    font-size:1.1em;
-}
-
 #legende {
     border: 1px #7777FF solid;
     width:40%;
     margin-left:0.3em;
     margin-bottom:0.7em;
 }
-
 #legende table {
     width: 100%;
 }
-
 #legende h1 {
     margin: 2px;
     font-size:1em;
@@ -85,43 +39,18 @@
     padding-left: 0.2em;
     text-align: left;
 }
-
 #legende th{
     text-align:center;
     width:18px;
 }
-#legende td, #legende th {
+#legende td,
+#legende th {
     padding-left: 2px;
 }
 #legende .color-sample {
     border-color: #AAAAAA;
     border-width: 1px;
     border-style: solid;
-}
-
-.sql_log {
-    border:1px dashed;
-    display:block;
-    margin:.2em .5em .5em;
-    padding:.2em .3em;
-    font-family: monospace;
-    font-size:1.2em;
-    background-color: rgba(221,221,255,0.5);
-}
-
-.yesno > input, .yesnoadmin > input {
-    margin: 0.2em;
-    vertical-align: bottom;
-}
-
-.exemple,
-.disabled,
-.disabled a {
-    color: #999999;
-}
-
-.button-container {
-    text-align: center;
 }
 
 /* =/ Old styles */

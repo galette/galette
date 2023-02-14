@@ -9,6 +9,17 @@
   display: none !important;
 }
 
+.exemple,
+.disabled,
+.disabled a {
+  color: @unselectedTextColor;
+}
+
+.inactive {
+  color: lighten(@grey, 15);
+  font-style: italic;
+}
+
 .language span {
   text-transform: uppercase;
 }

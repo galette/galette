@@ -190,9 +190,9 @@ if (!isset($install_plugin)) {
 if ($db_connected !== true) {
     $conndb_ok = false;
     echo '<div class="ui red message">';
-    echo '<h1>' . _T("Unable to connect to the database") . '</h1>';
-    echo '<p class="debuginfos">' . $db_connected->getMessage() . '<span>' .
-        $db_connected->getTraceAsString() . '</span></p>';
+    echo '<div class="ui small header">' . _T("Unable to connect to the database") . '</div>';
+    echo '<p>' . $db_connected->getMessage() . '</p>';
+    echo '<pre>' . $db_connected->getTraceAsString() . '</pre>';
     echo '</div>';
 }
 

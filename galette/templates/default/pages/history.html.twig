@@ -122,9 +122,17 @@
             <td data-title="{{ _T("Action") }}">{{ log.action_log|escape }}</td>
             <td data-title="{{ _T("Description") }}">
                 {{ log.text_log|escape }}
-                {% if log.sql_log %}
-                    <span class="sql_log">{{ log.sql_log|escape }}</span>
-                {% endif %}
+            {% if log.sql_log %}
+                <div class="ui basic fluid accordion">
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        {{ _T("Show associated query") }}
+                    </div>
+                    <div class="content">
+                        <div class="ui grey inverted segment">{{ log.sql_log|escape }}</div>
+                    </div>
+                </div>
+            {% endif %}
             </td>
         </tr>
     {% else %}
@@ -140,11 +148,6 @@
                     loader: "button",
                     single_action: "true"
                 } %}
-                var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" title="{{ _T("Show associated query")|e('js') }}"></i>');
-                $('.sql_log').hide().parent().prepend(_elt);
-                $('.qryhide').click(function() {
-                    $(this).next('.sql_log').show();
-                });
             });
         </script>
 {% endblock %}

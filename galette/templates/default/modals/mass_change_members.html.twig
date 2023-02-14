@@ -50,7 +50,7 @@
                 {% endfor %}
                 </ul>
             {% endif %}
-                <div class="button-container">
+                <div class="ui basic center aligned segment">
                     {% if mode != 'ajax' %}
                         <input type="submit" id="masschange" class="ui button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
                         <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>

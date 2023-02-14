@@ -22,7 +22,7 @@
                         <option value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}">{{ _T("Donation") }}</option>
                     </select>
                 </div>
-                <div class="button-container">
+                <div class="ui basic center aligned segment">
                     {% if mode != 'ajax' %}
                         <input type="submit" id="masschange" class="ui button" value="{{ _T("OK") }}"/>
                         <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
