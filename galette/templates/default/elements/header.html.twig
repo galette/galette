@@ -2,7 +2,6 @@
         <title>{% if preferences.pref_slogan != "" %}{{ preferences.pref_slogan }} - {% endif %}{% if page_title != "" %}{{ page_title }} - {% endif %}Galette {{ constant('GALETTE_VERSION') }}</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.css" />
 
     {% if html_editor %}

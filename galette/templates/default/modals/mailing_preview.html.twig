@@ -1,49 +1,53 @@
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
-    <section id="mailing_header" class="ajax_mailing_preview">
         <div class="ui top attached accordion-styled header">
             {{ _T("Headers") }}
         </div>
         <div class="ui bottom attached accordion-styled segment">
-            <table class="ui very basic striped table">
-                <tbody>
-                    <tr>
-                        <th>{{ _T("From:") }}</th>
-                        <td>{{ sender }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ _T("To:") }}</th>
-                        <td>
+            <div class="ui basic segments form">
+                <div class="ui segment">
+                    <div class="inline field">
+                        <label>{{ _T("From:") }}</label>
+                        <span>{{ sender }}</span>
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="inline field">
+                        <label>{{ _T("To:") }}</label>
+                        <div class="ui horizontal bulleted link list">
     {% for recipient in recipients %}
         {% if recipient.email is null and recipient.hasParent() %}
             {% set email = recipient.parent.email %}
         {% else %}
             {% set email = recipient.email %}
         {% endif %}
-                            <a href="mailto:{{ email }}">{{ recipient.sname }} &lt;{{ email }}&gt;</a>{% if not loop.last %}, {% endif %}
+                            <a href="mailto:{{ email }}" class="item">{{ recipient.sname }} &lt;{{ email }}&gt;</a>
     {% endfor %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>{{ _T("Subject:") }}</th>
-                        <td>{{ mailing.subject }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ _T("Attachments:") }}</th>
-                        <td>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="inline field">
+                        <label>{{ _T("Subject:") }}</label>
+                        <span>{{ mailing.subject }}</span>
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="inline field">
+                        <label>{{ _T("Attachments:") }}</label>
+                        <div class="ui horizontal bulleted link list">
     {% for attachment in attachments %}
-                            <span class="attached"><a target="_blank" href="{{ url_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}"><i class="ui paperclip icon"></i>{{ attachment.getFileName() }}</a></span>
+                            <a target="_blank" href="{{ url_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}" class="item"><i class="ui paperclip icon"></i>{{ attachment.getFileName() }}</a>
     {% else %}
-                    -
+                            <span class="item">-</span>
     {% endfor %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
-    <section id="mailing_preview" class="ajax_mailing_preview">
+
         <div class="ui top attached accordion-styled header">
             {{ _T("Mail body") }}
         </div>
@@ -54,5 +58,4 @@
             <pre>{{ mailing.wrapped_message|escape }}</pre>
     {% endif %}
         </div>
-    </section>
 {% endblock %}

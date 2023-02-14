@@ -215,7 +215,6 @@ header('Content-Type: text/html; charset=UTF-8');
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width" />
-        <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic.min.css" />
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
         <script type="text/javascript" src="./assets/js/jquery.min.js"></script>

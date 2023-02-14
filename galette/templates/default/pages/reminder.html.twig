@@ -45,14 +45,20 @@
         <div id="{{ key }}_preview" class="preview ui modal">
             <div class="header">{{ preview.tcomment }}</div>
             <div class="scrolling content">
-                <p>
-                    <span class="bline">{{ _T("Subject:") }}</span>
-                    <span>{{ preview.tsubject }}</span>
-                </p>
-                <p>
-                    <span class="bline">{{ _T("Message:") }}</span>
-                    <span>{{ preview.tbody|nl2br }}</span>
-                </p>
+                <div class="ui basic segments form">
+                    <div class="ui segment">
+                        <div class="inline field">
+                            <label>{{ _T("Subject:") }}</label>
+                            <span>{{ preview.tsubject }}</span>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <div class="field">
+                            <label>{{ _T("Message:") }}</label>
+                            <span>{{ preview.tbody|nl2br }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="actions">
                 <div class="ui cancel button">{{ _T("Close") }}</div>

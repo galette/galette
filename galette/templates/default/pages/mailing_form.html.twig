@@ -139,39 +139,54 @@
             </div>
         {% endif %}
         {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_PREVIEW') %}
-            <section class="mailing_write" id="mail_preview">
-                <header class="ui-state-default ui-state-active">{{ _T("Preview your mailing") }}</header>
-                <div>
-                    <p><span class="bline">{{ _T("Object:") }}</span>{{ mailing.subject }}</p>
-                    <p>
-                        <span class="bline">{{ _T("Message:") }}</span><br/>
-            {% if mailing.html %}
-                    {{ mailing.message }}
-            {% else %}
-                        <pre>{{ mailing.wrapped_message }}</pre>
-            {% endif %}
-                    </p>
-                </div>
-                <div>
-                    <p>
-                        <button type="submit" name="mailing_reset" class="ui labeled icon button">
-                            <i class="backward icon"></i>
-                            {{ _T("Modifiy mailing") }}
-                        </button>
-                        <button type="submit" name="mailing_confirm"{% if constant('GALETTE_MODE') == 'DEMO' %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
-                            <i class="rocket icon" aria-hidden="true"></i>
-                            {{ _T("Send") }}
-                        </button>
-                        <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
-                            <i class="trash red icon" aria-hidden="true"></i>
-                            {{ _T("Cancel mailing") }}
-                        </button>
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="jsonly displaynone icon dropdown"></i>
+                        {{ _T("Preview your mailing") }}
+                    </div>
+                    <div class="active content field">
+                        <div class="ui basic segments form">
+                            <div class="ui segment">
+                                <div class="inline field">
+                                    <label>{{ _T("Subject:") }}</label>
+                                    <span>{{ mailing.subject }}</span>
+                                </div>
+                            </div>
+                            <div class="ui segment">
+                                <div class="field">
+                                    <label>{{ _T("Message:") }}</label>
 
-                        <input type="hidden" name="mailing_objet" value="{{ mailing.subject }}"/>
-                        <input type="hidden" name="mailing_corps" value="{% if mailing.message %}{{ mailing.message|escape }}{% endif %}"/>
-                    </p>
+            {% if mailing.html %}
+                                    <div>{{ mailing.message }}</div>
+            {% else %}
+                                    <pre>{{ mailing.wrapped_message }}</pre>
+            {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
+
+            <div class="ui basic center aligned segment">
+                <button type="submit" name="mailing_reset" class="ui labeled icon button">
+                    <i class="backward icon"></i>
+                    {{ _T("Modifiy mailing") }}
+                </button>
+                <button type="submit" name="mailing_confirm"{% if constant('GALETTE_MODE') == 'DEMO' %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
+                    <i class="rocket icon" aria-hidden="true"></i>
+                    {{ _T("Send") }}
+                </button>
+                <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
+                    <i class="trash red icon" aria-hidden="true"></i>
+                    {{ _T("Cancel mailing") }}
+                </button>
+
+                <input type="hidden" name="mailing_objet" value="{{ mailing.subject }}"/>
+                <input type="hidden" name="mailing_corps" value="{% if mailing.message %}{{ mailing.message|escape }}{% endif %}"/>
+            </div>
         {% endif %}
             {% include "components/forms/csrf.html.twig" %}
         </form>

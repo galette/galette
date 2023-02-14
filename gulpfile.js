@@ -60,9 +60,6 @@ var paths = {
     theme: './semantic/src/themes/galette/'
   },
   styles: {
-    main: [
-      './ui/css/galette.css'
-    ],
     summernote: [
       './node_modules/summernote/dist/summernote-lite.min.css'
     ]
@@ -137,12 +134,6 @@ function clean() {
 }
 
 function styles() {
-  main = gulp.src(paths.styles.main)
-    .pipe(cleanCSS())
-    .pipe(concat('galette-main.bundle.min.css'))
-    .pipe(gulp.dest(paths.assets.css))
-    .pipe(browserSync.stream());
-
   summernote = gulp.src(paths.styles.summernote)
     .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
@@ -150,7 +141,7 @@ function styles() {
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
-  return merge(main, summernote);
+  return merge(summernote);
 }
 
 function scripts() {

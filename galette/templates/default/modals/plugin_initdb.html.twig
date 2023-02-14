@@ -43,15 +43,13 @@
         {{ results|raw }}
     {% endif %}
     {% if step == 'u3' %}
-            <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</legend>
-                <ul class="leaders">
+            <h3>{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</h3>
+            <ul class="leaders">
         {% set last = 0.00 %}
         {% for k, val in update_scripts %}
-                    <li>
-                        <span>
-                            <label for="upgrade-{{ val }}">
-
+                <li>
+                    <span>
+                        <label for="upgrade-{{ val }}">
             {% if last == 0.00 %}
                 {{ _T("older than %version")|replace({'%version': val}) }}
             {% elseif last != val %}
@@ -60,15 +58,14 @@
                 {{ val }}
             {% endif %}
             {% set last = val %}
-                            </label>
-                        </span>
-                        <span>
-                            <input type="radio" name="previous_version" value="{{ val }}" id="upgrade-{{ val }}" required/>
-                        </span>
-                    </li>
+                        </label>
+                    </span>
+                    <span>
+                        <input type="radio" name="previous_version" value="{{ val }}" id="upgrade-{{ val }}" required/>
+                    </span>
+                </li>
         {% endfor %}
-                </ul>
-            </fieldset>
+            </ul>
     {% endif %}
     {% if step == 'i4' or step == 'u4' %}
             <p>{{ _T("(Errors on DROP and RENAME operations can be ignored)") }}</p>

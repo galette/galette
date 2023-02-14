@@ -17,22 +17,21 @@
                     <span>{{ group.getCreationDate() }}</span>
                 </div>
             {% endif %}
-            <div class="inline field required">
-            {% if can_edit %}
+            <div class="inline field{% if can_edit %} required{% endif %}">
                 <label for="group_name">{{ _T("Name:") }}</label>
+            {% if can_edit %}
                 <input type="text" name="group_name" id="group_name" value="{{ group.getName() }}" maxlength="250" required/>
-            </div>
             {% else %}
-                <span class="bline">{{ _T("Name:") }}</span>
-                {{ group.getName() }}
+                <span>{{ group.getName() }}</span>
             {% endif %}
+            </div>
 
             {% if group.getParentGroup() %}
                 {% set pgroup = group.getParentGroup() %}
             {% endif %}
             <div class="inline field">
-                {% if can_edit %}
                     <label for="parent_group">{{ _T("Parent group:") }}</label>
+                {% if can_edit %}
                     <select name="parent_group" id="parent_group" class="ui search dropdown nochosen">
                         <option value="">{{ _T("None") }}</option>
                         {% for g in groups %}
@@ -42,7 +41,6 @@
                         {% endfor %}
                     </select>
                 {% else %}
-                    <span class="bline">{{ _T("Parent group:") }}</span>
                     <span>
         {% if pgroup is defined %}
             {{ pgroup.getName() }}
