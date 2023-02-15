@@ -1,20 +1,20 @@
 {% if tabbed ?? false == true %}
 <div id="social" class="ui{{ tab == 'social' ? ' active' }} tab segment" data-tab="social">
     {% block social_edit %}
-        <div id="social" class="ui bottom attached{% if tabbed ?? false == true %}tab {% endif %}segment" data-tab="social">
-            {% for social in socials %}
-                <div class="field stored">
-                    <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
-                    <div class="ui right action input">
-                        <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
-                        <a href="#" class="ui icon red button tooltip delete delsocial">
-                            <i class="trash icon" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}|e()"></i>
-                        </a>
-                    </div>
+        {% for social in socials %}
+            <div class="inline field stored">
+                <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
+                <div class="ui right action input">
+                    <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
+                    <a href="#" class="ui icon red button tooltip delete delsocial">
+                        <i class="trash icon" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}|e()"></i>
+                    </a>
                 </div>
-            {% endfor %}
-            <div class="ui yellow segment">
-                <div class="ui tiny header">{{ _T("Add new social network") }}</div>
+            </div>
+        {% endfor %}
+            {% if socials|length() > 0 %}<div class="ui divider"></div>{% endif %}
+            <div class="field addsocial">
+                <label>{{ _T("Add new social network") }}</label>
                 <div class="combo-social fields">
                     <div class="field">
                         <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
@@ -62,10 +62,9 @@
                     $('.addsocial').click(function(e){
                         e.preventDefault();
 
-                        var _newindex = $(this).parents('.segment').find('.combo-social:last select').attr('id').replace('social_new_type_', '');
+                        var _newindex = $(this).parents('.addsocial').find('.combo-social:last select').attr('id').replace('social_new_type_', '');
                         ++_newindex;
-                        console.log(_newindex);
-                        $(this).parents('.segment').find ('.combo-social:last')
+                        $(this).parents('.addsocial').find ('.combo-social:last')
                             .clone() // copy
                             .insertAfter('#social .combo-social:last') // where
                             .find('select').attr('id', 'social_new_type_' + _newindex).attr('name', 'social_new_type_' + _newindex)
@@ -76,7 +75,6 @@
                     });
                 });
             </script>
-        </div>
     {% endblock %}
 </div>
 {% else %}
