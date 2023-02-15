@@ -29,31 +29,53 @@ td.emptylist {
 /*-------------------------
      Membership status
 --------------------------*/
+#legende .table th.cotis-ok,
 .ui.ui.table.listing tbody tr > td.cotis-ok {
     background-color: #DDFFDD;
 }
+#legende .table th.cotis-never,
 .ui.ui.table.listing tbody tr > td.cotis-never {
     background-color: #EEEEEE;
 }
+#legende .table th.cotis-exempt,
 .ui.ui.table.listing tbody tr > td.cotis-exempt {
     background-color: #DDFFDD;
 }
+#legende .table th.cotis-soon,
 .ui.ui.table.listing tbody tr > td.cotis-soon {
     background-color: #FFE9AB;
 }
+#legende .table th.cotis-late,
+#legende .table th.transaction-uncomplete,
 .ui.ui.table.listing tbody tr > td.cotis-late,
 .ui.ui.table.listing tbody tr > td.transaction-uncomplete {
     background-color: #FFDDDD;
 }
+#legende .table th.cotis-lastday,
 .ui.ui.table.listing tbody tr > td.cotis-lastday {
     background-color: #FFD9AB;
 }
+#legende .table th.cotis-normal,
+#legende .table th.transaction-normal,
 .ui.ui.table.listing tbody tr > td.cotis-normal,
 .ui.ui.table.listing tbody tr > td.transaction-normal {
     background-color: #DDFFDD;
 }
+#legende .table th.cotis-give,
 .ui.ui.table.listing tbody tr > td.cotis-give {
     background-color: #FFDDDD;
+}
+
+/*-------------------------
+     Legends display
+--------------------------*/
+#legende .table {
+    th {
+        text-align: center;
+    }
+    .color-sample {
+        border: @rowBorder;
+    }
 }
 
 /*------------------
