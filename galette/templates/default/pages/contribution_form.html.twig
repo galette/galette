@@ -5,48 +5,6 @@
     {% if mode != 'ajax' %}
         <form action="{% if contribution.id %}{{ url_for("doEditContribution", {"type": type, "id": contribution.id}) }}{% else %}{{ url_for("doAddContribution", {"type": type}) }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
     {% endif %}
-    {% if contribution.isTransactionPart() %}
-        {% set mid = contribution.transaction.member %}
-            <div class="ui top attached accordion-styled header">
-                {{ _T("Related transaction information") }}
-            </div>
-            <div class="ui bottom attached accordion-styled segment">
-                <div class="active content field">
-                    <table id="transaction_detail" class="listing ui celled table">
-                        <thead>
-                            <tr>
-                                <th colspan="5">
-                                    {{ contribution.transaction.description }}
-                                    <a
-                                        href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
-                                        class="ui icon button tooltip"
-                                        title="{{ _T("View transaction") }}"
-                                    >
-                                        <i class="columns icon"><span class="displaynone">{{ _T("View transaction") }}</span></i>
-                                    </a>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th class="listing">#</th>
-                                <th class="listing">{{ _T("Date") }}</th>
-                                <th class="listing">{{ _T("Member") }}</th>
-                                <th class="listing">{{ _T("Amount") }}</th>
-                                <th class="listing">{{ _T("Not dispatched amount") }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ contribution.transaction.id }}</td>
-                                <td>{{ contribution.transaction.date }}</td>
-                                <td>{{ memberName({'id': mid}) }}</td>
-                                <td class="right">{{ contribution.transaction.amount }}</td>
-                                <td class="right">{{ contribution.transaction.getMissingAmount() }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-    {% endif %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
                     <i class="jsonly displaynone icon dropdown"></i>
@@ -55,60 +13,115 @@
     {% else %}
                     {{ _T("Select contributor and donation type") }}
     {% endif %}
-    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() > 0 %}
-                    <a
-                        href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
-                        class="ui icon button fright tooltip"
-                        title="{{ _T("Create a new fee that will be attached to the current transaction") }}">
-                        <i class="user check icon"></i>
-                        <span class="displaynone">{{ _T("New attached fee") }}</span>
-                    </a>
-                    <a
-                        href="{{ url_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
-                        class="ui icon button fright tooltip"
-                        title="{{ _T("Create a new donation that will be attached to the current transaction") }}">
-                        <i class="gift icon"></i>
-                        <span class="displaynone">{{ _T("New attached donation") }}</span>
-                    </a>
+    {% if contribution.isTransactionPart() %}
+                    <span class="ui teal horizontal label">
+                        {{ _T("Transaction related") }}
+                    </span>
     {% endif %}
                 </div>
                 <div class="active content">
+                    <div class="ui mobile reversed stackable grid">
+                        <div class="{% if contribution.isTransactionPart() %}five wide {% endif %}column">
     {% if not require_mass %}
-                    <div class="field inline">
-                        <label for="id_adh">{{ _T("Contributor:") }}</label>
-                        <div id="id_adh" class="jsonly search-dropdown ui input nochosen">
-                            <input id="id_adh_input" type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
-                            <i class="jsonly displaynone dropdown icon"></i>
-                            <div class="jsonly displaynone default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                            <div class="jsonly displaynone menu">
-                    {% for k, v in members.list %}
-                                <div class="item" data-value="{{ k }}">{{ v }}</div>
-                    {% endfor %}
-                            </div>
-                        </div>
-                        <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
-                    </div>
-    {% endif %}
-                    <div class="field inline">
-                        <label for="id_type_cotis">{{ _T("Contribution type:") }}</label>
-                        <select name="id_type_cotis" id="id_type_cotis" class="ui dropdown nochosen"{% if required.id_type_cotis == 1 %} required="required"{% endif %}>
-                            {% if contribution.type %}
-                                {% set selectedid = contribution.type.id %}
-                            {% else %}
-                                {% set selectedid = null %}
-                            {% endif %}
-                            {% for key, value in type_cotis_options %}
-                                <option value="{{ key }}"{% if key == selectedid %} selected="selected"{% endif %}>{{ value }}</option>
+                            <div class="inline field">
+                                <label for="id_adh">{{ _T("Contributor:") }}</label>
+                                <div id="id_adh" class="jsonly search-dropdown ui input nochosen">
+                                    <input id="id_adh_input" type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
+                                    <i class="jsonly displaynone dropdown icon"></i>
+                                    <div class="jsonly displaynone default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
+                                    <div class="jsonly displaynone menu">
+                            {% for k, v in members.list %}
+                                        <div class="item" data-value="{{ k }}">{{ v }}</div>
                             {% endfor %}
-                        </select>
-                    </div>
-    {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
-                    <noscript>
-                        <div class="ui basic fitted segment" id="reloadcont">
-                            <input type="submit" id="btnreload" name="btnreload" value="{{ _T("Reload") }}" title="{{ _T("Reload date information according to selected member and contribution type") }}" class="ui button"/>
-                        </div>
-                    </noscript>
+                                    </div>
+                                </div>
+                                <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
+                            </div>
     {% endif %}
+                            <div class="inline field">
+                                <label for="id_type_cotis">{{ _T("Contribution type:") }}</label>
+                                <select name="id_type_cotis" id="id_type_cotis" class="ui dropdown nochosen"{% if required.id_type_cotis == 1 %} required="required"{% endif %}>
+                                    {% if contribution.type %}
+                                        {% set selectedid = contribution.type.id %}
+                                    {% else %}
+                                        {% set selectedid = null %}
+                                    {% endif %}
+                                    {% for key, value in type_cotis_options %}
+                                        <option value="{{ key }}"{% if key == selectedid %} selected="selected"{% endif %}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+    {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
+                                <noscript>
+                                    <div class="ui basic fitted segment" id="reloadcont">
+                                        <input type="submit" id="btnreload" name="btnreload" value="{{ _T("Reload") }}" title="{{ _T("Reload date information according to selected member and contribution type") }}" class="ui button"/>
+                                    </div>
+                                </noscript>
+    {% endif %}
+                            </div>
+    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
+                            <div class="inline field">
+                                <label>{{ _T("Dispatch type:") }}</label>
+                                <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}"></i>
+                                <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}" checked="checked"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
+                                <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                            </div>
+    {% endif %}
+                        </div>
+    {% if contribution.isTransactionPart() %}
+                        <div class="eleven wide column">
+        {% set mid = contribution.transaction.member %}
+                            <div class="ui tiny header">{{ _T("Related transaction information") }}</div>
+                            <table id="transaction_detail" class="listing ui very compact small single line yellow table">
+                                <thead>
+                                    <tr>
+                                        <th class="listing">#</th>
+                                        <th class="listing">{{ _T("Description") }}</th>
+                                        <th class="listing">{{ _T("Date") }}</th>
+                                        <th class="listing">{{ _T("Member") }}</th>
+                                        <th class="listing">{{ _T("Amount") }}</th>
+                                        <th class="listing">{{ _T("Not dispatched amount") }}</th>
+                                        <th class="listing">{{ _T("Actions") }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ contribution.transaction.id }}</td>
+                                        <td>{{ contribution.transaction.description }}</td>
+                                        <td>{{ contribution.transaction.date }}</td>
+                                        <td>{{ memberName({'id': mid}) }}</td>
+                                        <td class="right">{{ contribution.transaction.amount }}</td>
+                                        <td class="right">{{ contribution.transaction.getMissingAmount() }}</td>
+                                        <td>
+                                            <a
+                                                href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                                                class="tooltip"
+                                                title="{{ _T("View transaction") }}"
+                                            >
+                                                <i class="eye outline blue icon"><span class="displaynone">{{ _T("View transaction") }}</span></i>
+                                            </a>
+    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() > 0 %}
+                                            <a
+                                                href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
+                                                class="tooltip"
+                                                title="{{ _T("Create a new fee that will be attached to the current transaction") }}">
+                                                <i class="user check green icon"></i>
+                                                <span class="displaynone">{{ _T("New attached fee") }}</span>
+                                            </a>
+                                            <a
+                                                href="{{ url_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
+                                                class="tooltip"
+                                                title="{{ _T("Create a new donation that will be attached to the current transaction") }}">
+                                                <i class="gift green icon"></i>
+                                                <span class="displaynone">{{ _T("New attached donation") }}</span>
+                                            </a>
+    {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+    {% endif %}
+                    </div>
                 </div>
             </div>
 
@@ -123,58 +136,62 @@
                 </div>
                 <div class="active content field">
                     <div id="contribdetails" class="ui basic fitted segment">
-                        <div class="field inline">
-                            <label for="montant_cotis">{{ _T("Amount:") }}</label>
-                            <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis == 1 %} required="required"{% endif %}/>
-                        </div>
-                    {# payment type #}
-                    {% set ptype = contribution.payment_type %}
-                    {% if ptype == null %}
-                        {% set ptype = constant('Galette\\Entity\\PaymentType::CHECK') %}
-                    {% endif %}
-                    {% include 'components/forms/payment_types.html.twig' with {'current': ptype, 'varname': 'type_paiement_cotis', 'show_inline': true} %}
-                        <div class="field inline">
-                            <label for="date_enreg">
-                                {{ _T("Record date:") }}
-                            </label>
-                            <div class="ui calendar" id="contribution-rangestart">
-                                <div class="ui input left icon">
-                                    <i class="calendar icon"></i>
-                                    <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg == 1 %} required="required"{% endif %}>
-                                </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label for="montant_cotis">{{ _T("Amount:") }}</label>
+                                <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis == 1 %} required="required"{% endif %}/>
                             </div>
-                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
-                        </div>
-                        <div class="field inline">
-                            <label for="date_debut_cotis">
-                            {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
-                                {{ _T("Start date of membership:") }}
-                            {% else %}
-                                {{ _T("Date of contribution:") }}
+                            {# payment type #}
+                            {% set ptype = contribution.payment_type %}
+                            {% if ptype == null %}
+                                {% set ptype = constant('Galette\\Entity\\PaymentType::CHECK') %}
                             {% endif %}
-                            </label>
-                            <div class="ui calendar" id="contribution-rangeend">
-                                <div class="ui input left icon">
-                                    <i class="calendar icon"></i>
-                                    <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %}/>
+                            {% include 'components/forms/payment_types.html.twig' with {'current': ptype, 'varname': 'type_paiement_cotis', 'show_inline': true} %}
+                        </div>
+                        <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
+                            <div class="field">
+                                <label for="date_enreg">
+                                    {{ _T("Record date:") }}
+                                </label>
+                                <div class="ui calendar" id="contribution-rangestart">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon"></i>
+                                        <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg == 1 %} required="required"{% endif %}>
+                                    </div>
                                 </div>
+                                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                             </div>
-                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
-                        </div>
+                            <div class="field">
+                                <label for="date_debut_cotis">
+                                {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
+                                    {{ _T("Start date of membership:") }}
+                                {% else %}
+                                    {{ _T("Date of contribution:") }}
+                                {% endif %}
+                                </label>
+                                <div class="ui calendar" id="contribution-rangeend">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon"></i>
+                                        <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %}/>
+                                    </div>
+                                </div>
+                                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+                            </div>
             {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
-                        <div class="field inline">
+                            <div class="field">
                 {% if preferences.pref_membership_ext != "" %}
-                            <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
-                            <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis == 1%} required="required"{% endif %}/>
-                            <span class="exemple">{{ _T("months") }}</span>
+                                <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
+                                <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis == 1%} required="required"{% endif %}/>
+                                <span class="exemple">{{ _T("months") }}</span>
                 {% else %}
-                            <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
-                            <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis == 1 %} required="required"{% endif %}/>
-                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+                                <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
+                                <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis == 1 %} required="required"{% endif %}/>
+                                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                 {% endif %}
-                        </div>
+                            </div>
             {% endif %}
-                        <div class="field inline">
+                        </div>
+                        <div class="field">
                             <label for="info_cotis">{{ _T("Comments:") }}</label>
                             <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{% if required.info_cotis is defined and required.info_cotis == 1 %} required="required"{% endif %}>{{ contribution.info }}</textarea>
                         </div>
@@ -182,23 +199,8 @@
                 </div>
             </div>
 
-    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
-            <div class="ui styled fluid accordion field">
-                <div class="active title">
-                    <i class="jsonly displaynone icon dropdown"></i>
-                    {{ _T("Transaction related") }}
-                </div>
-                <div class="active content field">
-                    <div class="field inline">
-                        <label>{{ _T("Dispatch type:") }}</label>
-                        <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}"></i>
-                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}" checked="checked"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
-                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
-                    </div>
-                </div>
-            </div>
-    {% endif %}
         {% include 'components/dynamic_fields.html.twig' with {'object': contribution} %}
+
     {% if not contribution.id and preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
         {% if not require_mass %}
             <div class="ui center aligned yellow segment">
