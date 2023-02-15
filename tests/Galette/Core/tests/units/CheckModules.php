@@ -108,8 +108,8 @@ class CheckModules extends atoum
                         ->array($checks->getMissings())
                             ->hasSize(6)
                         ->string($checks->toHtml())
-                            ->notContains('icon-valid.png')
-                            ->hasLength(1002);
+                            ->notContains('green check icon')
+                            ->hasLength(1026);
     }
 
     /**
