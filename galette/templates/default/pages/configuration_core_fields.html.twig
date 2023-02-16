@@ -2,22 +2,22 @@
 
 {% block content %}
     <div class="jsonly displaynone ui basic fitted segment">
-        <button id="collapse" class="ui labeled icon button">
-            <i class="angle double up icon"></i>
-            {{ _T("Collapse all") }}
-        </button>
+        <a class="ui labeled icon button collapse">
+            <i class="angle double down icon"></i>
+            {{ _T("Expand all") }}
+        </a>
     </div>
     <form action="{{ url_for('configureCoreFields') }}" method="post" id="config_fields_form" class="ui form">
     <div id="members_tab">
 {% for category in categories %}
     {% set catname = category.category %}
         <div class="galetteform ui styled fluid accordion field">
-            <div class="active ui title">
+            <div class="ui title">
                 <i class="jsonly displaynone dropdown icon"></i>
                 {{ _T(catname) }}
                 <i class="jsonly displaynone arrows alternate icon"></i>
             </div>
-            <div class="active content">
+            <div class="content">
                 <div class="ui basic fitted segment">
                     <div class="ui three column stackable grid">
                         <div class="middle aligned row">
@@ -81,6 +81,12 @@
         </div>
 {% endfor %}
     </div>
+    <div class="jsonly hidden ui basic fitted segment">
+        <a class="ui labeled icon button collapse">
+            <i class="angle double down icon"></i>
+            {{ _T("Expand all") }}
+        </a>
+    </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
@@ -129,26 +135,19 @@
 
 
         var _bindCollapse = function() {
-            $('#collapse').click(function(){
+            $('.collapse').click(function(){
                 var _this = $(this);
-                var _expandTxt = '{{ _T("Expand all") }}';
-                var _collapseTxt = '{{ _T("Collapse all") }}';
-
-                var _span = _this.children('i');
+                var _buttons = $('.collapse');
+                var _expandTxt = '<i class="angle double down icon"></i> {{ _T("Expand all") }}';
+                var _collapseTxt = '<i class="angle double up icon"></i> {{ _T("Collapse all") }}';
                 var _isExpand = false;
-
-                var _child = _this.children('.icon');
-
-                if( _child.is('.down') ) {
-                    _this.html(_collapseTxt);
+                var _icon = _this.children('.icon');
+                if( _icon.is('.down') ) {
+                    _buttons.html(_collapseTxt);
                 } else {
                     _isExpand = true;
-                    _this.html(_expandTxt);
+                    _buttons.html(_expandTxt);
                 }
-                _this.prepend(_span);
-
-                _child.toggleClass('down').toggleClass('up');
-
                 if (_isExpand == true) {
                     $('.ui.accordion.galetteform').accordion('close', 0);
                 } else {
