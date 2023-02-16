@@ -4,19 +4,21 @@
         {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_SENT') %}
                 <p>{{ _T("Your message has been sent to <strong>%s members</strong>")|replace({'%s': count}) }}</p>
         {% else %}
-                <p id="recipients_count">{{ _T("You are about to send an e-mail to <strong>%s members</strong>")|replace({'%s': count}) }}</p>
+                <p id="recipients_count">{{ _T("You are about to send an e-mail to <strong>%s members</strong>")|replace({'%s': count})|raw }}</p>
         {% endif %}
     {% else %}
         {% if count_unreachables > 0 %}
-                <p id="recipients_count"><strong>{{ _T("None of the selected members has an email address.") }}</strong></p>
+                <p id="recipients_count"><em>{{ _T("None of the selected members has an email address.") }}</em></p>
          {% else %}
-                <p id="recipients_count"><strong>{{ _T("No member selected (yet).") }}</strong></p>
+                <p id="recipients_count"><em>{{ _T("No member selected (yet).") }}</em></p>
          {% endif %}
     {% endif %}
     {% if count_unreachables > 0 %}
-                <p id="unreachables_count">
-                    <strong>{{ count_unreachables }} {% if count_unreachables != 1 %}{{ _T("unreachable members:") }}{% else %}{{ _T("unreachable member:") }}{% endif %}</strong><br/>
-                    {{ _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") }}
-                    <br/><a class="ui labeled icon button" href="{{ url_for('pdf-members-labels') }}?from=mailing"><i class="address card icon"></i> {{ _T("Generate labels") }}</a>
-                </p>
+                <div id="unreachables_count" class="ui message">
+                    <div class="header">
+                        {{ count_unreachables }} {% if count_unreachables != 1 %}{{ _T("unreachable members:") }}{% else %}{{ _T("unreachable member:") }}{% endif %}
+                    </div>
+                    <p>{{ _T("Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.") }}</p>
+                    <a class="ui basic labeled icon button" href="{{ url_for('pdf-members-labels') }}?from=mailing"><i class="th icon"></i> {{ _T("Generate labels") }}</a>
+                </div>
     {% endif %}
