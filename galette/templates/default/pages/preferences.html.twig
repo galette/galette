@@ -234,9 +234,9 @@
                     <div class="field" id="publicpages_visibility"{% if not pref.pref_bool_publicpages %} class="displaynone"{% endif %}>
                         <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
                         <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown nochosen">
-                            <option value=" {{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value=" {{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value=" {{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
                         </select>
                     </div>
                     <div class="field inline">
