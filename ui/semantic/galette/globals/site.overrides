@@ -36,8 +36,7 @@ body.pushable:not(.loggedin) > .pusher {
     justify-content: center;
 }
 
-section.content,
-.front-page section:not(.content) {
+.loggedin #main .main-content {
   padding: 1.25rem;
 }
 
