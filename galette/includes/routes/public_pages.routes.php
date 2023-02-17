@@ -37,7 +37,7 @@
 use Galette\Controllers\Crud;
 use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/public', function (RouteCollectorProxy $app) {
+$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
     //public members list
     $app->get(
         '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',
@@ -52,7 +52,7 @@ $app->group('/public', function (RouteCollectorProxy $app) {
 
     $app->get(
         '/members[/{option:page|order}/{value:\d+|\w+}]',
-        function ($request, $response, string $option = null, string $value = null) {
+        function ($request, $response, string $option = null, string $value = null) use ($routeparser) {
             $args = ['type' => 'list'];
             if ($option !== null && $value !== null) {
                 $args['option'] = $option;
@@ -60,17 +60,17 @@ $app->group('/public', function (RouteCollectorProxy $app) {
             }
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->get('router')->pathFor('publicList', $args));
+                ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
 
     $app->get(
         '/trombinoscope',
-        function ($request, $response) {
+        function ($request, $response) use ($routeparser) {
             $args = ['type' => 'trombi'];
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->get('router')->pathFor('publicList', $args));
+                ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
 })->add($showPublicPages);

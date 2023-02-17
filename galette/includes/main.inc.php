@@ -45,6 +45,7 @@ use Slim\Slim;
 use Galette\Core\Galette;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use Slim\Routing\RouteParser;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
@@ -148,7 +149,7 @@ $showPublicPages = function (Request $request, RequestHandler $handler) use ($co
             ->withStatus(403)
             ->withHeader(
                 'Location',
-                $this->get('router')->pathFor('slash')
+                $this->get(RouteParser::class)->urlFor('slash')
             );
     }
 
