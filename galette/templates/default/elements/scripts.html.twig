@@ -68,6 +68,9 @@
         <script type="text/javascript" src="{{ base_path() }}/assets/js/masschanges.min.js"></script>
     {% endif %}
     {% if html_editor %}
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/codemirror.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/xml.js"></script>
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/formatting.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
         <script language="javascript">

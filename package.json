@@ -6,7 +6,6 @@
   "directories": {
     "lib": "lib"
   },
-
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets && rm -rf galette/webroot/themes",
     "fomantic-install": "cd node_modules/fomantic-ui && npx gulp install",
@@ -42,6 +41,7 @@
     "chartjs-plugin-autocolors": "^0.0.5",
     "chartjs-plugin-datalabels": "^2.0.0",
     "fomantic-ui": "^2.8.8",
+    "gulp-download": "^0.0.1",
     "jquery": "^3.5.0",
     "js-cookie": "^3.0.1",
     "sortablejs": "^1.15.0",
