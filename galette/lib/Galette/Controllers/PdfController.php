@@ -545,7 +545,8 @@ class PdfController extends AbstractController
             $tpl = 'pages/configuration_pdf_models.html.twig';
             $params += [
                 'page_title'        => _T("PDF models"),
-                'models'            => $models
+                'models'            => $models,
+                'html_editor'       => true,
             ];
         }
 

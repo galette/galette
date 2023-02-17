@@ -289,6 +289,13 @@ ul.leaders span + span {
   }
 }
 
+/*-----------------------------
+    Summernote display
+------------------------------*/
+.field .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {
+    background-color: #fff;
+}
+
 /*-------------------------
     Print stylesheet
 --------------------------*/

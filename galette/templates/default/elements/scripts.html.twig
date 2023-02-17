@@ -108,7 +108,7 @@
                 $('#deactivate_editor').remove();
                 $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:activateMailingEditor();" id="activate_editor">{{ _T("Activate HTML editor") }}</a>');
             }
-        {% if html_editor_active == 1 %}
+        {% if html_editor_active is defined and html_editor_active == 1 %}
             $(function(){
                 activateMailingEditor();
             });
