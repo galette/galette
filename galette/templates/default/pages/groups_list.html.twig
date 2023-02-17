@@ -272,6 +272,10 @@
                 return false;
             });
         }
+
+        {% include "elements/js/removal.js.twig" with {
+            single_action: "true"
+        } %}
     });
 </script>
 {% endblock %}

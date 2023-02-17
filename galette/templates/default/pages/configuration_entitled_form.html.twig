@@ -1,11 +1,13 @@
-{% extends 'page.html.twig' %}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
 {% set name = fields.libelle %}
 {% set id = fields.id %}
 {% set field = fields.third %}
     <form action="{% if class == 'Status' %}{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_statut}) }}{% else %}{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_type_cotis}) }}{% endif %}" method="post" class="ui form">
+{% if mode != 'ajax' %}
         <div class="ui segment">
+{% endif %}
             <div class="field inline">
                 <label for="{{ name }}">{{ _T("Name:") }}</label>
                 <input type="text" name="{{ name }}" id="{{ name }}" value="{% if class == 'Status' %}{{ entry.libelle_statut }}{% else %}{{ entry.libelle_type_cotis }}{% endif %}" />
@@ -30,12 +32,14 @@
         <input type="hidden" name="mod" id="mod" value="{% if class == 'Status' %}{{ entry.id_statut }}{% else %}{{ entry.id_type_cotis }}{% endif %}"/>
         <input type="hidden" name="class" value="{{ class }}" />
 
+{% if mode != 'ajax' %}
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i>
                 {{ _T("Save") }}
             </button>
-            {% include 'components/forms/csrf.html.twig' %}
         </div>
+{% endif %}
+        {% include 'components/forms/csrf.html.twig' %}
     </form>
 {% endblock %}

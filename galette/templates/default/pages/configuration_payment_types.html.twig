@@ -48,25 +48,24 @@
                             <td class="center actions_row">
                                 <a
                                     href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}"
-                                    class="tooltip action"
+                                    class="action single-edit"
                                 >
                                     <i class="ui edit icon"></i>
                                     <span class="sr-only">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                                 <a
                                     href="{{ url_for('dynamicTranslations', {'text_orig': ptype.getName(false)|escape}) }}"
-                                    class="tooltip"
+                                    class="action single-translate"
                                 >
                                     <i class="ui language grey icon"></i>
                                     <span class="sr-only">{{ _T("Translate '%s'")|replace({'%s': ptype.getName()}) }}</span>
-                                </a>
                                 </a>
                 {% if ptype.isSystemType() %}
                                 <i class="ui icon">&nbsp;</i>
                 {% else %}
                                 <a
                                     href="{{ url_for('removePaymentType', {'id': ptype.__get('id')}) }}"
-                                    class="delete tooltip"
+                                    class="delete"
                                 >
                                     <i class="ui trash red icon"></i>
                                     <span class="sr-only">{{ _T("Delete '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
@@ -84,7 +83,43 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                {% include 'elements/js/removal.js.twig' %}
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-edit",
+                    modaltitle: _T("Edit payment type")|e("js"),
+                    modal_class: "mini",
+                } %}
+
+                {% set extra_success = "
+                    $('.modal-form form').on('submit', function(event) {
+                        event.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: 'POST',
+                            datatype: 'json',
+                            data: _data,
+                            error: function() {
+                                alert('{{ _T(\"An error occurred :(\")|e(\"js\") }}');
+                            }
+                        });
+                    });
+                " %}
+
+                {% set modalapprove = "
+                    $('.modal-form form #redirect_uri').val(window.location.href);
+                    $('.modal-form form').submit();
+                " %}
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-translate",
+                    extra_success: extra_success,
+                    modaltitle: _T("Translate labels")|e("js"),
+                    modalcontent_class: "scrolling"
+                } %}
+
+                {% include "elements/js/removal.js.twig" with {
+                    single_action: "true"
+                } %}
             });
         </script>
 {% endblock %}

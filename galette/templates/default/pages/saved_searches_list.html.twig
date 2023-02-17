@@ -67,7 +67,9 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                {% include "elements/js/removal.js.twig" %}
+                {% include "elements/js/removal.js.twig" with {
+                    single_action: "true"
+                } %}
             });
         </script>
 {% endblock %}

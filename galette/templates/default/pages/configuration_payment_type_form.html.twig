@@ -1,8 +1,10 @@
-{% extends 'page.html.twig' %}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
     <form action="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}" method="post" class="ui form">
+    {% if mode != 'ajax' %}
         <div class="ui segment" id="general">
+    {% endif %}
             <div class="field inline">
                 <label for="name" class="" title="{{ _T("Original string for name, that will be used for translations.") }}">{{ _T("Name:") }}</label>
                 <div class="ui right corner labeled input">
@@ -12,14 +14,18 @@
                     <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" />
                 </div>
             </div>
+    {% if mode != 'ajax' %}
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
             </button>
             <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+    {% endif %}
             <input type="hidden" name="id" id="id" value="{{ ptype.__get('id') }}"/>
             {% include 'components/forms/csrf.html.twig' %}
+    {% if mode != 'ajax' %}
         </div>
+    {% endif %}
      </form>
 {% endblock %}

@@ -696,7 +696,7 @@ class ContributionsController extends CrudController
             if (isset($post['delete'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('removeContributions'));
+                    ->withHeader('Location', $this->routeparser->urlFor('removeContributions', ['type' => $type]));
             }
 
             throw new \RuntimeException('Does not know what to batch :(');

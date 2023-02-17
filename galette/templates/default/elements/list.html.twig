@@ -101,8 +101,8 @@
         {% block extra_form %}{% endblock %}
         {% include "components/forms/csrf.html.twig" %}
     </form>
-    {% if mode == 'ajax' %}
         {% block legend %}{% endblock %}
+    {% if mode == 'ajax' %}
     </div>
     {% endif %}
 {% endblock %}

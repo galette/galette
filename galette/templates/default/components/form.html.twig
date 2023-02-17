@@ -132,7 +132,7 @@
             </div>
 
                 {# Social networks attached to the contact information fieldset #}
-                {% if fieldset.id == 3 %}
+                {% if fieldset.id == 3 and not (masschange ?? false) %}
                     {% include "elements/edit_socials.html.twig" with {socials: member.socials} %}
                 {% endif %}
             {% endfor %}

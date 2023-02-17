@@ -137,7 +137,8 @@
             $(function() {
                 {% include "elements/js/removal.js.twig" with {
                     selector: "#delete",
-                    loader: "button"
+                    loader: "button",
+                    single_action: "true"
                 } %}
                 var _elt = $('<i class="circular small inverted primary link icon info tooltip qryhide" title="{{ _T("Show associated query")|e('js') }}"></i>');
                 $('.sql_log').hide().parent().prepend(_elt);

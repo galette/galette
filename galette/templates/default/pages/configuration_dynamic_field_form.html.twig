@@ -3,11 +3,13 @@
 {% block content %}
 {% if action == 'edit' %}
     <form action="{{ url_for('doEditDynamicField', {'form_name': form_name, 'id': df.getId()}) }}" method="post" class="ui form">
+    {% if mode != 'ajax' %}
         <div class="ui top attached accordion-styled header">
             {{ _T("Edit field %field")|replace({'%field': df.getName()}) }}
         </div>
         <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
+    {% endif %}
                 <div class="inline field">
                     <label for="field_name">{{ _T("Name:") }}</label>
                     <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{% if df.getType != 0 %} required="required"{% endif %}/>
@@ -71,6 +73,7 @@
                     <textarea name="field_information" id="field_information" cols="20" rows="6">{{ df.getInformation() }}</textarea>
                     <span class="tip">{{ _T("Extra information displayed along with dynamic field.") }}</span>
                 </div>
+    {% if mode != 'ajax' %}
             </div>
         </div>
 
@@ -78,8 +81,9 @@
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
             </button>
-            {% include "components/forms/csrf.html.twig" %}
         </div>
+    {% endif %}
+            {% include "components/forms/csrf.html.twig" %}
      </form>
 {% elseif action == 'add' %}
     <form action="{{ url_for('doAddDynamicField', {'form_name': form_name}) }}" method="post" enctype="multipart/form-data" title="{{ _T("New dynamic field") }}" class="ui form">

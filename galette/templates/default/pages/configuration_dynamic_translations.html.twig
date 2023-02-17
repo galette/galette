@@ -1,8 +1,8 @@
-{% extends 'page.html.twig' %}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
 {% if trans is defined and trans|length > 0 %}
-    {% if exists %}
+    {% if exists and mode != 'ajax' %}
         <div class="ui top attached accordion-styled header">
             {{ _T("Choose label to translate") }}
         </div>
@@ -46,12 +46,17 @@
                     </table>
                 </div>
             </div>
+    {% if mode != 'ajax' %}
             <div class="ui basic center aligned segment">
                 <button type="submit" name="trans" class="ui labeled icon primary button action">
                     <i class="save icon"></i> {{ _T("Save") }}
                 </button>
-                {% include "components/forms/csrf.html.twig" %}
             </div>
+    {% else %}
+            <input type="hidden" name="trans" id="trans" value="true"/>
+            <input type="hidden" name="redirect_uri" id="redirect_uri" value=""/>
+    {% endif %}
+                {% include "components/forms/csrf.html.twig" %}
         </form>
 {% else %}
         <p>{{ _T("No fields to translate.") }}</p>

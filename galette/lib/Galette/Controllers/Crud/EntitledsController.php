@@ -207,6 +207,8 @@ class EntitledsController extends CrudController
         $entry = $entitled->get($id);
         $params['entry'] = $entry;
 
+        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+
         // display page
         $this->view->render(
             $response,

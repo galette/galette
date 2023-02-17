@@ -12,7 +12,20 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
-            {% include 'elements/js/removal.js.twig' %}
+            {% if url_class == "status" %}
+                {% set modaltitle = _T("Edit status")|e("js") %}
+            {% elseif url_class == "contributions-types" %}
+                {% set modaltitle = _T("Edit contribution type")|e("js") %}
+            {% endif %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-edit",
+                modaltitle: modaltitle,
+                modal_class: "mini",
+            } %}
+
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
         });
     </script>
 {% endblock %}

@@ -23,6 +23,8 @@
                     path: '{{ url_for('configureDynamicFields', {'form_name': ''}) }}',
                     onLoad: function(tabPath, parameterArray, historyEvent) {
                         _addDynField();
+                        _editDynField();
+                        _transDynField();
                         _removeItems();
                     }
                 });
@@ -73,5 +75,44 @@
                 });
             }
             _addDynField();
+
+            var _editDynField = function() {
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-edit",
+                    modaltitle: _T("Edit field")|e("js"),
+                    modal_class: "mini",
+                } %}
+            }
+            _editDynField();
+
+            {% set extra_success = "
+                $('.modal-form form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: 'POST',
+                        datatype: 'json',
+                        data: _data,
+                        error: function() {
+                            alert('{{ _T(\"An error occurred :(\")|e(\"js\") }}');
+                        }
+                    });
+                });
+            " %}
+            {% set modalapprove = "
+                $('.modal-form form #redirect_uri').val(window.location.href);
+                $('.modal-form form').submit();
+            " %}
+            var _transDynField = function() {
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-translate",
+                    extra_success: extra_success,
+                    modaltitle: _T("Translate labels")|e("js"),
+                    modalcontent_class: "scrolling"
+                } %}
+            }
+            _transDynField();
         </script>
 {% endblock %}

@@ -1,8 +1,10 @@
-{% extends 'page.html.twig' %}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
     <form action="{{ url_for('editTitle', {'id': title.id}) }}" method="post" class="ui form">
+    {% if mode != 'ajax' %}
         <div class="ui segment" id="general">
+    {% endif %}
             <div class="field inline">
                 <label for="short_label">{{ _T("Short form:") }}</label>
                 <input type="text" name="short_label" id="short_label" value="{{ title.short }}" />
@@ -12,13 +14,17 @@
                 <input type="text" name="long_label" id="long_label" value="{{ title.long }}" />
             </div>
         </div>
+    {% if mode != 'ajax' %}
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
             </button>
             <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" />
+    {% endif %}
             <input type="hidden" name="id" id="id" value="{{ title.id }}"/>
             {% include 'components/forms/csrf.html.twig' %}
+    {% if mode != 'ajax' %}
         </div>
+    {% endif %}
      </form>
 {% endblock %}
