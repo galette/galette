@@ -24,10 +24,10 @@
                     path: '{{ url_for('pdfModels', {'id': ''}) }}',
                     onLoad: function(tabPath, parameterArray, historyEvent) {
                         $('.ui.tab.segment:not(.active)').empty();
-                        $('.note-editor').remove();
+                        $('.note-editor, .btnlegend').remove();
                         _initCodeEditor();
                         _bindSubmit();
-                        _addLegendButton('field:not(.nolegend) .ui.corner.label');
+                        _addLegendButton('.field:not(.nolegend) .ui.corner.label');
                         _handleLegend(tabPath);
                     }
                 });
@@ -42,7 +42,7 @@
                     ]
                 });
                 // Disable wysiwyg edition
-                $('textarea.codeeditor').next().find(".note-editable").attr("contenteditable", false);
+                $('textarea.codeeditor').next().find('.note-editable').attr('contenteditable', false);
             }
             _initCodeEditor();
 
