@@ -596,6 +596,10 @@ class PdfController extends AbstractController
                 $model->type = $type;
                 foreach ($fields as $pvar => $prop) {
                     if (isset($post[$pvar])) {
+                        // Do not store content used by summernote when empty.
+                        if ($post[$pvar] == '<p><br></p>') {
+                            $post[$pvar] = '';
+                        }
                         $model->$prop = $post[$pvar];
                     }
                 }
