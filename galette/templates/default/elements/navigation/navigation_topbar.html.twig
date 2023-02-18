@@ -18,8 +18,10 @@
                 ui: "dropdown"
         } %}
 
-        <div class="item">
-            {% include "elements/modes.html.twig" %}
-        </div>
+        {% if constant('GALETTE_MODE') == 'DEMO' %}
+            <div class="item">
+                {% include "elements/modes.html.twig" %}
+            </div>
+        {% endif %}
     </div>
 </header>
