@@ -32,17 +32,23 @@
         <form action="{{ url_for('texts') }}" method="post" enctype="multipart/form-data" class="ui form">
             <div class="ui top attached accordion-styled header">
                 {{ mtxt.tcomment }}
-                <a id="btnlegend" class="tooltip action" title="{{ _T("Show existing variables") }}"><i class="circular inverted primary small icon info tooltip"></i><span class="displaynone">{{ _T("Show existing variables")|escape("js") }}</span></a>
             </div>
             <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">
-                    <div class="field inline">
+                    <div class="field">
                         <label for="tsubject">{{ _T("Email Subject") }}</label>
-                        <input type="text" name="text_subject" id="tsubject" value="{{ mtxt.tsubject }}" maxlength="255" size="32"/> <span class="exemple">{{ _T("(Max 255 characters)") }}</span>
+                        <div class="ui corner labeled input">
+                            <input type="text" name="text_subject" id="tsubject" value="{{ mtxt.tsubject }}" maxlength="255" size="32" class="codeeditor"/>
+                            <div class="ui corner label"></div>
+                        </div>
+                        <span class="exemple">{{ _T("(Max 255 characters)") }}</span>
                     </div>
                     <div class="field">
                         <label id="body_label" for="text_body">{{ _T("Email Body:") }}</label>
-                        <textarea name="text_body" id="text_body" cols="64" rows="15">{{ mtxt.tbody }}</textarea>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="text_body" id="text_body" cols="64" rows="15" class="codeeditor">{{ mtxt.tbody }}</textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -69,7 +75,7 @@
                     this.form.submit();
                 });
 
-                _addLegendButton('fieldset > p:nth-child(2)');
+                _addLegendButton('.ui.corner.label');
                 _handleLegend();
             });
         </script>

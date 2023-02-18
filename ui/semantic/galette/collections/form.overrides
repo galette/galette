@@ -2,6 +2,17 @@
          Galette Overrides
 *******************************/
 
+/*-------------------------------------
+    Style for "codeeditor" textareas
+    and text inputs
+--------------------------------------*/
+
+.ui.form input[type="text"].codeeditor,
+.ui.input textarea.codeeditor,
+.ui.form textarea.codeeditor {
+  font-family: monospace;
+}
+
 /*--------------------
     Gaptcha Input
 ---------------------*/
@@ -30,7 +41,7 @@
 }
 
 /*--------------------
-      Field
+      Fields
 ---------------------*/
 .ui .fields:first-child:last-child {
   margin-bottom: 0;
