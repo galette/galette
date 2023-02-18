@@ -46,7 +46,7 @@ $app->group(
         //Global route to access plugin resources (CSS, JS, images, ...)
         $app->get(
             '/{plugin}/res/{path:.*}',
-            function (Request $request, Response $response, $plugin, $path) {
+            function (Request $request, Response $response, $plugin, $path) use ($container) {
                 $ext = pathinfo($path)['extension'];
                 $auth_ext = [
                     'js'    => 'text/javascript',
@@ -58,7 +58,7 @@ $app->group(
                     'svg'   => 'image/svg+xml'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
-                    $file = $this->get('plugins')->getFile(
+                    $file = $container->get('plugins')->getFile(
                         $plugin,
                         $path
                     );
@@ -84,11 +84,11 @@ $app->group(
             $app->group(
                 '/' . $module['route'],
                 //$module_id may be used in included _routes.php from plugin.
-                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $showPublicPages) {
+                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $showPublicPages, $container) {
                     //Plugin home: give information
                     $app->get(
                         '',
-                        function ($request, $response) use ($module) {
+                        function ($request, $response) use ($module, $container) {
                             $params = [
                                 'page_title'    => $module['name'],
                                 'name'          => $module['name'],
@@ -96,11 +96,11 @@ $app->group(
                                 'date'          => $module['date'],
                                 'author'        => $module['author']
                             ];
-                            if ($this->get('login')->isAdmin()) {
+                            if ($container->get('login')->isAdmin()) {
                                 $params['module'] = $module;
                             }
                             // display page
-                            $this->get(\Slim\Views\Twig::class)->render(
+                            $container->get(\Slim\Views\Twig::class)->render(
                                 $response,
                                 'pages/plugin_info.html.twig',
                                 $params
