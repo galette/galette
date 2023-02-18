@@ -20,14 +20,13 @@
             ui: "item"
     } %}
 {% else %}
-        <div class="item">
-            {% include "elements/modes.html.twig" %}
-        </div>
-
         {% include "elements/navigation/navigation_items.html.twig" %}
 
         {% include "elements/logout.html.twig" with {
                 ui: "item"
         } %}
 {% endif %}
+        <div class="ui basic center aligned segment">
+            {% include "elements/modes.html.twig" %}
+        </div>
     </div>

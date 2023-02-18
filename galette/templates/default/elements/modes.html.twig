@@ -1,11 +1,12 @@
 {% if login.isSuperAdmin() %}
-    <div class="ui small red inverted center aligned segment" title="{{ _T("You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member.") }}">
-        <i class="ui user shield icon"></i>
-        <strong>{{ _T("Superadmin") }}</strong>
-    </div>
+    <span class="tooltip ui red icon circular label" title="{{ _T("You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member.") }}">
+        <i class="shield icon"></i>
+        {{ _T("Superadmin") }}
+    </span>
 {% endif %}
 {% if constant('GALETTE_MODE') == 'DEMO' %}
-        <div class="ui small orange inverted center aligned segment" title="{{ _T("This application runs under DEMO mode, all features may not be available.") }}">
-            <strong>{{ _T("Demonstration") }}</strong>
-        </div>
+    <span class="tooltip ui orange icon circular label" title="{{ _T("This application runs under DEMO mode, all features may not be available.") }}">
+        <i class="gamepad icon"></i>
+        {{ _T("Demonstration") }}
+    </span>
 {% endif %}

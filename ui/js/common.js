@@ -120,7 +120,7 @@ $(function() {
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
         $popup           = $('.no-touch a[title]'),
-        $tooltipPopup    = $('i.tooltip'),
+        $tooltipPopup    = $('i.tooltip, span.tooltip'),
         $menuPopupRight  = $('.no-touch .ui.vertical.accordion.menu a[title]'),
         $menuPopupBottom = $('.no-touch .ui.top.fixed.menu a.item[title]'),
         $menuPopupLeft   = $('.no-touch .ui.dropdown.right-aligned a[title]')

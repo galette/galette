@@ -13,17 +13,6 @@
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
                 <section{% if login.isLogged() %} class="content"{% endif %}>
-{% if constant('GALETTE_MODE') == 'DEMO' %}
-    {% if cur_route != "editMember" %}
-        {% if not login.isLogged() %}
-            {% if cur_route == ("addMember" or "login") or (cur_route == "publicList" and cur_subroute == ("list" or "trombi")) %}
-                    <div class="ui tiny orange message" title="{{ _T("This application runs under DEMO mode, all features may not be available.") }}">
-                        {{ _T("Demonstration") }}
-                    </div>
-            {% endif %}
-        {% endif %}
-    {% endif %}
-{% endif %}
 {% if not login.isLogged() %}
                     <div class="ui basic center aligned fitted segment">
                         <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
