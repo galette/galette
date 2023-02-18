@@ -53,6 +53,13 @@ use Analog\Analog;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
+ *
+ * @property integer $id
+ * @property string $name
+ * @property array $parameters
+ * @property integer $author_id
+ * @property string $creation_date
+ * @property string $form
  */
 
 class SavedSearch
@@ -279,6 +286,7 @@ class SavedSearch
                     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
                     $parameters = [];
                     foreach ((array)$this->parameters as $key => $parameter) {
+                        //@phpstan-ignore-next-line
                         if (isset($members_fields[$key])) {
                             //@phpstan-ignore-next-line
                             $key = $members_fields[$key]['label'];

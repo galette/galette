@@ -355,25 +355,25 @@ class SavedSearchesController extends CrudController
                 'success_detected',
                 _T("Saved search loaded")
             );
+
+            $parameters = $sco->parameters;
+
+            if (isset($parameters['free_search'])) {
+                $filters = new AdvancedMembersList();
+            } else {
+                $filters = new MembersList();
+            }
+
+            foreach ($parameters as $key => $value) {
+                $filters->$key = $value;
+            }
+            $this->session->filter_members = $filters;
         } catch (Throwable $e) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("An SQL error has occurred while loading search.")
             );
         }
-        $parameters = (array)$sco->parameters;
-
-        $filters = null;
-        if (isset($parameters['free_search'])) {
-            $filters = new AdvancedMembersList();
-        } else {
-            $filters = new MembersList();
-        }
-
-        foreach ($parameters as $key => $value) {
-            $filters->$key = $value;
-        }
-        $this->session->filter_members = $filters;
 
         return $response
             ->withStatus(301)

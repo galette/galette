@@ -256,11 +256,6 @@ trait Dynamics
         $store = false;
 
         foreach ($files as $key => $file) {
-            // if the field is disabled, skip it
-            if (isset($disabled[$key])) {
-                continue;
-            }
-
             if (substr($key, 0, 11) != $this->name_pattern) {
                 continue;
             }

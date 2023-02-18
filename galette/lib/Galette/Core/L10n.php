@@ -179,7 +179,7 @@ class L10n
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting dynamic translation for `' .
-                $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
+                $text_orig . ' | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );

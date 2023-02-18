@@ -608,7 +608,7 @@ class Preferences
                     unset($insert_values['pref_postal_staff_member']);
                 }
             } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
-                if (!isset($value) || $value < 1) {
+                if ($value < 1) {
                     $this->errors[] = _T("You have to select a staff member");
                 }
             }
@@ -1115,7 +1115,11 @@ class Preferences
     public function getDefaultURL()
     {
         if (defined('GALETTE_CRON')) {
-            return GALETTE_URI;
+            if (defined('GALETTE_URI')) {
+                return GALETTE_URI;
+            } else {
+                throw new \RuntimeException(_T('Please define constant "GALETTE_URI" with the path to your instance.'));
+            }
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');

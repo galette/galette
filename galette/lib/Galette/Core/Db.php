@@ -563,6 +563,7 @@ class Db
             $prefix = PREFIX_DB;
         }
 
+        $table = '';
         try {
             $tables = $this->getTables($prefix);
 

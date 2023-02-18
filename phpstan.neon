@@ -1,13 +1,15 @@
 parameters:
     parallel:
         maximumNumberOfProcesses: 2
-    level: 0
+    level: 1
     paths:
         - galette/lib/
+    scanFiles:
+        - galette/config/paths.inc.php
+        - galette/config/config.inc.php.dist
+        - galette/config/galette_tcpdf_config.php
     scanDirectories:
         - galette/includes/
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Attribute class .*\\Inject does not exist./'
-    excludePaths:
-        - galette/lib/Galette/Handlers/*.php

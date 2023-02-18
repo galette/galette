@@ -411,27 +411,10 @@ class History
 
         $forbidden = array();
         if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'fdate':
-                    //return formatted datetime
-                    try {
-                        $d = new \DateTime($this->$name);
-                        return $d->format(__("Y-m-d H:i:s"));
-                    } catch (Throwable $e) {
-                        //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$name . ') | ' .
-                            $e->getMessage(),
-                            Analog::INFO
-                        );
-                        return $this->$name;
-                    }
-                default:
-                    return $this->$name;
-            }
+            return $this->$name;
         } else {
             Analog::log(
-                '[History] Unable to get proprety `' . $name . '`',
+                '[History] Unable to get property `' . $name . '`',
                 Analog::WARNING
             );
         }
@@ -441,13 +424,13 @@ class History
      * Global isset method
      * Required for twig to access properties via __get
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return boolean
      */
     public function __isset($name)
     {
-        if ($name == 'fdate' || isset($this->$name)) {
+        if (isset($this->$name)) {
             return true;
         }
         return false;

@@ -144,7 +144,7 @@ class ContributionsController extends CrudController
         }
 
         $ext_membership = '';
-        if ($contrib->isFee() || !isset($contrib) && $type === Contribution::TYPE_FEE) {
+        if ($contrib->isFee() || $type === Contribution::TYPE_FEE) {
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;

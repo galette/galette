@@ -340,6 +340,7 @@ class CsvOut extends Csv
     {
         global $zdb;
 
+        $export = [];
         $data = Yaml::parseFile($this->parameted_file);
         foreach ($data as $anexport) {
             if (!isset($anexport['inactive']) || $anexport['inactive']) {
@@ -367,6 +368,7 @@ class CsvOut extends Csv
             if ($fp) {
                 $separator = $export['separator'] ?? self::DEFAULT_SEPARATOR;
                 $quote = $export['quote'] ?? self::DEFAULT_QUOTE;
+                $title = [];
                 if (isset($export['headers'])) {
                     if ($export['headers'] === false) {
                         //No title

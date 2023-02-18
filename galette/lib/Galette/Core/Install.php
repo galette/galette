@@ -585,6 +585,7 @@ class Install
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
         $sql_update_scripts = array();
+        $update_scripts = [];
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {

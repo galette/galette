@@ -196,6 +196,7 @@ class GaletteController extends AbstractController
 
         $prefs_fields = $this->preferences->getFieldsNames();
         // collect data
+        $pref = [];
         foreach ($prefs_fields as $fieldname) {
             $pref[$fieldname] = $this->preferences->$fieldname;
         }

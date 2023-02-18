@@ -1278,6 +1278,7 @@ class MembersController extends CrudController
     public function validateMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
+        $changes = [];
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -1289,7 +1290,6 @@ class MembersController extends CrudController
             $fc = $this->fields_config;
             $form_elements = $fc->getMassiveFormElements($this->members_fields, $this->login);
 
-            $changes = [];
             foreach ($form_elements['fieldsets'] as $form_element) {
                 foreach ($form_element->elements as $field) {
                     if (

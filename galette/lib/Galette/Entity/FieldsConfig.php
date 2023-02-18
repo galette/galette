@@ -403,7 +403,7 @@ class FieldsConfig
             //take care of fields categories, for db relations
             $categories->installInit($this->zdb);
 
-            $fields = array_keys($this->defaults);
+            $params = [];
             foreach ($fields as $f) {
                 //build default config for each field
                 $params[] = array(
@@ -917,7 +917,7 @@ class FieldsConfig
                 $required = $this->zdb->isPostgres() ? 'false' : 0;
             }
 
-            $list_visible = $f['list_visible'] ?? false;
+            $list_visible = $d['list_visible'] ?? false;
             if ($list_visible === false) {
                 $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
             }

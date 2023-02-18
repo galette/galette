@@ -960,11 +960,11 @@ class Adherent
      */
     private function getFieldLabel(string $field): string
     {
-        $label = $this->fields[$field]['label'];
+        $label = $this->fields[$field]['label'] ?? '';
         //replace "&nbsp;"
         $label = str_replace('&nbsp;', ' ', $label);
         //remove trailing ':' and then trim
-        $label = trim(trim($label ?? '', ':'));
+        $label = trim(trim($label, ':'));
         return $label;
     }
 
@@ -1094,6 +1094,7 @@ class Adherent
             if (isset($values[$key])) {
                 $value = $values[$key];
                 if ($value !== true && $value !== false) {
+                    //@phpstan-ignore-next-line
                     $value = trim($value ?? '');
                 }
             } elseif (empty($this->_id)) {
@@ -1923,6 +1924,7 @@ class Adherent
             $email = $this->parent->email;
         }
 
+        //@phpstan-ignore-next-line
         return $email ?? '';
     }
 

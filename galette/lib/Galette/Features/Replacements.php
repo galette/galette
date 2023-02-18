@@ -132,6 +132,7 @@ trait Replacements
                         break;
                     case '':
                     case 'VALUE':
+                    default:
                         $skey = $key;
                         $title = _T('Value for dynamic field "%s"');
                         break;

@@ -212,7 +212,7 @@ class GaletteMail
             $this->initMailer();
         }
 
-        if (!empty($post['recipients'])) {
+        if (!empty($recipients)) {
             $this->recipients = array();
             foreach ($recipients as $mail => $name) {
                 if (self::isValidEmail($mail)) {

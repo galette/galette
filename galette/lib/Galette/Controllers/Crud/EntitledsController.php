@@ -260,10 +260,12 @@ class EntitledsController extends CrudController
             case 'contributions-types':
                 $entitled = new ContributionsTypes($this->zdb);
                 break;
+            default:
+                throw new \RuntimeException('Unknown entitled class');
         }
 
         $label = trim($post[$entitled::$fields['libelle']]);
-        $field = trim($post[$entitled::$fields['third']] ?? 0);
+        $field = (int)trim($post[$entitled::$fields['third']] ?? 0);
 
         $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
 

@@ -532,6 +532,7 @@ class Plugins
         $f = $this->modules[$id]['root'] . '/_preferences.php';
         if (file_exists($f)) {
             include_once $f;
+            //@phpstan-ignore-next-line
             if (isset($_preferences)) {
                 //@phpstan-ignore-next-line
                 foreach ($_preferences as $k => $v) {
