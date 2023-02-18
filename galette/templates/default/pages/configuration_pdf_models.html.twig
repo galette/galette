@@ -23,34 +23,47 @@
                     alwaysRefresh: true,
                     path: '{{ url_for('pdfModels', {'id': ''}) }}',
                     onLoad: function(tabPath, parameterArray, historyEvent) {
+                        $('.ui.tab.segment:not(.active)').empty();
                         $('.note-editor').remove();
                         _initCodeEditor();
-                        _addLegendButton('.field:not(.nolegend) .note-toolbar');
+                        _bindSubmit();
+                        _addLegendButton('field:not(.nolegend) .ui.corner.label');
                         _handleLegend(tabPath);
                     }
                 });
             });
 
             function _initCodeEditor() {
-                $('.codeeditor').summernote({
+                $('textarea.codeeditor').summernote({
                     lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
-                    disableDragAndDrop: true,
                     height: 240,
                     toolbar: [
                         ['view', ['codeview']]
-                    ],
-                    callbacks: {
-                        onImageUpload: function(data) {
-                            //prevent image copypaste
-                            data.pop();
-                        }
-                    }
+                    ]
                 });
-                $('.codeeditor').next().find(".note-editable").attr("contenteditable", false);
+                // Disable wysiwyg edition
+                $('textarea.codeeditor').next().find(".note-editable").attr("contenteditable", false);
             }
             _initCodeEditor();
 
-            _addLegendButton('.field:not(.nolegend) .note-toolbar');
+            function _bindSubmit() {
+                $('button.action').click(function(event) {
+                    event.preventDefault();
+                    $('.note-editor').each(function(index) {
+                        var _this= $(this);
+                        // Because wysiwyg edition is disabled, it is required to toggle
+                        // codeview before submit, otherwise modifications will not persist.
+                        if (_this.hasClass('codeview')) {
+                            var _editor = _this.prev();
+                            _editor.summernote('codeview.toggle');
+                        }
+                    });
+                    $('.form').submit();
+                });
+            }
+            _bindSubmit();
+
+            _addLegendButton('.field:not(.nolegend) .ui.corner.label');
             _handleLegend();
         </script>
 {% endblock %}

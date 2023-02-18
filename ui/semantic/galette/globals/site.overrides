@@ -295,6 +295,9 @@ ul.leaders span + span {
 .field .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {
     background-color: #fff;
 }
+.ui.corner.labeled .note-editor {
+  width: 100%;
+}
 
 /*-------------------------
     Print stylesheet

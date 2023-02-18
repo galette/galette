@@ -1,27 +1,42 @@
         <form action="{{ url_for('pdfModels') }}" method="post" enctype="multipart/form-data" class="form ui">
-            <div class="ui basic segment">
+            <div class="ui basic fitted segment">
 {% if model.id != 1 %}
-                    <div class="inline field">
+                    <div class="field">
                         <label for="title_{{ model.id }}">{{ _T("Title") }}</label>
-                        <input type="text" name="model_title" id="title_{{ model.id }}" class="large" value="{{ model.title|escape }}"/>
+                        <div class="ui corner labeled input">
+                            <input type="text" name="model_title" id="title_{{ model.id }}" class="codeeditor" value="{{ model.title|escape }}"/>
+                            <div class="ui corner label"></div>
+                        </div>
                     </div>
-                    <div class="inline field">
+                    <div class="field">
                         <label for="subtitle_{{ model.id }}">{{ _T("Subtitle") }}</label>
-                        <input type="text" name="model_subtitle" id="subtitle_{{ model.id }}" class="large" value="{{ model.subtitle|escape }}"/>
+                        <div class="ui corner labeled input">
+                            <input type="text" name="model_subtitle" id="subtitle_{{ model.id }}" class="codeeditor" value="{{ model.subtitle|escape }}"/>
+                            <div class="ui corner label"></div>
+                        </div>
                     </div>
 {% endif %}
                     <div class="field">
                         <label for="header_{{ model.id }}">{{ _T("Header") }}</label>
-                        <textarea name="model_header" id="header_{{ model.id }}" class="codeeditor">{{ model.header }}</textarea>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="model_header" id="header_{{ model.id }}" class="codeeditor">{{ model.header }}</textarea>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="footer_{{ model.id }}">{{ _T("Footer") }}</label>
-                        <textarea name="model_footer" id="footer_{{ model.id }}" class="codeeditor">{{ model.footer }}</textarea>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="model_footer" id="footer_{{ model.id }}" class="codeeditor">{{ model.footer }}</textarea>
+                        </div>
                     </div>
 {% if model.id != 1 %}
                     <div class="field">
                         <label for="body_{{ model.id }}">{{ _T("Body") }}</label>
-                        <textarea name="model_body" id="body_{{ model.id }}" class="codeeditor">{{ model.body }}</textarea>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="model_body" id="body_{{ model.id }}" class="codeeditor">{{ model.body }}</textarea>
+                        </div>
                     </div>
 {% endif %}
                     <div class="field nolegend">
