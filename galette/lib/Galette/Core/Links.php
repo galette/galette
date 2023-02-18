@@ -114,7 +114,6 @@ class Links
             );
             throw $e;
         }
-        return false;
     }
 
     /**

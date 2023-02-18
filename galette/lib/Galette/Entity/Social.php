@@ -249,7 +249,7 @@ class Social
             $delete->where([self::PK => $ids]);
             $this->zdb->execute($delete);
             Analog::log(
-                'Social #' . implode(', #', $ids)  . ' deleted successfully.',
+                'Social #' . implode(', #', $ids) . ' deleted successfully.',
                 Analog::INFO
             );
             return true;

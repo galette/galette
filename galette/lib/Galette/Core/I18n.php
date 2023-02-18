@@ -93,7 +93,7 @@ class I18n
                     explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
                         list($l, $q) = array_merge(explode(';q=', $el), [1]);
-                        $res[$l] = (float) $q;
+                        $res[$l] = (float)$q;
                         return $res;
                     },
                     []

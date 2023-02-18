@@ -413,7 +413,7 @@ class History
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'fdate':
-                    //return formatted datemime
+                    //return formatted datetime
                     try {
                         $d = new \DateTime($this->$name);
                         return $d->format(__("Y-m-d H:i:s"));
@@ -426,10 +426,8 @@ class History
                         );
                         return $this->$name;
                     }
-                    break;
                 default:
                     return $this->$name;
-                    break;
             }
         } else {
             Analog::log(

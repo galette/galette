@@ -134,7 +134,7 @@ class GaletteMail
                     $this->mail->Port = 587;
                 } else {
                     $this->mail->Host = $this->preferences->pref_mail_smtp_host;
-                    $this->mail->SMTPAuth   = $this->preferences->pref_mail_smtp_auth;
+                    $this->mail->SMTPAuth = $this->preferences->pref_mail_smtp_auth;
 
                     if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or

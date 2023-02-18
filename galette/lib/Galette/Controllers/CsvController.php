@@ -158,7 +158,7 @@ class CsvController extends AbstractController
                     $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
                     $fp = fopen($filepath, 'w');
                     if ($fp) {
-                        $res = $csv->export(
+                        $csv->export(
                             $results,
                             Csv::DEFAULT_SEPARATOR,
                             Csv::DEFAULT_QUOTE,
@@ -628,11 +628,9 @@ class CsvController extends AbstractController
 
         $fields = $model->getFields();
         $defaults = $csv->getDefaultFields();
-        $defaults_loaded = false;
 
         if ($fields === null) {
             $fields = $defaults;
-            $defaults_loaded = true;
         }
 
         $ocsv = new CsvOut();

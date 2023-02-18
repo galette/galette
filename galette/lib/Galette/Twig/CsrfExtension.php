@@ -58,7 +58,7 @@ class CsrfExtension extends AbstractExtension implements GlobalsInterface
 {
     /**
      * @var Guard
-    */
+     */
     protected $csrf;
 
     /**

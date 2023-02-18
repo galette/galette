@@ -177,7 +177,7 @@ if ($db_connected === true && $permsdb_ok === true) {
         echo '<p class="ui green message">' . _T("Connection to database successfull") .
             '<br/>' . _T("Permissions to database are OK.") . '</p>';
     } else {
-         echo '<p class="ui green message">' . _T("Permissions to database are OK.") . '</p>';
+        echo '<p class="ui green message">' . _T("Permissions to database are OK.") . '</p>';
     }
 }
 

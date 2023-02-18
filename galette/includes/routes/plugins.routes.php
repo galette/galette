@@ -40,6 +40,7 @@ use Slim\Psr7\Response;
 $app->group(
     '/plugins',
     function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate, $showPublicPages) {
+        /** @var $container \DI\Container */
         $container = $app->getContainer();
         $modules = $container->get('plugins')->getModules();
 

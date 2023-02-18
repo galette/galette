@@ -65,7 +65,7 @@ session_start();
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
 
-$gapp =  new \Galette\Core\SlimApp();
+$gapp = new \Galette\Core\SlimApp();
 $app = $gapp->getApp();
 require_once '../includes/dependencies.php';
 

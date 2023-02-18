@@ -41,7 +41,6 @@ use Galette\Middleware\TrailingSlash;
 use Galette\Middleware\UpdateAndMaintenance;
 use RKA\SessionMiddleware;
 use Slim\Routing\RouteContext;
-use Slim\Slim;
 use Galette\Core\Galette;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
@@ -217,7 +216,7 @@ $app->addRoutingMiddleware();
  * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
  * @param bool $logErrorDetails -> Display error details in error log
  * which can be replaced by a callable of your choice.
-
+ *
  * Note: This middleware should be added last. It will not handle any exceptions/errors
  * for middleware added after it.
  */

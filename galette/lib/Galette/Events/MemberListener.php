@@ -209,7 +209,7 @@ class MemberListener implements ListenerSubscriber
         if ($new) {
             $password = new Password($this->zdb);
             $res = $password->generateNewPassword($member->id);
-            if ($res == true) {
+            if ($res === true) {
                 $texts
                     ->setLinkValidity()
                     ->setChangePasswordURI($password);

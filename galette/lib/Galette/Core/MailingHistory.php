@@ -357,7 +357,6 @@ class MailingHistory extends History
             );
             return false;
         }
-        return false;
     }
 
     /**

@@ -323,7 +323,7 @@ class Mailing extends GaletteMail
         }
 
         if (!file_exists($this->tmp_path)) {
-            //directory does not exists, create it
+            //directory does not exist, create it
             mkdir($this->tmp_path);
         }
 
@@ -511,32 +511,23 @@ class Mailing extends GaletteMail
             switch ($name) {
                 case 'alt_message':
                     return $this->cleanedHtml();
-                    break;
                 case 'step':
                     return $this->current_step;
-                    break;
                 case 'subject':
                     return $this->getSubject();
-                    break;
                 case 'message':
                     return $this->getMessage();
-                    break;
                 case 'wrapped_message':
                     return $this->getWrappedMessage();
-                    break;
                 case 'html':
                     return $this->isHTML();
-                    break;
                 case 'mail':
                 case '_mail':
                     return $this->getPhpMailer();
-                    break;
                 case 'errors':
                     return $this->getErrors();
-                    break;
                 case 'recipients':
                     return $this->mrecipients;
-                    break;
                 case 'tmp_path':
                     if (isset($this->tmp_path) && trim($this->tmp_path) !== '') {
                         return $this->tmp_path;
@@ -544,23 +535,18 @@ class Mailing extends GaletteMail
                         //no attachments
                         return false;
                     }
-                    break;
                 case 'attachments':
                     return $this->attachments;
-                    break;
                 case 'sender_name':
                     return $this->getSenderName();
-                    break;
                 case 'sender_address':
                     return $this->getSenderAddress();
-                    break;
                 default:
                     Analog::log(
                         '[' . get_class($this) . 'Trying to get ' . $name,
                         Analog::DEBUG
                     );
                     return $this->$name;
-                    break;
             }
         } else {
             Analog::log(
@@ -662,7 +648,6 @@ class Mailing extends GaletteMail
                     Analog::WARNING
                 );
                 return false;
-                break;
         }
     }
 }

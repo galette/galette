@@ -629,7 +629,6 @@ class Install
      */
     public function executeScripts($zdb, $spath = null)
     {
-        $queries_results = array();
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
         $this->_report = array();
@@ -719,6 +718,7 @@ class Install
      */
     public function executeSql($zdb, $sql_query)
     {
+        $queries_results = array();
         $fatal_error = false;
 
         // begin : copyright (2002) the phpbb group (support@phpbb.com)
@@ -954,7 +954,7 @@ class Install
             $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
             if ($conf !== false) {
                 if (!isset($post_data['install_dbtype'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/TYPE_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -964,7 +964,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbhost'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/HOST_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -974,7 +974,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbport'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/PORT_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -984,7 +984,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbuser'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/USER_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -994,7 +994,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbname'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/NAME_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -1006,7 +1006,7 @@ class Install
 
 
                 if (!isset($post_data['install_dbprefix'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/PREFIX_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -1017,7 +1017,7 @@ class Install
                 }
 
                 if ($pass === true) {
-                    $res = preg_match(
+                    preg_match(
                         '/PWD_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -1185,11 +1185,11 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->proceedReport(_T("Update preferences"), true);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
-            $res = $models->installInit(true);
+            $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
 
             $texts = new \Galette\Entity\Texts($preferences);
-            $res = $texts->installInit(true);
+            $texts->installInit(true);
             $this->proceedReport(_T("Mails texts"), true);
 
             return true;

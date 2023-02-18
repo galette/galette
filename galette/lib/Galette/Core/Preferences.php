@@ -926,9 +926,8 @@ class Preferences
                 case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
                     //pages are publically visibles
                     return true;
-                    break;
                 case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                    //pages should be displayed only for up to date members
+                    //pages should be displayed only for up-to-date members
                     if (
                         $login->isUp2Date()
                         || $login->isAdmin()
@@ -938,7 +937,6 @@ class Preferences
                     } else {
                         return false;
                     }
-                    break;
                 case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
                     //pages should be displayed only for staff and admins
                     if ($login->isAdmin() || $login->isStaff()) {
@@ -946,11 +944,9 @@ class Preferences
                     } else {
                         return false;
                     }
-                    break;
                 default:
                     //should never be there
                     return false;
-                    break;
             }
         } else {
             return false;

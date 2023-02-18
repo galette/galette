@@ -36,7 +36,6 @@
 
 namespace Galette\Updates;
 
-use \Analog\Analog;
 use Galette\Updater\AbstractUpdater;
 
 /**

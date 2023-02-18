@@ -36,7 +36,7 @@
 
 namespace Galette\Updates;
 
-use \Analog\Analog;
+use Analog\Analog;
 use Galette\Updater\AbstractUpdater;
 
 /**
@@ -111,7 +111,7 @@ class UpgradeTo08 extends AbstractUpdater
                     );
                 }
             }
-            $this->_moveDataDir($dir);
+            $this->moveDataDir($dir);
         }
 
         return !$this->hasErrors();
@@ -124,10 +124,10 @@ class UpgradeTo08 extends AbstractUpdater
      *
      * @return boolean
      */
-    private function _moveDataDir($dirname)
+    private function moveDataDir($dirname)
     {
         //all directories should not be moved
-         $nomove = array(
+        $nomove = array(
             'templates_c',
             'cache',
             'tempimages'
@@ -161,9 +161,7 @@ class UpgradeTo08 extends AbstractUpdater
                     }
                     break;
                 case 'attachments':
-                    if (GALETTE_ATTACHMENTS_PATH === $destdir
-                        && file_exists($origdir)
-                    ) {
+                    if (GALETTE_ATTACHMENTS_PATH === $destdir && file_exists($origdir)) {
                         $go = true;
                     }
                     break;

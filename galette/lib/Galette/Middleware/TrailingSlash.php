@@ -79,7 +79,7 @@ class TrailingSlash
             if ($request->getMethod() == 'GET') {
                 $response = new Response();
                 return $response
-                    ->withHeader('Location', (string) $uri)
+                    ->withHeader('Location', (string)$uri)
                     ->withStatus(301);
             } else {
                 $request = $request->withUri($uri);
