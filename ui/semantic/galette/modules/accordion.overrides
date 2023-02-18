@@ -34,6 +34,13 @@ details.ui.basic.styled.accordion .title {
   color: @textColor;
 }
 
+/*--------------------------------
+     Tree accordion style
+---------------------------------*/
+.ui.accordion.tree .nochild {
+   padding: .5em 0;
+}
+
 /*-------------
      No JS
 --------------*/

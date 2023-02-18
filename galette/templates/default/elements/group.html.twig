@@ -4,6 +4,10 @@
 {% set members = group.getMembers() %}
 
 <div class="ui stackable pointing inverted menu tabbed">
+    <div class="item header">
+        <i class="users cog icon"></i>
+        {{ group.getFullName() }} :
+    </div>
     <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_information" class="item{{ tab == 'group_information' ? ' active' }}" data-tab="group_information">{{ _T("Information") }}</a>
     <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_managers" class="item{{ tab == 'group_managers' ? ' active' }}" data-tab="group_managers">{{ _T("Managers") }} ({{ managers|length }})</a>
     <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_members" class="item{{ tab == 'group_members' ? ' active' }}" data-tab="group_members">{{ _T("Members") }} ({{ members|length }})</a>
@@ -83,20 +87,28 @@
     </div>
 
     <div class="ui basic center aligned segment">
-        {% if can_edit %}
-        <button type="submit" name="valid" class="ui labeled icon primary button action">
-            <i class="save icon"></i> {{ _T("Save") }}
-        </button>
-        <input type="hidden" name="id_group" id="id_group" value="{{ group.getId() }}"/>
-        <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
-        {% include "components/forms/csrf.html.twig" %}
-        {% endif %}
-        {% if login.isAdmin() or login.isStaff() %}
-            <a class="ui labeled icon button delete" id="delete" href="{{ url_for("removeGroup", {"id": group.getId()}) }}">
-                <i class="trash alt red icon"></i>
-                {{ _T("Delete") }}
-            </a>
-        {% endif %}
+        <div class="ui wrapping spaced buttons">
+            {% if can_edit %}
+            <button type="submit" name="valid" class="ui labeled icon primary button action">
+                <i class="save icon"></i> {{ _T("Save") }}
+            </button>
+            <input type="hidden" name="id_group" id="id_group" value="{{ group.getId() }}"/>
+            <input type="hidden" name="tab" id="tab" value="{{ tab }}"/>
+            {% include "components/forms/csrf.html.twig" %}
+            {% endif %}
+            {% if can_export %}
+                <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}" class="ui labeled icon button tooltip" title="{{ _T("Current group (and attached people) as PDF") }}">
+                    <i class="file pdf red icon" aria-hidden="true"></i>
+                    {{ _T("Group PDF") }}
+                </a>
+            {% endif %}
+            {% if login.isAdmin() or login.isStaff() %}
+                <a class="ui labeled icon button delete" id="delete" href="{{ url_for("removeGroup", {"id": group.getId()}) }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T("Delete") }}
+                </a>
+            {% endif %}
+        </div>
     </div>
 </form>
 <script type="text/javascript">
