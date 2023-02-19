@@ -98,14 +98,12 @@ class Links
                 'id'        => $id
             ]);
 
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Temporary link for `' . $target . '-' . $id . '` has been removed.',
-                    Analog::DEBUG
-                );
-            }
-            return $del;
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Temporary link for `' . $target . '-' . $id . '` has been removed.',
+                Analog::DEBUG
+            );
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred removing old temporary link ' .
@@ -161,15 +159,12 @@ class Links
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
 
-            $add = $this->zdb->execute($insert);
-            if ($add) {
-                Analog::log(
-                    'New temporary link set for `' . $target . '-' . $id . '`.',
-                    Analog::DEBUG
-                );
-                return base64_encode($hash);
-            }
-            return false;
+            $this->zdb->execute($insert);
+            Analog::log(
+                'New temporary link set for `' . $target . '-' . $id . '`.',
+                Analog::DEBUG
+            );
+            return base64_encode($hash);
         } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add temporary link entry. " .
@@ -206,15 +201,12 @@ class Links
                 'creation_date',
                 $date->format('Y-m-d H:i:s')
             );
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Expired temporary links has been deleted.',
-                    Analog::DEBUG
-                );
-                return true;
-            }
-            return false;
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Expired temporary links has been deleted.',
+                Analog::DEBUG
+            );
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting expired temporary links. ' .

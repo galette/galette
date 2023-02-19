@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Core\Db;
 use Throwable;
 use Galette\Entity\Title;
 use Analog\Analog;
@@ -82,7 +83,7 @@ class Titles
      *
      * @return array
      */
-    public static function getArrayList($zdb)
+    public static function getArrayList(Db $zdb)
     {
         $otitles = self::getList($zdb);
         $titles = array();
@@ -99,7 +100,7 @@ class Titles
      *
      * @return Title[]
      */
-    public static function getList($zdb)
+    public static function getList(Db $zdb)
     {
         $select = $zdb->select(self::TABLE);
         $select->order(self::PK);
@@ -120,9 +121,10 @@ class Titles
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean|Exception
+     * @return boolean
+     * @throws Throwable
      */
-    public function installInit($zdb)
+    public function installInit(Db $zdb)
     {
         try {
             //first, we drop all values
@@ -174,11 +176,11 @@ class Titles
     }
 
     /**
-     * Get the title
+     * Get translated title short version
      *
      * @param integer $title The title id to retrieve
      *
-     * @return translated title short version
+     * @return string
      */
     public static function getTitle($title)
     {

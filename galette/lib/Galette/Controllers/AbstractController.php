@@ -149,12 +149,6 @@ abstract class AbstractController
     protected $members_fields_cats;
 
     /**
-     * @var \Galette\Handlers\NotFound
-     */
-    /*#[Inject]
-    protected $notFoundHandler;*/
-
-    /**
      * Constructor
      *
      * @param ContainerInterface $container Container instance
@@ -177,7 +171,6 @@ abstract class AbstractController
         $this->flash = $container->get('flash');
         $this->fields_config = $container->get('fields_config');
         $this->lists_config = $container->get('lists_config');
-        /*$this->notFoundHandler = $container->get('notFoundHandler');*/
         $this->members_fields = $container->get('members_fields');
         $this->members_form_fields = $container->get('members_form_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');

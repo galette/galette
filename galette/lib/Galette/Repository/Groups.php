@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2021 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -52,7 +53,7 @@ use Galette\Core\Db;
  * @name      Groups
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -169,6 +170,7 @@ class Groups
             $results = $this->zdb->execute($select);
 
             foreach ($results as $row) {
+                /** @var ArrayObject $row */
                 $group = new Group($row);
                 $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;

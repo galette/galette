@@ -36,21 +36,13 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\Sql\Expression;
-use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
-use Galette\DynamicFields\Separator;
-use Galette\DynamicFields\Text;
-use Galette\DynamicFields\Line;
-use Galette\DynamicFields\Choice;
-use Galette\DynamicFields\Date;
-use Galette\DynamicFields\Boolean;
-use Galette\DynamicFields\File;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
 
@@ -375,7 +367,7 @@ class DynamicFieldsHandle
     private function handleRemovals()
     {
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
-        $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
+        $this->dynamic_fields = $fields->getList($this->form_name);
 
         $results = $this->getCurrentFields();
 
@@ -495,7 +487,7 @@ class DynamicFieldsHandle
     /**
      * Get current fields resultset
      *
-     * @return ResulSet
+     * @return ArrayObject
      */
     protected function getCurrentFields()
     {

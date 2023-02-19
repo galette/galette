@@ -139,6 +139,7 @@ class XHProf
             include_once $incl . '/utils/xhprof_runs.php';
 
             $runs = new \XHProfRuns_Default();
+            // @phpstan-ignore-next-line
             $id   = $runs->save_run($data, 'galette-' . GALETTE_VERSION);
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);

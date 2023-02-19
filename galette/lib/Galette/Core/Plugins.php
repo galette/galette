@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Exception;
 use Throwable;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
@@ -263,20 +264,21 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void|exception
+     * @return void
+     * @throws Exception
      */
     public function deactivateModule($id)
     {
         if (!isset($this->modules[$id])) {
-            throw new \Exception(_T("No such module."));
+            throw new Exception(_T("No such module."));
         }
 
         if (!$this->modules[$id]['root_writable']) {
-            throw new \Exception(_T("Cannot deactivate plugin."));
+            throw new Exception(_T("Cannot deactivate plugin."));
         }
 
         if (@file_put_contents($this->modules[$id]['root'] . '/_disabled', '')) {
-            throw new \Exception(_T("Cannot deactivate plugin."));
+            throw new Exception(_T("Cannot deactivate plugin."));
         }
     }
 
@@ -285,20 +287,21 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void|exception
+     * @return void
+     * @throws Exception
      */
     public function activateModule($id)
     {
         if (!isset($this->disabled[$id])) {
-            throw new \Exception(_T("No such module."));
+            throw new Exception(_T("No such module."));
         }
 
         if (!$this->disabled[$id]['root_writable']) {
-            throw new \Exception(_T("Cannot activate plugin."));
+            throw new Exception(_T("Cannot activate plugin."));
         }
 
         if (@unlink($this->disabled[$id]['root'] . '/_disabled') === false) {
-            throw new \Exception(_T("Cannot activate plugin."));
+            throw new Exception(_T("Cannot activate plugin."));
         }
     }
 
@@ -426,7 +429,7 @@ class Plugins
      * @param string $id   Module ID
      * @param string $info Information to retrieve
      *
-     * @return module's information
+     * @return mixed module's information
      */
     public function moduleInfo($id, $info)
     {
@@ -514,7 +517,7 @@ class Plugins
                 return false;
             }
         } else {
-            throw new \Exception(_T("Module does not exists!"));
+            throw new Exception(_T("Module does not exists!"));
         }
     }
 
@@ -576,7 +579,7 @@ class Plugins
                 throw new \RuntimeException(_T("File not found!"));
             }
         } else {
-            throw new \Exception(_T("Module does not exists!"));
+            throw new Exception(_T("Module does not exists!"));
         }
     }
 

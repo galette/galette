@@ -135,8 +135,8 @@ class EntitledsController extends CrudController
         $list = $entitled->getCompleteList();
         $params['entries'] = $list;
 
-        if (count($entitled->errors) > 0) {
-            foreach ($entitled->errors as $error) {
+        if (count($entitled->getErrors()) > 0) {
+            foreach ($entitled->getErrors() as $error) {
                 $this->flash->addMessage(
                     'error_detected',
                     $error

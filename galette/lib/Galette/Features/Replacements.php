@@ -45,6 +45,7 @@ use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
+use Galette\Entity\Reminder;
 use Galette\Entity\Texts;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
@@ -550,7 +551,7 @@ trait Replacements
      *
      * @param Contribution $contrib Contribution
      *
-     * @return PdfModel
+     * @return self
      */
     public function setContribution(Contribution $contrib): self
     {
@@ -596,7 +597,7 @@ trait Replacements
      *
      * @param Adherent $member Member
      *
-     * @return PdfModel
+     * @return self
      */
     public function setMember(Adherent $member): self
     {
@@ -653,7 +654,7 @@ trait Replacements
                 'adh_groups'        => $group_list,
                 'adh_dues'          => $member->getDues(),
                 'days_remaining'    => $member->days_remaining,
-                'days_expired'      => $member->days_remaining + 1,
+                'days_expired'      => (int)$member->days_remaining + 1,
                 //Handle COMPANY_NAME_ADH... https://bugs.galette.eu/issues/1530
                 '_adh_company'      => $member->company_name,
                 //Handle old names for variables ... https://bugs.galette.eu/issues/1393
@@ -679,7 +680,7 @@ trait Replacements
      * @param array  $dynamic_fields Dynamic fields
      * @param mixed  $object         Related object (Adherent, Contribution, ...)
      *
-     * @return PdfModel
+     * @return self
      */
     public function setDynamicFields(string $form_name, array $dynamic_fields, $object): self
     {

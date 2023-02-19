@@ -249,7 +249,7 @@ class Password extends atoum
     {
         $this->zdb = new \mock\Galette\Core\Db();
         $this->calling($this->zdb)->execute = function ($o) {
-            return false;
+            throw new \Exception('Ba. Da. Boum.');
         };
 
         $pass = new \Galette\Core\Password($this->zdb, false);

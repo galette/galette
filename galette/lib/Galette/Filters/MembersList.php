@@ -38,6 +38,7 @@ namespace Galette\Filters;
 
 use Analog\Analog;
 use Galette\Core\Pagination;
+use Galette\Core\Preferences;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
 
@@ -285,7 +286,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
-    public function setViewCommonsFilters($prefs, $view)
+    public function setViewCommonsFilters(Preferences $prefs, $view)
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),

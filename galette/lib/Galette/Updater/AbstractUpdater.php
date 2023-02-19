@@ -38,6 +38,7 @@ namespace Galette\Updater;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Core\Install;
 
 /**
  * Galette abstract updater script

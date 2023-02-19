@@ -97,13 +97,11 @@ class Password extends AbstractPassword
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id_adh]);
 
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Temporary passwords for `' . $id_adh . '` has been removed.',
-                    Analog::DEBUG
-                );
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Temporary passwords for `' . $id_adh . '` has been removed.',
+                Analog::DEBUG
+            );
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -141,18 +139,14 @@ class Password extends AbstractPassword
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
 
-            $add = $this->zdb->execute($insert);
-            if ($add) {
-                Analog::log(
-                    'New passwords temporary set for `' . $id_adh . '`.',
-                    Analog::DEBUG
-                );
-                $this->setPassword($password);
-                $this->setHash($hash);
-                return true;
-            } else {
-                return false;
-            }
+            $this->zdb->execute($insert);
+            Analog::log(
+                'New passwords temporary set for `' . $id_adh . '`.',
+                Analog::DEBUG
+            );
+            $this->setPassword($password);
+            $this->setHash($hash);
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add temporary password entry. " .
@@ -179,13 +173,11 @@ class Password extends AbstractPassword
                 'date_crea_tmp_passwd',
                 $date->format('Y-m-d H:i:s')
             );
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Old Temporary passwords have been deleted.',
-                    Analog::DEBUG
-                );
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Old Temporary passwords have been deleted.',
+                Analog::DEBUG
+            );
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -245,14 +237,12 @@ class Password extends AbstractPassword
                 array('tmp_passwd' => $hash)
             );
 
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Used hash has been successfully remove',
-                    Analog::DEBUG
-                );
-                return true;
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Used hash has been successfully remove',
+                Analog::DEBUG
+            );
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred attempting to delete used hash' .
@@ -261,6 +251,5 @@ class Password extends AbstractPassword
             );
             return false;
         }
-        return false;
     }
 }

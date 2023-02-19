@@ -400,7 +400,7 @@ class GaletteMail
     /**
      * Clean a string embedding html, producing AltText for html emails
      *
-     * @return current message in plaintext format
+     * @return string current message in plaintext format
      */
     protected function cleanedHtml()
     {

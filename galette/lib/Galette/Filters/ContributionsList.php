@@ -63,6 +63,7 @@ use Galette\Core\Pagination;
  * @property integer $max_amount
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
+ * @property array $selected
  */
 
 class ContributionsList extends Pagination
@@ -93,6 +94,8 @@ class ContributionsList extends Pagination
     private $from_transaction = false;
     private $max_amount = null;
 
+    private $selected = [];
+
     protected $list_fields = array(
         'start_date_filter',
         'end_date_filter',
@@ -102,7 +105,8 @@ class ContributionsList extends Pagination
         'payment_type_filter',
         'filtre_transactions',
         'from_transaction',
-        'max_amount'
+        'max_amount',
+        'selected'
     );
 
     protected $virtuals_list_fields = array(
@@ -145,6 +149,7 @@ class ContributionsList extends Pagination
         $this->filtre_cotis_children = false;
         $this->from_transaction = false;
         $this->max_amount = null;
+        $this->selected = [];
     }
 
     /**
@@ -201,7 +206,7 @@ class ContributionsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[ContributionsList] Unable to get proprety `' . $name . '`',
+                    '[ContributionsList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }

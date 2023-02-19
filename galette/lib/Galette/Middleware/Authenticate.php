@@ -77,7 +77,7 @@ class Authenticate
     private Login $login;
 
     /**
-     * @var RKA\Session
+     * @var Session
      */
     private Session $session;
 
@@ -112,14 +112,15 @@ class Authenticate
     {
         $response = new \Slim\Psr7\Response();
 
-        if (!$this->login || !$this->login->isLogged()) {
+        if (!$this->login->isLogged()) {
             if ($request->getMethod() === 'GET') {
-                $this->session->urlRedirect = $request->getUri()->getPath();
+                $this->session->set('urlRedirect', $request->getUri()->getPath());
+                Analog::log(
+                    'Login required to access ' . $this->session->get('urlRedirect'),
+                    Analog::DEBUG
+                );
             }
-            Analog::log(
-                'Login required to access ' . $this->session->urlRedirect,
-                Analog::DEBUG
-            );
+
             $this->flash->addMessage('error_detected', _T("Login required"));
             return $response
                 ->withHeader(

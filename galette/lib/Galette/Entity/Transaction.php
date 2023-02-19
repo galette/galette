@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Events\GaletteEvent;
 use Throwable;
 use Analog\Analog;
@@ -88,11 +89,11 @@ class Transaction
     /**
      * Default constructor
      *
-     * @param Db                 $zdb   Database instance
-     * @param Login              $login Login instance
-     * @param null|int|ResultSet $args  Either a ResultSet row or its id for to load
-     *                                  a specific transaction, or null to just
-     *                                  instantiate object
+     * @param Db                   $zdb   Database instance
+     * @param Login                $login Login instance
+     * @param null|int|ArrayObject $args  Either a ResultSet row or its id for to load
+     *                                    a specific transaction, or null to just
+     *                                    instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -131,7 +132,7 @@ class Transaction
                 'propname' => 'member'
             )
         );
-        if ($args == null || is_int($args)) {
+        if ($args === null || is_int($args)) {
             $this->_date = date("Y-m-d");
 
             if (is_int($args) && $args > 0) {
@@ -186,8 +187,9 @@ class Transaction
             }
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-            if ($result) {
+            if ($results->count() > 0) {
+                /** @var ArrayObject $result */
+                $result = $results->current();
                 $this->loadFromRS($result);
                 return true;
             } else {
@@ -271,11 +273,11 @@ class Transaction
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $pk = self::PK;
         $this->_id = $r->$pk;

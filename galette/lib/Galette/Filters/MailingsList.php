@@ -52,6 +52,14 @@ use Galette\Core\MailingHistory;
  * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property string $start_date_filter
+ * @property string $raw_start_date_filter
+ * @property string $end_date_filter
+ * @property string $raw_end_date_filter
+ * @property int $sender_filter
+ * @property int $sent_filter
+ * @property string $subject_filter
  */
 
 class MailingsList extends Pagination
@@ -132,10 +140,8 @@ class MailingsList extends Pagination
                 switch ($name) {
                     case 'raw_start_date_filter':
                         return $this->start_date_filter;
-                        break;
                     case 'raw_end_date_filter':
                         return $this->end_date_filter;
-                        break;
                     case 'start_date_filter':
                     case 'end_date_filter':
                         try {
@@ -158,7 +164,7 @@ class MailingsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[MailingsList] Unable to get proprety `' . $name . '`',
+                    '[MailingsList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -169,9 +175,9 @@ class MailingsList extends Pagination
      * Global isset method
      * Required for twig to access properties via __get
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return bool
      */
     public function __isset($name)
     {

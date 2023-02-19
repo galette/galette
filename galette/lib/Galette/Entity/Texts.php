@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Exception;
 use Galette\Core\I18n;
 use Galette\Features\Replacements;
 use Slim\Routing\RouteParser;
@@ -245,7 +247,7 @@ class Texts
      * @param string $ref  Reference of text to get
      * @param string $lang Language texts to get
      *
-     * @return array of all text fields for one language.
+     * @return ArrayObject of all text fields for one language.
      */
     public function getTexts($ref, $lang)
     {
@@ -404,7 +406,7 @@ class Texts
     /**
      * Initialize texts at install time
      *
-     * @param boolean $check_first Check first if it seem initialized
+     * @param boolean $check_first Check first if it seems initialized
      *
      * @return boolean|Exception false if no need to initialize, true if data
      *                           has been initialized, Exception if error

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2022 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2022 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
@@ -50,10 +51,15 @@ use Galette\Core\History;
  * @name      Reminder
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2022 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
+ *
+ * @property-read integer $member_id
+ * @property integer $type
+ * @property Adherent $dest
+ * @property string $date
  */
 
 class Reminder
@@ -128,11 +134,11 @@ class Reminder
     /**
      * Load reminder from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         global $zdb;
 

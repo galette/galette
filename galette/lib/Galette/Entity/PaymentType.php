@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2018-2022 The Galette Team
+ * Copyright © 2018-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2022 The Galette Team
+ * @copyright 2018-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
@@ -49,10 +50,13 @@ use Galette\Features\Translatable;
  * @name      PaymentType
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2022 The Galette Team
+ * @copyright 2018-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.2dev - 2018-07-23
+ *
+ * @property integer $id
+ * @property string $name
  */
 
 class PaymentType
@@ -120,11 +124,11 @@ class PaymentType
     /**
      * Load payment type from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         $pk = self::PK;
         $this->id = $rs->$pk;

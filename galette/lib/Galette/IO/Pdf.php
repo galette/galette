@@ -414,7 +414,7 @@ class Pdf extends \TCPDF
             $fontname = static::FONT;
         }
         $this->SetFontSize($fontsize);
-        while ($this->GetStringWidth($text, $fontname, $fontstyle, $fontsize) > $maxsize) {
+        while ((int)$this->GetStringWidth($text, $fontname, $fontstyle, $fontsize) > $maxsize) {
             $fontsize--;
             $this->SetFontSize($fontsize);
         }
@@ -431,8 +431,8 @@ class Pdf extends \TCPDF
     protected function cut($str, $length)
     {
         $length = $length - 2; //keep a margin
-        if ($this->GetStringWidth($str) > $length) {
-            while ($this->GetStringWidth($str . '...') > $length) {
+        if ((int)$this->GetStringWidth($str) > $length) {
+            while ((int)$this->GetStringWidth($str . '...') > $length) {
                 $str = mb_substr($str, 0, -1, 'UTF-8');
             }
             $str .= '...';
@@ -452,8 +452,8 @@ class Pdf extends \TCPDF
     {
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE);
         $stretch = 100;
-        if ($this->GetStringWidth($str) > $length) {
-            while ($this->GetStringWidth($str) > $length) {
+        if ((int)$this->GetStringWidth($str) > $length) {
+            while ((int)$this->GetStringWidth($str) > $length) {
                 $this->setFontStretching(--$stretch);
             }
         }
@@ -473,10 +473,10 @@ class Pdf extends \TCPDF
     /**
      * Download PDF from browser
      *
-     * @return void
+     * @return string
      */
-    public function download()
+    public function download(): string
     {
-        $this->Output($this->filename, 'D');
+        return $this->Output($this->filename, 'D');
     }
 }

@@ -36,6 +36,8 @@
 
 namespace Galette\Core;
 
+use ArrayObject;
+use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -87,9 +89,9 @@ class Picture implements FileInterface
     /**
      * Default constructor.
      *
-     * @param int $id_adh the id of the member
+     * @param mixed|null $id_adh the id of the member
      */
-    public function __construct($id_adh = '')
+    public function __construct($id_adh = null)
     {
 
         $this->init(
@@ -109,7 +111,7 @@ class Picture implements FileInterface
                 $this->db_id = $id_adh;
             }
 
-            //if file does not exists on the FileSystem, check for it in the database
+            //if file does not exist on the FileSystem, check for it in the database
             if (!$this->checkFileOnFS()) {
                 if ($this->checkFileInDB()) {
                     $this->has_picture = true;
@@ -140,7 +142,7 @@ class Picture implements FileInterface
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
         if (!$this->checkFileOnFS()) {
-            //if file does not exists on the FileSystem,
+            //if file does not exist on the FileSystem,
             //check for it in the database
             //$this->checkFileInDB();
         } else {
@@ -304,11 +306,11 @@ class Picture implements FileInterface
     /**
      * Set header and displays the picture.
      *
-     * @param Response $response Reponse
+     * @param Response $response Response
      *
      * @return object the binary file
      */
-    public function display(\Slim\Psr7\Response $response)
+    public function display(Response $response)
     {
         $response = $response->withHeader('Content-Type', $this->mime)
             ->withHeader('Content-Transfer-Encoding', 'binary')
@@ -644,6 +646,7 @@ class Picture implements FileInterface
             );
 
             foreach ($valids as $valid) {
+                /** @var ArrayObject $valid */
                 $file = $existing_disk[$valid->id_adh];
                 $this->storeInDb(
                     $zdb,

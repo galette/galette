@@ -268,7 +268,7 @@ class ExternalScript
     /**
      * Get full output (only relevant is method is file)
      *
-     * @return array
+     * @return string
      */
     public function getOutput()
     {

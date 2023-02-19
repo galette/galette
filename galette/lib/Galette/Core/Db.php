@@ -40,9 +40,8 @@ use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
-use Laminas\Db\Adapter\Driver\ConnectionInterface;
+use Laminas\Db\Adapter\Driver\AbstractConnection;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
-use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Insert;
 use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
@@ -66,7 +65,7 @@ use Laminas\Db\Sql\SqlInterface;
  * @property Adapter $db
  * @property Sql $sql
  * @property DriverInterface $driver
- * @property ConnectionInterface $connection
+ * @property AbstractConnection $connection
  * @property PlatformInterface $platform
  * @property string $query_string
  * @property string $type_db
@@ -776,7 +775,7 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return StatementInterface|ResultSet\ResultSet
+     * @return ResultSet\ResultSet
      */
     public function execute($sql)
     {
@@ -998,6 +997,7 @@ class Db
      */
     public function getLastGeneratedValue($entity): int
     {
+        /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres() ?
                 PREFIX_DB . $entity::TABLE . '_id_seq'

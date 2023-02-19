@@ -305,21 +305,21 @@ class PdfModel extends GaletteTestCase
         $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
 
         //prepare model
-        $rs = new \stdClass();
         $pk = \Galette\Entity\PdfModel::PK;
-        $rs->$pk = 42;
-        $rs->model_name = 'Test model';
-        $rs->model_title = 'A simple tmodel for tests';
-        $rs->model_subtitle = 'The subtitle';
-        $rs->model_header = null;
-        $rs->model_footer = null;
-        $rs->model_body = 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_' .
+        $rs = new \ArrayObject([
+            $pk => 42,
+            'model_name' => 'Test model',
+            'model_title' => 'A simple tmodel for tests',
+            'model_subtitle' => 'The subtitle',
+            'model_header' => null,
+            'model_footer' => null,
+            'model_body' => 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_' .
             $adf->getId() . '_ADH} dynvalue: {INPUT_DYNFIELD_' . $adf->getId() . '_ADH} ' .
             '- enddate: {CONTRIB_END_DATE} amount: {CONTRIB_AMOUNT} ({CONTRIB_AMOUNT_LETTERS}) dynlabel: ' .
-            '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}';
-        $rs->model_styles = null;
-        $rs->model_parent = \Galette\Entity\PdfModel::MAIN_MODEL;
-
+            '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}',
+            'model_styles' => null,
+            'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
+        ], \ArrayObject::ARRAY_AS_PROPS);
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs);
 
         $data = [

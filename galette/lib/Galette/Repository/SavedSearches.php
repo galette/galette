@@ -36,6 +36,8 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -97,7 +99,7 @@ class SavedSearches
      *                           returned
      * @param boolean $count     true if we want to count
      *
-     * @return SavedSearch[]|ResultSet
+     * @return SavedSearch[]|ArrayObject
      */
     public function getList($as_search = false, $fields = null, $count = true)
     {
@@ -171,7 +173,7 @@ class SavedSearches
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select)
     {
         try {
             $countSelect = clone $select;
@@ -205,7 +207,7 @@ class SavedSearches
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array
      */
     private function buildOrderClause()
     {
@@ -245,7 +247,6 @@ class SavedSearches
         }
 
         if (is_array($list)) {
-            $res = true;
             try {
                 if ($transaction) {
                     $this->zdb->connection->beginTransaction();
@@ -255,9 +256,9 @@ class SavedSearches
                 $searches = $this->zdb->execute($select);
                 foreach ($searches as $search) {
                     $s = new SavedSearch($this->zdb, $this->login, $search);
-                    $res = $s->remove(false);
+                    $res = $s->remove();
                     if ($res === false) {
-                        throw new \Exception();
+                        throw new \Exception('Cannot remove saved search');
                     }
                 }
                 if ($transaction) {

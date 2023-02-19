@@ -82,7 +82,7 @@ trait Dynamics
     /**
      * Get dynamic fields
      *
-     * @return array
+     * @return DynamicFieldsHandle
      */
     public function getDynamicFields()
     {
@@ -99,7 +99,7 @@ trait Dynamics
      * @param array $required Array of required fields
      * @param array $disabled Array of disabled fields
      *
-     * @return boolean
+     * @return bool
      */
     protected function dynamicsCheck(array $post, array $required, array $disabled)
     {
@@ -222,9 +222,9 @@ trait Dynamics
     /**
      * Stores dynamic fields
      *
-     * @param boolean $transaction True if a transaction already exists
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     protected function dynamicsStore($transaction = false)
     {
@@ -328,9 +328,9 @@ trait Dynamics
     /**
      * Remove dynamic fields values
      *
-     * @param boolean $transaction True if a transaction already exists
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     protected function dynamicsRemove($transaction = false)
     {

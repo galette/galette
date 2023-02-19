@@ -36,6 +36,8 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -96,7 +98,7 @@ class Transactions
      *                          an array. If null, all fields will be returned
      * @param boolean $count    true if we want to count members
      *
-     * @return Transaction[]|ResultSet
+     * @return Transaction[]|ArrayObject
      */
     public function getList($as_trans = false, $fields = null, $count = true)
     {
@@ -108,6 +110,7 @@ class Transactions
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
+                    /** @var ArrayObject $row */
                     $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
             } else {
@@ -339,12 +342,12 @@ class Transactions
     /**
      * Remove specified transactions
      *
-     * @param interger|array $ids  Transactions identifiers to delete
-     * @param History        $hist History
+     * @param array|integer $ids  Transactions identifiers to delete
+     * @param History       $hist History
      *
      * @return boolean
      */
-    public function remove($ids, History $hist)
+    public function remove(array|int $ids, History $hist)
     {
         $list = array();
         if (is_numeric($ids)) {
@@ -354,42 +357,32 @@ class Transactions
             $list = $ids;
         }
 
-        if (is_array($list)) {
-            $res = true;
-            try {
-                $this->zdb->connection->beginTransaction();
+        try {
+            $this->zdb->connection->beginTransaction();
 
-                $select = $this->zdb->select(self::TABLE);
-                $select->where->in(self::PK, $list);
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->in(self::PK, $list);
 
-                $results = $this->zdb->execute($select);
-                foreach ($results as $transaction) {
-                    $c = new Transaction($this->zdb, $this->login, $transaction);
-                    $res = $c->remove($hist, false);
-                    if ($res === false) {
-                        throw new \Exception();
-                    }
+            $results = $this->zdb->execute($select);
+            foreach ($results as $transaction) {
+                /** @var ArrayObject $transaction */
+                $c = new Transaction($this->zdb, $this->login, $transaction);
+                $res = $c->remove($hist, false);
+                if ($res === false) {
+                    throw new \Exception();
                 }
-                $this->zdb->connection->commit();
-                $hist->add(
-                    "Transactions deleted (" . print_r($list, true) . ')'
-                );
-                return true;
-            } catch (Throwable $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'An error occurred trying to remove transactions | ' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
-                return false;
             }
-        } else {
-            //not numeric and not an array: incorrect.
+            $this->zdb->connection->commit();
+            $hist->add(
+                "Transactions deleted (" . print_r($list, true) . ')'
+            );
+            return true;
+        } catch (Throwable $e) {
+            $this->zdb->connection->rollBack();
             Analog::log(
-                'Asking to remove transaction, but without providing ' .
-                'an array or a single numeric value.',
-                Analog::WARNING
+                'An error occurred trying to remove transactions | ' .
+                $e->getMessage(),
+                Analog::ERROR
             );
             return false;
         }

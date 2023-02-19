@@ -38,6 +38,7 @@ namespace Galette\Controllers;
 
 use Galette\Filters\ContributionsList;
 use Galette\IO\ContributionsCsv;
+use Laminas\Db\ResultSet\ResultSet;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ImportModel;
@@ -635,7 +636,7 @@ class CsvController extends AbstractController
 
         $ocsv = new CsvOut();
         $res = $ocsv->export(
-            $fields,
+            new ResultSet(),
             Csv::DEFAULT_SEPARATOR,
             Csv::DEFAULT_QUOTE,
             $fields

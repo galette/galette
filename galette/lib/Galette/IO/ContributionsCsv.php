@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use ArrayObject;
 use DateTime;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -120,6 +121,7 @@ class ContributionsCsv extends CsvOut
         $ctype = new ContributionsTypes($this->zdb);
 
         foreach ($contributions_list as &$contribution) {
+            /** @var ArrayObject $contribution */
             if (isset($contribution->type_paiement_cotis)) {
                 //add textual payment type
                 $contribution->type_paiement_cotis = $ptypes[$contribution->type_paiement_cotis];

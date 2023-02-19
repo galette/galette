@@ -74,10 +74,10 @@ class MembersCsv extends CsvOut
     /**
      * Default constructor
      *
-     * @param Db    $zdb            Db instance
-     * @param Login $login          Login instance
-     * @param array $members_fields Members fields
-     * @param array $fields_config  Fields configuration
+     * @param Db           $zdb            Db instance
+     * @param Login        $login          Login instance
+     * @param array        $members_fields Members fields
+     * @param FieldsConfig $fields_config  Fields configuration
      */
     public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
     {
@@ -93,7 +93,7 @@ class MembersCsv extends CsvOut
     /**
      * Export members CSV
      *
-     * @param MembersList $filters Current filtrs
+     * @param MembersList $filters Current filters
      *
      * @return void
      */

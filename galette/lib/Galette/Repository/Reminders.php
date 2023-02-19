@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-13
@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Galette\Core\Db;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Analog\Analog;
@@ -48,7 +49,7 @@ use Laminas\Db\Sql\Expression;
  * @name      Reminders
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-13
@@ -87,7 +88,7 @@ class Reminders
      *
      * @return void
      */
-    private function loadToRemind($zdb, $type, $nomail = false)
+    private function loadToRemind(Db $zdb, $type, $nomail = false)
     {
         $this->toremind = array();
         $select = $zdb->select(Members::TABLE, 'a');
@@ -214,7 +215,7 @@ class Reminders
      *
      * @return array
      */
-    public function getList($zdb, $nomail = false)
+    public function getList(Db $zdb, $nomail = false)
     {
         $this->types = array();
         $this->reminders = array();

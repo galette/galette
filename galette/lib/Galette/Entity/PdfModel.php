@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Galette\Core\Db;
@@ -61,10 +62,15 @@ use Laminas\Db\Sql\Expression;
  * @property string $name
  * @property integer $type
  * @property string $header
+ * @property-read string $hheader
  * @property string $footer
+ * @property-read string $hfooter
  * @property string $title
+ * @property-read string $htitle
  * @property string $subtitle
+ * @property-read string $hsubtitle
  * @property string $body
+ * @property-read string $hbody
  * @property string $styles
  * @property PdfMain $parent
  */
@@ -151,7 +157,9 @@ abstract class PdfModel
                     throw new \RuntimeException('Model not found!');
                 }
             } else {
-                $this->loadFromRs($results->current());
+                /** @var ArrayObject $result */
+                $result = $results->current();
+                $this->loadFromRs($result);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -166,11 +174,11 @@ abstract class PdfModel
     /**
      * Load model from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    protected function loadFromRs($rs)
+    protected function loadFromRs(ArrayObject $rs)
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -357,7 +365,6 @@ abstract class PdfModel
 
                 $value .= $this->styles;
                 return $value;
-                break;
             case 'hheader':
             case 'hfooter':
             case 'htitle':
@@ -379,7 +386,6 @@ abstract class PdfModel
 
                 $value = $this->proceedReplacements($prop_value);
                 return $value;
-                break;
             default:
                 Analog::log(
                     'Unable to get PdfModel property ' . $name,
@@ -399,8 +405,6 @@ abstract class PdfModel
      */
     public function __isset($name)
     {
-        global $lang;
-
         switch ($name) {
             case 'id':
             case 'name':

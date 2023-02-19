@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Repository\Groups;
 use Throwable;
 use Galette\Core\Login;
@@ -79,13 +80,13 @@ class Group
     /**
      * Default constructor
      *
-     * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-     *                                 a specific group, or null to just
-     *                                 instanciate object
+     * @param null|int|ArrayObject $args Either a ResultSet row or its id for to load
+     *                                   a specific group, or null to just
+     *                                   instanciate object
      */
     public function __construct($args = null)
     {
-        if ($args == null || is_int($args)) {
+        if ($args === null || is_int($args)) {
             if (is_int($args) && $args > 0) {
                 $this->load($args);
             }
@@ -129,11 +130,11 @@ class Group
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $this->id = (int)$r->id_group;
         $this->group_name = $r->group_name;

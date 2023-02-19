@@ -1,7 +1,7 @@
 parameters:
     parallel:
         maximumNumberOfProcesses: 2
-    level: 1
+    level: 2
     paths:
         - galette/lib/
     scanFiles:
@@ -13,3 +13,5 @@ parameters:
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Attribute class .*\\Inject does not exist./'
+        - '/Cannot access property .* on .*ArrayObject.*/'
+        - '/Access to an undefined property ArrayObject.*/'

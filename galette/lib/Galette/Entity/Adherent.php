@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Events\GaletteEvent;
 use Galette\Features\Socials;
 use Throwable;
@@ -67,7 +68,7 @@ use Galette\Features\Dynamics;
  * @property integer $id
  * @property integer|Title $title Either a title id or an instance of Title
  * @property string $stitle Title label
- * @property string company_name
+ * @property string $company_name
  * @property string $name
  * @property string $surname
  * @property string $nickname
@@ -119,7 +120,7 @@ use Galette\Features\Dynamics;
  * @property-read integer $parent_id
  * @property Social $social Social networks/Contact
  * @property string $number Member number
- *
+ * @property-read bool $self_adh
  */
 class Adherent
 {
@@ -305,7 +306,9 @@ class Adherent
                 return false;
             }
 
-            $this->loadFromRS($results->current());
+            /** @var ArrayObject $result */
+            $result = $results->current();
+            $this->loadFromRS($result);
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -336,8 +339,9 @@ class Adherent
             }
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-            if ($result) {
+            if ($results->count() > 0) {
+                /** @var ArrayObject $result */
+                $result = $results->current();
                 $this->loadFromRS($result);
             }
             return true;
@@ -354,11 +358,11 @@ class Adherent
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r): void
+    private function loadFromRS(ArrayObject $r): void
     {
         $this->_self_adh = false;
         $this->_id = $r->id_adh;

@@ -37,8 +37,10 @@
 namespace Galette\Core;
 
 use Analog\Analog;
+use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
+use Laminas\Db\ResultSet\ResultSet;
 
 /**
  * Mailing features
@@ -68,6 +70,7 @@ use Galette\IO\File;
  * @property array $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address
+ * @property integer $history_id
  */
 class Mailing extends GaletteMail
 {
@@ -179,13 +182,13 @@ class Mailing extends GaletteMail
     /**
      * Loads a mailing from history
      *
-     * @param ResultSet $rs  Mailing entry
-     * @param boolean   $new True if we create a 'new' mailing,
-     *                       false otherwise (from preview for example)
+     * @param ArrayObject $rs  Mailing entry
+     * @param boolean     $new True if we create a 'new' mailing,
+     *                         false otherwise (from preview for example)
      *
      * @return boolean
      */
-    public function loadFromHistory($rs, $new = true)
+    public function loadFromHistory(ArrayObject $rs, $new = true)
     {
         global $zdb;
 
@@ -541,6 +544,8 @@ class Mailing extends GaletteMail
                     return $this->getSenderName();
                 case 'sender_address':
                     return $this->getSenderAddress();
+                case 'history_id':
+                    return $this->$name;
                 default:
                     Analog::log(
                         '[' . get_class($this) . 'Trying to get ' . $name,

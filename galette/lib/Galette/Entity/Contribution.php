@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use DateTime;
 use Galette\Events\GaletteEvent;
 use Throwable;
 use Analog\Analog;
@@ -119,11 +121,11 @@ class Contribution
     /**
      * Default constructor
      *
-     * @param Db                 $zdb   Database
-     * @param Login              $login Login instance
-     * @param null|int|ResultSet $args  Either a ResultSet row to load
-     *                                  a specific contribution, or a type id
-     *                                  to just instantiate object
+     * @param Db                         $zdb   Database
+     * @param Login                      $login Login instance
+     * @param null|int|array|ArrayObject $args  Either a ResultSet row to load
+     *                                          a specific contribution, or a type id
+     *                                          to just instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -352,11 +354,11 @@ class Contribution
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $pk = self::PK;
         $this->_id = (int)$r->$pk;
@@ -573,6 +575,7 @@ class Contribution
     {
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
+            //@phpstan-ignore-next-line
             $select->columns(
                 array('date_debut_cotis', 'date_fin_cotis')
             )->join(
@@ -864,7 +867,7 @@ class Contribution
      * @param Db      $zdb       Database instance
      * @param integer $member_id Member identifier
      *
-     * @return date
+     * @return string
      */
     public static function getDueDate(Db $zdb, $member_id)
     {
@@ -1228,7 +1231,7 @@ class Contribution
                         $next_begin_date->add(new \DateInterval('P1D'));
                         $begin_date = new \DateTime($this->_begin_date);
                         $diff = $next_begin_date->diff($begin_date);
-                        return $diff->format('%y') * 12 + $diff->format('%m');
+                        return (int)$diff->format('%y') * 12 + (int)$diff->format('%m');
                     } else {
                         return '';
                     }

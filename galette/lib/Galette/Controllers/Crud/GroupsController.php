@@ -167,8 +167,7 @@ class GroupsController extends CrudController
                     'Trying to display group ' . $id . ' without appropriate permissions',
                     Analog::INFO
                 );
-                $response->setStatus(403);
-                return $response;
+                return $response->withStatus(403);
             }
         }
 

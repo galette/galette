@@ -36,8 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
-use Galette\Core;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
@@ -117,6 +117,7 @@ class SavedSearch
             }
 
             $results = $this->zdb->execute($select);
+            /** @var ArrayObject $res */
             $res = $results->current();
 
             $this->loadFromRs($res);
@@ -133,11 +134,11 @@ class SavedSearch
     /**
      * Load a saved search from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         $pk = self::PK;
         $this->id = $rs->$pk;

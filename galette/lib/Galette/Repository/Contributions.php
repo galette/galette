@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -116,7 +117,7 @@ class Contributions
      *                            returned
      * @param boolean $count      true if we want to count members
      *
-     * @return Contribution[]
+     * @return Contribution[]|ArrayObject[]
      */
     public function getArrayList(array $ids, bool $as_contrib = false, array $fields = null, bool $count = true)
     {
@@ -144,7 +145,7 @@ class Contributions
      *                            returned
      * @param boolean $count      true if we want to count members
      *
-     * @return Contribution[]|ResultSet
+     * @return Contribution[]|ArrayObject
      */
     public function getList($as_contrib = false, $fields = null, $count = true)
     {

@@ -156,9 +156,9 @@ class Install
     /**
      * HTML validation image
      *
-     * @param boolean $arg Argument
+     * @param bool $arg Argument
      *
-     * @return html string
+     * @return string html string
      */
     public function getValidationImage($arg)
     {
@@ -171,7 +171,7 @@ class Install
     /**
      * Get current mode
      *
-     * @return char
+     * @return string
      */
     public function getMode()
     {
@@ -201,7 +201,7 @@ class Install
     /**
      * Set installation mode
      *
-     * @param char $mode Requested mode
+     * @param string $mode Requested mode
      *
      * @return void
      */
@@ -623,12 +623,12 @@ class Install
     /**
      * Execute SQL scripts
      *
-     * @param Galette\Core\Db $zdb   Database instance
-     * @param string          $spath Path to scripts
+     * @param Db     $zdb   Database instance
+     * @param string $spath Path to scripts
      *
-     * @return boolean
+     * @return bool
      */
-    public function executeScripts($zdb, $spath = null)
+    public function executeScripts(Db $zdb, $spath = null)
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);

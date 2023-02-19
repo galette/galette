@@ -69,7 +69,7 @@ class LightSlimApp
         $this->mode = $mode;
 
         $builder = new ContainerBuilder();
-        $builder->useAnnotations(true);
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
             'settings.displayErrorDetails'      => (GALETTE_MODE === 'DEV'),

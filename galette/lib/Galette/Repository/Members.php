@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -39,12 +39,12 @@ namespace Galette\Repository;
 use Galette\Core\Login;
 use Galette\Entity\Social;
 use Galette\Events\GaletteEvent;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Predicate\IsNull;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
-use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
@@ -57,7 +57,6 @@ use Galette\Filters\MembersList;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Core\Picture;
 use Galette\Entity\Group;
-use Galette\Repository\Groups;
 use Galette\Entity\Status;
 use Galette\Core\Db;
 
@@ -69,7 +68,7 @@ use Galette\Core\Db;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -212,7 +211,7 @@ class Members
      * @param boolean $limit      true if we want records pagination
      * @param boolean $export     true if we are exporting
      *
-     * @return Adherent[]|Laminas\Db\ResultSet
+     * @return Adherent[]|ResultSet
      */
     public function getMembersList(
         $as_members = false,

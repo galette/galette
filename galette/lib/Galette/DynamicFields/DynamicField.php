@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2021 The Galette Team
+ * Copyright © 2012-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2021 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-07-28
@@ -36,6 +36,7 @@
 
 namespace Galette\DynamicFields;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -53,7 +54,7 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2021 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -152,8 +153,9 @@ abstract class DynamicField
             $select->where(['field_id' => $id]);
 
             $results = $zdb->execute($select);
-            $result = $results->current();
-            if ($result) {
+            if ($results->count() > 0) {
+                /** @var ArrayObject $result */
+                $result = $results->current();
                 $field_type = $result->field_type;
                 $field_type = self::getFieldType($zdb, $field_type);
                 $field_type->loadFromRs($result);
@@ -224,9 +226,9 @@ abstract class DynamicField
             $select->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-
-            if ($result) {
+            if ($results->count() > 0) {
+                /** @var ArrayObject $result */
+                $result = $results->current();
                 $this->loadFromRs($result);
             }
         } catch (Throwable $e) {
@@ -241,12 +243,12 @@ abstract class DynamicField
     /**
      * Load field type from a db ResultSet
      *
-     * @param ResultSet $rs     ResultSet
-     * @param boolean   $values Whether to load values. Defaults to true
+     * @param ArrayObject $rs     ResultSet
+     * @param bool        $values Whether to load values. Defaults to true
      *
      * @return void
      */
-    public function loadFromRs($rs, bool $values = true): void
+    public function loadFromRs(ArrayObject $rs, bool $values = true): void
     {
         $this->id = (int)$rs->field_id;
         $this->name = $rs->field_name;
@@ -268,7 +270,7 @@ abstract class DynamicField
      * Retrieve fixed values table name
      *
      * @param integer $id       Field ID
-     * @param boolean $prefixed Whether table name should be prefixed
+     * @param bool    $prefixed Whether table name should be prefixed
      *
      * @return string
      */
@@ -301,7 +303,7 @@ abstract class DynamicField
 
             $results = $this->zdb->execute($val_select);
             $this->values = array();
-            if ($results) {
+            if ($results->count() > 0) {
                 foreach ($results as $val) {
                     $this->values[] = $val->val;
                 }
@@ -341,7 +343,7 @@ abstract class DynamicField
     /**
      * Does the field handle data?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasData(): bool
     {
@@ -351,7 +353,7 @@ abstract class DynamicField
     /**
      * Does the field has width?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasWidth(): bool
     {
@@ -361,7 +363,7 @@ abstract class DynamicField
     /**
      * Does the field has height?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHeight(): bool
     {
@@ -371,7 +373,7 @@ abstract class DynamicField
     /**
      * Does the field has a size?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasSize(): bool
     {
@@ -381,7 +383,7 @@ abstract class DynamicField
     /**
      * Is the field multivalued?
      *
-     * @return boolean
+     * @return bool
      */
     public function isMultiValued(): bool
     {
@@ -391,7 +393,7 @@ abstract class DynamicField
     /**
      * Does the field has fixed values?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFixedValues(): bool
     {
@@ -401,7 +403,7 @@ abstract class DynamicField
     /**
      * Does the field require permissions?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasPermissions(): bool
     {
@@ -431,7 +433,7 @@ abstract class DynamicField
     /**
      * Is field required?
      *
-     * @return boolean
+     * @return bool
      */
     public function isRequired(): bool
     {
@@ -461,7 +463,7 @@ abstract class DynamicField
     /**
      * Is current field repeatable?
      *
-     * @return boolean
+     * @return bool
      */
     public function isRepeatable(): bool
     {
@@ -575,7 +577,7 @@ abstract class DynamicField
     /**
      * Get field values
      *
-     * @param boolean $imploded Whether to implode values
+     * @param bool $imploded Whether to implode values
      *
      * @return array|string|false
      */
@@ -701,7 +703,7 @@ abstract class DynamicField
      * @param array $values All values to check, basically the $_POST array
      *                      after sending the form
      *
-     * @return boolean
+     * @return bool
      */
     public function store(array $values): bool
     {
@@ -845,7 +847,7 @@ abstract class DynamicField
     /**
      * Is field duplicated?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDuplicate(): bool
     {
@@ -893,7 +895,7 @@ abstract class DynamicField
      *
      * @param string $action What to do (one of self::MOVE_*)
      *
-     * @return boolean
+     * @return bool
      */
     public function move(string $action): bool
     {
@@ -945,7 +947,7 @@ abstract class DynamicField
     /**
      * Delete a dynamic field
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {
@@ -969,29 +971,31 @@ abstract class DynamicField
             $this->zdb->execute($update);
 
             //remove associated values
-            $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
-            $delete->where(
-                array(
-                    'field_id'      => $this->id,
-                    'field_form'    => $this->form
-                )
-            );
-            $result = $this->zdb->execute($delete);
-            if (!$result) {
+            try {
+                $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
+                $delete->where(
+                    array(
+                        'field_id'      => $this->id,
+                        'field_form'    => $this->form
+                    )
+                );
+                $this->zdb->execute($delete);
+            } catch (Throwable $e) {
                 throw new \RuntimeException('Unable to remove associated values for field ' . $this->id . '!');
             }
 
             //remove field type
-            $delete = $this->zdb->delete(self::TABLE);
-            $delete->where(
-                array(
-                    'field_id'      => $this->id,
-                    'field_form'    => $this->form
-                )
-            );
-            $result = $this->zdb->execute($delete);
-            if (!$result) {
-                throw new \RuntimeException('Unable to remove field ' . $this->id . '!');
+            try {
+                $delete = $this->zdb->delete(self::TABLE);
+                $delete->where(
+                    array(
+                        'field_id'      => $this->id,
+                        'field_form'    => $this->form
+                    )
+                );
+                $this->zdb->execute($delete);
+            } catch (Throwable $e) {
+                throw new \RuntimeException('Unable to remove field type ' . $this->id . '!');
             }
 
             $this->deleteTranslation($this->name);

@@ -81,7 +81,7 @@ class GaletteEvent implements HasEventName
     /**
      * Get event object
      *
-     * @return mixed
+     * @return object
      */
     public function getObject(): object
     {

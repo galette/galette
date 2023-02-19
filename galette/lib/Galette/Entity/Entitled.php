@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -130,6 +131,7 @@ abstract class Entitled
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
+                /** @var ArrayObject $result */
                 $result = $results->current();
                 $this->loadFromRS($result);
 
@@ -154,11 +156,11 @@ abstract class Entitled
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $pk = $this->fpk;
         $this->id = $r->$pk;
@@ -486,7 +488,7 @@ abstract class Entitled
      * @param integer $extra Extra values (priority for statuses,
      *                       extension for contributions types, ...)
      *
-     * @return ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|boolean
      */
     public function update($id, $label, $extra)
     {
@@ -496,8 +498,6 @@ abstract class Entitled
             /* get() already logged and set $this->error. */
             return self::ID_NOT_EXITS;
         }
-
-        $class = get_class($this);
 
         try {
             $oldlabel = $ret->{$this->flabel};
@@ -540,7 +540,7 @@ abstract class Entitled
      *
      * @param integer $id Entry ID
      *
-     * @return ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|boolean
      */
     public function delete($id)
     {

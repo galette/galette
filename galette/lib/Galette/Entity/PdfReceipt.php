@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-25
@@ -36,7 +36,8 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog;
+use Galette\Core\Db;
+use Galette\Core\Preferences;
 
 /**
  * PDF receipt model
@@ -60,7 +61,7 @@ class PdfReceipt extends PdfContribution
      * @param Preferences $preferences Galette preferences
      * @param mixed       $args        Arguments
      */
-    public function __construct($zdb, $preferences, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, $args = null)
     {
         parent::__construct($zdb, $preferences, self::RECEIPT_MODEL, $args);
     }

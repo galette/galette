@@ -447,7 +447,7 @@ class MembersController extends CrudController
         if (!$member->canShow($this->login)) {
             $fields = $member->getDynamicFields()->getFields();
             if (!isset($fields[$fid])) {
-                //field does not exists or access is forbidden
+                //field does not exist or access is forbidden
                 $denied = true;
             } else {
                 $denied = false;
@@ -1058,7 +1058,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param mixed    $id       Member id/array of members id
+     * @param integer  $id       Member id/array of members id
      * @param string   $action   null or 'add'
      *
      * @return Response
@@ -1890,7 +1890,7 @@ class MembersController extends CrudController
      * @param array $args Route arguments
      * @param array $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post)
     {
@@ -1926,7 +1926,7 @@ class MembersController extends CrudController
     /**
      * Is self membership?
      *
-     * @return boolean
+     * @return bool
      */
     private function isSelfMembership(): bool
     {

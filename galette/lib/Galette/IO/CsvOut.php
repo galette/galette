@@ -36,6 +36,8 @@
 
 namespace Galette\IO;
 
+use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
 use Symfony\Component\Yaml\Yaml;
 use Throwable;
 use Analog\Analog;
@@ -77,22 +79,19 @@ class CsvOut extends Csv
     /**
      * Export Array result set to CSV
      *
-     * @param array  $rs        Results as an array
-     * @param string $separator The CSV separator (either '\t', ';' or ','
-     *                          are accepted)
-     * @param char   $quote     how does fields should be quoted
-     * @param bool   $titles    does export shows column titles or not.
-     *                          Defaults to false.
-     * @param object $file      export to a file on disk. A file pointer
-     *                          should be passed here. Defaults to false.
+     * @param ResultSet      $rs        Results as an array
+     * @param string         $separator The CSV separator (either '\t', ';' or ','
+     *                                  are accepted)
+     * @param string         $quote     how does fields should be quoted
+     * @param bool           $titles    does export shows column titles or not.
+     *                                  Defaults to false.
+     * @param resource|false $file      export to a file on disk. A file pointer
+     *                                  should be passed here. Defaults to false.
      *
      * @return string CSV result
      */
     public function export($rs, $separator, $quote, $titles = false, $file = false)
     {
-        if (!$rs) {
-            return '';
-        }
         //switch back to the default separator if not in accepted_separators array
         if (!in_array($separator, $this->accepted_separators)) {
             $separator = self::DEFAULT_SEPARATOR;
@@ -104,8 +103,10 @@ class CsvOut extends Csv
 
         $this->result = '';
         $results = [];
-        foreach ($rs as $row) {
-            $results[] = $row;
+        if (count($rs) > 0) {
+            foreach ($rs as $row) {
+                $results[] = $row;
+            }
         }
         $this->separator = $separator;
         $this->quote = $quote;
@@ -218,6 +219,8 @@ class CsvOut extends Csv
             );
             return (string)$xpath[0];
         }
+
+        return null;
     }
 
     /**

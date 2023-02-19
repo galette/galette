@@ -41,7 +41,6 @@ use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Adapter;
-use Galette\Core\Preferences;
 use Laminas\Db\Sql\Select;
 
 /**
@@ -55,6 +54,8 @@ use Laminas\Db\Sql\Select;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
+ *
+ * @property HistoryList $filters
  */
 
 class History
@@ -460,7 +461,7 @@ class History
             }
         } else {
             Analog::log(
-                '[History] Unable to set proprety `' . $name . '`',
+                '[History] Unable to set property `' . $name . '`',
                 Analog::WARNING
             );
         }

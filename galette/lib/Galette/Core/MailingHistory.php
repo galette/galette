@@ -36,10 +36,10 @@
 
 namespace Galette\Core;
 
+use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
-use Galette\Core\Db;
-use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Laminas\Db\Sql\Expression;
@@ -288,11 +288,11 @@ class MailingHistory extends History
     /**
      * Load mailing from an existing one
      *
-     * @param Db             $zdb     Database instance
-     * @param integer        $id      Model identifier
-     * @param GaletteMailing $mailing Mailing object
-     * @param boolean        $new     True if we create a 'new' mailing,
-     *                                false otherwise (from preview for example)
+     * @param Db      $zdb     Database instance
+     * @param integer $id      Model identifier
+     * @param Mailing $mailing Mailing object
+     * @param boolean $new     True if we create a 'new' mailing,
+     *                         false otherwise (from preview for example)
      *
      * @return boolean
      */
@@ -303,6 +303,7 @@ class MailingHistory extends History
             $select->where(['mailing_id' => $id]);
 
             $results = $zdb->execute($select);
+            /** @var ArrayObject $result */
             $result = $results->current();
 
             return $mailing->loadFromHistory($result, $new);
