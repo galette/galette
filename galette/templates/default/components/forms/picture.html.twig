@@ -11,11 +11,13 @@
         </div>
         <div class="content">
             <div class="description">
-                <label for="photo" class="ui labeled icon button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
-                    <i class="blue upload icon"></i>
-                    {{ _T("Choose a file") }}
-                </label>
-                <input class="labelalign ui invisible file input" type="file" name="photo"/>
+                <div class="ui file action input">
+                    <input type="file" name="photo"/>
+                    <label for="photo" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
+                        <i class="blue upload icon"></i>
+                        {% if member.hasPicture() == 1 %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                    </label>
+                </div>
             </div>
             <div class="extra">
     {% if member.hasPicture() == 1 %}

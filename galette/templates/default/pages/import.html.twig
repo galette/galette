@@ -87,8 +87,15 @@
                     <div class="active content field">
                         <form class="ui form" action="{{ url_for('uploadImportFile') }}" method="post" enctype="multipart/form-data">
                             <div class="field">
-                                <label for="new_file">{{ _T('Select a file:') }}</label>
-                                <input class="labelalign" type="file" name="new_file" accept="text/csv" id="new_file"/>
+                                <div class="ui file action input">
+                                    <input type="file" name="new_file" accept="text/csv" id="new_file"/>
+                                    <label for="new_file" class="ui button">
+                                        <i class="blue file csv icon"></i>
+                                        {{ _T('Choose a file') }}
+                                    </label>
+                                </div>
+
+
                             </div>
                             <div class="ui basic center aligned segment">
                                 <button type="submit" name="upload" id="upload" class="ui labeled icon button">

@@ -48,15 +48,16 @@
                             <div class="image">
                                 <img src="{{ url_for('logo') }}" class="picture" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ _T("Current logo") }}"/>
                             </div>
-        {% else %}
-                            <label for="logo_picture" class="ui labeled icon button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
-                                <i class="blue upload icon"></i>
-                                {{ _T("Choose a file") }}
-                            </label>
         {% endif %}
                             <div class="content">
                                 <div class="description">
-                                    <input type="file" name="logo" id="logo_picture" class="ui invisible file input"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                                    <div class="ui file action input">
+                                        <input type="file" name="logo" id="logo_picture"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                                        <label for="logo_picture" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
+                                            <i class="blue upload icon"></i>
+                                            {% if logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="extra">
         {% if logo.isCustom() %}
@@ -659,15 +660,16 @@
                             <div class="image">
                                 <img src="{{ url_for('printLogo') }}" class="picture" width="{{ print_logo.getOptimalWidth() }}" height="{{ print_logo.getOptimalHeight() }}" alt="{{ _T("Current logo for printing") }}"/><br/>
                             </div>
-    {% else %}
-                            <label for="card_logo" class="ui labeled icon button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
-                                <i class="blue upload icon"></i>
-                                {{ _T("Choose a file") }}
-                            </label>
     {% endif %}
                             <div class="content">
                                 <div class="description">
-                                    <input type="file" name="card_logo" id="card_logo" class="ui invisible file input"{% if constant('GALETTE_MODE') == constant('Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                                    <div class="ui file action input">
+                                        <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
+                                        <label for="card_logo" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
+                                            <i class="blue upload icon"></i>
+                                            {% if print_logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="extra">
     {% if print_logo.isCustom() %}
