@@ -6,8 +6,9 @@
                 <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
                 <div class="ui right action input">
                     <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
-                    <a href="#" class="ui icon red button tooltip delete delsocial">
-                        <i class="trash icon" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)}) }}|e()"></i>
+                    <a href="#" class="ui icon red button delete delsocial" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}">
+                        <i class="trash icon"></i>
+                        <span class="displaynone">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}</span>
                     </a>
                 </div>
             </div>

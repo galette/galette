@@ -27,19 +27,19 @@
                 <td class="actions_row">
                     <a
                         href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
-                        class="toggleActivation tooltip use"
+                        class="toggleActivation use"
                     >
-                        <i class="ui toggle on red icon"></i>
-                        <span class="displaynone">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
+                        <i class="ui toggle on red icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
                     </a>
     {% if plugins.needsDatabase(name) %}
                     <a
                         href="{{ url_for("pluginInitDb", {"id": name}) }}"
                         id="initdb_{{ name }}"
-                        class="initdb action tooltip"
+                        class="initdb action"
                     >
-                        <i class="ui database blue icon"></i>
-                        <span class="displaynone">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
+                        <i class="ui database blue icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
                     </a>
     {% else %}
                     <i class="ui icon">&nbsp;</i>
@@ -78,10 +78,10 @@
                 <td class="actions_row">
                     <a
                         href="{{ url_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
-                        class="toggleActivation tooltip delete"
+                        class="toggleActivation delete"
                     >
-                        <i class="ui toggle on grey icon"></i>
-                        <span class="displaynone">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
+                        <i class="ui toggle on grey icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
                     </a>
                     <i class="ui icon">&nbsp;</i>
                 </td>

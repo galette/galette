@@ -50,15 +50,15 @@
                                     href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}"
                                     class="action single-edit"
                                 >
-                                    <i class="ui edit icon"></i>
-                                    <span class="displaynone">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
+                                    <i class="ui edit icon tooltip"></i>
+                                    <span class="ui special popup">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                                 <a
                                     href="{{ url_for('dynamicTranslations', {'text_orig': ptype.getName(false)|escape}) }}"
                                     class="action single-translate"
                                 >
-                                    <i class="ui language grey icon"></i>
-                                    <span class="displaynone">{{ _T("Translate '%s'")|replace({'%s': ptype.getName()}) }}</span>
+                                    <i class="ui language grey icon tooltip"></i>
+                                    <span class="ui special popup">{{ _T("Translate '%s'")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                 {% if ptype.isSystemType() %}
                                 <i class="ui icon">&nbsp;</i>
@@ -67,8 +67,8 @@
                                     href="{{ url_for('removePaymentType', {'id': ptype.__get('id')}) }}"
                                     class="delete"
                                 >
-                                    <i class="ui trash red icon"></i>
-                                    <span class="displaynone">{{ _T("Delete '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
+                                    <i class="ui trash red icon tooltip"></i>
+                                    <span class="ui special popup">{{ _T("Delete '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                 {% endif %}
                             </td>

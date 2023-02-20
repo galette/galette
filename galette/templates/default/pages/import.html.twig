@@ -50,10 +50,10 @@
                                         <td class="actions_row">
                                             <a
                                                 href="{{ url_for("removeCsv", {"type": "import", "file": import.name}) }}"
-                                                class="delete tooltip"
+                                                class="delete"
                                             >
-                                                <i class="ui trash red icon"></i>
-                                                <span class="displaynone">{{ _T('Remove \'%file\' from disk')|replace({'%file': import.name}) }}</span>
+                                                <i class="ui trash red icon tooltip"></i>
+                                                <span class="ui special popup">{{ _T('Remove \'%file\' from disk')|replace({'%file': import.name}) }}</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -61,8 +61,8 @@
                                 </tbody>
                             </table>
                             <div class="ui basic center aligned segment">
-                                <div class="ui tooltip toggle checkbox">
-                                    <label for="dryrun" title="{{ _T('Run the import process, but do *not* store anything in the database') }}">{{ _T('Dry run') }}</label>
+                                <div class="ui tooltip toggle checkbox" title="{{ _T('Run the import process, but do *not* store anything in the database') }}">
+                                    <label for="dryrun">{{ _T('Dry run') }}</label>
                                     <input type="checkbox" name="dryrun" id="dryrun" value="1"{% if dryrun is defined and dryrun == true %} checked="checked"{% endif %}/>
                                 </div>
                                 <button type="submit" name="import" id="import" class="ui labeled icon button">

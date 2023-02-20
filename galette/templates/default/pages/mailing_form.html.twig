@@ -72,10 +72,10 @@
                                         <div class="content">
                                             <a
                                                 href="?remove_attachment={{ attachment.getFileName() }}"
-                                                class="rm_attachement tooltip delete"
+                                                class="rm_attachement delete"
                                             >
-                                                <i class="ui trash alt red icon"></i>
-                                                <span class="displaynone">{{ _T("Remove attachment") }}</span>
+                                                <i class="ui trash alt red icon tooltip"></i>
+                                                <span class="ui special popup">{{ _T("Remove attachment") }}</span>
                                             </a>
                                             {{ attachment.getFileName() }}
                                         </div>
@@ -92,7 +92,7 @@
                                     <div class="ui corner labeled input">
                                         <input type="file" name="attachment[]" id="attachment" multiple="multiple"/>
                                         <div class="ui corner label">
-                                            <i class="circular inverted primary link small icon info tooltip" title="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}"></i>
+                                            <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}"></i>
                                         </div>
                                     </div>
                                     <label for="attachment" class="ui button">

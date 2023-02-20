@@ -98,7 +98,7 @@
                     <i class="search icon"></i>
                     {{ _T('Filter') }}
                 </button>
-                <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
                     <i class="trash alt red icon" aria-hidden="true"></i>
                     {{ _T('Clear filter') }}
                 </button>
@@ -137,24 +137,23 @@
             <td class="center actions_row">
                 <a
                         href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
-                        class="showdetails tooltip"
+                        class="showdetails"
                 >
-                    <i class="ui eye green icon"></i>
-                    <span class="displaynone">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <i class="ui eye green icon tooltip"></i>
+                    <span class="ui special popup">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
-                        class="tooltip"
                 >
-                    <i class="ui clone blue icon"></i>
-                    <span class="displaynone">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <i class="ui clone blue icon tooltip"></i>
+                    <span class="ui special popup">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
-                        class="delete tooltip"
+                        class="delete"
                 >
-                    <i class="ui trash red icon"></i>
-                    <span class="displaynone">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <i class="ui trash red icon tooltip"></i>
+                    <span class="ui special popup">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
             </td>
         </tr>

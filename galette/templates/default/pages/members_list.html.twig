@@ -149,7 +149,7 @@
                         <i class="save blue icon"></i>
                         {{ _T('Save') }}
                     </button>
-                    <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                    <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
                         <i class="trash alt red icon" aria-hidden="true"></i>
                         {{ _T('Clear filter') }}
                     </button>
@@ -167,7 +167,7 @@
                     {{ _T('Change criteria') }}
                 </button>
                 <input type="hidden" name="advanced_search" value="1" class="ui button"/>
-                <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
                     <i class="trash alt red icon" aria-hidden="true"></i>
                     {{ _T('Clear filter') }}
                 </button>
@@ -296,31 +296,41 @@
                         <td class="{{ rclass }} username_row" data-scope="row">
                             <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
             {% if member.isCompany() %}
-                            <i class="ui building outline icon tooltip"><span class="displaynone">{{ _T('Is a company') }}</span></i>
+                            <span>
+                                <i class="ui building outline icon tooltip"></i>
+                                <span class="ui special popup">{{ _T('Is a company') }}</span>
+                            </span>
             {%  elseif member.isMan() %}
-                            <i class="ui male icon tooltip"><span class="displaynone">{{ _T('Is a man') }}</span></i>
+                            <span>
+                                <i class="ui male icon tooltip"></i>
+                                <span class="ui special popup">{{ _T('Is a man') }}</span>
+                            </span>
             {%  elseif member.isWoman() %}
-                            <i class="ui female icon tooltip"><span class="displaynone">{{ _T('Is a woman') }}</span></i>
+                            <span>
+                                <i class="ui female icon tooltip"></i>
+                                <span class="ui special popup">{{ _T('Is a woman') }}</span>
+                            </span>
             {% else %}
                             <i class="ui icon"></i>
             {% endif %}
             {% if member.email != '' %}
-                            <a href="mailto:{{ member.email }}" class="tooltip">
-                                <i class="ui envelope outline teal icon" aria-hidden="true"></i>
-                                <span class="displaynone">{{ _T('Mail') }}</span>
+                            <a href="mailto:{{ member.email }}">
+                                <i class="ui envelope outline teal icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Mail') }}</span>
                             </a>
+
             {% else %}
                             <i class="ui icon"></i>
             {% endif %}
             {% if member.isAdmin() %}
-                            <span class="tooltip">
-                                <i class="ui user shield red icon" aria-hidden="true"></i>
-                                <span class="displaynone">{{ _T('Admin') }}</span>
+                            <span>
+                                <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Admin') }}</span>
                             </span>
             {% elseif member.isStaff() %}
-                            <span class="tooltip">
-                                <i class="ui id card alternate orange icon" aria-hidden="true"></i>
-                                <span class="displaynone">{{ _T('Staff member') }}</span>
+                            <span>
+                                <i class="ui id card alternate orange icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Staff member') }}</span>
                             </span>
                 {# TODO: display for group managers #}
             {% else %}

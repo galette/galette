@@ -34,18 +34,35 @@
                     <td class="{{ rclass }} right">{{ member.id }}</td>
                     <td class="{{ rclass }} username_row">
                     {% if member.isCompany() %}
-                        <i class="ui building outline icon tooltip"><span class="displaynone">{{ _T("Company") }}</span></i>
+                        <span>
+                            <i class="ui building outline icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Company") }}</span>
+                        </span>
                     {% elseif member.isMan() %}
-                        <i class="ui male icon tooltip"><span class="displaynone">{{ _T("Man") }}</span></i>
+                        <span>
+                            <i class="ui male icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Man") }}</span>
+                        </span>
                     {% elseif member.isWoman() %}
-                        <i class="ui female icon tooltip"><span class="displaynone">{{ _T("Woman") }}</span></i>
+                        <span>
+                            <i class="ui female icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Woman") }}</span>
+                        </span>
                     {% else %}
-                        <i class="ui icon"></i>
+                        <span>
+                            <i class="ui icon"></i>
+                        </span>
                     {% endif %}
                     {% if member.isAdmin() %}
-                        <i class="ui user shield red icon"><span class="displaynone">{{ _T("Administrator") }}</span></i>
+                        <span>
+                            <i class="ui user shield red icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Administrator") }}</span>
+                        </span>
                     {% elseif member.isStaff() %}
-                        <i class="ui id card alternate orange icon"><span class="displaynone">{{ _T("Staff member") }}</span></i>
+                        <span>
+                            <i class="ui id card alternate orange icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Staff member") }}</span>
+                        </span>
                     {% else %}
                         <i class="ui icon"></i>
                     {% endif %}

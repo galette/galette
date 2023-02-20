@@ -63,7 +63,10 @@
 
                     {% if class == 'Status' %}
                         {% if entry.extra < 30 %}
-                            <i class="ui id card alternate icon tooltip" data-content="{{ _T("Staff member") }}"></i>
+                            <span>
+                                <i class="ui id card alternate icon tooltip"></i>
+                                <span class="ui special popup">{{ _T("Staff member") }}</span>
+                            </span>
                         {% else %}
                             <i class="ui icon">&nbsp;</i>
                         {% endif %}
@@ -86,15 +89,15 @@
                         href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}"
                         class="action single-edit"
                     >
-                        <i class="ui edit icon"></i>
-                        <span class="displaynone">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                        <i class="ui edit icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                     <a
                         href="{{ url_for('removeEntitled', {'class': url_class, 'id': eid}) }}"
                         class="delete"
                     >
-                        <i class="ui trash red icon"></i>
-                        <span class="displaynone">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                        <i class="ui trash red icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                     </a>
                 </td>
             </tr>

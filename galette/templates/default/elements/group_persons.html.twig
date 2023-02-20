@@ -18,18 +18,33 @@
                                 <td class="username_row">
                                 <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
                                 {% if person.isCompany() %}
-                                    <i class="ui building outline icon tooltip"><span class="displaynone">{{ _T("Company") }}</span></i>
+                                    <span>
+                                        <i class="ui building outline icon tooltip"></i>
+                                        <span class="ui special popup">{{ _T("Company") }}</span>
+                                    </span>
                                 {% elseif person.isMan() %}
-                                    <i class="ui male icon tooltip"><span class="displaynone">{{ _T("Man") }}</span></i>
+                                    <span>
+                                        <i class="ui male icon tooltip"></i>
+                                        <span class="ui special popup">{{ _T("Man") }}</span>
+                                    </span>
                                 {% elseif person.isWoman() %}
-                                    <i class="ui female icon tooltip"><span class="displaynone">{{ _T("Woman") }}</span></i>
+                                    <span>
+                                        <i class="ui female icon tooltip"></i>
+                                        <span class="ui special popup">{{ _T("Woman") }}</span>
+                                    </span>
                                 {% else %}
                                     <i class="ui icon"></i>
                                 {% endif %}
                                 {% if person.isAdmin() %}
-                                    <i class="ui user shield red icon"><span class="displaynone">{{ _T("[admin]") }}</span></i>
+                                    <span>
+                                        <i class="ui user shield red icon tooltip"></i>
+                                        <span class="ui special popup">{{ _T("[admin]") }}</span>
+                                    </span>
                                 {% elseif person.isStaff() %}
-                                    <i class="ui id card alternate orange icon"><span class="displaynone">{{ _T("[staff]") }}</span></i>
+                                    <span>
+                                        <i class="ui id card alternate orange icon tooltip"></i>
+                                        <span class="ui special popup">{{ _T("[admin]") }}</span>
+                                    </span>
                                 {% else %}
                                     <i class="ui icon"></i>
                                 {% endif %}
@@ -40,10 +55,9 @@
                                 <td class="actions_row">
                                     <a
                                             href="{{ url_for("impersonate", {"id": person.id}) }}"
-                                            class="tooltip"
                                     >
-                                        <i class="ui user secret grey icon" aria-hidden="true"></i>
-                                        <span class="displaynone">{{ _T("Log in in as %membername")|replace({"%membername": person.sname}) }}</span>
+                                        <i class="ui user secret grey icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Log in in as %membername")|replace({"%membername": person.sname}) }}</span>
                                     </a>
                                 </td>
                             </tr>

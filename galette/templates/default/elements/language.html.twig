@@ -1,10 +1,10 @@
 {% if ui is defined %}
     {% if ui == 'item'%}
-        {% set component_classes = "language item" %}
+        {% set component_classes = "tooltip language item" %}
         {% set content_classes = "content" %}
         {% set header = true %}
     {%  elseif ui == 'dropdown' %}
-        {% set component_classes = "language ui dropdown right-aligned item" %}
+        {% set component_classes = "tooltip language ui dropdown right-aligned item" %}
         {% set content_classes = "menu" %}
         {% set header = false %}
     {% endif %}

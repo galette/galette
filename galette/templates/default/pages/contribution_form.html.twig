@@ -35,7 +35,7 @@
                             {% endfor %}
                                     </div>
                                 </div>
-                                <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
+                                <div class="tooltip jsonly displaynone ui tiny icon button" id="reset-contributor" title="{{ _T("Reset") }}"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                             </div>
     {% endif %}
                             <div class="inline field">
@@ -94,25 +94,22 @@
                                         <td>
                                             <a
                                                 href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
-                                                class="tooltip"
-                                                title="{{ _T("View transaction") }}"
                                             >
-                                                <i class="eye outline blue icon"><span class="displaynone">{{ _T("View transaction") }}</span></i>
+                                                <i class="eye outline blue icon tooltip"></i>
+                                                <span class="ui special popup">{{ _T("View transaction") }}</span>
                                             </a>
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() > 0 %}
                                             <a
                                                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
-                                                class="tooltip"
-                                                title="{{ _T("Create a new fee that will be attached to the current transaction") }}">
-                                                <i class="user check green icon"></i>
-                                                <span class="displaynone">{{ _T("New attached fee") }}</span>
+                                            >
+                                                <i class="user check green icon tooltip"></i>
+                                                <span class="ui special popup">{{ _T("New attached fee") }}</span>
                                             </a>
                                             <a
                                                 href="{{ url_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
-                                                class="tooltip"
-                                                title="{{ _T("Create a new donation that will be attached to the current transaction") }}">
-                                                <i class="gift green icon"></i>
-                                                <span class="displaynone">{{ _T("New attached donation") }}</span>
+                                            >
+                                                <i class="gift green icon tooltip"></i>
+                                                <span class="ui special popup">{{ _T("New attached donation") }}</span>
                                             </a>
     {% endif %}
                                         </td>

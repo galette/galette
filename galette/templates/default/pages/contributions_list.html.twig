@@ -78,11 +78,11 @@
                 } %}
             </div>
                 <div class="ui right aligned basic fitted segment field flexend">
-                    <button type="submit"  class="ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                    <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
                         <i class="search icon"></i>
                         {{ _T("Filter") }}
                     </button>
-                    <button type="submit" id="clear_filter" name="clear_filter" class="ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                    <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
                         <i class="trash alt red icon" aria-hidden="true"></i>
                         {{ _T("Clear filter") }}
                     </button>
@@ -96,10 +96,9 @@
             <span class="ui primary ribbon label">
             <a
                     href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
-                    class="tooltip"
             >
-                        <i class="icon eraser"></i>
-                        <span class="displaynone">{{ _T("Show all members contributions") }}</span>
+                        <i class="icon eraser tooltip"></i>
+                        <span class="ui special popup">{{ _T("Show all members contributions") }}</span>
                     </a>
         {% endif %}
         {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
@@ -229,10 +228,9 @@
                     {% if contribution.isTransactionPart() %}
                         <a
                                 href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
-                                class="tooltip"
                         >
-                            <i class="ui link icon"></i>
-                            <span class="displaynone">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                            <i class="ui link icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                         </a>
                     {% endif %}
                 {% else %}
@@ -283,25 +281,24 @@
                 <td class="actions_row {{ cclass }} center">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
-                            class="tooltip"
                     >
-                        <i class="ui file pdf green icon"></i>
-                        <span class="displaynone">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
+                        <i class="ui file pdf green icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
                     </a>
                     {% if (login.isAdmin() or login.isStaff()) %}
                         <a
                                 href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
-                                class="tooltip action"
+                                class="action"
                         >
-                            <i class="ui edit icon"></i>
-                            <span class="displaynone">{{ _T("Edit the contribution") }}</span>
+                            <i class="ui edit icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
                         </a>
                         <a
                                 href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
-                                class="tooltip delete"
+                                class="delete"
                         >
-                            <i class="ui trash red icon"></i>
-                            <span class="displaynone">{{ _T("Delete the contribution") }}</span>
+                            <i class="ui trash red icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
                         </a>
                     {% endif %}
                 </td>

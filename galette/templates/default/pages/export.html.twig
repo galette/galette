@@ -54,10 +54,10 @@
                                     <td class="actions_row">
                                         <a
                                             href="{{ url_for("removeCsv", {"type": "export", "file": export.name}) }}"
-                                            class="delete tooltip"
+                                            class="delete "
                                         >
-                                            <i class="ui trash red icon"></i>
-                                            <span class="displaynone">{{ _T('Remove \'%file\' from disk')|replace({'%file': export.name}) }}</span>
+                                            <i class="ui trash red icon tooltip"></i>
+                                            <span class="ui special popup">{{ _T('Remove \'%file\' from disk')|replace({'%file': export.name}) }}</span>
                                         </a>
                                     </td>
                                 </tr>

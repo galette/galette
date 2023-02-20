@@ -72,7 +72,7 @@
             {% endfor %}
                             </div>
                         </div>
-                        <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
+                        <div class="jsonly displaynone ui tiny icon button tooltip" id="reset-contributor" title="{{ _T("Reset") }}"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                     </span>
             {% if member.isDuplicate() %}
                     <input type="hidden" name="duplicate" value="1" />

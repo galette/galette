@@ -1,8 +1,7 @@
         <div class="ui basic fitted segment">
             <a
                 href="{{ url_for('addDynamicField', {'form_name': form_name}) }}"
-                class="ui labeled icon button tooltip addfield"
-                title="{{ _T("Add")|e("js") }}"
+                class="ui labeled icon button addfield"
             >
                 <i class="plus green icon"></i>
                 {{ _T("Add") }}
@@ -36,32 +35,31 @@
                             href="{{ url_for('editDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
                             class="action single-edit"
                         >
-                            <i class="ui user edit blue icon" aria-hidden="true"></i>
-                            <span class="displaynone">{{ _T("Edit '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <i class="ui user edit blue icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
                         <a
                             href="{{ url_for('dynamicTranslations', {'text_orig': field.getName(false)|escape}) }}"
                             class="action single-translate"
                         >
-                            <i class="ui language grey icon" aria-hidden="true"></i>
-                            <span class="displaynone">{{ _T("Translate '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <i class="ui language grey icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Translate '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
                         <a
                             href="{{ url_for('removeDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
                             class="delete"
                         >
-                            <i class="ui trash red icon" aria-hidden="true"></i>
-                            <span class="displaynone">{{ _T("Delete '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
     {% if field.getIndex() == 1 %}
                         <i class="ui icon">&nbsp;</i>
     {% else %}
                         <a
                             href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'up', 'id': field.getId()}) }}"
-                            class="tooltip action"
                         >
-                            <i class="ui caret up grey icon"></i>
-                            <span class="displaynone">{{ _T("Move up '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <i class="ui caret up grey icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Move up '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
     {% endif %}
     {% if field.getIndex() == fields_list|length %}
@@ -69,10 +67,9 @@
     {% else %}
                         <a
                             href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'down', 'id': field.getId()}) }}"
-                            class="tooltip"
                         >
-                            <i class="ui caret down grey icon"></i>
-                            <span class="displaynone">{{ _T("Move down '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <i class="ui caret down grey icon tooltip"></i>
+                            <span class="ui special popup">{{ _T("Move down '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
                         </a>
     {% endif %}
                     </td>

@@ -43,7 +43,7 @@
                         <i class="search icon"></i>
                         {{ _T("Filter") }}
                     </button>
-                    <button type="submit" name="clear_filter" class="ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                    <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
                         <i class="trash alt red icon" aria-hidden="true"></i>
                         {{ _T("Clear filter") }}
                     </button>
@@ -57,10 +57,9 @@
                 <span class="ui primary ribbon label">
                 <a
                         href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
-                        class="tooltip"
                 >
-                        <i class="icon eraser"></i>
-                        <span class="displaynone">{{ _T("Show all members transactions") }}</span>
+                        <i class="icon eraser tooltip"></i>
+                        <span class="ui special popup">{{ _T("Show all members transactions") }}</span>
                     </a>
             {% endif %}
             {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
@@ -192,17 +191,17 @@
                 <td class="{{ cclass }} center">
                     <a
                             href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
-                            class="tooltip action"
+                            class="action"
                     >
-                        <i class="ui edit icon"></i>
-                        <span class="displaynone">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <i class="ui edit icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                     <a
                             href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
-                            class="delete tooltip"
+                            class="delete"
                     >
-                        <i class="ui trash red icon"></i>
-                        <span class="displaynone">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                        <i class="ui trash red icon tooltip"></i>
+                        <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
                     </a>
                 </td>
             {% endif %}

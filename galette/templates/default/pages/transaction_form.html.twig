@@ -26,7 +26,7 @@
     {% endfor %}
                                 </div>
                             </div>
-                            <div class="jsonly displaynone ui tiny icon button" id="reset-contributor"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
+                            <div class="tooltip jsonly displaynone ui tiny icon button" id="reset-contributor" title="{{ _T("Reset") }}"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                         </div>
                         <div class="field inline">
                             <label for="trans_date">{{ _T("Date:") }}</label>
@@ -90,6 +90,7 @@
                                             <a
                                                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ transaction.id }}"
                                                 class="ui icon green compact button tooltip"
+                                                title="{{ _T("Create a new fee that will be attached to the current transaction") }}"
                                             >
                                                 <i class="plus tiny icon"></i>
                                                 <i class="user check icon"></i>
@@ -98,6 +99,7 @@
                                             <a
                                                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ transaction.id }}"
                                                 class="ui icon green compact button tooltip"
+                                                title="{{ _T("Create a new donation that will be attached to the current transaction") }}"
                                             >
                                                 <i class="plus tiny icon"></i>
                                                 <i class="gift icon"></i>
@@ -106,6 +108,7 @@
                                             <a
                                                 href="#"
                                                 class="ui icon blue compact button tooltip"
+                                                title="{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}"
                                                 id="contribslist"
                                             >
                                                 <i class="cookie icon"></i>
@@ -137,10 +140,10 @@
                                     <td class="{{ cclass }} actions_row">
                                         <a
                                             href="{{ url_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
-                                            class="delete tooltip"
+                                            class="delete"
                                         >
-                                            <i class="ui red trash icon"></i>
-                                            <span class="displaynone">{{ _T("Detach contribution from this transaction") }}</span>
+                                            <i class="ui red trash icon tooltip"></i>
+                                            <span class="ui special popup">{{ _T("Detach contribution from this transaction") }}</span>
                                         </a>
                                     </td>
                 {% endif %}

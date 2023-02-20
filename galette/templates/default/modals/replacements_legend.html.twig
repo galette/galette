@@ -28,7 +28,7 @@
 <script type="text/javascript">
 
     var _addLegendButton = function(selector) {
-        $(selector).append('<a class="ui tooltip btnlegend" title="{{ _T("Show existing variables")|e('js') }}"><i class="circular inverted primary link icon info"></i> <span class="displaynone">{{ _T("Show existing variables")|e('js') }}</span></a>');
+        $(selector).append('<a class="btnlegend"><i class="circular inverted primary link icon info tooltip"></i> <span class="ui special popup">{{ _T("Show existing variables")|e('js') }}</span></a>');
     };
 
     var _handleLegend = function(selector) {
