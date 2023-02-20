@@ -52,14 +52,19 @@
             {% endfor %}
         </select>
     {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
-        <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
-            value="{{ valuedata }}" class="dynamic_date modif_date"
-            {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
-        {% if not masschange %}
-            {% if field.isRequired() %} required="required"{% endif %}
-        {% endif %}
-            {% if disabled %} disabled="disabled"{% endif %}
-        />
+        <div id="dynamic_date_{{ field.getId() }}_rangestart" class="ui calendar">
+            <div class="ui fluid input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
+                    value="{{ valuedata }}" class="dynamic_date modif_date"
+                    {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
+                {% if not masschange %}
+                    {% if field.isRequired() %} required="required"{% endif %}
+                {% endif %}
+                    {% if disabled %} disabled="disabled"{% endif %}
+                />
+            </div>
+        </div>
         <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
     {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
         <div class="ui toggle checkbox">
@@ -73,34 +78,47 @@
             />
         </div>
     {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
-        <div class="ui file action input">
-            <input
-                type="file"
-                name="info_field_{{ field.getId() }}_{{ loop }}"
-                id="info_field_{{ field.getId() }}_{{ loop }}_new"
-                {% if field.isRequired() and valuedata == '' %} required="required"{% endif %}
-                {% if disabled %} disabled="disabled"{% endif %}
-            />
-            <label for="info_field_{{ field.getId() }}_{{ loop }}_new" class="ui button">
-                <i class="blue upload icon"></i>
-                {% if object.id %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
-            </label>
+        <div class="item">
+            <div class="image">
+                {% if object.id %}
+                <a href="{{ url_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
+                    {{ valuedata }}
+                </a>
+                {% endif %}
+            </div>
+            <div class="content">
+                <div class="description">
+                    <div class="ui file action input">
+                        <input
+                            type="file"
+                            name="info_field_{{ field.getId() }}_{{ loop }}"
+                            id="info_field_{{ field.getId() }}_{{ loop }}_new"
+                            {% if field.isRequired() and valuedata == '' %} required="required"{% endif %}
+                            {% if disabled %} disabled="disabled"{% endif %}
+                        />
+                        <label for="info_field_{{ field.getId() }}_{{ loop }}_new" class="ui button">
+                            <i class="blue upload icon"></i>
+                            {% if object.id %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                        </label>
+                    </div>
+                </div>
+                <div class="extra ui basic fitted segment">
+                    {% if object.id %}
+                    <div class="ui toggle checkbox">
+                        <input
+                            type="checkbox"
+                            name="info_field_{{ field.getId() }}_{{ loop }}"
+                            id="info_field_{{ field.getId() }}_{{ loop }}_delete"
+                            onclick="this.form.info_field_{{ field.getId() }}_{{ loop }}_new.disabled = this.checked;"
+                        />
+                        <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_delete">
+                            {{ _T("delete") }}
+                        </label>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        {% if object.id %}
-        <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_current">{{ _T("current") }}</label>
-        <a href="{{ url_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
-            {{ valuedata }}
-        </a>
-        - <label class="labelalign" for="info_field_{{ field.getId() }}_{{ loop }}_delete">
-            {{ _T("delete") }}
-        </label>
-        <input
-            type="checkbox"
-            name="info_field_{{ field.getId() }}_{{ loop }}"
-            id="info_field_{{ field.getId() }}_{{ loop }}_delete"
-            onclick="this.form.info_field_{{ field.getId() }}_{{ loop }}_new.disabled = this.checked;"
-        />
-        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -110,63 +128,61 @@
         {{ _T("Additionnal fields:") }}
     </div>
     <div class="active content field">
-    {% set access_level = login.getAccessLevel() %}
-    {% for field in fields %}
-        {% if loop.index0 % 3 == 0 %}
-            <div class="three fields">
-        {% endif %}
-        {% if field.getInformation() %}
-            <div>{{ field.getInformation()|raw }}</div>
-        {% endif %}
+        <div class="ui three column stackable grid">
+        {% set access_level = login.getAccessLevel() %}
+        {% for field in fields %}
+            {% if field.getInformation() %}
+                <div class="sixteen wide column">{{ field.getInformation()|raw }}</div>
+            {% endif %}
 
-        {% set perm = field.getPerm() %}
-        {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
-        <div class="ui horizontal divider">{{ field.getName()|escape }}</div>
-        {% elseif (get_class(field) == 'Galette\\DynamicFields\\File' or field.isRepeatable()) and masschange %}
-            <!-- File and repeatable fields not shown in mass changes form -->
-        {% else %}
-        <div class="field{% if field.isRepeatable() %} repetable{% endif %}">
-            {% set disabled = false %}
-            {% if perm == constant('Galette\\DynamicFields\\DynamicField::PERM_USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
-                {% set disabled = true %}
-            {% endif %}
-            {% set values = object.getDynamicFields().getValues(field.getId()) %}
-            {#% set can_add = false %}
-            {% if field.getRepeat() == 0 or values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
-                {% set can_add = true %}
-            {% endif %#}
-            {% for field_data in values %}
-                {% if not loop.first %}<br/>{% endif %}
-                {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
-            {% endfor %}
-            {% if values is not iterable or values|length == 0 %}
-                {% set field_data = {'field_val': ''} %}
-                {% if values is iterable %}
-                    {% set current_count = values|length %}
-                {% else %}
-                    {% set current_count = 0 %}
+            {% set perm = field.getPerm() %}
+            {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
+            <div class="sixteen wide column">
+                <div class="ui horizontal divider">{{ field.getName()|escape }}</div>
+            </div>
+            {% elseif (get_class(field) == 'Galette\\DynamicFields\\File' or field.isRepeatable()) and masschange %}
+                <!-- File and repeatable fields not shown in mass changes form -->
+            {% else %}
+            <div class="field column{% if field.isRepeatable() %} repetable{% endif %}">
+                {% set disabled = false %}
+                {% if perm == constant('Galette\\DynamicFields\\DynamicField::PERM_USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
+                    {% set disabled = true %}
                 {% endif %}
-                {{ _self.draw_field(field, field_data, disabled, current_count + 1, object, masschange) }}
-            {% endif %}
-        </div>
-            {% if field.isRepeatable() %}
-                {% if field.getRepeat() == 0 %}
-        <p class="exemple" id="repeat_msg">{{ _T("Enter as many occurences you want.") }}</p>
-                {% elseif values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
+                {% set values = object.getDynamicFields().getValues(field.getId()) %}
+                {#% set can_add = false %}
+                {% if field.getRepeat() == 0 or values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
+                    {% set can_add = true %}
+                {% endif %#}
+                {% for field_data in values %}
+                    {% if not loop.first %}<br/>{% endif %}
+                    {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
+                {% endfor %}
+                {% if values is not iterable or values|length == 0 %}
+                    {% set field_data = {'field_val': ''} %}
                     {% if values is iterable %}
                         {% set current_count = values|length %}
                     {% else %}
-                        {% set current_count = 1 %}
+                        {% set current_count = 0 %}
                     {% endif %}
-                    {% set remaining = field.getRepeat() - current_count %}
-        <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurences.")|replace({"%count": remaining}) }}</p>
+                    {{ _self.draw_field(field, field_data, disabled, current_count + 1, object, masschange) }}
+                {% endif %}
+            </div>
+                {% if field.isRepeatable() %}
+                    {% if field.getRepeat() == 0 %}
+            <p class="exemple" id="repeat_msg">{{ _T("Enter as many occurences you want.") }}</p>
+                    {% elseif values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
+                        {% if values is iterable %}
+                            {% set current_count = values|length %}
+                        {% else %}
+                            {% set current_count = 1 %}
+                        {% endif %}
+                        {% set remaining = field.getRepeat() - current_count %}
+            <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurences.")|replace({"%count": remaining}) }}</p>
+                    {% endif %}
                 {% endif %}
             {% endif %}
-        {% endif %}
-    {% if loop.index0 % 3 == 2 or loop.last %}
+        {% endfor %}
         </div>
-    {% endif %}
-    {% endfor %}
     </div>
 </div>
 <script type="text/javascript">
