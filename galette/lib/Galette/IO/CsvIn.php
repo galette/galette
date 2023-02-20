@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-08-27
@@ -57,7 +57,7 @@ use Galette\Repository\Members;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-08-27
@@ -166,7 +166,7 @@ class CsvIn extends Csv implements FileInterface
      * @param array       $members_fields_cats Members fields categories
      * @param boolean     $dryrun              Run in dry run mode (do not store in database)
      *
-     * @return boolean
+     * @return bool|int
      */
     public function import(
         Db $zdb,

@@ -364,7 +364,7 @@ class Reminder
      *
      * @param string $name Property name
      *
-     * @return mixed
+     * @return bool
      */
     public function __isset($name)
     {

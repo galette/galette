@@ -699,7 +699,7 @@ class FieldsConfig
      *
      * @param string $field The requested field
      *
-     * @return boolean
+     * @return integer
      */
     public function getVisibility($field)
     {

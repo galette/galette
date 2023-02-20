@@ -285,7 +285,7 @@ class History
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     protected function buildOrderClause()
     {
@@ -427,7 +427,7 @@ class History
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {

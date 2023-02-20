@@ -122,7 +122,7 @@ class Transactions
                 'Cannot list transactions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -133,25 +133,22 @@ class Transactions
      * @param bool  $count  true if we want to count members
      *                      (not applicable from static calls), defaults to false
      *
-     * @return string SELECT statement
+     * @return Select SELECT statement
      */
     private function buildSelect($fields, $count = false)
     {
         try {
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
-
             $select = $this->zdb->select(self::TABLE, 't');
-            $select->columns(
-                array(
+            if ($fields === null || !count($fields)) {
+                $fields = array(
                     'trans_date',
                     'trans_id',
                     'trans_desc',
                     'id_adh',
                     'trans_amount'
-                )
-            )->join(
+                );
+            }
+            $select->columns($fields)->join(
                 array('a' => PREFIX_DB . Adherent::TABLE),
                 't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
                 array('nom_adh', 'prenom_adh')
@@ -170,7 +167,7 @@ class Transactions
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -207,14 +204,14 @@ class Transactions
                 'Cannot count transactions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     private function buildOrderClause()
     {

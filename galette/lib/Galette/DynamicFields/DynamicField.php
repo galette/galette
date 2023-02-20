@@ -599,7 +599,7 @@ abstract class DynamicField
      * @param array $values All values to check, basically the $_POST array
      *                      after sending the form
      *
-     * @return true|array
+     * @return bool
      */
     public function check(array $values)
     {

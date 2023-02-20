@@ -77,7 +77,7 @@ use Galette\Repository\PaymentTypes;
  * @property array $payments_types
  * @property integer $contrib_min_amount
  * @property integer $contrib_max_amount
- * @property string $contrib_dynamic
+ * @property array $contrib_dynamic
  * @property array $free_search
  * @property array $groups_search
  * @property integer $groups_search_log_op
@@ -395,7 +395,7 @@ class AdvancedMembersList extends MembersList
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return bool
      */
     public function __isset($name)
     {

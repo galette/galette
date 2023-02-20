@@ -55,10 +55,10 @@ use Galette\Repository\Members;
  * @link      http://galette.tuxfamily.org
  *
  * @property string $filter_str
- * @property string $field_filter
- * @property string $membership_filter
+ * @property integer $field_filter
+ * @property integer $membership_filter
  * @property integer $filter_account
- * @property string $email_filter
+ * @property integer $email_filter
  * @property integer $group_filter
  * @property array $selected
  * @property array $unreachable
@@ -103,7 +103,7 @@ class MembersList extends Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     protected function getDefaultOrder()
     {
@@ -163,7 +163,7 @@ class MembersList extends Pagination
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return object the called property
+     * @return bool
      */
     public function __isset($name)
     {

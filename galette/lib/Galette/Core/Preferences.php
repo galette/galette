@@ -145,8 +145,8 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_edit_groups
  * @property boolean $pref_bool_groupsmanagers_mailings
  * @property boolean $pref_bool_groupsmanagers_exports
- * @property-read string $vpref_email_newadh Comma separated list of mail senders
- * @property-read string $vpref_email Comma separated list of mail senders
+ * @property-read array $vpref_email_newadh list of mail senders
+ * @property-read array $vpref_email list of mail senders
  */
 class Preferences
 {
@@ -334,7 +334,7 @@ class Preferences
      * Check if all fields referenced in the default array does exists,
      * create them if not
      *
-     * @return void
+     * @return void|false
      */
     private function checkUpdate()
     {
@@ -958,7 +958,7 @@ class Preferences
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -1011,7 +1011,7 @@ class Preferences
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
@@ -1049,7 +1049,7 @@ class Preferences
      * @param string $name  name of the property we want to assign a value to
      * @param object $value a relevant value for the property
      *
-     * @return void
+     * @return void|false
      */
     public function __set($name, $value)
     {

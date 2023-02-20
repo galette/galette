@@ -286,7 +286,7 @@ class MailingsController extends CrudController
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
-                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
             if (

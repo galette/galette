@@ -100,7 +100,7 @@ class DynamicFieldsHandle
      *
      * @param mixed $object Object instance
      *
-     * @return array|false
+     * @return bool
      */
     public function load($object)
     {
@@ -116,7 +116,6 @@ class DynamicFieldsHandle
                 break;
             default:
                 throw new \RuntimeException('Class ' . get_class($object) . ' does not handle dynamic fields!');
-                break;
         }
 
         try {

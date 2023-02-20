@@ -355,22 +355,21 @@ class GroupsController extends CrudController
                 $group->detach();
             }
 
+            $m = new Members();
+
             //handle group managers
-            $managers_id = [];
             if (isset($post['managers'])) {
                 $managers_id = $post['managers'];
+                $managers = $m->getArrayList($managers_id);
+                $group->setManagers($managers);
             }
-            $m = new Members();
-            $managers = $m->getArrayList($managers_id);
-            $group->setManagers($managers);
 
             //handle group members
-            $members_id = [];
             if (isset($post['members'])) {
                 $members_id = $post['members'];
+                $members = $m->getArrayList($members_id);
+                $group->setMembers($members);
             }
-            $members = $m->getArrayList($members_id);
-            $group->setMembers($members);
 
             $store = $group->store();
             if ($store === true) {

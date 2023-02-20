@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-12-10
@@ -47,7 +47,7 @@ use PHPMailer\PHPMailer\PHPMailer;
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -202,7 +202,7 @@ class GaletteMail
      *
      * @param array $recipients Array (mail=>name) of all recipients
      *
-     * @return boolean
+     * @return bool
      */
     public function setRecipients($recipients)
     {
@@ -361,7 +361,7 @@ class GaletteMail
      *
      * @param string $address the email address to check
      *
-     * @return true if address is valid, false otherwise
+     * @return bool
      */
     public static function isValidEmail($address)
     {
@@ -380,7 +380,7 @@ class GaletteMail
      *
      * @param string $url the url to check
      *
-     * @return true if address is string is an url, false otherwise
+     * @return bool
      */
     public static function isUrl($url)
     {
@@ -424,7 +424,7 @@ class GaletteMail
      *
      * @param boolean $set The value to set
      *
-     * @return boolean
+     * @return bool
      */
     public function isHTML($set = null)
     {

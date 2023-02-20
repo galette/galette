@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2022 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -51,7 +51,7 @@ use Galette\Entity\Texts;
  * @name      AuthController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2022 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -66,7 +66,7 @@ class AuthController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $r        Redirect after login
      *
-     * @return void
+     * @return Response
      */
     public function login(Request $request, Response $response, string $r = null)
     {
@@ -100,7 +100,7 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function doLogin(Request $request, Response $response)
     {
@@ -160,7 +160,7 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function logout(Request $request, Response $response)
     {
@@ -179,7 +179,7 @@ class AuthController extends AbstractController
      * @param Response $response PSR Response
      * @param integer  $id       Member to impersonate
      *
-     * @return void
+     * @return Response
      */
     public function impersonate(Request $request, Response $response, int $id)
     {
@@ -222,7 +222,7 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function unimpersonate(Request $request, Response $response)
     {

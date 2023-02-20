@@ -1841,7 +1841,7 @@ class Adherent
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return mixed
+     * @return bool
      */
     public function __isset(string $name)
     {

@@ -357,6 +357,7 @@ class Groups
             }
             return true;
         } catch (Throwable $e) {
+            $te = clone $e;
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
@@ -372,7 +373,7 @@ class Groups
                 $msg . ' |' . implode("\n", $messages),
                 Analog::ERROR
             );
-            throw $e;
+            throw $te;
         }
     }
 

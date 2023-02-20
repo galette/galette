@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use ArrayObject;
 use Throwable;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
@@ -210,11 +211,11 @@ class Login extends Authentication
     /**
      * Populate object after successful login
      *
-     * @param \ArrayObject $row User information
+     * @param ArrayObject $row User information
      *
      * @return void
      */
-    private function logUser(\ArrayObject $row)
+    private function logUser(ArrayObject $row)
     {
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
         $this->id = $row->id_adh;
@@ -263,7 +264,7 @@ class Login extends Authentication
      *
      * @param int $id Member ID
      *
-     * @return boolean
+     * @return bool
      */
     public function impersonate($id)
     {
@@ -308,7 +309,7 @@ class Login extends Authentication
      *
      * @param string $user the username
      *
-     * @return true if the username already exists, false otherwise
+     * @return bool
      */
     public function loginExists($user)
     {
@@ -321,7 +322,7 @@ class Login extends Authentication
                 /* We got results, user already exists */
                 return true;
             } else {
-                /* No results, user does not exists yet :) */
+                /* No results, user does not exist yet :) */
                 return false;
             }
         } catch (Throwable $e) {
@@ -337,7 +338,7 @@ class Login extends Authentication
     /**
      * Is impersonated
      *
-     * @return boolean
+     * @return bool
      */
     public function isImpersonated()
     {

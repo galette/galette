@@ -99,7 +99,7 @@ class Contributions
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return Contribution[]
+     * @return Contribution[]|ArrayObject
      */
     public function getListFromTransaction($trans_id)
     {
@@ -117,7 +117,7 @@ class Contributions
      *                            returned
      * @param boolean $count      true if we want to count members
      *
-     * @return Contribution[]|ArrayObject[]
+     * @return Contribution[]|ArrayObject[]|false
      */
     public function getArrayList(array $ids, bool $as_contrib = false, array $fields = null, bool $count = true)
     {
@@ -292,7 +292,7 @@ class Contributions
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     private function buildOrderClause()
     {

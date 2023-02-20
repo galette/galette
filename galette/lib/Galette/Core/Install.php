@@ -1268,7 +1268,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @param Db $zdb Database instance
      *
-     * @return string
+     * @return string|false
      */
     public function getCurrentVersion($zdb)
     {
@@ -1277,7 +1277,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             if (isset($this->versions_mapper[$db_ver])) {
                 return $this->versions_mapper[$db_ver];
             } else {
-                return $db_ver;
+                return (string)$db_ver;
             }
         } catch (\LogicException $e) {
             return false;

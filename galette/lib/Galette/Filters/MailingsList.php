@@ -97,7 +97,7 @@ class MailingsList extends Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     protected function getDefaultOrder()
     {

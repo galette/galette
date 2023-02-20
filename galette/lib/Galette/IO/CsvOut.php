@@ -270,7 +270,7 @@ class CsvOut extends Csv
      *
      * @param string $id export's id to run
      *
-     * @return string filename used
+     * @return string|int filename used or error code
      */
     private function runXmlParametedExport($id)
     {
@@ -337,7 +337,7 @@ class CsvOut extends Csv
      *
      * @param string $id export's id to run
      *
-     * @return string filename used
+     * @return string|int|false filename used, error code or failure
      */
     private function runYamlParametedExport($id)
     {

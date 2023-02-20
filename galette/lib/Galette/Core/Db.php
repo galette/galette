@@ -46,7 +46,7 @@ use Laminas\Db\Sql\Insert;
 use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Delete;
-use Laminas\Db\ResultSet;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\SqlInterface;
 
@@ -190,7 +190,7 @@ class Db
      *
      * @param boolean $check_table Check if table exists, defaults to false
      *
-     * @return float
+     * @return string
      *
      * @throw LogicException
      */
@@ -218,7 +218,7 @@ class Db
                     ''
                 );
             } else {
-                return 0.63;
+                return '0.63';
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -256,7 +256,7 @@ class Db
      *
      * @param string $table Table name
      *
-     * @return array
+     * @return ResultSet
      */
     public function selectAll($table)
     {
@@ -775,7 +775,7 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return ResultSet\ResultSet
+     * @return ResultSet
      */
     public function execute($sql)
     {
@@ -836,7 +836,7 @@ class Db
      *
      * @param string $name name of the variable we want to retrieve
      *
-     * @return mixed
+     * @return bool
      */
     public function __isset($name)
     {

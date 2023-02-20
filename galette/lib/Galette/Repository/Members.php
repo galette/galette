@@ -523,7 +523,7 @@ class Members
      * @param boolean $dues        True if load dues as Adherent dependency
      * @param boolean $parent      True if load parent as Adherent dependency
      *
-     * @return Adherent[]
+     * @return Adherent[]|false
      */
     public function getArrayList(
         $ids,
@@ -700,8 +700,7 @@ class Members
                 && $this->filters->withinContributions()
             ) {
                 if (
-                    $this->filters->contrib_dynamic
-                    && count($this->filters->contrib_dynamic) > 0
+                    count($this->filters->contrib_dynamic) > 0
                     && !isset($this->filters->contrib_dynamic['empty'])
                 ) {
                     $hasDfc = true;
@@ -1167,8 +1166,6 @@ class Members
             if ($this->filters instanceof AdvancedMembersList) {
                 $this->buildAdvancedWhereClause($select);
             }
-
-            return $select;
         } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
@@ -1187,7 +1184,7 @@ class Members
      */
     private function buildAdvancedWhereClause(Select $select)
     {
-        global $zdb, $login;
+        global $zdb;
 
         // Search members who belong to any (OR) or all (AND) listed groups.
         // Idea is to build an array of members ID that fits groups selection
@@ -1514,14 +1511,12 @@ class Members
                 }
             }
         }
-
-        return $select;
     }
 
     /**
      * Login and password field cannot be empty.
      *
-     * If those ones are not required, or if a file has been imported
+     * If those are not required, or if a file has been imported
      * (from a CSV file for example), we fill here random values.
      *
      * @return boolean

@@ -415,7 +415,7 @@ class Picture implements FileInterface
      * @param object  $file the uploaded file
      * @param boolean $ajax If the image cames from an ajax call (dnd)
      *
-     * @return true|false result of the storage process
+     * @return bool|int
      */
     public function store($file, $ajax = false)
     {
@@ -523,7 +523,7 @@ class Picture implements FileInterface
      * @param string $file File path on disk
      * @param string $ext  File extension
      *
-     * @return boolean
+     * @return bool|int
      */
     private function storeInDb(Db $zdb, $id, $file, $ext)
     {
@@ -665,14 +665,14 @@ class Picture implements FileInterface
     }
 
     /**
-     * Resize the image if it exceed max allowed sizes
+     * Resize the image if it exceeds max allowed sizes
      *
      * @param string $source the source image
      * @param string $ext    file's extension
      * @param string $dest   the destination image.
      *                       If null, we'll use the source image. Defaults to null
      *
-     * @return void
+     * @return void|false
      */
     private function resizeImage($source, $ext, $dest = null)
     {

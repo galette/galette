@@ -374,7 +374,7 @@ abstract class Entitled
      * @param boolean $translated Do we want translated or original label?
      *                            Defaults to true.
      *
-     * @return string
+     * @return string|int
      */
     public function getLabel($id, $translated = true)
     {
@@ -426,7 +426,7 @@ abstract class Entitled
      * @param integer $extra Extra values (priority for statuses,
      *                       extension for contributions types, ...)
      *
-     * @return integer id if success ; -1 : DB error ; -2 : label already exists
+     * @return bool|integer  -2 : label already exists
      */
     public function add($label, $extra)
     {
@@ -632,7 +632,7 @@ abstract class Entitled
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -646,13 +646,10 @@ abstract class Entitled
             switch ($name) {
                 case 'libelle':
                     return _T($this->label);
-                    break;
                 case 'extension':
                     return $this->third;
-                    break;
                 default:
                     return $this->$name;
-                    break;
             }
         } else {
             return false;
@@ -665,7 +662,7 @@ abstract class Entitled
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return false|object the called property
+     * @return bool
      */
     public function __isset($name)
     {

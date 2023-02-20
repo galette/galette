@@ -96,7 +96,7 @@ class TransactionsList extends Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     protected function getDefaultOrder()
     {
@@ -176,7 +176,7 @@ class TransactionsList extends Pagination
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return object the called property
+     * @return bool
      */
     public function __isset($name)
     {

@@ -67,7 +67,7 @@ use Galette\Features\Dynamics;
  * @property string $date
  * @property DateTime $raw_date
  * @property integer $member
- * @property ContributionsTypes $type
+ * @property ContributionsTypes|int $type
  * @property double $amount
  * @property integer $payment_type
  * @property double $orig_amount
@@ -1261,7 +1261,7 @@ class Contribution
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return bool
      */
     public function __isset($name)
     {
@@ -1292,7 +1292,7 @@ class Contribution
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */

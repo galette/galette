@@ -95,7 +95,7 @@ abstract class Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     abstract protected function getDefaultOrder();
 
@@ -414,7 +414,7 @@ abstract class Pagination
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return object the called property
+     * @return bool
      */
     public function __isset($name)
     {

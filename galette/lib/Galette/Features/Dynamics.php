@@ -364,7 +364,7 @@ trait Dynamics
      * @param array  $values Dynamic fields values
      * @param string $prefix Prefix to replace, default to 'dynfield_'
      *
-     * @return void
+     * @return bool
      */
     public function dynamicsValidate($values, $prefix = 'dynfield_')
     {

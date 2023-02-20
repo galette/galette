@@ -223,7 +223,7 @@ class ImportModel
      *
      * @param array $fields Fields list
      *
-     * @return void
+     * @return ImportModel
      */
     public function setFields($fields)
     {

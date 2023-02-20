@@ -61,9 +61,9 @@ class TrailingSlash
      * @param  Request        $request PSR7 request
      * @param  RequestHandler $handler Request handler
      *
-     * @return Response
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, RequestHandler $handler): Response
+    public function __invoke(Request $request, RequestHandler $handler): ResponseInterface
     {
         $uri = $request->getUri();
         $path = $uri->getPath();

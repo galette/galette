@@ -223,7 +223,7 @@ class Links
      * @param string $hash the hash, base64 encoded
      * @param string $code Code sent to validate link
      *
-     * @return false if hash is not valid, array otherwise
+     * @return array|false false if hash is not valid, array otherwise
      */
     public function isHashValid($hash, $code)
     {

@@ -341,8 +341,7 @@ class Texts
      * @param string $subject Subject to set
      * @param string $body    Body text to set
      *
-     * @return integer|false affected rows (0 if record did not change)
-     *                       or false on error
+     * @return bool
      */
     public function setTexts($ref, $lang, $subject, $body)
     {

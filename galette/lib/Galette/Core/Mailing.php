@@ -269,7 +269,7 @@ class Mailing extends GaletteMail
     /**
      * Apply final header to email and send it :-)
      *
-     * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     * @return int
      */
     public function send()
     {
@@ -287,7 +287,7 @@ class Mailing extends GaletteMail
      *
      * @param array $members Array of Adherent objects
      *
-     * @return void
+     * @return bool
      */
     public function setRecipients($members)
     {
@@ -309,7 +309,7 @@ class Mailing extends GaletteMail
                 }
             }
         }
-        parent::setRecipients($m);
+        return parent::setRecipients($m);
     }
 
     /**
@@ -439,7 +439,7 @@ class Mailing extends GaletteMail
      * @param boolean $temp Remove only tmporary attachments,
      *                      to avoid history breaking
      *
-     * @return void
+     * @return void|false
      */
     public function removeAttachments($temp = false)
     {
@@ -505,7 +505,7 @@ class Mailing extends GaletteMail
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -568,7 +568,7 @@ class Mailing extends GaletteMail
      *
      * @param string $name name of the property we want to retrive
      *
-     * @return false|object the called property
+     * @return bool
      */
     public function __isset($name)
     {
@@ -603,7 +603,7 @@ class Mailing extends GaletteMail
      * @param string $name  name of the property we want to assign a value to
      * @param object $value a relevant value for the property
      *
-     * @return void
+     * @return void|false
      */
     public function __set($name, $value)
     {

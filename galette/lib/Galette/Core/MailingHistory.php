@@ -154,7 +154,7 @@ class MailingHistory extends History
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     protected function buildOrderClause()
     {

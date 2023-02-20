@@ -723,9 +723,10 @@ class Group
      *
      * @param Adherent[] $members Members list
      *
-     * @return void
+     * @return bool
+     * @throws Throwable
      */
-    public function setMembers($members)
+    public function setMembers(array $members = []): bool
     {
         global $zdb;
 
@@ -753,35 +754,34 @@ class Group
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            if (is_array($members)) {
-                foreach ($members as $m) {
-                    $result = $stmt->execute(
-                        array(
-                            'group' => $this->id,
-                            'adh'   => $m->id
-                        )
-                    );
+            foreach ($members as $m) {
+                $result = $stmt->execute(
+                    array(
+                        'group' => $this->id,
+                        'adh'   => $m->id
+                    )
+                );
 
-                    if ($result) {
-                        Analog::log(
-                            'Member `' . $m->sname . '` attached to group `' .
-                            $this->group_name . '`.',
-                            Analog::DEBUG
-                        );
-                    } else {
-                        Analog::log(
-                            'An error occurred trying to attach member `' .
-                            $m->sname . '` to group `' . $this->group_name .
-                            '` (' . $this->id . ').',
-                            Analog::ERROR
-                        );
-                        throw new \Exception(
-                            'Unable to attach `' . $m->sname . '` ' .
-                            'to ' . $this->group_name . '(' . $this->id . ')'
-                        );
-                    }
+                if ($result) {
+                    Analog::log(
+                        'Member `' . $m->sname . '` attached to group `' .
+                        $this->group_name . '`.',
+                        Analog::DEBUG
+                    );
+                } else {
+                    Analog::log(
+                        'An error occurred trying to attach member `' .
+                        $m->sname . '` to group `' . $this->group_name .
+                        '` (' . $this->id . ').',
+                        Analog::ERROR
+                    );
+                    throw new \Exception(
+                        'Unable to attach `' . $m->sname . '` ' .
+                        'to ' . $this->group_name . '(' . $this->id . ')'
+                    );
                 }
             }
+
             //commit all changes
             $zdb->connection->commit();
 
@@ -792,6 +792,7 @@ class Group
 
             return true;
         } catch (Throwable $e) {
+            $te = clone $e;
             $zdb->connection->rollBack();
             $messages = array();
             do {
@@ -802,7 +803,7 @@ class Group
                 '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
-            throw $e;
+            throw $te;
         }
     }
 
@@ -811,9 +812,10 @@ class Group
      *
      * @param Adherent[] $members Managers list
      *
-     * @return boolean
+     * @return bool
+     * @throws Throwable
      */
-    public function setManagers($members)
+    public function setManagers(array $members = []): bool
     {
         global $zdb;
 
@@ -841,35 +843,34 @@ class Group
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            if (is_array($members)) {
-                foreach ($members as $m) {
-                    $result = $stmt->execute(
-                        array(
-                            'group' => $this->id,
-                            'adh'   => $m->id
-                        )
-                    );
+            foreach ($members as $m) {
+                $result = $stmt->execute(
+                    array(
+                        'group' => $this->id,
+                        'adh'   => $m->id
+                    )
+                );
 
-                    if ($result) {
-                        Analog::log(
-                            'Manager `' . $m->sname . '` attached to group `' .
-                            $this->group_name . '`.',
-                            Analog::DEBUG
-                        );
-                    } else {
-                        Analog::log(
-                            'An error occurred trying to attach manager `' .
-                            $m->sname . '` to group `' . $this->group_name .
-                            '` (' . $this->id . ').',
-                            Analog::ERROR
-                        );
-                        throw new \Exception(
-                            'Unable to attach `' . $m->sname . '` ' .
-                            'to ' . $this->group_name . '(' . $this->id . ')'
-                        );
-                    }
+                if ($result) {
+                    Analog::log(
+                        'Manager `' . $m->sname . '` attached to group `' .
+                        $this->group_name . '`.',
+                        Analog::DEBUG
+                    );
+                } else {
+                    Analog::log(
+                        'An error occurred trying to attach manager `' .
+                        $m->sname . '` to group `' . $this->group_name .
+                        '` (' . $this->id . ').',
+                        Analog::ERROR
+                    );
+                    throw new \Exception(
+                        'Unable to attach `' . $m->sname . '` ' .
+                        'to ' . $this->group_name . '(' . $this->id . ')'
+                    );
                 }
             }
+
             //commit all changes
             $zdb->connection->commit();
 
@@ -880,6 +881,7 @@ class Group
 
             return true;
         } catch (Throwable $e) {
+            $te = clone $e;
             $zdb->connection->rollBack();
             $messages = array();
             do {
@@ -890,7 +892,7 @@ class Group
                 '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
-            throw $e;
+            throw $te;
         }
     }
 

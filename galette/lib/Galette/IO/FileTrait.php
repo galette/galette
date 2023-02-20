@@ -237,7 +237,7 @@ trait FileTrait
      * @param object  $file the uploaded file
      * @param boolean $ajax If the file cames from an ajax call (dnd)
      *
-     * @return true|false result of the storage process
+     * @return true|false|int result of the storage process
      */
     public function store($file, $ajax = false)
     {
