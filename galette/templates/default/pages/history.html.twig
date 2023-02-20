@@ -123,8 +123,7 @@
             <td data-title="{{ _T("Description") }}">
                 {{ log.text_log|escape }}
             {% if log.sql_log %}
-                <div class="ui basic fluid accordion">
-                    <div class="title">
+                    <div class="tooltip title" title="{{ _T("Click to get more details.") }}">
                         <i class="dropdown icon"></i>
                         {{ _T("Show associated query") }}
                     </div>

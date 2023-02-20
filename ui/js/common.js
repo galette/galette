@@ -26,6 +26,90 @@
  * @since     Available since 0.7dev - 2007-10-06
  */
 
+/* Fomantic UI components */
+var _bindFomanticComponents = function() {
+    if (!("ontouchstart" in document.documentElement)) {
+        document.documentElement.className += " no-touch";
+    }
+
+    var
+        $sidebar         = $('.ui.sidebar'),
+        $dropdown        = $('.ui.dropdown, select:not(.nochosen)'),
+        $accordion       = $('.ui.accordion'),
+        $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
+        $tabulation      = $('.ui.tabbed .item'),
+        $popup           = $('.no-touch a[title], .no-touch .tooltip'),
+        $menuPopupRight  = $('.no-touch .ui.vertical.accordion.menu a[title]'),
+        $menuPopupBottom = $('.no-touch .ui.top.fixed.menu a.item[title]'),
+        $menuPopupLeft   = $('.no-touch .ui.dropdown.right-aligned a[title]')
+    ;
+
+    $sidebar.sidebar('attach events', '.toc.item');
+
+    /* Make all dropdowns clickable when js is enabled for UX consistency.
+     * Keep them hoverable only when js is disabled.
+     */
+    $('.simple.dropdown').removeClass('simple');
+    $dropdown.dropdown();
+
+    $accordion.accordion();
+
+    $checkbox.checkbox();
+
+    $tabulation.tab();
+
+    /* Fomantic UI Tooltips */
+    /* Hide all popups when a dropdown is shown. */
+    $.fn.dropdown.settings.onShow = function() {
+        $('body').popup('hide all');
+    };
+    /* Hide all popups when an accordion is opened. */
+    $.fn.accordion.settings.onOpening = function() {
+        $('body').popup('hide all');
+    };
+    /* Default behaviour for tooltips on links with a title attribute,
+     * or other tags with the "tooltip" class.
+     * The title (or data-html) attribute is appended to body and removed
+     * from DOM after being hidden (inline: false).
+     */
+    $popup
+        .popup({
+            variation: 'inverted',
+            inline: false
+        })
+    ;
+    /* Position right on the main accordion menu.
+     */
+    $menuPopupRight
+        .popup({
+            position: 'right center',
+            variation: 'inverted',
+            delay: {
+                show: 300
+            }
+        })
+    ;
+    /* Position bottom on the top fixed menu.
+     */
+    $menuPopupBottom
+        .popup({
+            position: 'center bottom',
+            variation: 'inverted'
+        })
+    ;
+    /* Position left on the top right language dropdown menu.
+     */
+    $menuPopupLeft
+        .popup({
+            position: 'left center',
+            variation: 'inverted',
+            delay: {
+                show: 300
+            }
+        })
+    ;
+}
+
 var _bind_check = function(boxelt){
     if (typeof(boxelt) == 'undefined') {
         boxelt = 'entries_sel'
@@ -76,10 +160,6 @@ var _bind_legend = function() {
     });
 }
 
-if (!("ontouchstart" in document.documentElement)) {
-    document.documentElement.className += " no-touch";
-}
-
 $(function() {
     $('.nojs').removeClass('nojs').addClass('jsenabled');
     /* Display/enable elements required only when javascript is active */
@@ -88,16 +168,11 @@ $(function() {
     $('.jsenabled .jsonly.read-only').removeClass('read-only');
     $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search selection dropdown');
 
-    $('.debuginfos span').hide();
-    /** TODO: find a way to translate this message ==> ajax ? */
-    $('.debuginfos').attr('title', 'Click to get more details.');
-    $('.debuginfos').click(function(){
-        $('.debuginfos span').slideToggle('slow');
-    });
-
     $('#login').focus();
 
     _bindNbshow();
+
+    _bindFomanticComponents();
 
     if ( $('#back2top').length > 0 ) {
         if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
@@ -111,93 +186,4 @@ $(function() {
             }
         });
     }
-
-    /* Fomantic UI components */
-    var
-        $sidebar         = $('.ui.sidebar'),
-        $dropdown        = $('.ui.dropdown, select:not(.nochosen)'),
-        $accordion       = $('.ui.accordion'),
-        $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
-        $tabulation      = $('.ui.tabbed .item'),
-        $popup           = $('.no-touch a[title]'),
-        $tooltipPopup    = $('i.tooltip, span.tooltip'),
-        $menuPopupRight  = $('.no-touch .ui.vertical.accordion.menu a[title]'),
-        $menuPopupBottom = $('.no-touch .ui.top.fixed.menu a.item[title]'),
-        $menuPopupLeft   = $('.no-touch .ui.dropdown.right-aligned a[title]')
-    ;
-
-    $sidebar.sidebar('attach events', '.toc.item');
-
-    /* Make all dropdowns clickable when js is enabled for UX consistency.
-     * Keep them hoverable only when js is disabled.
-     */
-    $('.simple.dropdown').removeClass('simple');
-    $dropdown.dropdown();
-
-    $accordion.accordion();
-
-    $checkbox.checkbox();
-
-    $tabulation.tab();
-
-    /* Fomantic UI Tooltips */
-    /* Hide all popups when a dropdown is shown. */
-    $.fn.dropdown.settings.onShow = function() {
-        $('body').popup('hide all');
-    };
-    /* Hide all popups when an accordion is opened. */
-    $.fn.accordion.settings.onOpening = function() {
-        $('body').popup('hide all');
-    };
-    /* Default behaviour for each link with a title attribute.
-     * Created next to current element, and not removed from the DOM
-     * after being hidden (inline: true).
-     */
-    $popup
-        .popup({
-            variation: 'inverted',
-            inline: true
-        })
-    ;
-    /* Behaviour for tooltip icons (using <i> tag).
-     * data-html attribute appended to body and removed after being
-     * hidden (inline: false).
-     */
-    $tooltipPopup
-        .popup({
-            variation: 'inverted',
-            inline: false // default value
-        })
-    ;
-    /* Position right on the main accordion menu.
-     */
-    $menuPopupRight
-        .popup({
-            position: 'right center',
-            variation: 'inverted',
-            delay: {
-                show: 300
-            }
-        })
-    ;
-    /* Position bottom on the top fixed menu.
-     */
-    $menuPopupBottom
-        .popup({
-            position: 'center bottom',
-            variation: 'inverted'
-        })
-    ;
-    /* Position left on the top right language dropdown menu.
-     */
-    $menuPopupLeft
-        .popup({
-            position: 'left center',
-            variation: 'inverted',
-            delay: {
-                show: 300
-            }
-        })
-    ;
-
 });
