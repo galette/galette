@@ -151,8 +151,9 @@
                             const _value = value.split('__');
                             var value = _value[0];
                             var _form = $('#listform');
-                                _form.append($('<input type="hidden" name="' + value + '" value="true"/>'));
+                                _form.append($('<input id="directdownload" type="hidden" name="' + value + '" value="true"/>'));
                             _form.submit();
+                            $('#directdownload').remove();
                         // Handle delete.
                         } else if (value == 'delete') {
                             {% include "elements/js/removal.js.twig" with {
