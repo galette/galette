@@ -2,10 +2,8 @@
 
 {% block content %}
     <form action="{{ url_for('doAddEntitled', {'class': url_class}) }}" method="post" class="tabbed ui form">
-        <div id="intitules_tabs">
-            {% include 'elements/edit_entitleds.html.twig' %}
-            {% include 'components/forms/csrf.html.twig' %}
-        </div>
+        {% include 'elements/edit_entitleds.html.twig' %}
+        {% include 'components/forms/csrf.html.twig' %}
     </form>
 {% endblock %}
 
@@ -20,7 +18,7 @@
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
                 modaltitle: modaltitle,
-                modal_class: "mini",
+                modal_class: "tiny"
             } %}
 
             {% include "elements/js/removal.js.twig" with {
