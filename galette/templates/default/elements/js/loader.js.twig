@@ -3,11 +3,15 @@
     {% set loader_parent = (selector is not defined) ? 'body' : selector %}
     {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
 {% elseif (loader == 'button') %}
-    {% set loader_parent = (selector is defined) ? selector %}
     {% set loader = loader %}
-{% else %}
     {% set loader_parent = (selector is defined) ? selector %}
+{% elseif (loader == 'action') %}
+    {% set loader = 'inverted dimmer' %}
+    {% set loader_parent = (selector is defined) ? selector %}
+    {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
+{% else %}
     {% set loader = loader ~ ' loader' %}
+    {% set loader_parent = (selector is defined) ? selector %}
 {% endif %}
 
     beforeSend: function() {
@@ -16,7 +20,7 @@
 {% if (loader == 'button') %}
         $('{{ loader_parent }}').addClass('loading');
 {% else %}
-    {% if (loader ends with 'dimmer') %}
+    {% if (loader == 'action' or loader ends with 'dimmer') %}
         $('{{ loader_parent }} .dimmer:not(.modals)').remove();
     {% elseif (loader ends with 'loader') %}
         $('{{ loader_parent }} .loader').remove();

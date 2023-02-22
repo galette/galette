@@ -9,9 +9,11 @@
             <div class="content">
     {% endif %}
     {% if with_cascade is defined %}
-                <div class="field inline">
-                    <label for="cascade">{{ _T("Cascade delete") }}</label>
-                    <input type="checkbox" name="cascade" id="cascade" value="true" title="{{ _T("Delete all associated data") }}"/>
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="cascade" id="cascade" value="true" title="{{ _T("Delete all associated data") }}"/>
+                        <label for="cascade">{{ _T("Cascade delete") }}</label>
+                    </div>
                 </div>
     {% endif %}
     {% if mode != 'ajax' %}
@@ -34,15 +36,15 @@
             </div>
         </div>
     {% endif %}
+    {% if mode != 'ajax' %}
         <div class="ui basic center aligned segment">
-            {% if mode != 'ajax' %}
                 <input type="submit" id="delete" value="{{ _T("Remove") }}" class="ui primary button action"/>
                 <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
-            {% endif %}
+    {% endif %}
             <input type="hidden" name="confirm" value="1"/>
-            {% if mode == 'ajax' %}
+    {% if mode == 'ajax' %}
                 <input type="hidden" name="ajax" value="true"/>
-            {% endif %}
+    {% endif %}
             {% for key, value in data %}
                 {% if value is iterable %}
                     {% for val in value %}
@@ -53,7 +55,9 @@
                 {% endif %}
             {% endfor %}
             {% include 'components/forms/csrf.html.twig' %}
+    {% if mode != 'ajax' %}
         </div>
+    {% endif %}
     </form>
     </div>
 {% endblock %}

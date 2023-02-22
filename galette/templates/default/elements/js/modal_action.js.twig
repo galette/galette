@@ -7,6 +7,13 @@
 {% if datatype is not defined %}
     {% set datatype = 'html' %}
 {% endif %}
+{% if loader is not defined %}
+    {% set loader = 'action' %}
+    {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
+{% endif %}
+{% if loader_selector is not defined %}
+    {% set loader_selector = '.loader_selector' %}
+{% endif %}
             $('{{ selector }}').click(function(event) {
                 event.preventDefault();
                 var _this = $(this);
@@ -15,7 +22,11 @@
                     url: {% if actionurl is not defined %}_url{% else %}'{{ actionurl|raw }}'{% endif %},
                     type: "{{ method }}",
                     datatype: "{{ datatype }}",
-                    {% include "elements/js/loader.js.twig" %},
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: loader,
+                        selector: loader_selector,
+                        loader_text: loader_text
+                    } %},
                     success: function(res) {
 {% if extra_success is defined %}
                         {{ extra_success|raw }}
@@ -34,11 +45,16 @@
                             },
                             actions: [{
                                 text    : '{% if approve_text is not defined %}{{ _T("Save")|e("js") }}{% else %}{{ approve_text }}{% endif %}',
-                                class   : 'blue approve'
+                                icon   : 'save',
+                                class   : 'primary icon labeled approve'
                             }, {
                                 text    : '{{ _T("Close")|e("js") }}',
-                                class   : 'cancel'
-                            }]
+                                icon   : 'times',
+                                class   : 'icon labeled cancel'
+                            }],
+                            className: {
+                                title: 'primary header'
+                            }
                         }).modal('show');
                     },
                     error: function() {
