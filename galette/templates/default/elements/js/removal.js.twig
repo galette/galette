@@ -71,29 +71,16 @@
 
                     var _title = _res.find('.header');
 
-                    $('body').modal({
-                        class: 'tiny',
-                        title: _title,
-                        content: _res,
-                        onApprove: function() {
-                            $('#confirm_removal form').submit();
-                        },
-                        actions: [{
-                            text: '{{ _T("Remove")|e('js') }}',
-                            icon: 'trash',
-                            class: 'icon labeled red approve'
-                        }, {
-                            text: '{{ _T("Cancel")|e('js') }}',
-                            icon: 'times',
-                            class: 'icon labeled cancel'
-                        }],
-                        className: {
-                            modal: 'ui redalert modal',
-                            title: 'center aligned header',
-                            content: 'center aligned content',
-                            actions: 'center aligned actions'
-                        },
-                    }).modal('show');
+                    {% include "elements/js/modal.js.twig" with {
+                        modaltitlefromjs: "_title",
+                        modal_class: "tiny",
+                        modalcontent: "_res",
+                        modalapprove: "$('#confirm_removal form').submit();",
+                        approve_text: _T("Remove")|e('js'),
+                        approve_icon: 'trash',
+                        approve_color: 'red',
+                        modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'"
+                    } %}
                 },
                 error: function() {
                     alert('{{ _T("An error occurred :(")|e("js") }}');

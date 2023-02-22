@@ -75,11 +75,17 @@
             }
             _addDynField();
 
+            {% set modalapprove = "
+                $('.modal-form form #redirect_uri').val(window.location.href);
+                $('.modal-form form').submit();
+            " %}
+
             var _editDynField = function() {
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-edit",
                     modaltitle: _T("Edit field")|e("js"),
                     modal_class: "tiny",
+                    modalapprove: modalapprove
                 } %}
             }
             _editDynField();
@@ -100,16 +106,13 @@
                     });
                 });
             " %}
-            {% set modalapprove = "
-                $('.modal-form form #redirect_uri').val(window.location.href);
-                $('.modal-form form').submit();
-            " %}
             var _transDynField = function() {
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-translate",
                     extra_success: extra_success,
                     modaltitle: _T("Translate labels")|e("js"),
-                    modalcontent_class: "scrolling"
+                    modalcontent_class: "scrolling",
+                    modalapprove: modalapprove
                 } %}
             }
             _transDynField();
