@@ -903,8 +903,8 @@
                         content: _input,
                         actions: [{
                             text    : '{{ _T("Send")|e('js') }}',
-                            class   : 'green approve',
                             icon    : 'rocket',
+                            class   : 'icon labeled green approve',
                             click   : function() {
                                 $.ajax({
                                     url: _this.attr('href'),
@@ -933,7 +933,8 @@
                             }
                         }, {
                             text    : '{{ _T("Cancel")|e('js') }}',
-                            class   : 'cancel'
+                            icon    : 'times',
+                            class   : 'icon labeled cancel'
                         }]
                     }).modal('show');
                 });

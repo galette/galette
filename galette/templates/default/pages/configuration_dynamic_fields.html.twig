@@ -58,15 +58,13 @@
                                 },
                                 actions: [{
                                     text    : '{{ _T("Add") }}',
-                                    class   : 'green approve'
+                                    icon    : 'plus',
+                                    class   : 'icon labeled green approve'
                                 }, {
                                     text    : '{{ _T("Close")|e('js') }}',
-                                    class   : 'cancel'
-                                }],
-                                className: {
-                                    'title': 'center aligned header',
-                                    'actions': 'center aligned actions'
-                                },
+                                    icon    : 'times',
+                                    class   : 'icon labeled cancel'
+                                }]
                             }).modal('show');
                         },
                         error: function() {
@@ -81,7 +79,7 @@
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-edit",
                     modaltitle: _T("Edit field")|e("js"),
-                    modal_class: "mini",
+                    modal_class: "tiny",
                 } %}
             }
             _editDynField();

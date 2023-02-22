@@ -101,7 +101,8 @@
                     content: '{{ _T("Please make sure to select at least one field from the list to perform this action.")|e("js") }}',
                     actions: [{
                         text    : '{{ _T("Close")|e("js") }}',
-                        class   : 'cancel'
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
                     }]
                 }).modal('show');
                 return false;

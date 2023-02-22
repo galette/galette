@@ -264,7 +264,8 @@
                         content: res,
                         actions: [{
                             text    : '{{ _T("Close")|e('js') }}',
-                            class   : 'cancel'
+                            icon    :'times',
+                            class   : 'icon labeled cancel'
                         }]
                     }).modal('show');
                     _groups_ajax_mapper(res, _groups, _managed);

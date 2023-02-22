@@ -124,7 +124,8 @@
                             content: '{{ _T("Please make sure to select one file to import.")|e("js") }}',
                             actions: [{
                                 text    : '{{ _T("Close")|e("js") }}',
-                                class   : 'cancel'
+                                icon    : 'times',
+                                class   : 'icon labeled cancel'
                             }]
                         }).modal('show');
                         return false;
@@ -140,7 +141,8 @@
                             content: '{{ _T("Please make sure to select one file to upload.")|e("js") }}',
                             actions: [{
                                 text    : '{{ _T("Close")|e("js") }}',
-                                class   : 'cancel'
+                                icon    : 'times',
+                                class   : 'icon labeled cancel'
                             }]
                         }).modal('show');
                         return false;

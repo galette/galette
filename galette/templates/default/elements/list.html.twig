@@ -45,41 +45,43 @@
             {{ macros.drawBatchActionsList(batch_actions) }}
         {% endif %}
 
-            <table class="listing ui celled table">
-                <thead>
-                    <tr>
-                {% block header %}
-                    {% for column in columns %}
-                        <th class="left">
-                            {% if column.order is defined %}
-                            <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
-                                {{ column.label }}
-                                {% if filters.orderby == column.order %}
-                                    {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
-                                        <i class="ui angle down icon tooltip"></i>
-                                    {% else %}
-                                        <i class="ui angle up icon tooltip"></i>
+            <div class="ui basic fitted segment loader_selector">
+                <table class="listing ui celled table">
+                    <thead>
+                        <tr>
+                    {% block header %}
+                        {% for column in columns %}
+                            <th class="left">
+                                {% if column.order is defined %}
+                                <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
+                                    {{ column.label }}
+                                    {% if filters.orderby == column.order %}
+                                        {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
+                                            <i class="ui angle down icon tooltip"></i>
+                                        {% else %}
+                                            <i class="ui angle up icon tooltip"></i>
+                                        {% endif %}
                                     {% endif %}
+                                </a>
+                                {% else %}
+                                    {{ column.label }}
                                 {% endif %}
-                            </a>
-                            {% else %}
-                                {{ column.label }}
-                            {% endif %}
-                        </th>
-                    {% endfor %}
-                    {% if mode != 'ajax' and no_action is not defined or no_action == false %}
-                        <th class="actions_row">{{ _T('Actions') }}</th>
-                    {% endif %}
-                {% endblock %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% block body %}{% endblock %}
-                </tbody>
-                <tfoot>
-                    {% block footer %}{% endblock %}
-                </tfoot>
-            </table>
+                            </th>
+                        {% endfor %}
+                        {% if mode != 'ajax' and no_action is not defined or no_action == false %}
+                            <th class="actions_row">{{ _T('Actions') }}</th>
+                        {% endif %}
+                    {% endblock %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% block body %}{% endblock %}
+                    </tbody>
+                    <tfoot>
+                        {% block footer %}{% endblock %}
+                    </tfoot>
+                </table>
+            </div>
 
         {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
             {{ macros.drawBatchActionsList(batch_actions) }}
@@ -121,8 +123,15 @@
                     content: '{{ batch.modal.content|e("js") }}',
                     actions: [{
                         text    : '{{ _T("Close")|e("js") }}',
-                        class   : 'cancel'
-                    }]
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
+                    }],
+                    className: {
+                        modal: 'ui redalert modal',
+                        title: 'center aligned header',
+                        content: 'center aligned content',
+                        actions: 'center aligned actions'
+                    }
                 }).modal('show');
                 return false;
             } else {

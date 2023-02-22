@@ -2,6 +2,7 @@
 
 {% block content %}
         <form action="{{ url_for('paymentTypes') }}" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui basic fitted segment loader_selector">
                 <table class="listing ui celled table">
                     <thead>
                         <tr>
@@ -76,6 +77,7 @@
             {% endfor %}
                     </tbody>
                 </table>
+            </div>
             {% include 'components/forms/csrf.html.twig' %}
         </form>
 {% endblock %}
@@ -86,7 +88,7 @@
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-edit",
                     modaltitle: _T("Edit payment type")|e("js"),
-                    modal_class: "mini",
+                    modal_class: "mini"
                 } %}
 
                 {% set extra_success = "

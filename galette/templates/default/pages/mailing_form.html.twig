@@ -265,7 +265,8 @@
                 content: res,
                 actions: [{
                     text    : '{{ _T("Close")|e('js') }}',
-                    class   : 'cancel'
+                    icon    : 'times',
+                    class   : 'icon labeled cancel'
                 }]
             }).modal('show');
         }
@@ -299,7 +300,8 @@
                 content: res,
                 actions: [{
                     text    : '{{ _T("Close")|e('js') }}',
-                    class   : 'cancel'
+                    icon    : 'times'
+                    class   : 'icon labeled cancel'
                 }]
             }).modal('show');
             _members_ajax_mapper(res);
@@ -407,12 +409,15 @@
                 },
                 actions: [{
                     text    : '{{ _T("Remove")|e('js') }}',
-                    class   : 'red approve',
+                    icon    : 'trash',
+                    class   : 'icon labeled red approve',
                 }, {
                     text    : '{{ _T("Cancel")|e('js') }}',
-                    class   : 'cancel'
+                    icon    : 'times',
+                    class   : 'icon labeled cancel'
                 }],
                 className: {
+                    'modal': 'ui redalert modal',
                     'title': 'center aligned header',
                     'content': 'center aligned content',
                     'actions': 'center aligned actions'

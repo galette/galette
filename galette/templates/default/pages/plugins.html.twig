@@ -139,12 +139,12 @@
                     },
                     actions: [{
                         text    : '{{ _T("Next step")|e('js') }}',
-                        class   : 'blue labeled icon approve',
-                        icon    : 'forward'
+                        icon    : 'forward',
+                        class   : 'primary icon labeled approve'
                     }, {
                         text    : '{{ _T("Close")|e('js') }}',
-                        class   : 'labeled icon cancel',
-                        icon    : 'times'
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
                     }]
                 }).modal('show');
                 _initdb_bindings(res, plugin);
@@ -196,8 +196,8 @@
                             content: _content,
                             actions: [{
                                 text    : '{{ _T("Close")|e('js') }}',
-                                class   : 'labeled icon cancel',
-                                icon    : 'times'
+                                icon    : 'times',
+                                class   : 'icon labeled cancel'
                             }]
                         }).modal('show');
                     },

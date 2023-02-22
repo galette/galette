@@ -85,8 +85,15 @@
                             content: '{{ _T("Please make sure to select at least one reminder.")|e("js") }}',
                             actions: [{
                                 text    : '{{ _T("Close")|e("js") }}',
-                                class   : 'cancel'
-                            }]
+                                icon    : 'times',
+                                class   : 'icon labeled cancel'
+                            }],
+                            className: {
+                                'modal': 'ui redalert modal',
+                                'title': 'center aligned header',
+                                'content': 'center aligned content',
+                                'actions': 'center aligned actions'
+                            }
                         }).modal('show');
                         return false;
                     } else {

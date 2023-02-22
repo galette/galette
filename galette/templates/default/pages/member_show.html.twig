@@ -258,8 +258,15 @@
                     content: '{{ _T("You are not part of managers for the requested group.")|e("js") }}',
                     actions: [{
                         text    : '{{ _T("Close")|e('js') }}',
-                        class   : 'cancel'
-                    }]
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
+                    }],
+                    className: {
+                        'modal': 'ui redalert modal',
+                        'title': 'center aligned header',
+                        'content': 'center aligned content',
+                        'actions': 'center aligned actions'
+                    }
                 }).modal('show');
                 return false;
             });

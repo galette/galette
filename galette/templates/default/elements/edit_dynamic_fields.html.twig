@@ -1,12 +1,13 @@
-        <div class="ui basic fitted segment">
-            <a
-                href="{{ url_for('addDynamicField', {'form_name': form_name}) }}"
-                class="ui labeled icon button addfield"
-            >
-                <i class="plus green icon"></i>
-                {{ _T("Add") }}
-            </a>
-        </div>
+    <div class="ui basic fitted segment">
+        <a
+            href="{{ url_for('addDynamicField', {'form_name': form_name}) }}"
+            class="ui labeled icon button addfield"
+        >
+            <i class="plus green icon"></i>
+            {{ _T("Add") }}
+        </a>
+    </div>
+    <div class="ui basic fitted segment loader_selector">
         <table class="listing ui celled table">
             <thead>
                 <tr>
@@ -83,8 +84,9 @@
 {% endfor %}
             </tbody>
         </table>
-        <script type="text/javascript">
-            {% include "elements/js/removal.js.twig" with {
-                single_action: "true"
-            } %}
-        </script>
+    </div>
+    <script type="text/javascript">
+        {% include "elements/js/removal.js.twig" with {
+            single_action: "true"
+        } %}
+    </script>

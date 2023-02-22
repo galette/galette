@@ -14,8 +14,8 @@
                     class: 'large',
                     actions: [{
                         text    : '{{ _T("Send")|e('js') }}',
-                        class   : 'green approve',
                         icon    : 'share',
+                        class   : 'primary icon labeled approve',
                         click   : function() {
                             $.ajax({
                                 url:  '{{ url_for('telemetrySend') }}',
@@ -49,15 +49,12 @@
                                         content: data.message,
                                         actions: [{
                                             text    : '{{ _T("Close")|e('js') }}',
+                                            icon    : 'times',
+                                            class   : 'icon labeled',
                                             click   : function() {
                                                 window.location.reload();
                                             }
-                                        }],
-                                        className: {
-                                            'title': 'center aligned header',
-                                            'content': 'center aligned content',
-                                            'actions': 'center aligned actions'
-                                        },
+                                        }]
                                     }).modal('show');
                                 },
                                 error: function() {
@@ -66,7 +63,7 @@
                             });}
                     }, {
                         text    : '{{ _T("Cancel")|e('js') }}',
-                        class   : 'red cancel',
+                        class   : 'icon labeled cancel',
                         icon    : 'times',
                         click   : function() {
                             $(this).find('.tdata').empty();

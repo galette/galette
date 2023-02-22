@@ -473,7 +473,10 @@
                             type: "POST",
                             data: _data,
                             datatype: 'json',
-                            {% include "elements/js/loader.js.twig" %},
+                            {% include "elements/js/loader.js.twig" with {
+                                loader: "action",
+                                selector: ".loader_selector"
+                            } %},
                             success: function(res) {
                                 $.ajax({
                                     url: '{{ url_for('ajaxMessages') }}',
@@ -487,10 +490,12 @@
                     },
                     actions: [{
                         text    : '{{ _T("Save")|e('js') }}',
-                        class   : 'green approve'
+                        icon    : 'save',
+                        class   : 'icon labeled primary approve'
                     }, {
                         text    : '{{ _T("Cancel")|e('js') }}',
-                        class   : 'cancel'
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
                     }]
                 }).modal('show');
             });
@@ -511,19 +516,22 @@
                     content: '{{ _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e('js') }}',
                     actions: [{
                         text    : '{{ _T("Resume")|e('js') }}',
-                        class   : 'blue',
+                        icon    : 'edit',
+                        class   : 'icon labeled blue',
                         click   : function() {
                             location.href = _redirect;
                         }
                     }, {
                         text    : '{{ _T("New")|e('js') }}',
+                        icon    : 'plus',
                         class   : 'green',
                         click   : function() {
                             _form.submit();
                         }
                     }, {
                         text    : '{{ _T("Cancel")|e('js') }}',
-                        class   : 'deny'
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
                     }]
                 }).modal('show');
             } else {
@@ -541,7 +549,10 @@
                     }).get()
                 },
                 dataType: 'html',
-                {% include "elements/js/loader.js.twig" %},
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
                 success: function(res){
                     var _res = $(res);
 
@@ -558,10 +569,12 @@
                         },
                         actions: [{
                             text    : '{{ _T("Continue")|e("js") }}',
-                            class   : 'blue approve'
+                            icon    : 'arrow right',
+                            class   : 'icon labeled primary approve'
                         }, {
                             text    : '{{ _T("Cancel")|e("js") }}',
-                            class   : 'cancel'
+                            icon    : 'times',
+                            class   : 'icon labeled cancel'
                         }]
                     }).modal('show');
                 },
@@ -582,7 +595,10 @@
                     }).get()
                 },
                 datatype: 'html',
-                {% include "elements/js/loader.js.twig" %},
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
                 success: function(res){
                     var _res = $(res);
 
@@ -598,7 +614,10 @@
                             type: "POST",
                             data: _data,
                             datatype: 'json',
-                            {% include "elements/js/loader.js.twig" %},
+                            {% include "elements/js/loader.js.twig" with {
+                                loader: "action",
+                                selector: ".loader_selector"
+                            } %},
                             success: function(data, status, xhr) {
                                 var _res = $(data);
 
@@ -614,7 +633,10 @@
                                         type: "POST",
                                         data: _data,
                                         datatype: 'json',
-                                        {% include "elements/js/loader.js.twig" %},
+                                        {% include "elements/js/loader.js.twig" with {
+                                            loader: "action",
+                                            selector: ".loader_selector"
+                                        } %},
                                         success: function(res) {
                                             window.location.href = _form.find('input[name=redirect_uri]').val();
                                         },
@@ -634,10 +656,12 @@
                                     },
                                     actions: [{
                                         text    : '{{ _T("Continue")|e('js') }}',
-                                        class   : 'blue approve'
+                                        icon    : 'arrow right',
+                                        class   : 'icon labeled primary approve'
                                     }, {
                                         text    : '{{ _T("Cancel")|e('js') }}',
-                                        class   : 'cancel'
+                                        icon    : 'times',
+                                        class   : 'icon labeled cancel'
                                     }]
                                 }).modal('show');
                             },
@@ -658,10 +682,12 @@
                         },
                         actions: [{
                             text    : '{{ _T("Continue")|e("js") }}',
-                            class   : 'blue approve'
+                            icon    : 'arrow right',
+                            class   : 'icon labeled primary approve'
                         }, {
                             text    : '{{ _T("Cancel")|e("js") }}',
-                            class   : 'cancel'
+                            icon    : 'times',
+                            class   : 'icon labeled cancel'
                         }]
                     }).modal('show');
 
@@ -684,7 +710,10 @@
                     }).get()
                 },
                 datatype: 'json',
-                {% include "elements/js/loader.js.twig" %},
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
                 success: function(res){
                     var _res = $(res);
 
@@ -699,7 +728,10 @@
                             type: "POST",
                             data: _data,
                             datatype: 'json',
-                            {% include "elements/js/loader.js.twig" %},
+                            {% include "elements/js/loader.js.twig" with {
+                                loader: "action",
+                                selector: ".loader_selector"
+                            } %},
                             success: function(data, status, xhr) {
                                 var _res = $(data);
 
@@ -716,10 +748,12 @@
                                     },
                                     actions: [{
                                         text    : '{{ _T("Continue")|e('js') }}',
-                                        class   : 'blue approve'
+                                        icon    : 'arrow right',
+                                        class   : 'icon labeled primary approve'
                                     }, {
                                         text    : '{{ _T("Cancel")|e('js') }}',
-                                        class   : 'cancel'
+                                        icon    : 'times',
+                                        class   : 'icon labeled cancel'
                                     }]
                                 }).modal('show');
 
@@ -732,7 +766,10 @@
                                         type: "POST",
                                         data: _data,
                                         datatype: 'json',
-                                        {% include "elements/js/loader.js.twig" %},
+                                        {% include "elements/js/loader.js.twig" with {
+                                            loader: "action",
+                                            selector: ".loader_selector"
+                                        } %},
                                         success: function(res) {
                                             window.location.href = _form.find('input[name=redirect_uri]').val();
                                         },
@@ -758,10 +795,12 @@
                         },
                         actions: [{
                             text    : '{{ _T("Continue")|e('js') }}',
-                            class   : 'blue approve'
+                            icon    : 'arrow right',
+                            class   : 'icon labeled primary approve'
                         }, {
                             text    : '{{ _T("Cancel")|e('js') }}',
-                            class   : 'cancel'
+                            icon    : 'times',
+                            class   : 'icon labeled cancel'
                         }]
                     }).modal('show');
 
