@@ -5,7 +5,7 @@
 {% macro group_item(login, group, opened, selected) %}
     <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in opened %} active{% endif %}{% else %}nochild{% endif %}">
         <i class="{% if group.getGroups()|length > 0 %}dropdown{% else %}empty{% endif %} icon"></i>
-        <a class="ui{% if group.getName() == selected %} yellow{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
+        <a class="ui{% if group.getName() == selected %} primary{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
     </div>
@@ -27,7 +27,7 @@
         <div class="ui stackable grid">
             <div class="three wide column">
                 <div class="ui top attached accordion-styled header">{{ _T("Select a group") }} :</div>
-                <div class="ui attached accordion-styled scrolling segment">
+                <div class="ui attached accordion-styled scrolling segment loader_selector">
                     <div class="ui tree accordion">
                     {% for group in groups_root %}
                         {{ _self.group_item(login, group, opened, selected) }}
@@ -84,7 +84,10 @@
                                 ajax: true,
                                 gname: _name
                             },
-                            {% include 'elements/js/loader.js.twig' %},
+                            {% include "elements/js/loader.js.twig" with {
+                                selector: ".segment:not(.tab).loader_selector",
+                                loader: "button"
+                            } %},
                             success: function(res){
                                 if ( res.success == false ) {
                                     if (res.message) {
@@ -107,10 +110,12 @@
                 },
                 actions: [{
                     text    : '{{ _T("Create")|e('js') }}',
-                    class   : 'green approve'
+                    icon    : 'plus',
+                    class   : 'icon labeled green approve'
                 },{
                     text    : '{{ _T("Close")|e('js') }}',
-                    class   : 'deny'
+                    icon    : 'times',
+                    class   : 'icon labeled deny'
                 },]
             }).modal('show');
             return false;
@@ -133,8 +138,9 @@
                         mode: _mode,
                         members: _persons
                     },
-                    {% include 'elements/js/loader.js.twig' with {
-                        selector: '.tab.segment.active'
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: "action",
+                        selector: ".tab.segment.active .loader_selector"
                     } %},
                     success: function(res){
                         _members_dialog(res, _mode);
@@ -159,7 +165,8 @@
                 content: res,
                 actions: [{
                     text    : '{{ _T("Close")|e("js") }}',
-                    class   : 'cancel'
+                    icon    : 'times',
+                    class   : 'icon labeled cancel'
                 }]
             }).modal('show');
             _members_ajax_mapper(res, $('#group_id').val(), mode);
@@ -190,14 +197,14 @@
                         person_mode: mode
                     },
                     {% include "elements/js/loader.js.twig" with {
-                        selector: '#btnvalid',
-                        loader: 'button'
+                        selector: "#btnvalid",
+                        loader: "button"
                     } %},
                     success: function(res){
                         var _modified = '<div class="ui orange message with-transition"><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
                         _container.find('.message').remove();
                         if ( res != 0 ) {
-                            _container.find('table.listing').remove();
+                            _container.find('.loader_selector').remove();
                             _container.children('.segment').append(res);
                             _container.children('#group_' + mode + ' .segment').append(_modified);
                         } else {
@@ -258,8 +265,8 @@
                         mode: _mode,
                         multiple: true
                     },
-                    {% include 'elements/js/loader.js.twig' with {
-                        loader: '#listing'
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: "#listing"
                     } %},
                     success: function(res){
                         $('#listing').remove();
@@ -276,7 +283,8 @@
         }
 
         {% include "elements/js/removal.js.twig" with {
-            loader: 'button',
+            loader: "button",
+            loader_selector: "#delete",
             single_action: "true"
         } %}
     });
