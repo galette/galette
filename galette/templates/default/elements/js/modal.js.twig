@@ -1,24 +1,33 @@
     $.modal({
-        title: {% if modaltitlefromjs is defined %}{{ modaltitlefromjs }}{% else %}'{{ modaltitle }}'{% endif %},
+        title: {% if modaltitlefromjs is defined %}{{ modaltitlefromjs|raw }}{% else %}'{{ modaltitle }}'{% endif %},
         class: 'modal-form{% if modal_class is defined %} {{ modal_class }}{% endif %}',
         classContent: '{% if modalcontent_class is defined %}{{ modalcontent_class }}{% endif %}',
-        content: {{ modalcontent }},
+{% if contentfromtwig is defined %}
+        content: '{{ modalcontent }}',
+{% else %}
+        content: {{ modalcontent|raw }},
+{% endif %}
         onApprove: function() {
 {% if modalapprove is defined %}
             {{ modalapprove|raw }}
-{% else %}
+{% elseif singlecancelaction is not defined %}
             $('.modal-form form').submit();
 {% endif %}
         },
-        actions: [{
-            text: '{% if approve_text is not defined %}{{ _T("Continue")|e("js") }}{% else %}{{ approve_text }}{% endif %}',
-            icon: '{% if approve_icon is not defined %}arrow right{% else %}{{ approve_icon }}{% endif %}',
-            class: '{% if approve_color is not defined %}primary{% else %}{{ approve_color }}{% endif %} icon labeled approve'
-        }, {
-            text: '{% if cancel_text is not defined %}{{ _T("Cancel")|e("js") }}{% else %}{{ cancel_text }}{% endif %}',
-            icon: '{% if cancel_icon is not defined %}times{% else %}{{ cancel_icon }}{% endif %}',
-            class: '{% if cancel_color is defined %}{{ cancel_color }} {% endif %}icon labeled cancel'
-        }],
+        actions: [
+{% if singlecancelaction is not defined %}
+            {
+                text: '{% if approve_text is not defined %}{{ _T("Continue")|e("js") }}{% else %}{{ approve_text }}{% endif %}',
+                icon: '{% if approve_icon is not defined %}arrow right{% else %}{{ approve_icon }}{% endif %}',
+                class: '{% if approve_color is not defined %}primary{% else %}{{ approve_color }}{% endif %} icon labeled approve'
+            },
+{% endif %}
+            {
+                text: '{% if cancel_text is not defined %}{{ _T("Cancel")|e("js") }}{% else %}{{ cancel_text }}{% endif %}',
+                icon: '{% if cancel_icon is not defined %}times{% else %}{{ cancel_icon }}{% endif %}',
+                class: '{% if cancel_color is defined %}{{ cancel_color }} {% endif %}icon labeled cancel'
+            }
+        ],
         className: {
             {% if modalclassname is defined %}{{ modalclassname|raw }}{% endif %}
         }
