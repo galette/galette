@@ -83,15 +83,15 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
-            {% set modalapprove = "
+            {% set modal_onapprove = "
                 $('.modal-form form #redirect_uri').val(window.location.href);
                 $('.modal-form form').submit();
             " %}
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
-                modaltitle: _T("Edit title")|e("js"),
+                modal_title_twig: _T("Edit title")|e("js"),
                 modal_class: "mini",
-                modalapprove: modalapprove
+                modal_onapprove: modal_onapprove
             } %}
 
             {% include "elements/js/removal.js.twig" with {

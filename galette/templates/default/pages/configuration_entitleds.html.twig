@@ -10,20 +10,20 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
-            {% set modalapprove = "
+            {% set modal_onapprove = "
                 $('.modal-form form #redirect_uri').val(window.location.href);
                 $('.modal-form form').submit();
             " %}
             {% if url_class == "status" %}
-                {% set modaltitle = _T("Edit status")|e("js") %}
+                {% set modal_title_twig = _T("Edit status")|e("js") %}
             {% elseif url_class == "contributions-types" %}
-                {% set modaltitle = _T("Edit contribution type")|e("js") %}
+                {% set modal_title_twig = _T("Edit contribution type")|e("js") %}
             {% endif %}
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
-                modaltitle: modaltitle,
+                modal_title_twig: modal_title_twig,
                 modal_class: "tiny",
-                modalapprove: modalapprove
+                modal_onapprove: modal_onapprove
             } %}
 
             {% include "elements/js/removal.js.twig" with {

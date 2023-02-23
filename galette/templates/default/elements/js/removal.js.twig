@@ -72,14 +72,14 @@
                     var _title = _res.find('.header');
 
                     {% include "elements/js/modal.js.twig" with {
-                        modaltitlefromjs: "_title",
+                        modal_title: "_title",
                         modal_class: "tiny",
-                        modalcontent: "_res",
-                        modalapprove: "$('#confirm_removal form').submit();",
-                        approve_text: _T("Remove")|e('js'),
-                        approve_icon: 'trash',
-                        approve_color: 'red',
-                        modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'"
+                        modal_content: "_res",
+                        modal_onapprove: "$('#confirm_removal form').submit();",
+                        modal_approve_text: _T("Remove")|e('js'),
+                        modal_approve_icon: 'trash',
+                        modal_approve_color: 'red',
+                        modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'"
                     } %}
                 },
                 error: function() {

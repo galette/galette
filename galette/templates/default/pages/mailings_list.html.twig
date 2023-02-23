@@ -189,11 +189,11 @@
 
         var _preview_dialog = function(res){
             {% include "elements/js/modal.js.twig" with {
-                modaltitle: _T("Mailing preview")|e("js"),
-                modalcontent: "res",
+                modal_title_twig: _T("Mailing preview")|e("js"),
+                modal_content: "res",
                 modal_class: "scrolling",
-                singlecancelaction: true,
-                cancel_text: _T("Close")|e("js")
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
             } %}
         }
     </script>

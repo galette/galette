@@ -253,13 +253,12 @@
 
             $('.notmanaged').click(function(){
                 {% include "elements/js/modal.js.twig" with {
-                    modaltitle: _T("Not managed group")|e("js"),
-                    modalcontent: _T("You are not part of managers for the requested group.")|e("js"),
-                    contentfromtwig: true,
+                    modal_title_twig: _T("Not managed group")|e("js"),
+                    modal_content_twig: _T("You are not part of managers for the requested group.")|e("js"),
                     modal_class: "tiny",
-                    singlecancelaction: true,
-                    cancel_text: _T("Close")|e("js"),
-                    modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
                 } %}
                 return false;
             });

@@ -44,18 +44,13 @@
                                         );
     {% endif %}
                                     }
-                                    $('body').modal({
-                                        class: 'tiny',
-                                        content: data.message,
-                                        actions: [{
-                                            text    : '{{ _T("Close")|e('js') }}',
-                                            icon    : 'times',
-                                            class   : 'icon labeled',
-                                            click   : function() {
-                                                window.location.reload();
-                                            }
-                                        }]
-                                    }).modal('show');
+                                    {% include "elements/js/modal.js.twig" with {
+                                        modal_without_title: true,
+                                        modal_content: "data.message",
+                                        modal_class: "tiny",
+                                        modal_deny_only: true,
+                                        modal_cancel_text: _T("Close")|e('js')
+                                    } %}
                                 },
                                 error: function() {
                                     alert("{{ _T("An error occurred sending telemetry information :(")|e('js') }}");

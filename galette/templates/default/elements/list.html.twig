@@ -118,13 +118,12 @@
             var _checked = $('#listform').find('input[type=checkbox]:checked').length;
             if ( _checked == 0 ) {
                 {% include "elements/js/modal.js.twig" with {
-                    modaltitle: batch.modal.title|e("js"),
-                    modalcontent: batch.modal.content|e("js"),
-                    contentfromtwig: true,
+                    modal_title_twig: batch.modal.title|e("js"),
+                    modal_content_twig: batch.modal.content|e("js"),
                     modal_class: "tiny",
-                    singlecancelaction: true,
-                    cancel_text: _T("Close")|e("js"),
-                    modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
                 } %}
                 return false;
             } else {

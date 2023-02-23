@@ -1,34 +1,73 @@
+{% if modal_selector is not defined %}
     $.modal({
-        title: {% if modaltitlefromjs is defined %}{{ modaltitlefromjs|raw }}{% else %}'{{ modaltitle }}'{% endif %},
-        class: 'modal-form{% if modal_class is defined %} {{ modal_class }}{% endif %}',
-        classContent: '{% if modalcontent_class is defined %}{{ modalcontent_class }}{% endif %}',
-{% if contentfromtwig is defined %}
-        content: '{{ modalcontent }}',
+    {% if modal_without_title is not defined %}
+        title: {% if modal_title_twig is defined %}'{{ modal_title_twig }}'{% elseif modal_title is defined %}{{ modal_title|raw }}{% endif %},
+    {% endif %}
+    {% if modal_without_content is not defined %}
+        content: {% if modal_content_twig is defined %}'{{ modal_content_twig }}'{% elseif modal_content is defined %}{{ modal_content|raw }}{% endif %},
+    {% endif %}
 {% else %}
-        content: {{ modalcontent|raw }},
+    $('{{ modal_selector }}').modal({
+{% endif %}
+        class: 'modal-form{% if modal_class is defined %} {{ modal_class }}{% endif %}',
+        classContent: '{% if modal_content_class is defined %}{{ modal_content_class }}{% endif %}',
+{% if modal_other_options is defined and modal_other_options is iterable %}
+    {% for key, value in modal_other_options %}
+        {% if key == "observeChanges" and value == "1" %}
+            {{ key }}: true,
+        {% else %}
+            {{ key }}: "{{ value }}",
+        {% endif %}
+    {% endfor %}
 {% endif %}
         onApprove: function() {
-{% if modalapprove is defined %}
-            {{ modalapprove|raw }}
-{% elseif singlecancelaction is not defined %}
+{% if modal_onapprove is defined %}
+            {{ modal_onapprove|raw }}
+{% elseif modal_deny_only is not defined %}
             $('.modal-form form').submit();
 {% endif %}
         },
+        onDeny: function() {
+{% if modal_ondeny is defined %}
+            {{ modal_ondeny|raw }}
+{% endif %}
+        },
         actions: [
-{% if singlecancelaction is not defined %}
+{% if modal_additional_button is defined and modal_additional_button is iterable %}
             {
-                text: '{% if approve_text is not defined %}{{ _T("Continue")|e("js") }}{% else %}{{ approve_text }}{% endif %}',
-                icon: '{% if approve_icon is not defined %}arrow right{% else %}{{ approve_icon }}{% endif %}',
-                class: '{% if approve_color is not defined %}primary{% else %}{{ approve_color }}{% endif %} icon labeled approve'
+    {% for key, value in modal_additional_button %}
+        {% if key == "click" %}
+                {{ key }}: {{ value|raw }},
+        {% else %}
+                {{ key }}: "{{ value }}",
+        {% endif %}
+    {% endfor %}
+            },
+{% endif %}
+{% if modal_deny_only is not defined %}
+            {
+                text: '{% if modal_approve_text is not defined %}{{ _T("Continue")|e("js") }}{% else %}{{ modal_approve_text }}{% endif %}',
+                icon: '{% if modal_approve_icon is not defined %}arrow right{% else %}{{ modal_approve_icon }}{% endif %}',
+                class: '{% if modal_approve_color is not defined %}primary{% else %}{{ modal_approve_color }}{% endif %} icon labeled approve',
+                click: {
+{% if modal_approve_click is defined %}
+                    {{ modal_approve_click|raw }}
+{% endif %}
+                }
             },
 {% endif %}
             {
-                text: '{% if cancel_text is not defined %}{{ _T("Cancel")|e("js") }}{% else %}{{ cancel_text }}{% endif %}',
-                icon: '{% if cancel_icon is not defined %}times{% else %}{{ cancel_icon }}{% endif %}',
-                class: '{% if cancel_color is defined %}{{ cancel_color }} {% endif %}icon labeled cancel'
+                text: '{% if modal_cancel_text is not defined %}{{ _T("Cancel")|e("js") }}{% else %}{{ modal_cancel_text }}{% endif %}',
+                icon: '{% if modal_cancel_icon is not defined %}times{% else %}{{ modal_cancel_icon }}{% endif %}',
+                class: '{% if modal_cancel_color is defined %}{{ modal_cancel_color }} {% endif %}icon labeled cancel',
+                click: {
+{% if modal_cancel_click is defined %}
+                    {{ modal_cancel_click|raw }}
+{% endif %}
+                }
             }
         ],
         className: {
-            {% if modalclassname is defined %}{{ modalclassname|raw }}{% endif %}
+            {% if modal_classname is defined %}{{ modal_classname|raw }}{% endif %}
         }
     }).modal('show');

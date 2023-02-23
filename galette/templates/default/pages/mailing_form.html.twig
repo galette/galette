@@ -260,11 +260,11 @@
 
         var _preview_dialog = function(res){
             {% include "elements/js/modal.js.twig" with {
-                modaltitle: _T("Mailing preview")|e("js"),
-                modalcontent: "res",
-                modalcontent_class: "scrolling",
-                singlecancelaction: true,
-                cancel_text: _T("Close")|e("js")
+                modal_title_twig: _T("Mailing preview")|e("js"),
+                modal_content: "res",
+                modal_content_class: "scrolling",
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
             } %}
         }
 
@@ -292,12 +292,12 @@
 
         var _members_dialog = function(res){
             {% include "elements/js/modal.js.twig" with {
-                modaltitle: _T("Members selection")|e("js"),
-                modalcontent: "res",
+                modal_title_twig: _T("Members selection")|e("js"),
+                modal_content: "res",
                 modal_class: "members-selection fullscreen",
-                modalcontent_class: "scrolling",
-                singlecancelaction: true,
-                cancel_text: _T("Close")|e("js")
+                modal_content_class: "scrolling",
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
             } %}
             _members_ajax_mapper(res);
         }
@@ -392,22 +392,21 @@
             });
         }
 
-        {% set modalapprove = "window.location.href = '" ~ url_for('mailing') ~ "' + _link.attr('href');" %}
+        {% set modal_onapprove = "window.location.href = '" ~ url_for('mailing') ~ "' + _link.attr('href');" %}
         $('.rm_attachement').click(function(event){
             event.preventDefault();
             var _link = $(this);
-            {% set modalcontent = _T("Are you sure you want to remove this attachment?") ~ '<br/>' ~ _T("This will immediately remove attachment from disk and cannot be undone.") %}
+            {% set modal_content = _T("Are you sure you want to remove this attachment?") ~ '<br/>' ~ _T("This will immediately remove attachment from disk and cannot be undone.") %}
             {% include "elements/js/modal.js.twig" with {
-                modaltitle: _T("Remove attachment")|e("js"),
-                modalcontent: modalcontent|e("js"),
-                contentfromtwig: true,
+                modal_title_twig: _T("Remove attachment")|e("js"),
+                modal_content_twig: modal_content|e("js"),
                 modal_class: "tiny",
-                modalapprove: modalapprove,
-                approve_text: _T("Remove")|e('js'),
-                approve_icon: "trash",
-                approve_color: "red",
-                cancel_text: _T("Cancel")|e("js"),
-                modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                modal_onapprove: modal_onapprove,
+                modal_approve_text: _T("Remove")|e('js'),
+                modal_approve_icon: "trash",
+                modal_approve_color: "red",
+                modal_cancel_text: _T("Cancel")|e("js"),
+                modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
             } %}
         });
 

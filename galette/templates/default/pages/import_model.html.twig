@@ -96,13 +96,12 @@
             var _checked = $('#modelform').find('input[type=checkbox]:checked').length;
             if ( _checked == 0 ) {
                 {% include "elements/js/modal.js.twig" with {
-                    modaltitle: _T("No file selected")|e("js"),
-                    modalcontent: _T("Please make sure to select at least one field from the list to perform this action.")|e("js"),
-                    contentfromtwig: true,
+                    modal_title_twig: _T("No field selected")|e("js"),
+                    modal_content_twig: _T("Please make sure to select at least one field from the list to perform this action.")|e("js"),
                     modal_class: "tiny",
-                    singlecancelaction: true,
-                    cancel_text: _T("Close")|e("js"),
-                    modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
                 } %}
                 return false;
             } else {

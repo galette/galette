@@ -119,13 +119,12 @@
                         return true;
                     } else {
                         {% include "elements/js/modal.js.twig" with {
-                            modaltitle: _T("No file selected")|e("js"),
-                            modalcontent: _T("Please make sure to select one file to import.")|e("js"),
-                            contentfromtwig: true,
+                            modal_title_twig: _T("No file selected")|e("js"),
+                            modal_content_twig: _T("Please make sure to select one file to import.")|e("js"),
                             modal_class: "tiny",
-                            singlecancelaction: true,
-                            cancel_text: _T("Close")|e("js"),
-                            modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
                         } %}
                         return false;
                     }
@@ -135,13 +134,12 @@
                     var _selected = $('#new_file')[0].files.length;
                     if ( _selected == 0 ) {
                         {% include "elements/js/modal.js.twig" with {
-                            modaltitle: _T("No file selected")|e("js"),
-                            modalcontent: _T("Please make sure to select one file to upload.")|e("js"),
-                            contentfromtwig: true,
+                            modal_title_twig: _T("No file selected")|e("js"),
+                            modal_content_twig: _T("Please make sure to select one file to upload.")|e("js"),
                             modal_class: "tiny",
-                            singlecancelaction: true,
-                            cancel_text: _T("Close")|e("js"),
-                            modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
                         } %}
                         return false;
                     } else {

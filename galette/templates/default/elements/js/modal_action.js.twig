@@ -1,25 +1,20 @@
-{% set selector = (selector is defined) ? selector : ".single-custom-action" %}
-{% set method = (method is defined) ? method : "GET" %}
-{% set datatype = (datatype is defined) ? datatype : "html" %}
-{% set datatype = (datatype is defined) ? datatype : "html" %}
+{% set selector = selector is defined ? selector : ".single-custom-action" %}
+{% set method = method is defined ? method : "GET" %}
+{% set datatype = datatype is defined ? datatype : "html" %}
 {% if loader is not defined %}
     {% set loader = 'action' %}
-    {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
+    {% set loader_text = loader_text is defined ? loader_text : _T('Loading...') %}
 {% endif %}
-{% set loader_selector = (loader_selector is defined) ? loader_selector : ".loader_selector" %}
+{% set loader_selector = loader_selector is defined ? loader_selector : ".loader_selector" %}
 
-{% set modaltitle = (modaltitlefromjs is defined) ? modaltitlefromjs : modaltitle %}
-{% set modalcontent = (modalcontent is defined) ? modalcontent : "res" %}
-{% set modal_class = (modal_class is defined) ? modal_class : null %}
-{% set modalcontent_class = (modalcontent_class is defined) ? modalcontent_class : null %}
-{% set modalapprove = (modalapprove is defined) ? modalapprove : null %}
-{% set approve_text = (approve_text is defined) ? approve_text : _T("Save")|e("js") %}
-{% set approve_icon = (approve_icon is defined) ? approve_icon : "save" %}
-{% set approve_color = (approve_color is defined) ? approve_color : "primary" %}
-{% set cancel_text = (cancel_text is defined) ? cancel_text : _T("Close")|e("js") %}
-{% set cancel_icon = (cancel_icon is defined) ? cancel_icon : "times" %}
-{% set cancel_color = (cancel_color is defined) ? cancel_color : null %}
-{% set modalclassname = (modalclassname is defined) ? modalclassname : null %}
+{% set modal_title = modal_title_twig is defined ? modal_title_twig : modal_title %}
+{% set modal_content = modal_content_twig is defined ? modal_content_twig : "res" %}
+{% set modal_class = modal_class is defined ? modal_class : null %}
+{% set modal_content_class = modal_content_class is defined ? modal_content_class : null %}
+{% set modal_onapprove = modal_onapprove is defined ? modal_onapprove : null %}
+{% set modal_approve_text = modal_approve_text is defined ? modal_approve_text : _T("Save")|e("js") %}
+{% set modal_approve_icon = modal_approve_icon is defined ? modal_approve_icon : "save" %}
+{% set modal_cancel_text = modal_cancel_text is defined ? modal_cancel_text : _T("Close")|e("js") %}
 
     $('{{ selector }}').click(function(event) {
         event.preventDefault();
@@ -39,18 +34,14 @@
                 {{ extra_success|raw }}
 {% endif %}
                 {% include "elements/js/modal.js.twig" with {
-                    modaltitle: modaltitle,
-                    modalcontent: modalcontent,
+                    modal_title: modal_title,
+                    modal_content: modal_content,
                     modal_class: modal_class,
-                    modalcontent_class: modalcontent_class,
-                    modalapprove: modalapprove,
-                    approve_text: approve_text,
-                    approve_icon: approve_icon,
-                    approve_color: approve_color,
-                    cancel_text: cancel_text,
-                    cancel_icon: cancel_icon,
-                    cancel_color: cancel_color,
-                    modalclassname: modalclassname,
+                    modal_content_class: modal_content_class,
+                    modal_onapprove: modal_onapprove,
+                    modal_approve_text: modal_approve_text,
+                    modal_approve_icon: modal_approve_icon,
+                    modal_cancel_text: modal_cancel_text,
                 } %}
             },
             error: function() {

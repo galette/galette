@@ -222,12 +222,13 @@
             _btnuser_mapping();
 
             var _contribs_dialog = function(res, max_amount){
-                $('#contributions-modal').modal({
-                    title: '{{ _T("Contributions selection")|e("js") }}',
-                    class: 'contributions-selection fullscreen scrolling',
-                    content: res,
-                    autofocus: false
-                }).modal('show');
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Contributions selection")|e("js"),
+                    modal_content: "res",
+                    modal_class: "contributions-selection fullscreen scrolling",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e('js')
+                } %}
                 _contribs_ajax_mapper(res, max_amount);
             }
 

@@ -189,13 +189,12 @@
                     });
 
                     {% include "elements/js/modal.js.twig" with {
-                        modaltitlefromjs: "_w.find('.header')",
-                        modalcontent: "_w.find('.content')",
-                        contentfromtwig: true,
+                        modal_title: "_w.find('.header')",
+                        modal_content: "_w.find('.content')",
                         modal_class: "tiny",
-                        singlecancelaction: true,
-                        cancel_text: _T("Close")|e("js"),
-                        modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
                     } %}
                     return false;
                 } else {

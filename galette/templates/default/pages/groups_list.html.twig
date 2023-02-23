@@ -160,12 +160,12 @@
                 _title = '{{ _T("Group managers selection")|e('js') }}';
             }
             {% include "elements/js/modal.js.twig" with {
-                modaltitlefromjs: "_title",
-                modalcontent: "res",
+                modal_title: "_title",
+                modal_content: "res",
                 modal_class: "members-selection fullscreen",
-                modalcontent_class: "scrolling",
-                singlecancelaction: true,
-                cancel_text: _T("Close")|e("js")
+                modal_content_class: "scrolling",
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
             } %}
             _members_ajax_mapper(res, $('#group_id').val(), mode);
 
