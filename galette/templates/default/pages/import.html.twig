@@ -118,16 +118,15 @@
                     if ( $('input[name=import_file]:checked').length > 0 ) {
                         return true;
                     } else {
-                        $('body').modal({
-                            title: '{{ _T("No file selected")|e("js") }}',
-                            class: 'tiny',
-                            content: '{{ _T("Please make sure to select one file to import.")|e("js") }}',
-                            actions: [{
-                                text    : '{{ _T("Close")|e("js") }}',
-                                icon    : 'times',
-                                class   : 'icon labeled cancel'
-                            }]
-                        }).modal('show');
+                        {% include "elements/js/modal.js.twig" with {
+                            modaltitle: _T("No file selected")|e("js"),
+                            modalcontent: _T("Please make sure to select one file to import.")|e("js"),
+                            contentfromtwig: true,
+                            modal_class: "tiny",
+                            singlecancelaction: true,
+                            cancel_text: _T("Close")|e("js"),
+                            modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                        } %}
                         return false;
                     }
                 });
@@ -135,16 +134,15 @@
                 $('#upload').click(function(){
                     var _selected = $('#new_file')[0].files.length;
                     if ( _selected == 0 ) {
-                        $('body').modal({
-                            title: '{{ _T("No file to upload")|e("js") }}',
-                            class: 'tiny',
-                            content: '{{ _T("Please make sure to select one file to upload.")|e("js") }}',
-                            actions: [{
-                                text    : '{{ _T("Close")|e("js") }}',
-                                icon    : 'times',
-                                class   : 'icon labeled cancel'
-                            }]
-                        }).modal('show');
+                        {% include "elements/js/modal.js.twig" with {
+                            modaltitle: _T("No file selected")|e("js"),
+                            modalcontent: _T("Please make sure to select one file to upload.")|e("js"),
+                            contentfromtwig: true,
+                            modal_class: "tiny",
+                            singlecancelaction: true,
+                            cancel_text: _T("Close")|e("js"),
+                            modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                        } %}
                         return false;
                     } else {
                         return true;

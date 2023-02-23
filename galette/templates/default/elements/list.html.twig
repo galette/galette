@@ -117,22 +117,15 @@
         var _checkselection = function() {
             var _checked = $('#listform').find('input[type=checkbox]:checked').length;
             if ( _checked == 0 ) {
-                $('body').modal({
-                    title: '{{ batch.modal.title|e("js") }}',
-                    class: 'tiny',
-                    content: '{{ batch.modal.content|e("js") }}',
-                    actions: [{
-                        text    : '{{ _T("Close")|e("js") }}',
-                        icon    : 'times',
-                        class   : 'icon labeled cancel'
-                    }],
-                    className: {
-                        modal: 'ui redalert modal',
-                        title: 'center aligned header',
-                        content: 'center aligned content',
-                        actions: 'center aligned actions'
-                    }
-                }).modal('show');
+                {% include "elements/js/modal.js.twig" with {
+                    modaltitle: batch.modal.title|e("js"),
+                    modalcontent: batch.modal.content|e("js"),
+                    contentfromtwig: true,
+                    modal_class: "tiny",
+                    singlecancelaction: true,
+                    cancel_text: _T("Close")|e("js"),
+                    modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                } %}
                 return false;
             } else {
                 return true;

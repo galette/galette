@@ -95,16 +95,15 @@
         $('#store-model').click(function() {
             var _checked = $('#modelform').find('input[type=checkbox]:checked').length;
             if ( _checked == 0 ) {
-                $('body').modal({
-                    title: '{{ _T("No field selected")|e("js") }}',
-                    class: 'tiny',
-                    content: '{{ _T("Please make sure to select at least one field from the list to perform this action.")|e("js") }}',
-                    actions: [{
-                        text    : '{{ _T("Close")|e("js") }}',
-                        icon    : 'times',
-                        class   : 'icon labeled cancel'
-                    }]
-                }).modal('show');
+                {% include "elements/js/modal.js.twig" with {
+                    modaltitle: _T("No file selected")|e("js"),
+                    modalcontent: _T("Please make sure to select at least one field from the list to perform this action.")|e("js"),
+                    contentfromtwig: true,
+                    modal_class: "tiny",
+                    singlecancelaction: true,
+                    cancel_text: _T("Close")|e("js"),
+                    modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                } %}
                 return false;
             } else {
                 return true;

@@ -188,16 +188,15 @@
                         _w.find('ul').append('<li>' + _val + '</li>');
                     });
 
-                    $('body').modal({
-                        class: 'tiny',
-                        title: _w.find('.header'),
-                        content: _w.find('.content'),
-                        actions: [{
-                            text    : '{{ _T("Close")|e('js') }}',
-                            icon    : 'times',
-                            class   : 'icon labeled cancel'
-                        }]
-                    }).modal('show');
+                    {% include "elements/js/modal.js.twig" with {
+                        modaltitlefromjs: "_w.find('.header')",
+                        modalcontent: "_w.find('.content')",
+                        contentfromtwig: true,
+                        modal_class: "tiny",
+                        singlecancelaction: true,
+                        cancel_text: _T("Close")|e("js"),
+                        modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                    } %}
                     return false;
                 } else {
                     return true;

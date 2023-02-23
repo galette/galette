@@ -252,22 +252,15 @@
             {% include "elements/js/photo_dnd.js.twig" %}
 
             $('.notmanaged').click(function(){
-                $('body').modal({
-                    title: '{{ _T("Not managed group")|e('js') }}',
-                    class: 'tiny',
-                    content: '{{ _T("You are not part of managers for the requested group.")|e("js") }}',
-                    actions: [{
-                        text    : '{{ _T("Close")|e('js') }}',
-                        icon    : 'times',
-                        class   : 'icon labeled cancel'
-                    }],
-                    className: {
-                        'modal': 'ui redalert modal',
-                        'title': 'center aligned header',
-                        'content': 'center aligned content',
-                        'actions': 'center aligned actions'
-                    }
-                }).modal('show');
+                {% include "elements/js/modal.js.twig" with {
+                    modaltitle: _T("Not managed group")|e("js"),
+                    modalcontent: _T("You are not part of managers for the requested group.")|e("js"),
+                    contentfromtwig: true,
+                    modal_class: "tiny",
+                    singlecancelaction: true,
+                    cancel_text: _T("Close")|e("js"),
+                    modalclassname: "modal: 'ui redalert modal',title: 'center aligned header',content: 'center aligned content',actions: 'center aligned actions'",
+                } %}
                 return false;
             });
         });
