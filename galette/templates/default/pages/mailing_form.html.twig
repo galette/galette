@@ -392,17 +392,17 @@
             });
         }
 
+        {% set modalapprove = "window.location.href = '" ~ url_for('mailing') ~ "' + _link.attr('href');" %}
         $('.rm_attachement').click(function(event){
             event.preventDefault();
             var _link = $(this);
             {% set modalcontent = _T("Are you sure you want to remove this attachment?") ~ '<br/>' ~ _T("This will immediately remove attachment from disk and cannot be undone.") %}
             {% include "elements/js/modal.js.twig" with {
                 modaltitle: _T("Remove attachment")|e("js"),
-                modalcontent: modalcontent,
+                modalcontent: modalcontent|e("js"),
                 contentfromtwig: true,
                 modal_class: "tiny",
-                singlecancelaction: true,
-                modalapprove: "window.location.href = '{{ url_for('mailing') }}' + _link.attr('href');",
+                modalapprove: modalapprove,
                 approve_text: _T("Remove")|e('js'),
                 approve_icon: "trash",
                 approve_color: "red",
