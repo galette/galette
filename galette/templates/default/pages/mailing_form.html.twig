@@ -259,16 +259,13 @@
         });
 
         var _preview_dialog = function(res){
-            $('body').modal({
-                title: '{{ _T("Mailing preview")|e("js") }}',
-                class: 'scrolling',
-                content: res,
-                actions: [{
-                    text    : '{{ _T("Close")|e('js') }}',
-                    icon    : 'times',
-                    class   : 'icon labeled cancel'
-                }]
-            }).modal('show');
+            {% include "elements/js/modal.js.twig" with {
+                modaltitle: _T("Mailing preview")|e("js"),
+                modalcontent: "res",
+                modalcontent_class: "scrolling",
+                singlecancelaction: true,
+                cancel_text: _T("Close")|e("js")
+            } %}
         }
 
         {# Members popup #}
@@ -294,16 +291,14 @@
         });
 
         var _members_dialog = function(res){
-            $('body').modal({
-                title: '{{ _T("Members selection")|e("js") }}',
-                class: 'members-selection fullscreen scrolling',
-                content: res,
-                actions: [{
-                    text    : '{{ _T("Close")|e('js') }}',
-                    icon    : 'times'
-                    class   : 'icon labeled cancel'
-                }]
-            }).modal('show');
+            {% include "elements/js/modal.js.twig" with {
+                modaltitle: _T("Members selection")|e("js"),
+                modalcontent: "res",
+                modal_class: "members-selection fullscreen",
+                modalcontent_class: "scrolling",
+                singlecancelaction: true,
+                cancel_text: _T("Close")|e("js")
+            } %}
             _members_ajax_mapper(res);
         }
 

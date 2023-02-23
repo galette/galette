@@ -258,16 +258,14 @@
                     if ( _managed ) {
                         _title = '{{ _T("Managed groups selection")|e('js') }}';
                     }
-                    $('body').modal({
-                        title: _title,
-                        class: 'groups-selection fullscreen scrolling',
-                        content: res,
-                        actions: [{
-                            text    : '{{ _T("Close")|e('js') }}',
-                            icon    :'times',
-                            class   : 'icon labeled cancel'
-                        }]
-                    }).modal('show');
+                    {% include "elements/js/modal.js.twig" with {
+                        modaltitlefromjs: "_title",
+                        modalcontent: "res",
+                        modal_class: "groups-selection fullscreen",
+                        modalcontent_class: "scrolling",
+                        singlecancelaction: true,
+                        cancel_text: _T("Close")|e("js")
+                    } %}
                     _groups_ajax_mapper(res, _groups, _managed);
                 }
 

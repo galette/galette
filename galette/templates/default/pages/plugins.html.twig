@@ -189,17 +189,14 @@
                     {% include "elements/js/loader.js.twig" %},
                     success: function(res) {
                         var _content = $($.parseHTML(res)).find('div.main-content').children();
-                        $('body').modal({
-                            title: _this.html(),
-                            class: 'large',
-                            classContent: 'scrolling',
-                            content: _content,
-                            actions: [{
-                                text    : '{{ _T("Close")|e('js') }}',
-                                icon    : 'times',
-                                class   : 'icon labeled cancel'
-                            }]
-                        }).modal('show');
+                        {% include "elements/js/modal.js.twig" with {
+                            modaltitlefromjs: "_this.html()",
+                            modalcontent: "_content",
+                            modal_class: "large",
+                            modalcontent_class: "scrolling",
+                            singlecancelaction: true,
+                            cancel_text: _T("Close")|e("js")
+                        } %}
                     },
                     error: function() {
                         alert("{{ _T("An error occurred :(")|e('js') }}");

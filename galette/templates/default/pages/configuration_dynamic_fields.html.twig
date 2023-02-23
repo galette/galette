@@ -49,23 +49,15 @@
                         success: function(res){
                             var _res = $(res);
 
-                            $('body').modal({
-                                class: 'tiny',
-                                title: '{{ _T("New dynamic field") }}',
-                                content: _res,
-                                onApprove: function() {
-                                    $('form').submit();
-                                },
-                                actions: [{
-                                    text    : '{{ _T("Add") }}',
-                                    icon    : 'plus',
-                                    class   : 'icon labeled green approve'
-                                }, {
-                                    text    : '{{ _T("Close")|e('js') }}',
-                                    icon    : 'times',
-                                    class   : 'icon labeled cancel'
-                                }]
-                            }).modal('show');
+                            {% include "elements/js/modal.js.twig" with {
+                                modaltitle: _T("New dynamic field")|e("js"),
+                                modalcontent: "_res",
+                                modal_class: "tiny",
+                                approve_text: _T("Add")|e('js'),
+                                approve_icon: "plus",
+                                approve_color: "green",
+                                cancel_text: _T("Close")|e("js")
+                            } %}
                         },
                         error: function() {
                             alert("{{ _T("An error occurred :(")|e("js") }}");
