@@ -127,26 +127,16 @@
 
             var _initdb_dialog = function(res, plugin) {
                 var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
-                $('body').modal({
-                    title: _title.replace('%name', plugin),
-                    class: 'initdb-modal large',
-                    classContent: 'scrolling',
-                    observeChanges: true,
-                    content: res,
-                    onApprove : function() {
-                      $('#plugins_initdb_form').submit();
-                      return false;
-                    },
-                    actions: [{
-                        text    : '{{ _T("Next step")|e('js') }}',
-                        icon    : 'forward',
-                        class   : 'primary icon labeled approve'
-                    }, {
-                        text    : '{{ _T("Close")|e('js') }}',
-                        icon    : 'times',
-                        class   : 'icon labeled cancel'
-                    }]
-                }).modal('show');
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title: "_title.replace('%name', plugin)",
+                    modal_content: "res",
+                    modal_class: "initdb-modal large",
+                    modal_content_class: "scrolling",
+                    modal_other_options: { observeChanges: true },
+                    modal_onapprove: "$('#plugins_initdb_form').submit();return false;",
+                    modal_approve_text: _T("Next step")|e("js"),
+                    modal_cancel_text: _T("Close")|e("js")
+                } %}
                 _initdb_bindings(res, plugin);
             };
 
@@ -190,12 +180,12 @@
                     success: function(res) {
                         var _content = $($.parseHTML(res)).find('div.main-content').children();
                         {% include "elements/js/modal.js.twig" with {
-                            modaltitlefromjs: "_this.html()",
-                            modalcontent: "_content",
+                            modal_title: "_this.html()",
+                            modal_content: "_content",
                             modal_class: "large",
-                            modalcontent_class: "scrolling",
-                            singlecancelaction: true,
-                            cancel_text: _T("Close")|e("js")
+                            modal_content_class: "scrolling",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js")
                         } %}
                     },
                     error: function() {

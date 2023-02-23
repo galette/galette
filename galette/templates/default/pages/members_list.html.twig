@@ -510,30 +510,21 @@
             var _redirect = '{{ url_for('mailing') }}';
 
             if (existing) {
-                $('body').modal({
-                    title: '{{ _T("Existing mailing")|e('js') }}',
-                    class: 'tiny',
-                    content: '{{ _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e('js') }}',
-                    actions: [{
-                        text    : '{{ _T("Resume")|e('js') }}',
-                        icon    : 'edit',
-                        class   : 'icon labeled blue',
-                        click   : function() {
-                            location.href = _redirect;
-                        }
-                    }, {
-                        text    : '{{ _T("New")|e('js') }}',
-                        icon    : 'plus',
-                        class   : 'green',
-                        click   : function() {
-                            _form.submit();
-                        }
-                    }, {
-                        text    : '{{ _T("Cancel")|e('js') }}',
-                        icon    : 'times',
-                        class   : 'icon labeled cancel'
-                    }]
-                }).modal('show');
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Existing mailing")|e("js"),
+                    modal_content_twig: _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e("js"),
+                    modal_class: "tiny",
+                    modal_onapprove: "_form.submit();",
+                    modal_approve_text: _T("New")|e("js"),
+                    modal_approve_icon: "plus",
+                    modal_approve_color: "green",
+                    modal_additional_button: {
+                        text: _T("Resume")|e("js"),
+                        icon: "edit",
+                        class: "blue",
+                        click: "function() { location.href = _redirect; }"
+                    }
+                } %}
             } else {
                 _form.submit();
             }
@@ -558,25 +549,13 @@
 
                     $('body').append(_res);
 
-                    $('#attendance_sheet_details').modal({
-                        class: 'tiny',
-                        onApprove : function() {
-                            $('#attendance_sheet_details form').submit();
-                        },
-                        onDeny: function() {
-                            $(this).remove();
-                            $('body').dimmer('hide');
-                        },
-                        actions: [{
-                            text    : '{{ _T("Continue")|e("js") }}',
-                            icon    : 'arrow right',
-                            class   : 'icon labeled primary approve'
-                        }, {
-                            text    : '{{ _T("Cancel")|e("js") }}',
-                            icon    : 'times',
-                            class   : 'icon labeled cancel'
-                        }]
-                    }).modal('show');
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_selector: "#attendance_sheet_details",
+                        modal_without_title: true,
+                        modal_class: "tiny",
+                        modal_onapprove: "$('#attendance_sheet_details form').submit();",
+                        modal_ondeny: "$(this).remove();$('body').dimmer('hide');"
+                    } %}
                 },
                 error: function() {
                     alert("{{ _T("An error occurred displaying attendance sheet details interface :(")|e('js') }}");
@@ -646,24 +625,13 @@
                                     });
                                 });
 
-                                $('#mass_contributions').modal({
-                                    onApprove: function() {
-                                        $('#mass_contributions form').submit();
-                                    },
-                                    onDeny: function() {
-                                        $(this).remove();
-                                        $('body').dimmer('hide');
-                                    },
-                                    actions: [{
-                                        text    : '{{ _T("Continue")|e('js') }}',
-                                        icon    : 'arrow right',
-                                        class   : 'icon labeled primary approve'
-                                    }, {
-                                        text    : '{{ _T("Cancel")|e('js') }}',
-                                        icon    : 'times',
-                                        class   : 'icon labeled cancel'
-                                    }]
-                                }).modal('show');
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_selector: "#mass_contributions",
+                                    modal_without_title: true,
+                                    modal_class: "tiny",
+                                    modal_onapprove: "$('#mass_contributions form').submit();",
+                                    modal_ondeny: "$(this).remove();$('body').dimmer('hide');"
+                                } %}
                             },
                             error: function() {
                                 alert("{{ _T("An error occurred :(")|e('js') }}");
@@ -671,25 +639,13 @@
                         });
                     });
 
-                    $('#mass_contributions').modal({
-                        class: 'tiny',
-                        onApprove : function() {
-                            $('#mass_contributions form').submit();
-                        },
-                        onDeny: function() {
-                            $(this).remove();
-                            $('body').dimmer('hide');
-                        },
-                        actions: [{
-                            text    : '{{ _T("Continue")|e("js") }}',
-                            icon    : 'arrow right',
-                            class   : 'icon labeled primary approve'
-                        }, {
-                            text    : '{{ _T("Cancel")|e("js") }}',
-                            icon    : 'times',
-                            class   : 'icon labeled cancel'
-                        }]
-                    }).modal('show');
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_selector: "#mass_contributions",
+                        modal_without_title: true,
+                        modal_class: "tiny",
+                        modal_onapprove: "$('#mass_contributions form').submit();",
+                        modal_ondeny: "$(this).remove();$('body').dimmer('hide');"
+                    } %}
 
                     _massCheckboxes('#mass_contributions');
                 },
@@ -738,25 +694,6 @@
                                 $('#mass_change').remove();
                                 $('body').append(_res);
 
-                                $('#mass_change').modal({
-                                    onApprove: function() {
-                                        $('#mass_change form').submit();
-                                    },
-                                    onDeny: function() {
-                                        $(this).remove();
-                                        $('body').dimmer('hide');
-                                    },
-                                    actions: [{
-                                        text    : '{{ _T("Continue")|e('js') }}',
-                                        icon    : 'arrow right',
-                                        class   : 'icon labeled primary approve'
-                                    }, {
-                                        text    : '{{ _T("Cancel")|e('js') }}',
-                                        icon    : 'times',
-                                        class   : 'icon labeled cancel'
-                                    }]
-                                }).modal('show');
-
                                 _res.find('form').on('submit', function(e) {
                                     e.preventDefault();
                                     var _form = $(this);
@@ -778,6 +715,13 @@
                                         }
                                     });
                                 });
+
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_selector: "#mass_change",
+                                    modal_without_title: true,
+                                    modal_onapprove: "$('#mass_change form').submit();",
+                                    modal_ondeny: "$(this).remove();$('body').dimmer('hide');"
+                                } %}
                             },
                             error: function() {
                                 alert("{{ _T("An error occurred :(")|e('js') }}");
@@ -785,24 +729,12 @@
                         });
                     });
 
-                    $('#mass_change').modal({
-                        onApprove: function() {
-                            $('#mass_change form').submit();
-                        },
-                        onDeny: function() {
-                            $(this).remove();
-                            $('body').dimmer('hide');
-                        },
-                        actions: [{
-                            text    : '{{ _T("Continue")|e('js') }}',
-                            icon    : 'arrow right',
-                            class   : 'icon labeled primary approve'
-                        }, {
-                            text    : '{{ _T("Cancel")|e('js') }}',
-                            icon    : 'times',
-                            class   : 'icon labeled cancel'
-                        }]
-                    }).modal('show');
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_selector: "#mass_change",
+                        modal_without_title: true,
+                        modal_onapprove: "$('#mass_change form').submit();",
+                        modal_ondeny: "$(this).remove();$('body').dimmer('hide');"
+                    } %}
 
                     _massCheckboxes('#mass_change');
                 },
