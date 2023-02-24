@@ -107,6 +107,9 @@ var paths = {
     }, {
       src: './node_modules/jquery/dist/jquery.min.js',
       dest: 'js/'
+    }, {
+      src: './node_modules/twemoji-emojis/vendor/svg/*',
+      dest: 'emojis/'
     }
   ]
 };
@@ -216,15 +219,15 @@ function scripts() {
   return merge(main, masschanges, chartjs, sortablejs, summernote, codemirror, codemirrorxml, codemirrorformatting);
 }
 
-function extras() {
-  main = paths.extras.map(function (extra) {
+function movefiles() {
+  extras = paths.extras.map(function (extra) {
     return gulp.src(extra.src)
       .pipe(gulp.dest(paths.assets.public + extra.dest))
       .pipe(browserSync.stream());
     }
   );
 
-  return merge(main);
+  return merge(extras);
 }
 
 function watch() {
@@ -245,8 +248,8 @@ exports.theme = theme;
 exports.clean = clean;
 exports.styles = styles;
 exports.scripts = scripts;
-exports.extras = extras;
+exports.movefiles = movefiles;
 exports.watch = watch;
 
-var build = gulp.series(theme, clean, styles, scripts, extras, 'build ui', galette);
+var build = gulp.series(theme, clean, styles, scripts, movefiles, 'build ui', galette);
 exports.default = build;

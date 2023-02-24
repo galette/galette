@@ -215,7 +215,7 @@ class Galette
             if ($login->isAdmin() || $login->isStaff()) {
                 $menus['contributions'] = [
                     'title' => _T('Contributions'),
-                    'icon' => 'cookie',
+                    'icon' => 'receipt',
                     'items' => [
                         [
                             'label' => _T("List of contributions"),
@@ -553,7 +553,7 @@ class Galette
                         'route' => [
                             'name' => 'members'
                         ],
-                        'icon' => 'users'
+                        'icon' => 'card_box'
                     ],
                     [
                         'label' => _T("Groups"),
@@ -561,7 +561,7 @@ class Galette
                         'route' => [
                             'name' => 'groups'
                         ],
-                        'icon' => 'users cog'
+                        'icon' => 'busts_in_silhouette'
                     ],
                 ]
             );
@@ -577,7 +577,7 @@ class Galette
                         'route' => [
                             'name' => 'mailings'
                         ],
-                        'icon' => 'mail bulk'
+                        'icon' => 'postbox'
                     ],
                     [
                         'label' => _T("Contributions"),
@@ -586,7 +586,7 @@ class Galette
                             'name' => 'contributions',
                             'args' => ['type' => 'contributions']
                         ],
-                        'icon' => 'cookie'
+                        'icon' => 'receipt'
                     ],
                     [
                         'label' => _T("Transactions"),
@@ -595,7 +595,7 @@ class Galette
                             'name' => 'contributions',
                             'args' => ['type' => 'transactions']
                         ],
-                        'icon' => 'columns'
+                        'icon' => 'book'
                     ],
                     [
                         'label' => _T("Reminders"),
@@ -619,7 +619,7 @@ class Galette
                         'route' => [
                             'name' => 'preferences'
                         ],
-                        'icon' => 'tools'
+                        'icon' => 'control_knobs'
                     ],
                     [
                         'label' => _T("Plugins"),
@@ -627,7 +627,7 @@ class Galette
                         'route' => [
                             'name' => 'plugins'
                         ],
-                        'icon' => 'puzzle piece'
+                        'icon' => 'package'
                     ],
                 ]
             );
@@ -644,7 +644,7 @@ class Galette
                         'route' => [
                             'name' => 'me'
                         ],
-                        'icon' => 'user alternate'
+                        'icon' => 'bust_in_silhouette'
                     ],
                     [
                         'label' => _T("My contributions"),
@@ -653,7 +653,7 @@ class Galette
                             'name' => 'contributions',
                             'args' => ['type' => 'contributions']
                         ],
-                        'icon' => 'cookie'
+                        'icon' => 'receipt'
                     ],
                     [
                         'label' => _T("My transactions"),
@@ -662,7 +662,7 @@ class Galette
                             'name' => 'contributions',
                             'args' => ['type' => 'transactions']
                         ],
-                        'icon' => 'columns'
+                        'icon' => 'book'
                     ],
 
                 ]
@@ -743,7 +743,7 @@ class Galette
                             'value' => $member->id
                         ]
                     ],
-                    'icon' => 'cookie yellow'
+                    'icon' => 'receipt yellow'
                 ],
                 [
                     'label' => str_replace(
@@ -870,7 +870,7 @@ class Galette
                     [
                         'name' => 'masscontributions',
                         'label' => _T('Mass add contributions'),
-                        'icon' => 'cookie bite yellow'
+                        'icon' => 'receipt bite yellow'
                     ],
                     [
                         'name' => 'delete',

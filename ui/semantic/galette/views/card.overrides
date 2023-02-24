@@ -7,7 +7,7 @@
     flex-direction: column;
     align-items: center;
 
-    i {
+    em {
         margin-bottom: 1rem;
     }
 }

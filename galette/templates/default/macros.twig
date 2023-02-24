@@ -42,7 +42,7 @@
     <a class="ui card" href="{{ url_for(route.name, route.args|default([])) }}" title="{{ title }}">
         <div class="content">
             <div class="ui header">
-                <i class="ui big {{ icon }} grey icon"></i>
+                <em data-emoji="{{ icon }}" class="medium"></em>
                 <div class="content">
                     {{ label }}
                 </div>
