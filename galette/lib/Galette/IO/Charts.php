@@ -373,7 +373,7 @@ class Charts
             $groupby = new Expression('date_trunc(\'month\', date_enreg)');
         } elseif (TYPE_DB === 'mysql') {
             $cols['date'] = new Expression('date_format(date_enreg, \'%Y-%m\')');
-            $groupby = new Expression('EXTRACT(YEAR_MONTH FROM date_enreg)');
+            $groupby = new Expression('date_format(date_enreg, \'%Y-%m\')');
         }
 
         $select->columns($cols)->group($groupby)->order('date ASC');
