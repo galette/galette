@@ -34,12 +34,19 @@
                         </div>
                         <div class="inline field">
                             <label for="sheet_date">{{ _T("Date") }}</label>
-                            <input type="text" name="sheet_date" id="sheet_date"/>
+                            <div id="sheet_date_rangestart" class="ui calendar">
+                                <div class="ui fluid input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="sheet_date" id="sheet_date"/>
+                                </div>
+                            </div>
                             <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                         </div>
                         <div class="inline field">
-                            <label for="sheet_photos">{{ _T("With photos?") }}</label>
-                            <input type="checkbox" name="sheet_photos" id="sheet_photos" value="1"/>
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" name="sheet_photos" id="sheet_photos" value="1"/>
+                                <label for="sheet_photos">{{ _T("With photos?") }}</label>
+                            </div>
     {% for key, value in data %}
                             <input type="hidden" name="selection[]" value="{{ value }}"/>
     {% endfor %}
