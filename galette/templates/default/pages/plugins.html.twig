@@ -132,7 +132,9 @@
                     modal_content: "res",
                     modal_class: "initdb-modal large",
                     modal_content_class: "scrolling",
-                    modal_other_options: { observeChanges: true },
+                    modal_other_options: {
+                        observeChanges: true
+                    },
                     modal_onapprove: "$('#plugins_initdb_form').submit();return false;",
                     modal_approve_text: _T("Next step")|e("js"),
                     modal_cancel_text: _T("Close")|e("js")
