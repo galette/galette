@@ -255,7 +255,14 @@
                     _preview_dialog(res);
                 },
                 error: function() {
-                    alert("{{ _T("An error occurred displaying preview :(")|e("js") }}");
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying preview :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
             return false;
@@ -287,7 +294,14 @@
                     _members_dialog(res);
                 },
                 error: function() {
-                    alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
             return false;
@@ -328,7 +342,14 @@
                         $('.members-selection').modal('hide');
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                     }
                 });
             });
@@ -388,7 +409,14 @@
                         _members_ajax_mapper(res);
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                     }
                 });
                 return false;

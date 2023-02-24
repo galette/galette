@@ -100,7 +100,14 @@
         $(function() {
     {% if constant('GALETTE_MODE') == 'DEMO' %}
             $('.initdb, a.toggleActivation').click(function(){
-                alert('{{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.")|e('js') }}');
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Application runs under demo mode. This functionnality is not enabled, sorry.:(")|e("js"),
+                    modal_without_content: true,
+                    modal_class: "mini",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "redalert",
+                } %}
                 return false;
             });
     {% else %}
@@ -117,7 +124,14 @@
                             _initdb_dialog(res, _plugin);
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred displaying plugin database initialization interface :(")|e('js') }}");
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying plugin database initialization interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
                         }
                     });
                     return false;
@@ -164,7 +178,14 @@
                             _initdb_bindings(res);
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred displaying plugin database initialization interface :(")|e('js') }}");
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying plugin database initialization interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
                         }
                     });
                 });
@@ -191,7 +212,14 @@
                         } %}
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred :(")|e('js') }}");
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                     }
                 });
             });

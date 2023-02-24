@@ -271,7 +271,14 @@
                     $('#date_fin_cotis').val(res.date_fin_cotis);
                 },
                 error: function() {
-                    alert("{{ _T("An error occurred retrieving dates :(")|e("js") }}");
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred retrieving dates :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
 
@@ -286,7 +293,14 @@
             if (_current < _amount) {
                 $('#transaction_related').show();
             } else if (_current > _amount) {
-                alert('{{ _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js") }}');
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
+                    modal_without_content: true,
+                    modal_class: "mini",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "redalert",
+                } %}
             } else {
                 $('#transaction_related').hide();
             }

@@ -9,7 +9,14 @@
                 url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
                 onError: function(errorMessage, element, xhr) {
-                    alert(errorMessage);
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                        modal_content: "errorMessage",
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             }
         });

@@ -214,7 +214,14 @@
                             _contribs_dialog(res, '{{ transaction.getMissingAmount() }}');
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred displaying members interface :(")|e("js") }}");
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
                         }
                     });
                 });
@@ -263,7 +270,14 @@
                             _contribs_ajax_mapper(res, max_amount);
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
                         }
                     });
                     return false;
@@ -289,7 +303,14 @@
                             _contribs_ajax_mapper(res, max_amount);
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
                         },
                     });
                     return false;
@@ -315,7 +336,14 @@
                                 _contribs_ajax_mapper(res, max_amount);
                             },
                             error: function() {
-                                alert("{{ _T("An error occurred displaying contributions :(")|e("js") }}");
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
                             }
                         });
                     });

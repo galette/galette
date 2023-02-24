@@ -558,7 +558,14 @@
                     } %}
                 },
                 error: function() {
-                    alert("{{ _T("An error occurred displaying attendance sheet details interface :(")|e('js') }}");
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying attendance sheet details interface :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
         }
@@ -620,7 +627,14 @@
                                             window.location.href = _form.find('input[name=redirect_uri]').val();
                                         },
                                         error: function() {
-                                            alert("{{ _T("An error occurred :(")|e('js') }}");
+                                            {% include "elements/js/modal.js.twig" with {
+                                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                                modal_without_content: true,
+                                                modal_class: "mini",
+                                                modal_deny_only: true,
+                                                modal_cancel_text: _T("Close")|e("js"),
+                                                modal_classname: "redalert",
+                                            } %}
                                         }
                                     });
                                 });
@@ -634,7 +648,14 @@
                                 } %}
                             },
                             error: function() {
-                                alert("{{ _T("An error occurred :(")|e('js') }}");
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
                             }
                         });
                     });
@@ -650,7 +671,14 @@
                     _massCheckboxes('#mass_contributions');
                 },
                 error: function() {
-                    alert("{{ _T("An error occurred :(")|e('js') }}");
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
         }
@@ -711,7 +739,14 @@
                                             window.location.href = _form.find('input[name=redirect_uri]').val();
                                         },
                                         error: function() {
-                                            alert("{{ _T("An error occurred :(")|e('js') }}");
+                                            {% include "elements/js/modal.js.twig" with {
+                                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                                modal_without_content: true,
+                                                modal_class: "mini",
+                                                modal_deny_only: true,
+                                                modal_cancel_text: _T("Close")|e("js"),
+                                                modal_classname: "redalert",
+                                            } %}
                                         }
                                     });
                                 });
@@ -724,7 +759,14 @@
                                 } %}
                             },
                             error: function() {
-                                alert("{{ _T("An error occurred :(")|e('js') }}");
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
                             }
                         });
                     });
@@ -739,7 +781,14 @@
                     _massCheckboxes('#mass_change');
                 },
                 error: function() {
-                    alert("{{ _T("An error occurred :(")|e('js') }}");
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
                 }
             });
         }

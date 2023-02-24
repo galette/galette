@@ -108,14 +108,28 @@
                             datatype: 'json',
                             data: _data,
                             error: function() {
-                                alert('{{ _T(\"An error occurred :(\")|e(\"js\") }}');
+                                $.modal({
+                                    title: '%error%',
+                                    class: 'mini',
+                                    actions: [{
+                                        text: '%close%',
+                                        icon: 'times',
+                                        class: 'icon labeled cancel'
+                                    }],
+                                    className: {
+                                        modal: 'ui redalert modal',
+                                        title: 'center aligned header',
+                                        content: 'center aligned content',
+                                        actions: 'center aligned actions'
+                                    }
+                                }).modal('show');
                             }
                         });
                     });
                 " %}
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-translate",
-                    extra_success: extra_success,
+                    extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
                     modal_title_twig: _T("Translate labels")|e("js"),
                     modal_content_class: "scrolling",
                     modal_onapprove: modal_onapprove

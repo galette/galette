@@ -91,20 +91,48 @@
                             success: function(res){
                                 if ( res.success == false ) {
                                     if (res.message) {
-                                        alert(res.message)
+                                        {% include "elements/js/modal.js.twig" with {
+                                            modal_title_twig: _T("An error occurred :(")|e("js"),
+                                            modal_content: "res.message",
+                                            modal_class: "mini",
+                                            modal_deny_only: true,
+                                            modal_cancel_text: _T("Close")|e("js"),
+                                            modal_classname: "redalert",
+                                        } %}
                                     } else {
-                                        alert('{{ _T("The group name you have requested already exists in the database.") }}');
+                                        {% include "elements/js/modal.js.twig" with {
+                                            modal_title_twig: _T("The group name you have requested already exists in the database.")|e("js"),
+                                            modal_without_content: true,
+                                            modal_class: "mini",
+                                            modal_deny_only: true,
+                                            modal_cancel_text: _T("Close")|e("js"),
+                                            modal_classname: "redalert",
+                                        } %}
                                     }
                                 } else {
                                     $(location).attr('href', _href.replace('NAME', _name));
                                 }
                             },
                             error: function() {
-                                alert("{{ _T("An error occurred checking name uniqueness :(")|e('js') }}");
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred checking name uniqueness :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
                             }
                         });
                     } else {
-                        alert('{{ _T("Pleade provide a group name")|e('js') }}');
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("Pleade provide a group name:(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                         return false;
                     }
                 },
@@ -146,7 +174,14 @@
                         _members_dialog(res, _mode);
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                     }
                 });
                 return false;
@@ -216,7 +251,14 @@
 ;
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                     }
                 });
             });
@@ -273,7 +315,14 @@
                         _members_ajax_mapper(res, gid, _mode);
                     },
                     error: function() {
-                        alert("{{ _T("An error occurred displaying members interface :(")|e('js') }}");
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
                     }
                 });
                 return false;

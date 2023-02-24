@@ -60,7 +60,14 @@
                             } %}
                         },
                         error: function() {
-                            alert("{{ _T("An error occurred :(")|e("js") }}");
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
                         }
                     });
                 });
@@ -93,7 +100,21 @@
                         datatype: 'json',
                         data: _data,
                         error: function() {
-                            alert('{{ _T(\"An error occurred :(\")|e(\"js\") }}');
+                            $.modal({
+                                title: '%error%',
+                                class: 'mini',
+                                actions: [{
+                                    text: '%close%',
+                                    icon: 'times',
+                                    class: 'icon labeled cancel'
+                                }],
+                                className: {
+                                    modal: 'ui redalert modal',
+                                    title: 'center aligned header',
+                                    content: 'center aligned content',
+                                    actions: 'center aligned actions'
+                                }
+                            }).modal('show');
                         }
                     });
                 });
@@ -101,7 +122,7 @@
             var _transDynField = function() {
                 {% include "elements/js/modal_action.js.twig" with {
                     selector: ".single-translate",
-                    extra_success: extra_success,
+                    extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
                     modal_title_twig: _T("Translate labels")|e("js"),
                     modal_content_class: "scrolling",
                     modal_onapprove: modal_onapprove
