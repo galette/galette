@@ -28,8 +28,8 @@
 
 /* Fomantic UI components */
 var _bindFomanticComponents = function() {
-    if (!("ontouchstart" in document.documentElement)) {
-        document.documentElement.className += " no-touch";
+    if (!("ontouchstart" in document.documentElement) || !("no-touch" in document.documentElement.classList)) {
+        document.documentElement.classList.add("no-touch");
     }
 
     var
