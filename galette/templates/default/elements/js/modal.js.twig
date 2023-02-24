@@ -67,7 +67,18 @@
                 }
             }
         ],
+{% if modal_classname is defined %}
+    {% if modal_classname == "redalert" %}
         className: {
-            {% if modal_classname is defined %}{{ modal_classname|raw }}{% endif %}
+            modal: 'ui redalert modal',
+            title: 'center aligned header',
+            content: 'center aligned content',
+            actions: 'center aligned actions'
         }
+    {% else %}
+        className: {
+            {{ modal_classname|raw }}
+        }
+    {% endif %}
+{% endif %}
     }).modal('show');
