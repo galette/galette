@@ -38,6 +38,7 @@
                     modal_content: modal_content,
                     modal_class: modal_class,
                     modal_content_class: modal_content_class,
+                    modal_onshow: "_actionAjaxMapper();",
                     modal_onapprove: modal_onapprove,
                     modal_approve_text: modal_approve_text,
                     modal_approve_icon: modal_approve_icon,
@@ -56,3 +57,12 @@
             }
         });
     });
+
+    var _actionAjaxMapper = function(){
+        $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
+        $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
+        $('.no-touch .modal-form a[title], .no-touch .modal-form .tooltip').popup({
+            variation: 'inverted',
+            inline: false
+        });
+    }

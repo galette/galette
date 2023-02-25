@@ -20,6 +20,13 @@
         {% endif %}
     {% endfor %}
 {% endif %}
+        onShow: function() {
+{% if modal_onshow is defined %}
+            {{ modal_onshow|raw }}
+{% else %}
+            return true;
+{% endif %}
+        },
         onApprove: function() {
 {% if modal_onapprove is defined %}
             {{ modal_onapprove|raw }}
