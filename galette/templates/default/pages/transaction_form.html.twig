@@ -232,7 +232,8 @@
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("Contributions selection")|e("js"),
                     modal_content: "res",
-                    modal_class: "contributions-selection fullscreen scrolling",
+                    modal_class: "contributions-selection fullscreen",
+                    modal_content_class: "scrolling",
                     modal_deny_only: true,
                     modal_cancel_text: _T("Close")|e('js')
                 } %}

@@ -553,6 +553,7 @@
                         modal_selector: "#attendance_sheet_details",
                         modal_without_title: true,
                         modal_class: "tiny",
+                        modal_content_class: "scrolling",
                         modal_onshow: "_batchAjaxMapper();",
                         modal_onapprove: "$('#attendance_sheet_details form').submit();",
                         modal_ondeny: "$(this).modal('hide dimmer').remove();"
@@ -643,7 +644,8 @@
                                 {% include "elements/js/modal.js.twig" with {
                                     modal_selector: "#mass_contributions",
                                     modal_without_title: true,
-                                    modal_class: "tiny",
+                                    modal_content_class: "scrolling",
+                                    modal_onshow: "_batchAjaxMapper();",
                                     modal_onapprove: "$('#mass_contributions form').submit();",
                                     modal_ondeny: "$(this).modal('hide dimmer').remove();"
                                 } %}
@@ -664,8 +666,8 @@
                     {% include "elements/js/modal.js.twig" with {
                         modal_selector: "#mass_contributions",
                         modal_without_title: true,
-                        modal_class: "tiny",
-                        modal_onshow: "_massCheckboxes('#mass_change');_batchAjaxMapper();",
+                        modal_class: "mini",
+                        modal_onshow: "_batchAjaxMapper();",
                         modal_onapprove: "$('#mass_contributions form').submit();",
                         modal_ondeny: "$(this).modal('hide dimmer').remove();"
                     } %}
@@ -774,6 +776,7 @@
                     {% include "elements/js/modal.js.twig" with {
                         modal_selector: "#mass_change",
                         modal_without_title: true,
+                        modal_content_class: "scrolling",
                         modal_onshow: "_massCheckboxes('#mass_change');_batchAjaxMapper();",
                         modal_onapprove: "$('#mass_change form').submit();",
                         modal_ondeny: "$(this).modal('hide dimmer').remove();"
