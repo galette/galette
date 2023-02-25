@@ -16,7 +16,9 @@
     {% endif %}
             <form action="{{ form_url }}" method="post" class="ui form">
                 {{ parent() }}
+    {% if mode != 'ajax' %}
                 <div class="ui basic center aligned segment">
+    {% endif %}
                     {% if mode != 'ajax' %}
                         <input type="submit" id="masschange" class="ui button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
                         <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
@@ -33,7 +35,9 @@
                         {% endif %}
                     {% endfor %}
                     {% include "components/forms/csrf.html.twig" %}
+    {% if mode != 'ajax' %}
                 </div>
+    {% endif %}
             </form>
     {% if mode == 'ajax' %}
         </div>

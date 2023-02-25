@@ -12,7 +12,7 @@
         </h2>
     {% else %}
         </div>
-        <div class="content scrolling">
+        <div class="content">
     {% endif %}
             <form action="{{ form_url }}" method="post" class="ui form">
                 <div class="inline field">
@@ -22,11 +22,11 @@
                         <option value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}">{{ _T("Donation") }}</option>
                     </select>
                 </div>
+    {% if mode != 'ajax' %}
                 <div class="ui basic center aligned segment">
-                    {% if mode != 'ajax' %}
                         <input type="submit" id="masschange" class="ui button" value="{{ _T("OK") }}"/>
                         <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
-                    {% endif %}
+    {% endif %}
                     {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
                     {% for key, value in data %}
                         {% if value is iterable %}
@@ -38,7 +38,9 @@
                         {% endif %}
                     {% endfor %}
                     {% include "components/forms/csrf.html.twig" %}
+    {% if mode != 'ajax' %}
                 </div>
+    {% endif %}
             </form>
     {% if mode == 'ajax' %}
         </div>
