@@ -309,6 +309,7 @@
                         $('#' + _form + 'groups').html(_groups_str);
                         $('.groups-selection').modal('hide');
                     });
+
                     //Remap links
                     var _none = $('#none_selected').clone();
                     $('li input[type=checkbox]').click(function(e){
@@ -320,10 +321,13 @@
                             $('#selected_groups ul').append(_none);
                         }
                     });
-                    $('#listing a').click(function(e){
-                        e.preventDefault();
-                        var _gid = this.href.match(/.*\/(\d+)$/)[1];
-                        var _gname = $(this).text();
+
+                    //Select a row
+                    $('#listing tbody tr').click(function(event){
+                        event.preventDefault();
+                        var _glink = $(this).find('.username_row a');
+                        var _gid = _glink[0].href.match(/.*\/(\d+)$/)[1];
+                        var _gname = _glink.text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
                             var _li = '<li id="group_' + _gid + '" class="item">'
@@ -338,8 +342,7 @@
                             });
                         }
                         return false;
-                    });
-
+                    }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a contribution row to attach it to the current transaction")|e('js') }}');
                 }
 
     {% if not self_adh and not member.hasChildren() %}
