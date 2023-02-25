@@ -1,3 +1,64 @@
+{#
+/**
+ * @file
+ * Single click event using Fomantic UI Modal.
+ *
+ * Copyright © 2009-2023 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @category  Authentication
+ * @package   Galette
+ *
+ * @author    Guillaume Agniéray <dev@agnieray.net>
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009-2023 The Galette Team
+ * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or later
+ * @link      https://galette.eu
+ * @since     Available since 1.0dev - 2023-02-17
+ *
+ * Available variables:
+ *
+ * - selector: actionable element.
+ * - actionurl: URL where to send the request.
+ * - method: HTTP method to use for the request.
+ * - datatype: type of data expected in response.
+ * - extra_success: additionnal code at the begining of the success callback.
+ *
+ * - loader_selector: element on which to apply the loader.
+ * - loader: loader's variation to use (on button, action's list or page dimmer).
+ * - loader_text: text to display in the loader.
+ *
+ * - modal_title: value coming from js code.
+ * - modal_title_twig: value coming from twig.
+ * - modal_content: value coming from js code.
+ * - modal_content_twig: value coming from twig.
+ * - modal_class: class(es) applied on modal.
+ * - modal_content_class: class(es) applied on modal's content.
+ * - modal_onapprove: modal's onApprove callback.
+ * - modal_approve_text: modal's approve button's text.
+ * - modal_approve_icon: modal's approve button's icon.
+ * - modal_cancel_text: modal's cancel button's text.
+ *
+ * @see loader.js.twig
+ * @see modal.js.twig
+ *
+ */
+#}
+
 {% set selector = selector is defined ? selector : ".single-custom-action" %}
 {% set method = method is defined ? method : "GET" %}
 {% set datatype = datatype is defined ? datatype : "html" %}
@@ -22,7 +83,7 @@
         var _url = _this.attr('href');
         $.ajax({
             url: {% if actionurl is not defined %}_url{% else %}'{{ actionurl|raw }}'{% endif %},
-            type: "{{ method }}",
+            method: "{{ method }}",
             datatype: "{{ datatype }}",
             {% include "elements/js/loader.js.twig" with {
                 loader: loader,

@@ -1,3 +1,65 @@
+{#
+/**
+ * @file
+ * Fomantic UI Modal.
+ *
+ * Copyright © 2009-2023 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @category  Authentication
+ * @package   Galette
+ *
+ * @author    Guillaume Agniéray <dev@agnieray.net>
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009-2023 The Galette Team
+ * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or later
+ * @link      https://galette.eu
+ * @since     Available since 1.0dev - 2023-02-23
+ *
+ * Available variables:
+ *
+ * - modal_selector: existing inline HTML modal.
+ * - modal_without_title: true to hide modal's header.
+ * - modal_title: value coming from js code.
+ * - modal_title_twig: value coming from twig.
+ * - modal_without_content: true to hide modal's content.
+ * - modal_content: value coming from js code.
+ * - modal_content_twig: value coming from twig.
+ * - modal_class: class(es) applied on modal.
+ * - modal_content_class: class(es) applied on modal's content.
+ * - modal_other_options: hash to add other options { option: value }.
+ * - modal_onshow: modal's onShow callback.
+ * - modal_onapprove: modal's onApprove callback.
+ * - modal_ondeny: modal's onDeny callback.
+ * - modal_additional_button: hash to add a third button { text, icon, color, click }.
+ * - modal_deny_only: true hides the approve button.
+ * - modal_approve_text: modal's approve button's text.
+ * - modal_approve_icon: modal's approve button's icon.
+ * - modal_approve_color: modal's approve button's color.
+ * - modal_approve_click: modal's approve button's onclick event.
+ * - modal_cancel_text: modal's cancel button's icon.
+ * - modal_cancel_icon: modal's cancel button's icon.
+ * - modal_cancel_color: modal's cancel button's icon.
+ * - modal_cancel_click: modal's cancel button's onclick event.
+ * - modal_classname: string to override default Fomantic UI classes.
+ *
+ */
+#}
+
 {% if modal_selector is not defined %}
     $.modal({
     {% if modal_without_title is not defined %}
