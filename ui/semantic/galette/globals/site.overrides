@@ -24,6 +24,10 @@
   text-transform: uppercase;
 }
 
+.error-trace pre {
+  overflow-x: auto;
+}
+
 /*--------------------------------
      Base layout and navigation
 ---------------------------------*/
