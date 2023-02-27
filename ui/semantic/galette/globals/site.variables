@@ -4,7 +4,8 @@
 
 @fontName                   : 'PT Sans';
 
-@galetteNavBackground       : rgba(99, 107, 112, .3) url(themes/galette/assets/images/bg.png) no-repeat;
+@galetteBackgroundImage     : 'themes/galette/assets/images/bg.png';
+@galetteNavBackground       : rgba(99, 107, 112, .3);
 @galetteColor               : #ffb619;
 @lightGaletteColor          : #ffda8b;
 
