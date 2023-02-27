@@ -15,16 +15,28 @@
                 <section{% if login.isLogged() %} class="content"{% endif %}>
 {% if not login.isLogged() %}
                     <div class="ui basic center aligned fitted segment">
-                        <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
-                        <div class="ui block huge brand header">
+                        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
+                        <div class="ui large header">
                             {{ preferences.pref_nom }}
-                            <div class="sub header">{%  if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
+                            <div class="sub header">{% if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
+                        </div>
+                    </div>
+                    <h1 class="ui block center aligned header" style="position: relative">
+{% else %}
+                    <div class="ui horizontal basic segments header">
+                        <div class="ui center aligned segment">
+                            <h1>
+{% endif %}
+                                {{ page_title }}</h1>
+                            </h1>
+{% if login.isLogged() %}
                         </div>
                     </div>
 {% endif %}
-                    <h1 class="ui block center aligned header">{{ page_title }}</h1>
-                    {% include "elements/messages_inline.html.twig" %}
-                    <div class="main-content">{% block content %}{{ _T("Public page content") }}{% endblock %}</div>
+                    <div class="main-content">
+                        {% include "elements/messages_inline.html.twig" %}
+                        {% block content %}{{ _T("Public page content") }}{% endblock %}
+                    </div>
                     {% include "elements/footer.html.twig" %}
                 </section>
             </div>
