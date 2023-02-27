@@ -3,19 +3,25 @@
 *******************************/
 
 /*----------------------
+     Striped tables
+-----------------------*/
+
+.ui.striped:not(.basic).table > tbody > tr,
+.ui.striped:not(.basic).table > tr {
+    background-color: #eeeeee;
+}
+
+.ui.striped:not(.basic).table > tbody > tr:nth-child(2n),
+.ui.striped:not(.basic).table > tr:nth-child(2n) {
+    background-color: #e2e5ee;
+}
+
+/*----------------------
      Listing tables
 -----------------------*/
 table.listing td {
     line-height:1.5em;
     padding:.1em .2em;
-}
-table.listing.tbl_line_odd,
-table.listing tr.odd > td {
-    background-color: #e2e5ee;
-}
-table.listing tbody .tbl_line_even,
-table.listing tbody tr.even > td {
-    background-color: #eeeeee;
 }
 table.listing tbody tr:hover > td {
     background-color: @activeLineBackgroundColor !important;

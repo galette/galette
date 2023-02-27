@@ -46,7 +46,7 @@
         {% endif %}
 
             <div class="ui basic fitted segment loader_selector">
-                <table class="listing ui celled table">
+                <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
                     <thead>
                         <tr>
                     {% block header %}

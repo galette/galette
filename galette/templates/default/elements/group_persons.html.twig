@@ -1,5 +1,5 @@
                 <div class="ui basic fitted segment loader_selector">
-                    <table class="listing ui celled table">
+                    <table class="listing ui celled striped table">
                         <thead>
                             <tr>
                                 <th class="left">
@@ -15,7 +15,7 @@
                         </thead>
                         <tbody>
 {% for person in persons %}
-                            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                            <tr>
                                 <td class="username_row">
                                 <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
                                 {% if person.isCompany() %}

@@ -3,7 +3,7 @@
 {% block content %}
     <form action="{{ url_for('titles') }}" method="post" enctype="multipart/form-data" class="ui form">
         <div class="ui basic fitted segment loader_selector">
-            <table class="listing ui celled table">
+            <table class="listing ui celled striped table">
                 <thead>
                     <tr>
                         <th class="id_row">#</th>
@@ -36,7 +36,7 @@
                 </tfoot>
                 <tbody>
         {% for title in titles_list %}
-                    <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                    <tr>
                         <td data-scope="row">
             {% if preferences.pref_show_id %}
                             {{ title.id }}

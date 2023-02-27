@@ -26,7 +26,7 @@
                     </div>
                     <div class="active content field">
                         <p>{{ _T('The following exports already seems to exist on the disk:') }}</p>
-                        <table class="listing ui celled table">
+                        <table class="listing ui celled striped table">
                             <thead>
                                 <tr>
                                     <th class="id_row">#</th>
@@ -38,7 +38,7 @@
                             </thead>
                             <tbody>
         {% for export in existing %}
-                                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                                <tr>
                                     <td data-scope="id">
                                         {{ loop.index }}
                                     </td>
@@ -77,7 +77,7 @@
                     <div class="active content field">
 {% if parameted|length > 0 %}
                         <p>{{ _T('Which parameted export(s) do you want to run?') }}</p>
-                        <table class="listing ui celled table">
+                        <table class="listing ui celled striped table">
                             <thead>
                                 <tr>
                                     <th class="small_head"/>
@@ -87,7 +87,7 @@
                             </thead>
                             <tbody>
     {% for param in parameted %}
-                                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                                <tr>
                                     <td data-scope="id">
                                         <input type="checkbox" name="export_parameted[]" id="{{ param.id }}" value="{{ param.id }}"/>
                                     </td>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="active content field">
                         <p>{{ _T('Additionnaly, which table(s) do you want to export?') }}</p>
-                        <table class="listing same ui celled table">
+                        <table class="listing same ui celled striped table">
                             <thead>
                                 <tr>
                                     <th class="small_head"/>
@@ -124,7 +124,7 @@
                             </thead>
                             <tbody>
     {% for table in tables_list %}
-                                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                                <tr>
                                     <td>
                                         <input type="checkbox" name="export_tables[]" id="{{ table }}" value="{{ table }}"/>
                                     </td>

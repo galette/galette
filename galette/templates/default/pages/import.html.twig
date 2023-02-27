@@ -25,7 +25,7 @@
                             </div>
 {% if existing|length > 0 %}
                             <p>{{ _T('The following files seems ready to import on the disk:') }}</p>
-                            <table class="listing ui celled table">
+                            <table class="listing ui celled striped table">
                                 <thead>
                                     <tr>
                                         <th>{{ _T('Name') }}</th>
@@ -36,7 +36,7 @@
                                 </thead>
                                 <tbody>
     {% for import in existing %}
-                                    <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                                    <tr>
                                         <td data-scope="row">
                                             <input type="radio" name="import_file" id="file{{ loop.index }}" value="{{ import.name }}"{% if import_file is defined and import_file == import.name %} checked="checked"{% endif %}/>
                                             <label for="file{{ loop.index }}">{{ import.name }}</label> (<a href="{{ url_for("getCsv", {"type": "import", "file": import.name}) }}">{{ _T('see') }}</a>)

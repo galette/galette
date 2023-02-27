@@ -111,7 +111,7 @@
 {% block body %}
     {% for log in logs %}
         {% set date_format = _T('Y-m-d H:i:s') %}
-        <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+        <tr>
             <td data-scope="row">
                 {% if preferences.pref_show_id %}
                     {{ log.mailing_id }}

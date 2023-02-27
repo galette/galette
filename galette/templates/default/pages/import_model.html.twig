@@ -6,7 +6,7 @@
     <a href="{{ url_for('importModel') }}?tab=change" class="item{{ tab == 'change' ? ' active' }}" data-tab="change">{{ _T('Change model') }}</a>
 </div>
 <div class="ui{{ tab == 'current' ? ' active' }} tab segment" data-tab="current">
-    <table class="listing ui celled table">
+    <table class="listing ui celled striped table">
         <div class="ui small header">
             {% if defaults_loaded %}
                 {{ _T('Default fields') }}
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
     {% for field in fields %}
-            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+            <tr>
         {% if members_fields[field] is not defined %}
                 <td>{{ _T('Missing field \'%field\'')|replace({'%field': field}) }}</td>
         {% else %}
@@ -50,7 +50,7 @@
 </div>
 <div class="ui{{ tab == 'change' ? ' active' }} tab segment" data-tab="change">
     <form action="{{ url_for('storeImportModel') }}" method="POST" class="ui form" id="modelform">
-        <table class="listing ui celled table">
+        <table class="listing ui celled striped table">
             <thead>
                 <tr>
                     <th></th>
@@ -59,7 +59,7 @@
             </thead>
             <tbody>
         {% for k, field in members_fields %}
-                <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                <tr>
                     <td>
                         <input type="checkbox" name="fields[]" id="field_{{ k }}" value="{{ k }}"{% if k in fields %} checked="checked"{% endif %}/>
                     </td>
