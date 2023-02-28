@@ -403,7 +403,7 @@ abstract class GaletteTestCase extends atoum
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
 
         $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('DURAND René');
-        $this->string($adh->getRowClass())->isIdenticalTo('active cotis-never');
+        $this->string($adh->getRowClass())->isIdenticalTo('active-account cotis-never');
     }
 
     /**
@@ -506,7 +506,7 @@ abstract class GaletteTestCase extends atoum
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
 
         $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('HOARAU Lucas');
-        $this->string($adh->getRowClass())->isIdenticalTo('active cotis-never');
+        $this->string($adh->getRowClass())->isIdenticalTo('active-account cotis-never');
     }
 
     /**
@@ -696,7 +696,7 @@ abstract class GaletteTestCase extends atoum
         //load member from db
         $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         //member is now up-to-date
-        $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
+        $this->string($this->adh->getRowClass())->isIdenticalTo('active-account cotis-ok');
         $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
         $this->boolean($this->adh->isUp2Date())->isTrue();
         $this->boolean($contrib->isFee())->isTrue();

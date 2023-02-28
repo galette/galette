@@ -362,7 +362,7 @@ class Links extends GaletteTestCase
         //load member from db
         $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         //member is now up-to-date
-        $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-late');
+        $this->string($this->adh->getRowClass())->isIdenticalTo('active-account cotis-late');
         $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
         $this->boolean($this->adh->isUp2Date())->isFalse();
     }
