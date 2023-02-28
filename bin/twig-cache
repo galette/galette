@@ -87,12 +87,12 @@ $twig_functions = [
     '_Tn',
     '_Tx',
     '_Tnx',
-    'path_for',
+    'url_for',
     'memberName',
     'callstatic',
-    'is_current_path',
+    'is_current_url',
     'get_class',
-    'base_url',
+    'base_path',
     'file_exists'
 ];
 
