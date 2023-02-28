@@ -757,7 +757,7 @@ class Adherent
      */
     public function getRowClass(bool $public = false): string
     {
-        $strclass = ($this->isActive()) ? 'active' : 'inactive';
+        $strclass = ($this->isActive()) ? 'active-account' : 'inactive-account';
         if ($public === false) {
             $strclass .= $this->_row_classes;
         }

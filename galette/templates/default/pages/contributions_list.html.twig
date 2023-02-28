@@ -120,7 +120,7 @@
         </div>
     {% endif %}
     {% if member is defined %}
-        <div class="{{ member.getRowClass() }}{% if not member.isActive() %} inactive{% endif %} ui center aligned segment">
+        <div class="{{ member.getRowClass() }}{% if not member.isActive() %} inactive-account{% endif %} ui center aligned segment">
             {{ member.getDues() }}
         </div>
     {% endif %}

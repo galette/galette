@@ -15,7 +15,7 @@
   color: @unselectedTextColor;
 }
 
-.inactive {
+.inactive-account {
   color: lighten(@grey, 15);
   font-style: italic;
 }
