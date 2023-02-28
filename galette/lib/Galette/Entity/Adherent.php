@@ -1268,7 +1268,7 @@ class Adherent
                     $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                     if ($d === false) {
                         //try with non localized date
-                        $d = \DateTime::createFromFormat("Y-m-d", $value);
+                        $d = \DateTime::createFromFormat("d/m/Y", $value);
                         if ($d === false) {
                             throw new \Exception('Incorrect format');
                         }
