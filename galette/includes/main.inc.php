@@ -161,11 +161,6 @@ if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAd
 }
 
 /**
- * Trailing slash middleware
- */
-$app->add(TrailingSlash::class);
-
-/**
  * Change language middleware
  *
  * Require determineRouteBeforeAppMiddleware to be on.
@@ -234,6 +229,11 @@ $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class
  * At the end, so it can be used to render errors
  */
 $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
+
+/**
+ * Trailing slash middleware
+ */
+$app->add(TrailingSlash::class);
 
 $app->run();
 
