@@ -2,9 +2,11 @@
 
 {% block content %}
 {% if preferences.pref_mail_method == constant('Galette\\Core\\Mailing::METHOD_DISABLED') and constant('GALETTE_MODE') != 'DEMO' %}
-        <div id="errorbox" class="ui red message">
-            <h1>{{ _T("- ERROR -") }}</h1>
-            <p>{{ _T("Email sent is disabled in the preferences. Ask galette admin") }}</p>
+        <div id="errorbox" class="ui negative icon message">
+            <i class="ban icon"></i>
+            <div class="content">
+                <p>{{ _T("Email sent is disabled in the preferences. Ask galette admin") }}</p>
+            </div>
         </div>
 {% elseif mailing_saved is not defined %}
         <form action="{{ url_for('doMailing') }}" id="listform" method="post" enctype="multipart/form-data" class="ui form">

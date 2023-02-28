@@ -1,19 +1,27 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
+        <div class="ui icon info visible message">
+            <i class="info circle blue icon"></i>
+            <div class="content">
+                {{ _T("Each selected export will be stored into a separate file in the exports directory.") }}
+            </div>
+        </div>
         <form class="form" action="{{ url_for("doExport") }}" method="post" enctype="multipart/form-data">
-        <div class="ui orange message">{{ _T("Each selected export will be stored into a separate file in the exports directory.") }}</div>
 
 {% set written_exports = flash.getMessage('written_exports') %}
 
 {% if written is iterable and written|length > 0 %}
-        <div class="ui success message">
-            <p>{{ _T('The following files have been written on disk:') }}</p>
-            <ul>
+        <div class="ui icon success visible message with-transition">
+            <i class="download icon"></i>
+            <div class="content">
+                <p>{{ _T('The following files have been written on disk:') }}</p>
+                <ul>
     {% for ex in written %}
-                <li>{{ ex }}</li>
+                    <li>{{ ex|raw }}</li>
     {% endfor %}
-            </ul>
+                </ul>
+            </div>
         </div>
 {% endif %}
 

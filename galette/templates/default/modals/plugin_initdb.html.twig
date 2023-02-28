@@ -31,7 +31,12 @@
                         <ul>
                             <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
                         </ul>
-                        <p class="ui orange message">{{ _T("Warning: Don't forget to backup your current database.") }}</p>
+                        <div class="ui icon yellow icon message">
+                            <i class="exclamation triangle icon"></i>
+                            <div class="content">
+                                {{ _T("Warning: Don't forget to backup your current database.") }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

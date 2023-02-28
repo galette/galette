@@ -235,7 +235,7 @@
                         loader: "button"
                     } %},
                     success: function(res){
-                        var _modified = '<div class="ui orange message with-transition"><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
+                        var _modified = '<div class="ui icon yellow small message with-transition"><i class="exclamation triangle icon"></i><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
                         _container.find('.message').remove();
                         if ( res != 0 ) {
                             _container.find('.loader_selector').remove();
@@ -249,7 +249,6 @@
                         }
                         $('.members-selection').modal('hide');
                         $('.message.with-transition').transition('flash');
-;
                     },
                     error: function() {
                         {% include "elements/js/modal.js.twig" with {

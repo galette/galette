@@ -1,5 +1,10 @@
 {% if class == 'Status' %}
-    <div class="ui blue message">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</div>
+    <div class="ui icon info visible message">
+        <i class="info circle blue icon"></i>
+        <div class="content">
+            {{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}
+        </div>
+    </div>
 {% endif %}
     <div class="ui basic fitted segment loader_selector">
         <table class="listing ui celled striped table">

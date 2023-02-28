@@ -46,8 +46,8 @@
 {% endblock %}
 
 {% block search %}
-    <div class="ui icon yellow small message">
-        <i class="info circle icon"></i>
+    <div class="ui icon info visible message">
+        <i class="info circle blue icon"></i>
         <div class="content">
             {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
         </div>
@@ -91,15 +91,8 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="4">
-                <div class="ui icon info small message">
-                    <i class="info icon"></i>
-                    <div class="content">
-                        <div class="header">
-                            {{ _T('No member to show') }}
-                        </div>
-                    </div>
-                </div>
+            <td class="emptylist" colspan="4">
+                {{ _T('No member to show') }}
             </td>
         </tr>
     {% endfor %}

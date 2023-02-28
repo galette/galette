@@ -365,13 +365,16 @@
             </div>
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'mail' ? ' active' }} tab segment" data-tab="mail">
+    {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
+            <div class="ui icon negative message">
+                <i class="ban icon"></i>
+                <div class="content">
+                    {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
+                </div>
+            </div>
+    {% else %}
             <div class="ui stackable two column grid">
                 <div class="column">
-    {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
-                    <div class="ui negative message">
-                        <p>{{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}</p>
-                    </div>
-    {% else %}
                     <div class="field">
                         <label for="pref_email_nom">{{ _T("Sender name:") }}</label>
                         <input type="text" name="pref_email_nom" id="pref_email_nom" value="{{ pref.pref_email_nom }}" maxlength="50"{% if required.pref_email_nom is defined and required.pref_email_nom == 1 %} required="required"{% endif %}/>
@@ -525,9 +528,9 @@
                             <input type="password" name="pref_mail_smtp_password" id="pref_mail_smtp_password" value="{{ pref.pref_mail_smtp_password }}" autocomplete="off" maxlength="100" size="30"{% if required.pref_mail_smtp_password is defined and required.pref_mail_smtp_password == 1 %} required="required"{% endif %}/>
                         </div>
                     </div>
-    {% endif %}
                 </div>{# /column #}
             </div>{# /column grid #}
+    {% endif %}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'labels' ? ' active' }} tab segment" data-tab="labels">
             <div class="ui two column grid">
@@ -599,8 +602,11 @@
             </div>{# /column grid #}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'cards' ? ' active' }} tab segment" data-tab="cards">
-            <div class="ui message">
-                <p>{{ _T("Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)") }}</p>
+            <div class="ui icon info visible message">
+                <i class="info circle blue icon"></i>
+                <div class="content">
+                    {{ _T("Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)")|raw }}
+                </div>
             </div>
             <div class="ui two column grid">
                 <div class="column">
@@ -809,8 +815,11 @@
 {% if login.isSuperAdmin() %}
         <div class="ui{{ tab == 'admin' ? ' active' }} tab red segment" data-tab="admin">
     {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
-                <div class="ui negative message">
-                    {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
+                <div class="ui icon negative message">
+                    <i class="ban icon"></i>
+                    <div class="content">
+                        {{ _T("Application runs under demo mode. This functionnality is not enabled, sorry.") }}
+                    </div>
                 </div>
     {% else %}
                 <div class="inline field">

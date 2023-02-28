@@ -2,7 +2,12 @@
 
 {% block content %}
     <form action="{{ url_for('doAdminTools') }}" method="post" class="ui form">
-        <div class="ui orange message">{{ _T("Make sure you've done a backup of the database before using any of the following tools!") }}</div>
+        <div class="ui icon yellow icon message with-transition">
+            <i class="exclamation triangle icon"></i>
+            <div class="content">
+                {{ _T("Make sure you've done a backup of the database before using any of the following tools!") }}
+            </div>
+        </div>
         <div class="ui top attached accordion-styled header">
             {{ _T('Select actions(s)') }}
         </div>
