@@ -2,50 +2,37 @@
     {% set selector = "[id$='rangestart'], [id$='rangeend']" %}
 {% endif %}
 
-    function _cleanUntranslated(elt) {
-        if (Array.isArray(elt)) {
-            var _cleaned = [];
-            for (var i = 0; i < elt.length; i++) {
-                var a = elt[i].replace(/\s\(not translated\)/, '');
-                _cleaned.push(a);
-            }
-        } else {
-            var _cleaned = elt.replace(/\s\(not translated\)/, '');
-        }
-        return _cleaned;
-    }
-
-    var _calendarDays = '{{ _T("S,M,T,W,T,F,S") }}';
+    var _calendarDays = '{{ __("S,M,T,W,T,F,S") }}';
     var _calendarMonths = [
-        '{{ _T("January") }}',
-        '{{ _T("February") }}',
-        '{{ _T("March") }}',
-        '{{ _T("April") }}',
-        '{{ _T("May") }}',
-        '{{ _T("June") }}',
-        '{{ _T("July") }}',
-        '{{ _T("August") }}',
-        '{{ _T("September") }}',
-        '{{ _T("October") }}',
-        '{{ _T("November") }}',
-        '{{ _T("December") }}'
+        '{{ __("January") }}',
+        '{{ __("February") }}',
+        '{{ __("March") }}',
+        '{{ __("April") }}',
+        '{{ __("May") }}',
+        '{{ __("June") }}',
+        '{{ __("July") }}',
+        '{{ __("August") }}',
+        '{{ __("September") }}',
+        '{{ __("October") }}',
+        '{{ __("November") }}',
+        '{{ __("December") }}'
     ];
     var _calendarMonthsShort = [
-        '{{ _T("Jan") }}',
-        '{{ _T("Feb") }}',
-        '{{ _T("Mar") }}',
-        '{{ _T("Apr") }}',
-        '{{ _T("May") }}',
-        '{{ _T("Jun") }}',
-        '{{ _T("Jul") }}',
-        '{{ _T("Aug") }}',
-        '{{ _T("Sep") }}',
-        '{{ _T("Oct") }}',
-        '{{ _T("Nov") }}',
-        '{{ _T("Dec") }}'
+        '{{ __("Jan") }}',
+        '{{ __("Feb") }}',
+        '{{ __("Mar") }}',
+        '{{ __("Apr") }}',
+        '{{ __("May") }}',
+        '{{ __("Jun") }}',
+        '{{ __("Jul") }}',
+        '{{ __("Aug") }}',
+        '{{ __("Sep") }}',
+        '{{ __("Oct") }}',
+        '{{ __("Nov") }}',
+        '{{ __("Dec") }}'
     ];
-    var _calendarToday = '{{ _T("Today") }}';
-    var _calendarNow = '{{ _T("Now") }}';
+    var _calendarToday = '{{ __("Today") }}';
+    var _calendarNow = '{{ __("Now") }}';
     var _dateFormatter = '{{ _T("YYYY-MM-DD") }}';
     function _calendarWidget(selector) {
         $(selector).calendar({
@@ -53,14 +40,14 @@
             firstDayOfWeek: 1,
             monthFirst: false,
             text: {
-                days: _cleanUntranslated(_calendarDays).split(','),
-                months: _cleanUntranslated(_calendarMonths),
-                monthsShort: _cleanUntranslated(_calendarMonthsShort),
-                today: _cleanUntranslated(_calendarToday),
-                now: _cleanUntranslated(_calendarNow),
+                days: _calendarDays.split(','),
+                months: _calendarMonths,
+                monthsShort: _calendarMonthsShort,
+                today: _calendarToday,
+                now: _calendarNow,
             },
             formatter: {
-                date: _cleanUntranslated(_dateFormatter),
+                date: _dateFormatter,
             }
         });
     };
