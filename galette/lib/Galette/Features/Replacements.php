@@ -226,6 +226,7 @@ trait Replacements
                 'pattern'          => '/{ASSO_LOGO}/',
             ],
             'date_now'              => [
+                //TRANS: see https://www.php.net/manual/datetime.format.php
                 'title'     => _T('Current date (Y-m-d)'),
                 'pattern'   => '/{DATE_NOW}/'
             ],
@@ -496,6 +497,7 @@ trait Replacements
                 'asso_address_multi' => $address_multi,
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
+                //TRANS: see https://www.php.net/manual/datetime.format.php
                 'date_now'           => date(_T('Y-m-d')),
                 'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
             )

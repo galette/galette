@@ -183,6 +183,9 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('cur_route', null);
     $view->getEnvironment()->addGlobal('cur_subroute', null);
     $view->getEnvironment()->addGlobal('navigate', null);
+
+    //TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+    $view->getEnvironment()->addGlobal('fui_dateformatter', __("YYYY-MM-DD"));
     //End Twig globals
 
     return $view;
