@@ -31,13 +31,14 @@
 # Der_Unterhaendler <Lukas.Engelschalk@gmx.de>, 2022.
 # Moritz Walter Ott <moritzwott@gmail.com>, 2022.
 # klausellus-wallace <muetze.polka0e@icloud.com>, 2023.
+# CryptKid <CryptKiddie@chaospott.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
 "PO-Revision-Date: 2023-03-02 16:45+0000\n"
-"Last-Translator: klausellus-wallace <muetze.polka0e@icloud.com>\n"
+"Last-Translator: CryptKid <CryptKiddie@chaospott.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -3018,7 +3019,7 @@ msgstr "Galette URI zum Ändern des Passworts"
 
 #: ../lib/Galette/Entity/Texts.php:639
 msgid "Mail specific"
-msgstr "Mailspezifisch"
+msgstr "E-Mail-Spezifisch"
 
 #: ../lib/Galette/Entity/Social.php:362
 msgid "Mastodon"
