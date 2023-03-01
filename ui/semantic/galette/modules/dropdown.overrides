@@ -8,3 +8,36 @@
 .nojs select[multiple].ui.dropdown {
   height: 7rem;
 }
+
+/*------------------------
+     Search dropdown
+-------------------------*/
+.ui.search.selection.paginated.dropdown {
+    &.clearable .text {
+        margin-right: 2.5em;
+    }
+    > .chevron.circle.right.icon {
+        display: none;
+    }
+    &.visible > .chevron.circle.right.icon {
+        display: block;
+        cursor: pointer;
+        font-size: .85714286em;
+        margin: -.78571429em;
+        padding: .91666667em;
+        top: .78571429em;
+        right: 3.5em;
+        position: absolute;
+        opacity: .6;
+        z-index: 3;
+        &:hover {
+            opacity: 1;
+        }
+    }
+    &.visible > .remove.icon {
+        right: 5em;
+    }
+    > input.search {
+        padding: .67857143em 5em .67857143em 1em;
+    }
+}

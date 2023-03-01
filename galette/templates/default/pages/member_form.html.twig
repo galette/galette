@@ -62,17 +62,12 @@
                         <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
                     </div>
                     <span id="parent_id_elt" class="">
-                        <div id="parent_id" class="jsonly search-dropdown ui input nochosen">
+                        <div id="parent_id" class="jsonly search-dropdown ui input nochosen paginated">
                             <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
                             <i class="jsonly displaynone dropdown icon"></i>
+                            <i class="jsonly displaynone chevron circle right icon tooltip" title="{{ _T("Next results") }}"></i>
                             <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
-                            <div class="jsonly displaynone menu">
-            {% for k, v in members.list %}
-                                <div class="item" data-value="{{ k }}">{{ v }}</div>
-            {% endfor %}
-                            </div>
                         </div>
-                        <div class="jsonly displaynone ui tiny icon button tooltip" id="reset-contributor" title="{{ _T("Reset") }}"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                     </span>
             {% if member.isDuplicate() %}
                     <input type="hidden" name="duplicate" value="1" />

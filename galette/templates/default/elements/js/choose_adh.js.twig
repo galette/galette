@@ -4,7 +4,6 @@
     var _adhselect = function() {
         $('{{ js_chosen_id }}').dropdown({
             match: 'text',
-            placeholder: '{{ _T("Search for name or ID and pick member") }}',
             apiSettings: {
                 url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
@@ -22,12 +21,36 @@
                         modal_classname: "redalert",
                     } %}
                 }
+            },
+            onShow: function() {
+                $('{{ js_chosen_id }} .chevron.circle.right.icon').on('click', function() {
+                    $.ajax({
+                        // TODO : get next page number.
+                        {% set next_page = 2 %}
+                        url: '{{ url_for("contributionMembers", {"page": next_page }) }}',
+                        method: 'post',
+                        {% include "elements/js/loader.js.twig" with {
+                            loader: "action",
+                            loader_text: "",
+                            selector: ".menu.visible"
+                        } %},
+                        success: function(res) {
+                            var _values = Object.values(res)[0];
+                            $('{{ js_chosen_id }}').dropdown('change values', _values);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                });
             }
-        });
-
-        $('#reset-contributor').on('click', function() {
-            $('{{ js_chosen_id }}').dropdown('restore defaults');
-            $('{{ js_chosen_id }}').dropdown('refresh');
         });
     }
 

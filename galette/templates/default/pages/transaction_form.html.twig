@@ -16,17 +16,12 @@
                         </div>
                         <div class="field inline">
                             <label for="id_adh" >{{ _T("Originator:") }}</label>
-                            <div id="id_adh" class="jsonly search-dropdown ui input nochosen"{% if required.id_adh == 1 %} required="required"{% endif %}>
+                            <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated"{% if required.id_adh == 1 %} required="required"{% endif %}>
                                 <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
                                 <i class="jsonly displaynone dropdown icon"></i>
+                                <i class="jsonly displaynone chevron circle right icon tooltip" title="{{ _T("Next results") }}"></i>
                                 <div class="jsonly displaynone default text">{% if not transaction.member %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                                <div class="jsonly displaynone menu">
-    {% for k, v in members.list %}
-                                    <div class="item" data-value="{{ k }}">{{ v }}</div>
-    {% endfor %}
-                                </div>
                             </div>
-                            <div class="tooltip jsonly displaynone ui tiny icon button" id="reset-contributor" title="{{ _T("Reset") }}"><i class="redo icon"></i><span class="displaynone">{{ _T("Reset") }}</span></div>
                         </div>
                         <div class="field inline">
                             <label for="trans_date">{{ _T("Date:") }}</label>
