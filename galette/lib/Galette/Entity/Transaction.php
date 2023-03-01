@@ -326,7 +326,11 @@ class Transaction
                             try {
                                 $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                                 if ($d === false) {
-                                    throw new \Exception('Incorrect format');
+                                    //try with non localized date
+                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
+                                    if ($d === false) {
+                                        throw new \Exception('Incorrect format');
+                                    }
                                 }
                                 $this->$prop = $d->format('Y-m-d');
                             } catch (Throwable $e) {
