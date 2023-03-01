@@ -1,6 +1,6 @@
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-07-03 20:46+0000\n"
+"PO-Revision-Date: 2023-03-01 06:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1-dev\n"
+"X-Generator: Weblate 4.16-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -7912,7 +7912,6 @@ msgid "Are you sure you want to remove this attachment?"
 msgstr "Confirmes que vols eliminar aquest adjunt?"
 
 #: ../../tempcache/pages/mailing_form.html.twig:713
-#, fuzzy
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr "Això eliminarà immediatament l'adjunt del disc i no es pot desfer."
 
