@@ -255,8 +255,8 @@ class Contribution extends GaletteTestCase
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
         $due_date = clone $begin_date;
-        $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
+        $due_date->sub(new \DateInterval('P1D'));
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -332,8 +332,8 @@ class Contribution extends GaletteTestCase
 
         // First, check for 12 months renewal
         $due_date = new \DateTime();
-        $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
+        $due_date->sub(new \DateInterval('P1D'));
         $this->string($contrib->end_date)->isIdenticalTo($due_date->format('Y-m-d'));
 
         //unset pref_beg_membership and pref_membership_ext
@@ -426,8 +426,8 @@ class Contribution extends GaletteTestCase
 
         $now = new \DateTime();
         $due_date = clone $now;
-        $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
+        $due_date->sub(new \DateInterval('P1D'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
             \Galette\Entity\ContributionsTypes::PK  => 1, //annual fee
@@ -457,8 +457,8 @@ class Contribution extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P3M'));
         $due_date = clone $begin_date;
-        $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
+        $due_date->sub(new \DateInterval('P1D'));
         $data = [
             \Galette\Entity\Adherent::PK            => $adh->id,
             \Galette\Entity\ContributionsTypes::PK  => 1, //annual fee
@@ -616,8 +616,8 @@ class Contribution extends GaletteTestCase
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
         $due_date = clone $begin_date;
-        $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
+        $due_date->sub(new \DateInterval('P1D'));
 
         $data = [
             'id_adh' => $cid,
