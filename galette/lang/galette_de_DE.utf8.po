@@ -7,7 +7,7 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # aschlager <andreas.schlager@be-x.at>, 2020.
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
@@ -33,9 +33,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-07-03 20:27+0000\n"
+"PO-Revision-Date: 2023-03-01 06:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -44,7 +44,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1-dev\n"
+"X-Generator: Weblate 4.16-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -6553,8 +6553,6 @@ msgstr ""
 "Beim Überprüfen der Einzigartigkeit des Namens ist ein Fehler aufgetreten :("
 
 #: ../../tempcache/pages/groups_list.html.twig:218
-#, fuzzy
-#| msgid "Pleade provide a group name"
 msgid "Please provide a group name"
 msgstr "Bitte geben Sie einen Gruppennamen ein"
 
@@ -6927,9 +6925,6 @@ msgid "Are you sure you want to remove this attachment?"
 msgstr "Wollen Sie diesen Anhang wirklich entfernen?"
 
 #: ../../tempcache/pages/mailing_form.html.twig:713
-#, fuzzy
-#| msgid ""
-#| "This will immediately remove attachment from disk and cannot be undo."
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr "Anhang sofort entfernen, kann nicht rückgängig gemacht werden."
 
