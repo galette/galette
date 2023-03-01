@@ -24,7 +24,7 @@
 # G-Manu Studios <robbankz@yahoo.de>, 2021.
 # TwoB00m <qwertze@gmx.at>, 2021.
 # Harald Wopenka <hwop@wopit.at>, 2021.
-# Phil Clifford <philip.clifford@gmail.com>, 2021.
+# Phil Clifford <philip.clifford@gmail.com>, 2021, 2023.
 # Matthew Machivenyika <accounts@machivenyika.ch>, 2022.
 # Sven Kislig <seven7kislig@gmail.com>, 2022.
 # Marvin <wile.e.coyote@keemail.me>, 2022.
@@ -38,7 +38,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
 "PO-Revision-Date: 2023-03-02 16:45+0000\n"
-"Last-Translator: CryptKid <CryptKiddie@chaospott.de>\n"
+"Last-Translator: Phil Clifford <philip.clifford@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -2552,7 +2552,7 @@ msgstr "Gruppen des Mitglieds (als Liste)"
 
 #: ../lib/Galette/Features/Replacements.php:344
 msgid "Member state of dues"
-msgstr "Mitglieder nach Gebührenbezahlstatus"
+msgstr "Mitglieder nach Gebühren"
 
 #: ../lib/Galette/Features/Replacements.php:348
 msgid "Membership remaining days"
