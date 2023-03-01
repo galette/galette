@@ -402,7 +402,7 @@
                 {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
                                 <a href="tel:{{ value }}">{{ value }}</a>
                 {% elseif column.field_id == 'parent_id' %}
-                                <a href="{{ url_for("member", {"id": member.parent}) }}">{{ memberName(member.parent) }}</a>
+                                <a href="{{ url_for("member", {"id": member.parent}) }}">{{ memberName({"id": member.parent}) }}</a>
                 {% elseif column.field_id == 'ddn_adh' %}
                                 {{ value }} {{ member.getAge() }}
                 {% else %}
