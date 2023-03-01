@@ -1,5 +1,5 @@
 # Tymofij Lytvynenko <till.svit@gmail.com>, 2020, 2021.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023.
 # Віталій Куждін <kuzhdinvitaliy@gmail.com>, 2021.
 # Andrii Leitsius <leits.dev@gmail.com>, 2021.
 # Tymofii Lytvynenko <till.svit@gmail.com>, 2021.
@@ -9,19 +9,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-07-26 00:55+0000\n"
-"Last-Translator: Artem <artem@molotov.work>\n"
+"PO-Revision-Date: 2023-03-01 06:46+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.14-dev\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.16-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -6473,8 +6473,6 @@ msgid "An error occurred checking name uniqueness :("
 msgstr "Сталася помилка під час перевірки неповторюваності імені :("
 
 #: ../../tempcache/pages/groups_list.html.twig:218
-#, fuzzy
-#| msgid "Pleade provide a group name"
 msgid "Please provide a group name"
 msgstr "У плейаді вказати назву групи"
 
@@ -6844,9 +6842,6 @@ msgid "Are you sure you want to remove this attachment?"
 msgstr "Ви впевнені, що хочете видалити цей додаток?"
 
 #: ../../tempcache/pages/mailing_form.html.twig:713
-#, fuzzy
-#| msgid ""
-#| "This will immediately remove attachment from disk and cannot be undo."
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr "Це негайно видалить долучення з диска і це не можна скасувати."
 
