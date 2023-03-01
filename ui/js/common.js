@@ -166,7 +166,7 @@ $(function() {
     $('.jsenabled .jsonly.displaynone').removeClass('displaynone');
     $('.jsenabled .jsonly.disabled').removeClass('disabled');
     $('.jsenabled .jsonly.read-only').removeClass('read-only');
-    $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search selection dropdown');
+    $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search clearable selection dropdown');
 
     $('#login').focus();
 
