@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Features\BatchList;
 use Galette\Filters\ContributionsList;
 use Throwable;
 use Analog\Analog;
@@ -64,6 +65,8 @@ use Galette\Repository\PaymentTypes;
 
 class ContributionsController extends CrudController
 {
+    use BatchList;
+
     // CRUD - Create
 
     /**
@@ -982,4 +985,16 @@ class ContributionsController extends CrudController
 
     // /CRUD - Delete
     // /CRUD
+
+    /**
+     * Get filter name in session
+     *
+     * @param array|null $args Route arguments
+     *
+     * @return string
+     */
+    public function getFilterName(array $args = null): string
+    {
+        return 'filter_' . $args['type'];
+    }
 }

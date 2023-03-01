@@ -38,6 +38,7 @@ namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
+use Galette\Features\BatchList;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
@@ -74,6 +75,8 @@ use Analog\Analog;
 
 class MembersController extends CrudController
 {
+    use BatchList;
+
     /** @var bool */
     private $is_self_membership = false;
 
@@ -1833,29 +1836,6 @@ class MembersController extends CrudController
         );
     }
 
-
-    /**
-     * Get ID to remove
-     *
-     * In simple cases, we get the ID in the route arguments; but for
-     * batchs, it should be found elsewhere.
-     * In post values, we look for id key, as well as all entries_sel keys
-     *
-     * @param array $args Request arguments
-     * @param array $post POST values
-     *
-     * @return null|integer|integer[]
-     */
-    protected function getIdsToRemove(&$args, $post)
-    {
-        if (isset($args['id'])) {
-            return $args['id'];
-        } else {
-            $filters = $this->session->filter_members;
-            return $filters->selected;
-        }
-    }
-
     /**
      * Get confirmation removal page title
      *
@@ -1987,5 +1967,17 @@ class MembersController extends CrudController
         }
 
         return $navigate;
+    }
+
+    /**
+     * Get filter name in session
+     *
+     * @param array|null $args Route arguments
+     *
+     * @return string
+     */
+    public function getFilterName(array $args = null): string
+    {
+        return 'filter_members';
     }
 }

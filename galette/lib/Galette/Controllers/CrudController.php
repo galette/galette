@@ -196,19 +196,10 @@ abstract class CrudController extends AbstractController
             $ids = $args['id'];
         }
 
-        //look for {sthing}_sel as multiple ids selection (members_sel, contrib_sel, and so on)
-        //@deprecated using elements/list.html.twig assumes key is named entries_sel
-        if (is_array($post) && count($post)) {
-            $selecteds = preg_grep('/.+_sel$/', array_keys($post));
-            if (count($selecteds) == 1 && !isset($args['id'])) {
-                $ids = $post[array_shift($selecteds)];
-            } elseif (count($selecteds) > 1) {
-                //maybe an error to have multiple {type}_sel in same post request.
-                Analog::log(
-                    'Several {sthing}_sel variables in same post request should be avoid.',
-                    ANalog::WARNING
-                );
-            }
+        if ($ids === null && method_exists($this, 'getFilterName')) {
+            $filter_name = $this->getFilterName($args);
+            $filters = $this->session->$filter_name;
+            $ids = $filters->selected;
         }
 
         //type
