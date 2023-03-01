@@ -5,7 +5,7 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-07-04 07:19+0000\n"
+"PO-Revision-Date: 2023-03-01 06:46+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.13.1-dev\n"
+"X-Generator: Weblate 4.16-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1708,6 +1708,8 @@ msgstr "%status de l’association %name"
 #: ../lib/Galette/Core/Preferences.php:1121
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
+"Veuillez définir la constante \"GALETTE_URI\" avec le chemin de votre "
+"instance."
 
 # http://fr2.php.net/manual/fr/function.date.php
 #: ../lib/Galette/Core/Preferences.php:1140
@@ -3694,7 +3696,7 @@ msgstr "Association"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 #: ../includes/dependencies.php:188
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "DD/MM/YYYY"
 
 #: ../includes/dependencies.php:459
 msgid "Failed CSRF check!"
@@ -5131,132 +5133,108 @@ msgstr "Aucun groupe n’a encore été sélectionné."
 
 #: ../../tempcache/elements/js/calendar.js.twig:46
 msgid "S,M,T,W,T,F,S"
-msgstr ""
+msgstr "D,L,M,M,J,V,S"
 
 #: ../../tempcache/elements/js/calendar.js.twig:51
 msgid "January"
-msgstr ""
+msgstr "Janvier"
 
 #: ../../tempcache/elements/js/calendar.js.twig:55
 msgid "February"
-msgstr ""
+msgstr "Février"
 
 #: ../../tempcache/elements/js/calendar.js.twig:59
-#, fuzzy
-#| msgid "Search:"
 msgid "March"
-msgstr "Rechercher :"
+msgstr "Mars"
 
 #: ../../tempcache/elements/js/calendar.js.twig:63
 msgid "April"
-msgstr ""
+msgstr "Avril"
 
 #: ../../tempcache/elements/js/calendar.js.twig:67
 #: ../../tempcache/elements/js/calendar.js.twig:117
-#, fuzzy
-#| msgid "Man"
 msgid "May"
-msgstr "Homme"
+msgstr "Mai"
 
 #: ../../tempcache/elements/js/calendar.js.twig:71
 msgid "June"
-msgstr ""
+msgstr "Juin"
 
 #: ../../tempcache/elements/js/calendar.js.twig:75
 msgid "July"
-msgstr ""
+msgstr "Juillet"
 
 #: ../../tempcache/elements/js/calendar.js.twig:79
 msgid "August"
-msgstr ""
+msgstr "Août"
 
 #: ../../tempcache/elements/js/calendar.js.twig:83
-#, fuzzy
-#| msgid "Staff member"
 msgid "September"
-msgstr "Membre du bureau"
+msgstr "Septembre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:87
 msgid "October"
-msgstr ""
+msgstr "Octobre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:91
-#, fuzzy
-#| msgid "Non-member"
 msgid "November"
-msgstr "Non membre"
+msgstr "Novembre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:95
-#, fuzzy
-#| msgid "Member"
 msgid "December"
-msgstr "Adhérent"
+msgstr "Décembre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:101
-#, fuzzy
-#| msgid "Man"
 msgid "Jan"
-msgstr "Homme"
+msgstr "Jan"
 
 #: ../../tempcache/elements/js/calendar.js.twig:105
 msgid "Feb"
-msgstr ""
+msgstr "Fév"
 
 #: ../../tempcache/elements/js/calendar.js.twig:109
-#, fuzzy
-#| msgid "Man"
 msgid "Mar"
-msgstr "Homme"
+msgstr "Mar"
 
 #: ../../tempcache/elements/js/calendar.js.twig:113
 msgid "Apr"
-msgstr ""
+msgstr "Avr"
 
 #: ../../tempcache/elements/js/calendar.js.twig:121
 msgid "Jun"
-msgstr ""
+msgstr "Juin"
 
 #: ../../tempcache/elements/js/calendar.js.twig:125
 msgid "Jul"
-msgstr ""
+msgstr "Jui"
 
 #: ../../tempcache/elements/js/calendar.js.twig:129
 msgid "Aug"
-msgstr ""
+msgstr "Août"
 
 #: ../../tempcache/elements/js/calendar.js.twig:133
-#, fuzzy
-#| msgid "Steps:"
 msgid "Sep"
-msgstr "Étapes :"
+msgstr "Sep"
 
 #: ../../tempcache/elements/js/calendar.js.twig:137
-#, fuzzy
-#| msgid "Object:"
 msgid "Oct"
-msgstr "Sujet :"
+msgstr "Oct"
 
 #: ../../tempcache/elements/js/calendar.js.twig:141
-#, fuzzy
-#| msgid "No"
 msgid "Nov"
-msgstr "Non"
+msgstr "Nov"
 
 #: ../../tempcache/elements/js/calendar.js.twig:145
-#, fuzzy
-#| msgid "Detach?"
 msgid "Dec"
-msgstr "Détacher ?"
+msgstr "Déc"
 
 #: ../../tempcache/elements/js/calendar.js.twig:150
 msgid "Today"
-msgstr ""
+msgstr "Aujourd'hui"
 
 #: ../../tempcache/elements/js/calendar.js.twig:154
-#, fuzzy
-#| msgid "No"
 msgid "Now"
-msgstr "Non"
+msgstr "Maintenant"
 
 #: ../../tempcache/elements/js/modal_action.js.twig:52
 #: ../../tempcache/elements/js/loader.js.twig:49
@@ -5495,10 +5473,8 @@ msgstr "Aucun responsable attaché"
 #: ../../tempcache/elements/logout.html.twig:98
 #: ../../tempcache/elements/logout.html.twig:140
 #: ../../tempcache/elements/logout.html.twig:158
-#, fuzzy
-#| msgid "Unable to impersonate as %id"
 msgid "Unimpersonate"
-msgstr "Impossible d’effectuer une imposture en tant que %id"
+msgstr "Quitter l'imposture"
 
 #: ../../tempcache/elements/member_card.html.twig:54
 #: ../../tempcache/components/forms/picture.html.twig:67
@@ -6561,8 +6537,6 @@ msgid "An error occurred checking name uniqueness :("
 msgstr "Une erreur est survenue lors de la vérification de l'unicité du nom :("
 
 #: ../../tempcache/pages/groups_list.html.twig:218
-#, fuzzy
-#| msgid "Pleade provide a group name"
 msgid "Please provide a group name"
 msgstr "Veuillez spécifier un nom de groupe"
 
@@ -6582,6 +6556,8 @@ msgstr "Sélection des responsables du groupe"
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
+"Les éléments de cette liste ont été modifiés. N'oubliez pas d'enregistrer "
+"vos modifications."
 
 #: ../../tempcache/pages/index.html.twig:112
 #: ../../tempcache/pages/index.html.twig:118
@@ -6651,10 +6627,8 @@ msgstr "Envoyer un nouveau fichier"
 #: ../../tempcache/pages/preferences.html.twig:1982
 #: ../../tempcache/components/forms/picture.html.twig:86
 #: ../../tempcache/components/dynamic_fields.html.twig:717
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose a file"
-msgstr "Choisissez une entrée"
+msgstr "Choisissez un fichier"
 
 #: ../../tempcache/pages/import.html.twig:285
 msgid "Upload file"
@@ -6866,7 +6840,7 @@ msgstr "Gestion des adhérents sélectionnés"
 #: ../../tempcache/pages/advanced_search.html.twig:994
 #: ../../tempcache/components/forms/groups.html.twig:47
 msgid "This feature requires javascript."
-msgstr ""
+msgstr "Cette fonctionnalité nécessite javascript."
 
 #: ../../tempcache/pages/mailing_form.html.twig:199
 msgid "Existing attachments:"
@@ -6933,9 +6907,6 @@ msgid "Are you sure you want to remove this attachment?"
 msgstr "Voulez-vous vraiment effacer cette pièce jointe ?"
 
 #: ../../tempcache/pages/mailing_form.html.twig:713
-#, fuzzy
-#| msgid ""
-#| "This will immediately remove attachment from disk and cannot be undo."
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
 "Cela supprimera immédiatement la pièce jointe du disque et ne peut être "
@@ -6999,10 +6970,8 @@ msgstr "Logo actuel"
 #: ../../tempcache/pages/preferences.html.twig:1980
 #: ../../tempcache/components/forms/picture.html.twig:84
 #: ../../tempcache/components/dynamic_fields.html.twig:715
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose another file"
-msgstr "Choisissez une entrée"
+msgstr "Choisissez un autre fichier"
 
 #: ../../tempcache/pages/preferences.html.twig:269
 #: ../../tempcache/pages/preferences.html.twig:1997
@@ -7814,7 +7783,7 @@ msgstr "pas de recherches"
 
 #: ../../tempcache/pages/member_form.html.twig:105
 msgid "Display"
-msgstr ""
+msgstr "Afficher"
 
 #: ../../tempcache/pages/member_form.html.twig:137
 #: ../../tempcache/pages/member_show.html.twig:289
