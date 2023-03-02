@@ -439,10 +439,12 @@ class ContributionsController extends CrudController
             $filters->filtre_cotis_adh = (int)$get[Adherent::PK];
         }
 
-        $filters->filtre_transactions = false;
-        if (isset($request->getQueryParams()['max_amount'])) {
-            $filters->filtre_transactions = true;
-            $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
+        if ($type === 'contributions') {
+            $filters->filtre_transactions = false;
+            if (isset($request->getQueryParams()['max_amount'])) {
+                $filters->filtre_transactions = true;
+                $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
+            }
         }
 
         if ($option !== null) {
