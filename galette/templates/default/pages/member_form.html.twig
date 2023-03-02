@@ -68,6 +68,11 @@
                             <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}"></i></span>
                             <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}"></i></span>
                             <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
+                            <div class="jsonly displaynone menu">
+            {% for k, v in members.list %}
+                                <div class="item" data-value="{{ k }}">{{ v }}</div>
+            {% endfor %}
+                            </div>
                         </div>
                     </span>
             {% if member.isDuplicate() %}
