@@ -172,7 +172,7 @@
                 {% endif %}
                     }
                 });
-                $('.batch-selection').after(_legendlink);
+                $('.batch-selection').after({% if _legend_block is not empty %}_legendlink{% else %}_checklinks{% endif %});
                 _bind_check('entries_sel');
         {% endif %}
             }
