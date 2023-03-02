@@ -30,13 +30,14 @@
 # Marvin <wile.e.coyote@keemail.me>, 2022.
 # Der_Unterhaendler <Lukas.Engelschalk@gmx.de>, 2022.
 # Moritz Walter Ott <moritzwott@gmail.com>, 2022.
+# klausellus-wallace <muetze.polka0e@icloud.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2023-03-01 06:46+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2023-03-02 16:45+0000\n"
+"Last-Translator: klausellus-wallace <muetze.polka0e@icloud.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -44,7 +45,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16-rc\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1308,10 +1309,8 @@ msgid "Delete mailing entries"
 msgstr "Mailkampagnen löchen"
 
 #: ../lib/Galette/Core/Galette.php:126
-#, fuzzy
-#| msgid "Account:"
 msgid "My Account"
-msgstr "Konto:"
+msgstr "Konto"
 
 #: ../lib/Galette/Core/Galette.php:130 ../lib/Galette/Core/Galette.php:650
 msgid "My contributions"
@@ -1431,10 +1430,8 @@ msgid "Send reminders to late members"
 msgstr "Erinnerungen an überfällige Mitglieder versenden"
 
 #: ../lib/Galette/Core/Galette.php:274
-#, fuzzy
-#| msgid "Members management"
 msgid "Management"
-msgstr "Mitgliedsverwaltung"
+msgstr "Mitgliederverwaltung"
 
 #: ../lib/Galette/Core/Galette.php:278
 msgid "Manage groups"
@@ -1486,7 +1483,7 @@ msgid ""
 "configuration, ...)"
 msgstr ""
 "Einstellungen ändern (Adresse, Website, Konfiguration des "
-"Mitgliedsausweises …)"
+"Mitgliedsausweises, …)"
 
 #: ../lib/Galette/Core/Galette.php:342 ../lib/Galette/Core/Galette.php:626
 msgid "Information about available plugins"
@@ -1724,6 +1721,8 @@ msgstr "%status des Verbands %name"
 #: ../lib/Galette/Core/Preferences.php:1121
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
+"Bitte definieren Sie die Konstante \"GALETTE_URI\" mit dem Pfad zu Ihrer "
+"Instanz."
 
 #: ../lib/Galette/Core/Preferences.php:1140
 #: ../lib/Galette/Core/Preferences.php:1156 ../lib/Galette/IO/Csv.php:115
@@ -1731,7 +1730,7 @@ msgstr ""
 #: ../../tempcache/pages/history.html.twig:323
 #: ../../tempcache/pages/mailings_list.html.twig:274
 msgid "Y-m-d H:i:s"
-msgstr "d.m.Y H:i:s"
+msgstr "d/m/Y H:i:s"
 
 #: ../lib/Galette/Core/Preferences.php:1142
 msgid "Never"
@@ -1870,7 +1869,7 @@ msgstr ""
 #: ../../tempcache/pages/member_form.html.twig:899
 #: ../../tempcache/pages/advanced_search.html.twig:1327
 msgid "Y-m-d"
-msgstr "d.m.Y"
+msgstr "d/m/Y"
 
 #: ../lib/Galette/Repository/SavedSearches.php:271
 msgid "Searches deleted (%list)"
@@ -2458,7 +2457,7 @@ msgstr "Logo ihrer Organisation"
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 #: ../lib/Galette/Features/Replacements.php:230
 msgid "Current date (Y-m-d)"
-msgstr "Aktuelles Datum (Y-m-d)"
+msgstr "Aktuelles Datum (d/m/Y)"
 
 #: ../lib/Galette/Features/Replacements.php:234
 msgid "Galette's login URI"
@@ -3697,7 +3696,7 @@ msgstr "Verein"
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 #: ../includes/dependencies.php:188
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "DD/MM/YYYY"
 
 #: ../includes/dependencies.php:459
 msgid "Failed CSRF check!"
@@ -4929,15 +4928,13 @@ msgid "An error occurred sending telemetry information :("
 msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 
 #: ../../tempcache/elements/language.html.twig:72
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose your language"
-msgstr "Sprache ändern"
+msgstr "Wählen Sie ihre Sprache"
 
 #: ../../tempcache/elements/language.html.twig:113
 #, php-format
 msgid "Switch locale to '%locale'"
-msgstr ""
+msgstr "Wechsle zu Sprache '%locale'"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:48
 #: ../../tempcache/elements/edit_entitleds.html.twig:152
@@ -5032,10 +5029,8 @@ msgid "Home"
 msgstr "Zuhause"
 
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
-#, fuzzy
-#| msgid "Go back to import page"
 msgid "Go back to Galette homepage"
-msgstr "Zurück zum Import"
+msgstr "Zurück zur Galette Startseite"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:87
 msgid "Subscribe"
@@ -5131,132 +5126,108 @@ msgstr "Es ist keine Gruppe ausgewählt."
 
 #: ../../tempcache/elements/js/calendar.js.twig:46
 msgid "S,M,T,W,T,F,S"
-msgstr ""
+msgstr "S,M,D,M,D,F,S"
 
 #: ../../tempcache/elements/js/calendar.js.twig:51
 msgid "January"
-msgstr ""
+msgstr "Januar"
 
 #: ../../tempcache/elements/js/calendar.js.twig:55
 msgid "February"
-msgstr ""
+msgstr "Februar"
 
 #: ../../tempcache/elements/js/calendar.js.twig:59
-#, fuzzy
-#| msgid "Search:"
 msgid "March"
-msgstr "Suchen:"
+msgstr "März"
 
 #: ../../tempcache/elements/js/calendar.js.twig:63
 msgid "April"
-msgstr ""
+msgstr "April"
 
 #: ../../tempcache/elements/js/calendar.js.twig:67
 #: ../../tempcache/elements/js/calendar.js.twig:117
-#, fuzzy
-#| msgid "Man"
 msgid "May"
-msgstr "Mann"
+msgstr "Mai"
 
 #: ../../tempcache/elements/js/calendar.js.twig:71
 msgid "June"
-msgstr ""
+msgstr "Juni"
 
 #: ../../tempcache/elements/js/calendar.js.twig:75
 msgid "July"
-msgstr ""
+msgstr "Juli"
 
 #: ../../tempcache/elements/js/calendar.js.twig:79
 msgid "August"
-msgstr ""
+msgstr "August"
 
 #: ../../tempcache/elements/js/calendar.js.twig:83
-#, fuzzy
-#| msgid "Staff member"
 msgid "September"
-msgstr "Mitarbeiter"
+msgstr "September"
 
 #: ../../tempcache/elements/js/calendar.js.twig:87
 msgid "October"
-msgstr ""
+msgstr "Oktober"
 
 #: ../../tempcache/elements/js/calendar.js.twig:91
-#, fuzzy
-#| msgid "Non-member"
 msgid "November"
-msgstr "Nicht Mitglied"
+msgstr "November"
 
 #: ../../tempcache/elements/js/calendar.js.twig:95
-#, fuzzy
-#| msgid "Member"
 msgid "December"
-msgstr "Mitglied"
+msgstr "Dezember"
 
 #: ../../tempcache/elements/js/calendar.js.twig:101
-#, fuzzy
-#| msgid "Man"
 msgid "Jan"
-msgstr "Mann"
+msgstr "Jan"
 
 #: ../../tempcache/elements/js/calendar.js.twig:105
 msgid "Feb"
-msgstr ""
+msgstr "Feb"
 
 #: ../../tempcache/elements/js/calendar.js.twig:109
-#, fuzzy
-#| msgid "Man"
 msgid "Mar"
-msgstr "Mann"
+msgstr "Mär"
 
 #: ../../tempcache/elements/js/calendar.js.twig:113
 msgid "Apr"
-msgstr ""
+msgstr "Apr"
 
 #: ../../tempcache/elements/js/calendar.js.twig:121
 msgid "Jun"
-msgstr ""
+msgstr "Jun"
 
 #: ../../tempcache/elements/js/calendar.js.twig:125
 msgid "Jul"
-msgstr ""
+msgstr "Jul"
 
 #: ../../tempcache/elements/js/calendar.js.twig:129
 msgid "Aug"
-msgstr ""
+msgstr "Aug"
 
 #: ../../tempcache/elements/js/calendar.js.twig:133
-#, fuzzy
-#| msgid "Steps:"
 msgid "Sep"
-msgstr "Schritte:"
+msgstr "Sep"
 
 #: ../../tempcache/elements/js/calendar.js.twig:137
-#, fuzzy
-#| msgid "Object:"
 msgid "Oct"
-msgstr "Zweck:"
+msgstr "Okt"
 
 #: ../../tempcache/elements/js/calendar.js.twig:141
-#, fuzzy
-#| msgid "No"
 msgid "Nov"
-msgstr "Nein"
+msgstr "Nov"
 
 #: ../../tempcache/elements/js/calendar.js.twig:145
-#, fuzzy
-#| msgid "Detach?"
 msgid "Dec"
-msgstr "Entfernen?"
+msgstr "Dez"
 
 #: ../../tempcache/elements/js/calendar.js.twig:150
 msgid "Today"
-msgstr ""
+msgstr "Heute"
 
 #: ../../tempcache/elements/js/calendar.js.twig:154
-#, fuzzy
-#| msgid "No"
 msgid "Now"
-msgstr "Nein"
+msgstr "Jetzt"
 
 #: ../../tempcache/elements/js/modal_action.js.twig:52
 #: ../../tempcache/elements/js/loader.js.twig:49
@@ -5494,10 +5465,8 @@ msgstr "Kein Mitglied hinzugefügt"
 #: ../../tempcache/elements/logout.html.twig:98
 #: ../../tempcache/elements/logout.html.twig:140
 #: ../../tempcache/elements/logout.html.twig:158
-#, fuzzy
-#| msgid "Unable to impersonate as %id"
 msgid "Unimpersonate"
-msgstr "Anmelden als %id nicht möglich"
+msgstr "Identitätswechsel beenden"
 
 #: ../../tempcache/elements/member_card.html.twig:54
 #: ../../tempcache/components/forms/picture.html.twig:67
@@ -5742,7 +5711,7 @@ msgstr "Transaktionsdetails"
 #: ../../tempcache/pages/member_form.html.twig:229
 #: ../../tempcache/pages/member_form.html.twig:231
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: ../../tempcache/pages/transaction_form.html.twig:184
 #: ../../tempcache/pages/transaction_form.html.twig:190
@@ -6572,6 +6541,8 @@ msgstr "Auswahl der Gruppenmanager"
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
+"Die Elemente dieser Liste wurden bearbeitet. Vergessen Sie nicht Ihre "
+"Änderungen zu speichern."
 
 #: ../../tempcache/pages/index.html.twig:112
 #: ../../tempcache/pages/index.html.twig:118
@@ -6640,10 +6611,8 @@ msgstr "Neue Datei hochladen"
 #: ../../tempcache/pages/preferences.html.twig:1982
 #: ../../tempcache/components/forms/picture.html.twig:86
 #: ../../tempcache/components/dynamic_fields.html.twig:717
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose a file"
-msgstr "Wähle einen Eintrag"
+msgstr "Wählen Sie eine Datei"
 
 #: ../../tempcache/pages/import.html.twig:285
 msgid "Upload file"
@@ -6810,10 +6779,8 @@ msgid "An error occurred retrieving dates :("
 msgstr "Beim Abrufen der Daten ist ein Fehler aufgetreten :("
 
 #: ../../tempcache/pages/contribution_form.html.twig:749
-#, fuzzy
-#| msgid "Contribution amount should be greater than %max"
 msgid "Contribution amount should not be greater than %max"
-msgstr "Der Betrag sollte größer als %max sein"
+msgstr "Der Betrag sollte nicht größer als %max sein"
 
 #: ../../tempcache/pages/mailing_form.html.twig:76
 msgid "Mailing information"
@@ -6859,7 +6826,7 @@ msgstr "Gewählte Mitglieder verwalten"
 #: ../../tempcache/pages/advanced_search.html.twig:994
 #: ../../tempcache/components/forms/groups.html.twig:47
 msgid "This feature requires javascript."
-msgstr ""
+msgstr "Diese Funktion erfordert Javascript."
 
 #: ../../tempcache/pages/mailing_form.html.twig:199
 msgid "Existing attachments:"
@@ -6986,10 +6953,8 @@ msgstr "Aktuelles Logo"
 #: ../../tempcache/pages/preferences.html.twig:1980
 #: ../../tempcache/components/forms/picture.html.twig:84
 #: ../../tempcache/components/dynamic_fields.html.twig:715
-#, fuzzy
-#| msgid "Choose an entry"
 msgid "Choose another file"
-msgstr "Wähle einen Eintrag"
+msgstr "Wählen Sie eine weitere Datei"
 
 #: ../../tempcache/pages/preferences.html.twig:269
 #: ../../tempcache/pages/preferences.html.twig:1997
@@ -7470,11 +7435,13 @@ msgstr "Vertikaler Abstand:"
 
 #: ../../tempcache/pages/preferences.html.twig:1679
 msgid "Print border"
-msgstr ""
+msgstr "Druckrahmen"
 
 #: ../../tempcache/pages/preferences.html.twig:1684
 msgid "Check this box to print a grey border around each label."
 msgstr ""
+"Aktivieren Sie dieses Auswahlfeld um einen grauen Rahmen um jedes Etikett zu "
+"drucken."
 
 #: ../../tempcache/pages/preferences.html.twig:1693
 msgid "Label width:"
@@ -7766,12 +7733,11 @@ msgid "Available fields"
 msgstr "Verfügbare Felder"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
-#, fuzzy, php-format
-#| msgid "no search"
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "keine Suche"
-msgstr[1] "keine Suche"
+msgstr[0] "%count Suche"
+msgstr[1] "%count Suchen"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
@@ -7802,7 +7768,7 @@ msgstr "keine Suche"
 
 #: ../../tempcache/pages/member_form.html.twig:105
 msgid "Display"
-msgstr ""
+msgstr "Anzeigen"
 
 #: ../../tempcache/pages/member_form.html.twig:137
 #: ../../tempcache/pages/member_show.html.twig:289
@@ -8039,10 +8005,8 @@ msgid "Contributions over time"
 msgstr "Beiträge im Zeitverlauf"
 
 #: ../../tempcache/pages/charts.html.twig:405
-#, fuzzy
-#| msgid "%count contributions created"
 msgid "Total contributions for the month"
-msgstr "%count Beiträge erstellt"
+msgstr "Gesamte Beiträge des Monats"
 
 #: ../../tempcache/pages/members_public_list.html.twig:114
 #: ../../tempcache/pages/members_public_gallery.html.twig:57
@@ -8397,7 +8361,7 @@ msgstr ""
 
 #: ../../tempcache/components/forms/captcha.html.twig:90
 msgid "Captcha"
-msgstr ""
+msgstr "Captcha"
 
 #: ../../tempcache/components/forms/titles.html.twig:67
 msgid "Not supplied"
