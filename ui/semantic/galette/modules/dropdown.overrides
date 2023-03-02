@@ -13,31 +13,36 @@
      Search dropdown
 -------------------------*/
 .ui.search.selection.paginated.dropdown {
-    &.clearable .text {
-        margin-right: 2.5em;
-    }
-    > .chevron.circle.right.icon {
+    > .ui.mini.button {
         display: none;
     }
-    &.visible > .chevron.circle.right.icon {
+    > input.search {
+        width: 100%;
+    }
+    &.visible > .ui.mini.button {
         display: block;
-        cursor: pointer;
+        margin-right: 0;
+        //cursor: pointer;
         font-size: .85714286em;
-        margin: -.78571429em;
-        padding: .91666667em;
-        top: .78571429em;
-        right: 3.5em;
         position: absolute;
+        top: .3rem;
         opacity: .6;
         z-index: 3;
         &:hover {
             opacity: 1;
         }
+        &.next-results {
+            right: 2.5em;
+        }
+        &.prev-results {
+            right: 5em;
+        }
     }
     &.visible > .remove.icon {
-        right: 5em;
+        right: 8.5em;
     }
-    > input.search {
-        padding: .67857143em 5em .67857143em 1em;
-    }
+}
+.ui.search.selection.paginated.dropdown,
+.ui.search.selection.paginated.dropdown > input.search {
+    padding: .67857143em 6.5em .67857143em 1em;
 }

@@ -28,7 +28,8 @@
                                 <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated">
                                     <input id="id_adh_input" type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
                                     <i class="jsonly displaynone dropdown icon"></i>
-                                    <i class="jsonly displaynone chevron circle right icon tooltip" title="{{ _T("Next results") }}"></i>
+                                    <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}"></i></span>
+                                    <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}"></i></span>
                                     <div class="jsonly displaynone default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
                                 </div>
                             </div>
