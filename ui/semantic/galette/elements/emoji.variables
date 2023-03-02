@@ -10,4 +10,4 @@
 /*--------------
     Path
 ---------------*/
-@emojiPath: "/assets/emojis/";
+@emojiPath: "themes/galette/assets/emojis/";

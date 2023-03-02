@@ -4,7 +4,11 @@ RewriteEngine On
 # If you need to use the `RewriteBase` directive, it should be the
 # absolute physical path to the directory that contains this htaccess file.
 #
-# RewriteBase /
+# One known case is the use of an alias - say /mygalette/
+# that points to Galette webroot directory. In that case:
+#
+# RewriteBase /mygalette/
 
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]

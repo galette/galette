@@ -76,6 +76,17 @@ if ($needs_update) {
     $gapp = new \Galette\Core\SlimApp();
 }
 $app = $gapp->getApp();
+$app->setBasePath((function () {
+    $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+    $uri = (string)parse_url('http://a' . $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+    if (stripos($uri, $_SERVER['SCRIPT_NAME']) === 0) {
+        return dirname($_SERVER['SCRIPT_NAME']);
+    }
+    if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
+        return $scriptDir;
+    }
+    return '';
+})());
 
 //CONFIGURE AND START SESSION
 
@@ -229,11 +240,6 @@ $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class
  * At the end, so it can be used to render errors
  */
 $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
-
-/**
- * Trailing slash middleware
- */
-$app->add(TrailingSlash::class);
 
 $app->run();
 

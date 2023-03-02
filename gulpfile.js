@@ -54,7 +54,8 @@ var paths = {
     js: './ui/js/*.js',
     favicon:'./ui/images/favicon.png',
     logo: './ui/images/galette.png',
-    photo:'./ui/images/default.png'
+    photo:'./ui/images/default.png',
+    emojis: './node_modules/twemoji-emojis/vendor/svg/*'
   },
   semantic: {
     src: './semantic/src/',
@@ -107,9 +108,6 @@ var paths = {
     }, {
       src: './node_modules/jquery/dist/jquery.min.js',
       dest: 'js/'
-    }, {
-      src: './node_modules/twemoji-emojis/vendor/svg/*',
-      dest: 'emojis/'
     }
   ]
 };
@@ -139,7 +137,11 @@ function theme() {
     .pipe(gulp.dest(paths.semantic.theme))
     .pipe(browserSync.stream());
 
-  return merge(config, theme);
+  emojis = gulp.src(paths.src.emojis)
+    .pipe(gulp.dest(paths.semantic.theme + 'assets/emojis'))
+    .pipe(browserSync.stream());
+
+  return merge(config, theme, emojis);
 }
 
 function clean() {
