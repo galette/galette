@@ -10,7 +10,7 @@
     {% endif %}
 {% endif %}
 
-<div class="{{ component_classes }}" title="{{ _T("Choose your language") }}">
+<div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}" title="{{ _T("Choose your language") }}">
 {% if header == true %}
 <div class="image header title">
 {% endif %}

@@ -48,6 +48,10 @@ body.pushable:not(.loggedin) > .pusher {
     padding: 1.25rem;
   }
 }
+.loggedin #main.rtl {
+  background-image: url(@galetteBackgroundImageRtl);
+  background-position: left top;
+}
 
 #top-navbar,
 aside.computer.toc {

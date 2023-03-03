@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}" class="public_page{% if additionnal_html_class is defined %} {{ additionnal_html_class }}{% endif %}">
+<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additionnal_html_class is defined %} {{ additionnal_html_class }}{% endif %}">
     <head>
-        {% include 'elements/header.html.twig' %}
+        {% include 'elements/header.html.twig' with {
+            galette_lang: galette_lang
+        } %}
     </head>
     <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() %} loggedin{% endif %} nojs">
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <div class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() %}ui container{% else %}full height{% endif %}">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
 {% if login.isLogged() %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
