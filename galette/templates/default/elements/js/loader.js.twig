@@ -68,6 +68,10 @@
     $('{{ loader_parent }}').append(_loader);
 {% endif %}
 
+{% if extra_beforesend is defined %}
+        {{ extra_beforesend|raw }}
+{% endif %}
+
     },
     complete: function() {
 
@@ -79,6 +83,10 @@
     {% elseif (loader ends with 'loader') %}
         $('{{ loader_parent }} .loader').remove();
     {% endif %}
+{% endif %}
+
+{% if extra_complete is defined %}
+        {{ extra_complete|raw }}
 {% endif %}
 
     }

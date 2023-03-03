@@ -1,10 +1,135 @@
 {% if js_chosen_id is not defined %}
     {% set js_chosen_id = "#id_adh" %}
 {% endif %}
+    var _current_page = 1;
+
+    var _chosenPages = function() {
+            // Hide or enable pagination buttons.
+            {% if members.filters.pages is defined and members.filters.pages > 1 %}
+                $('.next-results').removeClass('disabled');
+                $('.next-results, .prev-results').removeClass('displaynone');
+            {% else %}
+                $('.next-results, .prev-results').addClass('displaynone');
+            {% endif %}
+
+            // Next results
+            $('{{ js_chosen_id }} .next-results').off().on('click', function() {
+                var _data = {
+                    page: _current_page + 1,
+                };
+                var _selected_value = $('{{ js_chosen_id }}').dropdown('get value');
+                var _selected_text = $('{{ js_chosen_id }}').dropdown('get text');
+                {% if members.filters.pages is defined %}
+                    var _pages = {{ members.filters.pages }};
+                {% endif %}
+
+                $.ajax({
+                    url: '{{ url_for("contributionMembers") }}',
+                    method: 'post',
+                    data: _data,
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: "action",
+                        loader_text: "",
+                        selector: ".menu.visible",
+                        extra_beforesend: "$('.next-results').addClass('disabled');",
+                        extra_complete: "if (_pages > _current_page) {$('.next-results').removeClass('disabled');}"
+                    } %},
+                    success: function(res) {
+                        // Reload dropdown's items with new results.
+                        var _values = Object.values(res)[0];
+                        $('{{ js_chosen_id }}').dropdown('change values', _values);
+
+                        // Restore selected item.
+                        if (_selected_value != '') {
+                            $('{{ js_chosen_id }}').dropdown('set value', _selected_value);
+                            $('{{ js_chosen_id }}').dropdown('set text', _selected_text);
+                        }
+
+                        // New current page number.
+                        _current_page += 1;
+
+                        // Disable/Enable required pagination buttons.
+                        if (_pages == _current_page) {
+                            $('.next-results').addClass('disabled');
+                        }
+                        if (_current_page > 1) {
+                            $('.prev-results').removeClass('disabled');
+                        }
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred retrieving members :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+            });
+
+            // Previous results
+            $('{{ js_chosen_id }} .prev-results').off().on('click', function() {
+                var _data = {
+                    page: _current_page - 1,
+                };
+                var _selected_value = $('{{ js_chosen_id }}').dropdown('get value');
+                var _selected_text = $('{{ js_chosen_id }}').dropdown('get text');
+                {% if members.filters.pages is defined %}
+                    var _pages = {{ members.filters.pages }};
+                {% endif %}
+
+                $.ajax({
+                    url: '{{ url_for("contributionMembers") }}',
+                    method: 'post',
+                    data: _data,
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: "action",
+                        loader_text: "",
+                        selector: ".menu.visible",
+                        extra_beforesend: "$('.prev-results').addClass('disabled');",
+                        extra_complete: "if (_current_page > 1) {$('.prev-results').removeClass('disabled');}"
+                    } %},
+                    success: function(res) {
+                        // Reload dropdown's items with new results.
+                        var _values = Object.values(res)[0];
+                        $('{{ js_chosen_id }}').dropdown('change values', _values);
+
+                        // Restore selected item.
+                        if (_selected_value != '') {
+                            $('{{ js_chosen_id }}').dropdown('set value', _selected_value);
+                            $('{{ js_chosen_id }}').dropdown('set text', _selected_text);
+                        }
+
+                        // New current page number.
+                        _current_page -= 1;
+
+                        // Disable/Enable required pagination buttons.
+                        if (_pages > _current_page) {
+                            $('.next-results').removeClass('disabled');
+                        }
+                        if (_current_page == 1) {
+                            $('.prev-results').addClass('disabled');
+                        }
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred retrieving members :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+            });
+    }
+
     var _adhselect = function() {
         $('{{ js_chosen_id }}').dropdown({
             match: 'text',
-            placeholder: '{{ _T("Search for name or ID and pick member") }}',
             apiSettings: {
                 url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
@@ -22,12 +147,18 @@
                         modal_classname: "redalert",
                     } %}
                 }
-            }
-        });
-
-        $('#reset-contributor').on('click', function() {
-            $('{{ js_chosen_id }}').dropdown('restore defaults');
-            $('{{ js_chosen_id }}').dropdown('refresh');
+            },
+            onShow: function() {
+                _chosenPages();
+            },
+            onChange: function() {
+                _chosenPages();
+            },
+            onHide: function() {
+                // Reset to defaults.
+                _current_page = 1;
+                $('.next-results, .prev-results').addClass('disabled');
+            },
         });
     }
 
