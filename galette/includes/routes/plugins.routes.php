@@ -56,7 +56,8 @@ $app->group(
                     'jpg'   => 'image/jpg',
                     'jpeg'  => 'image/jpg',
                     'gif'   => 'image/gif',
-                    'svg'   => 'image/svg+xml'
+                    'svg'   => 'image/svg+xml',
+                    'map'   => 'application/json'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
                     $file = $container->get('plugins')->getFile(
@@ -70,9 +71,13 @@ $app->group(
                     $body->write(file_get_contents($file));
                     return $response;
                 } else {
-                    $this->halt(
-                        500,
-                        _T("Invalid extension!")
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Invalid extension %1$s (%2$s)!',
+                            $ext,
+                            $path
+                        ),
+                        404
                     );
                 }
             }
