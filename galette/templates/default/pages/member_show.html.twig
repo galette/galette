@@ -222,7 +222,7 @@
                 {% elseif element.field_id == 'ddn_adh' %}
                                 {{ value }} {{ member.getAge() }}
                 {% else %}
-                                {{ value }}
+                                {{ value|raw }}
                 {% endif %}
                                 </td>
                             </tr>

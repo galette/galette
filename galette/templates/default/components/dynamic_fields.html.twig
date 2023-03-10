@@ -25,12 +25,12 @@
                 {% if not masschange %}
                     {% if field.isRequired() %} required="required"{% endif %}
                 {% endif %}
-                    {% if disabled %} disabled="disabled"{% endif %}>{{ valuedata }}</textarea>
+                    {% if disabled %} disabled="disabled"{% endif %}>{{ valuedata|raw }}</textarea>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' %}
                 <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
                     {% if field.getWidth() > 0 %}size="{{ field.getWidth() }}"{% endif %}
                     {% if field.getSize() > 0 %}maxlength="{{ field.getSize() }}"{% endif %}
-                    value="{{ valuedata }}"
+                    value="{{ valuedata|raw }}"
                 {% if not masschange %}
                     {% if field.isRequired() %} required="required"{% endif %}
                 {% endif %}
