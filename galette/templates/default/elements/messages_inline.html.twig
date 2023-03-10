@@ -22,12 +22,12 @@
             {% if errors|length > 1 %}
                 <ul class="list">
                 {% for error in errors %}
-                    <li>{{ error }}</li>
+                    <li>{{ error|raw }}</li>
                 {% endfor %}
                 </ul>
             {% else %}
                 {% for error in errors %}
-                    <p>{{ error }}</p>
+                    <p>{{ error|raw }}</p>
                 {% endfor %}
             {% endif %}
         </div>
@@ -50,12 +50,12 @@
             {% if warnings|length > 1 %}
                 <ul class="list">
                 {% for warning in warnings %}
-                    <li>{{ warning }}</li>
+                    <li>{{ warning|raw }}</li>
                 {% endfor %}
                 </ul>
             {% else %}
                 {% for warning in warnings %}
-                    <p>{{ warning }}</p>
+                    <p>{{ warning|raw }}</p>
                 {% endfor %}
             {% endif %}
         </div>
@@ -78,12 +78,12 @@
             {% if successs|length > 1 %}
                 <ul class="list">
                 {% for success in successs %}
-                    <li>{{ success }}</li>
+                    <li>{{ success|raw }}</li>
                 {% endfor %}
                 </ul>
             {% else %}
                 {% for success in successs %}
-                    <p>{{ success }}</p>
+                    <p>{{ success|raw }}</p>
                 {% endfor %}
             {% endif %}
             </div>
