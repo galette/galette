@@ -5,13 +5,13 @@
     {% if mode != 'ajax' %}
         <div class="ui segment" id="general">
     {% endif %}
-            <div class="field inline">
+            <div class="required field inline">
                 <label for="short_label">{{ _T("Short form:") }}</label>
-                <input type="text" name="short_label" id="short_label" value="{{ title.short }}" />
+                <input type="text" name="short_label" id="short_label" value="{{ title.short }}" required="required" />
             </div>
-            <div class="field inline">
+            <div class="required field inline">
                 <label for="long_label">{{ _T("Long form:") }}</label>
-                <input type="text" name="long_label" id="long_label" value="{{ title.long }}" />
+                <input type="text" name="long_label" id="long_label" value="{{ title.long }}" required="required" />
             </div>
         </div>
     {% if mode != 'ajax' %}

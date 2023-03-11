@@ -32,7 +32,10 @@
                         </span>
                     </td>
                     <td class="left" data-title="{{ _T("Name") }}">
-                        <input size="40" type="text" name="{{ fields.libelle }}"/>
+                        <div class="required field">
+                            <label for="name" class="displaynone">{{ _T("Name") }}</label>
+                            <input size="40" type="text" name="{{ fields.libelle }}" required="required"/>
+                        </div>
                     </td>
                     <td class="left" data-title="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
 {% if class == 'ContributionsTypes' %}

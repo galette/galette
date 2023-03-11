@@ -20,10 +20,16 @@
                             </span>
                         </td>
                         <td class="left" data-title="{{ _T("Short form") }}">
-                            <input size="20" type="text" name="short_label"/>
+                            <div class="required field">
+                                <label for="short_label" class="displaynone">{{ _T("Short form") }}</label>
+                                <input size="20" type="text" name="short_label" required="required"/>
+                            </div>
                         </td>
                         <td class="left" data-title="{{ _T("Long form") }}">
-                            <input size="20" type="text" name="long_label"/>
+                            <div class="required field">
+                                <label for="long_label" class="displaynone">{{ _T("Long form") }}</label>
+                                <input size="20" type="text" name="long_label" required="required"/>
+                            </div>
                         </td>
                         <td class="center actions_row">
                             <input type="hidden" name="new" value="1" />

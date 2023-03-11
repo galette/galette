@@ -8,9 +8,9 @@
 {% if mode != 'ajax' %}
         <div class="ui segment">
 {% endif %}
-            <div class="field inline">
+            <div class="required field inline">
                 <label for="{{ name }}">{{ _T("Name:") }}</label>
-                <input type="text" name="{{ name }}" id="{{ name }}" value="{% if class == 'Status' %}{{ entry.libelle_statut }}{% else %}{{ entry.libelle_type_cotis }}{% endif %}" />
+                <input type="text" name="{{ name }}" id="{{ name }}" value="{% if class == 'Status' %}{{ entry.libelle_statut }}{% else %}{{ entry.libelle_type_cotis }}{% endif %}" required="required" />
             </div>
 {% if class == 'Status' %}
             <div class="field inline">

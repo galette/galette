@@ -19,7 +19,10 @@
                                 </span>
                             </td>
                             <td class="left" data-title="{{ _T("Label") }}">
-                                <input size="20" type="text" name="name"/>
+                                <div class="required field">
+                                    <label for="name" class="displaynone">{{ _T("Name") }}</label>
+                                    <input size="20" type="text" name="name" required="required"/>
+                                </div>
                             </td>
                             <td class="center actions_row">
                                 <input type="hidden" name="new" value="1" />

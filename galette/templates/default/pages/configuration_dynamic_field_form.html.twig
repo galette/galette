@@ -10,7 +10,7 @@
         <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
     {% endif %}
-                <div class="inline field">
+                <div class="{% if df.getType != 0 %} required {% endif %}inline field">
                     <label for="field_name">{{ _T("Name:") }}</label>
                     <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{% if df.getType != 0 %} required="required"{% endif %}/>
                 </div>
