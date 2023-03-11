@@ -12,8 +12,8 @@
                 <label for="{{ name }}">{{ _T("Name:") }}</label>
                 <input type="text" name="{{ name }}" id="{{ name }}" value="{% if class == 'Status' %}{{ entry.libelle_statut }}{% else %}{{ entry.libelle_type_cotis }}{% endif %}" />
             </div>
-            <div class="field inline">
 {% if class == 'Status' %}
+            <div class="field inline">
                 <label for="{{ field }}">
                     {{ _T("Priority:") }}
                 </label>
@@ -39,6 +39,7 @@
                 <i class="save icon"></i>
                 {{ _T("Save") }}
             </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
         </div>
 {% endif %}
         {% include 'components/forms/csrf.html.twig' %}

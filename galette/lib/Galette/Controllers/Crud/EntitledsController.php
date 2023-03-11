@@ -253,6 +253,12 @@ class EntitledsController extends CrudController
     ): Response {
         $post = $request->getParsedBody();
 
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+        }
+
         $error_detected = [];
         $msg = null;
 

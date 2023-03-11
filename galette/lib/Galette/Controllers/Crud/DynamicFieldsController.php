@@ -112,6 +112,12 @@ class DynamicFieldsController extends CrudController
         $error_detected = [];
         $warning_detected = [];
 
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+        }
+
         $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
 
         try {
@@ -332,6 +338,12 @@ class DynamicFieldsController extends CrudController
         $post = $request->getParsedBody();
         $post['form_name'] = $form_name;
 
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+        }
+
         $error_detected = [];
         $warning_detected = [];
 
@@ -420,7 +432,7 @@ class DynamicFieldsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->routeparser->urlFor('configureDynamicFields');
+        return $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $args['form_name']]);
     }
 
     /**

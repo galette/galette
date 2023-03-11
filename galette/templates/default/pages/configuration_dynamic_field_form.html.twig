@@ -81,6 +81,8 @@
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon"></i> {{ _T("Save") }}
             </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+            <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
         </div>
     {% endif %}
             {% include "components/forms/csrf.html.twig" %}
@@ -137,6 +139,7 @@
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="plus icon"></i> {{ _T("Add") }}
             </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
     {% endif %}
             <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
     {% if mode == 'ajax' %}
