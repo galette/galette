@@ -193,55 +193,66 @@ class TitlesController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
+        $error_detected = [];
+        $msg = null;
+
         $title = new Title($id);
         $title->short = $post['short_label'];
         $title->long = $post['long_label'];
-        $res = $title->store($this->zdb);
+        if ((isset($post['short_label']) && $post['short_label'] != '') && (isset($post['long_label']) && $post['long_label'] != '')) {
+            $res = $title->store($this->zdb);
+        } else {
+            $res = false;
+            $error_detected[] = _T("Missing required title's short or long form!");
+        }
         $redirect_uri = $this->redirectUri($this->getArgs($request));
 
         if (!$res) {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has not been added!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $title->short !== null ? $title->short : '',
+                    _T("Title '%s' has not been added!")
                 );
             } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has not been modified!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $title->short !== null ? $title->short : '',
+                    _T("Title '%s' has not been modified!")
                 );
 
                 $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => $id]);
             }
         } else {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has been successfully added.")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has been successfully added.")
                 );
             } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has been successfully modified.")
-                    )
+                $msg = preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has been successfully modified.")
                 );
             }
         }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                $msg
+            );
+        }
+
         return $response
             ->withStatus(301)
             ->withHeader('Location', $redirect_uri);

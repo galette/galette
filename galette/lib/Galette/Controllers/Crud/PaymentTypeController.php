@@ -199,51 +199,47 @@ class PaymentTypeController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
+        $error_detected = [];
+        $msg = null;
+
         $ptype = new PaymentType($this->zdb, $id);
         $ptype->name = $post['name'];
-        $res = $ptype->store();
+        if (isset($post['name']) && $post['name'] != '') {
+            $res = $ptype->store();
+        } else {
+            $res = false;
+            $error_detected[] = _T("Missing required payment type's name!");
+        }
         $redirect_uri = $this->redirectUri($this->getArgs($request));
 
         if (!$res) {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has not been added!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has not been added!")
                 );
             } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has not been modified!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has not been modified!")
                 );
                 //redirect to payment type edition
                 $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => $id]);
             }
         } else {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has been successfully added.")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has been successfully added.")
                 );
             } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has been successfully modified.")
-                    )
+                $msg = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has been successfully modified.")
                 );
             }
         }
@@ -256,6 +252,20 @@ class PaymentTypeController extends CrudController
                     $warning
                 );
             }
+        }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                $msg
+            );
         }
 
         return $response

@@ -253,6 +253,9 @@ class EntitledsController extends CrudController
     ): Response {
         $post = $request->getParsedBody();
 
+        $error_detected = [];
+        $msg = null;
+
         switch ($class) {
             case 'status':
                 $entitled = new Status($this->zdb);
@@ -267,36 +270,50 @@ class EntitledsController extends CrudController
         $label = trim($post[$entitled::$fields['libelle']]);
         $field = (int)trim($post[$entitled::$fields['third']] ?? 0);
 
-        $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
+        if ($label != '') {
+            $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
+        } else {
+            $ret = false;
+            $error_detected[] = _T('Missing required %type name!');
+        }
+        $redirect_uri = $this->routeparser->urlFor('entitleds', ['class' => $class]);
 
         if ($ret !== true) {
-            $msg_type = 'error_detected';
-            $msg = $action === 'add' ?
+            $error_detected[] = $action === 'add' ?
                 _T("%type has not been added :(") : _T("%type #%id has not been updated");
+            if ($action === 'edit') {
+                $redirect_uri = $this->routeparser->urlFor('editEntitled', ['id' => $id, 'class' => $class]);
+            }
         } else {
-            $msg_type = 'success_detected';
             $msg = $action === 'add' ?
                 _T("%type has been successfully added!") : _T("%type #%id has been successfully updated!");
         }
 
-        $this->flash->addMessage(
-            $msg_type,
-            str_replace(
-                ['%type', '%id'],
-                [$entitled->getI18nType(), $id],
-                $msg
-            )
-        );
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        ['%type', '%id'],
+                        [$entitled->getI18nType(), $id],
+                        $error
+                    )
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace(
+                    ['%type', '%id'],
+                    [$entitled->getI18nType(), $id],
+                    $msg
+                )
+            );
+        }
 
         return $response
             ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->routeparser->urlFor(
-                    'entitleds',
-                    ['class' => $class]
-                )
-            );
+            ->withHeader('Location', $redirect_uri);
     }
 
 
