@@ -154,11 +154,7 @@
                 {% set propname = element.propname %}
 
                 {% set propvalue = attribute(member, propname) %}
-                {% if propvalue %}
-                    {% set value = propvalue|escape %}
-                {% else %}
-                    {% set value = propvalue %}
-                {% endif %}
+                {% set value = propvalue|escape %}
 
                 {% if element.field_id == 'nom_adh' %}
                     {% set value = member.sfullname %}
