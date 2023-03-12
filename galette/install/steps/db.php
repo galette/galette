@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
@@ -50,9 +50,11 @@ if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
                     <div class="content field">
                         <div class="ui text container">
 <?php
+echo '<div class="ui blue message">';
 if ($install->getMode() === GaletteInstall::INSTALL) {
-    echo '<div class="ui blue message"><p>' . _T("If it hadn't been made, create a database and a user for Galette.") . '</p></div>';
+    echo '<p>' . _T("If it hadn't been made, create a database and a user for Galette.") . '</p>';
 }
+echo '<p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.") . '</p></div>';
 if ($install->isUpgrade()) {
     echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
     $install->loadExistingConfig($_POST, $error_detected);
@@ -61,7 +63,6 @@ if ($install->isUpgrade()) {
         echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
     }
 }
-echo '<div class="ui blue message"><p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.") . '</p></div>';
 ?>
                             <div class="inline field">
                                 <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
