@@ -1,4 +1,4 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
@@ -40,10 +40,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-10-06 15:19+0000\n"
-"Last-Translator: Javier <javier.fserrador@gmail.com>\n"
+"PO-Revision-Date: 2023-03-12 08:54+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -5170,13 +5170,11 @@ msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:150
 msgid "Today"
-msgstr ""
+msgstr "Hoy"
 
 #: ../../tempcache/elements/js/calendar.js.twig:154
-#, fuzzy
-#| msgid "No"
 msgid "Now"
-msgstr "No"
+msgstr "Ahora"
 
 #: ../../tempcache/elements/js/modal_action.js.twig:52
 #: ../../tempcache/elements/js/loader.js.twig:49
