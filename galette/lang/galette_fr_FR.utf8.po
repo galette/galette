@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2023-03-12 08:41+0000\n"
+"PO-Revision-Date: 2023-03-12 08:54+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1253,7 +1253,7 @@ msgstr "Combien font %2$s retranchés de %1$s ?"
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr "J'ai %1$s Galettes, j'en donne %2$s. Combien de Galettes ai-je ?"
+msgstr "J'ai %1$s Galettes, j'en donne %2$s. Combien de Galettes ai-je ?"
 
 #: ../lib/Galette/Core/Pagination.php:278
 msgid "First page"
@@ -3767,7 +3767,7 @@ msgstr "Pays :"
 
 #: ../includes/fields_defs/members_fields.php:152
 msgid "Phone:"
-msgstr "Téléphone :"
+msgstr "Téléphone :"
 
 #: ../includes/fields_defs/members_fields.php:160
 msgid "Mobile phone:"
