@@ -277,6 +277,8 @@ class Db
      * @param string $db   database name
      *
      * @return true
+     *
+     * @throws \Exception|Throwable
      */
     public static function testConnectivity(
         $type,
@@ -286,14 +288,13 @@ class Db
         $port = null,
         $db = null
     ) {
-        $_type = null;
         try {
             if ($type === self::MYSQL) {
                 $_type = 'Pdo_Mysql';
             } elseif ($type === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception();
+                throw new \Exception('Unknown database type');
             }
 
             $_options = array(

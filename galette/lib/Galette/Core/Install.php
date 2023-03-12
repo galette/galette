@@ -452,8 +452,9 @@ class Install
     /**
      * Test database connection
      *
-     * @return true|array true if connection was successfull,
-     * an array with some infos otherwise
+     * @return true
+     *
+     * @throws \Exception
      */
     public function testDbConnexion()
     {

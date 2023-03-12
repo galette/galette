@@ -37,7 +37,11 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
-$db_connected = $install->testDbConnexion();
+try {
+    $db_connected = $install->testDbConnexion();
+} catch (Throwable $e) {
+    $db_connected = $e;
+}
 $conndb_ok = true;
 $permsdb_ok = true;
 
@@ -192,7 +196,6 @@ if ($db_connected !== true) {
     echo '<div class="ui red message">';
     echo '<div class="ui small header">' . _T("Unable to connect to the database") . '</div>';
     echo '<p>' . $db_connected->getMessage() . '</p>';
-    echo '<pre>' . $db_connected->getTraceAsString() . '</pre>';
     echo '</div>';
 }
 
@@ -231,12 +234,14 @@ if (!$conndb_ok) {
         }
         ?>
                 </ul>
+        <?php
+}
+?>
             </div>
         </div>
     </div>
-        <?php
-}
 
+<?php
 if (!isset($install_plugin)) {
 ?>
     <form action="installer.php" method="POST" class="ui form">
