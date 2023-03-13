@@ -1,4 +1,5 @@
 <div class="ui horizontal fluid card">
+    {% if not (member.picture.path ends with '/default/images/default.png') %}
     <div class="image">
         <img
                 src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
@@ -6,6 +7,7 @@
                 height="{{ member.picture.getOptimalHeight() }}"
                 alt="{{ _T("Picture") }}">
     </div>
+    {% endif %}
     <div class="content">
         <div class="header aligned">
             {{ member.sname }}

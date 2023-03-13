@@ -1,14 +1,12 @@
 <div class="field ui items">
     <label>{{ _T("Picture:") }}</label>
     <div class="item">
-        <div class="image">
     {% if member.id %}
+        <div class="image">
         {% set photo_id = member.id %}
-    {% else %}
-        {% set photo_id = 0 %}
-    {% endif %}
             <img id="photo_adh" src="{{ url_for("photo", {"id": photo_id, "rand": time}) }}" class="picture" width="{{ member.picture.getOptimalWidth() }}" height="{{ member.picture.getOptimalHeight() }}" alt="{{ _T("Picture") }}"/>
         </div>
+    {% endif %}
         <div class="content">
             <div class="description">
                 <div class="ui file action input">
