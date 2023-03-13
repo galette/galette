@@ -151,10 +151,6 @@
                 {% if element.field_id == 'parent_id' %}
                     {continue}
                 {% endif %}
-                {% set propname = element.propname %}
-
-                {% set propvalue = attribute(member, propname) %}
-                {% set value = propvalue|escape %}
 
                 {% if element.field_id == 'nom_adh' %}
                     {% set value = member.sfullname %}
@@ -176,6 +172,10 @@
                     {% set value = member.others_infos_admin|escape|nl2br %}
                 {% elseif element.field_id == 'info_public_adh' %}
                     {% set value = member.others_infos|escape|nl2br %}
+                {% else %}
+                    {% set propname = element.propname %}
+                    {% set propvalue = attribute(member, propname) %}
+                    {% set value = propvalue|escape %}
                 {% endif %}
                 {% if loop.first and loop.parent.loop.last and (member.getGroups()|length != 0 or member.getManagedGroups()|length != 0) %}
                             <tr>

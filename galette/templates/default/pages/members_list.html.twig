@@ -344,7 +344,6 @@
         {% else %}
             {% set lrclass = rclass %}
             {% set propname = column.propname %}
-            {% set propvalue = attribute(member, propname) %}
             {% set value = null %}
 
             {% if column.field_id == 'nom_adh' %}
@@ -382,6 +381,7 @@
 
             {# If value has not been set, take the generic value #}
             {% if not value %}
+                {% set propvalue = attribute(member, propname) %}
                 {% if propvalue %}
                     {% set value = propvalue|e('html') %}
                 {% else %}

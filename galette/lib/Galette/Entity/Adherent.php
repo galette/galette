@@ -1734,21 +1734,21 @@ class Adherent
             }
             switch ($name) {
                 case 'sadmin':
+                    return (($this->isAdmin()) ? _T("Yes") : _T("No"));
                 case 'sdue_free':
+                    return (($this->isDueFree()) ? _T("Yes") : _T("No"));
                 case 'sappears_in_list':
+                    return (($this->appearsInMembersList()) ? _T("Yes") : _T("No"));
                 case 'sstaff':
                     return (($this->$real) ? _T("Yes") : _T("No"));
-                    break;
                 case 'sactive':
-                    return (($this->$real) ? _T("Active") : _T("Inactive"));
-                    break;
+                    return (($this->isActive()) ? _T("Active") : _T("Inactive"));
                 case 'stitle':
                     if (isset($this->_title) && $this->_title instanceof Title) {
                         return $this->_title->tshort;
                     } else {
                         return null;
                     }
-                    break;
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->_status);
