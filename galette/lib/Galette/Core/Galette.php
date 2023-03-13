@@ -130,7 +130,7 @@ class Galette
                             'label' => _T('My contributions'),
                             'title' => _T('View and filter all my contributions'),
                             'route' => [
-                                'name' => 'myContributions',
+                                'name' => 'contributions',
                                 'args' => ['type' => 'contributions']
                             ]
                         ],
@@ -138,7 +138,7 @@ class Galette
                             'label' => _T('My transactions'),
                             'title' => _T('View and filter all my transactions'),
                             'route' => [
-                                'name' => 'myContributions',
+                                'name' => 'contributions',
                                 'args' => ['type' => 'transactions']
                             ]
                         ],
