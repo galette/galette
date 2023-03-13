@@ -570,6 +570,8 @@ class ContributionsController extends CrudController
      * @param string   $type     One of 'transactions' or 'contributions'
      *
      * @return Response
+     *
+     * @deprecated 1.0.0 use list
      */
     public function myList(Request $request, Response $response, string $type = null): Response
     {

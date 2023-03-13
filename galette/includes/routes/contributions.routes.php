@@ -41,11 +41,6 @@ use Galette\Controllers\PdfController;
 use Galette\Entity\Contribution;
 
 $app->get(
-    '/{type:transactions|contributions}/mine',
-    [Crud\ContributionsController::class, 'myList']
-)->setName('myContributions')->add($authenticate);
-
-$app->get(
     '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
     [Crud\ContributionsController::class, 'list']
 )->setName('contributions')->add($authenticate);
