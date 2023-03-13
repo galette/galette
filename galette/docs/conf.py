@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Galette API'
-copyright = '2020, Johan Cwiklinski'
+copyright = '2023, Johan Cwiklinski'
 author = 'Johan Cwiklinski'
 
 import subprocess
@@ -27,7 +27,7 @@ subprocess.call('doxygen', shell=True)
 master_doc = 'index'
 
 # The full version, including alpha/beta/rc tags
-release = '0.9.4.1'
+release = '1.0.0'
 
 
 # -- General configuration ---------------------------------------------------
