@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "Gestionnaire d’Adhérents en Ligne Extrêmement Tara
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = ../webroot/themes/default/images/galette.png
+PROJECT_LOGO           = ../../ui/images/galette.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -1207,7 +1207,7 @@ HTML_EXTRA_STYLESHEET  = doxygen-awesome.css doxygen-awesome-sidebar-only.css cu
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = ../webroot/themes/default/images/favicon.png \
+HTML_EXTRA_FILES       = ../../ui/images/favicon.png \
                          fonts/ptsans-regular-webfont.woff2 \
                          fonts/ptsans-bold-webfont.woff2 \
                          fonts/ptsans-bolditalic-webfont.woff2 \
