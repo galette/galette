@@ -59,13 +59,11 @@ class Transaction extends GaletteTestCase
     /**
      * Cleanup after each test method
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
 
         $this->zdb = new \Galette\Core\Db();
 
@@ -96,13 +94,11 @@ class Transaction extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
         $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
@@ -136,10 +132,10 @@ class Transaction extends GaletteTestCase
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $store = $this->transaction->store($this->history);
-        $this->boolean($store)->isTrue();
+        $this->assertTrue($store);
 
         return $this->transaction;
     }
@@ -151,25 +147,22 @@ class Transaction extends GaletteTestCase
      */
     public function testEmpty()
     {
-        $this->variable($this->transaction->id)->isNull();
-        $this->variable($this->transaction->date)->isEqualTo(date('Y-m-d'));
-        $this->variable($this->transaction->amount)->isNull();
-        $this->variable($this->transaction->description)->isNull();
+        $this->assertNull($this->transaction->id);
+        $this->assertEquals(date('Y-m-d'), $this->transaction->date);
+        $this->assertNull($this->transaction->amount);
+        $this->assertNull($this->transaction->description);
 
-        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)0);
-        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)0);
-        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-normal');
-        $this->array($this->transaction->fields)
-            ->hasSize(5)
-            ->hasKeys([
-                \Galette\Entity\Transaction::PK,
-                \Galette\Entity\Adherent::PK,
-                'trans_date',
-                'trans_amount',
-                'trans_desc'
-            ]);
+        $this->assertSame((double)0, $this->transaction->getDispatchedAmount());
+        $this->assertSame((double)0, $this->transaction->getMissingAmount());
+        $this->assertSame('transaction-normal', $this->transaction->getRowClass());
+        $this->assertCount(5, $this->transaction->fields);
+        $this->assertArrayHasKey(\Galette\Entity\Transaction::PK, $this->transaction->fields);
+        $this->assertArrayHasKey(\Galette\Entity\Adherent::PK, $this->transaction->fields);
+        $this->assertArrayHasKey('trans_date', $this->transaction->fields);
+        $this->assertArrayHasKey('trans_amount', $this->transaction->fields);
+        $this->assertArrayHasKey('trans_desc', $this->transaction->fields);
 
-        $this->variable($this->transaction->unknown_property)->isEqualTo(false);
+        $this->assertEquals(false, $this->transaction->unknown_property);
     }
 
     /**
@@ -185,31 +178,31 @@ class Transaction extends GaletteTestCase
         $data = ['trans_date' => 'mypassword'];
         $expected = ['- Wrong date format (Y-m-d) for Date!'];
         $check = $transaction->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         //set a correct date
         $data = ['trans_date' => '1999-01-01'];
         $check = $transaction->check($data, [], []);
-        $this->boolean($check)->isTrue();
-        $this->string($transaction->date)->isIdenticalTo('1999-01-01');
+        $this->assertTrue($check);
+        $this->assertSame('1999-01-01', $transaction->date);
 
         //set a bad amount
         $data = ['trans_amount' => 'mypassword'];
         $expected = ['- The amount must be an integer!'];
         $check = $transaction->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         //set a correct amount
         $data = ['trans_amount' => 1256];
         $check = $transaction->check($data, ['trans_amount' => 1], []);
-        $this->boolean($check)->isTrue();
-        $this->variable($transaction->amount)->isIdenticalTo(1256.00);
+        $this->assertTrue($check);
+        $this->assertSame(1256.00, $transaction->amount);
 
         //set a bad description
         $data = ['trans_desc' => 'this is a very long description that should give an error; because the length of transaction description is limited to 150 characters long, even if this is quite hard to find something to write.'];
         $expected = ['- Transaction description must be 150 characters long maximum.'];
         $check = $transaction->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
     }
 
     /**
@@ -243,13 +236,13 @@ class Transaction extends GaletteTestCase
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $store = $this->transaction->store($this->history);
-        $this->boolean($store)->isTrue();
+        $this->assertTrue($store);
 
         $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login, $this->transaction->id);
-        $this->variable($transaction->amount)->isIdenticalTo(42.00);
+        $this->assertSame(42.00, $transaction->amount);
     }
 
     /**
@@ -259,17 +252,25 @@ class Transaction extends GaletteTestCase
      */
     public function testGetFieldLabel()
     {
-        $this->string($this->transaction->getFieldLabel('trans_amount'))
-            ->isIdenticalTo('Amount');
+        $this->assertSame(
+            'Amount',
+            $this->transaction->getFieldLabel('trans_amount')
+        );
 
-        $this->string($this->transaction->getFieldLabel('trans_date'))
-            ->isIdenticalTo('Date');
+        $this->assertSame(
+            'Date',
+            $this->transaction->getFieldLabel('trans_date')
+        );
 
-        $this->string($this->transaction->getFieldLabel('trans_desc'))
-            ->isIdenticalTo('Description');
+        $this->assertSame(
+            'Description',
+            $this->transaction->getFieldLabel('trans_desc')
+        );
 
-        $this->string($this->transaction->getFieldLabel(\Galette\Entity\Adherent::PK))
-            ->isIdenticalTo('Originator');
+        $this->assertSame(
+            'Originator',
+            $this->transaction->getFieldLabel(\Galette\Entity\Adherent::PK)
+        );
     }
 
     /**
@@ -279,10 +280,13 @@ class Transaction extends GaletteTestCase
      */
     public function testLoad()
     {
-        $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->calling($this->login)->isLogged = true;
-        $this->calling($this->login)->isStaff = true;
-        $this->calling($this->login)->isAdmin = true;
+        $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isAdmin', 'isStaff'))
+            ->getMock();
+        $this->login->method('isLogged')->willReturn(true);
+        $this->login->method('isAdmin')->willReturn(true);
+        $this->login->method('isStaff')->willReturn(true);
 
         $this->getMemberOne();
 
@@ -292,8 +296,8 @@ class Transaction extends GaletteTestCase
         $id = $this->transaction->id;
         $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
 
-        $this->boolean($transaction->load((int)$id))->isTrue();
-        $this->boolean($transaction->load(1355522012))->isFalse();
+        $this->assertTrue($transaction->load((int)$id));
+        $this->assertFalse($transaction->load(1355522012));
     }
 
     /**
@@ -309,10 +313,10 @@ class Transaction extends GaletteTestCase
         $this->createTransaction();
 
         $tid = $this->transaction->id;
-        $this->boolean($this->transaction->load($tid))->isTrue();
-        $this->boolean($this->transaction->remove($this->history))->isTrue();
-        $this->boolean($this->transaction->load($tid))->isFalse();
-        $this->boolean($this->transaction->remove($this->history))->isFalse();
+        $this->assertTrue($this->transaction->load($tid));
+        $this->assertTrue($this->transaction->remove($this->history));
+        $this->assertFalse($this->transaction->load($tid));
+        $this->assertFalse($this->transaction->remove($this->history));
     }
 
     /**
@@ -327,39 +331,39 @@ class Transaction extends GaletteTestCase
         $this->createTransaction();
         $transaction = $this->transaction;
 
-        $this->boolean($transaction->canShow($this->login))->isFalse();
+        $this->assertFalse($transaction->canShow($this->login));
 
         //Superadmin can fully change transactions
         $this->logSuperAdmin();
 
-        $this->boolean($transaction->canShow($this->login))->isTrue();
+        $this->assertTrue($transaction->canShow($this->login));
 
         //logout
         $this->login->logOut();
-        $this->boolean($this->login->isLogged())->isFalse();
+        $this->assertFalse($this->login->isLogged());
 
         //Member can fully change its own transactions
         $mdata = $this->dataAdherentOne();
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
 
-        $this->boolean($transaction->canShow($this->login))->isTrue();
+        $this->assertTrue($transaction->canShow($this->login));
 
         //logout
         $this->login->logOut();
-        $this->boolean($this->login->isLogged())->isFalse();
+        $this->assertFalse($this->login->isLogged());
 
         //Another member has no access
         $this->getMemberTwo();
         $mdata = $this->dataAdherentTwo();
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
 
-        $this->boolean($transaction->canShow($this->login))->isFalse();
+        $this->assertFalse($transaction->canShow($this->login));
 
         //parents can chow change children transactions
         $this->getMemberOne();
@@ -395,34 +399,34 @@ class Transaction extends GaletteTestCase
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $store = $ctransaction->store($this->history);
-        $this->boolean($store)->isTrue();
+        $this->assertTrue($store);
 
         $this->login->logOut();
 
         //load child from db
         $child = new \Galette\Entity\Adherent($this->zdb);
         $child->enableDep('parent');
-        $this->boolean($child->load($cid))->isTrue();
+        $this->assertTrue($child->load($cid));
 
-        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
-        $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
-        $this->integer($child->parent->id)->isIdenticalTo($member->id);
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->assertSame($child_data['nom_adh'], $child->name);
+        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertSame($member->id, $child->parent->id);
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
         $mdata = $this->dataAdherentOne();
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
 
-        $this->boolean($ctransaction->canShow($this->login))->isTrue();
+        $this->assertTrue($ctransaction->canShow($this->login));
 
         //logout
         $this->login->logOut();
-        $this->boolean($this->login->isLogged())->isFalse();
+        $this->assertFalse($this->login->isLogged());
     }
 
     /**
@@ -462,12 +466,18 @@ class Transaction extends GaletteTestCase
         $contrib = $this->createContrib($data);
         $contribs_ids[] = $contrib->id;
 
-        $this->boolean($contrib->isTransactionPart())->isTrue();
-        $this->boolean($contrib->isTransactionPartOf($this->transaction->id))->isTrue();
+        $this->assertTrue($contrib->isTransactionPart());
+        $this->assertTrue($contrib->isTransactionPartOf($this->transaction->id));
 
-        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)25);
-        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)67);
-        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-uncomplete');
+        $this->assertSame(
+            (double)25,
+            $this->transaction->getDispatchedAmount()
+        );
+        $this->assertSame(
+            (double)67,
+            $this->transaction->getMissingAmount()
+        );
+        $this->assertSame('transaction-uncomplete', $this->transaction->getRowClass());
 
         //complete the transaction
         $data = [
@@ -484,16 +494,22 @@ class Transaction extends GaletteTestCase
         $contrib = $this->createContrib($data);
         $contribs_ids[] = $contrib->id;
 
-        $this->boolean($contrib->isTransactionPart())->isTrue();
-        $this->boolean($contrib->isTransactionPartOf($this->transaction->id))->isTrue();
-        $this->boolean($contrib->isFee())->isFalse();
-        $this->string($contrib->getTypeLabel())->isIdenticalTo('Donation');
-        $this->string($contrib->getRawType())->isIdenticalTo('donation');
+        $this->assertTrue($contrib->isTransactionPart());
+        $this->assertTrue($contrib->isTransactionPartOf($this->transaction->id));
+        $this->assertFalse($contrib->isFee());
+        $this->assertSame('Donation', $contrib->getTypeLabel());
+        $this->assertSame('donation', $contrib->getRawType());
 
 
-        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)92);
-        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)0);
-        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-normal');
+        $this->assertSame(
+            (double)92,
+            $this->transaction->getDispatchedAmount()
+        );
+        $this->assertSame(
+            (double)0,
+            $this->transaction->getMissingAmount()
+        );
+        $this->assertSame('transaction-normal', $this->transaction->getRowClass());
 
         //cannot add more
         $data = [
@@ -509,27 +525,39 @@ class Transaction extends GaletteTestCase
         ];
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $check = $contrib->check($data, [], []);
-        $this->array($check)->isIdenticalTo(['- Sum of all contributions exceed corresponding transaction amount.']);
+        $this->assertSame(['- Sum of all contributions exceed corresponding transaction amount.'], $check);
 
         $contrib_id = $contribs_ids[0];
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contrib_id);
-        $this->boolean($contrib->unsetTransactionPart($this->zdb, $this->login, $tid, $contrib_id))->isTrue();
+        $this->assertTrue($contrib->unsetTransactionPart($this->zdb, $this->login, $tid, $contrib_id));
 
-        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)67);
-        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)25);
-        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-uncomplete');
+        $this->assertSame(
+            (double)67,
+            $this->transaction->getDispatchedAmount()
+        );
+        $this->assertSame(
+            (double)25,
+            $this->transaction->getMissingAmount()
+        );
+        $this->assertSame('transaction-uncomplete', $this->transaction->getRowClass());
 
-        $this->boolean($contrib->setTransactionPart($this->zdb, $tid, $contrib_id))->isTrue();
+        $this->assertTrue($contrib->setTransactionPart($this->zdb, $tid, $contrib_id));
 
-        $this->float($this->transaction->getDispatchedAmount())->isIdenticalTo((double)92);
-        $this->float($this->transaction->getMissingAmount())->isIdenticalTo((double)0);
-        $this->string($this->transaction->getRowClass())->isIdenticalTo('transaction-normal');
+        $this->assertSame(
+            (double)92,
+            $this->transaction->getDispatchedAmount()
+        );
+        $this->assertSame(
+            (double)0,
+            $this->transaction->getMissingAmount()
+        );
+        $this->assertSame('transaction-normal', $this->transaction->getRowClass());
 
         //delete transaction, and ensures all contributions has been removed as well
-        $this->boolean($this->transaction->remove($this->history))->isTrue();
-        $this->boolean($this->transaction->load($tid))->isFalse();
+        $this->assertTrue($this->transaction->remove($this->history));
+        $this->assertFalse($this->transaction->load($tid));
         foreach ($contribs_ids as $contrib_id) {
-            $this->boolean($this->contrib->load($contrib_id))->isFalse();
+            $this->assertFalse($this->contrib->load($contrib_id));
         }
     }
 }

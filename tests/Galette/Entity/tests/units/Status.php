@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -52,7 +52,7 @@ use Laminas\Db\Adapter\Adapter;
  * @link      http://galette.tuxfamily.org
  * @since     2018-04-15
  */
-class Status extends atoum
+class Status extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private array $remove = [];
@@ -61,11 +61,9 @@ class Status extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n(
@@ -76,14 +74,12 @@ class Status extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->deleteStatus();
     }
@@ -120,13 +116,14 @@ class Status extends atoum
 
         $status = new \Galette\Entity\Status($this->zdb);
 
-        $this->integer(
+        $this->assertSame(
+            -2,
             $status->add('Active member', 81)
-        )->isIdenticalTo(-2);
+        );
 
-        $this->boolean(
+        $this->assertTrue(
             $status->add('Test status', 81)
-        )->isTrue();
+        );
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -135,25 +132,29 @@ class Status extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $result = $results->current();
+        $result = (array)$results->current();
 
-        $this->array((array)$result)
-            ->string['text_orig']->isIdenticalTo('Test status');
+        $this->assertSame(
+            'Test status',
+            $result['text_orig']
+        );
 
         $this->remove[] = $status->id;
         $id = $status->id;
 
-        $this->integer(
+        $this->assertSame(
+            \Galette\Entity\Entitled::ID_NOT_EXITS,
             $status->update(42, 'Active member', 81)
-        )->isIdenticalTo(\Galette\Entity\Entitled::ID_NOT_EXITS);
+        );
 
-        $this->boolean(
+        $this->assertTrue(
             $status->update($id, 'Tested status', 81)
-        )->isTrue();
+        );
 
-        $this->string(
+        $this->assertSame(
+            'Tested status',
             $status->getLabel($id)
-        )->isIdenticalTo('Tested status');
+        );
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -162,26 +163,25 @@ class Status extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $result = $results->current();
+        $result = (array)$results->current();
 
-        $this->array((array)$result)
-            ->string['text_orig']->isIdenticalTo('Tested status');
+        $this->assertSame(
+            'Tested status',
+            $result['text_orig']
+        );
 
-        $this->integer(
+        $this->assertSame(
+            \Galette\Entity\Entitled::ID_NOT_EXITS,
             $status->delete(42)
-        )->isIdenticalTo(\Galette\Entity\Entitled::ID_NOT_EXITS);
+        );
 
-        $this->exception(
-            function () use ($status) {
-                $status->delete($status::DEFAULT_STATUS);
-            }
-        )
-            ->hasMessage('You cannot delete default status!')
-            ->isInstanceOf('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete default status!');
+        $status->delete($status::DEFAULT_STATUS);
 
-        $this->boolean(
+        $this->assertTrue(
             $status->delete($id)
-        )->isTrue();
+        );
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -190,7 +190,7 @@ class Status extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
     }
 
     /**
@@ -203,14 +203,14 @@ class Status extends atoum
         $status = new \Galette\Entity\Status($this->zdb);
 
         $list = $status->getList();
-        $this->array($list)->hasSize(10);
+        $this->assertCount(10, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($status::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)->isGreaterThanOrEqualTo(10, 'Incorrect status sequence');
+            $this->assertGreaterThanOrEqual(10, $result->last_value, 'Incorrect status sequence');
 
             $this->zdb->db->query(
                 'SELECT setval(\'' . PREFIX_DB . $status::TABLE . '_id_seq\', 1)',
@@ -222,14 +222,14 @@ class Status extends atoum
         $status->installInit();
 
         $list = $status->getList();
-        $this->array($list)->hasSize(10);
+        $this->assertCount(10, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($status::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)->isGreaterThanOrEqualTo(10, 'Incorrect status sequence ' . $result->last_value);
+            $this->assertGreaterThanOrEqual(10, $result->last_value, 'Incorrect status sequence ' . $result->last_value);
         }
     }
 }

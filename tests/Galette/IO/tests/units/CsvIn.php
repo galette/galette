@@ -37,7 +37,7 @@
 
 namespace Galette\IO\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
 use Galette\GaletteTestCase;
@@ -61,26 +61,22 @@ class CsvIn extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
         $this->contents_table = null;
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $this->zdb->execute($delete);
@@ -135,8 +131,9 @@ class CsvIn extends GaletteTestCase
 
         $members = new \Galette\Repository\Members();
         $list = $members->getList();
-        $this->integer($list->count())->isIdenticalTo(
+        $this->assertSame(
             $count_before,
+            $list->count(),
             print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true)
         );
 
@@ -152,14 +149,20 @@ class CsvIn extends GaletteTestCase
         $response = $controller->getImportModel($request, $response);
         $csvin = new \Galette\IO\CsvIn($this->container->get('zdb'));
 
-        $this->integer($response->getStatusCode())->isIdenticalTo(200);
-        $this->array($response->getHeaders())
-            ->array['Content-Type']->isIdenticalTo(['text/csv'])
-            ->array['Content-Disposition']->isIdenticalTo(['attachment;filename="galette_import_model.csv"']);
+        $this->assertSame(200, $response->getStatusCode());
+        $headers = $response->getHeaders();
+        $this->assertIsArray($headers);
+        $this->assertSame(['text/csv'], $headers['Content-Type']);
+        $this->assertSame(
+            ['attachment;filename="galette_import_model.csv"'],
+            $headers['Content-Disposition']
+        );
 
         $csvfile_model = $response->getBody()->__toString();
-        $this->string($csvfile_model)
-             ->isIdenticalTo("\"" . implode("\";\"", $fields) . "\"\r\n");
+        $this->assertSame(
+            "\"" . implode("\";\"", $fields) . "\"\r\n",
+            $csvfile_model
+        );
 
         $contents = $csvfile_model;
         foreach ($members_list as $member) {
@@ -171,15 +174,15 @@ class CsvIn extends GaletteTestCase
         }
 
         $path = GALETTE_CACHE_DIR . $file_name;
-        $this->integer(file_put_contents($path, $contents));
+        $this->assertIsInt(file_put_contents($path, $contents));
         $_FILES['new_file'] = [
             'error' => UPLOAD_ERR_OK,
             'name'      => $file_name,
             'tmp_name'  => $path,
             'size'      => filesize($path)
         ];
-        $this->boolean($csvin->store($_FILES['new_file'], true))->isTrue();
-        $this->boolean(file_exists($csvin->getDestDir() . $csvin->getFileName()))->isTrue();
+        $this->assertTrue($csvin->store($_FILES['new_file'], true));
+        $this->assertTrue(file_exists($csvin->getDestDir() . $csvin->getFileName()));
 
         $post = [
             'import_file'   => $file_name
@@ -189,20 +192,20 @@ class CsvIn extends GaletteTestCase
         $request = $request->withParsedBody($post);
 
         $response = $controller->doImports($request, $response);
-        $this->integer($response->getStatusCode())->isIdenticalTo(301);
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo($flash_messages);
+        $this->assertSame(301, $response->getStatusCode());
+        $this->assertSame($flash_messages, $this->flash_data['slimFlash']);
         $this->flash->clearMessages();
 
         $members = new \Galette\Repository\Members();
         $list = $members->getList();
-        $this->integer($list->count())->isIdenticalTo($count_after);
+        $this->assertSame($count_after, $list->count());
 
         if ($count_before != $count_after) {
             foreach ($list as $member) {
                 $created = $members_list[$member->fingerprint];
                 foreach ($fields as $field) {
                     if (property_exists($member, $field)) {
-                        $this->variable($member->$field)->isEqualTo($created[$field]);
+                        $this->assertEquals($created[$field], $member->$field);
                     } else {
                         //manage dynamic fields
                         $matches = [];
@@ -223,7 +226,10 @@ class CsvIn extends GaletteTestCase
                                 $expected[0]['text_val'] = $values[$created[$field]];
                             }
 
-                            $this->array($adh->getDynamicFields()->getValues($matches[1]))->isEqualTo($expected);
+                            $this->assertEquals(
+                                $expected,
+                                $adh->getDynamicFields()->getValues($matches[1])
+                            );
                         } else {
                             throw new \RuntimeException("Unknown field $field");
                         }
@@ -277,11 +283,11 @@ class CsvIn extends GaletteTestCase
     protected function getModel($fields): \Galette\Entity\ImportModel
     {
         $model = new \Galette\Entity\ImportModel();
-        $this->boolean($model->remove($this->zdb))->isTrue();
+        $this->assertTrue($model->remove($this->zdb));
 
-        $this->object($model->setFields($fields))->isInstanceOf('Galette\Entity\ImportModel');
-        $this->boolean($model->store($this->zdb))->isTrue();
-        $this->boolean($model->load())->isTrue();
+        $this->assertInstanceOf(\Galette\Entity\ImportModel::class, $model->setFields($fields));
+        $this->assertTrue($model->store($this->zdb));
+        $this->assertTrue($model->load());
         return $model;
     }
 
@@ -304,13 +310,14 @@ class CsvIn extends GaletteTestCase
         ]);
         $select->where(['text_orig' => $text_orig]);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(count($langs));
+        $this->assertSame(count($langs), $results->count());
 
         foreach ($results as $result) {
-            $this->boolean(in_array(str_replace('.utf8', '', $result['text_locale']), $langs))->isTrue();
-            $this->integer((int)$result['text_nref'])->isIdenticalTo(1);
-            $this->string($result['text_trans'])->isIdenticalTo(
-                ($result['text_locale'] == 'en_US' ? $text_orig : '')
+            $this->assertTrue(in_array(str_replace('.utf8', '', $result['text_locale']), $langs));
+            $this->assertSame(1, (int)$result['text_nref']);
+            $this->assertSame(
+                ($result['text_locale'] == 'en_US' ? $text_orig : ''),
+                $result['text_trans']
             );
         }
     }
@@ -337,21 +344,22 @@ class CsvIn extends GaletteTestCase
         $stored = $df->store($field_data);
         $error_detected = $df->getErrors();
         $warning_detected = $df->getWarnings();
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->array($error_detected)->isEmpty(implode(' ', $df->getErrors()));
-        $this->array($warning_detected)->isEmpty(implode(' ', $df->getWarnings()));
+        $this->assertEmpty($error_detected, implode(' ', $df->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $df->getWarnings()));
         //check if dynamic translation has been added
         $this->checkDynamicTranslation($field_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
         $result = $this->zdb->execute($select)->current();
-        $this->integer((int)$result->num)->isIdenticalTo(1);
+        $this->assertSame(1, (int)$result->num);
 
         $fields = ['nom_adh', 'ville_adh', 'dynfield_' . $df->getId(), 'fingerprint'];
         $file_name = 'test-import-atoum-dyn.csv';
@@ -436,23 +444,24 @@ class CsvIn extends GaletteTestCase
         $stored = $cdf->store($cfield_data);
         $error_detected = $cdf->getErrors();
         $warning_detected = $cdf->getWarnings();
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $cdf->getErrors() + $cdf->getWarnings()
             )
         );
-        $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
-        $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
         //check if dynamic translation has been added
         $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
         $result = $this->zdb->execute($select)->current();
-        $this->integer((int)$result->num)->isIdenticalTo(2);
+        $this->assertSame(2, (int)$result->num);
 
-        $this->array($cdf->getValues())->isIdenticalTo($values);
+        $this->assertSame($values, $cdf->getValues());
 
         $fields = ['nom_adh', 'ville_adh', 'dynfield_' . $cdf->getId(), 'fingerprint'];
         $file_name = 'test-import-atoum-dyn-cdyn.csv';
@@ -501,21 +510,22 @@ class CsvIn extends GaletteTestCase
         $stored = $cdf->store($cfield_data);
         $error_detected = $cdf->getErrors();
         $warning_detected = $cdf->getWarnings();
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $cdf->getErrors() + $cdf->getWarnings()
             )
         );
-        $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
-        $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
         //check if dynamic translation has been added
         $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
         $result = $this->zdb->execute($select)->current();
-        $this->integer((int)$result->num)->isIdenticalTo(3);
+        $this->assertSame(3, (int)$result->num);
 
 
         $fields = ['nom_adh', 'ville_adh', 'dynfield_' . $cdf->getId(), 'fingerprint'];

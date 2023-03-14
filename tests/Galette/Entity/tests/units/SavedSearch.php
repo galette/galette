@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -52,7 +52,7 @@ use Laminas\Db\Adapter\Adapter;
  * @link      http://galette.tuxfamily.org
  * @since     2019-05-08
  */
-class SavedSearch extends atoum
+class SavedSearch extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\Core\I18n $i18n;
@@ -61,32 +61,31 @@ class SavedSearch extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->calling($this->login)->isLogged = true;
-        $this->calling($this->login)->isSuperAdmin = true;
-        $this->calling($this->login)->__get = 0; //to get login id
+        $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isSuperAdmin', '__get'))
+            ->getMock();
+        $this->login->method('isLogged')->willReturn(true);
+        $this->login->method('isSuperAdmin')->willReturn(true);
+        $this->login->method('__get')->willReturn(0);
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->deleteCreated();
     }
@@ -134,15 +133,15 @@ class SavedSearch extends atoum
 
         $errored = $post;
         unset($errored['form']);
-        $this->boolean($saved->check($errored))->isFalse();
-        $this->array($saved->getErrors())->isIdenticalTo(['form' => 'Form is mandatory!']);
+        $this->assertFalse($saved->check($errored));
+        $this->assertSame(['form' => 'Form is mandatory!'], $saved->getErrors());
 
         //store search
-        $this->boolean($saved->check($post))->isTrue();
-        $this->boolean($saved->store())->isTrue();
-        $this->array($searches->getList(true))->hasSize(1);
+        $this->assertTrue($saved->check($post));
+        $this->assertTrue($saved->store());
+        $this->assertCount(1, $searches->getList(true));
         //store again, got a duplicate
-        $this->boolean($saved->store())->isTrue();
-        $this->array($searches->getList(true))->hasSize(2);
+        $this->assertTrue($saved->store());
+        $this->assertCount(2, $searches->getList(true));
     }
 }

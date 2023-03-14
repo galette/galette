@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFields\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dynamic booleans test
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2013-10-18
  */
-class Boolean extends atoum
+class Boolean extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Boolean $bool;
@@ -59,11 +59,9 @@ class Boolean extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Current test method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->bool = new \Galette\DynamicFields\Boolean($this->zdb);
@@ -77,8 +75,7 @@ class Boolean extends atoum
     public function testConstructor()
     {
         $o = new \Galette\DynamicFields\Boolean($this->zdb, 10);
-        $this->variable($o->getId())
-            ->isNull();
+        $this->assertNull($o->getId());
     }
 
     /**
@@ -88,8 +85,7 @@ class Boolean extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->bool->getTypeName())
-            ->isIdenticalTo(_T('boolean'));
+        $this->assertSame(_T('boolean'), $this->bool->getTypeName());
     }
 
     /**
@@ -100,50 +96,50 @@ class Boolean extends atoum
     public function testBaseProperties()
     {
         $muliple = $this->bool->isMultiValued();
-        $this->boolean($muliple)->isFalse();
+        $this->assertFalse($muliple);
 
         $required = $this->bool->isRequired();
-        $this->boolean($required)->isFalse();
+        $this->assertFalse($required);
 
         $name = $this->bool->getName();
-        $this->variable($name)->isIdenticalTo('');
+        $this->assertSame('', $name);
 
         $has_fixed_values = $this->bool->hasFixedValues();
-        $this->boolean($has_fixed_values)->isFalse();
+        $this->assertFalse($has_fixed_values);
 
         $has_data = $this->bool->hasData();
-        $this->boolean($has_data)->isTrue();
+        $this->assertTrue($has_data);
 
         $has_w = $this->bool->hasWidth();
-        $this->boolean($has_w)->isFalse();
+        $this->assertFalse($has_w);
 
         $has_h = $this->bool->hasHeight();
-        $this->boolean($has_h)->isFalse();
+        $this->assertFalse($has_h);
 
         $has_s = $this->bool->hasSize();
-        $this->boolean($has_s)->isFalse();
+        $this->assertFalse($has_s);
 
         $perms = $this->bool->getPerm();
-        $this->variable($perms)->isNull();
+        $this->assertNull($perms);
 
         $width = $this->bool->getWidth();
-        $this->variable($width)->isNull();
+        $this->assertNull($width);
 
         $height = $this->bool->getHeight();
-        $this->variable($height)->isNull();
+        $this->assertNull($height);
 
         $repeat = $this->bool->getRepeat();
-        $this->variable($repeat)->isNull();
+        $this->assertNull($repeat);
 
         $repeat = $this->bool->isRepeatable();
-        $this->boolean($repeat)->isFalse();
+        $this->assertFalse($repeat);
 
         $size = $this->bool->getSize();
-        $this->variable($size)->isNull();
+        $this->assertNull($size);
 
         $values = $this->bool->getValues();
-        $this->boolean($values)->isFalse();
+        $this->assertFalse($values);
 
-        $this->boolean($this->bool->hasPermissions())->isTrue();
+        $this->assertTrue($this->bool->hasPermissions());
     }
 }

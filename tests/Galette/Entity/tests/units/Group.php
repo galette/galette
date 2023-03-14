@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
@@ -60,14 +60,12 @@ class Group extends GaletteTestCase
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         $this->deleteGroups();
-        parent::afterTestMethod($method);
+        parent::tearDown();
     }
 
     /**
@@ -104,16 +102,16 @@ class Group extends GaletteTestCase
         $group = new \Galette\Entity\Group();
         $this->logSuperAdmin();
         $group->setLogin($this->login);
-        //$this->boolean($group->isManager($this->login))->isFalse();
-        $this->variable($group->getId())->isNull();
-        $this->integer($group->getLevel())->isIdenticalTo(0);
-        $this->variable($group->getName())->isNull();
-        $this->variable($group->getFullName())->isNull();
-        $this->variable($group->getIndentName())->isNull();
-        $this->variable($group->getMembers())->isNull();
-        $this->variable($group->getMembers())->isNull();
-        $this->array($group->getGroups())->isEmpty();
-        $this->variable($group->getParentGroup())->isNull();
+        //$this->assertFalse($group->isManager($this->login));
+        $this->assertNull($group->getId());
+        $this->assertSame(0, $group->getLevel());
+        $this->assertNull($group->getName());
+        $this->assertNull($group->getFullName());
+        $this->assertNull($group->getIndentName());
+        $this->assertNull($group->getMembers());
+        $this->assertNull($group->getMembers());
+        $this->assertEmpty($group->getGroups());
+        $this->assertNull($group->getParentGroup());
     }
 
     /**
@@ -130,31 +128,31 @@ class Group extends GaletteTestCase
         $group->setLogin($this->login);
 
         $group->setName('A group');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
 
-        $this->boolean($group->isManager($this->login))->isFalse();
+        $this->assertFalse($group->isManager($this->login));
         $group_id = $group->getId();
-        $this->integer($group_id)->isGreaterThan(0);
-        $this->integer($group->getLevel())->isIdenticalTo(0);
-        $this->string($group->getName())->isIdenticalTo('A group');
-        $this->string($group->getFullName())->isIdenticalTo('A group');
-        $this->string($group->getIndentName())->isIdenticalTo('A group');
-        $this->array($group->getMembers())->isEmpty();
-        $this->integer($group->getMemberCount())->isIdenticalTo(0);
-        $this->array($group->getManagers())->isEmpty();
-        $this->array($group->getGroups())->isEmpty();
-        $this->variable($group->getParentGroup())->isNull();
+        $this->assertGreaterThan(0, $group_id);
+        $this->assertSame(0, $group->getLevel());
+        $this->assertSame('A group', $group->getName());
+        $this->assertSame('A group', $group->getFullName());
+        $this->assertSame('A group', $group->getIndentName());
+        $this->assertEmpty($group->getMembers());
+        $this->assertSame(0, $group->getMemberCount());
+        $this->assertEmpty($group->getManagers());
+        $this->assertEmpty($group->getGroups());
+        $this->assertNull($group->getParentGroup());
 
         //edit group
         $group = new \Galette\Entity\Group();
-        $this->boolean($group->load($group_id))->isTrue();
-        $this->string($group->getName())->isIdenticalTo('A group');
+        $this->assertTrue($group->load($group_id));
+        $this->assertSame('A group', $group->getName());
 
         $group->setName('A group - edited');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
 
         $group = new \Galette\Entity\Group($group_id);
-        $this->string($group->getName())->isIdenticalTo('A group - edited');
+        $this->assertSame('A group - edited', $group->getName());
     }
 
     /**
@@ -171,42 +169,34 @@ class Group extends GaletteTestCase
         $group->setLogin($this->login);
 
         $group->setName('A group');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $group_id = $group->getId();
 
         //update without changes should be ok
         $group = new \Galette\Entity\Group($group_id);
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
 
         //Adding another group with same name throws an exception
         $group = new \Galette\Entity\Group();
         $group->setLogin($this->login);
 
-        $this
-            ->exception(
-                function () use ($group) {
-                    $group->setName('A group');
-                    $this->boolean($group->store())->isFalse();
-                }
-            )->hasMessage('The group name you have requested already exists in the database.');
+        $this->expectExceptionMessage('The group name you have requested already exists in the database.');
+        $group->setName('A group');
+        $this->assertFalse($group->store());
 
         //update with changes should be ok
         $group = new \Galette\Entity\Group($group_id);
         $group->setName('A group - edited');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
 
-        //
         $group = new \Galette\Entity\Group();
         $group->setName('Unique one');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
+
         //editing using an existing name is not ok
-        $this
-            ->exception(
-                function () use ($group) {
-                    $group->setName('A group - edited');
-                    $this->boolean($group->store())->isFalse();
-                }
-            )->hasMessage('The group name you have requested already exists in the database.');
+        $this->expectExceptionMessage('The group name you have requested already exists in the database.');
+        $group->setName('A group - edited');
+        $this->assertFalse($group->store());
     }
 
     /**
@@ -221,47 +211,47 @@ class Group extends GaletteTestCase
 
         $group = new \Galette\Entity\Group();
         $group->setName('A parent group');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $parent_id = $group->getId();
 
         $group = new \Galette\Entity\Group();
         $group->setName('A child group');
         $group->setParentGroup($parent_id);
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $child_id_1 = $group->getId();
-        $this->integer($group->getParentGroup()->getId())->isIdenticalTo($parent_id);
+        $this->assertSame($parent_id, $group->getParentGroup()->getId());
 
         $group = new \Galette\Entity\Group();
         $group->setName('Another child group');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $child_id_2 = $group->getId();
 
         $group->setParentGroup($parent_id);
-        $this->boolean($group->store())->isTrue();
-        $this->integer($group->getParentGroup()->getId())->isIdenticalTo($parent_id);
+        $this->assertTrue($group->store());
+        $this->assertSame($parent_id, $group->getParentGroup()->getId());
 
         //non-logged-in will not see children groups
         $group = new \Galette\Entity\Group($parent_id);
         $group->setLogin($this->login);
         $children = $group->getGroups();
-        $this->array($children)->hasSize(0);
+        $this->assertCount(0, $children);
 
         //admin will not see children groups
         $group = new \Galette\Entity\Group($parent_id);
         $this->logSuperAdmin();
         $group->setLogin($this->login);
         $children = $group->getGroups();
-        $this->array($children)->hasSize(2);
+        $this->assertCount(2, $children);
 
         $group = new \Galette\Entity\Group($child_id_1);
-        $this->boolean($group->detach())->isTrue();
+        $this->assertTrue($group->detach());
 
         $group = new \Galette\Entity\Group($parent_id);
         $this->logSuperAdmin();
         $group->setLogin($this->login);
         $children = $group->getGroups();
-        $this->array($children)->hasSize(1);
-        $this->string($children[0]->getName())->isIdenticalTo('Another child group');
+        $this->assertCount(1, $children);
+        $this->assertSame('Another child group', $children[0]->getName());
     }
 
     /**
@@ -276,22 +266,22 @@ class Group extends GaletteTestCase
 
         $group = new \Galette\Entity\Group();
         $group->setName('A parent group');
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $parent_id = $group->getId();
 
         $group = new \Galette\Entity\Group();
         $group->setName('A child group');
         $group->setParentGroup($parent_id);
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $child_id_1 = $group->getId();
-        $this->integer($group->getParentGroup()->getId())->isIdenticalTo($parent_id);
+        $this->assertSame($parent_id, $group->getParentGroup()->getId());
 
         $group = new \Galette\Entity\Group($parent_id);
         $this->logSuperAdmin();
         $group->setLogin($this->login);
-        $this->boolean($group->remove())->isFalse(); //still have children, not removed
-        $this->boolean($group->load($parent_id))->isTrue();
-        $this->boolean($group->remove(true))->isTrue(); //cascade removal, all will be removed
-        $this->boolean($group->load($parent_id))->isFalse();
+        $this->assertFalse($group->remove()); //still have children, not removed
+        $this->assertTrue($group->load($parent_id));
+        $this->assertTrue($group->remove(true)); //cascade removal, all will be removed
+        $this->assertFalse($group->load($parent_id));
     }
 }

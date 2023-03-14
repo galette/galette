@@ -37,7 +37,7 @@
 
 namespace Galette\Util\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Telemetry tests class
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2017-10-07
  */
-class Telemetry extends atoum
+class Telemetry extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\Core\Preferences $preferences;
@@ -60,14 +60,12 @@ class Telemetry extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Method tested
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
 
         $this->preferences->pref_instance_uuid = '';
@@ -78,11 +76,9 @@ class Telemetry extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
@@ -116,10 +112,9 @@ class Telemetry extends atoum
         );
 
         $result = $telemetry->grabGaletteInfos();
-        $this->string($result['uuid'])
-            ->hasLength(40);
+        $this->assertSame(40, strlen($result['uuid']));
         $expected['uuid'] = $result['uuid'];
-        $this->array($result)->isIdenticalTo($expected);
+        $this->assertSame($expected, $result);
 
         $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $telemetry = new \Galette\Util\Telemetry(
@@ -137,30 +132,34 @@ class Telemetry extends atoum
         }
 
         $result = $telemetry->grabGaletteInfos();
-        $this->array($result)->isIdenticalTo($expected);
+        $this->assertSame($expected, $result);
 
-        $telemetry = new \mock\Galette\Util\Telemetry(
-            $this->zdb,
-            $this->preferences,
-            $this->plugins
-        );
-        $this->calling($telemetry)->getCount = function ($table, $where) {
-            switch ($table) {
-                case \Galette\Entity\Adherent::TABLE:
-                    return 56;
-                case \Galette\Entity\Contribution::TABLE:
-                    return 402;
-                case \Galette\Entity\Transaction::TABLE:
-                    return 100;
-            }
-            return 0;
-        };
+        $telemetry = $this->getMockBuilder(\Galette\Util\Telemetry::class)
+            ->setConstructorArgs([$this->zdb, $this->preferences, $this->plugins])
+            ->onlyMethods(array('getCount'))
+            ->getMock();
+        $telemetry->method('getCount')
+            ->will(
+                $this->returnCallback(
+                    function ($table, $where) {
+                        switch ($table) {
+                            case \Galette\Entity\Adherent::TABLE:
+                                return 56;
+                            case \Galette\Entity\Contribution::TABLE:
+                                return 402;
+                            case \Galette\Entity\Transaction::TABLE:
+                                return 100;
+                        }
+                        return 0;
+                    }
+                )
+            );
         $result = $telemetry->grabGaletteInfos();
 
         $expected['usage']['avg_members'] = '50-250';
         $expected['usage']['avg_contributions'] = '250-500';
         $expected['usage']['avg_transactions'] = '50-250';
-        $this->array($result)->isIdenticalTo($expected);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -178,12 +177,12 @@ class Telemetry extends atoum
 
         $infos  = $telemetry->grabDbInfos();
 
-        $this->string($infos['engine'])->isNotEmpty();
-        $this->string($infos['version'])->isNotEmpty();
-        $this->variable($infos['size'])->isNotNull();
+        $this->assertNotEmpty($infos['engine']);
+        $this->assertNotEmpty($infos['version']);
+        $this->assertNotNull($infos['size']);
         if (!$this->zdb->isPostgres()) {
             //no sql mode for postgres databases
-            $this->string($infos['sql_mode'])->isNotEmpty();
+            $this->assertNotEmpty($infos['sql_mode']);
         }
     }
 
@@ -194,19 +193,17 @@ class Telemetry extends atoum
      */
     public function testGrabWebserverInfos()
     {
-        $telemetry = new \mock\Galette\Util\Telemetry(
+        $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
             $this->preferences,
             $this->plugins
         );
         $result = $telemetry->grabWebserverInfos();
 
-        $this->array($result)
-            ->hasSize(2)
-            ->hasKeys(['engine', 'version']);
+        $this->assertSame(['engine', 'version'], array_keys($result));
         //no webserver infos from CLI
-        $this->string($result['engine'])->isEmpty();
-        $this->string($result['version'])->isEmpty();
+        $this->assertEmpty($result['engine']);
+        $this->assertEmpty($result['version']);
     }
 
     /**
@@ -235,7 +232,7 @@ class Telemetry extends atoum
             $this->plugins
         );
         $result = $telemetry->grabPhpInfos();
-        $this->array($result)->isIdenticalTo($expected);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -245,9 +242,17 @@ class Telemetry extends atoum
      */
     public function testGrabOsInfos()
     {
+        $distro = '';
+        if (file_exists('/etc/redhat-release')) {
+            $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/redhat-release'));
+        }
+        if (file_exists('/etc/fedora-release')) {
+            $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
+        }
+
         $expected = [
             'family'       => php_uname('s'),
-            'distribution' => '',
+            'distribution' => $distro,
             'version'      => php_uname('r')
         ];
 
@@ -257,7 +262,7 @@ class Telemetry extends atoum
             $this->plugins
         );
         $result = $telemetry->grabOsInfos();
-        $this->array($result)->isIdenticalTo($expected);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -274,24 +279,33 @@ class Telemetry extends atoum
         );
         $result = $telemetry->getTelemetryInfos();
 
-        $this->array($result)->keys->isEqualTo([
-            'galette',
-            'system'
-        ]);
+        $this->assertSame(
+            array_keys($result),
+            [
+                'galette',
+                'system'
+            ]
+        );
 
-        $this->array($result['galette'])->keys->isEqualTo([
-            'uuid',
-            'version',
-            'plugins',
-            'default_language',
-            'usage'
-        ]);
+        $this->assertSame(
+            array_keys($result['galette']),
+            [
+                'uuid',
+                'version',
+                'plugins',
+                'default_language',
+                'usage'
+            ]
+        );
 
-        $this->array($result['system'])->keys->isEqualTo([
-            'db',
-            'web_server',
-            'php',
-            'os'
-        ]);
+        $this->assertSame(
+            array_keys($result['system']),
+            [
+                'db',
+                'web_server',
+                'php',
+                'os'
+            ]
+        );
     }
 }

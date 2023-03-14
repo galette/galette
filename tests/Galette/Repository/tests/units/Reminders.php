@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
 
 /**
@@ -60,13 +60,11 @@ class Reminders extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
         $this->initStatus();
         $this->initContributionsTypes();
 
@@ -83,13 +81,11 @@ class Reminders extends GaletteTestCase
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
         $this->cleanContributions();
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
@@ -121,15 +117,15 @@ class Reminders extends GaletteTestCase
     {
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);
-        $this->array($ireminders->getList($this->zdb))->isIdenticalTo([]);
+        $this->assertSame([], $ireminders->getList($this->zdb));
 
         //lates
         $lreminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::LATE]);
-        $this->array($lreminders->getList($this->zdb))->isIdenticalTo([]);
+        $this->assertSame([], $lreminders->getList($this->zdb));
 
         //all
         $reminders = new \Galette\Repository\Reminders();
-        $this->array($reminders->getList($this->zdb))->isIdenticalTo([]);
+        $this->assertSame([], $reminders->getList($this->zdb));
 
         //create member
         $this->getMemberTwo();
@@ -156,13 +152,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member is up to date, but not yet close to be expired, no reminder to send
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(0);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertCount(0, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
 
         //create a close to be expired contribution
@@ -185,13 +181,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
-        //member is up to date, and close to be expired, one impending reminder to send
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(1);
+        //member is up-to-date, and close to be expired, one impending reminder to send
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(1, $ireminders->getList($this->zdb));
 
 
         //create a close to be expired contribution, 7 days before expiration
@@ -214,14 +210,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member is up to date, and close to be expired, one impending reminder to send
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(1);
-
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(1, $ireminders->getList($this->zdb));
 
         //create a close to be expired contribution, the last day before expiration
         $due_date = clone $now;
@@ -242,14 +237,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
-        //member is up to date, and close to be expired, one impending reminder to send
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(1);
-
+        //member is up-to-date, and close to be expired, one impending reminder to send
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(1, $ireminders->getList($this->zdb));
 
         //add a first close to be expired contribution reminder
         $send = new \DateTime();
@@ -266,14 +260,13 @@ class Reminders extends GaletteTestCase
         $insert->values($data);
 
         $add = $this->zdb->execute($insert);
-        $this->integer($add->count())->isGreaterThan(0);
+        $this->assertGreaterThan(0, $add->count());
 
         //there is still one impending reminder to send
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(1);
-
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(1, $ireminders->getList($this->zdb));
 
         //add a second close to be expired contribution reminder, yesterday
         $send = new \DateTime();
@@ -290,14 +283,13 @@ class Reminders extends GaletteTestCase
         $insert->values($data);
 
         $add = $this->zdb->execute($insert);
-        $this->integer($add->count())->isGreaterThan(0);
+        $this->assertGreaterThan(0, $add->count());
 
         //nothing to send!
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->array($reminders->getList($this->zdb))->hasSize(0);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertCount(0, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
         //create an expired contribution, today
         $due_date = clone $now;
@@ -319,14 +311,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member late, but for less than 30 days, no reminder to send
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(0);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertCount(0, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
         //create an expired contribution, 29 days ago
         $due_date = clone $now;
@@ -348,14 +339,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member is late, but for less than 30 days, no reminder to send
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(0);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertCount(0, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
         //create an expired contribution, late by 30 days
         $due_date = clone $now;
@@ -377,14 +367,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member is late, one late reminder to send
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(1);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(1, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
         //create an expired contribution, late by 40 days
         $due_date = clone $now;
@@ -406,14 +395,13 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member is late, one late reminder to send
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(1);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(1, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
         //add a sent late reminder, as it should have been
         $send = clone $now;
@@ -430,14 +418,13 @@ class Reminders extends GaletteTestCase
         $insert->values($data);
 
         $add = $this->zdb->execute($insert);
-        $this->integer($add->count())->isGreaterThan(0);
+        $this->assertGreaterThan(0, $add->count());
 
         //nothing to send!
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(0);
-        $this->array($lreminders->getList($this->zdb))->hasSize(0);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
-
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertCount(0, $reminders->getList($this->zdb));
+        $this->assertCount(0, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
 
         //create an expired contribution, 60 days ago
         $due_date = clone $now;
@@ -459,12 +446,12 @@ class Reminders extends GaletteTestCase
         ]);
 
         $adh = $this->adh;
-        $this->boolean($adh->load($id))->isTrue();
+        $this->assertTrue($adh->load($id));
 
         //member has been late for two months, one late reminder to send
-        $this->boolean($this->adh->isUp2Date())->isFalse();
-        $this->array($reminders->getList($this->zdb))->hasSize(1);
-        $this->array($lreminders->getList($this->zdb))->hasSize(1);
-        $this->array($ireminders->getList($this->zdb))->hasSize(0);
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertCount(1, $reminders->getList($this->zdb));
+        $this->assertCount(1, $lreminders->getList($this->zdb));
+        $this->assertCount(0, $ireminders->getList($this->zdb));
     }
 }

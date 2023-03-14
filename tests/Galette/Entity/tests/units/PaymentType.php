@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Payment type tests
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2019-12-15
  */
-class PaymentType extends atoum
+class PaymentType extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\Core\Preferences $preferences;
@@ -62,11 +62,9 @@ class PaymentType extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
@@ -77,20 +75,18 @@ class PaymentType extends atoum
 
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         $res = $types->installInit(false);
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->deletePaymentType();
     }
@@ -128,7 +124,7 @@ class PaymentType extends atoum
         $type = new \Galette\Entity\PaymentType($this->zdb);
 
         $type->name = 'Test payment type';
-        $this->boolean($type->store())->isTrue();
+        $this->assertTrue($type->store());
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -137,20 +133,19 @@ class PaymentType extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $result = $results->current();
+        $result = (array)$results->current();
 
-        $this->array((array)$result)
-            ->string['text_orig']->isIdenticalTo('Test payment type');
+        $this->assertSame('Test payment type', $result['text_orig']);
 
         $id = $type->id;
         $this->remove[] = $id;
 
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
         $type->name = 'Changed test payment type';
-        $this->boolean($type->store())->isTrue();
+        $this->assertTrue($type->store());
 
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
-        $this->string($type->getName())->isIdenticalTo('Changed test payment type');
+        $this->assertSame('Changed test payment type', $type->getName());
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -159,19 +154,15 @@ class PaymentType extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $this->integer(count($results))->isIdenticalTo(count($this->i18n->getArrayList()));
+        $this->assertSame(count($this->i18n->getArrayList()), count($results));
 
         $type = new \Galette\Entity\PaymentType($this->zdb, \Galette\Entity\PaymentType::CASH);
-        $this->exception(
-            function () use ($type) {
-                $type->remove();
-            }
-        )
-            ->hasMessage('You cannot delete system payment types!')
-            ->isInstanceOf('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete system payment types!');
+        $type->remove();
 
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
-        $this->boolean($type->remove())->isTrue();
+        $this->assertTrue($type->remove());
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -180,6 +171,6 @@ class PaymentType extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
     }
 }

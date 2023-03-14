@@ -58,29 +58,25 @@ class PdfModels extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
         $this->deletePdfModels();
     }
 
@@ -145,30 +141,34 @@ class PdfModels extends GaletteTestCase
 
         //install pdf models
         $list = $models->getList();
-        $this->array($list)->hasSize(4);
+        $this->assertCount(4, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PdfModel::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)
-                 ->isGreaterThanOrEqualTo(4, 'Incorrect PDF models sequence: ' . $result->last_value);
+            $this->assertGreaterThanOrEqual(
+                4,
+                $result->last_value,
+                'Incorrect PDF models sequence: ' . $result->last_value
+            );
         }
 
         //reinstall pdf models
         $models->installInit();
 
         $list = $models->getList();
-        $this->array($list)->hasSize(4);
+        $this->assertCount(4, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PdfModel::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)->isGreaterThanOrEqualTo(
+            $this->assertGreaterThanOrEqual(
                 4,
+                $result->last_value,
                 'Incorrect PDF models sequence ' . $result->last_value
             );
         }

@@ -61,7 +61,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->zdb = new \Galette\Core\Db();
 
@@ -80,13 +80,11 @@ class Adherent extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
         $this->initStatus();
         $this->initTitles();
 
@@ -116,26 +114,26 @@ class Adherent extends GaletteTestCase
     public function testEmpty()
     {
         $adh = $this->adh;
-        $this->boolean($adh->isAdmin())->isFalse();
-        $this->boolean($adh->admin)->isFalse();
-        $this->boolean($adh->isStaff())->isFalse();
-        $this->boolean($adh->staff)->isFalse();
-        $this->boolean($adh->isDueFree())->isFalse();
-        $this->boolean($adh->due_free)->isFalse();
-        $this->boolean($adh->isGroupMember('any'))->isFalse();
-        $this->boolean($adh->isGroupManager('any'))->isFalse();
-        $this->boolean($adh->isCompany())->isFalse();
-        $this->boolean($adh->isMan())->isFalse();
-        $this->boolean($adh->isWoman())->isFalse();
-        $this->boolean($adh->isActive())->isTrue();
-        $this->boolean($adh->active)->isTrue();
-        $this->boolean($adh->isUp2Date())->isFalse();
-        $this->boolean($adh->appearsInMembersList())->isFalse();
-        $this->boolean($adh->appears_in_list)->isFalse();
+        $this->assertFalse($adh->isAdmin());
+        $this->assertFalse($adh->admin);
+        $this->assertFalse($adh->isStaff());
+        $this->assertFalse($adh->staff);
+        $this->assertFalse($adh->isDueFree());
+        $this->assertFalse($adh->due_free);
+        $this->assertFalse($adh->isGroupMember('any'));
+        $this->assertFalse($adh->isGroupManager('any'));
+        $this->assertFalse($adh->isCompany());
+        $this->assertFalse($adh->isMan());
+        $this->assertFalse($adh->isWoman());
+        $this->assertTrue($adh->isActive());
+        $this->assertTrue($adh->active);
+        $this->assertFalse($adh->isUp2Date());
+        $this->assertFalse($adh->appearsInMembersList());
+        $this->assertFalse($adh->appears_in_list);
 
-        $this->variable($adh->fake_prop)->isNull();
+        $this->assertNull($adh->fake_prop);
 
-        $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+        $this->assertSame($this->default_deps, $adh->deps);
     }
 
     /**
@@ -146,7 +144,7 @@ class Adherent extends GaletteTestCase
     public function testDependencies()
     {
         $adh = $this->adh;
-        $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+        $this->assertSame($this->default_deps, $adh->deps);
 
         $adh = clone $this->adh;
         $adh->disableAllDeps();
@@ -159,7 +157,7 @@ class Adherent extends GaletteTestCase
             'dynamics'  => false,
             'socials'   => false
         ];
-        $this->array($adh->deps)->isIdenticalTo($expected);
+        $this->assertSame($expected, $adh->deps);
 
         $expected = [
             'picture'   => false,
@@ -174,7 +172,7 @@ class Adherent extends GaletteTestCase
             ->enableDep('dues')
             ->enableDep('dynamics')
             ->enableDep('children');
-        $this->array($adh->deps)->isIdenticalTo($expected);
+        $this->assertSame($expected, $adh->deps);
 
         $expected = [
             'picture'   => false,
@@ -186,10 +184,10 @@ class Adherent extends GaletteTestCase
             'socials'   => false
         ];
         $adh->disableDep('children');
-        $this->array($adh->deps)->isIdenticalTo($expected);
+        $this->assertSame($expected, $adh->deps);
 
         $adh->disableDep('none')->enableDep('anothernone');
-        $this->array($adh->deps)->isIdenticalTo($expected);
+        $this->assertSame($expected, $adh->deps);
 
         $expected = [
             'picture'   => true,
@@ -201,7 +199,7 @@ class Adherent extends GaletteTestCase
             'socials'   => true
         ];
         $adh->enableAllDeps('children');
-        $this->array($adh->deps)->isIdenticalTo($expected);
+        $this->assertSame($expected, $adh->deps);
     }
 
     /**
@@ -213,11 +211,8 @@ class Adherent extends GaletteTestCase
     {
         $adh = $this->adh;
 
-        $this->exception(
-            function () use ($adh) {
-                $adh->row_classes;
-            }
-        )->isInstanceOf('RuntimeException');
+        $this->expectException('RuntimeException');
+        $adh->row_classes;
     }
 
     /**
@@ -242,14 +237,14 @@ class Adherent extends GaletteTestCase
             $deps
         );
 
-        $this->array($adh->deps)->isIdenticalTo($deps);
+        $this->assertSame($deps, $adh->deps);
 
         $adh = new \Galette\Entity\Adherent(
             $this->zdb,
             null,
             'not an array'
         );
-        $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+        $this->assertSame($this->default_deps, $adh->deps);
     }
 
     /**
@@ -279,7 +274,7 @@ class Adherent extends GaletteTestCase
         $login = $this->adh->login;
         $email = $this->adh->email;
 
-        $this->variable($this->adh->email)->isIdenticalTo($this->adh->getEmail());
+        $this->assertSame($this->adh->getEmail(), $this->adh->email);
 
         $adh = new \Galette\Entity\Adherent($this->zdb, $login);
         $this->checkMemberOneExpected($adh);
@@ -303,7 +298,7 @@ class Adherent extends GaletteTestCase
         \Galette\Entity\Adherent::updatePassword($this->zdb, $this->adh->id, $newpass);
         $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         $pw_checked = password_verify($newpass, $adh->password);
-        $this->boolean($pw_checked)->isTrue();
+        $this->assertTrue($pw_checked);
 
         //reset original password
         \Galette\Entity\Adherent::updatePassword($this->zdb, $this->adh->id, 'J^B-()f');
@@ -321,7 +316,7 @@ class Adherent extends GaletteTestCase
         $data = ['ddn_adh' => 'not a date'];
         $expected = ['- Wrong date format (Y-m-d) for Birth date!'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = [
             'ddn_adh'       => '',
@@ -329,27 +324,27 @@ class Adherent extends GaletteTestCase
         ];
         $expected = ['- Wrong date format (Y-m-d) for Creation date!'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         //reste creation date to its default value
         $data = ['date_crea_adh' => date('Y-m-d')];
         $check = $adh->check($data, [], []);
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $data = ['email_adh' => 'not an email'];
         $expected = ['- Non-valid E-Mail address! (E-Mail)'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = ['login_adh' => 'a'];
         $expected = ['- The username must be composed of at least 2 characters!'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = ['login_adh' => 'login@galette'];
         $expected = ['- The username cannot contain the @ character'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = [
             'login_adh' => '',
@@ -358,12 +353,12 @@ class Adherent extends GaletteTestCase
         ];
         $expected = ['Too short (6 characters minimum, 5 found)'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = ['mdp_adh' => 'mypassword'];
         $expected = ['- The passwords don\'t match!'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = [
             'mdp_adh'   => 'mypassword',
@@ -371,40 +366,50 @@ class Adherent extends GaletteTestCase
         ];
         $expected = ['- The passwords don\'t match!'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = ['id_statut' => 256];
         $expected = ['Status #256 does not exists in database.'];
         $check = $adh->check($data, [], []);
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         //tests for group managers
-        $g1 = new \mock\Galette\Entity\Group();
-        $this->calling($g1)->getId = 1;
-        $g2 = new \mock\Galette\Entity\Group();
-        $this->calling($g2)->getId = 2;
+        //test insert failing
+        $g1 = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(array('getId'))
+            ->getMock();
+        $g1->method('getId')->willReturn(1);
+
+        $g2 = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(array('getId'))
+            ->getMock();
+        $g2->method('getId')->willReturn(2);
 
         //groups managers must specify a group they manage
         global $login;
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-
-        $this->calling($login)->isGroupManager = function ($gid) use ($g1) {
-            return $gid === null || $gid == $g1->getId();
-        };
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isGroupManager'))
+            ->getMock();
+        $login->method('isGroupManager')->willReturnCallback(
+            function ($gid) use ($g1) {
+                return $gid === null || $gid == $g1->getId();
+            }
+        );
 
         $data = ['id_statut' => ''];
         $check = $adh->check($data, [], []);
         $expected = ['You have to select a group you own!'];
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = ['groups_adh' => [$g2->getId()]];
         $check = $adh->check($data, [], []);
         $expected = ['You have to select a group you own!'];
-        $this->array($check)->isIdenticalTo($expected);
+        $this->assertSame($expected, $check);
 
         $data = ['groups_adh' => [$g1->getId()]];
         $check = $adh->check($data, [], []);
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
     }
 
     /**
@@ -417,12 +422,12 @@ class Adherent extends GaletteTestCase
         $this->getMemberOne();
 
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $this->boolean($fakedata->addPhoto($this->adh))->isTrue();
+        $this->assertTrue($fakedata->addPhoto($this->adh));
 
-        $this->boolean($this->adh->hasPicture())->isTrue();
+        $this->assertTrue($this->adh->hasPicture());
 
         //remove photo
-        $this->boolean($this->adh->picture->delete())->isTrue();
+        $this->assertTrue($this->adh->picture->delete());
     }
 
     /**
@@ -435,44 +440,68 @@ class Adherent extends GaletteTestCase
         $adh = new \Galette\Entity\Adherent($this->zdb);
 
         //non authorized
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->boolean($adh->canEdit($login))->isFalse();
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isGroupManager'))
+            ->getMock();
+        $this->assertFalse($adh->canEdit($login));
 
         //admin => authorized
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->calling($login)->isAdmin = true;
-        $this->boolean($adh->canEdit($login))->isTrue();
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $login->method('isAdmin')->willReturn(true);
+        $this->assertTrue($adh->canEdit($login));
 
         //staff => authorized
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->calling($login)->isStaff = true;
-        $this->boolean($adh->canEdit($login))->isTrue();
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isStaff'))
+            ->getMock();
+        $login->method('isStaff')->willReturn(true);
+        $this->assertTrue($adh->canEdit($login));
 
         //group managers
-        $adh = new \mock\Galette\Entity\Adherent($this->zdb);
+        $adh = $this->getMockBuilder(\Galette\Entity\Adherent::class)
+            ->setConstructorArgs(array($this->zdb))
+            ->onlyMethods(array('getGroups'))
+            ->getMock();
 
-        $g1 = new \mock\Galette\Entity\Group();
-        $this->calling($g1)->getId = 1;
-        $g2 = new \mock\Galette\Entity\Group();
-        $this->calling($g2)->getId = 2;
+        $g1 = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(array('getId'))
+            ->getMock();
+        $g1->method('getId')->willReturn(1);
 
-        $this->calling($adh)->getGroups = [$g1, $g2];
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->boolean($adh->canEdit($login))->isFalse();
+        $g2 = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(array('getId'))
+            ->getMock();
+        $g2->method('getId')->willReturn(2);
 
-        $this->calling($login)->isGroupManager = function ($gid) use ($g1) {
-            return $gid === null || $gid == $g1->getId();
-        };
-        $this->boolean($adh->canEdit($login))->isFalse();
+        $adh->method('getGroups')->willReturn([$g1, $g2]);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isGroupManager'))
+            ->getMock();
+
+        $this->assertFalse($adh->canEdit($login));
+
+        $login->method('isGroupManager')->willReturnCallback(
+            function ($gid) use ($g1) {
+                return $gid === null || $gid == $g1->getId();
+            }
+        );
+        $this->assertFalse($adh->canEdit($login));
 
         $this->preferences->pref_bool_groupsmanagers_edit_member = true;
         $canEdit = $adh->canEdit($login);
         $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
-        $this->boolean($canEdit)->isTrue();
+        $this->assertTrue($canEdit);
 
         //groups managers cannot edit members of the groups they do not own
-        $this->calling($adh)->getGroups = [$g2];
-        $this->boolean($adh->canEdit($login))->isFalse();
+        $adh->method('getGroups')->willReturn([$g2]);
+        $this->assertFalse($adh->canEdit($login));
     }
 
     /**
@@ -492,12 +521,12 @@ class Adherent extends GaletteTestCase
 
         $adh->setDuplicate();
 
-        $this->string($adh->others_infos_admin)->contains('Duplicated from');
-        $this->variable($adh->email)->isNull();
-        $this->variable($adh->id)->isNull();
-        $this->variable($adh->login)->isNull();
-        $this->variable($adh->birthdate)->isNull();
-        $this->variable($adh->surname)->isNull();
+        $this->assertStringContainsString('Duplicated from', $adh->others_infos_admin);
+        $this->assertNull($adh->email);
+        $this->assertNull($adh->id);
+        $this->assertNull($adh->login);
+        $this->assertNull($adh->birthdate);
+        $this->assertNull($adh->surname);
     }
 
     /**
@@ -521,21 +550,22 @@ class Adherent extends GaletteTestCase
             'nom_adh'       => 'Doe',
             'prenom_adh'    => 'Johny',
             'parent_id'     => $parent->id,
-            'attach'        => true
+            'attach'        => true,
+            'fingerprint'   => 'FAKER' . $this->seed
         ];
         $child = $this->createMember($child_data);
 
-        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
-        $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
-        $this->integer($child->parent->id)->isIdenticalTo($parent->id);
+        $this->assertSame($child_data['nom_adh'], $child->name);
+        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertSame($parent->id, $child->parent->id);
 
         $check = $child->check(['detach_parent' => true], [], []);
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
-        $this->boolean($child->store())->isTrue();
-        $this->variable($child->parent)->isNull();
+        $this->assertTrue($check);
+        $this->assertTrue($child->store());
+        $this->assertNull($child->parent);
     }
 
     /**
@@ -550,12 +580,13 @@ class Adherent extends GaletteTestCase
             'prenom_adh'        => 'Johny <script>console.log("anything");</script>',
             'email_adh'         => 'jdoe@doe.com',
             'login_adh'         => 'jdoe',
-            'info_public_adh'   => 'Any <script>console.log("useful");</script> information'
+            'info_public_adh'   => 'Any <script>console.log("useful");</script> information',
+            'fingerprint'       => 'FAKER' . $this->seed
         ] + $this->dataAdherentOne();
         $member = $this->createMember($data);
 
-        $this->string($member->sfullname)->isIdenticalTo('DOE Johny Console.log("anything");');
-        $this->string($member->others_infos)->isIdenticalTo('Any console.log("useful"); information');
+        $this->assertSame('DOE Johny Console.log("anything");', $member->sfullname);
+        $this->assertSame('Any console.log("useful"); information', $member->others_infos);
     }
 
     /**
@@ -569,47 +600,47 @@ class Adherent extends GaletteTestCase
         //load member from db
         $member = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
 
-        $this->boolean($member->canShow($this->login))->isFalse();
-        $this->boolean($member->canCreate($this->login))->isFalse();
-        $this->boolean($member->canEdit($this->login))->isFalse();
+        $this->assertFalse($member->canShow($this->login));
+        $this->assertFalse($member->canCreate($this->login));
+        $this->assertFalse($member->canEdit($this->login));
 
         //Superadmin can fully change members
         $this->logSuperAdmin();
 
-        $this->boolean($member->canShow($this->login))->isTrue();
-        $this->boolean($member->canCreate($this->login))->isTrue();
-        $this->boolean($member->canEdit($this->login))->isTrue();
+        $this->assertTrue($member->canShow($this->login));
+        $this->assertTrue($member->canCreate($this->login));
+        $this->assertTrue($member->canEdit($this->login));
 
         //logout
         $this->login->logOut();
-        $this->boolean($this->login->isLogged())->isFalse();
+        $this->assertFalse($this->login->isLogged());
 
         //Member can fully change its own information
         $mdata = $this->dataAdherentOne();
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
 
-        $this->boolean($member->canShow($this->login))->isTrue();
-        $this->boolean($member->canCreate($this->login))->isTrue();
-        $this->boolean($member->canEdit($this->login))->isTrue();
+        $this->assertTrue($member->canShow($this->login));
+        $this->assertTrue($member->canCreate($this->login));
+        $this->assertTrue($member->canEdit($this->login));
 
         //logout
         $this->login->logOut();
-        $this->boolean($this->login->isLogged())->isFalse();
+        $this->assertFalse($this->login->isLogged());
 
         //Another member has no access
         $this->getMemberTwo();
         $mdata = $this->dataAdherentTwo();
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
 
-        $this->boolean($member->canShow($this->login))->isFalse();
-        $this->boolean($member->canCreate($this->login))->isFalse();
-        $this->boolean($member->canEdit($this->login))->isFalse();
+        $this->assertFalse($member->canShow($this->login));
+        $this->assertFalse($member->canCreate($this->login));
+        $this->assertFalse($member->canEdit($this->login));
 
         //parents can fully change children information
         $this->getMemberOne();
@@ -633,48 +664,64 @@ class Adherent extends GaletteTestCase
         //load child from db
         $child = new \Galette\Entity\Adherent($this->zdb);
         $child->enableDep('parent');
-        $this->boolean($child->load($cid))->isTrue();
+        $this->assertTrue($child->load($cid));
 
-        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
-            $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
-        $this->integer($child->parent->id)->isIdenticalTo($member->id);
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
+        $this->assertSame($child_data['nom_adh'], $child->name);
+        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertSame($member->id, $child->parent->id);
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
         $mdata = $this->dataAdherentOne();
-        $this->boolean($this->login->login($mdata['login_adh'], $mdata['mdp_adh']))->isTrue();
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
 
-        $this->boolean($child->canShow($this->login))->isTrue();
-        $this->boolean($child->canCreate($this->login))->isFalse();
-        $this->boolean($child->canEdit($this->login))->isTrue();
+        $this->assertTrue($child->canShow($this->login));
+        $this->assertFalse($child->canCreate($this->login));
+        $this->assertTrue($child->canEdit($this->login));
 
         //logout
         $this->login->logOut();
-        $this->boolean($this->login->isLogged())->isFalse();
+        $this->assertFalse($this->login->isLogged());
 
         //tests for group managers
-        $adh = new \mock\Galette\Entity\Adherent($this->zdb);
+        $adh = $this->getMockBuilder('\Galette\Entity\Adherent')
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['getGroups'])
+            ->getMock();
 
-        $g1 = new \mock\Galette\Entity\Group();
-        $this->calling($g1)->getId = 1;
-        $g2 = new \mock\Galette\Entity\Group();
-        $this->calling($g2)->getId = 2;
+        $g1 = $this->getMockBuilder('\Galette\Entity\Group')
+            ->onlyMethods(['getId'])
+            ->getMock();
+        $g1->method('getId')->willReturn(1);
+
+        $g2 = $this->getMockBuilder('\Galette\Entity\Group')
+            ->onlyMethods(['getId'])
+            ->getMock();
+        $g2->method('getId')->willReturn(2);
 
         //groups managers can show members of the groups they own
-        $this->calling($adh)->getGroups = [$g1, $g2];
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->boolean($adh->canShow($login))->isFalse();
+        $adh->method('getGroups')->willReturn([$g1, $g2]);
 
-        $this->calling($login)->isGroupManager = function ($gid) use ($g1) {
+        $login = $this->getMockBuilder('\Galette\Core\Login')
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
+            ->getMock();
+        $this->assertFalse($adh->canShow($login));
+
+        $login->method('isGroupManager')->willReturnCallback(function ($gid) use ($g1) {
             return $gid === null || $gid == $g1->getId();
-        };
-        $this->boolean($adh->canShow($login))->isTrue();
+        });
+        $this->assertTrue($adh->canShow($login));
 
         //groups managers cannot show members of the groups they do not own
-        $this->calling($adh)->getGroups = [$g2];
-        $this->boolean($adh->canShow($login))->isFalse();
+        $adh = $this->getMockBuilder('\Galette\Entity\Adherent')
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['getGroups'])
+            ->getMock();
+        $adh->method('getGroups')->willReturn([$g2]);
+        $this->assertFalse($adh->canShow($login));
     }
 
     /**
@@ -682,7 +729,7 @@ class Adherent extends GaletteTestCase
      *
      * @return array[]
      */
-    protected function nameCaseProvider(): array
+    public static function nameCaseProvider(): array
     {
         return [
             [
@@ -752,7 +799,8 @@ class Adherent extends GaletteTestCase
      */
     public function testsGetNameWithCase(string $name, string $surname, $title, $id, $nick, string $expected)
     {
-        $this->string(
+        $this->assertSame(
+            $expected,
             \Galette\Entity\Adherent::getNameWithCase(
                 $name,
                 $surname,
@@ -760,6 +808,6 @@ class Adherent extends GaletteTestCase
                 $id,
                 $nick,
             )
-        )->isIdenticalTo($expected);
+        );
     }
 }

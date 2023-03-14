@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Galette\GaletteTestCase;
  * @name      Galette
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-23
@@ -61,20 +61,18 @@ class Galette extends GaletteTestCase
     public function testGitVersion()
     {
         $gitversion = \Galette\Core\Galette::gitVersion();
-        $this->boolean(str_starts_with(
-            $gitversion,
-            GALETTE_VERSION
-        ))->isTrue();
-        $this->integer(
+        $this->assertStringStartsWith(GALETTE_VERSION, $gitversion);
+        $this->assertSame(
+            1,
             preg_match(
-                '/-git-\w (\d{4}-\d{2}-\d{2})/',
+                '/-git-.+ \(\d{4}-\d{2}-\d{2}\)/',
                 str_replace(GALETTE_VERSION, '', $gitversion)
             )
         );
     }
 
     /**
-     * Test storign into session of various objects to detect serialization issues
+     * Test storing into session of various objects to detect serialization issues
      *
      * @return void
      */
@@ -83,68 +81,68 @@ class Galette extends GaletteTestCase
         //global objects
         $login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->session->login_test = $login;
-        $this->object($this->session->login_test)->isInstanceOf(\Galette\Core\Login::class);
+        $this->assertInstanceOf(\Galette\Core\Login::class, $this->session->login_test);
 
         $mailing = new \Galette\Core\Mailing($this->preferences);
         $this->session->mailing_test = $mailing;
-        $this->object($this->session->mailing_test)->isInstanceOf(\Galette\Core\Mailing::class);
+        $this->assertInstanceOf(\Galette\Core\Mailing::class, $this->session->mailing_test);
 
         $gaptcha = new \Galette\Core\Gaptcha($this->i18n);
         $this->session->gaptcha_test = $gaptcha;
-        $this->object($this->session->gaptcha_test)->isInstanceOf(\Galette\Core\Gaptcha::class);
+        $this->assertInstanceOf(\Galette\Core\Gaptcha::class, $this->session->gaptcha_test);
 
         $plugin_install = new \Galette\Core\PluginInstall();
         $this->session->plugininstall_test = $plugin_install;
-        $this->object($this->session->plugininstall_test)->isInstanceOf(\Galette\Core\PluginInstall::class);
+        $this->assertInstanceOf(\Galette\Core\PluginInstall::class, $this->session->plugininstall_test);
 
         $i18n = new \Galette\Core\I18n();
         $this->session->i18n_test = $i18n;
-        $this->object($this->session->i18n_test)->isInstanceOf(\Galette\Core\I18n::class);
+        $this->assertInstanceOf(\Galette\Core\I18n::class, $this->session->i18n_test);
 
         //entities
         $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->session->contribution_test = $contribution;
-        $this->object($this->session->contribution_test)->isInstanceOf(\Galette\Entity\Contribution::class);
+        $this->assertInstanceOf(\Galette\Entity\Contribution::class, $this->session->contribution_test);
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::LINE);
         $this->session->df_filter_test = $df;
-        $this->object($this->session->df_filter_test)->isInstanceOf(\Galette\DynamicFields\Line::class);
+        $this->assertInstanceOf(\Galette\DynamicFields\Line::class, $this->session->df_filter_test);
 
         $member = new \Galette\Entity\Adherent($this->zdb);
         $this->session->member_test = $member;
-        $this->object($this->session->member_test)->isInstanceOf(\Galette\Entity\Adherent::class);
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $this->session->member_test);
 
         $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
         $this->session->transaction_test = $transaction;
-        $this->object($this->session->transaction_test)->isInstanceOf(\Galette\Entity\Transaction::class);
+        $this->assertInstanceOf(\Galette\Entity\Transaction::class, $this->session->transaction_test);
 
         //filters
         $contribution_filter = new \Galette\Filters\ContributionsList();
         $this->session->contribution_filter_test = $contribution_filter;
-        $this->object($this->session->contribution_filter_test)->isInstanceOf(\Galette\Filters\ContributionsList::class);
+        $this->assertInstanceOf(\Galette\Filters\ContributionsList::class, $this->session->contribution_filter_test);
 
         $member_advanced_filter = new \Galette\Filters\AdvancedMembersList();
         $this->session->member_advanced_filter_test = $member_advanced_filter;
-        $this->object($this->session->member_advanced_filter_test)->isInstanceOf(\Galette\Filters\AdvancedMembersList::class);
+        $this->assertInstanceOf(\Galette\Filters\AdvancedMembersList::class, $this->session->member_advanced_filter_test);
 
         $member_filter = new \Galette\Filters\MembersList();
         $this->session->member_filter_test = $member_filter;
-        $this->object($this->session->member_filter_test)->isInstanceOf(\Galette\Filters\MembersList::class);
+        $this->assertInstanceOf(\Galette\Filters\MembersList::class, $this->session->member_filter_test);
 
         $history_filter = new \Galette\Filters\HistoryList();
         $this->session->history_filter_test = $history_filter;
-        $this->object($this->session->history_filter_test)->isInstanceOf(\Galette\Filters\HistoryList::class);
+        $this->assertInstanceOf(\Galette\Filters\HistoryList::class, $this->session->history_filter_test);
 
         $mailing_filter = new \Galette\Filters\MailingsList();
         $this->session->mailing_filter_test = $mailing_filter;
-        $this->object($this->session->mailing_filter_test)->isInstanceOf(\Galette\Filters\MailingsList::class);
+        $this->assertInstanceOf(\Galette\Filters\MailingsList::class, $this->session->mailing_filter_test);
 
         $saved_filter = new \Galette\Filters\SavedSearchesList();
         $this->session->saved_filter_test = $saved_filter;
-        $this->object($this->session->saved_filter_test)->isInstanceOf(\Galette\Filters\SavedSearchesList::class);
+        $this->assertInstanceOf(\Galette\Filters\SavedSearchesList::class, $this->session->saved_filter_test);
 
         $transaction_filter = new \Galette\Filters\TransactionsList();
         $this->session->transaction_filter_test = $transaction_filter;
-        $this->object($this->session->transaction_filter_test)->isInstanceOf(\Galette\Filters\TransactionsList::class);
+        $this->assertInstanceOf(\Galette\Filters\TransactionsList::class, $this->session->transaction_filter_test);
     }
 }

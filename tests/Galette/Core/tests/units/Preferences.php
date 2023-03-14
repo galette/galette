@@ -37,9 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
-use Galette\Middleware\Authenticate;
-use Slim\Routing\RouteParser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Preferences tests class
@@ -53,7 +51,7 @@ use Slim\Routing\RouteParser;
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
  */
-class Preferences extends atoum
+class Preferences extends TestCase
 {
     private ?\Galette\Core\Preferences $preferences = null;
     private \Galette\Core\Db $zdb;
@@ -62,11 +60,9 @@ class Preferences extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
@@ -82,24 +78,22 @@ class Preferences extends atoum
         $this->preferences = $container->get('preferences');
 
         global $routeparser;
-        $routeparser = $container->get(RouteParser::class);
+        $routeparser = $container->get(\Slim\Routing\RouteParser::class);
 
-        $authenticate = new Authenticate($container);
-        require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
+        $authenticate = new \Galette\Middleware\Authenticate($container);
+        require GALETTE_ROOT . 'includes/routes/main.routes.php';
+        require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
 
         $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
@@ -118,7 +112,7 @@ class Preferences extends atoum
             'da_admin',
             password_hash('da_secret', PASSWORD_BCRYPT)
         );
-        $this->boolean($result)->isTrue();
+        $this->assertTrue($result);
 
         //new object with values loaded from database to compare
         $prefs = new \Galette\Core\Preferences($this->zdb);
@@ -128,20 +122,20 @@ class Preferences extends atoum
 
             switch ($key) {
                 case 'pref_admin_login':
-                    $this->variable($value)->isIdenticalTo('da_admin');
+                    $this->assertSame('da_admin', $value);
                     break;
                 case 'pref_admin_pass':
                     $pw_checked = password_verify('da_secret', $value);
-                    $this->boolean($pw_checked)->isTrue();
+                    $this->assertTrue($pw_checked);
                     break;
                 case 'pref_lang':
-                    $this->variable($value)->isIdenticalTo('en_US');
+                    $this->assertSame('en_US', $value);
                     break;
                 case 'pref_card_year':
-                    $this->variable($value)->isIdenticalTo(date('Y'));
+                    $this->assertSame(date('Y'), $value);
                     break;
                 default:
-                    $this->variable($value)->isEqualTo($expected);
+                    $this->assertEquals($expected, $value);
                     break;
             }
         }
@@ -149,20 +143,20 @@ class Preferences extends atoum
         //tru to set and get a non existent value
         $prefs->doesnotexists = 'that *does* not exists.';
         $false_result = $prefs->doesnotexists;
-        $this->boolean($false_result)->isFalse();
+        $this->assertFalse($false_result);
 
         //change slogan
         $slogan = 'One Galette to rule them all';
         $prefs->pref_slogan = $slogan;
         $check = $prefs->pref_slogan;
-        $this->string($check)->isIdenticalTo($slogan);
+        $this->assertSame($slogan, $check);
 
         //change password
         $new_pass = 'anoth3er_s3cr3t';
         $prefs->pref_admin_pass = $new_pass;
         $pass = $prefs->pref_admin_pass;
         $pw_checked = password_verify($new_pass, $pass);
-        $this->boolean($pw_checked)->isTrue();
+        $this->assertTrue($pw_checked);
 
         $this->preferences->pref_nom = 'Galette';
         $this->preferences->pref_ville = 'Avignon';
@@ -174,20 +168,20 @@ class Preferences extends atoum
         $expected = "Galette\nPalais des Papes\nAu milieu\n84000 Avignon - France";
         $address = $this->preferences->getPostalAddress();
 
-        $this->variable($address)->isIdenticalTo($expected);
+        $this->assertSame($expected, $address);
 
         $slogan = $this->preferences->pref_slogan;
-        $this->variable($slogan)->isEqualTo('');
+        $this->assertEquals('', $slogan);
 
         $slogan = 'One Galette to rule them all';
         $this->preferences->pref_slogan = $slogan;
         $result = $this->preferences->store();
 
-        $this->boolean($result)->isTrue();
+        $this->assertTrue($result);
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $check_slogan = $prefs->pref_slogan;
-        $this->variable($check_slogan)->isEqualTo($slogan);
+        $this->assertEquals($slogan, $check_slogan);
 
         //reset database value...
         $this->preferences->pref_slogan = '';
@@ -208,7 +202,7 @@ class Preferences extends atoum
         sort($fields_names);
         sort($expected);
 
-        $this->array($fields_names)->isIdenticalTo($expected);
+        $this->assertSame($expected, $fields_names);
     }
 
     /**
@@ -238,15 +232,15 @@ class Preferences extends atoum
         $footer = $this->preferences->pref_footer;
         $new_contrib_script = $this->preferences->pref_new_contrib_script;
 
-        $this->boolean($footer)->isFalse();
-        $this->boolean($new_contrib_script)->isFalse();
+        $this->assertFalse($footer);
+        $this->assertFalse($new_contrib_script);
 
         $prefs = new \Galette\Core\Preferences($this->zdb);
         $footer = $prefs->pref_footer;
         $new_contrib_script = $prefs->pref_new_contrib_script;
 
-        $this->variable($footer)->isIdenticalTo('');
-        $this->variable($new_contrib_script)->isIdenticalTo('');
+        $this->assertSame('', $footer);
+        $this->assertSame('', $new_contrib_script);
     }
 
     /**
@@ -259,8 +253,9 @@ class Preferences extends atoum
         $this->preferences->load();
 
         $visibility = $this->preferences->pref_publicpages_visibility;
-        $this->variable($visibility)->isEqualTo(
-            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED
+        $this->assertEquals(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+            $visibility
         );
 
         $anon_login = new \Galette\Core\Login(
@@ -268,50 +263,50 @@ class Preferences extends atoum
             new \Galette\Core\I18n()
         );
 
-        $admin_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($admin_login)->isAdmin = true;
+        $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $admin_login->method('isAdmin')->willReturn(true);
 
-        $user_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($user_login)->isUp2Date = true;
+        $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isUp2Date'))
+            ->getMock();
+        $user_login->method('isUp2Date')->willReturn(true);
 
         $visible = $this->preferences->showPublicPages($anon_login);
-        $this->boolean($visible)->isFalse();
+        $this->assertFalse($visible);
 
         $visible = $this->preferences->showPublicPages($admin_login);
-        $this->boolean($visible)->isTrue();
+        $this->assertTrue($visible);
 
         $visible = $this->preferences->showPublicPages($user_login);
-        $this->boolean($visible)->isTrue();
+        $this->assertTrue($visible);
 
         $this->preferences->pref_publicpages_visibility
             = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
 
         $visible = $this->preferences->showPublicPages($anon_login);
-        $this->boolean($visible)->isTrue();
+        $this->assertTrue($visible);
 
         $visible = $this->preferences->showPublicPages($admin_login);
-        $this->boolean($visible)->isTrue();
+        $this->assertTrue($visible);
 
         $visible = $this->preferences->showPublicPages($user_login);
-        $this->boolean($visible)->isTrue();
+        $this->assertTrue($visible);
 
         $this->preferences->pref_publicpages_visibility
             = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;
 
         $visible = $this->preferences->showPublicPages($anon_login);
-        $this->boolean($visible)->isFalse();
+        $this->assertFalse($visible);
 
         $visible = $this->preferences->showPublicPages($admin_login);
-        $this->boolean($visible)->isTrue();
+        $this->assertTrue($visible);
 
         $visible = $this->preferences->showPublicPages($user_login);
-        $this->boolean($visible)->isFalse();
+        $this->assertFalse($visible);
     }
 
     /**
@@ -319,7 +314,7 @@ class Preferences extends atoum
      *
      * @return array
      */
-    protected function sizesProvider()
+    public static function sizesProvider()
     {
         return [
             [//defaults
@@ -381,7 +376,7 @@ class Preferences extends atoum
         $this->preferences->pref_card_marges_h = $hm;
         $this->preferences->pref_card_vspace = $vs;
         $this->preferences->pref_card_hspace = $hs;
-        $this->array($this->preferences->checkCardsSizes())->hasSize($count);
+        $this->assertCount($count, $this->preferences->checkCardsSizes());
     }
 
     /**
@@ -389,7 +384,7 @@ class Preferences extends atoum
      *
      * @return array
      */
-    protected function colorsProvider(): array
+    public static function colorsProvider(): array
     {
         return [
             [
@@ -428,7 +423,7 @@ class Preferences extends atoum
     {
         $prop = 'pref_card_' . $prop;
         $this->preferences->$prop = $color;
-        $this->string($this->preferences->$prop)->isIdenticalTo($expected);
+        $this->assertSame($expected, $this->preferences->$prop);
     }
 
     /**
@@ -466,16 +461,31 @@ class Preferences extends atoum
 
         $post = array_merge($preferences, $post);
 
-        $this->boolean($this->preferences->check($post, $this->login))->isTrue(print_r($this->preferences->getErrors(), true));
-        $this->boolean($this->preferences->store())->isTrue();
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertTrue($this->preferences->store());
 
         $socials = \Galette\Entity\Social::getListForMember(null);
-        $this->array($socials)->hasSize(2);
+        $this->assertCount(2, $socials);
 
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(1);
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER))->hasSize(1);
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK))->hasSize(0);
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::BLOG))->hasSize(0);
+        $this->assertCount(
+            1,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+        );
+        $this->assertCount(
+            1,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER)
+        );
+        $this->assertCount(
+            0,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
+        );
+        $this->assertCount(
+            0,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::BLOG)
+        );
 
         //create one new social network
         $post = [
@@ -490,26 +500,29 @@ class Preferences extends atoum
 
         $post = array_merge($preferences, $post);
 
-        $this->boolean($this->preferences->check($post, $this->login))->isTrue(print_r($this->preferences->getErrors(), true));
-        $this->boolean($this->preferences->store())->isTrue();
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertTrue($this->preferences->store());
 
         $socials = \Galette\Entity\Social::getListForMember(null);
-        $this->array($socials)->hasSize(3);
+        $this->assertCount(3, $socials);
 
         $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON);
-        $this->array($search)->hasSize(1);
+        $this->assertCount(1, $search);
         $masto = array_pop($search);
-        $this->string($masto->url)->isIdenticalTo('Galette mastodon URL');
+        $this->assertSame('Galette mastodon URL', $masto->url);
 
         $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER);
-        $this->array($search)->hasSize(1);
+        $this->assertCount(1, $search);
         $jabber = array_pop($search);
-        $this->string($jabber->url)->isIdenticalTo('Galette jabber ID - modified');
+        $this->assertSame('Galette jabber ID - modified', $jabber->url);
 
         $search = \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK);
-        $this->array($search)->hasSize(1);
+        $this->assertCount(1, $search);
         $facebook = array_pop($search);
-        $this->string($facebook->url)->isIdenticalTo('Galette does not have facebook');
+        $this->assertSame('Galette does not have facebook', $facebook->url);
 
         $post = [];
 
@@ -521,15 +534,27 @@ class Preferences extends atoum
         }
 
         $post = array_merge($preferences, $post);
-        $this->boolean($this->preferences->check($post, $this->login))->isTrue(print_r($this->preferences->getErrors(), true));
-        $this->boolean($this->preferences->store())->isTrue();
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertTrue($this->preferences->store());
 
         $socials = \Galette\Entity\Social::getListForMember(null);
-        $this->array($socials)->hasSize(2);
+        $this->assertCount(2, $socials);
 
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(0);
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER))->hasSize(1);
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK))->hasSize(1);
+        $this->assertCount(
+            0,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+        );
+        $this->assertCount(
+            1,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER)
+        );
+        $this->assertCount(
+            1,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
+        );
     }
 
     /**
@@ -539,38 +564,44 @@ class Preferences extends atoum
      */
     public function testGetMailSignature()
     {
-        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\n");
+        $this->assertSame("\r\n-- \r\nGalette\r\n\r\n", $this->preferences->getMailSignature());
 
         $this->preferences->pref_website = 'https://galette.eu';
-        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu");
+        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu", $this->preferences->getMailSignature());
 
         //with legacy values
         $this->preferences->pref_mailsign = "NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
-        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu");
+        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu", $this->preferences->getMailSignature());
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('https://framapiaf.org/@galette')
                 ->setLinkedMember(null)
                 ->store()
-        )->isTrue();
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(1);
+        );
+        $this->assertCount(
+            1,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+        );
 
         $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE} - {ASSO_SOCIAL_MASTODON}";
-        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette");
+        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette", $this->preferences->getMailSignature());
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Galette mastodon URL - the return')
                 ->setLinkedMember(null)
                 ->store()
-        )->isTrue();
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON))->hasSize(2);
-        $this->string($this->preferences->getMailSignature())->isIdenticalTo("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return");
+        );
+        $this->assertCount(
+            2,
+            \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
+        );
+        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return", $this->preferences->getMailSignature());
     }
 
     /**
@@ -581,29 +612,36 @@ class Preferences extends atoum
     public function testGetLegend()
     {
         $legend = $this->preferences->getLegend();
-        $this->array($legend)->hasSize(2);
-        $this->array($legend['main']['patterns'])->hasSize(8);
-        $this->array($legend['socials']['patterns'])->hasSize(9);
-        $this->array($legend['socials']['patterns']['asso_social_mastodon'])->isIdenticalTo([
+        $this->assertCount(2, $legend);
+        $this->assertCount(8, $legend['main']['patterns']);
+        $this->assertCount(9, $legend['socials']['patterns']);
+        $this->assertSame(
+            [
             'title' => __('Mastodon'),
             'pattern' => '/{ASSO_SOCIAL_MASTODON}/'
-        ]);
+            ],
+            $legend['socials']['patterns']['asso_social_mastodon']
+        );
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType('mynewtype')
                 ->setUrl('Galette specific social network URL')
                 ->setLinkedMember(null)
                 ->store()
-        )->isTrue();
+        );
 
         $legend = $this->preferences->getLegend();
-        $this->array($legend)->hasSize(2);
-        $this->array($legend['socials']['patterns'])->hasSIze(10)->hasKey('asso_social_mynewtype');
-        $this->array($legend['socials']['patterns']['asso_social_mynewtype'])->isIdenticalTo([
-            'title' => 'mynewtype',
-            'pattern' => '/{ASSO_SOCIAL_MYNEWTYPE}/'
-        ]);
+        $this->assertCount(2, $legend);
+        $this->assertCount(10, $legend['socials']['patterns']);
+        $this->assertTrue(isset($legend['socials']['patterns']['asso_social_mynewtype']));
+        $this->assertSame(
+            [
+                'title' => 'mynewtype',
+                'pattern' => '/{ASSO_SOCIAL_MYNEWTYPE}/'
+            ],
+            $legend['socials']['patterns']['asso_social_mynewtype']
+        );
     }
 }

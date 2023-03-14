@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Picture tests class
@@ -51,18 +51,16 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2017-07-08
  */
-class PrintLogo extends atoum
+class PrintLogo extends TestCase
 {
     private \Galette\Core\Db $zdb;
 
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         global $zdb;
         $this->zdb = new \Galette\Core\Db();
@@ -72,14 +70,12 @@ class PrintLogo extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -93,14 +89,14 @@ class PrintLogo extends atoum
         global $zdb;
         $zdb = $this->zdb;
         $logo = new \Galette\Core\PrintLogo();
-        $this->variable($logo->getDestDir())->isNull();
-        $this->variable($logo->getFileName())->isNull();
+        $this->assertNull($logo->getDestDir());
+        $this->assertNull($logo->getFileName());
 
         $expected_path = realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.png');
-        $this->string($logo->getPath())->isIdenticalTo($expected_path);
+        $this->assertSame($expected_path, $logo->getPath());
 
-        $this->string($logo->getMime())->isIdenticalTo('image/png');
-        $this->string($logo->getFormat())->isIdenticalTo('png');
-        $this->boolean($logo->isCustom())->isFalse();
+        $this->assertSame('image/png', $logo->getMime());
+        $this->assertSame('png', $logo->getFormat());
+        $this->assertFalse($logo->isCustom());
     }
 }

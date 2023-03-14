@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -52,7 +52,7 @@ use Laminas\Db\Adapter\Adapter;
  * @link      http://galette.tuxfamily.org
  * @since     2019-12-14
  */
-class Title extends atoum
+class Title extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private array $remove = [];
@@ -60,11 +60,9 @@ class Title extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
     }
@@ -72,14 +70,12 @@ class Title extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->deleteTitle();
     }
@@ -117,37 +113,31 @@ class Title extends atoum
         $titles = new \Galette\Repository\Titles($this->zdb);
         if (count($titles->getList()) === 0) {
             $res = $titles->installInit();
-            $this->boolean($res)->isTrue();
+            $this->assertTrue($res);
         }
 
         $title = new \Galette\Entity\Title();
 
         $title->short = 'Te.';
         $title->long = 'Test';
-        $this->boolean($title->store($this->zdb))->isTrue();
+        $this->assertTrue($title->store($this->zdb));
 
         $id = $title->id;
         $this->remove[] = $id;
         $title = new \Galette\Entity\Title($id); //reload
 
         $title->long = 'Test title';
-        $this->boolean($title->store($this->zdb))->isTrue();
+        $this->assertTrue($title->store($this->zdb));
         $title = new \Galette\Entity\Title($id); //reload
 
-        $this->string($title->long)->isIdenticalTo('Test title');
+        $this->assertSame('Test title', $title->long);
 
         $title = new \Galette\Entity\Title(\Galette\Entity\Title::MR);
-        $this->exception(
-            function () use ($title) {
-                $title->remove($this->zdb);
-            }
-        )
-            ->hasMessage('You cannot delete Mr. or Mrs. titles!')
-            ->isInstanceOf('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete Mr. or Mrs. titles!');
+        $title->remove($this->zdb);
 
         $title = new \Galette\Entity\Title($id); //reload
-        $this->boolean(
-            $title->remove($this->zdb)
-        )->isTrue();
+        $this->assertTrue($title->remove($this->zdb));
     }
 }

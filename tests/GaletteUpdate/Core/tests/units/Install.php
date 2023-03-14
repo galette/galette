@@ -38,6 +38,7 @@
 namespace Galette\Core\test\units;
 
 use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Update tests
@@ -51,7 +52,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2021-05-06
  */
-class Install extends atoum
+class Install extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private array $flash_data;
@@ -61,11 +62,9 @@ class Install extends atoum
     /**
      * Set up tests
      *
-     * @param stgring $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         setlocale(LC_ALL, 'en_US');
 
@@ -91,14 +90,12 @@ class Install extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -115,12 +112,12 @@ class Install extends atoum
             $this->zdb->type_db,
             '0.6'
         );
-        $this->array($update_scripts)->size->isGreaterThan(5);
+        $this->assertGreaterThan(5, count($update_scripts));
 
         $install->setMode(\Galette\Core\Install::UPDATE);
         $errors = [];
         $install->setDbType($this->zdb->type_db, $errors);
-        $this->array($errors)->isIdenticalTo([]);
+        $this->assertSame([], $errors);
 
         $install->setInstalledVersion('0.60');
         $install->setTablesPrefix(PREFIX_DB);
@@ -128,10 +125,13 @@ class Install extends atoum
 
         $report = $install->getInitializationReport();
         foreach ($report as $entry) {
-            $this->boolean($entry['res'])->isTrue(($entry['debug'] ?? '') . "\n" . ($entry['query'] ?? ''));
+            $this->assertTrue(
+                $entry['res'],
+                ($entry['debug'] ?? '') . "\n" . ($entry['query'] ?? '')
+            );
         }
 
-        $this->boolean($exec)->isTrue();
-        $this->string($this->zdb->getDbVersion())->isIdenticalTo(GALETTE_DB_VERSION);
+        $this->assertTrue($exec);
+        $this->assertSame(GALETTE_DB_VERSION, $this->zdb->getDbVersion());
     }
 }

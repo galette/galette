@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
@@ -71,11 +71,11 @@ class Texts extends GaletteTestCase
         $texts->installInit();
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
-        $this->array($list)->hasSize($count_texts);
+        $this->assertCount($count_texts, $list);
 
         foreach (array_keys($this->i18n->getArrayList()) as $lang) {
             $list = $texts->getRefs($lang);
-            $this->array($list)->hasSize($count_texts);
+            $this->assertCount($count_texts, $list);
         }
 
         if ($this->zdb->isPostgres()) {
@@ -83,8 +83,7 @@ class Texts extends GaletteTestCase
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)
-                 ->isGreaterThanOrEqualTo($count_texts, 'Incorrect texts sequence ' . $result->last_value);
+            $this->assertGreaterThanOrEqual($count_texts, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
 
             $this->zdb->db->query(
                 'SELECT setval(\'' . PREFIX_DB . $texts::TABLE . '_id_seq\', 1)',
@@ -96,15 +95,14 @@ class Texts extends GaletteTestCase
         $texts->installInit(false);
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
-        $this->array($list)->hasSize($count_texts);
+        $this->assertCount($count_texts, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($texts::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)
-                 ->isGreaterThanOrEqualTo(12, 'Incorrect texts sequence ' . $result->last_value);
+            $this->assertGreaterThanOrEqual(12, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
         }
     }
 }

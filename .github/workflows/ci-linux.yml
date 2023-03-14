@@ -132,7 +132,7 @@ jobs:
         if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
 
       - name: Update database tests
-        run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/GaletteUpdate/
+        run: UPDATE=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteUpdate/
         if: matrix.coverage != 'xdebug'
 
       - name: Init for PostgreSQL
@@ -150,11 +150,11 @@ jobs:
         if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
 
       - name: Unit tests
-        run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/
+        run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/Galette/
         if: matrix.coverage != 'xdebug'
 
       - name: Unit tests (with coverage)
-        run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/
+        run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --process-isolation --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
         if: matrix.coverage == 'xdebug'
 
       - name: Upload code coverage (scrutinizer)

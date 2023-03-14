@@ -102,8 +102,8 @@ class CheckModules
                     $mstring = _T("either 'mysql' or 'pgsql' PDO driver");
                 }
                 if (
-                    !extension_loaded('pdo_mysql')
-                    && !extension_loaded('pdo_pgsql')
+                    !$this->isExtensionLoaded('pdo_mysql')
+                    && !$this->isExtensionLoaded('pdo_pgsql')
                 ) {
                     $this->missing[] = $mstring;
                 } else {
@@ -111,7 +111,7 @@ class CheckModules
                 }
             } else {
                 $mstring = str_replace('%s', $name, $string);
-                if (!extension_loaded($name)) {
+                if (!$this->isExtensionLoaded($name)) {
                     if ($required) {
                         $this->missing[] = $mstring;
                     } else {
@@ -210,5 +210,17 @@ class CheckModules
     public function getMissings()
     {
         return $this->missing;
+    }
+
+    /**
+     * Check if a module is loaded
+     *
+     * @param string $ext Module name
+     *
+     * @return bool
+     */
+    protected function isExtensionLoaded(string $ext): bool
+    {
+        return extension_loaded($ext);
     }
 }

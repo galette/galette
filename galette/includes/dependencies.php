@@ -286,7 +286,7 @@ $container->set(
 $container->set('Galette\Core\History', \DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
-    include_once GALETTE_ROOT . 'includes/core_acls.php';
+    include GALETTE_ROOT . 'includes/core_acls.php';
     $acls = $core_acls;
 
     foreach ($c->get('plugins')->getModules() as $plugin) {
@@ -311,7 +311,7 @@ $container->set('texts_fields', function (ContainerInterface $c) {
 });
 
 $container->set('members_fields', function (ContainerInterface $c) {
-    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+    include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
 });
 
@@ -326,7 +326,7 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
 });
 
 $container->set('members_fields_cats', function (ContainerInterface $c) {
-    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+    include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
 });
 

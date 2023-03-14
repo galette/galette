@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Plugins tests class
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
  */
-class Plugins extends atoum
+class Plugins extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\Core\Preferences $preferences;
@@ -89,11 +89,9 @@ class Plugins extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
@@ -107,14 +105,12 @@ class Plugins extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -126,15 +122,12 @@ class Plugins extends atoum
     public function testLoadModules()
     {
         $plugins = $this->getPlugins();
-
-        $this->array($this->plugins->getModules())
-            ->hasSize(3);
+        $this->assertCount(3, $this->plugins->getModules());
 
         $loaded_plugin = $this->plugins->getModules('plugin-test2');
         $loaded_plugin['date'] = $this->plugin2['date'];
 
-        $this->variable($loaded_plugin)
-            ->isIdenticalTo($this->plugin2);
+        $this->assertSame($this->plugin2, $loaded_plugin);
     }
 
     /**
@@ -144,10 +137,8 @@ class Plugins extends atoum
      */
     public function testModuleExists()
     {
-        $this->boolean($this->plugins->moduleExists('plugin-test2'))
-            ->isTrue();
-        $this->boolean($this->plugins->moduleExists('plugin-disabled'))
-            ->isFalse();
+        $this->assertTrue($this->plugins->moduleExists('plugin-test2'));
+        $this->assertFalse($this->plugins->moduleExists('plugin-disabled'));
     }
 
     /**
@@ -157,14 +148,10 @@ class Plugins extends atoum
      */
     public function testDisabledModules()
     {
-        $this->array($this->plugins->getDisabledModules())
-            ->hasKeys(
-                array(
-                    'plugin-disabled',
-                    'plugin-unversionned',
-                    'plugin-oldversion'
-                )
-            );
+        $disabled_modules = $this->plugins->getDisabledModules();
+        $this->assertTrue(isset($disabled_modules['plugin-disabled']));
+        $this->assertTrue(isset($disabled_modules['plugin-unversionned']));
+        $this->assertTrue(isset($disabled_modules['plugin-oldversion']));
     }
 
     /**
@@ -174,8 +161,7 @@ class Plugins extends atoum
      */
     public function testModuleRoot()
     {
-        $this->variable($this->plugins->moduleRoot('plugin-test2'))
-            ->isIdenticalTo($this->plugin2['root']);
+        $this->assertSame($this->plugin2['root'], $this->plugins->moduleRoot('plugin-test2'));
     }
 
     /**
@@ -201,8 +187,7 @@ class Plugins extends atoum
     {
         $this->plugins->resetModulesList();
 
-        $this->array($this->plugins->getModules())
-            ->isempty();
+        $this->assertEmpty($this->plugins->getModules());
     }
 
     /**
@@ -213,35 +198,29 @@ class Plugins extends atoum
     public function testModuleActivation()
     {
         $plugins = $this->getPlugins();
-        $this->array($plugins->getModules())
-            ->hasSize(3)
-            ->hasKey('plugin-test2');
+        $modules = $plugins->getModules();
+        $this->assertCount(3, $modules);
+        $this->assertTrue(isset($modules['plugin-test2']));
         $plugins->deactivateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $this->array($plugins->getModules())
-            ->hasSize(2)
-            ->notHasKey('plugin-test2');
+        $modules = $plugins->getModules();
+        $this->assertCount(2, $modules);
+        $this->assertFalse(isset($module['plugin-test2']));
         $plugins->activateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $this->array($plugins->getModules())
-            ->hasSize(3)
-            ->hasKey('plugin-test2');
+        $modules = $plugins->getModules();
+        $this->assertCount(3, $modules);
+        $this->assertTrue(isset($modules['plugin-test2']));
 
-        $this->exception(
-            function () {
-                $plugins = $this->getPlugins();
-                $plugins->deactivateModule('nonexistant');
-            }
-        )->hasMessage(_T('No such module.'));
+        $plugins = $this->getPlugins();
+        $this->expectExceptionMessage(_T('No such module.'));
+        $plugins->deactivateModule('nonexistant');
 
-        $this->exception(
-            function () {
-                $plugins = $this->getPlugins();
-                $plugins->activateModule('nonexistant');
-            }
-        )->hasMessage(_T('No such module.'));
+        $plugins = $this->getPlugins();
+        $this->expectExceptionMessage(_T('No such module.'));
+        $plugins->activateModule('nonexistant');
     }
 
     /**
@@ -251,16 +230,11 @@ class Plugins extends atoum
      */
     public function testNeedDatabse()
     {
-        $this->boolean($this->plugins->needsDatabase('plugin-db'))
-            ->isTrue();
-        $this->boolean($this->plugins->needsDatabase('plugin-test2'))
-            ->isFalse();
+        $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
+        $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));
 
-        $this->exception(
-            function () {
-                $plugins = $this->getPlugins();
-                $plugins->needsDatabase('nonexistant');
-            }
-        )->hasMessage(_T('Module does not exists!'));
+        $plugins = $this->getPlugins();
+        $this->expectExceptionMessage(_T('Module does not exists!'));
+        $plugins->needsDatabase('nonexistant');
     }
 }

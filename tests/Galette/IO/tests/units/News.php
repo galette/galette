@@ -37,7 +37,7 @@
 
 namespace Galette\IO\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * News tests class
@@ -51,18 +51,16 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2017-03-07
  */
-class News extends atoum
+class News extends TestCase
 {
     private \Galette\Core\I18n $i18n;
 
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->i18n = new \Galette\Core\I18n();
         global $i18n;
@@ -81,8 +79,7 @@ class News extends atoum
         //load news without caching
         $news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true);
         $posts = $news->getPosts();
-        $this->array($posts)
-            ->size->isGreaterThan(0);
+        $this->assertGreaterThan(0, count($posts));
     }
 
     /**
@@ -95,18 +92,17 @@ class News extends atoum
         //will use default lang to build RSS URL
         $file = GALETTE_CACHE_DIR . md5('https://galette.eu/site/feed.xml') . '.cache';
 
-        //ensure file does not exists
-        $this->boolean(file_exists($file))->isFalse;
+        //ensure file does not exist
+        $this->assertFalse(file_exists($file));
 
         //load news with caching
         $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
 
         $posts = $news->getPosts();
-        $this->array($posts)
-            ->size->isGreaterThan(0);
+        $this->assertGreaterThan(0, count($posts));
 
         //ensure file does exists
-        $this->boolean(file_exists($file))->isTrue;
+        $this->assertTrue(file_exists($file));
 
         $dformat = 'Y-m-d H:i:s';
         $mdate = \DateTime::createFromFormat(
@@ -121,7 +117,7 @@ class News extends atoum
             new \DateInterval('PT25H')
         );
         $touched = touch($file, $expired->getTimestamp());
-        $this->boolean($touched)->isTrue;
+        $this->assertTrue($touched);
 
         $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
         $mnewdate = \DateTime::createFromFormat(
@@ -132,7 +128,7 @@ class News extends atoum
             )
         );
         $isnewdate = $mnewdate > $mdate;
-        $this->boolean($isnewdate)->isTrue;
+        $this->assertTrue($isnewdate);
 
         //drop file finally
         unlink($file);
@@ -146,11 +142,12 @@ class News extends atoum
      */
     public function testLoadNewsWExeption()
     {
-        $this->assert('News cannot be loaded')
-            ->if($this->function->ini_get = 0)
-            ->given($news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true))
-            ->then
-                ->array($news->getPosts())
-                ->hasSize(0);
+        $news = $this->getMockBuilder(\Galette\IO\News::class)
+            ->setConstructorArgs(array('https://galette.eu/site/feed.xml', true))
+            ->onlyMethods(array('allowURLFOpen'))
+            ->getMock();
+        $news->method('allowURLFOpen')->willReturn(false);
+
+        $this->assertCount(0, $news->getPosts());
     }
 }

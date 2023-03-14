@@ -36,15 +36,7 @@
 
 namespace Galette;
 
-use atoum;
-use Galette\Core\Db;
-use Galette\Core\History;
-use Galette\Core\I18n;
-use Galette\Core\Login;
-use Galette\Core\Preferences;
-use Galette\Entity\Adherent;
-use Galette\Entity\Contribution;
-use Galette\Middleware\Authenticate;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Galette tests case main class
@@ -58,27 +50,27 @@ use Galette\Middleware\Authenticate;
  * @link      http://galette.eu
  * @since     2020-12-27
  */
-abstract class GaletteTestCase extends atoum
+abstract class GaletteTestCase extends TestCase
 {
-    /** @var Db */
+    /** @var \Galette\Core\Db */
     protected \Galette\Core\Db $zdb;
     protected array $members_fields;
     protected array $members_fields_cats;
-    /** @var I18n */
+    /** @var \Galette\Core\I18n */
     protected \Galette\Core\I18n $i18n;
-    /** @var Preferences */
+    /** @var \Galette\Core\Preferences */
     protected \Galette\Core\Preferences $preferences;
     protected \RKA\Session $session;
-    /** @var Login */
+    /** @var \Galette\Core\Login */
     protected \Galette\Core\Login $login;
-    /** @var History */
+    /** @var \Galette\Core\History */
     protected \Galette\Core\History $history;
     protected $logger_storage = '';
 
-    /** @var Adherent */
-    protected Adherent $adh;
-    /** @var Contribution */
-    protected Contribution $contrib;
+    /** @var \Galette\Entity\Adherent */
+    protected \Galette\Entity\Adherent $adh;
+    /** @var \Galette\Entity\Contribution */
+    protected \Galette\Entity\Contribution $contrib;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
     /** @var array */
@@ -87,16 +79,14 @@ abstract class GaletteTestCase extends atoum
     protected \Slim\Flash\Messages $flash;
     protected \DI\Container $container;
     protected int $seed;
-    protected array $excluded_after_methods = [];
+    protected array $expected_mysql_warnings = [];
 
     /**
      * Set up tests
      *
-     * @param string $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $flash_data = [];
         $this->flash_data = &$flash_data;
@@ -106,11 +96,12 @@ abstract class GaletteTestCase extends atoum
         $app = $gapp->getApp();
         $plugins = new \Galette\Core\Plugins();
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
+        /** @var \DI\Container $container */
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
         $container->set('flash', $this->flash);
-        $container->set(Slim\Flash\Messages::class, $this->flash);
+        $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $app->addRoutingMiddleware();
 
@@ -133,33 +124,31 @@ abstract class GaletteTestCase extends atoum
         $container = $this->container;
         $galette_log_var = $this->logger_storage;
 
-        $authenticate = new Authenticate($container);
+        $authenticate = new \Galette\Middleware\Authenticate($container);
         $showPublicPages = function (\Slim\Psr7\Request $request, \Psr\Http\Server\RequestHandlerInterface $handler) {
             return $handler->handle($request);
         };
 
-        require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
-        require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
+        require GALETTE_ROOT . 'includes/routes/main.routes.php';
+        require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
+        require GALETTE_ROOT . 'includes/routes/management.routes.php';
+        require GALETTE_ROOT . 'includes/routes/members.routes.php';
+        require GALETTE_ROOT . 'includes/routes/groups.routes.php';
+        require GALETTE_ROOT . 'includes/routes/contributions.routes.php';
+        require GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
+        require GALETTE_ROOT . 'includes/routes/ajax.routes.php';
+        require GALETTE_ROOT . 'includes/routes/plugins.routes.php';
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql' && !in_array($method, $this->excluded_after_methods)) {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+        if (TYPE_DB === 'mysql') {
+            $this->assertSame($this->expected_mysql_warnings, $this->zdb->getWarnings());
         }
     }
 
@@ -293,10 +282,10 @@ abstract class GaletteTestCase extends atoum
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $store = $this->adh->store();
-        $this->boolean($store)->isTrue();
+        $this->assertTrue($store);
 
         return $this->adh;
     }
@@ -304,8 +293,8 @@ abstract class GaletteTestCase extends atoum
     /**
      * Check members expecteds
      *
-     * @param Adherent $adh           Member instance, if any
-     * @param array    $new_expecteds Changes on expected values
+     * @param \Galette\Entity\Adherent $adh           Member instance, if any
+     * @param array                    $new_expecteds Changes on expected values
      *
      * @return void
      */
@@ -319,7 +308,6 @@ abstract class GaletteTestCase extends atoum
             'nom_adh' => 'Durand',
             'prenom_adh' => 'René',
             'ville_adh' => 'Martel',
-            'cp_adh' => '07 926',
             'adresse_adh' => '66, boulevard De Oliveira',
             'email_adh' => 'meunier.josephine@ledoux.com',
             'login_adh' => 'arthur.hamon',
@@ -348,29 +336,30 @@ abstract class GaletteTestCase extends atoum
             $property = $this->members_fields[$key]['propname'];
             switch ($key) {
                 case 'bool_admin_adh':
-                    $this->boolean($adh->isAdmin())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
-                    $this->boolean($adh->isDueFree())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
-                    $this->boolean($adh->appearsInMembersList())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
-                    $this->boolean($adh->isActive())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
                     $pw_checked = password_verify($value, $adh->password);
-                    $this->boolean($pw_checked)->isTrue();
+                    $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
                     //rely on age, not on birthdate
-                    $this->variable($adh->$property)->isNotNull();
-                    $this->string($adh->getAge())->isIdenticalTo(' (82 years old)');
+                    $this->assertNotNull($adh->$property);
+                    $this->assertSame(' (82 years old)', $adh->getAge());
                     break;
                 default:
-                    $this->variable($adh->$property)->isIdenticalTo(
+                    $this->assertSame(
                         $value,
+                        $adh->$property,
                         "$property expected {$value} got {$adh->$property}"
                     );
 
@@ -380,37 +369,35 @@ abstract class GaletteTestCase extends atoum
 
         $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
 
-        $expected_str = ' (82 years old)';
-        $this->string($adh->getAge())->isIdenticalTo($expected_str);
-        $this->boolean($adh->hasChildren())->isFalse();
-        $this->boolean($adh->hasParent())->isFalse();
-        $this->boolean($adh->hasPicture())->isFalse();
+        $this->assertFalse($adh->hasChildren());
+        $this->assertFalse($adh->hasParent());
+        $this->assertFalse($adh->hasPicture());
 
-        $this->string($adh->sadmin)->isIdenticalTo('No');
-        $this->string($adh->sdue_free)->isIdenticalTo('No');
-        $this->string($adh->sappears_in_list)->isIdenticalTo('Yes');
-        $this->string($adh->sstaff)->isIdenticalTo('No');
-        $this->string($adh->sactive)->isIdenticalTo('Active');
-        $this->variable($adh->stitle)->isNull();
-        $this->string($adh->sstatus)->isIdenticalTo('Non-member');
-        $this->string($adh->sfullname)->isIdenticalTo('DURAND René');
-        $this->string($adh->saddress)->isIdenticalTo('66, boulevard De Oliveira');
-        $this->string($adh->sname)->isIdenticalTo('DURAND René');
+        $this->assertSame('No', $adh->sadmin);
+        $this->assertSame('No', $adh->sdue_free);
+        $this->assertSame('Yes', $adh->sappears_in_list);
+        $this->assertSame('No', $adh->sstaff);
+        $this->assertSame('Active', $adh->sactive);
+        $this->assertNull($adh->stitle);
+        $this->assertSame('Non-member', $adh->sstatus);
+        $this->assertSame('DURAND René', $adh->sfullname);
+        $this->assertSame('66, boulevard De Oliveira', $adh->saddress);
+        $this->assertSame('DURAND René', $adh->sname);
 
-        $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
-        $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
-        $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
+        $this->assertSame($expecteds['adresse_adh'], $adh->getAddress());
+        $this->assertSame($expecteds['cp_adh'], $adh->getZipcode());
+        $this->assertSame($expecteds['ville_adh'], $adh->getTown());
+        $this->assertSame($expecteds['pays_adh'], $adh->getCountry());
 
-        $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('DURAND René');
-        $this->string($adh->getRowClass())->isIdenticalTo('active-account cotis-never');
+        $this->assertSame('DURAND René', $adh::getSName($this->zdb, $adh->id));
+        $this->assertSame('active-account cotis-never', $adh->getRowClass());
     }
 
     /**
      * Check members expecteds
      *
-     * @param Adherent $adh           Member instance, if any
-     * @param array    $new_expecteds Changes on expected values
+     * @param \Galette\Entity\Adherent $adh           Member instance, if any
+     * @param array                    $new_expecteds Changes on expected values
      *
      * @return void
      */
@@ -452,28 +439,29 @@ abstract class GaletteTestCase extends atoum
             $property = $this->members_fields[$key]['propname'];
             switch ($key) {
                 case 'bool_admin_adh':
-                    $this->boolean($adh->isAdmin())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
-                    $this->boolean($adh->isDueFree())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
-                    $this->boolean($adh->appearsInMembersList())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
-                    $this->boolean($adh->isActive())->isIdenticalTo($value);
+                    $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
                     $pw_checked = password_verify($value, $adh->password);
-                    $this->boolean($pw_checked)->isTrue();
+                    $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
                     //rely on age, not on birthdate
-                    $this->variable($adh->$property)->isNotNull();
-                    $this->string($adh->getAge())->isIdenticalTo(' (28 years old)');
+                    $this->assertNotNull($adh->$property);
+                    $this->assertSame(' (28 years old)', $adh->getAge());
                     break;
                 default:
-                    $this->variable($adh->$property)->isIdenticalTo(
+                    $this->assertSame(
+                        $adh->$property,
                         $value,
                         "$property expected {$value} got {$adh->$property}"
                     );
@@ -483,36 +471,34 @@ abstract class GaletteTestCase extends atoum
 
         $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
 
-        $expected_str = ' (28 years old)';
-        $this->string($adh->getAge())->isIdenticalTo($expected_str);
-        $this->boolean($adh->hasChildren())->isFalse();
-        $this->boolean($adh->hasParent())->isFalse();
-        $this->boolean($adh->hasPicture())->isFalse();
+        $this->assertFalse($adh->hasChildren());
+        $this->assertFalse($adh->hasParent());
+        $this->assertFalse($adh->hasPicture());
 
-        $this->string($adh->sadmin)->isIdenticalTo('No');
-        $this->string($adh->sdue_free)->isIdenticalTo('No');
-        $this->string($adh->sappears_in_list)->isIdenticalTo('No');
-        $this->string($adh->sstaff)->isIdenticalTo('No');
-        $this->string($adh->sactive)->isIdenticalTo('Active');
-        $this->variable($adh->stitle)->isNull();
-        $this->string($adh->sstatus)->isIdenticalTo('Non-member');
-        $this->string($adh->sfullname)->isIdenticalTo('HOARAU Lucas');
-        $this->string($adh->saddress)->isIdenticalTo('2, boulevard Legros');
-        $this->string($adh->sname)->isIdenticalTo('HOARAU Lucas');
+        $this->assertSame('No', $adh->sadmin);
+        $this->assertSame('No', $adh->sdue_free);
+        $this->assertSame('No', $adh->sappears_in_list);
+        $this->assertSame('No', $adh->sstaff);
+        $this->assertSame('Active', $adh->sactive);
+        $this->assertNull($adh->stitle);
+        $this->assertSame('Non-member', $adh->sstatus);
+        $this->assertSame('HOARAU Lucas', $adh->sfullname);
+        $this->assertSame('2, boulevard Legros', $adh->saddress);
+        $this->assertSame('HOARAU Lucas', $adh->sname);
 
-        $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
-        $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
-        $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
+        $this->assertSame($expecteds['adresse_adh'], $adh->getAddress());
+        $this->assertSame($expecteds['cp_adh'], $adh->getZipcode());
+        $this->assertSame($expecteds['ville_adh'], $adh->getTown());
+        $this->assertSame($expecteds['pays_adh'], $adh->getCountry());
 
-        $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('HOARAU Lucas');
-        $this->string($adh->getRowClass())->isIdenticalTo('active-account cotis-never');
+        $this->assertSame('HOARAU Lucas', $adh::getSName($this->zdb, $adh->id));
+        $this->assertSame('active-account cotis-never', $adh->getRowClass());
     }
 
     /**
      * Look in database if test member already exists
      *
-     * @return false|ResultSet
+     * @return false|\Laminas\Db\ResultSet\ResultSet
      */
     protected function adhOneExists()
     {
@@ -536,7 +522,7 @@ abstract class GaletteTestCase extends atoum
     /**
      * Look in database if test member already exists
      *
-     * @return false|ResultSet
+     * @return false|\Laminas\Db\ResultSet\ResultSet
      */
     protected function adhTwoExists()
     {
@@ -570,6 +556,7 @@ abstract class GaletteTestCase extends atoum
         } else {
             $this->loadAdherent($rs->current()->id_adh);
         }
+        return $this->adh;
     }
 
     /**
@@ -585,6 +572,7 @@ abstract class GaletteTestCase extends atoum
         } else {
             $this->loadAdherent($rs->current()->id_adh);
         }
+        return $this->adh;
     }
 
     /**
@@ -602,10 +590,10 @@ abstract class GaletteTestCase extends atoum
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $store = $contrib->store();
-        $this->boolean($store)->isTrue();
+        $this->assertTrue($store);
 
         return $contrib;
     }
@@ -643,8 +631,8 @@ abstract class GaletteTestCase extends atoum
     /**
      * Check contributions expected
      *
-     * @param Contribution $contrib       Contribution instance, if any
-     * @param array        $new_expecteds Changes on expected values
+     * @param \Galette\Entity\Contribution $contrib       Contribution instance, if any
+     * @param array                        $new_expecteds Changes on expected values
      *
      * @return void
      */
@@ -660,9 +648,9 @@ abstract class GaletteTestCase extends atoum
         $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
 
-        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
-        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
-        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
+        $this->assertInstanceOf('DateTime', $contrib->raw_date);
+        $this->assertInstanceOf('DateTime', $contrib->raw_begin_date);
+        $this->assertInstanceOf('DateTime', $contrib->raw_end_date);
 
         $expecteds = [
             'id_adh' => "{$this->adh->id}",
@@ -674,7 +662,7 @@ abstract class GaletteTestCase extends atoum
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
-        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
+        $this->assertSame($expecteds['date_fin_cotis'], $contrib->raw_end_date->format('Y-m-d'));
 
         foreach ($expecteds as $key => $value) {
             $property = $this->contrib->fields[$key]['propname'];
@@ -682,13 +670,13 @@ abstract class GaletteTestCase extends atoum
                 case \Galette\Entity\ContributionsTypes::PK:
                     $ct = $this->contrib->type;
                     if ($ct instanceof \Galette\Entity\ContributionsTypes) {
-                        $this->integer((int)$ct->id)->isIdenticalTo($value);
+                        $this->assertSame($value, (int)$ct->id);
                     } else {
-                        $this->integer($ct)->isIdenticalTo($value);
+                        $this->assertSame($value, $ct);
                     }
                     break;
                 default:
-                    $this->variable($contrib->$property)->isEqualTo($value, $property);
+                    $this->assertEquals($contrib->$property, $value, $property);
                     break;
             }
         }
@@ -696,20 +684,23 @@ abstract class GaletteTestCase extends atoum
         //load member from db
         $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         //member is now up-to-date
-        $this->string($this->adh->getRowClass())->isIdenticalTo('active-account cotis-ok');
-        $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
-        $this->boolean($this->adh->isUp2Date())->isTrue();
-        $this->boolean($contrib->isFee())->isTrue();
-        $this->string($contrib->getTypeLabel())->isIdenticalTo('Membership');
-        $this->string($contrib->getRawType())->isIdenticalTo('membership');
-        $this->array($this->contrib->getRequired())->isIdenticalTo([
-            'id_type_cotis'     => 1,
-            'id_adh'            => 1,
-            'date_enreg'        => 1,
-            'date_debut_cotis'  => 1,
-            'date_fin_cotis'    => 1,
-            'montant_cotis'     => 1
-        ]);
+        $this->assertSame('active-account cotis-ok', $this->adh->getRowClass());
+        $this->assertSame($this->contrib->end_date, $this->adh->due_date);
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertTrue($contrib->isFee());
+        $this->assertSame('Membership', $contrib->getTypeLabel());
+        $this->assertSame('membership', $contrib->getRawType());
+        $this->assertSame(
+            $this->contrib->getRequired(),
+            [
+                'id_type_cotis'     => 1,
+                'id_adh'            => 1,
+                'date_enreg'        => 1,
+                'date_debut_cotis'  => 1,
+                'date_fin_cotis'    => 1,
+                'montant_cotis'     => 1
+            ]
+        );
     }
 
     /**
@@ -723,7 +714,7 @@ abstract class GaletteTestCase extends atoum
         if (count($status->getList()) === 0) {
             //status are not yet instantiated.
             $res = $status->installInit();
-            $this->boolean($res)->isTrue();
+            $this->assertTrue($res);
         }
     }
 
@@ -738,7 +729,7 @@ abstract class GaletteTestCase extends atoum
         if (count($ct->getCompleteList()) === 0) {
             //status are not yet instanciated.
             $res = $ct->installInit();
-            $this->boolean($res)->isTrue();
+            $this->assertTrue($res);
         }
     }
 
@@ -751,8 +742,8 @@ abstract class GaletteTestCase extends atoum
     {
         $titles = new \Galette\Repository\Titles($this->zdb);
         if (count($titles->getList($this->zdb)) === 0) {
-            $res = $titles->installInit($this->zdb);
-            $this->boolean($res)->isTrue();
+            $res = $titles->installInit();
+            $this->assertTrue($res);
         }
     }
 
@@ -765,7 +756,7 @@ abstract class GaletteTestCase extends atoum
     {
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
     }
 
     /**
@@ -789,7 +780,7 @@ abstract class GaletteTestCase extends atoum
     protected function logSuperAdmin(): void
     {
         $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->assertTrue($this->login->isLogged());
+        $this->assertTrue($this->login->isSuperAdmin());
     }
 }

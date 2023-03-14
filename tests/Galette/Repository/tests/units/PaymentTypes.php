@@ -58,29 +58,25 @@ class PaymentTypes extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
 
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         $res = $types->installInit(false);
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
     }
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
         $this->deletePaymentType();
     }
 
@@ -114,28 +110,30 @@ class PaymentTypes extends GaletteTestCase
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
 
         $list = $types->getList();
-        $this->array($list)->hasSize(6);
+        $this->assertCount(6, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)->isGreaterThanOrEqualTo(6, 'Incorrect payments types sequence');
+            $this->assertGreaterThanOrEqual(6, $result->last_value, 'Incorrect payments types sequence');
         }
 
         //reinstall payment types
         $types->installInit();
 
         $list = $types->getList();
-        $this->array($list)->hasSize(6);
+        $this->assertCount(6, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)->isGreaterThanOrEqualTo(
+            $this->assertGreaterThanOrEqual(
+                6,
+                $result->last_value,
                 6,
                 'Incorrect payment types sequence ' . $result->last_value
             );

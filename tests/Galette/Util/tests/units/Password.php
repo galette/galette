@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Telemetry tests
+ * Password tests
  *
  * PHP version 5
  *
@@ -36,14 +36,15 @@
 
 namespace Galette\Util\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\Core\Preferences;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Password tests class
  *
  * @category  Util
- * @name      Telemetry
+ * @name      Password
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2020-2023 The Galette Team
@@ -51,7 +52,7 @@ use Galette\Core\Preferences;
  * @link      http://galette.tuxfamily.org
  * @since     2020-04-25
  */
-class Password extends atoum
+class Password extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\Core\Preferences $preferences;
@@ -59,14 +60,12 @@ class Password extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Method tested
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDow(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->preferences->pref_password_strength = Preferences::PWD_NONE;
         $this->preferences->pref_password_length = 6;
@@ -77,11 +76,9 @@ class Password extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
@@ -92,7 +89,7 @@ class Password extends atoum
      *
      * @return array
      */
-    protected function passProvider()
+    public static function passProvider()
     {
         return [
             // [strength, password, errors]
@@ -130,14 +127,13 @@ class Password extends atoum
     /**
      * Test password validation
      *
-     * @dataProvider passProvider
-     *
      * @param integer $level  Password level
      * @param string  $pass   Password
      * @param array   $errors Errors
      *
      * @return void
      */
+    #[DataProvider('passProvider')]
     public function testValidatePassword($level, $pass, $errors)
     {
         //errror messages mapping
@@ -164,15 +160,15 @@ class Password extends atoum
         if ($level < Preferences::PWD_VERY_STRONG) {
             $this->preferences->pref_password_strength = $level + 1;
             $password = new \Galette\Util\Password($this->preferences);
-            $this->boolean($password->isValid($pass))->isFalse();
-            $this->array($password->getErrors())->isEqualTo($errors);
+            $this->assertFalse($password->isValid($pass));
+            $this->assertEquals($password->getErrors(), $errors);
         }
 
         $this->preferences->pref_password_strength = $level;
         $password = new \Galette\Util\Password($this->preferences);
-        $this->boolean($password->isValid($pass))->isTrue(implode(', ', $password->getErrors()));
-        $this->array($password->getErrors())->isEqualTo([]);
-        $this->array($password->getStrenghtErrors())->isEqualTo($errors);
+        $this->assertTrue($password->isValid($pass), implode(', ', $password->getErrors()));
+        $this->assertSame($password->getErrors(), []);
+        $this->assertEquals($password->getStrenghtErrors(), $errors);
     }
 
     /**
@@ -180,7 +176,7 @@ class Password extends atoum
      *
      * @return array
      */
-    protected function blacklistProvider()
+    public static function blacklistProvider()
     {
         return [
             ['galette', true],
@@ -195,22 +191,21 @@ class Password extends atoum
     /**
      * Test password blacklist
      *
-     * @dataProvider blacklistProvider
-     *
      * @param string  $pass     Password to test
      * @param boolean $expected Excpected return
      *
      * @return void
      */
+    #[DataProvider('blacklistProvider')]
     public function testBlacklist($pass, $expected)
     {
         $this->preferences->pref_password_blacklist = true;
         $password = new \Galette\Util\Password($this->preferences);
-        $this->boolean($password->isBlacklisted($pass))->isIdenticalTo($expected, $pass);
+        $this->assertSame($password->isBlacklisted($pass), $expected, $pass);
 
         $this->preferences->pref_password_blacklist = false;
         $password = new \Galette\Util\Password($this->preferences);
-        $this->boolean($password->isBlacklisted($pass))->isFalse();
+        $this->assertFalse($password->isBlacklisted($pass));
     }
 
     /**
@@ -231,21 +226,23 @@ class Password extends atoum
         $password = new \Galette\Util\Password($this->preferences);
         $password->addPersonalInformation($infos);
         foreach ($infos as $info) {
-            $this->boolean($password->isValid($info))->isTrue(implode(', ', $password->getErrors()));
-            $this->array($password->getErrors())->isEqualTo([]);
+            $this->assertTrue($password->isValid($info), implode(', ', $password->getErrors()));
+            $this->assertSame($password->getErrors(), []);
         }
 
         $this->preferences->pref_password_strength = Preferences::PWD_WEAK;
         $password = new \Galette\Util\Password($this->preferences);
         $password->addPersonalInformation($infos);
         foreach ($infos as $info) {
-            $this->boolean($password->isValid($info))->isFalse();
-            $this->array($password->getErrors())
-                 ->isEqualTo(['Do not use any of your personal information as password!']);
+            $this->assertFalse($password->isValid($info));
+            $this->assertEquals(
+                $password->getErrors(),
+                ['Do not use any of your personal information as password!']
+            );
         }
 
-        $this->boolean($password->isValid('MyLoGiN'))->isFalse();
-        $this->boolean($password->isValid('iMyLoGiN'))->isTrue();
+        $this->assertFalse($password->isValid('MyLoGiN'));
+        $this->assertTrue($password->isValid('iMyLoGiN'));
 
         //create member
         global $zdb, $login, $i18n; // globals :(
@@ -281,7 +278,7 @@ class Password extends atoum
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $password = new \Galette\Util\Password($this->preferences);
         $password->setAdherent($adh);
@@ -311,10 +308,10 @@ class Password extends atoum
         $adh_data['c24'] = 'pignonp';
 
         foreach ($adh_data as $key => $data) {
-            $this->boolean($password->isValid($data))->isFalse($key);
+            $this->assertFalse($password->isValid($data), $key);
         }
 
-        $this->boolean($password->isValid('19800501'))->isFalse();
-        $this->boolean($password->isValid('01051980'))->isFalse();
+        $this->assertFalse($password->isValid('19800501'));
+        $this->assertFalse($password->isValid('01051980'));
     }
 }

@@ -181,7 +181,6 @@ class Authenticate
                             _T("Unknown ACL rule '%acl'!")
                         )
                     );
-                    break;
             }
             if (!$go) {
                 Analog::log(
@@ -219,8 +218,7 @@ class Authenticate
             foreach ($this->acls as $regex => $route_acl) {
                 if (preg_match('@/(.+)/[imsxADU]?@', $regex)) {
                     //looks like a regular expression, go
-                    $matches = [];
-                    if (preg_match($regex, $name, $matches)) {
+                    if (preg_match($regex, $name)) {
                         return $route_acl;
                     }
                 }

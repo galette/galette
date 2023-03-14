@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Install tests class
@@ -51,18 +51,16 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2014-01-03
  */
-class Install extends atoum
+class Install extends TestCase
 {
     private \Galette\Core\Install $install;
 
     /**
      * Set up tests
      *
-     * @param stgring $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         setlocale(LC_ALL, 'en_US');
         $this->install = new \Galette\Core\Install();
@@ -71,15 +69,13 @@ class Install extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
             $zdb = new \Galette\Core\Db();
-            $this->array($zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $zdb->getWarnings());
         }
     }
 
@@ -93,22 +89,22 @@ class Install extends atoum
         $install = new \Galette\Core\Install();
 
         $step = $install->isCheckStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
 
         $mode = $install->getMode();
-        $this->variable($mode)->isNull();
+        $this->assertNull($mode);
 
         $is_install = $install->isInstall();
-        $this->boolean($is_install)->isFalse();
+        $this->assertFalse($is_install);
 
         $is_upgrade = $install->isUpgrade();
-        $this->boolean($is_upgrade)->isFalse();
+        $this->assertFalse($is_upgrade);
 
         $connected = $install->isDbConnected();
-        $this->boolean($connected)->isFalse();
+        $this->assertFalse($connected);
 
         $title = $install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Checks');
+        $this->assertSame('Checks', $title);
     }
 
     /**
@@ -145,9 +141,7 @@ class Install extends atoum
             '0.96'  => 'upgrade-to-0.96-pgsql.sql'
         );
 
-        $this->array($update_scripts)
-            ->hasSize(count($knowns))
-            ->isIdenticalTo($knowns);
+        $this->assertSame($knowns, $update_scripts);
 
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
             GALETTE_BASE_PATH . '/install',
@@ -156,8 +150,7 @@ class Install extends atoum
         );
 
         //if we're from 0.7.0, there are 4 less update scripts
-        $this->array($update_scripts)
-            ->hasSize(count($knowns) - 4);
+        $this->assertCount(count($knowns) - 4, $update_scripts);
 
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
             GALETTE_BASE_PATH . '/install'
@@ -165,9 +158,7 @@ class Install extends atoum
 
         //without specifying database nor version, we got all update scripts
         $all_knowns = ['0.60' => 'upgrade-to-0.60-pgsql.sql'] + $knowns;
-        $this->array(array_values($update_scripts))
-            ->hasSize(count($all_knowns))
-            ->isEqualTo(array_keys($all_knowns));
+        $this->assertEquals(array_values($update_scripts), array_keys($all_knowns));
 
         $this->install->setMode(\Galette\Core\Install::UPDATE);
         $errors = array();
@@ -177,9 +168,7 @@ class Install extends atoum
             GALETTE_BASE_PATH . '/install'
         );
 
-        $this->array($update_scripts)
-            ->hasSize(count($knowns))
-            ->isIdenticalTo($knowns);
+        $this->assertSame($knowns, $update_scripts);
 
         //for installation, only one script is present :)
         $this->install->setMode(\Galette\Core\Install::INSTALL);
@@ -187,10 +176,7 @@ class Install extends atoum
             GALETTE_BASE_PATH . '/install'
         );
 
-        $this->array($update_scripts)
-            ->hasSize(1)
-            ->hasKey('current')
-            ->strictlyContains(\Galette\Core\Db::PGSQL . '.sql');
+        $this->assertSame(['current' => \Galette\Core\Db::PGSQL . '.sql'], $update_scripts);
     }
 
     /**
@@ -203,10 +189,10 @@ class Install extends atoum
         $this->install->atTypeStep();
 
         $step = $this->install->isTypeStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Installation mode');
+        $this->assertSame('Installation mode', $title);
     }
 
     /**
@@ -222,15 +208,15 @@ class Install extends atoum
         $is_install = $this->install->isInstall();
         $is_upgrade = $this->install->isUpgrade();
 
-        $this->boolean($is_install)->isTrue();
-        $this->boolean($is_upgrade)->isFalse();
+        $this->assertTrue($is_install);
+        $this->assertFalse($is_upgrade);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Database');
+        $this->assertSame('Database', $title);
 
         $this->install->atPreviousStep();
         $step = $this->install->isTypeStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
     }
 
     /**
@@ -246,16 +232,16 @@ class Install extends atoum
         $is_install = $this->install->isInstall();
         $is_upgrade = $this->install->isUpgrade();
 
-        $this->boolean($is_install)->isFalse();
-        $this->boolean($is_upgrade)->isTrue();
+        $this->assertFalse($is_install);
+        $this->assertTrue($is_upgrade);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Database');
+        $this->assertSame('Database', $title);
 
         $this->install->atPreviousStep();
         $step = $this->install->isTypeStep();
 
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
     }
 
     /**
@@ -265,11 +251,9 @@ class Install extends atoum
      */
     public function testUnknownMode()
     {
-        $this->exception(
-            function () {
-                $this->install->setMode('nonsense');
-            }
-        )->hasMessage('Unknown mode "nonsense"');
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Unknown mode "nonsense"');
+        $this->install->setMode('nonsense');
     }
 
     /**
@@ -290,18 +274,17 @@ class Install extends atoum
             $this->install->setDbType(\Galette\Core\Db::MYSQL, $errors);
             $type = $this->install->getDbType();
 
-            $this->variable($type)->isIdenticalTo(\Galette\Core\Db::MYSQL);
-            $this->array($errors)->hasSize(0);
+            $this->assertSame(\Galette\Core\Db::MYSQL, $type);
+            $this->assertCount(0, $errors);
         }
 
         $errors = array();
         $this->install->setDbType('nonsense', $errors);
 
-        $this->array($errors)->hasSize(1)
-            ->strictlyContains('Database type unknown');
+        $this->assertSame(['Database type unknown'], $errors);
 
         $post_check = $this->install->postCheckDb();
-        $this->boolean($post_check)->isFalse();
+        $this->assertFalse($post_check);
     }
 
     /**
@@ -326,38 +309,38 @@ class Install extends atoum
         $this->install->atDbCheckStep();
 
         $step = $this->install->isDbCheckStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Database access and permissions');
+        $this->assertSame('Database access and permissions', $title);
 
         $connected = $this->install->testDbConnexion();
-        $this->boolean($connected)->isTrue();
+        $this->assertTrue($connected);
 
         $host = $this->install->getDbHost();
-        $this->string($host)->isIdenticalTo(HOST_DB);
+        $this->assertSame(HOST_DB, $host);
 
         $port = $this->install->getDbPort();
-        $this->variable($port)->isIdenticalTo(PORT_DB);
+        $this->assertSame(PORT_DB, $port);
 
         $name = $this->install->getDbName();
-        $this->variable($name)->isIdenticalTo(NAME_DB);
+        $this->assertSame(NAME_DB, $name);
 
         $user = $this->install->getDbUser();
-        $this->variable($user)->isIdenticalTo(USER_DB);
+        $this->assertSame(USER_DB, $user);
 
         $prefix = $this->install->getTablesPrefix();
-        $this->variable($prefix)->isIdenticalTo(PREFIX_DB);
+        $this->assertSame(PREFIX_DB, $prefix);
 
         $pass = $this->install->getDbPass();
-        $this->variable($pass)->isIdenticalTo(PWD_DB);
+        $this->assertSame(PWD_DB, $pass);
 
         $post_check = $this->install->postCheckDb();
-        $this->boolean($post_check)->isFalse();
+        $this->assertFalse($post_check);
 
         $this->install->atPreviousStep();
         $step = $this->install->isDbStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
     }
 
     /**
@@ -382,17 +365,17 @@ class Install extends atoum
         $this->install->atDbInstallStep();
 
         $step = $this->install->isDbinstallStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Tables Creation');
+        $this->assertSame('Tables Creation', $title);
 
         $post_check = $this->install->postCheckDb();
-        $this->boolean($post_check)->isTrue();
+        $this->assertTrue($post_check);
 
         $this->install->atPreviousStep();
         $step = $this->install->isDbCheckStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
     }
 
     /**
@@ -405,18 +388,18 @@ class Install extends atoum
         $this->install->atAdminStep();
 
         $step = $this->install->isAdminStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Admin parameters');
+        $this->assertSame('Admin parameters', $title);
 
         $post_check = $this->install->postCheckDb();
-        $this->boolean($post_check)->isTrue();
+        $this->assertTrue($post_check);
 
         $this->install->atPreviousStep();
         //db install cannot be run twice, step is still Admin
         $step = $this->install->isAdminStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
     }
 
     /**
@@ -429,12 +412,12 @@ class Install extends atoum
         $this->install->atGaletteInitStep();
 
         $step = $this->install->isGaletteInitStep();
-        $this->boolean($step)->isTrue();
+        $this->assertTrue($step);
 
         $title = $this->install->getStepTitle();
-        $this->string($title)->isIdenticalTo('Galette initialization');
+        $this->assertSame('Galette initialization', $title);
 
         $post_check = $this->install->postCheckDb();
-        $this->boolean($post_check)->isTrue();
+        $this->assertTrue($post_check);
     }
 }

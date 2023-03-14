@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFields\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dynamic file test
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-11
  */
-class File extends atoum
+class File extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\File $file;
@@ -59,11 +59,9 @@ class File extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Current test method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->file = new \Galette\DynamicFields\File($this->zdb);
@@ -77,8 +75,7 @@ class File extends atoum
     public function testConstructor()
     {
         $o = new \Galette\DynamicFields\File($this->zdb, 10);
-        $this->variable($o->getId())
-            ->isNull();
+        $this->assertNull($o->getId());
     }
 
     /**
@@ -88,8 +85,7 @@ class File extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->file->getTypeName())
-            ->isIdenticalTo(_T('file'));
+        $this->assertSame(_T('file'), $this->file->getTypeName());
     }
 
     /**
@@ -100,50 +96,50 @@ class File extends atoum
     public function testBaseProperties()
     {
         $muliple = $this->file->isMultiValued();
-        $this->boolean($muliple)->isFalse();
+        $this->assertFalse($muliple);
 
         $required = $this->file->isRequired();
-        $this->boolean($required)->isFalse();
+        $this->assertFalse($required);
 
         $name = $this->file->getName();
-        $this->variable($name)->isIdenticalTo('');
+        $this->assertSame('', $name);
 
         $has_fixed_values = $this->file->hasFixedValues();
-        $this->boolean($has_fixed_values)->isFalse();
+        $this->assertFalse($has_fixed_values);
 
         $has_data = $this->file->hasData();
-        $this->boolean($has_data)->isTrue();
+        $this->assertTrue($has_data);
 
         $has_w = $this->file->hasWidth();
-        $this->boolean($has_w)->isFalse();
+        $this->assertFalse($has_w);
 
         $has_h = $this->file->hasHeight();
-        $this->boolean($has_h)->isFalse();
+        $this->assertFalse($has_h);
 
         $has_s = $this->file->hasSize();
-        $this->boolean($has_s)->isTrue();
+        $this->assertTrue($has_s);
 
         $perms = $this->file->getPerm();
-        $this->variable($perms)->isNull();
+        $this->assertNull($perms);
 
         $width = $this->file->getWidth();
-        $this->variable($width)->isNull();
+        $this->assertNull($width);
 
         $height = $this->file->getHeight();
-        $this->variable($height)->isNull();
+        $this->assertNull($height);
 
         $repeat = $this->file->getRepeat();
-        $this->variable($repeat)->isNull();
+        $this->assertNull($repeat);
 
         $repeat = $this->file->isRepeatable();
-        $this->boolean($repeat)->isFalse();
+        $this->assertFalse($repeat);
 
         $size = $this->file->getSize();
-        $this->variable($size)->isNull();
+        $this->assertNull($size);
 
         $values = $this->file->getValues();
-        $this->boolean($values)->isFalse();
+        $this->assertFalse($values);
 
-        $this->boolean($this->file->hasPermissions())->isTrue();
+        $this->assertTrue($this->file->hasPermissions());
     }
 }

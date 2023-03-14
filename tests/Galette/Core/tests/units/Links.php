@@ -61,13 +61,11 @@ class Links extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
         $this->initStatus();
         $this->initContributionsTypes();
 
@@ -85,14 +83,10 @@ class Links extends GaletteTestCase
     /**
      * Cleanup after testeach test method
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
-
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
@@ -105,6 +99,7 @@ class Links extends GaletteTestCase
         $this->zdb->execute($delete);
 
         $this->cleanHistory();
+        parent::tearDown();
     }
 
     /**
@@ -123,19 +118,22 @@ class Links extends GaletteTestCase
             $id
         );
 
-        $this->string($res)->isNotEmpty();
+        $this->assertNotEmpty($res);
 
         $select = $this->zdb->select(\Galette\Core\Links::TABLE);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
-        $this->array($links->isHashValid($res, 'phoarau@tele2.fr'))->isIdenticalTo([
-            \Galette\Core\Links::TARGET_MEMBERCARD,
-            $id
-        ]);
+        $this->assertSame(
+            $links->isHashValid($res, 'phoarau@tele2.fr'),
+            [
+                \Galette\Core\Links::TARGET_MEMBERCARD,
+                $id
+            ]
+        );
 
-        $this->boolean($links->isHashValid($res, 'any@mail.com'))->isFalse();
-        $this->boolean($links->isHashValid(base64_encode('sthingthatisnotahash'), 'phoarau@tele2.fr'))->isFalse();
+        $this->assertFalse($links->isHashValid($res, 'any@mail.com'));
+        $this->assertFalse($links->isHashValid(base64_encode('sthingthatisnotahash'), 'phoarau@tele2.fr'));
 
         $this->createContribution();
         $cid = $this->contrib->id;
@@ -144,11 +142,14 @@ class Links extends GaletteTestCase
             $cid
         );
 
-        $this->string($res)->isNotEmpty();
-        $this->array($links->isHashValid($res, 'phoarau@tele2.fr'))->isIdenticalTo([
-            \Galette\Core\Links::TARGET_INVOICE,
-            $cid
-        ]);
+        $this->assertNotEmpty($res);
+        $this->assertSame(
+            $links->isHashValid($res, 'phoarau@tele2.fr'),
+            [
+                \Galette\Core\Links::TARGET_INVOICE,
+                $cid
+            ]
+        );
     }
 
     /**
@@ -167,16 +168,19 @@ class Links extends GaletteTestCase
             $id
         );
 
-        $this->string($res)->isNotEmpty();
+        $this->assertNotEmpty($res);
 
-        $this->array($links->isHashValid($res, 'phoarau@tele2.fr'))->isIdenticalTo([
-            \Galette\Core\Links::TARGET_MEMBERCARD,
-            $id
-        ]);
+        $this->assertSame(
+            $links->isHashValid($res, 'phoarau@tele2.fr'),
+            [
+                \Galette\Core\Links::TARGET_MEMBERCARD,
+                $id
+            ]
+        );
 
         $select = $this->zdb->select(\Galette\Core\Links::TABLE);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
         $update = $this->zdb->update(\Galette\Core\Links::TABLE);
         $old_date = new \DateTime();
@@ -186,7 +190,7 @@ class Links extends GaletteTestCase
             ->where(['hash' => base64_decode($res)]);
         $this->zdb->execute($update);
 
-        $this->boolean($links->isHashValid($res, 'phoarau@tele2.fr'))->isFalse();
+        $this->assertFalse($links->isHashValid($res, 'phoarau@tele2.fr'));
     }
 
     /**
@@ -224,14 +228,14 @@ class Links extends GaletteTestCase
 
         $select = $this->zdb->select(\Galette\Core\Links::TABLE);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(2);
+        $this->assertSame(2, $results->count());
 
         $links = new \Galette\Core\Links($this->zdb, true);
 
         $results = $this->zdb->execute($select);
         $result = $results->current();
-        $this->integer($results->count())->isIdenticalTo(1);
-        $this->string($result['hash'])->isIdenticalTo('Not expired link');
+        $this->assertSame(1, $results->count());
+        $this->assertSame('Not expired link', $result['hash']);
     }
 
     /**
@@ -267,12 +271,8 @@ class Links extends GaletteTestCase
             ]
         );
 
-        $this->exception(
-            function () use ($insert) {
-                $this->zdb->execute($insert);
-            }
-        )
-            ->hasMessage('Duplicate entry');
+        $this->expectExceptionMessage('Duplicate entry');
+        $this->zdb->execute($insert);
     }
 
     /**
@@ -326,9 +326,9 @@ class Links extends GaletteTestCase
         $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
 
-        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
-        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
-        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
+        $this->assertInstanceOf('DateTime', $contrib->raw_date);
+        $this->assertInstanceOf('DateTime', $contrib->raw_begin_date);
+        $this->assertInstanceOf('DateTime', $contrib->raw_end_date);
 
         $expecteds = [
             'id_adh' => "{$this->adh->id}",
@@ -340,7 +340,7 @@ class Links extends GaletteTestCase
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
-        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
+        $this->assertSame($expecteds['date_fin_cotis'], $contrib->raw_end_date->format('Y-m-d'));
 
         foreach ($expecteds as $key => $value) {
             $property = $this->contrib->fields[$key]['propname'];
@@ -348,13 +348,13 @@ class Links extends GaletteTestCase
                 case \Galette\Entity\ContributionsTypes::PK:
                     $ct = $this->contrib->type;
                     if ($ct instanceof \Galette\Entity\ContributionsTypes) {
-                        $this->integer((int)$ct->id)->isIdenticalTo($value);
+                        $this->assertSame($value, (int)$ct->id);
                     } else {
-                        $this->integer($ct)->isIdenticalTo($value);
+                        $this->assertSame($value, $ct);
                     }
                     break;
                 default:
-                    $this->variable($contrib->$property)->isEqualTo($value, $property);
+                    $this->assertEquals($contrib->$property, $value, $property);
                     break;
             }
         }
@@ -362,8 +362,8 @@ class Links extends GaletteTestCase
         //load member from db
         $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         //member is now up-to-date
-        $this->string($this->adh->getRowClass())->isIdenticalTo('active-account cotis-late');
-        $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
-        $this->boolean($this->adh->isUp2Date())->isFalse();
+        $this->assertSame('active-account cotis-late', $this->adh->getRowClass());
+        $this->assertSame($this->contrib->end_date, $this->adh->due_date);
+        $this->assertFalse($this->adh->isUp2Date());
     }
 }

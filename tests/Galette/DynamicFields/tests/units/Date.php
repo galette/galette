@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFields\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dynamic date test
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-11
  */
-class Date extends atoum
+class Date extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Date $date;
@@ -59,11 +59,9 @@ class Date extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Current test method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->date = new \Galette\DynamicFields\Date($this->zdb);
@@ -77,8 +75,7 @@ class Date extends atoum
     public function testConstructor()
     {
         $o = new \Galette\DynamicFields\Date($this->zdb, 10);
-        $this->variable($o->getId())
-            ->isNull();
+        $this->assertNull($o->getId());
     }
 
     /**
@@ -88,8 +85,7 @@ class Date extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->date->getTypeName())
-            ->isIdenticalTo(_T('date'));
+        $this->assertSame(_T('date'), $this->date->getTypeName());
     }
 
     /**
@@ -100,50 +96,50 @@ class Date extends atoum
     public function testBaseProperties()
     {
         $muliple = $this->date->isMultiValued();
-        $this->boolean($muliple)->isFalse();
+        $this->assertFalse($muliple);
 
         $required = $this->date->isRequired();
-        $this->boolean($required)->isFalse();
+        $this->assertFalse($required);
 
         $name = $this->date->getName();
-        $this->variable($name)->isIdenticalTo('');
+        $this->assertSame('', $name);
 
         $has_fixed_values = $this->date->hasFixedValues();
-        $this->boolean($has_fixed_values)->isFalse();
+        $this->assertFalse($has_fixed_values);
 
         $has_data = $this->date->hasData();
-        $this->boolean($has_data)->isTrue();
+        $this->assertTrue($has_data);
 
         $has_w = $this->date->hasWidth();
-        $this->boolean($has_w)->isFalse();
+        $this->assertFalse($has_w);
 
         $has_h = $this->date->hasHeight();
-        $this->boolean($has_h)->isFalse();
+        $this->assertFalse($has_h);
 
         $has_s = $this->date->hasSize();
-        $this->boolean($has_s)->isFalse();
+        $this->assertFalse($has_s);
 
         $perms = $this->date->getPerm();
-        $this->variable($perms)->isNull();
+        $this->assertNull($perms);
 
         $width = $this->date->getWidth();
-        $this->variable($width)->isNull();
+        $this->assertNull($width);
 
         $height = $this->date->getHeight();
-        $this->variable($height)->isNull();
+        $this->assertNull($height);
 
         $repeat = $this->date->getRepeat();
-        $this->variable($repeat)->isNull();
+        $this->assertNull($repeat);
 
         $repeat = $this->date->isRepeatable();
-        $this->boolean($repeat)->isFalse();
+        $this->assertFalse($repeat);
 
         $size = $this->date->getSize();
-        $this->variable($size)->isNull();
+        $this->assertNull($size);
 
         $values = $this->date->getValues();
-        $this->boolean($values)->isFalse();
+        $this->assertFalse($values);
 
-        $this->boolean($this->date->hasPermissions())->isTrue();
+        $this->assertTrue($this->date->hasPermissions());
     }
 }

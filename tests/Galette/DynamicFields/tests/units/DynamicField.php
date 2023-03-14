@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFields\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dynamic fields test
@@ -51,18 +51,16 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-11
  */
-class DynamicField extends atoum
+class DynamicField extends TestCase
 {
     private \Galette\Core\Db $zdb;
 
     /**
      * Set up tests
      *
-     * @param string $method Current test method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
     }
@@ -70,11 +68,9 @@ class DynamicField extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
         $this->zdb->execute($delete);
@@ -100,7 +96,7 @@ class DynamicField extends atoum
      */
     public function testLoadFieldType()
     {
-        $this->boolean(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, 10))->isFalse();
+        $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, 10));
 
         $field_data = [
             'form_name'         => 'adh',
@@ -113,40 +109,49 @@ class DynamicField extends atoum
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
-        $this->string($df->getForm())->isIdenticalTo('adh');
-        $this->integer($df->getIndex())->isIdenticalTo(1);
+        $this->assertTrue($stored);
+        $this->assertEquals(
+            $df,
+            \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
+        );
+        $this->assertSame('adh', $df->getForm());
+        $this->assertSame(1, $df->getIndex());
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $field_data['field_name'] = 'Another one';
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
-        $this->integer($df->getIndex())->isIdenticalTo(2);
+        $this->assertTrue($stored);
+        $this->assertEquals(
+            $df,
+            \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
+        );
+        $this->assertSame(2, $df->getIndex());
 
         $field_data['field_name'] = 'Another one - modified';
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->string($df->getName())->isIdenticalTo($field_data['field_name']);
+        $this->assertTrue($stored);
+        $this->assertSame($field_data['field_name'], $df->getName());
     }
 
     /**
@@ -154,7 +159,7 @@ class DynamicField extends atoum
      *
      * @return array
      */
-    protected function permsProvider(): array
+    public static function permsProvider(): array
     {
         return [
             [
@@ -188,11 +193,11 @@ class DynamicField extends atoum
     public function testGetPermsNames()
     {
         $expected = [];
-        foreach ($this->permsProvider() as $perm) {
+        foreach (self::permsProvider() as $perm) {
             $expected[$perm['perm']] = $perm['name'];
         }
 
-        $this->array(\Galette\DynamicFields\DynamicField::getPermsNames())->isIdenticalTo($expected);
+        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getPermsNames());
     }
 
     /**
@@ -218,14 +223,15 @@ class DynamicField extends atoum
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->string($df->getPermName())->isIdenticalTo($name);
+        $this->assertTrue($stored);
+        $this->assertSame($name, $df->getPermName());
     }
 
     /**
@@ -239,7 +245,7 @@ class DynamicField extends atoum
         foreach ($this->formNamesProvider() as $form) {
             $expected[$form['form']] = $form['expected'];
         }
-        $this->array(\Galette\DynamicFields\DynamicField::getFormsNames())->isIdenticalTo($expected);
+        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getFormsNames());
     }
 
     /**
@@ -247,7 +253,7 @@ class DynamicField extends atoum
      *
      * @return \string[][]
      */
-    protected function formNamesProvider(): array
+    public static function formNamesProvider(): array
     {
         return [
             [
@@ -277,7 +283,7 @@ class DynamicField extends atoum
      */
     public function testGetFormTitle(string $form, string $expected)
     {
-        $this->string(\Galette\DynamicFields\DynamicField::getFormTitle($form))->isIdenticalTo($expected);
+        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getFormTitle($form));
     }
 
     /**
@@ -287,9 +293,9 @@ class DynamicField extends atoum
      */
     public function testGetFixedValuesTableName()
     {
-        $this->string(\Galette\DynamicFields\DynamicField::getFixedValuesTableName(10))->isIdenticalTo('field_contents_10');
-        $this->string(\Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, false))->isIdenticalTo('field_contents_10');
-        $this->string(\Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, true))->isIdenticalTo('galette_field_contents_10');
+        $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10));
+        $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, false));
+        $this->assertSame('galette_field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, true));
     }
 
     /**
@@ -315,18 +321,19 @@ class DynamicField extends atoum
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
+        $this->assertTrue($stored);
 
         $stored = $df->load($df->getId());
-        $this->array($df->getValues())->isIdenticalTo(['One', 'Two', 'Three']);
-        $this->string($df->getValues(true))->isIdenticalTo("One\nTwo\nThree");
-        $this->integer($df->getIndex())->isIdenticalTo(1);
+        $this->assertSame(['One', 'Two', 'Three'], $df->getValues());
+        $this->assertSame("One\nTwo\nThree", $df->getValues(true));
+        $this->assertSame(1, $df->getIndex());
     }
 
     /**
@@ -352,44 +359,44 @@ class DynamicField extends atoum
         $orig_values = $values;
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
 
-        $this->boolean($df->check($values))->isTrue();
-        $this->array($df->getErrors())->isIdenticalTo([]);
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
 
         $values['form_name'] = 'unk';
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Unknown form!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Unknown form!'], $df->getErrors());
 
         $values['field_perm'] = 42;
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Unknown permission!', 'Unknown form!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Unknown permission!', 'Unknown form!'], $df->getErrors());
 
         $values = $orig_values;
         $values['field_perm'] = '';
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Missing required field permissions!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required field permissions!'], $df->getErrors());
 
         unset($values['field_perm']);
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Missing required field permissions!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required field permissions!'], $df->getErrors());
 
         $values = $orig_values;
         $values['form_name'] = '';
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Missing required form!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required form!'], $df->getErrors());
         $values = $orig_values;
         unset($values['form_name']);
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Missing required form!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required form!'], $df->getErrors());
 
         $values = $orig_values;
         $values['field_name'] = '';
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Missing required field name!']);
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required field name!'], $df->getErrors());
         $values = $orig_values;
         unset($values['field_name']);
-        $this->boolean($df->check($values))->isFalse();
-        $this->array($df->getErrors())->isIdenticalTo(['Missing required field name!']);
-        $this->boolean($df->store($values))->isFalse();
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required field name!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
     }
 
     /**
@@ -410,65 +417,77 @@ class DynamicField extends atoum
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
-        $this->integer($df->getIndex())->isIdenticalTo(1);
+        $this->assertTrue($stored);
+        $this->assertEquals(
+            $df,
+            \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
+        );
+        $this->assertSame(1, $df->getIndex());
         $df_id_1 = $df->getId();
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $field_data['field_name'] = 'A second text field';
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
-        $this->integer($df->getIndex())->isIdenticalTo(2);
+        $this->assertTrue($stored);
+        $this->assertEquals(
+            $df,
+            \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
+        );
+        $this->assertSame(2, $df->getIndex());
         $df_id_2 = $df->getId();
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $field_data['field_name'] = 'A third text field';
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
-        $this->integer($df->getIndex())->isIdenticalTo(3);
+        $this->assertTrue($stored);
+        $this->assertEquals(
+            $df,
+            \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
+        );
+        $this->assertSame(3, $df->getIndex());
         $df_id_3 = $df->getId();
 
-        $this->boolean($df->move(\Galette\DynamicFields\DynamicField::MOVE_UP))->isTrue();
+        $this->assertTrue($df->move(\Galette\DynamicFields\DynamicField::MOVE_UP));
         $df->load($df_id_1);
-        $this->integer($df->getIndex())->isIdenticalTo(1);
+        $this->assertSame(1, $df->getIndex());
 
         $df->load($df_id_2);
-        $this->integer($df->getIndex())->isIdenticalTo(3);
+        $this->assertSame(3, $df->getIndex());
 
         $df->load($df_id_3);
-        $this->integer($df->getIndex())->isIdenticalTo(2);
+        $this->assertSame(2, $df->getIndex());
 
         $df->load($df_id_1);
-        $this->boolean($df->move(\Galette\DynamicFields\DynamicField::MOVE_DOWN))->isTrue();
+        $this->assertTrue($df->move(\Galette\DynamicFields\DynamicField::MOVE_DOWN));
         $df->load($df_id_1);
-        $this->integer($df->getIndex())->isIdenticalTo(2);
+        $this->assertSame(2, $df->getIndex());
 
         $df->load($df_id_2);
-        $this->integer($df->getIndex())->isIdenticalTo(3);
+        $this->assertSame(3, $df->getIndex());
 
         $df->load($df_id_3);
-        $this->integer($df->getIndex())->isIdenticalTo(1);
+        $this->assertSame(1, $df->getIndex());
     }
 
     /**
@@ -493,28 +512,27 @@ class DynamicField extends atoum
         ];
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
+        $this->assertTrue($stored);
         $df_id = $df->getId();
 
         //check if table has been created
         $select = $this->zdb->select($df::getFixedValuesTableName($df->getId()));
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(3);
+        $this->assertSame(3, $results->count());
 
-        $this->boolean($df->remove())->isTrue();
+        $this->assertTrue($df->remove());
 
-        $this->exception(
-            function () use ($select) {
-                $results = $this->zdb->execute($select);
-            }
-        )->isInstanceOf('\PDOException');
-        $this->boolean(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id))->isFalse();
+        $this->expectException('\PDOException');
+        $results = $this->zdb->execute($select);
+
+        $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id));
     }
 
     /**
@@ -534,15 +552,19 @@ class DynamicField extends atoum
 
         $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
         $stored = $df->store($field_data);
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->boolean($stored)->isTrue();
-        $this->object(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId()))->isEqualTo($df);
+        $this->assertTrue($stored);
+        $this->assertEquals(
+            $df,
+            \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
+        );
 
-        $this->string($df->getInformation())->isIdenticalTo('<p>This is an important information.</p><p>And here an xss...  <img src="img.png" alt="img.png" /></p>');
+        $this->assertSame('<p>This is an important information.</p><p>And here an xss...  <img src="img.png" alt="img.png" /></p>', $df->getInformation());
     }
 }

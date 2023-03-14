@@ -61,17 +61,15 @@ class PdfModel extends GaletteTestCase
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
@@ -85,13 +83,11 @@ class PdfModel extends GaletteTestCase
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
 
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
@@ -134,10 +130,10 @@ class PdfModel extends GaletteTestCase
             'date_now'           => '/{DATE_NOW}/',
             'login_uri'          => '/{LOGIN_URI}/'
         ];
-        $this->array($model->getPatterns())->isIdenticalTo($main_expected);
+        $this->assertSame($main_expected, $model->getPatterns());
 
         $model = new \Galette\Entity\PdfMain($this->zdb, $this->preferences);
-        $this->array($model->getPatterns())->isIdenticalTo($main_expected);
+        $this->assertSame($main_expected, $model->getPatterns());
 
         $expected = $main_expected + [
             'adh_title'         => '/{TITLE_ADH}/',
@@ -173,7 +169,7 @@ class PdfModel extends GaletteTestCase
             '_adh_email'        => '/{MAIL_ADH}/',
         ];
         $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences);
-        $this->array($model->getPatterns())->isIdenticalTo($expected);
+        $this->assertSame($expected, $model->getPatterns());
 
         $expected += [
             'contrib_label'     => '/{CONTRIB_LABEL}/',
@@ -202,10 +198,10 @@ class PdfModel extends GaletteTestCase
             'deadline'           => '/{DEADLINE}/'
         ];
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
-        $this->array($model->getPatterns())->isIdenticalTo($expected);
+        $this->assertSame($expected, $model->getPatterns());
 
         $model = new \Galette\Entity\PdfReceipt($this->zdb, $this->preferences);
-        $this->array($model->getPatterns())->isIdenticalTo($expected);
+        $this->assertSame($expected, $model->getPatterns());
     }
 
     /**
@@ -213,7 +209,7 @@ class PdfModel extends GaletteTestCase
      *
      * @return array
      */
-    protected function typesProvider(): array
+    public static function typesProvider(): array
     {
         return [
             [
@@ -246,7 +242,7 @@ class PdfModel extends GaletteTestCase
      */
     public function testGetypeClass($type, $expected)
     {
-        $this->string(\Galette\Entity\PdfModel::getTypeClass($type))->isIdenticalTo($expected);
+        $this->assertSame($expected, \Galette\Entity\PdfModel::getTypeClass($type));
     }
 
     /**
@@ -271,14 +267,15 @@ class PdfModel extends GaletteTestCase
         $stored = $adf->store($field_data);
         $error_detected = $adf->getErrors();
         $warning_detected = $adf->getWarnings();
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $adf->getErrors() + $adf->getWarnings()
             )
         );
-        $this->array($error_detected)->isEmpty(implode(' ', $adf->getErrors()));
-        $this->array($warning_detected)->isEmpty(implode(' ', $adf->getWarnings()));
+        $this->assertEmpty($error_detected, implode(' ', $adf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $adf->getWarnings()));
 
         $field_data = [
             'form_name'         => 'contrib',
@@ -295,14 +292,15 @@ class PdfModel extends GaletteTestCase
         $stored = $cdf->store($field_data);
         $error_detected = $cdf->getErrors();
         $warning_detected = $cdf->getWarnings();
-        $this->boolean($stored)->isTrue(
+        $this->assertTrue(
+            $stored,
             implode(
                 ' ',
                 $cdf->getErrors() + $cdf->getWarnings()
             )
         );
-        $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
-        $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
 
         //prepare model
         $pk = \Galette\Entity\PdfModel::PK;
@@ -356,40 +354,46 @@ class PdfModel extends GaletteTestCase
         $this->createPdfContribution($cdf);
         $model->setContribution($this->contrib);
 
-        $this->string($model->hheader)->isIdenticalTo("<table>
+        $this->assertSame(
+            "<table>
     <tr>
         <td id=\"pdf_assoname\"><strong id=\"asso_name\">Galette</strong><br/></td>
         <td id=\"pdf_logo\"><img src=\"http:///logo\" width=\"129\" height=\"60\"/></td>
     </tr>
-</table>");
+</table>",
+            $model->hheader
+        );
 
-        $this->string($model->hfooter)->isIdenticalTo('<div id="pdf_footer">
+        $this->assertSame(
+            '<div id="pdf_footer">
     Association Galette - Galette
 Palais des Papes
 Au milieu
 84000 Avignon - France<br/>
     
-</div>');
+</div>',
+            $model->hfooter
+        );
 
-        $this->string($model->hbody)->isEqualTo(
+        $this->assertSame(
             'name: DURAND René login: arthur.hamon birthdate: 1937-12-26 dynlabel: Dynamic text field dynvalue: ' .
             'My value (: ' .
             '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
-            'dynvalue: 2020-12-03'
+            'dynvalue: 2020-12-03',
+            $model->hbody
         );
 
         $legend = $model->getLegend();
-        $this->array($legend)
-            ->hasSize(3)
-            ->hasKeys(['main', 'member', 'contribution']);
+        $this->assertCount(3, $legend);
+        $this->assertArrayHasKey('main', $legend);
+        $this->assertArrayHasKey('member', $legend);
+        $this->assertArrayHasKey('contribution', $legend);
 
-        $this->array($legend['main']['patterns'])->hasSize(8);
-        $this->array($legend['member']['patterns'])
-            ->hasSize(28)
-            ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'dynfield_' . $adf->getId() . '_adh']);
-        $this->array($legend['contribution']['patterns'])
-            ->hasSize(14)
-            ->hasKeys(['label_dynfield_' . $cdf->getId() . '_contrib', 'dynfield_' . $cdf->getId() . '_contrib']);
+        $this->assertCount(8, $legend['main']['patterns']);
+        $this->assertCount(28, $legend['member']['patterns']);
+        $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
+        $this->assertCount(14, $legend['contribution']['patterns']);
+        $this->assertTrue(isset($legend['contribution']['patterns']['label_dynfield_' . $cdf->getId() . '_contrib']));
     }
 
     /**
@@ -406,10 +410,10 @@ Au milieu
         if (is_array($check)) {
             var_dump($check);
         }
-        $this->boolean($check)->isTrue();
+        $this->assertTrue($check);
 
         $store = $adh->store();
-        $this->boolean($store)->isTrue();
+        $this->assertTrue($store);
         return $adh;
     }
 
@@ -455,12 +459,12 @@ Au milieu
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
 
         $orig_title = $model->title;
-        $this->string($orig_title)->isIdenticalTo('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}');
+        $this->assertSame('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}', $orig_title);
 
         $model->title = 'Another test';
-        $this->boolean($model->store())->isTrue();
+        $this->assertTrue($model->store());
 
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
-        $this->string($model->title)->isIdenticalTo('Another test');
+        $this->assertSame('Another test', $model->title);
     }
 }

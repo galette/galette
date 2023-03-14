@@ -189,7 +189,7 @@ class News
     private function parseFeed()
     {
         try {
-            if (!ini_get('allow_url_fopen')) {
+            if (!$this->allowURLFOpen()) {
                 throw new \RuntimeException(
                     'allow_url_fopen is set to false; cannot load news.'
                 );
@@ -295,5 +295,15 @@ class News
         }
 
         return $url;
+    }
+
+    /**
+     * Check if allow_url_fopen is enabled
+     *
+     * @return boolean
+     */
+    protected function allowURLFOpen(): bool
+    {
+        return ini_get('allow_url_fopen');
     }
 }

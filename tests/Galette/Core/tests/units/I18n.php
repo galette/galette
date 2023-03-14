@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * I18n tests class
@@ -51,7 +51,7 @@ use atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
  */
-class I18n extends atoum
+class I18n extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private ?\Galette\Core\I18n $i18n = null;
@@ -59,11 +59,9 @@ class I18n extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Tested method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n(
@@ -74,14 +72,12 @@ class I18n extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -94,27 +90,25 @@ class I18n extends atoum
     {
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->i18n->getID())->isIdenticalTo(\Galette\Core\I18n::DEFAULT_LANG);
+        $this->assertSame(\Galette\Core\I18n::DEFAULT_LANG, $this->i18n->getID());
 
         //simulate fr from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr_BE';
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->i18n->getID())
-            ->isIdenticalTo('fr_FR');
+        $this->assertSame('fr_FR', $this->i18n->getID());
 
         //simulate en from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en_GB';
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->i18n->getID())->isIdenticalTo('en_US');
+        $this->assertSame('en_US', $this->i18n->getID());
 
         //simulate unknown lang from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'un_KN';
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->i18n->getID())
-            ->isIdenticalTo(\Galette\Core\I18n::DEFAULT_LANG);
+        $this->assertSame(\Galette\Core\I18n::DEFAULT_LANG, $this->i18n->getID());
     }
 
     /**
@@ -126,12 +120,10 @@ class I18n extends atoum
     {
         $list = $this->i18n->getList();
 
-        $this->array($list)
-            ->size->isGreaterThan(3);
+        $this->assertGreaterThan(3, count($list));
 
         foreach ($list as $elt) {
-            $this->object($elt)
-                ->isInstanceOf('\Galette\Core\I18n');
+            $this->assertInstanceOf('\Galette\Core\I18n', $elt);
         }
     }
 
@@ -144,8 +136,7 @@ class I18n extends atoum
     {
         $list = $this->i18n->getArrayList();
 
-        $this->array($list)
-            ->size->isGreaterThan(3);
+        $this->assertGreaterThan(3, count($list));
     }
 
     /**
@@ -156,10 +147,10 @@ class I18n extends atoum
     public function testGetNameFromid()
     {
         $lang = $this->i18n->getNameFromId('en_US');
-        $this->variable($lang)->isIdenticalTo('English');
+        $this->assertSame('English', $lang);
 
         $lang = $this->i18n->getNameFromId('fr_FR');
-        $this->variable($lang)->isIdenticalTo('Français');
+        $this->assertSame('Français', $lang);
     }
 
     /**
@@ -174,10 +165,10 @@ class I18n extends atoum
         $name = $this->i18n->getName();
         $abbrev = $this->i18n->getAbbrev();
 
-        $this->variable($id)->isIdenticalTo('en_US');
-        $this->variable($longid)->isIdenticalTo('en_US');
-        $this->variable($name)->isIdenticalTo('English');
-        $this->variable($abbrev)->isIdenticalTo('en');
+        $this->assertSame('en_US', $id);
+        $this->assertSame('en_US', $longid);
+        $this->assertSame('English', $name);
+        $this->assertSame('en', $abbrev);
 
         $this->i18n->changeLanguage('fr_FR');
         $id = $this->i18n->getID();
@@ -185,10 +176,10 @@ class I18n extends atoum
         $name = $this->i18n->getName();
         $abbrev = $this->i18n->getAbbrev();
 
-        $this->variable($id)->isIdenticalTo('fr_FR');
-        $this->variable($longid)->isIdenticalTo('fr_FR.utf8');
-        $this->variable($name)->isIdenticalTo('Français');
-        $this->variable($abbrev)->isIdenticalTo('fr');
+        $this->assertSame('fr_FR', $id);
+        $this->assertSame('fr_FR.utf8', $longid);
+        $this->assertSame('Français', $name);
+        $this->assertSame('fr', $abbrev);
     }
 
     /**
@@ -201,7 +192,7 @@ class I18n extends atoum
         $this->i18n->changeLanguage('un_KN');
         $id = $this->i18n->getID();
 
-        $this->variable($id)->isIdenticalTo(\Galette\Core\I18n::DEFAULT_LANG);
+        $this->assertSame(\Galette\Core\I18n::DEFAULT_LANG, $id);
     }
 
     /**
@@ -214,7 +205,7 @@ class I18n extends atoum
         $is_utf = $this->i18n->seemUtf8('HéhéHÉHÉâ-ôß¬- ©»«<ëßßä€êþÿûîœô');
         $is_iso = $this->i18n->seemUtf8(mb_convert_encoding('Héhé', 'ISO-8859-1'));
 
-        $this->boolean($is_utf)->isTrue();
-        $this->boolean($is_iso)->isFalse();
+        $this->assertTrue($is_utf);
+        $this->assertFalse($is_iso);
     }
 }
