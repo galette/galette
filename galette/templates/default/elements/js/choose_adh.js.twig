@@ -133,6 +133,12 @@
             apiSettings: {
                 url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
+                beforeSend: function (settings) {
+                    if (settings.urlData.query == '') {
+                        settings.url = settings.url.replace(/\/{query}/, '');
+                    }
+                    return settings;
+                },
                 onFailure: function(response, element, xhr) {
                     console.log(response);
                 },
