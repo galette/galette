@@ -1142,7 +1142,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $login = new \Galette\Core\Login($zdb, $i18n);
             //$fc = new \Galette\Entity\FieldsCategories();
             $texts = new \Galette\Entity\Texts($preferences);
-            $titles = new \Galette\Repository\Titles();
+            $titles = new \Galette\Repository\Titles($zdb);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
 
@@ -1173,7 +1173,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->proceedReport(_T("Mails texts"), $res);
 
             //Install titles
-            $res = $titles->installInit($zdb);
+            $res = $titles->installInit();
             $this->proceedReport(_T("Titles"), $res);
 
             //Install PDF models

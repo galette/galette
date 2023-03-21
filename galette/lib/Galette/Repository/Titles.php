@@ -76,36 +76,29 @@ class Titles
         )
     );
 
+    private Db $zdb;
+
     /**
-     * Get the list of all titles as an array
+     * Default constructor
      *
      * @param Db $zdb Database instance
-     *
-     * @return array
      */
-    public static function getArrayList(Db $zdb)
+    public function __construct(Db $zdb)
     {
-        $otitles = self::getList($zdb);
-        $titles = array();
-        foreach ($otitles as $t) {
-            $titles[$t->id] = $t->short;
-        }
-        return $titles;
+        $this->zdb = $zdb;
     }
 
     /**
      * Get the list of all titles
      *
-     * @param Db $zdb Database instance
-     *
      * @return Title[]
      */
-    public static function getList(Db $zdb)
+    public function getList()
     {
-        $select = $zdb->select(self::TABLE);
+        $select = $this->zdb->select(self::TABLE);
         $select->order(self::PK);
 
-        $results = $zdb->execute($select);
+        $results = $this->zdb->execute($select);
 
         $pols = array();
         foreach ($results as $r) {
@@ -119,19 +112,17 @@ class Titles
     /**
      * Set default titles at install time
      *
-     * @param Db $zdb Database instance
-     *
      * @return boolean
      * @throws Throwable
      */
-    public function installInit(Db $zdb)
+    public function installInit()
     {
         try {
             //first, we drop all values
-            $delete = $zdb->delete(self::TABLE);
-            $zdb->execute($delete);
+            $delete = $this->zdb->delete(self::TABLE);
+            $this->zdb->execute($delete);
 
-            $insert = $zdb->insert(self::TABLE);
+            $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
                 array(
                     'id_title'      => ':id',
@@ -139,9 +130,9 @@ class Titles
                     'long_label'    => ':long'
                 )
             );
-            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-            $zdb->handleSequence(
+            $this->zdb->handleSequence(
                 self::TABLE,
                 count(self::$defaults)
             );

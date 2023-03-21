@@ -45,9 +45,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
-use Galette\Entity\Title;
 use Galette\Repository\Titles;
-use Galette\IO\FileTrait;
 use Galette\Repository\Members;
 
 /**
@@ -333,7 +331,8 @@ class CsvIn extends Csv implements FileInterface
                     if ($this->_fields[$col] == 'titre_adh' && !empty($column)) {
                         if ($this->titles === null) {
                             //load existing titles
-                            $this->titles = Titles::getList($this->zdb);
+                            $titles = new Titles($this->zdb);
+                            $this->titles = $titles->getList();
                         }
                         if (!isset($this->titles[$column])) {
                             $this->addError(

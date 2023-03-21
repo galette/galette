@@ -115,8 +115,8 @@ class Title extends atoum
         $zdb = $this->zdb;
 
         $titles = new \Galette\Repository\Titles($this->zdb);
-        if (count($titles->getList($this->zdb)) === 0) {
-            $res = $titles->installInit($this->zdb);
+        if (count($titles->getList()) === 0) {
+            $res = $titles->installInit();
             $this->boolean($res)->isTrue();
         }
 

@@ -160,6 +160,9 @@ class MembersController extends CrudController
 
         $gaptcha = new Gaptcha($this->i18n);
         $this->session->gaptcha = $gaptcha;
+
+        $titles = new Titles($this->zdb);
+
         // display page
         $this->view->render(
             $response,
@@ -173,7 +176,7 @@ class MembersController extends CrudController
                 'osocials'          => new Social($this->zdb),
                 // pseudo random int
                 'time'              => time(),
-                'titles_list'       => Titles::getList($this->zdb),
+                'titles_list'       => $titles->getList(),
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
                 //self_adh specific
@@ -1145,6 +1148,8 @@ class MembersController extends CrudController
 
         //Status
         $statuts = new Status($this->zdb);
+        //Titles
+        $titles = new Titles($this->zdb);
 
         //Groups
         $groups = new Groups($this->zdb, $this->login);
@@ -1192,7 +1197,7 @@ class MembersController extends CrudController
                 'self_adh'          => false,
                 // pseudo random int
                 'time'              => time(),
-                'titles_list'       => Titles::getList($this->zdb),
+                'titles_list'       => $titles->getList(),
                 'statuts'           => $statuts->getList(),
                 'groups'            => $groups_list,
                 'fieldsets'         => $form_elements['fieldsets'],
@@ -1245,6 +1250,8 @@ class MembersController extends CrudController
 
         //Status
         $statuts = new Status($this->zdb);
+        //Titles
+        $titles = new Titles($this->zdb);
 
         // display page
         $this->view->render(
@@ -1262,7 +1269,7 @@ class MembersController extends CrudController
                 'data'          => $data,
                 'member'        => $member,
                 'fieldsets'     => $form_elements['fieldsets'],
-                'titles_list'   => Titles::getList($this->zdb),
+                'titles_list'   => $titles->getList(),
                 'statuts'       => $statuts->getList(),
                 'require_mass'  => true
             )
@@ -1340,6 +1347,8 @@ class MembersController extends CrudController
 
         //Status
         $statuts = new Status($this->zdb);
+        //Titles
+        $titles = new Titles($this->zdb);
 
         // display page
         $this->view->render(
@@ -1355,7 +1364,7 @@ class MembersController extends CrudController
                 'form_url'      => $this->routeparser->urlFor('massstoremembers'),
                 'cancel_uri'    => $this->routeparser->urlFor('members'),
                 'data'          => $data,
-                'titles_list'   => Titles::getList($this->zdb),
+                'titles_list'   => $titles->getList(),
                 'statuts'       => $statuts->getList(),
                 'changes'       => $changes
             )

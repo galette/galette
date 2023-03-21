@@ -102,7 +102,7 @@ class TitlesController extends CrudController
      */
     public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
-        $titles = Titles::getList($this->zdb);
+        $titles = new Titles($this->zdb);
 
         // display page
         $this->view->render(
@@ -110,7 +110,7 @@ class TitlesController extends CrudController
             'pages/configuration_titles.html.twig',
             [
                 'page_title'        => _T("Titles management"),
-                'titles_list'       => $titles
+                'titles_list'       => $titles->getList()
             ]
         );
         return $response;

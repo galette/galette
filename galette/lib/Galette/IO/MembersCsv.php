@@ -159,8 +159,8 @@ class MembersCsv extends CsvOut
         $s = new Status($this->zdb);
         $statuses = $s->getList();
 
-        $t = new Titles();
-        $titles = $t->getList($this->zdb);
+        $t = new Titles($this->zdb);
+        $titles = $t->getList();
 
         foreach ($members_list as &$member) {
             if (isset($member->id_statut)) {
