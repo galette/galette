@@ -94,8 +94,7 @@ class I18n extends atoum
     {
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->i18n->getID())
-            ->isIdenticalTo('fr_FR');
+        $this->variable($this->i18n->getID())->isIdenticalTo(\Galette\Core\I18n::DEFAULT_LANG);
 
         //simulate fr from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr_BE';
@@ -108,15 +107,14 @@ class I18n extends atoum
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en_GB';
         $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->i18n->getID())
-            ->isIdenticalTo('en_US');
+        $this->variable($this->i18n->getID())->isIdenticalTo('en_US');
 
         //simulate unknown lang from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'un_KN';
         $this->i18n = new \Galette\Core\I18n();
 
         $this->variable($this->i18n->getID())
-            ->isIdenticalTo('fr_FR');
+            ->isIdenticalTo(\Galette\Core\I18n::DEFAULT_LANG);
     }
 
     /**
@@ -158,9 +156,10 @@ class I18n extends atoum
     public function testGetNameFromid()
     {
         $lang = $this->i18n->getNameFromId('en_US');
+        $this->variable($lang)->isIdenticalTo('English');
 
-        $this->variable($lang)
-            ->isIdenticalTo('English');
+        $lang = $this->i18n->getNameFromId('fr_FR');
+        $this->variable($lang)->isIdenticalTo('Français');
     }
 
     /**
@@ -175,14 +174,21 @@ class I18n extends atoum
         $name = $this->i18n->getName();
         $abbrev = $this->i18n->getAbbrev();
 
-        $this->variable($id)
-            ->isIdenticalTo('fr_FR');
-        $this->variable($longid)
-            ->isIdenticalTo('fr_FR.utf8');
-        $this->variable($name)
-            ->isIdenticalTo('Français');
-        $this->variable($abbrev)
-            ->isIdenticalTo('fr');
+        $this->variable($id)->isIdenticalTo('en_US');
+        $this->variable($longid)->isIdenticalTo('en_US');
+        $this->variable($name)->isIdenticalTo('English');
+        $this->variable($abbrev)->isIdenticalTo('en');
+
+        $this->i18n->changeLanguage('fr_FR');
+        $id = $this->i18n->getID();
+        $longid = $this->i18n->getLongID();
+        $name = $this->i18n->getName();
+        $abbrev = $this->i18n->getAbbrev();
+
+        $this->variable($id)->isIdenticalTo('fr_FR');
+        $this->variable($longid)->isIdenticalTo('fr_FR.utf8');
+        $this->variable($name)->isIdenticalTo('Français');
+        $this->variable($abbrev)->isIdenticalTo('fr');
     }
 
     /**
@@ -195,8 +201,7 @@ class I18n extends atoum
         $this->i18n->changeLanguage('un_KN');
         $id = $this->i18n->getID();
 
-        $this->variable($id)
-            ->isIdenticalTo('fr_FR');
+        $this->variable($id)->isIdenticalTo(\Galette\Core\I18n::DEFAULT_LANG);
     }
 
     /**

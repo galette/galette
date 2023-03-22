@@ -93,7 +93,7 @@ class News extends atoum
     public function testCacheNews()
     {
         //will use default lang to build RSS URL
-        $file = GALETTE_CACHE_DIR . md5('https://galette.eu/site/fr/feed.xml') . '.cache';
+        $file = GALETTE_CACHE_DIR . md5('https://galette.eu/site/feed.xml') . '.cache';
 
         //ensure file does not exists
         $this->boolean(file_exists($file))->isFalse;

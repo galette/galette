@@ -58,7 +58,7 @@ class I18n
     private $name;
     private $abbrev;
 
-    public const DEFAULT_LANG = 'fr_FR';
+    public const DEFAULT_LANG = 'en_US';
 
     private $dir = 'lang/';
     private $path;
