@@ -162,7 +162,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    protected function cleanExpired(): bool
+    public function cleanExpired(): bool
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));

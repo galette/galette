@@ -269,7 +269,8 @@ class Password extends atoum
             throw new \LogicException('Error executing query!', 123);
         };
 
-        $pass = new \Galette\Core\Password($this->zdb, true);
+        $pass = new \Galette\Core\Password($this->zdb, false);
+        $this->boolean($pass->cleanExpired())->isFalse();
     }
 
     /**
