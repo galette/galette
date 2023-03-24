@@ -11,7 +11,73 @@ on:
   pull_request:
 
 jobs:
-  ubuntu-latest:
+  lint:
+    runs-on: ubuntu-latest
+    name: "Lint on PHP ${{ matrix.php-versions }}"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: [ '8.1', '8.2' ]
+
+    steps:
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, pecl
+          coverage: ${{ matrix.coverage }}
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+
+      - name: "Show versions"
+        run: |
+          php --version
+          composer --version
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          cd galette
+          composer install
+
+      - name: CS
+        run: |
+          galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/
+
+      - name: Twig CS
+        run: |
+          galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
+
+      - name: Install checker
+        working-directory: galette
+        run: composer require maglnet/composer-require-checker -W
+
+      - name: Check missing symbols
+        run: |
+          galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
+
+      - name: PHPStan checks
+        run: |
+          galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
+
+  unit-tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -92,30 +158,6 @@ jobs:
 
       - name: Install dependencies
         run: bin/install_deps
-
-      - name: CS
-        run: |
-          galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/
-
-      - name: Twig CS
-        run: |
-          galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
-        if: matrix.php-versions == '8.1'
-
-      - name: Install checker
-        working-directory: galette
-        run: composer require maglnet/composer-require-checker -W
-        if: matrix.php-versions == '8.1'
-
-      - name: Check missing symbols
-        run: |
-          galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
-        if: matrix.php-versions == '8.1'
-
-      - name: PHPStan checks
-        run: |
-          galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
-        if: matrix.php-versions == '8.1'
 
       - name: Init for PostgreSQL (update)
         env:

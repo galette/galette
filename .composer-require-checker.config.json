@@ -15,6 +15,12 @@
     "static", "self", "parent",
     "array", "bool", "callable", "float", "int", "iterable", "object", "string", "void",
 
+    "// random native PHP functions",
+    "// these are moved in random native extension in PHP 8.2, but this extension does not exists in previous PHP versions",
+    "mt_rand",
+    "rand",
+    "random_int",
+
     "// Galette constants (not detected as they are dynamically declared)",
     "GALETTE_ATTACHMENTS_PATH",
     "GALETTE_BASE_PATH",
