@@ -53,6 +53,8 @@ use Galette\GaletteTestCase;
  */
 class Galette extends GaletteTestCase
 {
+    protected int $seed = 20230324120838;
+
     /**
      * Test gitVersion
      *
@@ -144,5 +146,343 @@ class Galette extends GaletteTestCase
         $transaction_filter = new \Galette\Filters\TransactionsList();
         $this->session->transaction_filter_test = $transaction_filter;
         $this->assertInstanceOf(\Galette\Filters\TransactionsList::class, $this->session->transaction_filter_test);
+    }
+
+    /**
+     * Test getMenus
+     *
+     * @return void
+     */
+    public function testGetMenus()
+    {
+        global $preferences, $login, $plugins;
+        $db = new \Galette\Core\Db();
+        $plugins = new \Galette\Core\Plugins($db);
+        $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
+            ->setConstructorArgs(array($db))
+            ->onlyMethods(array('showPublicPages'))
+            ->getMock();
+
+        $preferences->method('showPublicPages')->willReturn(true);
+
+        $menus = \Galette\Core\Galette::getMenus();
+        $this->assertIsArray($menus);
+        $this->assertCount(0, $menus);
+
+        $menus = \Galette\Core\Galette::getMenus(true);
+        $this->assertIsArray($menus);
+        $this->assertCount(1, $menus);
+        $this->assertArrayHasKey('public', $menus);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $menus = \Galette\Core\Galette::getMenus(true);
+        $this->assertIsArray($menus);
+        $this->assertCount(6, $menus);
+
+        $this->assertArrayHasKey('myaccount', $menus);
+        $this->assertArrayHasKey('members', $menus);
+        $this->assertArrayHasKey('contributions', $menus);
+        $this->assertArrayHasKey('management', $menus);
+        $this->assertArrayHasKey('configuration', $menus);
+        $this->assertArrayHasKey('public', $menus);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $menus = \Galette\Core\Galette::getMenus(true);
+        $this->assertIsArray($menus);
+        $this->assertCount(5, $menus);
+
+        $this->assertArrayHasKey('myaccount', $menus);
+        $this->assertArrayHasKey('members', $menus);
+        $this->assertArrayHasKey('contributions', $menus);
+        $this->assertArrayHasKey('management', $menus);
+        $this->assertArrayNotHasKey('configuration', $menus);
+        $this->assertArrayHasKey('public', $menus);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(true);
+
+        $menus = \Galette\Core\Galette::getMenus(true);
+        $this->assertIsArray($menus);
+        $this->assertCount(5, $menus);
+
+        $this->assertArrayNotHasKey('myaccount', $menus);
+        $this->assertArrayHasKey('members', $menus);
+        $this->assertArrayHasKey('contributions', $menus);
+        $this->assertArrayHasKey('management', $menus);
+        $this->assertArrayHasKey('configuration', $menus);
+        $this->assertArrayHasKey('public', $menus);
+    }
+
+    /**
+     * Test getPublicMenus
+     *
+     * @return void
+     */
+    public function testGetPublicMenus()
+    {
+        global $preferences;
+
+        $db = new \Galette\Core\Db();
+        $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
+            ->setConstructorArgs(array($db))
+            ->onlyMethods(array('showPublicPages'))
+            ->getMock();
+        $preferences->method('showPublicPages')->willReturn(false);
+
+        $menus = \Galette\Core\Galette::getPublicMenus();
+        $this->assertIsArray($menus);
+        $this->assertCount(0, $menus);
+
+        $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
+            ->setConstructorArgs(array($db))
+            ->onlyMethods(array('showPublicPages'))
+            ->getMock();
+        $preferences->method('showPublicPages')->willReturn(true);
+
+        $menus = \Galette\Core\Galette::getPublicMenus();
+        $this->assertIsArray($menus);
+        $this->assertCount(1, $menus);
+    }
+
+    /**
+     * Test getDashboards
+     *
+     * @return void
+     */
+    public function testGetDashboards()
+    {
+        global $login;
+
+        $db = new \Galette\Core\Db();
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertCount(0, $dashboards);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(true);
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertCount(8, $dashboards);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertCount(11, $dashboards);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertCount(9, $dashboards);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $dashboards = \Galette\Core\Galette::getDashboards();
+        $this->assertCount(3, $dashboards);
+    }
+
+    /**
+     * Test getListActions
+     *
+     * @return void
+     */
+    public function testGetListActions()
+    {
+        global $login;
+
+        $db = new \Galette\Core\Db();
+        $member = $this->getMemberOne();
+
+        $actions = \Galette\Core\Galette::getListActions($member);
+        $this->assertCount(0, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(true);
+
+        $actions = \Galette\Core\Galette::getListActions($member);
+        $this->assertCount(4, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $actions = \Galette\Core\Galette::getListActions($member);
+        $this->assertCount(3, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $actions = \Galette\Core\Galette::getListActions($member);
+        $this->assertCount(3, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $actions = \Galette\Core\Galette::getListActions($member);
+        $this->assertCount(0, $actions);
+    }
+
+    /**
+     * Test getDetailledActions
+     *
+     * @return void
+     */
+    public function testGetDetailledActions()
+    {
+        $member = $this->getMemberOne();
+
+        //no core actions yet
+        $actions = \Galette\Core\Galette::getDetailedActions($member);
+        $this->assertCount(0, $actions);
+    }
+
+    /**
+     * Test getBatchActions
+     *
+     * @return void
+     */
+    public function testGetBatchActions()
+    {
+        global $login;
+
+        $db = new \Galette\Core\Db();
+        $member = $this->getMemberOne();
+
+        $actions = \Galette\Core\Galette::getBatchActions();
+        $this->assertCount(0, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(true);
+
+        $actions = \Galette\Core\Galette::getBatchActions();
+        $this->assertCount(7, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $actions = \Galette\Core\Galette::getBatchActions();
+        $this->assertCount(7, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $actions = \Galette\Core\Galette::getBatchActions();
+        $this->assertCount(7, $actions);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $actions = \Galette\Core\Galette::getBatchActions();
+        $this->assertCount(0, $actions);
     }
 }

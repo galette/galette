@@ -63,6 +63,7 @@ class Adherent extends GaletteTestCase
      */
     public function tearDown(): void
     {
+        parent::tearDown();
         $this->zdb = new \Galette\Core\Db();
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
@@ -73,8 +74,18 @@ class Adherent extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+    }
 
-        $this->cleanHistory();
+    /**
+     * Cleanup after class
+     *
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        $self = new self(__METHOD__);
+        $self->setUp();
+        $self->tearDown();
     }
 
     /**

@@ -252,7 +252,7 @@ class Password extends TestCase
         );
         $login = new \Galette\Core\Login($this->zdb, $i18n);
         $history = new \Galette\Core\History($this->zdb, $login, $this->preferences);
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $members_fields = $members_fields;
 
         $adh = new \Galette\Entity\Adherent($this->zdb);

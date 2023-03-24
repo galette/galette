@@ -98,7 +98,6 @@ class Links extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
         $this->zdb->execute($delete);
 
-        $this->cleanHistory();
         parent::tearDown();
     }
 
@@ -125,7 +124,7 @@ class Links extends GaletteTestCase
         $this->assertSame(1, $results->count());
 
         $this->assertSame(
-            $links->isHashValid($res, 'phoarau@tele2.fr'),
+            $links->isHashValid($res, $this->adh->getEmail()),
             [
                 \Galette\Core\Links::TARGET_MEMBERCARD,
                 $id
@@ -133,7 +132,7 @@ class Links extends GaletteTestCase
         );
 
         $this->assertFalse($links->isHashValid($res, 'any@mail.com'));
-        $this->assertFalse($links->isHashValid(base64_encode('sthingthatisnotahash'), 'phoarau@tele2.fr'));
+        $this->assertFalse($links->isHashValid(base64_encode('sthingthatisnotahash'), $this->adh->getEmail()));
 
         $this->createContribution();
         $cid = $this->contrib->id;
@@ -144,7 +143,7 @@ class Links extends GaletteTestCase
 
         $this->assertNotEmpty($res);
         $this->assertSame(
-            $links->isHashValid($res, 'phoarau@tele2.fr'),
+            $links->isHashValid($res, $this->adh->getEmail()),
             [
                 \Galette\Core\Links::TARGET_INVOICE,
                 $cid
@@ -171,7 +170,7 @@ class Links extends GaletteTestCase
         $this->assertNotEmpty($res);
 
         $this->assertSame(
-            $links->isHashValid($res, 'phoarau@tele2.fr'),
+            $links->isHashValid($res, $this->adh->getEmail()),
             [
                 \Galette\Core\Links::TARGET_MEMBERCARD,
                 $id
@@ -190,7 +189,7 @@ class Links extends GaletteTestCase
             ->where(['hash' => base64_decode($res)]);
         $this->zdb->execute($update);
 
-        $this->assertFalse($links->isHashValid($res, 'phoarau@tele2.fr'));
+        $this->assertFalse($links->isHashValid($res, $this->adh->getEmail()));
     }
 
     /**

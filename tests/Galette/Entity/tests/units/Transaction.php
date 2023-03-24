@@ -87,8 +87,6 @@ class Transaction extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
-
-        $this->cleanHistory();
     }
 
     /**

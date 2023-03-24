@@ -150,6 +150,7 @@ abstract class GaletteTestCase extends TestCase
         if (TYPE_DB === 'mysql') {
             $this->assertSame($this->expected_mysql_warnings, $this->zdb->getWarnings());
         }
+        $this->cleanHistory();
     }
 
     /**
@@ -190,8 +191,8 @@ abstract class GaletteTestCase extends TestCase
             'ville_adh' => 'Martel',
             'cp_adh' => '39 069',
             'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine@ledoux.com',
-            'login_adh' => 'arthur.hamon',
+            'email_adh' => 'meunier.josephine' .  $this->seed . '@ledoux.com',
+            'login_adh' => 'arthur.hamon' .  $this->seed,
             'mdp_adh' => 'J^B-()f',
             'mdp_adh2' => 'J^B-()f',
             'bool_admin_adh' => false,
@@ -236,8 +237,8 @@ abstract class GaletteTestCase extends TestCase
             'ville_adh' => 'Reynaudnec',
             'cp_adh' => '63077',
             'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau@tele2.fr',
-            'login_adh' => 'nathalie51',
+            'email_adh' => 'phoarau' .  $this->seed . '@tele2.fr',
+            'login_adh' => 'nathalie51' .  $this->seed,
             'mdp_adh' => 'T.u!IbKOi|06',
             'mdp_adh2' => 'T.u!IbKOi|06',
             'bool_admin_adh' => false,
@@ -309,8 +310,8 @@ abstract class GaletteTestCase extends TestCase
             'prenom_adh' => 'René',
             'ville_adh' => 'Martel',
             'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine@ledoux.com',
-            'login_adh' => 'arthur.hamon',
+            'email_adh' => 'meunier.josephine' .  $this->seed . '@ledoux.com',
+            'login_adh' => 'arthur.hamon' .  $this->seed,
             'mdp_adh' => 'J^B-()f',
             'bool_admin_adh' => false,
             'bool_exempt_adh' => false,
@@ -413,8 +414,8 @@ abstract class GaletteTestCase extends TestCase
             'ville_adh' => 'Reynaudnec',
             'cp_adh' => '63077',
             'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau@tele2.fr',
-            'login_adh' => 'nathalie51',
+            'email_adh' => 'phoarau' .  $this->seed . '@tele2.fr',
+            'login_adh' => 'nathalie51' .  $this->seed,
             'mdp_adh' => 'T.u!IbKOi|06',
             'bool_admin_adh' => false,
             'bool_exempt_adh' => false,

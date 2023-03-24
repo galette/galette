@@ -75,9 +75,9 @@ class ListsConfig extends TestCase
     {
         $this->zdb = new \Galette\Core\Db();
 
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         $this->members_fields_cats = $members_fields_cats;
 
         $this->lists_config = new \Galette\Entity\ListsConfig(

@@ -320,32 +320,7 @@ class PdfModel extends GaletteTestCase
         ], \ArrayObject::ARRAY_AS_PROPS);
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs);
 
-        $data = [
-            'nom_adh' => 'Durand',
-            'prenom_adh' => 'René',
-            'ville_adh' => 'Martel',
-            'cp_adh' => '39 069',
-            'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine@ledoux.com',
-            'login_adh' => 'arthur.hamon',
-            'mdp_adh' => 'J^B-()f',
-            'mdp_adh2' => 'J^B-()f',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => true,
-            'sexe_adh' => 0,
-            'prof_adh' => 'Chef de fabrication',
-            'titre_adh' => null,
-            'ddn_adh' => '1937-12-26',
-            'lieu_naissance' => 'Gonzalez-sur-Meunier',
-            'pseudo_adh' => 'ubertrand',
-            'pays_adh' => 'Antarctique',
-            'tel_adh' => '0439153432',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'date_crea_adh' => '2020-06-10',
-            'pref_lang' => 'en_US',
-            'fingerprint' => 'FAKER' . $this->seed,
+        $data = $this->dataAdherentOne() + [
             'info_field_' . $adf->getId() . '_1' => 'My value (:'
         ];
         $this->createMember($data);
@@ -376,7 +351,7 @@ Au milieu
         );
 
         $this->assertSame(
-            'name: DURAND René login: arthur.hamon birthdate: 1937-12-26 dynlabel: Dynamic text field dynvalue: ' .
+            'name: DURAND René login: arthur.hamon' .  $this->seed . ' birthdate: ' . $data['ddn_adh'] . ' dynlabel: Dynamic text field dynvalue: ' .
             'My value (: ' .
             '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
             'dynvalue: 2020-12-03',
@@ -394,27 +369,6 @@ Au milieu
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
         $this->assertCount(14, $legend['contribution']['patterns']);
         $this->assertTrue(isset($legend['contribution']['patterns']['label_dynfield_' . $cdf->getId() . '_contrib']));
-    }
-
-    /**
-     * Create member from data
-     *
-     * @param array $data Data to use to create member
-     *
-     * @return Adherent
-     */
-    public function createMember(array $data)
-    {
-        $adh = $this->adh;
-        $check = $adh->check($data, [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-
-        $store = $adh->store();
-        $this->assertTrue($store);
-        return $adh;
     }
 
     /**

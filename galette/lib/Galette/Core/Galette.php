@@ -633,7 +633,7 @@ class Galette
             );
         }
 
-        if (!$login->isSuperAdmin()) {
+        if ($login->isLogged() && !$login->isSuperAdmin()) {
             // Single member
             $dashboards = array_merge(
                 $dashboards,
