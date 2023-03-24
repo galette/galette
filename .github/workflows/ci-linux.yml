@@ -84,7 +84,7 @@ jobs:
       matrix:
         php-versions: [ '8.1', '8.2' ]
         coverage: ['none']
-        db-image: ['mysql:5.7', 'mysql:8.0', 'mariadb:10.2', 'mariadb:10.6', 'postgres:10', 'postgres:14']
+        db-image: ['mysql:5.7', 'mysql:8.0', 'mariadb:10.3', 'mariadb:10.11', 'postgres:11', 'postgres:15']
         include:
           - php-versions: '8.1'
             coverage: 'xdebug'
