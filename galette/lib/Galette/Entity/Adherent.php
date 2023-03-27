@@ -183,7 +183,7 @@ class Adherent
     private $_groups = [];
     private $_managed_groups = [];
     private $_parent;
-    private $_children;
+    private $_children = [];
     private $_duplicate = false;
     private $_socials;
     private $_number;

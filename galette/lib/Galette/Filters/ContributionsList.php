@@ -155,7 +155,7 @@ class ContributionsList extends Pagination
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return mixed the called property
      */
