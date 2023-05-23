@@ -53,13 +53,13 @@ use Galette\Core\MailingHistory;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
- * @property string $start_date_filter
+ * @property ?string $start_date_filter
  * @property string $raw_start_date_filter
- * @property string $end_date_filter
+ * @property ?string $end_date_filter
  * @property string $raw_end_date_filter
  * @property int $sender_filter
  * @property int $sent_filter
- * @property string $subject_filter
+ * @property ?string $subject_filter
  */
 
 class MailingsList extends Pagination

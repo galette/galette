@@ -52,9 +52,9 @@ use Galette\Core\Pagination;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
- * @property date $start_date_filter
- * @property date $end_date_filter
- * @property integer $filtre_cotis_adh
+ * @property ?string $start_date_filter
+ * @property ?string $end_date_filter
+ * @property ?integer $filtre_cotis_adh
  * @property boolean $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
@@ -163,7 +163,7 @@ class TransactionsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[TransactionsList] Unable to get proprety `' . $name . '`',
+                    '[TransactionsList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -174,7 +174,7 @@ class TransactionsList extends Pagination
      * Global isset method
      * Required for twig to access properties via __get
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return bool
      */

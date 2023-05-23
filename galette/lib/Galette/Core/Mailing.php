@@ -601,9 +601,9 @@ class Mailing extends GaletteMail
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
-     * @return void|false
+     * @return void
      */
     public function __set($name, $value)
     {
@@ -649,10 +649,9 @@ class Mailing extends GaletteMail
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
+                    '[' . get_class($this) . '] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
-                return false;
         }
     }
 }

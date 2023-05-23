@@ -55,7 +55,7 @@ use Analog\Analog;
  *
  * @property int $id
  * @property string $short
- * @property string $long
+ * @property ?string $long
  * @property-read string $tshort
  * @property-read string $tlong
  */

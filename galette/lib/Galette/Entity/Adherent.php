@@ -116,7 +116,7 @@ use Galette\Features\Dynamics;
  * @property string $sname
  * @property string $saddress
  * @property string $contribstatus State of member contributions
- * @property string $days_remaining
+ * @property integer $days_remaining
  * @property-read integer $parent_id
  * @property Social $social Social networks/Contact
  * @property string $number Member number

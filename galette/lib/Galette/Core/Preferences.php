@@ -1049,7 +1049,7 @@ class Preferences
      * @param string $name  name of the property we want to assign a value to
      * @param object $value a relevant value for the property
      *
-     * @return void|false
+     * @return void
      */
     public function __set($name, $value)
     {
@@ -1060,7 +1060,7 @@ class Preferences
                 . $name . ')',
                 Analog::WARNING
             );
-            return false;
+            return;
         }
 
         if (

@@ -51,6 +51,13 @@ use Galette\Core\Pagination;
  * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property ?string $start_date_filter
+ * @property ?string $raw_start_date_filter
+ * @property ?string $end_date_filter
+ * @property ?string $raw_end_date_filter
+ * @property integer $user_filter
+ * @property ?string $action_filter
  */
 
 class HistoryList extends Pagination

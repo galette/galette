@@ -48,11 +48,11 @@ namespace Galette\Core;
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
  *
- * @property  string $login
- * @property  string $name
- * @property  string $surname
- * @property  integer $id
- * @property  string $lang
+ * @property  ?string $login
+ * @property  ?string $name
+ * @property  ?string $surname
+ * @property  ?integer $id
+ * @property  ?string $lang
  * @property  array $managed_groups
  */
 

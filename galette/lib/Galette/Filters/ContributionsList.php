@@ -52,15 +52,15 @@ use Galette\Core\Pagination;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
- * @property date $start_date_filter
- * @property date $end_date_filter
- * @property integer $filtre_cotis_adh
+ * @property ?string $start_date_filter
+ * @property ?string $end_date_filter
+ * @property ?integer $filtre_cotis_adh
  * @property boolean $filtre_cotis_children
- * @property string $date_field
- * @property integer $payment_type_filter
+ * @property integer $date_field
+ * @property ?integer $payment_type_filter
  * @property boolean $filtre_transactions
  * @property integer|false $from_transaction
- * @property integer $max_amount
+ * @property ?integer $max_amount
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
  * @property array $selected
@@ -89,7 +89,7 @@ class ContributionsList extends Pagination
     private $payment_type_filter = null;
     private $filtre_cotis_adh = null;
     private $filtre_cotis_children = false;
-    private $filtre_transactions = null;
+    private $filtre_transactions = false;
 
     private $from_transaction = false;
     private $max_amount = null;
@@ -144,7 +144,7 @@ class ContributionsList extends Pagination
         $this->start_date_filter = null;
         $this->end_date_filter = null;
         $this->payment_type_filter = null;
-        $this->filtre_transactions = null;
+        $this->filtre_transactions = false;
         $this->filtre_cotis_adh = null;
         $this->filtre_cotis_children = false;
         $this->from_transaction = false;
