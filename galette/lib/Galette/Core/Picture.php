@@ -96,11 +96,12 @@ class Picture implements FileInterface
 
         $this->init(
             null,
-            array('jpeg', 'jpg', 'png', 'gif'),
+            array('jpeg', 'jpg', 'png', 'gif', 'webp'),
             array(
                 'jpg'    =>    'image/jpeg',
                 'png'    =>    'image/png',
-                'gif'    =>    'image/gif'
+                'gif'    =>    'image/gif',
+                'webp'   =>    'image/webp'
             )
         );
 
@@ -183,6 +184,11 @@ class Picture implements FileInterface
             $this->format = 'gif';
             $this->mime = 'image/gif';
             return true;
+        } elseif (file_exists($file_wo_ext . '.webp')) {
+            $this->file_path = realpath($file_wo_ext . '.webp');
+            $this->format = 'webp';
+            $this->mime = 'image/webp';
+            return true;
         }
         return false;
     }
@@ -220,6 +226,9 @@ class Picture implements FileInterface
                         break;
                     case 'gif':
                         $this->mime = 'image/gif';
+                        break;
+                    case 'webp':
+                        $this->mime = 'image/webp';
                         break;
                 }
                 $this->file_path = realpath($file_wo_ext . '.' . $this->format);
@@ -375,6 +384,10 @@ class Picture implements FileInterface
             } elseif (file_exists($file_wo_ext . '.gif')) {
                 //return unlink($file_wo_ext . '.gif');
                 $_file = $file_wo_ext . '.gif';
+                $success = unlink($_file);
+            } elseif (file_exists($file_wo_ext . '.webp')) {
+                //return unlink($file_wo_ext . '.webp');
+                $_file = $file_wo_ext . '.webp';
                 $success = unlink($_file);
             }
 
@@ -717,6 +730,17 @@ class Picture implements FileInterface
                         return false;
                     }
                     break;
+                case 'webp':
+                    if (!$gdinfo['WebP Support']) {
+                        Analog::log(
+                            '[' . $class . '] GD has no WebP Support - ' .
+                            'pictures could not be resized!',
+                            Analog::ERROR
+                        );
+                        return false;
+                    }
+                    break;
+
                 default:
                     return false;
             }
@@ -755,6 +779,11 @@ class Picture implements FileInterface
                     $image = imagecreatefromgif($source);
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                     imagegif($thumb, $dest);
+                    break;
+                case 'webp':
+                    $image = imagecreatefromwebp($source);
+                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    imagewebp($thumb, $dest);
                     break;
             }
         } else {

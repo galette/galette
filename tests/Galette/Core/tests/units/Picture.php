@@ -104,13 +104,14 @@ class Picture extends TestCase
         $this->assertNull($picture->getDestDir());
         $this->assertNull($picture->getFileName());
 
-        $expected_exts = ['jpeg', 'jpg', 'png', 'gif'];
+        $expected_exts = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
         $this->assertSame(implode(', ', $expected_exts), $picture->getAllowedExts());
 
         $expected_mimes = [
             'jpg'    =>    'image/jpeg',
             'png'    =>    'image/png',
-            'gif'    =>    'image/gif'
+            'gif'    =>    'image/gif',
+            'webp'   =>    'image/webp'
         ];
         $this->assertSame($expected_mimes, $picture->getAllowedMimeTypes());
 
@@ -232,7 +233,7 @@ class Picture extends TestCase
             $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILENAME)
         );
         $this->assertSame(
-            'File extension is not allowed, only jpeg, jpg, png, gif files are.',
+            'File extension is not allowed, only jpeg, jpg, png, gif, webp files are.',
             $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_EXTENSION)
         );
         $this->assertSame(
