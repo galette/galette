@@ -52,7 +52,6 @@ if ($install->isUpgrade()) {
 }
 ?>
                             </p>
-                            <p class="ui red message"><?php echo _T("To secure the system, please delete the install directory"); ?></p>
                         </div>
                     </div>
                 </div>
