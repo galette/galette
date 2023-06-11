@@ -40,6 +40,10 @@ require_once GALETTE_ROOT . 'config/versions.inc.php';
 require_once GALETTE_ROOT . 'config/paths.inc.php';
 
 $phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<');
+$php_message = PHP_VERSION;
+if (!$phpok) {
+    $php_message .= sprintf(' (%s minimum required)', GALETTE_PHP_MIN);
+}
 $cm = new Galette\Core\CheckModules(false);
 $cm->doCheck(false); //do not load with translations!
 ?>
@@ -71,7 +75,7 @@ $cm->doCheck(false); //do not load with translations!
                 ?>
                             <ul class="leaders">
                                 <li>
-                                    <span>PHP <strong class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></strong></span>
+                                    <span>PHP <strong class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo $php_message; ?></strong></span>
                                     <span><i class="ui <?php echo ($phpok) ? 'green check' : 'red times'; ?> icon"></i></span>
                                 </li>
                 <?php
