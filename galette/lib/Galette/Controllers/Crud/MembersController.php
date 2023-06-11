@@ -270,7 +270,7 @@ class MembersController extends CrudController
         }
 
         if ($member->id == null) {
-            //member does not exists!
+            //member does not exist!
             $this->flash->addMessage(
                 'error_detected',
                 str_replace('%id', $id, _T("No member #%id."))

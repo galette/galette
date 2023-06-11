@@ -455,7 +455,7 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if (!$this->_parent instanceof Adherent) {
+        if ($this->_parent !== null && !$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
             $this->_parent = new Adherent($this->zdb, (int)$this->_parent, $deps);
         }
@@ -1923,7 +1923,7 @@ class Adherent
     public function getEmail(): string
     {
         $email = $this->_email;
-        if (empty($email)) {
+        if (empty($email) && $this->hasParent()) {
             $this->loadParent();
             $email = $this->parent->email;
         }
