@@ -13,11 +13,7 @@
                 $('#telemetry_panel').modal({
                     title: '{{ _T("Send telemetry information")|e('js') }}',
                     class: 'large',
-                    actions: [{
-                        text    : '{{ _T("Send")|e('js') }}',
-                        icon    : 'share',
-                        class   : 'primary icon labeled approve',
-                        click   : function() {
+                    onApprove: function() {
                             $.ajax({
                                 url:  '{{ url_for('telemetrySend') }}',
                                 method: 'POST',
@@ -63,14 +59,19 @@
                                         modal_classname: "redalert",
                                     } %}
                                 }
-                            });}
+                            });
+                    },
+                    onDeny: function() {
+                            $(this).find('.tdata').empty();
+                    },
+                    actions: [{
+                        text    : '{{ _T("Send")|e('js') }}',
+                        icon    : 'share',
+                        class   : 'primary icon labeled approve'
                     }, {
                         text    : '{{ _T("Cancel")|e('js') }}',
-                        class   : 'icon labeled cancel',
                         icon    : 'times',
-                        click   : function() {
-                            $(this).find('.tdata').empty();
-                        }
+                        class   : 'icon labeled cancel'
                     }]
                 });
 
