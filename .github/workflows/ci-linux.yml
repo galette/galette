@@ -84,11 +84,11 @@ jobs:
       matrix:
         php-versions: [ '8.1', '8.2' ]
         coverage: ['none']
-        db-image: ['mysql:5.7', 'mysql:8.0', 'mariadb:10.3', 'mariadb:10.11', 'postgres:11', 'postgres:15']
+        db-image: ['mysql:8.0', 'mariadb:10.11', 'mariadb:11', 'postgres:12', 'postgres:15']
         include:
-          - php-versions: '8.1'
+          - php-versions: '8.2'
             coverage: 'xdebug'
-            db-image: 'postgres:14'
+            db-image: 'postgres:15'
       fail-fast: false
 
     env:
@@ -114,7 +114,7 @@ jobs:
           - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
-          --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else mysqladmin ping; fi'"
+          --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else if [[ -n $(command -v mysqladmin) ]]; then mysqladmin ping; else mariadb-admin ping; fi fi'"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -137,7 +137,7 @@ jobs:
           composer --version
           echo "node $(node --version)"
           echo "npm $(npm --version)"
-          docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else mysql --version; fi"
+          docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
       - name: Checkout
         uses: actions/checkout@v3
