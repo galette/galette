@@ -398,6 +398,7 @@
 {% endfor %}
                 </div>
             </div>
+            {# Disable free search; see https://bugs.galette.eu/issues/1684
                 <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
                 <div class="jsonly disabled galetteform ui styled fluid accordion field">
                     <div class="active ui title">
@@ -467,8 +468,6 @@
     {% endfor %}
 
                                         </select>
-    {# may not be defined #}
-    {#  #}
     {% if type is not defined %}{% set type = null %}{% endif %}
                                         <span class="data fields">
                                             <input type="hidden" name="free_type[]" value="{% if cur_field is defined %}{{ cur_field.getType() }}{% endif %}"/>
@@ -530,6 +529,7 @@
                         </ul>
                     </div>
                 </div>
+            #}
             <div class="ui basic center aligned segment">
                 <button type="submit" class="ui labeled icon primary button action">
                     <i class="search icon" aria-hidden="true"></i>
