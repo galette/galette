@@ -1928,7 +1928,6 @@ class Adherent
             $email = $this->parent->email;
         }
 
-        //@phpstan-ignore-next-line
         return $email ?? '';
     }
 
