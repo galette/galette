@@ -622,6 +622,13 @@ class Members
                 $select::JOIN_LEFT
             );
 
+            $select->join(
+                array('parent' => PREFIX_DB . self::TABLE),
+                'a.parent_id=parent.' . self::PK,
+                array(),
+                $select::JOIN_LEFT
+            );
+
             switch ($mode) {
                 case self::SHOW_STAFF:
                 case self::SHOW_LIST:
@@ -781,12 +788,12 @@ class Members
                         new PredicateSet(
                             array(
                                 new Operator(
-                                    'date_echeance',
+                                    'a.date_echeance',
                                     '>=',
                                     date('Y-m-d')
                                 ),
                                 new Operator(
-                                    'bool_exempt_adh',
+                                    'a.bool_exempt_adh',
                                     '=',
                                     new Expression('true')
                                 )
@@ -796,12 +803,12 @@ class Members
                         new PredicateSet(
                             array(
                                 new Operator(
-                                    'bool_display_info',
+                                    'a.bool_display_info',
                                     '=',
                                     new Expression('true')
                                 ),
                                 new Operator(
-                                    'activite_adh',
+                                    'a.activite_adh',
                                     '=',
                                     new Expression('true')
                                 )
@@ -999,10 +1006,10 @@ class Members
 
         try {
             if ($this->filters->email_filter == self::FILTER_W_EMAIL) {
-                $select->where('email_adh != \'\'');
+                $select->where('(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')');
             }
             if ($this->filters->email_filter == self::FILTER_WO_EMAIL) {
-                $select->where('(email_adh = \'\' OR email_adh IS NULL)');
+                $select->where('(a.email_adh = \'\' OR a.email_adh IS NULL) AND (parent.email_adh = \'\' OR parent.email_adh IS NULL)');
             }
 
             if ($this->filters->filter_str != '') {
@@ -1023,41 +1030,41 @@ class Members
 
                         $select->where(
                             '(' .
-                            $pre . 'LOWER(nom_adh)' . $sep .
-                            'LOWER(prenom_adh)' . $sep .
-                            'LOWER(pseudo_adh)' . $post . ' LIKE ' .
+                            $pre . 'LOWER(a.nom_adh)' . $sep .
+                            'LOWER(a.prenom_adh)' . $sep .
+                            'LOWER(a.pseudo_adh)' . $post . ' LIKE ' .
                             $token
                             . ' OR ' .
-                            $pre . 'LOWER(prenom_adh)' . $sep .
-                            'LOWER(nom_adh)' . $sep .
-                            'LOWER(pseudo_adh)' . $post . ' LIKE ' .
+                            $pre . 'LOWER(a.prenom_adh)' . $sep .
+                            'LOWER(a.nom_adh)' . $sep .
+                            'LOWER(a.pseudo_adh)' . $post . ' LIKE ' .
                             $token
                             . ')'
                         );
                         break;
                     case self::FILTER_COMPANY_NAME:
                         $select->where(
-                            'LOWER(societe_adh) LIKE ' .
+                            'LOWER(a.societe_adh) LIKE ' .
                             $token
                         );
                         break;
                     case self::FILTER_ADDRESS:
                         $select->where(
                             '(' .
-                            'LOWER(adresse_adh) LIKE ' . $token
+                            'LOWER(a.adresse_adh) LIKE ' . $token
                             . ' OR ' .
-                            'cp_adh LIKE ' . $token
+                            'a.cp_adh LIKE ' . $token
                             . ' OR ' .
-                            'LOWER(ville_adh) LIKE ' . $token
+                            'LOWER(a.ville_adh) LIKE ' . $token
                             . ' OR ' .
-                            'LOWER(pays_adh) LIKE ' . $token
+                            'LOWER(a.pays_adh) LIKE ' . $token
                             . ')'
                         );
                         break;
                     case self::FILTER_MAIL:
                         $select->where(
                             '(' .
-                            'LOWER(email_adh) LIKE ' . $token
+                            'LOWER(a.email_adh) LIKE ' . $token
                             . ' OR ' .
                             'LOWER(so.url) LIKE ' . $token
                             . ')'
@@ -1065,16 +1072,16 @@ class Members
                         break;
                     case self::FILTER_JOB:
                         $select->where(
-                            'LOWER(prof_adh) LIKE ' . $token
+                            'LOWER(a.prof_adh) LIKE ' . $token
                         );
                         break;
                     case self::FILTER_INFOS:
                         $more = '';
                         if ($login->isAdmin() || $login->isStaff()) {
-                            $more = ' OR LOWER(info_adh) LIKE ' . $token;
+                            $more = ' OR LOWER(a.info_adh) LIKE ' . $token;
                         }
                         $select->where(
-                            '(LOWER(info_public_adh) LIKE ' .
+                            '(LOWER(a.info_public_adh) LIKE ' .
                             $token . $more . ')'
                         );
                         break;
@@ -1095,29 +1102,29 @@ class Members
                         $due_date->modify('+30 days');
                         $select->where
                             ->greaterThanOrEqualTo(
-                                'date_echeance',
+                                'a.date_echeance',
                                 $now->format('Y-m-d')
                             )->lessThanOrEqualTo(
-                                'date_echeance',
+                                'a.date_echeance',
                                 $due_date->format('Y-m-d')
-                            )->equalTo('bool_exempt_adh', new Expression('false'));
+                            )->equalTo('a.bool_exempt_adh', new Expression('false'));
                         break;
                     case self::MEMBERSHIP_LATE:
                         $select->where
                             ->lessThan(
-                                'date_echeance',
+                                'a.date_echeance',
                                 date('Y-m-d', time())
-                            )->equalTo('bool_exempt_adh', new Expression('false'));
+                            )->equalTo('a.bool_exempt_adh', new Expression('false'));
                         break;
                     case self::MEMBERSHIP_UP2DATE:
                         $select->where(
-                            '(' . 'date_echeance >= \'' . date('Y-m-d', time())
-                            . '\' OR bool_exempt_adh=true)'
+                            '(' . 'a.date_echeance >= \'' . date('Y-m-d', time())
+                            . '\' OR a.bool_exempt_adh=true)'
                         );
                         break;
                     case self::MEMBERSHIP_NEVER:
-                        $select->where('date_echeance IS NULL')
-                            ->where('bool_exempt_adh = false');
+                        $select->where('a.date_echeance IS NULL')
+                            ->where('a.bool_exempt_adh = false');
                         break;
                     case self::MEMBERSHIP_STAFF:
                         $select->where->lessThan(
@@ -1126,7 +1133,7 @@ class Members
                         );
                         break;
                     case self::MEMBERSHIP_ADMIN:
-                        $select->where->equalTo('bool_admin_adh', true);
+                        $select->where->equalTo('a.bool_admin_adh', true);
                         break;
                     case self::MEMBERSHIP_NONE:
                         $select->where->equalTo('a.id_statut', Status::DEFAULT_STATUS);
@@ -1137,10 +1144,10 @@ class Members
             if ($this->filters->filter_account) {
                 switch ($this->filters->filter_account) {
                     case self::ACTIVE_ACCOUNT:
-                        $select->where('activite_adh=true');
+                        $select->where('a.activite_adh=true');
                         break;
                     case self::INACTIVE_ACCOUNT:
-                        $select->where('activite_adh=false');
+                        $select->where('a.activite_adh=false');
                         break;
                 }
             }
@@ -1267,10 +1274,10 @@ class Members
 
         //FIXME: should be retrieved from members_fields
         $dates = [
-            'ddn_adh'               => 'birth_date',
-            'date_crea_adh'         => 'creation_date',
-            'date_modif_adh'        => 'modif_date',
-            'date_echeance'         => 'due_date',
+            'a.ddn_adh'               => 'birth_date',
+            'a.date_crea_adh'         => 'creation_date',
+            'a.date_modif_adh'        => 'modif_date',
+            'a.date_echeance'         => 'due_date',
             'ct.date_enreg'         => 'contrib_creation_date',
             'ct.date_debut_cotis'   => 'contrib_begin_date',
             'ct.date_fin_cotis'     => 'contrib_end_date'
@@ -1298,10 +1305,10 @@ class Members
         if ($this->filters->show_public_infos) {
             switch ($this->filters->show_public_infos) {
                 case self::FILTER_W_PUBINFOS:
-                    $select->where('bool_display_info = true');
+                    $select->where('a.bool_display_info = true');
                     break;
                 case self::FILTER_WO_PUBINFOS:
-                    $select->where('bool_display_info = false');
+                    $select->where('a.bool_display_info = false');
                     break;
                 case self::FILTER_DC_PUBINFOS:
                     //nothing to do here.
