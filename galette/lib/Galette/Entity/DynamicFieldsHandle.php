@@ -131,7 +131,22 @@ class DynamicFieldsHandle
                         $field = $this->dynamic_fields[$f->{DynamicField::PK}];
                         if ($field->hasFixedValues()) {
                             $choices = $field->getValues();
-                            $f->text_val = $choices[$f->field_val];
+                            if (!isset($choices[$f->field_val])) {
+                                if ($idx = array_search($f->field_val, $choices)) {
+                                    //text has been stored (from CSV import?), but we want the index
+                                    $f->text_val = $f->field_val;
+                                    $f->field_val = $idx;
+                                } else {
+                                    //something went wrong here :(
+                                    Analog::log(
+                                        'Dynamic choice value "' . $f->field_val . '" does not exists!',
+                                        Analog::WARNING
+                                    );
+                                    $f->text_val = $f->field_val;
+                                }
+                            } else {
+                                $f->text_val = $choices[$f->field_val];
+                            }
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
