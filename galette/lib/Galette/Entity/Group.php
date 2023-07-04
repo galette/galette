@@ -926,7 +926,7 @@ class Group
         }
 
         //group managers can edit groups they manage when pref is on
-        if ($preferences->pref_bool_groupsmanagers_edit_member && $this->isManager($login)) {
+        if ($preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login)) {
             return true;
         }
 
