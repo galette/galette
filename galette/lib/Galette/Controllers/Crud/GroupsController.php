@@ -183,6 +183,13 @@ class GroupsController extends CrudController
             }
         }
 
+        $parent_groups = [];
+        foreach ($groups_list as $parent_group) {
+            if ($group->canSetParentGroup($parent_group)) {
+                $parent_groups[] = $parent_group;
+            }
+        }
+
         //Active tab on page
         $tab = $request->getQueryParams['tab'] ?? 'group_information';
 
@@ -193,7 +200,7 @@ class GroupsController extends CrudController
             array(
                 'page_title'            => _T("Groups"),
                 'groups_root'           => $groups_root,
-                'groups'                => $groups_list,
+                'parent_groups'         => $parent_groups,
                 'group'                 => $group,
                 'tab'                   => $tab
             )

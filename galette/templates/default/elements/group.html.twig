@@ -35,13 +35,11 @@
             {% endif %}
             <div class="inline field">
                     <label for="parent_group">{{ _T("Parent group:") }}</label>
-                {% if can_edit %}
+                {% if can_edit and parent_groups|length > 0 %}
                     <select name="parent_group" id="parent_group" class="ui search dropdown nochosen">
                         <option value="">{{ _T("None") }}</option>
-                        {% for g in groups %}
-                            {% if group.canSetParentGroup(g) %}
-                                <option value="{{ g.getId() }}"{% if pgroup is defined and pgroup.getId() == g.getId() %} selected="selected"{% endif %}>{{ g.getIndentName()|raw }}</option>
-                            {% endif %}
+                        {% for g in parent_groups %}
+                            <option value="{{ g.getId() }}"{% if pgroup is defined and pgroup.getId() == g.getId() %} selected="selected"{% endif %}>{{ g.getIndentName()|raw }}</option>
                         {% endfor %}
                     </select>
                 {% else %}
