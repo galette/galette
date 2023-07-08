@@ -1,13 +1,13 @@
 # Quentin PAGÈS <quentinantonin@free.fr>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
 # Pèire Bréchet <charrar@free.fr>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-02-08 17:58+0000\n"
-"Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
+"PO-Revision-Date: 2023-07-08 08:09+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
 "Language: oc\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -5912,8 +5912,8 @@ msgstr ""
 #, php-format
 msgid "%count entry"
 msgid_plural "%count entries"
-msgstr[0] "Percent d’intradas de %count"
-msgstr[1] "Percent d’intradas de %count"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:327
@@ -7445,12 +7445,11 @@ msgid "Available fields"
 msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
-#, fuzzy, php-format
-#| msgid "no search"
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "ges de recèrca"
-msgstr[1] "ges de recèrca"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
