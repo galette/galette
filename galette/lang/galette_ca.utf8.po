@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2023-03-01 06:46+0000\n"
+"PO-Revision-Date: 2023-07-08 08:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16-rc\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1722,7 +1722,7 @@ msgstr "Operacions"
 #: ../lib/Galette/Core/Galette.php:710 ../lib/Galette/Core/Galette.php:715
 #, fuzzy
 msgid "%membername: edit information"
-msgstr "percentmembername edita informació"
+msgstr "%membername edita informació"
 
 #: ../lib/Galette/Core/Galette.php:731 ../lib/Galette/Core/Galette.php:736
 #, fuzzy
@@ -2413,9 +2413,8 @@ msgid "attendance_sheet"
 msgstr "full d'assistència"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:169
-#, fuzzy
 msgid "%A, %B %#d%O %Y"
-msgstr "PERCENTATGEA0%B"
+msgstr ""
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:187
 #, fuzzy
@@ -2514,11 +2513,11 @@ msgstr "des d'un altre membre en importar"
 #: ../lib/Galette/IO/CsvIn.php:359
 #, fuzzy
 msgid "from member %id_adh"
-msgstr "de membre percentidadh"
+msgstr "de membre %id_adh"
 
 #: ../lib/Galette/IO/CsvIn.php:365
 msgid "Email address %address is already used! (%extra)"
-msgstr "L'adreça de correu electrònic per cent ja s'utilitza! (%extra)"
+msgstr "L'adreça de correu electrònic %address ja s'utilitza! (%extra)"
 
 #: ../lib/Galette/IO/CsvIn.php:390
 #, fuzzy
@@ -2532,8 +2531,7 @@ msgstr "El fitxer és buit!"
 
 #: ../lib/Galette/IO/CsvIn.php:529 ../lib/Galette/IO/CsvIn.php:540
 msgid "An error occurred storing member at row %row (%name):"
-msgstr ""
-"S'ha produït un error en emmagatzemar el membre a la fila per cent (%name):"
+msgstr "S'ha produït un error en emmagatzemar el membre a la fila %row (%name):"
 
 #: ../lib/Galette/IO/CsvIn.php:575
 #, fuzzy
@@ -2541,9 +2539,9 @@ msgid "An error occurred while importing members"
 msgstr "S'ha produït un error en importar membres"
 
 #: ../lib/Galette/IO/Pdf.php:100 ../lib/Galette/IO/Pdf.php:226
-#, fuzzy, php-format
+#, php-format
 msgid "Association %s"
-msgstr "Associacions"
+msgstr "Associacion %s"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
 #, fuzzy
@@ -2666,20 +2664,18 @@ msgstr "Factura"
 #: ../lib/Galette/Features/I18n.php:136
 #, fuzzy, php-format
 msgid "Unable to add dynamic translation for %field :("
-msgstr ""
-"No s'ha pogut afegir una traducció dinàmica per a l'ordre del 5%field ("
+msgstr "No s'ha pogut afegir una traducció dinàmica per a l'ordre del %field ("
 
 #: ../lib/Galette/Features/I18n.php:202
 #, fuzzy, php-format
 msgid "Unable to update dynamic translation for %field :("
 msgstr ""
-"No s'ha pogut actualitzar la traducció dinàmica per a l'ordre de 1%field ("
+"No s'ha pogut actualitzar la traducció dinàmica per a l'ordre de %field ("
 
 #: ../lib/Galette/Features/I18n.php:237
 #, fuzzy, php-format
 msgid "Unable to remove old dynamic translation for %field :("
-msgstr ""
-"No s'ha pogut eliminar la traducció dinàmica antiga per a l'Uldingfield ("
+msgstr "No s'ha pogut eliminar la traducció dinàmica antiga per a l'%field ("
 
 #: ../lib/Galette/Features/Replacements.php:129
 #, php-format
@@ -3011,7 +3007,7 @@ msgstr ""
 #, fuzzy
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
-"No s'ha pogut enviar el recordatori del percentmembership (sense adreça "
+"No s'ha pogut enviar el recordatori del %membership (sense adreça "
 "electrònica)."
 
 #: ../lib/Galette/Entity/Reminder.php:317
@@ -3049,7 +3045,7 @@ msgstr "Últim dia!"
 #: ../lib/Galette/Entity/Adherent.php:821
 #, fuzzy, php-format
 msgid "%days days remaining (ending on %date)"
-msgstr "percentdays days restants (fins al dia d'espera)"
+msgstr "%days days restants (fins al dia d'espera)"
 
 #: ../lib/Galette/Entity/Adherent.php:835
 #, fuzzy, php-format
@@ -3072,10 +3068,8 @@ msgid "- Birthdate must be set in the past!"
 msgstr "- La data de naixement s'ha d'establir en el passat!"
 
 #: ../lib/Galette/Entity/Adherent.php:1293
-#, fuzzy
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr ""
-"- Els diputats han de tenir menys de 200 anys (actualment, per cent anys)!"
+msgstr "- Els diputats han de tenir menys de 200 anys (actualment, %years)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1331
 #, fuzzy
@@ -3455,17 +3449,17 @@ msgstr "Bloc"
 #: ../lib/Galette/Entity/PdfModel.php:313
 #, fuzzy, php-format
 msgid "%field should be less than %chars characters long."
-msgstr "Percentfield ha de tenir menys de 100 caràcters."
+msgstr "%field ha de tenir menys de %char caràcters."
 
 #: ../lib/Galette/Entity/PdfModel.php:323
 #, fuzzy, php-format
 msgid "%field should not be empty!"
-msgstr "El percentatge no ha de quedar buit!"
+msgstr "%field no ha de quedar buit!"
 
 #: ../lib/Galette/Entity/PdfModel.php:456
 #, fuzzy
 msgid "Unknown type %type!"
-msgstr "Tipus desconegut!"
+msgstr "Tipus desconegut %type!"
 
 #: ../lib/Galette/Entity/PdfModel.php:474
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:117
@@ -3536,7 +3530,7 @@ msgstr "La forma és obligatòria!"
 #: ../lib/Galette/Entity/SavedSearch.php:358
 #, fuzzy, php-format
 msgid "Unknown form %form!"
-msgstr "Formulari desconegut!"
+msgstr "Formulari desconegut %form!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:373
 #, fuzzy
@@ -4728,7 +4722,7 @@ msgstr "El directori per centdir no s'ha mogut ("
 #: ../install/scripts/upgrade-to-0.8.php:221
 #, fuzzy, php-format
 msgid "Directory %dir is not in its original path and will not be moved."
-msgstr "El directori percentdir no està en el seu camí original i no es mourà."
+msgstr "El directori %dir no està en el seu camí original i no es mourà."
 
 #: ../install/steps/end.php:48
 #, fuzzy
@@ -4865,7 +4859,7 @@ msgstr "La versió actual de Galette és..."
 #: ../../tempcache/modals/plugin_initdb.html.twig:177
 #, fuzzy
 msgid "older than %version"
-msgstr "més antic que el 5%version"
+msgstr "més antic que el %version"
 
 #: ../install/steps/db_select_version.php:104
 #: ../../tempcache/modals/plugin_initdb.html.twig:184
@@ -5773,9 +5767,9 @@ msgid "New contribution type"
 msgstr "Nou tipus de contribució"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:178
-#, fuzzy, php-format
+#, php-format
 msgid "%s field"
-msgstr "percentatge del camp"
+msgstr "camp %s"
 
 #: ../../tempcache/elements/ajax_members.html.twig:57
 #: ../../tempcache/pages/preferences.html.twig:2068
@@ -6246,15 +6240,15 @@ msgid "Picture"
 msgstr "Imatge"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:50
-#, fuzzy, php-format
+#, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
-msgstr "El vostre missatge ha estat enviat als membres <strong>%</strong>"
+msgstr "El vostre missatge ha estat enviat als <strong>%s membres</strong>"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:56
-#, fuzzy, php-format
+#, php-format
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
 msgstr ""
-"Esteu a punt d'enviar un correu electrònic als membres <strong>%</strong>"
+"Esteu a punt d'enviar un correu electrònic als <strong>%s membres</strong>"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:68
 #, fuzzy
@@ -6288,10 +6282,8 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_socials.html.twig:98
 #: ../../tempcache/elements/edit_socials.html.twig:103
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "Elimina %type '%label'"
+msgstr "Elimina %type"
 
 #: ../../tempcache/elements/edit_socials.html.twig:122
 #, fuzzy
@@ -6416,14 +6408,13 @@ msgstr ""
 "dades de connectors ("
 
 #: ../../tempcache/pages/plugins.html.twig:373
-#, fuzzy
 msgid "Plugin database initialization: %name"
-msgstr "Nom d'inicialització de la base de dades de connectors"
+msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:62
-#, fuzzy, php-format
+#, php-format
 msgid "Edit field %field"
-msgstr "Edita el camp per cent del camp"
+msgstr "Edita el camp %field"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:87
 msgid "Permissions:"
@@ -6672,9 +6663,8 @@ msgstr ""
 "Feu clic a una fila de contribució per adjuntar-la a la transacció actual"
 
 #: ../../tempcache/pages/plugin_info.html.twig:62
-#, fuzzy
 msgid "By %name"
-msgstr "Per nom del 5%"
+msgstr "Per %name"
 
 #: ../../tempcache/pages/plugin_info.html.twig:89
 #, fuzzy
@@ -6812,33 +6802,31 @@ msgid "See member profile"
 msgstr "Vegeu el perfil de membre"
 
 #: ../../tempcache/pages/contributions_list.html.twig:298
-#, fuzzy, php-format
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "contribució de percentatge del 5%"
-msgstr[1] "contribucions de percentatge del 5%"
+msgstr[0] "%count contribució"
+msgstr[1] "%count contribucions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:397
 #, fuzzy, php-format
 msgid "Found contributions total %f"
-msgstr "S'han trobat contribucions total per centf"
+msgstr "S'han trobat contribucions total %f"
 
 #: ../../tempcache/pages/contributions_list.html.twig:491
 #: ../../tempcache/pages/contributions_list.html.twig:520
-#, fuzzy
 msgid "Contribution %id"
-msgstr "Contribució percentual"
+msgstr "Contribució %id"
 
 #: ../../tempcache/pages/contributions_list.html.twig:508
 #: ../../tempcache/pages/contributions_list.html.twig:530
-#, fuzzy, php-format
+#, php-format
 msgid "Transaction: %s"
-msgstr "Percentatges de transaccions"
+msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:607
-#, fuzzy
 msgid "Show only '%name' contributions"
-msgstr "Mostra totes les contribucions dels membres"
+msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:622
 #: ../../tempcache/pages/transactions_list.html.twig:390
@@ -7006,11 +6994,11 @@ msgstr "Suprimeix el títol '%s'"
 
 #: ../../tempcache/pages/history.html.twig:65
 #: ../../tempcache/pages/mailings_list.html.twig:61
-#, fuzzy, php-format
+#, php-format
 msgid "%count entry"
 msgid_plural "%count entries"
-msgstr[0] "entrada de percentatge del 5%"
-msgstr[1] "entrades de recompte de percentatges"
+msgstr[0] "%count entrada"
+msgstr[1] "%count entrades"
 
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:327
@@ -7042,9 +7030,8 @@ msgid "Select an action"
 msgstr "Seleccioneu una acció"
 
 #: ../../tempcache/pages/history.html.twig:315
-#, fuzzy
 msgid "History entry %id"
-msgstr "Identificador de l'historial"
+msgstr ""
 
 #: ../../tempcache/pages/history.html.twig:356
 #: ../../tempcache/pages/history.html.twig:361
@@ -7073,9 +7060,9 @@ msgid "Default fields"
 msgstr "Camps per defecte"
 
 #: ../../tempcache/pages/import_model.html.twig:86
-#, fuzzy, php-format
+#, php-format
 msgid "Model parameted on %date"
-msgstr "Model parat el dia u per cent"
+msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:96
 #: ../../tempcache/pages/import_model.html.twig:184
@@ -7084,9 +7071,9 @@ msgid "Field"
 msgstr "Camp"
 
 #: ../../tempcache/pages/import_model.html.twig:113
-#, fuzzy, php-format
+#, php-format
 msgid "Missing field '%field'"
-msgstr "Falta el camp obligatori del percentatge"
+msgstr "Falta el camp \"%field\""
 
 #: ../../tempcache/pages/import_model.html.twig:140
 #, fuzzy
@@ -7178,11 +7165,11 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:75
 #: ../../tempcache/pages/members_public_list.html.twig:63
 #: ../../tempcache/pages/members_public_gallery.html.twig:70
-#, fuzzy, php-format
+#, php-format
 msgid "%count member"
 msgid_plural "%count members"
-msgstr[0] "membre del nombre d'usuaris"
-msgstr[1] "membres del nombre d'usuaris"
+msgstr[0] "%count membre"
+msgstr[1] "%count membres"
 
 #: ../../tempcache/pages/members_list.html.twig:129
 #, fuzzy
@@ -8155,10 +8142,8 @@ msgid "Default account filter:"
 msgstr "Filtre de compte per defecte"
 
 #: ../../tempcache/pages/preferences.html.twig:756
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Default payment type:"
-msgstr "Suprimeix el tipus de pagament '%s'"
+msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:795
 #, fuzzy
@@ -8875,9 +8860,8 @@ msgid "Sent mailings:"
 msgstr "MAIlings enviats"
 
 #: ../../tempcache/pages/mailings_list.html.twig:297
-#, fuzzy
 msgid "Mailing entry %id"
-msgstr "Identificador de correu electrònic"
+msgstr ""
 
 #: ../../tempcache/pages/mailings_list.html.twig:367
 #, php-format
@@ -8911,11 +8895,11 @@ msgid "Available fields"
 msgstr "Camps disponibles"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
-#, fuzzy, php-format
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "sense cerca"
-msgstr[1] "sense cerca"
+msgstr[0] "%count cerques"
+msgstr[1] "%count cerca"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
@@ -9059,9 +9043,8 @@ msgid "View contributions"
 msgstr "Visualitza les contribucions"
 
 #: ../../tempcache/pages/member_show.html.twig:221
-#, fuzzy
 msgid "Create a new member with %name information."
-msgstr "Crea un membre nou amb informació de nom a percentatge."
+msgstr "Crea un membre nou amb informació %name."
 
 #: ../../tempcache/pages/member_show.html.twig:228
 #, fuzzy
@@ -9140,11 +9123,11 @@ msgid "Show all members transactions"
 msgstr "Mostra totes les transaccions dels membres"
 
 #: ../../tempcache/pages/transactions_list.html.twig:200
-#, fuzzy, php-format
+#, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
-msgstr[0] "Proporcionament"
-msgstr[1] "percentatge de transaccions"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../../tempcache/pages/transactions_list.html.twig:264
 #: ../../tempcache/pages/transactions_list.html.twig:420
@@ -9158,9 +9141,8 @@ msgid "Transaction %id"
 msgstr "ID de transacció"
 
 #: ../../tempcache/pages/transactions_list.html.twig:375
-#, fuzzy
 msgid "Show only '%name' transactions"
-msgstr "Mostra totes les contribucions dels membres"
+msgstr ""
 
 #: ../../tempcache/pages/transactions_list.html.twig:484
 msgid "Edit transaction #%id"
@@ -9688,9 +9670,9 @@ msgid "Enter as many occurences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:227
-#, fuzzy, php-format
+#, php-format
 msgid "Enter up to %count more occurences."
-msgstr "Introduïu fins a un percentatge més d'aparició."
+msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:289
 #, fuzzy, php-format
