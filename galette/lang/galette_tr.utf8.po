@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # ibrahimyzr <ibrahimyzr@hotmail.com>, 2021.
 # Ahmet Aylin Öztürk <ahmetaylinozturk@gmail.com>, 2021.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2021, 2023.
 # Boran Roni <boranroniurtekin@gmail.com>, 2021.
 # seckiyn <kyofl6@gmail.com>, 2022.
 # benjamin <itsbenx@outlook.com>, 2022.
@@ -14,10 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-04-24 15:13+0000\n"
-"Last-Translator: Onur Akkas <jon_onur_akkas@hotmail.com>\n"
+"PO-Revision-Date: 2023-07-08 08:09+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.12.1-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -447,7 +447,7 @@ msgstr "Bağış"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
 #, php-format
 msgid "Mass add contribution on %count members"
-msgstr "%c üyeye toplu katkı sağlandı"
+msgstr "%count üyeye toplu katkı sağlandı"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:518
 msgid "Contributions management"
@@ -4977,10 +4977,8 @@ msgid "October"
 msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:91
-#, fuzzy
-#| msgid "No member #%id."
 msgid "November"
-msgstr "Üye numarası #%id bulunamadı."
+msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:95
 msgid "December"
