@@ -6,7 +6,7 @@
 # DALBARD <Verturin@live.fr>, 2018. #zanata
 # Miguel Cordas <mc@mcsi.ch>, 2019. #zanata
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
 # Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020, 2021.
@@ -25,17 +25,17 @@
 # Antonio Bifulco <gighen11@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-02-09 22:58+0000\n"
-"Last-Translator: Antonio Bifulco <gighen11@gmail.com>\n"
+"PO-Revision-Date: 2023-07-08 08:09+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1032,7 +1032,7 @@ msgstr "Si è verificato un errore nel caricamento dell'export '%export'."
 msgid ""
 "An error occurred running parameted export '%export'. Please check the logs."
 msgstr ""
-"Si è verificato un errore nel caricamento dell'export '%exoprt'. Ricontrolla "
+"Si è verificato un errore nel caricamento dell'export '%export'. Ricontrolla "
 "gli accessi."
 
 #: ../lib/Galette/Controllers/CsvController.php:268
@@ -5405,10 +5405,8 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_socials.html.twig:98
 #: ../../tempcache/elements/edit_socials.html.twig:103
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove %type"
-msgstr "Rimuovi %type '%label'"
+msgstr "Rimuovi %type"
 
 #: ../../tempcache/elements/edit_socials.html.twig:122
 msgid "Add new social network"
@@ -5868,10 +5866,8 @@ msgid "Transaction: %s"
 msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:607
-#, fuzzy
-#| msgid "View member's contributions"
 msgid "Show only '%name' contributions"
-msgstr "Visualizza i contributi degli utenti"
+msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:622
 #: ../../tempcache/pages/transactions_list.html.twig:390
