@@ -1,15 +1,15 @@
 # rsichler <blagoslovichlibog@hotmail.fr>, 2020.
 # ThonyVezbe <a.guechoum@gmail.com>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2021, 2023.
 # Egareg JAOUEN <egareg@jaouen.eu>, 2021.
 # Pierre Wani Alan Morvan <allannkorh@yahoo.fr>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-01-08 13:56+0000\n"
-"Last-Translator: Pierre Wani Alan Morvan <allannkorh@yahoo.fr>\n"
+"PO-Revision-Date: 2023-07-08 08:09+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -18,10 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=5; plural=(n % 10 == 1 && n % 100 != 11 && n % 100 != "
 "71 && n % 100 != 91) ? 0 : ((n % 10 == 2 && n % 100 != 12 && n % 100 != 72 "
-"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && "
-"(n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
+"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
+"n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
 "< 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -4963,10 +4963,8 @@ msgid "October"
 msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:91
-#, fuzzy
-#| msgid "No member #%id."
 msgid "November"
-msgstr "Ezel ebet gant #%id."
+msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:95
 msgid "December"
