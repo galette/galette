@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2023-03-12 08:54+0000\n"
+"PO-Revision-Date: 2023-07-08 08:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.2-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -441,7 +441,7 @@ msgstr "Editar un tipo de contribución"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:275
 msgid "%type has not been added :("
-msgstr "%s no se ha añadido :("
+msgstr "%type no se ha añadido :("
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:275
 msgid "%type #%id has not been updated"
@@ -1187,7 +1187,7 @@ msgstr "El script %version ha sido ejecutado con éxito :)"
 
 #: ../lib/Galette/Core/Install.php:696
 msgid "Unable to run %version update script :("
-msgstr "No se puede ejecutar el script de actualización de %versión :("
+msgstr "No se puede ejecutar el script de actualización de %version :("
 
 #: ../lib/Galette/Core/Install.php:1045
 msgid "Write configuration file"
@@ -1878,11 +1878,11 @@ msgstr "d-m-Y"
 
 #: ../lib/Galette/Repository/SavedSearches.php:271
 msgid "Searches deleted (%list)"
-msgstr "Búsquedas eliminadas (%lista)"
+msgstr "Búsquedas eliminadas (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:535
 msgid "Contributions deleted (%list)"
-msgstr "Contribuciones eliminadas (%lista)"
+msgstr "Contribuciones eliminadas (%list)"
 
 #: ../lib/Galette/Util/Password.php:87
 msgid "Password is blacklisted!"
@@ -2697,7 +2697,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:317
 msgid "%name (#%id - %days days)"
-msgstr "%nombre (#%id - %días días)"
+msgstr "%name (#%id - %días días)"
 
 #: ../lib/Galette/Entity/Adherent.php:787
 msgid "Freed of dues"
@@ -2730,7 +2730,7 @@ msgstr "Faltan %days días {se termina el %date}"
 #: ../lib/Galette/Entity/Adherent.php:835
 #, php-format
 msgid "Late of %days days (since %date)"
-msgstr "Espacio de %d días (desde %d)"
+msgstr "Espacio de %days días (desde %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:838
 msgid "No longer member"
@@ -2747,7 +2747,7 @@ msgstr "- ¡Fecha de cumpleaños debe estar en el pasado!"
 
 #: ../lib/Galette/Entity/Adherent.php:1293
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "- ¡Los miembros deben tener menos de 200 años (actualmente % años)!"
+msgstr "- ¡Los miembros deben tener menos de 200 años (actualmente %years)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1331
 msgid "- Non-valid E-Mail address!"
@@ -5453,7 +5453,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_socials.html.twig:98
 #: ../../tempcache/elements/edit_socials.html.twig:103
 msgid "Remove %type"
-msgstr "Quitar %tipo"
+msgstr "Quitar %type"
 
 #: ../../tempcache/elements/edit_socials.html.twig:122
 msgid "Add new social network"
@@ -7595,8 +7595,8 @@ msgstr "Campos disponibles"
 #, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "%búsqueda de conteo"
-msgstr[1] "%recuento de búsquedas"
+msgstr[0] "%count búsqueda"
+msgstr[1] "%count búsquedas"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:128
