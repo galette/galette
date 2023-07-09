@@ -166,6 +166,11 @@
                 $('.next-results, .prev-results').addClass('disabled');
             },
         });
+
+        var _chosen_id_input = $('{{ js_chosen_id }}_input');
+        if ( typeof(_chosen_id_input) != 'undefined' && _chosen_id_input != null ) {
+            _chosen_id_input.prop('type', 'hidden');
+        }
     }
 
     $(function() {
