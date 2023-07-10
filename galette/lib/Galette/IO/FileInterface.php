@@ -58,5 +58,5 @@ interface FileInterface
     public const NEW_FILE_EXISTS = -5;
     public const INVALID_FILE = -6;
     public const CANT_WRITE = -7;
-    public const MAX_FILE_SIZE = 1024;
+    public const MAX_FILE_SIZE = 2048;
 }

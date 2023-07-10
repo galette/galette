@@ -236,7 +236,7 @@ class Picture extends TestCase
             $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_EXTENSION)
         );
         $this->assertSame(
-            'File is too big. Maximum allowed size is 1024Ko',
+            'File is too big. Maximum allowed size is 2048Ko',
             $this->picture->getErrorMessage(\Galette\Core\Picture::FILE_TOO_BIG)
         );
         $this->assertSame(
