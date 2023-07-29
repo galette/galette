@@ -3,13 +3,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2021, 2023.
 # Egareg JAOUEN <egareg@jaouen.eu>, 2021.
 # Pierre Wani Alan Morvan <allannkorh@yahoo.fr>, 2022.
+# Pierre Wani Alan Morvan <per.morvan.bzh29@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2023-07-08 08:09+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2023-07-30 15:02+0000\n"
+"Last-Translator: Pierre Wani Alan Morvan <per.morvan.bzh29@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -1070,7 +1071,7 @@ msgstr "mod da staliañ"
 
 #: ../lib/Galette/Core/Install.php:129 ../webroot/installer.php:308
 msgid "Database"
-msgstr "diaz roadennoù"
+msgstr "diaz-roadennoù"
 
 #: ../lib/Galette/Core/Install.php:132
 msgid "Database access and permissions"
@@ -3460,7 +3461,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:305
 msgid "partnership"
-msgstr ""
+msgstr "kevelerezh"
 
 #: ../includes/i18n.inc.php:306
 msgid "reduced annual fee"
