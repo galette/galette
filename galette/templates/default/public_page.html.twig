@@ -20,7 +20,7 @@
                         <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
                         <div class="ui large header">
                             {{ preferences.pref_nom }}
-                            <div class="sub header">{% if preferences.pref_slogan %}{{ preferences.pref_slogan }}{% endif %}</div>
+                            <div class="sub header">{% if preferences.pref_slogan %}{{ __(preferences.pref_slogan) }}{% endif %}</div>
                         </div>
                     </div>
                     <h1 class="ui block center aligned header" style="position: relative">
