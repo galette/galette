@@ -192,7 +192,15 @@ class Mailing extends GaletteMail
     {
         global $zdb;
 
-        $orig_recipients = unserialize($rs->mailing_recipients);
+        try {
+            $orig_recipients = unserialize($rs->mailing_recipients);
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Unable to unserialize recipients for mailing ' . $rs->mailing_id,
+                Analog::ERROR
+            );
+            $orig_recipients = [];
+        }
 
         $_recipients = array();
         $mdeps = ['parent' => true];
