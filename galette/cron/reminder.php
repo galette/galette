@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2022 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -42,7 +42,8 @@ use Galette\Filters\MembersList;
 /** @ignore */
 require_once __DIR__ . '/../includes/galette.inc.php';
 
-$app = new \Galette\Core\LightSlimApp('CRON');
+$gapp = new \Galette\Core\LightSlimApp('CRON');
+$app = $gapp->getApp();
 
 session_start();
 require_once __DIR__ . '/../includes/dependencies.php';
