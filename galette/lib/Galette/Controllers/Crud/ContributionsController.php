@@ -860,7 +860,7 @@ class ContributionsController extends CrudController
                 $redirect_url = $this->routeparser->urlFor(
                     'addContribution',
                     [
-                        'type'      => $post['contrib_type']
+                        'type'      => $type
                     ]
                 ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
                 '&' . Adherent::PK . '=' . $contrib->member;
