@@ -38,7 +38,7 @@
     {% if can_export or login.isAdmin() or login.isStaff() %}
             <div class="ui basic fitted segment">
                 <div class="ui wrapping spaced buttons">
-        {% if group.getId()  and can_export %}
+        {% if group.getId() and can_export %}
                     <a href="{{ url_for("pdf_groups") }}" class="ui labeled icon fluid button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
                         <i class="file pdf red labeled icon" aria-hidden="true"></i>
                         {{ _T("All groups PDF") }}
