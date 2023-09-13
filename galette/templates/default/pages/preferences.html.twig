@@ -20,9 +20,9 @@
         <div class="ui{{ tab == 'general' ? ' active' }} tab segment" data-tab="general">
             <div class="ui stackable two column grid">
                 <div class="column">
-                    <div class="{% if required.pref_nom == 1 %}required {% endif %} field">
+                    <div class="{% if required.pref_nom is defined and required.pref_nom == 1 %}required {% endif %} field">
                         <label for="pref_nom">{{ _T("Name of the association:") }}</label>
-                        <input{% if required.pref_nom == 1 %} required="required"{% endif %} type="text" name="pref_nom" id="pref_nom" value="{{ pref.pref_nom }}" maxlength="190"/>
+                        <input type="text" name="pref_nom" id="pref_nom" value="{{ pref.pref_nom }}" maxlength="190"{% if required.pref_nom is defined and required.pref_nom == 1 %} required="required"{% endif %}/>
                     </div>
                     <div class="{% if required.pref_slogan is defined and required.pref_slogan == 1 %}required {% endif %} field">
                         <label for="pref_slogan">{{ _T("Association's short description:") }}
@@ -167,9 +167,9 @@
         <div class="ui{{ tab == 'parameters' ? ' active' }} tab segment" data-tab="parameters">
             <div class="ui stackable two column grid">
                 <div class="column">
-                    <div class="field">
+                    <div class="{% if required.pref_lang is defined and required.pref_lang == 1 %}required {% endif %}field">
                         <label for="pref_lang" >{{ _T("Default language:") }}</label>
-                        <select name="pref_lang" id="pref_lang" class="lang ui search dropdown nochosen">
+                        <select name="pref_lang" id="pref_lang" class="lang ui search dropdown nochosen"{% if required.pref_lang is defined and required.pref_lang == 1 %} required="required"{% endif %}>
         {% for langue in languages %}
                             <option value="{{ langue.getID() }}" {% if pref.pref_lang == langue.getID() %}selected="selected"{% endif %}>{{ langue.getName()|capitalize }}</option>
         {% endfor %}
@@ -183,9 +183,9 @@
         {% endfor %}
                         </select>
                     </div>#}
-                    <div class="field">
+                    <div class="{% if required.pref_numrows is defined and required.pref_numrows == 1 %}required {% endif %}field">
                         <label for="pref_numrows">{{ _T("Lines / Page:") }}</label>
-                        <select name="pref_numrows" id="pref_numrows" class="ui search dropdown nochosen">
+                        <select name="pref_numrows" id="pref_numrows" class="ui search dropdown nochosen"{% if required.pref_numrows is defined and required.pref_numrows == 1 %} required="required"{% endif %}>
                             {% for key, value in pref_numrows_options %}
                                 <option value="{{ key }}"{% if key == pref.pref_numrows %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -202,9 +202,9 @@
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
                         </select>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_log is defined and required.pref_log == 1 %}required {% endif %}field">
                         <label for="pref_log">{{ _T("Logging level:") }}</label>
-                        <select name="pref_log" id="pref_log" class="ui search dropdown nochosen">
+                        <select name="pref_log" id="pref_log" class="ui search dropdown nochosen"{% if required.pref_log is defined and required.pref_log == 1 %} required="required"{% endif %}>
                             <option value="{{ constant('Galette\\Core\\Preferences::LOG_DISABLED') }}" {% if pref.pref_log == constant('Galette\\Core\\Preferences::LOG_DISABLED') %}selected="selected"{% endif %}>{{ _T("Disabled") }}</option>
                             <option value="{{ constant('Galette\\Core\\Preferences::LOG_ENABLED') }}" {% if pref.pref_log == constant('Galette\\Core\\Preferences::LOG_ENABLED') %}selected="selected"{% endif %}>{{ _T("Enabled") }}</option>
                         </select>
@@ -535,28 +535,28 @@
         <div class="ui{{ tab == 'labels' ? ' active' }} tab segment" data-tab="labels">
             <div class="ui two column grid">
                 <div class="column">
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_marges_v is defined and required.pref_etiq_marges_v == 1 %}required {% endif %}field">
                         <label for="pref_etiq_marges_v">{{ _T("Vertical margins:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_etiq_marges_v" id="pref_etiq_marges_v" value="{{ pref.pref_etiq_marges_v }}" maxlength="4"{% if required.pref_etiq_marges_v is defined and required.pref_etiq_marges_v == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_marges_h is defined and required.pref_etiq_marges_h == 1 %}required {% endif %}field">
                         <label for="pref_etiq_marges_h">{{ _T("Horizontal margins:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_etiq_marges_h" id="pref_etiq_marges_h" value="{{ pref.pref_etiq_marges_h }}" maxlength="4"{% if required.pref_etiq_marges_h is defined and required.pref_etiq_marges_h == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_hspace is defined and required.pref_etiq_hspace == 1 %}required {% endif %}field">
                         <label for="pref_etiq_hspace">{{ _T("Horizontal spacing:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_etiq_hspace" id="pref_etiq_hspace" value="{{ pref.pref_etiq_hspace }}" maxlength="4"{% if required.pref_etiq_hspace is defined and required.pref_etiq_hspace == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_vspace is defined and required.pref_etiq_vspace == 1 %}required {% endif %}field">
                         <label for="pref_etiq_vspace">{{ _T("Vertical spacing:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_etiq_vspace" id="pref_etiq_vspace" value="{{ pref.pref_etiq_vspace }}" maxlength="4"{% if required.pref_etiq_vspace is defined and required.pref_etiq_vspace == 1 %} required="required"{% endif %}/>
@@ -572,29 +572,29 @@
                     </div>
                 </div>{# /column #}
                 <div class="column">
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_hsize is defined and required.pref_etiq_hsize == 1 %}required {% endif %}field">
                         <label for="pref_etiq_hsize">{{ _T("Label width:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_etiq_hsize" id="pref_etiq_hsize" value="{{ pref.pref_etiq_hsize }}" maxlength="4"{% if required.pref_etiq_hsize is defined and required.pref_etiq_hsize == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_vsize is defined and required.pref_etiq_vsize == 1 %}required {% endif %}field">
                         <label for="pref_etiq_vsize">{{ _T("Label height:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_etiq_vsize" id="pref_etiq_vsize" value="{{ pref.pref_etiq_vsize }}" maxlength="4"{% if required.pref_etiq_vsize is defined and required.pref_etiq_vsize == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_cols is defined and required.pref_etiq_cols == 1 %}required {% endif %}field">
                         <label for="pref_etiq_cols">{{ _T("Number of label columns:") }}</label>
                         <input type="number" name="pref_etiq_cols" id="pref_etiq_cols" value="{{ pref.pref_etiq_cols }}" maxlength="4"{% if required.pref_etiq_cols is defined and required.pref_etiq_cols == 1 %} required="required"{% endif %}/>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_rows is defined and required.pref_etiq_rows == 1 %}required {% endif %}field">
                         <label for="pref_etiq_rows">{{ _T("Number of label lines:") }}</label>
                         <input type="number" name="pref_etiq_rows" id="pref_etiq_rows" value="{{ pref.pref_etiq_rows }}" maxlength="4"{% if required.pref_etiq_rows is defined and required.pref_etiq_rows == 1 %} required="required"{% endif %}/>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_etiq_corps is defined and required.pref_etiq_corps == 1 %}required {% endif %}field">
                         <label for="pref_etiq_corps">{{ _T("Font size:") }}</label>
                         <input type="number" name="pref_etiq_corps" id="pref_etiq_corps" value="{{ pref.pref_etiq_corps }}" maxlength="4"{% if required.pref_etiq_corps is defined and required.pref_etiq_corps == 1 %} required="required"{% endif %}/>
                     </div>
@@ -610,7 +610,7 @@
             </div>
             <div class="ui two column grid">
                 <div class="column">
-                    <div class="field">
+                    <div class="ui field{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required{% endif %}">
                         <label for="pref_card_abrev">{{ _T("Short Text (Card Center):") }}</label>
                         <div class="ui action input">
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required="required"{% endif %}/>
@@ -625,7 +625,7 @@
                         </div>
                         <span class="exemple">{{ _T("(10 characters max)") }}</span>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %}required {% endif %}field">
                         <label for="pref_card_strip">{{ _T("Long Text (Bottom Line):") }}</label>
                         <div class="ui action input">
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %} required="required"{% endif %}/>
@@ -726,28 +726,28 @@
                             <input type="text" name="pref_card_year" id="pref_card_year" value="{{ pref.pref_card_year }}" maxlength="9"{% if required.pref_card_year is defined and required.pref_card_year == 1 %} required="required"{% endif %}/>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_card_marges_v is defined and required.pref_card_marges_v == 1 %}required {% endif %}field">
                         <label for="pref_card_marges_v">{{ _T("Vertical margins:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_card_marges_v" id="pref_card_marges_v" value="{{ pref.pref_card_marges_v }}" maxlength="4"{% if required.pref_card_marges_v is defined and required.pref_card_marges_v == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_card_marges_h is defined and required.pref_card_marges_h == 1 %}required {% endif %}field">
                         <label for="pref_card_marges_h">{{ _T("Horizontal margins:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_card_marges_h" id="pref_card_marges_h" value="{{ pref.pref_card_marges_h }}" maxlength="4"{% if required.pref_card_marges_h is defined and required.pref_card_marges_h == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_card_vspace is defined and required.pref_card_vspace == 1 %}required {% endif %}field">
                         <label for="pref_card_vspace">{{ _T("Vertical spacing:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_card_vspace" id="pref_card_vspace" value="{{ pref.pref_card_vspace }}" maxlength="4"{% if required.pref_card_vspace is defined and required.pref_card_vspace == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
-                    <div class="field">
+                    <div class="{% if required.pref_card_hspace is defined and required.pref_card_hspace == 1 %}required {% endif %}field">
                         <label for="pref_card_hspace">{{ _T("Horizontal spacing:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_card_hspace" id="pref_card_hspace" value="{{ pref.pref_card_hspace }}" maxlength="4"{% if required.pref_card_hspace is defined and required.pref_card_hspace == 1 %} required="required"{% endif %}/>
