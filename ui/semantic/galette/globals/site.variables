@@ -34,3 +34,10 @@
 @inputPlaceholderFocusColor : lighten(@inputColor, 10);
 
 @toggleLaneBackground       : rgba(0,0,0,.15);
+
+@cotisOkBackgroundColor     : #ddffdd;
+@cotisNeverBackgroundColor  : @evenLineBackgroundColor;
+@cotisExemptBackgroundColor : @cotisOkBackgroundColor;
+@cotisSoonBackgroundColor   : #ffe9ab;
+@cotisLateBackgroundColor   : #ffdddd;
+@cotisLastdayBackgroundColor: #ffd9ab;

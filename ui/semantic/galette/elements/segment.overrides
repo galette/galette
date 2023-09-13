@@ -42,6 +42,30 @@
   border-top: none;
 }
 
+/*-------------------------
+     Membership status
+--------------------------*/
+.ui.segment {
+  &.cotis-ok {
+      background-color: @cotisOkBackgroundColor;
+  }
+  &.cotis-never {
+      background-color: @cotisNeverBackgroundColor;
+  }
+  &.cotis-exempt {
+      background-color: @cotisExemptBackgroundColor;
+  }
+  &.cotis-soon {
+      background-color: @cotisSoonBackgroundColor;
+  }
+  &.cotis-late {
+      background-color: @cotisLateBackgroundColor;
+  }
+  &.cotis-lastday {
+      background-color: @cotisLastdayBackgroundColor;
+  }
+}
+
 /*-------------
      No JS
 --------------*/

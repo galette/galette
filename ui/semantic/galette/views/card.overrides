@@ -17,3 +17,27 @@
         margin-top: 1em !important;
     }
 }
+
+/*-------------------------
+     Membership status
+--------------------------*/
+.ui.card > .extra {
+  &.cotis-ok {
+      background-color: @cotisOkBackgroundColor;
+  }
+  &.cotis-never {
+      background-color: @cotisNeverBackgroundColor;
+  }
+  &.cotis-exempt {
+      background-color: @cotisExemptBackgroundColor;
+  }
+  &.cotis-soon {
+      background-color: @cotisSoonBackgroundColor;
+  }
+  &.cotis-late {
+      background-color: @cotisLateBackgroundColor;
+  }
+  &.cotis-lastday {
+      background-color: @cotisLastdayBackgroundColor;
+  }
+}

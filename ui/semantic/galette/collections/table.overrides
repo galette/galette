@@ -8,12 +8,12 @@
 
 .ui.striped:not(.basic).table > tbody > tr,
 .ui.striped:not(.basic).table > tr {
-    background-color: #eeeeee;
+    background-color: @evenLineBackgroundColor;
 }
 
 .ui.striped:not(.basic).table > tbody > tr:nth-child(2n),
 .ui.striped:not(.basic).table > tr:nth-child(2n) {
-    background-color: #e2e5ee;
+    background-color: @oddLineBackgroundColor;
 }
 
 /*----------------------
@@ -27,7 +27,7 @@ table.listing tbody tr:hover > td {
     background-color: @activeLineBackgroundColor !important;
 }
 td.emptylist {
-    background-color: #eeeeee;
+    background-color: @evenLineBackgroundColor;
     text-align: center;
     font-style: italic;
 }
@@ -37,39 +37,39 @@ td.emptylist {
 --------------------------*/
 #legende .table th.cotis-ok,
 .ui.ui.table.listing tbody tr > td.cotis-ok {
-    background-color: #DDFFDD;
+    background-color: @cotisOkBackgroundColor;
 }
 #legende .table th.cotis-never,
 .ui.ui.table.listing tbody tr > td.cotis-never {
-    background-color: #EEEEEE;
+    background-color: @cotisNeverBackgroundColor;
 }
 #legende .table th.cotis-exempt,
 .ui.ui.table.listing tbody tr > td.cotis-exempt {
-    background-color: #DDFFDD;
+    background-color: @cotisExemptBackgroundColor;
 }
 #legende .table th.cotis-soon,
 .ui.ui.table.listing tbody tr > td.cotis-soon {
-    background-color: #FFE9AB;
+    background-color: @cotisSoonBackgroundColor;
 }
 #legende .table th.cotis-late,
 #legende .table th.transaction-uncomplete,
 .ui.ui.table.listing tbody tr > td.cotis-late,
 .ui.ui.table.listing tbody tr > td.transaction-uncomplete {
-    background-color: #FFDDDD;
+    background-color: @cotisLateBackgroundColor;
 }
 #legende .table th.cotis-lastday,
 .ui.ui.table.listing tbody tr > td.cotis-lastday {
-    background-color: #FFD9AB;
+    background-color: @cotisLastdayBackgroundColor;
 }
 #legende .table th.cotis-normal,
 #legende .table th.transaction-normal,
 .ui.ui.table.listing tbody tr > td.cotis-normal,
 .ui.ui.table.listing tbody tr > td.transaction-normal {
-    background-color: #DDFFDD;
+    background-color: @cotisOkBackgroundColor;
 }
 #legende .table th.cotis-give,
 .ui.ui.table.listing tbody tr > td.cotis-give {
-    background-color: #FFDDDD;
+    background-color: @cotisLateBackgroundColor;
 }
 
 /*-------------------------
