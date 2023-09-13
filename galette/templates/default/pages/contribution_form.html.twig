@@ -26,7 +26,7 @@
                             <div class="inline field">
                                 <label for="id_adh">{{ _T("Contributor:") }}</label>
                                 <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated">
-                                    <input id="id_adh_input" type="text" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
+                                    <input id="id_adh_input" type="hidden" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
                                     <i class="jsonly displaynone dropdown icon"></i>
                                     <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}"></i></span>
                                     <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}"></i></span>
