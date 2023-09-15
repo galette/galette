@@ -55,6 +55,8 @@ class Members extends GaletteTestCase
     protected int $seed = 335689;
     private array $mids = [];
 
+    private ?string $contents_table = null;
+
     /**
      * Set up tests
      *
@@ -63,6 +65,7 @@ class Members extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->contents_table = null;
         $this->createMembers();
     }
 
@@ -77,6 +80,25 @@ class Members extends GaletteTestCase
 
         $this->deleteGroups();
         $this->deleteMembers();
+
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
+        $this->zdb->execute($delete);
+        //cleanup dynamic translations
+        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
+        $delete->where([
+            'text_orig' => [
+                'Dynamic choice field',
+                'Dynamic date field',
+                'Dynamic text field'
+            ]
+        ]);
+        $this->zdb->execute($delete);
+
+        if ($this->contents_table !== null) {
+            $this->zdb->drop($this->contents_table);
+        }
     }
 
     /**
@@ -131,7 +153,7 @@ class Members extends GaletteTestCase
             $this->assertTrue($member->store());
             $mids[] = $member->id;
 
-            //set first member displayed publically an active and up to date member
+            //set first member displayed publicly an active and up-to-date member
             if ($member->appearsInMembersList() && !$member->isDueFree() && $first === true) {
                 $first = false;
                 $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
@@ -607,6 +629,177 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->assertSame(0, $list->count());
+    }
+
+    /**
+     * Test getList with contribution dynamic fields
+     *
+     * @return void
+     */
+    public function testGetListContributionDynamics()
+    {
+        // Advanced search on contributions dynamic fields
+
+        //add dynamic fields on contributions
+        $field_data = [
+            'form_name'         => 'contrib',
+            'field_name'        => 'Dynamic text field',
+            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
+            'field_required'    => 1,
+            'field_repeat'      => 1
+        ];
+
+        $tdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+
+        $stored = $tdf->store($field_data);
+        $error_detected = $tdf->getErrors();
+        $warning_detected = $tdf->getWarnings();
+        $this->assertTrue(
+            $stored,
+            implode(
+                ' ',
+                $tdf->getErrors() + $tdf->getWarnings()
+            )
+        );
+        $this->assertEmpty($error_detected, implode(' ', $tdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $tdf->getWarnings()));
+
+        //new dynamic field, of type choice.
+        $values = [
+            'First value',
+            'Second value',
+            'Third value'
+        ];
+        $field_data = [
+            'form_name'         => 'contrib',
+            'field_name'        => 'Dynamic choice field',
+            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
+            'field_required'    => 0,
+            'field_repeat'      => 1,
+            'fixed_values'      => implode("\n", $values)
+        ];
+
+        $cdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+
+        $stored = $cdf->store($field_data);
+        $error_detected = $cdf->getErrors();
+        $warning_detected = $cdf->getWarnings();
+        $this->assertTrue(
+            $stored,
+            implode(
+                ' ',
+                $cdf->getErrors() + $cdf->getWarnings()
+            )
+        );
+        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
+        //cleanup dynamic choices table
+        $this->contents_table = $cdf->getFixedValuesTableName($cdf->getId());
+
+        //new dynamic field, of type date.
+        $field_data = [
+            'form_name'         => 'contrib',
+            'field_name'        => 'Dynamic date field',
+            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::DATE,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ];
+
+        $ddf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+
+        $stored = $ddf->store($field_data);
+        $error_detected = $ddf->getErrors();
+        $warning_detected = $ddf->getWarnings();
+        $this->assertTrue(
+            $stored,
+            implode(
+                ' ',
+                $ddf->getErrors() + $ddf->getWarnings()
+            )
+        );
+        $this->assertEmpty($error_detected, implode(' ', $ddf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $ddf->getWarnings()));
+
+        //search on contribution dynamic text field
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_dynamic = [$tdf->getId() => 'text value'];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(0, $list->count());
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+
+        $now = new \DateTime();
+        $begin_date = clone $now;
+        $begin_date->sub(new \DateInterval('P1D'));
+        $due_date = clone $begin_date;
+        $due_date->sub(new \DateInterval('P1D'));
+        $due_date->add(new \DateInterval('P1Y'));
+
+        $cdata = [
+            \Galette\Entity\Adherent::PK    => $this->mids[0],
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'              => $begin_date->format('Y-m-d'),
+            'date_fin_cotis'                => $due_date->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => 4, //donation in kind
+            'info_field_' . $tdf->getId() . '_1' => 'A contribution with a dynamic text value set on it'
+        ];
+        $this->assertTrue($contrib->check($cdata, [], []));
+        $this->assertTrue($contrib->store());
+
+        $list = $members->getList();
+        $this->assertSame(1, $list->count());
+
+        //search on contribution dynamic date field
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $ddate = new \DateTime('2020-01-01');
+        $filters->contrib_dynamic = [$ddf->getId() => $ddate->format(__('Y-m-d'))];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(0, $list->count());
+
+        $cdata += [
+            'id_cotis' => $contrib->id,
+            'info_field_' . $ddf->getId() . '_1' => $ddate->format(__('Y-m-d'))
+        ];
+        $this->assertTrue($contrib->check($cdata, [], []));
+        $this->assertTrue($contrib->store());
+
+        $list = $members->getList();
+        $this->assertSame(1, $list->count());
+
+        //search on contribution dynamic choice field
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_dynamic = [$cdf->getId() => 2]; //3rd options is selected
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(0, $list->count());
+
+        $cdata += [
+            'id_cotis' => $contrib->id,
+            'info_field_' . $cdf->getId() . '_1' => 2
+        ];
+        $this->assertTrue($contrib->check($cdata, [], []));
+        $this->assertTrue($contrib->store());
+
+        $list = $members->getList();
+        $this->assertSame(1, $list->count());
+
+        //search on multiple contribution dynamic choice field
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_dynamic = [$cdf->getId() => [0, 2]]; //1st OR 3rd options are selected
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
     }
 
     /**

@@ -498,14 +498,9 @@ class MembersController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        if (isset($this->session->filter_members)) {
-            //CAUTION: this one may be simple or advanced, display must change
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->filter_members ?? new MembersList();
 
-        //reintialize filters
+        //reinitialize filters
         if (isset($post['clear_filter'])) {
             $filters = new MembersList();
         } elseif (isset($post['clear_adv_filter'])) {

@@ -381,18 +381,32 @@
     {% else %}
         {% set rid = "cds_" ~ fid %}
     {% endif %}
+    {% if get_class(field) != "Galette\\DynamicFields\\Boolean" %}
                         <label for="cds{% if get_class(field) == "Galette\\DynamicFields\\Choice" %}c{% endif %}_{{ field.getId() }}">{{ field.getName() }}</label>
+    {% endif %}
     {% if get_class(field) == "Galette\\DynamicFields\\Line" %}
-                        <input type="text" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" value="{% if attribute(filters.contrib_dynamic, rid) is defined %}{{ attribute(filters.contrib_dynamic, rid) }}{% endif %}" />
+                        <input type="text" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" value="{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}" />
     {% elseif get_class(field) == "Galette\\DynamicFields\\Text" %}
-                        <textarea name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}">{% if attribute(filters.contrib_dynamic, rid) is defined %}{{ attribute(filters.contrib_dynamic, rid) }}{% endif %}</textarea>
+                        <textarea name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}">{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}</textarea>
     {% elseif get_class(field) == "Galette\\DynamicFields\\Choice" %}
                         <select name="cdsc_{{ field.getId() }}[]" id="cdsc_{{ field.getId() }}" multiple="multiple" class="ui dropdown nochosen">
                             <option value="">{{ _T('Select') }}</option>
         {% for k, choice in field.getValues() %}
-                            <option value="{{ k }}"{% if cds.field is defined and cds.field == rid %} selected="selected"{% endif %}>{{ choice }}</option>
+                            <option value="{{ k }}"{% if attribute(filters.contrib_dynamic, fid) is defined and k in attribute(filters.contrib_dynamic, fid) %} selected="selected"{% endif %}>{{ choice }}</option>
         {% endfor %}
                         </select>
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Boolean" %}
+        <div class="ui right aligned toggle checkbox">
+            <input type="checkbox" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" value="1" {% if attribute(filters.contrib_dynamic, fid) is defined %} checked="checked"{% endif %}/>
+            <label for="cds_{{ field.getId() }}">{{ field.getName() }}</label>
+        </div>
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Date" %}
+                    <div class="ui calendar" id="cds_{{ field.getId() }}-rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input id="cds_{{ field.getId() }}" name="cds_{{ field.getId() }}" type="text" class="due_date" maxlength="10" size="10" value="{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                        </div>
+                    </div>
     {% endif %}
                     </div>
 {% endfor %}

@@ -714,7 +714,8 @@ class Members
 
                     //check if there are dynamic fields in the filter
                     foreach ($this->filters->contrib_dynamic as $k => $cd) {
-                        if (is_array($cd)) {
+                        $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
+                        if ($dyn_field instanceof \Galette\DynamicFields\Choice) {
                             $hasCdfc = true;
                             $cdfcs[] = $k;
                         }
@@ -754,24 +755,26 @@ class Members
 
             // choice dynamic fields
             if ($hasCdfc === true) {
-                $cdf_field = 'cdf.id';
-                if (TYPE_DB === 'pgsql') {
-                    $cdf_field .= '::text';
-                }
-
-                $cdf_field = 'cdfc.id';
-                if (TYPE_DB === 'pgsql') {
-                    $cdf_field .= '::text';
-                }
                 foreach ($cdfcs as $cdf) {
-                    $rcdf_field = str_replace(
-                        'cdfc.',
-                        'cdfc' . $cdf . '.',
-                        $cdf_field
+                    $rcdf_field = sprintf(
+                        '%s.%s',
+                        $zdb->platform->quoteIdentifier('cdfc' . $cdf),
+                        $zdb->platform->quoteIdentifier('id')
                     );
+                    if (TYPE_DB === 'pgsql') {
+                        $rcdf_field = $rcdf_field . '::text';
+                    }
+
                     $select->join(
                         array('cdfc' . $cdf => DynamicField::getFixedValuesTableName($cdf, true)),
-                        $rcdf_field . '=dfc.field_val',
+                        new Expression(
+                            sprintf(
+                                '%s = %s.%s',
+                                $rcdf_field,
+                                $zdb->platform->quoteIdentifier('dfc'),
+                                $zdb->platform->quoteIdentifier('field_val')
+                            )
+                        ),
                         array(),
                         $select::JOIN_LEFT
                     );
@@ -1360,9 +1363,6 @@ class Members
             && !isset($this->filters->contrib_dynamic['empty'])
         ) {
             foreach ($this->filters->contrib_dynamic as $k => $cd) {
-                $qry = '';
-                $prefix = 'a.';
-                $field = null;
                 $qop = ' LIKE ';
 
                 if (is_array($cd)) {
@@ -1379,9 +1379,34 @@ class Members
                     $qry = 'dfc.field_form = \'contrib\' AND ' .
                         'dfc.field_id = ' . $k . ' AND ';
                     $field = 'field_val';
-                    $qry .= 'LOWER(' . $prefix . $field . ') ' .
-                        $qop . ' ';
-                    $select->where($qry . $zdb->platform->quoteValue('%' . strtolower($cd) . '%'));
+
+                    $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
+
+                    if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
+                        if ($cd == 1) {
+                            $qry .= $field . ' = ' . (int)$cd;
+                        }
+                        $select->where($qry);
+                    } elseif ($dyn_field instanceof \Galette\DynamicFields\Date) {
+                        //dynamic dates are stored in their localized format :/
+                        //use current lang format to query for now
+                        //FIXME works with french formatted date only -_-
+                        if ($zdb->isPostgres()) {
+                            $qop = '=';
+                            $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
+                            $cd = "to_date('" . $cd . "', '" . $store_fmt . "')";
+                            $qry .= "to_date(" . $prefix . $field . ", '$store_fmt')";
+                        } else {
+                            $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
+                            $cd = "STR_TO_DATE('" . $cd . "', '" . $store_fmt . "')";
+                            $qry .= 'STR_TO_DATE(' . $prefix . $field . ', \'' . $store_fmt . '\') ';
+                        }
+                        $qry .= $qop . ' ' . $cd;
+                        $select->where($qry);
+                    } else {
+                        $qry .= 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
+                        $select->where($qry . $zdb->platform->quoteValue('%' . strtolower($cd) . '%'));
+                    }
                 }
             }
         }
@@ -1473,13 +1498,14 @@ class Members
                     } else {
                         //dynamic dates are stored in their localized format :/
                         //use current lang format to query for now
+                        //FIXME works with french formatted date only -_-
                         if ($zdb->isPostgres()) {
-                            $fs['search'] = "to_date('" . $fs['search'] . "', 'YYYY-MM-DD')";
                             $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
+                            $fs['search'] = "to_date('" . $fs['search'] . "', '" . $store_fmt . "')";
                             $qry .= "to_date('" . $prefix . $fs['field'] . "', '$store_fmt')";
                         } else {
-                            $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%Y-%m-%d')";
                             $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
+                            $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '" . $store_fmt . "')";
                             $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'' . $store_fmt . '\') ';
                         }
 
