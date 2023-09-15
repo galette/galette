@@ -37,6 +37,8 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Galette\DynamicFields\File;
+use Galette\DynamicFields\Separator;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
@@ -182,6 +184,24 @@ class DynamicFieldsHandle
     public function getFields(): array
     {
         return $this->dynamic_fields;
+    }
+
+    /**
+     * Get fields for search pages
+     *
+     * @return array
+     */
+    public function getSearchFields(): array
+    {
+        $dynamics = $this->dynamic_fields;
+
+        foreach ($dynamics as $key => $field) {
+            if ($field instanceof Separator || $field instanceof File) {
+                unset($dynamics[$key]);
+            }
+        }
+
+        return $dynamics;
     }
 
     /**
