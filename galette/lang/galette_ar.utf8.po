@@ -12,12 +12,13 @@
 # Menna Ebraheam & Jana hesham <monymenna62@gmail.com>, 2022.
 # Hothaifa Jaber <i74ifa@icloud.com>, 2022.
 # AOSUS <aosus@protonmail.com>, 2022.
+# ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-03-01 07:27+0100\n"
-"PO-Revision-Date: 2022-06-05 17:19+0000\n"
-"Last-Translator: AOSUS <aosus@protonmail.com>\n"
+"PO-Revision-Date: 2023-09-19 14:59+0000\n"
+"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -25,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.13-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -6841,7 +6842,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:525
 msgid "Update your information"
-msgstr ""
+msgstr "تحديث معلوماتك"
 
 #: ../../tempcache/pages/preferences.html.twig:534
 #: ../../tempcache/pages/desktop.html.twig:105
@@ -6858,7 +6859,7 @@ msgstr "اللغة الافتراضية:"
 
 #: ../../tempcache/pages/preferences.html.twig:602
 msgid "Lines / Page:"
-msgstr ""
+msgstr "الأسطر / الصفحة:"
 
 #: ../../tempcache/pages/preferences.html.twig:631
 #: ../../tempcache/pages/member_form.html.twig:314
