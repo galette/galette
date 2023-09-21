@@ -198,7 +198,7 @@ class ContributionsController extends CrudController
             $contrib = new Contribution(
                 $this->zdb,
                 $this->login,
-                (count($cparams) > 0 ? $cparams : null)
+                $cparams
             );
 
             if (isset($cparams['adh'])) {
@@ -274,18 +274,22 @@ class ContributionsController extends CrudController
     {
         $post = $request->getParsedBody();
         $filters = $this->session->filter_members;
-        $contribution = new Contribution($this->zdb, $this->login);
-
         $type = $post['type'];
+
+        $ct = new ContributionsTypes($this->zdb);
+        $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
+
+        $contribution = new Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => array_keys($contributions_types)[0]]
+        );
+
         $data = [
             'id'            => $filters->selected,
             'redirect_uri'  => $this->routeparser->urlFor('members'),
             'type'          => $type
         ];
-
-        // contribution types
-        $ct = new ContributionsTypes($this->zdb);
-        $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
         // display page
         $this->view->render(
