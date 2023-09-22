@@ -39,9 +39,9 @@
                                 </div>
                             </div>
     {% endif %}
-                            <div class="inline field">
+                            <div class="inline field{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required{% endif %}">
                                 <label for="id_type_cotis">{{ _T("Contribution type:") }}</label>
-                                <select name="id_type_cotis" id="id_type_cotis" class="ui dropdown nochosen"{% if required.id_type_cotis == 1 %} required="required"{% endif %}>
+                                <select name="id_type_cotis" id="id_type_cotis" class="ui dropdown nochosen"{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required="required"{% endif %}>
                                     {% if contribution.type %}
                                         {% set selectedid = contribution.type.id %}
                                     {% else %}
@@ -135,9 +135,9 @@
                 <div class="active content field">
                     <div id="contribdetails" class="ui basic fitted segment">
                         <div class="two fields">
-                            <div class="field">
+                            <div class="field{% if required.montant_cotis is defined and required.montant_cotis == 1 %} required{% endif %}">
                                 <label for="montant_cotis">{{ _T("Amount:") }}</label>
-                                <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis == 1 %} required="required"{% endif %}/>
+                                <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis is defined and required.montant_cotis == 1 %} required="required"{% endif %}/>
                             </div>
                             {# payment type #}
                             {% set ptype = contribution.payment_type %}
@@ -147,19 +147,19 @@
                             {% include 'components/forms/payment_types.html.twig' with {'current': ptype, 'varname': 'type_paiement_cotis', 'show_inline': true} %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
-                            <div class="field">
+                            <div class="field{% if required.date_enreg is defined and required.date_enreg == 1 %} required{% endif %}">
                                 <label for="date_enreg">
                                     {{ _T("Record date:") }}
                                 </label>
                                 <div class="ui calendar" id="contribution-rangestart">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
-                                        <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg == 1 %} required="required"{% endif %}>
+                                        <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg is defined and required.date_enreg == 1 %} required="required"{% endif %}>
                                     </div>
                                 </div>
                                 <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                             </div>
-                            <div class="field">
+                            <div class="field{% if required.date_debut_cotis is defined and required.date_debut_cotis == 1 %} required{% endif %}">
                                 <label for="date_debut_cotis">
                                 {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                                     {{ _T("Start date of membership:") }}
@@ -176,20 +176,25 @@
                                 <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                             </div>
             {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
-                            <div class="field">
+                            <div class="field{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required{% endif %}">
                 {% if preferences.pref_membership_ext != "" %}
                                 <label for="duree_mois_cotis">{{ _T("Membership extension:") }}</label>
-                                <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis == 1%} required="required"{% endif %}/>
+                                <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{{ contribution.duration }}" maxlength="3"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %}/>
                                 <span class="exemple">{{ _T("months") }}</span>
                 {% else %}
                                 <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
-                                <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis == 1 %} required="required"{% endif %}/>
+                                <div class="ui calendar" id="membership-rangeend">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon"></i>
+                                        <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %}/>
+                                    </div>
+                                </div>
                                 <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                 {% endif %}
                             </div>
             {% endif %}
                         </div>
-                        <div class="field">
+                        <div class="field{% if required.info_cotis is defined and required.info_cotis == 1 %} required{% endif %}">
                             <label for="info_cotis">{{ _T("Comments:") }}</label>
                             <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{% if required.info_cotis is defined and required.info_cotis == 1 %} required="required"{% endif %}>{{ contribution.info }}</textarea>
                         </div>
