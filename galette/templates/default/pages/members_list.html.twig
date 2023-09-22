@@ -631,6 +631,7 @@
                                             window.location.href = _form.find('input[name=redirect_uri]').val();
                                         },
                                         error: function() {
+                                            $('#mass_contributions').modal('hide dimmer').remove();
                                             {% include "elements/js/modal.js.twig" with {
                                                 modal_title_twig: _T("An error occurred :(")|e("js"),
                                                 modal_without_content: true,
@@ -647,8 +648,9 @@
                                     modal_selector: "#mass_contributions",
                                     modal_without_title: true,
                                     modal_content_class: "scrolling",
-                                    modal_onshow: "_batchAjaxMapper();",
-                                    modal_onapprove: "$('#mass_contributions form').submit();",
+                                    modal_onhidden: "$(this).modal('hide dimmer').remove();",
+                                    modal_onshow: "_batchAjaxMapper();_formValidationInModal('#mass_contributions');",
+                                    modal_onapprove: "var submitted = _formSubmitInModal('#mass_contributions');if (!submitted){return false;}",
                                     modal_ondeny: "$(this).modal('hide dimmer').remove();"
                                 } %}
                             },
@@ -806,6 +808,25 @@
             {% include 'elements/js/calendar.js.twig' with {
                 selector: ".modal-form [id$='rangestart'], .modal-form [id$='rangeend']"
             } %}
+        }
+        var _formValidationInModal = function(modal){
+            $(modal +' form').form({
+                inline: true,
+                autoCheckRequired: true,
+                prompt: {
+                    empty: '{{ _T("Required field!")|e("js") }}'
+                }
+            })
+        }
+        var _formSubmitInModal = function(modal){
+            var validated = $(modal +' form').form('is valid');
+            if(validated) {
+                $(modal +' form').submit();
+                $(modal).modal('hide dimmer').remove();
+            } else {
+                $(modal +' form').form('validate form');
+                return false;
+            }
         }
 {% endif %}
     </script>

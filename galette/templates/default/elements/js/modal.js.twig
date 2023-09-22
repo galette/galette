@@ -43,6 +43,7 @@
  * - modal_content_class: class(es) applied on modal's content.
  * - modal_other_options: hash to add other options { option: value }.
  * - modal_onshow: modal's onShow callback.
+ * - modal_onhidden: modal's onHidden callback.
  * - modal_onapprove: modal's onApprove callback.
  * - modal_ondeny: modal's onDeny callback.
  * - modal_additional_button: hash to add a third button { text, icon, color, click }.
@@ -85,6 +86,13 @@
         onShow: function() {
 {% if modal_onshow is defined %}
             {{ modal_onshow|raw }}
+{% else %}
+            return true;
+{% endif %}
+        },
+        onHidden: function() {
+{% if modal_onhidden is defined %}
+            {{ modal_onhidden|raw }}
 {% else %}
             return true;
 {% endif %}
