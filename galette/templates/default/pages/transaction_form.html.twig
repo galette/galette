@@ -10,13 +10,13 @@
             <div class="active content field">
                 <div class="ui mobile reversed stackable grid">
                     <div class="{% if transaction.id %}five wide {% endif %}column">
-                        <div class="field inline">
+                        <div class="field inline{% if required.trans_desc is defined and required.trans_desc == 1 %} required{% endif %}">
                             <label for="trans_desc">{{ _T("Description:") }}</label>
-                            <input type="text" name="trans_desc" id="trans_desc" value="{{ transaction.description }}" maxlength="150" size="30"{% if required.trans_desc == 1 %} required="required"{% endif %}/>
+                            <input type="text" name="trans_desc" id="trans_desc" value="{{ transaction.description }}" maxlength="150" size="30"{% if required.trans_desc is defined and required.trans_desc == 1 %} required="required"{% endif %}/>
                         </div>
-                        <div class="field inline">
+                        <div class="field inline{% if required.id_adh is defined and required.id_adh == 1 %} required{% endif %}">
                             <label for="id_adh" >{{ _T("Originator:") }}</label>
-                            <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated"{% if required.id_adh == 1 %} required="required"{% endif %}>
+                            <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated"{% if required.id_adh is defined and required.id_adh == 1 %} required="required"{% endif %}>
                                 <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
                                 <i class="jsonly displaynone dropdown icon"></i>
                                 <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}"></i></span>
@@ -29,19 +29,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field inline">
+                        <div class="field inline{% if required.trans_date is defined and required.trans_date == 1 %} required{% endif %}">
                             <label for="trans_date">{{ _T("Date:") }}</label>
                             <div class="ui calendar" id="transaction-rangestart">
                                 <div class="ui input left icon">
                                     <i class="calendar icon"></i>
-                                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date == 1 %} required="required"{% endif %}/>
+                                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date is defined and required.trans_date == 1 %} required="required"{% endif %}/>
                                 </div>
                             </div>
                             <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                         </div>
-                        <div class="field inline">
+                        <div class="field inline{% if required.trans_amount is defined and required.trans_amount == 1 %} required{% endif %}">
                             <label for="trans_amount">{{ _T("Amount:") }}</label>
-                            <input type="text" name="trans_amount" id="trans_amount" value="{{ transaction.amount }}" maxlength="10"{% if required.trans_amount == 1 %} required="required"{% endif %}/>
+                            <input type="text" name="trans_amount" id="trans_amount" value="{{ transaction.amount }}" maxlength="10"{% if required.trans_amount is defined and required.trans_amount == 1 %} required="required"{% endif %}/>
                         </div>
     {% if transaction.id == null %}
                         <div class="field inline">
