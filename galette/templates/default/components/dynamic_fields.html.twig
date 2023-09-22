@@ -147,7 +147,7 @@
                             {% if get_class(field) == 'Galette\\DynamicFields\\File' or (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
                                repetable sixteen wide {% endif %}column">
                             {% for field_data in values %}
-                                <div class="field">
+                                <div class="field{% if field.isRequired() %} required{% endif %}">
                                     {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
                                     {% if field.getInformation() %}
                                         <p class="exemple">{{ field.getInformation()|raw }}</p>
