@@ -285,9 +285,9 @@
             </div>{# /column grid #}
             <div class="ui stackable two column grid">
                 <div class="column">
-                    <div class="field">
+                    <div class="field{% if required.pref_statut is defined and required.pref_statut == 1 %} required{% endif %}">
                         <label for="pref_statut">{{ _T("Default membership status:") }}</label>
-                        <select name="pref_statut" id="pref_statut" class="ui search dropdown nochosen">
+                        <select name="pref_statut" id="pref_statut" class="ui search dropdown nochosen"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
                             {% for key, value in statuts %}
                                 <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -610,13 +610,13 @@
             </div>
             <div class="ui two column grid">
                 <div class="column">
-                    <div class="ui field{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required{% endif %}">
+                    <div class="field">
                         <label for="pref_card_abrev">{{ _T("Short Text (Card Center):") }}</label>
                         <div class="ui action input">
-                            <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"{% if required.pref_card_abrev is defined and required.pref_card_abrev == 1 %} required="required"{% endif %}/>
+                            <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"/>
                             <a
                                 href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
-                                class="tooltip ui icon button"
+                                class="tooltip ui icon button{% if pref.pref_card_abrev is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"
                             >
                                 <i class="language icon"></i>
@@ -625,13 +625,13 @@
                         </div>
                         <span class="exemple">{{ _T("(10 characters max)") }}</span>
                     </div>
-                    <div class="{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %}required {% endif %}field">
+                    <div class="field">
                         <label for="pref_card_strip">{{ _T("Long Text (Bottom Line):") }}</label>
                         <div class="ui action input">
-                            <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"{% if required.pref_card_strip is defined and required.pref_card_strip == 1 %} required="required"{% endif %}/>
+                            <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"/>
                             <a
                                 href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
-                                class="tooltip ui icon button "
+                                class="tooltip ui icon button{% if pref.pref_card_strip is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"
                             >
                                 <i class="language icon"></i>

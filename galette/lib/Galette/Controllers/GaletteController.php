@@ -182,8 +182,6 @@ class GaletteController extends AbstractController
             'pref_etiq_cols'        => 1,
             'pref_etiq_rows'        => 1,
             'pref_etiq_corps'       => 1,
-            'pref_card_abrev'       => 1,
-            'pref_card_strip'       => 1,
             'pref_card_marges_v'    => 1,
             'pref_card_marges_h'    => 1,
             'pref_card_hspace'      => 1,
