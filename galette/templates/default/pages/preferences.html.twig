@@ -910,43 +910,43 @@
                         title: '{{ _T("Enter the email adress")|e('js') }}',
                         class: 'tiny',
                         content: _input,
+                        onApprove: function() {
+                            $.ajax({
+                                url: _this.attr('href'),
+                                type: 'GET',
+                                data: {
+                                    adress: $('#email_adress').val()
+                                },
+                                {% include "elements/js/loader.js.twig" with {
+                                    selector: '#btnmail',
+                                    loader: 'button'
+                                } %},
+                                success: function(res) {
+                                    //display message
+                                    $.ajax({
+                                        url: '{{ url_for('ajaxMessages') }}',
+                                        method: "GET",
+                                        success: function (message) {
+                                            $('#testEmail').prepend(message);
+                                        }
+                                    });
+                                },
+                                error: function () {
+                                    {% include "elements/js/modal.js.twig" with {
+                                        modal_title_twig: _T("An error occurred sending test email :(")|e("js"),
+                                        modal_without_content: true,
+                                        modal_class: "mini",
+                                        modal_deny_only: true,
+                                        modal_cancel_text: _T("Close")|e("js"),
+                                        modal_classname: "redalert",
+                                    } %}
+                                }
+                            });
+                        },
                         actions: [{
                             text    : '{{ _T("Send")|e('js') }}',
                             icon    : 'rocket',
-                            class   : 'icon labeled green approve',
-                            click   : function() {
-                                $.ajax({
-                                    url: _this.attr('href'),
-                                    type: 'GET',
-                                    data: {
-                                        adress: $('#email_adress').val()
-                                    },
-                                    {% include "elements/js/loader.js.twig" with {
-                                        selector: '#btnmail',
-                                        loader: 'button'
-                                    } %},
-                                    success: function(res) {
-                                        //display message
-                                        $.ajax({
-                                            url: '{{ url_for('ajaxMessages') }}',
-                                            method: "GET",
-                                            success: function (message) {
-                                                $('#testEmail').prepend(message);
-                                            }
-                                        });
-                                    },
-                                    error: function () {
-                                        {% include "elements/js/modal.js.twig" with {
-                                            modal_title_twig: _T("An error occurred sending test email :(")|e("js"),
-                                            modal_without_content: true,
-                                            modal_class: "mini",
-                                            modal_deny_only: true,
-                                            modal_cancel_text: _T("Close")|e("js"),
-                                            modal_classname: "redalert",
-                                        } %}
-                                    }
-                                });
-                            }
+                            class   : 'icon labeled green approve'
                         }, {
                             text    : '{{ _T("Cancel")|e('js') }}',
                             icon    : 'times',
