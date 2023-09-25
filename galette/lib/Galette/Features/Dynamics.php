@@ -36,6 +36,7 @@
 
 namespace Galette\Features;
 
+use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
@@ -306,8 +307,13 @@ trait Dynamics
                 continue;
             }
 
+            $form_name = $this->getFormName();
+            if ($form_name === 'adh') {
+                $form_name = 'member'; //for compatibility with existing files
+            }
             $new_filename = sprintf(
-                'member_%d_field_%d_value_%d',
+                '%s_%d_field_%d_value_%d',
+                $form_name,
                 $this->id,
                 $field_id,
                 $val_index
@@ -375,5 +381,15 @@ trait Dynamics
             $dfields[str_replace($prefix, $this->name_pattern, $key)] = $value;
         }
         return $this->dynamicsCheck($dfields, [], []);
+    }
+
+    /**
+     * Get form name
+     *
+     * @return string
+     */
+    public function getFormName(): string
+    {
+        return array_search(get_class($this), DynamicFieldsSet::getClasses());
     }
 }

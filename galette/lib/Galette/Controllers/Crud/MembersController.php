@@ -53,7 +53,6 @@ use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
-use Galette\IO\File;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Repository\PaymentTypes;
@@ -421,110 +420,6 @@ class MembersController extends CrudController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor('publicList', ['type' => $type]));
-    }
-
-    /**
-     * Get a dynamic file
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param integer  $id       Member ID
-     * @param integer  $fid      Dynamic fields ID
-     * @param integer  $pos      Dynamic field position
-     * @param string   $name     File name
-     *
-     * @return Response
-     */
-    public function getDynamicFile(
-        Request $request,
-        Response $response,
-        int $id,
-        int $fid,
-        int $pos,
-        string $name
-    ): Response {
-        $member = new Adherent($this->zdb);
-        $member
-            ->disableAllDeps()
-            ->enableDep('dynamics')
-            ->load($id);
-
-        $denied = null;
-        if (!$member->canShow($this->login)) {
-            $fields = $member->getDynamicFields()->getFields();
-            if (!isset($fields[$fid])) {
-                //field does not exist or access is forbidden
-                $denied = true;
-            } else {
-                $denied = false;
-            }
-        }
-
-        if ($denied === true) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
-            );
-
-            return $response
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor(
-                        'member',
-                        ['id' => $id]
-                    )
-                );
-        }
-
-        $filename = str_replace(
-            [
-                '%mid',
-                '%fid',
-                '%pos'
-            ],
-            [
-                $id,
-                $fid,
-                $pos
-            ],
-            'member_%mid_field_%fid_value_%pos'
-        );
-
-        if (file_exists(GALETTE_FILES_PATH . $filename)) {
-            $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
-
-            $response = $response->withHeader('Content-Description', 'File Transfer')
-                ->withHeader('Content-Type', $type)
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $name . '"')
-                ->withHeader('Pragma', 'no-cache')
-                ->withHeader('Content-Transfer-Encoding', 'binary')
-                ->withHeader('Expires', '0')
-                ->withHeader('Cache-Control', 'must-revalidate')
-                ->withHeader('Pragma', 'public');
-
-            $stream = fopen('php://memory', 'r+');
-            fwrite($stream, file_get_contents(GALETTE_FILES_PATH . $filename));
-            rewind($stream);
-
-            return $response->withBody(new \Slim\Psr7\Stream($stream));
-        } else {
-            Analog::log(
-                'A request has been made to get a dynamic file named `' .
-                $filename . '` that does not exists.',
-                Analog::WARNING
-            );
-
-            $this->flash->addMessage(
-                'error_detected',
-                _T("The file does not exists or cannot be read :(")
-            );
-
-            return $response
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('member', ['id' => $id])
-                );
-        }
     }
 
     /**

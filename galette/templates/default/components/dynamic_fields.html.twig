@@ -79,7 +79,7 @@
                 </div>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
                 {% if object.id and valuedata %}
-                <a href="{{ url_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
+                <a href="{{ url_for("getDynamicFile", {"form_name": object.getFormName(), "id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
                     {{ valuedata }}
                     <i class="external alternate icon"></i>
                 </a>

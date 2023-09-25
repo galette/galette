@@ -35,7 +35,7 @@
                         {{ _T("No") }}
                                 {% endif %}
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
-                                <a href="{{ url_for("getDynamicFile", {"id": object.id, "fid": field.getId(), "pos": loop.index, "name": value}) }}">{{ value }}</a>
+                                <a href="{{ url_for("getDynamicFile", {"form_name": object.getFormName(), "id": object.id, "fid": field.getId(), "pos": loop.index, "name": value}) }}">{{ value }}</a>
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isValidEmail", value) %}
                                 <a href="mailto:{{ value }}">{{ value }}</a>
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isUrl", value) %}

@@ -74,6 +74,20 @@ class DynamicFieldsSet
     }
 
     /**
+     * Get form names and associated classes
+     *
+     * @return string[]
+     */
+    public static function getClasses(): array
+    {
+        return [
+            'adh' => 'Galette\Entity\Adherent',
+            'contrib' => 'Galette\Entity\Contribution',
+            'trans' => 'Galette\Entity\Transaction'
+        ];
+    }
+
+    /**
      * Get fields list for one form
      *
      * @param string $form_name Form name

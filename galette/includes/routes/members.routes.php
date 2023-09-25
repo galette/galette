@@ -224,11 +224,6 @@ $app->post(
 )->setName('ajaxGroupMembers')->add($authenticate);
 
 $app->get(
-    '/member/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
-    [Crud\MembersController::class, 'getDynamicFile']
-)->setName('getDynamicFile')->add($authenticate);
-
-$app->get(
     '/members/mass-change',
     [Crud\MembersController::class, 'massChange']
 )->setName('masschangeMembers')->add($authenticate);

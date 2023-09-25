@@ -412,3 +412,8 @@ $app->post(
     '/payment-type/edit/{id:\d+}',
     [Crud\PaymentTypeController::class, 'doEdit']
 )->setname('editPaymentType')->add($authenticate);
+
+$app->get(
+    '/{form_name:adh|contrib|trans}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
+    [Crud\DynamicFieldsController::class, 'getDynamicFile']
+)->setName('getDynamicFile')->add($authenticate);

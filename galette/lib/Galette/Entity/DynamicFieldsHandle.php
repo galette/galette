@@ -104,19 +104,7 @@ class DynamicFieldsHandle
      */
     public function load($object)
     {
-        switch (get_class($object)) {
-            case 'Galette\Entity\Adherent':
-                $this->form_name = 'adh';
-                break;
-            case 'Galette\Entity\Contribution':
-                $this->form_name = 'contrib';
-                break;
-            case 'Galette\Entity\Transaction':
-                $this->form_name = 'trans';
-                break;
-            default:
-                throw new \RuntimeException('Class ' . get_class($object) . ' does not handle dynamic fields!');
-        }
+        $this->form_name = $object->getFormName();
 
         try {
             $this->item_id = $object->id;

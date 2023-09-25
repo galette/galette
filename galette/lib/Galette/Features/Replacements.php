@@ -753,6 +753,7 @@ trait Replacements
                                 $this->routeparser->urlFor(
                                     'getDynamicFile',
                                     [
+                                        'form_name' => $form_name,
                                         'id' => $object->id,
                                         'fid' => $field_id,
                                         'pos' => ++$pos,

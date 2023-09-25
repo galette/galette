@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\IO\File;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
@@ -271,6 +272,126 @@ class DynamicFieldsController extends CrudController
     {
         //no filtering
         return $response;
+    }
+
+    /**
+     * Get a dynamic file
+     *
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $form_name Form name
+     * @param integer  $id        Object ID
+     * @param integer  $fid       Dynamic fields ID
+     * @param integer  $pos       Dynamic field position
+     * @param string   $name      File name
+     *
+     * @return Response
+     */
+    public function getDynamicFile(
+        Request $request,
+        Response $response,
+        string $form_name,
+        int $id,
+        int $fid,
+        int $pos,
+        string $name
+    ): Response {
+        $object_class = DynamicFieldsSet::getClasses()[$form_name];
+        if ($object_class === 'Galette\Entity\Adherent') {
+            $object = new $object_class($this->zdb);
+        } else {
+            $object = new $object_class($this->zdb, $this->login);
+        }
+
+        $object
+            ->disableAllDeps()
+            ->enableDep('dynamics')
+            ->load($id);
+
+        $denied = null;
+        if (!$object->canShow($this->login)) {
+            $fields = $object->getDynamicFields()->getFields();
+            if (!isset($fields[$fid])) {
+                //field does not exist or access is forbidden
+                $denied = true;
+            } else {
+                $denied = false;
+            }
+        }
+
+        if ($denied === true) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            $route_name = 'member';
+            if ($form_name == 'contrib') {
+                $route_name = 'contribution';
+            } elseif ($route_name == 'trans') {
+                $route_name = 'transaction';
+            }
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor(
+                        $route_name,
+                        ['id' => $id]
+                    )
+                );
+        }
+
+        $filename = str_replace(
+            [
+                '%form',
+                '%oid',
+                '%fid',
+                '%pos'
+            ],
+            [
+                $form_name,
+                $id,
+                $fid,
+                $pos
+            ],
+            '%form_%oid_field_%fid_value_%pos'
+        );
+
+        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+            $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
+
+            $response = $response->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Type', $type)
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $name . '"')
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents(GALETTE_FILES_PATH . $filename));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Psr7\Stream($stream));
+        } else {
+            Analog::log(
+                'A request has been made to get a dynamic file named `' .
+                $filename . '` that does not exists.',
+                Analog::WARNING
+            );
+
+            $this->flash->addMessage(
+                'error_detected',
+                _T("The file does not exists or cannot be read :(")
+            );
+
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('member', ['id' => $id])
+                );
+        }
     }
 
     // /CRUD - Read
