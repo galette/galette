@@ -95,12 +95,12 @@
                         />
                         <label for="info_field_{{ field.getId() }}_{{ loop }}_new" class="ui button">
                             <i class="blue upload icon"></i>
-                            {% if object.id %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                            {% if object.id and valuedata %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                         </label>
                     </div>
                 </div>
+                {% if object.id and valuedata %}
                 <div class="extra ui basic fitted segment">
-                    {% if object.id %}
                     <div class="ui toggle checkbox">
                         <input
                             type="checkbox"
@@ -112,8 +112,8 @@
                             {{ _T("delete") }}
                         </label>
                     </div>
-                    {% endif %}
                 </div>
+                {% endif %}
             {% endif %}
         {% endmacro %}
 
