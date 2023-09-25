@@ -58,6 +58,8 @@ use Galette\Entity\DynamicFieldsHandle;
 
 trait Dynamics
 {
+    use Dependencies;
+
     /** @var string */
     protected $name_pattern = 'info_field_';
 
