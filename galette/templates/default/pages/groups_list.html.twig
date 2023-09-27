@@ -5,7 +5,7 @@
 {% macro group_item(login, group, opened, selected) %}
     <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in opened %} active{% endif %}{% else %}nochild{% endif %}">
         <i class="{% if group.getGroups()|length > 0 %}dropdown{% else %}empty{% endif %} icon"></i>
-        <a class="ui{% if group.getName() == selected %} primary{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
+        <a class="ui{% if group.getName() == selected %} primary{% endif %}{% if not login.isGroupManager(group.getId()) %} disabled{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
     </div>
