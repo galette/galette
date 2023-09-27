@@ -37,7 +37,7 @@
                     <label for="parent_group">{{ _T("Parent group:") }}</label>
                 {% if can_edit and parent_groups|length > 0 %}
                     <select name="parent_group" id="parent_group" class="ui search dropdown nochosen">
-                        <option value="">{{ _T("None") }}</option>
+                        <option value="none">{{ _T("None") }}</option>
                         {% for g in parent_groups %}
                             <option value="{{ g.getId() }}"{% if pgroup is defined and pgroup.getId() == g.getId() %} selected="selected"{% endif %}>{{ g.getIndentName()|raw }}</option>
                         {% endfor %}
@@ -48,7 +48,7 @@
                         {{ pgroup.getName() }}
                         <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
                     {% else %}
-                        -
+                        {{ _T("None") }}
                         <input type="hidden" name="parent_group" value=""/>
                     {% endif %}
                     </span>
