@@ -44,13 +44,14 @@
                     </select>
                 {% else %}
                     <span>
-        {% if pgroup is defined %}
-            {{ pgroup.getName() }}
-            <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
-        {% else %}
-            -
-        {% endif %}
-                            </span>
+                    {% if pgroup is defined %}
+                        {{ pgroup.getName() }}
+                        <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
+                    {% else %}
+                        -
+                        <input type="hidden" name="parent_group" value=""/>
+                    {% endif %}
+                    </span>
                 {% endif %}
             </div>
         </div>

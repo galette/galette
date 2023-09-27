@@ -246,7 +246,7 @@
                             _container.children('.segment').append(res);
                             _container.children('#group_' + mode + ' .segment').append(_modified);
                         } else {
-                            var _emptyselection = '<tbody><tr><td colspan="2">{{ _T("No member attached")|e('js') }}</td></tr></tbody>';
+                            var _emptyselection = '<tbody><tr><td colspan="2"><input type="hidden" name="' + mode + '[]" value="">{{ _T("No member attached")|e('js') }}</td></tr></tbody>';
                             _container.find('table.listing tbody').remove();
                             _container.find('table.listing').append(_emptyselection);
                             _container.children('#group_' + mode + ' .segment').append(_modified);
