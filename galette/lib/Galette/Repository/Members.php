@@ -637,7 +637,7 @@ class Members
                     $select->join(
                         array('status' => PREFIX_DB . Status::TABLE),
                         'a.' . Status::PK . '=status.' . Status::PK,
-                        array()
+                        array('priorite_statut')
                     );
                     break;
                 case self::SHOW_MANAGED:

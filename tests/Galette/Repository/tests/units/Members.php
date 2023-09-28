@@ -566,10 +566,11 @@ class Members extends GaletteTestCase
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
-            $this->assertCount(3, $array);
+            $this->assertCount(4, $array);
             $this->assertArrayHasKey('nom_adh', $array);
             $this->assertArrayHasKey('ville_adh', $array);
             $this->assertArrayHasKey('id_adh', $array);
+            $this->assertArrayHasKey('priorite_statut', $array);
         }
 
         //Get staff
