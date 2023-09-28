@@ -65,6 +65,7 @@ $core_acls = [
     'contributions'                     => 'member',
     'printContribution'                 => 'member',
     'myContributions'                   => 'member',
+    'contributionMembers'               => 'groupmanager',
     '/(.+)?contribution(.+)?/i'         => 'staff',
     '/(.+)?transaction(.+)?/i'          => 'staff',
     // /Contributions rules
