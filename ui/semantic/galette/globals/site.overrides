@@ -260,7 +260,7 @@ ul.leaders span + span {
   width: auto;
   display: inline-block;
   margin-right: .25rem;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 /*---------------------------------

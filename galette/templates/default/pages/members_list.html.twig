@@ -271,6 +271,10 @@
                             <td class="back">{{ _T('Admin') }}</td>
                             <th><i class="ui id card alternate orange icon"></i></th>
                             <td class="back">{{ _T('Staff member') }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="ui users cog orange icon"></i></th>
+                            <td class="back">{{ _T('Group manager') }}</td>
 
                         </tr>
                     </tbody>
@@ -334,7 +338,11 @@
                                 <i class="ui id card alternate orange icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Staff member') }}</span>
                             </span>
-                {# TODO: display for group managers #}
+            {% elseif member.getManagedGroups() %}
+                            <span>
+                                <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Group manager') }}</span>
+                            </span>
             {% else %}
                             <i class="ui icon"></i>
             {% endif %}
