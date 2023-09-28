@@ -131,6 +131,7 @@
         $('{{ js_chosen_id }}').dropdown({
             match: 'text',
             apiSettings: {
+                {% if js_chosen_cache is defined and js_chosen_cache == false %}cache: false,{% endif %}
                 url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
                 beforeSend: function (settings) {
