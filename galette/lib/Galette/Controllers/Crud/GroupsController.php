@@ -356,7 +356,7 @@ class GroupsController extends CrudController
 
         $group->setName($post['group_name']);
         try {
-            if ($post['parent_group'] !== ('' or 'none')) {
+            if ($post['parent_group'] !== '') {
                 $group->setParentGroup((int)$post['parent_group']);
             } else {
                 $group->detach();

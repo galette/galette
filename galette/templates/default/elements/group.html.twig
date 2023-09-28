@@ -40,12 +40,17 @@
                         {{ pgroup.getName() }}
                         <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
                     {% else %}
-                        <select name="parent_group" id="parent_group" class="ui search dropdown nochosen">
-                            <option value="none">{{ _T("None") }}</option>
+                        <div class="ui search selection dropdown nochosen">
+                            <input type="hidden" name="parent_group" id="parent_group" value="{% if pgroup is defined %}{{ pgroup.getId() }}{% endif %}">
+                            <i class="dropdown icon"></i>
+                            <div class="text">{% if pgroup is defined %}{{ pgroup.getName() }}{% endif %}</div>
+                            <div class="menu">
+                                <div class="item" data-value="">{{ _T("None") }}</div>
                             {% for g in parent_groups %}
-                                <option value="{{ g.getId() }}"{% if pgroup is defined and pgroup.getId() == g.getId() %} selected="selected"{% endif %}>{{ g.getIndentName()|raw }}</option>
+                                <div class="item" data-value="{{ g.getId() }}">{{ g.getIndentName()|raw }}</div>
                             {% endfor %}
-                        </select>
+                            </div>
+                        </div>
                     {% endif %}
                 {% else %}
                     <span>
