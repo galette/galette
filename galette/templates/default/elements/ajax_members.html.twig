@@ -60,8 +60,13 @@
                         </span>
                     {% elseif member.isStaff() %}
                         <span>
-                            <i class="ui id card alternate orange icon tooltip"></i>
+                            <i class="ui user tie orange icon tooltip"></i>
                             <span class="ui special popup">{{ _T("Staff member") }}</span>
+                        </span>
+                    {% elseif member.getManagedGroups() %}
+                        <span>
+                            <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T('Group manager') }}</span>
                         </span>
                     {% else %}
                         <i class="ui icon"></i>
