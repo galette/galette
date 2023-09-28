@@ -39,12 +39,17 @@
                                 {% if person.isAdmin() %}
                                     <span>
                                         <i class="ui user shield red icon tooltip"></i>
-                                        <span class="ui special popup">{{ _T("[admin]") }}</span>
+                                        <span class="ui special popup">{{ _T("Administrator") }}</span>
                                     </span>
                                 {% elseif person.isStaff() %}
                                     <span>
-                                        <i class="ui id card alternate orange icon tooltip"></i>
-                                        <span class="ui special popup">{{ _T("[admin]") }}</span>
+                                        <i class="ui user tie orange icon tooltip"></i>
+                                        <span class="ui special popup">{{ _T("Staff member") }}</span>
+                                    </span>
+                                {% elseif person.getManagedGroups() %}
+                                    <span>
+                                        <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T('Group manager') }}</span>
                                     </span>
                                 {% else %}
                                     <i class="ui icon"></i>
