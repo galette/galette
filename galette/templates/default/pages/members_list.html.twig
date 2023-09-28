@@ -269,7 +269,7 @@
                         <tr>
                             <th><i class="ui user shield red icon"></i></th>
                             <td class="back">{{ _T('Admin') }}</td>
-                            <th><i class="ui id card alternate orange icon"></i></th>
+                            <th><i class="ui user tie orange icon"></i></th>
                             <td class="back">{{ _T('Staff member') }}</td>
                         </tr>
                         <tr>
@@ -335,7 +335,7 @@
                             </span>
             {% elseif member.isStaff() %}
                             <span>
-                                <i class="ui id card alternate orange icon tooltip" aria-hidden="true"></i>
+                                <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Staff member') }}</span>
                             </span>
             {% elseif member.getManagedGroups() %}
