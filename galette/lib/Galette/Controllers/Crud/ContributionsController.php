@@ -534,6 +534,7 @@ class ContributionsController extends CrudController
 
         if ($filters->filtre_cotis_adh != null) {
             $member = new Adherent($this->zdb);
+            $member->enableDep('children');
             $member->load($filters->filtre_cotis_adh);
             $tpl_vars['member'] = $member;
         }
