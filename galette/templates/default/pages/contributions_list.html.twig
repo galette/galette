@@ -96,12 +96,14 @@
             <div class="ui compact vertically fitted segment">
             <div class="ui horizontal list">
             <span class="ui primary ribbon label">
-            <a
+            {% if login.isAdmin() or login.isStaff() or member.hasChildren() %}
+                <a
                     href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
-            >
-                        <i class="icon times tooltip"></i>
-                        <span class="ui special popup">{{ _T("Show all members contributions") }}</span>
-                    </a>
+                >
+                    <i class="icon times tooltip"></i>
+                    <span class="ui special popup">{{ _T("Show all members contributions") }}</span>
+                </a>
+            {% endif %}
         {% endif %}
         {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
         </span>
