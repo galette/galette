@@ -12,7 +12,7 @@
         </h2>
     {% else %}
         </div>
-        <div class="content scrolling">
+        <div class="content">
     {% endif %}
             <form action="{{ url_for('attendance_sheet') }}" id="sheet_details_form" method="POST" class="ui form">
                 <div class="ui top attached accordion-styled header">
@@ -35,9 +35,9 @@
                         <div class="inline field">
                             <label for="sheet_date">{{ _T("Date") }}</label>
                             <div id="sheet_date_rangestart" class="ui calendar">
-                                <div class="ui fluid input left icon">
+                                <div class="ui input left icon">
                                     <i class="calendar icon"></i>
-                                    <input type="text" name="sheet_date" id="sheet_date"/>
+                                    <input type="text" name="sheet_date" id="sheet_date" size="20"/>
                                 </div>
                             </div>
                             <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
