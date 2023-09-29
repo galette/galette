@@ -701,15 +701,16 @@
                 var _freesearch = document.getElementById('fs_sortable');
                 var _groupsearch = document.getElementById('gs_sortable');
 
-                new Sortable(_freesearch, {
-                    animation: 150,
-                    ghostClass: 'yellow',
-                    filter: '.filtered',
-                    onUpdate: function (evt) {
-                        var _item = evt.item;
-                        _item.classList.add('yellow');
-                    }
-                });
+                /* Disable free search; see https://bugs.galette.eu/issues/1684 */
+                //new Sortable(_freesearch, {
+                //    animation: 150,
+                //    ghostClass: 'yellow',
+                //    filter: '.filtered',
+                //    onUpdate: function (evt) {
+                //        var _item = evt.item;
+                //        _item.classList.add('yellow');
+                //    }
+                //});
 
                 new Sortable(_groupsearch, {
                     animation: 150,
