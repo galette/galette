@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use ArrayObject;
+use Galette\Entity\Status;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -476,6 +477,10 @@ class Groups
         $select = $this->zdb->select(Adherent::TABLE, 'adh');
         $select->columns(
             [Adherent::PK]
+        )->join(
+            array('status' => PREFIX_DB . Status::TABLE),
+            'a.' . Status::PK . '=status.' . Status::PK,
+            array('priorite_statut')
         )->join(
             array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
             'adh.' . Adherent::PK . '=b.' . Adherent::PK,

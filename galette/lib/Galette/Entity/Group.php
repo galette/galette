@@ -179,6 +179,11 @@ class Group
 
                 $select = $zdb->select(Adherent::TABLE, 'a');
                 $select->join(
+                    array('status' => PREFIX_DB . Status::TABLE),
+                    'a.' . Status::PK . '=status.' . Status::PK,
+                    array('priorite_statut')
+                );
+                $select->join(
                     array('g' => $join),
                     'g.' . Adherent::PK . '=a.' . Adherent::PK,
                     array()
