@@ -164,19 +164,18 @@ class PdfAttendanceSheet extends Pdf
         $this->PageHeader($this->doc_title);
 
         if ($this->sheet_date) {
-            $date_fmt = null;
-            if (PHP_OS === 'Linux') {
-                $format = _T("%A, %B %#d%O %Y");
-                $format = str_replace(
-                    '%O',
-                    date('S', $this->sheet_date->getTimestamp()),
-                    $format
-                );
-                $date_fmt = strftime($format, $this->sheet_date->getTimestamp());
-            } else {
-                $format = __("Y-m-d");
-                $date_fmt = $this->sheet_date->format($format);
-            }
+            $format = str_replace('(not translated)', '', _T("MMMM, EEEE d y"));
+            $formatter = new \IntlDateFormatter(
+                $this->i18n->getLongID(),
+                \IntlDateFormatter::FULL,
+                \IntlDateFormatter::NONE,
+                \date_default_timezone_get(),
+                \IntlDateFormatter::GREGORIAN,
+                $format
+            );
+            $datetime = new \DateTimeImmutable($this->sheet_date->format('Y-m-d'));
+            $date = \DateTime::createFromImmutable($datetime);
+            $date_fmt = ucwords($formatter->format($date));
             $this->Cell(190, 7, $date_fmt, 0, 1, 'C');
         }
 
