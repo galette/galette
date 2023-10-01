@@ -14,10 +14,10 @@
 {% if login.isLogged() %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
-                <section{% if login.isLogged() %} class="content"{% endif %}>
+                <section class="{% if login.isLogged() %}content{% else %}vertically centered{% endif %}">
 {% if not login.isLogged() %}
                     <div class="ui basic center aligned fitted segment">
-                        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
+                        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="logo"/>
                         <div class="ui large header">
                             {{ preferences.pref_nom }}
                             <div class="sub header">{% if preferences.pref_slogan %}{{ __(preferences.pref_slogan) }}{% endif %}</div>
@@ -43,10 +43,8 @@
                 </section>
             </div>
         </div>
-
-        <a href="#" id="back2top" class="ui basic icon button">
+        <a href="#" id="back2top" class="circular big ui icon button" title="{{ _T("Back to top") }}">
             <i class="arrow up icon"></i>
-            {{ _T("Back to top") }}
         </a>
         {% include "elements/scripts.html.twig" %}
         {% block javascripts %}{% endblock %}

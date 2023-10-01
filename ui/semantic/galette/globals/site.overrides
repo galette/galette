@@ -33,6 +33,19 @@
 ---------------------------------*/
 html {
   overflow: hidden;
+
+  &.public_page {
+    section.vertically.centered {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+
+      img.logo {
+        margin-top: 1rem;
+      }
+    }
+  }
 }
 
 body.pushable:not(.loggedin) > .pusher {
