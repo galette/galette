@@ -65,10 +65,8 @@ body.pushable:not(.loggedin) > .pusher {
   background-image: url(@galetteBackgroundImageRtl);
   background-position: left top;
 }
-
-#top-navbar,
-aside.computer.toc {
-  background: @galetteNavBackground;
+#top-navbar {
+  background: @lightGrey;
 }
 
 #top-navbar.ui.menu .item img.logo {
@@ -129,6 +127,10 @@ footer .ui.horizontal.list > .item{
   }
   .loggedin .ui.fixed.menu + .pusher {
     padding-top: 0;
+  }
+
+  aside.computer.toc {
+    background: @galetteNavBackground;
   }
 
   aside.toc {
