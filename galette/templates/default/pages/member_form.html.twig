@@ -2,7 +2,7 @@
 
 {% block content %}
 <form action="{% if self_adh %}{{ url_for("storeselfmembers") }}{% elseif not member.id %}{{ url_for("doAddMember") }}{% else %}{{ url_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
-    {% if member.id or not self_adh %}
+    {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
 <div class="ui stackable grid">
     <div class="row">
         <div class="sixteen wide tablet six wide computer five wide widescreen column order-2">
@@ -35,7 +35,7 @@
         {% endif %}
     {% endif %}
 
-    {% if not self_adh %}
+    {% if not self_adh and members.list is defined and members.list|length > 0 %}
                 <div class="ui basic horizontally fitted segment">
                     <div class="ui segment">
         {% if member.hasParent() and not member.isDuplicate() %}
@@ -59,7 +59,7 @@
                             </div>
                         </div>
             {% endif %}
-        {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() and members.list is defined %}
+        {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() %}
                         <div class="field">
                             <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
                                 <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
@@ -100,7 +100,7 @@
                 </div>
     {% endif %}
 
-    {% if member.id or not self_adh %}
+    {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
             </div>
         </div>
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
@@ -187,7 +187,7 @@
             {% include "components/forms/csrf.html.twig" %}
             </div>
 
-    {% if member.id or not self_adh %}
+    {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
         </div>
     </div>
 </div>
