@@ -26,8 +26,6 @@
                     <h1 class="ui block center aligned header" style="position: relative">
 {% else %}
                     <div class="ui horizontal basic segments header">
-                        <div class="ui left aligned segment">
-                        </div>
                         <div class="ui center aligned segment">
                             <h1>
 {% endif %}
@@ -35,7 +33,7 @@
                             </h1>
 {% if login.isLogged() %}
                         </div>
-                        <div class="ui right aligned segment">
+                        <div class="ui right aligned compact segment">
                             <div class="ui compact tiny menu">
             {% if cur_route != 'mailing' and existing_mailing == true %}
                                 <a
@@ -64,9 +62,8 @@
                 </section>
             </div>
         </div>
-        <a href="#" id="back2top" class="ui basic icon button">
+        <a href="#" id="back2top" class="circular big ui icon button" title="{{ _T("Back to top") }}">
             <i class="arrow up icon"></i>
-            {{ _T("Back to top") }}
         </a>
         {% include "elements/scripts.html.twig" %}
         {% block javascripts %}{% endblock %}
