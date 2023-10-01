@@ -288,15 +288,12 @@ ul.leaders span + span {
     Back top top button
 --------------------------*/
 #back2top {
+  display: none;
   position: fixed;
-  right: 0;
-  bottom: 0;
+  right: .5rem;
+  bottom: .5rem;
   z-index: 2;
-  opacity: 0.45;
-}
-
-#back2top:hover {
-  opacity: 1;
+  border: 1px solid @borderColor;
 }
 
 /*------------------------------------------------

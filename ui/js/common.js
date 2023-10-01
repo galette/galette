@@ -174,16 +174,17 @@ $(function() {
 
     _bindFomanticComponents();
 
-    if ( $('#back2top').length > 0 ) {
-        if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
-            $('#back2top').fadeOut();
+    var _back2Top = document.getElementById("back2top");
+    document.body.addEventListener('scroll', function() {
+        if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+            _back2Top.style.display = "block";
+        } else {
+            _back2Top.style.display = "none";
         }
-        $(window).scroll(function() {
-            if ($(this).scrollTop()) {
-                $('#back2top').fadeIn();
-            } else {
-                $('#back2top').fadeOut();
-            }
-        });
+    });
+    _back2Top.onclick = function(event){
+        event.preventDefault();
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 });
