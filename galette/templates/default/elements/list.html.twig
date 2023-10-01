@@ -38,71 +38,80 @@
             {% endif %}
         </form>
     {% endblock %}
-    <form action="{%  if form.route is defined %}{{ url_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
-        <div class="ui basic fitted segment">
+    {% if form is defined %}
+        <form action="{%  if form.route is defined %}{{ url_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
+            <div class="ui basic fitted segment">
 
-        {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
-            {{ macros.drawBatchActionsList(batch_actions) }}
-        {% endif %}
+            {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
+                {{ macros.drawBatchActionsList(batch_actions) }}
+            {% endif %}
+    {% endif %}
 
-            <div class="ui basic fitted segment loader_selector">
-                <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
-                    <thead>
-                        <tr>
-                    {% block header %}
-                        {% for column in columns %}
-                            <th class="left">
-                                {% if column.order is defined %}
-                                <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
-                                    {{ column.label }}
-                                    {% if filters.orderby == column.order %}
-                                        {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
-                                            <i class="ui angle down icon tooltip"></i>
-                                        {% else %}
-                                            <i class="ui angle up icon tooltip"></i>
+    {% if list_type is defined and list_type == 'cards' %}
+                <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
+    {% else %}
+                <div class="ui basic fitted segment loader_selector">
+                    <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
+                        <thead>
+                            <tr>
+                        {% block header %}
+                            {% for column in columns %}
+                                <th class="left">
+                                    {% if form is defined and column.order is defined %}
+                                    <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
+                                        {{ column.label }}
+                                        {% if filters.orderby == column.order %}
+                                            {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
+                                                <i class="ui angle down icon tooltip"></i>
+                                            {% else %}
+                                                <i class="ui angle up icon tooltip"></i>
+                                            {% endif %}
                                         {% endif %}
+                                    </a>
+                                    {% else %}
+                                        {{ column.label }}
                                     {% endif %}
-                                </a>
-                                {% else %}
-                                    {{ column.label }}
-                                {% endif %}
-                            </th>
-                        {% endfor %}
-                        {% if mode != 'ajax' and no_action is not defined or no_action == false %}
-                            <th class="actions_row">{{ _T('Actions') }}</th>
-                        {% endif %}
-                    {% endblock %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% block body %}{% endblock %}
-                    </tbody>
-                    <tfoot>
-                        {% block footer %}{% endblock %}
-                    </tfoot>
-                </table>
+                                </th>
+                            {% endfor %}
+                            {% if mode != 'ajax' and no_action is not defined or no_action == false %}
+                                <th class="actions_row">{{ _T('Actions') }}</th>
+                            {% endif %}
+                        {% endblock %}
+                            </tr>
+                        </thead>
+                        <tbody>
+    {% endif %}
+                            {% block body %}{% endblock %}
+    {% if list_type is not defined %}
+                        </tbody>
+                        <tfoot>
+                            {% block footer %}{% endblock %}
+                        </tfoot>
+                    </table>
+    {% endif %}
+
+            {% if form is defined and mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
+                {{ macros.drawBatchActionsList(batch_actions) }}
+            {% endif %}
+
             </div>
 
-        {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
-            {{ macros.drawBatchActionsList(batch_actions) }}
-        {% endif %}
-
-        </div>
-
-        {% if is_paginated %}
-        <div class="ui basic center aligned fitted segment">
-            <div class="ui inverted pagination menu">
-                <div class="header item">
-                    {{ _T('Pages:') }}
+            {% if is_paginated %}
+            <div class="ui basic center aligned fitted segment">
+                <div class="ui inverted pagination menu">
+                    <div class="header item">
+                        {{ _T('Pages:') }}
+                    </div>
+                    {{ pagination|raw }}
                 </div>
-                {{ pagination|raw }}
             </div>
-        </div>
-        {% endif %}
+            {% endif %}
 
-        {% block extra_form %}{% endblock %}
-        {% include "components/forms/csrf.html.twig" %}
-    </form>
+    {% if form is defined %}
+            {% block extra_form %}{% endblock %}
+            {% include "components/forms/csrf.html.twig" %}
+        </form>
+    {% endif %}
         {% block legend %}{% endblock %}
     {% if mode == 'ajax' %}
     </div>

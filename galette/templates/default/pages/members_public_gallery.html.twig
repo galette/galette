@@ -1,66 +1,53 @@
-{% extends 'public_page.html.twig' %}
+{% extends 'elements/list.html.twig' %}
 
-{% block content %}
-        <div class="ui icon info visible message">
-            <i class="info circle blue icon"></i>
-            <div class="content">
-                {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
-            </div>
-        </div>
-{% if members|length > 0 %}
-        <form action="{{ url_for("filterPublicList", {"type": "trombi"}) }}" method="POST" class="ui form">
-            <div class="infoline">
-                <div class="ui basic horizontal segments">
-                    <div class="ui basic fitted segment">
-                        <div class="ui label">{{ _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}) }}</div>
-                    </div>
-                    <div class="ui basic right aligned fitted segment">
-                        <div class="inline field">
-                            <label for="nbshow">{{ _T('Records per page:') }}</label>
-                            <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
-                                {% for key, value in nbshow_options %}
-                                    <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
-                                {% endfor %}
-                            </select>
-                            <noscript> <span><input type="submit" value="{{ _T('Change') }}" /></span></noscript>
-                            {% include "components/forms/csrf.html.twig" %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <div class="ui doubling six column cards">
-    {% for member in members %}
-            <div class="ui fluid card">
-                {% set mid = member.id %}
-                <div class="image">
-                    <img
-                        src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
-                        width="{{ member.picture.getOptimalWidth() }}"
-                        height="{{ member.picture.getOptimalHeight() }}"
-                        alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
-                        />
-                </div>
-                <div class="content">
-                    <div class="header">{{ member.sfullname }}</div>
-                    {% if member.nickname != '' %}<div class="meta">{{ member.nickname|escape }}</div>{% endif %}
-                </div>
-            </div>
-    {% endfor %}
-        </div>
-        <div class="ui basic center aligned fitted segment">
-            <div class="ui inverted pagination menu">
-                <div class="header item">
-                    {{ _T('Pages:') }}
-                </div>
-                {{ pagination|raw }}
-            </div>
-        </div>
-{% else %}
-    <div class="ui small message">
+{% set nb = members|length %}
+{% set is_public = not login.isLogged() %}
+{% set list_type = 'cards' %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filterPublicList',
+            'args': {
+                "type": "trombi"
+            }
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <div class="ui icon info visible message">
+        <i class="info circle blue icon"></i>
         <div class="content">
-            <em>{{ _T('No member to show') }}</em>
+            {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
         </div>
     </div>
-{% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for member in members %}
+        <div class="ui fluid card">
+            {% set mid = member.id %}
+            <div class="image">
+                <img
+                    src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
+                    width="{{ member.picture.getOptimalWidth() }}"
+                    height="{{ member.picture.getOptimalHeight() }}"
+                    alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
+                    />
+            </div>
+            <div class="content">
+                <div class="header">{{ member.sfullname }}</div>
+                {% if member.nickname != '' %}<div class="meta">{{ member.nickname|escape }}</div>{% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="ui small message">
+            <div class="content">
+                <em>{{ _T('No member to show') }}</em>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
