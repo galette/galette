@@ -21,6 +21,35 @@
                     }
                 });
 
+    {% if login.isLogged() %}
+                // Display user menu in compact mode
+                var _compactMenu = function() {
+                    var _hidden = Cookies.get('galette_compact_menu');
+                    var _menu = document.getElementById('sidemenu');
+                    var _content = _menu.nextElementSibling;
+                    var _trigger = document.getElementById('compactmenu');
+                    if (_hidden & _hidden == 1) {
+                        _trigger.checked = true;
+                        _menu.classList.add('compact_menu');
+                        _content.classList.add('extended');
+                    }
+                    _trigger.addEventListener('change', function() {
+                        var _checked = $(this).is(':checked');
+                        Cookies.set(
+                            'galette_compact_menu',
+                            (_checked ? 1 : 0),
+                                {
+                                    expires: 365,
+                                    path: '/'
+                                }
+                        );
+                        window.location.reload();
+                    });
+                }
+
+                _compactMenu();
+    {% endif %}
+
     {% if autocomplete %}
                 $('#ville_adh_field, #lieu_naissance_field').search({
                     apiSettings: {

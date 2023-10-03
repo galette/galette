@@ -1,18 +1,25 @@
 {% import "macros.twig" as menus_macros %}
 
+{% set mode = (mode is defined) ? mode %}
+
 {% if login.isLogged() %}
         <a href="{{ url_for('dashboard') }}"
             title="{{ _T("Go to Galette's dashboard") }}"
             class="{% if cur_route == "dashboard" %}active {% endif %}item"
+            data-position="right center"
         >
-            <div class="image header title">
+        {% if mode != "compact" %}
+            <div class="image header title{% if mode == "compact" %} no-touch tooltip" data-html="{{ _T("Dashboard") }}"{% else %}"{% endif %}>
+        {% endif %}
                 <i class="compass icon" aria-hidden="true"></i>
+        {% if mode != "compact" %}
                 {{ _T("Dashboard") }}
             </div>
+        {% endif %}
         </a>
 {% endif %}
 
 {% set menus = callstatic('\\Galette\\Core\\Galette', 'getAllMenus') %}
 {% for menu in menus %}
-    {{ menus_macros.renderMenu(menu.title, menu.icon, menu.items) }}
+    {{ menus_macros.renderMenu(menu.title, menu.icon, menu.items, mode) }}
 {% endfor %}

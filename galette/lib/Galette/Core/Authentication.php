@@ -77,6 +77,7 @@ abstract class Authentication
     protected $uptodate = false;
     protected $managed_groups = [];
     protected $cron = false;
+    protected $compact_menu = false;
 
     /**
      * Logs in user.
@@ -259,6 +260,16 @@ abstract class Authentication
     public function getManagedGroups(): array
     {
         return $this->managed_groups;
+    }
+
+    /**
+     * Get compact menu mode
+     *
+     * @return bool
+     */
+    public function getCompactMenu(): bool
+    {
+        return ($this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu']) ? true : false;
     }
 
     /**

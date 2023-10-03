@@ -1,12 +1,9 @@
-<aside class="ui computer only toc">
-{% if login.isLogged() %}
+<aside id="sidemenu" class="ui computer only toc{% if login.getCompactMenu() %} compact_menu{% endif %}">
     {% include "elements/logout.html.twig" with {
             ui: "menu"
     } %}
-{% endif %}
 
-    {% include "elements/modes.html.twig" %}
-
+{% if not login.getCompactMenu() %}
     <div class="ui basic center aligned fitted segment">
         <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
         <div class="ui block huge brand header">
@@ -14,8 +11,21 @@
             {% if preferences.pref_slogan %}<div class="sub tiny header">{{ __(preferences.pref_slogan) }}</div>{% endif %}
         </div>
     </div>
+{% endif %}
 
-    <div class="ui vertical accordion compact fluid menu">
-        {% include "elements/navigation/navigation_items.html.twig" %}
+    <div class="ui vertical{% if not login.getCompactMenu() %} accordion compact{% else %} tiny icon{% endif %} fluid menu">
+        {% set mode = login.getCompactMenu() ? "compact" : "accordion" %}
+        {% include "elements/navigation/navigation_items.html.twig" with {
+                mode: mode
+        } %}
+    </div>
+
+    <div class="ui basic fitted segment">
+        <div class="ui toggle mini checkbox">
+            <input type="checkbox" name="compactmenu" id="compactmenu" class="hidden"{% if login.getCompactMenu() %} checked="checked"{% endif %}>
+            <label for="compactmenu"{% if login.getCompactMenu() %} class="no-touch tooltip" data-html="{{ _T("Compact menu") }}"{% endif %}>
+                {% if not login.getCompactMenu() %}{{ _T("Compact menu") }}{% endif %}
+            </label>
+        </div>
     </div>
 </aside>

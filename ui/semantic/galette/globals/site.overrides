@@ -125,11 +125,57 @@ footer .ui.horizontal.list > .item{
     overflow-y: scroll;
     width: 260px;
     padding: 1.25rem;
+    &.compact_menu {
+      z-index: 1001;
+      width: 85px;
+      overflow-y: initial;
+      #logoutmenu {
+        .ui.dropdown .menu > .item:hover,
+        .ui.dropdown .menu > .active.item {
+          background: @white !important;
+          color: @textColor !important;
+          font-weight: 400 !important;
+          cursor: default;
+        }
+        .brand.header {
+          max-width: 500px;
+          white-space: normal;
+        }
+      }
+      .ui.menu .dropdown.item.active-menu {
+        background: @lightGaletteColor;
+      }
+      .ui.toggle.checkbox {
+        line-height: 1rem;
+        input {
+          width: 3rem;
+          height: 1rem;
+          &:checked ~ label::after {
+            left: 1.35rem;
+          }
+        }
+        label {
+          min-height: 1rem;
+          padding-left: 4rem;
+          &::before {
+            width: 2.4rem;
+            height: 1rem;
+          }
+          &::after {
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+      }
+    }
   }
 
   body:not(.front-page) section.content {
     margin-left: 260px;
     flex: 1 1 auto;
+    &.extended {
+      margin-left: 85px;
+    }
   }
 
   section.desktop .container {

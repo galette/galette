@@ -1,20 +1,32 @@
-{% macro renderMenu(title, icon, items) %}
+{% macro renderMenu(title, icon, items, mode) %}
     {% set my_routes = [] %}
     {% for item in items %}
         {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
     {% endfor %}
-    <div class="item">
-        <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
+    {% if mode == "compact" %}
+        <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown item no-touch tooltip" data-html="{{ title }}" data-position="right center">
             <i class="{{ icon }} icon"></i>
-            {{ title }}
-            <i class="dropdown icon"></i>
+            <span class="displaynone">{{ title }}</span>
+            <div class="menu">
+                {% for item in items %}
+                    {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null, null, 'right center') }}
+                {% endfor %}
+            </div>
         </div>
-        <div class="content{% if cur_route in my_routes %} active{% endif %}">
-            {% for item in items %}
-                {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null) }}
-            {% endfor %}
+    {% else %}
+        <div class="item">
+            <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
+                <i class="{{ icon }} icon"></i>
+                {{ title }}
+                <i class="dropdown icon"></i>
+            </div>
+            <div class="content{% if cur_route in my_routes %} active{% endif %}">
+                {% for item in items %}
+                    {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null) }}
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endmacro %}
 
 {% macro renderMenuItem(label, title, route, icon, class, tips_position) %}
