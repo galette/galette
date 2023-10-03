@@ -26,8 +26,8 @@
 # Paolo Mauri <paolo@paolomauri.it>, 2023.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2023-03-01 07:27+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-03 21:03+0200\n"
 "PO-Revision-Date: 2023-09-11 13:55+0000\n"
 "Last-Translator: Paolo Mauri <paolo@paolomauri.it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -43,14 +43,14 @@ msgid "Transaction"
 msgstr "Transazione"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1138
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:113
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1034
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:116
 msgid "modification"
 msgstr "modifica"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1140
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:115
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1036
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:118
 msgid "creation"
 msgstr "creazione"
 
@@ -83,16 +83,22 @@ msgid "Payment types management"
 msgstr "Gestione delle tipologie di pagamento"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:161
-#: ../../tempcache/pages/configuration_payment_types.html.twig:248
+#: ../../tempcache/pages/configuration_payment_types.html.twig:254
 msgid "Edit payment type"
 msgstr "Modifica tipologia di pagamento"
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:214
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:211
+#, fuzzy
+#| msgid "Missing required field name!"
+msgid "Missing required payment type's name!"
+msgstr "Campo nome obbligatorio mancante!"
+
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:220
 #, php-format
 msgid "Payment type '%s' has not been added!"
 msgstr "La tipologia di pagamento \"%s\" non è stata aggiunta!"
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:223
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:226
 #, php-format
 msgid "Payment type '%s' has not been modified!"
 msgstr "La tipologia di pagamento \"%s\" non è stata modificata!"
@@ -102,12 +108,12 @@ msgstr "La tipologia di pagamento \"%s\" non è stata modificata!"
 msgid "Payment type '%s' has been successfully added."
 msgstr "La tipologia di pagamento \"%s\" è stata aggiunta correttamente."
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:245
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:242
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
 msgstr "La tipologia di pagamento \"%s\" è stata modificata correttamente."
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:308
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:318
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Rimuovi la tipologia di pagamento %1$s"
@@ -116,25 +122,25 @@ msgstr "Rimuovi la tipologia di pagamento %1$s"
 msgid "Group name is missing!"
 msgstr "Nome del gruppo mancante!"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:194
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:201
 #: ../lib/Galette/Core/Galette.php:559
 msgid "Groups"
 msgstr "Gruppi"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:381
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:388
 msgid "Group `%groupname` has been successfully saved."
 msgstr "Il gruppo \"%groupname\" è stato salvato correttamente."
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:388
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:395
 msgid "An error occurred while storing the group."
 msgstr "Si è verificato un errore durante la registrazione del gruppo."
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:493
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:500
 #, php-format
 msgid "Remove group %1$s"
 msgstr "Rimuovi il gruppo %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:516
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:523
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr ""
 "Il gruppo non è vuoto e non può essere cancellato. Usa al suo posto la "
@@ -184,190 +190,190 @@ msgid "Remove mailing #%1$s"
 msgstr "Rimuovi mailing #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:740
-#: ../../tempcache/pages/mailing_form.html.twig:560
+#: ../../tempcache/pages/mailing_form.html.twig:559
 #: ../../tempcache/pages/mailings_list.html.twig:463
 msgid "Mailing preview"
 msgstr "Anteprima spedizione"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:76
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:77
 msgid "Add field"
 msgstr "Aggiungi campo"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:138
 msgid "An error occurred adding dynamic field :("
 msgstr "Errore durante l'aggiunta del campo dinamico :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:369
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:152
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:502
 msgid "Dynamic field has been successfully stored!"
 msgstr "Campo dinamico salvato!"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:230
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:237
 msgid "Dynamic fields configuration"
 msgstr "Configurazione del campo dinamico"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:294
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:325
+#: ../lib/Galette/Controllers/Crud/MembersController.php:260
+#: ../lib/Galette/Controllers/Crud/MembersController.php:990
+#: ../lib/Galette/Controllers/PdfController.php:119
+#: ../lib/Galette/Controllers/PdfController.php:286
+#: ../lib/Galette/Middleware/Authenticate.php:192
+msgid "You do not have permission for requested URL."
+msgstr "Non hai i premessi per l'URL richiesto."
+
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:386
+msgid "The file does not exists or cannot be read :("
+msgstr "Il file non esiste o non può essere letto :("
+
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:421
 msgid "Unable to retrieve field information."
 msgstr "Impossibile recuperare le informazioni."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:303
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:430
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:206
 msgid "Edit field"
 msgstr "Modifica campo"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:355
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:488
 msgid "An error occurred editing dynamic field :("
 msgstr "Si è verificato un errore modificando il campo dinamico :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:454
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:456
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:587
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:589
 msgid "Requested field does not exists!"
 msgstr "Il file richiesto non esiste!"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:460
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:593
 #, php-format
 msgid "Remove dynamic field %1$s"
 msgstr "Rimuovi campo dinamico %1$s"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:505
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:638
 msgid "Field has been successfully moved"
 msgstr "Il campo è stato spostato con successo"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:510
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:643
 msgid "An error occurred moving field :("
 msgstr "Si è verificato un errore nel muovere il campo :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:165
+#: ../lib/Galette/Controllers/Crud/MembersController.php:170
 msgid "Subscription"
 msgstr "Abbonamento"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:255
-#: ../lib/Galette/Controllers/Crud/MembersController.php:460
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1094
-#: ../lib/Galette/Controllers/PdfController.php:119
-#: ../lib/Galette/Controllers/PdfController.php:286
-#: ../lib/Galette/Middleware/Authenticate.php:193
-msgid "You do not have permission for requested URL."
-msgstr "Non hai i premessi per l'URL richiesto."
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:270
+#: ../lib/Galette/Controllers/Crud/MembersController.php:275
 msgid "No member #%id."
 msgstr "Nessun membro #%id."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:289
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1136
+#: ../lib/Galette/Controllers/Crud/MembersController.php:294
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1032
 msgid "Member Profile"
 msgstr "Profilo del membro"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:370
+#: ../lib/Galette/Controllers/Crud/MembersController.php:375
 #: ../lib/Galette/Core/Galette.php:495 ../lib/Galette/Core/Galette.php:496
 msgid "Members list"
 msgstr "Lista dei membri"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:370
+#: ../lib/Galette/Controllers/Crud/MembersController.php:375
 #: ../lib/Galette/Core/Galette.php:504 ../lib/Galette/Core/Galette.php:505
 msgid "Trombinoscope"
 msgstr "Registro"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:513
-msgid "The file does not exists or cannot be read :("
-msgstr "Il file non esiste o non può essere letto :("
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:576
+#: ../lib/Galette/Controllers/Crud/MembersController.php:477
 msgid "Members management"
 msgstr "Gestione membri"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:779
+#: ../lib/Galette/Controllers/Crud/MembersController.php:675
 msgid "Status label"
 msgstr "Livello di status"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:822
+#: ../lib/Galette/Controllers/Crud/MembersController.php:718
 #: ../lib/Galette/Core/Galette.php:185
 #: ../../tempcache/pages/advanced_search.html.twig:258
 msgid "Advanced search"
 msgstr "Ricerca Avanzata"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1044
+#: ../lib/Galette/Controllers/Crud/MembersController.php:940
 #: ../lib/Galette/Controllers/PdfController.php:152
 #: ../lib/Galette/Controllers/PdfController.php:233
 msgid "No member was selected, please check at least one name."
 msgstr "Nessun membro selezionato, per favore selezionare almeno un nome."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1255
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1155
 #, php-format
 msgid "Mass change %count members"
 msgstr "Cambio di massa membri %count"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1286
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1381
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1186
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1283
 msgid "Mass changes has not been confirmed!"
 msgstr "La modifica di massa non è stata confermata!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1350
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1252
 #, php-format
 msgid "Review mass change %count members"
 msgstr "Controllo cambio massivo di %count membri"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1434
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1336
 msgid "Nothing to do!"
 msgstr "Niente da fare!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1459
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1692
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1361
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1594
 msgid "An error occurred while storing the member."
 msgstr "Si è verificato un errore nell'estrazione di un membro."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1471
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1373
 msgid "Something went wront during mass edition!"
 msgstr "Qualcosa è andato storto nell'edizione massiva!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1478
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1380
 #, php-format
 msgid "%count members has been changed successfully!"
 msgstr "Membri %count sono stati cambiati con successo!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1543
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1445
 msgid "Invalid captcha"
 msgstr "Captcha invalido"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1650
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1552
 msgid "Your account has been created!"
 msgstr "Il tuo account è stato creato!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1655
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1557
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 "Ti è stata inviata un’e-mail, controlla la tua casella di posta elettronica."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1658
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1560
 msgid "New member has been successfully added."
 msgstr "Un nuovo membro è stato aggiunto con successo."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1661
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1563
 msgid "Member account has been modified."
 msgstr "L'account membro è stato modificato."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1673
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1575
 msgid "An error occurred adding member to its groups."
 msgstr "Si è verificato un errore nell'aggiungere un membro al gruppo."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1687
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1589
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Si è verificato un errore nell'aggiungere un membro al gruppo come manager."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1704
-#: ../lib/Galette/Controllers/GaletteController.php:325
-#: ../lib/Galette/Controllers/GaletteController.php:357
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1606
+#: ../lib/Galette/Controllers/GaletteController.php:323
+#: ../lib/Galette/Controllers/GaletteController.php:355
 msgid "Delete failed"
 msgstr "Rimozione fallita"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1873
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1752
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Rimuovi membro %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1882
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1761
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Stai per rimuovere %count membri."
@@ -377,16 +383,22 @@ msgid "Titles management"
 msgstr "Gestione titoli"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:155
-#: ../../tempcache/pages/configuration_titles.html.twig:249
+#: ../../tempcache/pages/configuration_titles.html.twig:261
 msgid "Edit title"
 msgstr "Modifica titolo"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:209
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:206
+#, fuzzy
+#| msgid "Missing required form!"
+msgid "Missing required title's short or long form!"
+msgstr "Manca il modulo richiesto!"
+
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:215
 #, php-format
 msgid "Title '%s' has not been added!"
 msgstr "Titolo '%s' non è stato aggiunto!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:218
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:221
 #, php-format
 msgid "Title '%s' has not been modified!"
 msgstr "Titolo '%s' non è stato modificato!"
@@ -396,12 +408,12 @@ msgstr "Titolo '%s' non è stato modificato!"
 msgid "Title '%s' has been successfully added."
 msgstr "Titolo '%s' è stato aggiunto con successo."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:240
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:237
 #, php-format
 msgid "Title '%s' has been successfully modified."
 msgstr "Titolo '%s' è stato modificato."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:291
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:302
 #, php-format
 msgid "Remove title %1$s"
 msgstr "Rimuovi titolo %1$s"
@@ -424,101 +436,107 @@ msgstr "Modifica stato"
 msgid "Edit contribution type"
 msgstr "Modifica tipo di contributo"
 
-#: ../lib/Galette/Controllers/Crud/EntitledsController.php:275
+#: ../lib/Galette/Controllers/Crud/EntitledsController.php:283
+#, fuzzy
+#| msgid "Missing required field name!"
+msgid "Missing required %type name!"
+msgstr "Campo nome obbligatorio mancante!"
+
+#: ../lib/Galette/Controllers/Crud/EntitledsController.php:289
 msgid "%type has not been added :("
 msgstr "%type non è stato aggiunto :("
 
-#: ../lib/Galette/Controllers/Crud/EntitledsController.php:275
+#: ../lib/Galette/Controllers/Crud/EntitledsController.php:289
 msgid "%type #%id has not been updated"
 msgstr "%type #%id non è stato aggiornato"
 
-#: ../lib/Galette/Controllers/Crud/EntitledsController.php:279
+#: ../lib/Galette/Controllers/Crud/EntitledsController.php:295
 msgid "%type has been successfully added!"
 msgstr "%type è stato aggiunto!"
 
-#: ../lib/Galette/Controllers/Crud/EntitledsController.php:279
+#: ../lib/Galette/Controllers/Crud/EntitledsController.php:295
 msgid "%type #%id has been successfully updated!"
 msgstr "%type #%id è stato modificato!"
 
-#: ../lib/Galette/Controllers/Crud/EntitledsController.php:359
+#: ../lib/Galette/Controllers/Crud/EntitledsController.php:382
 msgid "Remove %type '%label'"
 msgstr "Rimuovi %type '%label'"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:107
-#: ../../tempcache/pages/transaction_form.html.twig:196
-#: ../../tempcache/pages/contribution_form.html.twig:241
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:110
+#: ../../tempcache/pages/transaction_form.html.twig:218
+#: ../../tempcache/pages/contribution_form.html.twig:247
 msgid "Membership fee"
 msgstr "Contributo Membership"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:109
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 #: ../lib/Galette/Entity/Contribution.php:1137
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:103
-#: ../../tempcache/pages/transaction_form.html.twig:202
-#: ../../tempcache/pages/contribution_form.html.twig:245
+#: ../../tempcache/pages/transaction_form.html.twig:224
+#: ../../tempcache/pages/contribution_form.html.twig:251
 msgid "Donation"
 msgstr "Donazione"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:252
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:255
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:303
 #, php-format
 msgid "Mass add contribution on %count members"
 msgstr "Aggiunta di contributi di %count membri"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:518
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:527
 msgid "Contributions management"
 msgstr "Gestione contributi"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:518
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:527
 msgid "Transactions management"
 msgstr "Gestione transazioni"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:649
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:659
 msgid "- Unknown payment type!"
 msgstr "- Metodo di pagamento sconosciuto!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:706
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:716
 msgid "No contribution was selected, please check at least one."
 msgstr ""
 "Non è stato selezionato nessun contribuo, per favore selezionane almeno uno."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:742
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:752
 #: ../lib/Galette/Controllers/PdfController.php:446
 #: ../lib/Galette/Controllers/PdfController.php:715
 msgid "Unable to load contribution #%id!"
 msgstr "Impossibile caricare il contributo #%id!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:836
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:846
 msgid "Contribution has been successfully stored"
 msgstr "Il contributo è stato aggiunto con successo"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:840
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:850
 msgid "An error occurred while storing the contribution."
 msgstr "Si è verificato un errore nell'aggiungere il contributo."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:944
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:954
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Rimuovi %1$s %2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:946
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:956
 msgid "contributions"
 msgstr "Contributi"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:946
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:956
 msgid "transactions"
 msgstr "transazioni"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:950
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:960
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr "Rimuovi %1$s #%2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:951
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:961
 #: ../lib/Galette/IO/PdfContribution.php:85
 msgid "contribution"
 msgstr "Contributo"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:951
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:961
 msgid "transaction"
 msgstr "transazione"
 
@@ -562,31 +580,32 @@ msgid "System information"
 msgstr "Informazioni di sistema"
 
 #: ../lib/Galette/Controllers/GaletteController.php:128
-#: ../../tempcache/elements/navigation/navigation_items.html.twig:62
+#: ../../tempcache/elements/navigation/navigation_items.html.twig:71
+#: ../../tempcache/elements/navigation/navigation_items.html.twig:86
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: ../lib/Galette/Controllers/GaletteController.php:245
+#: ../lib/Galette/Controllers/GaletteController.php:243
 #: ../lib/Galette/Core/Galette.php:334 ../lib/Galette/Core/Galette.php:617
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: ../lib/Galette/Controllers/GaletteController.php:260
+#: ../lib/Galette/Controllers/GaletteController.php:258
 #: ../lib/Galette/Filters/MembersList.php:327
 msgid "All accounts"
 msgstr "Tutti gli account"
 
-#: ../lib/Galette/Controllers/GaletteController.php:261
+#: ../lib/Galette/Controllers/GaletteController.php:259
 #: ../lib/Galette/Filters/MembersList.php:328
 msgid "Active accounts"
 msgstr "Account attivi"
 
-#: ../lib/Galette/Controllers/GaletteController.php:262
+#: ../lib/Galette/Controllers/GaletteController.php:260
 #: ../lib/Galette/Filters/MembersList.php:329
 msgid "Inactive accounts"
 msgstr "Account Inattivi"
 
-#: ../lib/Galette/Controllers/GaletteController.php:290
+#: ../lib/Galette/Controllers/GaletteController.php:288
 msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
@@ -594,11 +613,11 @@ msgstr ""
 "Si è verificato un errore SQL nel salvare le impostationi. Per favore "
 "riprovare o contattare l'amministratore se il problema persiste."
 
-#: ../lib/Galette/Controllers/GaletteController.php:294
+#: ../lib/Galette/Controllers/GaletteController.php:292
 msgid "Preferences has been saved."
 msgstr "Le impostazioni sono state salvate."
 
-#: ../lib/Galette/Controllers/GaletteController.php:411
+#: ../lib/Galette/Controllers/GaletteController.php:409
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
@@ -606,84 +625,84 @@ msgstr ""
 "Hai chiesto a Galette di inviare un’e-mail di prova, ma le e-mail sono state "
 "disabilitate nelle preferenze."
 
-#: ../lib/Galette/Controllers/GaletteController.php:418
+#: ../lib/Galette/Controllers/GaletteController.php:416
 msgid "Test message"
 msgstr "Messaggio di test"
 
-#: ../lib/Galette/Controllers/GaletteController.php:421
+#: ../lib/Galette/Controllers/GaletteController.php:419
 msgid "Galette admin"
 msgstr "Amministratore Galette"
 
-#: ../lib/Galette/Controllers/GaletteController.php:424
+#: ../lib/Galette/Controllers/GaletteController.php:422
 msgid "Test message."
 msgstr "Messaggio test."
 
-#: ../lib/Galette/Controllers/GaletteController.php:433
+#: ../lib/Galette/Controllers/GaletteController.php:431
 #, php-format
 msgid "An email has been sent to %email"
 msgstr "Un’e-mail è stata inviata a %email"
 
-#: ../lib/Galette/Controllers/GaletteController.php:442
+#: ../lib/Galette/Controllers/GaletteController.php:440
 #, php-format
 msgid "No email sent to %email"
 msgstr "Nessun’e-mail inviata a %email"
 
-#: ../lib/Galette/Controllers/GaletteController.php:449
+#: ../lib/Galette/Controllers/GaletteController.php:447
 msgid "Invalid email adress!"
 msgstr "Indirizzo e-mail non valido!"
 
-#: ../lib/Galette/Controllers/GaletteController.php:493
+#: ../lib/Galette/Controllers/GaletteController.php:491
 #: ../lib/Galette/Core/Galette.php:319
 msgid "Charts"
 msgstr "Tabelle"
 
-#: ../lib/Galette/Controllers/GaletteController.php:514
+#: ../lib/Galette/Controllers/GaletteController.php:512
 msgid "Fields configuration"
 msgstr "Campi di configurazione"
 
-#: ../lib/Galette/Controllers/GaletteController.php:577
+#: ../lib/Galette/Controllers/GaletteController.php:575
 msgid "Fields configuration has been successfully stored"
 msgstr "I campi di configurazione sono stati salvati con successo"
 
-#: ../lib/Galette/Controllers/GaletteController.php:582
+#: ../lib/Galette/Controllers/GaletteController.php:580
 msgid "An error occurred while storing fields configuration :("
 msgstr "Si è verificato un errore nel salvare le configurazioni dei campi :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:607
+#: ../lib/Galette/Controllers/GaletteController.php:605
 msgid "Lists configuration"
 msgstr "Configurazione liste"
 
-#: ../lib/Galette/Controllers/GaletteController.php:645
+#: ../lib/Galette/Controllers/GaletteController.php:643
 msgid "List configuration has been successfully stored"
 msgstr "La configurazione delle liste è stata salvata"
 
-#: ../lib/Galette/Controllers/GaletteController.php:650
+#: ../lib/Galette/Controllers/GaletteController.php:648
 msgid "An error occurred while storing list configuration :("
 msgstr ""
 "Si è verificato un errore nel salvataggio della lista di configurazione :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:684
+#: ../lib/Galette/Controllers/GaletteController.php:682
 #: ../lib/Galette/Core/Galette.php:262 ../lib/Galette/Core/Galette.php:601
 msgid "Reminders"
 msgstr "Promemoria"
 
-#: ../lib/Galette/Controllers/GaletteController.php:725
+#: ../lib/Galette/Controllers/GaletteController.php:723
 msgid "No reminder to send for now."
 msgstr "Nessun promemoria da inviare per adesso."
 
-#: ../lib/Galette/Controllers/GaletteController.php:762
+#: ../lib/Galette/Controllers/GaletteController.php:760
 msgid "There are no member to proceed."
 msgstr "Non ci sono membri per procedere."
 
-#: ../lib/Galette/Controllers/GaletteController.php:769
+#: ../lib/Galette/Controllers/GaletteController.php:767
 msgid "Reminder has not been sent:"
 msgstr "Il promemoria non è stato inviato:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:776
+#: ../lib/Galette/Controllers/GaletteController.php:774
 msgid "Sent reminders:"
 msgstr "Invia promemoria:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:852
+#: ../lib/Galette/Controllers/GaletteController.php:850
 msgid "Download document"
 msgstr "Scarica documento"
 
@@ -703,17 +722,17 @@ msgstr ""
 msgid "Thank you for registering!"
 msgstr "Grazie per esserti registrato!"
 
-#: ../lib/Galette/Controllers/CrudController.php:290
+#: ../lib/Galette/Controllers/CrudController.php:281
 #: ../lib/Galette/Controllers/HistoryController.php:206
 #: ../lib/Galette/Controllers/CsvController.php:504
 msgid "Removal has not been confirmed!"
 msgstr "La rimozione non è stata confermata!"
 
-#: ../lib/Galette/Controllers/CrudController.php:300
+#: ../lib/Galette/Controllers/CrudController.php:291
 msgid "Successfully deleted!"
 msgstr "Cancellata con successo!"
 
-#: ../lib/Galette/Controllers/CrudController.php:312
+#: ../lib/Galette/Controllers/CrudController.php:303
 msgid "An error occurred trying to delete :("
 msgstr "Si è verificato un errore nel tentativo di eliminare :("
 
@@ -793,8 +812,9 @@ msgstr "Autenticazione fallita"
 
 #: ../lib/Galette/Controllers/AuthController.php:168
 #: ../../tempcache/elements/logout.html.twig:100
-#: ../../tempcache/elements/logout.html.twig:142
-#: ../../tempcache/elements/logout.html.twig:160
+#: ../../tempcache/elements/logout.html.twig:145
+#: ../../tempcache/elements/logout.html.twig:163
+#: ../../tempcache/elements/logout.html.twig:261
 msgid "Log off"
 msgstr "Esci"
 
@@ -818,7 +838,7 @@ msgid "Password recovery"
 msgstr "Recupero password"
 
 #: ../lib/Galette/Controllers/AuthController.php:293
-#: ../../tempcache/pages/mailing_form.html.twig:60
+#: ../../tempcache/pages/mailing_form.html.twig:58
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 "Le e-mail iniviate sono disabilitate nelle preferenze. Chiedi "
@@ -982,7 +1002,7 @@ msgstr "Il Plugin %name è stato disattivato"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:76
 #: ../lib/Galette/Core/Galette.php:371
-#: ../../tempcache/pages/configuration_payment_types.html.twig:287
+#: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
 msgid "Translate labels"
 msgstr "Traduci etichette"
@@ -1089,16 +1109,16 @@ msgstr "Il modello importato è stato salvato :)"
 msgid "Import model has not been stored :("
 msgstr "Il modello importato non è stato salvato :("
 
-#: ../lib/Galette/Controllers/TextController.php:92
+#: ../lib/Galette/Controllers/TextController.php:91
 msgid "Automatic emails texts edition"
 msgstr "Creazione automatica del testo dell'email"
 
-#: ../lib/Galette/Controllers/TextController.php:161
+#: ../lib/Galette/Controllers/TextController.php:160
 #, php-format
 msgid "Email: '%s' has not been modified!"
 msgstr "E-mail: «%s» è stato modificato!"
 
-#: ../lib/Galette/Controllers/TextController.php:170
+#: ../lib/Galette/Controllers/TextController.php:169
 #, php-format
 msgid "Email: '%s' has been successfully modified."
 msgstr "Email: « %s » è stato modificato con successo."
@@ -1108,7 +1128,7 @@ msgid "Checks"
 msgstr "Controlli"
 
 #: ../lib/Galette/Core/Install.php:126 ../webroot/installer.php:302
-#: ../../tempcache/modals/plugin_initdb.html.twig:381
+#: ../../tempcache/modals/plugin_initdb.html.twig:386
 msgid "Installation mode"
 msgstr "Modalità di installazione"
 
@@ -1141,7 +1161,7 @@ msgid "Galette initialization"
 msgstr "Inizializzazione di Galette"
 
 #: ../lib/Galette/Core/Install.php:150 ../webroot/installer.php:364
-#: ../../tempcache/modals/plugin_initdb.html.twig:446
+#: ../../tempcache/modals/plugin_initdb.html.twig:451
 msgid "End!"
 msgstr "Fine!"
 
@@ -1157,61 +1177,61 @@ msgstr "Ko"
 msgid "Database type unknown"
 msgstr "Tipo di banca dati sconosciuto"
 
-#: ../lib/Galette/Core/Install.php:684
+#: ../lib/Galette/Core/Install.php:685
 msgid "%version script has been successfully executed :)"
 msgstr "%version script è stato eseguito :)"
 
-#: ../lib/Galette/Core/Install.php:696
+#: ../lib/Galette/Core/Install.php:697
 msgid "Unable to run %version update script :("
 msgstr "Impossibile caricare lo script di aggiornamento %version :("
 
-#: ../lib/Galette/Core/Install.php:1045
+#: ../lib/Galette/Core/Install.php:1046
 msgid "Write configuration file"
 msgstr "Scrivi il file di configurazione"
 
-#: ../lib/Galette/Core/Install.php:1074
+#: ../lib/Galette/Core/Install.php:1075
 msgid "Config file already exists and is up to date"
 msgstr "Il file di configurazione è già presente ed è aggiornato"
 
-#: ../lib/Galette/Core/Install.php:1103
+#: ../lib/Galette/Core/Install.php:1104
 msgid "Unable to create configuration file (%path)"
 msgstr "Impossibile creare il file di configurazione (%path)"
 
-#: ../lib/Galette/Core/Install.php:1156
+#: ../lib/Galette/Core/Install.php:1157
 msgid "Preferences"
 msgstr "Preferenze"
 
-#: ../lib/Galette/Core/Install.php:1160 ../lib/Galette/Core/Galette.php:388
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
 msgid "Contributions types"
 msgstr "Tipi di contributi"
 
-#: ../lib/Galette/Core/Install.php:1164
+#: ../lib/Galette/Core/Install.php:1165
 #: ../../tempcache/pages/advanced_search.html.twig:494
 #: ../../tempcache/pages/advanced_search.html.twig:499
 msgid "Status"
 msgstr "Stato"
 
-#: ../lib/Galette/Core/Install.php:1168
+#: ../lib/Galette/Core/Install.php:1169
 msgid "Fields config and categories"
 msgstr "Configurazione campi e categorie"
 
-#: ../lib/Galette/Core/Install.php:1172 ../lib/Galette/Core/Install.php:1194
+#: ../lib/Galette/Core/Install.php:1173 ../lib/Galette/Core/Install.php:1195
 msgid "Mails texts"
 msgstr "Testi delle e-mail"
 
-#: ../lib/Galette/Core/Install.php:1176 ../lib/Galette/Core/Galette.php:403
+#: ../lib/Galette/Core/Install.php:1177 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
 msgstr "Titoli"
 
-#: ../lib/Galette/Core/Install.php:1180
+#: ../lib/Galette/Core/Install.php:1181
 msgid "PDF Models"
 msgstr "Modelli PDF"
 
-#: ../lib/Galette/Core/Install.php:1186
+#: ../lib/Galette/Core/Install.php:1187
 msgid "Update preferences"
 msgstr "Preferenze di aggiornamento"
 
-#: ../lib/Galette/Core/Install.php:1190
+#: ../lib/Galette/Core/Install.php:1191
 msgid "Update models"
 msgstr "Aggiorna modelli"
 
@@ -1282,12 +1302,12 @@ msgstr "Ultima pagina (%i)"
 msgid "All"
 msgstr "Tutti"
 
-#: ../lib/Galette/Core/Authentication.php:290
+#: ../lib/Galette/Core/Authentication.php:301
 #, php-format
 msgid "Logged in as:<br/>%login"
 msgstr "Accesso eseguito come: <br/>%login"
 
-#: ../lib/Galette/Core/MailingHistory.php:503
+#: ../lib/Galette/Core/MailingHistory.php:505
 msgid "Delete mailing entries"
 msgstr "Elimina le voci di posta"
 
@@ -1381,8 +1401,8 @@ msgid "View and filter transactions"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:239
-#: ../../tempcache/pages/contributions_list.html.twig:231
-#: ../../tempcache/pages/contributions_list.html.twig:325
+#: ../../tempcache/pages/contributions_list.html.twig:245
+#: ../../tempcache/pages/contributions_list.html.twig:344
 #: ../../tempcache/pages/member_show.html.twig:192
 msgid "Add a membership fee"
 msgstr ""
@@ -1392,8 +1412,8 @@ msgid "Add new membership fee in database"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:247
-#: ../../tempcache/pages/contributions_list.html.twig:241
-#: ../../tempcache/pages/contributions_list.html.twig:338
+#: ../../tempcache/pages/contributions_list.html.twig:259
+#: ../../tempcache/pages/contributions_list.html.twig:357
 #: ../../tempcache/pages/member_show.html.twig:207
 msgid "Add a donation"
 msgstr ""
@@ -1403,8 +1423,8 @@ msgid "Add new donation in database"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:255
-#: ../../tempcache/pages/transactions_list.html.twig:176
-#: ../../tempcache/pages/transactions_list.html.twig:227
+#: ../../tempcache/pages/transactions_list.html.twig:183
+#: ../../tempcache/pages/transactions_list.html.twig:234
 msgid "Add a transaction"
 msgstr ""
 
@@ -1575,7 +1595,7 @@ msgid "%membername: remove from database"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:776 ../lib/Galette/Core/Galette.php:781
-#: ../../tempcache/elements/group_persons.html.twig:171
+#: ../../tempcache/elements/group_persons.html.twig:182
 msgid "Log in in as %membername"
 msgstr ""
 
@@ -1590,13 +1610,13 @@ msgid "Mass add contributions"
 msgstr "Elenco dei contributi"
 
 #: ../lib/Galette/Core/Galette.php:877
-#: ../../tempcache/elements/group.html.twig:334
+#: ../../tempcache/elements/group.html.twig:358
 #: ../../tempcache/pages/contributions_list.html.twig:56
 msgid "Delete"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:893
-#: ../../tempcache/pages/members_list.html.twig:738
+#: ../../tempcache/pages/members_list.html.twig:745
 msgid "Mail"
 msgstr ""
 
@@ -1614,40 +1634,40 @@ msgstr ""
 msgid "Export as CSV"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:530
+#: ../lib/Galette/Core/Preferences.php:529
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Devi indicare un mittente per le email!"
 
-#: ../lib/Galette/Core/Preferences.php:536
+#: ../lib/Galette/Core/Preferences.php:535
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Devi indicare un indirizzo e-mail che Galette dovrebbe usare per inviare "
 "messagi!"
 
-#: ../lib/Galette/Core/Preferences.php:543
+#: ../lib/Galette/Core/Preferences.php:542
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Devi indicare il server SMTP che vuoi usare!"
 
-#: ../lib/Galette/Core/Preferences.php:555
+#: ../lib/Galette/Core/Preferences.php:554
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- È necessario eseguire il login per l'autenticazione SMTP."
 
-#: ../lib/Galette/Core/Preferences.php:561
+#: ../lib/Galette/Core/Preferences.php:560
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- È necessario fornire una password per l'autenticazione SMTP."
 
-#: ../lib/Galette/Core/Preferences.php:573
+#: ../lib/Galette/Core/Preferences.php:572
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 "- L'estensione predefinita e l'inizio dell'iscrizione si escludono a vicenda."
 
-#: ../lib/Galette/Core/Preferences.php:582
+#: ../lib/Galette/Core/Preferences.php:581
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- L'offerta di mesi è compatibile solo con la prima iscrizione."
 
-#: ../lib/Galette/Core/Preferences.php:591
+#: ../lib/Galette/Core/Preferences.php:590
 #: ../lib/Galette/Entity/Adherent.php:1190
 #: ../lib/Galette/Entity/Transaction.php:386
 #: ../lib/Galette/Entity/Contribution.php:531
@@ -1655,91 +1675,91 @@ msgstr "- L'offerta di mesi è compatibile solo con la prima iscrizione."
 msgid "- Mandatory field %field empty."
 msgstr "- Il campo obbligatorio %field è vuoto."
 
-#: ../lib/Galette/Core/Preferences.php:599 ../webroot/installer.php:185
+#: ../lib/Galette/Core/Preferences.php:598 ../webroot/installer.php:185
 msgid "Passwords mismatch"
 msgstr "Password non corrispondenti"
 
-#: ../lib/Galette/Core/Preferences.php:612
+#: ../lib/Galette/Core/Preferences.php:611
 msgid "You have to select a staff member"
 msgstr "Devi selezionare un membro dello staff"
 
-#: ../lib/Galette/Core/Preferences.php:667
+#: ../lib/Galette/Core/Preferences.php:666
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Indirizzo e-mail non valido: %s"
 
-#: ../lib/Galette/Core/Preferences.php:681
+#: ../lib/Galette/Core/Preferences.php:680
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Il nome utente deve essere composto da almeno 4 caratteri!"
 
-#: ../lib/Galette/Core/Preferences.php:685
+#: ../lib/Galette/Core/Preferences.php:684
 msgid "- This username is already used by another member !"
 msgstr "- Questo nome utente è già utilizzato da un altro membro!"
 
-#: ../lib/Galette/Core/Preferences.php:692
-#: ../lib/Galette/Core/Preferences.php:713
+#: ../lib/Galette/Core/Preferences.php:691
+#: ../lib/Galette/Core/Preferences.php:712
 msgid "- The numbers and measures have to be integers!"
 msgstr "- I numeri e le misure devono essere interi!"
 
-#: ../lib/Galette/Core/Preferences.php:747
+#: ../lib/Galette/Core/Preferences.php:746
 msgid "- Invalid number of months of membership extension."
 msgstr "- Numero di mesi non valido per l'estensione dell'affiliazione."
 
-#: ../lib/Galette/Core/Preferences.php:753
+#: ../lib/Galette/Core/Preferences.php:752
 msgid "- Invalid format of beginning of membership."
 msgstr ""
 "- L'estensione predefinita e l'inizio dell'iscrizione si escludono una "
 "vicenda."
 
-#: ../lib/Galette/Core/Preferences.php:757
+#: ../lib/Galette/Core/Preferences.php:756
 msgid "- Invalid date for beginning of membership."
 msgstr "- Data non valida per l'inizio dell'iscrizione."
 
-#: ../lib/Galette/Core/Preferences.php:763
+#: ../lib/Galette/Core/Preferences.php:762
 msgid "- Invalid number of offered months."
 msgstr "- Numero di mesi offerti non valido."
 
-#: ../lib/Galette/Core/Preferences.php:768
+#: ../lib/Galette/Core/Preferences.php:767
 msgid "- Invalid year for cards."
 msgstr "- Anno per le carte non valido."
 
-#: ../lib/Galette/Core/Preferences.php:885
+#: ../lib/Galette/Core/Preferences.php:884
 msgid "%name association's %status"
 msgstr "%status dell'associazione %name"
 
-#: ../lib/Galette/Core/Preferences.php:1121
+#: ../lib/Galette/Core/Preferences.php:1120
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1140
-#: ../lib/Galette/Core/Preferences.php:1156 ../lib/Galette/IO/Csv.php:115
+#: ../lib/Galette/Core/Preferences.php:1139
+#: ../lib/Galette/Core/Preferences.php:1155 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Entity/Texts.php:214
 #: ../../tempcache/pages/history.html.twig:323
 #: ../../tempcache/pages/mailings_list.html.twig:274
 msgid "Y-m-d H:i:s"
 msgstr "d/m/Y H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1142
+#: ../lib/Galette/Core/Preferences.php:1141
 msgid "Never"
 msgstr "Mai"
 
-#: ../lib/Galette/Core/Preferences.php:1180
+#: ../lib/Galette/Core/Preferences.php:1179
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
 "La configurazione attuale delle schede può superare la larghezza della "
 "pagina!"
 
-#: ../lib/Galette/Core/Preferences.php:1191
+#: ../lib/Galette/Core/Preferences.php:1190
 msgid "Current cards configuration may exceed page height!"
 msgstr ""
 "La configurazione attuale delle schede può superare l'altezza della pagina!"
 
-#: ../lib/Galette/Core/Preferences.php:1217
-#: ../lib/Galette/Features/Replacements.php:791
+#: ../lib/Galette/Core/Preferences.php:1216
+#: ../lib/Galette/Features/Replacements.php:792
 msgid "Main information"
 msgstr "Informazioni principali"
 
-#: ../lib/Galette/Core/Preferences.php:1224
+#: ../lib/Galette/Core/Preferences.php:1223
 #: ../../tempcache/elements/display_socials.html.twig:45
 #: ../../tempcache/elements/edit_socials.html.twig:56
 #: ../../tempcache/pages/preferences.html.twig:69
@@ -1779,7 +1799,7 @@ msgstr "Il modulo non esiste!"
 msgid "File not found!"
 msgstr "File non trovato!"
 
-#: ../lib/Galette/Core/Picture.php:862
+#: ../lib/Galette/Core/Picture.php:891
 msgid "An SQL error has occurred."
 msgstr "Si è verificato un errore SQL."
 
@@ -1797,21 +1817,22 @@ msgstr ""
 "Impossibile rimuovere un membro che ha ancora dipendenze (mailing, ...)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Repository/Members.php:1471
-#: ../lib/Galette/Repository/Members.php:1475
+#: ../lib/Galette/Repository/Members.php:1396
+#: ../lib/Galette/Repository/Members.php:1400
+#: ../lib/Galette/Repository/Members.php:1503
+#: ../lib/Galette/Repository/Members.php:1507
 #: ../lib/Galette/Util/Password.php:268 ../lib/Galette/IO/MembersCsv.php:183
 #: ../lib/Galette/IO/MembersCsv.php:195 ../lib/Galette/IO/MembersCsv.php:207
 #: ../lib/Galette/IO/MembersCsv.php:219
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:90
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:122
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:177
 #: ../lib/Galette/IO/ContributionsCsv.php:140
 #: ../lib/Galette/IO/ContributionsCsv.php:152
 #: ../lib/Galette/IO/ContributionsCsv.php:164
 #: ../lib/Galette/Features/Replacements.php:501
-#: ../lib/Galette/Features/Dynamics.php:178
-#: ../lib/Galette/Features/Dynamics.php:191
-#: ../lib/Galette/Features/Dynamics.php:200
+#: ../lib/Galette/Features/Dynamics.php:181
+#: ../lib/Galette/Features/Dynamics.php:194
+#: ../lib/Galette/Features/Dynamics.php:203
 #: ../lib/Galette/Entity/Adherent.php:793
 #: ../lib/Galette/Entity/Adherent.php:816
 #: ../lib/Galette/Entity/Adherent.php:829
@@ -1833,15 +1854,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1359
 #: ../lib/Galette/Entity/ImportModel.php:215
 #: ../lib/Galette/Entity/SavedSearch.php:274
-#: ../lib/Galette/Entity/Group.php:637
+#: ../lib/Galette/Entity/Group.php:642
 #: ../lib/Galette/Filters/TransactionsList.php:144
 #: ../lib/Galette/Filters/TransactionsList.php:245
 #: ../lib/Galette/Filters/TransactionsList.php:254
 #: ../lib/Galette/Filters/TransactionsList.php:283
-#: ../lib/Galette/Filters/HistoryList.php:150
-#: ../lib/Galette/Filters/HistoryList.php:246
-#: ../lib/Galette/Filters/HistoryList.php:255
-#: ../lib/Galette/Filters/HistoryList.php:284
+#: ../lib/Galette/Filters/HistoryList.php:157
+#: ../lib/Galette/Filters/HistoryList.php:253
+#: ../lib/Galette/Filters/HistoryList.php:262
+#: ../lib/Galette/Filters/HistoryList.php:291
 #: ../lib/Galette/Filters/MailingsList.php:150
 #: ../lib/Galette/Filters/MailingsList.php:246
 #: ../lib/Galette/Filters/MailingsList.php:255
@@ -1854,8 +1875,8 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:343
 #: ../lib/Galette/Filters/AdvancedMembersList.php:460
 #: ../lib/Galette/Filters/AdvancedMembersList.php:606
-#: ../../tempcache/pages/member_form.html.twig:899
-#: ../../tempcache/pages/advanced_search.html.twig:1327
+#: ../../tempcache/pages/member_form.html.twig:905
+#: ../../tempcache/pages/advanced_search.html.twig:1375
 msgid "Y-m-d"
 msgstr "d/m/Y"
 
@@ -1913,12 +1934,13 @@ msgid "User, read/write"
 msgstr "Utente, lettura/scrittura"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
-#: ../../tempcache/elements/edit_entitleds.html.twig:198
+#: ../../tempcache/elements/edit_entitleds.html.twig:210
 #: ../../tempcache/elements/ajax_members.html.twig:167
+#: ../../tempcache/elements/group_persons.html.twig:137
 #: ../../tempcache/pages/members_list.html.twig:619
-#: ../../tempcache/pages/members_list.html.twig:767
+#: ../../tempcache/pages/members_list.html.twig:774
 #: ../../tempcache/pages/configuration_core_fields.html.twig:263
-#: ../../tempcache/pages/preferences.html.twig:436
+#: ../../tempcache/pages/preferences.html.twig:382
 #: ../../tempcache/pages/configuration_core_lists.html.twig:143
 #: ../../tempcache/pages/configuration_core_lists.html.twig:250
 msgid "Staff member"
@@ -1926,6 +1948,7 @@ msgstr "Membri dello staff"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
 #: ../../tempcache/elements/ajax_members.html.twig:156
+#: ../../tempcache/elements/group_persons.html.twig:126
 #: ../../tempcache/pages/configuration_core_fields.html.twig:253
 #: ../../tempcache/pages/configuration_core_lists.html.twig:138
 #: ../../tempcache/pages/configuration_core_lists.html.twig:245
@@ -1933,10 +1956,14 @@ msgid "Administrator"
 msgstr "Amministratore"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:524
+#: ../../tempcache/elements/ajax_members.html.twig:178
+#: ../../tempcache/elements/group_persons.html.twig:148
+#: ../../tempcache/pages/members_list.html.twig:626
+#: ../../tempcache/pages/members_list.html.twig:785
 #: ../../tempcache/pages/configuration_core_fields.html.twig:273
 #: ../../tempcache/pages/configuration_core_lists.html.twig:148
 #: ../../tempcache/pages/configuration_core_lists.html.twig:255
-#: ../../tempcache/pages/member_show.html.twig:562
+#: ../../tempcache/pages/member_show.html.twig:551
 #: ../../tempcache/components/forms/groups.html.twig:149
 msgid "Group manager"
 msgstr "Gruppo manager"
@@ -2041,15 +2068,16 @@ msgid "Managers:"
 msgstr "Gestori:"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:186
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:185
 #: ../lib/Galette/Features/Replacements.php:264
 #: ../lib/Galette/Entity/PdfModel.php:463
 #: ../lib/Galette/Filters/MembersList.php:292
 #: ../includes/fields_defs/members_fields.php:322
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:59
-#: ../../tempcache/elements/edit_entitleds.html.twig:52
-#: ../../tempcache/elements/edit_entitleds.html.twig:100
-#: ../../tempcache/elements/edit_entitleds.html.twig:185
+#: ../../tempcache/elements/edit_entitleds.html.twig:58
+#: ../../tempcache/elements/edit_entitleds.html.twig:106
+#: ../../tempcache/elements/edit_entitleds.html.twig:111
+#: ../../tempcache/elements/edit_entitleds.html.twig:197
 #: ../../tempcache/elements/ajax_members.html.twig:51
 #: ../../tempcache/elements/ajax_groups.html.twig:46
 #: ../../tempcache/elements/group_persons.html.twig:44
@@ -2057,23 +2085,24 @@ msgstr "Gestori:"
 #: ../../tempcache/pages/plugins.html.twig:226
 #: ../../tempcache/pages/members_list.html.twig:497
 #: ../../tempcache/pages/members_list.html.twig:505
-#: ../../tempcache/pages/import.html.twig:100
+#: ../../tempcache/pages/import.html.twig:86
 #: ../../tempcache/pages/configuration_payment_types.html.twig:61
-#: ../../tempcache/pages/configuration_payment_types.html.twig:149
-#: ../../tempcache/pages/mailing_form.html.twig:115
+#: ../../tempcache/pages/configuration_payment_types.html.twig:86
+#: ../../tempcache/pages/configuration_payment_types.html.twig:155
+#: ../../tempcache/pages/mailing_form.html.twig:114
 #: ../../tempcache/pages/saved_searches_list.html.twig:69
 #: ../../tempcache/pages/saved_searches_list.html.twig:134
 #: ../../tempcache/pages/members_public_list.html.twig:78
-#: ../../tempcache/pages/export.html.twig:119
-#: ../../tempcache/pages/export.html.twig:246
+#: ../../tempcache/pages/export.html.twig:128
+#: ../../tempcache/pages/export.html.twig:255
 msgid "Name"
 msgstr "Nome"
 
 #: ../lib/Galette/IO/PdfGroups.php:180
 #: ../lib/Galette/Features/Replacements.php:328
 #: ../lib/Galette/Features/Replacements.php:376
-#: ../../tempcache/elements/member_card.html.twig:120
-#: ../../tempcache/pages/preferences.html.twig:2060
+#: ../../tempcache/elements/member_card.html.twig:127
+#: ../../tempcache/pages/preferences.html.twig:1990
 #: ../../tempcache/pages/members_public_list.html.twig:86
 #: ../../tempcache/pages/members_public_list.html.twig:222
 msgid "Email"
@@ -2082,7 +2111,7 @@ msgstr "E-mail"
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Features/Replacements.php:320
 #: ../lib/Galette/Entity/ListsConfig.php:223
-#: ../../tempcache/elements/member_card.html.twig:80
+#: ../../tempcache/elements/member_card.html.twig:87
 msgid "Phone"
 msgstr "Telefono"
 
@@ -2101,8 +2130,8 @@ msgstr "lista membri_filtrati"
 #: ../../tempcache/modals/mass_change_members.html.twig:163
 #: ../../tempcache/elements/ajax_members.html.twig:126
 #: ../../tempcache/elements/group_persons.html.twig:98
-#: ../../tempcache/pages/advanced_search.html.twig:1091
-#: ../../tempcache/pages/advanced_search.html.twig:1612
+#: ../../tempcache/pages/advanced_search.html.twig:1142
+#: ../../tempcache/pages/advanced_search.html.twig:1662
 #: ../../tempcache/components/forms/gender.html.twig:129
 msgid "Man"
 msgstr "Uomo"
@@ -2113,8 +2142,8 @@ msgstr "Uomo"
 #: ../../tempcache/modals/mass_change_members.html.twig:154
 #: ../../tempcache/elements/ajax_members.html.twig:137
 #: ../../tempcache/elements/group_persons.html.twig:109
-#: ../../tempcache/pages/advanced_search.html.twig:1091
-#: ../../tempcache/pages/advanced_search.html.twig:1612
+#: ../../tempcache/pages/advanced_search.html.twig:1142
+#: ../../tempcache/pages/advanced_search.html.twig:1662
 #: ../../tempcache/components/forms/gender.html.twig:146
 msgid "Woman"
 msgstr "Donna"
@@ -2123,8 +2152,8 @@ msgstr "Donna"
 #: ../lib/Galette/Features/Replacements.php:616
 #: ../lib/Galette/Entity/Adherent.php:1775
 #: ../../tempcache/modals/mass_change_members.html.twig:145
-#: ../../tempcache/pages/advanced_search.html.twig:1091
-#: ../../tempcache/pages/advanced_search.html.twig:1612
+#: ../../tempcache/pages/advanced_search.html.twig:1142
+#: ../../tempcache/pages/advanced_search.html.twig:1662
 #: ../../tempcache/components/forms/gender.html.twig:112
 msgid "Unspecified"
 msgstr "Non specificato"
@@ -2132,40 +2161,46 @@ msgstr "Non specificato"
 #: ../lib/Galette/IO/MembersCsv.php:243 ../lib/Galette/IO/MembersCsv.php:247
 #: ../lib/Galette/IO/MembersCsv.php:251 ../lib/Galette/IO/MembersCsv.php:255
 #: ../lib/Galette/Features/Replacements.php:737
-#: ../lib/Galette/Entity/Adherent.php:1740
+#: ../lib/Galette/Entity/Adherent.php:1737
+#: ../lib/Galette/Entity/Adherent.php:1739
+#: ../lib/Galette/Entity/Adherent.php:1741
+#: ../lib/Galette/Entity/Adherent.php:1743
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:111
-#: ../../tempcache/elements/edit_entitleds.html.twig:128
-#: ../../tempcache/elements/edit_entitleds.html.twig:231
+#: ../../tempcache/elements/edit_entitleds.html.twig:140
+#: ../../tempcache/elements/edit_entitleds.html.twig:243
 #: ../../tempcache/elements/js/messages.js.twig:118
-#: ../../tempcache/elements/display_dynamic_fields.html.twig:129
+#: ../../tempcache/elements/display_dynamic_fields.html.twig:135
 #: ../../tempcache/elements/messages_inline.html.twig:310
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:137
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:422
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:141
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:434
 #: ../../tempcache/pages/configuration_core_fields.html.twig:186
 #: ../../tempcache/pages/mailings_list.html.twig:195
 #: ../../tempcache/pages/advanced_search.html.twig:469
-#: ../../tempcache/pages/advanced_search.html.twig:1355
-#: ../../tempcache/pages/advanced_search.html.twig:1699
+#: ../../tempcache/pages/advanced_search.html.twig:1403
+#: ../../tempcache/pages/advanced_search.html.twig:1749
 msgid "Yes"
 msgstr "Sì"
 
 #: ../lib/Galette/IO/MembersCsv.php:243 ../lib/Galette/IO/MembersCsv.php:247
 #: ../lib/Galette/IO/MembersCsv.php:251 ../lib/Galette/IO/MembersCsv.php:255
 #: ../lib/Galette/Features/Replacements.php:737
-#: ../lib/Galette/Entity/Adherent.php:1740
+#: ../lib/Galette/Entity/Adherent.php:1737
+#: ../lib/Galette/Entity/Adherent.php:1739
+#: ../lib/Galette/Entity/Adherent.php:1741
+#: ../lib/Galette/Entity/Adherent.php:1743
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:113
-#: ../../tempcache/elements/edit_entitleds.html.twig:124
-#: ../../tempcache/elements/edit_entitleds.html.twig:237
+#: ../../tempcache/elements/edit_entitleds.html.twig:136
+#: ../../tempcache/elements/edit_entitleds.html.twig:249
 #: ../../tempcache/elements/js/messages.js.twig:136
-#: ../../tempcache/elements/display_dynamic_fields.html.twig:135
+#: ../../tempcache/elements/display_dynamic_fields.html.twig:141
 #: ../../tempcache/elements/messages_inline.html.twig:314
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:129
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:414
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:133
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:426
 #: ../../tempcache/pages/configuration_core_fields.html.twig:205
 #: ../../tempcache/pages/mailings_list.html.twig:211
 #: ../../tempcache/pages/advanced_search.html.twig:485
-#: ../../tempcache/pages/advanced_search.html.twig:1363
-#: ../../tempcache/pages/advanced_search.html.twig:1701
+#: ../../tempcache/pages/advanced_search.html.twig:1411
+#: ../../tempcache/pages/advanced_search.html.twig:1751
 msgid "No"
 msgstr "No"
 
@@ -2173,11 +2208,11 @@ msgstr "No"
 msgid "attendance_sheet"
 msgstr "foglio presenze"
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:169
-msgid "%A, %B %#d%O %Y"
-msgstr "%A %#d %B %Y"
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:167
+msgid "MMMM, EEEE d y"
+msgstr ""
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:187
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:186
 msgid "Signature"
 msgstr "Firma"
 
@@ -2227,55 +2262,55 @@ msgstr ""
 msgid "Labels"
 msgstr "Etichetta"
 
-#: ../lib/Galette/IO/CsvIn.php:232
+#: ../lib/Galette/IO/CsvIn.php:230
 #, php-format
 msgid "File %filename cannot be open!"
 msgstr "Il file %filename non può essere aperto!"
 
-#: ../lib/Galette/IO/CsvIn.php:280
+#: ../lib/Galette/IO/CsvIn.php:278
 msgid ""
 "Fields count mismatch... There should be %should_count fields and there are "
 "%count (row %row)"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:302
+#: ../lib/Galette/IO/CsvIn.php:300
 msgid "Field %field is required, but missing in row %row"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:324
+#: ../lib/Galette/IO/CsvIn.php:322
 #, php-format
 msgid "Status %status does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:343
+#: ../lib/Galette/IO/CsvIn.php:342
 msgid "Title %title does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:359
+#: ../lib/Galette/IO/CsvIn.php:358
 msgid "from another member in import"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:359
+#: ../lib/Galette/IO/CsvIn.php:358
 msgid "from member %id_adh"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:365
+#: ../lib/Galette/IO/CsvIn.php:364
 msgid "Email address %address is already used! (%extra)"
 msgstr "L’indirizzo e-mail %address è già usato! (%extra)"
 
-#: ../lib/Galette/IO/CsvIn.php:390
+#: ../lib/Galette/IO/CsvIn.php:389
 msgid "Lang %lang does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:442
+#: ../lib/Galette/IO/CsvIn.php:441
 msgid "File is empty!"
 msgstr "Il file è vuoto!"
 
-#: ../lib/Galette/IO/CsvIn.php:529 ../lib/Galette/IO/CsvIn.php:540
+#: ../lib/Galette/IO/CsvIn.php:528 ../lib/Galette/IO/CsvIn.php:539
 msgid "An error occurred storing member at row %row (%name):"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:575
+#: ../lib/Galette/IO/CsvIn.php:574
 msgid "An error occurred while importing members"
 msgstr ""
 
@@ -2311,7 +2346,7 @@ msgstr ""
 msgid "File extension is not allowed, only %s files are."
 msgstr ""
 
-#: ../lib/Galette/IO/FileTrait.php:494 ../lib/Galette/Features/Dynamics.php:302
+#: ../lib/Galette/IO/FileTrait.php:494 ../lib/Galette/Features/Dynamics.php:305
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr ""
@@ -2458,7 +2493,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:260
 #: ../lib/Galette/Filters/MembersList.php:293
-#: ../../tempcache/pages/preferences.html.twig:2092
+#: ../../tempcache/pages/preferences.html.twig:2022
 msgid "Member number"
 msgstr ""
 
@@ -2474,7 +2509,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:276
 #: ../../tempcache/elements/group_persons.html.twig:50
-#: ../../tempcache/pages/preferences.html.twig:2076
+#: ../../tempcache/pages/preferences.html.twig:2006
 #: ../../tempcache/pages/members_public_list.html.twig:78
 #: ../../tempcache/pages/members_public_list.html.twig:211
 msgid "Nickname"
@@ -2494,7 +2529,7 @@ msgid "Birth place"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:292
-#: ../../tempcache/pages/preferences.html.twig:2084
+#: ../../tempcache/pages/preferences.html.twig:2014
 msgid "Profession"
 msgstr ""
 
@@ -2507,7 +2542,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:300
 #: ../lib/Galette/Features/Replacements.php:304
 #: ../lib/Galette/Filters/MembersList.php:295
-#: ../../tempcache/pages/mailing_form.html.twig:125
+#: ../../tempcache/pages/mailing_form.html.twig:124
 msgid "Address"
 msgstr ""
 
@@ -2550,12 +2585,12 @@ msgid "Contribution label"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:402
-#: ../../tempcache/pages/transaction_form.html.twig:253
-#: ../../tempcache/pages/contributions_list.html.twig:368
-#: ../../tempcache/pages/contributions_list.html.twig:645
-#: ../../tempcache/pages/contribution_form.html.twig:282
-#: ../../tempcache/pages/transactions_list.html.twig:272
-#: ../../tempcache/pages/transactions_list.html.twig:463
+#: ../../tempcache/pages/transaction_form.html.twig:275
+#: ../../tempcache/pages/contributions_list.html.twig:387
+#: ../../tempcache/pages/contributions_list.html.twig:664
+#: ../../tempcache/pages/contribution_form.html.twig:288
+#: ../../tempcache/pages/transactions_list.html.twig:279
+#: ../../tempcache/pages/transactions_list.html.twig:470
 #: ../../tempcache/pages/advanced_search.html.twig:789
 msgid "Amount"
 msgstr ""
@@ -2592,8 +2627,8 @@ msgid "Contribution id"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:434
-#: ../../tempcache/pages/contributions_list.html.twig:368
-#: ../../tempcache/pages/contributions_list.html.twig:653
+#: ../../tempcache/pages/contributions_list.html.twig:387
+#: ../../tempcache/pages/contributions_list.html.twig:672
 #: ../../tempcache/pages/advanced_search.html.twig:853
 #: ../../tempcache/pages/advanced_search.html.twig:858
 msgid "Payment type"
@@ -2608,21 +2643,22 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:620
 #: ../lib/Galette/Features/Replacements.php:621
-#: ../../tempcache/elements/group.html.twig:159
-#: ../../tempcache/pages/preferences.html.twig:2313
+#: ../../tempcache/elements/group.html.twig:186
+#: ../../tempcache/elements/group.html.twig:229
+#: ../../tempcache/pages/preferences.html.twig:2259
 msgid "None"
 msgstr "Nessuno"
 
-#: ../lib/Galette/Features/Replacements.php:796
+#: ../lib/Galette/Features/Replacements.php:797
 msgid "Member information"
 msgstr "Informazione membro"
 
-#: ../lib/Galette/Features/Dynamics.php:159
+#: ../lib/Galette/Features/Dynamics.php:162
 #, php-format
 msgid "Missing required field %field"
 msgstr ""
 
-#: ../lib/Galette/Features/Dynamics.php:203
+#: ../lib/Galette/Features/Dynamics.php:206
 #: ../lib/Galette/Entity/Adherent.php:1314
 #: ../lib/Galette/Entity/Transaction.php:352
 #: ../lib/Galette/Entity/Contribution.php:460
@@ -2785,48 +2821,48 @@ msgstr ""
 msgid "Member card updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1743
+#: ../lib/Galette/Entity/Adherent.php:1745
 #: ../../tempcache/components/forms/account.html.twig:64
 msgid "Active"
 msgstr "Attivo"
 
-#: ../lib/Galette/Entity/Adherent.php:1743
-#: ../../tempcache/pages/contributions_list.html.twig:207
-#: ../../tempcache/pages/transactions_list.html.twig:152
+#: ../lib/Galette/Entity/Adherent.php:1745
+#: ../../tempcache/pages/contributions_list.html.twig:214
+#: ../../tempcache/pages/transactions_list.html.twig:159
 #: ../../tempcache/components/forms/account.html.twig:72
 msgid "Inactive"
 msgstr "Inattivo"
 
-#: ../lib/Galette/Entity/Adherent.php:2029
-#: ../../tempcache/pages/member_form.html.twig:913
+#: ../lib/Galette/Entity/Adherent.php:2028
+#: ../../tempcache/pages/member_form.html.twig:919
 msgid " (%age years old)"
 msgstr " (%age anni)"
 
-#: ../lib/Galette/Entity/Adherent.php:2102
+#: ../lib/Galette/Entity/Adherent.php:2101
 msgid "Duplicated from %name (%id)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:119
-#: ../../tempcache/pages/transaction_form.html.twig:143
+#: ../../tempcache/pages/transaction_form.html.twig:160
 #: ../../tempcache/pages/plugin_info.html.twig:97
 msgid "Date:"
 msgstr "Data:"
 
 #: ../lib/Galette/Entity/Transaction.php:123
 #: ../lib/Galette/Entity/Contribution.php:162
-#: ../../tempcache/pages/transaction_form.html.twig:166
-#: ../../tempcache/pages/contribution_form.html.twig:406
+#: ../../tempcache/pages/transaction_form.html.twig:188
+#: ../../tempcache/pages/contribution_form.html.twig:417
 msgid "Amount:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:127
-#: ../../tempcache/pages/transaction_form.html.twig:78
+#: ../../tempcache/pages/transaction_form.html.twig:83
 #: ../../tempcache/pages/plugin_info.html.twig:81
 msgid "Description:"
 msgstr "Descrizione:"
 
 #: ../lib/Galette/Entity/Transaction.php:131
-#: ../../tempcache/pages/transaction_form.html.twig:92
+#: ../../tempcache/pages/transaction_form.html.twig:102
 msgid "Originator:"
 msgstr ""
 
@@ -2862,11 +2898,12 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:154
 #: ../../tempcache/pages/contribution_form.html.twig:112
+#: ../../tempcache/components/forms/member_dropdown.html.twig:40
 msgid "Contributor:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:158
-#: ../../tempcache/pages/contribution_form.html.twig:161
+#: ../../tempcache/pages/contribution_form.html.twig:167
 msgid "Contribution type:"
 msgstr ""
 
@@ -2876,41 +2913,41 @@ msgid "Payment type:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:170
-#: ../../tempcache/pages/contribution_form.html.twig:558
+#: ../../tempcache/pages/contribution_form.html.twig:593
 msgid "Comments:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:174
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:124
-#: ../../tempcache/pages/transaction_form.html.twig:224
-#: ../../tempcache/pages/contributions_list.html.twig:352
-#: ../../tempcache/pages/contributions_list.html.twig:550
+#: ../../tempcache/pages/transaction_form.html.twig:246
+#: ../../tempcache/pages/contributions_list.html.twig:371
+#: ../../tempcache/pages/contributions_list.html.twig:569
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:321
-#: ../../tempcache/pages/import.html.twig:104
-#: ../../tempcache/pages/import.html.twig:161
-#: ../../tempcache/pages/contribution_form.html.twig:274
+#: ../../tempcache/pages/import.html.twig:90
+#: ../../tempcache/pages/import.html.twig:147
+#: ../../tempcache/pages/contribution_form.html.twig:280
 #: ../../tempcache/pages/mailings_list.html.twig:97
 #: ../../tempcache/pages/mailings_list.html.twig:303
-#: ../../tempcache/pages/transactions_list.html.twig:240
-#: ../../tempcache/pages/transactions_list.html.twig:336
-#: ../../tempcache/pages/export.html.twig:123
-#: ../../tempcache/pages/export.html.twig:169
+#: ../../tempcache/pages/transactions_list.html.twig:247
+#: ../../tempcache/pages/transactions_list.html.twig:343
+#: ../../tempcache/pages/export.html.twig:132
+#: ../../tempcache/pages/export.html.twig:178
 msgid "Date"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:178
-#: ../../tempcache/pages/contribution_form.html.twig:481
+#: ../../tempcache/pages/contribution_form.html.twig:502
 msgid "Date of contribution:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:179
-#: ../../tempcache/pages/contribution_form.html.twig:475
+#: ../../tempcache/pages/contribution_form.html.twig:496
 msgid "Start date of membership:"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:183
-#: ../../tempcache/pages/contribution_form.html.twig:533
+#: ../../tempcache/pages/contribution_form.html.twig:558
 msgid "End date of membership:"
 msgstr ""
 
@@ -2921,7 +2958,7 @@ msgid "Transaction ID"
 msgstr "Transazione"
 
 #: ../lib/Galette/Entity/Contribution.php:193
-#: ../../tempcache/pages/contribution_form.html.twig:515
+#: ../../tempcache/pages/contribution_form.html.twig:540
 msgid "Membership extension:"
 msgstr ""
 
@@ -3116,28 +3153,28 @@ msgstr ""
 msgid "Name cannot be empty!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:386
+#: ../lib/Galette/Entity/Group.php:391
 msgid "Group has been detached from its parent"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:423
-#: ../../tempcache/pages/groups_list.html.twig:201
+#: ../lib/Galette/Entity/Group.php:428
+#: ../../tempcache/pages/groups_list.html.twig:213
 msgid "The group name you have requested already exists in the database."
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:451
+#: ../lib/Galette/Entity/Group.php:456
 msgid "Group added"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:456
+#: ../lib/Galette/Entity/Group.php:461
 msgid "Fail to add new group."
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:474
+#: ../lib/Galette/Entity/Group.php:479
 msgid "Group updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:711
+#: ../lib/Galette/Entity/Group.php:716
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr ""
@@ -3150,7 +3187,7 @@ msgstr ""
 msgid "Unknown ACL rule '%acl'!"
 msgstr ""
 
-#: ../lib/Galette/Middleware/Authenticate.php:234
+#: ../lib/Galette/Middleware/Authenticate.php:232
 msgid "Route '%name' is not registered in ACLs!"
 msgstr ""
 
@@ -3282,9 +3319,10 @@ msgid "Infos"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:302
-#: ../../tempcache/pages/transaction_form.html.twig:104
+#: ../../tempcache/pages/transaction_form.html.twig:114
 #: ../../tempcache/pages/contribution_form.html.twig:119
-#: ../../tempcache/pages/member_form.html.twig:200
+#: ../../tempcache/pages/member_form.html.twig:207
+#: ../../tempcache/components/forms/member_dropdown.html.twig:48
 #, fuzzy
 #| msgid "Members list"
 msgid "Member ID"
@@ -3295,7 +3333,7 @@ msgid "All members"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:314
-#: ../../tempcache/pages/preferences.html.twig:828
+#: ../../tempcache/pages/preferences.html.twig:803
 msgid "Up to date members"
 msgstr ""
 
@@ -3317,8 +3355,8 @@ msgstr ""
 
 #: ../lib/Galette/Filters/TransactionsList.php:215
 #: ../lib/Galette/Filters/TransactionsList.php:252
-#: ../lib/Galette/Filters/HistoryList.php:216
-#: ../lib/Galette/Filters/HistoryList.php:253
+#: ../lib/Galette/Filters/HistoryList.php:223
+#: ../lib/Galette/Filters/HistoryList.php:260
 #: ../lib/Galette/Filters/MailingsList.php:216
 #: ../lib/Galette/Filters/MailingsList.php:253
 #: ../lib/Galette/Filters/ContributionsList.php:258
@@ -3328,8 +3366,8 @@ msgstr "Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:231
 #: ../lib/Galette/Filters/TransactionsList.php:253
-#: ../lib/Galette/Filters/HistoryList.php:232
-#: ../lib/Galette/Filters/HistoryList.php:254
+#: ../lib/Galette/Filters/HistoryList.php:239
+#: ../lib/Galette/Filters/HistoryList.php:261
 #: ../lib/Galette/Filters/MailingsList.php:232
 #: ../lib/Galette/Filters/MailingsList.php:254
 #: ../lib/Galette/Filters/ContributionsList.php:274
@@ -3338,21 +3376,21 @@ msgid "Y-m"
 msgstr "m/Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:259
-#: ../lib/Galette/Filters/HistoryList.php:260
+#: ../lib/Galette/Filters/HistoryList.php:267
 #: ../lib/Galette/Filters/MailingsList.php:260
 #: ../lib/Galette/Filters/ContributionsList.php:302
 msgid "start date filter"
 msgstr "Filtro per data inizio"
 
 #: ../lib/Galette/Filters/TransactionsList.php:262
-#: ../lib/Galette/Filters/HistoryList.php:263
+#: ../lib/Galette/Filters/HistoryList.php:270
 #: ../lib/Galette/Filters/MailingsList.php:263
 #: ../lib/Galette/Filters/ContributionsList.php:305
 msgid "end date filter"
 msgstr "filtro per fine data"
 
 #: ../lib/Galette/Filters/TransactionsList.php:272
-#: ../lib/Galette/Filters/HistoryList.php:273
+#: ../lib/Galette/Filters/HistoryList.php:280
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:315
 #, php-format
@@ -3389,7 +3427,6 @@ msgstr ""
 
 #: ../webroot/installer.php:257
 #: ../../tempcache/elements/messages_inline.html.twig:86
-#: ../../tempcache/pages/mailing_form.html.twig:56
 msgid "- ERROR -"
 msgstr "- ERRORE -"
 
@@ -3398,17 +3435,17 @@ msgid "Database access/permissions"
 msgstr "Accesso e permessi della banca dati"
 
 #: ../webroot/installer.php:323
-#: ../../tempcache/modals/plugin_initdb.html.twig:412
+#: ../../tempcache/modals/plugin_initdb.html.twig:417
 msgid "Version selection"
 msgstr ""
 
 #: ../webroot/installer.php:329
-#: ../../tempcache/modals/plugin_initdb.html.twig:431
+#: ../../tempcache/modals/plugin_initdb.html.twig:436
 msgid "Database upgrade"
 msgstr "Aggiornamento della banca dati"
 
 #: ../webroot/installer.php:338
-#: ../../tempcache/modals/plugin_initdb.html.twig:429
+#: ../../tempcache/modals/plugin_initdb.html.twig:434
 msgid "Database installation"
 msgstr "Installazione della banca dati"
 
@@ -3420,12 +3457,8 @@ msgstr ""
 msgid "Documentation"
 msgstr "Documentazione"
 
-#: ../includes/main.inc.php:140
+#: ../includes/main.inc.php:151
 msgid "Unauthorized"
-msgstr ""
-
-#: ../includes/routes/plugins.routes.php:75
-msgid "Invalid extension!"
 msgstr ""
 
 #: ../includes/i18n.inc.php:277
@@ -3687,10 +3720,10 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:62
 #: ../../tempcache/elements/group.html.twig:117
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:73
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:77
 #: ../../tempcache/pages/plugin_info.html.twig:73
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:75
-#: ../../tempcache/pages/groups_list.html.twig:163
+#: ../../tempcache/pages/groups_list.html.twig:175
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:65
 msgid "Name:"
 msgstr ""
@@ -3720,23 +3753,23 @@ msgid "Gender:"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:120
-#: ../../tempcache/pages/preferences.html.twig:291
-#: ../../tempcache/pages/preferences.html.twig:305
+#: ../../tempcache/pages/preferences.html.twig:277
+#: ../../tempcache/pages/preferences.html.twig:287
 msgid "Address:"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:128
-#: ../../tempcache/pages/preferences.html.twig:322
+#: ../../tempcache/pages/preferences.html.twig:299
 msgid "Zip Code:"
 msgstr "CAP:"
 
 #: ../includes/fields_defs/members_fields.php:136
-#: ../../tempcache/pages/preferences.html.twig:341
+#: ../../tempcache/pages/preferences.html.twig:309
 msgid "City:"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:144
-#: ../../tempcache/pages/preferences.html.twig:360
+#: ../../tempcache/pages/preferences.html.twig:319
 msgid "Country:"
 msgstr ""
 
@@ -3767,14 +3800,14 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:200 ../install/steps/admin.php:46
 #: ../../tempcache/pages/index.html.twig:69
 #: ../../tempcache/pages/index.html.twig:73
-#: ../../tempcache/pages/preferences.html.twig:2395
+#: ../../tempcache/pages/preferences.html.twig:2348
 msgid "Username:"
 msgstr "Nome utente:"
 
 #: ../includes/fields_defs/members_fields.php:208 ../install/steps/admin.php:50
-#: ../install/steps/db.php:87 ../../tempcache/pages/index.html.twig:81
+#: ../install/steps/db.php:88 ../../tempcache/pages/index.html.twig:81
 #: ../../tempcache/pages/index.html.twig:85
-#: ../../tempcache/pages/preferences.html.twig:2409
+#: ../../tempcache/pages/preferences.html.twig:2362
 msgid "Password:"
 msgstr "Password:"
 
@@ -4074,11 +4107,7 @@ msgstr ""
 msgid "Galette has been successfully updated!"
 msgstr ""
 
-#: ../install/steps/end.php:55
-msgid "To secure the system, please delete the install directory"
-msgstr ""
-
-#: ../install/steps/end.php:62
+#: ../install/steps/end.php:61
 msgid "Homepage"
 msgstr ""
 
@@ -4087,17 +4116,17 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
 #: ../install/steps/admin.php:54
-#: ../../tempcache/pages/preferences.html.twig:2423
+#: ../../tempcache/pages/preferences.html.twig:2371
 msgid "Retype password:"
 msgstr ""
 
 #: ../install/steps/admin.php:62 ../install/steps/db_install.php:87
 #: ../install/steps/db_select_version.php:141
 #: ../install/steps/db_select_version.php:152
-#: ../install/steps/db_checks.php:245 ../install/steps/galette.php:87
-#: ../install/steps/check.php:174 ../install/steps/db.php:112
+#: ../install/steps/db_checks.php:250 ../install/steps/galette.php:87
+#: ../install/steps/check.php:174 ../install/steps/db.php:113
 #: ../install/steps/type.php:69
-#: ../../tempcache/modals/plugin_initdb.html.twig:333
+#: ../../tempcache/modals/plugin_initdb.html.twig:338
 #: ../../tempcache/pages/plugins.html.twig:377
 msgid "Next step"
 msgstr ""
@@ -4124,15 +4153,15 @@ msgstr ""
 
 #: ../install/steps/db_install.php:83 ../install/steps/galette.php:83
 #: ../install/steps/check.php:168
-#: ../../tempcache/modals/plugin_initdb.html.twig:327
+#: ../../tempcache/modals/plugin_initdb.html.twig:332
 msgid "Retry"
 msgstr ""
 
 #: ../install/steps/db_install.php:101
 #: ../install/steps/db_select_version.php:144
 #: ../install/steps/db_select_version.php:155
-#: ../install/steps/db_checks.php:256 ../install/steps/galette.php:101
-#: ../install/steps/db.php:115 ../install/steps/type.php:72
+#: ../install/steps/db_checks.php:261 ../install/steps/galette.php:101
+#: ../install/steps/db.php:116 ../install/steps/type.php:72
 msgid "Back"
 msgstr ""
 
@@ -4171,17 +4200,17 @@ msgid "Your current Galette version is..."
 msgstr ""
 
 #: ../install/steps/db_select_version.php:101
-#: ../../tempcache/modals/plugin_initdb.html.twig:177
+#: ../../tempcache/modals/plugin_initdb.html.twig:182
 msgid "older than %version"
 msgstr ""
 
 #: ../install/steps/db_select_version.php:104
-#: ../../tempcache/modals/plugin_initdb.html.twig:184
+#: ../../tempcache/modals/plugin_initdb.html.twig:189
 msgid "comprised between"
 msgstr ""
 
 #: ../install/steps/db_select_version.php:105
-#: ../../tempcache/modals/plugin_initdb.html.twig:188
+#: ../../tempcache/modals/plugin_initdb.html.twig:193
 #: ../../tempcache/pages/advanced_search.html.twig:289
 #: ../../tempcache/pages/advanced_search.html.twig:331
 #: ../../tempcache/pages/advanced_search.html.twig:375
@@ -4190,7 +4219,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:726
 #: ../../tempcache/pages/advanced_search.html.twig:770
 #: ../../tempcache/pages/advanced_search.html.twig:805
-#: ../../tempcache/pages/advanced_search.html.twig:1042
+#: ../../tempcache/pages/advanced_search.html.twig:1093
 msgid "and"
 msgstr ""
 
@@ -4199,109 +4228,112 @@ msgstr ""
 #: ../../tempcache/modals/confirm_removal.html.twig:160
 #: ../../tempcache/modals/mass_add_contributions.html.twig:114
 #: ../../tempcache/modals/mass_change_members.html.twig:216
-#: ../../tempcache/modals/telemetry.html.twig:131
-#: ../../tempcache/elements/js/modal.js.twig:259
-#: ../../tempcache/pages/members_list.html.twig:1125
-#: ../../tempcache/pages/mailing_form.html.twig:718
+#: ../../tempcache/modals/telemetry.html.twig:136
+#: ../../tempcache/elements/js/modal.js.twig:275
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:282
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:457
+#: ../../tempcache/pages/configuration_entitled_form.html.twig:174
+#: ../../tempcache/pages/members_list.html.twig:1141
+#: ../../tempcache/pages/mailing_form.html.twig:717
 #: ../../tempcache/pages/configuration_title_form.html.twig:94
-#: ../../tempcache/pages/preferences.html.twig:2593
+#: ../../tempcache/pages/preferences.html.twig:2536
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:94
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../install/steps/db_checks.php:66
+#: ../install/steps/db_checks.php:70
 msgid "CREATE operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:73
+#: ../install/steps/db_checks.php:77
 msgid "CREATE operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:80
+#: ../install/steps/db_checks.php:84
 msgid "INSERT operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:87
+#: ../install/steps/db_checks.php:91
 msgid "INSERT operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:94
+#: ../install/steps/db_checks.php:98
 msgid "UPDATE operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:101
+#: ../install/steps/db_checks.php:105
 msgid "UPDATE operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:108
+#: ../install/steps/db_checks.php:112
 msgid "SELECT operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:115
+#: ../install/steps/db_checks.php:119
 msgid "SELECT operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:122
+#: ../install/steps/db_checks.php:126
 msgid "DELETE operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:129
+#: ../install/steps/db_checks.php:133
 msgid "DELETE operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:136
+#: ../install/steps/db_checks.php:140
 msgid "DROP operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:143
+#: ../install/steps/db_checks.php:147
 msgid "DROP operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:151
+#: ../install/steps/db_checks.php:155
 msgid "ALTER operation not allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:158
+#: ../install/steps/db_checks.php:162
 msgid "ALTER operation allowed"
 msgstr ""
 
-#: ../install/steps/db_checks.php:177
+#: ../install/steps/db_checks.php:181
 msgid "Connection to database successfull"
 msgstr ""
 
-#: ../install/steps/db_checks.php:178 ../install/steps/db_checks.php:180
+#: ../install/steps/db_checks.php:182 ../install/steps/db_checks.php:184
 msgid "Permissions to database are OK."
 msgstr ""
 
-#: ../install/steps/db_checks.php:186
+#: ../install/steps/db_checks.php:190
 msgid "Check of the database"
 msgstr ""
 
-#: ../install/steps/db_checks.php:193
+#: ../install/steps/db_checks.php:197
 msgid "Unable to connect to the database"
 msgstr ""
 
-#: ../install/steps/db_checks.php:201
+#: ../install/steps/db_checks.php:204
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 msgstr ""
 
-#: ../install/steps/db_checks.php:206
+#: ../install/steps/db_checks.php:209
 msgid "Database exists and connection parameters are OK."
 msgstr ""
 
-#: ../install/steps/db_checks.php:207
+#: ../install/steps/db_checks.php:210
 msgid "Permissions on the base"
 msgstr ""
 
-#: ../install/steps/db_checks.php:214
+#: ../install/steps/db_checks.php:217
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
 
-#: ../install/steps/db_checks.php:216
+#: ../install/steps/db_checks.php:219
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
@@ -4315,22 +4347,22 @@ msgid "Data initialized."
 msgstr ""
 
 #: ../install/steps/galette.php:58
-#: ../../tempcache/modals/telemetry.html.twig:207
+#: ../../tempcache/modals/telemetry.html.twig:209
 #: ../../tempcache/elements/js/modal_action.js.twig:137
-#: ../../tempcache/elements/js/choose_adh.js.twig:65
-#: ../../tempcache/elements/js/removal.js.twig:158
-#: ../../tempcache/elements/js/removal.js.twig:174
-#: ../../tempcache/elements/scripts.html.twig:93
-#: ../../tempcache/elements/scripts.html.twig:113
+#: ../../tempcache/elements/js/choose_adh.js.twig:249
+#: ../../tempcache/elements/js/removal.js.twig:161
+#: ../../tempcache/elements/js/removal.js.twig:177
+#: ../../tempcache/elements/scripts.html.twig:127
+#: ../../tempcache/elements/scripts.html.twig:147
 #: ../../tempcache/pages/plugins.html.twig:438
-#: ../../tempcache/pages/members_list.html.twig:1260
-#: ../../tempcache/pages/members_list.html.twig:1274
-#: ../../tempcache/pages/members_list.html.twig:1288
-#: ../../tempcache/pages/members_list.html.twig:1358
-#: ../../tempcache/pages/members_list.html.twig:1372
-#: ../../tempcache/pages/members_list.html.twig:1386
-#: ../../tempcache/pages/groups_list.html.twig:196
-#: ../../tempcache/pages/configuration_payment_types.html.twig:287
+#: ../../tempcache/pages/members_list.html.twig:1277
+#: ../../tempcache/pages/members_list.html.twig:1291
+#: ../../tempcache/pages/members_list.html.twig:1305
+#: ../../tempcache/pages/members_list.html.twig:1375
+#: ../../tempcache/pages/members_list.html.twig:1389
+#: ../../tempcache/pages/members_list.html.twig:1403
+#: ../../tempcache/pages/groups_list.html.twig:208
+#: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:178
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
 msgid "An error occurred :("
@@ -4353,7 +4385,7 @@ msgid "Temporary images"
 msgstr ""
 
 #: ../install/steps/check.php:75
-#: ../../tempcache/pages/mailing_form.html.twig:244
+#: ../../tempcache/pages/mailing_form.html.twig:243
 #: ../../tempcache/pages/mailings_list.html.twig:331
 msgid "Attachments"
 msgstr ""
@@ -4428,50 +4460,50 @@ msgid ""
 "property panel."
 msgstr ""
 
-#: ../install/steps/db.php:54
+#: ../install/steps/db.php:55
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 
 #: ../install/steps/db.php:57
+msgid ""
+"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr ""
+
+#: ../install/steps/db.php:59
 msgid "Enter connection data for the existing database."
 msgstr ""
 
-#: ../install/steps/db.php:61
+#: ../install/steps/db.php:63
 msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
 msgstr ""
 
-#: ../install/steps/db.php:64
-msgid ""
-"The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
-msgstr ""
-
-#: ../install/steps/db.php:67
+#: ../install/steps/db.php:68
 msgid "Database type:"
 msgstr ""
 
-#: ../install/steps/db.php:75
+#: ../install/steps/db.php:76
 msgid "Host:"
 msgstr ""
 
-#: ../install/steps/db.php:79
+#: ../install/steps/db.php:80
 msgid "Port:"
 msgstr ""
 
-#: ../install/steps/db.php:83
+#: ../install/steps/db.php:84
 msgid "User:"
 msgstr ""
 
-#: ../install/steps/db.php:91
+#: ../install/steps/db.php:92
 msgid "Database:"
 msgstr ""
 
-#: ../install/steps/db.php:95
+#: ../install/steps/db.php:96
 msgid "Table prefix:"
 msgstr ""
 
-#: ../install/steps/db.php:101
+#: ../install/steps/db.php:102
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr ""
 
@@ -4500,8 +4532,8 @@ msgid ""
 msgstr ""
 
 #: ../install/steps/type.php:62
-#: ../../tempcache/modals/plugin_initdb.html.twig:127
-#: ../../tempcache/pages/import.html.twig:85
+#: ../../tempcache/modals/plugin_initdb.html.twig:130
+#: ../../tempcache/pages/import.html.twig:56
 msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 
@@ -4532,40 +4564,40 @@ msgid ""
 "version"
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:154
+#: ../../tempcache/modals/plugin_initdb.html.twig:159
 msgid "You current %name version is..."
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:229
+#: ../../tempcache/modals/plugin_initdb.html.twig:234
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:241
+#: ../../tempcache/modals/plugin_initdb.html.twig:246
 msgid "The tables are not totally created, it may be a permission problem."
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:247
+#: ../../tempcache/modals/plugin_initdb.html.twig:252
 msgid ""
 "The tables have not been totally created, it may be a permission problem."
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:252
+#: ../../tempcache/modals/plugin_initdb.html.twig:257
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:273
+#: ../../tempcache/modals/plugin_initdb.html.twig:278
 msgid "Plugin '%name' has been successfully installed!"
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:279
+#: ../../tempcache/modals/plugin_initdb.html.twig:284
 msgid "Plugin '%name' has been successfully updated!"
 msgstr "Il plugin '%name' è stato aggiornato correttamente!"
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:350
+#: ../../tempcache/modals/plugin_initdb.html.twig:355
 msgid "Back to plugins managment page"
 msgstr ""
 
-#: ../../tempcache/modals/plugin_initdb.html.twig:395
+#: ../../tempcache/modals/plugin_initdb.html.twig:400
 msgid "Access permissions to database"
 msgstr ""
 
@@ -4586,8 +4618,8 @@ msgid "This can't be undone."
 msgstr ""
 
 #: ../../tempcache/modals/confirm_removal.html.twig:154
-#: ../../tempcache/elements/js/removal.js.twig:168
-#: ../../tempcache/pages/mailing_form.html.twig:718
+#: ../../tempcache/elements/js/removal.js.twig:171
+#: ../../tempcache/pages/mailing_form.html.twig:717
 msgid "Remove"
 msgstr ""
 
@@ -4610,7 +4642,7 @@ msgstr "A:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:117
 #: ../../tempcache/pages/reminder.html.twig:190
-#: ../../tempcache/pages/mailing_form.html.twig:407
+#: ../../tempcache/pages/mailing_form.html.twig:406
 msgid "Subject:"
 msgstr ""
 
@@ -4644,14 +4676,14 @@ msgid "Sheet type"
 msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:134
-#: ../../tempcache/pages/transaction_form.html.twig:160
+#: ../../tempcache/pages/transaction_form.html.twig:177
 #: ../../tempcache/pages/contributions_list.html.twig:122
 #: ../../tempcache/pages/contributions_list.html.twig:139
 #: ../../tempcache/pages/history.html.twig:131
 #: ../../tempcache/pages/history.html.twig:148
-#: ../../tempcache/pages/contribution_form.html.twig:465
-#: ../../tempcache/pages/contribution_form.html.twig:502
-#: ../../tempcache/pages/contribution_form.html.twig:545
+#: ../../tempcache/pages/contribution_form.html.twig:481
+#: ../../tempcache/pages/contribution_form.html.twig:523
+#: ../../tempcache/pages/contribution_form.html.twig:575
 #: ../../tempcache/pages/mailings_list.html.twig:126
 #: ../../tempcache/pages/mailings_list.html.twig:143
 #: ../../tempcache/pages/transactions_list.html.twig:77
@@ -4670,11 +4702,12 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:735
 #: ../../tempcache/pages/advanced_search.html.twig:762
 #: ../../tempcache/pages/advanced_search.html.twig:779
-#: ../../tempcache/pages/advanced_search.html.twig:1331
-#: ../../tempcache/pages/advanced_search.html.twig:1731
+#: ../../tempcache/pages/advanced_search.html.twig:1026
+#: ../../tempcache/pages/advanced_search.html.twig:1379
+#: ../../tempcache/pages/advanced_search.html.twig:1781
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
-#: ../../tempcache/components/dynamic_fields.html.twig:610
+#: ../../tempcache/components/dynamic_fields.html.twig:614
 msgid "(yyyy-mm-dd format)"
 msgstr ""
 
@@ -4692,18 +4725,21 @@ msgid "Existing variables"
 msgstr ""
 
 #: ../../tempcache/modals/replacements_legend.html.twig:131
+#: ../../tempcache/modals/telemetry.html.twig:112
 #: ../../tempcache/modals/telemetry.html.twig:118
-#: ../../tempcache/modals/telemetry.html.twig:124
-#: ../../tempcache/modals/telemetry.html.twig:207
+#: ../../tempcache/modals/telemetry.html.twig:209
 #: ../../tempcache/elements/js/modal_action.js.twig:74
 #: ../../tempcache/elements/js/modal_action.js.twig:137
 #: ../../tempcache/elements/js/photo_dnd.js.twig:112
 #: ../../tempcache/elements/js/pwdcheck.js.twig:135
-#: ../../tempcache/elements/js/choose_adh.js.twig:65
-#: ../../tempcache/elements/js/removal.js.twig:158
-#: ../../tempcache/elements/js/removal.js.twig:174
-#: ../../tempcache/elements/scripts.html.twig:93
-#: ../../tempcache/elements/scripts.html.twig:113
+#: ../../tempcache/elements/js/choose_adh.js.twig:134
+#: ../../tempcache/elements/js/choose_adh.js.twig:213
+#: ../../tempcache/elements/js/choose_adh.js.twig:249
+#: ../../tempcache/elements/js/removal.js.twig:152
+#: ../../tempcache/elements/js/removal.js.twig:161
+#: ../../tempcache/elements/js/removal.js.twig:177
+#: ../../tempcache/elements/scripts.html.twig:127
+#: ../../tempcache/elements/scripts.html.twig:147
 #: ../../tempcache/elements/list.html.twig:388
 #: ../../tempcache/pages/plugins.html.twig:335
 #: ../../tempcache/pages/plugins.html.twig:361
@@ -4711,55 +4747,55 @@ msgstr ""
 #: ../../tempcache/pages/plugins.html.twig:409
 #: ../../tempcache/pages/plugins.html.twig:432
 #: ../../tempcache/pages/plugins.html.twig:438
-#: ../../tempcache/pages/transaction_form.html.twig:560
-#: ../../tempcache/pages/transaction_form.html.twig:615
-#: ../../tempcache/pages/transaction_form.html.twig:626
-#: ../../tempcache/pages/transaction_form.html.twig:666
-#: ../../tempcache/pages/transaction_form.html.twig:697
-#: ../../tempcache/pages/transaction_form.html.twig:728
-#: ../../tempcache/pages/contributions_list.html.twig:802
+#: ../../tempcache/pages/transaction_form.html.twig:582
+#: ../../tempcache/pages/transaction_form.html.twig:637
+#: ../../tempcache/pages/transaction_form.html.twig:648
+#: ../../tempcache/pages/transaction_form.html.twig:688
+#: ../../tempcache/pages/transaction_form.html.twig:719
+#: ../../tempcache/pages/transaction_form.html.twig:750
+#: ../../tempcache/pages/contributions_list.html.twig:821
 #: ../../tempcache/pages/import_model.html.twig:269
-#: ../../tempcache/pages/members_list.html.twig:628
-#: ../../tempcache/pages/members_list.html.twig:1189
-#: ../../tempcache/pages/members_list.html.twig:1260
-#: ../../tempcache/pages/members_list.html.twig:1274
-#: ../../tempcache/pages/members_list.html.twig:1288
-#: ../../tempcache/pages/members_list.html.twig:1358
-#: ../../tempcache/pages/members_list.html.twig:1372
-#: ../../tempcache/pages/members_list.html.twig:1386
+#: ../../tempcache/pages/members_list.html.twig:635
+#: ../../tempcache/pages/members_list.html.twig:1205
+#: ../../tempcache/pages/members_list.html.twig:1277
+#: ../../tempcache/pages/members_list.html.twig:1291
+#: ../../tempcache/pages/members_list.html.twig:1305
+#: ../../tempcache/pages/members_list.html.twig:1375
+#: ../../tempcache/pages/members_list.html.twig:1389
+#: ../../tempcache/pages/members_list.html.twig:1403
 #: ../../tempcache/pages/configuration_core_fields.html.twig:463
-#: ../../tempcache/pages/groups_list.html.twig:196
-#: ../../tempcache/pages/groups_list.html.twig:201
-#: ../../tempcache/pages/groups_list.html.twig:211
-#: ../../tempcache/pages/groups_list.html.twig:218
-#: ../../tempcache/pages/groups_list.html.twig:233
-#: ../../tempcache/pages/groups_list.html.twig:274
-#: ../../tempcache/pages/groups_list.html.twig:296
-#: ../../tempcache/pages/groups_list.html.twig:359
-#: ../../tempcache/pages/groups_list.html.twig:427
-#: ../../tempcache/pages/import.html.twig:314
-#: ../../tempcache/pages/import.html.twig:325
-#: ../../tempcache/pages/configuration_payment_types.html.twig:287
+#: ../../tempcache/pages/groups_list.html.twig:208
+#: ../../tempcache/pages/groups_list.html.twig:213
+#: ../../tempcache/pages/groups_list.html.twig:223
+#: ../../tempcache/pages/groups_list.html.twig:230
+#: ../../tempcache/pages/groups_list.html.twig:245
+#: ../../tempcache/pages/groups_list.html.twig:286
+#: ../../tempcache/pages/groups_list.html.twig:308
+#: ../../tempcache/pages/groups_list.html.twig:370
+#: ../../tempcache/pages/groups_list.html.twig:438
+#: ../../tempcache/pages/import.html.twig:311
+#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/reminder.html.twig:215
 #: ../../tempcache/pages/reminder.html.twig:244
-#: ../../tempcache/pages/contribution_form.html.twig:723
-#: ../../tempcache/pages/contribution_form.html.twig:750
-#: ../../tempcache/pages/mailing_form.html.twig:550
-#: ../../tempcache/pages/mailing_form.html.twig:560
-#: ../../tempcache/pages/mailing_form.html.twig:587
-#: ../../tempcache/pages/mailing_form.html.twig:597
-#: ../../tempcache/pages/mailing_form.html.twig:631
-#: ../../tempcache/pages/mailing_form.html.twig:696
-#: ../../tempcache/pages/preferences.html.twig:2585
+#: ../../tempcache/pages/contribution_form.html.twig:757
+#: ../../tempcache/pages/contribution_form.html.twig:784
+#: ../../tempcache/pages/mailing_form.html.twig:549
+#: ../../tempcache/pages/mailing_form.html.twig:559
+#: ../../tempcache/pages/mailing_form.html.twig:586
+#: ../../tempcache/pages/mailing_form.html.twig:596
+#: ../../tempcache/pages/mailing_form.html.twig:630
+#: ../../tempcache/pages/mailing_form.html.twig:695
+#: ../../tempcache/pages/preferences.html.twig:2521
 #: ../../tempcache/pages/mailings_list.html.twig:453
 #: ../../tempcache/pages/mailings_list.html.twig:463
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:178
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
-#: ../../tempcache/pages/member_form.html.twig:643
-#: ../../tempcache/pages/member_form.html.twig:663
-#: ../../tempcache/pages/member_show.html.twig:725
-#: ../../tempcache/pages/transactions_list.html.twig:558
+#: ../../tempcache/pages/member_form.html.twig:649
+#: ../../tempcache/pages/member_form.html.twig:669
+#: ../../tempcache/pages/member_show.html.twig:714
+#: ../../tempcache/pages/transactions_list.html.twig:565
 msgid "Close"
 msgstr ""
 
@@ -4767,64 +4803,64 @@ msgstr ""
 msgid "Show existing variables"
 msgstr ""
 
-#: ../../tempcache/modals/telemetry.html.twig:42
+#: ../../tempcache/modals/telemetry.html.twig:44
 msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
 
-#: ../../tempcache/modals/telemetry.html.twig:47
+#: ../../tempcache/modals/telemetry.html.twig:48
 msgid ""
 "Nothing is automated in the process; it's up to you to send (or resend) data."
 msgstr ""
 
-#: ../../tempcache/modals/telemetry.html.twig:49
+#: ../../tempcache/modals/telemetry.html.twig:50
 msgid ""
 "You can review below the raw data that would be send if you press the 'Send' "
 "button."
 msgstr ""
 
-#: ../../tempcache/modals/telemetry.html.twig:51
+#: ../../tempcache/modals/telemetry.html.twig:52
 msgid ""
 "Also note tha all data is sent over a <strong>HTTPS secured connection</"
 "strong>."
 msgstr ""
 
-#: ../../tempcache/modals/telemetry.html.twig:65
+#: ../../tempcache/modals/telemetry.html.twig:66
 msgid "Send telemetry information"
 msgstr ""
 
-#: ../../tempcache/modals/telemetry.html.twig:71
-#: ../../tempcache/pages/reminder.html.twig:162
-#: ../../tempcache/pages/mailing_form.html.twig:374
-#: ../../tempcache/pages/mailing_form.html.twig:465
-#: ../../tempcache/pages/preferences.html.twig:2553
-msgid "Send"
-msgstr ""
-
-#: ../../tempcache/modals/telemetry.html.twig:124
+#: ../../tempcache/modals/telemetry.html.twig:118
 msgid "An error occurred sending telemetry information :("
 msgstr "Si è verificato un errore durante l’invio della telemetria :("
 
-#: ../../tempcache/elements/language.html.twig:72
+#: ../../tempcache/modals/telemetry.html.twig:129
+#: ../../tempcache/pages/reminder.html.twig:162
+#: ../../tempcache/pages/mailing_form.html.twig:373
+#: ../../tempcache/pages/mailing_form.html.twig:464
+#: ../../tempcache/pages/preferences.html.twig:2529
+msgid "Send"
+msgstr ""
+
+#: ../../tempcache/elements/language.html.twig:75
 #, fuzzy
 #| msgid "Change language"
 msgid "Choose your language"
 msgstr "Cambia lingua"
 
-#: ../../tempcache/elements/language.html.twig:113
+#: ../../tempcache/elements/language.html.twig:116
 #, php-format
 msgid "Switch locale to '%locale'"
 msgstr ""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:48
-#: ../../tempcache/elements/edit_entitleds.html.twig:152
+#: ../../tempcache/elements/edit_entitleds.html.twig:164
 #: ../../tempcache/elements/edit_socials.html.twig:158
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:440
-#: ../../tempcache/pages/configuration_titles.html.twig:101
-#: ../../tempcache/pages/configuration_payment_types.html.twig:91
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:452
+#: ../../tempcache/pages/configuration_titles.html.twig:113
+#: ../../tempcache/pages/configuration_payment_types.html.twig:97
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
-#: ../../tempcache/components/dynamic_fields.html.twig:256
+#: ../../tempcache/components/dynamic_fields.html.twig:260
 msgid "Add"
 msgstr ""
 
@@ -4840,36 +4876,36 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:67
 #: ../../tempcache/elements/edit_pdf_models.html.twig:163
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:364
-#: ../../tempcache/pages/transaction_form.html.twig:249
-#: ../../tempcache/pages/contributions_list.html.twig:368
-#: ../../tempcache/pages/contributions_list.html.twig:637
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:376
+#: ../../tempcache/pages/transaction_form.html.twig:271
+#: ../../tempcache/pages/contributions_list.html.twig:387
+#: ../../tempcache/pages/contributions_list.html.twig:656
 #: ../../tempcache/pages/advanced_search.html.twig:819
 #: ../../tempcache/pages/advanced_search.html.twig:824
 msgid "Type"
 msgstr ""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:71
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:405
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:417
 #: ../../tempcache/pages/configuration_core_fields.html.twig:109
 #: ../../tempcache/pages/configuration_core_fields.html.twig:174
 msgid "Required"
 msgstr "Richiesta"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:75
-#: ../../tempcache/elements/edit_entitleds.html.twig:72
+#: ../../tempcache/elements/edit_entitleds.html.twig:78
 #: ../../tempcache/elements/list.html.twig:339
-#: ../../tempcache/pages/transaction_form.html.twig:260
+#: ../../tempcache/pages/transaction_form.html.twig:282
 #: ../../tempcache/pages/configuration_titles.html.twig:69
 #: ../../tempcache/pages/members_list.html.twig:543
-#: ../../tempcache/pages/import.html.twig:112
+#: ../../tempcache/pages/import.html.twig:98
 #: ../../tempcache/pages/configuration_payment_types.html.twig:65
-#: ../../tempcache/pages/contribution_form.html.twig:290
+#: ../../tempcache/pages/contribution_form.html.twig:296
 msgid "Actions"
 msgstr ""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:131
-#: ../../tempcache/elements/edit_entitleds.html.twig:263
+#: ../../tempcache/elements/edit_entitleds.html.twig:275
 #, php-format
 msgid "Edit '%s' field"
 msgstr ""
@@ -4880,7 +4916,7 @@ msgid "Translate '%s' field"
 msgstr ""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:157
-#: ../../tempcache/elements/edit_entitleds.html.twig:276
+#: ../../tempcache/elements/edit_entitleds.html.twig:288
 #, php-format
 msgid "Delete '%s' field"
 msgstr ""
@@ -4900,7 +4936,7 @@ msgstr ""
 msgid "There is not yet any dynamic field configured for '%formname'"
 msgstr ""
 
-#: ../../tempcache/elements/navigation/navigation_items.html.twig:49
+#: ../../tempcache/elements/navigation/navigation_items.html.twig:54
 msgid "Go to Galette's dashboard"
 msgstr ""
 
@@ -4913,50 +4949,57 @@ msgstr "Home"
 msgid "Go back to Galette homepage"
 msgstr ""
 
+#: ../../tempcache/elements/navigation/navigation_aside.html.twig:111
+#: ../../tempcache/elements/navigation/navigation_aside.html.twig:118
+#, fuzzy
+#| msgid "Companies"
+msgid "Compact menu"
+msgstr "Aziende"
+
 #: ../../tempcache/elements/navigation/public_pages.html.twig:87
 msgid "Subscribe"
 msgstr "Iscriviti"
 
-#: ../../tempcache/elements/edit_entitleds.html.twig:40
-#: ../../tempcache/pages/configuration_entitled_form.html.twig:114
+#: ../../tempcache/elements/edit_entitleds.html.twig:44
+#: ../../tempcache/pages/configuration_entitled_form.html.twig:115
 msgid ""
 "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../../tempcache/elements/edit_entitleds.html.twig:59
-#: ../../tempcache/elements/edit_entitleds.html.twig:110
-#: ../../tempcache/elements/edit_entitleds.html.twig:218
-#: ../../tempcache/pages/configuration_entitled_form.html.twig:137
+#: ../../tempcache/elements/edit_entitleds.html.twig:65
+#: ../../tempcache/elements/edit_entitleds.html.twig:122
+#: ../../tempcache/elements/edit_entitleds.html.twig:230
+#: ../../tempcache/pages/configuration_entitled_form.html.twig:138
 msgid "Extends membership?"
 msgstr ""
 
-#: ../../tempcache/elements/edit_entitleds.html.twig:66
-#: ../../tempcache/elements/edit_entitleds.html.twig:112
-#: ../../tempcache/elements/edit_entitleds.html.twig:220
+#: ../../tempcache/elements/edit_entitleds.html.twig:72
+#: ../../tempcache/elements/edit_entitleds.html.twig:124
+#: ../../tempcache/elements/edit_entitleds.html.twig:232
 msgid "Priority"
 msgstr ""
 
-#: ../../tempcache/elements/edit_entitleds.html.twig:85
+#: ../../tempcache/elements/edit_entitleds.html.twig:91
 msgid "New status"
 msgstr ""
 
-#: ../../tempcache/elements/edit_entitleds.html.twig:91
+#: ../../tempcache/elements/edit_entitleds.html.twig:97
 msgid "New contribution type"
 msgstr ""
 
-#: ../../tempcache/elements/edit_entitleds.html.twig:178
+#: ../../tempcache/elements/edit_entitleds.html.twig:190
 #, php-format
 msgid "%s field"
 msgstr ""
 
 #: ../../tempcache/elements/ajax_members.html.twig:57
-#: ../../tempcache/pages/preferences.html.twig:2068
+#: ../../tempcache/pages/preferences.html.twig:1998
 msgid "Zip - Town"
 msgstr ""
 
 #: ../../tempcache/elements/ajax_members.html.twig:70
 #: ../../tempcache/elements/list.html.twig:153
-#: ../../tempcache/pages/members_public_gallery.html.twig:179
+#: ../../tempcache/pages/members_public_gallery.html.twig:180
 msgid "Pages:"
 msgstr ""
 
@@ -4967,19 +5010,19 @@ msgstr ""
 msgid "Company"
 msgstr "Aziende"
 
-#: ../../tempcache/elements/ajax_members.html.twig:199
+#: ../../tempcache/elements/ajax_members.html.twig:210
 msgid "no member"
 msgstr ""
 
-#: ../../tempcache/elements/ajax_members.html.twig:219
+#: ../../tempcache/elements/ajax_members.html.twig:230
 msgid "Selected members"
 msgstr ""
 
-#: ../../tempcache/elements/ajax_members.html.twig:236
+#: ../../tempcache/elements/ajax_members.html.twig:247
 msgid "No members has been selected yet."
 msgstr ""
 
-#: ../../tempcache/elements/ajax_members.html.twig:300
+#: ../../tempcache/elements/ajax_members.html.twig:311
 #: ../../tempcache/elements/ajax_groups.html.twig:205
 msgid "Validate"
 msgstr ""
@@ -4993,7 +5036,7 @@ msgid "%membercount members"
 msgstr ""
 
 #: ../../tempcache/elements/ajax_groups.html.twig:136
-#: ../../tempcache/pages/groups_list.html.twig:142
+#: ../../tempcache/pages/groups_list.html.twig:150
 msgid "no group"
 msgstr ""
 
@@ -5136,22 +5179,22 @@ msgstr ""
 
 #: ../../tempcache/elements/js/modal_action.js.twig:70
 #: ../../tempcache/elements/edit_pdf_models.html.twig:216
-#: ../../tempcache/elements/group.html.twig:290
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:273
-#: ../../tempcache/pages/transaction_form.html.twig:513
+#: ../../tempcache/elements/group.html.twig:314
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:277
+#: ../../tempcache/pages/transaction_form.html.twig:535
 #: ../../tempcache/pages/configuration_texts.html.twig:190
-#: ../../tempcache/pages/configuration_entitled_form.html.twig:168
+#: ../../tempcache/pages/configuration_entitled_form.html.twig:169
 #: ../../tempcache/pages/members_list.html.twig:387
 #: ../../tempcache/pages/members_list.html.twig:417
-#: ../../tempcache/pages/members_list.html.twig:1118
+#: ../../tempcache/pages/members_list.html.twig:1134
 #: ../../tempcache/pages/configuration_core_fields.html.twig:347
-#: ../../tempcache/pages/contribution_form.html.twig:623
-#: ../../tempcache/pages/mailing_form.html.twig:362
+#: ../../tempcache/pages/contribution_form.html.twig:658
+#: ../../tempcache/pages/mailing_form.html.twig:361
 #: ../../tempcache/pages/configuration_title_form.html.twig:89
-#: ../../tempcache/pages/preferences.html.twig:2464
+#: ../../tempcache/pages/preferences.html.twig:2407
 #: ../../tempcache/pages/configuration_core_lists.html.twig:287
-#: ../../tempcache/pages/member_form.html.twig:89
-#: ../../tempcache/pages/member_form.html.twig:458
+#: ../../tempcache/pages/member_form.html.twig:93
+#: ../../tempcache/pages/member_form.html.twig:468
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:89
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:179
 msgid "Save"
@@ -5188,15 +5231,15 @@ msgstr "Vuoi inviarlo di nuovo?"
 msgid "Later"
 msgstr "Più tardi"
 
-#: ../../tempcache/elements/js/choose_adh.js.twig:51
-#: ../../tempcache/pages/transaction_form.html.twig:110
-#: ../../tempcache/pages/contribution_form.html.twig:125
-#: ../../tempcache/pages/member_form.html.twig:205
-msgid "Search for name or ID and pick member"
-msgstr ""
+#: ../../tempcache/elements/js/choose_adh.js.twig:134
+#: ../../tempcache/elements/js/choose_adh.js.twig:213
+#, fuzzy
+#| msgid "An error occurred sending test email :("
+msgid "An error occurred retrieving members :("
+msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
 
-#: ../../tempcache/elements/js/modal.js.twig:218
-#: ../../tempcache/pages/export.html.twig:375
+#: ../../tempcache/elements/js/modal.js.twig:234
+#: ../../tempcache/pages/export.html.twig:384
 msgid "Continue"
 msgstr ""
 
@@ -5228,7 +5271,7 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:171
 #: ../../tempcache/pages/contributions_list.html.twig:151
-#: ../../tempcache/pages/advanced_search.html.twig:956
+#: ../../tempcache/pages/advanced_search.html.twig:961
 msgid "Select"
 msgstr ""
 
@@ -5249,7 +5292,7 @@ msgstr ""
 msgid "Additionnal fields:"
 msgstr ""
 
-#: ../../tempcache/elements/display_dynamic_fields.html.twig:164
+#: ../../tempcache/elements/display_dynamic_fields.html.twig:170
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr ""
@@ -5268,28 +5311,28 @@ msgstr ""
 msgid "Parent group:"
 msgstr ""
 
-#: ../../tempcache/elements/group.html.twig:235
+#: ../../tempcache/elements/group.html.twig:259
 msgid "Manage managers"
 msgstr ""
 
-#: ../../tempcache/elements/group.html.twig:266
+#: ../../tempcache/elements/group.html.twig:290
 msgid "Manage members"
 msgstr "Gestisci membri"
 
-#: ../../tempcache/elements/group.html.twig:314
+#: ../../tempcache/elements/group.html.twig:338
 msgid "Current group (and attached people) as PDF"
 msgstr ""
 
-#: ../../tempcache/elements/group.html.twig:319
+#: ../../tempcache/elements/group.html.twig:343
 msgid "Group PDF"
 msgstr ""
 
-#: ../../tempcache/elements/scripts.html.twig:209
+#: ../../tempcache/elements/scripts.html.twig:243
 msgid "Deactivate HTML editor"
 msgstr ""
 
-#: ../../tempcache/elements/scripts.html.twig:243
-#: ../../tempcache/pages/mailing_form.html.twig:339
+#: ../../tempcache/elements/scripts.html.twig:277
+#: ../../tempcache/pages/mailing_form.html.twig:338
 msgid "Activate HTML editor"
 msgstr ""
 
@@ -5298,14 +5341,14 @@ msgid "- WARNING -"
 msgstr "- ATTENZIONE -"
 
 #: ../../tempcache/elements/list.html.twig:222
-#: ../../tempcache/pages/members_public_gallery.html.twig:77
+#: ../../tempcache/pages/members_public_gallery.html.twig:78
 msgid "Records per page:"
 msgstr ""
 
 #: ../../tempcache/elements/list.html.twig:249
 #: ../../tempcache/pages/configuration_texts.html.twig:122
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:92
-#: ../../tempcache/pages/members_public_gallery.html.twig:104
+#: ../../tempcache/pages/members_public_gallery.html.twig:105
 msgid "Change"
 msgstr ""
 
@@ -5318,8 +5361,8 @@ msgid "Invert selection"
 msgstr ""
 
 #: ../../tempcache/elements/list.html.twig:422
-#: ../../tempcache/pages/transactions_list.html.twig:573
-#: ../../tempcache/pages/transactions_list.html.twig:588
+#: ../../tempcache/pages/transactions_list.html.twig:580
+#: ../../tempcache/pages/transactions_list.html.twig:595
 msgid "Show legend"
 msgstr ""
 
@@ -5343,30 +5386,26 @@ msgstr ""
 msgid "Demonstration"
 msgstr ""
 
-#: ../../tempcache/elements/group_persons.html.twig:126
-#: ../../tempcache/elements/group_persons.html.twig:137
-msgid "[admin]"
-msgstr ""
-
-#: ../../tempcache/elements/group_persons.html.twig:189
-#: ../../tempcache/pages/groups_list.html.twig:346
+#: ../../tempcache/elements/group_persons.html.twig:200
+#: ../../tempcache/pages/groups_list.html.twig:358
 msgid "No member attached"
 msgstr ""
 
-#: ../../tempcache/elements/group_persons.html.twig:195
+#: ../../tempcache/elements/group_persons.html.twig:206
 msgid "No manager attached"
 msgstr ""
 
 #: ../../tempcache/elements/logout.html.twig:98
-#: ../../tempcache/elements/logout.html.twig:140
-#: ../../tempcache/elements/logout.html.twig:158
+#: ../../tempcache/elements/logout.html.twig:143
+#: ../../tempcache/elements/logout.html.twig:161
+#: ../../tempcache/elements/logout.html.twig:259
 #, fuzzy
 #| msgid "Unable to impersonate as %id"
 msgid "Unimpersonate"
 msgstr "Impossibile accedere come %id"
 
-#: ../../tempcache/elements/member_card.html.twig:54
-#: ../../tempcache/components/forms/picture.html.twig:67
+#: ../../tempcache/elements/member_card.html.twig:58
+#: ../../tempcache/components/forms/picture.html.twig:59
 msgid "Picture"
 msgstr ""
 
@@ -5415,7 +5454,7 @@ msgstr ""
 msgid "Choose or enter your own..."
 msgstr ""
 
-#: ../../tempcache/macros.twig:380
+#: ../../tempcache/macros.twig:421
 msgid "For the selection:"
 msgstr ""
 
@@ -5428,11 +5467,11 @@ msgstr ""
 #: ../../tempcache/pages/plugins.html.twig:125
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:345
-#: ../../tempcache/pages/contribution_form.html.twig:270
-#: ../../tempcache/pages/transactions_list.html.twig:256
-#: ../../tempcache/pages/transactions_list.html.twig:409
-#: ../../tempcache/pages/export.html.twig:250
-#: ../../tempcache/pages/export.html.twig:280
+#: ../../tempcache/pages/contribution_form.html.twig:276
+#: ../../tempcache/pages/transactions_list.html.twig:263
+#: ../../tempcache/pages/transactions_list.html.twig:416
+#: ../../tempcache/pages/export.html.twig:259
+#: ../../tempcache/pages/export.html.twig:289
 msgid "Description"
 msgstr ""
 
@@ -5497,8 +5536,8 @@ msgid "No inactive plugin."
 msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:335
-#: ../../tempcache/pages/preferences.html.twig:1155
-#: ../../tempcache/pages/preferences.html.twig:2386
+#: ../../tempcache/pages/preferences.html.twig:1120
+#: ../../tempcache/pages/preferences.html.twig:2334
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
@@ -5518,67 +5557,67 @@ msgstr ""
 msgid "Edit field %field"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:87
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:91
 msgid "Permissions:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:120
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:124
 msgid "Required:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:150
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:154
 msgid "Width:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:166
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:170
 msgid "Height:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:182
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:186
 msgid "Size:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:193
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:197
 msgid "Maximum file size, in Ko."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:199
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:203
 msgid "Maximum number of characters."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:214
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:218
 msgid "Repeat:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:222
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:226
 msgid "Number of values or zero if infinite."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:234
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:238
 msgid "Values:"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:242
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:246
 msgid "Choice list (one entry per line)."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:251
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:255
 #, fuzzy
 #| msgid "Information"
 msgid "Information:"
 msgstr "Informazioni"
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:259
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:263
 msgid "Extra information displayed along with dynamic field."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:291
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:300
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:303
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:312
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
 msgid "New dynamic field"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:311
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:323
 #: ../../tempcache/pages/configuration_core_fields.html.twig:103
 #: ../../tempcache/pages/configuration_core_fields.html.twig:147
 #: ../../tempcache/pages/configuration_core_lists.html.twig:78
@@ -5588,7 +5627,7 @@ msgstr ""
 msgid "Field name"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:323
+#: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:335
 msgid "Visibility"
 msgstr ""
 
@@ -5596,132 +5635,146 @@ msgstr ""
 msgid "Transaction details"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:135
-#: ../../tempcache/pages/transaction_form.html.twig:137
-#: ../../tempcache/pages/contribution_form.html.twig:150
-#: ../../tempcache/pages/contribution_form.html.twig:152
-#: ../../tempcache/pages/member_form.html.twig:229
-#: ../../tempcache/pages/member_form.html.twig:231
-msgid "Reset"
+#: ../../tempcache/pages/transaction_form.html.twig:119
+#: ../../tempcache/pages/contribution_form.html.twig:124
+#: ../../tempcache/pages/member_form.html.twig:212
+#: ../../tempcache/components/forms/member_dropdown.html.twig:53
+msgid "Load previous members..."
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:184
-#: ../../tempcache/pages/transaction_form.html.twig:190
-#: ../../tempcache/pages/contribution_form.html.twig:235
+#: ../../tempcache/pages/transaction_form.html.twig:123
+#: ../../tempcache/pages/contribution_form.html.twig:128
+#: ../../tempcache/pages/member_form.html.twig:216
+#: ../../tempcache/components/forms/member_dropdown.html.twig:57
+#, fuzzy
+#| msgid "No longer member"
+msgid "Load following members..."
+msgstr "Non più membro"
+
+#: ../../tempcache/pages/transaction_form.html.twig:128
+#: ../../tempcache/pages/contribution_form.html.twig:133
+#: ../../tempcache/pages/member_form.html.twig:220
+#: ../../tempcache/components/forms/member_dropdown.html.twig:62
+msgid "Search for name or ID and pick member"
+msgstr ""
+
+#: ../../tempcache/pages/transaction_form.html.twig:206
+#: ../../tempcache/pages/transaction_form.html.twig:212
+#: ../../tempcache/pages/contribution_form.html.twig:241
 msgid "Select a contribution type to create for dispatch transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:186
-#: ../../tempcache/pages/contribution_form.html.twig:231
+#: ../../tempcache/pages/transaction_form.html.twig:208
+#: ../../tempcache/pages/contribution_form.html.twig:237
 msgid "Dispatch type:"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:216
+#: ../../tempcache/pages/transaction_form.html.twig:238
 msgid "Attached contributions"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:228
+#: ../../tempcache/pages/transaction_form.html.twig:250
 #: ../../tempcache/pages/contributions_list.html.twig:87
-#: ../../tempcache/pages/contributions_list.html.twig:352
-#: ../../tempcache/pages/contributions_list.html.twig:558
+#: ../../tempcache/pages/contributions_list.html.twig:371
+#: ../../tempcache/pages/contributions_list.html.twig:577
 msgid "Begin"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:232
+#: ../../tempcache/pages/transaction_form.html.twig:254
 #: ../../tempcache/pages/contributions_list.html.twig:97
-#: ../../tempcache/pages/contributions_list.html.twig:352
-#: ../../tempcache/pages/contributions_list.html.twig:566
+#: ../../tempcache/pages/contributions_list.html.twig:371
+#: ../../tempcache/pages/contributions_list.html.twig:585
 msgid "End"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:236
-#: ../../tempcache/pages/contributions_list.html.twig:368
-#: ../../tempcache/pages/contributions_list.html.twig:661
+#: ../../tempcache/pages/transaction_form.html.twig:258
+#: ../../tempcache/pages/contributions_list.html.twig:387
+#: ../../tempcache/pages/contributions_list.html.twig:680
 msgid "Duration"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:243
-#: ../../tempcache/pages/contributions_list.html.twig:360
-#: ../../tempcache/pages/contributions_list.html.twig:577
+#: ../../tempcache/pages/transaction_form.html.twig:265
+#: ../../tempcache/pages/contributions_list.html.twig:379
+#: ../../tempcache/pages/contributions_list.html.twig:596
 #: ../../tempcache/pages/history.html.twig:165
-#: ../../tempcache/pages/contribution_form.html.twig:278
-#: ../../tempcache/pages/transactions_list.html.twig:248
-#: ../../tempcache/pages/transactions_list.html.twig:347
+#: ../../tempcache/pages/contribution_form.html.twig:284
+#: ../../tempcache/pages/transactions_list.html.twig:255
+#: ../../tempcache/pages/transactions_list.html.twig:354
 msgid "Member"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:277
+#: ../../tempcache/pages/transaction_form.html.twig:299
 msgid "Dispatched amount:"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:294
+#: ../../tempcache/pages/transaction_form.html.twig:316
 msgid "Not dispatched amount:"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:326
-#: ../../tempcache/pages/transaction_form.html.twig:333
+#: ../../tempcache/pages/transaction_form.html.twig:348
+#: ../../tempcache/pages/transaction_form.html.twig:355
 msgid "Create a new fee that will be attached to the current transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:346
-#: ../../tempcache/pages/transaction_form.html.twig:353
+#: ../../tempcache/pages/transaction_form.html.twig:368
+#: ../../tempcache/pages/transaction_form.html.twig:375
 msgid "Create a new donation that will be attached to the current transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:361
-#: ../../tempcache/pages/transaction_form.html.twig:368
+#: ../../tempcache/pages/transaction_form.html.twig:383
+#: ../../tempcache/pages/transaction_form.html.twig:390
 msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:466
+#: ../../tempcache/pages/transaction_form.html.twig:488
 msgid "Detach contribution from this transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:486
-#: ../../tempcache/pages/contributions_list.html.twig:736
+#: ../../tempcache/pages/transaction_form.html.twig:508
+#: ../../tempcache/pages/contributions_list.html.twig:755
 msgid "no contribution"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:535
-#: ../../tempcache/pages/contribution_form.html.twig:657
+#: ../../tempcache/pages/transaction_form.html.twig:557
+#: ../../tempcache/pages/contribution_form.html.twig:692
 msgid "No member registered!"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:540
-#: ../../tempcache/pages/contribution_form.html.twig:662
+#: ../../tempcache/pages/transaction_form.html.twig:562
+#: ../../tempcache/pages/contribution_form.html.twig:697
 msgid "Unfortunately, there is no member in your database yet,"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:547
-#: ../../tempcache/pages/contribution_form.html.twig:669
+#: ../../tempcache/pages/transaction_form.html.twig:569
+#: ../../tempcache/pages/contribution_form.html.twig:704
 msgid "please create a member"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:615
-#: ../../tempcache/pages/groups_list.html.twig:274
-#: ../../tempcache/pages/groups_list.html.twig:359
-#: ../../tempcache/pages/groups_list.html.twig:427
-#: ../../tempcache/pages/mailing_form.html.twig:587
-#: ../../tempcache/pages/mailing_form.html.twig:631
-#: ../../tempcache/pages/mailing_form.html.twig:696
+#: ../../tempcache/pages/transaction_form.html.twig:637
+#: ../../tempcache/pages/groups_list.html.twig:286
+#: ../../tempcache/pages/groups_list.html.twig:370
+#: ../../tempcache/pages/groups_list.html.twig:438
+#: ../../tempcache/pages/mailing_form.html.twig:586
+#: ../../tempcache/pages/mailing_form.html.twig:630
+#: ../../tempcache/pages/mailing_form.html.twig:695
 msgid "An error occurred displaying members interface :("
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:626
+#: ../../tempcache/pages/transaction_form.html.twig:648
 msgid "Contributions selection"
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:666
-#: ../../tempcache/pages/transaction_form.html.twig:697
-#: ../../tempcache/pages/transaction_form.html.twig:728
+#: ../../tempcache/pages/transaction_form.html.twig:688
+#: ../../tempcache/pages/transaction_form.html.twig:719
+#: ../../tempcache/pages/transaction_form.html.twig:750
 msgid "An error occurred displaying contributions :("
 msgstr ""
 
-#: ../../tempcache/pages/transaction_form.html.twig:745
-#: ../../tempcache/pages/groups_list.html.twig:393
-#: ../../tempcache/pages/member_form.html.twig:742
+#: ../../tempcache/pages/transaction_form.html.twig:767
+#: ../../tempcache/pages/groups_list.html.twig:404
+#: ../../tempcache/pages/member_form.html.twig:748
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 
@@ -5809,7 +5862,7 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:377
 #: ../../tempcache/pages/mailings_list.html.twig:226
 #: ../../tempcache/pages/transactions_list.html.twig:107
-#: ../../tempcache/pages/advanced_search.html.twig:1474
+#: ../../tempcache/pages/advanced_search.html.twig:1524
 msgid "Filter"
 msgstr "Filtra"
 
@@ -5828,159 +5881,161 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:438
 #: ../../tempcache/pages/mailings_list.html.twig:236
 #: ../../tempcache/pages/transactions_list.html.twig:117
-#: ../../tempcache/pages/advanced_search.html.twig:1482
+#: ../../tempcache/pages/advanced_search.html.twig:1532
 msgid "Clear filter"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:197
+#: ../../tempcache/pages/contributions_list.html.twig:201
 msgid "Show all members contributions"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:221
-#: ../../tempcache/pages/transactions_list.html.twig:166
+#: ../../tempcache/pages/contributions_list.html.twig:231
+#: ../../tempcache/pages/transactions_list.html.twig:173
 msgid "See member profile"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:298
+#: ../../tempcache/pages/contributions_list.html.twig:317
 #, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
 msgstr[0] "%count contributo"
 msgstr[1] "%count contributi"
 
-#: ../../tempcache/pages/contributions_list.html.twig:397
+#: ../../tempcache/pages/contributions_list.html.twig:416
 #, php-format
 msgid "Found contributions total %f"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:491
-#: ../../tempcache/pages/contributions_list.html.twig:520
+#: ../../tempcache/pages/contributions_list.html.twig:510
+#: ../../tempcache/pages/contributions_list.html.twig:539
 msgid "Contribution %id"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:508
-#: ../../tempcache/pages/contributions_list.html.twig:530
+#: ../../tempcache/pages/contributions_list.html.twig:527
+#: ../../tempcache/pages/contributions_list.html.twig:549
 #, php-format
 msgid "Transaction: %s"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:607
+#: ../../tempcache/pages/contributions_list.html.twig:626
 msgid "Show only '%name' contributions"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:622
-#: ../../tempcache/pages/transactions_list.html.twig:390
+#: ../../tempcache/pages/contributions_list.html.twig:641
+#: ../../tempcache/pages/transactions_list.html.twig:397
 msgid "Show '%name' card"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:681
+#: ../../tempcache/pages/contributions_list.html.twig:700
 msgid "Print an invoice or a receipt (depending on contribution type)"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:698
+#: ../../tempcache/pages/contributions_list.html.twig:717
 msgid "Edit the contribution"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:711
+#: ../../tempcache/pages/contributions_list.html.twig:730
 msgid "Delete the contribution"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:751
-#: ../../tempcache/pages/contributions_list.html.twig:755
+#: ../../tempcache/pages/contributions_list.html.twig:770
+#: ../../tempcache/pages/contributions_list.html.twig:774
 #: ../../tempcache/pages/members_list.html.twig:477
 #: ../../tempcache/pages/members_list.html.twig:481
-#: ../../tempcache/pages/transactions_list.html.twig:532
-#: ../../tempcache/pages/transactions_list.html.twig:536
+#: ../../tempcache/pages/transactions_list.html.twig:539
+#: ../../tempcache/pages/transactions_list.html.twig:543
 msgid "Legend"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:769
+#: ../../tempcache/pages/contributions_list.html.twig:788
 #: ../../tempcache/pages/members_list.html.twig:554
 #: ../../tempcache/pages/member_show.html.twig:83
 msgid "Modification"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:778
+#: ../../tempcache/pages/contributions_list.html.twig:797
 #: ../../tempcache/pages/members_list.html.twig:570
 msgid "Deletion"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:788
+#: ../../tempcache/pages/contributions_list.html.twig:807
 msgid "Contribution"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:795
+#: ../../tempcache/pages/contributions_list.html.twig:814
 msgid "Gift"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:55
+#: ../../tempcache/pages/admintools.html.twig:58
 msgid ""
 "Make sure you've done a backup of the database before using any of the "
 "following tools!"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:60
+#: ../../tempcache/pages/admintools.html.twig:65
 msgid "Select actions(s)"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:70
-#: ../../tempcache/pages/admintools.html.twig:78
-#: ../../tempcache/pages/admintools.html.twig:92
-#: ../../tempcache/pages/admintools.html.twig:100
+#: ../../tempcache/pages/admintools.html.twig:75
+#: ../../tempcache/pages/admintools.html.twig:83
+#: ../../tempcache/pages/admintools.html.twig:97
+#: ../../tempcache/pages/admintools.html.twig:105
 msgid "Reset all emails contents to their default values"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:74
+#: ../../tempcache/pages/admintools.html.twig:79
 msgid "Reset emails contents"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:82
-#: ../../tempcache/pages/admintools.html.twig:106
-#: ../../tempcache/pages/admintools.html.twig:128
+#: ../../tempcache/pages/admintools.html.twig:87
+#: ../../tempcache/pages/admintools.html.twig:111
+#: ../../tempcache/pages/admintools.html.twig:133
 msgid "(all existing values will be removed)"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:96
+#: ../../tempcache/pages/admintools.html.twig:101
 msgid "Reset fields configuration"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:102
+#: ../../tempcache/pages/admintools.html.twig:107
 msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:116
-#: ../../tempcache/pages/admintools.html.twig:124
+#: ../../tempcache/pages/admintools.html.twig:121
+#: ../../tempcache/pages/admintools.html.twig:129
 msgid "Reset all PDF models to their default values"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:120
+#: ../../tempcache/pages/admintools.html.twig:125
 msgid "Reinitialize PDF models"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:138
-#: ../../tempcache/pages/admintools.html.twig:146
+#: ../../tempcache/pages/admintools.html.twig:143
+#: ../../tempcache/pages/admintools.html.twig:151
 msgid "Fill all empty login and passwords"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:142
+#: ../../tempcache/pages/admintools.html.twig:147
 msgid "Generate empty logins and passwords"
 msgstr ""
 
-#: ../../tempcache/pages/admintools.html.twig:158
+#: ../../tempcache/pages/admintools.html.twig:163
 msgid "Go"
 msgstr ""
 
 #: ../../tempcache/pages/configuration_titles.html.twig:61
 #: ../../tempcache/pages/configuration_titles.html.twig:85
-#: ../../tempcache/pages/configuration_titles.html.twig:159
+#: ../../tempcache/pages/configuration_titles.html.twig:90
+#: ../../tempcache/pages/configuration_titles.html.twig:171
 msgid "Short form"
 msgstr ""
 
 #: ../../tempcache/pages/configuration_titles.html.twig:65
-#: ../../tempcache/pages/configuration_titles.html.twig:91
-#: ../../tempcache/pages/configuration_titles.html.twig:165
+#: ../../tempcache/pages/configuration_titles.html.twig:97
+#: ../../tempcache/pages/configuration_titles.html.twig:102
+#: ../../tempcache/pages/configuration_titles.html.twig:177
 msgid "Long form"
 msgstr ""
 
@@ -5988,17 +6043,17 @@ msgstr ""
 msgid "Add title"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_titles.html.twig:152
+#: ../../tempcache/pages/configuration_titles.html.twig:164
 #, php-format
 msgid "%s title"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_titles.html.twig:180
+#: ../../tempcache/pages/configuration_titles.html.twig:192
 #, php-format
 msgid "Edit '%s' title"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_titles.html.twig:201
+#: ../../tempcache/pages/configuration_titles.html.twig:213
 #, php-format
 msgid "Delete '%s' title"
 msgstr ""
@@ -6129,7 +6184,7 @@ msgstr "Corpo dell’email:"
 msgid "Sorry, the page you are looking for could not be found."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_entitled_form.html.twig:100
+#: ../../tempcache/pages/configuration_entitled_form.html.twig:101
 msgid "Priority:"
 msgstr ""
 
@@ -6145,7 +6200,7 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:75
 #: ../../tempcache/pages/members_public_list.html.twig:63
-#: ../../tempcache/pages/members_public_gallery.html.twig:70
+#: ../../tempcache/pages/members_public_gallery.html.twig:71
 #, php-format
 msgid "%count member"
 msgid_plural "%count members"
@@ -6262,62 +6317,68 @@ msgid "Send an email"
 msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:594
-#: ../../tempcache/pages/members_list.html.twig:697
+#: ../../tempcache/pages/members_list.html.twig:704
 #: ../../tempcache/pages/members_public_list.html.twig:147
 #: ../../tempcache/pages/members_public_list.html.twig:151
 msgid "Is a company"
 msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:602
-#: ../../tempcache/pages/members_list.html.twig:708
+#: ../../tempcache/pages/members_list.html.twig:715
 #: ../../tempcache/pages/members_public_list.html.twig:161
 #: ../../tempcache/pages/members_public_list.html.twig:165
 msgid "Is a man"
 msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:607
-#: ../../tempcache/pages/members_list.html.twig:719
+#: ../../tempcache/pages/members_list.html.twig:726
 #: ../../tempcache/pages/members_public_list.html.twig:175
 #: ../../tempcache/pages/members_public_list.html.twig:179
 msgid "Is a woman"
 msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:614
-#: ../../tempcache/pages/members_list.html.twig:756
+#: ../../tempcache/pages/members_list.html.twig:763
 #: ../../tempcache/pages/preferences.html.twig:132
 msgid "Admin"
 msgstr "Admin"
 
-#: ../../tempcache/pages/members_list.html.twig:1017
+#: ../../tempcache/pages/members_list.html.twig:1033
 msgid "No member has been found"
 msgstr ""
 
-#: ../../tempcache/pages/members_list.html.twig:1080
+#: ../../tempcache/pages/members_list.html.twig:1096
 msgid "Search title"
 msgstr ""
 
-#: ../../tempcache/pages/members_list.html.twig:1151
-#: ../../tempcache/page.html.twig:159
+#: ../../tempcache/pages/members_list.html.twig:1167
+#: ../../tempcache/page.html.twig:170
 msgid "Existing mailing"
 msgstr ""
 
-#: ../../tempcache/pages/members_list.html.twig:1151
+#: ../../tempcache/pages/members_list.html.twig:1167
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
 
-#: ../../tempcache/pages/members_list.html.twig:1151
+#: ../../tempcache/pages/members_list.html.twig:1167
 msgid "New"
 msgstr ""
 
-#: ../../tempcache/pages/members_list.html.twig:1151
+#: ../../tempcache/pages/members_list.html.twig:1167
 msgid "Resume"
 msgstr ""
 
-#: ../../tempcache/pages/members_list.html.twig:1189
+#: ../../tempcache/pages/members_list.html.twig:1205
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
+
+#: ../../tempcache/pages/members_list.html.twig:1427
+#, fuzzy
+#| msgid "Required"
+msgid "Required field!"
+msgstr "Richiesta"
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:56
 #: ../../tempcache/pages/configuration_core_fields.html.twig:339
@@ -6376,44 +6437,44 @@ msgstr ""
 msgid "Please correct above warnings to continue."
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:99
+#: ../../tempcache/pages/groups_list.html.twig:104
 msgid "Export all groups and their members as PDF"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:104
+#: ../../tempcache/pages/groups_list.html.twig:109
 msgid "All groups PDF"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:114
-#: ../../tempcache/pages/groups_list.html.twig:119
+#: ../../tempcache/pages/groups_list.html.twig:121
+#: ../../tempcache/pages/groups_list.html.twig:126
 msgid "New group"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:168
+#: ../../tempcache/pages/groups_list.html.twig:180
 msgid "Add a new group"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:211
+#: ../../tempcache/pages/groups_list.html.twig:223
 msgid "An error occurred checking name uniqueness :("
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:218
+#: ../../tempcache/pages/groups_list.html.twig:230
 msgid "Please provide a group name"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:226
+#: ../../tempcache/pages/groups_list.html.twig:238
 msgid "Create"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:286
+#: ../../tempcache/pages/groups_list.html.twig:298
 msgid "Group members selection"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:291
+#: ../../tempcache/pages/groups_list.html.twig:303
 msgid "Group managers selection"
 msgstr ""
 
-#: ../../tempcache/pages/groups_list.html.twig:336
+#: ../../tempcache/pages/groups_list.html.twig:348
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
@@ -6423,85 +6484,85 @@ msgstr ""
 msgid "Lost your password?"
 msgstr "Hai perso la password?"
 
-#: ../../tempcache/pages/import.html.twig:63
-msgid "Configure import model"
-msgstr ""
-
-#: ../../tempcache/pages/import.html.twig:74
+#: ../../tempcache/pages/import.html.twig:66
 msgid "Existing files"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:93
+#: ../../tempcache/pages/import.html.twig:79
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:108
-#: ../../tempcache/pages/import.html.twig:170
-#: ../../tempcache/pages/export.html.twig:127
-#: ../../tempcache/pages/export.html.twig:178
+#: ../../tempcache/pages/import.html.twig:94
+#: ../../tempcache/pages/import.html.twig:156
+#: ../../tempcache/pages/export.html.twig:136
+#: ../../tempcache/pages/export.html.twig:187
 msgid "Size"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:156
+#: ../../tempcache/pages/import.html.twig:142
 msgid "see"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:188
-#: ../../tempcache/pages/export.html.twig:196
+#: ../../tempcache/pages/import.html.twig:174
+#: ../../tempcache/pages/export.html.twig:205
 #, php-format
 msgid "Remove '%file' from disk"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:212
+#: ../../tempcache/pages/import.html.twig:198
 msgid "Run the import process, but do *not* store anything in the database"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:216
+#: ../../tempcache/pages/import.html.twig:202
 msgid "Dry run"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:229
+#: ../../tempcache/pages/import.html.twig:215
 msgid "Import"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:241
+#: ../../tempcache/pages/import.html.twig:227
 msgid "No import file actually exists."
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:243
+#: ../../tempcache/pages/import.html.twig:229
 msgid ""
 "Use upload form below to send a new file on server, or copy it directly in "
 "the imports directory."
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:258
+#: ../../tempcache/pages/import.html.twig:248
 msgid "Upload new file"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:273
-#: ../../tempcache/pages/preferences.html.twig:254
-#: ../../tempcache/pages/preferences.html.twig:1982
-#: ../../tempcache/components/forms/picture.html.twig:86
-#: ../../tempcache/components/dynamic_fields.html.twig:717
+#: ../../tempcache/pages/import.html.twig:259
+#: ../../tempcache/pages/preferences.html.twig:245
+#: ../../tempcache/pages/preferences.html.twig:1918
+#: ../../tempcache/components/forms/picture.html.twig:81
+#: ../../tempcache/components/dynamic_fields.html.twig:721
 #, fuzzy
 #| msgid "Change language"
 msgid "Choose a file"
 msgstr "Cambia lingua"
 
-#: ../../tempcache/pages/import.html.twig:285
+#: ../../tempcache/pages/import.html.twig:272
 msgid "Upload file"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:314
-#: ../../tempcache/pages/import.html.twig:325
+#: ../../tempcache/pages/import.html.twig:285
+msgid "Configure import model"
+msgstr ""
+
+#: ../../tempcache/pages/import.html.twig:311
+#: ../../tempcache/pages/import.html.twig:322
 msgid "No file selected"
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:314
+#: ../../tempcache/pages/import.html.twig:311
 msgid "Please make sure to select one file to import."
 msgstr ""
 
-#: ../../tempcache/pages/import.html.twig:325
+#: ../../tempcache/pages/import.html.twig:322
 msgid "Please make sure to select one file to upload."
 msgstr ""
 
@@ -6513,28 +6574,28 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_payment_types.html.twig:142
+#: ../../tempcache/pages/configuration_payment_types.html.twig:148
 #, php-format
 msgid "%s payment type"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_payment_types.html.twig:164
+#: ../../tempcache/pages/configuration_payment_types.html.twig:170
 #, php-format
 msgid "Edit '%s' payment type"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_payment_types.html.twig:177
-#: ../../tempcache/pages/preferences.html.twig:195
-#: ../../tempcache/pages/preferences.html.twig:201
-#: ../../tempcache/pages/preferences.html.twig:1805
-#: ../../tempcache/pages/preferences.html.twig:1811
-#: ../../tempcache/pages/preferences.html.twig:1842
-#: ../../tempcache/pages/preferences.html.twig:1848
+#: ../../tempcache/pages/configuration_payment_types.html.twig:183
+#: ../../tempcache/pages/preferences.html.twig:186
+#: ../../tempcache/pages/preferences.html.twig:192
+#: ../../tempcache/pages/preferences.html.twig:1760
+#: ../../tempcache/pages/preferences.html.twig:1766
+#: ../../tempcache/pages/preferences.html.twig:1798
+#: ../../tempcache/pages/preferences.html.twig:1804
 #, php-format
 msgid "Translate '%s'"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_payment_types.html.twig:198
+#: ../../tempcache/pages/configuration_payment_types.html.twig:204
 #, php-format
 msgid "Delete '%s' payment type"
 msgstr ""
@@ -6565,8 +6626,8 @@ msgid "Generate labels for members without email address"
 msgstr "Genera etichette per i membri senza indirizzo e-mail"
 
 #: ../../tempcache/pages/reminder.html.twig:202
-#: ../../tempcache/pages/mailing_form.html.twig:304
-#: ../../tempcache/pages/mailing_form.html.twig:417
+#: ../../tempcache/pages/mailing_form.html.twig:303
+#: ../../tempcache/pages/mailing_form.html.twig:416
 #: ../../tempcache/pages/500.html.twig:111
 msgid "Message:"
 msgstr ""
@@ -6591,175 +6652,175 @@ msgstr ""
 msgid "Transaction related"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:214
+#: ../../tempcache/pages/contribution_form.html.twig:220
 msgid "Reload"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:216
+#: ../../tempcache/pages/contribution_form.html.twig:222
 msgid ""
 "Reload date information according to selected member and contribution type"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:262
+#: ../../tempcache/pages/contribution_form.html.twig:268
 msgid "Related transaction information"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:286
+#: ../../tempcache/pages/contribution_form.html.twig:292
 msgid "Not dispatched amount"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:330
+#: ../../tempcache/pages/contribution_form.html.twig:336
 msgid "View transaction"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:348
+#: ../../tempcache/pages/contribution_form.html.twig:354
 msgid "New attached fee"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:362
+#: ../../tempcache/pages/contribution_form.html.twig:368
 msgid "New attached donation"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:388
+#: ../../tempcache/pages/contribution_form.html.twig:394
 msgid "Details of membership fee"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:394
+#: ../../tempcache/pages/contribution_form.html.twig:400
 msgid "Details of donation"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:447
+#: ../../tempcache/pages/contribution_form.html.twig:463
 msgid "Record date:"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:527
+#: ../../tempcache/pages/contribution_form.html.twig:552
 msgid "months"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:597
+#: ../../tempcache/pages/contribution_form.html.twig:632
 msgid "Notify member"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:604
+#: ../../tempcache/pages/contribution_form.html.twig:639
 msgid "Member will receive a notification by email, if he has an address."
 msgstr "Il membro riceverà una notifica via e-mail, se ha un indirizzo."
 
-#: ../../tempcache/pages/contribution_form.html.twig:723
+#: ../../tempcache/pages/contribution_form.html.twig:757
 msgid "An error occurred retrieving dates :("
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:749
+#: ../../tempcache/pages/contribution_form.html.twig:783
 msgid "Contribution amount should not be greater than %max"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:76
+#: ../../tempcache/pages/mailing_form.html.twig:75
 msgid "Mailing information"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:84
+#: ../../tempcache/pages/mailing_form.html.twig:83
 #: ../../tempcache/pages/mailings_list.html.twig:97
 #: ../../tempcache/pages/mailings_list.html.twig:309
 msgid "Sender"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:91
-#: ../../tempcache/pages/preferences.html.twig:408
+#: ../../tempcache/pages/mailing_form.html.twig:90
+#: ../../tempcache/pages/preferences.html.twig:354
 msgid "from preferences"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:100
+#: ../../tempcache/pages/mailing_form.html.twig:99
 msgid "current logged in user"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:108
+#: ../../tempcache/pages/mailing_form.html.twig:107
 msgid "other"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:138
+#: ../../tempcache/pages/mailing_form.html.twig:137
 #: ../../tempcache/pages/mailings_list.html.twig:97
 #: ../../tempcache/pages/mailings_list.html.twig:319
 msgid "Recipients"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:151
+#: ../../tempcache/pages/mailing_form.html.twig:150
 msgid "Go back to members list"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:160
+#: ../../tempcache/pages/mailing_form.html.twig:159
 msgid "Manage selected members"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:182
+#: ../../tempcache/pages/mailing_form.html.twig:181
 #: ../../tempcache/pages/configuration_core_lists.html.twig:55
 #: ../../tempcache/pages/charts.html.twig:56
 #: ../../tempcache/pages/advanced_search.html.twig:529
-#: ../../tempcache/pages/advanced_search.html.twig:994
+#: ../../tempcache/pages/advanced_search.html.twig:1045
 #: ../../tempcache/components/forms/groups.html.twig:47
 msgid "This feature requires javascript."
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:199
+#: ../../tempcache/pages/mailing_form.html.twig:198
 msgid "Existing attachments:"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:221
-#: ../../tempcache/pages/mailing_form.html.twig:716
+#: ../../tempcache/pages/mailing_form.html.twig:220
+#: ../../tempcache/pages/mailing_form.html.twig:715
 msgid "Remove attachment"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:256
+#: ../../tempcache/pages/mailing_form.html.twig:255
 msgid ""
 "Select files to add as attachments.<br/>Multiple file selection using 'ctrl' "
 "or 'shift' keys are only available on compatible browsers."
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:264
+#: ../../tempcache/pages/mailing_form.html.twig:263
 msgid "Add attachment"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:287
+#: ../../tempcache/pages/mailing_form.html.twig:286
 msgid "Write your mailing"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:294
+#: ../../tempcache/pages/mailing_form.html.twig:293
 msgid "Object:"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:332
+#: ../../tempcache/pages/mailing_form.html.twig:331
 msgid "Interpret HTML"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:355
+#: ../../tempcache/pages/mailing_form.html.twig:354
 msgid "Preview"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:381
-#: ../../tempcache/pages/mailing_form.html.twig:472
+#: ../../tempcache/pages/mailing_form.html.twig:380
+#: ../../tempcache/pages/mailing_form.html.twig:471
 msgid "Cancel mailing"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:398
+#: ../../tempcache/pages/mailing_form.html.twig:397
 msgid "Preview your mailing"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:451
+#: ../../tempcache/pages/mailing_form.html.twig:450
 msgid "Modifiy mailing"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:550
+#: ../../tempcache/pages/mailing_form.html.twig:549
 #: ../../tempcache/pages/mailings_list.html.twig:453
 msgid "An error occurred displaying preview :("
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:597
+#: ../../tempcache/pages/mailing_form.html.twig:596
 msgid "Members selection"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:713
+#: ../../tempcache/pages/mailing_form.html.twig:712
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""
 
-#: ../../tempcache/pages/mailing_form.html.twig:713
+#: ../../tempcache/pages/mailing_form.html.twig:712
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
 
@@ -6796,199 +6857,199 @@ msgstr ""
 msgid "Name of the association:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:171
+#: ../../tempcache/pages/preferences.html.twig:166
 msgid "Association's short description:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:175
+#: ../../tempcache/pages/preferences.html.twig:170
 msgid ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:211
-#: ../../tempcache/pages/preferences.html.twig:1939
+#: ../../tempcache/pages/preferences.html.twig:202
+#: ../../tempcache/pages/preferences.html.twig:1875
 msgid "Logo:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:227
+#: ../../tempcache/pages/preferences.html.twig:218
 msgid "Current logo"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:252
-#: ../../tempcache/pages/preferences.html.twig:1980
-#: ../../tempcache/components/forms/picture.html.twig:84
-#: ../../tempcache/components/dynamic_fields.html.twig:715
+#: ../../tempcache/pages/preferences.html.twig:243
+#: ../../tempcache/pages/preferences.html.twig:1916
+#: ../../tempcache/components/forms/picture.html.twig:79
+#: ../../tempcache/components/dynamic_fields.html.twig:719
 #, fuzzy
 #| msgid "Change language"
 msgid "Choose another file"
 msgstr "Cambia lingua"
 
-#: ../../tempcache/pages/preferences.html.twig:269
-#: ../../tempcache/pages/preferences.html.twig:1997
-#: ../../tempcache/components/forms/picture.html.twig:101
+#: ../../tempcache/pages/preferences.html.twig:260
+#: ../../tempcache/pages/preferences.html.twig:1933
+#: ../../tempcache/components/forms/picture.html.twig:96
 msgid "Delete image"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:307
+#: ../../tempcache/pages/preferences.html.twig:289
 msgid " (continuation)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:379
+#: ../../tempcache/pages/preferences.html.twig:329
 msgid "Website:"
 msgstr "Sito Web:"
 
-#: ../../tempcache/pages/preferences.html.twig:397
+#: ../../tempcache/pages/preferences.html.twig:343
 msgid "Postal address:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:401
+#: ../../tempcache/pages/preferences.html.twig:347
 msgid ""
 "Use either the address setted below or select a staff member to retrieve "
 "he's address."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:422
+#: ../../tempcache/pages/preferences.html.twig:368
 msgid "from a staff user"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:441
+#: ../../tempcache/pages/preferences.html.twig:387
 msgid "-- Choose a staff member --"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:471
+#: ../../tempcache/pages/preferences.html.twig:417
 msgid "Footer text:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:477
+#: ../../tempcache/pages/preferences.html.twig:423
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:490
+#: ../../tempcache/pages/preferences.html.twig:436
 msgid "Telemetry date:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:494
+#: ../../tempcache/pages/preferences.html.twig:440
 msgid "Last telemetry sent date."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:504
+#: ../../tempcache/pages/preferences.html.twig:450
 msgid "send"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:512
+#: ../../tempcache/pages/preferences.html.twig:458
 msgid "Registration date:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:516
+#: ../../tempcache/pages/preferences.html.twig:462
 msgid "Date on which you registered your Galette instance."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:525
+#: ../../tempcache/pages/preferences.html.twig:471
 msgid "Update your information"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:534
+#: ../../tempcache/pages/preferences.html.twig:480
 #: ../../tempcache/pages/desktop.html.twig:105
 msgid "Register"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:537
+#: ../../tempcache/pages/preferences.html.twig:483
 msgid "Not registered"
 msgstr "Non registrato"
 
-#: ../../tempcache/pages/preferences.html.twig:571
+#: ../../tempcache/pages/preferences.html.twig:522
 msgid "Default language:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:602
+#: ../../tempcache/pages/preferences.html.twig:562
 msgid "Lines / Page:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:631
-#: ../../tempcache/pages/member_form.html.twig:314
+#: ../../tempcache/pages/preferences.html.twig:596
+#: ../../tempcache/pages/member_form.html.twig:324
 msgid "After member creation:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:642
-#: ../../tempcache/pages/member_form.html.twig:325
+#: ../../tempcache/pages/preferences.html.twig:607
+#: ../../tempcache/pages/member_form.html.twig:335
 msgid "create a new contribution (default action)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:652
-#: ../../tempcache/pages/member_form.html.twig:335
+#: ../../tempcache/pages/preferences.html.twig:617
+#: ../../tempcache/pages/member_form.html.twig:345
 msgid "create a new transaction"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:662
-#: ../../tempcache/pages/member_form.html.twig:345
+#: ../../tempcache/pages/preferences.html.twig:627
+#: ../../tempcache/pages/member_form.html.twig:355
 msgid "create another new member"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:672
-#: ../../tempcache/pages/member_form.html.twig:355
+#: ../../tempcache/pages/preferences.html.twig:637
+#: ../../tempcache/pages/member_form.html.twig:365
 msgid "show member"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:682
-#: ../../tempcache/pages/member_form.html.twig:365
+#: ../../tempcache/pages/preferences.html.twig:647
+#: ../../tempcache/pages/member_form.html.twig:375
 msgid "go to members list"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:692
-#: ../../tempcache/pages/member_form.html.twig:375
+#: ../../tempcache/pages/preferences.html.twig:657
+#: ../../tempcache/pages/member_form.html.twig:385
 msgid "go to main page"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:699
+#: ../../tempcache/pages/preferences.html.twig:669
 msgid "Logging level:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:710
+#: ../../tempcache/pages/preferences.html.twig:685
 msgid "Disabled"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:720
+#: ../../tempcache/pages/preferences.html.twig:695
 msgid "Enabled"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:727
+#: ../../tempcache/pages/preferences.html.twig:702
 msgid "Default account filter:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:756
+#: ../../tempcache/pages/preferences.html.twig:731
 #, fuzzy
 #| msgid "Edit payment type"
 msgid "Default payment type:"
 msgstr "Modifica tipologia di pagamento"
 
-#: ../../tempcache/pages/preferences.html.twig:795
+#: ../../tempcache/pages/preferences.html.twig:770
 msgid "Public pages enabled?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:807
+#: ../../tempcache/pages/preferences.html.twig:782
 msgid "Show public pages for"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:818
+#: ../../tempcache/pages/preferences.html.twig:793
 msgid "Everyone"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:838
+#: ../../tempcache/pages/preferences.html.twig:813
 msgid "Admin and staff only"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:852
+#: ../../tempcache/pages/preferences.html.twig:827
 msgid "Self subscription enabled?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:859
+#: ../../tempcache/pages/preferences.html.twig:834
 msgid "Post new contribution script URI"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:865
+#: ../../tempcache/pages/preferences.html.twig:840
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -6997,137 +7058,137 @@ msgid ""
 "those cases)."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:877
+#: ../../tempcache/pages/preferences.html.twig:852
 msgid "RSS feed URL"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:883
+#: ../../tempcache/pages/preferences.html.twig:858
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:899
+#: ../../tempcache/pages/preferences.html.twig:870
 msgid "Galette base URL"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:905
+#: ../../tempcache/pages/preferences.html.twig:876
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:930
+#: ../../tempcache/pages/preferences.html.twig:897
 msgid "Show identifiers"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:935
+#: ../../tempcache/pages/preferences.html.twig:902
 msgid "Display database identifiers in related windows"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:947
+#: ../../tempcache/pages/preferences.html.twig:919
 msgid "Default membership status:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:976
+#: ../../tempcache/pages/preferences.html.twig:953
 msgid "Default membership extension:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:990
+#: ../../tempcache/pages/preferences.html.twig:963
 msgid "(Months)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1001
+#: ../../tempcache/pages/preferences.html.twig:974
 msgid "Beginning of membership:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1013
+#: ../../tempcache/pages/preferences.html.twig:982
 msgid "(dd/mm)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1019
+#: ../../tempcache/pages/preferences.html.twig:988
 msgid "Number of months offered:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1025
+#: ../../tempcache/pages/preferences.html.twig:994
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1027
+#: ../../tempcache/pages/preferences.html.twig:996
 msgid ""
 "Let's say you offer last 2 months, and have a renewal on 31th of December. "
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1061
+#: ../../tempcache/pages/preferences.html.twig:1026
 msgid "Can members create child?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1075
+#: ../../tempcache/pages/preferences.html.twig:1040
 msgid "Can group managers edit their groups?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1089
+#: ../../tempcache/pages/preferences.html.twig:1054
 msgid "Can group managers create members?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1103
+#: ../../tempcache/pages/preferences.html.twig:1068
 msgid "Can group managers edit members?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1117
+#: ../../tempcache/pages/preferences.html.twig:1082
 msgid "Can group managers send mailings?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1131
+#: ../../tempcache/pages/preferences.html.twig:1096
 msgid "Can group managers do exports?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1136
+#: ../../tempcache/pages/preferences.html.twig:1101
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1164
+#: ../../tempcache/pages/preferences.html.twig:1132
 msgid "Sender name:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1183
+#: ../../tempcache/pages/preferences.html.twig:1142
 msgid "Sender Email:"
 msgstr "E-mail del mittente:"
 
-#: ../../tempcache/pages/preferences.html.twig:1198
-#: ../../tempcache/pages/preferences.html.twig:1249
+#: ../../tempcache/pages/preferences.html.twig:1153
+#: ../../tempcache/pages/preferences.html.twig:1196
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1204
+#: ../../tempcache/pages/preferences.html.twig:1159
 msgid "Reply-To Email:"
 msgstr "E-mail di risposta:"
 
-#: ../../tempcache/pages/preferences.html.twig:1210
+#: ../../tempcache/pages/preferences.html.twig:1165
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
 "Lascia vuoto per utilizzare l’e-mail del mittente come indirizzo di risposta"
 
-#: ../../tempcache/pages/preferences.html.twig:1229
+#: ../../tempcache/pages/preferences.html.twig:1180
 msgid "Members administrator's Email:"
 msgstr "E-mail dell’amministratore dei membri:"
 
-#: ../../tempcache/pages/preferences.html.twig:1235
+#: ../../tempcache/pages/preferences.html.twig:1186
 msgid "Recipient of new online registation and edition emails"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1265
+#: ../../tempcache/pages/preferences.html.twig:1209
 msgid "Send email to administrators?"
 msgstr "Inviare un’e-mail agli amministratori?"
 
-#: ../../tempcache/pages/preferences.html.twig:1270
+#: ../../tempcache/pages/preferences.html.twig:1214
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
@@ -7135,24 +7196,24 @@ msgstr ""
 "Invia un’e-mail ogni volta che un nuovo membro si registra online o modifica "
 "il suo account"
 
-#: ../../tempcache/pages/preferences.html.twig:1286
+#: ../../tempcache/pages/preferences.html.twig:1227
 msgid "Wrap emails text?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1291
+#: ../../tempcache/pages/preferences.html.twig:1232
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1307
+#: ../../tempcache/pages/preferences.html.twig:1245
 #, fuzzy
 #| msgid "Send email to administrators?"
 msgid "Send email to members?"
 msgstr "Inviare un’e-mail agli amministratori?"
 
-#: ../../tempcache/pages/preferences.html.twig:1312
+#: ../../tempcache/pages/preferences.html.twig:1250
 #, fuzzy
 #| msgid ""
 #| "Sends an email each time a new member registers online or edit his/her "
@@ -7164,338 +7225,338 @@ msgstr ""
 "Invia un’e-mail ogni volta che un nuovo membro si registra online o modifica "
 "il suo account"
 
-#: ../../tempcache/pages/preferences.html.twig:1328
+#: ../../tempcache/pages/preferences.html.twig:1263
 msgid "Activate HTML editor?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1333
+#: ../../tempcache/pages/preferences.html.twig:1268
 msgid "Should HTML editor be activated on page load ?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1339
+#: ../../tempcache/pages/preferences.html.twig:1274
 msgid "Mail signature"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1360
+#: ../../tempcache/pages/preferences.html.twig:1291
 msgid "Emailing method:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1372
+#: ../../tempcache/pages/preferences.html.twig:1303
 msgid "Emailing disabled"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1386
+#: ../../tempcache/pages/preferences.html.twig:1317
 msgid "PHP mail() function"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1400
+#: ../../tempcache/pages/preferences.html.twig:1331
 msgid "Using a SMTP server (slower)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1414
+#: ../../tempcache/pages/preferences.html.twig:1345
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1428
+#: ../../tempcache/pages/preferences.html.twig:1359
 msgid "Using Sendmail server"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1442
+#: ../../tempcache/pages/preferences.html.twig:1373
 msgid "Using QMAIL server"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1458
+#: ../../tempcache/pages/preferences.html.twig:1389
 msgid "Test email settings"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1466
+#: ../../tempcache/pages/preferences.html.twig:1397
 msgid "SMTP server:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1480
+#: ../../tempcache/pages/preferences.html.twig:1407
 msgid "SMTP port:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1505
+#: ../../tempcache/pages/preferences.html.twig:1425
 msgid "Use SMTP authentication?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1510
+#: ../../tempcache/pages/preferences.html.twig:1430
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1526
+#: ../../tempcache/pages/preferences.html.twig:1443
 msgid "Use TLS for SMTP?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1531
+#: ../../tempcache/pages/preferences.html.twig:1448
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1547
+#: ../../tempcache/pages/preferences.html.twig:1461
 msgid "Allow unsecure TLS?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1552
+#: ../../tempcache/pages/preferences.html.twig:1466
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1561
+#: ../../tempcache/pages/preferences.html.twig:1475
 msgid "SMTP (or GMail) user:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1575
+#: ../../tempcache/pages/preferences.html.twig:1485
 msgid "SMTP (or GMail) password:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1604
-#: ../../tempcache/pages/preferences.html.twig:2125
+#: ../../tempcache/pages/preferences.html.twig:1515
+#: ../../tempcache/pages/preferences.html.twig:2056
 msgid "Vertical margins:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1621
-#: ../../tempcache/pages/preferences.html.twig:2142
+#: ../../tempcache/pages/preferences.html.twig:1537
+#: ../../tempcache/pages/preferences.html.twig:2078
 msgid "Horizontal margins:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1638
-#: ../../tempcache/pages/preferences.html.twig:2176
+#: ../../tempcache/pages/preferences.html.twig:1559
+#: ../../tempcache/pages/preferences.html.twig:2122
 msgid "Horizontal spacing:"
 msgstr "Spaziatura orizzontale:"
 
-#: ../../tempcache/pages/preferences.html.twig:1655
-#: ../../tempcache/pages/preferences.html.twig:2159
+#: ../../tempcache/pages/preferences.html.twig:1581
+#: ../../tempcache/pages/preferences.html.twig:2100
 msgid "Vertical spacing:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1679
+#: ../../tempcache/pages/preferences.html.twig:1605
 msgid "Print border"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1684
+#: ../../tempcache/pages/preferences.html.twig:1610
 msgid "Check this box to print a grey border around each label."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1693
+#: ../../tempcache/pages/preferences.html.twig:1624
 msgid "Label width:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1710
+#: ../../tempcache/pages/preferences.html.twig:1646
 msgid "Label height:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1727
+#: ../../tempcache/pages/preferences.html.twig:1668
 msgid "Number of label columns:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1741
+#: ../../tempcache/pages/preferences.html.twig:1687
 msgid "Number of label lines:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1755
+#: ../../tempcache/pages/preferences.html.twig:1706
 msgid "Font size:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1778
+#: ../../tempcache/pages/preferences.html.twig:1731
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1786
+#: ../../tempcache/pages/preferences.html.twig:1740
 msgid "Short Text (Card Center):"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1817
+#: ../../tempcache/pages/preferences.html.twig:1772
 msgid "(10 characters max)"
 msgstr "(10 caratteri max)"
 
-#: ../../tempcache/pages/preferences.html.twig:1823
+#: ../../tempcache/pages/preferences.html.twig:1778
 msgid "Long Text (Bottom Line):"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1854
+#: ../../tempcache/pages/preferences.html.twig:1810
 msgid "(65 characters max)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1861
+#: ../../tempcache/pages/preferences.html.twig:1817
 msgid "Strip Text Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1873
-#: ../../tempcache/pages/preferences.html.twig:1891
-#: ../../tempcache/pages/preferences.html.twig:1909
-#: ../../tempcache/pages/preferences.html.twig:1927
+#: ../../tempcache/pages/preferences.html.twig:1825
+#: ../../tempcache/pages/preferences.html.twig:1839
+#: ../../tempcache/pages/preferences.html.twig:1853
+#: ../../tempcache/pages/preferences.html.twig:1867
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1879
+#: ../../tempcache/pages/preferences.html.twig:1831
 msgid "Active Member Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1897
+#: ../../tempcache/pages/preferences.html.twig:1845
 msgid "Board Members Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1915
+#: ../../tempcache/pages/preferences.html.twig:1859
 msgid "Honor Members Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1955
+#: ../../tempcache/pages/preferences.html.twig:1891
 msgid "Current logo for printing"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2023
+#: ../../tempcache/pages/preferences.html.twig:1956
 msgid "Allow members to print card ?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2040
+#: ../../tempcache/pages/preferences.html.twig:1970
 msgid "Show title ?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2045
+#: ../../tempcache/pages/preferences.html.twig:1975
 msgid "(Show or not title in front of name)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2051
+#: ../../tempcache/pages/preferences.html.twig:1981
 msgid "Address type:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2097
+#: ../../tempcache/pages/preferences.html.twig:2027
 msgid "(Choose address printed below name)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2103
+#: ../../tempcache/pages/preferences.html.twig:2033
 msgid "Year:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2109
+#: ../../tempcache/pages/preferences.html.twig:2039
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2207
+#: ../../tempcache/pages/preferences.html.twig:2153
 msgid "Password length:"
 msgstr "Lunghezza password:"
 
-#: ../../tempcache/pages/preferences.html.twig:2213
+#: ../../tempcache/pages/preferences.html.twig:2159
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2232
+#: ../../tempcache/pages/preferences.html.twig:2178
 msgid "Enable password blacklists"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2234
+#: ../../tempcache/pages/preferences.html.twig:2180
 msgid "Enable blacklists:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2239
+#: ../../tempcache/pages/preferences.html.twig:2185
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2245
+#: ../../tempcache/pages/preferences.html.twig:2191
 msgid "Enforce password strength"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2247
+#: ../../tempcache/pages/preferences.html.twig:2193
 msgid "Password strength:"
 msgstr "Robustezza password:"
 
-#: ../../tempcache/pages/preferences.html.twig:2258
+#: ../../tempcache/pages/preferences.html.twig:2204
 msgid "None (default)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2268
-#: ../../tempcache/pages/preferences.html.twig:2319
+#: ../../tempcache/pages/preferences.html.twig:2214
+#: ../../tempcache/pages/preferences.html.twig:2265
 msgid "Weak"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2278
-#: ../../tempcache/pages/preferences.html.twig:2325
+#: ../../tempcache/pages/preferences.html.twig:2224
+#: ../../tempcache/pages/preferences.html.twig:2271
 msgid "Medium"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2288
-#: ../../tempcache/pages/preferences.html.twig:2331
+#: ../../tempcache/pages/preferences.html.twig:2234
+#: ../../tempcache/pages/preferences.html.twig:2277
 msgid "Strong"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2298
+#: ../../tempcache/pages/preferences.html.twig:2244
 msgid "Very strong"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2304
+#: ../../tempcache/pages/preferences.html.twig:2250
 msgid "Enforce minimal password strength for all password."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2308
+#: ../../tempcache/pages/preferences.html.twig:2254
 msgid "Levels are:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2315
+#: ../../tempcache/pages/preferences.html.twig:2261
 msgid "for no strength enforcement"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2321
+#: ../../tempcache/pages/preferences.html.twig:2267
 msgid "require at least one matched rule"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2327
+#: ../../tempcache/pages/preferences.html.twig:2273
 msgid "require at least two matched rules"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2333
+#: ../../tempcache/pages/preferences.html.twig:2279
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2337
+#: ../../tempcache/pages/preferences.html.twig:2283
 msgid "Very Strong"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2339
+#: ../../tempcache/pages/preferences.html.twig:2285
 msgid "requires all rules."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2344
+#: ../../tempcache/pages/preferences.html.twig:2290
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2348
+#: ../../tempcache/pages/preferences.html.twig:2294
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2356
+#: ../../tempcache/pages/preferences.html.twig:2302
 msgid "Test a password:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2362
+#: ../../tempcache/pages/preferences.html.twig:2308
 msgid "Test a password with current selected values."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2364
+#: ../../tempcache/pages/preferences.html.twig:2310
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2546
+#: ../../tempcache/pages/preferences.html.twig:2489
 msgid "Enter the email adress"
 msgstr "Inserisci l’indirizzo e-mail"
 
-#: ../../tempcache/pages/preferences.html.twig:2585
+#: ../../tempcache/pages/preferences.html.twig:2521
 msgid "An error occurred sending test email :("
 msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
 
@@ -7589,66 +7650,66 @@ msgstr ""
 msgid "no search"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:105
+#: ../../tempcache/pages/member_form.html.twig:109
 msgid "Display"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:137
+#: ../../tempcache/pages/member_form.html.twig:141
 #: ../../tempcache/pages/member_show.html.twig:289
 msgid "Attached to:"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:168
+#: ../../tempcache/pages/member_form.html.twig:172
 msgid "Detach?"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:191
+#: ../../tempcache/pages/member_form.html.twig:197
 msgid "Attach member"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:250
+#: ../../tempcache/pages/member_form.html.twig:259
 #: ../../tempcache/pages/member_show.html.twig:307
 msgid "Parent of:"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:417
+#: ../../tempcache/pages/member_form.html.twig:427
 msgid "Notify member his account has been modified"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:423
+#: ../../tempcache/pages/member_form.html.twig:433
 msgid "Notify member his account has been created"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:436
+#: ../../tempcache/pages/member_form.html.twig:446
 msgid "Member will be notified by email his account has been modified."
 msgstr ""
 "Il membro riceverà una notifica via e-mail che il suo account è stato "
 "modificato."
 
-#: ../../tempcache/pages/member_form.html.twig:442
+#: ../../tempcache/pages/member_form.html.twig:452
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
 "Il membro riceverà il suo nome utente e la password via e-mail, se ha un "
 "indirizzo."
 
-#: ../../tempcache/pages/member_form.html.twig:643
+#: ../../tempcache/pages/member_form.html.twig:649
 msgid "An error occurred displaying groups interface :("
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:653
+#: ../../tempcache/pages/member_form.html.twig:659
 msgid "Groups selection"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:658
+#: ../../tempcache/pages/member_form.html.twig:664
 msgid "Managed groups selection"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:678
+#: ../../tempcache/pages/member_form.html.twig:684
 msgid "Manager for:"
 msgstr ""
 
-#: ../../tempcache/pages/member_form.html.twig:683
+#: ../../tempcache/pages/member_form.html.twig:689
 msgid "Member of:"
 msgstr ""
 
@@ -7691,22 +7752,22 @@ msgstr ""
 msgid "Family"
 msgstr ""
 
-#: ../../tempcache/pages/member_show.html.twig:524
+#: ../../tempcache/pages/member_show.html.twig:513
 #: ../../tempcache/components/forms/groups.html.twig:40
 msgid "Groups:"
 msgstr ""
 
-#: ../../tempcache/pages/member_show.html.twig:553
+#: ../../tempcache/pages/member_show.html.twig:542
 #: ../../tempcache/pages/advanced_search.html.twig:166
 #: ../../tempcache/components/forms/groups.html.twig:140
 msgid "Member of group"
 msgstr ""
 
-#: ../../tempcache/pages/member_show.html.twig:725
+#: ../../tempcache/pages/member_show.html.twig:714
 msgid "Not managed group"
 msgstr ""
 
-#: ../../tempcache/pages/member_show.html.twig:725
+#: ../../tempcache/pages/member_show.html.twig:714
 msgid "You are not part of managers for the requested group."
 msgstr ""
 
@@ -7719,18 +7780,18 @@ msgstr ""
 msgid "Get my document"
 msgstr ""
 
-#: ../../tempcache/pages/password_recover.html.twig:61
+#: ../../tempcache/pages/password_recover.html.twig:59
+msgid "(at least 4 characters)"
+msgstr ""
+
 #: ../../tempcache/pages/password_recover.html.twig:65
+#: ../../tempcache/pages/password_recover.html.twig:69
 msgid "New password:"
 msgstr ""
 
-#: ../../tempcache/pages/password_recover.html.twig:73
 #: ../../tempcache/pages/password_recover.html.twig:77
+#: ../../tempcache/pages/password_recover.html.twig:81
 msgid "Confirmation:"
-msgstr ""
-
-#: ../../tempcache/pages/password_recover.html.twig:83
-msgid "(at least 4 characters)"
 msgstr ""
 
 #: ../../tempcache/pages/password_recover.html.twig:87
@@ -7741,49 +7802,49 @@ msgstr ""
 msgid "Show transactions since"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:142
+#: ../../tempcache/pages/transactions_list.html.twig:146
 msgid "Show all members transactions"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:200
+#: ../../tempcache/pages/transactions_list.html.twig:207
 #, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
 msgstr[0] "%count transazione"
 msgstr[1] "%count transazioni"
 
-#: ../../tempcache/pages/transactions_list.html.twig:264
-#: ../../tempcache/pages/transactions_list.html.twig:420
+#: ../../tempcache/pages/transactions_list.html.twig:271
+#: ../../tempcache/pages/transactions_list.html.twig:427
 msgid "Originator"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:327
+#: ../../tempcache/pages/transactions_list.html.twig:334
 msgid "Transaction %id"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:375
+#: ../../tempcache/pages/transactions_list.html.twig:382
 #, fuzzy
 #| msgid "View member's contributions"
 msgid "Show only '%name' transactions"
 msgstr "Visualizza i contributi degli utenti"
 
-#: ../../tempcache/pages/transactions_list.html.twig:484
+#: ../../tempcache/pages/transactions_list.html.twig:491
 msgid "Edit transaction #%id"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:497
+#: ../../tempcache/pages/transactions_list.html.twig:504
 msgid "Remove transaction #%id"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:517
+#: ../../tempcache/pages/transactions_list.html.twig:524
 msgid "no transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:544
+#: ../../tempcache/pages/transactions_list.html.twig:551
 msgid "Completely dispatched transaction"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:551
+#: ../../tempcache/pages/transactions_list.html.twig:558
 msgid "Uncomplete dispatched transaction"
 msgstr ""
 
@@ -7836,7 +7897,7 @@ msgid "Total contributions for the month"
 msgstr "Modifica tipo di contributo"
 
 #: ../../tempcache/pages/members_public_list.html.twig:114
-#: ../../tempcache/pages/members_public_gallery.html.twig:57
+#: ../../tempcache/pages/members_public_gallery.html.twig:55
 msgid ""
 "This page shows only members who have choosen to be visible on the public "
 "lists and are up-to-date within their contributions. If you want your "
@@ -7844,8 +7905,8 @@ msgid ""
 "members list'"
 msgstr ""
 
-#: ../../tempcache/pages/members_public_list.html.twig:252
-#: ../../tempcache/pages/members_public_gallery.html.twig:197
+#: ../../tempcache/pages/members_public_list.html.twig:248
+#: ../../tempcache/pages/members_public_gallery.html.twig:196
 msgid "No member to show"
 msgstr ""
 
@@ -7920,8 +7981,8 @@ msgstr ""
 
 #: ../../tempcache/pages/advanced_search.html.twig:626
 #: ../../tempcache/pages/advanced_search.html.twig:632
-#: ../../tempcache/pages/advanced_search.html.twig:1447
-#: ../../tempcache/pages/advanced_search.html.twig:1453
+#: ../../tempcache/pages/advanced_search.html.twig:1495
+#: ../../tempcache/pages/advanced_search.html.twig:1501
 msgid "Remove criteria"
 msgstr ""
 
@@ -7929,64 +7990,64 @@ msgstr ""
 msgid "Within contributions"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1001
+#: ../../tempcache/pages/advanced_search.html.twig:1052
 msgid "Free search"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1009
-#: ../../tempcache/pages/advanced_search.html.twig:1015
+#: ../../tempcache/pages/advanced_search.html.twig:1060
+#: ../../tempcache/pages/advanced_search.html.twig:1066
 msgid "Add new free search criteria"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1052
+#: ../../tempcache/pages/advanced_search.html.twig:1103
 msgid "or"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1058
+#: ../../tempcache/pages/advanced_search.html.twig:1109
 msgid "Select a field"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1224
-#: ../../tempcache/pages/advanced_search.html.twig:1302
-#: ../../tempcache/pages/advanced_search.html.twig:1346
-#: ../../tempcache/pages/advanced_search.html.twig:1377
-#: ../../tempcache/pages/advanced_search.html.twig:1508
+#: ../../tempcache/pages/advanced_search.html.twig:1272
+#: ../../tempcache/pages/advanced_search.html.twig:1350
+#: ../../tempcache/pages/advanced_search.html.twig:1394
+#: ../../tempcache/pages/advanced_search.html.twig:1425
+#: ../../tempcache/pages/advanced_search.html.twig:1558
 msgid "is"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1234
-#: ../../tempcache/pages/advanced_search.html.twig:1397
-#: ../../tempcache/pages/advanced_search.html.twig:1528
+#: ../../tempcache/pages/advanced_search.html.twig:1282
+#: ../../tempcache/pages/advanced_search.html.twig:1445
+#: ../../tempcache/pages/advanced_search.html.twig:1578
 msgid "is not"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1312
-#: ../../tempcache/pages/advanced_search.html.twig:1568
+#: ../../tempcache/pages/advanced_search.html.twig:1360
+#: ../../tempcache/pages/advanced_search.html.twig:1618
 msgid "before"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1322
-#: ../../tempcache/pages/advanced_search.html.twig:1578
+#: ../../tempcache/pages/advanced_search.html.twig:1370
+#: ../../tempcache/pages/advanced_search.html.twig:1628
 msgid "after"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1387
-#: ../../tempcache/pages/advanced_search.html.twig:1518
+#: ../../tempcache/pages/advanced_search.html.twig:1435
+#: ../../tempcache/pages/advanced_search.html.twig:1568
 msgid "contains"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1407
-#: ../../tempcache/pages/advanced_search.html.twig:1538
+#: ../../tempcache/pages/advanced_search.html.twig:1455
+#: ../../tempcache/pages/advanced_search.html.twig:1588
 msgid "do not contains"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1417
-#: ../../tempcache/pages/advanced_search.html.twig:1548
+#: ../../tempcache/pages/advanced_search.html.twig:1465
+#: ../../tempcache/pages/advanced_search.html.twig:1598
 msgid "starts with"
 msgstr ""
 
-#: ../../tempcache/pages/advanced_search.html.twig:1427
-#: ../../tempcache/pages/advanced_search.html.twig:1558
+#: ../../tempcache/pages/advanced_search.html.twig:1475
+#: ../../tempcache/pages/advanced_search.html.twig:1608
 msgid "ends with"
 msgstr ""
 
@@ -8024,39 +8085,39 @@ msgid ""
 "directory."
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:71
+#: ../../tempcache/pages/export.html.twig:79
 msgid "The following files have been written on disk:"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:105
+#: ../../tempcache/pages/export.html.twig:114
 msgid "Existing exports"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:111
+#: ../../tempcache/pages/export.html.twig:120
 msgid "The following exports already seems to exist on the disk:"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:229
+#: ../../tempcache/pages/export.html.twig:238
 msgid "Parameted exports"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:238
+#: ../../tempcache/pages/export.html.twig:247
 msgid "Which parameted export(s) do you want to run?"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:302
+#: ../../tempcache/pages/export.html.twig:311
 msgid "No parameted exports are available."
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:316
+#: ../../tempcache/pages/export.html.twig:325
 msgid "Galette tables exports"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:322
+#: ../../tempcache/pages/export.html.twig:331
 msgid "Additionnaly, which table(s) do you want to export?"
 msgstr ""
 
-#: ../../tempcache/pages/export.html.twig:330
+#: ../../tempcache/pages/export.html.twig:339
 msgid "Table name"
 msgstr ""
 
@@ -8169,6 +8230,11 @@ msgstr ""
 msgid "Captcha"
 msgstr ""
 
+#: ../../tempcache/components/forms/member_dropdown.html.twig:87
+#: ../../tempcache/components/forms/member_dropdown.html.twig:89
+msgid "Reset"
+msgstr ""
+
 #: ../../tempcache/components/forms/titles.html.twig:67
 msgid "Not supplied"
 msgstr ""
@@ -8177,33 +8243,33 @@ msgstr ""
 msgid "Picture:"
 msgstr "Foto:"
 
-#: ../../tempcache/components/dynamic_fields.html.twig:202
+#: ../../tempcache/components/dynamic_fields.html.twig:206
 msgid "Enter as many occurences you want."
 msgstr ""
 
-#: ../../tempcache/components/dynamic_fields.html.twig:227
+#: ../../tempcache/components/dynamic_fields.html.twig:231
 #, php-format
 msgid "Enter up to %count more occurences."
 msgstr ""
 
-#: ../../tempcache/components/dynamic_fields.html.twig:289
+#: ../../tempcache/components/dynamic_fields.html.twig:293
 #, php-format
 msgid "Enter up to %count more occurrences."
 msgstr ""
 
-#: ../../tempcache/components/dynamic_fields.html.twig:536
+#: ../../tempcache/components/dynamic_fields.html.twig:540
 msgid "Select an option"
 msgstr ""
 
-#: ../../tempcache/components/dynamic_fields.html.twig:758
+#: ../../tempcache/components/dynamic_fields.html.twig:762
 msgid "delete"
 msgstr ""
 
-#: ../../tempcache/public_page.html.twig:151 ../../tempcache/page.html.twig:194
+#: ../../tempcache/public_page.html.twig:178 ../../tempcache/page.html.twig:205
 msgid "Back to top"
 msgstr ""
 
-#: ../../tempcache/public_page.html.twig:170
+#: ../../tempcache/public_page.html.twig:197
 msgid "Public page content"
 msgstr ""
 
@@ -8211,15 +8277,18 @@ msgstr ""
 msgid "Ajax page content"
 msgstr ""
 
-#: ../../tempcache/page.html.twig:152
+#: ../../tempcache/page.html.twig:163
 msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
 
-#: ../../tempcache/page.html.twig:220
+#: ../../tempcache/page.html.twig:231
 msgid "Page content"
 msgstr ""
+
+#~ msgid "%A, %B %#d%O %Y"
+#~ msgstr "%A %#d %B %Y"
 
 #, fuzzy
 #~| msgid "Members management"
@@ -8254,11 +8323,6 @@ msgstr ""
 
 #~ msgid "Member's email address"
 #~ msgstr "Indirizzo e-mail del membro"
-
-#, fuzzy
-#~| msgid "An error occurred sending test email :("
-#~ msgid "An error occured retrieving dates :("
-#~ msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
 
 #~ msgid ""
 #~ "Your subscription has been registered, you will receive a recapitulative "
