@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-07-08 08:09+0000\n"
+"PO-Revision-Date: 2023-10-03 19:13+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -77,10 +77,8 @@ msgid "Edit payment type"
 msgstr "Modifier le type de paiement"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:211
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required payment type's name!"
-msgstr "Non du champ manquant !"
+msgstr "Nom du type de paiement manquant !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:220
 #, php-format
@@ -377,10 +375,8 @@ msgid "Edit title"
 msgstr "Édition du titre"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:206
-#, fuzzy
-#| msgid "Missing required form!"
 msgid "Missing required title's short or long form!"
-msgstr "Formulaire requis manquant !"
+msgstr "Titre sous forme courte ou longue manquant !"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:215
 #, php-format
@@ -426,10 +422,8 @@ msgid "Edit contribution type"
 msgstr "Édition d’un type de contribution"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:283
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required %type name!"
-msgstr "Non du champ manquant !"
+msgstr "Nom du champ %type manquant !"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:289
 msgid "%type has not been added :("
@@ -1976,7 +1970,7 @@ msgstr "Utilisateur, lecture seule"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:613
 msgid "Missing required field name!"
-msgstr "Non du champ manquant !"
+msgstr "Nom du champ manquant !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:622
 msgid "Missing required field permissions!"
@@ -2212,7 +2206,7 @@ msgstr "liste_emargement"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:167
 msgid "MMMM, EEEE d y"
-msgstr ""
+msgstr "EEEE d MMMM y"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
 msgid "Signature"
@@ -3579,7 +3573,7 @@ msgstr "cotisation annuelle"
 
 #: ../includes/i18n.inc.php:301
 msgid "annual fee (to be paid)"
-msgstr "cotisation annuelle (dûe)"
+msgstr "cotisation annuelle (à payer)"
 
 #: ../includes/i18n.inc.php:302
 msgid "company fee"
@@ -5077,10 +5071,8 @@ msgstr "Retour à la page d'accueil de Galette"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:111
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:118
-#, fuzzy
-#| msgid "Company name"
 msgid "Compact menu"
-msgstr "Raison sociale"
+msgstr "Menu compact"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:87
 msgid "Subscribe"
@@ -6510,10 +6502,8 @@ msgstr ""
 "liste d'émargement :("
 
 #: ../../tempcache/pages/members_list.html.twig:1427
-#, fuzzy
-#| msgid "Required"
 msgid "Required field!"
-msgstr "Obligatoire"
+msgstr "Champ obligatoire !"
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:56
 #: ../../tempcache/pages/configuration_core_fields.html.twig:339
@@ -7552,7 +7542,7 @@ msgstr "(10 caractères max)"
 
 #: ../../tempcache/pages/preferences.html.twig:1778
 msgid "Long Text (Bottom Line):"
-msgstr "Texte long (linge du bas) :"
+msgstr "Texte long (ligne du bas) :"
 
 #: ../../tempcache/pages/preferences.html.twig:1810
 msgid "(65 characters max)"
