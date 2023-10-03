@@ -164,7 +164,7 @@ class PdfAttendanceSheet extends Pdf
         $this->PageHeader($this->doc_title);
 
         if ($this->sheet_date) {
-            $format = str_replace('(not translated)', '', _T("MMMM, EEEE d y"));
+            $format = __("MMMM, EEEE d y");
             $formatter = new \IntlDateFormatter(
                 $this->i18n->getLongID(),
                 \IntlDateFormatter::FULL,
@@ -175,7 +175,7 @@ class PdfAttendanceSheet extends Pdf
             );
             $datetime = new \DateTimeImmutable($this->sheet_date->format('Y-m-d'));
             $date = \DateTime::createFromImmutable($datetime);
-            $date_fmt = ucwords($formatter->format($date));
+            $date_fmt = mb_convert_case($formatter->format($date), MB_CASE_TITLE);
             $this->Cell(190, 7, $date_fmt, 0, 1, 'C');
         }
 
