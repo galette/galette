@@ -393,6 +393,18 @@
                             <option value="{{ k }}"{% if cds.field is defined and cds.field == rid %} selected="selected"{% endif %}>{{ choice }}</option>
         {% endfor %}
                         </select>
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
+                        <div id="dynamic_date_{{ field.getId() }}_rangestart" class="ui calendar">
+                            <div class="ui fluid input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" maxlength="10" value="" class="dynamic_date modif_date" />
+                            </div>
+                        </div>
+                        <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+    {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" value="1" />
+                        </div>
     {% endif %}
                     </div>
 {% endfor %}
