@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-10-04 07:11+0000\n"
+"PO-Revision-Date: 2023-10-04 07:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -3270,7 +3270,7 @@ msgstr ""
 #: ../lib/Galette/Filters/ContributionsList.php:258
 #: ../lib/Galette/Filters/ContributionsList.php:295
 msgid "Y"
-msgstr "A"
+msgstr "Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:231
 #: ../lib/Galette/Filters/TransactionsList.php:253
