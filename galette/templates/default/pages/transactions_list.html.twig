@@ -57,12 +57,19 @@
                 <div class="ui compact vertically fitted segment">
                 <div class="ui horizontal list">
                 <span class="ui primary ribbon label">
-                {% if login.isAdmin() or login.isStaff() or member.hasChildren() %}
+                {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
+                {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                     <a
                         href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
                     >
                         <i class="icon times tooltip"></i>
-                        <span class="ui special popup">{{ _T("Show all members transactions") }}</span>
+                        <span class="ui special popup">
+                        {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.logged_in_as(true))) %}
+                            {{ _T("Show all your transactions") }}
+                        {% else %}
+                            {{ _T("Show all members transactions") }}
+                        {% endif %}
+                        </span>
                     </a>
                 {% endif %}
             {% endif %}
