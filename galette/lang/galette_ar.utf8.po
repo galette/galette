@@ -3,7 +3,7 @@
 # imed omri <omriimed@ymail.com>, 2014
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
 # ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020, 2021, 2022.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 # Woodyx <shiposhouyou@gmail.com>, 2020.
 # Mustafa Wahhudi <mustafawahhudi@gmail.com>, 2021.
@@ -15,10 +15,10 @@
 # ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-09-19 14:59+0000\n"
-"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2023-10-04 11:27+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -1827,9 +1827,8 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:606
 #: ../../tempcache/pages/member_form.html.twig:905
 #: ../../tempcache/pages/advanced_search.html.twig:1375
-#, fuzzy
 msgid "Y-m-d"
-msgstr "m-d-Y"
+msgstr ""
 
 #: ../lib/Galette/Repository/SavedSearches.php:271
 msgid "Searches deleted (%list)"
