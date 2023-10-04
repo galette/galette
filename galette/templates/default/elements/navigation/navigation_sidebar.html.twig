@@ -15,13 +15,13 @@
             tips_position: "right center",
             sign_in: true
     } %}
-
+{% else %}
+    {% include "elements/navigation/navigation_items.html.twig" %}
+{% endif %}
     {% include "elements/language.html.twig" with {
             ui: "item"
     } %}
-{% else %}
-        {% include "elements/navigation/navigation_items.html.twig" %}
-
+{% if login.isLogged() %}
         {% include "elements/logout.html.twig" with {
                 ui: "item"
         } %}

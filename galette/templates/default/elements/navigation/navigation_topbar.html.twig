@@ -3,6 +3,18 @@
         <a class="toc item">
             <i class="sidebar icon"></i>
         </a>
+        {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
+            <a
+                id="recup_mailing"
+                href="{{ url_for("mailing") }}"
+                class="ui blue tooltip item"
+                title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
+                data-position="bottom right"
+            >
+                <i class="paper plane outline blue icon"></i>
+                <span class="displaynone">{{ _T("Existing mailing") }}</span>
+            </a>
+        {% endif %}
         <div class="header item">
             <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
             <span>{{ preferences.pref_nom }}</span>

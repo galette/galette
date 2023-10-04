@@ -88,10 +88,11 @@ body.pushable:not(.loggedin) > .pusher {
 }
 
 .ui.fixed.menu + .pusher {
-  padding-top: 4rem;
+  padding-top: 3.8rem;
 }
 
-aside.toc {
+aside.toc,
+.ui.segments.header .compact.segment.right {
   display: none;
 }
 
@@ -107,7 +108,7 @@ footer .ui.horizontal.list > .item{
 }
 
 @media only screen and (max-width: 991px) {
-  #top-navbar .item:not(.header):not(.toc) {
+  #top-navbar .item:not(.header):not(.toc):not(#recup_mailing) {
     display: none;
   }
   .sidebar.uncover + .fixed.menu .toc i::before {
@@ -183,6 +184,10 @@ footer .ui.horizontal.list > .item{
         }
       }
     }
+  }
+
+  .ui.segments.header .compact.segment.right {
+    display: block;
   }
 
   body:not(.front-page) section.content {
