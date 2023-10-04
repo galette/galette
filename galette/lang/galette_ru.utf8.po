@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Andrei Guliaikin <like427@gmail.com>, 2022.
 # Evgeniy Khramov <thejenjagamertjg@gmail.com>, 2022.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2022-12-15 11:47+0000\n"
-"Last-Translator: Evgeniy Khramov <thejenjagamertjg@gmail.com>\n"
+"PO-Revision-Date: 2023-10-04 07:18+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1806,7 +1807,7 @@ msgstr ""
 #: ../../tempcache/pages/member_form.html.twig:905
 #: ../../tempcache/pages/advanced_search.html.twig:1375
 msgid "Y-m-d"
-msgstr "Г-м-д"
+msgstr ""
 
 #: ../lib/Galette/Repository/SavedSearches.php:271
 msgid "Searches deleted (%list)"
