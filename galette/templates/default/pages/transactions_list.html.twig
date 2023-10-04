@@ -122,18 +122,12 @@
     ] %}
 
     {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
+        {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
     {% endif %}
 
     {% set columns = columns|merge([
         {'label': _T("Description")}
     ]) %}
-
-    {% if login.isAdmin() or login.isStaff() %}
-        {% set columns = columns|merge([
-            {'label': _T("Originator")}
-        ]) %}
-    {% endif %}
 
     {% set columns = columns|merge([
         {'label': _T('Amount'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT")}
@@ -146,6 +140,12 @@
     {% for ordre, transaction in list %}
         {% set mid = transaction.member %}
         {% set cclass = transaction.getRowClass() %}
+        {% if member is defined %}
+            {% set mname = member.sname %}
+        {% else %}
+            {% set mname = memberName({id: mid}) %}
+        {% endif %}
+
         <tr>
             <td class="{{ cclass }}" data-scope="row">
                 {% if preferences.pref_show_id %}
@@ -162,12 +162,7 @@
             <td class="{{ cclass }}" data-title="{{ _T("Date") }}">{{ transaction.date }}</td>
             {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
                 <td class="{{ cclass }}" data-title="{{ _T("Member") }}">
-                    {% if member is defined %}
-                        {% set mname = member.sname %}
-                    {% else %}
-                        {% set mname = memberName({id: mid}) %}
-                    {% endif %}
-                    {% if filters.filtre_cotis_adh == "" %}
+                    {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
                         <a
                                 href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
                                 title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
@@ -179,24 +174,11 @@
                             href="{{ url_for("member", {"id": mid}) }}"
                             title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
                     >
-                        {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
+                        {{ mname }}
                     </a>
                 </td>
             {% endif %}
             <td class="{{ cclass }}" data-title="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
-            {% if login.isAdmin() or login.isStaff() %}
-                <td class="{{ cclass }}" data-title="{{ _T("Originator") }}">
-                    {% if filters.filtre_cotis_adh == "" %}
-                        <a href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}">
-                            {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
-                        </a>
-                    {% else %}
-                        <a href="{{ url_for("member", {"id": mid}) }}">
-                            {% if member is defined %}{{ member.sname }}{% else %}{{ memberName({"id": mid}) }}{% endif %}
-                        </a>
-                    {% endif %}
-                </td>
-            {% endif %}
             <td class="actions_row {{ cclass }}" data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             {% if login.isAdmin() or login.isStaff() %}
                 <td class="{{ cclass }} center">
