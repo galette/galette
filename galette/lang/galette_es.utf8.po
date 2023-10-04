@@ -40,9 +40,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-07-08 08:09+0000\n"
+"PO-Revision-Date: 2023-10-04 07:11+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1752,7 +1752,7 @@ msgstr ""
 #: ../../tempcache/pages/history.html.twig:323
 #: ../../tempcache/pages/mailings_list.html.twig:274
 msgid "Y-m-d H:i:s"
-msgstr "A-m-d H:i:s"
+msgstr "Y-m-d H:i:s"
 
 #: ../lib/Galette/Core/Preferences.php:1141
 msgid "Never"
