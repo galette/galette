@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Transaction filters tests
+ * Contribution filters tests
  *
  * PHP version 5
  *
@@ -39,10 +39,10 @@ namespace Galette\Entity\test\units;
 use Galette\GaletteTestCase;
 
 /**
- * Transaction filters tests class
+ * Contribution filters tests class
  *
  * @category  Filters
- * @name      TransactionsList
+ * @name      ContributionsList
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2023 The Galette Team
@@ -50,23 +50,29 @@ use Galette\GaletteTestCase;
  * @link      https://galette.eu
  * @since     2023-10-04
  */
-class TransactionsList extends GaletteTestCase
+class ContributionsList extends GaletteTestCase
 {
     /**
      * Test filter defaults values
      *
-     * @param \Galette\Filters\TransactionsList $filters Filters instance
+     * @param \Galette\Filters\ContributionsList $filters Filters instance
      *
      * @return void
      */
-    protected function testDefaults(\Galette\Filters\TransactionsList $filters): void
+    protected function testDefaults(\Galette\Filters\ContributionsList $filters): void
     {
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_DATE, $filters->orderby);
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDER_ASC, $filters->ordered);
-        $this->assertFalse($filters->filtre_cotis_children);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE, $filters->orderby);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
+        $this->assertSame(\Galette\Filters\ContributionsList::DATE_BEGIN, $filters->date_field);
         $this->assertNull($filters->start_date_filter);
         $this->assertNull($filters->end_date_filter);
+        $this->assertNull($filters->payment_type_filter);
+        $this->assertFalse($filters->filtre_transactions);
         $this->assertNull($filters->filtre_cotis_adh);
+        $this->assertFalse($filters->filtre_cotis_children);
+        $this->assertFalse($filters->from_transaction);
+        $this->assertNull($filters->max_amount);
+        $this->assertEmpty($filters->selected);
     }
 
     /**
@@ -76,33 +82,57 @@ class TransactionsList extends GaletteTestCase
      */
     public function testCreate()
     {
-        $filters = new \Galette\Filters\TransactionsList();
+        $filters = new \Galette\Filters\ContributionsList();
 
         $this->testDefaults($filters);
 
         //change order field
-        $filters->orderby = \Galette\Filters\TransactionsList::ORDERBY_AMOUNT;
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDER_ASC, $filters->ordered);
+        $filters->orderby = \Galette\Filters\ContributionsList::ORDERBY_AMOUNT;
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
 
         //same order field again: direction inverted
-        $filters->orderby = \Galette\Filters\TransactionsList::ORDERBY_AMOUNT;
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDER_DESC, $filters->ordered);
+        $filters->orderby = \Galette\Filters\ContributionsList::ORDERBY_AMOUNT;
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_DESC, $filters->ordered);
 
         //not existing order, same kept
         $filters->ordered = 42;
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDER_DESC, $filters->ordered);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_DESC, $filters->ordered);
 
         //change direction only
-        $filters->ordered = \Galette\Filters\TransactionsList::ORDER_ASC;
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\TransactionsList::ORDER_ASC, $filters->ordered);
+        $filters->ordered = \Galette\Filters\ContributionsList::ORDER_ASC;
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
 
         //set filter on children
         $filters->filtre_cotis_children = true;
         $this->assertTrue($filters->filtre_cotis_children);
+
+        $filters->date_field = \Galette\Filters\ContributionsList::DATE_END;
+        $this->assertSame(\Galette\Filters\ContributionsList::DATE_END, $filters->date_field);
+
+        $filters->payment_type_filter = 42;
+        $this->assertSame(42, $filters->payment_type_filter);
+
+        $filters->filtre_transactions = true;
+        $this->assertTrue($filters->filtre_transactions);
+
+        $filters->filtre_cotis_adh = 42;
+        $this->assertSame(42, $filters->filtre_cotis_adh);
+
+        $filters->filtre_cotis_children = true;
+        $this->assertTrue($filters->filtre_cotis_children);
+
+        $filters->from_transaction = true;
+        $this->assertTrue($filters->from_transaction);
+
+        $filters->max_amount = 42;
+        $this->assertSame(42, $filters->max_amount);
+
+        $filters->selected = [0, 1, 2];
+        $this->assertSame([0, 1, 2], $filters->selected);
 
         //reinit and test defaults are back
         $filters->reinit();
@@ -116,7 +146,7 @@ class TransactionsList extends GaletteTestCase
      */
     public function testLocalizedDates(): void
     {
-        $filters = new \Galette\Filters\TransactionsList();
+        $filters = new \Galette\Filters\ContributionsList();
         $this->testDefaults($filters);
 
         $i18n = new \Galette\Core\I18n(
