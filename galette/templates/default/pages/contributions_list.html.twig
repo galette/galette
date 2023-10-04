@@ -242,7 +242,7 @@
                         <a
                                 href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                         >
-                            <i class="ui link icon tooltip"></i>
+                            <i class="ui linkify icon tooltip"></i>
                             <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                         </a>
                     {% endif %}
