@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-07-30 15:02+0000\n"
-"Last-Translator: Pierre Wani Alan Morvan <per.morvan.bzh29@gmail.com>\n"
+"PO-Revision-Date: 2023-10-04 11:27+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -19,10 +19,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=5; plural=(n % 10 == 1 && n % 100 != 11 && n % 100 != "
 "71 && n % 100 != 91) ? 0 : ((n % 10 == 2 && n % 100 != 12 && n % 100 != 72 "
-"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && "
-"(n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
+"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
+"n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
 "< 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -3615,7 +3615,7 @@ msgstr ""
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 #: ../includes/dependencies.php:188
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "DD/MM/YYYY"
 
 #: ../includes/dependencies.php:459
 msgid "Failed CSRF check!"
