@@ -19,8 +19,8 @@
             {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\Text' %}
                 <textarea name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
-                    cols="{% if field.getWidth() > 0 %}{{ field.getWidth() }}{else}61{% endif %}"
-                    rows="{% if field.getHeight() > 0 %}{{ field.getHeight() }}{else}6{% endif %}"
+                    cols="{% if field.getWidth() > 0 %}{{ field.getWidth() }}{% else %}61{% endif %}"
+                    rows="{% if field.getHeight() > 0 %}{{ field.getHeight() }}{% else %}6{% endif %}"
                     {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
                 {% if not masschange %}
                     {% if field.isRequired() %} required="required"{% endif %}
