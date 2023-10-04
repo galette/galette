@@ -307,7 +307,7 @@ class ContributionsList extends Pagination
 
                                 throw new \Exception(
                                     str_replace(
-                                        array('%field', '%format'),
+                                        array('%field', '%formats'),
                                         array(
                                             $field,
                                             implode(', ', $formats)
