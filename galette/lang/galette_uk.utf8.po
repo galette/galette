@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-10-04 07:11+0000\n"
+"PO-Revision-Date: 2023-10-04 07:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -3343,7 +3343,7 @@ msgstr "РР"
 #: ../lib/Galette/Filters/ContributionsList.php:274
 #: ../lib/Galette/Filters/ContributionsList.php:296
 msgid "Y-m"
-msgstr "РР-ММ"
+msgstr "Y-m"
 
 #: ../lib/Galette/Filters/TransactionsList.php:259
 #: ../lib/Galette/Filters/HistoryList.php:267
