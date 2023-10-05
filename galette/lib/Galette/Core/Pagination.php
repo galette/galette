@@ -252,6 +252,7 @@ abstract class Pagination
      */
     public function setViewPagination(RouteParser $routeparser, $view, $restricted = true)
     {
+        $is_paginated = true;
         $paginate = null;
         $this->view = $view;
         $this->routeparser = $routeparser;
@@ -318,6 +319,9 @@ abstract class Pagination
                 preg_replace("(%i)", $this->pages, _T("Last page (%i)"))
             );
         }
+        if ($this->current_page == 1 && $this->current_page == $this->pages) {
+            $is_paginated = false;
+        }
 
         $options = array(
             10 => "10",
@@ -334,6 +338,7 @@ abstract class Pagination
         $view->getEnvironment()->addGlobal('nb_pages', $this->pages);
         $view->getEnvironment()->addGlobal('page', $this->current_page);
         $view->getEnvironment()->addGlobal('numrows', $this->show);
+        $view->getEnvironment()->addGlobal('is_paginated', $is_paginated);
         $view->getEnvironment()->addGlobal('pagination', $paginate);
         $view->getEnvironment()->addGlobal('nbshow_options', $options);
 
