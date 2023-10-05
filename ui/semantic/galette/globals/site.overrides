@@ -390,8 +390,23 @@ ul.leaders span + span {
     background: #fff;
   }
 
+  html.public_page section.vertically.centered {
+    justify-content: start;
+  }
+
   .ui.fixed.menu + .pusher {
     padding-top: 0;
+  }
+
+  .loggedin #main {
+    background-image: none;
+  }
+  body:not(.loggedin) #main {
+    width: 100%;
+  }
+
+  .logo {
+    margin-top: 0 !important;
   }
 
   table.listing tbody tr:hover > td {
@@ -409,7 +424,9 @@ ul.leaders span + span {
   .infoline .right.aligned.segment,
   .actions_row,
   .ui.pagination.menu,
-  section.content > footer,
+  section.content .main-content > footer,
+  section.content .main-content + footer,
+  section.vertically.centered .main-content + footer,
   #back2top {
     display: none !important;
   }
