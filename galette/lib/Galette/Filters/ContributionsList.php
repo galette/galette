@@ -217,7 +217,7 @@ class ContributionsList extends Pagination
      * Global isset method
      * Required for twig to access properties via __get
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
      * @return bool
      */
