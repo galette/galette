@@ -31,21 +31,23 @@
     {% endfor %}
     </table>
     <div class="ui basic center aligned segment">
-        <a class="ui labeled icon primary button" href="{{ url_for('getImportModel') }}">
-            <i class="file csv icon" aria-hidden="true"></i>
-            {{ _T('Generate empty CSV file') }}
-        </a>
-        {% if not defaults_loaded %}
-        <a
-            id="delete"
-            class="ui labeled icon button delete tooltip"
-            href="{{ url_for('importModel') }}?remove=true"
-            title="{{ _T('Remove model and back to defaults') }}"
-        >
-            <i class="trash icon" aria-hiden="true"></i>
-            {{ _T('Remove model') }}
-        </a>
-        {% endif %}
+        <div class="ui wrapping spaced buttons">
+            <a class="ui labeled icon primary button" href="{{ url_for('getImportModel') }}">
+                <i class="file csv icon" aria-hidden="true"></i>
+                {{ _T('Generate empty CSV file') }}
+            </a>
+            {% if not defaults_loaded %}
+            <a
+                id="delete"
+                class="ui labeled icon button delete tooltip"
+                href="{{ url_for('importModel') }}?remove=true"
+                title="{{ _T('Remove model and back to defaults') }}"
+            >
+                <i class="trash icon" aria-hiden="true"></i>
+                {{ _T('Remove model') }}
+            </a>
+            {% endif %}
+        </div>
     </div>
 </div>
 <div class="ui{{ tab == 'change' ? ' active' }} tab segment" data-tab="change">

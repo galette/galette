@@ -78,7 +78,7 @@
                             {{ _T('Upload new file') }}
                         </div>
                         <div class="active content field">
-                            <div class="field">
+                            <div class="field wide">
                                 <div class="ui file action input">
                                     <input type="file" name="new_file" accept="text/csv" id="new_file"/>
                                     <label for="new_file" class="ui button">
@@ -91,18 +91,20 @@
                     </div>
                 </div>
                 <div class="ui basic center aligned segment">
-                    <button type="submit" name="upload" id="upload" class="ui primary labeled icon button">
-                        <i class="upload icon" aria-hidd="true"></i>
-                        {{ _T('Upload file') }}
-                    </button>
-                    <a
-                        href="{{ url_for('importModel') }}"
-                        class="ui labeled icon button"
-                    >
-                        <i class="cogs icon" aria-hidden="true"></i>
-                        {{ _T('Configure import model') }}
-                    </a>
-                    {% include "components/forms/csrf.html.twig" %}
+                    <div class="ui wrapping spaced buttons">
+                        <button type="submit" name="upload" id="upload" class="ui primary labeled icon button">
+                            <i class="upload icon" aria-hidd="true"></i>
+                            {{ _T('Upload file') }}
+                        </button>
+                        <a
+                            href="{{ url_for('importModel') }}"
+                            class="ui labeled icon button"
+                        >
+                            <i class="cogs icon" aria-hidden="true"></i>
+                            {{ _T('Configure import model') }}
+                        </a>
+                        {% include "components/forms/csrf.html.twig" %}
+                    </div>
                 </div>
             </form>
 {% endblock %}

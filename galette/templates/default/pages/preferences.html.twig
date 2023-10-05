@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="column">
-                    <div class="field ui items">
+                    <div class="field wide ui items">
                         <label>{{ _T("Logo:") }}</label>
                         <div class="item">
         {% if logo.isCustom() %}
@@ -533,7 +533,7 @@
     {% endif %}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'labels' ? ' active' }} tab segment" data-tab="labels">
-            <div class="ui two column grid">
+            <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="{% if required.pref_etiq_marges_v is defined and required.pref_etiq_marges_v == 1 %}required {% endif %}field">
                         <label for="pref_etiq_marges_v">{{ _T("Vertical margins:") }}</label>
@@ -608,12 +608,12 @@
                     {{ _T("Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)")|raw }}
                 </div>
             </div>
-            <div class="ui two column grid">
+            <div class="ui stackable two column grid">
                 <div class="column">
                     <div class="field">
                         <label for="pref_card_abrev">{{ _T("Short Text (Card Center):") }}</label>
                         <div class="ui action input">
-                            <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" size="10" maxlength="10"/>
+                            <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" maxlength="10"/>
                             <a
                                 href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
                                 class="tooltip ui icon button{% if pref.pref_card_abrev is empty %} disabled{% endif %}"
@@ -628,7 +628,7 @@
                     <div class="field">
                         <label for="pref_card_strip">{{ _T("Long Text (Bottom Line):") }}</label>
                         <div class="ui action input">
-                            <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" size="40" maxlength="65"/>
+                            <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" maxlength="65"/>
                             <a
                                 href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
                                 class="tooltip ui icon button{% if pref.pref_card_strip is empty %} disabled{% endif %}"
@@ -662,7 +662,7 @@
                             <i class="circular small inverted primary icon info tooltip" title="{{ _T("Hexadecimal color notation: #RRGGBB") }}"></i>
                         </div>
                     </div>{# /group fields #}
-                    <div class="field ui items">
+                    <div class="field wide ui items">
                         <label>{{ _T("Logo:") }}</label>
                         <div class="item">
     {% if print_logo.isCustom() %}

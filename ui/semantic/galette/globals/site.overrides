@@ -249,6 +249,16 @@ footer .ui.horizontal.list > .item{
   color: @textColor;
 }
 
+/*-------------------------
+      Spacings
+--------------------------*/
+.filters .segment .button,
+.infoline .segments .fitted.segment .label,
+.infoline .segments .fitted.segment .tiny.button,
+#groups_field .button {
+  margin-bottom: 0.75em;
+}
+
 /*-----------------------
     Sortable items
 ------------------------*/
