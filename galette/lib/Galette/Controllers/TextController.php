@@ -90,7 +90,7 @@ class TextController extends AbstractController
             [
                 'page_title'        => _T("Automatic emails texts edition"),
                 'texts'             => $texts,
-                'reflist'           => $texts->getRefs(),
+                'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
                 'cur_lang'          => $lang,
                 'cur_ref'           => $ref,
