@@ -259,7 +259,7 @@ abstract class Entitled
             $select->columns($fields);
 
             if ($this->order_field !== false) {
-                $select->order($this->order_field, $this->fpk);
+                $select->order($this->order_field);
             }
             if ($extent !== null) {
                 if ($extent === true) {
@@ -511,7 +511,7 @@ abstract class Entitled
             $update->set($values);
             $update->where([$this->fpk => $id]);
 
-            $ret = $this->zdb->execute($update);
+            $this->zdb->execute($update);
 
             if ($oldlabel != $label) {
                 $this->deleteTranslation($oldlabel);

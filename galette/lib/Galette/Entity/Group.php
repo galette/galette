@@ -142,15 +142,9 @@ class Group
         if ($r->parent_group) {
             $this->parent_group = new Group((int)$r->parent_group);
         }
-        $adhpk = Adherent::PK;
         if (isset($r->members)) {
             //we're from a list, we just want members count
             $this->count_members = $r->members;
-        } else {
-            //we're probably from a single group, let's load sub entities
-            //$this->loadPersons(self::MEMBER_TYPE);
-            //$this->loadPersons(self::MANAGER_TYPE);
-            //$this->loadSubGroups();
         }
     }
 

@@ -510,7 +510,6 @@ class Contributions
         }
 
         if (is_array($list)) {
-            $res = true;
             try {
                 if ($transaction) {
                     $this->zdb->connection->beginTransaction();

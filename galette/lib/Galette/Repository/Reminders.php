@@ -220,7 +220,6 @@ class Reminders
         $this->types = array();
         $this->reminders = array();
 
-        $types = array();
         foreach ($this->selected as $s) {
             $this->loadToRemind($zdb, $s, $nomail);
 

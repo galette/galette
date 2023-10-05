@@ -259,7 +259,6 @@ trait FileTrait
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
             );
-            $extension = strtolower($matches[2]);
         } else {
             $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $this->name, $errmatches);
@@ -327,7 +326,6 @@ trait FileTrait
             return self::NEW_FILE_EXISTS;
         }
 
-        $in_place = false;
         if ($ajax === true) {
             $in_place = rename($tmpfile, $new_file);
         } else {
@@ -337,7 +335,7 @@ trait FileTrait
         if ($in_place === false) {
             return self::CANT_WRITE;
         }
-        return $in_place;
+        return true;
     }
 
     /**

@@ -1205,7 +1205,6 @@ class Members
             count($this->filters->groups_search) > 0
             && !isset($this->filters->groups_search['empty'])
         ) {
-            $groups_adh = [];
             $wheregroups = [];
 
             foreach ($this->filters->groups_search as $gs) { // then add a row for each group

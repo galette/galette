@@ -757,7 +757,6 @@ class FieldsConfig
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
-            $params = null;
             foreach ($this->categorized_fields as $cat) {
                 foreach ($cat as $pos => $field) {
                     if (in_array($field['field_id'], $this->non_required)) {
@@ -817,8 +816,6 @@ class FieldsConfig
      */
     public function migrateRequired()
     {
-        $old_required = null;
-
         try {
             $select = $this->zdb->select('required');
             $select->from(PREFIX_DB . 'required');

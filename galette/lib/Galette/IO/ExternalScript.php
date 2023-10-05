@@ -243,7 +243,7 @@ class ExternalScript
                 //closes pipes and process
                 fclose($pipes[1]);
                 fclose($pipes[2]);
-                $exit = proc_close($process);
+                proc_close($process);
 
                 if (trim($this->output) === '') {
                     $result = true;

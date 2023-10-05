@@ -234,7 +234,7 @@ class Transaction
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
-                $rem = $c->remove($cids, $hist, false);
+                $c->remove($cids, $hist, false);
             }
 
             //remove transaction itself
@@ -479,7 +479,7 @@ class Transaction
 
             //dynamic fields
             if ($success) {
-                $success = $this->dynamicsStore(true);
+                $this->dynamicsStore(true);
             }
 
             $this->zdb->connection->commit();

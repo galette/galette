@@ -296,7 +296,7 @@ class MemberListener implements ListenerSubscriber
         }
 
         $mlang = $this->preferences->pref_lang;
-        $mtxt = $texts->getTexts(
+        $texts->getTexts(
             $txt_id,
             $mlang
         );

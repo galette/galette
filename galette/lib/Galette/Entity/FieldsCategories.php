@@ -145,7 +145,6 @@ class FieldsCategories
             $zdb->connection->rollBack();
             throw $e;
         }
-        return false;
     }
 
     /**

@@ -209,7 +209,6 @@ class Password
      */
     public function getBlacklistedPasswords()
     {
-        $blacklist = [];
         $file = GALETTE_DATA_PATH . '/blacklist.txt';
 
         if (!file_exists($file)) {

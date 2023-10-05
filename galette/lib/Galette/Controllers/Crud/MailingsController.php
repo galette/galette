@@ -97,7 +97,7 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !GALETTE_MODE === Galette::MODE_DEMO
+            && !(GALETTE_MODE === Galette::MODE_DEMO)
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
@@ -134,7 +134,7 @@ class MailingsController extends CrudController
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
                 $members = $m->getList(true);
-                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
+                $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
                     count($filters->selected) == 0
@@ -249,7 +249,7 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !GALETTE_MODE === Galette::MODE_DEMO
+            && !(GALETTE_MODE === Galette::MODE_DEMO)
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
@@ -257,15 +257,10 @@ class MailingsController extends CrudController
             $error_detected[] = _T("Trying to load mailing while email is disabled in preferences.");
             $goto = $this->routeparser->urlFor('slash');
         } else {
-            if (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
-            } else {
-                $filters = new MembersList();
-            }
+            $filters = $this->session->filter_members ?? new MembersList();
 
             if (
                 $this->session->mailing !== null
-                && !isset($post['mailing_cancel'])
             ) {
                 $mailing = $this->session->mailing;
             } else {
@@ -327,7 +322,7 @@ class MailingsController extends CrudController
                         break;
                 }
 
-                $mailing->html = (isset($post['mailing_html'])) ? true : false;
+                $mailing->html = isset($post['mailing_html']);
 
                 //handle attachments
                 if (isset($_FILES['attachment'])) {

@@ -298,7 +298,6 @@ class SavedSearch
                         $parameters[$key] = $parameter;
                     }
                     return $parameters;
-                    break;
                 default:
                     if (!property_exists($this, $name)) {
                         Analog::log(

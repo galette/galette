@@ -1662,7 +1662,7 @@ class Adherent
                 array('date_modif_adh' => $modif_date)
             )->where([self::PK => $this->_id]);
 
-            $edit = $this->zdb->execute($update);
+            $this->zdb->execute($update);
             $this->_modification_date = $modif_date;
         } catch (Throwable $e) {
             Analog::log(
@@ -1909,8 +1909,6 @@ class Adherent
             default:
                 return property_exists($this, $rname);
         }
-
-        return false;
     }
 
     /**

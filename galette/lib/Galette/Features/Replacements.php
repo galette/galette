@@ -872,8 +872,6 @@ trait Replacements
      */
     protected function proceedReplacements(string $source): string
     {
-        $replaced = $source;
-
         //handle translations
         $callback = static function ($matches) {
             return _T($matches[1]);

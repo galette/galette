@@ -224,7 +224,6 @@ class PaymentType
             case 'id':
             case 'name':
                 return $this->$name;
-                break;
             default:
                 Analog::log(
                     'Unable to get Title property ' . $name,

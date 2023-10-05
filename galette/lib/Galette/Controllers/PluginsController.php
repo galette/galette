@@ -262,8 +262,7 @@ class PluginsController extends AbstractController
                 break;
             case 'i2':
             case 'u2':
-                $install_plugin = true;
-                //not used here, but from include
+                $install_plugin = true; //not used here, but from include
                 $zdb = $this->zdb;
                 ob_start();
                 include_once GALETTE_ROOT . '/install/steps/db_checks.php';
