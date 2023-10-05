@@ -12,7 +12,7 @@
     {% set infoline = {
         'label': _Tn("%count entry", "%count entries", history.getCount())|replace({"%count": history.getCount()}),
         'route': {
-            'name': 'history_filter'
+            'name': 'mailings_filter'
         }
     } %}
     {{ parent() }}
