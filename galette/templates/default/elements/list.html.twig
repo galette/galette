@@ -164,6 +164,7 @@
                                 _form.append($('<input id="directdownload" type="hidden" name="' + value + '" value="true"/>'));
                             _form.submit();
                             $('#directdownload').remove();
+            {% if login.isAdmin() or login.isStaff() %}
                         // Handle delete.
                         } else if (value == 'delete') {
                             {% include "elements/js/removal.js.twig" with {
@@ -174,11 +175,12 @@
                                 loader: "button",
                                 loader_parent: ".batch-select-action"
                             } %}
+            {% endif %}
                         }
                         // Handle other custom list actions.
-                {% if batch_selection is defined %}
+            {% if batch_selection is defined %}
                         {% block batch_selection %}{% endblock %}
-                {% endif %}
+            {% endif %}
                     }
                 });
                 $('.batch-selection').after({% if _legend_block is not empty %}_legendlink{% else %}_checklinks{% endif %});
