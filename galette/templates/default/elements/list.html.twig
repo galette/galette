@@ -183,7 +183,9 @@
             {% endif %}
                     }
                 });
-                $('.batch-selection').after({% if _legend_block is not empty %}_legendlink{% else %}_checklinks{% endif %});
+            {% if _legend_block is not empty %}
+                $('.batch-selection').after(_legendlink);
+            {% endif %}
                 _bind_check('entries_sel');
         {% endif %}
             }
