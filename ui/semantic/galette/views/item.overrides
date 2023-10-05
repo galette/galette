@@ -2,11 +2,22 @@
     Galette Overrides
 *******************************/
 
-.edit-member .fieldset-1 .ui.items > .item {
-  & > .image {
-    display: none;
+.edit-member {
+  .fieldset-1 .ui.items > .item {
+    & > .image {
+      display: none;
+    }
+    & > .content {
+      padding: 0;
+    }
   }
-  & > .content {
-    padding: 0;
+}
+
+.advanced-search {
+  #gs_sortable,
+  #fs_sortable {
+    .ui.items > .item .image {
+      width: auto !important;
+    }
   }
 }
