@@ -412,7 +412,10 @@ class CsvOut extends Csv
     public function runParametedExport($id)
     {
         //try first to run from YAML configuration file
-        return $this->runYamlParametedExport($id);
+        $run = $this->runYamlParametedExport($id);
+        if ($run !== null) {
+            return $run;
+        }
 
         //if nothing has been run yet, look into legacy XML configuration file
         if (file_exists($this->legacy_parameted_file)) {
