@@ -205,7 +205,10 @@
                 modal_class: "members-selection fullscreen",
                 modal_content_class: "scrolling",
                 modal_deny_only: true,
-                modal_cancel_text: _T("Close")|e("js")
+                modal_cancel_text: _T("Close")|e("js"),
+                modal_other_options: {
+                    autofocus: false
+                }
             } %}
             _members_ajax_mapper(res, $('#group_id').val(), mode);
 
@@ -318,7 +321,7 @@
                     success: function(res){
                         $('#listing').remove();
                         var _listing = $($.parseHTML(res)).find('#listing');
-                        $('.members-selection .eleven.wide.column').append(_listing);
+                        $('.members-selection .eleven.wide.column').prepend(_listing);
                         _members_ajax_mapper(res, gid, _mode);
                     },
                     error: function() {
