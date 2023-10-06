@@ -12,20 +12,6 @@
                     </th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="center">
-                        <div class="ui basic left aligned fitted segment">
-                            <div class="ui inverted pagination menu">
-                                <div class="header item">
-                                    {{ _T('Pages:') }}
-                                </div>
-                                {{ pagination|raw }}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
             <tbody>
 {% for member in members_list %}
     {% if excluded is not defined or excluded != member.id %}
@@ -80,6 +66,23 @@
                 <tr><td colspan="3" class="emptylist">{{ _T("no member") }}</td></tr>
 {% endfor %}
             </tbody>
+{% if is_paginated %}
+            <tfoot>
+            {# keep this one after "tbody" element to prevent display issues #}
+                <tr>
+                    <td colspan="3" class="center">
+                        <div class="ui basic left aligned fitted segment">
+                            <div class="ui inverted pagination stackable menu">
+                                <div class="header item">
+                                    {{ _T('Pages:') }}
+                                </div>
+                                {{ pagination|raw }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+{% endif %}
         </table>
     </div>
 {% if multiple %}

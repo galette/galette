@@ -48,3 +48,12 @@
     content: none;
   }
 }
+
+/*------------------
+     Pagination
+-------------------*/
+@media only screen and (max-width: 991px) {
+  .ui.menu.pagination {
+    width: 100%;
+  }
+}
