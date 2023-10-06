@@ -94,7 +94,7 @@
 {% if modal_onhidden is defined %}
             {{ modal_onhidden|raw }}
 {% else %}
-            return true;
+            $(this).modal('hide dimmer').remove();
 {% endif %}
         },
         onApprove: function() {
@@ -107,6 +107,8 @@
         onDeny: function() {
 {% if modal_ondeny is defined %}
             {{ modal_ondeny|raw }}
+{% else %}
+            return true;
 {% endif %}
         },
         actions: [
