@@ -172,7 +172,6 @@ class DynamicTranslationsController extends AbstractController
     public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $post['text_orig'] = htmlspecialchars($post['text_orig'], ENT_QUOTES);
         if (isset($post['redirect_uri'])) {
             $redirect_url = $post['redirect_uri'];
             unset($post['redirect_uri']);
@@ -186,7 +185,7 @@ class DynamicTranslationsController extends AbstractController
 
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($post['new']) && $post['new'] == 'true') {
-                //create translation if it does not exists yet
+                //create translation if it does not exist yet
                 $res = $this->l10n->addDynamicTranslation(
                     $post['text_orig']
                 );

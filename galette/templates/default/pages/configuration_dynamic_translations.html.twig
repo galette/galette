@@ -29,7 +29,7 @@
             </div>
     {% endif %}
             <div class="ui top attached accordion-styled header">
-                {{ _T("Translation of '%s' label")|replace({'%s': text_orig|escape}) }}
+                {{ _T("Translation of '%s' label")|replace({'%s': text_orig}) }}
             </div>
             <div class="ui bottom attached accordion-styled segment">
                 <div class="active content field">
@@ -39,11 +39,11 @@
                             <td class="three wide"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></td>
                             <td class="thirteen wide">
                                 <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
-                                <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
                             </td>
                         </tr>
     {% endfor %}
                     </table>
+                    <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
                 </div>
             </div>
     {% if mode != 'ajax' %}

@@ -151,7 +151,7 @@ abstract class Repository
     /**
      * Add default values in database
      *
-     * @param boolean $check_first Check first if it seem initialized, defaults to true
+     * @param boolean $check_first Check first if it seems initialized, defaults to true
      *
      * @return boolean
      */
