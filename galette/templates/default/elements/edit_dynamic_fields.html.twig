@@ -37,21 +37,21 @@
                             class="action single-edit"
                         >
                             <i class="ui user edit blue icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
                         <a
-                            href="{{ url_for('dynamicTranslations', {'text_orig': field.getName(false)|escape}) }}"
+                            href="{{ url_for('dynamicTranslations', {'text_orig': field.getName(false)}) }}"
                             class="action single-translate"
                         >
                             <i class="ui language grey icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Translate '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <span class="ui special popup">{{ _T("Translate '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
                         <a
                             href="{{ url_for('removeDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
                             class="delete"
                         >
                             <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
     {% if field.getIndex() == 1 %}
                         <i class="ui icon">&nbsp;</i>
@@ -60,7 +60,7 @@
                             href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'up', 'id': field.getId()}) }}"
                         >
                             <i class="ui caret up grey icon tooltip"></i>
-                            <span class="ui special popup">{{ _T("Move up '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <span class="ui special popup">{{ _T("Move up '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
     {% endif %}
     {% if field.getIndex() == fields_list|length %}
@@ -70,7 +70,7 @@
                             href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'down', 'id': field.getId()}) }}"
                         >
                             <i class="ui caret down grey icon tooltip"></i>
-                            <span class="ui special popup">{{ _T("Move down '%s' field")|replace({'%s': field.getName()|escape}) }}</span>
+                            <span class="ui special popup">{{ _T("Move down '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
     {% endif %}
                     </td>
