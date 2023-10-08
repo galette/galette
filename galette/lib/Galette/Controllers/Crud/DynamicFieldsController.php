@@ -357,6 +357,29 @@ class DynamicFieldsController extends CrudController
             '%form_%oid_field_%fid_value_%pos'
         );
 
+        if ($form_name !== 'member' && !file_exists(GALETTE_FILES_PATH . $filename)) {
+            //handle old names for non adh dynamic files
+            $test_filename = str_replace(
+                [
+                    '%form',
+                    '%oid',
+                    '%fid',
+                    '%pos'
+                ],
+                [
+                    'member',
+                    $id,
+                    $fid,
+                    $pos
+                ],
+                '%form_%oid_field_%fid_value_%pos'
+            );
+            if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
+                //rename old file to new name
+                rename(GALETTE_FILES_PATH . $test_filename, GALETTE_FILES_PATH . $filename);
+            }
+        }
+
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
 
