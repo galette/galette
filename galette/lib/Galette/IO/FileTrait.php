@@ -76,6 +76,7 @@ trait FileTrait
     protected $allowed_extensions = array();
     protected $allowed_mimes = array();
     protected $maxlenght;
+    protected $mincropsize;
 
     public static $mime_types = array(
         'txt'       => 'text/plain',
@@ -181,10 +182,11 @@ trait FileTrait
     /**
      * Initialization
      *
-     * @param string $dest       File destination directory
-     * @param array  $extensions Array of permitted extensions
-     * @param array  $mimes      Array of permitted mime types
-     * @param int    $maxlenght  Maximum lenght for each file
+     * @param string $dest        File destination directory
+     * @param array  $extensions  Array of permitted extensions
+     * @param array  $mimes       Array of permitted mime types
+     * @param int    $maxlenght   Maximum lenght for each file
+     * @param int    $mincropsize Minimum image side size required for cropping
      *
      * @return void
      */
@@ -192,7 +194,8 @@ trait FileTrait
         $dest,
         $extensions = null,
         $mimes = null,
-        $maxlenght = null
+        $maxlenght = null,
+        $mincropsize = null
     ) {
         if ($dest !== null && substr($dest, -1) !== '/') {
             //normalize path
@@ -209,6 +212,11 @@ trait FileTrait
             $this->maxlenght = $maxlenght;
         } else {
             $this->maxlenght = self::MAX_FILE_SIZE;
+        }
+        if ($mincropsize !== null) {
+            $this->mincropsize = $mincropsize;
+        } else {
+            $this->mincropsize = self::MIN_CROP_SIZE;
         }
     }
 
@@ -490,6 +498,12 @@ trait FileTrait
                     '|%d|',
                     $this->maxlenght,
                     _T("File is too big. Maximum allowed size is %dKo")
+                );
+                break;
+            case self::IMAGE_TOO_SMALL:
+                $error = sprintf(
+                    _T("Image is too small. The minimum image side size allowed is %spx"),
+                    $this->mincropsize
                 );
                 break;
             case self::MIME_NOT_ALLOWED:

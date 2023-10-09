@@ -2040,11 +2040,12 @@ class Adherent
     /**
      * Handle files (photo and dynamics files)
      *
-     * @param array $files Files sent
+     * @param array $files    Files sent
+     * @param array $cropping Cropping properties
      *
      * @return array|true
      */
-    public function handleFiles(array $files)
+    public function handleFiles(array $files, array $cropping = null)
     {
         $this->errors = [];
         // picture upload
@@ -2052,7 +2053,11 @@ class Adherent
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
                 if ($files['photo']['tmp_name'] != '') {
                     if (is_uploaded_file($files['photo']['tmp_name'])) {
-                        $res = $this->picture->store($files['photo']);
+                        if ($this->preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
+                            $res = $this->picture->store($files['photo'], false, $cropping);
+                        } else {
+                            $res = $this->picture->store($files['photo']);
+                        }
                         if ($res < 0) {
                             $this->errors[]
                                 = $this->picture->getErrorMessage($res);

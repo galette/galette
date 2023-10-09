@@ -4,9 +4,6 @@
 
 .edit-member {
   .fieldset-1 .ui.items > .item {
-    & > .image {
-      display: none;
-    }
     & > .content {
       padding: 0;
     }

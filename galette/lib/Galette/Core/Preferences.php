@@ -102,6 +102,8 @@ use Galette\Repository\Members;
  * @property string $pref_etiq_rows
  * @property string $pref_etiq_corps
  * @property boolean $pref_etiq_border
+ * @property boolean $pref_force_picture_ratio
+ * @property string $pref_member_picture_ratio
  * @property string $pref_card_abrev
  * @property string $pref_card_strip
  * @property string $pref_card_tcol
@@ -240,6 +242,8 @@ class Preferences
         'pref_etiq_corps'    =>    12,
         'pref_etiq_border'    =>    true,
         /* Preferences for members cards */
+        'pref_force_picture_ratio'    =>    false,
+        'pref_member_picture_ratio'    =>    'square_ratio',
         'pref_card_abrev'    =>    'GALETTE',
         'pref_card_strip'    =>    'Gestion d\'Adherents en Ligne Extrêmement Tarabiscotée',
         'pref_card_tcol'    =>    '#FFFFFF',

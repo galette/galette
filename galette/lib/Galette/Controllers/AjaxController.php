@@ -108,6 +108,10 @@ class AjaxController extends AbstractController
         $mid = $post['member_id'];
         $fsize = $post['filesize'];
         $fname = $post['filename'];
+        $cropping = null;
+        if ($post['cropping'] != false) {
+            $cropping = $post['cropping'];
+        }
         $tmpname = GALETTE_TEMPIMAGES_PATH . 'ajax_upload_' . $fname;
 
         $temp = explode('base64,', $post['file']);
@@ -126,7 +130,8 @@ class AjaxController extends AbstractController
                 'tmp_name'  => $tmpname,
                 'size'      => $fsize
             ),
-            true
+            true,
+            $cropping
         );
 
         if ($res < 0) {

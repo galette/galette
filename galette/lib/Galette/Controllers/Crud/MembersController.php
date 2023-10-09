@@ -1596,7 +1596,13 @@ class MembersController extends CrudController
             }
 
             if (count($error_detected) === 0) {
-                $files_res = $member->handleFiles($_FILES);
+                $cropping = null;
+                if ($this->preferences->pref_force_picture_ratio == 1) {
+                    $cropping = [];
+                    $cropping['ratio'] = isset($this->preferences->pref_member_picture_ratio) ? $this->preferences->pref_member_picture_ratio : 'square_ratio';
+                    $cropping['focus'] = isset($post['crop_focus']) ? $post['crop_focus'] : 'center';
+                }
+                $files_res = $member->handleFiles($_FILES, $cropping);
                 if (is_array($files_res)) {
                     $error_detected = array_merge($error_detected, $files_res);
                 }

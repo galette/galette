@@ -398,7 +398,6 @@
                 });
         {% endif %}
     {% endif %}
-                {% include "elements/js/photo_dnd.js.twig" %}
 
                 $('#ddn_adh').on('blur', function() {
                     var _bdate = $(this).val();
@@ -418,6 +417,19 @@
                         $('#member_age').html('');
                     }
                 });
+
+    {% if preferences.pref_force_picture_ratio == 1 %}
+                // Show photo cropping preferences on file selection
+                let _photo_new = document.getElementById('photo_new');
+                _photo_new.addEventListener('change', function () {
+                    if (_photo_new.files.length > 0) {
+                        let _crop_focus = document.getElementById('crop_focus_field');
+                        _crop_focus.classList.remove('displaynone');
+                        $('#crop_focus_field').transition('glow');
+                        return;
+                    }
+                });
+    {% endif %}
 {% endif %}
             });
         </script>

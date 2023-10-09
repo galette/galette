@@ -1,11 +1,22 @@
-<div class="ui horizontal fluid card">
+<div id="member_card" class="ui horizontal fluid card">
     {% if not (member.picture.path ends with '/default/images/default.png') %}
     <div class="image">
         <img
+                id="photo_adh"
                 src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
                 width="{{ member.picture.getOptimalWidth() }}"
                 height="{{ member.picture.getOptimalHeight() }}"
-                alt="{{ _T("Picture") }}">
+                alt="{{ _T("Picture") }}"
+                class="green no-touch tooltip"
+        {# Drag'n drop is disabled on member form #}
+        {% if (hidden_elements is not defined) %}
+                data-html="{{ _T("Drag and drop an image file to change the picture") }}">
+        <span class="ui bottom left corner tiny label">
+            <i class="download icon"></i>
+        </span>
+        {% else %}
+        >
+        {% endif %}
     </div>
     {% endif %}
     <div class="content">

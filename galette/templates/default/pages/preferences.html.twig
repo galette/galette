@@ -233,12 +233,27 @@
                             <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
                         </div>
                     </div>
-                    <div class="field" id="publicpages_visibility"{% if not pref.pref_bool_publicpages %} class="displaynone"{% endif %}>
+                    <div id="publicpages_visibility" class="field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
                         <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
                         <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown nochosen">
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_force_picture_ratio" id="pref_force_picture_ratio" value="1" {% if pref.pref_force_picture_ratio == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_force_picture_ratio">{{ _T("Force member picture ratio") }}</label>
+                        </div>
+                        <i class="tooltip circular inverted primary small icon info" data-html="{{ _T("If checked, the members's picture will be resized and cropped to the ratio selected below.") }}" data-variation="inverted wide"></i>
+                    </div>
+                    <div id="pref_member_picture_ratio_field" class="inline field{% if pref.pref_force_picture_ratio != 1 %} displaynone{% endif %}">
+                        <label for="pref_member_picture_ratio" title="{{ _T("Choose the") }}">{{ _T("Select a ratio") }}</label>
+                        <select name="pref_member_picture_ratio" id="pref_member_picture_ratio" class="ui dropdown nochosen">
+                            <option value="square_ratio"{% if pref.pref_member_picture_ratio == 'square_ratio' %} selected="selected"{% endif %}>{{ _T("Square (1:1)") }}</option>
+                            <option value="portrait_ratio"{% if pref.pref_member_picture_ratio == 'portrait_ratio' %} selected="selected"{% endif %}>{{ _T("Portrait (3:4)") }}</option>
+                            <option value="landscape_ratio"{% if pref.pref_member_picture_ratio == 'landscape_ratio' %} selected="selected"{% endif %}>{{ _T("Landscape (4:3)") }}</option>
                         </select>
                     </div>
                     <div class="field inline">
@@ -884,12 +899,6 @@
                         }
                     }
                 });
-                /*$('#smtp, #gmail').checkbox({
-                    onChecked: function() {
-                        console.log($(this).closest('#smtp_parameters'));
-                        //$('#smtp_parameters, #smtp_auth').toggleClass('displaynone');
-                    }
-                });*/
 
                 $('.pointing.menu .item').tab({
                     onVisible: function(tabPath) {
@@ -897,8 +906,18 @@
                     }
                 });
 
-                $('#pref_bool_publicpages').change(function(){
-                    $('#publicpages_visibility').toggleClass('displaynone');
+                let _publicpages_status = document.getElementById('pref_bool_publicpages');
+                let _publicpages_visibility = document.getElementById('publicpages_visibility');
+                _publicpages_status.addEventListener('change', function () {
+                    _publicpages_visibility.classList.toggle('displaynone');
+                    return;
+                });
+
+                let _crop_status = document.getElementById('pref_force_picture_ratio');
+                let _crop_ratio = document.getElementById('pref_member_picture_ratio_field');
+                _crop_status.addEventListener('change', function () {
+                    _crop_ratio.classList.toggle('displaynone');
+                    return;
                 });
 
                 $('#btnmail').on('click', function(e) {

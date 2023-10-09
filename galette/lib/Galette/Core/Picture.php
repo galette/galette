@@ -425,12 +425,13 @@ class Picture implements FileInterface
     /**
      * Stores an image on the disk and in the database
      *
-     * @param object  $file the uploaded file
-     * @param boolean $ajax If the image cames from an ajax call (dnd)
+     * @param object  $file     The uploaded file
+     * @param boolean $ajax     If the image cames from an ajax call (dnd)
+     * @param array   $cropping Cropping properties
      *
      * @return bool|int
      */
-    public function store($file, $ajax = false)
+    public function store($file, $ajax = false, $cropping = null)
     {
         /** TODO: fix max size (by preferences ?) */
         global $zdb;
@@ -508,6 +509,22 @@ class Picture implements FileInterface
             );
         }
 
+        // Source image must have minimum dimensions to match the cropping process requirements
+        // and ensure the final picture will fit the maximum allowed resizing dimensions.
+        if (isset($cropping['ratio']) && isset($cropping['focus'])) {
+            if ($current[0] < $this->mincropsize || $current[1] < $this->mincropsize) {
+                $min_current = min($current[0], $current[1]);
+                Analog::log(
+                    '[' . $class . '] Image is too small. The minimum image side size allowed is ' .
+                    $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
+                    Analog::ERROR
+                );
+                return self::IMAGE_TOO_SMALL;
+            } else {
+                Analog::log('[' . $class . '] Image dimensions are OK, proceed', Analog::DEBUG);
+            }
+        }
+
         $this->delete();
 
         $new_file = $this->store_path .
@@ -522,7 +539,7 @@ class Picture implements FileInterface
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
                 Should'nt we want to stop the process here? */
-            $this->resizeImage($new_file, $extension);
+            $this->resizeImage($new_file, $extension, null, $cropping);
         }
 
         return $this->storeInDb($zdb, $this->db_id, $new_file, $extension);
@@ -678,16 +695,17 @@ class Picture implements FileInterface
     }
 
     /**
-     * Resize the image if it exceeds max allowed sizes
+     * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string $source the source image
-     * @param string $ext    file's extension
-     * @param string $dest   the destination image.
-     *                       If null, we'll use the source image. Defaults to null
+     * @param string $source   The source image
+     * @param string $ext      File's extension
+     * @param string $dest     The destination image.
+     *                         If null, we'll use the source image. Defaults to null
+     * @param array  $cropping Cropping properties
      *
      * @return void|false
      */
-    private function resizeImage($source, $ext, $dest = null)
+    private function resizeImage($source, $ext, $dest = null, $cropping = null)
     {
         $class = get_class($this);
 
@@ -750,39 +768,144 @@ class Picture implements FileInterface
 
             $ratio = $cur_width / $cur_height;
 
-            // calculate image size according to ratio
-            if ($cur_width > $cur_height) {
-                $h = round($w / $ratio);
+            // Define cropping variables if necessary.
+            $thumb_cropped = false;
+            // Cropping is based on the smallest side of the source in order to
+            // provide as less focusing options as possible if the source doesn't
+            // fit the final ratio (center, top, bottom, left, right).
+            $min_size = min($cur_width, $cur_height);
+            // Cropping dimensions.
+            $crop_width = $min_size;
+            $crop_height = $min_size;
+            // Cropping focus.
+            $crop_x = 0;
+            $crop_y = 0;
+            if (isset($cropping['ratio']) && isset($cropping['focus'])) {
+                // Calculate cropping dimensions
+                switch ($cropping['ratio']) {
+                    case 'portrait_ratio':
+                        // Calculate cropping dimensions
+                        if ($ratio < 1) {
+                            $crop_height = ceil($crop_width * 4 / 3);
+                        } else {
+                            $crop_width = ceil($crop_height * 3 / 4);
+                        }
+                        // Calculate resizing dimensions
+                        $w = ceil($h * 3 / 4);
+                        break;
+                    case 'landscape_ratio':
+                        // Calculate cropping dimensions
+                        if ($ratio > 1) {
+                            $crop_width = ceil($crop_height * 4 / 3);
+                        } else {
+                            $crop_height = ceil($crop_width * 3 / 4);
+                        }
+                        // Calculate resizing dimensions
+                        $h = ceil($w * 3 / 4);
+                        break;
+                }
+                // Calculate focus coordinates
+                switch ($cropping['focus']) {
+                    case 'center':
+                        if ($ratio > 1) {
+                            $crop_x = ceil(($cur_width - $crop_width) / 2);
+                        } elseif ($ratio == 1) {
+                            $crop_x = ceil(($cur_width - $crop_width) / 2);
+                            $crop_y = ceil(($cur_height - $crop_height) / 2);
+                        } else {
+                            $crop_y = ceil(($cur_height - $crop_height) / 2);
+                        }
+                        break;
+                    case 'top':
+                        $crop_x = ceil(($cur_width - $crop_width) / 2);
+                        break;
+                    case 'bottom':
+                        $crop_y = $cur_height - $crop_height;
+                        break;
+                    case 'right':
+                        $crop_x = $cur_width - $crop_width;
+                        break;
+                }
+                // Cropped image.
+                $thumb_cropped = imagecreatetruecolor($crop_width, $crop_height);
+                // Cropped ratio.
+                $ratio = $crop_width / $crop_height;
+            // Otherwise, calculate image size according to the source's ratio.
             } else {
-                $w = round($h * $ratio);
+                if ($cur_width > $cur_height) {
+                    $h = round($w / $ratio);
+                } else {
+                    $w = round($h * $ratio);
+                }
             }
 
+            // Resized image.
             $thumb = imagecreatetruecolor($w, $h);
+
+            $image = false;
             switch ($ext) {
                 case 'jpg':
                     $image = imagecreatefromjpeg($source);
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    // Crop
+                    if ($thumb_cropped !== false) {
+                        // First, crop.
+                        imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+                        // Then, resize.
+                        imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+                    // Resize
+                    } else {
+                        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    }
                     imagejpeg($thumb, $dest);
                     break;
                 case 'png':
                     $image = imagecreatefrompng($source);
                     // Turn off alpha blending and set alpha flag. That prevent alpha
                     // transparency to be saved as an arbitrary color (black in my tests)
-                    imagealphablending($thumb, false);
                     imagealphablending($image, false);
-                    imagesavealpha($thumb, true);
                     imagesavealpha($image, true);
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    imagealphablending($thumb, false);
+                    imagesavealpha($thumb, true);
+                    // Crop
+                    if ($thumb_cropped !== false) {
+                        imagealphablending($thumb_cropped, false);
+                        imagesavealpha($thumb_cropped, true);
+                        // First, crop.
+                        imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+                        // Then, resize.
+                        imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+                    // Resize
+                    } else {
+                        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    }
                     imagepng($thumb, $dest);
                     break;
                 case 'gif':
                     $image = imagecreatefromgif($source);
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    // Crop
+                    if ($thumb_cropped !== false) {
+                        // First, crop.
+                        imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+                        // Then, resize.
+                        imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+                    // Resize
+                    } else {
+                        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    }
                     imagegif($thumb, $dest);
                     break;
                 case 'webp':
                     $image = imagecreatefromwebp($source);
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    // Crop
+                    if ($thumb_cropped !== false) {
+                        // First, crop.
+                        imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+                        // Then, resize.
+                        imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+                    // Resize
+                    } else {
+                        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    }
                     imagewebp($thumb, $dest);
                     break;
             }
