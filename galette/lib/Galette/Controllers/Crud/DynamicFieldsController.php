@@ -341,6 +341,9 @@ class DynamicFieldsController extends CrudController
                 );
         }
 
+        if ($form_name === 'adh') {
+            $form_name = 'member'; //for compatibility with existing files
+        }
         $filename = str_replace(
             [
                 '%form',
