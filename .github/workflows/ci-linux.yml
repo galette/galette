@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.1', '8.2' ]
+        php-versions: [ '8.1', '8.2', '8.3-rc' ]
 
     steps:
       - name: PHP
@@ -55,7 +55,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd galette
-          composer install
+          composer install --optimize-autoloader --ignore-platform-reqs
 
       - name: CS
         run: |
@@ -67,7 +67,7 @@ jobs:
 
       - name: Install checker
         working-directory: galette
-        run: composer require maglnet/composer-require-checker -W
+        run: composer require maglnet/composer-require-checker -W --optimize-autoloader --ignore-platform-reqs
 
       - name: Check missing symbols
         run: |
@@ -177,7 +177,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.1', '8.2' ]
+        php-versions: [ '8.1', '8.2', '8.3-rc' ]
         coverage: ['none']
         db-image: ['mysql:5.7', 'mysql:8.1', 'mariadb:10.4', 'mariadb:11', 'postgres:11', 'postgres:16']
         include:
