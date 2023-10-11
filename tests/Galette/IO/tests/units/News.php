@@ -52,6 +52,7 @@ use PHPUnit\Framework\TestCase;
  */
 class News extends TestCase
 {
+    private string $local_url;
     private \Galette\Core\I18n $i18n;
 
     /**
@@ -64,6 +65,7 @@ class News extends TestCase
         $this->i18n = new \Galette\Core\I18n();
         global $i18n;
         $i18n = $this->i18n;
+        $this->local_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
     }
 
     /**
@@ -76,7 +78,7 @@ class News extends TestCase
         //ensure allow_url_fopen is on
         ini_set('allow_url_fopen', true);
         //load news without caching
-        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true);
+        $news = new \Galette\IO\News($this->local_url, true);
         $posts = $news->getPosts();
         $this->assertGreaterThan(0, count($posts));
     }
@@ -89,13 +91,13 @@ class News extends TestCase
     public function testCacheNews()
     {
         //will use default lang to build RSS URL
-        $file = GALETTE_CACHE_DIR . md5('https://galette.eu/site/feed.xml') . '.cache';
+        $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
 
         //ensure file does not exist
         $this->assertFalse(file_exists($file));
 
         //load news with caching
-        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
+        $news = new \Galette\IO\News($this->local_url);
 
         $posts = $news->getPosts();
         $this->assertGreaterThan(0, count($posts));
@@ -118,7 +120,7 @@ class News extends TestCase
         $touched = touch($file, $expired->getTimestamp());
         $this->assertTrue($touched);
 
-        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
+        $news = new \Galette\IO\News($this->local_url);
         $mnewdate = \DateTime::createFromFormat(
             $dformat,
             date(
@@ -142,7 +144,7 @@ class News extends TestCase
     public function testLoadNewsWExeption()
     {
         $news = $this->getMockBuilder(\Galette\IO\News::class)
-            ->setConstructorArgs(array('https://galette.eu/site/feed.xml', true))
+            ->setConstructorArgs(array($this->local_url, true))
             ->onlyMethods(array('allowURLFOpen'))
             ->getMock();
         $news->method('allowURLFOpen')->willReturn(false);
