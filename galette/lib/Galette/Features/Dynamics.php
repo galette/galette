@@ -36,6 +36,7 @@
 
 namespace Galette\Features;
 
+use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Analog\Analog;
@@ -164,14 +165,14 @@ trait Dynamics
                 } else {
                     if ($fields[$field_id] instanceof File) {
                         //delete checkbox
-                        $filename = sprintf(
-                            'member_%d_field_%d_value_%d',
-                            $this->id,
-                            $field_id,
-                            $val_index
-                        );
+                        $filename = $fields[$field_id]->getFileName($this->id, $val_index);
                         if (file_exists(GALETTE_FILES_PATH . $filename)) {
                             unlink(GALETTE_FILES_PATH . $filename);
+                        } elseif (!$this instanceof Adherent) {
+                            $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
+                            if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
+                                unlink(GALETTE_FILES_PATH . $test_filename);
+                            }
                         }
                         $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                     } else {

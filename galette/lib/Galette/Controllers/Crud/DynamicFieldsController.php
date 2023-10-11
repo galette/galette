@@ -307,10 +307,11 @@ class DynamicFieldsController extends CrudController
             ->disableAllDeps()
             ->enableDep('dynamics')
             ->load($id);
+        $fields = $object->getDynamicFields()->getFields();
+        $field = $fields[$fid] ?? null;
 
         $denied = null;
         if (!$object->canShow($this->login)) {
-            $fields = $object->getDynamicFields()->getFields();
             if (!isset($fields[$fid])) {
                 //field does not exist or access is forbidden
                 $denied = true;
@@ -341,42 +342,11 @@ class DynamicFieldsController extends CrudController
                 );
         }
 
-        if ($form_name === 'adh') {
-            $form_name = 'member'; //for compatibility with existing files
-        }
-        $filename = str_replace(
-            [
-                '%form',
-                '%oid',
-                '%fid',
-                '%pos'
-            ],
-            [
-                $form_name,
-                $id,
-                $fid,
-                $pos
-            ],
-            '%form_%oid_field_%fid_value_%pos'
-        );
+        $filename = $field->getFileName($id, $pos);
 
         if ($form_name !== 'member' && !file_exists(GALETTE_FILES_PATH . $filename)) {
             //handle old names for non adh dynamic files
-            $test_filename = str_replace(
-                [
-                    '%form',
-                    '%oid',
-                    '%fid',
-                    '%pos'
-                ],
-                [
-                    'member',
-                    $id,
-                    $fid,
-                    $pos
-                ],
-                '%form_%oid_field_%fid_value_%pos'
-            );
+            $test_filename = $field->getFileName($id, $pos, 'member');
             if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
                 //rename old file to new name
                 rename(GALETTE_FILES_PATH . $test_filename, GALETTE_FILES_PATH . $filename);

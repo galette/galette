@@ -76,4 +76,39 @@ class File extends DynamicField
     {
         return self::FILE;
     }
+
+    /**
+     * Get file name on disk
+     *
+     * @param int         $id     Object (member, contribution, ...) ID
+     * @param int         $pos    Position in the list of values  (0-based)
+     * @param string|null $prefix Forced file prefix; if null (defaults) form_name wil be used verbatim
+     *
+     * @return string
+     */
+    public function getFileName(int $id, int $pos, string $prefix = null): string
+    {
+        $form_name = $this->form;
+        if ($form_name === 'adh') {
+            $form_name = 'member'; //fix expected filename
+        }
+
+        $filename = str_replace(
+            [
+                '%form',
+                '%oid',
+                '%fid',
+                '%pos'
+            ],
+            [
+                $prefix ?? $form_name,
+                $id,
+                $this->id,
+                $pos
+            ],
+            '%form_%oid_field_%fid_value_%pos'
+        );
+
+        return $filename;
+    }
 }
