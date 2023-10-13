@@ -78,7 +78,7 @@ var paths = {
       './ui/js/masschanges.js'
     ],
     chartjs: [
-      './node_modules/chart.js/dist/chart.min.js',
+      './node_modules/chart.js/dist/chart.umd.js',
       './node_modules/chartjs-plugin-autocolors/dist/chartjs-plugin-autocolors.min.js',
       './node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js'
     ],
