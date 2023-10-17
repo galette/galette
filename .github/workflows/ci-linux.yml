@@ -77,6 +77,101 @@ jobs:
         run: |
           galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
 
+  unsupported-dbs:
+    runs-on: ubuntu-latest
+    name: "DB Fail on ${{ matrix.php-versions }}  ${{ matrix.db-image }}"
+
+    strategy:
+      matrix:
+        php-versions: [ '8.2' ]
+        coverage: ['none']
+        db-image: ['mysql:5.6', 'mariadb:10.3', 'postgres:10']
+      fail-fast: false
+
+    env:
+      DB: ${{ matrix.db-image }}
+
+    services:
+      # Label used to access the service container
+      db:
+        # Docker Hub image
+        image: ${{ matrix.db-image }}
+        # Provide env variables for both mysql and pgsql
+        env:
+          POSTGRES_USER: galette_tests
+          POSTGRES_PASSWORD: g@l3tte
+          POSTGRES_DB: galette_fail_tests
+          MYSQL_USER: galette_tests
+          MYSQL_PASSWORD: g@l3tte
+          MYSQL_ROOT_PASSWORD: g@l3tte
+          MYSQL_DATABASE: galette_fail_tests
+        # Open network ports for both mysql and pgsql
+        ports:
+          - 3306:3306
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else if [[ -n $(command -v mysqladmin) ]]; then mysqladmin ping; else mariadb-admin ping; fi fi'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, pecl
+          coverage: ${{ matrix.coverage }}
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+
+      - name: "Show versions"
+        run: |
+          php --version
+          composer --version
+          echo "node $(node --version)"
+          echo "npm $(npm --version)"
+          docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: bin/install_deps
+
+      - name: Init for PostgreSQL (update)
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        run: |
+          PGPASSWORD=g@l3tte psql -d galette_fail_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
+        if: startsWith(matrix.db-image, 'postgres')
+
+      - name: Init for MariaDB (update)
+        run: |
+          mysql -e 'create database IF NOT EXISTS galette_fail_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+          mysql -e 'use galette_fail_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+        if: startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb')
+
+      - name: Fail database tests
+        run: FAIL=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteDbFails/
+        if: matrix.coverage != 'xdebug'
+
   unit-tests:
     runs-on: ubuntu-latest
 
@@ -84,11 +179,11 @@ jobs:
       matrix:
         php-versions: [ '8.1', '8.2' ]
         coverage: ['none']
-        db-image: ['mysql:8.0', 'mariadb:10.11', 'mariadb:11', 'postgres:12', 'postgres:15']
+        db-image: ['mysql:5.7', 'mysql:8.1', 'mariadb:10.4', 'mariadb:11', 'postgres:11', 'postgres:16']
         include:
           - php-versions: '8.2'
             coverage: 'xdebug'
-            db-image: 'postgres:15'
+            db-image: 'postgres:16'
       fail-fast: false
 
     env:

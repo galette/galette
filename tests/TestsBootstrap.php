@@ -33,6 +33,11 @@ if (
     $db = 'pgsql';
 }
 
+$fail_env = getenv('FAIL');
+if ($fail_env !== false) {
+    $db .= '_fail';
+}
+
 define('GALETTE_CONFIG_PATH', __DIR__ . '/config/' . $db . '/');
 define('GALETTE_BASE_PATH', $basepath);
 define('GALETTE_TESTS', true);

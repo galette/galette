@@ -1022,4 +1022,51 @@ class Db
 
         return $warnings;
     }
+
+    /**
+     * Is current database engine supported?
+     *
+     * @return bool
+     */
+    public function isEngineSUpported(): bool
+    {
+        $infos = $this->getInfos();
+        $version = $infos['version'];
+        if ($this->isPostgres()) {
+            $min_version = GALETTE_PGSQL_MIN;
+        } else {
+            $min_version = preg_match('/-MariaDB/', $version) ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+        }
+
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+        return version_compare($version, $min_version, '>=');
+    }
+
+    /**
+     * Get not supported database version message
+     *
+     * @return string
+     */
+    public function getUnsupportedMessage(): string
+    {
+        $infos = $this->getInfos();
+        $version = $infos['version'];
+        $engine = null;
+        if ($this->isPostgres()) {
+            $engine = 'PostgreSQL';
+            $min_version = GALETTE_PGSQL_MIN;
+        } else {
+            $engine = preg_match('/-MariaDB/', $version) ? 'MariaDB' : 'MySQL';
+            $min_version = preg_match('/-MariaDB/', $version) ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+        }
+
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+
+        return sprintf(
+            'Minimum version for %1$s engine is %2$s, %1$s %3$s found!',
+            $engine,
+            $min_version,
+            $version
+        );
+    }
 }

@@ -6,6 +6,7 @@ parameters:
         - galette/lib/
     scanFiles:
         - galette/config/paths.inc.php
+        - galette/config/versions.inc.php
         - galette/config/config.inc.php.dist
         - galette/config/galette_tcpdf_config.php
     scanDirectories:

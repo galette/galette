@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Update tests
+ * DB fail tests
  *
  * PHP version 5
  *
- * Copyright © 2021-2023 The Galette Team
+ * Copyright © 2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,10 +28,10 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-05-06
+ * @link      https://galette.eu
+ * @since     2023-10-18
  */
 
 namespace Galette\Core\test\units;
@@ -40,16 +40,16 @@ use atoum;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Update tests
+ * DB fail tests
  *
  * @category  Core
  * @name      Install
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-05-06
+ * @link      https://galette.eu
+ * @since     2023-10-18
  */
 class Install extends TestCase
 {
@@ -105,42 +105,19 @@ class Install extends TestCase
      */
     public function testDbSupport()
     {
-        $this->assertTrue($this->zdb->isEngineSUpported());
+        $this->assertFalse($this->zdb->isEngineSUpported());
     }
 
     /**
-     * Test updates
+     * Test if current database version is supported
      *
      * @return void
      */
-    public function testUpdates()
+    public function testGetUnsupportedMessage()
     {
-        $install = new \Galette\Core\Install();
-        $update_scripts = \Galette\Core\Install::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install',
-            $this->zdb->type_db,
-            '0.6'
+        $this->assertMatchesRegularExpression(
+            '/Minimum version for .+ engine is .+, .+ .+ found!/',
+            $this->zdb->getUnsupportedMessage()
         );
-        $this->assertGreaterThan(5, count($update_scripts));
-
-        $install->setMode(\Galette\Core\Install::UPDATE);
-        $errors = [];
-        $install->setDbType($this->zdb->type_db, $errors);
-        $this->assertSame([], $errors);
-
-        $install->setInstalledVersion('0.60');
-        $install->setTablesPrefix(PREFIX_DB);
-        $exec = $install->executeScripts($this->zdb, GALETTE_BASE_PATH . '/install');
-
-        $report = $install->getInitializationReport();
-        foreach ($report as $entry) {
-            $this->assertTrue(
-                $entry['res'],
-                ($entry['debug'] ?? '') . "\n" . ($entry['query'] ?? '')
-            );
-        }
-
-        $this->assertTrue($exec);
-        $this->assertSame(GALETTE_DB_VERSION, $this->zdb->getDbVersion());
     }
 }

@@ -36,3 +36,6 @@
  */
 
 define('GALETTE_PHP_MIN', '8.1');
+define('GALETTE_MYSQL_MIN', '5.7');
+define('GALETTE_MARIADB_MIN', '10.4');
+define('GALETTE_PGSQL_MIN', '11')  ;

@@ -50,6 +50,9 @@
     "GALETTE_X_FORWARDED_FOR_INDEX",
     "_CURRENT_THEME_PATH",
     "GALETTE_URI",
+    "GALETTE_MYSQL_MIN",
+    "GALETTE_MARIADB_MIN",
+    "GALETTE_PGSQL_MIN",
 
     "// Galette db constants (not detected as they are dynamically declared)",
     "HOST_DB",
