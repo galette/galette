@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-10-04 11:27+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2023-10-19 04:12+0000\n"
+"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.1\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -78,10 +78,8 @@ msgid "Edit payment type"
 msgstr "تعديل نوع الدفع"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:211
-#, fuzzy
-#| msgid "Manage payment types"
 msgid "Missing required payment type's name!"
-msgstr "إدارة أنواع السداد"
+msgstr "مفقود يتطلب اسم نوع الدفع!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:220
 #, php-format
@@ -152,9 +150,8 @@ msgid "Mailing"
 msgstr "مراسلة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:299
-#, fuzzy
 msgid "Please type an object for the message."
-msgstr "من فضلك اكتب حرفا بالرسالة"
+msgstr "فضلًا اكتب غرض الرسالة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:305
 msgid "Please enter a message."
@@ -697,7 +694,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AjaxController.php:301
 msgid "Thank you for registering!"
-msgstr ""
+msgstr "شكراً على التسجيل!"
 
 #: ../lib/Galette/Controllers/CrudController.php:281
 #: ../lib/Galette/Controllers/HistoryController.php:206
@@ -5674,7 +5671,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:557
 #: ../../tempcache/pages/contribution_form.html.twig:692
 msgid "No member registered!"
-msgstr ""
+msgstr "لا يوجد أي عضو مسجل!"
 
 #: ../../tempcache/pages/transaction_form.html.twig:562
 #: ../../tempcache/pages/contribution_form.html.twig:697
@@ -6901,7 +6898,7 @@ msgstr "تحديث معلوماتك"
 #: ../../tempcache/pages/preferences.html.twig:480
 #: ../../tempcache/pages/desktop.html.twig:105
 msgid "Register"
-msgstr ""
+msgstr "إنشاء حساب"
 
 #: ../../tempcache/pages/preferences.html.twig:483
 msgid "Not registered"
@@ -7138,6 +7135,7 @@ msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
 msgstr ""
+"يرسل رسالة إلكترونية في كل مرة يسجل فيها عضو جديد على الإنترنت أو يحرر حسابه"
 
 #: ../../tempcache/pages/preferences.html.twig:1227
 msgid "Wrap emails text?"
