@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 20:57+0200\n"
+"POT-Creation-Date: 2023-10-19 21:12+0200\n"
 "PO-Revision-Date: 2023-10-19 18:33+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -737,7 +737,7 @@ msgid "Unable to get groups list."
 msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:547
-#: ../lib/Galette/Core/Galette.php:411
+#: ../lib/Galette/Core/Install.php:1181 ../lib/Galette/Core/Galette.php:411
 msgid "PDF models"
 msgstr "قوالب PDF"
 
@@ -1178,10 +1178,6 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:1177 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
 msgstr ""
-
-#: ../lib/Galette/Core/Install.php:1181
-msgid "PDF Models"
-msgstr "نماذج PDF"
 
 #: ../lib/Galette/Core/Install.php:1187
 msgid "Update preferences"
@@ -5288,7 +5284,8 @@ msgid "Receipt"
 msgstr "وصل"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:189
-msgid "Adhesion Form"
+#: ../../tempcache/pages/member_show.html.twig:152
+msgid "Adhesion form"
 msgstr "استمارة الإنخراط"
 
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:45
@@ -7514,6 +7511,7 @@ msgid "Strong"
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2299
+#: ../../tempcache/pages/preferences.html.twig:2338
 msgid "Very strong"
 msgstr ""
 
@@ -7539,10 +7537,6 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2334
 msgid "require at least three matched rules (recommended for most usages)"
-msgstr ""
-
-#: ../../tempcache/pages/preferences.html.twig:2338
-msgid "Very Strong"
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2340
@@ -7751,10 +7745,6 @@ msgstr "كلمة السر الجديدة"
 #: ../../tempcache/pages/member_show.html.twig:139
 msgid "Generate Member Card"
 msgstr "توليد بطاقة العضو"
-
-#: ../../tempcache/pages/member_show.html.twig:152
-msgid "Adhesion form"
-msgstr "استمارة الإنخراط"
 
 #: ../../tempcache/pages/member_show.html.twig:171
 msgid "View contributions"
@@ -8278,6 +8268,12 @@ msgstr ""
 #: ../../tempcache/page.html.twig:228
 msgid "Page content"
 msgstr ""
+
+#~ msgid "PDF Models"
+#~ msgstr "نماذج PDF"
+
+#~ msgid "Adhesion Form"
+#~ msgstr "استمارة الإنخراط"
 
 #~ msgid "-- select a name --"
 #~ msgstr "-- اختر اسما --"

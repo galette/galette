@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 20:57+0200\n"
+"POT-Creation-Date: 2023-10-19 21:12+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -773,7 +773,7 @@ msgid "Unable to get groups list."
 msgstr "No s'ha pogut obtenir la llista de grups."
 
 #: ../lib/Galette/Controllers/PdfController.php:547
-#: ../lib/Galette/Core/Galette.php:411
+#: ../lib/Galette/Core/Install.php:1181 ../lib/Galette/Core/Galette.php:411
 #, fuzzy
 msgid "PDF models"
 msgstr "Models PDF"
@@ -1312,11 +1312,6 @@ msgstr "Texts de Mail"
 #, fuzzy
 msgid "Titles"
 msgstr "Títols"
-
-#: ../lib/Galette/Core/Install.php:1181
-#, fuzzy
-msgid "PDF Models"
-msgstr "Models PDF"
 
 #: ../lib/Galette/Core/Install.php:1187
 #, fuzzy
@@ -6200,9 +6195,10 @@ msgid "Receipt"
 msgstr "Rebut"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:189
+#: ../../tempcache/pages/member_show.html.twig:152
 #, fuzzy
-msgid "Adhesion Form"
-msgstr "Formulari d'adhesius"
+msgid "Adhesion form"
+msgstr "Forma d'adhesius"
 
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:45
 #: ../../tempcache/components/dynamic_fields.html.twig:60
@@ -8885,6 +8881,7 @@ msgid "Strong"
 msgstr "Fort"
 
 #: ../../tempcache/pages/preferences.html.twig:2299
+#: ../../tempcache/pages/preferences.html.twig:2338
 #, fuzzy
 msgid "Very strong"
 msgstr "Molt fort"
@@ -8919,11 +8916,6 @@ msgstr "requereix almenys dues regles coincidents"
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "requereix almenys tres regles coincidents (recomanat per a la majoria d'usos)"
-
-#: ../../tempcache/pages/preferences.html.twig:2338
-#, fuzzy
-msgid "Very Strong"
-msgstr "Molt fort"
 
 #: ../../tempcache/pages/preferences.html.twig:2340
 #, fuzzy
@@ -9176,11 +9168,6 @@ msgstr "Nova contrasenya"
 #, fuzzy
 msgid "Generate Member Card"
 msgstr "Genera una targeta de membre"
-
-#: ../../tempcache/pages/member_show.html.twig:152
-#, fuzzy
-msgid "Adhesion form"
-msgstr "Forma d'adhesius"
 
 #: ../../tempcache/pages/member_show.html.twig:171
 #, fuzzy
@@ -9827,6 +9814,18 @@ msgstr "Contingut de la pàgina Ajax"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "PDF Models"
+#~ msgstr "Models PDF"
+
+#, fuzzy
+#~ msgid "Adhesion Form"
+#~ msgstr "Formulari d'adhesius"
+
+#, fuzzy
+#~ msgid "Very Strong"
+#~ msgstr "Molt fort"
 
 #, fuzzy
 #~ msgid "Choose the"

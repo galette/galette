@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 20:57+0200\n"
+"POT-Creation-Date: 2023-10-19 21:12+0200\n"
 "PO-Revision-Date: 2023-10-04 07:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -775,7 +775,7 @@ msgid "Unable to get groups list."
 msgstr "Kann die Gruppenliste nicht lesen."
 
 #: ../lib/Galette/Controllers/PdfController.php:547
-#: ../lib/Galette/Core/Galette.php:411
+#: ../lib/Galette/Core/Install.php:1181 ../lib/Galette/Core/Galette.php:411
 msgid "PDF models"
 msgstr "PDF Modelle"
 
@@ -1239,10 +1239,6 @@ msgstr "Texte der E-Mails"
 #: ../lib/Galette/Core/Install.php:1177 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
 msgstr "Titel"
-
-#: ../lib/Galette/Core/Install.php:1181
-msgid "PDF Models"
-msgstr "PDF Modelle"
 
 #: ../lib/Galette/Core/Install.php:1187
 msgid "Update preferences"
@@ -5465,7 +5461,8 @@ msgid "Receipt"
 msgstr "Quittung"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:189
-msgid "Adhesion Form"
+#: ../../tempcache/pages/member_show.html.twig:152
+msgid "Adhesion form"
 msgstr "Beitrittsformular"
 
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:45
@@ -7759,6 +7756,7 @@ msgid "Strong"
 msgstr "Stark"
 
 #: ../../tempcache/pages/preferences.html.twig:2299
+#: ../../tempcache/pages/preferences.html.twig:2338
 msgid "Very strong"
 msgstr "Sehr stark"
 
@@ -7787,10 +7785,6 @@ msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "mindestens drei übereinstimmende Regeln erfordern (für die meisten "
 "Verwendenung empfohlen)"
-
-#: ../../tempcache/pages/preferences.html.twig:2338
-msgid "Very Strong"
-msgstr "Sehr stark"
 
 #: ../../tempcache/pages/preferences.html.twig:2340
 msgid "requires all rules."
@@ -8004,10 +7998,6 @@ msgstr "Neues Passwort"
 #: ../../tempcache/pages/member_show.html.twig:139
 msgid "Generate Member Card"
 msgstr "Mitgliedskarte erstellen"
-
-#: ../../tempcache/pages/member_show.html.twig:152
-msgid "Adhesion form"
-msgstr "Beitrittsformular"
 
 #: ../../tempcache/pages/member_show.html.twig:171
 msgid "View contributions"
@@ -8544,6 +8534,15 @@ msgstr "Ajax Inhaltsverzeichnis"
 #: ../../tempcache/page.html.twig:228
 msgid "Page content"
 msgstr "Seiteninhalt"
+
+#~ msgid "PDF Models"
+#~ msgstr "PDF Modelle"
+
+#~ msgid "Adhesion Form"
+#~ msgstr "Beitrittsformular"
+
+#~ msgid "Very Strong"
+#~ msgstr "Sehr stark"
 
 #, fuzzy
 #~| msgid "Choose a file"

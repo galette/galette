@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2023-10-19 20:57+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-19 21:12+0200\n"
 "PO-Revision-Date: 2023-10-19 19:12+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -749,7 +749,7 @@ msgid "Unable to get groups list."
 msgstr "Impossible d’obtenir la liste des groupes."
 
 #: ../lib/Galette/Controllers/PdfController.php:547
-#: ../lib/Galette/Core/Galette.php:411
+#: ../lib/Galette/Core/Install.php:1181 ../lib/Galette/Core/Galette.php:411
 msgid "PDF models"
 msgstr "Modèles PDF"
 
@@ -1217,10 +1217,6 @@ msgstr "Textes courriels"
 #: ../lib/Galette/Core/Install.php:1177 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
 msgstr "Titres"
-
-#: ../lib/Galette/Core/Install.php:1181
-msgid "PDF Models"
-msgstr "Modèles PDF"
 
 #: ../lib/Galette/Core/Install.php:1187
 msgid "Update preferences"
@@ -5459,7 +5455,8 @@ msgid "Receipt"
 msgstr "Reçu"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:189
-msgid "Adhesion Form"
+#: ../../tempcache/pages/member_show.html.twig:152
+msgid "Adhesion form"
 msgstr "Formulaire d’adhésion"
 
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:45
@@ -7754,6 +7751,7 @@ msgid "Strong"
 msgstr "Fort"
 
 #: ../../tempcache/pages/preferences.html.twig:2299
+#: ../../tempcache/pages/preferences.html.twig:2338
 msgid "Very strong"
 msgstr "Très fort"
 
@@ -7782,10 +7780,6 @@ msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "requiert le respect d'au moins trois règles (recommandé pour la plupart des "
 "utilisations)"
-
-#: ../../tempcache/pages/preferences.html.twig:2338
-msgid "Very Strong"
-msgstr "Très fort"
 
 #: ../../tempcache/pages/preferences.html.twig:2340
 msgid "requires all rules."
@@ -8001,10 +7995,6 @@ msgstr "Nouveau Mot de passe"
 #: ../../tempcache/pages/member_show.html.twig:139
 msgid "Generate Member Card"
 msgstr "Générer la carte de membre"
-
-#: ../../tempcache/pages/member_show.html.twig:152
-msgid "Adhesion form"
-msgstr "Formulaire d’adhésion"
 
 #: ../../tempcache/pages/member_show.html.twig:171
 msgid "View contributions"
@@ -8542,6 +8532,15 @@ msgstr "Contenu de la page ajax"
 #: ../../tempcache/page.html.twig:228
 msgid "Page content"
 msgstr "Contenu de la page"
+
+#~ msgid "PDF Models"
+#~ msgstr "Modèles PDF"
+
+#~ msgid "Adhesion Form"
+#~ msgstr "Formulaire d’adhésion"
+
+#~ msgid "Very Strong"
+#~ msgstr "Très fort"
 
 #, fuzzy
 #~| msgid "Choose a file"
