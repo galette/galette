@@ -1063,7 +1063,7 @@ class Db
         $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
 
         return sprintf(
-            'Minimum version for %1$s engine is %2$s, %1$s %3$s found!',
+            _T('Minimum version for %1$s engine is %2$s, %1$s %3$s found!'),
             $engine,
             $min_version,
             $version
