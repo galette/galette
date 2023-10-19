@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 20:57+0200\n"
-"PO-Revision-Date: 2023-10-19 20:57+0200\n"
+"POT-Creation-Date: 2023-10-19 21:12+0200\n"
+"PO-Revision-Date: 2023-10-19 21:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -729,7 +729,7 @@ msgid "Unable to get groups list."
 msgstr "Unable to get groups list."
 
 #: ../lib/Galette/Controllers/PdfController.php:547
-#: ../lib/Galette/Core/Galette.php:411
+#: ../lib/Galette/Core/Install.php:1181 ../lib/Galette/Core/Galette.php:411
 msgid "PDF models"
 msgstr "PDF models"
 
@@ -1180,10 +1180,6 @@ msgstr "Mails texts"
 #: ../lib/Galette/Core/Install.php:1177 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
 msgstr "Titles"
-
-#: ../lib/Galette/Core/Install.php:1181
-msgid "PDF Models"
-msgstr "PDF Models"
 
 #: ../lib/Galette/Core/Install.php:1187
 msgid "Update preferences"
@@ -5354,8 +5350,9 @@ msgid "Receipt"
 msgstr "Receipt"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:189
-msgid "Adhesion Form"
-msgstr "Adhesion Form"
+#: ../../tempcache/pages/member_show.html.twig:152
+msgid "Adhesion form"
+msgstr "Adhesion form"
 
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:45
 #: ../../tempcache/components/dynamic_fields.html.twig:60
@@ -7621,6 +7618,7 @@ msgid "Strong"
 msgstr "Strong"
 
 #: ../../tempcache/pages/preferences.html.twig:2299
+#: ../../tempcache/pages/preferences.html.twig:2338
 msgid "Very strong"
 msgstr "Very strong"
 
@@ -7647,10 +7645,6 @@ msgstr "require at least two matched rules"
 #: ../../tempcache/pages/preferences.html.twig:2334
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr "require at least three matched rules (recommended for most usages)"
-
-#: ../../tempcache/pages/preferences.html.twig:2338
-msgid "Very Strong"
-msgstr "Very Strong"
 
 #: ../../tempcache/pages/preferences.html.twig:2340
 msgid "requires all rules."
@@ -7862,10 +7856,6 @@ msgstr "New password"
 #: ../../tempcache/pages/member_show.html.twig:139
 msgid "Generate Member Card"
 msgstr "Generate Member Card"
-
-#: ../../tempcache/pages/member_show.html.twig:152
-msgid "Adhesion form"
-msgstr "Adhesion form"
 
 #: ../../tempcache/pages/member_show.html.twig:171
 msgid "View contributions"

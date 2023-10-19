@@ -1178,7 +1178,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
 
             //Install PDF models
             $res = $models->installInit(false);
-            $this->proceedReport(_T("PDF Models"), $res);
+            $this->proceedReport(_T("PDF models"), $res);
 
             return !$this->_error;
         } elseif ($this->isUpgrade()) {
