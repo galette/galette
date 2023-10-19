@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 21:12+0200\n"
+"POT-Creation-Date: 2023-10-19 21:25+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -408,8 +408,10 @@ msgid "User statuses"
 msgstr "Estats de l'usuari"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
-msgid "Contribution types"
-msgstr "Tipus de contribució"
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
+#, fuzzy
+msgid "Contributions types"
+msgstr "Tipus de contribucions"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:193
 #: ../../tempcache/pages/configuration_entitleds.html.twig:83
@@ -1285,11 +1287,6 @@ msgstr "No s'ha pogut crear el fitxer de configuració (%path)"
 #, fuzzy
 msgid "Preferences"
 msgstr "Preferències"
-
-#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
-#, fuzzy
-msgid "Contributions types"
-msgstr "Tipus de contribucions"
 
 #: ../lib/Galette/Core/Install.php:1165
 #: ../../tempcache/pages/advanced_search.html.twig:494
@@ -9814,6 +9811,9 @@ msgstr "Contingut de la pàgina Ajax"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#~ msgid "Contribution types"
+#~ msgstr "Tipus de contribució"
 
 #, fuzzy
 #~ msgid "PDF Models"

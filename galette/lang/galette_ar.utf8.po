@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 21:12+0200\n"
+"POT-Creation-Date: 2023-10-19 21:25+0200\n"
 "PO-Revision-Date: 2023-10-19 18:33+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -405,8 +405,9 @@ msgid "User statuses"
 msgstr "حالات المستخدمين"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
-msgid "Contribution types"
-msgstr "أنواع المساهمات"
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
+msgid "Contributions types"
+msgstr "نوع الإشتراك"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:193
 #: ../../tempcache/pages/configuration_entitleds.html.twig:83
@@ -1156,10 +1157,6 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:1157
 msgid "Preferences"
 msgstr ""
-
-#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
-msgid "Contributions types"
-msgstr "نوع الإشتراك"
 
 #: ../lib/Galette/Core/Install.php:1165
 #: ../../tempcache/pages/advanced_search.html.twig:494
@@ -8268,6 +8265,9 @@ msgstr ""
 #: ../../tempcache/page.html.twig:228
 msgid "Page content"
 msgstr ""
+
+#~ msgid "Contribution types"
+#~ msgstr "أنواع المساهمات"
 
 #~ msgid "PDF Models"
 #~ msgstr "نماذج PDF"

@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 21:12+0200\n"
+"POT-Creation-Date: 2023-10-19 21:25+0200\n"
 "PO-Revision-Date: 2023-10-04 07:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -435,7 +435,8 @@ msgid "User statuses"
 msgstr "Mitgliederstatus"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
-msgid "Contribution types"
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
+msgid "Contributions types"
 msgstr "Beitragstypen"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:193
@@ -1217,10 +1218,6 @@ msgstr "Konfigurationsdatei konnte nicht erstellt werden (%path)"
 #: ../lib/Galette/Core/Install.php:1157
 msgid "Preferences"
 msgstr "Einstellungen"
-
-#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
-msgid "Contributions types"
-msgstr "Beitragstypen"
 
 #: ../lib/Galette/Core/Install.php:1165
 #: ../../tempcache/pages/advanced_search.html.twig:494
@@ -8534,6 +8531,9 @@ msgstr "Ajax Inhaltsverzeichnis"
 #: ../../tempcache/page.html.twig:228
 msgid "Page content"
 msgstr "Seiteninhalt"
+
+#~ msgid "Contribution types"
+#~ msgstr "Beitragstypen"
 
 #~ msgid "PDF Models"
 #~ msgstr "PDF Modelle"
