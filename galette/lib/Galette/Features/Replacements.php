@@ -483,11 +483,13 @@ trait Replacements
         }
 
         $logo = new Logo();
-        $logo_elt = '<img' .
-            ' src="' . $this->preferences->getURL() . $this->routeparser->urlFor('logo') . '"' .
-            ' width="' . $logo->getOptimalWidth() . '"' .
-            ' height="' . $logo->getOptimalHeight() . '"' .
-            '/>';
+
+        $logo_elt = sprintf(
+            '<img src="%1$s" width="%2$s" height="%3$s" />',
+            '@' . base64_encode(file_get_contents($logo->getPath())),
+            $logo->getOptimalWidth(),
+            $logo->getOptimalHeight()
+        );
 
         $this->setReplacements(
             array(
