@@ -249,7 +249,7 @@
                         <i class="tooltip circular inverted primary small icon info" data-html="{{ _T("If checked, the members's picture will be resized and cropped to the ratio selected below.") }}" data-variation="inverted wide"></i>
                     </div>
                     <div id="pref_member_picture_ratio_field" class="inline field{% if pref.pref_force_picture_ratio != 1 %} displaynone{% endif %}">
-                        <label for="pref_member_picture_ratio" title="{{ _T("Choose the") }}">{{ _T("Select a ratio") }}</label>
+                        <label for="pref_member_picture_ratio">{{ _T("Select a ratio") }}</label>
                         <select name="pref_member_picture_ratio" id="pref_member_picture_ratio" class="ui dropdown nochosen">
                             <option value="square_ratio"{% if pref.pref_member_picture_ratio == 'square_ratio' %} selected="selected"{% endif %}>{{ _T("Square (1:1)") }}</option>
                             <option value="portrait_ratio"{% if pref.pref_member_picture_ratio == 'portrait_ratio' %} selected="selected"{% endif %}>{{ _T("Portrait (3:4)") }}</option>
