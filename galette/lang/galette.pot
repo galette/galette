@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 20:54+0200\n"
+"POT-Creation-Date: 2023-10-19 20:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1704,6 +1704,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/CheckModules.php:102
 msgid "either 'mysql' or 'pgsql' PDO driver"
+msgstr ""
+
+#: ../lib/Galette/Core/Db.php:1066
+#, php-format
+msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr ""
 
 #: ../lib/Galette/Core/Plugins.php:273 ../lib/Galette/Core/Plugins.php:296
