@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-12 18:02+0200\n"
-"PO-Revision-Date: 2023-10-03 19:13+0000\n"
+"PO-Revision-Date: 2023-10-19 18:54+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.1\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -2352,7 +2352,7 @@ msgstr "Le fichier est trop gros. La taille maximale autorisée est de %dKo"
 #: ../lib/Galette/IO/FileTrait.php:505
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr ""
+msgstr "L'image est trop petite. La taille minimale autorisée est %spx"
 
 #: ../lib/Galette/IO/FileTrait.php:511
 msgid "Mime-Type not allowed"
@@ -5315,53 +5315,49 @@ msgstr "Enregistrer"
 #: ../../tempcache/pages/preferences.html.twig:854
 #: ../../tempcache/components/forms/picture.html.twig:86
 msgid "Square (1:1)"
-msgstr ""
+msgstr "Original (1:1)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:75
 #: ../../tempcache/pages/preferences.html.twig:862
 #: ../../tempcache/components/forms/picture.html.twig:86
 msgid "Portrait (3:4)"
-msgstr ""
+msgstr "Portrait (3:4)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:75
 #: ../../tempcache/pages/preferences.html.twig:870
 #: ../../tempcache/components/forms/picture.html.twig:86
 msgid "Landscape (4:3)"
-msgstr ""
+msgstr "Paysage (4:3)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:86
 #: ../../tempcache/components/forms/picture.html.twig:97
 msgid "Center"
-msgstr ""
+msgstr "Centrer"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:90
 #: ../../tempcache/components/forms/picture.html.twig:101
-#, fuzzy
-#| msgid "To:"
 msgid "Top"
-msgstr "À :"
+msgstr "Haut"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:94
 #: ../../tempcache/components/forms/picture.html.twig:105
 msgid "Bottom"
-msgstr ""
+msgstr "Bas"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:98
 #: ../../tempcache/components/forms/picture.html.twig:109
 msgid "Left"
-msgstr ""
+msgstr "Gauche"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:102
 #: ../../tempcache/components/forms/picture.html.twig:113
-#, fuzzy
-#| msgid "Rights"
 msgid "Right"
-msgstr "Droits"
+msgstr "Droit"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:109
 #: ../../tempcache/components/forms/picture.html.twig:92
 msgid "Cropping focus"
-msgstr ""
+msgstr "Recadrage"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:109
 #: ../../tempcache/components/forms/picture.html.twig:118
@@ -5369,6 +5365,8 @@ msgid ""
 "Choose the area of the original image to preserve after cropping to the "
 "final ratio defined in the settings : %ratio"
 msgstr ""
+"Choisissez la zone de l'image d'origine à conserver après le recadrage au "
+"ratio final défini dans les paramètres : %ratio"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:159
 msgid "An error occurred sending photo :("
@@ -5579,7 +5577,7 @@ msgstr "Image"
 
 #: ../../tempcache/elements/member_card.html.twig:68
 msgid "Drag and drop an image file to change the picture"
-msgstr ""
+msgstr "Faites glisser et déposer un fichier image pour changer la photo"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:50
 #, php-format
@@ -6070,10 +6068,8 @@ msgid "Clear filter"
 msgstr "Effacer le filtre"
 
 #: ../../tempcache/pages/contributions_list.html.twig:208
-#, fuzzy
-#| msgid "Show all members contributions"
 msgid "Show all your contributions"
-msgstr "Voir les contributions de tous les membres"
+msgstr "Voir toutes vos contributions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:214
 msgid "Show all members contributions"
@@ -7248,16 +7244,16 @@ msgid "Admin and staff only"
 msgstr "Administrateurs et membres du bureau uniquement"
 
 #: ../../tempcache/pages/preferences.html.twig:827
-#, fuzzy
-#| msgid "After member creation:"
 msgid "Force member picture ratio"
-msgstr "Après la création de l'adhérent :"
+msgstr "Forcer le ratio sur l'image de l'adhérent"
 
 #: ../../tempcache/pages/preferences.html.twig:832
 msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 msgstr ""
+"Si coché, l'image de l'adhérent sera redimensionnée et recadrée selon le "
+"ratio choisi ci-dessous."
 
 #: ../../tempcache/pages/preferences.html.twig:843
 #, fuzzy
@@ -7266,10 +7262,8 @@ msgid "Choose the"
 msgstr "Choisissez un fichier"
 
 #: ../../tempcache/pages/preferences.html.twig:845
-#, fuzzy
-#| msgid "Select an action"
 msgid "Select a ratio"
-msgstr "Sélectionnez une action"
+msgstr "Sélectionnez un ratio"
 
 #: ../../tempcache/pages/preferences.html.twig:884
 msgid "Self subscription enabled?"
@@ -8076,10 +8070,8 @@ msgid "Show transactions since"
 msgstr "Afficher les transactions du"
 
 #: ../../tempcache/pages/transactions_list.html.twig:157
-#, fuzzy
-#| msgid "Show all members transactions"
 msgid "Show all your transactions"
-msgstr "Voir les transactions de tous les membres"
+msgstr "Voir toutes vos transactions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:163
 msgid "Show all members transactions"
