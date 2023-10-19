@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-03 21:03+0200\n"
-"PO-Revision-Date: 2023-10-19 04:12+0000\n"
+"PO-Revision-Date: 2023-10-19 18:33+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -196,7 +196,7 @@ msgstr "تم تخزين الحقل بنجاح !"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:237
 msgid "Dynamic fields configuration"
-msgstr "تكوين الحقول الديناميكية"
+msgstr "ضبط الحقول الديناميكية"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:325
 #: ../lib/Galette/Controllers/Crud/MembersController.php:260
@@ -633,7 +633,7 @@ msgstr "الرسوم البيانية"
 
 #: ../lib/Galette/Controllers/GaletteController.php:512
 msgid "Fields configuration"
-msgstr ""
+msgstr "ضبط الحقول"
 
 #: ../lib/Galette/Controllers/GaletteController.php:575
 msgid "Fields configuration has been successfully stored"
@@ -739,7 +739,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:547
 #: ../lib/Galette/Core/Galette.php:411
 msgid "PDF models"
-msgstr ""
+msgstr "قوالب PDF"
 
 #: ../lib/Galette/Controllers/PdfController.php:576
 msgid "Missing PDF model type!"
@@ -967,7 +967,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
 msgid "Translate labels"
-msgstr ""
+msgstr "ترجمة الملصقات"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:119
 #, php-format
@@ -982,7 +982,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:244
 msgid "Labels has been sucessfully translated!"
-msgstr ""
+msgstr "تمت ترجمة الملصقات بنجاح!"
 
 #: ../lib/Galette/Controllers/CsvController.php:128
 msgid "CVS database Export"
@@ -1181,7 +1181,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1181
 msgid "PDF Models"
-msgstr ""
+msgstr "نماذج PDF"
 
 #: ../lib/Galette/Core/Install.php:1187
 msgid "Update preferences"
@@ -1391,10 +1391,8 @@ msgid "Send reminders to late members"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:274
-#, fuzzy
-#| msgid "Members management"
 msgid "Management"
-msgstr "إدارة الأعضاء"
+msgstr "الإدارة"
 
 #: ../lib/Galette/Core/Galette.php:278
 msgid "Manage groups"
@@ -1438,7 +1436,7 @@ msgstr "الرسوم البيانية المختلفة"
 
 #: ../lib/Galette/Core/Galette.php:330 ../install/steps/check.php:71
 msgid "Configuration"
-msgstr ""
+msgstr "ضبط الإعدادات"
 
 #: ../lib/Galette/Core/Galette.php:335 ../lib/Galette/Core/Galette.php:618
 msgid ""
@@ -1501,7 +1499,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:412
 msgid "Manage PDF models"
-msgstr ""
+msgstr "إدارة نماذج PDF"
 
 #: ../lib/Galette/Core/Galette.php:418
 msgid "Payment types"
@@ -1521,11 +1519,11 @@ msgstr "تنزيل استمارة انخراط فارغة"
 
 #: ../lib/Galette/Core/Galette.php:437
 msgid "Admin tools"
-msgstr ""
+msgstr "الأدوات الإدارية"
 
 #: ../lib/Galette/Core/Galette.php:438
 msgid "Various administrative tools"
-msgstr ""
+msgstr "مختلف الأدوات الإدارية"
 
 #: ../lib/Galette/Core/Galette.php:491
 msgid "Public pages"
@@ -1577,7 +1575,7 @@ msgstr ""
 #: ../lib/Galette/Core/Galette.php:914
 #: ../../tempcache/elements/mailing_recipients.html.twig:106
 msgid "Generate labels"
-msgstr ""
+msgstr "توليد الملصقات"
 
 #: ../lib/Galette/Core/Galette.php:919
 msgid "Generate Member Cards"
@@ -2196,16 +2194,16 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:73
 msgid "labels_print_filename"
-msgstr ""
+msgstr "ملصقات"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:85
 msgid "Member's Labels"
-msgstr ""
+msgstr "ملصقات الأعضاء"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:87
 #: ../../tempcache/pages/preferences.html.twig:101
 msgid "Labels"
-msgstr ""
+msgstr "الملصقات"
 
 #: ../lib/Galette/IO/CsvIn.php:230
 #, php-format
