@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2023-10-03 21:03+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-12 18:02+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -139,7 +139,7 @@ msgid "Trying to load mailing while email is disabled in preferences."
 msgstr "Пробуємо завантажити розсилку, поки е-пошта вимкнена в налаштуваннях."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:280
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:275
 msgid "No member selected for mailing!"
 msgstr "Жодного члена не вибрано для розсилки!"
 
@@ -147,33 +147,33 @@ msgstr "Жодного члена не вибрано для розсилки!"
 msgid "Mailing"
 msgstr "Розсилка"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:299
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:294
 msgid "Please type an object for the message."
 msgstr "Уведіть об’єкт для повідомлення."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:305
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:300
 msgid "Please enter a message."
 msgstr "Уведіть повідомлення."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:402
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:397
 msgid "Mailing has been successfully sent!"
 msgstr "Пошта успішно надіслана!"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:425
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:420
 msgid "Mailing has been successfully saved."
 msgstr "Поштову розсилку успішно збережено."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:507
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:502
 #: ../lib/Galette/Core/Galette.php:575
 msgid "Mailings"
 msgstr "Розсилки"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:658
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:653
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Видалити поштову розсилку #%1$s"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:740
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:735
 #: ../../tempcache/pages/mailing_form.html.twig:559
 #: ../../tempcache/pages/mailings_list.html.twig:463
 msgid "Mailing preview"
@@ -188,7 +188,7 @@ msgid "An error occurred adding dynamic field :("
 msgstr "Сталася помилка додавання динамічного поля :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:152
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:502
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:528
 msgid "Dynamic field has been successfully stored!"
 msgstr "Динамічне поле успішно збережено!"
 
@@ -205,38 +205,38 @@ msgstr "Налаштування динамічних полів"
 msgid "You do not have permission for requested URL."
 msgstr "У Вас нема дозволу на запитувану URL-адресу."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:386
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:412
 msgid "The file does not exists or cannot be read :("
 msgstr "Файл не існує або його неможливо прочитати :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:421
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:447
 msgid "Unable to retrieve field information."
 msgstr "Не вдалося отримати відомості про поле."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:430
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:456
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:206
 msgid "Edit field"
 msgstr "Правити поле"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:488
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:514
 msgid "An error occurred editing dynamic field :("
 msgstr "Під час правки динамічного поля сталася помилка :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:587
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:589
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:613
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:615
 msgid "Requested field does not exists!"
 msgstr "Запитане поле не існує!"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:593
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:619
 #, php-format
 msgid "Remove dynamic field %1$s"
 msgstr "Вилучити динамічне поле %1$s"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:638
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:664
 msgid "Field has been successfully moved"
 msgstr "Поле успішно переміщено"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:643
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:669
 msgid "An error occurred moving field :("
 msgstr "Сталася помилка переміщення поля :("
 
@@ -344,18 +344,18 @@ msgstr "Не вдалося додати члена до своїх груп."
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Не вдалося додати члена до своїх груп як управника."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1606
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1612
 #: ../lib/Galette/Controllers/GaletteController.php:323
 #: ../lib/Galette/Controllers/GaletteController.php:355
 msgid "Delete failed"
 msgstr "Не вдалося видалити"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1752
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1758
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Видалити члена %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1761
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1767
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Ви збираєтеся видалити %count членів."
@@ -690,15 +690,15 @@ msgstr "Завантажити документ"
 msgid "Required argument not present!"
 msgstr "Обов’язковий аргумент відсутній!"
 
-#: ../lib/Galette/Controllers/AjaxController.php:142
+#: ../lib/Galette/Controllers/AjaxController.php:147
 msgid "Member photo has been changed."
 msgstr "Світлину члена змінено."
 
-#: ../lib/Galette/Controllers/AjaxController.php:275
+#: ../lib/Galette/Controllers/AjaxController.php:280
 msgid "Telemetry information has been sent. Thank you!"
 msgstr "Телеметричні відомості було надіслано. Спасибі!"
 
-#: ../lib/Galette/Controllers/AjaxController.php:301
+#: ../lib/Galette/Controllers/AjaxController.php:306
 msgid "Thank you for registering!"
 msgstr "Дякуємо за реєстрацію!"
 
@@ -708,11 +708,11 @@ msgstr "Дякуємо за реєстрацію!"
 msgid "Removal has not been confirmed!"
 msgstr "Видалення не підтверджено!"
 
-#: ../lib/Galette/Controllers/CrudController.php:291
+#: ../lib/Galette/Controllers/CrudController.php:289
 msgid "Successfully deleted!"
 msgstr "Успішно видалено!"
 
-#: ../lib/Galette/Controllers/CrudController.php:303
+#: ../lib/Galette/Controllers/CrudController.php:301
 msgid "An error occurred trying to delete :("
 msgstr "Під час видалення виникла помилка :("
 
@@ -993,12 +993,12 @@ msgstr ""
 "Немає перекладу для '%s'!<br>Будь ласка, заповніть та надішліть вищезгадану "
 "форму, щоб створити його."
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:203
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:228
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:202
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:227
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr "Не вдалося зберегти мітку `%label` для мови`%lang`"
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:244
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:243
 msgid "Labels has been sucessfully translated!"
 msgstr "Мітки успішно перекладено!"
 
@@ -1251,31 +1251,31 @@ msgstr "Скільки дорівнюватиме %2$s вiднiмаючись в
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "Я маю %1$s галетів, i дaю %2$s iз них. Скiльки галетів у мене є?"
 
-#: ../lib/Galette/Core/Pagination.php:278
+#: ../lib/Galette/Core/Pagination.php:279
 msgid "First page"
 msgstr "Перша сторінка"
 
-#: ../lib/Galette/Core/Pagination.php:284
+#: ../lib/Galette/Core/Pagination.php:285
 msgid "Previous page (%i)"
 msgstr "Попередня сторінка (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:296
+#: ../lib/Galette/Core/Pagination.php:297
 msgid "Current page (%i)"
 msgstr "Поточна сторінка (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:304
+#: ../lib/Galette/Core/Pagination.php:305
 msgid "Page %i"
 msgstr "Сторінка %i"
 
-#: ../lib/Galette/Core/Pagination.php:312
+#: ../lib/Galette/Core/Pagination.php:313
 msgid "Next page (%i)"
 msgstr "Наступна сторінка (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:318
+#: ../lib/Galette/Core/Pagination.php:319
 msgid "Last page (%i)"
 msgstr "Остання сторінка (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:330
+#: ../lib/Galette/Core/Pagination.php:334
 msgid "All"
 msgstr "Усе"
 
@@ -1374,8 +1374,8 @@ msgid "View and filter transactions"
 msgstr "Перегляд і добірка переказів"
 
 #: ../lib/Galette/Core/Galette.php:239
-#: ../../tempcache/pages/contributions_list.html.twig:245
-#: ../../tempcache/pages/contributions_list.html.twig:344
+#: ../../tempcache/pages/contributions_list.html.twig:262
+#: ../../tempcache/pages/contributions_list.html.twig:361
 #: ../../tempcache/pages/member_show.html.twig:192
 msgid "Add a membership fee"
 msgstr "Додати членський внесок"
@@ -1385,8 +1385,8 @@ msgid "Add new membership fee in database"
 msgstr "Додати новий членський внесок до бази даних"
 
 #: ../lib/Galette/Core/Galette.php:247
-#: ../../tempcache/pages/contributions_list.html.twig:259
-#: ../../tempcache/pages/contributions_list.html.twig:357
+#: ../../tempcache/pages/contributions_list.html.twig:276
+#: ../../tempcache/pages/contributions_list.html.twig:374
 #: ../../tempcache/pages/member_show.html.twig:207
 msgid "Add a donation"
 msgstr "Додати пожертву"
@@ -1396,8 +1396,8 @@ msgid "Add new donation in database"
 msgstr "Додати нову пожертву в базу даних"
 
 #: ../lib/Galette/Core/Galette.php:255
-#: ../../tempcache/pages/transactions_list.html.twig:183
-#: ../../tempcache/pages/transactions_list.html.twig:234
+#: ../../tempcache/pages/transactions_list.html.twig:204
+#: ../../tempcache/pages/transactions_list.html.twig:255
 msgid "Add a transaction"
 msgstr "Додати переказ"
 
@@ -1605,39 +1605,39 @@ msgstr "Утворити картки члена"
 msgid "Export as CSV"
 msgstr "Експорт у форматі CSV"
 
-#: ../lib/Galette/Core/Preferences.php:529
+#: ../lib/Galette/Core/Preferences.php:533
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Ви повинні вказати ім'я відправника для е-пошт!"
 
-#: ../lib/Galette/Core/Preferences.php:535
+#: ../lib/Galette/Core/Preferences.php:539
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
 "для надсилання електронних листів!"
 
-#: ../lib/Galette/Core/Preferences.php:542
+#: ../lib/Galette/Core/Preferences.php:546
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Ви повинні вказати SMTP-сервер, який хочете використовувати!"
 
-#: ../lib/Galette/Core/Preferences.php:554
+#: ../lib/Galette/Core/Preferences.php:558
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- Ви повинні вказати логін для SMTP-автентифікації."
 
-#: ../lib/Galette/Core/Preferences.php:560
+#: ../lib/Galette/Core/Preferences.php:564
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- Ви повинні вказати пароль для SMTP-автентифікації."
 
-#: ../lib/Galette/Core/Preferences.php:572
+#: ../lib/Galette/Core/Preferences.php:576
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr "- Типове розширення членства та початок членства взаємозаперечні."
 
-#: ../lib/Galette/Core/Preferences.php:581
+#: ../lib/Galette/Core/Preferences.php:585
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Пропонування місяців сумісне лише з початком членства."
 
-#: ../lib/Galette/Core/Preferences.php:590
+#: ../lib/Galette/Core/Preferences.php:594
 #: ../lib/Galette/Entity/Adherent.php:1190
 #: ../lib/Galette/Entity/Transaction.php:386
 #: ../lib/Galette/Entity/Contribution.php:531
@@ -1645,86 +1645,86 @@ msgstr "- Пропонування місяців сумісне лише з п�
 msgid "- Mandatory field %field empty."
 msgstr "- Обов’язкове поле %field порожнє."
 
-#: ../lib/Galette/Core/Preferences.php:598 ../webroot/installer.php:185
+#: ../lib/Galette/Core/Preferences.php:602 ../webroot/installer.php:185
 msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
 
-#: ../lib/Galette/Core/Preferences.php:611
+#: ../lib/Galette/Core/Preferences.php:615
 msgid "You have to select a staff member"
 msgstr "Ви повинні вибрати співробітника"
 
-#: ../lib/Galette/Core/Preferences.php:666
+#: ../lib/Galette/Core/Preferences.php:670
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Неприпустима адреса е-пошти: %s"
 
-#: ../lib/Galette/Core/Preferences.php:680
+#: ../lib/Galette/Core/Preferences.php:684
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Ім'я користувача повинно складатися щонайменше з 4 знаків!"
 
-#: ../lib/Galette/Core/Preferences.php:684
+#: ../lib/Galette/Core/Preferences.php:688
 msgid "- This username is already used by another member !"
 msgstr "- Це ім’я користувача вже використовується іншим членом!"
 
-#: ../lib/Galette/Core/Preferences.php:691
-#: ../lib/Galette/Core/Preferences.php:712
+#: ../lib/Galette/Core/Preferences.php:695
+#: ../lib/Galette/Core/Preferences.php:716
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Числа та міри мають бути цілими числами!"
 
-#: ../lib/Galette/Core/Preferences.php:746
+#: ../lib/Galette/Core/Preferences.php:750
 msgid "- Invalid number of months of membership extension."
 msgstr "- Неприпустима кількість місяців продовження членства."
 
-#: ../lib/Galette/Core/Preferences.php:752
+#: ../lib/Galette/Core/Preferences.php:756
 msgid "- Invalid format of beginning of membership."
 msgstr "- Неприпустимий формат початку членства."
 
-#: ../lib/Galette/Core/Preferences.php:756
+#: ../lib/Galette/Core/Preferences.php:760
 msgid "- Invalid date for beginning of membership."
 msgstr "- Неприпустима дата початку членства."
 
-#: ../lib/Galette/Core/Preferences.php:762
+#: ../lib/Galette/Core/Preferences.php:766
 msgid "- Invalid number of offered months."
 msgstr "- Неприпустима кількість запропонованих місяців."
 
-#: ../lib/Galette/Core/Preferences.php:767
+#: ../lib/Galette/Core/Preferences.php:771
 msgid "- Invalid year for cards."
 msgstr "- Неприпустимий рік для карток."
 
-#: ../lib/Galette/Core/Preferences.php:884
+#: ../lib/Galette/Core/Preferences.php:888
 msgid "%name association's %status"
 msgstr "%name - %status товариства"
 
-#: ../lib/Galette/Core/Preferences.php:1120
+#: ../lib/Galette/Core/Preferences.php:1124
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1139
-#: ../lib/Galette/Core/Preferences.php:1155 ../lib/Galette/IO/Csv.php:115
+#: ../lib/Galette/Core/Preferences.php:1143
+#: ../lib/Galette/Core/Preferences.php:1159 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Entity/Texts.php:214
 #: ../../tempcache/pages/history.html.twig:323
 #: ../../tempcache/pages/mailings_list.html.twig:274
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1141
+#: ../lib/Galette/Core/Preferences.php:1145
 msgid "Never"
 msgstr "Ніколи"
 
-#: ../lib/Galette/Core/Preferences.php:1179
+#: ../lib/Galette/Core/Preferences.php:1183
 msgid "Current cards configuration may exceed page width!"
 msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
 
-#: ../lib/Galette/Core/Preferences.php:1190
+#: ../lib/Galette/Core/Preferences.php:1194
 msgid "Current cards configuration may exceed page height!"
 msgstr "Поточна конфігурація карток може перевищувати висоту сторінки!"
 
-#: ../lib/Galette/Core/Preferences.php:1216
+#: ../lib/Galette/Core/Preferences.php:1220
 #: ../lib/Galette/Features/Replacements.php:792
 msgid "Main information"
 msgstr "Контактні відомості"
 
-#: ../lib/Galette/Core/Preferences.php:1223
+#: ../lib/Galette/Core/Preferences.php:1227
 #: ../../tempcache/elements/display_socials.html.twig:45
 #: ../../tempcache/elements/edit_socials.html.twig:56
 #: ../../tempcache/pages/preferences.html.twig:69
@@ -1764,7 +1764,7 @@ msgstr "Модуль не існує!"
 msgid "File not found!"
 msgstr "Файл не знайдено!"
 
-#: ../lib/Galette/Core/Picture.php:891
+#: ../lib/Galette/Core/Picture.php:1014
 msgid "An SQL error has occurred."
 msgstr "Сталася помилка SQL."
 
@@ -1782,11 +1782,11 @@ msgstr ""
 "Не вдається видалити члена, який все ще має залежності (розсилання, ...)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Repository/Members.php:1396
-#: ../lib/Galette/Repository/Members.php:1400
-#: ../lib/Galette/Repository/Members.php:1503
-#: ../lib/Galette/Repository/Members.php:1507
-#: ../lib/Galette/Util/Password.php:268 ../lib/Galette/IO/MembersCsv.php:183
+#: ../lib/Galette/Repository/Members.php:1395
+#: ../lib/Galette/Repository/Members.php:1399
+#: ../lib/Galette/Repository/Members.php:1502
+#: ../lib/Galette/Repository/Members.php:1506
+#: ../lib/Galette/Util/Password.php:267 ../lib/Galette/IO/MembersCsv.php:183
 #: ../lib/Galette/IO/MembersCsv.php:195 ../lib/Galette/IO/MembersCsv.php:207
 #: ../lib/Galette/IO/MembersCsv.php:219
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:90
@@ -1819,15 +1819,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1359
 #: ../lib/Galette/Entity/ImportModel.php:215
 #: ../lib/Galette/Entity/SavedSearch.php:274
-#: ../lib/Galette/Entity/Group.php:642
+#: ../lib/Galette/Entity/Group.php:636
 #: ../lib/Galette/Filters/TransactionsList.php:144
 #: ../lib/Galette/Filters/TransactionsList.php:245
 #: ../lib/Galette/Filters/TransactionsList.php:254
 #: ../lib/Galette/Filters/TransactionsList.php:283
-#: ../lib/Galette/Filters/HistoryList.php:157
-#: ../lib/Galette/Filters/HistoryList.php:253
-#: ../lib/Galette/Filters/HistoryList.php:262
-#: ../lib/Galette/Filters/HistoryList.php:291
+#: ../lib/Galette/Filters/HistoryList.php:155
+#: ../lib/Galette/Filters/HistoryList.php:251
+#: ../lib/Galette/Filters/HistoryList.php:260
+#: ../lib/Galette/Filters/HistoryList.php:289
 #: ../lib/Galette/Filters/MailingsList.php:150
 #: ../lib/Galette/Filters/MailingsList.php:246
 #: ../lib/Galette/Filters/MailingsList.php:255
@@ -1840,8 +1840,7 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:343
 #: ../lib/Galette/Filters/AdvancedMembersList.php:460
 #: ../lib/Galette/Filters/AdvancedMembersList.php:606
-#: ../../tempcache/pages/member_form.html.twig:905
-#: ../../tempcache/pages/advanced_search.html.twig:1375
+#: ../../tempcache/pages/member_form.html.twig:902
 msgid "Y-m-d"
 msgstr "d.m.Y"
 
@@ -1849,7 +1848,7 @@ msgstr "d.m.Y"
 msgid "Searches deleted (%list)"
 msgstr "Пошукові запити видалено (%list)"
 
-#: ../lib/Galette/Repository/Contributions.php:535
+#: ../lib/Galette/Repository/Contributions.php:534
 msgid "Contributions deleted (%list)"
 msgstr "Внески видалено (%list)"
 
@@ -1900,7 +1899,7 @@ msgstr "Користувач, читання/запис"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 #: ../../tempcache/elements/edit_entitleds.html.twig:210
-#: ../../tempcache/elements/ajax_members.html.twig:167
+#: ../../tempcache/elements/ajax_members.html.twig:147
 #: ../../tempcache/elements/group_persons.html.twig:137
 #: ../../tempcache/pages/members_list.html.twig:619
 #: ../../tempcache/pages/members_list.html.twig:774
@@ -1912,7 +1911,7 @@ msgid "Staff member"
 msgstr "Співробітник"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
-#: ../../tempcache/elements/ajax_members.html.twig:156
+#: ../../tempcache/elements/ajax_members.html.twig:136
 #: ../../tempcache/elements/group_persons.html.twig:126
 #: ../../tempcache/pages/configuration_core_fields.html.twig:253
 #: ../../tempcache/pages/configuration_core_lists.html.twig:138
@@ -1921,7 +1920,7 @@ msgid "Administrator"
 msgstr "Адміністратор"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:524
-#: ../../tempcache/elements/ajax_members.html.twig:178
+#: ../../tempcache/elements/ajax_members.html.twig:158
 #: ../../tempcache/elements/group_persons.html.twig:148
 #: ../../tempcache/pages/members_list.html.twig:626
 #: ../../tempcache/pages/members_list.html.twig:785
@@ -2062,8 +2061,8 @@ msgstr "Ім'я"
 #: ../lib/Galette/IO/PdfGroups.php:180
 #: ../lib/Galette/Features/Replacements.php:328
 #: ../lib/Galette/Features/Replacements.php:376
-#: ../../tempcache/elements/member_card.html.twig:127
-#: ../../tempcache/pages/preferences.html.twig:1990
+#: ../../tempcache/elements/member_card.html.twig:147
+#: ../../tempcache/pages/preferences.html.twig:2047
 #: ../../tempcache/pages/members_public_list.html.twig:86
 #: ../../tempcache/pages/members_public_list.html.twig:222
 msgid "Email"
@@ -2072,7 +2071,7 @@ msgstr "Е-пошта"
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Features/Replacements.php:320
 #: ../lib/Galette/Entity/ListsConfig.php:223
-#: ../../tempcache/elements/member_card.html.twig:87
+#: ../../tempcache/elements/member_card.html.twig:107
 msgid "Phone"
 msgstr "Телефон"
 
@@ -2089,10 +2088,9 @@ msgstr "filtered_memberslist"
 #: ../lib/Galette/Features/Replacements.php:612
 #: ../lib/Galette/Entity/Adherent.php:1771
 #: ../../tempcache/modals/mass_change_members.html.twig:163
-#: ../../tempcache/elements/ajax_members.html.twig:126
+#: ../../tempcache/elements/ajax_members.html.twig:106
 #: ../../tempcache/elements/group_persons.html.twig:98
-#: ../../tempcache/pages/advanced_search.html.twig:1142
-#: ../../tempcache/pages/advanced_search.html.twig:1662
+#: ../../tempcache/pages/advanced_search.html.twig:1187
 #: ../../tempcache/components/forms/gender.html.twig:129
 msgid "Man"
 msgstr "Чоловік"
@@ -2101,10 +2099,9 @@ msgstr "Чоловік"
 #: ../lib/Galette/Features/Replacements.php:614
 #: ../lib/Galette/Entity/Adherent.php:1773
 #: ../../tempcache/modals/mass_change_members.html.twig:154
-#: ../../tempcache/elements/ajax_members.html.twig:137
+#: ../../tempcache/elements/ajax_members.html.twig:117
 #: ../../tempcache/elements/group_persons.html.twig:109
-#: ../../tempcache/pages/advanced_search.html.twig:1142
-#: ../../tempcache/pages/advanced_search.html.twig:1662
+#: ../../tempcache/pages/advanced_search.html.twig:1187
 #: ../../tempcache/components/forms/gender.html.twig:146
 msgid "Woman"
 msgstr "Жінка"
@@ -2113,8 +2110,7 @@ msgstr "Жінка"
 #: ../lib/Galette/Features/Replacements.php:616
 #: ../lib/Galette/Entity/Adherent.php:1775
 #: ../../tempcache/modals/mass_change_members.html.twig:145
-#: ../../tempcache/pages/advanced_search.html.twig:1142
-#: ../../tempcache/pages/advanced_search.html.twig:1662
+#: ../../tempcache/pages/advanced_search.html.twig:1187
 #: ../../tempcache/components/forms/gender.html.twig:112
 msgid "Unspecified"
 msgstr "Невстановлено"
@@ -2137,8 +2133,7 @@ msgstr "Невстановлено"
 #: ../../tempcache/pages/configuration_core_fields.html.twig:186
 #: ../../tempcache/pages/mailings_list.html.twig:195
 #: ../../tempcache/pages/advanced_search.html.twig:469
-#: ../../tempcache/pages/advanced_search.html.twig:1403
-#: ../../tempcache/pages/advanced_search.html.twig:1749
+#: ../../tempcache/pages/advanced_search.html.twig:1274
 msgid "Yes"
 msgstr "Так"
 
@@ -2160,8 +2155,7 @@ msgstr "Так"
 #: ../../tempcache/pages/configuration_core_fields.html.twig:205
 #: ../../tempcache/pages/mailings_list.html.twig:211
 #: ../../tempcache/pages/advanced_search.html.twig:485
-#: ../../tempcache/pages/advanced_search.html.twig:1411
-#: ../../tempcache/pages/advanced_search.html.twig:1751
+#: ../../tempcache/pages/advanced_search.html.twig:1276
 msgid "No"
 msgstr "Ні"
 
@@ -2295,75 +2289,80 @@ msgstr "Картки члена"
 msgid "Cards"
 msgstr "Картки"
 
-#: ../lib/Galette/IO/FileTrait.php:477
+#: ../lib/Galette/IO/FileTrait.php:483
 msgid "An error occurred."
 msgstr "Сталася помилка."
 
-#: ../lib/Galette/IO/FileTrait.php:481
+#: ../lib/Galette/IO/FileTrait.php:487
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
 "Назва файлу неприпустима, воно не повинно містити спеціальні знаки чи "
 "пробіли."
 
-#: ../lib/Galette/IO/FileTrait.php:487
+#: ../lib/Galette/IO/FileTrait.php:493
 #, php-format
 msgid "File extension is not allowed, only %s files are."
 msgstr "Розширення файлів не дозволено, є лише %s файлів."
 
-#: ../lib/Galette/IO/FileTrait.php:494 ../lib/Galette/Features/Dynamics.php:305
+#: ../lib/Galette/IO/FileTrait.php:500 ../lib/Galette/Features/Dynamics.php:305
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr "Файл завеликий. Найбільш допустимий розмір - %dKo"
 
-#: ../lib/Galette/IO/FileTrait.php:499
+#: ../lib/Galette/IO/FileTrait.php:505
+#, php-format
+msgid "Image is too small. The minimum image side size allowed is %spx"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:511
 msgid "Mime-Type not allowed"
 msgstr "Mime-Type не дозволено"
 
-#: ../lib/Galette/IO/FileTrait.php:502
+#: ../lib/Galette/IO/FileTrait.php:514
 msgid "A file with that name already exists!"
 msgstr "Файл із такою назвою вже існує!"
 
-#: ../lib/Galette/IO/FileTrait.php:505
+#: ../lib/Galette/IO/FileTrait.php:517
 msgid "File does not comply with requirements."
 msgstr "Файл не відповідає вимогам."
 
-#: ../lib/Galette/IO/FileTrait.php:508
+#: ../lib/Galette/IO/FileTrait.php:520
 msgid "Unable to write file or temporary file"
 msgstr "Не вдається записати файл або тимчасовий файл"
 
-#: ../lib/Galette/IO/FileTrait.php:538
+#: ../lib/Galette/IO/FileTrait.php:550
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr "Завантажений файл перевищує обмеження upload_max_filesize у php.ini"
 
-#: ../lib/Galette/IO/FileTrait.php:540
+#: ../lib/Galette/IO/FileTrait.php:552
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 "Завантажений файл перевищує обмеження MAX_FILE_SIZE, указане у формі HTML"
 
-#: ../lib/Galette/IO/FileTrait.php:542
+#: ../lib/Galette/IO/FileTrait.php:554
 msgid "The uploaded file was only partially uploaded"
 msgstr "Вивантажений файл було вивантажено лише частково"
 
-#: ../lib/Galette/IO/FileTrait.php:544
+#: ../lib/Galette/IO/FileTrait.php:556
 msgid "No file was uploaded"
 msgstr "Файл не вивантажено"
 
-#: ../lib/Galette/IO/FileTrait.php:546
+#: ../lib/Galette/IO/FileTrait.php:558
 msgid "Missing a temporary folder"
 msgstr "Відсутній тимчасовий каталог"
 
-#: ../lib/Galette/IO/FileTrait.php:548
+#: ../lib/Galette/IO/FileTrait.php:560
 msgid "Failed to write file to disk"
 msgstr "Не вдалося записати файл на диск"
 
-#: ../lib/Galette/IO/FileTrait.php:550
+#: ../lib/Galette/IO/FileTrait.php:562
 msgid "File upload stopped by extension"
 msgstr "Завантаження файлу зупинено розширенням"
 
-#: ../lib/Galette/IO/FileTrait.php:552
+#: ../lib/Galette/IO/FileTrait.php:564
 msgid "Unknown upload error"
 msgstr "Невідома помилка вивантаження"
 
@@ -2457,7 +2456,7 @@ msgstr "ID члена"
 
 #: ../lib/Galette/Features/Replacements.php:260
 #: ../lib/Galette/Filters/MembersList.php:293
-#: ../../tempcache/pages/preferences.html.twig:2022
+#: ../../tempcache/pages/preferences.html.twig:2079
 msgid "Member number"
 msgstr "Номер члена"
 
@@ -2473,7 +2472,7 @@ msgstr "Ім'я"
 
 #: ../lib/Galette/Features/Replacements.php:276
 #: ../../tempcache/elements/group_persons.html.twig:50
-#: ../../tempcache/pages/preferences.html.twig:2006
+#: ../../tempcache/pages/preferences.html.twig:2063
 #: ../../tempcache/pages/members_public_list.html.twig:78
 #: ../../tempcache/pages/members_public_list.html.twig:211
 msgid "Nickname"
@@ -2493,7 +2492,7 @@ msgid "Birth place"
 msgstr "Місце народження"
 
 #: ../lib/Galette/Features/Replacements.php:292
-#: ../../tempcache/pages/preferences.html.twig:2014
+#: ../../tempcache/pages/preferences.html.twig:2071
 msgid "Profession"
 msgstr "Професія"
 
@@ -2548,11 +2547,11 @@ msgstr "Мітка внеску"
 
 #: ../lib/Galette/Features/Replacements.php:402
 #: ../../tempcache/pages/transaction_form.html.twig:275
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:664
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:681
 #: ../../tempcache/pages/contribution_form.html.twig:288
-#: ../../tempcache/pages/transactions_list.html.twig:279
-#: ../../tempcache/pages/transactions_list.html.twig:470
+#: ../../tempcache/pages/transactions_list.html.twig:289
+#: ../../tempcache/pages/transactions_list.html.twig:431
 #: ../../tempcache/pages/advanced_search.html.twig:789
 msgid "Amount"
 msgstr "Сума"
@@ -2589,8 +2588,8 @@ msgid "Contribution id"
 msgstr "ID внеску"
 
 #: ../lib/Galette/Features/Replacements.php:434
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:672
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:689
 #: ../../tempcache/pages/advanced_search.html.twig:853
 #: ../../tempcache/pages/advanced_search.html.twig:858
 msgid "Payment type"
@@ -2607,7 +2606,7 @@ msgstr "Відомості про внесок"
 #: ../lib/Galette/Features/Replacements.php:621
 #: ../../tempcache/elements/group.html.twig:186
 #: ../../tempcache/elements/group.html.twig:229
-#: ../../tempcache/pages/preferences.html.twig:2259
+#: ../../tempcache/pages/preferences.html.twig:2316
 msgid "None"
 msgstr "Немає"
 
@@ -2792,18 +2791,18 @@ msgid "Active"
 msgstr "Діяльний"
 
 #: ../lib/Galette/Entity/Adherent.php:1745
-#: ../../tempcache/pages/contributions_list.html.twig:214
-#: ../../tempcache/pages/transactions_list.html.twig:159
+#: ../../tempcache/pages/contributions_list.html.twig:231
+#: ../../tempcache/pages/transactions_list.html.twig:180
 #: ../../tempcache/components/forms/account.html.twig:72
 msgid "Inactive"
 msgstr "Незадіяний"
 
-#: ../lib/Galette/Entity/Adherent.php:2028
-#: ../../tempcache/pages/member_form.html.twig:919
+#: ../lib/Galette/Entity/Adherent.php:2026
+#: ../../tempcache/pages/member_form.html.twig:916
 msgid " (%age years old)"
 msgstr " (вік: %age)"
 
-#: ../lib/Galette/Entity/Adherent.php:2101
+#: ../lib/Galette/Entity/Adherent.php:2104
 msgid "Duplicated from %name (%id)"
 msgstr "Повторюється з %name (%id)"
 
@@ -2885,8 +2884,8 @@ msgstr "Коментарі:"
 #: ../lib/Galette/Entity/Contribution.php:174
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:124
 #: ../../tempcache/pages/transaction_form.html.twig:246
-#: ../../tempcache/pages/contributions_list.html.twig:371
-#: ../../tempcache/pages/contributions_list.html.twig:569
+#: ../../tempcache/pages/contributions_list.html.twig:388
+#: ../../tempcache/pages/contributions_list.html.twig:586
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:321
 #: ../../tempcache/pages/import.html.twig:90
@@ -2894,8 +2893,8 @@ msgstr "Коментарі:"
 #: ../../tempcache/pages/contribution_form.html.twig:280
 #: ../../tempcache/pages/mailings_list.html.twig:97
 #: ../../tempcache/pages/mailings_list.html.twig:303
-#: ../../tempcache/pages/transactions_list.html.twig:247
-#: ../../tempcache/pages/transactions_list.html.twig:343
+#: ../../tempcache/pages/transactions_list.html.twig:268
+#: ../../tempcache/pages/transactions_list.html.twig:369
 #: ../../tempcache/pages/export.html.twig:132
 #: ../../tempcache/pages/export.html.twig:178
 msgid "Date"
@@ -3071,27 +3070,27 @@ msgstr "тіло не повинно бути порожнім!"
 msgid "You cannot delete system payment types!"
 msgstr "Ви не можете видалити системні види оплати!"
 
-#: ../lib/Galette/Entity/PaymentType.php:298
+#: ../lib/Galette/Entity/PaymentType.php:297
 msgid "Other"
 msgstr "Інше"
 
-#: ../lib/Galette/Entity/PaymentType.php:299
+#: ../lib/Galette/Entity/PaymentType.php:298
 msgid "Cash"
 msgstr "Готівка"
 
-#: ../lib/Galette/Entity/PaymentType.php:300
+#: ../lib/Galette/Entity/PaymentType.php:299
 msgid "Credit card"
 msgstr "Кредитна картка"
 
-#: ../lib/Galette/Entity/PaymentType.php:301
+#: ../lib/Galette/Entity/PaymentType.php:300
 msgid "Check"
 msgstr "Перевірити"
 
-#: ../lib/Galette/Entity/PaymentType.php:302
+#: ../lib/Galette/Entity/PaymentType.php:301
 msgid "Transfer"
 msgstr "Переказ"
 
-#: ../lib/Galette/Entity/PaymentType.php:303
+#: ../lib/Galette/Entity/PaymentType.php:302
 msgid "Paypal"
 msgstr "PayPal"
 
@@ -3107,37 +3106,37 @@ msgstr "Ви не можете видалити типовий стан!"
 msgid "Form is mandatory!"
 msgstr "Форма обов'язкова!"
 
-#: ../lib/Galette/Entity/SavedSearch.php:358
+#: ../lib/Galette/Entity/SavedSearch.php:357
 #, php-format
 msgid "Unknown form %form!"
 msgstr "Невідома форма %form!"
 
-#: ../lib/Galette/Entity/SavedSearch.php:373
+#: ../lib/Galette/Entity/SavedSearch.php:372
 msgid "Name cannot be empty!"
 msgstr "Ім'я не може бути порожнім!"
 
-#: ../lib/Galette/Entity/Group.php:391
+#: ../lib/Galette/Entity/Group.php:385
 msgid "Group has been detached from its parent"
 msgstr "Групу відокремлено від батьківської"
 
-#: ../lib/Galette/Entity/Group.php:428
+#: ../lib/Galette/Entity/Group.php:422
 #: ../../tempcache/pages/groups_list.html.twig:213
 msgid "The group name you have requested already exists in the database."
 msgstr "Назва групи, яку ви запитували, вже є у базі даних."
 
-#: ../lib/Galette/Entity/Group.php:456
+#: ../lib/Galette/Entity/Group.php:450
 msgid "Group added"
 msgstr "Групу додано"
 
-#: ../lib/Galette/Entity/Group.php:461
+#: ../lib/Galette/Entity/Group.php:455
 msgid "Fail to add new group."
 msgstr "Не вдалося додати нову групу."
 
-#: ../lib/Galette/Entity/Group.php:479
+#: ../lib/Galette/Entity/Group.php:473
 msgid "Group updated"
 msgstr "Групу оновлено"
 
-#: ../lib/Galette/Entity/Group.php:716
+#: ../lib/Galette/Entity/Group.php:710
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr "Групу \"%1$s\" не можна встановити як батьківську!"
@@ -3325,8 +3324,8 @@ msgstr "Не члени"
 
 #: ../lib/Galette/Filters/TransactionsList.php:215
 #: ../lib/Galette/Filters/TransactionsList.php:252
-#: ../lib/Galette/Filters/HistoryList.php:223
-#: ../lib/Galette/Filters/HistoryList.php:260
+#: ../lib/Galette/Filters/HistoryList.php:221
+#: ../lib/Galette/Filters/HistoryList.php:258
 #: ../lib/Galette/Filters/MailingsList.php:216
 #: ../lib/Galette/Filters/MailingsList.php:253
 #: ../lib/Galette/Filters/ContributionsList.php:258
@@ -3336,8 +3335,8 @@ msgstr "РР"
 
 #: ../lib/Galette/Filters/TransactionsList.php:231
 #: ../lib/Galette/Filters/TransactionsList.php:253
-#: ../lib/Galette/Filters/HistoryList.php:239
-#: ../lib/Galette/Filters/HistoryList.php:261
+#: ../lib/Galette/Filters/HistoryList.php:237
+#: ../lib/Galette/Filters/HistoryList.php:259
 #: ../lib/Galette/Filters/MailingsList.php:232
 #: ../lib/Galette/Filters/MailingsList.php:254
 #: ../lib/Galette/Filters/ContributionsList.php:274
@@ -3346,21 +3345,21 @@ msgid "Y-m"
 msgstr "Y-m"
 
 #: ../lib/Galette/Filters/TransactionsList.php:259
-#: ../lib/Galette/Filters/HistoryList.php:267
+#: ../lib/Galette/Filters/HistoryList.php:265
 #: ../lib/Galette/Filters/MailingsList.php:260
 #: ../lib/Galette/Filters/ContributionsList.php:302
 msgid "start date filter"
 msgstr "добірка дати початку"
 
 #: ../lib/Galette/Filters/TransactionsList.php:262
-#: ../lib/Galette/Filters/HistoryList.php:270
+#: ../lib/Galette/Filters/HistoryList.php:268
 #: ../lib/Galette/Filters/MailingsList.php:263
 #: ../lib/Galette/Filters/ContributionsList.php:305
 msgid "end date filter"
 msgstr "добірка дати завершення"
 
 #: ../lib/Galette/Filters/TransactionsList.php:272
-#: ../lib/Galette/Filters/HistoryList.php:280
+#: ../lib/Galette/Filters/HistoryList.php:278
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:315
 #, php-format
@@ -3772,14 +3771,14 @@ msgstr "Професія:"
 #: ../includes/fields_defs/members_fields.php:200 ../install/steps/admin.php:46
 #: ../../tempcache/pages/index.html.twig:69
 #: ../../tempcache/pages/index.html.twig:73
-#: ../../tempcache/pages/preferences.html.twig:2348
+#: ../../tempcache/pages/preferences.html.twig:2405
 msgid "Username:"
 msgstr "Ім'я користувача:"
 
 #: ../includes/fields_defs/members_fields.php:208 ../install/steps/admin.php:50
 #: ../install/steps/db.php:88 ../../tempcache/pages/index.html.twig:81
 #: ../../tempcache/pages/index.html.twig:85
-#: ../../tempcache/pages/preferences.html.twig:2362
+#: ../../tempcache/pages/preferences.html.twig:2419
 msgid "Password:"
 msgstr "Пароль:"
 
@@ -4136,7 +4135,7 @@ msgstr ""
 "Будь ласка, оберіть параметри облікового запису адміністратора на Galette"
 
 #: ../install/steps/admin.php:54
-#: ../../tempcache/pages/preferences.html.twig:2371
+#: ../../tempcache/pages/preferences.html.twig:2428
 msgid "Retype password:"
 msgstr "Введіть пароль ще раз:"
 
@@ -4245,7 +4244,6 @@ msgstr "що міститься між"
 #: ../../tempcache/pages/advanced_search.html.twig:726
 #: ../../tempcache/pages/advanced_search.html.twig:770
 #: ../../tempcache/pages/advanced_search.html.twig:805
-#: ../../tempcache/pages/advanced_search.html.twig:1093
 msgid "and"
 msgstr "і"
 
@@ -4255,14 +4253,14 @@ msgstr "і"
 #: ../../tempcache/modals/mass_add_contributions.html.twig:114
 #: ../../tempcache/modals/mass_change_members.html.twig:216
 #: ../../tempcache/modals/telemetry.html.twig:136
-#: ../../tempcache/elements/js/modal.js.twig:275
+#: ../../tempcache/elements/js/modal.js.twig:279
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:282
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:457
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:174
 #: ../../tempcache/pages/members_list.html.twig:1141
 #: ../../tempcache/pages/mailing_form.html.twig:717
 #: ../../tempcache/pages/configuration_title_form.html.twig:94
-#: ../../tempcache/pages/preferences.html.twig:2536
+#: ../../tempcache/pages/preferences.html.twig:2597
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:94
 msgid "Cancel"
 msgstr "Скасувати"
@@ -4729,7 +4727,7 @@ msgstr "Тип листа"
 #: ../../tempcache/pages/mailings_list.html.twig:126
 #: ../../tempcache/pages/mailings_list.html.twig:143
 #: ../../tempcache/pages/transactions_list.html.twig:77
-#: ../../tempcache/pages/transactions_list.html.twig:92
+#: ../../tempcache/pages/transactions_list.html.twig:94
 #: ../../tempcache/pages/advanced_search.html.twig:281
 #: ../../tempcache/pages/advanced_search.html.twig:298
 #: ../../tempcache/pages/advanced_search.html.twig:323
@@ -4745,11 +4743,10 @@ msgstr "Тип листа"
 #: ../../tempcache/pages/advanced_search.html.twig:762
 #: ../../tempcache/pages/advanced_search.html.twig:779
 #: ../../tempcache/pages/advanced_search.html.twig:1026
-#: ../../tempcache/pages/advanced_search.html.twig:1379
-#: ../../tempcache/pages/advanced_search.html.twig:1781
+#: ../../tempcache/pages/advanced_search.html.twig:1306
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
-#: ../../tempcache/components/dynamic_fields.html.twig:614
+#: ../../tempcache/components/dynamic_fields.html.twig:619
 msgid "(yyyy-mm-dd format)"
 msgstr "(формат рррр-мм-дд)"
 
@@ -4772,7 +4769,7 @@ msgstr "Наявні змінні"
 #: ../../tempcache/modals/telemetry.html.twig:209
 #: ../../tempcache/elements/js/modal_action.js.twig:74
 #: ../../tempcache/elements/js/modal_action.js.twig:137
-#: ../../tempcache/elements/js/photo_dnd.js.twig:112
+#: ../../tempcache/elements/js/photo_dnd.js.twig:159
 #: ../../tempcache/elements/js/pwdcheck.js.twig:135
 #: ../../tempcache/elements/js/choose_adh.js.twig:134
 #: ../../tempcache/elements/js/choose_adh.js.twig:213
@@ -4782,7 +4779,7 @@ msgstr "Наявні змінні"
 #: ../../tempcache/elements/js/removal.js.twig:177
 #: ../../tempcache/elements/scripts.html.twig:127
 #: ../../tempcache/elements/scripts.html.twig:147
-#: ../../tempcache/elements/list.html.twig:388
+#: ../../tempcache/elements/list.html.twig:424
 #: ../../tempcache/pages/plugins.html.twig:335
 #: ../../tempcache/pages/plugins.html.twig:361
 #: ../../tempcache/pages/plugins.html.twig:377
@@ -4795,8 +4792,8 @@ msgstr "Наявні змінні"
 #: ../../tempcache/pages/transaction_form.html.twig:688
 #: ../../tempcache/pages/transaction_form.html.twig:719
 #: ../../tempcache/pages/transaction_form.html.twig:750
-#: ../../tempcache/pages/contributions_list.html.twig:821
-#: ../../tempcache/pages/import_model.html.twig:269
+#: ../../tempcache/pages/contributions_list.html.twig:838
+#: ../../tempcache/pages/import_model.html.twig:271
 #: ../../tempcache/pages/members_list.html.twig:635
 #: ../../tempcache/pages/members_list.html.twig:1205
 #: ../../tempcache/pages/members_list.html.twig:1277
@@ -4815,8 +4812,8 @@ msgstr "Наявні змінні"
 #: ../../tempcache/pages/groups_list.html.twig:308
 #: ../../tempcache/pages/groups_list.html.twig:370
 #: ../../tempcache/pages/groups_list.html.twig:438
-#: ../../tempcache/pages/import.html.twig:311
-#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/import.html.twig:313
+#: ../../tempcache/pages/import.html.twig:324
 #: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/reminder.html.twig:215
 #: ../../tempcache/pages/reminder.html.twig:244
@@ -4828,7 +4825,7 @@ msgstr "Наявні змінні"
 #: ../../tempcache/pages/mailing_form.html.twig:596
 #: ../../tempcache/pages/mailing_form.html.twig:630
 #: ../../tempcache/pages/mailing_form.html.twig:695
-#: ../../tempcache/pages/preferences.html.twig:2521
+#: ../../tempcache/pages/preferences.html.twig:2582
 #: ../../tempcache/pages/mailings_list.html.twig:453
 #: ../../tempcache/pages/mailings_list.html.twig:463
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
@@ -4837,7 +4834,7 @@ msgstr "Наявні змінні"
 #: ../../tempcache/pages/member_form.html.twig:649
 #: ../../tempcache/pages/member_form.html.twig:669
 #: ../../tempcache/pages/member_show.html.twig:714
-#: ../../tempcache/pages/transactions_list.html.twig:565
+#: ../../tempcache/pages/transactions_list.html.twig:526
 msgid "Close"
 msgstr "Закрити"
 
@@ -4888,7 +4885,7 @@ msgstr "Під час надсилання відомостей про теле�
 #: ../../tempcache/pages/reminder.html.twig:162
 #: ../../tempcache/pages/mailing_form.html.twig:373
 #: ../../tempcache/pages/mailing_form.html.twig:464
-#: ../../tempcache/pages/preferences.html.twig:2529
+#: ../../tempcache/pages/preferences.html.twig:2590
 msgid "Send"
 msgstr "Надіслати"
 
@@ -4908,7 +4905,7 @@ msgstr "Змінити мову на \"%locale\""
 #: ../../tempcache/pages/configuration_titles.html.twig:113
 #: ../../tempcache/pages/configuration_payment_types.html.twig:97
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
-#: ../../tempcache/components/dynamic_fields.html.twig:260
+#: ../../tempcache/components/dynamic_fields.html.twig:263
 msgid "Add"
 msgstr "Додати"
 
@@ -4926,8 +4923,8 @@ msgstr "Дозволи"
 #: ../../tempcache/elements/edit_pdf_models.html.twig:163
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:376
 #: ../../tempcache/pages/transaction_form.html.twig:271
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:656
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:673
 #: ../../tempcache/pages/advanced_search.html.twig:819
 #: ../../tempcache/pages/advanced_search.html.twig:824
 msgid "Type"
@@ -4942,7 +4939,7 @@ msgstr "Потрібно"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:75
 #: ../../tempcache/elements/edit_entitleds.html.twig:78
-#: ../../tempcache/elements/list.html.twig:339
+#: ../../tempcache/elements/list.html.twig:375
 #: ../../tempcache/pages/transaction_form.html.twig:282
 #: ../../tempcache/pages/configuration_titles.html.twig:69
 #: ../../tempcache/pages/members_list.html.twig:543
@@ -4997,6 +4994,21 @@ msgstr "Домівка"
 msgid "Go back to Galette homepage"
 msgstr "Поверніться на домашню сторінку Galette"
 
+#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:55
+#: ../../tempcache/page.html.twig:161
+msgid ""
+"A mailing exists in the current session. Click here if you want to resume or "
+"cancel it."
+msgstr ""
+"У поточному сеансі наявне розсилання. Натисніть тут, якщо ви хочете "
+"відновити або скасувати його."
+
+#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:62
+#: ../../tempcache/pages/members_list.html.twig:1167
+#: ../../tempcache/page.html.twig:168
+msgid "Existing mailing"
+msgstr "Наявна розсилка"
+
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:111
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:118
 #, fuzzy
@@ -5042,34 +5054,33 @@ msgid "%s field"
 msgstr "Поле %s"
 
 #: ../../tempcache/elements/ajax_members.html.twig:57
-#: ../../tempcache/pages/preferences.html.twig:1998
+#: ../../tempcache/pages/preferences.html.twig:2055
 msgid "Zip - Town"
 msgstr "ZIP - Місто"
 
-#: ../../tempcache/elements/ajax_members.html.twig:70
-#: ../../tempcache/elements/list.html.twig:153
-#: ../../tempcache/pages/members_public_gallery.html.twig:180
-msgid "Pages:"
-msgstr "Сторінки:"
-
-#: ../../tempcache/elements/ajax_members.html.twig:115
+#: ../../tempcache/elements/ajax_members.html.twig:95
 #: ../../tempcache/elements/group_persons.html.twig:87
 msgid "Company"
 msgstr "Компанія"
 
-#: ../../tempcache/elements/ajax_members.html.twig:210
+#: ../../tempcache/elements/ajax_members.html.twig:190
 msgid "no member"
 msgstr "немає члена"
 
-#: ../../tempcache/elements/ajax_members.html.twig:230
+#: ../../tempcache/elements/ajax_members.html.twig:213
+#: ../../tempcache/elements/list.html.twig:184
+msgid "Pages:"
+msgstr "Сторінки:"
+
+#: ../../tempcache/elements/ajax_members.html.twig:239
 msgid "Selected members"
 msgstr "Вибрані члени"
 
-#: ../../tempcache/elements/ajax_members.html.twig:247
+#: ../../tempcache/elements/ajax_members.html.twig:256
 msgid "No members has been selected yet."
 msgstr "Членів ще не вибрано."
 
-#: ../../tempcache/elements/ajax_members.html.twig:311
+#: ../../tempcache/elements/ajax_members.html.twig:320
 #: ../../tempcache/elements/ajax_groups.html.twig:205
 msgid "Validate"
 msgstr "Підтвердити"
@@ -5244,7 +5255,7 @@ msgstr "Завантаження..."
 #: ../../tempcache/pages/contribution_form.html.twig:658
 #: ../../tempcache/pages/mailing_form.html.twig:361
 #: ../../tempcache/pages/configuration_title_form.html.twig:89
-#: ../../tempcache/pages/preferences.html.twig:2407
+#: ../../tempcache/pages/preferences.html.twig:2464
 #: ../../tempcache/pages/configuration_core_lists.html.twig:287
 #: ../../tempcache/pages/member_form.html.twig:93
 #: ../../tempcache/pages/member_form.html.twig:468
@@ -5253,7 +5264,66 @@ msgstr "Завантаження..."
 msgid "Save"
 msgstr "Зберегти"
 
-#: ../../tempcache/elements/js/photo_dnd.js.twig:112
+#: ../../tempcache/elements/js/photo_dnd.js.twig:75
+#: ../../tempcache/pages/preferences.html.twig:854
+#: ../../tempcache/components/forms/picture.html.twig:86
+msgid "Square (1:1)"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:75
+#: ../../tempcache/pages/preferences.html.twig:862
+#: ../../tempcache/components/forms/picture.html.twig:86
+msgid "Portrait (3:4)"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:75
+#: ../../tempcache/pages/preferences.html.twig:870
+#: ../../tempcache/components/forms/picture.html.twig:86
+msgid "Landscape (4:3)"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:86
+#: ../../tempcache/components/forms/picture.html.twig:97
+msgid "Center"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:90
+#: ../../tempcache/components/forms/picture.html.twig:101
+#, fuzzy
+#| msgid "To:"
+msgid "Top"
+msgstr "До:"
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:94
+#: ../../tempcache/components/forms/picture.html.twig:105
+msgid "Bottom"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:98
+#: ../../tempcache/components/forms/picture.html.twig:109
+msgid "Left"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:102
+#: ../../tempcache/components/forms/picture.html.twig:113
+#, fuzzy
+#| msgid "Rights"
+msgid "Right"
+msgstr "Права"
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:109
+#: ../../tempcache/components/forms/picture.html.twig:92
+msgid "Cropping focus"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:109
+#: ../../tempcache/components/forms/picture.html.twig:118
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %ratio"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:159
 msgid "An error occurred sending photo :("
 msgstr "Сталася помилка під час надсилання світлини :("
 
@@ -5289,7 +5359,7 @@ msgstr "Пізніше"
 msgid "An error occurred retrieving members :("
 msgstr "Під час отримання членів сталася помилка :("
 
-#: ../../tempcache/elements/js/modal.js.twig:234
+#: ../../tempcache/elements/js/modal.js.twig:238
 #: ../../tempcache/pages/export.html.twig:384
 msgid "Continue"
 msgstr "Продовжити"
@@ -5391,29 +5461,27 @@ msgstr "Задіяти редактор HTML"
 msgid "- WARNING -"
 msgstr "- ПОПЕРЕДЖЕННЯ -"
 
-#: ../../tempcache/elements/list.html.twig:222
-#: ../../tempcache/pages/members_public_gallery.html.twig:78
+#: ../../tempcache/elements/list.html.twig:258
 msgid "Records per page:"
 msgstr "Записів на сторінці:"
 
-#: ../../tempcache/elements/list.html.twig:249
+#: ../../tempcache/elements/list.html.twig:285
 #: ../../tempcache/pages/configuration_texts.html.twig:122
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:92
-#: ../../tempcache/pages/members_public_gallery.html.twig:105
 msgid "Change"
 msgstr "Змінити"
 
-#: ../../tempcache/elements/list.html.twig:411
+#: ../../tempcache/elements/list.html.twig:447
 msgid "(Un)Check all"
 msgstr "Зняти/вибрати все"
 
-#: ../../tempcache/elements/list.html.twig:415
+#: ../../tempcache/elements/list.html.twig:451
 msgid "Invert selection"
 msgstr "Узворотнити виділення"
 
-#: ../../tempcache/elements/list.html.twig:422
-#: ../../tempcache/pages/transactions_list.html.twig:580
-#: ../../tempcache/pages/transactions_list.html.twig:595
+#: ../../tempcache/elements/list.html.twig:458
+#: ../../tempcache/pages/transactions_list.html.twig:541
+#: ../../tempcache/pages/transactions_list.html.twig:556
 msgid "Show legend"
 msgstr "Показати умовні позначення"
 
@@ -5458,10 +5526,13 @@ msgstr "Менеджера не долучено"
 msgid "Unimpersonate"
 msgstr "Не вдається видати себе за %id"
 
-#: ../../tempcache/elements/member_card.html.twig:58
-#: ../../tempcache/components/forms/picture.html.twig:59
+#: ../../tempcache/elements/member_card.html.twig:59
 msgid "Picture"
 msgstr "Зображення"
+
+#: ../../tempcache/elements/member_card.html.twig:68
+msgid "Drag and drop an image file to change the picture"
+msgstr ""
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:50
 #, php-format
@@ -5524,8 +5595,8 @@ msgstr "Діяльні розширення"
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:345
 #: ../../tempcache/pages/contribution_form.html.twig:276
-#: ../../tempcache/pages/transactions_list.html.twig:263
-#: ../../tempcache/pages/transactions_list.html.twig:416
+#: ../../tempcache/pages/transactions_list.html.twig:284
+#: ../../tempcache/pages/transactions_list.html.twig:423
 #: ../../tempcache/pages/export.html.twig:259
 #: ../../tempcache/pages/export.html.twig:289
 msgid "Description"
@@ -5592,8 +5663,8 @@ msgid "No inactive plugin."
 msgstr "Немає незадіяних втулків."
 
 #: ../../tempcache/pages/plugins.html.twig:335
-#: ../../tempcache/pages/preferences.html.twig:1120
-#: ../../tempcache/pages/preferences.html.twig:2334
+#: ../../tempcache/pages/preferences.html.twig:1177
+#: ../../tempcache/pages/preferences.html.twig:2391
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
@@ -5730,31 +5801,30 @@ msgstr "Долучені внески"
 
 #: ../../tempcache/pages/transaction_form.html.twig:250
 #: ../../tempcache/pages/contributions_list.html.twig:87
-#: ../../tempcache/pages/contributions_list.html.twig:371
-#: ../../tempcache/pages/contributions_list.html.twig:577
+#: ../../tempcache/pages/contributions_list.html.twig:388
+#: ../../tempcache/pages/contributions_list.html.twig:594
 msgid "Begin"
 msgstr "Початок"
 
 #: ../../tempcache/pages/transaction_form.html.twig:254
 #: ../../tempcache/pages/contributions_list.html.twig:97
-#: ../../tempcache/pages/contributions_list.html.twig:371
-#: ../../tempcache/pages/contributions_list.html.twig:585
+#: ../../tempcache/pages/contributions_list.html.twig:388
+#: ../../tempcache/pages/contributions_list.html.twig:602
 msgid "End"
 msgstr "Кінець"
 
 #: ../../tempcache/pages/transaction_form.html.twig:258
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:680
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:697
 msgid "Duration"
 msgstr "Тривалість"
 
 #: ../../tempcache/pages/transaction_form.html.twig:265
-#: ../../tempcache/pages/contributions_list.html.twig:379
-#: ../../tempcache/pages/contributions_list.html.twig:596
+#: ../../tempcache/pages/contributions_list.html.twig:396
+#: ../../tempcache/pages/contributions_list.html.twig:613
 #: ../../tempcache/pages/history.html.twig:165
 #: ../../tempcache/pages/contribution_form.html.twig:284
-#: ../../tempcache/pages/transactions_list.html.twig:255
-#: ../../tempcache/pages/transactions_list.html.twig:354
+#: ../../tempcache/pages/transactions_list.html.twig:380
 msgid "Member"
 msgstr "Член"
 
@@ -5789,7 +5859,7 @@ msgid "Detach contribution from this transaction"
 msgstr "Відлучити внесок від цього переказу"
 
 #: ../../tempcache/pages/transaction_form.html.twig:508
-#: ../../tempcache/pages/contributions_list.html.twig:755
+#: ../../tempcache/pages/contributions_list.html.twig:772
 msgid "no contribution"
 msgstr "немає внеску"
 
@@ -5903,7 +5973,7 @@ msgstr "починаючи з"
 #: ../../tempcache/pages/contributions_list.html.twig:132
 #: ../../tempcache/pages/history.html.twig:141
 #: ../../tempcache/pages/mailings_list.html.twig:136
-#: ../../tempcache/pages/transactions_list.html.twig:85
+#: ../../tempcache/pages/transactions_list.html.twig:87
 msgid "until"
 msgstr "до"
 
@@ -5911,7 +5981,7 @@ msgstr "до"
 #: ../../tempcache/pages/history.html.twig:247
 #: ../../tempcache/pages/members_list.html.twig:372
 #: ../../tempcache/pages/mailings_list.html.twig:221
-#: ../../tempcache/pages/transactions_list.html.twig:102
+#: ../../tempcache/pages/transactions_list.html.twig:106
 msgid "Apply filters"
 msgstr "Застосувати добірки"
 
@@ -5919,8 +5989,8 @@ msgstr "Застосувати добірки"
 #: ../../tempcache/pages/history.html.twig:252
 #: ../../tempcache/pages/members_list.html.twig:377
 #: ../../tempcache/pages/mailings_list.html.twig:226
-#: ../../tempcache/pages/transactions_list.html.twig:107
-#: ../../tempcache/pages/advanced_search.html.twig:1524
+#: ../../tempcache/pages/transactions_list.html.twig:111
+#: ../../tempcache/pages/advanced_search.html.twig:1049
 msgid "Filter"
 msgstr "Фільтр"
 
@@ -5929,7 +5999,7 @@ msgstr "Фільтр"
 #: ../../tempcache/pages/members_list.html.twig:392
 #: ../../tempcache/pages/members_list.html.twig:433
 #: ../../tempcache/pages/mailings_list.html.twig:231
-#: ../../tempcache/pages/transactions_list.html.twig:112
+#: ../../tempcache/pages/transactions_list.html.twig:116
 msgid "Reset all filters to defaults"
 msgstr "Скинути всі добірки до типових"
 
@@ -5938,21 +6008,27 @@ msgstr "Скинути всі добірки до типових"
 #: ../../tempcache/pages/members_list.html.twig:397
 #: ../../tempcache/pages/members_list.html.twig:438
 #: ../../tempcache/pages/mailings_list.html.twig:236
-#: ../../tempcache/pages/transactions_list.html.twig:117
-#: ../../tempcache/pages/advanced_search.html.twig:1532
+#: ../../tempcache/pages/transactions_list.html.twig:121
+#: ../../tempcache/pages/advanced_search.html.twig:1057
 msgid "Clear filter"
 msgstr "Очистити добірку"
 
-#: ../../tempcache/pages/contributions_list.html.twig:201
+#: ../../tempcache/pages/contributions_list.html.twig:208
+#, fuzzy
+#| msgid "Show all members contributions"
+msgid "Show all your contributions"
+msgstr "Показати внески всіх членів"
+
+#: ../../tempcache/pages/contributions_list.html.twig:214
 msgid "Show all members contributions"
 msgstr "Показати внески всіх членів"
 
-#: ../../tempcache/pages/contributions_list.html.twig:231
-#: ../../tempcache/pages/transactions_list.html.twig:173
+#: ../../tempcache/pages/contributions_list.html.twig:248
+#: ../../tempcache/pages/transactions_list.html.twig:194
 msgid "See member profile"
 msgstr "Див. профіль члена"
 
-#: ../../tempcache/pages/contributions_list.html.twig:317
+#: ../../tempcache/pages/contributions_list.html.twig:334
 #, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
@@ -5960,68 +6036,68 @@ msgstr[0] "%count внесок"
 msgstr[1] "%count внески"
 msgstr[2] "%count внесків"
 
-#: ../../tempcache/pages/contributions_list.html.twig:416
+#: ../../tempcache/pages/contributions_list.html.twig:433
 #, php-format
 msgid "Found contributions total %f"
 msgstr "Знайдено внесків у цілому %f"
 
-#: ../../tempcache/pages/contributions_list.html.twig:510
-#: ../../tempcache/pages/contributions_list.html.twig:539
+#: ../../tempcache/pages/contributions_list.html.twig:527
+#: ../../tempcache/pages/contributions_list.html.twig:556
 msgid "Contribution %id"
 msgstr "Внесок %id"
 
-#: ../../tempcache/pages/contributions_list.html.twig:527
-#: ../../tempcache/pages/contributions_list.html.twig:549
+#: ../../tempcache/pages/contributions_list.html.twig:544
+#: ../../tempcache/pages/contributions_list.html.twig:566
 #, php-format
 msgid "Transaction: %s"
 msgstr "Переказ: %s"
 
-#: ../../tempcache/pages/contributions_list.html.twig:626
+#: ../../tempcache/pages/contributions_list.html.twig:643
 msgid "Show only '%name' contributions"
 msgstr "Показати внески лише від '%name'"
 
-#: ../../tempcache/pages/contributions_list.html.twig:641
-#: ../../tempcache/pages/transactions_list.html.twig:397
+#: ../../tempcache/pages/contributions_list.html.twig:658
+#: ../../tempcache/pages/transactions_list.html.twig:408
 msgid "Show '%name' card"
 msgstr "Показ картки '%name'"
 
-#: ../../tempcache/pages/contributions_list.html.twig:700
+#: ../../tempcache/pages/contributions_list.html.twig:717
 msgid "Print an invoice or a receipt (depending on contribution type)"
 msgstr "Роздрукуйте рахунок-фактуру або квитанцію (залежно від типу внеску)"
 
-#: ../../tempcache/pages/contributions_list.html.twig:717
+#: ../../tempcache/pages/contributions_list.html.twig:734
 msgid "Edit the contribution"
 msgstr "Редагувати внеску"
 
-#: ../../tempcache/pages/contributions_list.html.twig:730
+#: ../../tempcache/pages/contributions_list.html.twig:747
 msgid "Delete the contribution"
 msgstr "Видалити внесок"
 
-#: ../../tempcache/pages/contributions_list.html.twig:770
-#: ../../tempcache/pages/contributions_list.html.twig:774
+#: ../../tempcache/pages/contributions_list.html.twig:787
+#: ../../tempcache/pages/contributions_list.html.twig:791
 #: ../../tempcache/pages/members_list.html.twig:477
 #: ../../tempcache/pages/members_list.html.twig:481
-#: ../../tempcache/pages/transactions_list.html.twig:539
-#: ../../tempcache/pages/transactions_list.html.twig:543
+#: ../../tempcache/pages/transactions_list.html.twig:500
+#: ../../tempcache/pages/transactions_list.html.twig:504
 msgid "Legend"
 msgstr "Умовне позначення"
 
-#: ../../tempcache/pages/contributions_list.html.twig:788
+#: ../../tempcache/pages/contributions_list.html.twig:805
 #: ../../tempcache/pages/members_list.html.twig:554
 #: ../../tempcache/pages/member_show.html.twig:83
 msgid "Modification"
 msgstr "Змінення"
 
-#: ../../tempcache/pages/contributions_list.html.twig:797
+#: ../../tempcache/pages/contributions_list.html.twig:814
 #: ../../tempcache/pages/members_list.html.twig:570
 msgid "Deletion"
 msgstr "Видалення"
 
-#: ../../tempcache/pages/contributions_list.html.twig:807
+#: ../../tempcache/pages/contributions_list.html.twig:824
 msgid "Contribution"
 msgstr "Внесок"
 
-#: ../../tempcache/pages/contributions_list.html.twig:814
+#: ../../tempcache/pages/contributions_list.html.twig:831
 msgid "Gift"
 msgstr "Подарунок"
 
@@ -6185,7 +6261,7 @@ msgid "Model parameted on %date"
 msgstr "Модель з параметром %date"
 
 #: ../../tempcache/pages/import_model.html.twig:96
-#: ../../tempcache/pages/import_model.html.twig:184
+#: ../../tempcache/pages/import_model.html.twig:186
 msgid "Field"
 msgstr "Поле"
 
@@ -6194,31 +6270,31 @@ msgstr "Поле"
 msgid "Missing field '%field'"
 msgstr "Відсутнє поле \"%field\""
 
-#: ../../tempcache/pages/import_model.html.twig:140
+#: ../../tempcache/pages/import_model.html.twig:141
 msgid "Generate empty CSV file"
 msgstr "Утворити порожній файл CSV"
 
-#: ../../tempcache/pages/import_model.html.twig:156
+#: ../../tempcache/pages/import_model.html.twig:157
 msgid "Remove model and back to defaults"
 msgstr "Вилучити модель і повернутися до типових значень"
 
-#: ../../tempcache/pages/import_model.html.twig:162
+#: ../../tempcache/pages/import_model.html.twig:163
 msgid "Remove model"
 msgstr "Вилучити модель"
 
-#: ../../tempcache/pages/import_model.html.twig:229
+#: ../../tempcache/pages/import_model.html.twig:231
 msgid "Store new model"
 msgstr "Зберегти нову модель"
 
-#: ../../tempcache/pages/import_model.html.twig:250
+#: ../../tempcache/pages/import_model.html.twig:252
 msgid "Go back to import page"
 msgstr "Поверніться на сторінку імпорту"
 
-#: ../../tempcache/pages/import_model.html.twig:269
+#: ../../tempcache/pages/import_model.html.twig:271
 msgid "No field selected"
 msgstr "Поле не вибрано"
 
-#: ../../tempcache/pages/import_model.html.twig:269
+#: ../../tempcache/pages/import_model.html.twig:271
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
 "action."
@@ -6268,7 +6344,7 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:75
 #: ../../tempcache/pages/members_public_list.html.twig:63
-#: ../../tempcache/pages/members_public_gallery.html.twig:71
+#: ../../tempcache/pages/members_public_gallery.html.twig:60
 #, php-format
 msgid "%count member"
 msgid_plural "%count members"
@@ -6419,11 +6495,6 @@ msgstr "Члена не знайдено"
 #: ../../tempcache/pages/members_list.html.twig:1096
 msgid "Search title"
 msgstr "Заголовок пошуку"
-
-#: ../../tempcache/pages/members_list.html.twig:1167
-#: ../../tempcache/page.html.twig:170
-msgid "Existing mailing"
-msgstr "Наявна розсилка"
 
 #: ../../tempcache/pages/members_list.html.twig:1167
 msgid ""
@@ -6610,32 +6681,32 @@ msgstr "Вивантажити новий файл"
 
 #: ../../tempcache/pages/import.html.twig:259
 #: ../../tempcache/pages/preferences.html.twig:245
-#: ../../tempcache/pages/preferences.html.twig:1918
-#: ../../tempcache/components/forms/picture.html.twig:81
-#: ../../tempcache/components/dynamic_fields.html.twig:721
+#: ../../tempcache/pages/preferences.html.twig:1975
+#: ../../tempcache/components/forms/picture.html.twig:75
+#: ../../tempcache/components/dynamic_fields.html.twig:726
 #, fuzzy
 #| msgid "Choose an entry"
 msgid "Choose a file"
 msgstr "Виберіть запис"
 
-#: ../../tempcache/pages/import.html.twig:272
+#: ../../tempcache/pages/import.html.twig:273
 msgid "Upload file"
 msgstr "Вивантажити файл"
 
-#: ../../tempcache/pages/import.html.twig:285
+#: ../../tempcache/pages/import.html.twig:286
 msgid "Configure import model"
 msgstr "Налаштування моделі імпорту"
 
-#: ../../tempcache/pages/import.html.twig:311
-#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/import.html.twig:313
+#: ../../tempcache/pages/import.html.twig:324
 msgid "No file selected"
 msgstr "Файл не вибрано"
 
-#: ../../tempcache/pages/import.html.twig:311
+#: ../../tempcache/pages/import.html.twig:313
 msgid "Please make sure to select one file to import."
 msgstr "Виберіть один файл для імпорту."
 
-#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/import.html.twig:324
 msgid "Please make sure to select one file to upload."
 msgstr "Виберіть один файл для вивантаження."
 
@@ -6660,10 +6731,10 @@ msgstr "Редагувати вид оплати '%s'"
 #: ../../tempcache/pages/configuration_payment_types.html.twig:183
 #: ../../tempcache/pages/preferences.html.twig:186
 #: ../../tempcache/pages/preferences.html.twig:192
-#: ../../tempcache/pages/preferences.html.twig:1760
-#: ../../tempcache/pages/preferences.html.twig:1766
-#: ../../tempcache/pages/preferences.html.twig:1798
-#: ../../tempcache/pages/preferences.html.twig:1804
+#: ../../tempcache/pages/preferences.html.twig:1817
+#: ../../tempcache/pages/preferences.html.twig:1823
+#: ../../tempcache/pages/preferences.html.twig:1855
+#: ../../tempcache/pages/preferences.html.twig:1861
 #, php-format
 msgid "Translate '%s'"
 msgstr "Переклад \"%s\""
@@ -6829,7 +6900,6 @@ msgstr "Управляти вибраними членами"
 #: ../../tempcache/pages/configuration_core_lists.html.twig:55
 #: ../../tempcache/pages/charts.html.twig:56
 #: ../../tempcache/pages/advanced_search.html.twig:529
-#: ../../tempcache/pages/advanced_search.html.twig:1045
 #: ../../tempcache/components/forms/groups.html.twig:47
 msgid "This feature requires javascript."
 msgstr ""
@@ -6948,7 +7018,7 @@ msgstr ""
 "головній сторінці та в заголовку сторінок."
 
 #: ../../tempcache/pages/preferences.html.twig:202
-#: ../../tempcache/pages/preferences.html.twig:1875
+#: ../../tempcache/pages/preferences.html.twig:1932
 msgid "Logo:"
 msgstr "Логотип:"
 
@@ -6957,17 +7027,17 @@ msgid "Current logo"
 msgstr "Поточний логотип"
 
 #: ../../tempcache/pages/preferences.html.twig:243
-#: ../../tempcache/pages/preferences.html.twig:1916
-#: ../../tempcache/components/forms/picture.html.twig:79
-#: ../../tempcache/components/dynamic_fields.html.twig:719
+#: ../../tempcache/pages/preferences.html.twig:1973
+#: ../../tempcache/components/forms/picture.html.twig:73
+#: ../../tempcache/components/dynamic_fields.html.twig:724
 #, fuzzy
 #| msgid "Choose an entry"
 msgid "Choose another file"
 msgstr "Виберіть запис"
 
 #: ../../tempcache/pages/preferences.html.twig:260
-#: ../../tempcache/pages/preferences.html.twig:1933
-#: ../../tempcache/components/forms/picture.html.twig:96
+#: ../../tempcache/pages/preferences.html.twig:1990
+#: ../../tempcache/components/forms/picture.html.twig:53
 msgid "Delete image"
 msgstr "Видалити зображення"
 
@@ -7124,14 +7194,38 @@ msgid "Admin and staff only"
 msgstr "Лише адміністратори та співробітники"
 
 #: ../../tempcache/pages/preferences.html.twig:827
+#, fuzzy
+#| msgid "After member creation:"
+msgid "Force member picture ratio"
+msgstr "Після створення члена:"
+
+#: ../../tempcache/pages/preferences.html.twig:832
+msgid ""
+"If checked, the members's picture will be resized and cropped to the ratio "
+"selected below."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:843
+#, fuzzy
+#| msgid "Choose an entry"
+msgid "Choose the"
+msgstr "Виберіть запис"
+
+#: ../../tempcache/pages/preferences.html.twig:845
+#, fuzzy
+#| msgid "Select an action"
+msgid "Select a ratio"
+msgstr "Виберіть дію"
+
+#: ../../tempcache/pages/preferences.html.twig:884
 msgid "Self subscription enabled?"
 msgstr "Увімкнено самопідписку?"
 
-#: ../../tempcache/pages/preferences.html.twig:834
+#: ../../tempcache/pages/preferences.html.twig:891
 msgid "Post new contribution script URI"
 msgstr "Оприлюднити новий URI скрипта внеску"
 
-#: ../../tempcache/pages/preferences.html.twig:840
+#: ../../tempcache/pages/preferences.html.twig:897
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -7145,22 +7239,22 @@ msgstr ""
 "'<em>get://</em>' чи '<em>post://</em>' для викликів HTTP (префікс буде "
 "замінено на http:// в обох випадках)."
 
-#: ../../tempcache/pages/preferences.html.twig:852
+#: ../../tempcache/pages/preferences.html.twig:909
 msgid "RSS feed URL"
 msgstr "URL-адреса стрічки RSS"
 
-#: ../../tempcache/pages/preferences.html.twig:858
+#: ../../tempcache/pages/preferences.html.twig:915
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 "Уведіть повну URL-адресу RSS-стрічки. Вона відображатиметься на стільниці "
 "Galette."
 
-#: ../../tempcache/pages/preferences.html.twig:870
+#: ../../tempcache/pages/preferences.html.twig:927
 msgid "Galette base URL"
 msgstr "Основна URL-адреса Galette"
 
-#: ../../tempcache/pages/preferences.html.twig:876
+#: ../../tempcache/pages/preferences.html.twig:933
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
@@ -7168,39 +7262,39 @@ msgstr ""
 "Уведіть основну URL-адресу до вашого зразка Galette. Ви повинні лише змінити "
 "цей параметр, якщо поточна URL-адреса сторінки не є:<br>%galette_url"
 
-#: ../../tempcache/pages/preferences.html.twig:897
+#: ../../tempcache/pages/preferences.html.twig:954
 msgid "Show identifiers"
 msgstr "Показати ідентифікатори"
 
-#: ../../tempcache/pages/preferences.html.twig:902
+#: ../../tempcache/pages/preferences.html.twig:959
 msgid "Display database identifiers in related windows"
 msgstr "Відображення ідентифікаторів бази даних у відповідних вікнах"
 
-#: ../../tempcache/pages/preferences.html.twig:919
+#: ../../tempcache/pages/preferences.html.twig:976
 msgid "Default membership status:"
 msgstr "Типовий стан членства:"
 
-#: ../../tempcache/pages/preferences.html.twig:953
+#: ../../tempcache/pages/preferences.html.twig:1010
 msgid "Default membership extension:"
 msgstr "Типове розширення членства:"
 
-#: ../../tempcache/pages/preferences.html.twig:963
+#: ../../tempcache/pages/preferences.html.twig:1020
 msgid "(Months)"
 msgstr "(Місяців)"
 
-#: ../../tempcache/pages/preferences.html.twig:974
+#: ../../tempcache/pages/preferences.html.twig:1031
 msgid "Beginning of membership:"
 msgstr "Початок членства:"
 
-#: ../../tempcache/pages/preferences.html.twig:982
+#: ../../tempcache/pages/preferences.html.twig:1039
 msgid "(dd/mm)"
 msgstr "(дд/мм)"
 
-#: ../../tempcache/pages/preferences.html.twig:988
+#: ../../tempcache/pages/preferences.html.twig:1045
 msgid "Number of months offered:"
 msgstr "Кількість пропонованих місяців:"
 
-#: ../../tempcache/pages/preferences.html.twig:994
+#: ../../tempcache/pages/preferences.html.twig:1051
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
@@ -7208,7 +7302,7 @@ msgstr ""
 "Під час використання опції початку членства; ви можете запропонувати останні "
 "місяці року."
 
-#: ../../tempcache/pages/preferences.html.twig:996
+#: ../../tempcache/pages/preferences.html.twig:1053
 msgid ""
 "Let's say you offer last 2 months, and have a renewal on 31th of December. "
 "All created contributions in current year will be valid until this date, but "
@@ -7219,31 +7313,31 @@ msgstr ""
 "цієї дати, але починаючи з жовтня, вони будуть дійсні протягом всього "
 "наступного року."
 
-#: ../../tempcache/pages/preferences.html.twig:1026
+#: ../../tempcache/pages/preferences.html.twig:1083
 msgid "Can members create child?"
 msgstr "Чи можуть члени створити дочірнє?"
 
-#: ../../tempcache/pages/preferences.html.twig:1040
+#: ../../tempcache/pages/preferences.html.twig:1097
 msgid "Can group managers edit their groups?"
 msgstr "Чи можуть менеджери групи редагувати свої групи?"
 
-#: ../../tempcache/pages/preferences.html.twig:1054
+#: ../../tempcache/pages/preferences.html.twig:1111
 msgid "Can group managers create members?"
 msgstr "Чи можуть менеджери груп створювати учасників?"
 
-#: ../../tempcache/pages/preferences.html.twig:1068
+#: ../../tempcache/pages/preferences.html.twig:1125
 msgid "Can group managers edit members?"
 msgstr "Чи можуть менеджери груп редагувати учасників?"
 
-#: ../../tempcache/pages/preferences.html.twig:1082
+#: ../../tempcache/pages/preferences.html.twig:1139
 msgid "Can group managers send mailings?"
 msgstr "Чи можуть менеджери груп надсилати листи?"
 
-#: ../../tempcache/pages/preferences.html.twig:1096
+#: ../../tempcache/pages/preferences.html.twig:1153
 msgid "Can group managers do exports?"
 msgstr "Чи можуть менеджери груп здійснювати експорт?"
 
-#: ../../tempcache/pages/preferences.html.twig:1101
+#: ../../tempcache/pages/preferences.html.twig:1158
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
@@ -7251,16 +7345,16 @@ msgstr ""
 "Менеджерам груп буде дозволено експортувати учасників у форматі CSV, карток "
 "PDF, аркушів супроводу та груп PDF"
 
-#: ../../tempcache/pages/preferences.html.twig:1132
+#: ../../tempcache/pages/preferences.html.twig:1189
 msgid "Sender name:"
 msgstr "Ім'я відправника:"
 
-#: ../../tempcache/pages/preferences.html.twig:1142
+#: ../../tempcache/pages/preferences.html.twig:1199
 msgid "Sender Email:"
 msgstr "Е-пошта відправника:"
 
-#: ../../tempcache/pages/preferences.html.twig:1153
-#: ../../tempcache/pages/preferences.html.twig:1196
+#: ../../tempcache/pages/preferences.html.twig:1210
+#: ../../tempcache/pages/preferences.html.twig:1253
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
@@ -7268,28 +7362,28 @@ msgstr ""
 "(Ви можете ввести кілька повідомлень е-пошти, розділених комами. Перша "
 "адреса буде типовою.)"
 
-#: ../../tempcache/pages/preferences.html.twig:1159
+#: ../../tempcache/pages/preferences.html.twig:1216
 msgid "Reply-To Email:"
 msgstr "Е-пошта для відповіді:"
 
-#: ../../tempcache/pages/preferences.html.twig:1165
+#: ../../tempcache/pages/preferences.html.twig:1222
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
 "Залиште порожнім, щоб використовувати е-пошту відправника як адресу відповіді"
 
-#: ../../tempcache/pages/preferences.html.twig:1180
+#: ../../tempcache/pages/preferences.html.twig:1237
 msgid "Members administrator's Email:"
 msgstr "Е-пошта адміністратора членів:"
 
-#: ../../tempcache/pages/preferences.html.twig:1186
+#: ../../tempcache/pages/preferences.html.twig:1243
 msgid "Recipient of new online registation and edition emails"
 msgstr "Одержувач нових повідомлень е-пошти про реєстрацію та редагування"
 
-#: ../../tempcache/pages/preferences.html.twig:1209
+#: ../../tempcache/pages/preferences.html.twig:1266
 msgid "Send email to administrators?"
 msgstr "Надіслати повідомлення е-пошти адміністраторам?"
 
-#: ../../tempcache/pages/preferences.html.twig:1214
+#: ../../tempcache/pages/preferences.html.twig:1271
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
@@ -7297,11 +7391,11 @@ msgstr ""
 "Надсилає повідомлення е-пошти щоразу, коли новий член реєструється в мережі "
 "або редагує свій обліковий запис"
 
-#: ../../tempcache/pages/preferences.html.twig:1227
+#: ../../tempcache/pages/preferences.html.twig:1284
 msgid "Wrap emails text?"
 msgstr "Переносити текст е-пошти?"
 
-#: ../../tempcache/pages/preferences.html.twig:1232
+#: ../../tempcache/pages/preferences.html.twig:1289
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
@@ -7311,11 +7405,11 @@ msgstr ""
 "функцію, обов'язково загорніть текст самостійно. Запримітьте, що на поточне "
 "редагування розсилання зміни не вплинуть."
 
-#: ../../tempcache/pages/preferences.html.twig:1245
+#: ../../tempcache/pages/preferences.html.twig:1302
 msgid "Send email to members?"
 msgstr "Надіслати лист спізнілим членам?"
 
-#: ../../tempcache/pages/preferences.html.twig:1250
+#: ../../tempcache/pages/preferences.html.twig:1307
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
@@ -7323,63 +7417,63 @@ msgstr ""
 "Надсилає електронний лист кожного разу, коли картка члена або внесок були "
 "додані або відредаговані. Це можна вимкнути для кожного випадку."
 
-#: ../../tempcache/pages/preferences.html.twig:1263
+#: ../../tempcache/pages/preferences.html.twig:1320
 msgid "Activate HTML editor?"
 msgstr "Задіяти редактор HTML?"
 
-#: ../../tempcache/pages/preferences.html.twig:1268
+#: ../../tempcache/pages/preferences.html.twig:1325
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Чи слід задіяти редактор HTML під час завантаження сторінки?"
 
-#: ../../tempcache/pages/preferences.html.twig:1274
+#: ../../tempcache/pages/preferences.html.twig:1331
 msgid "Mail signature"
 msgstr "Поштовий підпис"
 
-#: ../../tempcache/pages/preferences.html.twig:1291
+#: ../../tempcache/pages/preferences.html.twig:1348
 msgid "Emailing method:"
 msgstr "Спосіб розсилання е-поштлю:"
 
-#: ../../tempcache/pages/preferences.html.twig:1303
+#: ../../tempcache/pages/preferences.html.twig:1360
 msgid "Emailing disabled"
 msgstr "Розсилання е-поштою вимкнено"
 
-#: ../../tempcache/pages/preferences.html.twig:1317
+#: ../../tempcache/pages/preferences.html.twig:1374
 msgid "PHP mail() function"
 msgstr "Функція PHP mail()"
 
-#: ../../tempcache/pages/preferences.html.twig:1331
+#: ../../tempcache/pages/preferences.html.twig:1388
 msgid "Using a SMTP server (slower)"
 msgstr "Використовувати сервер SMTP (повільніше)"
 
-#: ../../tempcache/pages/preferences.html.twig:1345
+#: ../../tempcache/pages/preferences.html.twig:1402
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Використання GMAIL як SMTP-сервера (повільніше)"
 
-#: ../../tempcache/pages/preferences.html.twig:1359
+#: ../../tempcache/pages/preferences.html.twig:1416
 msgid "Using Sendmail server"
 msgstr "Використовувати сервер Sendmail"
 
-#: ../../tempcache/pages/preferences.html.twig:1373
+#: ../../tempcache/pages/preferences.html.twig:1430
 msgid "Using QMAIL server"
 msgstr "Використовувати сервер QMAIL"
 
-#: ../../tempcache/pages/preferences.html.twig:1389
+#: ../../tempcache/pages/preferences.html.twig:1446
 msgid "Test email settings"
 msgstr "Перевірка налаштувань е-пошти"
 
-#: ../../tempcache/pages/preferences.html.twig:1397
+#: ../../tempcache/pages/preferences.html.twig:1454
 msgid "SMTP server:"
 msgstr "SMTP-сервер:"
 
-#: ../../tempcache/pages/preferences.html.twig:1407
+#: ../../tempcache/pages/preferences.html.twig:1464
 msgid "SMTP port:"
 msgstr "SMTP-порт:"
 
-#: ../../tempcache/pages/preferences.html.twig:1425
+#: ../../tempcache/pages/preferences.html.twig:1482
 msgid "Use SMTP authentication?"
 msgstr "Використовувати автентифікацію SMTP?"
 
-#: ../../tempcache/pages/preferences.html.twig:1430
+#: ../../tempcache/pages/preferences.html.twig:1487
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
@@ -7388,11 +7482,11 @@ msgstr ""
 "вказати ім'я користувача та пароль нижче. Для GMail автентифікація завжди "
 "буде увімкнена."
 
-#: ../../tempcache/pages/preferences.html.twig:1443
+#: ../../tempcache/pages/preferences.html.twig:1500
 msgid "Use TLS for SMTP?"
 msgstr "Використовувати TLS для SMTP?"
 
-#: ../../tempcache/pages/preferences.html.twig:1448
+#: ../../tempcache/pages/preferences.html.twig:1505
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -7400,11 +7494,11 @@ msgstr ""
 "Ви хочете використовувати можливості TLS сервера?<br>Для GMail це завжди "
 "буде увімкнено."
 
-#: ../../tempcache/pages/preferences.html.twig:1461
+#: ../../tempcache/pages/preferences.html.twig:1518
 msgid "Allow unsecure TLS?"
 msgstr "Дозволити незахищений TLS?"
 
-#: ../../tempcache/pages/preferences.html.twig:1466
+#: ../../tempcache/pages/preferences.html.twig:1523
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
@@ -7413,63 +7507,63 @@ msgstr ""
 "ваш сервер використовує самопідписаний сертифікат, а також у деяких інших "
 "випадках."
 
-#: ../../tempcache/pages/preferences.html.twig:1475
+#: ../../tempcache/pages/preferences.html.twig:1532
 msgid "SMTP (or GMail) user:"
 msgstr "Користувач SMTP (або GMail):"
 
-#: ../../tempcache/pages/preferences.html.twig:1485
+#: ../../tempcache/pages/preferences.html.twig:1542
 msgid "SMTP (or GMail) password:"
 msgstr "Пароль SMTP (або GMail) :"
 
-#: ../../tempcache/pages/preferences.html.twig:1515
-#: ../../tempcache/pages/preferences.html.twig:2056
+#: ../../tempcache/pages/preferences.html.twig:1572
+#: ../../tempcache/pages/preferences.html.twig:2113
 msgid "Vertical margins:"
 msgstr "Вертикальні поля:"
 
-#: ../../tempcache/pages/preferences.html.twig:1537
-#: ../../tempcache/pages/preferences.html.twig:2078
+#: ../../tempcache/pages/preferences.html.twig:1594
+#: ../../tempcache/pages/preferences.html.twig:2135
 msgid "Horizontal margins:"
 msgstr "Горизонтальні поля:"
 
-#: ../../tempcache/pages/preferences.html.twig:1559
-#: ../../tempcache/pages/preferences.html.twig:2122
+#: ../../tempcache/pages/preferences.html.twig:1616
+#: ../../tempcache/pages/preferences.html.twig:2179
 msgid "Horizontal spacing:"
 msgstr "Поземний інтервал:"
 
-#: ../../tempcache/pages/preferences.html.twig:1581
-#: ../../tempcache/pages/preferences.html.twig:2100
+#: ../../tempcache/pages/preferences.html.twig:1638
+#: ../../tempcache/pages/preferences.html.twig:2157
 msgid "Vertical spacing:"
 msgstr "Вертикальний інтервал:"
 
-#: ../../tempcache/pages/preferences.html.twig:1605
+#: ../../tempcache/pages/preferences.html.twig:1662
 msgid "Print border"
 msgstr "Друкувати межу"
 
-#: ../../tempcache/pages/preferences.html.twig:1610
+#: ../../tempcache/pages/preferences.html.twig:1667
 msgid "Check this box to print a grey border around each label."
 msgstr "Позначте цей пункт, щоб надрукувати сіру межу навколо кожної мітки."
 
-#: ../../tempcache/pages/preferences.html.twig:1624
+#: ../../tempcache/pages/preferences.html.twig:1681
 msgid "Label width:"
 msgstr "Ширина мітки:"
 
-#: ../../tempcache/pages/preferences.html.twig:1646
+#: ../../tempcache/pages/preferences.html.twig:1703
 msgid "Label height:"
 msgstr "Висота мітки:"
 
-#: ../../tempcache/pages/preferences.html.twig:1668
+#: ../../tempcache/pages/preferences.html.twig:1725
 msgid "Number of label columns:"
 msgstr "Кількість стовпців міток:"
 
-#: ../../tempcache/pages/preferences.html.twig:1687
+#: ../../tempcache/pages/preferences.html.twig:1744
 msgid "Number of label lines:"
 msgstr "Кількість рядків міток:"
 
-#: ../../tempcache/pages/preferences.html.twig:1706
+#: ../../tempcache/pages/preferences.html.twig:1763
 msgid "Font size:"
 msgstr "Розмір шрифту:"
 
-#: ../../tempcache/pages/preferences.html.twig:1731
+#: ../../tempcache/pages/preferences.html.twig:1788
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
@@ -7477,74 +7571,74 @@ msgstr ""
 "Кожна картка має ширину 75 мм і висоту 40 мм. Кожна сторінка містить 2 "
 "стовпчики та 6 рядків.<br/>Подвійні контрольні поля та проміжки;)"
 
-#: ../../tempcache/pages/preferences.html.twig:1740
+#: ../../tempcache/pages/preferences.html.twig:1797
 msgid "Short Text (Card Center):"
 msgstr "Короткий текст (Картковий центр):"
 
-#: ../../tempcache/pages/preferences.html.twig:1772
+#: ../../tempcache/pages/preferences.html.twig:1829
 msgid "(10 characters max)"
 msgstr "(Не більше 10 знаків)"
 
-#: ../../tempcache/pages/preferences.html.twig:1778
+#: ../../tempcache/pages/preferences.html.twig:1835
 msgid "Long Text (Bottom Line):"
 msgstr "Довгий текст (нижній рядок):"
 
-#: ../../tempcache/pages/preferences.html.twig:1810
+#: ../../tempcache/pages/preferences.html.twig:1867
 msgid "(65 characters max)"
 msgstr "(не більше 65 знаків)"
 
-#: ../../tempcache/pages/preferences.html.twig:1817
+#: ../../tempcache/pages/preferences.html.twig:1874
 msgid "Strip Text Color:"
 msgstr "Колір тексту смуги:"
 
-#: ../../tempcache/pages/preferences.html.twig:1825
-#: ../../tempcache/pages/preferences.html.twig:1839
-#: ../../tempcache/pages/preferences.html.twig:1853
-#: ../../tempcache/pages/preferences.html.twig:1867
+#: ../../tempcache/pages/preferences.html.twig:1882
+#: ../../tempcache/pages/preferences.html.twig:1896
+#: ../../tempcache/pages/preferences.html.twig:1910
+#: ../../tempcache/pages/preferences.html.twig:1924
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "Шістнадцяткове позначення кольорів: #RRGGBB"
 
-#: ../../tempcache/pages/preferences.html.twig:1831
+#: ../../tempcache/pages/preferences.html.twig:1888
 msgid "Active Member Color:"
 msgstr "Активний колір члена:"
 
-#: ../../tempcache/pages/preferences.html.twig:1845
+#: ../../tempcache/pages/preferences.html.twig:1902
 msgid "Board Members Color:"
 msgstr "Колір членів ради:"
 
-#: ../../tempcache/pages/preferences.html.twig:1859
+#: ../../tempcache/pages/preferences.html.twig:1916
 msgid "Honor Members Color:"
 msgstr "Колір почесних членів:"
 
-#: ../../tempcache/pages/preferences.html.twig:1891
+#: ../../tempcache/pages/preferences.html.twig:1948
 msgid "Current logo for printing"
 msgstr "Поточний логотип для друку"
 
-#: ../../tempcache/pages/preferences.html.twig:1956
+#: ../../tempcache/pages/preferences.html.twig:2013
 msgid "Allow members to print card ?"
 msgstr "Дозволити членам друкувати картку?"
 
-#: ../../tempcache/pages/preferences.html.twig:1970
+#: ../../tempcache/pages/preferences.html.twig:2027
 msgid "Show title ?"
 msgstr "Показувати заголовок?"
 
-#: ../../tempcache/pages/preferences.html.twig:1975
+#: ../../tempcache/pages/preferences.html.twig:2032
 msgid "(Show or not title in front of name)"
 msgstr "(Показувати заголовок перед іменем чи ні)"
 
-#: ../../tempcache/pages/preferences.html.twig:1981
+#: ../../tempcache/pages/preferences.html.twig:2038
 msgid "Address type:"
 msgstr "Тип адреси:"
 
-#: ../../tempcache/pages/preferences.html.twig:2027
+#: ../../tempcache/pages/preferences.html.twig:2084
 msgid "(Choose address printed below name)"
 msgstr "(Виберіть адресу, надруковану під назвою)"
 
-#: ../../tempcache/pages/preferences.html.twig:2033
+#: ../../tempcache/pages/preferences.html.twig:2090
 msgid "Year:"
 msgstr "Рік:"
 
-#: ../../tempcache/pages/preferences.html.twig:2039
+#: ../../tempcache/pages/preferences.html.twig:2096
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -7552,25 +7646,25 @@ msgstr ""
 "Ви можете ввести:<br>- рік,<br>- два роки зі скісною рискою як роздільником,"
 "<br>- рядок 'DEADLINE' для використання крайнього строку члена"
 
-#: ../../tempcache/pages/preferences.html.twig:2153
+#: ../../tempcache/pages/preferences.html.twig:2210
 msgid "Password length:"
 msgstr "Довжина пароля:"
 
-#: ../../tempcache/pages/preferences.html.twig:2159
+#: ../../tempcache/pages/preferences.html.twig:2216
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 "Щонайменша довжина пароля, необхідна для всіх облікових записів. Щонайменший "
 "розмір - 6."
 
-#: ../../tempcache/pages/preferences.html.twig:2178
+#: ../../tempcache/pages/preferences.html.twig:2235
 msgid "Enable password blacklists"
 msgstr "Увімкнути чорні списки паролів"
 
-#: ../../tempcache/pages/preferences.html.twig:2180
+#: ../../tempcache/pages/preferences.html.twig:2237
 msgid "Enable blacklists:"
 msgstr "Увімкнути чорні списки:"
 
-#: ../../tempcache/pages/preferences.html.twig:2185
+#: ../../tempcache/pages/preferences.html.twig:2242
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -7579,71 +7673,71 @@ msgstr ""
 "неможливим. Список надається разом з Galette, але ви можете додати свій "
 "власний."
 
-#: ../../tempcache/pages/preferences.html.twig:2191
+#: ../../tempcache/pages/preferences.html.twig:2248
 msgid "Enforce password strength"
 msgstr "Посилення надійності паролю"
 
-#: ../../tempcache/pages/preferences.html.twig:2193
+#: ../../tempcache/pages/preferences.html.twig:2250
 msgid "Password strength:"
 msgstr "Надійність паролю:"
 
-#: ../../tempcache/pages/preferences.html.twig:2204
+#: ../../tempcache/pages/preferences.html.twig:2261
 msgid "None (default)"
 msgstr "Немає (типово)"
 
-#: ../../tempcache/pages/preferences.html.twig:2214
-#: ../../tempcache/pages/preferences.html.twig:2265
+#: ../../tempcache/pages/preferences.html.twig:2271
+#: ../../tempcache/pages/preferences.html.twig:2322
 msgid "Weak"
 msgstr "Слабкий"
 
-#: ../../tempcache/pages/preferences.html.twig:2224
-#: ../../tempcache/pages/preferences.html.twig:2271
+#: ../../tempcache/pages/preferences.html.twig:2281
+#: ../../tempcache/pages/preferences.html.twig:2328
 msgid "Medium"
 msgstr "Середній"
 
-#: ../../tempcache/pages/preferences.html.twig:2234
-#: ../../tempcache/pages/preferences.html.twig:2277
+#: ../../tempcache/pages/preferences.html.twig:2291
+#: ../../tempcache/pages/preferences.html.twig:2334
 msgid "Strong"
 msgstr "Сильний"
 
-#: ../../tempcache/pages/preferences.html.twig:2244
+#: ../../tempcache/pages/preferences.html.twig:2301
 msgid "Very strong"
 msgstr "Дуже сильний"
 
-#: ../../tempcache/pages/preferences.html.twig:2250
+#: ../../tempcache/pages/preferences.html.twig:2307
 msgid "Enforce minimal password strength for all password."
 msgstr "Забезпечте щонайменшу надійність пароля для всіх паролів."
 
-#: ../../tempcache/pages/preferences.html.twig:2254
+#: ../../tempcache/pages/preferences.html.twig:2311
 msgid "Levels are:"
 msgstr "Рівні:"
 
-#: ../../tempcache/pages/preferences.html.twig:2261
+#: ../../tempcache/pages/preferences.html.twig:2318
 msgid "for no strength enforcement"
 msgstr "без примусового виконання"
 
-#: ../../tempcache/pages/preferences.html.twig:2267
+#: ../../tempcache/pages/preferences.html.twig:2324
 msgid "require at least one matched rule"
 msgstr "вимагає принаймні одного відповідного правила"
 
-#: ../../tempcache/pages/preferences.html.twig:2273
+#: ../../tempcache/pages/preferences.html.twig:2330
 msgid "require at least two matched rules"
 msgstr "вимагає принаймні двох відповідних правил"
 
-#: ../../tempcache/pages/preferences.html.twig:2279
+#: ../../tempcache/pages/preferences.html.twig:2336
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "вимагає принаймні трьох відповідних правил (пораджено для більшості випадків)"
 
-#: ../../tempcache/pages/preferences.html.twig:2283
+#: ../../tempcache/pages/preferences.html.twig:2340
 msgid "Very Strong"
 msgstr "Дуже сильний"
 
-#: ../../tempcache/pages/preferences.html.twig:2285
+#: ../../tempcache/pages/preferences.html.twig:2342
 msgid "requires all rules."
 msgstr "вимагає всіх правил."
 
-#: ../../tempcache/pages/preferences.html.twig:2290
+#: ../../tempcache/pages/preferences.html.twig:2347
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
@@ -7651,7 +7745,7 @@ msgstr ""
 "Правила включають знаки нижнього регістру, великого регістру, цифр та "
 "спеціальних символів."
 
-#: ../../tempcache/pages/preferences.html.twig:2294
+#: ../../tempcache/pages/preferences.html.twig:2351
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
@@ -7659,24 +7753,24 @@ msgstr ""
 "Запримітьте, що при будь-якому рівні дотримання користувач не може "
 "використовувати свої особисті відомості (ім'я, логін, ...) в якості пароля."
 
-#: ../../tempcache/pages/preferences.html.twig:2302
+#: ../../tempcache/pages/preferences.html.twig:2359
 msgid "Test a password:"
 msgstr "Перевірка пароля:"
 
-#: ../../tempcache/pages/preferences.html.twig:2308
+#: ../../tempcache/pages/preferences.html.twig:2365
 msgid "Test a password with current selected values."
 msgstr "Перевірка пароля з поточними вибраними значеннями."
 
-#: ../../tempcache/pages/preferences.html.twig:2310
+#: ../../tempcache/pages/preferences.html.twig:2367
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr "Не забудьте зберегти свої налаштування, якщо задоволені результатом ;)"
 
-#: ../../tempcache/pages/preferences.html.twig:2489
+#: ../../tempcache/pages/preferences.html.twig:2550
 msgid "Enter the email adress"
 msgstr "Уведіть адресу е-пошти"
 
-#: ../../tempcache/pages/preferences.html.twig:2521
+#: ../../tempcache/pages/preferences.html.twig:2582
 msgid "An error occurred sending test email :("
 msgstr ""
 "Сталася помилка під час надсилання перевіркового повідомлення е-пошти :("
@@ -7924,11 +8018,17 @@ msgstr "Змінення пароля"
 msgid "Show transactions since"
 msgstr "Показати перекази з"
 
-#: ../../tempcache/pages/transactions_list.html.twig:146
+#: ../../tempcache/pages/transactions_list.html.twig:157
+#, fuzzy
+#| msgid "Show all members transactions"
+msgid "Show all your transactions"
+msgstr "Показати всі перекази членів"
+
+#: ../../tempcache/pages/transactions_list.html.twig:163
 msgid "Show all members transactions"
 msgstr "Показати всі перекази членів"
 
-#: ../../tempcache/pages/transactions_list.html.twig:207
+#: ../../tempcache/pages/transactions_list.html.twig:228
 #, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
@@ -7936,36 +8036,35 @@ msgstr[0] "%count переказ"
 msgstr[1] "%count перекази"
 msgstr[2] "%count переказів"
 
-#: ../../tempcache/pages/transactions_list.html.twig:271
-#: ../../tempcache/pages/transactions_list.html.twig:427
+#: ../../tempcache/pages/transactions_list.html.twig:276
 msgid "Originator"
 msgstr "Автор"
 
-#: ../../tempcache/pages/transactions_list.html.twig:334
+#: ../../tempcache/pages/transactions_list.html.twig:360
 msgid "Transaction %id"
 msgstr "Переказ %id"
 
-#: ../../tempcache/pages/transactions_list.html.twig:382
+#: ../../tempcache/pages/transactions_list.html.twig:393
 msgid "Show only '%name' transactions"
 msgstr "Показати перекази лише від '%name'"
 
-#: ../../tempcache/pages/transactions_list.html.twig:491
+#: ../../tempcache/pages/transactions_list.html.twig:452
 msgid "Edit transaction #%id"
 msgstr "Змінити переказ #%id"
 
-#: ../../tempcache/pages/transactions_list.html.twig:504
+#: ../../tempcache/pages/transactions_list.html.twig:465
 msgid "Remove transaction #%id"
 msgstr "Видалити переказ #%id"
 
-#: ../../tempcache/pages/transactions_list.html.twig:524
+#: ../../tempcache/pages/transactions_list.html.twig:485
 msgid "no transaction"
 msgstr "немає переказів"
 
-#: ../../tempcache/pages/transactions_list.html.twig:551
+#: ../../tempcache/pages/transactions_list.html.twig:512
 msgid "Completely dispatched transaction"
 msgstr "Повністю надісланий переказ"
 
-#: ../../tempcache/pages/transactions_list.html.twig:558
+#: ../../tempcache/pages/transactions_list.html.twig:519
 msgid "Uncomplete dispatched transaction"
 msgstr "Не повністю надісланий переказ"
 
@@ -8016,7 +8115,7 @@ msgid "Total contributions for the month"
 msgstr "Всього внесків за місяць"
 
 #: ../../tempcache/pages/members_public_list.html.twig:114
-#: ../../tempcache/pages/members_public_gallery.html.twig:55
+#: ../../tempcache/pages/members_public_gallery.html.twig:79
 msgid ""
 "This page shows only members who have choosen to be visible on the public "
 "lists and are up-to-date within their contributions. If you want your "
@@ -8029,7 +8128,7 @@ msgstr ""
 "видимим в списку членів\""
 
 #: ../../tempcache/pages/members_public_list.html.twig:248
-#: ../../tempcache/pages/members_public_gallery.html.twig:196
+#: ../../tempcache/pages/members_public_gallery.html.twig:151
 msgid "No member to show"
 msgstr "Немає члена для показу"
 
@@ -8104,8 +8203,6 @@ msgstr "У будь-якій з вибраних груп"
 
 #: ../../tempcache/pages/advanced_search.html.twig:626
 #: ../../tempcache/pages/advanced_search.html.twig:632
-#: ../../tempcache/pages/advanced_search.html.twig:1495
-#: ../../tempcache/pages/advanced_search.html.twig:1501
 msgid "Remove criteria"
 msgstr "Вилучити умови"
 
@@ -8113,66 +8210,37 @@ msgstr "Вилучити умови"
 msgid "Within contributions"
 msgstr "У межах внесків"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1052
-msgid "Free search"
-msgstr "Вільний пошук"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1060
-#: ../../tempcache/pages/advanced_search.html.twig:1066
-msgid "Add new free search criteria"
-msgstr "Додати нові вільні умови пошуку"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1103
-msgid "or"
-msgstr "або"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1109
-msgid "Select a field"
-msgstr "Вибрати поле"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1272
-#: ../../tempcache/pages/advanced_search.html.twig:1350
-#: ../../tempcache/pages/advanced_search.html.twig:1394
-#: ../../tempcache/pages/advanced_search.html.twig:1425
-#: ../../tempcache/pages/advanced_search.html.twig:1558
+#: ../../tempcache/pages/advanced_search.html.twig:1083
 msgid "is"
 msgstr "є"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1282
-#: ../../tempcache/pages/advanced_search.html.twig:1445
-#: ../../tempcache/pages/advanced_search.html.twig:1578
-msgid "is not"
-msgstr "не"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1360
-#: ../../tempcache/pages/advanced_search.html.twig:1618
-msgid "before"
-msgstr "перед"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1370
-#: ../../tempcache/pages/advanced_search.html.twig:1628
-msgid "after"
-msgstr "після"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1435
-#: ../../tempcache/pages/advanced_search.html.twig:1568
+#: ../../tempcache/pages/advanced_search.html.twig:1093
 msgid "contains"
 msgstr "містить"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1455
-#: ../../tempcache/pages/advanced_search.html.twig:1588
+#: ../../tempcache/pages/advanced_search.html.twig:1103
+msgid "is not"
+msgstr "не"
+
+#: ../../tempcache/pages/advanced_search.html.twig:1113
 msgid "do not contains"
 msgstr "не містить"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1465
-#: ../../tempcache/pages/advanced_search.html.twig:1598
+#: ../../tempcache/pages/advanced_search.html.twig:1123
 msgid "starts with"
 msgstr "починається з"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1475
-#: ../../tempcache/pages/advanced_search.html.twig:1608
+#: ../../tempcache/pages/advanced_search.html.twig:1133
 msgid "ends with"
 msgstr "закінчується на"
+
+#: ../../tempcache/pages/advanced_search.html.twig:1143
+msgid "before"
+msgstr "перед"
+
+#: ../../tempcache/pages/advanced_search.html.twig:1153
+msgid "after"
+msgstr "після"
 
 #: ../../tempcache/pages/500.html.twig:54
 msgid "Application error"
@@ -8380,29 +8448,29 @@ msgstr "Не вказано"
 msgid "Picture:"
 msgstr "Зображення:"
 
-#: ../../tempcache/components/dynamic_fields.html.twig:206
+#: ../../tempcache/components/dynamic_fields.html.twig:209
 msgid "Enter as many occurences you want."
 msgstr "Уведіть скільки завгодно випадків."
 
-#: ../../tempcache/components/dynamic_fields.html.twig:231
+#: ../../tempcache/components/dynamic_fields.html.twig:234
 #, php-format
 msgid "Enter up to %count more occurences."
 msgstr "Уведіть до %count зустрічей."
 
-#: ../../tempcache/components/dynamic_fields.html.twig:293
+#: ../../tempcache/components/dynamic_fields.html.twig:296
 #, php-format
 msgid "Enter up to %count more occurrences."
 msgstr "Уведіть до %count зустрічей."
 
-#: ../../tempcache/components/dynamic_fields.html.twig:540
+#: ../../tempcache/components/dynamic_fields.html.twig:545
 msgid "Select an option"
 msgstr "Виберіть опцію"
 
-#: ../../tempcache/components/dynamic_fields.html.twig:762
+#: ../../tempcache/components/dynamic_fields.html.twig:767
 msgid "delete"
 msgstr "видалити"
 
-#: ../../tempcache/public_page.html.twig:178 ../../tempcache/page.html.twig:205
+#: ../../tempcache/public_page.html.twig:177 ../../tempcache/page.html.twig:201
 msgid "Back to top"
 msgstr "На початок"
 
@@ -8414,17 +8482,21 @@ msgstr "Зміст загальнодоступної сторінки"
 msgid "Ajax page content"
 msgstr "Вміст сторінки Ajax"
 
-#: ../../tempcache/page.html.twig:163
-msgid ""
-"A mailing exists in the current session. Click here if you want to resume or "
-"cancel it."
-msgstr ""
-"У поточному сеансі наявне розсилання. Натисніть тут, якщо ви хочете "
-"відновити або скасувати його."
-
-#: ../../tempcache/page.html.twig:231
+#: ../../tempcache/page.html.twig:228
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#~ msgid "Free search"
+#~ msgstr "Вільний пошук"
+
+#~ msgid "Add new free search criteria"
+#~ msgstr "Додати нові вільні умови пошуку"
+
+#~ msgid "or"
+#~ msgstr "або"
+
+#~ msgid "Select a field"
+#~ msgstr "Вибрати поле"
 
 #~ msgid "%A, %B %#d%O %Y"
 #~ msgstr "%A, %B %#d%O %Y"

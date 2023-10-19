@@ -13,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2023-10-03 21:03+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-12 18:02+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -143,7 +143,7 @@ msgstr ""
 "està desactivat a les preferències."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:280
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:275
 msgid "No member selected for mailing!"
 msgstr "No s'ha seleccionat cap membre per contactar per correu!"
 
@@ -151,33 +151,33 @@ msgstr "No s'ha seleccionat cap membre per contactar per correu!"
 msgid "Mailing"
 msgstr "Enviament de correu electrònic"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:299
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:294
 msgid "Please type an object for the message."
 msgstr "Escriviu un objecte per al missatge."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:305
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:300
 msgid "Please enter a message."
 msgstr "Introduïu un missatge."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:402
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:397
 msgid "Mailing has been successfully sent!"
 msgstr "El correu s'ha enviat correctament!"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:425
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:420
 msgid "Mailing has been successfully saved."
 msgstr "El correu s'ha desat correctament."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:507
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:502
 #: ../lib/Galette/Core/Galette.php:575
 msgid "Mailings"
 msgstr "Correus electrònics"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:658
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:653
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Elimina el mailing #%1$s"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:740
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:735
 #: ../../tempcache/pages/mailing_form.html.twig:559
 #: ../../tempcache/pages/mailings_list.html.twig:463
 msgid "Mailing preview"
@@ -192,7 +192,7 @@ msgid "An error occurred adding dynamic field :("
 msgstr "S'ha produït un error en afegir un camp dinàmic:("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:152
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:502
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:528
 msgid "Dynamic field has been successfully stored!"
 msgstr "El camp dinàmic ha estat emmagatzemat amb èxit!"
 
@@ -209,38 +209,38 @@ msgstr "Configuració de camps dinàmics"
 msgid "You do not have permission for requested URL."
 msgstr "No teniu permís per a l'URL sol·licitat."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:386
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:412
 msgid "The file does not exists or cannot be read :("
 msgstr "El fitxer no existeix o no es pot llegir :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:421
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:447
 msgid "Unable to retrieve field information."
 msgstr "No s'ha pogut recuperar la informació del camp."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:430
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:456
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:206
 msgid "Edit field"
 msgstr "Editar el camp"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:488
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:514
 msgid "An error occurred editing dynamic field :("
 msgstr "S'ha produït un error en editar un camp dinàmic:("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:587
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:589
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:613
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:615
 msgid "Requested field does not exists!"
 msgstr "El camp sol·licitat no existeix!"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:593
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:619
 #, php-format
 msgid "Remove dynamic field %1$s"
 msgstr "Elimina el camp dinàmic %1$s"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:638
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:664
 msgid "Field has been successfully moved"
 msgstr "El camp s'ha mogut exitosament"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:643
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:669
 msgid "An error occurred moving field :("
 msgstr "S'ha produït un error en moure el camp :("
 
@@ -348,18 +348,18 @@ msgstr "Hi ha hagut un error en afegir un membre als seus grups."
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Hi ha hagut un error afegint el membre als seus grups com a gestor."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1606
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1612
 #: ../lib/Galette/Controllers/GaletteController.php:323
 #: ../lib/Galette/Controllers/GaletteController.php:355
 msgid "Delete failed"
 msgstr "Ha fallat la supressió"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1752
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1758
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Elimina el membre %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1761
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1767
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Esteu a punt d'eliminar %count membres."
@@ -709,17 +709,17 @@ msgstr "Descarrega el document"
 msgid "Required argument not present!"
 msgstr "L'argument requerit no és present!"
 
-#: ../lib/Galette/Controllers/AjaxController.php:142
+#: ../lib/Galette/Controllers/AjaxController.php:147
 #, fuzzy
 msgid "Member photo has been changed."
 msgstr "S'ha canviat la foto de membre."
 
-#: ../lib/Galette/Controllers/AjaxController.php:275
+#: ../lib/Galette/Controllers/AjaxController.php:280
 #, fuzzy
 msgid "Telemetry information has been sent. Thank you!"
 msgstr "S'ha enviat informació de telemetria. Gràcies!"
 
-#: ../lib/Galette/Controllers/AjaxController.php:301
+#: ../lib/Galette/Controllers/AjaxController.php:306
 #, fuzzy
 msgid "Thank you for registering!"
 msgstr "Gràcies per registrar-vos!"
@@ -731,12 +731,12 @@ msgstr "Gràcies per registrar-vos!"
 msgid "Removal has not been confirmed!"
 msgstr "La supressió no s'ha confirmat!"
 
-#: ../lib/Galette/Controllers/CrudController.php:291
+#: ../lib/Galette/Controllers/CrudController.php:289
 #, fuzzy
 msgid "Successfully deleted!"
 msgstr "S'ha suprimit correctament!"
 
-#: ../lib/Galette/Controllers/CrudController.php:303
+#: ../lib/Galette/Controllers/CrudController.php:301
 #, fuzzy
 msgid "An error occurred trying to delete :("
 msgstr "Hi ha hagut un error en intentar suprimir ("
@@ -1068,13 +1068,13 @@ msgstr ""
 "No hi ha traducció per '%s'!<br>Si us plau ompliu i envieu el formulari "
 "anterior per crear-lo."
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:203
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:228
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:202
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:227
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 "Hi ha hagut un error en desar l'etiqueta `%label` per al llenguatge `%lang`"
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:244
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:243
 #, fuzzy
 msgid "Labels has been sucessfully translated!"
 msgstr "Les etiquetes s'han traduït amb sucessió!"
@@ -1366,33 +1366,33 @@ msgstr "Quant és el preu de la retirada de l'u per cent2$ a l'u per cent1$?"
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr "Tinc un $Galettes que en dono un $2$. Quantes Galettes tinc?"
 
-#: ../lib/Galette/Core/Pagination.php:278
+#: ../lib/Galette/Core/Pagination.php:279
 #, fuzzy
 msgid "First page"
 msgstr "Primera pàgina"
 
-#: ../lib/Galette/Core/Pagination.php:284
+#: ../lib/Galette/Core/Pagination.php:285
 msgid "Previous page (%i)"
 msgstr "Pàgina anterior (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:296
+#: ../lib/Galette/Core/Pagination.php:297
 msgid "Current page (%i)"
 msgstr "Pàgina actual (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:304
+#: ../lib/Galette/Core/Pagination.php:305
 #, fuzzy
 msgid "Page %i"
 msgstr "Percenti"
 
-#: ../lib/Galette/Core/Pagination.php:312
+#: ../lib/Galette/Core/Pagination.php:313
 msgid "Next page (%i)"
 msgstr "Pàgina següent (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:318
+#: ../lib/Galette/Core/Pagination.php:319
 msgid "Last page (%i)"
 msgstr "Última pàgina (%i)"
 
-#: ../lib/Galette/Core/Pagination.php:330
+#: ../lib/Galette/Core/Pagination.php:334
 msgid "All"
 msgstr "Tot"
 
@@ -1512,8 +1512,8 @@ msgid "View and filter transactions"
 msgstr "Visualitza i filtra transaccions"
 
 #: ../lib/Galette/Core/Galette.php:239
-#: ../../tempcache/pages/contributions_list.html.twig:245
-#: ../../tempcache/pages/contributions_list.html.twig:344
+#: ../../tempcache/pages/contributions_list.html.twig:262
+#: ../../tempcache/pages/contributions_list.html.twig:361
 #: ../../tempcache/pages/member_show.html.twig:192
 #, fuzzy
 msgid "Add a membership fee"
@@ -1525,8 +1525,8 @@ msgid "Add new membership fee in database"
 msgstr "Afegeix una tarifa de pertinença nova a la base de dades"
 
 #: ../lib/Galette/Core/Galette.php:247
-#: ../../tempcache/pages/contributions_list.html.twig:259
-#: ../../tempcache/pages/contributions_list.html.twig:357
+#: ../../tempcache/pages/contributions_list.html.twig:276
+#: ../../tempcache/pages/contributions_list.html.twig:374
 #: ../../tempcache/pages/member_show.html.twig:207
 #, fuzzy
 msgid "Add a donation"
@@ -1538,8 +1538,8 @@ msgid "Add new donation in database"
 msgstr "Afegeix una donació nova a la base de dades"
 
 #: ../lib/Galette/Core/Galette.php:255
-#: ../../tempcache/pages/transactions_list.html.twig:183
-#: ../../tempcache/pages/transactions_list.html.twig:234
+#: ../../tempcache/pages/transactions_list.html.twig:204
+#: ../../tempcache/pages/transactions_list.html.twig:255
 #, fuzzy
 msgid "Add a transaction"
 msgstr "Afegeix una transacció"
@@ -1797,34 +1797,34 @@ msgstr "Genera targetes de membre"
 msgid "Export as CSV"
 msgstr "Exporta com a CSV"
 
-#: ../lib/Galette/Core/Preferences.php:529
+#: ../lib/Galette/Core/Preferences.php:533
 #, fuzzy
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Heu d'indicar un nom de remitent per a correus electrònics!"
 
-#: ../lib/Galette/Core/Preferences.php:535
+#: ../lib/Galette/Core/Preferences.php:539
 #, fuzzy
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Heu d'indicar una adreça de correu electrònic que Galette hauria "
 "d'utilitzar per enviar correus electrònics!"
 
-#: ../lib/Galette/Core/Preferences.php:542
+#: ../lib/Galette/Core/Preferences.php:546
 #, fuzzy
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Heu d'indicar el servidor SMTP que voleu utilitzar!"
 
-#: ../lib/Galette/Core/Preferences.php:554
+#: ../lib/Galette/Core/Preferences.php:558
 #, fuzzy
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- Heu de proporcionar un inici de sessió per a l'autenticació SMTP."
 
-#: ../lib/Galette/Core/Preferences.php:560
+#: ../lib/Galette/Core/Preferences.php:564
 #, fuzzy
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- Heu de proporcionar una contrasenya per a l'autenticació SMTP."
 
-#: ../lib/Galette/Core/Preferences.php:572
+#: ../lib/Galette/Core/Preferences.php:576
 #, fuzzy
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
@@ -1833,13 +1833,13 @@ msgstr ""
 "- L'extensió per defecte de la pertinença i el començament de la pertinença "
 "són mútuament excloents."
 
-#: ../lib/Galette/Core/Preferences.php:581
+#: ../lib/Galette/Core/Preferences.php:585
 #, fuzzy
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 "- Oferir mesos només és compatible amb el començament de la pertinença."
 
-#: ../lib/Galette/Core/Preferences.php:590
+#: ../lib/Galette/Core/Preferences.php:594
 #: ../lib/Galette/Entity/Adherent.php:1190
 #: ../lib/Galette/Entity/Transaction.php:386
 #: ../lib/Galette/Entity/Contribution.php:531
@@ -1847,73 +1847,73 @@ msgstr ""
 msgid "- Mandatory field %field empty."
 msgstr "- El camp obligatori està buit."
 
-#: ../lib/Galette/Core/Preferences.php:598 ../webroot/installer.php:185
+#: ../lib/Galette/Core/Preferences.php:602 ../webroot/installer.php:185
 #, fuzzy
 msgid "Passwords mismatch"
 msgstr "Les contrasenyes no coincideixen"
 
-#: ../lib/Galette/Core/Preferences.php:611
+#: ../lib/Galette/Core/Preferences.php:615
 #, fuzzy
 msgid "You have to select a staff member"
 msgstr "Heu de seleccionar un membre del personal"
 
-#: ../lib/Galette/Core/Preferences.php:666
+#: ../lib/Galette/Core/Preferences.php:670
 #, fuzzy, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Adreça de correu electrònic invàlida"
 
-#: ../lib/Galette/Core/Preferences.php:680
+#: ../lib/Galette/Core/Preferences.php:684
 #, fuzzy
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- El nom d'usuari s'ha de compondre d'almenys 4 caràcters!"
 
-#: ../lib/Galette/Core/Preferences.php:684
+#: ../lib/Galette/Core/Preferences.php:688
 #, fuzzy
 msgid "- This username is already used by another member !"
 msgstr "- Aquest nom d'usuari ja l'utilitza un altre membre!"
 
-#: ../lib/Galette/Core/Preferences.php:691
-#: ../lib/Galette/Core/Preferences.php:712
+#: ../lib/Galette/Core/Preferences.php:695
+#: ../lib/Galette/Core/Preferences.php:716
 #, fuzzy
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Els números i les mesures han de ser enters!"
 
-#: ../lib/Galette/Core/Preferences.php:746
+#: ../lib/Galette/Core/Preferences.php:750
 #, fuzzy
 msgid "- Invalid number of months of membership extension."
 msgstr "- El nombre de mesos d'extensió de la pertinença no és vàlid."
 
-#: ../lib/Galette/Core/Preferences.php:752
+#: ../lib/Galette/Core/Preferences.php:756
 #, fuzzy
 msgid "- Invalid format of beginning of membership."
 msgstr "- Format no vàlid de l'inici de la pertinença."
 
-#: ../lib/Galette/Core/Preferences.php:756
+#: ../lib/Galette/Core/Preferences.php:760
 #, fuzzy
 msgid "- Invalid date for beginning of membership."
 msgstr "- Data no vàlida per començar la pertinença."
 
-#: ../lib/Galette/Core/Preferences.php:762
+#: ../lib/Galette/Core/Preferences.php:766
 #, fuzzy
 msgid "- Invalid number of offered months."
 msgstr "- El nombre de mesos oferts no és vàlid."
 
-#: ../lib/Galette/Core/Preferences.php:767
+#: ../lib/Galette/Core/Preferences.php:771
 #, fuzzy
 msgid "- Invalid year for cards."
 msgstr "- Any invàlid per a targetes."
 
-#: ../lib/Galette/Core/Preferences.php:884
+#: ../lib/Galette/Core/Preferences.php:888
 #, fuzzy
 msgid "%name association's %status"
 msgstr "percentatge de l'associació"
 
-#: ../lib/Galette/Core/Preferences.php:1120
+#: ../lib/Galette/Core/Preferences.php:1124
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1139
-#: ../lib/Galette/Core/Preferences.php:1155 ../lib/Galette/IO/Csv.php:115
+#: ../lib/Galette/Core/Preferences.php:1143
+#: ../lib/Galette/Core/Preferences.php:1159 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Entity/Texts.php:214
 #: ../../tempcache/pages/history.html.twig:323
 #: ../../tempcache/pages/mailings_list.html.twig:274
@@ -1921,30 +1921,30 @@ msgstr ""
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d His"
 
-#: ../lib/Galette/Core/Preferences.php:1141
+#: ../lib/Galette/Core/Preferences.php:1145
 #, fuzzy
 msgid "Never"
 msgstr "Mai"
 
-#: ../lib/Galette/Core/Preferences.php:1179
+#: ../lib/Galette/Core/Preferences.php:1183
 #, fuzzy
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
 "La configuració de les targetes actuals pot superar l'amplada de pàgina!"
 
-#: ../lib/Galette/Core/Preferences.php:1190
+#: ../lib/Galette/Core/Preferences.php:1194
 #, fuzzy
 msgid "Current cards configuration may exceed page height!"
 msgstr ""
 "La configuració de les targetes actuals pot superar l'alçada de la pàgina!"
 
-#: ../lib/Galette/Core/Preferences.php:1216
+#: ../lib/Galette/Core/Preferences.php:1220
 #: ../lib/Galette/Features/Replacements.php:792
 #, fuzzy
 msgid "Main information"
 msgstr "Informació principal"
 
-#: ../lib/Galette/Core/Preferences.php:1223
+#: ../lib/Galette/Core/Preferences.php:1227
 #: ../../tempcache/elements/display_socials.html.twig:45
 #: ../../tempcache/elements/edit_socials.html.twig:56
 #: ../../tempcache/pages/preferences.html.twig:69
@@ -1991,7 +1991,7 @@ msgstr "El mòdul no existeix!"
 msgid "File not found!"
 msgstr "No s'ha trobat el fitxer!"
 
-#: ../lib/Galette/Core/Picture.php:891
+#: ../lib/Galette/Core/Picture.php:1014
 #, fuzzy
 msgid "An SQL error has occurred."
 msgstr "Hi ha hagut un error SQL."
@@ -2012,11 +2012,11 @@ msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "No es pot eliminar un membre que encara té dependències (mailings)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Repository/Members.php:1396
-#: ../lib/Galette/Repository/Members.php:1400
-#: ../lib/Galette/Repository/Members.php:1503
-#: ../lib/Galette/Repository/Members.php:1507
-#: ../lib/Galette/Util/Password.php:268 ../lib/Galette/IO/MembersCsv.php:183
+#: ../lib/Galette/Repository/Members.php:1395
+#: ../lib/Galette/Repository/Members.php:1399
+#: ../lib/Galette/Repository/Members.php:1502
+#: ../lib/Galette/Repository/Members.php:1506
+#: ../lib/Galette/Util/Password.php:267 ../lib/Galette/IO/MembersCsv.php:183
 #: ../lib/Galette/IO/MembersCsv.php:195 ../lib/Galette/IO/MembersCsv.php:207
 #: ../lib/Galette/IO/MembersCsv.php:219
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:90
@@ -2049,15 +2049,15 @@ msgstr "No es pot eliminar un membre que encara té dependències (mailings)"
 #: ../lib/Galette/Entity/Contribution.php:1359
 #: ../lib/Galette/Entity/ImportModel.php:215
 #: ../lib/Galette/Entity/SavedSearch.php:274
-#: ../lib/Galette/Entity/Group.php:642
+#: ../lib/Galette/Entity/Group.php:636
 #: ../lib/Galette/Filters/TransactionsList.php:144
 #: ../lib/Galette/Filters/TransactionsList.php:245
 #: ../lib/Galette/Filters/TransactionsList.php:254
 #: ../lib/Galette/Filters/TransactionsList.php:283
-#: ../lib/Galette/Filters/HistoryList.php:157
-#: ../lib/Galette/Filters/HistoryList.php:253
-#: ../lib/Galette/Filters/HistoryList.php:262
-#: ../lib/Galette/Filters/HistoryList.php:291
+#: ../lib/Galette/Filters/HistoryList.php:155
+#: ../lib/Galette/Filters/HistoryList.php:251
+#: ../lib/Galette/Filters/HistoryList.php:260
+#: ../lib/Galette/Filters/HistoryList.php:289
 #: ../lib/Galette/Filters/MailingsList.php:150
 #: ../lib/Galette/Filters/MailingsList.php:246
 #: ../lib/Galette/Filters/MailingsList.php:255
@@ -2070,8 +2070,7 @@ msgstr "No es pot eliminar un membre que encara té dependències (mailings)"
 #: ../lib/Galette/Filters/AdvancedMembersList.php:343
 #: ../lib/Galette/Filters/AdvancedMembersList.php:460
 #: ../lib/Galette/Filters/AdvancedMembersList.php:606
-#: ../../tempcache/pages/member_form.html.twig:905
-#: ../../tempcache/pages/advanced_search.html.twig:1375
+#: ../../tempcache/pages/member_form.html.twig:902
 #, fuzzy
 msgid "Y-m-d"
 msgstr "Y-m-d"
@@ -2080,7 +2079,7 @@ msgstr "Y-m-d"
 msgid "Searches deleted (%list)"
 msgstr "Cerca esborrada (%list)"
 
-#: ../lib/Galette/Repository/Contributions.php:535
+#: ../lib/Galette/Repository/Contributions.php:534
 msgid "Contributions deleted (%list)"
 msgstr "Contribucions suprimides (%list)"
 
@@ -2142,7 +2141,7 @@ msgstr "Lectura/escriptura de l'usuari"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 #: ../../tempcache/elements/edit_entitleds.html.twig:210
-#: ../../tempcache/elements/ajax_members.html.twig:167
+#: ../../tempcache/elements/ajax_members.html.twig:147
 #: ../../tempcache/elements/group_persons.html.twig:137
 #: ../../tempcache/pages/members_list.html.twig:619
 #: ../../tempcache/pages/members_list.html.twig:774
@@ -2155,7 +2154,7 @@ msgid "Staff member"
 msgstr "Membre del personal"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
-#: ../../tempcache/elements/ajax_members.html.twig:156
+#: ../../tempcache/elements/ajax_members.html.twig:136
 #: ../../tempcache/elements/group_persons.html.twig:126
 #: ../../tempcache/pages/configuration_core_fields.html.twig:253
 #: ../../tempcache/pages/configuration_core_lists.html.twig:138
@@ -2164,7 +2163,7 @@ msgid "Administrator"
 msgstr "Administrador"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:524
-#: ../../tempcache/elements/ajax_members.html.twig:178
+#: ../../tempcache/elements/ajax_members.html.twig:158
 #: ../../tempcache/elements/group_persons.html.twig:148
 #: ../../tempcache/pages/members_list.html.twig:626
 #: ../../tempcache/pages/members_list.html.twig:785
@@ -2328,8 +2327,8 @@ msgstr "Nom"
 #: ../lib/Galette/IO/PdfGroups.php:180
 #: ../lib/Galette/Features/Replacements.php:328
 #: ../lib/Galette/Features/Replacements.php:376
-#: ../../tempcache/elements/member_card.html.twig:127
-#: ../../tempcache/pages/preferences.html.twig:1990
+#: ../../tempcache/elements/member_card.html.twig:147
+#: ../../tempcache/pages/preferences.html.twig:2047
 #: ../../tempcache/pages/members_public_list.html.twig:86
 #: ../../tempcache/pages/members_public_list.html.twig:222
 msgid "Email"
@@ -2338,7 +2337,7 @@ msgstr "Correu-e"
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Features/Replacements.php:320
 #: ../lib/Galette/Entity/ListsConfig.php:223
-#: ../../tempcache/elements/member_card.html.twig:87
+#: ../../tempcache/elements/member_card.html.twig:107
 #, fuzzy
 msgid "Phone"
 msgstr "Telèfon"
@@ -2358,10 +2357,9 @@ msgstr "llista de membres filtrats"
 #: ../lib/Galette/Features/Replacements.php:612
 #: ../lib/Galette/Entity/Adherent.php:1771
 #: ../../tempcache/modals/mass_change_members.html.twig:163
-#: ../../tempcache/elements/ajax_members.html.twig:126
+#: ../../tempcache/elements/ajax_members.html.twig:106
 #: ../../tempcache/elements/group_persons.html.twig:98
-#: ../../tempcache/pages/advanced_search.html.twig:1142
-#: ../../tempcache/pages/advanced_search.html.twig:1662
+#: ../../tempcache/pages/advanced_search.html.twig:1187
 #: ../../tempcache/components/forms/gender.html.twig:129
 #, fuzzy
 msgid "Man"
@@ -2371,10 +2369,9 @@ msgstr "Man"
 #: ../lib/Galette/Features/Replacements.php:614
 #: ../lib/Galette/Entity/Adherent.php:1773
 #: ../../tempcache/modals/mass_change_members.html.twig:154
-#: ../../tempcache/elements/ajax_members.html.twig:137
+#: ../../tempcache/elements/ajax_members.html.twig:117
 #: ../../tempcache/elements/group_persons.html.twig:109
-#: ../../tempcache/pages/advanced_search.html.twig:1142
-#: ../../tempcache/pages/advanced_search.html.twig:1662
+#: ../../tempcache/pages/advanced_search.html.twig:1187
 #: ../../tempcache/components/forms/gender.html.twig:146
 #, fuzzy
 msgid "Woman"
@@ -2384,8 +2381,7 @@ msgstr "Dona"
 #: ../lib/Galette/Features/Replacements.php:616
 #: ../lib/Galette/Entity/Adherent.php:1775
 #: ../../tempcache/modals/mass_change_members.html.twig:145
-#: ../../tempcache/pages/advanced_search.html.twig:1142
-#: ../../tempcache/pages/advanced_search.html.twig:1662
+#: ../../tempcache/pages/advanced_search.html.twig:1187
 #: ../../tempcache/components/forms/gender.html.twig:112
 #, fuzzy
 msgid "Unspecified"
@@ -2409,8 +2405,7 @@ msgstr "Sense especificar"
 #: ../../tempcache/pages/configuration_core_fields.html.twig:186
 #: ../../tempcache/pages/mailings_list.html.twig:195
 #: ../../tempcache/pages/advanced_search.html.twig:469
-#: ../../tempcache/pages/advanced_search.html.twig:1403
-#: ../../tempcache/pages/advanced_search.html.twig:1749
+#: ../../tempcache/pages/advanced_search.html.twig:1274
 #, fuzzy
 msgid "Yes"
 msgstr "Sí."
@@ -2433,8 +2428,7 @@ msgstr "Sí."
 #: ../../tempcache/pages/configuration_core_fields.html.twig:205
 #: ../../tempcache/pages/mailings_list.html.twig:211
 #: ../../tempcache/pages/advanced_search.html.twig:485
-#: ../../tempcache/pages/advanced_search.html.twig:1411
-#: ../../tempcache/pages/advanced_search.html.twig:1751
+#: ../../tempcache/pages/advanced_search.html.twig:1276
 #, fuzzy
 msgid "No"
 msgstr "No"
@@ -2592,12 +2586,12 @@ msgstr "Targetes de membre"
 msgid "Cards"
 msgstr "Targetes"
 
-#: ../lib/Galette/IO/FileTrait.php:477
+#: ../lib/Galette/IO/FileTrait.php:483
 #, fuzzy
 msgid "An error occurred."
 msgstr "Hi ha hagut un error."
 
-#: ../lib/Galette/IO/FileTrait.php:481
+#: ../lib/Galette/IO/FileTrait.php:487
 #, fuzzy
 msgid ""
 "File name is invalid, it should not contain any special character or space."
@@ -2605,42 +2599,47 @@ msgstr ""
 "El nom del fitxer no és vàlid no hauria de contenir cap caràcter o espai "
 "especial."
 
-#: ../lib/Galette/IO/FileTrait.php:487
+#: ../lib/Galette/IO/FileTrait.php:493
 #, fuzzy, php-format
 msgid "File extension is not allowed, only %s files are."
 msgstr "L'extensió del fitxer no està permesa només n'hi ha un 1%."
 
-#: ../lib/Galette/IO/FileTrait.php:494 ../lib/Galette/Features/Dynamics.php:305
+#: ../lib/Galette/IO/FileTrait.php:500 ../lib/Galette/Features/Dynamics.php:305
 #, fuzzy, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr "El fitxer és massa gran. La mida màxima permesa és de percentKo"
 
-#: ../lib/Galette/IO/FileTrait.php:499
+#: ../lib/Galette/IO/FileTrait.php:505
+#, php-format
+msgid "Image is too small. The minimum image side size allowed is %spx"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:511
 #, fuzzy
 msgid "Mime-Type not allowed"
 msgstr "Tipus MIME no permès"
 
-#: ../lib/Galette/IO/FileTrait.php:502
+#: ../lib/Galette/IO/FileTrait.php:514
 #, fuzzy
 msgid "A file with that name already exists!"
 msgstr "Ja existeix un fitxer amb aquest nom!"
 
-#: ../lib/Galette/IO/FileTrait.php:505
+#: ../lib/Galette/IO/FileTrait.php:517
 #, fuzzy
 msgid "File does not comply with requirements."
 msgstr "El fitxer no compleix els requisits."
 
-#: ../lib/Galette/IO/FileTrait.php:508
+#: ../lib/Galette/IO/FileTrait.php:520
 #, fuzzy
 msgid "Unable to write file or temporary file"
 msgstr "No s'ha pogut escriure el fitxer o el fitxer temporal"
 
-#: ../lib/Galette/IO/FileTrait.php:538
+#: ../lib/Galette/IO/FileTrait.php:550
 #, fuzzy
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr "El fitxer pujat excedeix la directiva uploadmaxfilesize a php.ini"
 
-#: ../lib/Galette/IO/FileTrait.php:540
+#: ../lib/Galette/IO/FileTrait.php:552
 #, fuzzy
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
@@ -2649,32 +2648,32 @@ msgstr ""
 "El fitxer pujat excedeix la directiva MAXFILESIZE que s'ha especificat en el "
 "formulari HTML"
 
-#: ../lib/Galette/IO/FileTrait.php:542
+#: ../lib/Galette/IO/FileTrait.php:554
 #, fuzzy
 msgid "The uploaded file was only partially uploaded"
 msgstr "El fitxer pujat només s'ha carregat parcialment"
 
-#: ../lib/Galette/IO/FileTrait.php:544
+#: ../lib/Galette/IO/FileTrait.php:556
 #, fuzzy
 msgid "No file was uploaded"
 msgstr "No s'ha carregat cap fitxer"
 
-#: ../lib/Galette/IO/FileTrait.php:546
+#: ../lib/Galette/IO/FileTrait.php:558
 #, fuzzy
 msgid "Missing a temporary folder"
 msgstr "Falta una carpeta temporal"
 
-#: ../lib/Galette/IO/FileTrait.php:548
+#: ../lib/Galette/IO/FileTrait.php:560
 #, fuzzy
 msgid "Failed to write file to disk"
 msgstr "No s'ha pogut escriure el fitxer al disc"
 
-#: ../lib/Galette/IO/FileTrait.php:550
+#: ../lib/Galette/IO/FileTrait.php:562
 #, fuzzy
 msgid "File upload stopped by extension"
 msgstr "La pujada de fitxers s'ha aturat per extensió"
 
-#: ../lib/Galette/IO/FileTrait.php:552
+#: ../lib/Galette/IO/FileTrait.php:564
 #, fuzzy
 msgid "Unknown upload error"
 msgstr "Error de pujada desconegut"
@@ -2785,7 +2784,7 @@ msgstr "ID del membre"
 
 #: ../lib/Galette/Features/Replacements.php:260
 #: ../lib/Galette/Filters/MembersList.php:293
-#: ../../tempcache/pages/preferences.html.twig:2022
+#: ../../tempcache/pages/preferences.html.twig:2079
 #, fuzzy
 msgid "Member number"
 msgstr "Número de membre"
@@ -2804,7 +2803,7 @@ msgstr "Nom"
 
 #: ../lib/Galette/Features/Replacements.php:276
 #: ../../tempcache/elements/group_persons.html.twig:50
-#: ../../tempcache/pages/preferences.html.twig:2006
+#: ../../tempcache/pages/preferences.html.twig:2063
 #: ../../tempcache/pages/members_public_list.html.twig:78
 #: ../../tempcache/pages/members_public_list.html.twig:211
 #, fuzzy
@@ -2828,7 +2827,7 @@ msgid "Birth place"
 msgstr "Lloc de naixement"
 
 #: ../lib/Galette/Features/Replacements.php:292
-#: ../../tempcache/pages/preferences.html.twig:2014
+#: ../../tempcache/pages/preferences.html.twig:2071
 #, fuzzy
 msgid "Profession"
 msgstr "Professió"
@@ -2895,11 +2894,11 @@ msgstr "Etiqueta de contribució"
 
 #: ../lib/Galette/Features/Replacements.php:402
 #: ../../tempcache/pages/transaction_form.html.twig:275
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:664
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:681
 #: ../../tempcache/pages/contribution_form.html.twig:288
-#: ../../tempcache/pages/transactions_list.html.twig:279
-#: ../../tempcache/pages/transactions_list.html.twig:470
+#: ../../tempcache/pages/transactions_list.html.twig:289
+#: ../../tempcache/pages/transactions_list.html.twig:431
 #: ../../tempcache/pages/advanced_search.html.twig:789
 #, fuzzy
 msgid "Amount"
@@ -2943,8 +2942,8 @@ msgid "Contribution id"
 msgstr "ID de contribució"
 
 #: ../lib/Galette/Features/Replacements.php:434
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:672
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:689
 #: ../../tempcache/pages/advanced_search.html.twig:853
 #: ../../tempcache/pages/advanced_search.html.twig:858
 #, fuzzy
@@ -2963,7 +2962,7 @@ msgstr "Informació de contribució"
 #: ../lib/Galette/Features/Replacements.php:621
 #: ../../tempcache/elements/group.html.twig:186
 #: ../../tempcache/elements/group.html.twig:229
-#: ../../tempcache/pages/preferences.html.twig:2259
+#: ../../tempcache/pages/preferences.html.twig:2316
 #, fuzzy
 msgid "None"
 msgstr "Cap"
@@ -3183,19 +3182,19 @@ msgid "Active"
 msgstr "Actiu"
 
 #: ../lib/Galette/Entity/Adherent.php:1745
-#: ../../tempcache/pages/contributions_list.html.twig:214
-#: ../../tempcache/pages/transactions_list.html.twig:159
+#: ../../tempcache/pages/contributions_list.html.twig:231
+#: ../../tempcache/pages/transactions_list.html.twig:180
 #: ../../tempcache/components/forms/account.html.twig:72
 #, fuzzy
 msgid "Inactive"
 msgstr "Inactiu"
 
-#: ../lib/Galette/Entity/Adherent.php:2028
-#: ../../tempcache/pages/member_form.html.twig:919
+#: ../lib/Galette/Entity/Adherent.php:2026
+#: ../../tempcache/pages/member_form.html.twig:916
 msgid " (%age years old)"
 msgstr " (edat de %age anys)"
 
-#: ../lib/Galette/Entity/Adherent.php:2101
+#: ../lib/Galette/Entity/Adherent.php:2104
 msgid "Duplicated from %name (%id)"
 msgstr "Duplicat des del nom %name (%id)"
 
@@ -3295,8 +3294,8 @@ msgstr "Comentaris"
 #: ../lib/Galette/Entity/Contribution.php:174
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:124
 #: ../../tempcache/pages/transaction_form.html.twig:246
-#: ../../tempcache/pages/contributions_list.html.twig:371
-#: ../../tempcache/pages/contributions_list.html.twig:569
+#: ../../tempcache/pages/contributions_list.html.twig:388
+#: ../../tempcache/pages/contributions_list.html.twig:586
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:321
 #: ../../tempcache/pages/import.html.twig:90
@@ -3304,8 +3303,8 @@ msgstr "Comentaris"
 #: ../../tempcache/pages/contribution_form.html.twig:280
 #: ../../tempcache/pages/mailings_list.html.twig:97
 #: ../../tempcache/pages/mailings_list.html.twig:303
-#: ../../tempcache/pages/transactions_list.html.twig:247
-#: ../../tempcache/pages/transactions_list.html.twig:343
+#: ../../tempcache/pages/transactions_list.html.twig:268
+#: ../../tempcache/pages/transactions_list.html.twig:369
 #: ../../tempcache/pages/export.html.twig:132
 #: ../../tempcache/pages/export.html.twig:178
 #, fuzzy
@@ -3518,32 +3517,32 @@ msgstr "el cos no hauria d'estar buit!"
 msgid "You cannot delete system payment types!"
 msgstr "No podeu suprimir els tipus de pagament del sistema!"
 
-#: ../lib/Galette/Entity/PaymentType.php:298
+#: ../lib/Galette/Entity/PaymentType.php:297
 #, fuzzy
 msgid "Other"
 msgstr "Altres"
 
-#: ../lib/Galette/Entity/PaymentType.php:299
+#: ../lib/Galette/Entity/PaymentType.php:298
 #, fuzzy
 msgid "Cash"
 msgstr "Cash"
 
-#: ../lib/Galette/Entity/PaymentType.php:300
+#: ../lib/Galette/Entity/PaymentType.php:299
 #, fuzzy
 msgid "Credit card"
 msgstr "Targeta de crèdit"
 
-#: ../lib/Galette/Entity/PaymentType.php:301
+#: ../lib/Galette/Entity/PaymentType.php:300
 #, fuzzy
 msgid "Check"
 msgstr "Comprovació"
 
-#: ../lib/Galette/Entity/PaymentType.php:302
+#: ../lib/Galette/Entity/PaymentType.php:301
 #, fuzzy
 msgid "Transfer"
 msgstr "Transferència"
 
-#: ../lib/Galette/Entity/PaymentType.php:303
+#: ../lib/Galette/Entity/PaymentType.php:302
 msgid "Paypal"
 msgstr "Paypale"
 
@@ -3562,43 +3561,43 @@ msgstr "No podeu suprimir l'estat per defecte!"
 msgid "Form is mandatory!"
 msgstr "La forma és obligatòria!"
 
-#: ../lib/Galette/Entity/SavedSearch.php:358
+#: ../lib/Galette/Entity/SavedSearch.php:357
 #, fuzzy, php-format
 msgid "Unknown form %form!"
 msgstr "Formulari desconegut %form!"
 
-#: ../lib/Galette/Entity/SavedSearch.php:373
+#: ../lib/Galette/Entity/SavedSearch.php:372
 #, fuzzy
 msgid "Name cannot be empty!"
 msgstr "El nom no pot estar buit!"
 
-#: ../lib/Galette/Entity/Group.php:391
+#: ../lib/Galette/Entity/Group.php:385
 #, fuzzy
 msgid "Group has been detached from its parent"
 msgstr "El grup s'ha separat del seu pare"
 
-#: ../lib/Galette/Entity/Group.php:428
+#: ../lib/Galette/Entity/Group.php:422
 #: ../../tempcache/pages/groups_list.html.twig:213
 #, fuzzy
 msgid "The group name you have requested already exists in the database."
 msgstr "El nom del grup que heu demanat ja surt a la base de dades."
 
-#: ../lib/Galette/Entity/Group.php:456
+#: ../lib/Galette/Entity/Group.php:450
 #, fuzzy
 msgid "Group added"
 msgstr "Grup afegit"
 
-#: ../lib/Galette/Entity/Group.php:461
+#: ../lib/Galette/Entity/Group.php:455
 #, fuzzy
 msgid "Fail to add new group."
 msgstr "No s'ha pogut afegir un grup nou."
 
-#: ../lib/Galette/Entity/Group.php:479
+#: ../lib/Galette/Entity/Group.php:473
 #, fuzzy
 msgid "Group updated"
 msgstr "Grup actualitzat"
 
-#: ../lib/Galette/Entity/Group.php:716
+#: ../lib/Galette/Entity/Group.php:710
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr "El grup `%1$s` no es pot establir com a pare!"
@@ -3808,8 +3807,8 @@ msgstr "No membres"
 
 #: ../lib/Galette/Filters/TransactionsList.php:215
 #: ../lib/Galette/Filters/TransactionsList.php:252
-#: ../lib/Galette/Filters/HistoryList.php:223
-#: ../lib/Galette/Filters/HistoryList.php:260
+#: ../lib/Galette/Filters/HistoryList.php:221
+#: ../lib/Galette/Filters/HistoryList.php:258
 #: ../lib/Galette/Filters/MailingsList.php:216
 #: ../lib/Galette/Filters/MailingsList.php:253
 #: ../lib/Galette/Filters/ContributionsList.php:258
@@ -3820,8 +3819,8 @@ msgstr "Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:231
 #: ../lib/Galette/Filters/TransactionsList.php:253
-#: ../lib/Galette/Filters/HistoryList.php:239
-#: ../lib/Galette/Filters/HistoryList.php:261
+#: ../lib/Galette/Filters/HistoryList.php:237
+#: ../lib/Galette/Filters/HistoryList.php:259
 #: ../lib/Galette/Filters/MailingsList.php:232
 #: ../lib/Galette/Filters/MailingsList.php:254
 #: ../lib/Galette/Filters/ContributionsList.php:274
@@ -3831,7 +3830,7 @@ msgid "Y-m"
 msgstr "Y-m"
 
 #: ../lib/Galette/Filters/TransactionsList.php:259
-#: ../lib/Galette/Filters/HistoryList.php:267
+#: ../lib/Galette/Filters/HistoryList.php:265
 #: ../lib/Galette/Filters/MailingsList.php:260
 #: ../lib/Galette/Filters/ContributionsList.php:302
 #, fuzzy
@@ -3839,7 +3838,7 @@ msgid "start date filter"
 msgstr "filtre de data d'inici"
 
 #: ../lib/Galette/Filters/TransactionsList.php:262
-#: ../lib/Galette/Filters/HistoryList.php:270
+#: ../lib/Galette/Filters/HistoryList.php:268
 #: ../lib/Galette/Filters/MailingsList.php:263
 #: ../lib/Galette/Filters/ContributionsList.php:305
 #, fuzzy
@@ -3847,7 +3846,7 @@ msgid "end date filter"
 msgstr "filtre de data final"
 
 #: ../lib/Galette/Filters/TransactionsList.php:272
-#: ../lib/Galette/Filters/HistoryList.php:280
+#: ../lib/Galette/Filters/HistoryList.php:278
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:315
 #, php-format
@@ -4352,7 +4351,7 @@ msgstr "Professió"
 #: ../includes/fields_defs/members_fields.php:200 ../install/steps/admin.php:46
 #: ../../tempcache/pages/index.html.twig:69
 #: ../../tempcache/pages/index.html.twig:73
-#: ../../tempcache/pages/preferences.html.twig:2348
+#: ../../tempcache/pages/preferences.html.twig:2405
 #, fuzzy
 msgid "Username:"
 msgstr "Nom d'usuari"
@@ -4360,7 +4359,7 @@ msgstr "Nom d'usuari"
 #: ../includes/fields_defs/members_fields.php:208 ../install/steps/admin.php:50
 #: ../install/steps/db.php:88 ../../tempcache/pages/index.html.twig:81
 #: ../../tempcache/pages/index.html.twig:85
-#: ../../tempcache/pages/preferences.html.twig:2362
+#: ../../tempcache/pages/preferences.html.twig:2419
 #, fuzzy
 msgid "Password:"
 msgstr "Contrasenya"
@@ -4775,7 +4774,7 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Trieu els paràmetres del compte d'administració a Galette"
 
 #: ../install/steps/admin.php:54
-#: ../../tempcache/pages/preferences.html.twig:2371
+#: ../../tempcache/pages/preferences.html.twig:2428
 #, fuzzy
 msgid "Retype password:"
 msgstr "Torneu a escriure la contrasenya"
@@ -4901,7 +4900,6 @@ msgstr "format entre"
 #: ../../tempcache/pages/advanced_search.html.twig:726
 #: ../../tempcache/pages/advanced_search.html.twig:770
 #: ../../tempcache/pages/advanced_search.html.twig:805
-#: ../../tempcache/pages/advanced_search.html.twig:1093
 #, fuzzy
 msgid "and"
 msgstr "i"
@@ -4912,14 +4910,14 @@ msgstr "i"
 #: ../../tempcache/modals/mass_add_contributions.html.twig:114
 #: ../../tempcache/modals/mass_change_members.html.twig:216
 #: ../../tempcache/modals/telemetry.html.twig:136
-#: ../../tempcache/elements/js/modal.js.twig:275
+#: ../../tempcache/elements/js/modal.js.twig:279
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:282
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:457
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:174
 #: ../../tempcache/pages/members_list.html.twig:1141
 #: ../../tempcache/pages/mailing_form.html.twig:717
 #: ../../tempcache/pages/configuration_title_form.html.twig:94
-#: ../../tempcache/pages/preferences.html.twig:2536
+#: ../../tempcache/pages/preferences.html.twig:2597
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:94
 #, fuzzy
 msgid "Cancel"
@@ -5469,7 +5467,7 @@ msgstr "Tipus de full"
 #: ../../tempcache/pages/mailings_list.html.twig:126
 #: ../../tempcache/pages/mailings_list.html.twig:143
 #: ../../tempcache/pages/transactions_list.html.twig:77
-#: ../../tempcache/pages/transactions_list.html.twig:92
+#: ../../tempcache/pages/transactions_list.html.twig:94
 #: ../../tempcache/pages/advanced_search.html.twig:281
 #: ../../tempcache/pages/advanced_search.html.twig:298
 #: ../../tempcache/pages/advanced_search.html.twig:323
@@ -5485,11 +5483,10 @@ msgstr "Tipus de full"
 #: ../../tempcache/pages/advanced_search.html.twig:762
 #: ../../tempcache/pages/advanced_search.html.twig:779
 #: ../../tempcache/pages/advanced_search.html.twig:1026
-#: ../../tempcache/pages/advanced_search.html.twig:1379
-#: ../../tempcache/pages/advanced_search.html.twig:1781
+#: ../../tempcache/pages/advanced_search.html.twig:1306
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
-#: ../../tempcache/components/dynamic_fields.html.twig:614
+#: ../../tempcache/components/dynamic_fields.html.twig:619
 #, fuzzy
 msgid "(yyyy-mm-dd format)"
 msgstr "(format yyyy-mm-dd)"
@@ -5516,7 +5513,7 @@ msgstr "Variables existents"
 #: ../../tempcache/modals/telemetry.html.twig:209
 #: ../../tempcache/elements/js/modal_action.js.twig:74
 #: ../../tempcache/elements/js/modal_action.js.twig:137
-#: ../../tempcache/elements/js/photo_dnd.js.twig:112
+#: ../../tempcache/elements/js/photo_dnd.js.twig:159
 #: ../../tempcache/elements/js/pwdcheck.js.twig:135
 #: ../../tempcache/elements/js/choose_adh.js.twig:134
 #: ../../tempcache/elements/js/choose_adh.js.twig:213
@@ -5526,7 +5523,7 @@ msgstr "Variables existents"
 #: ../../tempcache/elements/js/removal.js.twig:177
 #: ../../tempcache/elements/scripts.html.twig:127
 #: ../../tempcache/elements/scripts.html.twig:147
-#: ../../tempcache/elements/list.html.twig:388
+#: ../../tempcache/elements/list.html.twig:424
 #: ../../tempcache/pages/plugins.html.twig:335
 #: ../../tempcache/pages/plugins.html.twig:361
 #: ../../tempcache/pages/plugins.html.twig:377
@@ -5539,8 +5536,8 @@ msgstr "Variables existents"
 #: ../../tempcache/pages/transaction_form.html.twig:688
 #: ../../tempcache/pages/transaction_form.html.twig:719
 #: ../../tempcache/pages/transaction_form.html.twig:750
-#: ../../tempcache/pages/contributions_list.html.twig:821
-#: ../../tempcache/pages/import_model.html.twig:269
+#: ../../tempcache/pages/contributions_list.html.twig:838
+#: ../../tempcache/pages/import_model.html.twig:271
 #: ../../tempcache/pages/members_list.html.twig:635
 #: ../../tempcache/pages/members_list.html.twig:1205
 #: ../../tempcache/pages/members_list.html.twig:1277
@@ -5559,8 +5556,8 @@ msgstr "Variables existents"
 #: ../../tempcache/pages/groups_list.html.twig:308
 #: ../../tempcache/pages/groups_list.html.twig:370
 #: ../../tempcache/pages/groups_list.html.twig:438
-#: ../../tempcache/pages/import.html.twig:311
-#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/import.html.twig:313
+#: ../../tempcache/pages/import.html.twig:324
 #: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/reminder.html.twig:215
 #: ../../tempcache/pages/reminder.html.twig:244
@@ -5572,7 +5569,7 @@ msgstr "Variables existents"
 #: ../../tempcache/pages/mailing_form.html.twig:596
 #: ../../tempcache/pages/mailing_form.html.twig:630
 #: ../../tempcache/pages/mailing_form.html.twig:695
-#: ../../tempcache/pages/preferences.html.twig:2521
+#: ../../tempcache/pages/preferences.html.twig:2582
 #: ../../tempcache/pages/mailings_list.html.twig:453
 #: ../../tempcache/pages/mailings_list.html.twig:463
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
@@ -5581,7 +5578,7 @@ msgstr "Variables existents"
 #: ../../tempcache/pages/member_form.html.twig:649
 #: ../../tempcache/pages/member_form.html.twig:669
 #: ../../tempcache/pages/member_show.html.twig:714
-#: ../../tempcache/pages/transactions_list.html.twig:565
+#: ../../tempcache/pages/transactions_list.html.twig:526
 #, fuzzy
 msgid "Close"
 msgstr "Tanca"
@@ -5640,7 +5637,7 @@ msgstr "S'ha produït un error en enviar la informació de telemetria ("
 #: ../../tempcache/pages/reminder.html.twig:162
 #: ../../tempcache/pages/mailing_form.html.twig:373
 #: ../../tempcache/pages/mailing_form.html.twig:464
-#: ../../tempcache/pages/preferences.html.twig:2529
+#: ../../tempcache/pages/preferences.html.twig:2590
 #, fuzzy
 msgid "Send"
 msgstr "Envia"
@@ -5662,7 +5659,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_titles.html.twig:113
 #: ../../tempcache/pages/configuration_payment_types.html.twig:97
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
-#: ../../tempcache/components/dynamic_fields.html.twig:260
+#: ../../tempcache/components/dynamic_fields.html.twig:263
 #, fuzzy
 msgid "Add"
 msgstr "Afegeix"
@@ -5682,8 +5679,8 @@ msgstr "Permisos"
 #: ../../tempcache/elements/edit_pdf_models.html.twig:163
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:376
 #: ../../tempcache/pages/transaction_form.html.twig:271
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:656
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:673
 #: ../../tempcache/pages/advanced_search.html.twig:819
 #: ../../tempcache/pages/advanced_search.html.twig:824
 #, fuzzy
@@ -5700,7 +5697,7 @@ msgstr "Requerit"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:75
 #: ../../tempcache/elements/edit_entitleds.html.twig:78
-#: ../../tempcache/elements/list.html.twig:339
+#: ../../tempcache/elements/list.html.twig:375
 #: ../../tempcache/pages/transaction_form.html.twig:282
 #: ../../tempcache/pages/configuration_titles.html.twig:69
 #: ../../tempcache/pages/members_list.html.twig:543
@@ -5759,6 +5756,23 @@ msgstr "Inici"
 msgid "Go back to Galette homepage"
 msgstr "Torna a la pàgina d'importació"
 
+#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:55
+#: ../../tempcache/page.html.twig:161
+#, fuzzy
+msgid ""
+"A mailing exists in the current session. Click here if you want to resume or "
+"cancel it."
+msgstr ""
+"Existeix un mailing a la sessió actual. Feu clic aquí si voleu reprendre-ho "
+"o cancel·lar-ho."
+
+#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:62
+#: ../../tempcache/pages/members_list.html.twig:1167
+#: ../../tempcache/page.html.twig:168
+#, fuzzy
+msgid "Existing mailing"
+msgstr "Correu existent"
+
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:111
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:118
 #, fuzzy
@@ -5809,40 +5823,39 @@ msgid "%s field"
 msgstr "camp %s"
 
 #: ../../tempcache/elements/ajax_members.html.twig:57
-#: ../../tempcache/pages/preferences.html.twig:1998
+#: ../../tempcache/pages/preferences.html.twig:2055
 #, fuzzy
 msgid "Zip - Town"
 msgstr "Zip - Ciutat"
 
-#: ../../tempcache/elements/ajax_members.html.twig:70
-#: ../../tempcache/elements/list.html.twig:153
-#: ../../tempcache/pages/members_public_gallery.html.twig:180
-#, fuzzy
-msgid "Pages:"
-msgstr "Pàgines"
-
-#: ../../tempcache/elements/ajax_members.html.twig:115
+#: ../../tempcache/elements/ajax_members.html.twig:95
 #: ../../tempcache/elements/group_persons.html.twig:87
 #, fuzzy
 msgid "Company"
 msgstr "Companyia"
 
-#: ../../tempcache/elements/ajax_members.html.twig:210
+#: ../../tempcache/elements/ajax_members.html.twig:190
 #, fuzzy
 msgid "no member"
 msgstr "cap membre"
 
-#: ../../tempcache/elements/ajax_members.html.twig:230
+#: ../../tempcache/elements/ajax_members.html.twig:213
+#: ../../tempcache/elements/list.html.twig:184
+#, fuzzy
+msgid "Pages:"
+msgstr "Pàgines"
+
+#: ../../tempcache/elements/ajax_members.html.twig:239
 #, fuzzy
 msgid "Selected members"
 msgstr "Membres seleccionats"
 
-#: ../../tempcache/elements/ajax_members.html.twig:247
+#: ../../tempcache/elements/ajax_members.html.twig:256
 #, fuzzy
 msgid "No members has been selected yet."
 msgstr "Encara no s'ha seleccionat cap membre."
 
-#: ../../tempcache/elements/ajax_members.html.twig:311
+#: ../../tempcache/elements/ajax_members.html.twig:320
 #: ../../tempcache/elements/ajax_groups.html.twig:205
 #, fuzzy
 msgid "Validate"
@@ -6010,7 +6023,7 @@ msgstr "S'està carregant..."
 #: ../../tempcache/pages/contribution_form.html.twig:658
 #: ../../tempcache/pages/mailing_form.html.twig:361
 #: ../../tempcache/pages/configuration_title_form.html.twig:89
-#: ../../tempcache/pages/preferences.html.twig:2407
+#: ../../tempcache/pages/preferences.html.twig:2464
 #: ../../tempcache/pages/configuration_core_lists.html.twig:287
 #: ../../tempcache/pages/member_form.html.twig:93
 #: ../../tempcache/pages/member_form.html.twig:468
@@ -6020,7 +6033,65 @@ msgstr "S'està carregant..."
 msgid "Save"
 msgstr "Desa"
 
-#: ../../tempcache/elements/js/photo_dnd.js.twig:112
+#: ../../tempcache/elements/js/photo_dnd.js.twig:75
+#: ../../tempcache/pages/preferences.html.twig:854
+#: ../../tempcache/components/forms/picture.html.twig:86
+msgid "Square (1:1)"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:75
+#: ../../tempcache/pages/preferences.html.twig:862
+#: ../../tempcache/components/forms/picture.html.twig:86
+msgid "Portrait (3:4)"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:75
+#: ../../tempcache/pages/preferences.html.twig:870
+#: ../../tempcache/components/forms/picture.html.twig:86
+msgid "Landscape (4:3)"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:86
+#: ../../tempcache/components/forms/picture.html.twig:97
+msgid "Center"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:90
+#: ../../tempcache/components/forms/picture.html.twig:101
+#, fuzzy
+msgid "Top"
+msgstr "A"
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:94
+#: ../../tempcache/components/forms/picture.html.twig:105
+msgid "Bottom"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:98
+#: ../../tempcache/components/forms/picture.html.twig:109
+msgid "Left"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:102
+#: ../../tempcache/components/forms/picture.html.twig:113
+#, fuzzy
+#| msgid "Rights"
+msgid "Right"
+msgstr "Drets"
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:109
+#: ../../tempcache/components/forms/picture.html.twig:92
+msgid "Cropping focus"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:109
+#: ../../tempcache/components/forms/picture.html.twig:118
+msgid ""
+"Choose the area of the original image to preserve after cropping to the "
+"final ratio defined in the settings : %ratio"
+msgstr ""
+
+#: ../../tempcache/elements/js/photo_dnd.js.twig:159
 #, fuzzy
 msgid "An error occurred sending photo :("
 msgstr "S'ha produït un error en enviar la foto ("
@@ -6064,7 +6135,7 @@ msgstr "Més tard"
 msgid "An error occurred retrieving members :("
 msgstr "S'ha produït un error en recuperar els membres ("
 
-#: ../../tempcache/elements/js/modal.js.twig:234
+#: ../../tempcache/elements/js/modal.js.twig:238
 #: ../../tempcache/pages/export.html.twig:384
 #, fuzzy
 msgid "Continue"
@@ -6185,33 +6256,31 @@ msgstr "Activar l'editor HTML"
 msgid "- WARNING -"
 msgstr "- AVÍS -"
 
-#: ../../tempcache/elements/list.html.twig:222
-#: ../../tempcache/pages/members_public_gallery.html.twig:78
+#: ../../tempcache/elements/list.html.twig:258
 #, fuzzy
 msgid "Records per page:"
 msgstr "Registres per pàgina"
 
-#: ../../tempcache/elements/list.html.twig:249
+#: ../../tempcache/elements/list.html.twig:285
 #: ../../tempcache/pages/configuration_texts.html.twig:122
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:92
-#: ../../tempcache/pages/members_public_gallery.html.twig:105
 #, fuzzy
 msgid "Change"
 msgstr "Canvia"
 
-#: ../../tempcache/elements/list.html.twig:411
+#: ../../tempcache/elements/list.html.twig:447
 #, fuzzy
 msgid "(Un)Check all"
 msgstr "(Des)Comprova-ho tot"
 
-#: ../../tempcache/elements/list.html.twig:415
+#: ../../tempcache/elements/list.html.twig:451
 #, fuzzy
 msgid "Invert selection"
 msgstr "Inverteix la selecció"
 
-#: ../../tempcache/elements/list.html.twig:422
-#: ../../tempcache/pages/transactions_list.html.twig:580
-#: ../../tempcache/pages/transactions_list.html.twig:595
+#: ../../tempcache/elements/list.html.twig:458
+#: ../../tempcache/pages/transactions_list.html.twig:541
+#: ../../tempcache/pages/transactions_list.html.twig:556
 #, fuzzy
 msgid "Show legend"
 msgstr "Mostra la llegenda"
@@ -6263,11 +6332,14 @@ msgstr "No hi ha cap gestor adjuntat"
 msgid "Unimpersonate"
 msgstr "No s'ha pogut suplantar com a percentid"
 
-#: ../../tempcache/elements/member_card.html.twig:58
-#: ../../tempcache/components/forms/picture.html.twig:59
+#: ../../tempcache/elements/member_card.html.twig:59
 #, fuzzy
 msgid "Picture"
 msgstr "Imatge"
+
+#: ../../tempcache/elements/member_card.html.twig:68
+msgid "Drag and drop an image file to change the picture"
+msgstr ""
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:50
 #, php-format
@@ -6340,8 +6412,8 @@ msgstr "Connectors actius"
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:345
 #: ../../tempcache/pages/contribution_form.html.twig:276
-#: ../../tempcache/pages/transactions_list.html.twig:263
-#: ../../tempcache/pages/transactions_list.html.twig:416
+#: ../../tempcache/pages/transactions_list.html.twig:284
+#: ../../tempcache/pages/transactions_list.html.twig:423
 #: ../../tempcache/pages/export.html.twig:259
 #: ../../tempcache/pages/export.html.twig:289
 #, fuzzy
@@ -6419,8 +6491,8 @@ msgid "No inactive plugin."
 msgstr "No hi ha cap connector inactiu."
 
 #: ../../tempcache/pages/plugins.html.twig:335
-#: ../../tempcache/pages/preferences.html.twig:1120
-#: ../../tempcache/pages/preferences.html.twig:2334
+#: ../../tempcache/pages/preferences.html.twig:1177
+#: ../../tempcache/pages/preferences.html.twig:2391
 #, fuzzy
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
@@ -6581,34 +6653,33 @@ msgstr "Contribucions adjuntes"
 
 #: ../../tempcache/pages/transaction_form.html.twig:250
 #: ../../tempcache/pages/contributions_list.html.twig:87
-#: ../../tempcache/pages/contributions_list.html.twig:371
-#: ../../tempcache/pages/contributions_list.html.twig:577
+#: ../../tempcache/pages/contributions_list.html.twig:388
+#: ../../tempcache/pages/contributions_list.html.twig:594
 #, fuzzy
 msgid "Begin"
 msgstr "Inici"
 
 #: ../../tempcache/pages/transaction_form.html.twig:254
 #: ../../tempcache/pages/contributions_list.html.twig:97
-#: ../../tempcache/pages/contributions_list.html.twig:371
-#: ../../tempcache/pages/contributions_list.html.twig:585
+#: ../../tempcache/pages/contributions_list.html.twig:388
+#: ../../tempcache/pages/contributions_list.html.twig:602
 #, fuzzy
 msgid "End"
 msgstr "Final"
 
 #: ../../tempcache/pages/transaction_form.html.twig:258
-#: ../../tempcache/pages/contributions_list.html.twig:387
-#: ../../tempcache/pages/contributions_list.html.twig:680
+#: ../../tempcache/pages/contributions_list.html.twig:404
+#: ../../tempcache/pages/contributions_list.html.twig:697
 #, fuzzy
 msgid "Duration"
 msgstr "Durada"
 
 #: ../../tempcache/pages/transaction_form.html.twig:265
-#: ../../tempcache/pages/contributions_list.html.twig:379
-#: ../../tempcache/pages/contributions_list.html.twig:596
+#: ../../tempcache/pages/contributions_list.html.twig:396
+#: ../../tempcache/pages/contributions_list.html.twig:613
 #: ../../tempcache/pages/history.html.twig:165
 #: ../../tempcache/pages/contribution_form.html.twig:284
-#: ../../tempcache/pages/transactions_list.html.twig:255
-#: ../../tempcache/pages/transactions_list.html.twig:354
+#: ../../tempcache/pages/transactions_list.html.twig:380
 #, fuzzy
 msgid "Member"
 msgstr "Membre"
@@ -6651,7 +6722,7 @@ msgid "Detach contribution from this transaction"
 msgstr "Separa la contribució d'aquesta operació"
 
 #: ../../tempcache/pages/transaction_form.html.twig:508
-#: ../../tempcache/pages/contributions_list.html.twig:755
+#: ../../tempcache/pages/contributions_list.html.twig:772
 #, fuzzy
 msgid "no contribution"
 msgstr "sense contribució"
@@ -6788,7 +6859,7 @@ msgstr "des de"
 #: ../../tempcache/pages/contributions_list.html.twig:132
 #: ../../tempcache/pages/history.html.twig:141
 #: ../../tempcache/pages/mailings_list.html.twig:136
-#: ../../tempcache/pages/transactions_list.html.twig:85
+#: ../../tempcache/pages/transactions_list.html.twig:87
 #, fuzzy
 msgid "until"
 msgstr "fins"
@@ -6797,7 +6868,7 @@ msgstr "fins"
 #: ../../tempcache/pages/history.html.twig:247
 #: ../../tempcache/pages/members_list.html.twig:372
 #: ../../tempcache/pages/mailings_list.html.twig:221
-#: ../../tempcache/pages/transactions_list.html.twig:102
+#: ../../tempcache/pages/transactions_list.html.twig:106
 #, fuzzy
 msgid "Apply filters"
 msgstr "Aplica els filtres"
@@ -6806,8 +6877,8 @@ msgstr "Aplica els filtres"
 #: ../../tempcache/pages/history.html.twig:252
 #: ../../tempcache/pages/members_list.html.twig:377
 #: ../../tempcache/pages/mailings_list.html.twig:226
-#: ../../tempcache/pages/transactions_list.html.twig:107
-#: ../../tempcache/pages/advanced_search.html.twig:1524
+#: ../../tempcache/pages/transactions_list.html.twig:111
+#: ../../tempcache/pages/advanced_search.html.twig:1049
 #, fuzzy
 msgid "Filter"
 msgstr "Filtre"
@@ -6817,7 +6888,7 @@ msgstr "Filtre"
 #: ../../tempcache/pages/members_list.html.twig:392
 #: ../../tempcache/pages/members_list.html.twig:433
 #: ../../tempcache/pages/mailings_list.html.twig:231
-#: ../../tempcache/pages/transactions_list.html.twig:112
+#: ../../tempcache/pages/transactions_list.html.twig:116
 #, fuzzy
 msgid "Reset all filters to defaults"
 msgstr "Restableix tots els filtres als valors predeterminats"
@@ -6827,100 +6898,105 @@ msgstr "Restableix tots els filtres als valors predeterminats"
 #: ../../tempcache/pages/members_list.html.twig:397
 #: ../../tempcache/pages/members_list.html.twig:438
 #: ../../tempcache/pages/mailings_list.html.twig:236
-#: ../../tempcache/pages/transactions_list.html.twig:117
-#: ../../tempcache/pages/advanced_search.html.twig:1532
+#: ../../tempcache/pages/transactions_list.html.twig:121
+#: ../../tempcache/pages/advanced_search.html.twig:1057
 #, fuzzy
 msgid "Clear filter"
 msgstr "Neteja el filtre"
 
-#: ../../tempcache/pages/contributions_list.html.twig:201
+#: ../../tempcache/pages/contributions_list.html.twig:208
+#, fuzzy
+msgid "Show all your contributions"
+msgstr "Mostra totes les contribucions dels membres"
+
+#: ../../tempcache/pages/contributions_list.html.twig:214
 #, fuzzy
 msgid "Show all members contributions"
 msgstr "Mostra totes les contribucions dels membres"
 
-#: ../../tempcache/pages/contributions_list.html.twig:231
-#: ../../tempcache/pages/transactions_list.html.twig:173
+#: ../../tempcache/pages/contributions_list.html.twig:248
+#: ../../tempcache/pages/transactions_list.html.twig:194
 #, fuzzy
 msgid "See member profile"
 msgstr "Vegeu el perfil de membre"
 
-#: ../../tempcache/pages/contributions_list.html.twig:317
+#: ../../tempcache/pages/contributions_list.html.twig:334
 #, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
 msgstr[0] "%count contribució"
 msgstr[1] "%count contribucions"
 
-#: ../../tempcache/pages/contributions_list.html.twig:416
+#: ../../tempcache/pages/contributions_list.html.twig:433
 #, fuzzy, php-format
 msgid "Found contributions total %f"
 msgstr "S'han trobat contribucions total %f"
 
-#: ../../tempcache/pages/contributions_list.html.twig:510
-#: ../../tempcache/pages/contributions_list.html.twig:539
+#: ../../tempcache/pages/contributions_list.html.twig:527
+#: ../../tempcache/pages/contributions_list.html.twig:556
 msgid "Contribution %id"
 msgstr "Contribució %id"
 
-#: ../../tempcache/pages/contributions_list.html.twig:527
-#: ../../tempcache/pages/contributions_list.html.twig:549
+#: ../../tempcache/pages/contributions_list.html.twig:544
+#: ../../tempcache/pages/contributions_list.html.twig:566
 #, php-format
 msgid "Transaction: %s"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:626
+#: ../../tempcache/pages/contributions_list.html.twig:643
 msgid "Show only '%name' contributions"
 msgstr ""
 
-#: ../../tempcache/pages/contributions_list.html.twig:641
-#: ../../tempcache/pages/transactions_list.html.twig:397
+#: ../../tempcache/pages/contributions_list.html.twig:658
+#: ../../tempcache/pages/transactions_list.html.twig:408
 #, fuzzy
 msgid "Show '%name' card"
 msgstr "Mostra la tarjeta de '%name'"
 
-#: ../../tempcache/pages/contributions_list.html.twig:700
+#: ../../tempcache/pages/contributions_list.html.twig:717
 #, fuzzy
 msgid "Print an invoice or a receipt (depending on contribution type)"
 msgstr "Imprimeix una factura o un rebut (depenent del tipus de contribució)"
 
-#: ../../tempcache/pages/contributions_list.html.twig:717
+#: ../../tempcache/pages/contributions_list.html.twig:734
 #, fuzzy
 msgid "Edit the contribution"
 msgstr "Edita la contribució"
 
-#: ../../tempcache/pages/contributions_list.html.twig:730
+#: ../../tempcache/pages/contributions_list.html.twig:747
 #, fuzzy
 msgid "Delete the contribution"
 msgstr "Suprimeix la contribució"
 
-#: ../../tempcache/pages/contributions_list.html.twig:770
-#: ../../tempcache/pages/contributions_list.html.twig:774
+#: ../../tempcache/pages/contributions_list.html.twig:787
+#: ../../tempcache/pages/contributions_list.html.twig:791
 #: ../../tempcache/pages/members_list.html.twig:477
 #: ../../tempcache/pages/members_list.html.twig:481
-#: ../../tempcache/pages/transactions_list.html.twig:539
-#: ../../tempcache/pages/transactions_list.html.twig:543
+#: ../../tempcache/pages/transactions_list.html.twig:500
+#: ../../tempcache/pages/transactions_list.html.twig:504
 #, fuzzy
 msgid "Legend"
 msgstr "Llegenda"
 
-#: ../../tempcache/pages/contributions_list.html.twig:788
+#: ../../tempcache/pages/contributions_list.html.twig:805
 #: ../../tempcache/pages/members_list.html.twig:554
 #: ../../tempcache/pages/member_show.html.twig:83
 #, fuzzy
 msgid "Modification"
 msgstr "Modificació"
 
-#: ../../tempcache/pages/contributions_list.html.twig:797
+#: ../../tempcache/pages/contributions_list.html.twig:814
 #: ../../tempcache/pages/members_list.html.twig:570
 #, fuzzy
 msgid "Deletion"
 msgstr "Supressió"
 
-#: ../../tempcache/pages/contributions_list.html.twig:807
+#: ../../tempcache/pages/contributions_list.html.twig:824
 #, fuzzy
 msgid "Contribution"
 msgstr "Contribució"
 
-#: ../../tempcache/pages/contributions_list.html.twig:814
+#: ../../tempcache/pages/contributions_list.html.twig:831
 #, fuzzy
 msgid "Gift"
 msgstr "Regal"
@@ -7110,7 +7186,7 @@ msgid "Model parameted on %date"
 msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:96
-#: ../../tempcache/pages/import_model.html.twig:184
+#: ../../tempcache/pages/import_model.html.twig:186
 #, fuzzy
 msgid "Field"
 msgstr "Camp"
@@ -7120,37 +7196,37 @@ msgstr "Camp"
 msgid "Missing field '%field'"
 msgstr "Falta el camp \"%field\""
 
-#: ../../tempcache/pages/import_model.html.twig:140
+#: ../../tempcache/pages/import_model.html.twig:141
 #, fuzzy
 msgid "Generate empty CSV file"
 msgstr "Genera un fitxer CSV buit"
 
-#: ../../tempcache/pages/import_model.html.twig:156
+#: ../../tempcache/pages/import_model.html.twig:157
 #, fuzzy
 msgid "Remove model and back to defaults"
 msgstr "Elimina el model i torna als valors predeterminats"
 
-#: ../../tempcache/pages/import_model.html.twig:162
+#: ../../tempcache/pages/import_model.html.twig:163
 #, fuzzy
 msgid "Remove model"
 msgstr "Elimina el model"
 
-#: ../../tempcache/pages/import_model.html.twig:229
+#: ../../tempcache/pages/import_model.html.twig:231
 #, fuzzy
 msgid "Store new model"
 msgstr "Desa un model nou"
 
-#: ../../tempcache/pages/import_model.html.twig:250
+#: ../../tempcache/pages/import_model.html.twig:252
 #, fuzzy
 msgid "Go back to import page"
 msgstr "Torna a la pàgina d'importació"
 
-#: ../../tempcache/pages/import_model.html.twig:269
+#: ../../tempcache/pages/import_model.html.twig:271
 #, fuzzy
 msgid "No field selected"
 msgstr "No s'ha seleccionat cap camp"
 
-#: ../../tempcache/pages/import_model.html.twig:269
+#: ../../tempcache/pages/import_model.html.twig:271
 #, fuzzy
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
@@ -7209,7 +7285,7 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:75
 #: ../../tempcache/pages/members_public_list.html.twig:63
-#: ../../tempcache/pages/members_public_gallery.html.twig:71
+#: ../../tempcache/pages/members_public_gallery.html.twig:60
 #, php-format
 msgid "%count member"
 msgid_plural "%count members"
@@ -7387,12 +7463,6 @@ msgstr "No s'ha trobat cap membre"
 #, fuzzy
 msgid "Search title"
 msgstr "Cerca títol"
-
-#: ../../tempcache/pages/members_list.html.twig:1167
-#: ../../tempcache/page.html.twig:170
-#, fuzzy
-msgid "Existing mailing"
-msgstr "Correu existent"
 
 #: ../../tempcache/pages/members_list.html.twig:1167
 #, fuzzy
@@ -7611,35 +7681,35 @@ msgstr "Carrega un fitxer nou"
 
 #: ../../tempcache/pages/import.html.twig:259
 #: ../../tempcache/pages/preferences.html.twig:245
-#: ../../tempcache/pages/preferences.html.twig:1918
-#: ../../tempcache/components/forms/picture.html.twig:81
-#: ../../tempcache/components/dynamic_fields.html.twig:721
+#: ../../tempcache/pages/preferences.html.twig:1975
+#: ../../tempcache/components/forms/picture.html.twig:75
+#: ../../tempcache/components/dynamic_fields.html.twig:726
 #, fuzzy
 msgid "Choose a file"
 msgstr "Trieu una entrada"
 
-#: ../../tempcache/pages/import.html.twig:272
+#: ../../tempcache/pages/import.html.twig:273
 #, fuzzy
 msgid "Upload file"
 msgstr "Carrega un fitxer"
 
-#: ../../tempcache/pages/import.html.twig:285
+#: ../../tempcache/pages/import.html.twig:286
 #, fuzzy
 msgid "Configure import model"
 msgstr "Configura el model d'importació"
 
-#: ../../tempcache/pages/import.html.twig:311
-#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/import.html.twig:313
+#: ../../tempcache/pages/import.html.twig:324
 #, fuzzy
 msgid "No file selected"
 msgstr "No s'ha seleccionat cap fitxer"
 
-#: ../../tempcache/pages/import.html.twig:311
+#: ../../tempcache/pages/import.html.twig:313
 #, fuzzy
 msgid "Please make sure to select one file to import."
 msgstr "Assegureu-vos de seleccionar un fitxer per importar."
 
-#: ../../tempcache/pages/import.html.twig:322
+#: ../../tempcache/pages/import.html.twig:324
 #, fuzzy
 msgid "Please make sure to select one file to upload."
 msgstr "Si us plau assegureu-vos de seleccionar un fitxer a pujar."
@@ -7667,10 +7737,10 @@ msgstr "Edita el tipus de pagament «%s»"
 #: ../../tempcache/pages/configuration_payment_types.html.twig:183
 #: ../../tempcache/pages/preferences.html.twig:186
 #: ../../tempcache/pages/preferences.html.twig:192
-#: ../../tempcache/pages/preferences.html.twig:1760
-#: ../../tempcache/pages/preferences.html.twig:1766
-#: ../../tempcache/pages/preferences.html.twig:1798
-#: ../../tempcache/pages/preferences.html.twig:1804
+#: ../../tempcache/pages/preferences.html.twig:1817
+#: ../../tempcache/pages/preferences.html.twig:1823
+#: ../../tempcache/pages/preferences.html.twig:1855
+#: ../../tempcache/pages/preferences.html.twig:1861
 #, php-format
 msgid "Translate '%s'"
 msgstr "Tradueix '%s'"
@@ -7866,7 +7936,6 @@ msgstr "Gestiona els membres seleccionats"
 #: ../../tempcache/pages/configuration_core_lists.html.twig:55
 #: ../../tempcache/pages/charts.html.twig:56
 #: ../../tempcache/pages/advanced_search.html.twig:529
-#: ../../tempcache/pages/advanced_search.html.twig:1045
 #: ../../tempcache/components/forms/groups.html.twig:47
 msgid "This feature requires javascript."
 msgstr ""
@@ -8007,7 +8076,7 @@ msgstr ""
 "la pàgina d'índex i al títol de les pàgines."
 
 #: ../../tempcache/pages/preferences.html.twig:202
-#: ../../tempcache/pages/preferences.html.twig:1875
+#: ../../tempcache/pages/preferences.html.twig:1932
 #, fuzzy
 msgid "Logo:"
 msgstr "Logotip"
@@ -8018,16 +8087,16 @@ msgid "Current logo"
 msgstr "Logotip actual"
 
 #: ../../tempcache/pages/preferences.html.twig:243
-#: ../../tempcache/pages/preferences.html.twig:1916
-#: ../../tempcache/components/forms/picture.html.twig:79
-#: ../../tempcache/components/dynamic_fields.html.twig:719
+#: ../../tempcache/pages/preferences.html.twig:1973
+#: ../../tempcache/components/forms/picture.html.twig:73
+#: ../../tempcache/components/dynamic_fields.html.twig:724
 #, fuzzy
 msgid "Choose another file"
 msgstr "Trieu una entrada"
 
 #: ../../tempcache/pages/preferences.html.twig:260
-#: ../../tempcache/pages/preferences.html.twig:1933
-#: ../../tempcache/components/forms/picture.html.twig:96
+#: ../../tempcache/pages/preferences.html.twig:1990
+#: ../../tempcache/components/forms/picture.html.twig:53
 #, fuzzy
 msgid "Delete image"
 msgstr "Suprimeix la imatge"
@@ -8217,15 +8286,36 @@ msgstr "Només administrador i personal"
 
 #: ../../tempcache/pages/preferences.html.twig:827
 #, fuzzy
+msgid "Force member picture ratio"
+msgstr "Després de la creació del membre"
+
+#: ../../tempcache/pages/preferences.html.twig:832
+msgid ""
+"If checked, the members's picture will be resized and cropped to the ratio "
+"selected below."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:843
+#, fuzzy
+msgid "Choose the"
+msgstr "Trieu una entrada"
+
+#: ../../tempcache/pages/preferences.html.twig:845
+#, fuzzy
+msgid "Select a ratio"
+msgstr "Seleccioneu una acció"
+
+#: ../../tempcache/pages/preferences.html.twig:884
+#, fuzzy
 msgid "Self subscription enabled?"
 msgstr "S'ha habilitat l'autosubscripció?"
 
-#: ../../tempcache/pages/preferences.html.twig:834
+#: ../../tempcache/pages/preferences.html.twig:891
 #, fuzzy
 msgid "Post new contribution script URI"
 msgstr "Publica un script URI nou de contribució"
 
-#: ../../tempcache/pages/preferences.html.twig:840
+#: ../../tempcache/pages/preferences.html.twig:897
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -8239,24 +8329,24 @@ msgstr ""
 "a una crida directa<em>get://</em>' o<em>post://</em>' per a trucades HTTP "
 "(el prefix serà reemplaçat per http:// en aquests casos)."
 
-#: ../../tempcache/pages/preferences.html.twig:852
+#: ../../tempcache/pages/preferences.html.twig:909
 #, fuzzy
 msgid "RSS feed URL"
 msgstr "URL del canal RSS"
 
-#: ../../tempcache/pages/preferences.html.twig:858
+#: ../../tempcache/pages/preferences.html.twig:915
 #, fuzzy
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 "Introduïu l'URL complet del canal RSS. Es mostrarà a l'escriptori Galette."
 
-#: ../../tempcache/pages/preferences.html.twig:870
+#: ../../tempcache/pages/preferences.html.twig:927
 #, fuzzy
 msgid "Galette base URL"
 msgstr "URL base de Galette"
 
-#: ../../tempcache/pages/preferences.html.twig:876
+#: ../../tempcache/pages/preferences.html.twig:933
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
@@ -8264,48 +8354,48 @@ msgstr ""
 "Introduïu l'URL base a la vostra instància de Galette. Només haureu de "
 "canviar aquest paràmetre si l'URL de la pàgina actual no és<br>%galetteurl"
 
-#: ../../tempcache/pages/preferences.html.twig:897
+#: ../../tempcache/pages/preferences.html.twig:954
 #, fuzzy
 msgid "Show identifiers"
 msgstr "Mostra els identificadors"
 
-#: ../../tempcache/pages/preferences.html.twig:902
+#: ../../tempcache/pages/preferences.html.twig:959
 #, fuzzy
 msgid "Display database identifiers in related windows"
 msgstr ""
 "Mostra els identificadors de la base de dades a les finestres relacionades"
 
-#: ../../tempcache/pages/preferences.html.twig:919
+#: ../../tempcache/pages/preferences.html.twig:976
 #, fuzzy
 msgid "Default membership status:"
 msgstr "Estat de pertinença per defecte"
 
-#: ../../tempcache/pages/preferences.html.twig:953
+#: ../../tempcache/pages/preferences.html.twig:1010
 #, fuzzy
 msgid "Default membership extension:"
 msgstr "Extensió de pertinença per defecte"
 
-#: ../../tempcache/pages/preferences.html.twig:963
+#: ../../tempcache/pages/preferences.html.twig:1020
 #, fuzzy
 msgid "(Months)"
 msgstr "(Months)"
 
-#: ../../tempcache/pages/preferences.html.twig:974
+#: ../../tempcache/pages/preferences.html.twig:1031
 #, fuzzy
 msgid "Beginning of membership:"
 msgstr "Inici de la pertinença"
 
-#: ../../tempcache/pages/preferences.html.twig:982
+#: ../../tempcache/pages/preferences.html.twig:1039
 #, fuzzy
 msgid "(dd/mm)"
 msgstr "(dd/mm)"
 
-#: ../../tempcache/pages/preferences.html.twig:988
+#: ../../tempcache/pages/preferences.html.twig:1045
 #, fuzzy
 msgid "Number of months offered:"
 msgstr "Nombre de mesos oferts"
 
-#: ../../tempcache/pages/preferences.html.twig:994
+#: ../../tempcache/pages/preferences.html.twig:1051
 #, fuzzy
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
@@ -8314,7 +8404,7 @@ msgstr ""
 "Quan utilitzeu l'opció d'inici de l'adhesió podeu oferir els últims mesos de "
 "l'any."
 
-#: ../../tempcache/pages/preferences.html.twig:996
+#: ../../tempcache/pages/preferences.html.twig:1053
 #, fuzzy
 msgid ""
 "Let's say you offer last 2 months, and have a renewal on 31th of December. "
@@ -8325,37 +8415,37 @@ msgstr ""
 "desembre. Totes les contribucions creades en l'any actual seran vàlides fins "
 "a aquesta data però a l'octubre seran vàlides durant tot l'any que ve."
 
-#: ../../tempcache/pages/preferences.html.twig:1026
+#: ../../tempcache/pages/preferences.html.twig:1083
 #, fuzzy
 msgid "Can members create child?"
 msgstr "No hi ha cap membre adjuntat?"
 
-#: ../../tempcache/pages/preferences.html.twig:1040
+#: ../../tempcache/pages/preferences.html.twig:1097
 #, fuzzy
 msgid "Can group managers edit their groups?"
 msgstr "Els gestors de grups poden editar els seus grups?"
 
-#: ../../tempcache/pages/preferences.html.twig:1054
+#: ../../tempcache/pages/preferences.html.twig:1111
 #, fuzzy
 msgid "Can group managers create members?"
 msgstr "Envia els recordatoris als membres finals?"
 
-#: ../../tempcache/pages/preferences.html.twig:1068
+#: ../../tempcache/pages/preferences.html.twig:1125
 #, fuzzy
 msgid "Can group managers edit members?"
 msgstr "Els gestors de grup poden editar els seus membres?"
 
-#: ../../tempcache/pages/preferences.html.twig:1082
+#: ../../tempcache/pages/preferences.html.twig:1139
 #, fuzzy
 msgid "Can group managers send mailings?"
 msgstr "Selecció dels gestors de grups"
 
-#: ../../tempcache/pages/preferences.html.twig:1096
+#: ../../tempcache/pages/preferences.html.twig:1153
 #, fuzzy
 msgid "Can group managers do exports?"
 msgstr "Poden fer exportacions els gestors de grups?"
 
-#: ../../tempcache/pages/preferences.html.twig:1101
+#: ../../tempcache/pages/preferences.html.twig:1158
 #, fuzzy
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
@@ -8364,18 +8454,18 @@ msgstr ""
 "Els gestors de grups tindran permís per exportar membres com a cvs, cartes "
 "pdf, assistència i grups pdf"
 
-#: ../../tempcache/pages/preferences.html.twig:1132
+#: ../../tempcache/pages/preferences.html.twig:1189
 #, fuzzy
 msgid "Sender name:"
 msgstr "Nom del remitent"
 
-#: ../../tempcache/pages/preferences.html.twig:1142
+#: ../../tempcache/pages/preferences.html.twig:1199
 #, fuzzy
 msgid "Sender Email:"
 msgstr "Correu electrònic del remitent"
 
-#: ../../tempcache/pages/preferences.html.twig:1153
-#: ../../tempcache/pages/preferences.html.twig:1196
+#: ../../tempcache/pages/preferences.html.twig:1210
+#: ../../tempcache/pages/preferences.html.twig:1253
 #, fuzzy
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
@@ -8384,34 +8474,34 @@ msgstr ""
 "(Podeu introduir diversos correus electrònics separats amb una coma. La "
 "primera adreça serà la predeterminada.)"
 
-#: ../../tempcache/pages/preferences.html.twig:1159
+#: ../../tempcache/pages/preferences.html.twig:1216
 #, fuzzy
 msgid "Reply-To Email:"
 msgstr "Correu electrònic de resposta a"
 
-#: ../../tempcache/pages/preferences.html.twig:1165
+#: ../../tempcache/pages/preferences.html.twig:1222
 #, fuzzy
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
 "Deixa buit per utilitzar el correu electrònic del remitent com a adreça de "
 "resposta"
 
-#: ../../tempcache/pages/preferences.html.twig:1180
+#: ../../tempcache/pages/preferences.html.twig:1237
 #, fuzzy
 msgid "Members administrator's Email:"
 msgstr "Correu electrònic de l'administrador dels membres"
 
-#: ../../tempcache/pages/preferences.html.twig:1186
+#: ../../tempcache/pages/preferences.html.twig:1243
 #, fuzzy
 msgid "Recipient of new online registation and edition emails"
 msgstr "Destinatari de nous correus electrònics en línia de registre i edició"
 
-#: ../../tempcache/pages/preferences.html.twig:1209
+#: ../../tempcache/pages/preferences.html.twig:1266
 #, fuzzy
 msgid "Send email to administrators?"
 msgstr "Enviar correu electrònic als administradors?"
 
-#: ../../tempcache/pages/preferences.html.twig:1214
+#: ../../tempcache/pages/preferences.html.twig:1271
 #, fuzzy
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
@@ -8420,12 +8510,12 @@ msgstr ""
 "Envia un correu electrònic cada vegada que un membre nou es registri en "
 "línia o editi el seu compte"
 
-#: ../../tempcache/pages/preferences.html.twig:1227
+#: ../../tempcache/pages/preferences.html.twig:1284
 #, fuzzy
 msgid "Wrap emails text?"
 msgstr "Voleu ajustar el text dels correus electrònics?"
 
-#: ../../tempcache/pages/preferences.html.twig:1232
+#: ../../tempcache/pages/preferences.html.twig:1289
 #, fuzzy
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
@@ -8436,12 +8526,12 @@ msgstr ""
 "Assegureu-vos d'ajustar-vos si ho deshabiliteu. Tingueu en compte que "
 "l'edició actual del mailing no es veurà afectada per un canvi."
 
-#: ../../tempcache/pages/preferences.html.twig:1245
+#: ../../tempcache/pages/preferences.html.twig:1302
 #, fuzzy
 msgid "Send email to members?"
 msgstr "Envia els recordatoris als membres finals"
 
-#: ../../tempcache/pages/preferences.html.twig:1250
+#: ../../tempcache/pages/preferences.html.twig:1307
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
@@ -8449,78 +8539,78 @@ msgstr ""
 "Envia un correu electrònic cada vegada que un membre nou es registri en "
 "línia o editi el seu compte. Això es pot desactivar per cada cas."
 
-#: ../../tempcache/pages/preferences.html.twig:1263
+#: ../../tempcache/pages/preferences.html.twig:1320
 #, fuzzy
 msgid "Activate HTML editor?"
 msgstr "Activar l'editor HTML?"
 
-#: ../../tempcache/pages/preferences.html.twig:1268
+#: ../../tempcache/pages/preferences.html.twig:1325
 #, fuzzy
 msgid "Should HTML editor be activated on page load ?"
 msgstr "S'ha d'activar l'editor HTML en carregar la pàgina ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1274
+#: ../../tempcache/pages/preferences.html.twig:1331
 #, fuzzy
 msgid "Mail signature"
 msgstr "Signatura de correu"
 
-#: ../../tempcache/pages/preferences.html.twig:1291
+#: ../../tempcache/pages/preferences.html.twig:1348
 #, fuzzy
 msgid "Emailing method:"
 msgstr "Mètode de correu electrònic"
 
-#: ../../tempcache/pages/preferences.html.twig:1303
+#: ../../tempcache/pages/preferences.html.twig:1360
 #, fuzzy
 msgid "Emailing disabled"
 msgstr "Correu electrònic desactivat"
 
-#: ../../tempcache/pages/preferences.html.twig:1317
+#: ../../tempcache/pages/preferences.html.twig:1374
 #, fuzzy
 msgid "PHP mail() function"
 msgstr "Funció PHP mail()"
 
-#: ../../tempcache/pages/preferences.html.twig:1331
+#: ../../tempcache/pages/preferences.html.twig:1388
 #, fuzzy
 msgid "Using a SMTP server (slower)"
 msgstr "Ús d'un servidor SMTP (més lent)"
 
-#: ../../tempcache/pages/preferences.html.twig:1345
+#: ../../tempcache/pages/preferences.html.twig:1402
 #, fuzzy
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Ús del GMAIL com a servidor SMTP (més lent)"
 
-#: ../../tempcache/pages/preferences.html.twig:1359
+#: ../../tempcache/pages/preferences.html.twig:1416
 #, fuzzy
 msgid "Using Sendmail server"
 msgstr "Ús del servidor Sendmail"
 
-#: ../../tempcache/pages/preferences.html.twig:1373
+#: ../../tempcache/pages/preferences.html.twig:1430
 #, fuzzy
 msgid "Using QMAIL server"
 msgstr "Ús del servidor QMAIL"
 
-#: ../../tempcache/pages/preferences.html.twig:1389
+#: ../../tempcache/pages/preferences.html.twig:1446
 #, fuzzy
 #| msgid "Reset emails contents"
 msgid "Test email settings"
 msgstr "Reinicialitza els continguts dels missatges de correu"
 
-#: ../../tempcache/pages/preferences.html.twig:1397
+#: ../../tempcache/pages/preferences.html.twig:1454
 #, fuzzy
 msgid "SMTP server:"
 msgstr "Servidor SMTP"
 
-#: ../../tempcache/pages/preferences.html.twig:1407
+#: ../../tempcache/pages/preferences.html.twig:1464
 #, fuzzy
 msgid "SMTP port:"
 msgstr "Port SMTP"
 
-#: ../../tempcache/pages/preferences.html.twig:1425
+#: ../../tempcache/pages/preferences.html.twig:1482
 #, fuzzy
 msgid "Use SMTP authentication?"
 msgstr "Voleu utilitzar l'autenticació SMTP?"
 
-#: ../../tempcache/pages/preferences.html.twig:1430
+#: ../../tempcache/pages/preferences.html.twig:1487
 #, fuzzy
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
@@ -8530,12 +8620,12 @@ msgstr ""
 "de proporcionar el nom d'usuari i la contrasenya a continuació. Per a "
 "l'autenticació de GMail sempre estarà activada."
 
-#: ../../tempcache/pages/preferences.html.twig:1443
+#: ../../tempcache/pages/preferences.html.twig:1500
 #, fuzzy
 msgid "Use TLS for SMTP?"
 msgstr "Voleu utilitzar TLS per SMTP?"
 
-#: ../../tempcache/pages/preferences.html.twig:1448
+#: ../../tempcache/pages/preferences.html.twig:1505
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -8543,12 +8633,12 @@ msgstr ""
 "Voleu utilitzar les capacitats TLS del servidor?<br>Per a GMail sempre "
 "estarà activat."
 
-#: ../../tempcache/pages/preferences.html.twig:1461
+#: ../../tempcache/pages/preferences.html.twig:1518
 #, fuzzy
 msgid "Allow unsecure TLS?"
 msgstr "Voleu permetre que TLS no estigui segur?"
 
-#: ../../tempcache/pages/preferences.html.twig:1466
+#: ../../tempcache/pages/preferences.html.twig:1523
 #, fuzzy
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
@@ -8557,74 +8647,74 @@ msgstr ""
 "Voleu permetre connexions 'sense seguretat'? Això pot ser útil si el "
 "servidor utilitza un certificat autosignat i en altres casos."
 
-#: ../../tempcache/pages/preferences.html.twig:1475
+#: ../../tempcache/pages/preferences.html.twig:1532
 #, fuzzy
 msgid "SMTP (or GMail) user:"
 msgstr "Usuari SMTP (o GMail)"
 
-#: ../../tempcache/pages/preferences.html.twig:1485
+#: ../../tempcache/pages/preferences.html.twig:1542
 #, fuzzy
 msgid "SMTP (or GMail) password:"
 msgstr "Contrasenya SMTP (o GMail)"
 
-#: ../../tempcache/pages/preferences.html.twig:1515
-#: ../../tempcache/pages/preferences.html.twig:2056
+#: ../../tempcache/pages/preferences.html.twig:1572
+#: ../../tempcache/pages/preferences.html.twig:2113
 #, fuzzy
 msgid "Vertical margins:"
 msgstr "Marges verticals"
 
-#: ../../tempcache/pages/preferences.html.twig:1537
-#: ../../tempcache/pages/preferences.html.twig:2078
+#: ../../tempcache/pages/preferences.html.twig:1594
+#: ../../tempcache/pages/preferences.html.twig:2135
 #, fuzzy
 msgid "Horizontal margins:"
 msgstr "Marges horitzontals"
 
-#: ../../tempcache/pages/preferences.html.twig:1559
-#: ../../tempcache/pages/preferences.html.twig:2122
+#: ../../tempcache/pages/preferences.html.twig:1616
+#: ../../tempcache/pages/preferences.html.twig:2179
 #, fuzzy
 msgid "Horizontal spacing:"
 msgstr "Espaiat horitzontal"
 
-#: ../../tempcache/pages/preferences.html.twig:1581
-#: ../../tempcache/pages/preferences.html.twig:2100
+#: ../../tempcache/pages/preferences.html.twig:1638
+#: ../../tempcache/pages/preferences.html.twig:2157
 #, fuzzy
 msgid "Vertical spacing:"
 msgstr "Espaiat vertical"
 
-#: ../../tempcache/pages/preferences.html.twig:1605
+#: ../../tempcache/pages/preferences.html.twig:1662
 msgid "Print border"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1610
+#: ../../tempcache/pages/preferences.html.twig:1667
 msgid "Check this box to print a grey border around each label."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1624
+#: ../../tempcache/pages/preferences.html.twig:1681
 #, fuzzy
 msgid "Label width:"
 msgstr "Amplada de l'etiqueta"
 
-#: ../../tempcache/pages/preferences.html.twig:1646
+#: ../../tempcache/pages/preferences.html.twig:1703
 #, fuzzy
 msgid "Label height:"
 msgstr "Alçada de l'etiqueta"
 
-#: ../../tempcache/pages/preferences.html.twig:1668
+#: ../../tempcache/pages/preferences.html.twig:1725
 #, fuzzy
 msgid "Number of label columns:"
 msgstr "Nombre de columnes d'etiquetes"
 
-#: ../../tempcache/pages/preferences.html.twig:1687
+#: ../../tempcache/pages/preferences.html.twig:1744
 #, fuzzy
 msgid "Number of label lines:"
 msgstr "Nombre de línies d'etiqueta"
 
-#: ../../tempcache/pages/preferences.html.twig:1706
+#: ../../tempcache/pages/preferences.html.twig:1763
 #, fuzzy
 msgid "Font size:"
 msgstr "Mida del tipus de lletra"
 
-#: ../../tempcache/pages/preferences.html.twig:1731
+#: ../../tempcache/pages/preferences.html.twig:1788
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
@@ -8632,90 +8722,90 @@ msgstr ""
 "Cada carta és d'amplada de 75 mm i alçada de 40 mm. Cada pàgina conté 2 "
 "columnes i 6 files.<br>Doble comprovació marges i espais ;)"
 
-#: ../../tempcache/pages/preferences.html.twig:1740
+#: ../../tempcache/pages/preferences.html.twig:1797
 #, fuzzy
 msgid "Short Text (Card Center):"
 msgstr "Text curt (Centre de xarxa)"
 
-#: ../../tempcache/pages/preferences.html.twig:1772
+#: ../../tempcache/pages/preferences.html.twig:1829
 #, fuzzy
 msgid "(10 characters max)"
 msgstr "(10 caràcters màxims)"
 
-#: ../../tempcache/pages/preferences.html.twig:1778
+#: ../../tempcache/pages/preferences.html.twig:1835
 #, fuzzy
 msgid "Long Text (Bottom Line):"
 msgstr "Text llarg (línia inferior)"
 
-#: ../../tempcache/pages/preferences.html.twig:1810
+#: ../../tempcache/pages/preferences.html.twig:1867
 #, fuzzy
 msgid "(65 characters max)"
 msgstr "(65 caràcters màx.)"
 
-#: ../../tempcache/pages/preferences.html.twig:1817
+#: ../../tempcache/pages/preferences.html.twig:1874
 #, fuzzy
 msgid "Strip Text Color:"
 msgstr "Elimina el color del text"
 
-#: ../../tempcache/pages/preferences.html.twig:1825
-#: ../../tempcache/pages/preferences.html.twig:1839
-#: ../../tempcache/pages/preferences.html.twig:1853
-#: ../../tempcache/pages/preferences.html.twig:1867
+#: ../../tempcache/pages/preferences.html.twig:1882
+#: ../../tempcache/pages/preferences.html.twig:1896
+#: ../../tempcache/pages/preferences.html.twig:1910
+#: ../../tempcache/pages/preferences.html.twig:1924
 #, fuzzy
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "Notació de color hexadecimal #RRGGBB"
 
-#: ../../tempcache/pages/preferences.html.twig:1831
+#: ../../tempcache/pages/preferences.html.twig:1888
 #, fuzzy
 msgid "Active Member Color:"
 msgstr "Color del membre actiu"
 
-#: ../../tempcache/pages/preferences.html.twig:1845
+#: ../../tempcache/pages/preferences.html.twig:1902
 #, fuzzy
 msgid "Board Members Color:"
 msgstr "Color dels membres del tauler"
 
-#: ../../tempcache/pages/preferences.html.twig:1859
+#: ../../tempcache/pages/preferences.html.twig:1916
 #, fuzzy
 msgid "Honor Members Color:"
 msgstr "Color dels membres d'honor"
 
-#: ../../tempcache/pages/preferences.html.twig:1891
+#: ../../tempcache/pages/preferences.html.twig:1948
 #, fuzzy
 msgid "Current logo for printing"
 msgstr "Logotip actual per imprimir"
 
-#: ../../tempcache/pages/preferences.html.twig:1956
+#: ../../tempcache/pages/preferences.html.twig:2013
 #, fuzzy
 msgid "Allow members to print card ?"
 msgstr "Voleu permetre als membres imprimir la targeta ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1970
+#: ../../tempcache/pages/preferences.html.twig:2027
 #, fuzzy
 msgid "Show title ?"
 msgstr "Voleu mostrar el títol?"
 
-#: ../../tempcache/pages/preferences.html.twig:1975
+#: ../../tempcache/pages/preferences.html.twig:2032
 #, fuzzy
 msgid "(Show or not title in front of name)"
 msgstr "(Mostra o no el títol davant del nom)"
 
-#: ../../tempcache/pages/preferences.html.twig:1981
+#: ../../tempcache/pages/preferences.html.twig:2038
 #, fuzzy
 msgid "Address type:"
 msgstr "Tipus d'adreça"
 
-#: ../../tempcache/pages/preferences.html.twig:2027
+#: ../../tempcache/pages/preferences.html.twig:2084
 #, fuzzy
 msgid "(Choose address printed below name)"
 msgstr "(Tanca l'adreça impresa sota el nom)"
 
-#: ../../tempcache/pages/preferences.html.twig:2033
+#: ../../tempcache/pages/preferences.html.twig:2090
 #, fuzzy
 msgid "Year:"
 msgstr "Any"
 
-#: ../../tempcache/pages/preferences.html.twig:2039
+#: ../../tempcache/pages/preferences.html.twig:2096
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -8724,29 +8814,29 @@ msgstr ""
 "separador<br>- la cadena «DEADLINE» per utilitzar el termini de temps de "
 "membre"
 
-#: ../../tempcache/pages/preferences.html.twig:2153
+#: ../../tempcache/pages/preferences.html.twig:2210
 #, fuzzy
 msgid "Password length:"
 msgstr "Longitud de la contrasenya"
 
-#: ../../tempcache/pages/preferences.html.twig:2159
+#: ../../tempcache/pages/preferences.html.twig:2216
 #, fuzzy
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 "Longitud mínima de la contrasenya requerida per a tots els comptes. La mida "
 "mínima és 6."
 
-#: ../../tempcache/pages/preferences.html.twig:2178
+#: ../../tempcache/pages/preferences.html.twig:2235
 #, fuzzy
 msgid "Enable password blacklists"
 msgstr "Habilita les llistes negres de contrasenyes"
 
-#: ../../tempcache/pages/preferences.html.twig:2180
+#: ../../tempcache/pages/preferences.html.twig:2237
 #, fuzzy
 msgid "Enable blacklists:"
 msgstr "Habilita les llistes negres"
 
-#: ../../tempcache/pages/preferences.html.twig:2185
+#: ../../tempcache/pages/preferences.html.twig:2242
 #, fuzzy
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
@@ -8756,86 +8846,86 @@ msgstr ""
 "contrasenyes incloses a la llista negra. Es proporciona una llista juntament "
 "amb Galette però podeu afegir-vos la pròpia."
 
-#: ../../tempcache/pages/preferences.html.twig:2191
+#: ../../tempcache/pages/preferences.html.twig:2248
 #, fuzzy
 msgid "Enforce password strength"
 msgstr "Força la força de la contrasenya"
 
-#: ../../tempcache/pages/preferences.html.twig:2193
+#: ../../tempcache/pages/preferences.html.twig:2250
 #, fuzzy
 msgid "Password strength:"
 msgstr "Força de la contrasenya"
 
-#: ../../tempcache/pages/preferences.html.twig:2204
+#: ../../tempcache/pages/preferences.html.twig:2261
 #, fuzzy
 msgid "None (default)"
 msgstr "Cap (per defecte)"
 
-#: ../../tempcache/pages/preferences.html.twig:2214
-#: ../../tempcache/pages/preferences.html.twig:2265
+#: ../../tempcache/pages/preferences.html.twig:2271
+#: ../../tempcache/pages/preferences.html.twig:2322
 #, fuzzy
 msgid "Weak"
 msgstr "Weak"
 
-#: ../../tempcache/pages/preferences.html.twig:2224
-#: ../../tempcache/pages/preferences.html.twig:2271
+#: ../../tempcache/pages/preferences.html.twig:2281
+#: ../../tempcache/pages/preferences.html.twig:2328
 #, fuzzy
 msgid "Medium"
 msgstr "Mitjana"
 
-#: ../../tempcache/pages/preferences.html.twig:2234
-#: ../../tempcache/pages/preferences.html.twig:2277
+#: ../../tempcache/pages/preferences.html.twig:2291
+#: ../../tempcache/pages/preferences.html.twig:2334
 #, fuzzy
 msgid "Strong"
 msgstr "Fort"
 
-#: ../../tempcache/pages/preferences.html.twig:2244
+#: ../../tempcache/pages/preferences.html.twig:2301
 #, fuzzy
 msgid "Very strong"
 msgstr "Molt fort"
 
-#: ../../tempcache/pages/preferences.html.twig:2250
+#: ../../tempcache/pages/preferences.html.twig:2307
 #, fuzzy
 msgid "Enforce minimal password strength for all password."
 msgstr "Força la força mínima de la contrasenya per a tota la contrasenya."
 
-#: ../../tempcache/pages/preferences.html.twig:2254
+#: ../../tempcache/pages/preferences.html.twig:2311
 #, fuzzy
 msgid "Levels are:"
 msgstr "Els nivells són"
 
-#: ../../tempcache/pages/preferences.html.twig:2261
+#: ../../tempcache/pages/preferences.html.twig:2318
 #, fuzzy
 msgid "for no strength enforcement"
 msgstr "per a no fer complir la força"
 
-#: ../../tempcache/pages/preferences.html.twig:2267
+#: ../../tempcache/pages/preferences.html.twig:2324
 #, fuzzy
 msgid "require at least one matched rule"
 msgstr "requereix almenys una regla coincident"
 
-#: ../../tempcache/pages/preferences.html.twig:2273
+#: ../../tempcache/pages/preferences.html.twig:2330
 #, fuzzy
 msgid "require at least two matched rules"
 msgstr "requereix almenys dues regles coincidents"
 
-#: ../../tempcache/pages/preferences.html.twig:2279
+#: ../../tempcache/pages/preferences.html.twig:2336
 #, fuzzy
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "requereix almenys tres regles coincidents (recomanat per a la majoria d'usos)"
 
-#: ../../tempcache/pages/preferences.html.twig:2283
+#: ../../tempcache/pages/preferences.html.twig:2340
 #, fuzzy
 msgid "Very Strong"
 msgstr "Molt fort"
 
-#: ../../tempcache/pages/preferences.html.twig:2285
+#: ../../tempcache/pages/preferences.html.twig:2342
 #, fuzzy
 msgid "requires all rules."
 msgstr "requereix totes les regles."
 
-#: ../../tempcache/pages/preferences.html.twig:2290
+#: ../../tempcache/pages/preferences.html.twig:2347
 #, fuzzy
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
@@ -8844,7 +8934,7 @@ msgstr ""
 "Les regles inclouen caràcters minúscules caràcters majúscules números i "
 "caràcters especials."
 
-#: ../../tempcache/pages/preferences.html.twig:2294
+#: ../../tempcache/pages/preferences.html.twig:2351
 #, fuzzy
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
@@ -8853,17 +8943,17 @@ msgstr ""
 "Tingueu en compte que amb qualsevol nivell d'execució l'usuari no pot "
 "utilitzar la seva informació personal (nom login ) com a contrasenya."
 
-#: ../../tempcache/pages/preferences.html.twig:2302
+#: ../../tempcache/pages/preferences.html.twig:2359
 #, fuzzy
 msgid "Test a password:"
 msgstr "Prova una contrasenya"
 
-#: ../../tempcache/pages/preferences.html.twig:2308
+#: ../../tempcache/pages/preferences.html.twig:2365
 #, fuzzy
 msgid "Test a password with current selected values."
 msgstr "Prova una contrasenya amb els valors seleccionats actuals."
 
-#: ../../tempcache/pages/preferences.html.twig:2310
+#: ../../tempcache/pages/preferences.html.twig:2367
 #, fuzzy
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
@@ -8871,12 +8961,12 @@ msgstr ""
 "No oblideu desar les vostres preferències si esteu satisfet amb el "
 "resultat ;)"
 
-#: ../../tempcache/pages/preferences.html.twig:2489
+#: ../../tempcache/pages/preferences.html.twig:2550
 #, fuzzy
 msgid "Enter the email adress"
 msgstr "Introduïu el correu electrònic de correu electrònic"
 
-#: ../../tempcache/pages/preferences.html.twig:2521
+#: ../../tempcache/pages/preferences.html.twig:2582
 #, fuzzy
 msgid "An error occurred sending test email :("
 msgstr "S'ha produït un error en enviar el correu electrònic de prova ("
@@ -9167,52 +9257,56 @@ msgstr "Canvia la meva contrasenya"
 msgid "Show transactions since"
 msgstr "Mostra les operacions des de"
 
-#: ../../tempcache/pages/transactions_list.html.twig:146
+#: ../../tempcache/pages/transactions_list.html.twig:157
+#, fuzzy
+msgid "Show all your transactions"
+msgstr "Mostra totes les transaccions dels membres"
+
+#: ../../tempcache/pages/transactions_list.html.twig:163
 #, fuzzy
 msgid "Show all members transactions"
 msgstr "Mostra totes les transaccions dels membres"
 
-#: ../../tempcache/pages/transactions_list.html.twig:207
+#: ../../tempcache/pages/transactions_list.html.twig:228
 #, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:271
-#: ../../tempcache/pages/transactions_list.html.twig:427
+#: ../../tempcache/pages/transactions_list.html.twig:276
 #, fuzzy
 msgid "Originator"
 msgstr "Origen"
 
-#: ../../tempcache/pages/transactions_list.html.twig:334
+#: ../../tempcache/pages/transactions_list.html.twig:360
 #, fuzzy
 msgid "Transaction %id"
 msgstr "ID de transacció"
 
-#: ../../tempcache/pages/transactions_list.html.twig:382
+#: ../../tempcache/pages/transactions_list.html.twig:393
 msgid "Show only '%name' transactions"
 msgstr ""
 
-#: ../../tempcache/pages/transactions_list.html.twig:491
+#: ../../tempcache/pages/transactions_list.html.twig:452
 msgid "Edit transaction #%id"
 msgstr "Edita la transacció #%id"
 
-#: ../../tempcache/pages/transactions_list.html.twig:504
+#: ../../tempcache/pages/transactions_list.html.twig:465
 msgid "Remove transaction #%id"
 msgstr "Elimina la transacció #%id"
 
-#: ../../tempcache/pages/transactions_list.html.twig:524
+#: ../../tempcache/pages/transactions_list.html.twig:485
 #, fuzzy
 msgid "no transaction"
 msgstr "sense transacció"
 
-#: ../../tempcache/pages/transactions_list.html.twig:551
+#: ../../tempcache/pages/transactions_list.html.twig:512
 #, fuzzy
 msgid "Completely dispatched transaction"
 msgstr "Operació enviada completament"
 
-#: ../../tempcache/pages/transactions_list.html.twig:558
+#: ../../tempcache/pages/transactions_list.html.twig:519
 #, fuzzy
 msgid "Uncomplete dispatched transaction"
 msgstr "Operació enviada sense completar"
@@ -9272,7 +9366,7 @@ msgid "Total contributions for the month"
 msgstr "Separa la contribució d'aquesta operació"
 
 #: ../../tempcache/pages/members_public_list.html.twig:114
-#: ../../tempcache/pages/members_public_gallery.html.twig:55
+#: ../../tempcache/pages/members_public_gallery.html.twig:79
 #, fuzzy
 msgid ""
 "This page shows only members who have choosen to be visible on the public "
@@ -9286,7 +9380,7 @@ msgstr ""
 "visible a la llista de membres'"
 
 #: ../../tempcache/pages/members_public_list.html.twig:248
-#: ../../tempcache/pages/members_public_gallery.html.twig:196
+#: ../../tempcache/pages/members_public_gallery.html.twig:151
 #, fuzzy
 msgid "No member to show"
 msgstr "No hi ha cap membre per mostrar"
@@ -9379,8 +9473,6 @@ msgstr "Grups seleccionats"
 
 #: ../../tempcache/pages/advanced_search.html.twig:626
 #: ../../tempcache/pages/advanced_search.html.twig:632
-#: ../../tempcache/pages/advanced_search.html.twig:1495
-#: ../../tempcache/pages/advanced_search.html.twig:1501
 #, fuzzy
 msgid "Remove criteria"
 msgstr "Elimina els criteris"
@@ -9390,78 +9482,45 @@ msgstr "Elimina els criteris"
 msgid "Within contributions"
 msgstr "Dins de les contribucions"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1052
-#, fuzzy
-msgid "Free search"
-msgstr "Cerca lliure"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1060
-#: ../../tempcache/pages/advanced_search.html.twig:1066
-#, fuzzy
-msgid "Add new free search criteria"
-msgstr "Afegeix nous criteris de cerca lliure"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1103
-#, fuzzy
-msgid "or"
-msgstr "o"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1109
-#, fuzzy
-msgid "Select a field"
-msgstr "Seleccioneu un camp"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1272
-#: ../../tempcache/pages/advanced_search.html.twig:1350
-#: ../../tempcache/pages/advanced_search.html.twig:1394
-#: ../../tempcache/pages/advanced_search.html.twig:1425
-#: ../../tempcache/pages/advanced_search.html.twig:1558
+#: ../../tempcache/pages/advanced_search.html.twig:1083
 #, fuzzy
 msgid "is"
 msgstr "és"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1282
-#: ../../tempcache/pages/advanced_search.html.twig:1445
-#: ../../tempcache/pages/advanced_search.html.twig:1578
-#, fuzzy
-msgid "is not"
-msgstr "no és"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1360
-#: ../../tempcache/pages/advanced_search.html.twig:1618
-#, fuzzy
-msgid "before"
-msgstr "abans"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1370
-#: ../../tempcache/pages/advanced_search.html.twig:1628
-#, fuzzy
-msgid "after"
-msgstr "després de"
-
-#: ../../tempcache/pages/advanced_search.html.twig:1435
-#: ../../tempcache/pages/advanced_search.html.twig:1568
+#: ../../tempcache/pages/advanced_search.html.twig:1093
 #, fuzzy
 msgid "contains"
 msgstr "conté"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1455
-#: ../../tempcache/pages/advanced_search.html.twig:1588
+#: ../../tempcache/pages/advanced_search.html.twig:1103
+#, fuzzy
+msgid "is not"
+msgstr "no és"
+
+#: ../../tempcache/pages/advanced_search.html.twig:1113
 #, fuzzy
 msgid "do not contains"
 msgstr "no continguis"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1465
-#: ../../tempcache/pages/advanced_search.html.twig:1598
+#: ../../tempcache/pages/advanced_search.html.twig:1123
 #, fuzzy
 msgid "starts with"
 msgstr "comença amb"
 
-#: ../../tempcache/pages/advanced_search.html.twig:1475
-#: ../../tempcache/pages/advanced_search.html.twig:1608
+#: ../../tempcache/pages/advanced_search.html.twig:1133
 #, fuzzy
 msgid "ends with"
 msgstr "acaba amb"
+
+#: ../../tempcache/pages/advanced_search.html.twig:1143
+#, fuzzy
+msgid "before"
+msgstr "abans"
+
+#: ../../tempcache/pages/advanced_search.html.twig:1153
+#, fuzzy
+msgid "after"
+msgstr "després de"
 
 #: ../../tempcache/pages/500.html.twig:54
 #, fuzzy
@@ -9719,32 +9778,32 @@ msgstr "No subministrat"
 msgid "Picture:"
 msgstr "Imatge"
 
-#: ../../tempcache/components/dynamic_fields.html.twig:206
+#: ../../tempcache/components/dynamic_fields.html.twig:209
 #, fuzzy
 msgid "Enter as many occurences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
-#: ../../tempcache/components/dynamic_fields.html.twig:231
+#: ../../tempcache/components/dynamic_fields.html.twig:234
 #, php-format
 msgid "Enter up to %count more occurences."
 msgstr ""
 
-#: ../../tempcache/components/dynamic_fields.html.twig:293
+#: ../../tempcache/components/dynamic_fields.html.twig:296
 #, fuzzy, php-format
 msgid "Enter up to %count more occurrences."
 msgstr "Introduïu fins %count més d'aparició."
 
-#: ../../tempcache/components/dynamic_fields.html.twig:540
+#: ../../tempcache/components/dynamic_fields.html.twig:545
 #, fuzzy
 msgid "Select an option"
 msgstr "Seleccioneu una opció"
 
-#: ../../tempcache/components/dynamic_fields.html.twig:762
+#: ../../tempcache/components/dynamic_fields.html.twig:767
 #, fuzzy
 msgid "delete"
 msgstr "suprimeix"
 
-#: ../../tempcache/public_page.html.twig:178 ../../tempcache/page.html.twig:205
+#: ../../tempcache/public_page.html.twig:177 ../../tempcache/page.html.twig:201
 #, fuzzy
 msgid "Back to top"
 msgstr "Torna a dalt"
@@ -9759,19 +9818,26 @@ msgstr "Contingut de la pàgina pública"
 msgid "Ajax page content"
 msgstr "Contingut de la pàgina Ajax"
 
-#: ../../tempcache/page.html.twig:163
-#, fuzzy
-msgid ""
-"A mailing exists in the current session. Click here if you want to resume or "
-"cancel it."
-msgstr ""
-"Existeix un mailing a la sessió actual. Feu clic aquí si voleu reprendre-ho "
-"o cancel·lar-ho."
-
-#: ../../tempcache/page.html.twig:231
+#: ../../tempcache/page.html.twig:228
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "Free search"
+#~ msgstr "Cerca lliure"
+
+#, fuzzy
+#~ msgid "Add new free search criteria"
+#~ msgstr "Afegeix nous criteris de cerca lliure"
+
+#, fuzzy
+#~ msgid "or"
+#~ msgstr "o"
+
+#, fuzzy
+#~ msgid "Select a field"
+#~ msgstr "Seleccioneu un camp"
 
 #, fuzzy
 #~ msgid "Invalid extension!"
