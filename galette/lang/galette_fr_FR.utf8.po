@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-19 20:54+0200\n"
-"PO-Revision-Date: 2023-10-19 18:54+0000\n"
+"PO-Revision-Date: 2023-10-19 18:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -4383,10 +4383,8 @@ msgid "Database exists and connection parameters are OK."
 msgstr "La base existe et les paramètres de connexion sont corrects."
 
 #: ../install/steps/db_checks.php:194
-#, fuzzy
-#| msgid "Incompatible with current version"
 msgid "Incompatible database version."
-msgstr "Incompatible avec la version courante"
+msgstr "Version de base de données Incompatible."
 
 #: ../install/steps/db_checks.php:198
 msgid "Connection to database successfull"
