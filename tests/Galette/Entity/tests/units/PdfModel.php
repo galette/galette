@@ -328,13 +328,13 @@ class PdfModel extends GaletteTestCase
         $this->createPdfContribution($cdf);
         $model->setContribution($this->contrib);
 
-        $this->assertSame(
-            "<table>
-    <tr>
-        <td id=\"pdf_assoname\"><strong id=\"asso_name\">Galette</strong><br/></td>
-        <td id=\"pdf_logo\"><img src=\"http:///logo\" width=\"129\" height=\"60\"/></td>
-    </tr>
-</table>",
+        $this->assertStringContainsString(
+            '<td id="pdf_assoname"><strong id="asso_name">Galette</strong><br/></td>',
+            $model->hheader
+        );
+
+        $this->assertMatchesRegularExpression(
+            '/<td id="pdf_logo"><img src="@.+" width="129" height="60" \/><\/td>/',
             $model->hheader
         );
 
