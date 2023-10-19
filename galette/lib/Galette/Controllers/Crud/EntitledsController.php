@@ -124,7 +124,7 @@ class EntitledsController extends CrudController
             case 'contributions-types':
                 $className = 'ContributionsTypes';
                 $entitled = new ContributionsTypes($this->zdb);
-                $params['page_title'] = _T("Contribution types");
+                $params['page_title'] = _T("Contributions types");
                 break;
         }
 

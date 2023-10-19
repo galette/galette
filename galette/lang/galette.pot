@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 21:12+0200\n"
+"POT-Creation-Date: 2023-10-19 21:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -394,7 +394,8 @@ msgid "User statuses"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
-msgid "Contribution types"
+#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
+msgid "Contributions types"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:193
@@ -1144,10 +1145,6 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1157
 msgid "Preferences"
-msgstr ""
-
-#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
-msgid "Contributions types"
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1165
