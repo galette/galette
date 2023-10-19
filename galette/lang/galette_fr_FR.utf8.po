@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-10-19 20:57+0200\n"
-"PO-Revision-Date: 2023-10-19 18:58+0000\n"
+"PO-Revision-Date: 2023-10-19 19:12+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1776,7 +1776,7 @@ msgstr "l’un des pilotes PDO « mysql » ou « pgsql »"
 #: ../lib/Galette/Core/Db.php:1066
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
-msgstr ""
+msgstr "La version minimale pour le moteur %1$s est %2$s, %1$s %3$s trouvé !"
 
 #: ../lib/Galette/Core/Plugins.php:273 ../lib/Galette/Core/Plugins.php:296
 msgid "No such module."
@@ -2507,7 +2507,7 @@ msgstr "Numéro adhérent"
 #: ../lib/Galette/Features/Replacements.php:268
 #: ../lib/Galette/Features/Replacements.php:364
 msgid "Last name"
-msgstr "Prénom"
+msgstr "Nom"
 
 #: ../lib/Galette/Features/Replacements.php:272
 #: ../lib/Galette/Features/Replacements.php:368 ../includes/i18n.inc.php:330
