@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 20:54+0200\n"
+"POT-Creation-Date: 2023-10-19 20:57+0200\n"
 "PO-Revision-Date: 2023-10-19 18:33+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -1723,6 +1723,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/CheckModules.php:102
 msgid "either 'mysql' or 'pgsql' PDO driver"
+msgstr ""
+
+#: ../lib/Galette/Core/Db.php:1066
+#, php-format
+msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr ""
 
 #: ../lib/Galette/Core/Plugins.php:273 ../lib/Galette/Core/Plugins.php:296
