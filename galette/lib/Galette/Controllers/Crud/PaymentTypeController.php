@@ -230,7 +230,7 @@ class PaymentTypeController extends CrudController
             }
         } else {
             if ($id === null) {
-                $error_detected[] = preg_replace(
+                $msg = preg_replace(
                     '(%s)',
                     $ptype->getName(),
                     _T("Payment type '%s' has been successfully added.")
