@@ -58,13 +58,8 @@
                                         url: '{{ url_for("ajaxMessages") }}',
                                         method: "GET",
                                         success: function (message) {
-                                            {% include "elements/js/modal.js.twig" with {
-                                                modal_without_title: true,
-                                                modal_content: "message",
-                                                modal_class: "mini",
-                                                modal_deny_only: true,
-                                                modal_cancel_text: _T("Close")|e("js")
-                                            } %}
+                                            $('.main-content .message').remove();
+                                            $('.main-content').prepend(message);
                                         }
                                     });
                                 }
