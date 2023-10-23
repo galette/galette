@@ -1,5 +1,6 @@
         <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.67/darkreader.min.js"></script>
 
         <script type="text/javascript">
             function csrfSafeMethod(method) {
@@ -8,6 +9,33 @@
             }
 
             $(function(){
+    {% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
+    {% if not file_exists(darkcssfile) %}
+                function writeDarkTheme() {
+                    DarkReader.enable({
+                        brightness: 100,
+                        contrast: 90,
+                        sepia: 10
+                    });
+                    return DarkReader.exportGeneratedCSS();
+                }
+
+                writeDarkTheme().then(function(cssdata) {
+                    $.ajax({
+                        url: '{{ url_for("writeDarkCSS") }}',
+                        method: 'post',
+                        data: cssdata,
+                        success: function(res) {
+                            console.log('Dark theme CSS stored');
+                        },
+                        error: function() {
+                            console.log('Error storing dark theme CSS');
+                        }
+                    });
+                });
+
+    {% endif %}
+
                 $.ajaxPrefilter(function(options, originalOptions, jqXHR){
                     if (options.type.toLowerCase() === "post") {
                         // initialize `data` to empty string if it does not exist

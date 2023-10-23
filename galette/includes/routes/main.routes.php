@@ -81,3 +81,25 @@ $app->get(
     '/system-information',
     [GaletteController::class, 'systemInformation']
 )->setName('sysinfos')->add($authenticate);
+
+$app->post(
+    '/write-dark-css',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        file_put_contents(GALETTE_CACHE_DIR . '/dark.css', $post);
+        return $response->withStatus(200);
+    }
+)->setName('writeDarkCSS');
+
+$app->get(
+    '/get-dark-css',
+    function ($request, $response) {
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        if (file_exists($cssfile)) {
+            $response = $response->withHeader('Content-type', 'text/css');
+            $body = $response->getBody();
+            $body->write(file_get_contents($cssfile));
+        }
+        return $response;
+    }
+)->setName('getDarkCSS');
