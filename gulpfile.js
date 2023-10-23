@@ -96,6 +96,9 @@ var paths = {
     ],
     codemirrorformatting: [
       'https://cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.js'
+    ],
+    darkreader: [
+      './node_modules/darkreader/darkreader.js'
     ]
   },
   extras: [
@@ -218,7 +221,17 @@ function scripts() {
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  return merge(main, masschanges, chartjs, sortablejs, summernote, codemirror, codemirrorxml, codemirrorformatting);
+  darkreader = gulp.src(paths.scripts.darkreader)
+    .pipe(concat('darkreader.min.js'))
+    .pipe(uglify({
+      output: {
+        comments: /^!/
+      }
+    }))
+    .pipe(gulp.dest(paths.assets.js))
+    .pipe(browserSync.stream());
+
+  return merge(main, masschanges, chartjs, sortablejs, summernote, codemirror, codemirrorxml, codemirrorformatting, darkreader);
 }
 
 function movefiles() {

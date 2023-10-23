@@ -78,6 +78,7 @@ abstract class Authentication
     protected $managed_groups = [];
     protected $cron = false;
     protected $compact_menu = false;
+    protected $dark_mode = false;
 
     /**
      * Logs in user.
@@ -269,12 +270,22 @@ abstract class Authentication
      */
     public function getCompactMenu(): bool
     {
-        return ($this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu']) ? true : false;
+        return $this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu'];
+    }
+
+    /**
+     * Is dark mode enabled?
+     *
+     * @return bool
+     */
+    public function isDarkModeEnabled(): bool
+    {
+        return isset($_COOKIE['galette_dark_mode']) && $_COOKIE['galette_dark_mode'];
     }
 
     /**
      * Is user currently up to date?
-     * An up to date member is active and either due free, or with up to date
+     * An up-to-date member is active and either due free, or with up-to-date
      * subscription
      *
      * @return bool

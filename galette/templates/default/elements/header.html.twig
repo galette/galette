@@ -30,3 +30,8 @@
         {% include header with {'module_id': mid} %}
     {% endfor %}
 {% endif %}
+
+{% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
+{% if login.isDarkModeEnabled() and file_exists(darkcssfile) %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('getDarkCSS') }}">
+{% endif %}

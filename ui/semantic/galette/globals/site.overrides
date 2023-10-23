@@ -130,6 +130,10 @@ footer .ui.horizontal.list > .item{
     padding-top: 0;
   }
 
+  #top-navbar div.item a.button.darkmode span {
+    display: none;
+  }
+
   aside.computer.toc {
     background: @galetteNavBackground;
   }
@@ -216,6 +220,18 @@ footer .ui.horizontal.list > .item{
     position: sticky;
     top: 0px;
     z-index: 10;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  aside.computer.toc {
+    .ui.text.compact.small.fluid.menu {
+      font-size: .8em;
+
+      .ui.buttons .button {
+        padding: .5em;
+      }
+    }
   }
 }
 
