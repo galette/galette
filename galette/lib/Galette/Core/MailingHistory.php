@@ -275,9 +275,7 @@ class MailingHistory extends History
 
             $k = self::PK;
             $this->count = $result->$k;
-            if ($this->count > 0) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count history | ' . $e->getMessage(),

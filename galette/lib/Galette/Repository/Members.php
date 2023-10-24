@@ -888,7 +888,7 @@ class Members
             $results = $zdb->execute($countSelect);
 
             $this->count = (int)$results->current()->count;
-            if (isset($this->filters) && $this->count > 0) {
+            if (isset($this->filters)) {
                 $this->filters->setCounter($this->count);
             }
         } catch (Throwable $e) {
