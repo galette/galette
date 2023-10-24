@@ -1,6 +1,8 @@
         <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.67/darkreader.min.js"></script>
+    {% if login.getDarkMode() %}
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/darkreader.min.js"></script>
+    {% endif %}
 
         <script type="text/javascript">
             function csrfSafeMethod(method) {
@@ -9,32 +11,51 @@
             }
 
             $(function(){
+                function _darkMode() {
+                    var _dark_enabled = Cookies.get('galette_dark_mode');
+                    var _trigger = document.getElementById('darkmode');
+                    var _cookie_value = 1;
+                    if (_dark_enabled && _dark_enabled == 1) {
+                        var _cookie_value = 0;
     {% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
     {% if not file_exists(darkcssfile) %}
-                function writeDarkTheme() {
-                    DarkReader.enable({
-                        brightness: 100,
-                        contrast: 90,
-                        sepia: 10
-                    });
-                    return DarkReader.exportGeneratedCSS();
-                }
-
-                writeDarkTheme().then(function(cssdata) {
-                    $.ajax({
-                        url: '{{ url_for("writeDarkCSS") }}',
-                        method: 'post',
-                        data: cssdata,
-                        success: function(res) {
-                            console.log('Dark theme CSS stored');
-                        },
-                        error: function() {
-                            console.log('Error storing dark theme CSS');
+                        function writeDarkTheme() {
+                            DarkReader.enable({
+                                brightness: 100,
+                                contrast: 90,
+                                sepia: 10
+                            });
+                            return DarkReader.exportGeneratedCSS();
                         }
-                    });
-                });
-
+                        writeDarkTheme().then(function(cssdata) {
+                            $.ajax({
+                                url: '{{ url_for("writeDarkCSS") }}',
+                                method: 'post',
+                                data: cssdata.replaceAll('themes/galette/assets', 'themes/default/ui/themes/galette/assets'),
+                                success: function(res) {
+                                    console.log('Dark theme CSS stored');
+                                },
+                                error: function() {
+                                    console.log('Error storing dark theme CSS');
+                                }
+                            });
+                        });
     {% endif %}
+                    }
+                    _trigger.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        Cookies.set(
+                            'galette_dark_mode',
+                            _cookie_value,
+                            {
+                                expires: 365,
+                                path: '/'
+                            }
+                        );
+                        window.location.reload();
+                    });
+                }
+                _darkMode();
 
                 $.ajaxPrefilter(function(options, originalOptions, jqXHR){
                     if (options.type.toLowerCase() === "post") {
