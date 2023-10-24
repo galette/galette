@@ -78,6 +78,7 @@ abstract class Authentication
     protected $managed_groups = [];
     protected $cron = false;
     protected $compact_menu = false;
+    protected $dark_mode = false;
 
     /**
      * Logs in user.
@@ -270,6 +271,16 @@ abstract class Authentication
     public function getCompactMenu(): bool
     {
         return ($this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu']) ? true : false;
+    }
+
+    /**
+     * Get dark mode status
+     *
+     * @return bool
+     */
+    public function getDarkMode(): bool
+    {
+        return (isset($_COOKIE['galette_dark_mode']) && $_COOKIE['galette_dark_mode']) ? true : false;
     }
 
     /**

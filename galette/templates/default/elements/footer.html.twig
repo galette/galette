@@ -21,6 +21,10 @@
             </div>
             <div class="row">
                 <nav class="ui horizontal bulleted link list">
+                    <a id="darkmode" href="#" class="item">
+                        <i class="adjust icon"></i>
+                        {% if login.getDarkMode() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
+                    </a>
                     <a id="copyright" href="https://galette.eu/" class="item">
                         <i class="icon cookie bite"></i>
                         Galette {{ constant('GALETTE_DISPLAY_VERSION') }}
