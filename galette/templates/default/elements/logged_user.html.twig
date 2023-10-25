@@ -76,7 +76,15 @@
                                 {% include "elements/modes.html.twig" %}
                             </div>
                             <a
-                                class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
+                                href="#"
+                                class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} fluid icon button"
+                                title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
+                            >
+                                <i class="icon adjust"></i>
+                                {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
+                            </a>
+                            <a
+                                class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} fluid icon button"
                                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
                             >
                                 <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
