@@ -22,7 +22,7 @@
             ui: "item"
     } %}
 {% if login.isLogged() %}
-        {% include "elements/logout.html.twig" with {
+        {% include "elements/logged_user.html.twig" with {
                 ui: "item"
         } %}
 {% endif %}
