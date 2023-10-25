@@ -32,5 +32,14 @@
     {% for public_item in public_items %}
         {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon, public_item.class, tips_position) }}
     {% endfor %}
+        <a
+            href="#"
+            class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"
+            data-position="{{ tips_position }}"
+            title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
+        >
+            <i class="icon adjust"></i>
+            <span>{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
+        </a>
     </div>
 {% endif %}
