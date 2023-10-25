@@ -21,10 +21,6 @@
             </div>
             <div class="row">
                 <nav class="ui horizontal bulleted link list">
-                    <a id="darkmode" href="#" class="item">
-                        <i class="adjust icon"></i>
-                        {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
-                    </a>
                     <a id="copyright" href="https://galette.eu/" class="item">
                         <i class="icon cookie bite"></i>
                         Galette {{ constant('GALETTE_DISPLAY_VERSION') }}
@@ -37,7 +33,7 @@
 {% endif %}
                 </nav>
 {% if login.isLogged() and cur_route == 'dashboard' %}
-                {# Comply with the Twemoji project's requirements about attribution #}
+                {# Comply with the Twemoji project's requirements about attribution #}
                 <!--
                     Emojis used by Galette's core and its official plugins on the dashboard
                     are licensed under CC-BY 4.0 <https://creativecommons.org/licenses/by/4.0/>

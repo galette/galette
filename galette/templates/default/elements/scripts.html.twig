@@ -13,7 +13,6 @@
             $(function(){
                 function _darkMode() {
                     var _dark_enabled = Cookies.get('galette_dark_mode');
-                    var _trigger = document.getElementById('darkmode');
                     var _cookie_value = 1;
                     if (_dark_enabled && _dark_enabled == 1) {
                         var _cookie_value = 0;
@@ -42,7 +41,7 @@
                         });
     {% endif %}
                     }
-                    _trigger.addEventListener('click', function(e) {
+                    $('.darkmode').on('click', function(e) {
                         e.preventDefault();
                         Cookies.set(
                             'galette_dark_mode',
