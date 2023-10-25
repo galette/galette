@@ -270,7 +270,7 @@ abstract class Authentication
      */
     public function getCompactMenu(): bool
     {
-        return ($this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu']) ? true : false;
+        return $this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu'];
     }
 
     /**
@@ -280,12 +280,12 @@ abstract class Authentication
      */
     public function isDarkModeEnabled(): bool
     {
-        return (isset($_COOKIE['galette_dark_mode']) && $_COOKIE['galette_dark_mode']) ? true : false;
+        return isset($_COOKIE['galette_dark_mode']) && $_COOKIE['galette_dark_mode'];
     }
 
     /**
      * Is user currently up to date?
-     * An up to date member is active and either due free, or with up to date
+     * An up-to-date member is active and either due free, or with up-to-date
      * subscription
      *
      * @return bool
