@@ -219,6 +219,18 @@ footer .ui.horizontal.list > .item{
   }
 }
 
+@media only screen and (max-width: 1199px) {
+  aside.computer.toc {
+    .ui.text.compact.small.fluid.menu {
+      font-size: .8em;
+
+      .ui.buttons .button {
+        padding: .5em;
+      }
+    }
+  }
+}
+
 @media only screen and (min-width: 1200px) {
   aside.toc {
     width: 350px;
