@@ -35,23 +35,25 @@
                 </div>
                 <div class="right menu">
                     <div class="item">
-                        <a
-                            href="#"
-                            class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"
-                            title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
-                        >
-                            <i class="icon adjust"></i>
-                            <span class="displaynone">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
-                        </a>
-                        <a
-                            class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
-                            href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
-                            title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
-                            data-position="bottom right"
-                        >
-                            <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
-                            <span class="displaynone">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
-                        </a>
+                        <div class="ui icon buttons">
+                            <a
+                                href="#"
+                                class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"
+                                title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
+                            >
+                                <i class="icon adjust"></i>
+                                <span class="displaynone">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
+                            </a>
+                            <a
+                                class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
+                                href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
+                                title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
+                                data-position="bottom right"
+                            >
+                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+                                <span class="displaynone">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
