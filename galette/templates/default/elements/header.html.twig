@@ -32,6 +32,6 @@
 {% endif %}
 
 {% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
-{% if login.getDarkMode() and file_exists(darkcssfile) %}
+{% if login.isDarkModeEnabled() and file_exists(darkcssfile) %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('getDarkCSS') }}">
 {% endif %}

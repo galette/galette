@@ -1,6 +1,6 @@
         <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
-    {% if login.getDarkMode() %}
+    {% if login.isDarkModeEnabled() %}
         <script type="text/javascript" src="{{ base_path() }}/assets/js/darkreader.min.js"></script>
     {% endif %}
 

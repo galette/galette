@@ -274,11 +274,11 @@ abstract class Authentication
     }
 
     /**
-     * Get dark mode status
+     * Is dark mode enabled?
      *
      * @return bool
      */
-    public function getDarkMode(): bool
+    public function isDarkModeEnabled(): bool
     {
         return (isset($_COOKIE['galette_dark_mode']) && $_COOKIE['galette_dark_mode']) ? true : false;
     }
