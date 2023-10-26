@@ -64,6 +64,9 @@
                     onDeny: function() {
                             $(this).find('.tdata').empty();
                     },
+                    onHidden: function() {
+                            $(this).find('.tdata').empty();
+                    },
                     actions: [{
                         text    : '{{ _T("Send")|e('js') }}',
                         icon    : 'share',
