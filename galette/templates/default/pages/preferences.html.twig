@@ -396,9 +396,7 @@
                     </div>
                     <div class="field">
                         <label for="pref_email">{{ _T("Sender Email:") }}</label>
-        {% set pref_email = preferences.vpref_email|join(',') %}
-                        <input type="text" name="pref_email" id="pref_email" value="{{ pref_email }}" maxlength="100" size="30"/>
-                        <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
+                        <input type="text" name="pref_email" id="pref_email" value="{{ pref.pref_email }}" maxlength="100" size="30"/>
                     </div>
                     <div class="field">
                         <label for="pref_email_reply_to">{{ _T("Reply-To Email:") }}</label>
@@ -410,13 +408,13 @@
                         </div>
                     </div>
                     <div class="field">
-        {% set pref_email = preferences.vpref_email_newadh|join(',') %}
+        {% set pref_email_newadh = preferences.vpref_email_newadh|join(',') %}
                         <label for="pref_email_newadh">{{ _T("Members administrator's Email:") }}</label>
                         <div class="ui right corner labeled input">
                             <div class="ui corner label">
                                 <i class="circular inverted primary icon info tooltip" title="{{ _T("Recipient of new online registation and edition emails") }}"></i>
                             </div>
-                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref.pref_email_newadh }}" maxlength="100" size="30"/>
+                            <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{{ pref_email_newadh }}" maxlength="100" size="30"/>
                         </div>
                         <span class="exemple">{{ _T("(You can enter several emails separated with a comma. First address will be the default one.)") }}</span>
                     </div>
