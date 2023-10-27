@@ -39,6 +39,9 @@ use Galette\Core\Db as GaletteDb;
 use Analog\Analog;
 use Analog\Handler;
 use Analog\Handler\LevelName;
+use Galette\Core\Plugins;
+use Galette\Core\Preferences;
+use Galette\Util\Telemetry;
 
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
@@ -111,6 +114,18 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     Analog::handler($galette_run_log);
 }
 
+if (!$install->isEndStep()
+    && ($install->postCheckDb() || $install->isDbCheckStep())
+) {
+    //if we have passed database configuration, define required constants
+    initDbConstants($install);
+
+    if ($install->postCheckDb()) {
+        //while before check db, connection is not checked
+        $zdb = new GaletteDb();
+    }
+}
+
 if (isset($_POST['stepback_btn'])) {
     $install->atPreviousStep();
 } elseif (isset($_POST['install_permsok']) && $_POST['install_permsok'] == 1) {
@@ -162,7 +177,7 @@ if (isset($_POST['stepback_btn'])) {
 } elseif (isset($_POST['install_dbwrite_ok']) && $install->isInstall()) {
     $install->atAdminStep();
 } elseif (isset($_POST['install_dbwrite_ok']) && $install->isUpgrade()) {
-    $install->atGaletteInitStep();
+    $install->atTelemetryStep();
 } elseif (isset($_POST['install_adminlogin'])
     && isset($_POST['install_adminpass'])
     && $install->isInstall()
@@ -189,22 +204,26 @@ if (isset($_POST['stepback_btn'])) {
             $_POST['install_adminlogin'],
             $_POST['install_adminpass']
         );
-        $install->atGaletteInitStep();
+        $install->atTelemetryStep();
     }
+} elseif (isset($_POST['install_telemetry_ok'])) {
+    if (isset($_POST['send_telemetry'])) {
+        $preferences = new Preferences($zdb);
+        $plugins = new Plugins();
+        $telemetry = new Telemetry(
+            $zdb,
+            $preferences,
+            $plugins
+        );
+        try {
+            $telemetry->send();
+        } catch (Throwable $e) {
+            Analog::log($e->getMessage(), Analog::ERROR);
+        }
+    }
+    $install->atGaletteInitStep();
 } elseif (isset($_POST['install_prefs_ok'])) {
     $install->atEndStep();
-}
-
-if (!$install->isEndStep()
-    && ($install->postCheckDb() || $install->isDbCheckStep())
-) {
-    //if we have passed database configuration, define required constants
-    initDbConstants($install);
-
-    if ($install->postCheckDb()) {
-        //while before check db, connection is not checked
-        $zdb = new GaletteDb();
-    }
 }
 
 header('Content-Type: text/html; charset=UTF-8');
@@ -283,13 +302,15 @@ if ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/db_install.php';
 } elseif ($install->isAdminStep()) {
     include_once __DIR__ . '/../install/steps/admin.php';
+} elseif ($install->isTelemetryStep()) {
+    include_once __DIR__ . '/../install/steps/telemetry.php';
 } elseif ($install->isGaletteInitStep()) {
     include_once __DIR__ . '/../install/steps/galette.php';
 } elseif ($install->isEndStep()) {
     include_once __DIR__ . '/../install/steps/end.php';
 }
 ?>
-                <div class="ui tablet stackable mini eight steps">
+                <div class="ui tablet stackable mini nine steps">
                     <div class="step<?php if ($install->isCheckStep()) echo ' active'; ?>">
                         <i class="tasks icon"></i>
                         <div class="content">
@@ -352,6 +373,12 @@ if (!$install->isUpgrade()) {
     <?php
 }
 ?>
+                    <div class="step<?php if ($install->isTelemetryStep()) echo ' active'; ?>">
+                        <i class="chart bar icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Telemetry"); ?></div>
+                        </div>
+                    </div>
                     <div class="step<?php if ($install->isGaletteInitStep()) echo ' active'; ?>">
                         <i class="cogs icon"></i>
                         <div class="content">

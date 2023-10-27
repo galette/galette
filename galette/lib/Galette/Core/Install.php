@@ -62,8 +62,9 @@ class Install
     public const STEP_DB_UPGRADE = 5;
     public const STEP_DB_INSTALL = 6;
     public const STEP_ADMIN = 7;
-    public const STEP_GALETTE_INIT = 8;
-    public const STEP_END = 9;
+    public const STEP_TELEMETRY = 8;
+    public const STEP_GALETTE_INIT = 9;
+    public const STEP_END = 10;
 
     public const INSTALL = 'i';
     public const UPDATE = 'u';
@@ -142,6 +143,9 @@ class Install
                 break;
             case self::STEP_ADMIN:
                 $step_title = _T("Admin parameters");
+                break;
+            case self::STEP_TELEMETRY:
+                $step_title = _T("Telemetry");
                 break;
             case self::STEP_GALETTE_INIT:
                 $step_title = _T("Galette initialization");
@@ -872,6 +876,26 @@ class Install
     public function getAdminPass()
     {
         return $this->_admin_pass;
+    }
+
+    /**
+     * Set step to telemetry
+     *
+     * @return void
+     */
+    public function atTelemetryStep()
+    {
+        $this->_step = self::STEP_TELEMETRY;
+    }
+
+    /**
+     * Are we at telemetry step?
+     *
+     * @return boolean
+     */
+    public function isTelemetryStep()
+    {
+        return $this->_step === self::STEP_TELEMETRY;
     }
 
     /**
