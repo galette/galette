@@ -335,7 +335,7 @@ class Install extends TestCase
         $this->assertSame(PWD_DB, $pass);
 
         $post_check = $this->install->postCheckDb();
-        $this->assertFalse($post_check);
+        $this->assertTrue($post_check);
 
         $this->install->atPreviousStep();
         $step = $this->install->isDbStep();
