@@ -81,9 +81,46 @@
                                         <th class="listing">{{ _T("Member") }}</th>
                                         <th class="listing">{{ _T("Amount") }}</th>
                                         <th class="listing">{{ _T("Not dispatched amount") }}</th>
-                                        <th class="listing">{{ _T("Actions") }}</th>
                                     </tr>
                                 </thead>
+    {% if contribution.id and contribution.isTransactionPart() %}
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="ui basic fitted right aligned segment">
+                                                <a
+                                                    href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                                                    class="ui icon blue compact button tooltip"
+                                                >
+                                                    <i class="eye icon tooltip"></i>
+                                                    <span class="ui special popup">{{ _T("View transaction") }}</span>
+                                                </a>
+        {% if contribution.transaction.getMissingAmount() > 0 %}
+                                                <a
+                                                    href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
+                                                    class="ui icon green compact button tooltip"
+                                                    title="{{ _T("Create a new fee that will be attached to the current transaction") }}"
+                                                >
+                                                    <i class="plus tiny icon"></i>
+                                                    <i class="user check icon"></i>
+                                                    <span class="displaynone">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
+                                                </a>
+                                                <a
+                                                    href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ contribution.transaction.id }}"
+                                                    class="ui icon green compact button tooltip"
+                                                    title="{{ _T("Create a new donation that will be attached to the current transaction") }}"
+                                                >
+                                                    <i class="plus tiny icon"></i>
+                                                    <i class="gift icon"></i>
+                                                    <span class="displaynone">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
+                                                </a>
+        {% endif %}
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tfoot>
+    {% endif %}
                                 <tbody>
                                     <tr>
                                         <td>{{ contribution.transaction.id }}</td>
@@ -92,28 +129,6 @@
                                         <td>{{ memberName({'id': mid}) }}</td>
                                         <td class="right">{{ contribution.transaction.amount }}</td>
                                         <td class="right">{{ contribution.transaction.getMissingAmount() }}</td>
-                                        <td>
-                                            <a
-                                                href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
-                                            >
-                                                <i class="eye outline blue icon tooltip"></i>
-                                                <span class="ui special popup">{{ _T("View transaction") }}</span>
-                                            </a>
-    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() > 0 %}
-                                            <a
-                                                href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
-                                            >
-                                                <i class="receipt green icon tooltip"></i>
-                                                <span class="ui special popup">{{ _T("New attached fee") }}</span>
-                                            </a>
-                                            <a
-                                                href="{{ url_for("addContribution", {"type": "donation"}) }}?trans_id={{ contribution.transaction.id }}"
-                                            >
-                                                <i class="gift green icon tooltip"></i>
-                                                <span class="ui special popup">{{ _T("New attached donation") }}</span>
-                                            </a>
-    {% endif %}
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
