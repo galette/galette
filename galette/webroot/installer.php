@@ -310,86 +310,64 @@ if ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/end.php';
 }
 ?>
-                <div class="ui tablet stackable mini nine steps">
-                    <div class="step<?php if ($install->isCheckStep()) echo ' active'; ?>">
-                        <i class="tasks icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Checks"); ?></div>
-                        </div>
+                <div class="ui tablet stackable mini nine steps fluid">
+                    <div class="step<?php if ($install->isCheckStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Checks"); ?>">
+                        <i class="tasks icon<?php if($install->isStepPassed(GaletteInstall::STEP_CHECK)) { echo ' green'; } ?>"></i>
+                        <span class="displaynone"><?php echo _T("Checks"); ?></span>
                     </div>
-                    <div class="step<?php if ($install->isTypeStep()) echo ' active'; ?>">
-                        <i class="question icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Installation mode"); ?></div>
-                        </div>
+                    <div class="step<?php if ($install->isTypeStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Installation mode"); ?>">
+                        <i class="question icon<?php if($install->isStepPassed(GaletteInstall::STEP_TYPE)) { echo ' green'; } ?>"></i>
+                        <span class="displaynone"><?php echo _T("Installation mode"); ?></span>
                     </div>
-                    <div class="step<?php if ($install->isDbStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isDbStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Database"); ?>">
                         <i class="database icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Database"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Database"); ?></span>
                     </div>
-                    <div class="step<?php if ($install->isDbCheckStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isDbCheckStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Database access/permissions"); ?>">
                         <i class="key icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Database access/permissions"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Database access/permissions"); ?></span>
                     </div>
 <?php
 if ($install->isUpgrade()) {
     ?>
-                    <div class="step<?php if ($install->isVersionSelectionStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isVersionSelectionStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Version selection"); ?>">
                         <i class="tag icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Version selection"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Version selection"); ?></span>
                     </div>
-                    <div class="step<?php if ($install->isDbUpgradeStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isDbUpgradeStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Database upgrade"); ?>">
                         <i class="sync alt icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Database upgrade"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Database upgrade"); ?></span>
                     </div>
     <?php
 } else {
     ?>
-                    <div class="step<?php if ($install->isDbinstallStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isDbinstallStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Database installation"); ?>">
                         <i class="spinner icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Database installation"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Database installation"); ?></span>
                     </div>
     <?php
 }
 
 if (!$install->isUpgrade()) {
     ?>
-                    <div class="step<?php if ($install->isAdminStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isAdminStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Admin parameters"); ?>">
                         <i class="user icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Admin parameters"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Admin parameters"); ?></span>
                     </div>
     <?php
 }
 ?>
-                    <div class="step<?php if ($install->isTelemetryStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isTelemetryStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Telemetry"); ?>">
                         <i class="chart bar icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Telemetry"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Telemetry"); ?></span>
                     </div>
-                    <div class="step<?php if ($install->isGaletteInitStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isGaletteInitStep()) echo ' active'; ?> tooltip" title="<?php echo _T("Galette initialisation"); ?>">
                         <i class="cogs icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("Galette initialisation"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("Galette initialisation"); ?></span>
                     </div>
-                    <div class="step<?php if ($install->isEndStep()) echo ' active'; ?>">
+                    <div class="step<?php if ($install->isEndStep()) echo ' active'; ?> tooltip" title="<?php echo _T("End!"); ?>">
                         <i class="flag checkered icon"></i>
-                        <div class="content">
-                            <div class="title"><?php echo _T("End!"); ?></div>
-                        </div>
+                        <span class="displaynone"><?php echo _T("End!"); ?></span>
                     </div>
                 </div>
             </div>
