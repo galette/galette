@@ -36,40 +36,40 @@
 
 use Galette\Core\Install as GaletteInstall;
 ?>
-                <form action="installer.php" method="POST" class="ui form">
-                    <div class="ui two stackable cards">
-                            <div class="ui fluid card">
-                                <div class="content">
-                                    <h2>
-                                        <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ($install->isInstall() || !$install->isUpgrade()) { echo ' checked="checked"'; } ?> id="install"/>
-                                        <label for="install"><?php echo _T("New installation"); ?></label>
-                                    </h2>
-                                    <ul>
-                                        <li><?php echo _T("you're installing Galette for the first time"); ?>,</li>
-                                        <li><?php echo _T("you wish to erase an older version of Galette without keeping your data"); ?>.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="ui fluid card">
-                                <div class="content">
-                                    <h2>
-                                        <input type="radio" name="install_type" value="<?php echo GaletteInstall::UPDATE; ?>"<?php if ($install->isUpgrade()) { echo ' checked="checked"'; } ?> id="update"/>
-                                        <label for="update"><?php echo _T("Update"); ?></label>
-                                    </h2>
-                                    <ul>
-                                    <li><?php echo _T("you already have installed Galette, and you want to upgrade to the latest version"); ?>.</li>
-                                    </ul>
-                                    <p class="ui orange message"><?php echo _T("Warning: Don't forget to backup your current database."); ?></p>
-                                </div>
-                            </div>
-                    </div>
-
-                    <div class="ui mobile tablet computer reversed equal width grid">
-                        <div class="right aligned column">
-                            <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
-                        </div>
-                        <div class="left aligned column">
-                            <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
-                        </div>
-                    </div>
-                </form>
+<form action="installer.php" method="POST" class="ui form">
+    <div class="ui two stackable cards">
+            <div class="ui fluid card">
+                <div class="content">
+                    <h2>
+                        <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ($install->isInstall() || !$install->isUpgrade()) { echo ' checked="checked"'; } ?> id="install"/>
+                        <label for="install"><?php echo _T("New installation"); ?></label>
+                    </h2>
+                    <ul>
+                        <li><?php echo _T("you're installing Galette for the first time"); ?>,</li>
+                        <li><?php echo _T("you wish to erase an older version of Galette without keeping your data"); ?>.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ui fluid card">
+                <div class="content">
+                    <h2>
+                        <input type="radio" name="install_type" value="<?php echo GaletteInstall::UPDATE; ?>"<?php if ($install->isUpgrade()) { echo ' checked="checked"'; } ?> id="update"/>
+                        <label for="update"><?php echo _T("Update"); ?></label>
+                    </h2>
+                    <ul>
+                    <li><?php echo _T("you already have installed Galette, and you want to upgrade to the latest version"); ?>.</li>
+                    </ul>
+                    <p class="ui orange message"><?php echo _T("Warning: Don't forget to backup your current database."); ?></p>
+                </div>
+            </div>
+    </div>
+    <div class="ui section divider"></div>
+    <div class="ui equal width grid">
+        <div class="column">
+            <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+        </div>
+        <div class="right aligned column">
+            <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+        </div>
+    </div>
+</form>

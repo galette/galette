@@ -45,40 +45,43 @@ $telemetry = new \Galette\Util\Telemetry(
     $plugins
 );
 ?>
-                <form action="installer.php" method="POST" class="ui form">
-                    <div class="ui segment">
-                        <div class="content field">
-                            <div class="ui text container">
-                                <div class="ui toggle checkbox tooltip" title="<?php echo _T("Send anonymous and imprecise data about your Galette instance"); ?>">
-                                    <input type="checkbox" name="send_telemetry" tabindex="0" class="hidden" checked="checked"/>
-                                    <label><?php echo _T("Send telemetry information"); ?></label>
-                                </div>
+    <form action="installer.php" method="POST" class="ui form">
+        <div class="ui stackable equal width grid">
+            <div class="column">
+                <div class="ui toggle checkbox tooltip" title="<?php echo _T("Send anonymous and imprecise data about your Galette instance"); ?>">
+                    <input type="checkbox" name="send_telemetry" tabindex="0" class="hidden" checked="checked"/>
+                    <label><?php echo _T("Send telemetry information"); ?></label>
+                </div>
+            </div>
 <?php
 if (!$telemetry->isRegistered()) {
 ?>
-                                <a class="ui button right floated" href="<?php echo GALETTE_TELEMETRY_URI; ?>reference?showmodal&uuid=<?php echo $telemetry->getRegistrationUuid(); ?>" title="<?php echo _T("Register your organization as a Galette user"); ?>" target="_blank">
-                                    <i class="id card icon"></i>
-                                    <?php echo _T("Register"); ?>
-                                </a>
+            <div class="right aligned column">
+                <a class="ui button" href="<?php echo GALETTE_TELEMETRY_URI; ?>reference?showmodal&uuid=<?php echo $telemetry->getRegistrationUuid(); ?>" title="<?php echo _T("Register your organization as a Galette user"); ?>" target="_blank">
+                    <i class="id card icon"></i>
+                    <?php echo _T("Register"); ?>
+                </a>
+            </div>
 <?php
 }
 ?>
-                                <div class="ui message scrolling content">
-                                    <p><?php echo _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent."); ?></p>
-                                    <p>
-                                        <?php echo _T("Also note tha all data is sent over a <strong>HTTPS secured connection</strong>."); ?>
-                                    </p>
-                                    <div class="tdata">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui mobile tablet computer reversed equal width grid">
-                        <div class="right aligned column">
-                            <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
-                            <input type="hidden" name="install_telemetry_ok" value="1"/>
-                        </div>
-                    </div>
-                </form>
+        </div>
+        <div class="ui message scrolling content">
+            <p><?php echo _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent."); ?></p>
+            <p>
+                <?php echo _T("Also note tha all data is sent over a <strong>HTTPS secured connection</strong>."); ?>
+            </p>
+            <div class="tdata">
+            </div>
+        </div>
+
+        <div class="ui section divider"></div>
+
+        <div class="ui equal width grid">
+            <div class="right aligned column">
+                <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+                <input type="hidden" name="install_telemetry_ok" value="1"/>
+            </div>
+        </div>
+    </form>
 

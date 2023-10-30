@@ -39,10 +39,7 @@ use Galette\Core\Install as GaletteInstall;
 $session[md5(GALETTE_ROOT)] = null;
 unset($session[md5(GALETTE_ROOT)]);
 ?>
-                <div class="ui segment">
-                    <div class="content field">
-                        <div class="ui text container">
-                            <p class="ui green message">
+    <p class="ui green message">
 <?php
 if ($install->isInstall()) {
     echo _T("Galette has been successfully installed!");
@@ -51,14 +48,14 @@ if ($install->isUpgrade()) {
     echo _T("Galette has been successfully updated!");
 }
 ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <form action="<?php echo GALETTE_BASE_PATH; ?>" method="get">
-                    <div class="ui mobile tablet computer reversed equal width grid">
-                        <div class="right aligned column">
-                            <button type="submit" class="ui right labeled icon button"><i class="home icon"></i> <?php echo _T("Homepage"); ?></button>
-                        </div>
-                    </div>
-                </form>
+    </p>
+
+    <div class="ui section divider"></div>
+
+    <form action="<?php echo GALETTE_BASE_PATH; ?>" method="get">
+        <div class="ui equal width grid">
+            <div class="right aligned column">
+                <button type="submit" class="ui right labeled icon button"><i class="home icon"></i> <?php echo _T("Homepage"); ?></button>
+            </div>
+        </div>
+    </form>
