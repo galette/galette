@@ -181,13 +181,6 @@
         </p>
     </div>
 {% endif %}
-    <div id="contributions-modal" class="ui modal">
-        <div class="header"></div>
-        <div class="content"></div>
-        <div class="actions">
-            <button class="ui cancel button">{{ _T("Close")|e("js") }}</button>
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -264,11 +257,11 @@
                         type: "POST",
                         data: _form.serialize(),
                         {% include "elements/js/loader.js.twig" with {
-                            selector: '#contributions-modal'
+                            selector: '.contributions-selection'
                         } %},
                         success: function(res){
                             $('#main-container').remove();
-                            $('#contributions-modal .content').append(res);
+                            $('.contributions-selection .content').append(res);
                             _contribs_ajax_mapper(res, max_amount);
                         },
                         error: function() {
@@ -297,11 +290,11 @@
                             max_amount: max_amount
                         },
                         {% include "elements/js/loader.js.twig" with {
-                            selector: '#contributions-modal'
+                            selector: '.contributions-selection'
                         } %},
                         success: function(res){
                             $('#main-container').remove();
-                            $('#contributions-modal .content').append(res);
+                            $('.contributions-selection .content').append(res);
                             _contribs_ajax_mapper(res, max_amount);
                         },
                         error: function() {
@@ -330,11 +323,11 @@
                                 clear_filter: true
                             },
                             {% include "elements/js/loader.js.twig" with {
-                                selector: '#contributions-modal'
+                                selector: '.contributions-selection'
                             } %},
                             success: function(res){
                                 $('#main-container').remove();
-                                $('#contributions-modal .content').append(res);
+                                $('.contributions-selection .content').append(res);
                                 _contribs_ajax_mapper(res, max_amount);
                             },
                             error: function() {
