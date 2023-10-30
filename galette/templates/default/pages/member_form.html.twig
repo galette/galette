@@ -137,7 +137,7 @@
             <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1"{% if member.sendEMail() %} checked="checked"{% endif %}/>
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1"{% if preferences.pref_bool_mailowner or member.sendEMail() %} checked="checked"{% endif %}/>
                         <label for="mail_confirm">
         {% if member.id %}
                             {{ _T("Notify member his account has been modified") }}
