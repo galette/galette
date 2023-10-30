@@ -39,15 +39,15 @@ use Galette\Core\Db as GaletteDb;
 ?>
 <form id="adminform" action="installer.php" method="post" class="ui form">
     <h2><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></h2>
-    <div class="field inline">
+    <div class="field required inline">
         <label for="install_adminlogin"><?php echo _T("Username:"); ?></label>
         <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if (isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>" required autofocus/>
     </div>
-    <div class="field inline">
+    <div class="field required inline">
         <label for="install_adminpass"><?php echo _T("Password:"); ?></label>
         <input type="password" name="install_adminpass" id="install_adminpass" value="" required/>
     </div>
-    <div class="field inline">
+    <div class="field required inline">
         <label for="install_adminpass_verif"><?php echo _T("Retype password:"); ?></label>
         <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" required/>
     </div>
