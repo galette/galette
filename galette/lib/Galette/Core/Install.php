@@ -307,7 +307,7 @@ class Install
      */
     public function postCheckDb()
     {
-        return $this->_step > self::STEP_DB_CHECKS;
+        return $this->_step >= self::STEP_DB_CHECKS;
     }
 
     /**
