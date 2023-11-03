@@ -115,7 +115,7 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
 }
 
 if (!$install->isEndStep()
-    && ($install->postCheckDb() || $install->isDbCheckStep())
+    && ($install->postCheckDb())
 ) {
     //if we have passed database configuration, define required constants
     initDbConstants($install);
@@ -164,6 +164,7 @@ if (isset($_POST['stepback_btn'])) {
             $_POST['install_dbprefix']
         );
         $install->atDbCheckStep();
+        initDbConstants($install);
     }
 } elseif (isset($_POST['install_dbperms_ok'])) {
     if ($install->isInstall()) {
@@ -185,7 +186,7 @@ if (isset($_POST['stepback_btn'])) {
     if ($_POST['install_adminlogin'] == '') {
         $error_detected[] = _T("No user name");
     }
-    if (strpos($_POST['install_adminlogin'], '@') != false) {
+    if (strpos($_POST['install_adminlogin'], '@')) {
         $error_detected[] = _T("The username cannot contain the @ character");
     }
     if ($_POST['install_adminpass'] == '') {
