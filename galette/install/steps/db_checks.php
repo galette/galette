@@ -250,7 +250,7 @@ if (!$conndb_ok) {
 if (!isset($install_plugin)) {
 ?>
     <form action="installer.php" method="POST" class="ui form">
-        <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
                 <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?> class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
 <?php

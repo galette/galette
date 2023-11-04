@@ -69,7 +69,7 @@ foreach ($install->getInitializationReport() as $r) {
     <div class="ui section divider"></div>
 
     <form action="installer.php" method="POST" class="ui form">
-        <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
 <?php
 if (!$config_file_ok || !$objects_ok) {

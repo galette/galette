@@ -70,7 +70,7 @@ foreach ($install->getDbInstallReport() as $r) {
     <div class="ui section divider"></div>
 
     <form action="installer.php" method="POST" class="ui form">
-        <div class="mobile tablet computer reversed ui equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
 <?php
 if (!$db_installed) {

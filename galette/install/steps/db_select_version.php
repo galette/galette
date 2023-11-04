@@ -132,7 +132,7 @@ if (count($versions) == 0) {
 <?php
 if (count($versions) == 0) {
 ?>
-        <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
                 <input type="submit" class="ui icon button" name="abort_btn" value="<?php echo _T("Cancel"); ?>"/>
                 <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
@@ -144,7 +144,7 @@ if (count($versions) == 0) {
 <?php
 } else {
 ?>
-        <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
                 <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
             </div>

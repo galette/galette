@@ -102,7 +102,7 @@ if ($install->isUpgrade()) {
             </div>
         </div>
         <div class="ui section divider"></div>
-        <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
                 <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
             </div>
