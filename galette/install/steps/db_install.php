@@ -70,17 +70,7 @@ foreach ($install->getDbInstallReport() as $r) {
     <div class="ui section divider"></div>
 
     <form action="installer.php" method="POST" class="ui form">
-        <div class="ui equal width grid">
-<?php
-if (!$db_installed) {
-    //once DB is installed, that does not make sense to go back
-?>
-            <div class="column">
-                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
-            </div>
-<?php
-}
-?>
+        <div class="mobile tablet computer reversed ui equal width grid">
             <div class="right aligned column">
 <?php
 if (!$db_installed) {
@@ -98,5 +88,15 @@ if ($db_installed) {
 }
 ?>
             </div>
+<?php
+if (!$db_installed) {
+    //once DB is installed, that does not make sense to go back
+    ?>
+                <div class="column">
+                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+                </div>
+    <?php
+}
+?>
         </div>
     </form>

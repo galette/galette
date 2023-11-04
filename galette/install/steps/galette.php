@@ -69,17 +69,7 @@ foreach ($install->getInitializationReport() as $r) {
     <div class="ui section divider"></div>
 
     <form action="installer.php" method="POST" class="ui form">
-        <div class="ui equal width grid">
-<?php
-if (!$config_file_ok || !$objects_ok) {
-    //once DB is installed, that does not make sense to go back
-?>
-            <div class="column">
-                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
-            </div>
-<?php
-}
-?>
+        <div class="ui mobile tablet computer reversed equal width grid">
             <div class="right aligned column">
 <?php
 if (!$config_file_ok || !$objects_ok) {
@@ -97,5 +87,15 @@ if ($config_file_ok && $objects_ok) {
 }
 ?>
             </div>
+<?php
+if (!$config_file_ok || !$objects_ok) {
+    //once DB is installed, that does not make sense to go back
+    ?>
+                <div class="left aligned column">
+                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+                </div>
+                <?php
+}
+?>
         </div>
     </form>
