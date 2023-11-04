@@ -300,7 +300,6 @@ ul.sortable-items {
 ---------------------*/
 ul.leaders {
   display: block!important;
-  max-width: 40em;
   padding: 0;
   overflow-x: hidden;
   list-style: none;
@@ -310,14 +309,13 @@ ul.leaders li {
   position: relative;
 }
 ul.leaders li:before {
-  float: left;
-  width: 0;
-  white-space: nowrap;
-  content:
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
+  width: 100%;
+  content: "";
+  border-bottom: 1px dotted @textColor;
+  height: 1rem;
+  position: absolute;
+  bottom: .5rem;
+  z-index: -1;
 }
 ul.leaders span:first-child {
   padding-right: 0.33em;

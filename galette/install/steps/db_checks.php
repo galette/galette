@@ -177,17 +177,13 @@ if ($db_connected === true) {
     }
 }
 ?>
-    <div class="ui segment">
-        <div class="content field">
-            <div class="ui text container">
-
 
 <?php
 if (!isset($install_plugin)) {
 ?>
-                <h2><?php echo _T("Check of the database"); ?></h2>
+    <h2><?php echo _T("Check of the database"); ?></h2>
 <?php
-                echo '<p>' . _T("Database exists and connection parameters are OK.") . '</p>';
+    echo '<p>' . _T("Database exists and connection parameters are OK.") . '</p>';
 }
 
 if ($supported_db === false) {
@@ -212,12 +208,12 @@ if ($db_connected !== true) {
 
 if (!$conndb_ok) {
     ?>
-                <p><?php echo _T("Database can't be reached. Please go back to enter the connection parameters again."); ?></p>
+        <p><?php echo _T("Database can't be reached. Please go back to enter the connection parameters again."); ?></p>
     <?php
 } elseif ($supported_db === true) {
     if (!isset($install_plugin)) {
     ?>
-                <h2><?php echo _T("Permissions on the base"); ?></h2>
+        <h2><?php echo _T("Permissions on the base"); ?></h2>
     <?php
     }
     if (!$permsdb_ok) {
@@ -232,30 +228,29 @@ if (!$conndb_ok) {
         echo '</div>';
     }
     ?>
-                <ul class="leaders">
+        <ul class="leaders">
         <?php
         foreach ($result as $r) {
         ?>
-                    <li>
-                        <span><?php echo $r['message'] ?></span>
-                        <span><?php echo $install->getValidationImage($r['res']); ?></span>
-                    </li>
+            <li>
+                <span><?php echo $r['message'] ?></span>
+                <span><?php echo $install->getValidationImage($r['res']); ?></span>
+            </li>
         <?php
         }
         ?>
-                </ul>
+        </ul>
         <?php
 }
 ?>
-            </div>
-        </div>
-    </div>
+
+    <div class="ui section divider"></div>
 
 <?php
 if (!isset($install_plugin)) {
 ?>
     <form action="installer.php" method="POST" class="ui form">
-        <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
                 <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?> class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
 <?php
