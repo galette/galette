@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-05 13:08+0100\n"
-"PO-Revision-Date: 2023-10-19 19:12+0000\n"
+"PO-Revision-Date: 2023-11-05 12:11+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.2-dev\n"
 
 #: ../lib/Galette/IO/CsvIn.php:230
 #, php-format
@@ -7957,10 +7957,8 @@ msgstr "Faites glisser et déposer un fichier image pour changer la photo"
 #: ../../tempcache/elements/logged_user.html.twig:299
 #: ../../tempcache/elements/navigation/public_pages.html.twig:132
 #: ../../tempcache/elements/navigation/public_pages.html.twig:142
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable dark mode"
-msgstr "Désactivé"
+msgstr "Désactiver le mode sombre"
 
 #: ../../tempcache/elements/logged_user.html.twig:84
 #: ../../tempcache/elements/logged_user.html.twig:156
@@ -7969,10 +7967,8 @@ msgstr "Désactivé"
 #: ../../tempcache/elements/logged_user.html.twig:301
 #: ../../tempcache/elements/navigation/public_pages.html.twig:134
 #: ../../tempcache/elements/navigation/public_pages.html.twig:144
-#, fuzzy
-#| msgid "Table name"
 msgid "Enable dark mode"
-msgstr "Nom de la table"
+msgstr "Activer le mode sombre"
 
 #: ../../tempcache/elements/logged_user.html.twig:117
 #: ../../tempcache/elements/logged_user.html.twig:190
