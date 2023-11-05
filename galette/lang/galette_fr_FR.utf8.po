@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-05 13:08+0100\n"
-"PO-Revision-Date: 2023-11-05 12:11+0000\n"
+"PO-Revision-Date: 2023-11-05 12:25+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1012,7 +1012,7 @@ msgstr "Gestion des envois"
 
 #: ../lib/Galette/Core/Galette.php:298 ../lib/Galette/Core/Galette.php:576
 msgid "Manage mailings that has been sent"
-msgstr "Gestion des envois"
+msgstr "Gestion des envois effectués"
 
 #: ../lib/Galette/Core/Galette.php:304 ../install/steps/check.php:72
 msgid "Exports"
