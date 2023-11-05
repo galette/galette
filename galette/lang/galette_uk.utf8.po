@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-20 14:28+0200\n"
+"POT-Creation-Date: 2023-11-05 13:08+0100\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -114,10 +114,11 @@ msgstr "Під час імпортування членів сталася по�
 #: ../lib/Galette/Filters/HistoryList.php:251
 #: ../lib/Galette/Filters/HistoryList.php:260
 #: ../lib/Galette/Filters/HistoryList.php:289
-#: ../lib/Galette/Filters/TransactionsList.php:144
-#: ../lib/Galette/Filters/TransactionsList.php:245
-#: ../lib/Galette/Filters/TransactionsList.php:254
-#: ../lib/Galette/Filters/TransactionsList.php:283
+#: ../lib/Galette/Filters/TransactionsList.php:145
+#: ../lib/Galette/Filters/TransactionsList.php:153
+#: ../lib/Galette/Filters/TransactionsList.php:253
+#: ../lib/Galette/Filters/TransactionsList.php:262
+#: ../lib/Galette/Filters/TransactionsList.php:291
 #: ../lib/Galette/Filters/MailingsList.php:150
 #: ../lib/Galette/Filters/MailingsList.php:246
 #: ../lib/Galette/Filters/MailingsList.php:255
@@ -196,7 +197,7 @@ msgstr "Ім'я"
 #: ../lib/Galette/Features/Replacements.php:376
 #: ../../tempcache/pages/members_public_list.html.twig:86
 #: ../../tempcache/pages/members_public_list.html.twig:222
-#: ../../tempcache/pages/preferences.html.twig:2045
+#: ../../tempcache/pages/preferences.html.twig:2038
 #: ../../tempcache/elements/member_card.html.twig:147
 msgid "Email"
 msgstr "Е-пошта"
@@ -491,19 +492,19 @@ msgstr "Модуль \"%s\""
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr "драйвер PDO 'mysql' або 'pgsql'"
 
-#: ../lib/Galette/Core/CheckModules.php:139 ../lib/Galette/Core/Install.php:166
+#: ../lib/Galette/Core/CheckModules.php:139 ../lib/Galette/Core/Install.php:170
 msgid "Ko"
 msgstr "Ko"
 
-#: ../lib/Galette/Core/CheckModules.php:147 ../lib/Galette/Core/Install.php:166
+#: ../lib/Galette/Core/CheckModules.php:147 ../lib/Galette/Core/Install.php:170
 msgid "Ok"
 msgstr "Гаразд"
 
-#: ../lib/Galette/Core/MailingHistory.php:505
+#: ../lib/Galette/Core/MailingHistory.php:503
 msgid "Delete mailing entries"
 msgstr "Видалення записів розсилання"
 
-#: ../lib/Galette/Core/Authentication.php:301
+#: ../lib/Galette/Core/Authentication.php:312
 #, php-format
 msgid "Logged in as:<br/>%login"
 msgstr "Вхід виконано як: <br>%login"
@@ -532,109 +533,114 @@ msgstr "Файл не знайдено!"
 msgid "Unknown lang (%lang)"
 msgstr "Невідома мова (%lang)"
 
-#: ../lib/Galette/Core/Install.php:123 ../webroot/installer.php:296
+#: ../lib/Galette/Core/Install.php:124 ../webroot/installer.php:303
 msgid "Checks"
 msgstr "Чеки"
 
-#: ../lib/Galette/Core/Install.php:126 ../webroot/installer.php:302
+#: ../lib/Galette/Core/Install.php:127 ../webroot/installer.php:309
 #: ../../tempcache/modals/plugin_initdb.html.twig:386
 msgid "Installation mode"
 msgstr "Режим установлення"
 
-#: ../lib/Galette/Core/Install.php:129 ../webroot/installer.php:308
+#: ../lib/Galette/Core/Install.php:130 ../webroot/installer.php:315
 msgid "Database"
 msgstr "База даних"
 
-#: ../lib/Galette/Core/Install.php:132
+#: ../lib/Galette/Core/Install.php:133
 msgid "Database access and permissions"
 msgstr "Доступ до бази даних і дозволи"
 
-#: ../lib/Galette/Core/Install.php:135
+#: ../lib/Galette/Core/Install.php:136
 msgid "Previous version selection"
 msgstr "Вибір попередньої версії"
 
-#: ../lib/Galette/Core/Install.php:138
+#: ../lib/Galette/Core/Install.php:139
 msgid "Datapase upgrade"
 msgstr "Оновлення бази даних"
 
-#: ../lib/Galette/Core/Install.php:141
+#: ../lib/Galette/Core/Install.php:142
 msgid "Tables Creation"
 msgstr "Створення таблиць"
 
-#: ../lib/Galette/Core/Install.php:144 ../webroot/installer.php:349
+#: ../lib/Galette/Core/Install.php:145 ../webroot/installer.php:356
 msgid "Admin parameters"
 msgstr "Параметри адміністратора"
 
-#: ../lib/Galette/Core/Install.php:147
+#: ../lib/Galette/Core/Install.php:148 ../webroot/installer.php:365
+#: ../../tempcache/pages/desktop.html.twig:86
+msgid "Telemetry"
+msgstr "Телеметрія"
+
+#: ../lib/Galette/Core/Install.php:151
 msgid "Galette initialization"
 msgstr "Ініціалізація Galette"
 
-#: ../lib/Galette/Core/Install.php:150 ../webroot/installer.php:364
+#: ../lib/Galette/Core/Install.php:154 ../webroot/installer.php:377
 #: ../../tempcache/modals/plugin_initdb.html.twig:451
 msgid "End!"
 msgstr "Завершено!"
 
-#: ../lib/Galette/Core/Install.php:325
+#: ../lib/Galette/Core/Install.php:329
 msgid "Database type unknown"
 msgstr "Невідомий тип бази даних"
 
-#: ../lib/Galette/Core/Install.php:685
+#: ../lib/Galette/Core/Install.php:689
 msgid "%version script has been successfully executed :)"
 msgstr "Скрипт %version успішно виконано :)"
 
-#: ../lib/Galette/Core/Install.php:697
+#: ../lib/Galette/Core/Install.php:701
 msgid "Unable to run %version update script :("
 msgstr "Неможливо запустити скрипт оновлення %version :("
 
-#: ../lib/Galette/Core/Install.php:1046
+#: ../lib/Galette/Core/Install.php:1070
 msgid "Write configuration file"
 msgstr "Записати файл конфігурації"
 
-#: ../lib/Galette/Core/Install.php:1075
+#: ../lib/Galette/Core/Install.php:1099
 msgid "Config file already exists and is up to date"
 msgstr "Файл конфігурації вже існує та оновлений"
 
-#: ../lib/Galette/Core/Install.php:1104
+#: ../lib/Galette/Core/Install.php:1128
 msgid "Unable to create configuration file (%path)"
 msgstr "Неможливо створити файл конфігурації (%path)"
 
-#: ../lib/Galette/Core/Install.php:1157
+#: ../lib/Galette/Core/Install.php:1181
 msgid "Preferences"
 msgstr "Налаштування"
 
-#: ../lib/Galette/Core/Install.php:1161 ../lib/Galette/Core/Galette.php:388
+#: ../lib/Galette/Core/Install.php:1185 ../lib/Galette/Core/Galette.php:388
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
 msgid "Contributions types"
 msgstr "Типи внесків"
 
-#: ../lib/Galette/Core/Install.php:1165
+#: ../lib/Galette/Core/Install.php:1189
 #: ../../tempcache/pages/advanced_search.html.twig:494
 #: ../../tempcache/pages/advanced_search.html.twig:499
 msgid "Status"
 msgstr "Стан"
 
-#: ../lib/Galette/Core/Install.php:1169
+#: ../lib/Galette/Core/Install.php:1193
 msgid "Fields config and categories"
 msgstr "Поля конфігурації та категорії"
 
-#: ../lib/Galette/Core/Install.php:1173 ../lib/Galette/Core/Install.php:1195
+#: ../lib/Galette/Core/Install.php:1197 ../lib/Galette/Core/Install.php:1219
 msgid "Mails texts"
 msgstr "Поштові тексти"
 
-#: ../lib/Galette/Core/Install.php:1177 ../lib/Galette/Core/Galette.php:403
+#: ../lib/Galette/Core/Install.php:1201 ../lib/Galette/Core/Galette.php:403
 msgid "Titles"
 msgstr "Заголовки"
 
-#: ../lib/Galette/Core/Install.php:1181 ../lib/Galette/Core/Galette.php:411
+#: ../lib/Galette/Core/Install.php:1205 ../lib/Galette/Core/Galette.php:411
 #: ../lib/Galette/Controllers/PdfController.php:547
 msgid "PDF models"
 msgstr "Моделі PDF"
 
-#: ../lib/Galette/Core/Install.php:1187
+#: ../lib/Galette/Core/Install.php:1211
 msgid "Update preferences"
 msgstr "Налаштування оновлення"
 
-#: ../lib/Galette/Core/Install.php:1191
+#: ../lib/Galette/Core/Install.php:1215
 msgid "Update models"
 msgstr "Оновлення моделей"
 
@@ -744,7 +750,7 @@ msgstr "- Пропонування місяців сумісне лише з п�
 msgid "- Mandatory field %field empty."
 msgstr "- Обов’язкове поле %field порожнє."
 
-#: ../lib/Galette/Core/Preferences.php:602 ../webroot/installer.php:185
+#: ../lib/Galette/Core/Preferences.php:602 ../webroot/installer.php:207
 msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
 
@@ -1273,7 +1279,7 @@ msgstr "Тип внеску:"
 #: ../lib/Galette/Entity/Contribution.php:162
 #: ../lib/Galette/Entity/Transaction.php:123
 #: ../../tempcache/pages/transaction_form.html.twig:188
-#: ../../tempcache/pages/contribution_form.html.twig:417
+#: ../../tempcache/pages/contribution_form.html.twig:440
 msgid "Amount:"
 msgstr "Сума:"
 
@@ -1283,7 +1289,7 @@ msgid "Payment type:"
 msgstr "Вид оплати:"
 
 #: ../lib/Galette/Entity/Contribution.php:170
-#: ../../tempcache/pages/contribution_form.html.twig:593
+#: ../../tempcache/pages/contribution_form.html.twig:616
 msgid "Comments:"
 msgstr "Коментарі:"
 
@@ -1307,17 +1313,17 @@ msgid "Date"
 msgstr "Дата"
 
 #: ../lib/Galette/Entity/Contribution.php:178
-#: ../../tempcache/pages/contribution_form.html.twig:502
+#: ../../tempcache/pages/contribution_form.html.twig:525
 msgid "Date of contribution:"
 msgstr "Дата внеску:"
 
 #: ../lib/Galette/Entity/Contribution.php:179
-#: ../../tempcache/pages/contribution_form.html.twig:496
+#: ../../tempcache/pages/contribution_form.html.twig:519
 msgid "Start date of membership:"
 msgstr "Дата початку членства:"
 
 #: ../lib/Galette/Entity/Contribution.php:183
-#: ../../tempcache/pages/contribution_form.html.twig:558
+#: ../../tempcache/pages/contribution_form.html.twig:581
 msgid "End date of membership:"
 msgstr "Дата завершення членства:"
 
@@ -1326,7 +1332,7 @@ msgid "Transaction ID"
 msgstr "ID переказу"
 
 #: ../lib/Galette/Entity/Contribution.php:193
-#: ../../tempcache/pages/contribution_form.html.twig:540
+#: ../../tempcache/pages/contribution_form.html.twig:563
 msgid "Membership extension:"
 msgstr "Розширення членства:"
 
@@ -1752,7 +1758,7 @@ msgstr "Jabber"
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../lib/Galette/Entity/Social.php:369 ../webroot/installer.php:374
+#: ../lib/Galette/Entity/Social.php:369 ../webroot/installer.php:414
 #: ../../tempcache/elements/footer.html.twig:44
 msgid "Website"
 msgstr "Вебсайт"
@@ -1863,7 +1869,7 @@ msgid "Administration tools"
 msgstr "Засоби адміністрування"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
-#: ../install/steps/check.php:116
+#: ../install/steps/check.php:112
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
@@ -2059,10 +2065,10 @@ msgid "Authentication failed"
 msgstr "Автентифікація не вдалася"
 
 #: ../lib/Galette/Controllers/AuthController.php:168
-#: ../../tempcache/elements/logout.html.twig:100
-#: ../../tempcache/elements/logout.html.twig:145
-#: ../../tempcache/elements/logout.html.twig:163
-#: ../../tempcache/elements/logout.html.twig:261
+#: ../../tempcache/elements/logged_user.html.twig:119
+#: ../../tempcache/elements/logged_user.html.twig:192
+#: ../../tempcache/elements/logged_user.html.twig:210
+#: ../../tempcache/elements/logged_user.html.twig:336
 msgid "Log off"
 msgstr "Вийти"
 
@@ -2146,7 +2152,7 @@ msgstr ""
 "Це посилання більше не діє. Вам слід попросити відновити свій пароль ще раз."
 
 #: ../lib/Galette/Controllers/AuthController.php:492
-#: ../webroot/installer.php:134 ../webroot/installer.php:177
+#: ../webroot/installer.php:155 ../webroot/installer.php:199
 msgid "No password"
 msgstr "Немає пароля"
 
@@ -2744,8 +2750,8 @@ msgstr "Дякуємо за реєстрацію!"
 
 #: ../lib/Galette/Filters/HistoryList.php:221
 #: ../lib/Galette/Filters/HistoryList.php:258
-#: ../lib/Galette/Filters/TransactionsList.php:215
-#: ../lib/Galette/Filters/TransactionsList.php:252
+#: ../lib/Galette/Filters/TransactionsList.php:223
+#: ../lib/Galette/Filters/TransactionsList.php:260
 #: ../lib/Galette/Filters/MailingsList.php:216
 #: ../lib/Galette/Filters/MailingsList.php:253
 #: ../lib/Galette/Filters/ContributionsList.php:258
@@ -2755,8 +2761,8 @@ msgstr "РР"
 
 #: ../lib/Galette/Filters/HistoryList.php:237
 #: ../lib/Galette/Filters/HistoryList.php:259
-#: ../lib/Galette/Filters/TransactionsList.php:231
-#: ../lib/Galette/Filters/TransactionsList.php:253
+#: ../lib/Galette/Filters/TransactionsList.php:239
+#: ../lib/Galette/Filters/TransactionsList.php:261
 #: ../lib/Galette/Filters/MailingsList.php:232
 #: ../lib/Galette/Filters/MailingsList.php:254
 #: ../lib/Galette/Filters/ContributionsList.php:274
@@ -2765,21 +2771,21 @@ msgid "Y-m"
 msgstr "Y-m"
 
 #: ../lib/Galette/Filters/HistoryList.php:265
-#: ../lib/Galette/Filters/TransactionsList.php:259
+#: ../lib/Galette/Filters/TransactionsList.php:267
 #: ../lib/Galette/Filters/MailingsList.php:260
 #: ../lib/Galette/Filters/ContributionsList.php:302
 msgid "start date filter"
 msgstr "добірка дати початку"
 
 #: ../lib/Galette/Filters/HistoryList.php:268
-#: ../lib/Galette/Filters/TransactionsList.php:262
+#: ../lib/Galette/Filters/TransactionsList.php:270
 #: ../lib/Galette/Filters/MailingsList.php:263
 #: ../lib/Galette/Filters/ContributionsList.php:305
 msgid "end date filter"
 msgstr "добірка дати завершення"
 
 #: ../lib/Galette/Filters/HistoryList.php:278
-#: ../lib/Galette/Filters/TransactionsList.php:272
+#: ../lib/Galette/Filters/TransactionsList.php:280
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:315
 #, php-format
@@ -2788,7 +2794,7 @@ msgstr "Невідомий формат дати для %field.<br>Відомі 
 
 #: ../lib/Galette/Filters/MembersList.php:293
 #: ../lib/Galette/Features/Replacements.php:260
-#: ../../tempcache/pages/preferences.html.twig:2077
+#: ../../tempcache/pages/preferences.html.twig:2070
 msgid "Member number"
 msgstr "Номер члена"
 
@@ -2977,7 +2983,7 @@ msgstr "Ім'я"
 #: ../lib/Galette/Features/Replacements.php:276
 #: ../../tempcache/pages/members_public_list.html.twig:78
 #: ../../tempcache/pages/members_public_list.html.twig:211
-#: ../../tempcache/pages/preferences.html.twig:2061
+#: ../../tempcache/pages/preferences.html.twig:2054
 #: ../../tempcache/elements/group_persons.html.twig:50
 msgid "Nickname"
 msgstr "Позивний"
@@ -2996,7 +3002,7 @@ msgid "Birth place"
 msgstr "Місце народження"
 
 #: ../lib/Galette/Features/Replacements.php:292
-#: ../../tempcache/pages/preferences.html.twig:2069
+#: ../../tempcache/pages/preferences.html.twig:2062
 msgid "Profession"
 msgstr "Професія"
 
@@ -3083,7 +3089,7 @@ msgstr "Вид оплати"
 
 #: ../lib/Galette/Features/Replacements.php:622
 #: ../lib/Galette/Features/Replacements.php:623
-#: ../../tempcache/pages/preferences.html.twig:2314
+#: ../../tempcache/pages/preferences.html.twig:2307
 #: ../../tempcache/elements/group.html.twig:186
 #: ../../tempcache/elements/group.html.twig:229
 msgid "None"
@@ -3259,11 +3265,11 @@ msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 "Не вдається видалити члена, який все ще має залежності (розсилання, ...)"
 
-#: ../lib/Galette/Repository/SavedSearches.php:271
+#: ../lib/Galette/Repository/SavedSearches.php:268
 msgid "Searches deleted (%list)"
 msgstr "Пошукові запити видалено (%list)"
 
-#: ../lib/Galette/Repository/Contributions.php:534
+#: ../lib/Galette/Repository/Contributions.php:531
 msgid "Contributions deleted (%list)"
 msgstr "Внески видалено (%list)"
 
@@ -3365,63 +3371,63 @@ msgstr "Відомості про внески та вивід скриптів 
 msgid "Post contribution script has failed."
 msgstr "Помилка скрипту оприлюднення внеску."
 
-#: ../webroot/installer.php:125
+#: ../webroot/installer.php:146
 msgid "No host"
 msgstr "Немає хосту"
 
-#: ../webroot/installer.php:128
+#: ../webroot/installer.php:149
 msgid "No port"
 msgstr "Немає порту"
 
-#: ../webroot/installer.php:131 ../webroot/installer.php:171
+#: ../webroot/installer.php:152 ../webroot/installer.php:193
 msgid "No user name"
 msgstr "Немає імені користувача"
 
-#: ../webroot/installer.php:137
+#: ../webroot/installer.php:158
 msgid "No database name"
 msgstr "Немає назви бази даних"
 
-#: ../webroot/installer.php:174
+#: ../webroot/installer.php:196
 msgid "The username cannot contain the @ character"
 msgstr "Ім'я користувача не може містити знак @"
 
-#: ../webroot/installer.php:215
+#: ../webroot/installer.php:241
 msgid "Galette Installation"
 msgstr "Установлення Galette"
 
-#: ../webroot/installer.php:226
+#: ../webroot/installer.php:252
 msgid "Galette installation"
 msgstr "Установлення Galette"
 
-#: ../webroot/installer.php:257
+#: ../webroot/installer.php:283
 #: ../../tempcache/elements/messages_inline.html.twig:86
 msgid "- ERROR -"
 msgstr "- ПОМИЛКА -"
 
-#: ../webroot/installer.php:314
+#: ../webroot/installer.php:321
 msgid "Database access/permissions"
 msgstr "Доступ/дозволи до бази даних"
 
-#: ../webroot/installer.php:323
+#: ../webroot/installer.php:330
 #: ../../tempcache/modals/plugin_initdb.html.twig:417
 msgid "Version selection"
 msgstr "Вибір версії"
 
-#: ../webroot/installer.php:329
+#: ../webroot/installer.php:336
 #: ../../tempcache/modals/plugin_initdb.html.twig:436
 msgid "Database upgrade"
 msgstr "Оновлення бази даних"
 
-#: ../webroot/installer.php:338
+#: ../webroot/installer.php:345
 #: ../../tempcache/modals/plugin_initdb.html.twig:434
 msgid "Database installation"
 msgstr "Установлення бази даних"
 
-#: ../webroot/installer.php:358
+#: ../webroot/installer.php:371
 msgid "Galette initialisation"
 msgstr "Ініціалізація Galette"
 
-#: ../webroot/installer.php:378 ../../tempcache/elements/footer.html.twig:51
+#: ../webroot/installer.php:418 ../../tempcache/elements/footer.html.twig:51
 msgid "Documentation"
 msgstr "Документація"
 
@@ -3430,11 +3436,11 @@ msgid "Unauthorized"
 msgstr "Неавторизовано"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-#: ../includes/dependencies.php:188
+#: ../includes/dependencies.php:186
 msgid "YYYY-MM-DD"
 msgstr "DD.MM.YYYY"
 
-#: ../includes/dependencies.php:459
+#: ../includes/dependencies.php:457
 msgid "Failed CSRF check!"
 msgstr "Не вдалося перевірити CSRF!"
 
@@ -3773,15 +3779,15 @@ msgstr "Інші відомості:"
 msgid "Profession:"
 msgstr "Професія:"
 
-#: ../includes/fields_defs/members_fields.php:200 ../install/steps/admin.php:46
-#: ../../tempcache/pages/preferences.html.twig:2403
+#: ../includes/fields_defs/members_fields.php:200 ../install/steps/admin.php:43
+#: ../../tempcache/pages/preferences.html.twig:2396
 #: ../../tempcache/pages/index.html.twig:69
 #: ../../tempcache/pages/index.html.twig:73
 msgid "Username:"
 msgstr "Ім'я користувача:"
 
-#: ../includes/fields_defs/members_fields.php:208 ../install/steps/admin.php:50
-#: ../install/steps/db.php:88 ../../tempcache/pages/preferences.html.twig:2417
+#: ../includes/fields_defs/members_fields.php:208 ../install/steps/admin.php:47
+#: ../install/steps/db.php:85 ../../tempcache/pages/preferences.html.twig:2410
 #: ../../tempcache/pages/index.html.twig:81
 #: ../../tempcache/pages/index.html.twig:85
 msgid "Password:"
@@ -4145,41 +4151,42 @@ msgstr "ви вже встановили Galette, і ви хочете онов�
 msgid "Warning: Don't forget to backup your current database."
 msgstr "Увага: не забудьте створити резервну копію поточної бази даних."
 
-#: ../install/steps/type.php:69 ../install/steps/db_install.php:87
-#: ../install/steps/check.php:174 ../install/steps/admin.php:62
-#: ../install/steps/galette.php:87 ../install/steps/db_checks.php:260
-#: ../install/steps/db_select_version.php:141
-#: ../install/steps/db_select_version.php:152 ../install/steps/db.php:113
+#: ../install/steps/type.php:69 ../install/steps/db_install.php:82
+#: ../install/steps/check.php:168 ../install/steps/admin.php:59
+#: ../install/steps/telemetry.php:82 ../install/steps/galette.php:81
+#: ../install/steps/db_checks.php:255
+#: ../install/steps/db_select_version.php:138
+#: ../install/steps/db_select_version.php:149 ../install/steps/db.php:107
 #: ../../tempcache/pages/plugins.html.twig:377
 #: ../../tempcache/modals/plugin_initdb.html.twig:338
 msgid "Next step"
 msgstr "Наступний крок"
 
-#: ../install/steps/type.php:72 ../install/steps/db_install.php:101
-#: ../install/steps/galette.php:101 ../install/steps/db_checks.php:271
-#: ../install/steps/db_select_version.php:144
-#: ../install/steps/db_select_version.php:155 ../install/steps/db.php:116
+#: ../install/steps/type.php:72 ../install/steps/db_install.php:96
+#: ../install/steps/galette.php:95 ../install/steps/db_checks.php:266
+#: ../install/steps/db_select_version.php:141
+#: ../install/steps/db_select_version.php:152 ../install/steps/db.php:110
 msgid "Back"
 msgstr "Назад"
 
-#: ../install/steps/db_install.php:48
+#: ../install/steps/db_install.php:44
 msgid "Database has not been installed!"
 msgstr "Базу даних не встановлено!"
 
-#: ../install/steps/db_install.php:50
+#: ../install/steps/db_install.php:46
 msgid "Database has not been upgraded!"
 msgstr "Базу даних не оновлено!"
 
-#: ../install/steps/db_install.php:54
+#: ../install/steps/db_install.php:50
 msgid "Database has been installed :)"
 msgstr "Базу даних установлено :)"
 
-#: ../install/steps/db_install.php:56
+#: ../install/steps/db_install.php:52
 msgid "Database has been upgraded :)"
 msgstr "Базу даних оновлено :)"
 
-#: ../install/steps/db_install.php:83 ../install/steps/check.php:168
-#: ../install/steps/galette.php:83
+#: ../install/steps/db_install.php:78 ../install/steps/check.php:162
+#: ../install/steps/galette.php:77
 #: ../../tempcache/modals/plugin_initdb.html.twig:332
 msgid "Retry"
 msgstr "Повторити"
@@ -4210,15 +4217,15 @@ msgstr "Долучення"
 msgid "Files"
 msgstr "Файли"
 
-#: ../install/steps/check.php:92
+#: ../install/steps/check.php:88
 msgid "Welcome to the Galette Install!"
 msgstr "Ласкаво просимо до Установлення Galette!"
 
-#: ../install/steps/check.php:95
+#: ../install/steps/check.php:91
 msgid "Galette requirements are met :)"
 msgstr "Вимоги Galette виконано :)"
 
-#: ../install/steps/check.php:99
+#: ../install/steps/check.php:95
 msgid ""
 "Your PHP date settings are not correct. Maybe you've missed the timezone "
 "settings that is mandatory since PHP 5.3?"
@@ -4226,56 +4233,56 @@ msgstr ""
 "Налаштування дати PHP неправильні. Можливо, ви пропустили налаштування "
 "часового поясу, які є обов'язковими з PHP 5.3?"
 
-#: ../install/steps/check.php:104
+#: ../install/steps/check.php:100
 msgid "PHP version"
 msgstr "Версія PHP"
 
-#: ../install/steps/check.php:108
+#: ../install/steps/check.php:104
 msgid "Date settings"
 msgstr "Налаштування дати"
 
-#: ../install/steps/check.php:113
+#: ../install/steps/check.php:109
 msgid "PHP Modules"
 msgstr "Модулі PHP"
 
-#: ../install/steps/check.php:123
+#: ../install/steps/check.php:119
 msgid "Files permissions"
 msgstr "Дозволи на доступ до файлів"
 
-#: ../install/steps/check.php:141
+#: ../install/steps/check.php:137
 msgid "Files permissions are not OK!"
 msgstr "Дозволи на доступ до файлів не в порядку!"
 
-#: ../install/steps/check.php:145
+#: ../install/steps/check.php:141
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
 "Для роботи з excpected, Galette потрібен дозвіл на запис до файлів, "
 "перелічених вище."
 
-#: ../install/steps/check.php:147
+#: ../install/steps/check.php:143
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 "Для оновлення Galette потрібен дозвіл на запис до файлів, перелічених вище."
 
-#: ../install/steps/check.php:151
+#: ../install/steps/check.php:147
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "У розділі UNIX/Linux можна надати дозволи за допомогою цих команд"
 
-#: ../install/steps/check.php:152
+#: ../install/steps/check.php:148
 msgid "apache_user"
 msgstr "apache_user"
 
-#: ../install/steps/check.php:152
+#: ../install/steps/check.php:148
 msgid "file_name"
 msgstr "file_name"
 
-#: ../install/steps/check.php:152
+#: ../install/steps/check.php:148
 msgid "directory_name"
 msgstr "directory_name"
 
-#: ../install/steps/check.php:154
+#: ../install/steps/check.php:150
 msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
@@ -4283,29 +4290,67 @@ msgstr ""
 "У Windows переконайтеся, що ці каталоги не перебувають у режимі лише для "
 "читання в їх властивостях."
 
-#: ../install/steps/admin.php:44
+#: ../install/steps/admin.php:41
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Будь ласка, оберіть параметри облікового запису адміністратора на Galette"
 
-#: ../install/steps/admin.php:54
-#: ../../tempcache/pages/preferences.html.twig:2426
+#: ../install/steps/admin.php:51
+#: ../../tempcache/pages/preferences.html.twig:2419
 msgid "Retype password:"
 msgstr "Введіть пароль ще раз:"
 
-#: ../install/steps/admin.php:72
+#: ../install/steps/admin.php:69
 msgid "Password mismatch!"
 msgstr "Невідповідність пароля!"
 
-#: ../install/steps/galette.php:55
+#: ../install/steps/telemetry.php:51 ../../tempcache/pages/desktop.html.twig:81
+msgid "Send anonymous and imprecise data about your Galette instance"
+msgstr "Надсилайте анонімні та приблизні дані про свій зразок Galette"
+
+#: ../install/steps/telemetry.php:53
+#: ../../tempcache/modals/telemetry.html.twig:66
+msgid "Send telemetry information"
+msgstr "Надіслати дані телеметрії"
+
+#: ../install/steps/telemetry.php:60
+#: ../../tempcache/pages/desktop.html.twig:100
+msgid "Register your organization as a Galette user"
+msgstr "Зареєструвати Вашу організацію в якості користувача Galette"
+
+#: ../install/steps/telemetry.php:62
+#: ../../tempcache/pages/preferences.html.twig:480
+#: ../../tempcache/pages/desktop.html.twig:105
+msgid "Register"
+msgstr "Зареєструватися"
+
+#: ../install/steps/telemetry.php:70
+#: ../../tempcache/modals/telemetry.html.twig:44
+msgid ""
+"Telemetry data are <strong>anonymous</strong>; nothing about your "
+"organization or its members will be sent."
+msgstr ""
+"Дані телеметрії <strong>цілком таємні</strong>; нічого про вашу організацію "
+"не буде надіслано."
+
+#: ../install/steps/telemetry.php:72
+#: ../../tempcache/modals/telemetry.html.twig:52
+msgid ""
+"Also note tha all data is sent over a <strong>HTTPS secured connection</"
+"strong>."
+msgstr ""
+"Також запримітьте, що всі дані надсилаються через <strong>захищене з'єднання "
+"HTTPS</strong>."
+
+#: ../install/steps/galette.php:50
 msgid "Configuration file created!"
 msgstr "Файл конфігурації створено!"
 
-#: ../install/steps/galette.php:56
+#: ../install/steps/galette.php:51
 msgid "Data initialized."
 msgstr "Дані започатковано."
 
-#: ../install/steps/galette.php:58 ../../tempcache/pages/plugins.html.twig:438
+#: ../install/steps/galette.php:53 ../../tempcache/pages/plugins.html.twig:438
 #: ../../tempcache/pages/groups_list.html.twig:208
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:178
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
@@ -4317,12 +4362,11 @@ msgstr "Дані започатковано."
 #: ../../tempcache/pages/members_list.html.twig:1403
 #: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/elements/js/choose_adh.js.twig:249
-#: ../../tempcache/elements/js/removal.js.twig:161
-#: ../../tempcache/elements/js/removal.js.twig:177
+#: ../../tempcache/elements/js/removal.js.twig:159
+#: ../../tempcache/elements/js/removal.js.twig:175
 #: ../../tempcache/elements/js/modal_action.js.twig:137
-#: ../../tempcache/elements/scripts.html.twig:127
-#: ../../tempcache/elements/scripts.html.twig:147
-#: ../../tempcache/modals/telemetry.html.twig:209
+#: ../../tempcache/elements/scripts.html.twig:208
+#: ../../tempcache/elements/scripts.html.twig:228
 msgid "An error occurred :("
 msgstr "Сталася помилка :("
 
@@ -4382,33 +4426,33 @@ msgstr "Операція ЗМІНИТИ не дозволена"
 msgid "ALTER operation allowed"
 msgstr "Операція ЗМІНИТИ дозволена"
 
-#: ../install/steps/db_checks.php:188
+#: ../install/steps/db_checks.php:184
 msgid "Check of the database"
 msgstr "Перевірка бази даних"
 
-#: ../install/steps/db_checks.php:190
+#: ../install/steps/db_checks.php:186
 msgid "Database exists and connection parameters are OK."
 msgstr "База даних існує, і параметри під'єднання в порядку."
 
-#: ../install/steps/db_checks.php:194
+#: ../install/steps/db_checks.php:190
 #, fuzzy
 #| msgid "Incompatible with current version"
 msgid "Incompatible database version."
 msgstr "Несумісно з поточною версією"
 
-#: ../install/steps/db_checks.php:198
+#: ../install/steps/db_checks.php:194
 msgid "Connection to database successfull"
 msgstr "Під'єднання до бази даних успішне"
 
-#: ../install/steps/db_checks.php:199 ../install/steps/db_checks.php:202
+#: ../install/steps/db_checks.php:195 ../install/steps/db_checks.php:198
 msgid "Permissions to database are OK."
 msgstr "Дозволи на доступ до бази даних у порядку."
 
-#: ../install/steps/db_checks.php:208
+#: ../install/steps/db_checks.php:204
 msgid "Unable to connect to the database"
 msgstr "Не вдалося під'єднатися до бази даних"
 
-#: ../install/steps/db_checks.php:215
+#: ../install/steps/db_checks.php:211
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
@@ -4416,48 +4460,48 @@ msgstr ""
 "Не вдалося отримати доступ до бази даних. Поверніться, щоб знову ввести "
 "параметри під'єднання."
 
-#: ../install/steps/db_checks.php:220
+#: ../install/steps/db_checks.php:216
 msgid "Permissions on the base"
 msgstr "Дозволи на базу"
 
-#: ../install/steps/db_checks.php:227
+#: ../install/steps/db_checks.php:223
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
 "Galette не має достатньо дозволів на базу даних, щоб продовжити встановлення."
 
-#: ../install/steps/db_checks.php:229
+#: ../install/steps/db_checks.php:225
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 "Galette не має достатньо дозволів на базу даних для продовження оновлення."
 
-#: ../install/steps/end.php:48
+#: ../install/steps/end.php:45
 msgid "Galette has been successfully installed!"
 msgstr "Galette успішно встановлено!"
 
-#: ../install/steps/end.php:51
+#: ../install/steps/end.php:48
 msgid "Galette has been successfully updated!"
 msgstr "Galette успішно оновлено!"
 
-#: ../install/steps/end.php:61
+#: ../install/steps/end.php:58
 msgid "Homepage"
 msgstr "Домівка"
 
-#: ../install/steps/db_select_version.php:49
+#: ../install/steps/db_select_version.php:46
 msgid "Select your previous Galette version below, and then click next."
 msgstr "Виберіть попередню версію Galette нижче та натисніть кнопку \"Далі\"."
 
-#: ../install/steps/db_select_version.php:53
+#: ../install/steps/db_select_version.php:50
 msgid "No update script found!"
 msgstr "Скрипт оновлення не знайдено!"
 
-#: ../install/steps/db_select_version.php:57
+#: ../install/steps/db_select_version.php:54
 msgid "It seems you already use latest Galette version!"
 msgstr "Здається, ви вже використовуєте останню версію Galette!"
 
-#: ../install/steps/db_select_version.php:65
+#: ../install/steps/db_select_version.php:62
 msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
 "version</strong>."
@@ -4465,7 +4509,7 @@ msgstr ""
 "Попередня версія старіша за 0,7. <strong> Переконайтеся, що ви правильно "
 "підібрали версію</strong>."
 
-#: ../install/steps/db_select_version.php:69
+#: ../install/steps/db_select_version.php:66
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
 "strong>."
@@ -4473,7 +4517,7 @@ msgstr ""
 "Ваша попередня версія повинна бути вибрана та <strong>виділена жирним "
 "шрифтом</strong>."
 
-#: ../install/steps/db_select_version.php:76
+#: ../install/steps/db_select_version.php:73
 msgid ""
 "It seems you already use latest Galette version!<br/>Are you sure you want "
 "to upgrade?"
@@ -4481,21 +4525,21 @@ msgstr ""
 "Здається, ви вже використовуєте останню версію Galette!<br>Ви дійсно бажаєте "
 "виконати оновлення?"
 
-#: ../install/steps/db_select_version.php:80
+#: ../install/steps/db_select_version.php:77
 msgid "Your current Galette version is..."
 msgstr "Ваша поточна версія Galette..."
 
-#: ../install/steps/db_select_version.php:101
+#: ../install/steps/db_select_version.php:98
 #: ../../tempcache/modals/plugin_initdb.html.twig:182
 msgid "older than %version"
 msgstr "старіша за %version"
 
-#: ../install/steps/db_select_version.php:104
+#: ../install/steps/db_select_version.php:101
 #: ../../tempcache/modals/plugin_initdb.html.twig:189
 msgid "comprised between"
 msgstr "що міститься між"
 
-#: ../install/steps/db_select_version.php:105
+#: ../install/steps/db_select_version.php:102
 #: ../../tempcache/pages/advanced_search.html.twig:289
 #: ../../tempcache/pages/advanced_search.html.twig:331
 #: ../../tempcache/pages/advanced_search.html.twig:375
@@ -4509,10 +4553,10 @@ msgstr "що міститься між"
 msgid "and"
 msgstr "і"
 
-#: ../install/steps/db_select_version.php:140
+#: ../install/steps/db_select_version.php:137
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:174
 #: ../../tempcache/pages/configuration_title_form.html.twig:94
-#: ../../tempcache/pages/preferences.html.twig:2595
+#: ../../tempcache/pages/preferences.html.twig:2588
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:94
 #: ../../tempcache/pages/members_list.html.twig:1141
 #: ../../tempcache/pages/mailing_form.html.twig:717
@@ -4522,28 +4566,28 @@ msgstr "і"
 #: ../../tempcache/modals/confirm_removal.html.twig:160
 #: ../../tempcache/modals/mass_change_members.html.twig:216
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:120
-#: ../../tempcache/modals/telemetry.html.twig:136
+#: ../../tempcache/modals/telemetry.html.twig:139
 #: ../../tempcache/modals/mass_add_contributions.html.twig:114
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: ../install/steps/db.php:55
+#: ../install/steps/db.php:52
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 "Якщо це не було зроблено, створіть базу даних та користувача для Galette."
 
-#: ../install/steps/db.php:57
+#: ../install/steps/db.php:54
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
 "Необхідні дозволи: СТВОРЕННЯ, ПЕРЕНЕСЕННЯ, ВИДАЛЕННЯ, ОНОВЛЕННЯ, ВИБИРАННЯ "
 "та ВСТАВЛЕННЯ."
 
-#: ../install/steps/db.php:59
+#: ../install/steps/db.php:56
 msgid "Enter connection data for the existing database."
 msgstr "Уведіть дані під'єднання для наявної бази даних."
 
-#: ../install/steps/db.php:63
+#: ../install/steps/db.php:60
 msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
@@ -4551,31 +4595,31 @@ msgstr ""
 "Здається, ви вже встановили Galette один раз.<br>Усі наявні дані буде "
 "видалено, якщо ви продовжуватимете використовувати наявну базу даних!"
 
-#: ../install/steps/db.php:68
+#: ../install/steps/db.php:65
 msgid "Database type:"
 msgstr "Тип бази даних:"
 
-#: ../install/steps/db.php:76
+#: ../install/steps/db.php:73
 msgid "Host:"
 msgstr "Хост:"
 
-#: ../install/steps/db.php:80
+#: ../install/steps/db.php:77
 msgid "Port:"
 msgstr "Порт:"
 
-#: ../install/steps/db.php:84
+#: ../install/steps/db.php:81
 msgid "User:"
 msgstr "Користувач:"
 
-#: ../install/steps/db.php:92
+#: ../install/steps/db.php:89
 msgid "Database:"
 msgstr "База даних:"
 
-#: ../install/steps/db.php:96
+#: ../install/steps/db.php:93
 msgid "Table prefix:"
 msgstr "Префікс таблиці:"
 
-#: ../install/steps/db.php:102
+#: ../install/steps/db.php:98
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr "(Вкажіть префікс CURRENT ваших таблиць Galette)"
 
@@ -4660,7 +4704,6 @@ msgstr "Довга форма"
 #: ../../tempcache/pages/transaction_form.html.twig:282
 #: ../../tempcache/pages/import.html.twig:98
 #: ../../tempcache/pages/members_list.html.twig:543
-#: ../../tempcache/pages/contribution_form.html.twig:296
 #: ../../tempcache/pages/configuration_payment_types.html.twig:65
 #: ../../tempcache/elements/edit_entitleds.html.twig:78
 #: ../../tempcache/elements/list.html.twig:375
@@ -4836,9 +4879,9 @@ msgstr "між"
 #: ../../tempcache/pages/contributions_list.html.twig:139
 #: ../../tempcache/pages/mailings_list.html.twig:126
 #: ../../tempcache/pages/mailings_list.html.twig:143
-#: ../../tempcache/pages/contribution_form.html.twig:481
-#: ../../tempcache/pages/contribution_form.html.twig:523
-#: ../../tempcache/pages/contribution_form.html.twig:575
+#: ../../tempcache/pages/contribution_form.html.twig:504
+#: ../../tempcache/pages/contribution_form.html.twig:546
+#: ../../tempcache/pages/contribution_form.html.twig:598
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
@@ -5076,7 +5119,7 @@ msgstr "Немає незадіяних втулків."
 
 #: ../../tempcache/pages/plugins.html.twig:335
 #: ../../tempcache/pages/preferences.html.twig:1175
-#: ../../tempcache/pages/preferences.html.twig:2389
+#: ../../tempcache/pages/preferences.html.twig:2382
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
@@ -5101,12 +5144,11 @@ msgstr ""
 #: ../../tempcache/pages/groups_list.html.twig:370
 #: ../../tempcache/pages/groups_list.html.twig:438
 #: ../../tempcache/pages/import_model.html.twig:271
-#: ../../tempcache/pages/transaction_form.html.twig:582
-#: ../../tempcache/pages/transaction_form.html.twig:637
-#: ../../tempcache/pages/transaction_form.html.twig:648
-#: ../../tempcache/pages/transaction_form.html.twig:688
-#: ../../tempcache/pages/transaction_form.html.twig:719
-#: ../../tempcache/pages/transaction_form.html.twig:750
+#: ../../tempcache/pages/transaction_form.html.twig:625
+#: ../../tempcache/pages/transaction_form.html.twig:636
+#: ../../tempcache/pages/transaction_form.html.twig:676
+#: ../../tempcache/pages/transaction_form.html.twig:707
+#: ../../tempcache/pages/transaction_form.html.twig:738
 #: ../../tempcache/pages/member_form.html.twig:649
 #: ../../tempcache/pages/member_form.html.twig:669
 #: ../../tempcache/pages/import.html.twig:313
@@ -5114,7 +5156,7 @@ msgstr ""
 #: ../../tempcache/pages/member_show.html.twig:714
 #: ../../tempcache/pages/reminder.html.twig:215
 #: ../../tempcache/pages/reminder.html.twig:244
-#: ../../tempcache/pages/preferences.html.twig:2580
+#: ../../tempcache/pages/preferences.html.twig:2573
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:178
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
@@ -5129,8 +5171,8 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:838
 #: ../../tempcache/pages/mailings_list.html.twig:453
 #: ../../tempcache/pages/mailings_list.html.twig:463
-#: ../../tempcache/pages/contribution_form.html.twig:757
-#: ../../tempcache/pages/contribution_form.html.twig:784
+#: ../../tempcache/pages/contribution_form.html.twig:780
+#: ../../tempcache/pages/contribution_form.html.twig:807
 #: ../../tempcache/pages/mailing_form.html.twig:549
 #: ../../tempcache/pages/mailing_form.html.twig:559
 #: ../../tempcache/pages/mailing_form.html.twig:586
@@ -5143,18 +5185,17 @@ msgstr ""
 #: ../../tempcache/elements/js/choose_adh.js.twig:249
 #: ../../tempcache/elements/js/photo_dnd.js.twig:159
 #: ../../tempcache/elements/js/pwdcheck.js.twig:135
-#: ../../tempcache/elements/js/removal.js.twig:152
-#: ../../tempcache/elements/js/removal.js.twig:161
-#: ../../tempcache/elements/js/removal.js.twig:177
+#: ../../tempcache/elements/js/removal.js.twig:159
+#: ../../tempcache/elements/js/removal.js.twig:175
 #: ../../tempcache/elements/js/modal_action.js.twig:74
 #: ../../tempcache/elements/js/modal_action.js.twig:137
 #: ../../tempcache/elements/list.html.twig:424
-#: ../../tempcache/elements/scripts.html.twig:127
-#: ../../tempcache/elements/scripts.html.twig:147
+#: ../../tempcache/elements/scripts.html.twig:208
+#: ../../tempcache/elements/scripts.html.twig:228
 #: ../../tempcache/modals/replacements_legend.html.twig:131
 #: ../../tempcache/modals/telemetry.html.twig:112
 #: ../../tempcache/modals/telemetry.html.twig:118
-#: ../../tempcache/modals/telemetry.html.twig:209
+#: ../../tempcache/modals/telemetry.html.twig:212
 msgid "Close"
 msgstr "Закрити"
 
@@ -5285,14 +5326,14 @@ msgstr "Продовжити членство?"
 #: ../../tempcache/pages/transaction_form.html.twig:535
 #: ../../tempcache/pages/member_form.html.twig:93
 #: ../../tempcache/pages/member_form.html.twig:468
-#: ../../tempcache/pages/preferences.html.twig:2462
+#: ../../tempcache/pages/preferences.html.twig:2455
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:89
 #: ../../tempcache/pages/members_list.html.twig:387
 #: ../../tempcache/pages/members_list.html.twig:417
 #: ../../tempcache/pages/members_list.html.twig:1134
 #: ../../tempcache/pages/configuration_texts.html.twig:190
 #: ../../tempcache/pages/configuration_core_lists.html.twig:287
-#: ../../tempcache/pages/contribution_form.html.twig:658
+#: ../../tempcache/pages/contribution_form.html.twig:681
 #: ../../tempcache/pages/mailing_form.html.twig:361
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:277
 #: ../../tempcache/elements/js/modal_action.js.twig:70
@@ -5542,7 +5583,7 @@ msgstr "Створити"
 #: ../../tempcache/pages/groups_list.html.twig:286
 #: ../../tempcache/pages/groups_list.html.twig:370
 #: ../../tempcache/pages/groups_list.html.twig:438
-#: ../../tempcache/pages/transaction_form.html.twig:637
+#: ../../tempcache/pages/transaction_form.html.twig:625
 #: ../../tempcache/pages/mailing_form.html.twig:586
 #: ../../tempcache/pages/mailing_form.html.twig:630
 #: ../../tempcache/pages/mailing_form.html.twig:695
@@ -5568,7 +5609,7 @@ msgid "No member attached"
 msgstr "Не долучено жодного члена"
 
 #: ../../tempcache/pages/groups_list.html.twig:404
-#: ../../tempcache/pages/transaction_form.html.twig:767
+#: ../../tempcache/pages/transaction_form.html.twig:755
 #: ../../tempcache/pages/member_form.html.twig:748
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "Клацніть на рядок внеску, щоб додати його до поточного переказу"
@@ -5778,11 +5819,15 @@ msgstr "Ненадіслана сума:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:348
 #: ../../tempcache/pages/transaction_form.html.twig:355
+#: ../../tempcache/pages/contribution_form.html.twig:331
+#: ../../tempcache/pages/contribution_form.html.twig:338
 msgid "Create a new fee that will be attached to the current transaction"
 msgstr "Створити новий внесок, який буде долучено до поточного переказу"
 
 #: ../../tempcache/pages/transaction_form.html.twig:368
 #: ../../tempcache/pages/transaction_form.html.twig:375
+#: ../../tempcache/pages/contribution_form.html.twig:351
+#: ../../tempcache/pages/contribution_form.html.twig:358
 msgid "Create a new donation that will be attached to the current transaction"
 msgstr "Створити нове пожертвування, яке буде приєднано до поточного переказу"
 
@@ -5804,27 +5849,27 @@ msgid "no contribution"
 msgstr "немає внеску"
 
 #: ../../tempcache/pages/transaction_form.html.twig:557
-#: ../../tempcache/pages/contribution_form.html.twig:692
+#: ../../tempcache/pages/contribution_form.html.twig:715
 msgid "No member registered!"
 msgstr "Жоден член не зареєстрований!"
 
 #: ../../tempcache/pages/transaction_form.html.twig:562
-#: ../../tempcache/pages/contribution_form.html.twig:697
+#: ../../tempcache/pages/contribution_form.html.twig:720
 msgid "Unfortunately, there is no member in your database yet,"
 msgstr "На жаль, у вашій базі даних ще немає членів,"
 
 #: ../../tempcache/pages/transaction_form.html.twig:569
-#: ../../tempcache/pages/contribution_form.html.twig:704
+#: ../../tempcache/pages/contribution_form.html.twig:727
 msgid "please create a member"
 msgstr "будь ласка, створіть члена"
 
-#: ../../tempcache/pages/transaction_form.html.twig:648
+#: ../../tempcache/pages/transaction_form.html.twig:636
 msgid "Contributions selection"
 msgstr "Вибір внесків"
 
-#: ../../tempcache/pages/transaction_form.html.twig:688
-#: ../../tempcache/pages/transaction_form.html.twig:719
-#: ../../tempcache/pages/transaction_form.html.twig:750
+#: ../../tempcache/pages/transaction_form.html.twig:676
+#: ../../tempcache/pages/transaction_form.html.twig:707
+#: ../../tempcache/pages/transaction_form.html.twig:738
 msgid "An error occurred displaying contributions :("
 msgstr "Під час відображення внесків сталася помилка :("
 
@@ -5978,7 +6023,7 @@ msgstr "Вивантажити новий файл"
 
 #: ../../tempcache/pages/import.html.twig:259
 #: ../../tempcache/pages/preferences.html.twig:245
-#: ../../tempcache/pages/preferences.html.twig:1973
+#: ../../tempcache/pages/preferences.html.twig:1966
 #: ../../tempcache/components/forms/picture.html.twig:75
 #: ../../tempcache/components/dynamic_fields.html.twig:726
 #, fuzzy
@@ -6089,10 +6134,10 @@ msgid "Generate labels for members without email address"
 msgstr "Утворити мітки для учасників без адреси е-пошти"
 
 #: ../../tempcache/pages/reminder.html.twig:162
-#: ../../tempcache/pages/preferences.html.twig:2588
+#: ../../tempcache/pages/preferences.html.twig:2581
 #: ../../tempcache/pages/mailing_form.html.twig:373
 #: ../../tempcache/pages/mailing_form.html.twig:464
-#: ../../tempcache/modals/telemetry.html.twig:129
+#: ../../tempcache/modals/telemetry.html.twig:132
 msgid "Send"
 msgstr "Надіслати"
 
@@ -6236,17 +6281,17 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:186
 #: ../../tempcache/pages/preferences.html.twig:192
-#: ../../tempcache/pages/preferences.html.twig:1815
-#: ../../tempcache/pages/preferences.html.twig:1821
-#: ../../tempcache/pages/preferences.html.twig:1853
-#: ../../tempcache/pages/preferences.html.twig:1859
+#: ../../tempcache/pages/preferences.html.twig:1808
+#: ../../tempcache/pages/preferences.html.twig:1814
+#: ../../tempcache/pages/preferences.html.twig:1846
+#: ../../tempcache/pages/preferences.html.twig:1852
 #: ../../tempcache/pages/configuration_payment_types.html.twig:183
 #, php-format
 msgid "Translate '%s'"
 msgstr "Переклад \"%s\""
 
 #: ../../tempcache/pages/preferences.html.twig:202
-#: ../../tempcache/pages/preferences.html.twig:1930
+#: ../../tempcache/pages/preferences.html.twig:1923
 msgid "Logo:"
 msgstr "Логотип:"
 
@@ -6255,7 +6300,7 @@ msgid "Current logo"
 msgstr "Поточний логотип"
 
 #: ../../tempcache/pages/preferences.html.twig:243
-#: ../../tempcache/pages/preferences.html.twig:1971
+#: ../../tempcache/pages/preferences.html.twig:1964
 #: ../../tempcache/components/forms/picture.html.twig:73
 #: ../../tempcache/components/dynamic_fields.html.twig:724
 #, fuzzy
@@ -6264,7 +6309,7 @@ msgid "Choose another file"
 msgstr "Виберіть запис"
 
 #: ../../tempcache/pages/preferences.html.twig:260
-#: ../../tempcache/pages/preferences.html.twig:1988
+#: ../../tempcache/pages/preferences.html.twig:1981
 #: ../../tempcache/components/forms/picture.html.twig:53
 msgid "Delete image"
 msgstr "Видалити зображення"
@@ -6337,11 +6382,6 @@ msgstr "Дата, коли ви зареєстрували зразок Galette.
 #: ../../tempcache/pages/preferences.html.twig:471
 msgid "Update your information"
 msgstr "Оновіть свої відомості"
-
-#: ../../tempcache/pages/preferences.html.twig:480
-#: ../../tempcache/pages/desktop.html.twig:105
-msgid "Register"
-msgstr "Зареєструватися"
 
 #: ../../tempcache/pages/preferences.html.twig:483
 msgid "Not registered"
@@ -6563,8 +6603,24 @@ msgstr "Ім'я відправника:"
 msgid "Sender Email:"
 msgstr "Е-пошта відправника:"
 
-#: ../../tempcache/pages/preferences.html.twig:1208
-#: ../../tempcache/pages/preferences.html.twig:1251
+#: ../../tempcache/pages/preferences.html.twig:1207
+msgid "Reply-To Email:"
+msgstr "Е-пошта для відповіді:"
+
+#: ../../tempcache/pages/preferences.html.twig:1213
+msgid "Leave empty to use Sender Email as reply address"
+msgstr ""
+"Залиште порожнім, щоб використовувати е-пошту відправника як адресу відповіді"
+
+#: ../../tempcache/pages/preferences.html.twig:1228
+msgid "Members administrator's Email:"
+msgstr "Е-пошта адміністратора членів:"
+
+#: ../../tempcache/pages/preferences.html.twig:1234
+msgid "Recipient of new online registation and edition emails"
+msgstr "Одержувач нових повідомлень е-пошти про реєстрацію та редагування"
+
+#: ../../tempcache/pages/preferences.html.twig:1244
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
@@ -6572,28 +6628,11 @@ msgstr ""
 "(Ви можете ввести кілька повідомлень е-пошти, розділених комами. Перша "
 "адреса буде типовою.)"
 
-#: ../../tempcache/pages/preferences.html.twig:1214
-msgid "Reply-To Email:"
-msgstr "Е-пошта для відповіді:"
-
-#: ../../tempcache/pages/preferences.html.twig:1220
-msgid "Leave empty to use Sender Email as reply address"
-msgstr ""
-"Залиште порожнім, щоб використовувати е-пошту відправника як адресу відповіді"
-
-#: ../../tempcache/pages/preferences.html.twig:1235
-msgid "Members administrator's Email:"
-msgstr "Е-пошта адміністратора членів:"
-
-#: ../../tempcache/pages/preferences.html.twig:1241
-msgid "Recipient of new online registation and edition emails"
-msgstr "Одержувач нових повідомлень е-пошти про реєстрацію та редагування"
-
-#: ../../tempcache/pages/preferences.html.twig:1264
+#: ../../tempcache/pages/preferences.html.twig:1257
 msgid "Send email to administrators?"
 msgstr "Надіслати повідомлення е-пошти адміністраторам?"
 
-#: ../../tempcache/pages/preferences.html.twig:1269
+#: ../../tempcache/pages/preferences.html.twig:1262
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
@@ -6601,11 +6640,11 @@ msgstr ""
 "Надсилає повідомлення е-пошти щоразу, коли новий член реєструється в мережі "
 "або редагує свій обліковий запис"
 
-#: ../../tempcache/pages/preferences.html.twig:1282
+#: ../../tempcache/pages/preferences.html.twig:1275
 msgid "Wrap emails text?"
 msgstr "Переносити текст е-пошти?"
 
-#: ../../tempcache/pages/preferences.html.twig:1287
+#: ../../tempcache/pages/preferences.html.twig:1280
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
@@ -6615,11 +6654,11 @@ msgstr ""
 "функцію, обов'язково загорніть текст самостійно. Запримітьте, що на поточне "
 "редагування розсилання зміни не вплинуть."
 
-#: ../../tempcache/pages/preferences.html.twig:1300
+#: ../../tempcache/pages/preferences.html.twig:1293
 msgid "Send email to members?"
 msgstr "Надіслати лист спізнілим членам?"
 
-#: ../../tempcache/pages/preferences.html.twig:1305
+#: ../../tempcache/pages/preferences.html.twig:1298
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
@@ -6627,63 +6666,63 @@ msgstr ""
 "Надсилає електронний лист кожного разу, коли картка члена або внесок були "
 "додані або відредаговані. Це можна вимкнути для кожного випадку."
 
-#: ../../tempcache/pages/preferences.html.twig:1318
+#: ../../tempcache/pages/preferences.html.twig:1311
 msgid "Activate HTML editor?"
 msgstr "Задіяти редактор HTML?"
 
-#: ../../tempcache/pages/preferences.html.twig:1323
+#: ../../tempcache/pages/preferences.html.twig:1316
 msgid "Should HTML editor be activated on page load ?"
 msgstr "Чи слід задіяти редактор HTML під час завантаження сторінки?"
 
-#: ../../tempcache/pages/preferences.html.twig:1329
+#: ../../tempcache/pages/preferences.html.twig:1322
 msgid "Mail signature"
 msgstr "Поштовий підпис"
 
-#: ../../tempcache/pages/preferences.html.twig:1346
+#: ../../tempcache/pages/preferences.html.twig:1339
 msgid "Emailing method:"
 msgstr "Спосіб розсилання е-поштлю:"
 
-#: ../../tempcache/pages/preferences.html.twig:1358
+#: ../../tempcache/pages/preferences.html.twig:1351
 msgid "Emailing disabled"
 msgstr "Розсилання е-поштою вимкнено"
 
-#: ../../tempcache/pages/preferences.html.twig:1372
+#: ../../tempcache/pages/preferences.html.twig:1365
 msgid "PHP mail() function"
 msgstr "Функція PHP mail()"
 
-#: ../../tempcache/pages/preferences.html.twig:1386
+#: ../../tempcache/pages/preferences.html.twig:1379
 msgid "Using a SMTP server (slower)"
 msgstr "Використовувати сервер SMTP (повільніше)"
 
-#: ../../tempcache/pages/preferences.html.twig:1400
+#: ../../tempcache/pages/preferences.html.twig:1393
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Використання GMAIL як SMTP-сервера (повільніше)"
 
-#: ../../tempcache/pages/preferences.html.twig:1414
+#: ../../tempcache/pages/preferences.html.twig:1407
 msgid "Using Sendmail server"
 msgstr "Використовувати сервер Sendmail"
 
-#: ../../tempcache/pages/preferences.html.twig:1428
+#: ../../tempcache/pages/preferences.html.twig:1421
 msgid "Using QMAIL server"
 msgstr "Використовувати сервер QMAIL"
 
-#: ../../tempcache/pages/preferences.html.twig:1444
+#: ../../tempcache/pages/preferences.html.twig:1437
 msgid "Test email settings"
 msgstr "Перевірка налаштувань е-пошти"
 
-#: ../../tempcache/pages/preferences.html.twig:1452
+#: ../../tempcache/pages/preferences.html.twig:1445
 msgid "SMTP server:"
 msgstr "SMTP-сервер:"
 
-#: ../../tempcache/pages/preferences.html.twig:1462
+#: ../../tempcache/pages/preferences.html.twig:1455
 msgid "SMTP port:"
 msgstr "SMTP-порт:"
 
-#: ../../tempcache/pages/preferences.html.twig:1480
+#: ../../tempcache/pages/preferences.html.twig:1473
 msgid "Use SMTP authentication?"
 msgstr "Використовувати автентифікацію SMTP?"
 
-#: ../../tempcache/pages/preferences.html.twig:1485
+#: ../../tempcache/pages/preferences.html.twig:1478
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
@@ -6692,11 +6731,11 @@ msgstr ""
 "вказати ім'я користувача та пароль нижче. Для GMail автентифікація завжди "
 "буде увімкнена."
 
-#: ../../tempcache/pages/preferences.html.twig:1498
+#: ../../tempcache/pages/preferences.html.twig:1491
 msgid "Use TLS for SMTP?"
 msgstr "Використовувати TLS для SMTP?"
 
-#: ../../tempcache/pages/preferences.html.twig:1503
+#: ../../tempcache/pages/preferences.html.twig:1496
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -6704,11 +6743,11 @@ msgstr ""
 "Ви хочете використовувати можливості TLS сервера?<br>Для GMail це завжди "
 "буде увімкнено."
 
-#: ../../tempcache/pages/preferences.html.twig:1516
+#: ../../tempcache/pages/preferences.html.twig:1509
 msgid "Allow unsecure TLS?"
 msgstr "Дозволити незахищений TLS?"
 
-#: ../../tempcache/pages/preferences.html.twig:1521
+#: ../../tempcache/pages/preferences.html.twig:1514
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
@@ -6717,63 +6756,63 @@ msgstr ""
 "ваш сервер використовує самопідписаний сертифікат, а також у деяких інших "
 "випадках."
 
-#: ../../tempcache/pages/preferences.html.twig:1530
+#: ../../tempcache/pages/preferences.html.twig:1523
 msgid "SMTP (or GMail) user:"
 msgstr "Користувач SMTP (або GMail):"
 
-#: ../../tempcache/pages/preferences.html.twig:1540
+#: ../../tempcache/pages/preferences.html.twig:1533
 msgid "SMTP (or GMail) password:"
 msgstr "Пароль SMTP (або GMail) :"
 
-#: ../../tempcache/pages/preferences.html.twig:1570
-#: ../../tempcache/pages/preferences.html.twig:2111
+#: ../../tempcache/pages/preferences.html.twig:1563
+#: ../../tempcache/pages/preferences.html.twig:2104
 msgid "Vertical margins:"
 msgstr "Вертикальні поля:"
 
-#: ../../tempcache/pages/preferences.html.twig:1592
-#: ../../tempcache/pages/preferences.html.twig:2133
+#: ../../tempcache/pages/preferences.html.twig:1585
+#: ../../tempcache/pages/preferences.html.twig:2126
 msgid "Horizontal margins:"
 msgstr "Горизонтальні поля:"
 
-#: ../../tempcache/pages/preferences.html.twig:1614
-#: ../../tempcache/pages/preferences.html.twig:2177
+#: ../../tempcache/pages/preferences.html.twig:1607
+#: ../../tempcache/pages/preferences.html.twig:2170
 msgid "Horizontal spacing:"
 msgstr "Поземний інтервал:"
 
-#: ../../tempcache/pages/preferences.html.twig:1636
-#: ../../tempcache/pages/preferences.html.twig:2155
+#: ../../tempcache/pages/preferences.html.twig:1629
+#: ../../tempcache/pages/preferences.html.twig:2148
 msgid "Vertical spacing:"
 msgstr "Вертикальний інтервал:"
 
-#: ../../tempcache/pages/preferences.html.twig:1660
+#: ../../tempcache/pages/preferences.html.twig:1653
 msgid "Print border"
 msgstr "Друкувати межу"
 
-#: ../../tempcache/pages/preferences.html.twig:1665
+#: ../../tempcache/pages/preferences.html.twig:1658
 msgid "Check this box to print a grey border around each label."
 msgstr "Позначте цей пункт, щоб надрукувати сіру межу навколо кожної мітки."
 
-#: ../../tempcache/pages/preferences.html.twig:1679
+#: ../../tempcache/pages/preferences.html.twig:1672
 msgid "Label width:"
 msgstr "Ширина мітки:"
 
-#: ../../tempcache/pages/preferences.html.twig:1701
+#: ../../tempcache/pages/preferences.html.twig:1694
 msgid "Label height:"
 msgstr "Висота мітки:"
 
-#: ../../tempcache/pages/preferences.html.twig:1723
+#: ../../tempcache/pages/preferences.html.twig:1716
 msgid "Number of label columns:"
 msgstr "Кількість стовпців міток:"
 
-#: ../../tempcache/pages/preferences.html.twig:1742
+#: ../../tempcache/pages/preferences.html.twig:1735
 msgid "Number of label lines:"
 msgstr "Кількість рядків міток:"
 
-#: ../../tempcache/pages/preferences.html.twig:1761
+#: ../../tempcache/pages/preferences.html.twig:1754
 msgid "Font size:"
 msgstr "Розмір шрифту:"
 
-#: ../../tempcache/pages/preferences.html.twig:1786
+#: ../../tempcache/pages/preferences.html.twig:1779
 msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
@@ -6781,79 +6820,79 @@ msgstr ""
 "Кожна картка має ширину 75 мм і висоту 40 мм. Кожна сторінка містить 2 "
 "стовпчики та 6 рядків.<br/>Подвійні контрольні поля та проміжки;)"
 
-#: ../../tempcache/pages/preferences.html.twig:1795
+#: ../../tempcache/pages/preferences.html.twig:1788
 msgid "Short Text (Card Center):"
 msgstr "Короткий текст (Картковий центр):"
 
-#: ../../tempcache/pages/preferences.html.twig:1827
+#: ../../tempcache/pages/preferences.html.twig:1820
 msgid "(10 characters max)"
 msgstr "(Не більше 10 знаків)"
 
-#: ../../tempcache/pages/preferences.html.twig:1833
+#: ../../tempcache/pages/preferences.html.twig:1826
 msgid "Long Text (Bottom Line):"
 msgstr "Довгий текст (нижній рядок):"
 
-#: ../../tempcache/pages/preferences.html.twig:1865
+#: ../../tempcache/pages/preferences.html.twig:1858
 msgid "(65 characters max)"
 msgstr "(не більше 65 знаків)"
 
-#: ../../tempcache/pages/preferences.html.twig:1872
+#: ../../tempcache/pages/preferences.html.twig:1865
 msgid "Strip Text Color:"
 msgstr "Колір тексту смуги:"
 
-#: ../../tempcache/pages/preferences.html.twig:1880
-#: ../../tempcache/pages/preferences.html.twig:1894
-#: ../../tempcache/pages/preferences.html.twig:1908
-#: ../../tempcache/pages/preferences.html.twig:1922
+#: ../../tempcache/pages/preferences.html.twig:1873
+#: ../../tempcache/pages/preferences.html.twig:1887
+#: ../../tempcache/pages/preferences.html.twig:1901
+#: ../../tempcache/pages/preferences.html.twig:1915
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "Шістнадцяткове позначення кольорів: #RRGGBB"
 
-#: ../../tempcache/pages/preferences.html.twig:1886
+#: ../../tempcache/pages/preferences.html.twig:1879
 msgid "Active Member Color:"
 msgstr "Активний колір члена:"
 
-#: ../../tempcache/pages/preferences.html.twig:1900
+#: ../../tempcache/pages/preferences.html.twig:1893
 msgid "Board Members Color:"
 msgstr "Колір членів ради:"
 
-#: ../../tempcache/pages/preferences.html.twig:1914
+#: ../../tempcache/pages/preferences.html.twig:1907
 msgid "Honor Members Color:"
 msgstr "Колір почесних членів:"
 
-#: ../../tempcache/pages/preferences.html.twig:1946
+#: ../../tempcache/pages/preferences.html.twig:1939
 msgid "Current logo for printing"
 msgstr "Поточний логотип для друку"
 
-#: ../../tempcache/pages/preferences.html.twig:2011
+#: ../../tempcache/pages/preferences.html.twig:2004
 msgid "Allow members to print card ?"
 msgstr "Дозволити членам друкувати картку?"
 
-#: ../../tempcache/pages/preferences.html.twig:2025
+#: ../../tempcache/pages/preferences.html.twig:2018
 msgid "Show title ?"
 msgstr "Показувати заголовок?"
 
-#: ../../tempcache/pages/preferences.html.twig:2030
+#: ../../tempcache/pages/preferences.html.twig:2023
 msgid "(Show or not title in front of name)"
 msgstr "(Показувати заголовок перед іменем чи ні)"
 
-#: ../../tempcache/pages/preferences.html.twig:2036
+#: ../../tempcache/pages/preferences.html.twig:2029
 msgid "Address type:"
 msgstr "Тип адреси:"
 
-#: ../../tempcache/pages/preferences.html.twig:2053
+#: ../../tempcache/pages/preferences.html.twig:2046
 #: ../../tempcache/elements/ajax_members.html.twig:57
 msgid "Zip - Town"
 msgstr "ZIP - Місто"
 
-#: ../../tempcache/pages/preferences.html.twig:2082
+#: ../../tempcache/pages/preferences.html.twig:2075
 msgid "(Choose address printed below name)"
 msgstr "(Виберіть адресу, надруковану під назвою)"
 
-#: ../../tempcache/pages/preferences.html.twig:2088
+#: ../../tempcache/pages/preferences.html.twig:2081
 msgid "Year:"
 msgstr "Рік:"
 
-#: ../../tempcache/pages/preferences.html.twig:2094
+#: ../../tempcache/pages/preferences.html.twig:2087
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -6861,25 +6900,25 @@ msgstr ""
 "Ви можете ввести:<br>- рік,<br>- два роки зі скісною рискою як роздільником,"
 "<br>- рядок 'DEADLINE' для використання крайнього строку члена"
 
-#: ../../tempcache/pages/preferences.html.twig:2208
+#: ../../tempcache/pages/preferences.html.twig:2201
 msgid "Password length:"
 msgstr "Довжина пароля:"
 
-#: ../../tempcache/pages/preferences.html.twig:2214
+#: ../../tempcache/pages/preferences.html.twig:2207
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 "Щонайменша довжина пароля, необхідна для всіх облікових записів. Щонайменший "
 "розмір - 6."
 
-#: ../../tempcache/pages/preferences.html.twig:2233
+#: ../../tempcache/pages/preferences.html.twig:2226
 msgid "Enable password blacklists"
 msgstr "Увімкнути чорні списки паролів"
 
-#: ../../tempcache/pages/preferences.html.twig:2235
+#: ../../tempcache/pages/preferences.html.twig:2228
 msgid "Enable blacklists:"
 msgstr "Увімкнути чорні списки:"
 
-#: ../../tempcache/pages/preferences.html.twig:2240
+#: ../../tempcache/pages/preferences.html.twig:2233
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -6888,68 +6927,68 @@ msgstr ""
 "неможливим. Список надається разом з Galette, але ви можете додати свій "
 "власний."
 
-#: ../../tempcache/pages/preferences.html.twig:2246
+#: ../../tempcache/pages/preferences.html.twig:2239
 msgid "Enforce password strength"
 msgstr "Посилення надійності паролю"
 
-#: ../../tempcache/pages/preferences.html.twig:2248
+#: ../../tempcache/pages/preferences.html.twig:2241
 msgid "Password strength:"
 msgstr "Надійність паролю:"
 
-#: ../../tempcache/pages/preferences.html.twig:2259
+#: ../../tempcache/pages/preferences.html.twig:2252
 msgid "None (default)"
 msgstr "Немає (типово)"
 
-#: ../../tempcache/pages/preferences.html.twig:2269
-#: ../../tempcache/pages/preferences.html.twig:2320
+#: ../../tempcache/pages/preferences.html.twig:2262
+#: ../../tempcache/pages/preferences.html.twig:2313
 msgid "Weak"
 msgstr "Слабкий"
 
-#: ../../tempcache/pages/preferences.html.twig:2279
-#: ../../tempcache/pages/preferences.html.twig:2326
+#: ../../tempcache/pages/preferences.html.twig:2272
+#: ../../tempcache/pages/preferences.html.twig:2319
 msgid "Medium"
 msgstr "Середній"
 
-#: ../../tempcache/pages/preferences.html.twig:2289
-#: ../../tempcache/pages/preferences.html.twig:2332
+#: ../../tempcache/pages/preferences.html.twig:2282
+#: ../../tempcache/pages/preferences.html.twig:2325
 msgid "Strong"
 msgstr "Сильний"
 
-#: ../../tempcache/pages/preferences.html.twig:2299
-#: ../../tempcache/pages/preferences.html.twig:2338
+#: ../../tempcache/pages/preferences.html.twig:2292
+#: ../../tempcache/pages/preferences.html.twig:2331
 msgid "Very strong"
 msgstr "Дуже сильний"
 
-#: ../../tempcache/pages/preferences.html.twig:2305
+#: ../../tempcache/pages/preferences.html.twig:2298
 msgid "Enforce minimal password strength for all password."
 msgstr "Забезпечте щонайменшу надійність пароля для всіх паролів."
 
-#: ../../tempcache/pages/preferences.html.twig:2309
+#: ../../tempcache/pages/preferences.html.twig:2302
 msgid "Levels are:"
 msgstr "Рівні:"
 
-#: ../../tempcache/pages/preferences.html.twig:2316
+#: ../../tempcache/pages/preferences.html.twig:2309
 msgid "for no strength enforcement"
 msgstr "без примусового виконання"
 
-#: ../../tempcache/pages/preferences.html.twig:2322
+#: ../../tempcache/pages/preferences.html.twig:2315
 msgid "require at least one matched rule"
 msgstr "вимагає принаймні одного відповідного правила"
 
-#: ../../tempcache/pages/preferences.html.twig:2328
+#: ../../tempcache/pages/preferences.html.twig:2321
 msgid "require at least two matched rules"
 msgstr "вимагає принаймні двох відповідних правил"
 
-#: ../../tempcache/pages/preferences.html.twig:2334
+#: ../../tempcache/pages/preferences.html.twig:2327
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "вимагає принаймні трьох відповідних правил (пораджено для більшості випадків)"
 
-#: ../../tempcache/pages/preferences.html.twig:2340
+#: ../../tempcache/pages/preferences.html.twig:2333
 msgid "requires all rules."
 msgstr "вимагає всіх правил."
 
-#: ../../tempcache/pages/preferences.html.twig:2345
+#: ../../tempcache/pages/preferences.html.twig:2338
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
@@ -6957,7 +6996,7 @@ msgstr ""
 "Правила включають знаки нижнього регістру, великого регістру, цифр та "
 "спеціальних символів."
 
-#: ../../tempcache/pages/preferences.html.twig:2349
+#: ../../tempcache/pages/preferences.html.twig:2342
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
@@ -6965,24 +7004,24 @@ msgstr ""
 "Запримітьте, що при будь-якому рівні дотримання користувач не може "
 "використовувати свої особисті відомості (ім'я, логін, ...) в якості пароля."
 
-#: ../../tempcache/pages/preferences.html.twig:2357
+#: ../../tempcache/pages/preferences.html.twig:2350
 msgid "Test a password:"
 msgstr "Перевірка пароля:"
 
-#: ../../tempcache/pages/preferences.html.twig:2363
+#: ../../tempcache/pages/preferences.html.twig:2356
 msgid "Test a password with current selected values."
 msgstr "Перевірка пароля з поточними вибраними значеннями."
 
-#: ../../tempcache/pages/preferences.html.twig:2365
+#: ../../tempcache/pages/preferences.html.twig:2358
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr "Не забудьте зберегти свої налаштування, якщо задоволені результатом ;)"
 
-#: ../../tempcache/pages/preferences.html.twig:2548
+#: ../../tempcache/pages/preferences.html.twig:2541
 msgid "Enter the email adress"
 msgstr "Уведіть адресу е-пошти"
 
-#: ../../tempcache/pages/preferences.html.twig:2580
+#: ../../tempcache/pages/preferences.html.twig:2573
 msgid "An error occurred sending test email :("
 msgstr ""
 "Сталася помилка під час надсилання перевіркового повідомлення е-пошти :("
@@ -7417,47 +7456,39 @@ msgstr "Відомості про пов'язані перекази"
 msgid "Not dispatched amount"
 msgstr "Ненадіслана сума"
 
-#: ../../tempcache/pages/contribution_form.html.twig:336
+#: ../../tempcache/pages/contribution_form.html.twig:314
 msgid "View transaction"
 msgstr "Переглянути переказ"
 
-#: ../../tempcache/pages/contribution_form.html.twig:354
-msgid "New attached fee"
-msgstr "Нова додана плата"
-
-#: ../../tempcache/pages/contribution_form.html.twig:368
-msgid "New attached donation"
-msgstr "Нове долучене пожертвування"
-
-#: ../../tempcache/pages/contribution_form.html.twig:394
+#: ../../tempcache/pages/contribution_form.html.twig:417
 msgid "Details of membership fee"
 msgstr "Подробиці членського внеску"
 
-#: ../../tempcache/pages/contribution_form.html.twig:400
+#: ../../tempcache/pages/contribution_form.html.twig:423
 msgid "Details of donation"
 msgstr "Подробиці пожертвування"
 
-#: ../../tempcache/pages/contribution_form.html.twig:463
+#: ../../tempcache/pages/contribution_form.html.twig:486
 msgid "Record date:"
 msgstr "Дата запису:"
 
-#: ../../tempcache/pages/contribution_form.html.twig:552
+#: ../../tempcache/pages/contribution_form.html.twig:575
 msgid "months"
 msgstr "місяців"
 
-#: ../../tempcache/pages/contribution_form.html.twig:632
+#: ../../tempcache/pages/contribution_form.html.twig:655
 msgid "Notify member"
 msgstr "Повідомити члена"
 
-#: ../../tempcache/pages/contribution_form.html.twig:639
+#: ../../tempcache/pages/contribution_form.html.twig:662
 msgid "Member will receive a notification by email, if he has an address."
 msgstr "Член отримає повідомлення е-поштою, якщо у нього є адреса."
 
-#: ../../tempcache/pages/contribution_form.html.twig:757
+#: ../../tempcache/pages/contribution_form.html.twig:780
 msgid "An error occurred retrieving dates :("
 msgstr "Під час отримання дат сталася помилка :("
 
-#: ../../tempcache/pages/contribution_form.html.twig:783
+#: ../../tempcache/pages/contribution_form.html.twig:806
 msgid "Contribution amount should not be greater than %max"
 msgstr "Сума внеску повинна бути меншою, ніж %max"
 
@@ -7516,7 +7547,7 @@ msgid "Interpret HTML"
 msgstr "Інтерпретувати HTML"
 
 #: ../../tempcache/pages/mailing_form.html.twig:338
-#: ../../tempcache/elements/scripts.html.twig:277
+#: ../../tempcache/elements/scripts.html.twig:358
 msgid "Activate HTML editor"
 msgstr "Задіяти редактор HTML"
 
@@ -7550,7 +7581,7 @@ msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr "Це негайно видалить долучення з диска і це не можна скасувати."
 
 #: ../../tempcache/pages/mailing_form.html.twig:717
-#: ../../tempcache/elements/js/removal.js.twig:171
+#: ../../tempcache/elements/js/removal.js.twig:169
 #: ../../tempcache/modals/confirm_removal.html.twig:154
 msgid "Remove"
 msgstr "Вилучити"
@@ -7659,18 +7690,6 @@ msgid ""
 msgstr ""
 "Скористайтеся миттю - поділіться деякими відомостями з нами, щоб ми могли "
 "дізнатися краще про використання Galette."
-
-#: ../../tempcache/pages/desktop.html.twig:81
-msgid "Send anonymous and imprecise data about your Galette instance"
-msgstr "Надсилайте анонімні та приблизні дані про свій зразок Galette"
-
-#: ../../tempcache/pages/desktop.html.twig:86
-msgid "Telemetry"
-msgstr "Телеметрія"
-
-#: ../../tempcache/pages/desktop.html.twig:100
-msgid "Register your organization as a Galette user"
-msgstr "Зареєструвати Вашу організацію в якості користувача Galette"
 
 #: ../../tempcache/pages/desktop.html.twig:114
 msgid ""
@@ -7865,6 +7884,39 @@ msgstr "Зображення"
 #: ../../tempcache/elements/member_card.html.twig:68
 msgid "Drag and drop an image file to change the picture"
 msgstr ""
+
+#: ../../tempcache/elements/logged_user.html.twig:82
+#: ../../tempcache/elements/logged_user.html.twig:154
+#: ../../tempcache/elements/logged_user.html.twig:164
+#: ../../tempcache/elements/logged_user.html.twig:289
+#: ../../tempcache/elements/logged_user.html.twig:299
+#: ../../tempcache/elements/navigation/public_pages.html.twig:132
+#: ../../tempcache/elements/navigation/public_pages.html.twig:142
+#, fuzzy
+#| msgid "Disabled"
+msgid "Disable dark mode"
+msgstr "Вимкнено"
+
+#: ../../tempcache/elements/logged_user.html.twig:84
+#: ../../tempcache/elements/logged_user.html.twig:156
+#: ../../tempcache/elements/logged_user.html.twig:166
+#: ../../tempcache/elements/logged_user.html.twig:291
+#: ../../tempcache/elements/logged_user.html.twig:301
+#: ../../tempcache/elements/navigation/public_pages.html.twig:134
+#: ../../tempcache/elements/navigation/public_pages.html.twig:144
+#, fuzzy
+#| msgid "Table name"
+msgid "Enable dark mode"
+msgstr "Назва таблиці"
+
+#: ../../tempcache/elements/logged_user.html.twig:117
+#: ../../tempcache/elements/logged_user.html.twig:190
+#: ../../tempcache/elements/logged_user.html.twig:208
+#: ../../tempcache/elements/logged_user.html.twig:334
+#, fuzzy
+#| msgid "Unable to impersonate as %id"
+msgid "Unimpersonate"
+msgstr "Не вдається видати себе за %id"
 
 #: ../../tempcache/elements/js/choose_adh.js.twig:134
 #: ../../tempcache/elements/js/choose_adh.js.twig:213
@@ -8155,7 +8207,7 @@ msgstr "Підписатися"
 msgid "Go to Galette's dashboard"
 msgstr "Перейти до дошки даних Galette"
 
-#: ../../tempcache/elements/scripts.html.twig:243
+#: ../../tempcache/elements/scripts.html.twig:324
 msgid "Deactivate HTML editor"
 msgstr "Знедіяти редактор HTML"
 
@@ -8288,15 +8340,6 @@ msgstr "Виберіть свою мову"
 #, php-format
 msgid "Switch locale to '%locale'"
 msgstr "Змінити мову на \"%locale\""
-
-#: ../../tempcache/elements/logout.html.twig:98
-#: ../../tempcache/elements/logout.html.twig:143
-#: ../../tempcache/elements/logout.html.twig:161
-#: ../../tempcache/elements/logout.html.twig:259
-#, fuzzy
-#| msgid "Unable to impersonate as %id"
-msgid "Unimpersonate"
-msgstr "Не вдається видати себе за %id"
 
 #: ../../tempcache/elements/modes.html.twig:40
 msgid ""
@@ -8463,14 +8506,6 @@ msgstr "Зі світлинами?"
 msgid "Generate"
 msgstr "Утворити"
 
-#: ../../tempcache/modals/telemetry.html.twig:44
-msgid ""
-"Telemetry data are <strong>anonymous</strong>; nothing about your "
-"organization or its members will be sent."
-msgstr ""
-"Дані телеметрії <strong>цілком таємні</strong>; нічого про вашу організацію "
-"не буде надіслано."
-
 #: ../../tempcache/modals/telemetry.html.twig:48
 msgid ""
 "Nothing is automated in the process; it's up to you to send (or resend) data."
@@ -8486,21 +8521,15 @@ msgstr ""
 "Ви можете переглянути нижче необроблені дані, які будуть надіслані, якщо "
 "натиснути кнопку \"Надіслати\"."
 
-#: ../../tempcache/modals/telemetry.html.twig:52
-msgid ""
-"Also note tha all data is sent over a <strong>HTTPS secured connection</"
-"strong>."
-msgstr ""
-"Також запримітьте, що всі дані надсилаються через <strong>захищене з'єднання "
-"HTTPS</strong>."
-
-#: ../../tempcache/modals/telemetry.html.twig:66
-msgid "Send telemetry information"
-msgstr "Надіслати дані телеметрії"
-
 #: ../../tempcache/modals/telemetry.html.twig:118
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
+
+#~ msgid "New attached fee"
+#~ msgstr "Нова додана плата"
+
+#~ msgid "New attached donation"
+#~ msgstr "Нове долучене пожертвування"
 
 #~ msgid "Reset"
 #~ msgstr "Скинути"
