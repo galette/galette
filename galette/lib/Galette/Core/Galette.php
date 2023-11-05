@@ -743,7 +743,7 @@ class Galette
                             'value' => $member->id
                         ]
                     ],
-                    'icon' => 'receipt yellow'
+                    'icon' => 'receipt green'
                 ],
                 [
                     'label' => str_replace(
@@ -870,7 +870,7 @@ class Galette
                     [
                         'name' => 'masscontributions',
                         'label' => _T('Mass add contributions'),
-                        'icon' => 'receipt bite yellow'
+                        'icon' => 'receipt bite green'
                     ],
                     [
                         'name' => 'delete',

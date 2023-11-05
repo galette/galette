@@ -47,7 +47,7 @@
 
 {% block search %}
     <div class="ui icon info visible message">
-        <i class="info circle blue icon"></i>
+        <i class="info circle blue icon" aria-hidden="true"></i>
         <div class="content">
             {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
         </div>
@@ -61,21 +61,21 @@
             <td class="{{ rclass }} username_row" data-scope="row">
                 {% if member.isCompany() %}
                     <span>
-                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}"></i>
+                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}" aria-hidden="true"></i>
                         <span class="ui special popup">{{ _T('Is a company') }}</span>
                     </span>
                 {%  elseif member.isMan() %}
                     <span>
-                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}"></i>
+                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}" aria-hidden="true"></i>
                         <span class="ui special popup">{{ _T('Is a man') }}</span>
                     </span>
                 {%  elseif member.isWoman() %}
                     <span>
-                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}"></i>
+                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}" aria-hidden="true"></i>
                         <span class="ui special popup">{{ _T('Is a woman') }}</span>
                     </span>
                 {% else %}
-                    <i class="ui icon"></i>
+                    <i class="ui icon" aria-hidden="true"></i>
                 {% endif %}
                 {% if member.website != '' %}
                     <a href="{{ member.website }}">{{ member.sfullname }}</a>

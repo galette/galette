@@ -138,7 +138,7 @@ class CheckModules
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
-                $html .= '<li><span>' . $m . '</span><span><i class="ui red times icon"></i><span class="displaynone">' .
+                $html .= '<li><span>' . $m . '</span><span><i class="ui red times icon" aria-hidden="true"></i><span class="displaynone">' .
                     $ko . '</span></span></li>';
             }
         }
@@ -146,14 +146,14 @@ class CheckModules
         if (count($this->good) > 0) {
             $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
-                $html .= '<li><span>' . $m . '</span><span><i class="ui green check icon"></i><span class="displaynone">' .
+                $html .= '<li><span>' . $m . '</span><span><i class="ui green check icon" aria-hidden="true"></i><span class="displaynone">' .
                     $ok . '</span></span></li>';
             }
         }
 
         if (count($this->should) > 0) {
             foreach ($this->should as $m) {
-                $html .= '<li><span>' . $m . '</span><span><i class="ui yellow exclamation circle icon"></i></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui yellow exclamation circle icon" aria-hidden="true"></i></span></li>';
             }
         }
 

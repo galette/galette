@@ -57,8 +57,8 @@ $telemetry = new \Galette\Util\Telemetry(
 if (!$telemetry->isRegistered()) {
 ?>
             <div class="right aligned column">
-                <a class="ui button" href="<?php echo GALETTE_TELEMETRY_URI; ?>reference?showmodal&uuid=<?php echo $telemetry->getRegistrationUuid(); ?>" title="<?php echo _T("Register your organization as a Galette user"); ?>" target="_blank">
-                    <i class="id card icon"></i>
+                <a class="ui blue button" href="<?php echo GALETTE_TELEMETRY_URI; ?>reference?showmodal&uuid=<?php echo $telemetry->getRegistrationUuid(); ?>" title="<?php echo _T("Register your organization as a Galette user"); ?>" target="_blank">
+                    <i class="id card icon" aria-hidden="true"></i>
                     <?php echo _T("Register"); ?>
                 </a>
             </div>
@@ -66,7 +66,7 @@ if (!$telemetry->isRegistered()) {
 }
 ?>
         </div>
-        <div class="ui message scrolling content">
+        <div class="ui info visible message">
             <p><?php echo _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent."); ?></p>
             <p>
                 <?php echo _T("Also note that all data are sent over a <strong>HTTPS secured connection</strong>."); ?>
@@ -79,7 +79,7 @@ if (!$telemetry->isRegistered()) {
 
         <div class="ui equal width grid">
             <div class="right aligned column">
-                <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
                 <input type="hidden" name="install_telemetry_ok" value="1"/>
             </div>
         </div>

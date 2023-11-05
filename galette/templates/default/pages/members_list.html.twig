@@ -144,11 +144,11 @@
                 </div>
                 <div class="ui right aligned basic fitted segment field">
                     <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                        <i class="search icon"></i>
+                        <i class="search icon" aria-hidden="true"></i>
                         {{ _T('Filter') }}
                     </button>
                     <button type="submit"  class="tooltip action ui labeled icon button" title="{{ _T('Save selected criteria') }}" name="savesearch" id="savesearch">
-                        <i class="save blue icon"></i>
+                        <i class="save blue icon" aria-hidden="true"></i>
                         {{ _T('Save') }}
                     </button>
                     <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
@@ -161,11 +161,11 @@
             <div class="field">
                 <span class="ui primary ribbon label">{{ _T('Advanced search mode') }}</span>
                 <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Save current advanced search criteria') }}" name="savesearch" id="savesearch">
-                    <i class="save icon"></i>
+                    <i class="save icon" aria-hidden="true"></i>
                     {{ _T('Save') }}
                 </button>
                 <button type="submit" class="tooltip action ui labeled icon button" title="{{ _T('Change search criteria') }}" name="adv_criteria">
-                    <i class="edit blue icon"></i>
+                    <i class="edit blue icon" aria-hidden="true"></i>
                     {{ _T('Change criteria') }}
                 </button>
                 <input type="hidden" name="advanced_search" value="1" class="ui button"/>
@@ -175,7 +175,7 @@
                 </button>
                 <div class="ui basic fluid accordion">
                     <div class="title">
-                        <i class="dropdown icon"></i>
+                        <i class="dropdown icon" aria-hidden="true"></i>
                         {{ _T('Show/hide query') }}
                     </div>
                     <div class="content">
@@ -230,17 +230,17 @@
                     <tbody>
                         <tr>
                             <th class="action">
-                                <i class="ui user edit blue icon"></i>
+                                <i class="ui user edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Modification') }}</td>
                             <th>
-                                <i class="ui receipt yellow icon"></i>
+                                <i class="ui receipt green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Contributions') }}</td>
                         </tr>
                         <tr>
                             <th class="delete">
-                                <i class="ui user times red icon"></i>
+                                <i class="ui user times red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Deletion') }}</td>
                         </tr>
@@ -254,33 +254,33 @@
                     <thead>
                     <tbody>
                         <tr>
-                            <th><i class="ui envelope outline teal icon"></i></th>
+                            <th><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Send an email') }}</td>
-                            <th><i class="ui building icon"></i></th>
+                            <th><i class="ui building icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a company') }}</td>
                         </tr>
 
                         <tr>
-                            <th><i class="ui male icon"></i></th>
+                            <th><i class="ui male icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a man') }}</td>
-                            <th><i class="ui female icon"></i></th>
+                            <th><i class="ui female icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a woman') }}</td>
                         </tr>
                         <tr>
-                            <th><i class="ui user shield red icon"></i></th>
+                            <th><i class="ui user shield red icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Admin') }}</td>
-                            <th><i class="ui user tie orange icon"></i></th>
+                            <th><i class="ui user tie orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Staff member') }}</td>
                         </tr>
                         <tr>
-                            <th><i class="ui users cog orange icon"></i></th>
+                            <th><i class="ui users cog orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Group manager') }}</td>
 
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T('Close') }}</div></div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T('Close') }}</div></div>
         </div>
     {% endif %}
 {% endblock %}
@@ -303,21 +303,21 @@
                             <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
             {% if member.isCompany() %}
                             <span>
-                                <i class="ui building outline icon tooltip"></i>
+                                <i class="ui building outline icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a company') }}</span>
                             </span>
             {%  elseif member.isMan() %}
                             <span>
-                                <i class="ui male icon tooltip"></i>
+                                <i class="ui male icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a man') }}</span>
                             </span>
             {%  elseif member.isWoman() %}
                             <span>
-                                <i class="ui female icon tooltip"></i>
+                                <i class="ui female icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a woman') }}</span>
                             </span>
             {% else %}
-                            <i class="ui icon"></i>
+                            <i class="ui icon" aria-hidden="true"></i>
             {% endif %}
             {% if member.email != '' %}
                             <a href="mailto:{{ member.email }}">
@@ -326,7 +326,7 @@
                             </a>
 
             {% else %}
-                            <i class="ui icon"></i>
+                            <i class="ui icon" aria-hidden="true"></i>
             {% endif %}
             {% if member.isAdmin() %}
                             <span>
@@ -344,7 +344,7 @@
                                 <span class="ui special popup">{{ _T('Group manager') }}</span>
                             </span>
             {% else %}
-                            <i class="ui icon"></i>
+                            <i class="ui icon" aria-hidden="true"></i>
             {% endif %}
                         {% set mid = member.id %}
                             <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>

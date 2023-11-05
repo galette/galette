@@ -32,7 +32,7 @@
             <td class="left" data-title="{{ _T("Search parameters") }}">
                 <details class="ui basic styled accordion">
                     <summary class="title">
-                        <i class="info circle primary icon"></i> {{ _T("Show parameters") }}
+                        <i class="info circle primary icon" aria-hidden="true"></i> {{ _T("Show parameters") }}
                     </summary>
                     <div class="content">
         {% for key, parameter in search.sparameters %}
@@ -45,7 +45,7 @@
                 <a
                         href="{{ url_for("loadSearch", {"id": search.id}) }}"
                 >
-                    <i class="ui search icon tooltip"></i>
+                    <i class="ui search icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Load saved search") }}</span>
                 </a>
 
@@ -53,7 +53,7 @@
                         href="{{ url_for("removeSearch", {"id": search.id}) }}"
                         class="delete"
                 >
-                    <i class="ui trash red icon tooltip"></i>
+                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Delete saved search") }}</span>
                 </a>
             </td>

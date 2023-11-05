@@ -32,10 +32,10 @@ $('{{ selector }}').on('keyup', function() {
             _meter.attr('title', '');
 
             if (res.valid) {
-                _txt.append($('<i class="ui check circle green icon"></i> <span>{{ _T("Password is valid :)")|e('js') }}</span>'));
+                _txt.append($('<i class="ui check circle green icon" aria-hidden="true"></i> <span>{{ _T("Password is valid :)")|e('js') }}</span>'));
                 _txt.addClass('use');
             } else {
-                _txt.append($('<i class="ui times circle red icon"></i> <span>{{ _T("Password is not valid!")|e('js') }}</span>'));
+                _txt.append($('<i class="ui times circle red icon" aria-hidden="true"></i> <span>{{ _T("Password is not valid!")|e('js') }}</span>'));
 
                 _txt.append(' (');
                 for (i = 0; i < res.errors.length; i++) {

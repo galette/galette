@@ -4,7 +4,7 @@
 
 {% macro group_item(login, group, opened, selected) %}
     <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in opened %} active{% endif %}{% else %}nochild{% endif %}">
-        <i class="{% if group.getGroups()|length > 0 %}dropdown{% else %}empty{% endif %} icon"></i>
+        <i class="{% if group.getGroups()|length > 0 %}dropdown{% else %}empty{% endif %} icon" aria-hidden="true"></i>
         <a class="ui{% if group.getName() == selected %} primary{% endif %}{% if not login.isGroupManager(group.getId()) %} disabled{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
@@ -242,7 +242,7 @@
                         loader: "button"
                     } %},
                     success: function(res){
-                        var _modified = '<div class="ui icon yellow small message with-transition"><i class="exclamation triangle icon"></i><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
+                        var _modified = '<div class="ui icon yellow small message with-transition"><i class="exclamation triangle icon" aria-hidden="true"></i><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
                         _container.find('.message').remove();
                         if ( res != 0 ) {
                             _container.find('.loader_selector').remove();
@@ -286,7 +286,7 @@
                 var _mname = _mlink.text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon"></i><span class="ui content">' + _mname + '</span></li>';
+                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();

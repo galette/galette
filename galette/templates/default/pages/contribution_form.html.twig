@@ -7,7 +7,7 @@
     {% endif %}
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly displaynone icon dropdown"></i>
+                    <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Select contributor and membership fee type") }}
     {% else %}
@@ -27,9 +27,9 @@
                                 <label for="id_adh">{{ _T("Contributor:") }}</label>
                                 <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated">
                                     <input id="id_adh_input" type="hidden" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
-                                    <i class="jsonly displaynone dropdown icon"></i>
-                                    <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}"></i></span>
-                                    <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}"></i></span>
+                                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                                    <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
+                                    <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
                                     <div class="jsonly displaynone default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
                                     <div class="jsonly displaynone menu">
                             {% for k, v in members.list %}
@@ -62,7 +62,7 @@
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
                             <div class="inline field">
                                 <label>{{ _T("Dispatch type:") }}</label>
-                                <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}"></i>
+                                <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
                                 <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}" checked="checked"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
                                 <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
                             </div>
@@ -92,7 +92,7 @@
                                                     href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                                                     class="ui icon blue compact button tooltip"
                                                 >
-                                                    <i class="eye icon tooltip"></i>
+                                                    <i class="eye icon tooltip" aria-hidden="true"></i>
                                                     <span class="ui special popup">{{ _T("View transaction") }}</span>
                                                 </a>
         {% if contribution.transaction.getMissingAmount() > 0 %}
@@ -101,8 +101,8 @@
                                                     class="ui icon green compact button tooltip"
                                                     title="{{ _T("Create a new fee that will be attached to the current transaction") }}"
                                                 >
-                                                    <i class="plus tiny icon"></i>
-                                                    <i class="user check icon"></i>
+                                                    <i class="plus tiny icon" aria-hidden="true"></i>
+                                                    <i class="user check icon" aria-hidden="true"></i>
                                                     <span class="displaynone">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
                                                 </a>
                                                 <a
@@ -110,8 +110,8 @@
                                                     class="ui icon green compact button tooltip"
                                                     title="{{ _T("Create a new donation that will be attached to the current transaction") }}"
                                                 >
-                                                    <i class="plus tiny icon"></i>
-                                                    <i class="gift icon"></i>
+                                                    <i class="plus tiny icon" aria-hidden="true"></i>
+                                                    <i class="gift icon" aria-hidden="true"></i>
                                                     <span class="displaynone">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
                                                 </a>
         {% endif %}
@@ -140,7 +140,7 @@
 
             <div class="ui styled fluid accordion field">
                 <div class="active title">
-                    <i class="jsonly displaynone icon dropdown"></i>
+                    <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                     {{ _T("Details of membership fee") }}
     {% else %}
@@ -168,7 +168,7 @@
                                 </label>
                                 <div class="ui calendar" id="contribution-rangestart">
                                     <div class="ui input left icon">
-                                        <i class="calendar icon"></i>
+                                        <i class="calendar icon" aria-hidden="true"></i>
                                         <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg is defined and required.date_enreg == 1 %} required="required"{% endif %}>
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@
                                 </label>
                                 <div class="ui calendar" id="contribution-rangeend">
                                     <div class="ui input left icon">
-                                        <i class="calendar icon"></i>
+                                        <i class="calendar icon" aria-hidden="true"></i>
                                         <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %}/>
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@
                                 <label for="date_fin_cotis">{{ _T("End date of membership:") }}</label>
                                 <div class="ui calendar" id="membership-rangeend">
                                     <div class="ui input left icon">
-                                        <i class="calendar icon"></i>
+                                        <i class="calendar icon" aria-hidden="true"></i>
                                         <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %}/>
                                     </div>
                                 </div>
@@ -240,7 +240,7 @@
     {% if not require_mass %}
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
-                <i class="save icon"></i> {{ _T("Save") }}
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
             <input type="hidden" name="id_cotis" value="{{ contribution.id }}"/>
             <input type="hidden" name="valid" value="1"/>

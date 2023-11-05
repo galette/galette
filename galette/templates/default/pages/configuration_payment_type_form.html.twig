@@ -9,7 +9,7 @@
                 <label for="name" class="" title="{{ _T("Original string for name, that will be used for translations.") }}">{{ _T("Name:") }}</label>
                 <div class="ui right corner labeled input">
                     <div class="ui corner label">
-                        <i class="circular inverted primary link icon info tooltip" title="{{ _T("Original string for name, that will be used for translations.") }}"></i>
+                        <i class="circular inverted primary link icon info tooltip" title="{{ _T("Original string for name, that will be used for translations.") }}" aria-hidden="true"></i>
                     </div>
                     <input type="text" name="name" id="name" value="{{ ptype.__get('name') }}" required="required" />
                 </div>
@@ -18,7 +18,7 @@
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
-                <i class="save icon"></i> {{ _T("Save") }}
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
             <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
     {% endif %}

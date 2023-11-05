@@ -23,12 +23,12 @@
     {% endfor %}
         </table>
     </div>
-    <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T('Close') }}</div></div>
+    <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T('Close') }}</div></div>
 </div>
 <script type="text/javascript">
 
     var _addLegendButton = function(selector) {
-        $(selector).append('<a class="btnlegend"><i class="circular inverted primary link icon info tooltip"></i> <span class="ui special popup">{{ _T("Show existing variables")|e('js') }}</span></a>');
+        $(selector).append('<a class="btnlegend"><i class="circular inverted primary link icon info tooltip" aria-hidden="true"></i> <span class="ui special popup">{{ _T("Show existing variables")|e('js') }}</span></a>');
     };
 
     var _handleLegend = function(selector) {

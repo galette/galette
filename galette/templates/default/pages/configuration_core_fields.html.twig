@@ -3,7 +3,7 @@
 {% block content %}
     <div class="jsonly displaynone ui basic fitted segment">
         <a class="ui labeled icon button collapse">
-            <i class="angle double down icon"></i>
+            <i class="angle double down icon" aria-hidden="true"></i>
             {{ _T("Expand all") }}
         </a>
     </div>
@@ -13,9 +13,9 @@
     {% set catname = category.category %}
         <div class="galetteform ui styled fluid accordion field">
             <div class="ui title">
-                <i class="jsonly displaynone dropdown icon"></i>
+                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                 {{ _T(catname) }}
-                <i class="jsonly displaynone arrows alternate icon"></i>
+                <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
             </div>
             <div class="content">
                 <div class="ui basic fitted segment">
@@ -42,7 +42,7 @@
                         <div class="ui three column stackable grid">
                             <div class="middle aligned row">
                                 <div class="column">
-                                    <i class="jsonly displaynone arrows alternate icon"></i>
+                                    <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
                                     <span data-title="{{ _T("Field name") }}" class="fieldname">
                                         <input type="hidden" name="fields[]" value="{{ fid }}"/>
                                         <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
@@ -83,13 +83,13 @@
     </div>
     <div class="jsonly hidden ui basic fitted segment">
         <a class="ui labeled icon button collapse">
-            <i class="angle double down icon"></i>
+            <i class="angle double down icon" aria-hidden="true"></i>
             {{ _T("Expand all") }}
         </a>
     </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
-                <i class="save icon"></i> {{ _T("Save") }}
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
             {% include "components/forms/csrf.html.twig" %}
         </div>
@@ -138,8 +138,8 @@
             $('.collapse').click(function(){
                 var _this = $(this);
                 var _buttons = $('.collapse');
-                var _expandTxt = '<i class="angle double down icon"></i> {{ _T("Expand all") }}';
-                var _collapseTxt = '<i class="angle double up icon"></i> {{ _T("Collapse all") }}';
+                var _expandTxt = '<i class="angle double down icon" aria-hidden="true"></i> {{ _T("Expand all") }}';
+                var _collapseTxt = '<i class="angle double up icon" aria-hidden="true"></i> {{ _T("Collapse all") }}';
                 var _isExpand = false;
                 var _icon = _this.children('.icon');
                 if( _icon.is('.down') ) {

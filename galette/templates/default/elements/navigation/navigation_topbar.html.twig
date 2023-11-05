@@ -1,7 +1,7 @@
 <header id="top-navbar" class="ui top fixed menu">
     <div class="ui fluid container">
         <a class="toc item">
-            <i class="sidebar icon"></i>
+            <i class="sidebar icon" aria-hidden="true"></i>
         </a>
         {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
             <a
@@ -11,7 +11,7 @@
                 title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
                 data-position="bottom right"
             >
-                <i class="paper plane outline blue icon"></i>
+                <i class="paper plane outline blue icon" aria-hidden="true"></i>
                 <span class="displaynone">{{ _T("Existing mailing") }}</span>
             </a>
         {% endif %}

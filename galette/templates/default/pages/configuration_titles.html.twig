@@ -62,7 +62,7 @@
                                 href="{{ url_for('editTitle', {'id': title.id}) }}"
                                 class="action single-edit"
                             >
-                                <i class="ui edit icon tooltip"></i>
+                                <i class="ui edit icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% if title.id == 1 or title.id == 2 %}
@@ -72,7 +72,7 @@
                                 href="{{ url_for('removeTitle', {'id': title.id}) }}"
                                 class="delete "
                             >
-                                <i class="ui trash red icon tooltip"></i>
+                                <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
                             </a>
             {% endif %}

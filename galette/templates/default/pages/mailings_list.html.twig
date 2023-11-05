@@ -23,7 +23,7 @@
         class="action ui tiny labeled icon button"
         href="{{ url_for('mailing') }}?mailing_new=true"
     >
-        <i class="plus circle green icon"></i>
+        <i class="plus circle green icon" aria-hidden="true"></i>
         {{ _T('Create new mailing') }}
     </a>
 {% endblock %}
@@ -50,7 +50,7 @@
                         <label for="start_date_filter">{{ _T('since') }}</label>
                         <div class="ui calendar" id="mailings-rangestart">
                             <div class="ui input left icon">
-                                <i class="calendar icon"></i>
+                                <i class="calendar icon" aria-hidden="true"></i>
                                 <input placeholder="{{ _T('(yyyy-mm-dd format)') }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                         <label for="end_date_filter">{{ _T('until') }}</label>
                         <div class="ui calendar" id="mailings-rangeend">
                             <div class="ui input left icon">
-                                <i class="calendar icon"></i>
+                                <i class="calendar icon" aria-hidden="true"></i>
                                 <input placeholder="{{ _T('(yyyy-mm-dd format)') }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
             </div>
             <div class="ui right aligned basic fitted segment field">
                 <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                    <i class="search icon"></i>
+                    <i class="search icon" aria-hidden="true"></i>
                     {{ _T('Filter') }}
                 </button>
                 <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
@@ -129,9 +129,9 @@
             <td class="center" data-title="{{ _T('Attachments') }}">{{ log.attachments }}</td>
             <td class="center{% if log.mailing_sent == 1 %} use{% endif %}" data-title="{{ _T('Sent') }}">
                 {% if log.mailing_sent == 1 %}
-                    <i class="ui thumbs up green icon"></i>
+                    <i class="ui thumbs up green icon" aria-hidden="true"></i>
                 {% else %}
-                    <i class="ui thumbs down red icon"></i>
+                    <i class="ui thumbs down red icon" aria-hidden="true"></i>
                 {% endif %}
             </td>
             <td class="center actions_row">
@@ -139,20 +139,20 @@
                         href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
                         class="showdetails"
                 >
-                    <i class="ui eye green icon tooltip"></i>
+                    <i class="ui eye green icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
                 >
-                    <i class="ui clone blue icon tooltip"></i>
+                    <i class="ui clone blue icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
                         class="delete"
                 >
-                    <i class="ui trash red icon tooltip"></i>
+                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
                 </a>
             </td>

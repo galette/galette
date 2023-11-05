@@ -26,7 +26,7 @@
         class="ui tiny labeled icon button"
         href="{{ url_for("flushHistory") }}"
     >
-        <i class="trash red icon"></i>
+        <i class="trash red icon" aria-hidden="true"></i>
         {{ _T("Flush the logs") }}
     </a>
 {% endblock %}
@@ -52,7 +52,7 @@
                     <label for="start_date_filter">{{ _T("since") }}</label>
                     <div class="ui calendar" id="contrib-rangestart">
                         <div class="ui input left icon">
-                            <i class="calendar icon"></i>
+                            <i class="calendar icon" aria-hidden="true"></i>
                             <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                     <label for="end_date_filter">{{ _T("until") }}</label>
                     <div class="ui calendar" id="contrib-rangeend">
                         <div class="ui input left icon">
-                            <i class="calendar icon"></i>
+                            <i class="calendar icon" aria-hidden="true"></i>
                             <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
             </div>
             <div class="ui right aligned basic fitted segment field flexend">
                 <button type="submit" class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                    <i class="search icon"></i>
+                    <i class="search icon" aria-hidden="true"></i>
                     {{ _T('Filter') }}
                 </button>
                 <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
@@ -124,7 +124,7 @@
                 {{ log.text_log|escape }}
             {% if log.sql_log %}
                     <div class="tooltip title" title="{{ _T("Show associated query") }}">
-                        <i class="dropdown icon"></i>
+                        <i class="dropdown icon" aria-hidden="true"></i>
                         {{ _T("Show associated query") }}
                     </div>
                     <div class="content">

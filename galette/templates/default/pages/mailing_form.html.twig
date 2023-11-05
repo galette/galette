@@ -3,7 +3,7 @@
 {% block content %}
 {% if preferences.pref_mail_method == constant('Galette\\Core\\Mailing::METHOD_DISABLED') and constant('GALETTE_MODE') != 'DEMO' %}
         <div id="errorbox" class="ui negative icon message">
-            <i class="ban icon"></i>
+            <i class="ban icon" aria-hidden="true"></i>
             <div class="content">
                 <p>{{ _T("Email sent is disabled in the preferences. Ask galette admin") }}</p>
             </div>
@@ -13,7 +13,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly displaynone icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
                         {{ _T("Mailing information") }}
                     </div>
                     <div class="active content field">
@@ -54,7 +54,7 @@
                                     href="{{ path }}"
                                     class="jsonly disabled ui labeled icon button"
                                 >
-                                    <i class="blue users icon"></i>
+                                    <i class="blue users icon" aria-hidden="true"></i>
                                     {{ text }}
                                 </a>
                                 <noscript>
@@ -65,7 +65,7 @@
                             <div class="field">
                             {% if attachments|length > 0 %}
                                 <div class="ui tiny header">
-                                    <i class="paperclip icon"></i>
+                                    <i class="paperclip icon" aria-hidden="true"></i>
                                     <div class="content">{{ _T("Existing attachments:") }}</div>
                                 </div>
                                 <div id="existing_attachments" class="ui middle aligned divided selection list">
@@ -76,7 +76,7 @@
                                                 href="?remove_attachment={{ attachment.getFileName() }}"
                                                 class="rm_attachement delete"
                                             >
-                                                <i class="ui trash alt red icon tooltip"></i>
+                                                <i class="ui trash alt red icon tooltip" aria-hidden="true"></i>
                                                 <span class="ui special popup">{{ _T("Remove attachment") }}</span>
                                             </a>
                                             {{ attachment.getFileName() }}
@@ -86,7 +86,7 @@
                                 </div>
                             {% else %}
                                 <div class="ui tiny header">
-                                    <i class="paperclip icon"></i>
+                                    <i class="paperclip icon" aria-hidden="true"></i>
                                     <div class="content">{{ _T("Attachments") }}</div>
                                 </div>
                             {% endif %}
@@ -94,11 +94,11 @@
                                     <div class="ui corner labeled input">
                                         <input type="file" name="attachment[]" id="attachment" multiple="multiple"/>
                                         <div class="ui corner label">
-                                            <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}"></i>
+                                            <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                     <label for="attachment" class="ui button">
-                                        <i class="blue upload icon"></i>
+                                        <i class="blue upload icon" aria-hidden="true"></i>
                                         {{ _T("Add attachment") }}
                                     </label>
                                 </div>
@@ -113,7 +113,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly displaynone icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
                         {{ _T("Write your mailing") }}
                     </div>
                     <div class="active content field">
@@ -168,7 +168,7 @@
             <div class="ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly hidden icon dropdown"></i>
+                        <i class="jsonly hidden icon dropdown" aria-hidden="true"></i>
                         {{ _T("Preview your mailing") }}
                     </div>
                     <div class="active content field">
@@ -198,7 +198,7 @@
             <div class="ui basic center aligned segment">
                 <div class="ui wrapped wrapping spaced buttons">
                     <button type="submit" name="mailing_reset" class="ui labeled icon button">
-                        <i class="backward icon"></i>
+                        <i class="backward icon" aria-hidden="true"></i>
                         {{ _T("Modifiy mailing") }}
                     </button>
                     <button type="submit" name="mailing_confirm"{% if constant('GALETTE_MODE') == 'DEMO' %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
@@ -369,7 +369,7 @@
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '" class="item"><i class="user minus icon"></i><span class="ui content">' + _mname + '</span></li>';
+                    var _li = '<li id="member_' + _mid + '" class="item"><i class="user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();

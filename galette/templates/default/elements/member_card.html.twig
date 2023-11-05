@@ -12,7 +12,7 @@
         {% if (hidden_elements is not defined) %}
                 data-html="{{ _T("Drag and drop an image file to change the picture") }}">
         <span class="ui bottom left corner tiny label">
-            <i class="download icon"></i>
+            <i class="download icon" aria-hidden="true"></i>
         </span>
         {% else %}
         >
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="extra {{ member.getRowClass() }} content">
-        <i class="icon receipt"></i>
+        <i class="icon receipt" aria-hidden="true"></i>
         {{ member.getDues()|escape }}
     </div>
 </div>

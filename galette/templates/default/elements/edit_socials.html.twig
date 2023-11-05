@@ -7,7 +7,7 @@
                 <div class="ui right action input">
                     <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
                     <a href="#" class="ui icon red button delete delsocial" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}">
-                        <i class="trash icon"></i>
+                        <i class="trash icon" aria-hidden="true"></i>
                         <span class="displaynone">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}</span>
                     </a>
                 </div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <a href="#" class="ui tiny green labeled icon button action addsocial">
-                    <i class="plus icon"></i>
+                    <i class="plus icon" aria-hidden="true"></i>
                     {{ _T("Add") }}
                 </a>
             </div>
@@ -81,7 +81,7 @@
 {% else %}
     <div id="social" class="ui styled fluid accordion field">
         <div class="active title">
-            <i class="jsonly displaynone icon dropdown"></i>
+            <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
             {{ _T("Social networks") }}
         </div>
         <div class="active content field">

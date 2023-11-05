@@ -79,7 +79,7 @@
 
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
-                <i class="save icon"></i> {{ _T("Save") }}
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
             <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
             <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
@@ -137,7 +137,7 @@
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
-                <i class="plus icon"></i> {{ _T("Add") }}
+                <i class="plus icon" aria-hidden="true"></i> {{ _T("Add") }}
             </button>
             <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
     {% endif %}

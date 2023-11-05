@@ -5,9 +5,9 @@
     {% endfor %}
     <div class="item">
         <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
-            <i class="{{ icon }} icon"></i>
+            <i class="{{ icon }} icon" aria-hidden="true"></i>
             {{ title }}
-            <i class="dropdown icon"></i>
+            <i class="dropdown icon" aria-hidden="true"></i>
         </div>
         <div class="content{% if cur_route in my_routes %} active{% endif %}">
             {% for item in items %}

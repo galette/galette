@@ -49,8 +49,8 @@
 {% for group in selected_groups %}
                     <li id="group_{{ group.id }}" class="item">
                         <i class="icons">
-                            <i class="users icon"></i>
-                            <i class="top right corner minus icon"></i>
+                            <i class="users icon" aria-hidden="true"></i>
+                            <i class="top right corner minus icon" aria-hidden="true"></i>
                         </i>
                         {{ group.name }}
                     </li>

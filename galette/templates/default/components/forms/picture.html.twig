@@ -14,7 +14,7 @@
                 <div class="ui file action input">
                     <input id="photo_new" type="file" name="photo"/>
                     <label for="photo_new" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
-                        <i class="blue upload icon"></i>
+                        <i class="blue upload icon" aria-hidden="true"></i>
                         {% if member.hasPicture() == 1 %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                     </label>
                 </div>
@@ -31,7 +31,7 @@
                         <option value="left">{{ _T("Left") }}</option>
                         <option value="right">{{ _T("Right") }}</option>
                     </select>
-                    <i class="tooltip circular inverted primary small icon info" data-html="{{ _T("Choose the area of the original image to preserve after cropping to the final ratio defined in the settings : %ratio")|replace({"%ratio": system_ratio}) }}"></i>
+                    <i class="tooltip circular inverted primary small icon info" data-html="{{ _T("Choose the area of the original image to preserve after cropping to the final ratio defined in the settings : %ratio")|replace({"%ratio": system_ratio}) }}" aria-hidden="true"></i>
                 </div>
             </div>
     {% endif %}

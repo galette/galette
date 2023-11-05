@@ -32,7 +32,7 @@
                             <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
                         </ul>
                         <div class="ui icon yellow icon message">
-                            <i class="exclamation triangle icon"></i>
+                            <i class="exclamation triangle icon" aria-hidden="true"></i>
                             <div class="content">
                                 {{ _T("Warning: Don't forget to backup your current database.") }}
                             </div>
@@ -111,12 +111,12 @@
             {% if error_detected|length > 0 %}
                 <input type="submit" class="ui button" value="{{ _T("Retry") }}"/>
             {% else %}
-                <button id="next" class="ui labeled icon button" type="submit"><i class="forward icon"></i> {{ _T("Next step") }}</button>
+                <button id="next" class="ui labeled icon button" type="submit"><i class="forward icon" aria-hidden="true"></i> {{ _T("Next step") }}</button>
             {% endif %}
         {% endif %}
     {% else %}
         {% if mode != 'ajax' %}
-                <a href="{{ url_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon"></i> {{ _T("Back to plugins managment page") }}</a>
+                <a href="{{ url_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon" aria-hidden="true"></i> {{ _T("Back to plugins managment page") }}</a>
         {% endif %}
     {% endif %}
         {% if mode != 'ajax' %}
@@ -126,33 +126,33 @@
         {# _T("Steps:") #}
             <div class="ui mini mobile stackable fluid steps">
                 <div class="step{% if step == 1 %} active{% endif %}">
-                    <i class="question icon"></i>
+                    <i class="question icon" aria-hidden="true"></i>
                     <div class="content">
                         <div class="title">{{ _T("Installation mode") }}</div>
                     </div>
                 </div>
                 <div class="step{% if step == 'i2' or step == 'u2' %} active{% endif %}">
-                    <i class="key icon"></i>
+                    <i class="key icon" aria-hidden="true"></i>
                     <div class="content">
                         <div class="title">{{ _T("Access permissions to database") }}</div>
                     </div>
                 </div>
     {% if install_type is defined and install_type == 'upgrade' %}
                 <div class="step{% if step == 'u3' %} active{% endif %}">
-                    <i class="code branch icon"></i>
+                    <i class="code branch icon" aria-hidden="true"></i>
                     <div class="content">
                         <div class="title">{{ _T("Version selection") }}</div>
                     </div>
                 </div>
     {% endif %}
                 <div class="step{% if step == 'i4' or step == 'u4' %} active{% endif %}">
-                    <i class="database icon"></i>
+                    <i class="database icon" aria-hidden="true"></i>
                     <div class="content">
                         <div class="title">{% if install_type is not defined or install_type == 'install' %}{{ _T("Database installation") }}{% else %}{{ _T("Database upgrade") }}{% endif %}</div>
                     </div>
                 </div>
                 <div class="step{% if step == 'i5' or step == 'u5' %} active{% endif %}">
-                    <i class="flag checkered icon"></i>
+                    <i class="flag checkered icon" aria-hidden="true"></i>
                     <div class="content">
                         <div class="title">{{ _T("End!") }}</div>
                     </div>

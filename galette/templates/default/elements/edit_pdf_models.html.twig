@@ -62,7 +62,7 @@
                 <input type="hidden" name="model_type" value="{{ model.type }}"/>
 {% endif %}
                 <button type="submit" class="ui labeled icon primary button action">
-                    <i class="save icon"></i> {{ _T("Save") }}
+                    <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
                 </button>
                 {% include 'components/forms/csrf.html.twig' %}
             </div>

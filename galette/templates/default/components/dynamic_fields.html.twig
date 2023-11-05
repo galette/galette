@@ -54,7 +54,7 @@
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
                 <div id="dynamic_date_{{ field.getId() }}_rangestart" class="ui calendar">
                     <div class="ui fluid input left icon">
-                        <i class="calendar icon"></i>
+                        <i class="calendar icon" aria-hidden="true"></i>
                         <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
                             value="{{ valuedata }}" class="dynamic_date modif_date"
                             {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
@@ -81,7 +81,7 @@
                 {% if object.id and valuedata %}
                 <a href="{{ url_for("getDynamicFile", {"form_name": object.getFormName(), "id": object.id, "fid": field.getId(), "pos": loop, "name": valuedata}) }}">
                     {{ valuedata }}
-                    <i class="external alternate icon"></i>
+                    <i class="external alternate icon" aria-hidden="true"></i>
                 </a>
                 {% endif %}
                 <div class="extra ui basic fitted segment">
@@ -94,7 +94,7 @@
                             {% if disabled %} disabled="disabled"{% endif %}
                         />
                         <label for="info_field_{{ field.getId() }}_{{ loop }}_new" class="ui button">
-                            <i class="blue upload icon"></i>
+                            <i class="blue upload icon" aria-hidden="true"></i>
                             {% if object.id and valuedata %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                         </label>
                     </div>
@@ -119,7 +119,7 @@
 
         <div class="ui styled fluid accordion field">
             <div class="active title">
-                <i class="jsonly displaynone icon dropdown"></i>
+                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
                 {{ _T("Additionnal fields:") }}
             </div>
             <div class="active content field">
@@ -185,7 +185,7 @@
         {% if not masschange %}
             <script type="text/javascript">
                 var _addLnk = function(){
-                    return $('<a class="ui tiny green labeled icon button" href="#"><i class="plus icon"></i> {{ _T("Add") }}</a>');
+                    return $('<a class="ui tiny green labeled icon button" href="#"><i class="plus icon" aria-hidden="true"></i> {{ _T("Add") }}</a>');
                 };
 
                 var _lnkEvent = function(_a, _input, _parent) {

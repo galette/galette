@@ -55,7 +55,7 @@
                     <label for="start_date_filter">{{ _T("since") }}</label>
                     <div class="ui calendar" id="contrib-rangestart">
                         <div class="ui input left icon">
-                            <i class="calendar icon"></i>
+                            <i class="calendar icon" aria-hidden="true"></i>
                             <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                     <label for="end_date_filter">{{ _T("until") }}</label>
                     <div class="ui calendar" id="contrib-rangeend">
                         <div class="ui input left icon">
-                            <i class="calendar icon"></i>
+                            <i class="calendar icon" aria-hidden="true"></i>
                             <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
             </div>
                 <div class="ui right aligned basic fitted segment field flexend">
                     <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
-                        <i class="search icon"></i>
+                        <i class="search icon" aria-hidden="true"></i>
                         {{ _T("Filter") }}
                     </button>
                     <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
@@ -101,7 +101,7 @@
                 <a
                     href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
                 >
-                    <i class="icon times tooltip"></i>
+                    <i class="icon times tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">
                         {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                             {{ _T("Show all your contributions") }}
@@ -250,7 +250,7 @@
                         <a
                                 href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                         >
-                            <i class="ui linkify icon tooltip"></i>
+                            <i class="ui linkify icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                         </a>
                     {% endif %}
@@ -259,7 +259,7 @@
                             {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
                         </span>
                     {% if contribution.isTransactionPart() %}
-                        <i class="ui link icon"></i>
+                        <i class="ui link icon" aria-hidden="true"></i>
                         <span class="displaynone">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                     {% endif %}
                 {% endif %}
@@ -283,7 +283,7 @@
                                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": mid}) }}"
                                 title="{{ _T("Show only '%name' contributions")|replace({"%name": mname}) }}"
                         >
-                            <i class="ui filter grey small icon"></i>
+                            <i class="ui filter grey small icon" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                     <a
@@ -303,7 +303,7 @@
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
                     >
-                        <i class="ui file pdf green icon tooltip"></i>
+                        <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
                         <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
                     </a>
                     {% if (login.isAdmin() or login.isStaff()) %}
@@ -311,14 +311,14 @@
                                 href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
                                 class="action"
                         >
-                            <i class="ui edit icon tooltip"></i>
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
                         </a>
                         <a
                                 href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
                                 class="delete"
                         >
-                            <i class="ui trash red icon tooltip"></i>
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
                         </a>
                     {% endif %}
@@ -338,13 +338,13 @@
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     <tr>
                         <th class="action">
-                            <i class="ui edit blue icon"></i>
+                            <i class="ui edit blue icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Modification") }}</td>
                     </tr>
                     <tr>
                         <th class="delete">
-                            <i class="ui trash red icon"></i>
+                            <i class="ui trash red icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Deletion") }}</td>
                     </tr>
@@ -359,6 +359,6 @@
                 </tr>
             </table>
         </div>
-        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {{ _T("Close") }}</div></div>
+        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
     </div>
 {% endblock %}

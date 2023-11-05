@@ -48,7 +48,7 @@
                 />
     {% endblock %}
     {% if search_id is defined %}
-                <i class="jsonly displaynone search icon"></i>
+                <i class="jsonly displaynone search icon" aria-hidden="true"></i>
             </div>
         </div>
     {% elseif (rightlabel is defined and rightlabel != '') and (type is defined and type == 'text') %}
@@ -58,7 +58,7 @@
         </div>
     {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
             <div class="ui corner label">
-                <i class="circular inverted primary small icon info tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}"></i>
+                <i class="circular inverted primary small icon info tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
             </div>
         </div>
     {% elseif type is defined and type == 'password' %}
@@ -76,7 +76,7 @@
     {% endblock %}
     </div>
     {% endif %}
-    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}"></i>{% endif %}
+    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
     {% if example is defined %}<span class="exemple">{{ example }}</span>{% endif %}
 {% if notag is not defined %}
 </div>

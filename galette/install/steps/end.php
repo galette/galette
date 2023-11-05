@@ -55,7 +55,7 @@ if ($install->isUpgrade()) {
     <form action="<?php echo GALETTE_BASE_PATH; ?>" method="get">
         <div class="ui equal width grid">
             <div class="right aligned column">
-                <button type="submit" class="ui right labeled icon button"><i class="home icon"></i> <?php echo _T("Homepage"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"><i class="home icon" aria-hidden="true"></i> <?php echo _T("Homepage"); ?></button>
             </div>
         </div>
     </form>

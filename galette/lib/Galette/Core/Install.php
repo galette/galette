@@ -168,7 +168,7 @@ class Install
     {
         $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<i class="ui ' . $img_name . ' icon"></i><span class="displaynone">' . $alt . '</span>';
+        $img = '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="displaynone">' . $alt . '</span>';
         return $img;
     }
 

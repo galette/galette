@@ -47,6 +47,25 @@
   .ui.vertical.menu div.item .item.button::before {
     content: none;
   }
+  .ui.vertical.accordion.menu {
+    a.active.item,
+    a.item:hover {
+      & > .title {
+        color: @hoveredTextColor;
+      }
+    }
+  }
+}
+
+/* --------------
+      Hover
+--------------- */
+
+.ui.link.menu .item:hover,
+.ui.menu .dropdown.item:hover,
+.ui.menu .link.item:hover,
+.ui.menu a.item:hover {
+    color: @hoveredTextColor;
 }
 
 /*------------------

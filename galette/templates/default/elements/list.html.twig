@@ -62,9 +62,9 @@
                                         {{ column.label }}
                                         {% if filters.orderby == column.order %}
                                             {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
-                                                <i class="ui angle down icon tooltip"></i>
+                                                <i class="ui angle down icon tooltip" aria-hidden="true"></i>
                                             {% else %}
-                                                <i class="ui angle up icon tooltip"></i>
+                                                <i class="ui angle up icon tooltip" aria-hidden="true"></i>
                                             {% endif %}
                                         {% endif %}
                                     </a>

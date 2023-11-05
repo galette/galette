@@ -38,7 +38,7 @@
             data-position="{{ tips_position }}"
             title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
         >
-            <i class="icon adjust"></i>
+            <i class="icon adjust" aria-hidden="true"></i>
             <span>{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
         </a>
     </div>

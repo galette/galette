@@ -15,14 +15,14 @@
                 href="#"
                 class="ui fluid darkmode{% if login.isDarkModeEnabled() %} black{% endif %} basic button"
             >
-                <i class="icon adjust"></i>
+                <i class="icon adjust" aria-hidden="true"></i>
                 {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
             </a>
             <a
                 class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
             >
-                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
                 {% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}
             </a>
         </div>
@@ -30,7 +30,7 @@
         {% if not login.getCompactMenu() %}
             <div class="{{ component_classes }}">
                 <div class="ui item">
-                    <i class="user circle big icon"></i>
+                    <i class="user circle big icon" aria-hidden="true"></i>
                     {{ login.loggedInAs()|raw }}
                 </div>
                 <div class="right menu">
@@ -41,7 +41,7 @@
                                 class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"
                                 title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                             >
-                                <i class="icon adjust"></i>
+                                <i class="icon adjust" aria-hidden="true"></i>
                                 <span class="displaynone">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
                             </a>
                             <a
@@ -50,7 +50,7 @@
                                 title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
                                 data-position="bottom right"
                             >
-                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
                                 <span class="displaynone">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
                             </a>
                         </div>
@@ -62,7 +62,7 @@
             {% set component_classes = "ui vertical centered tiny fluid icon menu" %}
             <div id="logoutmenu" class="{{ component_classes }}">
                 <div class="ui dropdown item no-touch tooltip" data-html="{{ login.loggedInAs()|raw }}" data-position="right center">
-                    <i class="user circle icon"></i>
+                    <i class="user circle icon" aria-hidden="true"></i>
                     <span class="text displaynone">{{ login.loggedInAs()|raw }}</span>
                     <div class="menu">
                         <div class="item">
@@ -82,14 +82,14 @@
                                 class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} fluid icon button"
                                 title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                             >
-                                <i class="icon adjust"></i>
+                                <i class="icon adjust" aria-hidden="true"></i>
                                 {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
                             </a>
                             <a
                                 class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} fluid icon button"
                                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
                             >
-                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}"></i>
+                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
                                 {% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}
                             </a>
                         </div>

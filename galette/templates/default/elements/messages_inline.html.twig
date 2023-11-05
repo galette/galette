@@ -15,8 +15,8 @@
 {% endif %}
 {% if errors is iterable and errors|length > 0 %}
     <div class="ui error icon message with-transition">
-        <i class="times icon"></i>
-        <i class="window close outline icon"></i>
+        <i class="times icon" aria-hidden="true"></i>
+        <i class="window close outline icon" aria-hidden="true"></i>
         <div class="content">
             <div class="header">{{ _T("- ERROR -") }}</div>
             {% if errors|length > 1 %}
@@ -43,8 +43,8 @@
 {% endif %}
 {% if warnings is iterable and warnings|length > 0 %}
     <div class="ui warning icon message with-transition">
-        <i class="exclamation triangle icon"></i>
-        <i class="window close outline icon"></i>
+        <i class="exclamation triangle icon" aria-hidden="true"></i>
+        <i class="window close outline icon" aria-hidden="true"></i>
         <div class="content">
             <div class="header">{{ _T("- WARNING -") }}</div>
             {% if warnings|length > 1 %}
@@ -72,8 +72,8 @@
 {% if successs is iterable and successs|length > 0 %}
     <noscript>
         <div class="ui success icon message">
-            <i class="check circle outline icon"></i>
-            <i class="window close outline icon"></i>
+            <i class="check circle outline icon" aria-hidden="true"></i>
+            <i class="window close outline icon" aria-hidden="true"></i>
             <div class="content">
             {% if successs|length > 1 %}
                 <ul class="list">
@@ -96,7 +96,7 @@
     {% include "modals/telemetry.html.twig" with {part: "dialog"} %}
     <noscript>
         <div class="ui info icon message" id="renewbox">
-            <i class="info icon"></i>
+            <i class="info icon" aria-hidden="true"></i>
             <div class="content">
                 <div class="header">{{ _T("Your telemetry data are more than one year old.") }}</div>
                 <p>{{ _T("Do you want to send it again?") }}</p>

@@ -21,32 +21,32 @@
                     <td class="{{ rclass }} username_row">
                     {% if member.isCompany() %}
                         <span>
-                            <i class="ui building outline icon tooltip"></i>
+                            <i class="ui building outline icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Company") }}</span>
                         </span>
                     {% elseif member.isMan() %}
                         <span>
-                            <i class="ui male icon tooltip"></i>
+                            <i class="ui male icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Man") }}</span>
                         </span>
                     {% elseif member.isWoman() %}
                         <span>
-                            <i class="ui female icon tooltip"></i>
+                            <i class="ui female icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Woman") }}</span>
                         </span>
                     {% else %}
                         <span>
-                            <i class="ui icon"></i>
+                            <i class="ui icon" aria-hidden="true"></i>
                         </span>
                     {% endif %}
                     {% if member.isAdmin() %}
                         <span>
-                            <i class="ui user shield red icon tooltip"></i>
+                            <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Administrator") }}</span>
                         </span>
                     {% elseif member.isStaff() %}
                         <span>
-                            <i class="ui user tie orange icon tooltip"></i>
+                            <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Staff member") }}</span>
                         </span>
                     {% elseif member.getManagedGroups() %}
@@ -55,7 +55,7 @@
                             <span class="ui special popup">{{ _T('Group manager') }}</span>
                         </span>
                     {% else %}
-                        <i class="ui icon"></i>
+                        <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     <a href="{{ url_for('member', {'id': member.id}) }}" class="choice">{{ member.sfullname }}</a>
                     </td>
@@ -107,8 +107,8 @@
         {% for recipient in unreachables_members %}
                     <li id="member_{{ recipient.id }}" class="item">
                         <i class="icons">
-                            <i class="dont disabled icon"></i>
-                            <i class="top right corner minus icon"></i>
+                            <i class="dont disabled icon" aria-hidden="true"></i>
+                            <i class="top right corner minus icon" aria-hidden="true"></i>
                         </i>
                         <span class="ui disabled content">{{ recipient.sfullname }}</span>
                     </li>

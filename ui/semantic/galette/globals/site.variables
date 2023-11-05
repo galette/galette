@@ -10,7 +10,9 @@
 @galetteColor               : #ffb619;
 @lightGaletteColor          : #ffda8b;
 
-@red                        : #e56868;
+@red                        : #d22828;
+@blue                       : #2f69b3;
+@green                      : #087d24;
 @grey                       : #636b70;
 
 @primaryColor               : @galetteColor;
@@ -21,9 +23,20 @@
 
 @textColor                  : @grey;
 
-@oddLineBackgroundColor     : #e2e5ee;
+@linkColor                  : @blue;
+
+@primaryColorHover          : if(iscolor(@primaryColor), saturate(darken(@primaryColor, 7), 10, relative), @primaryColor);
+
+@redTextColor               : darken(@red, 9);
+@orangeTextColor            : darken(@orange, 25);
+@yellowTextColor            : #714f00;
+@greenTextColor             : darken(@green, 8);
+@blueTextColor              : darken(@blue, 8);
+@infoTextColor              : #1f657b;
+
+@oddLineBackgroundColor     : #f9f9f9;
 @evenLineBackgroundColor    : #eeeeee;
-@activeLineBackgroundColor  : #cce2ff;
+@activeLineBackgroundColor  : #dfecff;
 
 @borderColor                : lighten(@textColor, 30);
 @solidBorderColor           : lighten(@textColor, 30);
@@ -35,9 +48,9 @@
 
 @toggleLaneBackground       : rgba(0,0,0,.15);
 
-@cotisOkBackgroundColor     : #ddffdd;
-@cotisNeverBackgroundColor  : @evenLineBackgroundColor;
+@cotisOkBackgroundColor     : #e1fde1;
+@cotisNeverBackgroundColor  : @oddLineBackgroundColor;
 @cotisExemptBackgroundColor : @cotisOkBackgroundColor;
 @cotisSoonBackgroundColor   : #ffe9ab;
-@cotisLateBackgroundColor   : #ffdddd;
-@cotisLastdayBackgroundColor: #ffd9ab;
+@cotisLateBackgroundColor   : #ffe9e9;
+@cotisLastdayBackgroundColor: #ffebd3;

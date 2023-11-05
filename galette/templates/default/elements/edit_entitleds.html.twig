@@ -1,6 +1,6 @@
 {% if class == 'Status' %}
     <div class="ui icon info visible message">
-        <i class="info circle blue icon"></i>
+        <i class="info circle blue icon" aria-hidden="true"></i>
         <div class="content">
             {{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}
         </div>
@@ -72,7 +72,7 @@
                         {% if class == 'Status' %}
                             {% if entry.extra < 30 %}
                                 <span>
-                                    <i class="ui user tie icon tooltip"></i>
+                                    <i class="ui user tie icon tooltip" aria-hidden="true"></i>
                                     <span class="ui special popup">{{ _T("Staff member") }}</span>
                                 </span>
                             {% else %}
@@ -97,14 +97,14 @@
                             href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}"
                             class="action single-edit"
                         >
-                            <i class="ui edit icon tooltip"></i>
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                         </a>
                         <a
                             href="{{ url_for('removeEntitled', {'class': url_class, 'id': eid}) }}"
                             class="delete"
                         >
-                            <i class="ui trash red icon tooltip"></i>
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                         </a>
                     </td>

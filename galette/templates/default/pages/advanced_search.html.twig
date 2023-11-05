@@ -4,7 +4,7 @@
         <form action="{{ url_for('filter-memberslist') }}" method="post" class="ui form advanced-search">
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                     {{ _T('Simple search') }}
                 </div>
                 <div class="active content">
@@ -72,7 +72,7 @@
             </div>
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                     {{ _T('Advanced search') }}
                 </div>
                 <div class="active content">
@@ -84,7 +84,7 @@
                                     <label for="birth_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="birth-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{{ filters.birth_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}" />
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                                     <label for="birth_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="birth-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{{ filters.birth_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                     <label for="creation_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="creation-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.creation_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                                     <label for="creation_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="creation-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.creation_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
                                     <label for="modif_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="modification-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.modif_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@
                                     <label for="modif_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="modification-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.modif_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -155,7 +155,7 @@
                                     <label for="due_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="due-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.due_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -164,7 +164,7 @@
                                     <label for="due_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="due-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.due_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -211,7 +211,7 @@
             <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
             <div class="jsonly disabled galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                     {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
                     <a
                         href="#"
@@ -219,7 +219,7 @@
                         class="ui tiny compact icon green button tooltip"
                         title="{{ _T('Add new group search criteria') }}"
                     >
-                        <i class="plus icon"></i>
+                        <i class="plus icon" aria-hidden="true"></i>
                         <span class="displaynone">{{ _T('Add new group search criteria') }}</span>
                     </a>
                 </div>
@@ -235,7 +235,7 @@
                         <li class="even ui segment unstackable items">
                             <div class="ui item">
                                 <div class="ui image">
-                                    <i class="arrows alternate icon"></i>
+                                    <i class="arrows alternate icon" aria-hidden="true"></i>
                                 </div>
                                 <div>
                                     <select name="groups_search[]" class="group_selector ui search dropdown origselect nochosen">
@@ -249,7 +249,7 @@
                                         class="ui small compact red icon button filtered fright tooltip delete delcriteria"
                                         title="{{ _T('Remove criteria') }}"
                                     >
-                                        <i class="trash alt icon"></i>
+                                        <i class="trash alt icon" aria-hidden="true"></i>
                                         <span class="displaynone">{{ _T('Remove criteria') }}</span>
                                     </a>
                                 </div>
@@ -262,7 +262,7 @@
 
             <div class="galetteform ui styled fluid accordion field">
                 <div class="active ui title">
-                    <i class="jsonly displaynone dropdown icon"></i>
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                     {{ _T('Within contributions') }}
                 </div>
                 <div class="active content">
@@ -274,7 +274,7 @@
                                     <label for="contrib_creation_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="contrib-creation-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                             <input id="contrib_creation_date_begin" name="contrib_creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_creation_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -283,7 +283,7 @@
                                     <label for="contrib_creation_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="contrib-creation-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                             <input id="contrib_creation_date_end" name="contrib_creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_creation_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -297,7 +297,7 @@
                                     <label for="contrib_begin_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="contrib-begin-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                             <input id="contrib_begin_date_begin" name="contrib_begin_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_begin_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -306,7 +306,7 @@
                                     <label for="contrib_begin_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="contrib-begin-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                             <input id="contrib_begin_date_end" name="contrib_begin_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_begin_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -322,7 +322,7 @@
                                     <label for="contrib_end_date_begin">{{ _T('beetween') }}</label>
                                     <div class="ui calendar" id="contrib-end-rangestart">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                             <input id="contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.contrib_end_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -331,7 +331,7 @@
                                     <label for="contrib_end_date_end">{{ _T('and') }}</label>
                                     <div class="ui calendar" id="contrib-end-rangeend">
                                         <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
+                                            <i class="calendar icon" aria-hidden="true"></i>
                                                 <input id="contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.contrib_end_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                                         </div>
                                     </div>
@@ -403,7 +403,7 @@
     {% elseif get_class(field) == "Galette\\DynamicFields\\Date" %}
                     <div class="ui calendar" id="cds_{{ field.getId() }}-rangeend">
                         <div class="ui input left icon">
-                            <i class="calendar icon"></i>
+                            <i class="calendar icon" aria-hidden="true"></i>
                             <input id="cds_{{ field.getId() }}" name="cds_{{ field.getId() }}" type="text" class="due_date" maxlength="10" size="10" value="{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
                         </div>
                     </div>
@@ -415,7 +415,7 @@
                 <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
                 <div class="jsonly disabled galetteform ui styled fluid accordion field">
                     <div class="active ui title">
-                        <i class="jsonly displaynone dropdown icon"></i>
+                        <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                         {{ _T('Free search') }} ({{ _T('Experimental') }})
                         <a
                             href="#"
@@ -423,7 +423,7 @@
                             class="ui tiny compact icon green button tooltip"
                             title="{{ _T('Add new free search criteria') }}"
                         >
-                            <i class="plus icon"></i>
+                            <i class="plus icon" aria-hidden="true"></i>
                             <span class="displaynone">{{ _T('Add new free search criteria') }}</span>
                         </a>
                     </div>
@@ -433,7 +433,7 @@
                             <li class="even ui segment unstackable items">
                                 <div class="ui item">
                                     <div class="ui image">
-                                        <i class="arrows alternate icon"></i>
+                                        <i class="arrows alternate icon" aria-hidden="true"></i>
                                     </div>
                                     <div class="inline fields">
                                         <select name="free_logical_operator[]" class="operator_selector ui search dropdown origselect nochosen">
@@ -533,7 +533,7 @@
                                             class="ui small compact red icon button filtered fright tooltip delete delcriteria"
                                             title="{{ _T('Remove criteria') }}"
                                         >
-                                            <i class="trash alt icon"></i>
+                                            <i class="trash alt icon" aria-hidden="true"></i>
                                             <span class="displaynone">{{ _T('Remove criteria') }}</span>
                                         </a>
 
@@ -662,7 +662,7 @@
                                 _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
                                 _html += '<div class="ui calendar fs-calendar">'
                                 _html += '<div class="ui input left icon">'
-                                _html += '<i class="calendar icon"></i>'
+                                _html += '<i class="calendar icon" aria-hidden="true"></i>'
                                 _html += '<input type="text" name="free_text[]" class="modif_date" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>';
                                 _html += '</div>'
                                 _html += '</div>'

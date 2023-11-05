@@ -32,7 +32,7 @@
                             <div class="ui two column stackable grid">
                                 <div class="middle aligned row">
                                     <div class="column">
-                                        <i class="arrows alternate icon"></i>
+                                        <i class="arrows alternate icon" aria-hidden="true"></i>
                                         <span data-title="{{ _T("Field name") }}">
                                             <input type="hidden" name="fields[]" value="{{ fid }}"/>
                                             {{ field.label }}
@@ -79,7 +79,7 @@
                             <div class="ui two column stackable grid">
                                 <div class="middle aligned row">
                                     <div class="column">
-                                        <i class="arrows alternate icon"></i>
+                                        <i class="arrows alternate icon" aria-hidden="true"></i>
                                         <span data-title="{{ _T("Field name") }}">
                                             <input type="hidden" name="rfields[]" value="{{ fid }}"/>
                                             {{ field.label }}
@@ -105,7 +105,7 @@
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
-                <i class="save icon"></i> {{ _T("Save") }}
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
         </div>
         {% include "components/forms/csrf.html.twig" %}

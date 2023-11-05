@@ -18,14 +18,14 @@
                         <div class="ui small spaced buttons">
                     {% if member.id %}
                             <button type="submit" name="valid" class="action ui labeled icon primary button">
-                                <i class="save icon"></i> {{ _T("Save") }}
+                                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
                             </button>
                     {% endif %}
                             <a
                                 href="{{ url_for("member", {"id": member.id}) }}"
                                 class="ui basic labeled icon button"
                             >
-                                <i class="eye outline icon"></i>
+                                <i class="eye outline icon" aria-hidden="true"></i>
                                 {{ _T("Display") }}
                             </a>
                         </div>
@@ -41,7 +41,7 @@
         {% if member.hasParent() and not member.isDuplicate() %}
                         <div class="field">
                             <div class="ui label">
-                                <i class="linkify icon"></i>
+                                <i class="linkify icon" aria-hidden="true"></i>
                                 {{ _T("Attached to:") }}
                             </div>
                             <div class="ui celled list">
@@ -63,15 +63,15 @@
                         <div class="field">
                             <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
                                 <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
-                                <label for="attach"><i class="linkify icon"></i> {{ _T("Attach member") }}</label>
+                                <label for="attach"><i class="linkify icon" aria-hidden="true"></i> {{ _T("Attach member") }}</label>
                             </div>
                         </div>
                         <span id="parent_id_elt" class="">
                             <div id="parent_id" class="jsonly search-dropdown ui input nochosen paginated">
                                 <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
-                                <i class="jsonly displaynone dropdown icon"></i>
-                                <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}"></i></span>
-                                <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}"></i></span>
+                                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                                <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
+                                <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
                                 <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
                                 <div class="jsonly displaynone menu">
             {% for k, v in members.list %}
@@ -86,7 +86,7 @@
         {% elseif member.hasChildren() %}
                         <div class="field">
                             <div class="ui label">
-                                <i class="linkify icon"></i>
+                                <i class="linkify icon" aria-hidden="true"></i>
                                 {{ _T("Parent of:") }}
                             </div>
                             <div class="ui celled list">
@@ -159,7 +159,7 @@
     {% endif %}
             <div class="ui basic center aligned fitted segment">
                 <button type="submit" name="valid" class="action ui labeled icon primary button">
-                    <i class="save icon"></i> {{ _T("Save") }}
+                    <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
                 </button>
             {% for entry in hidden_elements %}
                 {% if entry.field_id != 'mdp_adh' %}
@@ -334,7 +334,7 @@
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
                             var _li = '<li id="group_' + _gid + '" class="item">'
-                                    + '<i class="icons"><i class="users icon"><i class="top right corner minus icon"></i></i></i>'
+                                    + '<i class="icons" aria-hidden="true"><i class="users icon"><i class="top right corner minus icon"></i></i></i>'
                                     + '<span class="ui content">' + _gname + '</span></li>';
                             $('#selected_groups ul').append(_li);
                             $('#group_' + _gid).click(function(){

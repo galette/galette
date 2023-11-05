@@ -20,12 +20,12 @@
                                 href="{{ url_for("editMember", {"id": member.id}) }}"
                                 class="ui labeled icon button"
                             >
-                                <i class="user edit icon"></i>
+                                <i class="user edit icon" aria-hidden="true"></i>
                                 {{ _T("Modification") }}
                             </a>
                 {% endif %}
                             <div class="ui combo top right pointing simple dropdown icon button">
-                                <i class="dropdown icon"></i>
+                                <i class="dropdown icon" aria-hidden="true"></i>
                                 <div class="menu">
                 {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (login.isAdmin() or login.isStaff()) %}
                                     <a
@@ -34,7 +34,7 @@
                                         title="{{ _T("Send member a link to generate a new password, as if had used the 'lost password' functionality.") }}"
                                             class="ui item"
                                     >
-                                        <i class="unlock icon"></i>
+                                        <i class="unlock icon" aria-hidden="true"></i>
                                         {{ _T("New password") }}
                                     </a>
                 {% endif %}
@@ -43,14 +43,14 @@
                                         href="{% if member.isUp2Date() %}{{ url_for("pdf-members-cards", {'id_adh': member.id}) }}{% else %}#{% endif %}"
                                         class="ui item{% if not member.isUp2Date() %} disabled{% endif %} tooltip"
                                     >
-                                        <i class="id badge icon"></i>
+                                        <i class="id badge icon" aria-hidden="true"></i>
                                         {{ _T("Generate Member Card") }}
                                     </a>
                                     <a
                                         href="{{ url_for("adhesionForm", {"id_adh": member.id}) }}"
                                         class="ui item"
                                     >
-                                        <i class="id card icon"></i>
+                                        <i class="id card icon" aria-hidden="true"></i>
                                         {{ _T("Adhesion form") }}
                                     </a>
                 {% endif %}
@@ -59,7 +59,7 @@
                                         href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": member.id}) }}"
                                         class="ui item"
                                     >
-                                        <i class="receipt icon"></i>
+                                        <i class="receipt icon" aria-hidden="true"></i>
                                         {{ _T("View contributions") }}
                                     </a>
                 {% endif %}
@@ -68,14 +68,14 @@
                                         href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}"
                                         class="ui item"
                                     >
-                                        <i class="user check icon"></i>
+                                        <i class="user check icon" aria-hidden="true"></i>
                                         {{ _T("Add a membership fee") }}
                                     </a>
                                     <a
                                         href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?id_adh={{ member.id }}"
                                         class="ui item"
                                     >
-                                        <i class="gift icon"></i>
+                                        <i class="gift icon" aria-hidden="true"></i>
                                         {{ _T("Add a donation") }}
                                     </a>
                     {% if login.isAdmin() or login.isStaff() %}
@@ -106,7 +106,7 @@
                 <div class="ui basic fitted segment">
                     <div class="ui styled fluid accordion row">
                         <div class="active title">
-                            <i class="jsonly hidden icon dropdown"></i>
+                            <i class="jsonly hidden icon dropdown" aria-hidden="true"></i>
                             {{ _T("Family") }}
                         </div>
                         <div class="active content field">
@@ -142,7 +142,7 @@
             <div class="fieldset-{{ display_element.id }} ui basic fitted segment">
                 <div class="ui styled fluid accordion row">
                     <div class="active title">
-                        <i class="jsonly displaynone icon dropdown"></i>
+                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
                         {{ _T(display_element.label) }}
                     </div>
                     <div class="active content field">
@@ -186,10 +186,10 @@
                 {% if member.isGroupMember(group) or member.isGroupManager(group) %}
                                         <a href="{% if login.isGroupManager(kgroup) %}{{ url_for("groups", {"id": kgroup}) }}{% else %}#{% endif %}" class="ui label{% if not login.isGroupManager(kgroup) %} disabled notmanaged{% endif %}">
                     {% if member.isGroupMember(group) %}
-                                            <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}"></i>
+                                            <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}" aria-hidden="true"></i>
                     {% endif %}
                     {% if member.isGroupManager(group) %}
-                                            <i class="ui shield icon tooltip" title="{{ _T("Group manager") }}"></i>
+                                            <i class="ui shield icon tooltip" title="{{ _T("Group manager") }}" aria-hidden="true"></i>
                     {% endif %}
                                             {{ group }}
                                         </a>
@@ -204,11 +204,11 @@
                                 <td>
                 {% if element.field_id == 'nom_adh' %}
                     {% if member.isCompany() %}
-                                    <i class="ui industry icon"></i>
+                                    <i class="ui industry icon" aria-hidden="true"></i>
                     {% elseif member.isMan() %}
-                                    <i class="ui mars icon"></i>
+                                    <i class="ui mars icon" aria-hidden="true"></i>
                     {% elseif member.isWoman() %}
-                                    <i class="ui venus icon"></i>
+                                    <i class="ui venus icon" aria-hidden="true"></i>
                     {% endif %}
                 {% endif %}
                 {% if element.field_id == 'email_adh' %}

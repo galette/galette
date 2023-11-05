@@ -57,7 +57,7 @@
                 <input type="hidden" name="cur_ref" value="{{ cur_ref }}"/>
                 <input type="hidden" name="valid" id="valid" value="1"/>
                 <button type="submit" class="ui labeled icon primary button action">
-                    <i class="save icon"></i> {{ _T("Save") }}
+                    <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
                 </button>
                 {% include 'components/forms/csrf.html.twig' %}
             </div>

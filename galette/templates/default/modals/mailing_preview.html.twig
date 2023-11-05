@@ -38,7 +38,7 @@
                         <label>{{ _T("Attachments:") }}</label>
                         <div class="ui horizontal bulleted link list">
     {% for attachment in attachments %}
-                            <a target="_blank" href="{{ url_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}" class="item"><i class="ui paperclip icon"></i>{{ attachment.getFileName() }}</a>
+                            <a target="_blank" href="{{ url_for("previewAttachment", {"id": mailing_id, "pos": loop.index}) }}" class="item"><i class="ui paperclip icon" aria-hidden="true"></i>{{ attachment.getFileName() }}</a>
     {% else %}
                             <span class="item">-</span>
     {% endfor %}

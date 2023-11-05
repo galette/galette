@@ -3,7 +3,7 @@
             href="{{ url_for('addDynamicField', {'form_name': form_name}) }}"
             class="ui labeled icon button addfield"
         >
-            <i class="plus green icon"></i>
+            <i class="plus green icon" aria-hidden="true"></i>
             {{ _T("Add") }}
         </a>
     </div>
@@ -59,7 +59,7 @@
                         <a
                             href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'up', 'id': field.getId()}) }}"
                         >
-                            <i class="ui caret up grey icon tooltip"></i>
+                            <i class="ui caret up grey icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Move up '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
     {% endif %}
@@ -69,7 +69,7 @@
                         <a
                             href="{{ url_for('moveDynamicField', {'form_name': form_name, 'direction': 'down', 'id': field.getId()}) }}"
                         >
-                            <i class="ui caret down grey icon tooltip"></i>
+                            <i class="ui caret down grey icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Move down '%s' field")|replace({'%s': field.getName()}) }}</span>
                         </a>
     {% endif %}
