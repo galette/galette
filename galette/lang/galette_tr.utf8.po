@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-05 13:08+0100\n"
+"POT-Creation-Date: 2023-11-06 07:15+0100\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -4233,7 +4233,7 @@ msgstr ""
 #: ../install/steps/telemetry.php:72
 #: ../../tempcache/modals/telemetry.html.twig:52
 msgid ""
-"Also note tha all data is sent over a <strong>HTTPS secured connection</"
+"Also note that all data are sent over a <strong>HTTPS secured connection</"
 "strong>."
 msgstr ""
 
