@@ -146,6 +146,7 @@
     {% if mode == 'ajax'%}
         <input type="hidden" name="ajax" value="true"/>
         <input type="hidden" name="max_amount" value="{{ filters.max_amount }}"/>
+        <input type="hidden" name="filtre_transactions" value="{{ filters.filtre_transactions }}"/>
     {% else %}
         {% include "components/forms/csrf.html.twig" %}
     {% endif %}

@@ -401,14 +401,6 @@ class ContributionsController extends CrudController
         $ajax = false;
         $get = $request->getQueryParams();
 
-        if (
-            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
-            || isset($get['ajax'])
-            && $get['ajax'] == 'true'
-        ) {
-            $ajax = true;
-        }
-
         switch ($type) {
             case 'transactions':
                 $raw_type = 'transactions';
@@ -430,6 +422,14 @@ class ContributionsController extends CrudController
         }
 
         $filter_name = 'filter_' . $raw_type;
+        if (
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
+            || isset($get['ajax'])
+            && $get['ajax'] == 'true'
+        ) {
+            $ajax = true;
+            $filter_name .= '_ajax';
+        }
 
         if (isset($this->session->$filter_name)) {
             $filters = $this->session->$filter_name;
@@ -444,7 +444,6 @@ class ContributionsController extends CrudController
         }
 
         if ($type === 'contributions') {
-            $filters->filtre_transactions = false;
             if (isset($request->getQueryParams()['max_amount'])) {
                 $filters->filtre_transactions = true;
                 $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
@@ -602,7 +601,13 @@ class ContributionsController extends CrudController
      */
     public function filter(Request $request, Response $response, string $type = null): Response
     {
+        $ajax = false;
         $filter_name = 'filter_' . $type;
+        if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
+            $ajax = true;
+            $filter_name .= '_ajax';
+        }
+
         $post = $request->getParsedBody();
         $error_detected = [];
 
@@ -614,9 +619,9 @@ class ContributionsController extends CrudController
         }
 
         if (isset($post['clear_filter'])) {
-            $filters->reinit();
+            $filters->reinit($ajax);
         } else {
-            if (isset($post['max_amount'])) {
+            if (!isset($post['max_amount'])) {
                 $filters->max_amount = null;
             }
 

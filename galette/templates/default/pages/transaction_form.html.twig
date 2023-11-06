@@ -240,8 +240,8 @@
                 $('.contributions-selection .contribution_row input[type=checkbox]').hide();
 
                 //Initialize Fomantic components
-                $('.contributions-selection .dropdown').dropdown()
-                $('[id$="rangestart"], [id$="rangeend"]').calendar();
+                $('.contributions-selection .dropdown').dropdown();
+                {% include "elements/js/calendar.js.twig" %}
 
                 //Deactivate contributions list links
                 $('.contributions-selection tbody a').click(function(){

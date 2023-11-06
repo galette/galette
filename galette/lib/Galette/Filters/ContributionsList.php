@@ -135,21 +135,26 @@ class ContributionsList extends Pagination
     /**
      * Reinit default parameters
      *
+     * @param boolean $ajax Called form an ajax query
+     *
      * @return void
      */
-    public function reinit()
+    public function reinit($ajax = false)
     {
         parent::reinit();
         $this->date_field = self::DATE_BEGIN;
         $this->start_date_filter = null;
         $this->end_date_filter = null;
         $this->payment_type_filter = null;
-        $this->filtre_transactions = false;
         $this->filtre_cotis_adh = null;
         $this->filtre_cotis_children = false;
         $this->from_transaction = false;
-        $this->max_amount = null;
         $this->selected = [];
+
+        if ($ajax === false) {
+            $this->max_amount = null;
+            $this->filtre_transactions = false;
+        }
     }
 
     /**
