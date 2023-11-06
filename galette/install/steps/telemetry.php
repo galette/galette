@@ -69,7 +69,7 @@ if (!$telemetry->isRegistered()) {
         <div class="ui message scrolling content">
             <p><?php echo _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent."); ?></p>
             <p>
-                <?php echo _T("Also note tha all data is sent over a <strong>HTTPS secured connection</strong>."); ?>
+                <?php echo _T("Also note that all data are sent over a <strong>HTTPS secured connection</strong>."); ?>
             </p>
             <div class="tdata">
             </div>
