@@ -145,15 +145,11 @@ class HistoryController extends AbstractController
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
-                try {
-                    if (isset($post['start_date_filter'])) {
-                        $filters->start_date_filter = $post['start_date_filter'];
-                    }
-                    if (isset($post['end_date_filter'])) {
-                        $filters->end_date_filter = $post['end_date_filter'];
-                    }
-                } catch (Throwable $e) {
-                    $error_detected[] = $e->getMessage();
+                if (isset($post['start_date_filter'])) {
+                    $filters->start_date_filter = $post['start_date_filter'];
+                }
+                if (isset($post['end_date_filter'])) {
+                    $filters->end_date_filter = $post['end_date_filter'];
                 }
             }
 

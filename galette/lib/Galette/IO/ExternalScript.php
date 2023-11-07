@@ -107,7 +107,6 @@ class ExternalScript
                 break;
             default:
                 throw new \RuntimeException('Unknown protocol.');
-                break;
         }
 
         Analog::log(

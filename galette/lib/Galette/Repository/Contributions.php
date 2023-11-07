@@ -416,7 +416,7 @@ class Contributions
                     );
                     if (
                         !$member->hasParent() ||
-                        $member->hasParent() && $member->parent->id != $this->login->id
+                        $member->parent->id != $this->login->id
                     ) {
                         Analog::log(
                             'Trying to display contributions for member #' . $member->id .

@@ -78,8 +78,6 @@ class MailingHistory extends History
     private $sender_address;
     private $sent = false;
 
-    private $senders;
-
     /**
      * Default constructor
      *

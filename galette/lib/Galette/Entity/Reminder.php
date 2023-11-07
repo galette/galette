@@ -349,6 +349,8 @@ class Reminder
             case 'type':
             case 'date':
                 return $this->$name;
+            case 'comment':
+                return $this->comment;
             default:
                 Analog::log(
                     'Unable to get Reminder property ' . $name,
@@ -372,6 +374,7 @@ class Reminder
             case 'member_id':
             case 'type':
             case 'date':
+            case 'comment':
                 return true;
         }
         return false;

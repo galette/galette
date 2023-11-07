@@ -1005,6 +1005,10 @@ class Members
      */
     private function buildWhereClause(Select $select)
     {
+        /**
+         * @var Db $zdb
+         * @var Login $login
+         */
         global $zdb, $login;
 
         try {
@@ -1021,7 +1025,7 @@ class Members
                 );
                 switch ($this->filters->field_filter) {
                     case self::FILTER_NAME:
-                        if (TYPE_DB === 'pgsql') {
+                        if ($zdb->isPostgres()) {
                             $sep = " || ' ' || ";
                             $pre = '';
                             $post = '';

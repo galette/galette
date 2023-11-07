@@ -79,9 +79,9 @@ class Pdf extends \TCPDF
      * Main constructor, set creator and author
      *
      * @param Preferences $prefs Preferences
-     * @param PdfModel    $model Related model
+     * @param ?PdfModel   $model Related model
      */
-    public function __construct(Preferences $prefs, $model = null)
+    public function __construct(Preferences $prefs, ?PdfModel $model = null)
     {
         global $i18n;
 
@@ -108,14 +108,8 @@ class Pdf extends \TCPDF
         }
 
         if ($model !== null) {
-            if ($model instanceof PdfModel) {
-                $this->model = $model;
-                $this->SetTitle($this->model->htitle);
-            } else {
-                throw new \UnexpectedValueException(
-                    'Provided model must be an instance of PdfModel!'
-                );
-            }
+            $this->model = $model;
+            $this->SetTitle($this->model->htitle);
         }
     }
 

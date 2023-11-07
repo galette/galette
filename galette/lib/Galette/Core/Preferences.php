@@ -621,8 +621,7 @@ class Preferences
         foreach ($insert_values as $champ => $valeur) {
             if (
                 $login->isSuperAdmin()
-                || (!$login->isSuperAdmin()
-                && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
+                || $champ != 'pref_admin_pass' && $champ != 'pref_admin_login'
             ) {
                 if (
                     ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
@@ -691,10 +690,6 @@ class Preferences
                 }
                 break;
             case 'pref_numrows':
-                if (!is_numeric($value) || $value < 0) {
-                    $this->errors[] = _T("- The numbers and measures have to be integers!");
-                }
-                break;
             case 'pref_etiq_marges_h':
             case 'pref_etiq_marges_v':
             case 'pref_etiq_hspace':
@@ -708,10 +703,6 @@ class Preferences
             case 'pref_card_marges_h':
             case 'pref_card_hspace':
             case 'pref_card_vspace':
-                // prevent division by zero
-                if ($fieldname == 'pref_numrows' && $value == '0') {
-                    $value = '10';
-                }
                 if (!is_numeric($value) || $value < 0) {
                     $this->errors[] = _T("- The numbers and measures have to be integers!");
                 }

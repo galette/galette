@@ -660,7 +660,6 @@ class Contribution
                 unset($values['date_fin_cotis']);
             }
 
-            $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
@@ -677,7 +676,6 @@ class Contribution
                         _T("Contribution added"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
-                    $success = true;
                     $event = 'contribution.add';
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
@@ -705,7 +703,6 @@ class Contribution
                         'An error occurred updating contribution # ' . $this->_id . '!'
                     );
                 }
-                $success = true;
                 $event = 'contribution.edit';
             }
             //update deadline
@@ -714,9 +711,7 @@ class Contribution
             }
 
             //dynamic fields
-            if ($success) {
-                $success = $this->dynamicsStore(true);
-            }
+            $this->dynamicsStore(true);
 
             $this->zdb->connection->commit();
             $this->_orig_amount = $this->_amount;

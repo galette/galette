@@ -84,7 +84,7 @@ class PdfController extends AbstractController
         $response = $response
             ->withHeader('Content-type', 'application/pdf')
             ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->getBody()->write($pdf->download() ?? '');
+        $response->getBody()->write($pdf->download());
         return $response;
     }
 
@@ -93,7 +93,7 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id_adh   Member id
+     * @param ?integer $id_adh   Member id
      *
      * @return Response
      */
@@ -160,7 +160,7 @@ class PdfController extends AbstractController
 
         // Fill array $selected with selected ids
         $selected = array();
-        if (isset($unique) && $unique) {
+        if (isset($unique)) {
             $selected[] = $unique;
         } else {
             $selected = $filters->selected;

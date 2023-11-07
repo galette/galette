@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.6-dev - 2021-11-07
@@ -40,9 +40,7 @@ use ArrayObject;
 use DateTime;
 use Galette\Core\Db;
 use Galette\Core\Login;
-use Galette\Core\Authentication;
 use Galette\Entity\Adherent;
-use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Contributions;
 use Galette\Filters\ContributionsList;
@@ -55,7 +53,7 @@ use Galette\Repository\PaymentTypes;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.6-dev - 2021-11-07
@@ -67,9 +65,6 @@ class ContributionsCsv extends CsvOut
     private $path;
     private $zdb;
     private $login;
-    private $members_fields;
-    private $fields_config;
-    private $filters;
     private $type;
 
     /**

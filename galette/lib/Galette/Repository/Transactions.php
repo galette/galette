@@ -279,7 +279,7 @@ class Transactions
                     );
                     if (
                         !$member->hasParent() ||
-                        $member->hasParent() && $member->parent->id != $this->login->id
+                        $member->parent->id != $this->login->id
                     ) {
                         Analog::log(
                             'Trying to display transactions for member #' . $member->id .

@@ -484,11 +484,11 @@ abstract class PdfModel
             case 'footer':
             case 'body':
                 if ($value === null || trim($value) === '') {
-                    if ($name !== 'body' && get_class($this) === 'PdfMain') {
+                    if ($name !== 'body' && get_class($this) === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
                         );
-                    } elseif ($name === 'body' && get_class($this) !== 'PdfMain') {
+                    } elseif ($name === 'body' && get_class($this) !== PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("body should not be empty!")
                         );

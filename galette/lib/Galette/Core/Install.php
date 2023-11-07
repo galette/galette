@@ -785,7 +785,7 @@ class Install
                 $zdb->connection->rollBack();
             } catch (\PDOException $e) {
                 //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || (!$zdb->isPostgres() && !str_contains($e->getMessage(), 'no active transaction'))) {
+                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
                     throw $e;
                 }
             }
@@ -794,7 +794,7 @@ class Install
                 $zdb->connection->commit();
             } catch (\PDOException $e) {
                 //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || (!$zdb->isPostgres() && !str_contains($e->getMessage(), 'no active transaction'))) {
+                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
                     throw $e;
                 }
             }
@@ -1105,7 +1105,7 @@ class Install
         $conffile = GALETTE_CONFIG_PATH . 'config.inc.php';
         if (
             is_writable(GALETTE_CONFIG_PATH)
-            && (!file_exists($conffile) || file_exists($conffile) && is_writable($conffile))
+            && (!file_exists($conffile) || is_writable($conffile))
             && $fd = @fopen($conffile, 'w')
         ) {
                 $data = "<?php

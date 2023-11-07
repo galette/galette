@@ -308,7 +308,6 @@ class SavedSearch
                     } else {
                         return $this->$name;
                     }
-                    break;
             }
         }
     }

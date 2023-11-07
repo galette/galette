@@ -60,7 +60,6 @@ class CsvOut extends Csv
 {
     public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
-    private $rs;
     private $parameted_path;
     private $legacy_parameted_file = 'exports.xml';
     private $parameted_file = 'exports.yaml';

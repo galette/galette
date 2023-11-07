@@ -127,74 +127,72 @@ class Authenticate
                     'Location',
                     $this->routeparser->urlFor('slash')
                 )->withStatus(302);
-        } else {
-            //check for ACLs
-            $routeContext = RouteContext::fromRequest($request);
-            $route = $routeContext->getRoute();
-            $cur_route = $route->getName();
-            $acl = $this->getAclFor($cur_route);
+        }
 
-            $go = false;
-            switch ($acl) {
-                case 'superadmin':
-                    if ($this->login->isSuperAdmin()) {
-                        $go = true;
-                    }
-                    break;
-                case 'admin':
-                    if (
-                        $this->login->isSuperAdmin()
-                        || $this->login->isAdmin()
-                    ) {
-                        $go = true;
-                    }
-                    break;
-                case 'staff':
-                    if (
-                        $this->login->isSuperAdmin()
-                        || $this->login->isAdmin()
-                        || $this->login->isStaff()
-                    ) {
-                        $go = true;
-                    }
-                    break;
-                case 'groupmanager':
-                    if (
-                        $this->login->isSuperAdmin()
-                        || $this->login->isAdmin()
-                        || $this->login->isStaff()
-                        || $this->login->isGroupManager()
-                    ) {
-                        $go = true;
-                    }
-                    break;
-                case 'member':
-                    if ($this->login->isLogged()) {
-                        $go = true;
-                    }
-                    break;
-                default:
-                    throw new \RuntimeException(
-                        str_replace(
-                            '%acl',
-                            $acl,
-                            _T("Unknown ACL rule '%acl'!")
-                        )
-                    );
-            }
-            if (!$go) {
-                Analog::log(
-                    'Permission denied for route ' . $cur_route . ' for user ' . $this->login->login,
-                    Analog::DEBUG
+        //check for ACLs
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+        $cur_route = $route->getName();
+        $acl = $this->getAclFor($cur_route);
+
+        $go = false;
+        switch ($acl) {
+            case 'superadmin':
+                if ($this->login->isSuperAdmin()) {
+                    $go = true;
+                }
+                break;
+            case 'admin':
+                if (
+                    $this->login->isSuperAdmin()
+                    || $this->login->isAdmin()
+                ) {
+                    $go = true;
+                }
+                break;
+            case 'staff':
+                if (
+                    $this->login->isSuperAdmin()
+                    || $this->login->isAdmin()
+                    || $this->login->isStaff()
+                ) {
+                    $go = true;
+                }
+                break;
+            case 'groupmanager':
+                if (
+                    $this->login->isSuperAdmin()
+                    || $this->login->isAdmin()
+                    || $this->login->isStaff()
+                    || $this->login->isGroupManager()
+                ) {
+                    $go = true;
+                }
+                break;
+            case 'member':
+                $go = true;
+                break;
+            default:
+                throw new \RuntimeException(
+                    str_replace(
+                        '%acl',
+                        $acl,
+                        _T("Unknown ACL rule '%acl'!")
+                    )
                 );
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("You do not have permission for requested URL.")
-                );
-                return $response
-                    ->withHeader('Location', $this->routeparser->urlFor('slash'))
-                    ->withStatus(302);
-            }
+        }
+        if (!$go) {
+            Analog::log(
+                'Permission denied for route ' . $cur_route . ' for user ' . $this->login->login,
+                Analog::DEBUG
+            );
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+            return $response
+                ->withHeader('Location', $this->routeparser->urlFor('slash'))
+                ->withStatus(302);
         }
 
         return $handler->handle($request);

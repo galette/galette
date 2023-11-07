@@ -37,6 +37,7 @@
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Core\Db;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Status;
@@ -358,6 +359,7 @@ class Charts
      */
     private function getChartContribsAllTime()
     {
+        /** @var Db $zdb */
         global $zdb;
 
         $select = $zdb->select(Contribution::TABLE);
@@ -368,10 +370,10 @@ class Charts
         );
         $groupby = null;
 
-        if (TYPE_DB === 'pgsql') {
+        if ($zdb->isPostgres()) {
             $cols['date'] = new Expression('date_trunc(\'month\', date_enreg)');
             $groupby = new Expression('date_trunc(\'month\', date_enreg)');
-        } elseif (TYPE_DB === 'mysql') {
+        } else {
             $cols['date'] = new Expression('date_format(date_enreg, \'%Y-%m\')');
             $groupby = new Expression('date_format(date_enreg, \'%Y-%m\')');
         }

@@ -200,7 +200,6 @@ class ContributionsList extends Pagination
                             );
                             return $this->$name;
                         }
-                        break;
                     case 'rstart_date_filter':
                     case 'rend_date_filter':
                         //same as above, but raw format

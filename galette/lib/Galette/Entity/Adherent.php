@@ -70,7 +70,7 @@ use Galette\Features\Dynamics;
  * @property string $stitle Title label
  * @property string $company_name
  * @property string $name
- * @property string $surname
+ * @property ?string $surname
  * @property string $nickname
  * @property string $birthdate Localized birthdate
  * @property string $rbirthdate Raw birthdate
@@ -1558,7 +1558,6 @@ class Adherent
                 }
             }
 
-            $success = false;
             if (empty($this->_id)) {
                 //we're inserting a new member
                 unset($values[self::PK]);
@@ -1585,7 +1584,6 @@ class Adherent
                             $this->sname
                         );
                     }
-                    $success = true;
 
                     $event = 'member.add';
                 } else {
@@ -1623,21 +1621,18 @@ class Adherent
                         $this->sname
                     );
                 }
-                $success = true;
                 $event = 'member.edit';
             }
 
             //dynamic fields
-            if ($success) {
-                $success = $this->dynamicsStore();
-                $this->storeSocials($this->id);
-            }
+            $this->dynamicsStore();
+            $this->storeSocials($this->id);
 
             //send event at the end of process, once all has been stored
             if ($event !== null) {
                 $emitter->dispatch(new GaletteEvent($event, $this));
             }
-            return $success;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .

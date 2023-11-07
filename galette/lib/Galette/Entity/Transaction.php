@@ -437,7 +437,6 @@ class Transaction
                 $values[$field] = $this->$prop;
             }
 
-            $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
@@ -452,7 +451,6 @@ class Transaction
                         _T("Transaction added"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
-                    $success = true;
                     $event = 'transaction.add';
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
@@ -473,14 +471,11 @@ class Transaction
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                 }
-                $success = true;
                 $event = 'transaction.edit';
             }
 
             //dynamic fields
-            if ($success) {
-                $this->dynamicsStore(true);
-            }
+            $this->dynamicsStore(true);
 
             $this->zdb->connection->commit();
 

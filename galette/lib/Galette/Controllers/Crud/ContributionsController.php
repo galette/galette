@@ -37,8 +37,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Features\BatchList;
-use Galette\Filters\ContributionsList;
-use Throwable;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
@@ -480,7 +478,7 @@ class ContributionsController extends CrudController
                 );
                 if (
                     !$member->hasParent() ||
-                    $member->hasParent() && $member->parent->id != $this->login->id
+                    $member->parent->id != $this->login->id
                 ) {
                     $value = $this->login->id;
                     Analog::log(
@@ -636,15 +634,11 @@ class ContributionsController extends CrudController
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
-                try {
-                    if (isset($post['start_date_filter'])) {
-                        $filters->start_date_filter = $post['start_date_filter'];
-                    }
-                    if (isset($post['end_date_filter'])) {
-                        $filters->end_date_filter = $post['end_date_filter'];
-                    }
-                } catch (Throwable $e) {
-                    $error_detected[] = $e->getMessage();
+                if (isset($post['start_date_filter'])) {
+                    $filters->start_date_filter = $post['start_date_filter'];
+                }
+                if (isset($post['end_date_filter'])) {
+                    $filters->end_date_filter = $post['end_date_filter'];
                 }
             }
 
@@ -698,7 +692,8 @@ class ContributionsController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
-            $filters = $this->session->$filter_name ?? new ContributionsList();
+            $filter_class = '\\Galette\\Filters\\' . ucwords($type . 'List');
+            $filters = $this->session->$filter_name ?? new $filter_class();
             $filters->selected = $post['entries_sel'];
             $this->session->$filter_name = $filters;
 

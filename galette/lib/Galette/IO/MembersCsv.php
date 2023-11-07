@@ -69,7 +69,6 @@ class MembersCsv extends CsvOut
     private $login;
     private $members_fields;
     private $fields_config;
-    private $filters;
 
     /**
      * Default constructor

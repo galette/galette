@@ -277,7 +277,7 @@ class ClassLoader
             }
         }
 
-        return class_exists($className, false) || interface_exists($className, false);
+        return false;
     }
 
     /**

@@ -133,7 +133,7 @@ class SavedSearches
      * @param bool  $count  true if we want to count members
      *                      (not applicable from static calls), defaults to false
      *
-     * @return string SELECT statement
+     * @return Select SELECT statement
      */
     private function buildSelect($fields, $count = false)
     {
@@ -243,7 +243,7 @@ class SavedSearches
             $list = $ids;
         }
 
-        if (is_array($list)) {
+        if (count($list)) {
             try {
                 if ($transaction) {
                     $this->zdb->connection->beginTransaction();
