@@ -417,10 +417,6 @@ if ($install->isCheckStep()) {
                                 <i class="icon book"></i>
                                <?php echo _T("Documentation"); ?>
                             </a>
-                            <a href="https://twitter.com/galette_soft" class="item">
-                                <i class="icon twitter"></i>
-                                @galette_soft
-                            </a>
                             <a href="https://framapiaf.org/@galette" class="item">
                                 <i class="icon mastodon"></i>
                                 @galette
