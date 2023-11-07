@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -82,12 +82,12 @@ td#pdf_logo {
     width: 25%;
 }
 
-div[dir=\'rtl\'] td#pdf_logo {
+td[dir=rtl]#pdf_logo {
     text-align: left;
     width: 0%;
 }
 
-div[dir=rtl] td#pdf_assoname {
+td[dir=rtl]#pdf_assoname {
     width: 100%;
     margin-left: 25%;
 }
@@ -211,13 +211,16 @@ hr {
         <td height="30"></td>
     </tr>
     <tr>
-        <td>_T("Required membership:")
-            <form action="none">
-                <input type="radio" class="box" name="cotisation" value="none1">_T("Active member")
-                <input type="radio" class="box" name="cotisation" value="none2">_T("Benefactor member")
-                <input type="radio" class="box" name="cotisation" value="none3">_T("Donation")
-                <div class="infos">_T("The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor.")  </div>
-            </form>
+        <td>
+            <table>
+                <tr>
+                <td class="boxlabel">_T("Required membership:")</td>
+                <td class="box"><input type="radio" name="cotisation" value="none1"></td><td class="boxlabel">_T("Active member")</td>
+                <td class="box"><input type="radio" class="box" name="cotisation" value="none2"></td><td class="boxlabel">_T("Benefactor member")</td>
+                <td class="box"><input type="radio" class="box" name="cotisation" value="none3"></td><td class="boxlabel">_T("Donation")</td>
+                </tr>
+            </table>
+            <div class="infos">_T("The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor.")  </div>
         </td>
     </tr>
     <tr>
@@ -312,6 +315,14 @@ p.notes {
 .member td {
     line-height: 20px;
     height: 20px;
+}
+
+td.boxlabel {
+    width: 20%;
+}
+
+td.box {
+    width: 5%;
 }',
         'model_parent'  => PdfModel::MAIN_MODEL
     )
