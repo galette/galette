@@ -282,6 +282,7 @@ abstract class CrudController extends AbstractController
             );
         } else {
             try {
+                $this->getIdsToRemove($args, $post);
                 $res = $this->doDelete($args, $post);
                 if ($res === true) {
                     $this->flash->addMessage(
