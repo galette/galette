@@ -330,7 +330,7 @@ class DynamicFieldsController extends CrudController
             $route_name = 'member';
             if ($form_name == 'contrib') {
                 $route_name = 'contribution';
-            } elseif ($route_name == 'trans') {
+            } elseif ($form_name == 'trans') {
                 $route_name = 'transaction';
             }
             return $response
