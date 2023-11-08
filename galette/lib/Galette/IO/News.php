@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use Galette\Core\Galette;
 use Throwable;
 use Analog\Analog;
 
@@ -76,7 +77,7 @@ class News
         $this->feed_url = $this->getFeedURL($url);
 
         //only if cache should be used
-        if ($nocache === false && GALETTE_MODE !== 'DEV') {
+        if ($nocache === false && !Galette::isDebugEnabled()) {
             if (!$this->checkCache()) {
                 $this->makeCache();
             } else {

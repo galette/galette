@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Core\Galette;
 use Galette\IO\File;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
@@ -132,7 +133,7 @@ class DynamicFieldsController extends CrudController
                 $e->getMessage(),
                 Analog::ERROR
             );
-            if (GALETTE_MODE == 'DEV') {
+            if (Galette::isDebugEnabled()) {
                 throw $e;
             }
             $error_detected[] = _T('An error occurred adding dynamic field :(');
@@ -478,7 +479,7 @@ class DynamicFieldsController extends CrudController
                 $e->getMessage(),
                 Analog::ERROR
             );
-            if (GALETTE_MODE == 'DEV') {
+            if (Galette::isDebugEnabled()) {
                 throw $e;
             }
             $error_detected[] = _T('An error occurred editing dynamic field :(');

@@ -1,7 +1,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-{% if preferences.pref_mail_method == constant('Galette\\Core\\Mailing::METHOD_DISABLED') and constant('GALETTE_MODE') != 'DEMO' %}
+{% if preferences.pref_mail_method == constant('Galette\\Core\\Mailing::METHOD_DISABLED') and not callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
         <div id="errorbox" class="ui negative icon message">
             <i class="ban icon" aria-hidden="true"></i>
             <div class="content">
@@ -153,7 +153,7 @@
                         <i class="save green icon" aria-hidden="true"></i>
                         {{ _T("Save") }}
                     </button>
-                    <button type="submit" name="mailing_confirm" class="ui labeled icon button {% if constant('GALETTE_MODE') == 'DEMO' %} disabled" disabled="disabled{% endif %}">
+                    <button type="submit" name="mailing_confirm" class="ui labeled icon button {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled" disabled="disabled{% endif %}">
                         <i class="rocket red icon" aria-hidden="true"></i>
                         {{ _T("Send") }}
                     </button>
@@ -201,7 +201,7 @@
                         <i class="backward icon" aria-hidden="true"></i>
                         {{ _T("Modifiy mailing") }}
                     </button>
-                    <button type="submit" name="mailing_confirm"{% if constant('GALETTE_MODE') == 'DEMO' %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
+                    <button type="submit" name="mailing_confirm"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
                         <i class="rocket icon" aria-hidden="true"></i>
                         {{ _T("Send") }}
                     </button>
@@ -221,7 +221,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{% if (preferences.pref_mail_method != constant('Galette\\Core\\Mailing::METHOD_DISABLED') or constant('GALETTE_MODE') != 'DEMO') and mailing_saved is not defined %}
+{% if (preferences.pref_mail_method != constant('Galette\\Core\\Mailing::METHOD_DISABLED') or not callstatic('\\Galette\\Core\\Galette', 'isDemo')) and mailing_saved is not defined %}
     {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
 <script type="text/javascript">
     $(function() {

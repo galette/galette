@@ -97,7 +97,7 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !(GALETTE_MODE === Galette::MODE_DEMO)
+            && !Galette::isDemo()
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
@@ -249,7 +249,7 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !(GALETTE_MODE === Galette::MODE_DEMO)
+            && !Galette::isDemo()
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")

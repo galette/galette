@@ -65,7 +65,7 @@ class SysInfos
 
         $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
 
-        if (GALETTE_MODE == \Galette\Core\Galette::MODE_DEMO) {
+        if (Galette::isDemo()) {
             $str .= $this->getPluginsInfo($plugins);
             return $str;
         }

@@ -72,14 +72,14 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
         $templates,
         [
             'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
-            'debug' => (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV),
-            'strict_variables' => (GALETTE_MODE == \Galette\Core\Galette::MODE_DEV)
+            'debug' => \Galette\Core\Galette::isDebugEnabled(),
+            'strict_variables' => \Galette\Core\Galette::isDebugEnabled()
         ]
     );
 
     //Twig extensions
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
-    if (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV) {
+    if (\Galette\Core\Galette::isDebugEnabled()) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
     }
     //End Twig extensions

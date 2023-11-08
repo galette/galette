@@ -30,7 +30,7 @@
                 ui: "dropdown"
         } %}
 
-        {% if constant('GALETTE_MODE') == 'DEMO' %}
+        {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
             <div class="item">
                 {% include "elements/modes.html.twig" %}
             </div>

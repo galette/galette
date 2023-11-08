@@ -100,7 +100,7 @@ class PluginsController extends AbstractController
      */
     public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
-        if (GALETTE_MODE !== Galette::MODE_DEMO) {
+        if (!Galette::isDemo()) {
             $plugins = $this->plugins;
             $reload_plugins = false;
             if ($action == 'activate') {
@@ -163,7 +163,7 @@ class PluginsController extends AbstractController
      */
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {
-        if (GALETTE_MODE === Galette::MODE_DEMO) {
+        if (Galette::isDemo()) {
             Analog::log(
                 'Trying to access plugin database initialization in DEMO mode.',
                 Analog::WARNING

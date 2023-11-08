@@ -68,7 +68,7 @@ class Galette
     {
         $galette_version = GALETTE_VERSION;
 
-        //used for both gith and nightly installs
+        //used for both git and nightly installs
         $version = str_replace('-dev', '-git', GALETTE_VERSION);
         if (strstr($version, '-git') === false) {
             $version .= '-git';
@@ -85,7 +85,7 @@ class Galette
                 $commitHash,
                 $commitDate->format(($time ? 'Y-m-d H:i:s T' : 'Y-m-d'))
             );
-        } elseif (GALETTE_NIGHTLY !== false) {
+        } elseif (static::isNightly()) {
             $galette_version = $version . '-' . GALETTE_NIGHTLY;
         }
         return $galette_version;
@@ -941,5 +941,45 @@ class Galette
             }
         }
         return $actions;
+    }
+
+    /**
+     * Is demonstration mode enabled
+     *
+     * @return bool
+     */
+    public static function isDemo(): bool
+    {
+        return GALETTE_MODE === static::MODE_DEMO;
+    }
+
+    /**
+     * Is debug mode enabled
+     *
+     * @return bool
+     */
+    public static function isDebugEnabled(): bool
+    {
+        return GALETTE_MODE === static::MODE_DEV;
+    }
+
+    /**
+     * Is SQL debug mode enabled
+     *
+     * @return bool
+     */
+    public static function isSqlDebugEnabled(): bool
+    {
+        return defined('GALETTE_SQL_DEBUG') || static::isDebugEnabled();
+    }
+
+    /**
+     * Is a nightly build
+     *
+     * @return bool
+     */
+    public static function isNightly(): bool
+    {
+        return GALETTE_NIGHTLY !== false;
     }
 }

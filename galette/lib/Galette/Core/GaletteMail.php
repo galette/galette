@@ -116,7 +116,7 @@ class GaletteMail
                 //if we want to send emails using a smtp server
                 $this->mail->IsSMTP();
                 // enables SMTP debug information
-                if (GALETTE_MODE == 'DEV') {
+                if (Galette::isDebugEnabled()) {
                     $this->mail->SMTPDebug = 4;
                     //cannot use a callable here; this prevents class to be serialized
                     //see https://bugs.galette.eu/issues/1468

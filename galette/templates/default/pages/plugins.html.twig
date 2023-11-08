@@ -98,7 +98,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function() {
-    {% if constant('GALETTE_MODE') == 'DEMO' %}
+    {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
             $('.initdb, a.toggleActivation').click(function(){
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("Application runs under demo mode. This functionnality is not enabled, sorry.")|e("js"),

@@ -53,8 +53,8 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="logo" id="logo_picture"{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
-                                        <label for="logo_picture" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
+                                        <input type="file" name="logo" id="logo_picture"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <label for="logo_picture" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                                         </label>
@@ -380,7 +380,7 @@
             </div>
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'mail' ? ' active' }} tab segment" data-tab="mail">
-    {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
+    {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
             <div class="ui icon negative message">
                 <i class="ban icon" aria-hidden="true"></i>
                 <div class="content">
@@ -686,8 +686,8 @@
                             <div class="content">
                                 <div class="description">
                                     <div class="ui file action input">
-                                        <input type="file" name="card_logo" id="card_logo"{% if constant('GALETTE_MODE') == constant('Galette\\Core\\Galette::MODE_DEMO') %} disabled="disabled"{% endif %}/>
-                                        <label for="card_logo" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
+                                        <input type="file" name="card_logo" id="card_logo"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled="disabled"{% endif %}/>
+                                        <label for="card_logo" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                                             <i class="blue upload icon" aria-hidden="true"></i>
                                             {% if print_logo.isCustom() %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                                         </label>
@@ -827,7 +827,7 @@
 {% endif %}
 {% if login.isSuperAdmin() %}
         <div class="ui{{ tab == 'admin' ? ' active' }} tab red segment" data-tab="admin">
-    {% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %}
+    {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
                 <div class="ui icon negative message">
                     <i class="ban icon" aria-hidden="true"></i>
                     <div class="content">

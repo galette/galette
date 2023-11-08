@@ -71,7 +71,7 @@ class LightSlimApp
         $builder->useAttributes(true);
         $builder->addDefinitions([
             'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
-            'settings.displayErrorDetails'      => (GALETTE_MODE === 'DEV'),
+            'settings.displayErrorDetails'      => Galette::isDebugEnabled(),
             'settings.addContentLengthHeader'   => false,
             'galette'                           => [
                 'mode'      => $this->mode,

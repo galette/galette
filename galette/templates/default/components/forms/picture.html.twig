@@ -13,7 +13,7 @@
             <div class="description">
                 <div class="ui file action input">
                     <input id="photo_new" type="file" name="photo"/>
-                    <label for="photo_new" class="ui button{% if constant('GALETTE_MODE') == constant('\\Galette\\Core\\Galette::MODE_DEMO') %} disabled{% endif %}">
+                    <label for="photo_new" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                         <i class="blue upload icon" aria-hidden="true"></i>
                         {% if member.hasPicture() == 1 %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
                     </label>

@@ -227,7 +227,7 @@ $app->addRoutingMiddleware();
  * for middleware added after it.
  */
 $errorMiddleware = $app->addErrorMiddleware(
-    (GALETTE_MODE === 'DEV'),
+    Galette::isDebugEnabled(),
     true,
     true
 );

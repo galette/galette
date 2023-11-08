@@ -4,7 +4,7 @@
         {{ _T("Superadmin") }}
     </span>
 {% endif %}
-{% if constant('GALETTE_MODE') == 'DEMO' %}
+{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
     <span class="tooltip ui orange icon circular label" title="{{ _T("This application runs under DEMO mode, all features may not be available.") }}">
         <i class="gamepad icon" aria-hidden="true"></i>
         {{ _T("Demonstration") }}

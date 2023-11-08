@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="ui grid">
-{% if not hide_telemetry and constant('GALETTE_MODE') != 'DEMO' %}
+{% if not hide_telemetry and not callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
         <div class="sixteen wide column">
             <div class="ui yellow message">
                 <div class="header">{{ _T("Help us know about you!") }}</div>

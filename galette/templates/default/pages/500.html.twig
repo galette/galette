@@ -38,7 +38,7 @@
         <h2 class="ui center aligned header">{{ _T("Application error") }}</h2>
     </div>
 
-    {% if login.isLogged() and login.isAdmin() or constant('GALETTE_MODE') == 'DEV' %}
+    {% if login.isLogged() and login.isAdmin() or callstatic('\\Galette\\Core\\Galette', 'isDebugEnabled') %}
         {{ _self.render_ex(exception) }}
     {% endif %}
 {% endblock %}

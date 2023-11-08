@@ -236,7 +236,7 @@ class Db
      */
     public function checkDbVersion()
     {
-        if (GALETTE_MODE === 'DEV') {
+        if (Galette::isDebugEnabled()) {
             Analog::log(
                 'Database version not checked in DEV mode.',
                 Analog::INFO
@@ -983,7 +983,7 @@ class Db
      */
     protected function log($query)
     {
-        if (GALETTE_MODE == 'DEV' || defined('GALETTE_SQL_DEBUG')) {
+        if (Galette::isSqlDebugEnabled()) {
             $logfile = GALETTE_LOGS_PATH . 'galette_sql.log';
             file_put_contents($logfile, $query . "\n", FILE_APPEND);
         }

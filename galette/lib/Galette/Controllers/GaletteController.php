@@ -188,7 +188,7 @@ class GaletteController extends AbstractController
             'pref_card_vspace'      => 1
         );
 
-        if ($this->login->isSuperAdmin() && GALETTE_MODE !== Galette::MODE_DEMO) {
+        if ($this->login->isSuperAdmin() && !Galette::isDemo()) {
             $required['pref_admin_login'] = 1;
         }
 
@@ -295,7 +295,7 @@ class GaletteController extends AbstractController
                 $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($_FILES['logo'])) {
+                if (!Galette::isDemo() && isset($_FILES['logo'])) {
                     if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
@@ -318,7 +318,7 @@ class GaletteController extends AbstractController
                     }
                 }
 
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($post['del_logo'])) {
+                if (!Galette::isDemo() && isset($post['del_logo'])) {
                     if (!$this->logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {
@@ -327,7 +327,7 @@ class GaletteController extends AbstractController
                 }
 
                 // Card logo upload
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($_FILES['card_logo'])) {
+                if (!Galette::isDemo() && isset($_FILES['card_logo'])) {
                     if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['card_logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
@@ -350,7 +350,7 @@ class GaletteController extends AbstractController
                     }
                 }
 
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($post['del_card_logo'])) {
+                if (!Galette::isDemo() && isset($post['del_card_logo'])) {
                     if (!$this->print_logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {

@@ -142,7 +142,7 @@ Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
 
 if (!defined('GALETTE_LOG_LVL')) {
-    if (GALETTE_MODE === 'DEV') {
+    if (\Galette\Core\Galette::isDebugEnabled()) {
         define('GALETTE_LOG_LVL', Analog::DEBUG);
     } elseif (defined('GALETTE_TESTS')) {
         define('GALETTE_LOG_LVL', Analog::NOTICE);
