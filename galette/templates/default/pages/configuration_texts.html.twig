@@ -9,20 +9,29 @@
                 <div class="fields">
                     <div class="inline field">
                         <label for="sel_lang">{{ _T("Language:") }}</label>
-                        <select name="sel_lang" id="sel_lang" class="ui dropdown nochosen lang">
+                        <div class="ui dropdown selection autosubmit">
+                            <input type="hidden" name="sel_lang" value="{{ cur_lang }}">
+                            <i class="dropdown icon"></i>
+                            <div class="text">{{ cur_lang_name }}</div>
+                            <div class="menu">
                             {% for langue in langlist %}
-                                <option value="{{ langue.getID() }}" {% if cur_lang == langue.getID() %}selected="selected"{% endif %}>{{ langue.getName() }}</option>
+                                <div class="item{% if cur_lang == langue.getID() %} active selected {% endif %}" data-value="{{ langue.getID() }}">{{ langue.getName() }}</div>
                             {% endfor %}
-                        </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="inline field">
                         <label for="sel_ref">{{ _T("Reference:") }}</label>
-                        <select name="sel_ref" id="sel_ref" class="ui dropdown nochosen">
+                        <div class="ui dropdown selection autosubmit">
+                            <input type="hidden" name="sel_ref" value="{{ cur_ref }}">
+                            <i class="dropdown icon"></i>
+                            <div class="text">{% for ref in reflist %}{% if cur_ref == ref.tref %}{{ ref.tcomment }}{% endif %}{% endfor %}</div>
+                            <div class="menu">
                             {% for ref in reflist %}
-                                <option value="{{ ref.tref }}" {% if cur_ref == ref.tref %}selected="selected"{% endif %} >{{ ref.tcomment }}</option>
+                                <div class="item{% if cur_ref == ref.tref %} active selected {% endif %}" data-value="{{ ref.tref }}">{{ ref.tcomment }}</div>
                             {% endfor %}
-                        </select>
-                        <noscript><span><input type="submit" value="{{ _T("Change") }}" class="ui button" /></span></noscript>
+                            </div>
+                        </div>
                     </div>
                     {% include 'components/forms/csrf.html.twig' %}
                 </div>
@@ -68,13 +77,6 @@
 {% block javascripts %}
         <script type="text/javascript">
             $(function() {
-                $('#sel_ref, #sel_lang').change(function() {
-                    $(':input[type="submit"]').attr('disabled', 'disabled');
-                    //Change the input[@id='value'] ; we do not want to validate, but to change lang/ref
-                    $('#valid').attr('value', (this.id === 'sel_lang') ? 'change_lang' : 'change_text');
-                    this.form.submit();
-                });
-
                 _addLegendButton('.ui.corner.label');
                 _handleLegend();
                 _bindFomanticComponents();

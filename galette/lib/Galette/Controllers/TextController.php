@@ -93,6 +93,7 @@ class TextController extends AbstractController
                 'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
                 'cur_lang'          => $lang,
+                'cur_lang_name'     => $this->i18n->getNameFromId($lang),
                 'cur_ref'           => $ref,
                 'mtxt'              => $mtxt,
             ]

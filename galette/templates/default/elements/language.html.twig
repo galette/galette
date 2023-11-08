@@ -3,8 +3,8 @@
         {% set component_classes = "tooltip language item" %}
         {% set content_classes = "content" %}
         {% set header = true %}
-    {%  elseif ui == 'dropdown' %}
-        {% set component_classes = "tooltip language ui dropdown right-aligned item" %}
+    {% elseif ui == 'dropdown' %}
+        {% set component_classes = "tooltip language ui dropdown navigation right-aligned item" %}
         {% set content_classes = "menu" %}
         {% set header = false %}
     {% endif %}
@@ -12,24 +12,24 @@
 
 <div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}" title="{{ _T("Choose your language") }}">
 {% if header == true %}
-<div class="image header title">
+    <div class="image header title"{% if ui == 'item'%}data-fold="fold-language" tabindex="0"{% endif %}>
 {% endif %}
-    <i class="icon language" aria-hidden="true"></i>
-    <span>{{ galette_lang }}</span>
-    <i class="dropdown icon" aria-hidden="true"></i>
+        <i class="icon language" aria-hidden="true"></i>
+        <span>{{ galette_lang }}</span>
+        <i class="dropdown icon" aria-hidden="true"></i>
 {% if header == true %}
-</div>
+    </div>
 {% endif %}
-<div class="{{ content_classes }}">
-    {% for langue in languages %}
-        {% if langue.getAbbrev() != galette_lang %}
-    <a href="?ui_pref_lang={{ langue.getID() }}"
-       title="{{ _T("Switch locale to '%locale'")|replace({"%locale": langue.getName()}) }}"
-       class="item"
-    >
-        {{ langue.getName() }} <span>({{ langue.getAbbrev() }})</span>
-    </a>
-        {% endif %}
-    {% endfor %}
-</div>
+    <div class="{{ content_classes }}">
+{% for langue in languages %}
+    {% if langue.getAbbrev() != galette_lang %}
+        <a href="?ui_pref_lang={{ langue.getID() }}"
+           title="{{ _T("Switch locale to '%locale'")|replace({"%locale": langue.getName()}) }}"
+           class="item"
+        >
+            {{ langue.getName() }} <span>({{ langue.getAbbrev() }})</span>
+        </a>
+    {% endif %}
+{% endfor %}
+    </div>
 </div>

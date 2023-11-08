@@ -34,7 +34,8 @@ var _bindFomanticComponents = function() {
 
     var
         $sidebar         = $('.ui.sidebar'),
-        $dropdown        = $('.ui.dropdown, select:not(.nochosen)'),
+        $dropdown        = $('.ui.dropdown:not(.navigation, .autosubmit), select:not(.nochosen)'),
+        $dropdownNav     = $('.ui.dropdown.navigation'),
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
@@ -51,6 +52,15 @@ var _bindFomanticComponents = function() {
      */
     $('.simple.dropdown').removeClass('simple');
     $dropdown.dropdown();
+
+    /* Required for keyboard accessibility on dropdowns used in navigation.
+     */
+    $dropdownNav.dropdown({
+        // Set default action : simply open the link selected.
+        action: function(text, value, element) {
+            location.href = element[0].href;
+        }
+    });
 
     $accordion.accordion();
 
@@ -110,7 +120,48 @@ var _bindFomanticComponents = function() {
     ;
 }
 
-var _bind_check = function(boxelt){
+/* Required for keyboard navigation accessibility.
+ */
+var _keyboardNavigation = function() {
+    // Accordion menus
+    var _folds = document.querySelectorAll('[data-fold^="fold-"]');
+    _folds.forEach(item => {
+        item.addEventListener('keydown', event => {
+            if (event.keyCode == 13) {
+                event.target.click();
+            }
+        })
+    });
+    // Mobile menu trigger
+    var _mobile_menu_trigger = document.querySelector('#top-navbar a.toc.item');
+    _mobile_menu_trigger.addEventListener('keydown', event => {
+        if (event.keyCode == 13) {
+            // Open mobile menu
+            event.target.click();
+            // Jump to mobile menu
+            var url = location.href;
+            location.href = "#sidebarmenu";
+            history.replaceState(null,null,url);
+        }
+    });
+}
+
+/* Required for keyboard accessibility on simple dropdowns with autosubmit.
+ */
+var _bindDropdownsAutosubmit = function() {
+    $('.ui.dropdown.autosubmit').dropdown({
+        action: function(text, value, element) {
+            var element = element.parentElement !== undefined ? element : element[0];
+            var dropdown = element.closest('.ui.dropdown');
+            var form = element.closest('form');
+            $(dropdown).dropdown('set value', value);
+            $(dropdown).dropdown('hide');
+            $(form).trigger('submit');
+        }
+    });
+}
+
+var _bind_check = function(boxelt) {
     if (typeof(boxelt) == 'undefined') {
         boxelt = 'entries_sel'
     }
@@ -141,18 +192,6 @@ var _bind_check = function(boxelt){
     });
 };
 
-var _bindNbshow = function(selector) {
-    if (typeof(selector) == 'undefined') {
-        selector = '';
-    } else {
-        selector = selector + ' ';
-    }
-
-    $(selector + '#nbshow').change(function() {
-        $(this.form).trigger('submit');
-    });
-}
-
 /* Display tables legends in Fomantic UI modal */
 var _bind_legend = function() {
     $('.show_legend').click(function(e){
@@ -170,9 +209,11 @@ $(function() {
 
     $('#login').focus();
 
-    _bindNbshow();
-
     _bindFomanticComponents();
+
+    _bindDropdownsAutosubmit();
+
+    _keyboardNavigation();
 
     var _back2Top = document.getElementById("back2top");
     document.body.addEventListener('scroll', function() {

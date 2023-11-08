@@ -14,7 +14,7 @@
 {% endif %}
 
     <div class="ui vertical{% if not login.getCompactMenu() %} accordion compact{% else %} tiny icon{% endif %} fluid menu">
-        {% set mode = login.getCompactMenu() ? "compact" : "accordion" %}
+        {% set mode = login.getCompactMenu() ? "compact" : "default" %}
         {% include "elements/navigation/navigation_items.html.twig" with {
                 mode: mode
         } %}

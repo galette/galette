@@ -60,3 +60,13 @@
 @invertedActiveHoverBackground: @invertedActiveBackground;
 @invertedActiveHoverColor: darken(@textColor, 15);
 @invertedArrowActiveHoverColor: @invertedArrowActiveColor;
+
+/*----------------------------------
+     Compact mode logout menu
+-----------------------------------*/
+@darkmodeItemBackground: #e0e1e2;
+@darkmodeItemBackgroundInverted: @black;
+@darkmodeHover: #cacbcd;
+@darkmodeActive: #babbbc;
+@logoutItemBackground: @red;
+@logoutItemBackgroundImpersonated: @purple;

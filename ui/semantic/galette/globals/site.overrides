@@ -28,6 +28,19 @@
   overflow-x: auto;
 }
 
+/*---------------------------------------------------------------
+     Override outline on links and navigation elements
+----------------------------------------------------------------*/
+a,
+.ui.button:not(.tertiary),
+.compact_menu .ui.dropdown.item,
+.ui.dropdown.language,
+.infoline .ui.dropdown:not(.tertiary) {
+    &:focus-visible {
+        outline: 3px solid @blueFocus;
+    }
+}
+
 /*--------------------------------
      Base layout and navigation
 ---------------------------------*/

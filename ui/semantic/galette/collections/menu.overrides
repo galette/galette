@@ -76,3 +76,54 @@
     width: 100%;
   }
 }
+
+/*----------------------------------
+     Compact mode logout menu
+-----------------------------------*/
+.compact_menu #logoutmenu {
+  & > a.item {
+    &.darkmode {
+      background-color: @darkmodeItemBackground;
+      &:hover,
+      &:focus {
+        background-color: @darkmodeHover;
+      }
+      &:active {
+        background-color: @darkmodeActive;
+      }
+      &.black {
+        background-color: @darkmodeItemBackgroundInverted;
+        color: @invertedTextColor;
+        &:hover,
+        &:focus {
+          background-color: @blackHover;
+        }
+        &:active {
+          background-color: @blackDown;
+        }
+      }
+    }
+    &.purple {
+      background-color: @logoutItemBackgroundImpersonated;
+      color: @invertedTextColor;
+      &:hover,
+      &:focus {
+        background-color: @purpleHover;
+      }
+      &:active {
+        background-color: @purpleDown;
+      }
+    }
+    &.red {
+      background-color: @logoutItemBackground;
+      color: @invertedTextColor;
+      &:hover,
+      &:focus {
+        background-color: @redHover;
+      }
+      &:active {
+        background-color: @redDown;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-    <div class="ui simple left vertical accordion menu sidebar">
+    <div id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
 {% if not login.isLogged() %}
     {% if cur_route != "login" %}
         {% import "macros.twig" as menus_macros %}
@@ -13,10 +13,13 @@
 
     {% include "elements/navigation/public_pages.html.twig" with {
             tips_position: "right center",
-            sign_in: true
+            sign_in: true,
+            mode: "default"
     } %}
 {% else %}
-    {% include "elements/navigation/navigation_items.html.twig" %}
+    {% include "elements/navigation/navigation_items.html.twig" with {
+            mode: "default"
+    } %}
 {% endif %}
     {% include "elements/language.html.twig" with {
             ui: "item"

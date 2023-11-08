@@ -203,20 +203,6 @@
                 $('#company_field.nocompany').addClass('displaynone');
                 $('#is_company').change(function(){
                     $('#company_field').toggleClass('displaynone');
-                    $('#company_field').backgroundFade(
-                        {
-                            sColor:'#ffffff',
-                            eColor:'#DDDDFF',
-                            steps:10
-                        },
-                        function() {
-                            $(this).backgroundFade(
-                                {
-                                    sColor:'#DDDDFF',
-                                    eColor:'#ffffff'
-                                }
-                            );
-                        });
                 });
 
 {% if not self_adh %}

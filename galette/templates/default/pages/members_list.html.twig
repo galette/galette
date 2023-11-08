@@ -94,7 +94,7 @@
                 </div>
                 <div class="field">
                     <label for="filter_str">{{ _T('among:') }}</label>
-                    <select name="membership_filter" onchange="form.submit()" class="ui search dropdown nochosen">
+                    <select name="membership_filter" class="ui search dropdown nochosen">
                         {% for key, value in membership_filter_options %}
                             <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
@@ -102,7 +102,7 @@
                 </div>
                 <div class="flexend field">
                     <label for="filter_account" class="displaynone">{{ _T('among:') }}</label>
-                    <select name="filter_account" onchange="form.submit()" class="ui search dropdown nochosen">
+                    <select name="filter_account" class="ui search dropdown nochosen">
                         {% for key, value in filter_accounts_options %}
                             <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
@@ -110,7 +110,7 @@
                 </div>
                 <div class="flexend field">
                     <label for="group_filter" class="displaynone">{{ _T('among:') }}</label>
-                    <select name="group_filter" onchange="form.submit()" class="ui search dropdown nochosen">
+                    <select name="group_filter" class="ui search dropdown nochosen">
                         <option value="0">{{ _T('Select a group') }}</option>
     {% for group in filter_groups_options %}
                         <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getIndentName()|raw }}</option>

@@ -4,9 +4,10 @@
         {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
     {% endfor %}
     {% if mode == "compact" %}
-        <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown item no-touch tooltip" data-html="{{ title }}" data-position="right center">
+        <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown navigation item no-touch tooltip" data-html="{{ title }}" data-position="right center">
             <i class="{{ icon }} icon" aria-hidden="true"></i>
             <span class="displaynone">{{ title }}</span>
+            <i class="dropdown icon" aria-hidden="true"></i>
             <div class="menu">
                 {% for item in items %}
                     {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null, null, 'right center') }}
@@ -15,21 +16,21 @@
         </div>
     {% else %}
         <div class="item">
-            <div class="image header title{% if cur_route in my_routes %} active{% endif %}">
+            <div class="image header title{% if cur_route in my_routes %} active{% endif %}" data-fold="fold-{{ icon|replace({' ': '-'}) }}" tabindex="0">
                 <i class="{{ icon }} icon" aria-hidden="true"></i>
                 {{ title }}
                 <i class="dropdown icon" aria-hidden="true"></i>
             </div>
             <div class="content{% if cur_route in my_routes %} active{% endif %}">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null) }}
+                    {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null, null, null, mode) }}
                 {% endfor %}
             </div>
         </div>
     {% endif %}
 {% endmacro %}
 
-{% macro renderMenuItem(label, title, route, icon, class, tips_position) %}
+{% macro renderMenuItem(label, title, route, icon, class, tips_position, mode) %}
     {% if class is empty %}
         {% if is_current_url(route.name, route.args|default([])) or (cur_route in route.aliases ?? [] and route.sub_select ?? true == true) %}
             {% set class = "active item" %}
@@ -42,6 +43,7 @@
             class="{{ class }}"
             title="{{ title }}"
             {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
+            {% if mode != "default" %}tabindex="-1"{% endif %}
     >
         {% if icon %}
             <i class="{{ icon }} icon" aria-hidden="true"></i>

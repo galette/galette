@@ -9,6 +9,18 @@
   height: 7rem;
 }
 
+/*------------------------------
+     Compact menu dropdowns
+-------------------------------*/
+.compact_menu .ui.dropdown .dropdown.icon {
+    margin: 0;
+    float: none;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 /*--------------------------
      Language dropdown
 ---------------------------*/

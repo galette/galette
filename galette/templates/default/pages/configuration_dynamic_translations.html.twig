@@ -8,13 +8,17 @@
         </div>
         <div class="ui bottom attached accordion-styled segment">
             <form action="{{ url_for('dynamicTranslations') }}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
-                <div class="field inline">
-                    <select name="text_orig" id="text_orig" class="ui dropdown nochosen">
-                    {% for value in orig %}
-                        <option value="{{ value }}"{% if value == text_orig %} selected="selected"{% endif %}>{{ value }}</option>
-                    {% endfor %}
-                    </select>
-                    <noscript> <span><input type="submit" value="{{ _T("Change") }}" class="ui button" /></span></noscript>
+                <div class="inline field">
+                    <div class="ui dropdown selection autosubmit">
+                        <input type="hidden" name="text_orig" value="{{ text_orig }}">
+                        <i class="dropdown icon"></i>
+                        <div class="text">{{ text_orig }}</div>
+                        <div class="menu">
+                        {% for value in orig %}
+                            <div class="item{% if value == text_orig %} active selected {% endif %}" data-value="{{ value }}">{{ value }}</div>
+                        {% endfor %}
+                        </div>
+                    </div>
                     {% include "components/forms/csrf.html.twig" %}
                 </div>
             </form>
@@ -60,21 +64,5 @@
         </form>
 {% else %}
         <p>{{ _T("No fields to translate.") }}</p>
-{% endif %}
-{% endblock %}
-
-{% block javascripts %}
-{% if trans is defined and trans|length > 0 %}
-    {% if exists %}
-    <script type="text/javascript">
-        $('#text_orig').change(function(e) {
-            e.preventDefault();
-            var _selected  = $('#text_orig option:selected').val();
-            var _form = $('#select_orig');
-            _form.attr('action', _form.attr('action') + '/' + _selected)
-            $('#select_orig').submit();
-        });
-    </script>
-    {% endif %}
 {% endif %}
 {% endblock %}

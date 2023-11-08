@@ -1,7 +1,8 @@
 <header id="top-navbar" class="ui top fixed menu">
     <div class="ui fluid container">
-        <a class="toc item">
+        <a class="toc item" tabindex="0">
             <i class="sidebar icon" aria-hidden="true"></i>
+            <span class="displaynone">{{ _T("Menu") }}</span>
         </a>
         {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
             <a
@@ -23,7 +24,8 @@
         {% include "elements/navigation/public_pages.html.twig" with {
                 tips_position: "bottom center",
                 sign_in: true,
-                sign_in_side: 'right'
+                sign_in_side: 'right',
+                mode: "default"
         } %}
 
         {% include "elements/language.html.twig" with {

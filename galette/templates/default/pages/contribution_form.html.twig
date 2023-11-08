@@ -41,23 +41,21 @@
     {% endif %}
                             <div class="inline field{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required{% endif %}">
                                 <label for="id_type_cotis">{{ _T("Contribution type:") }}</label>
-                                <select name="id_type_cotis" id="id_type_cotis" class="ui dropdown nochosen"{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required="required"{% endif %}>
+                                <div id="id_type_cotis" class="ui dropdown selection nochosen">
                                     {% if contribution.type %}
                                         {% set selectedid = contribution.type.id %}
                                     {% else %}
                                         {% set selectedid = null %}
                                     {% endif %}
+                                    <input id="id_type_cotis_input" type="hidden" name="id_type_cotis" value="{{ selectedid }}"{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required="required"{% endif %}>
+                                    <i class="dropdown icon"></i>
+                                    <div class="text">{% for key, value in type_cotis_options %}{% if key == selectedid %}{{ value }}{% endif %}{% endfor %}</div>
+                                    <div class="menu">
                                     {% for key, value in type_cotis_options %}
-                                        <option value="{{ key }}"{% if key == selectedid %} selected="selected"{% endif %}>{{ value }}</option>
+                                        <div class="item{% if key == selectedid %} active selected{% endif %}" data-value="{{ key }}">{{ value }}</div>
                                     {% endfor %}
-                                </select>
-    {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
-                                <noscript>
-                                    <div class="ui basic fitted segment" id="reloadcont">
-                                        <input type="submit" id="btnreload" name="btnreload" value="{{ _T("Reload") }}" title="{{ _T("Reload date information according to selected member and contribution type") }}" class="ui button"/>
                                     </div>
-                                </noscript>
-    {% endif %}
+                                </div>
                             </div>
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
                             <div class="inline field">
@@ -270,38 +268,45 @@
     $(function() {
 
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') and not contribution.id %}
-        $('#id_adh, #id_type_cotis').on('change', function() {
-            var _this = $(this);
-            var _member = $('#id_adh').val();
-            var _fee    = $('#id_type_cotis').val();
+        $('#id_adh, #id_type_cotis').dropdown({
+            action: function(text, value, element) {
+                var element = element.parentElement !== undefined ? element : element[0];
+                var dropdown = element.parentElement.parentElement;
+                $(dropdown).find('div.text').html(text);
+                $(dropdown).dropdown('set selected', value);
+                $(dropdown).dropdown('hide');
 
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url : '{{ url_for("contributionDates") }}',
-                data: {
-                    member_id: _member,
-                    fee_id: _fee
-                },
-                {% include "elements/js/loader.js.twig" with {
-                    selector: '#contribdetails'
-                } %},
-                success: function(res){
-                    $('#date_debut_cotis').val(res.date_debut_cotis);
-                    $('#date_fin_cotis').val(res.date_fin_cotis);
-                },
-                error: function() {
-                    {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("An error occurred retrieving dates :(")|e("js"),
-                        modal_without_content: true,
-                        modal_class: "mini",
-                        modal_deny_only: true,
-                        modal_cancel_text: _T("Close")|e("js"),
-                        modal_classname: "redalert",
-                    } %}
-                }
-            });
+                var _member = $('#id_adh_input').val();
+                var _fee    = $('#id_type_cotis_input').val();
 
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url : '{{ url_for("contributionDates") }}',
+                    data: {
+                        member_id: _member,
+                        fee_id: _fee
+                    },
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: '#contribdetails'
+                    } %},
+                    success: function(res){
+                        $('#date_debut_cotis').val(res.date_debut_cotis);
+                        $('#date_fin_cotis').val(res.date_fin_cotis);
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred retrieving dates :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+
+            }
         });
     {% endif %}
 

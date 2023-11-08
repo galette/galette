@@ -4,7 +4,7 @@
     {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
     {% for public_menu in public_menus %}
         {% for public_item in public_menu.items %}
-            {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon ?? null, null, tips_position) }}
+            {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
         {% endfor %}
     {% endfor %}
 
@@ -30,7 +30,7 @@
     {% endif %}
 
     {% for public_item in public_items %}
-        {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon, public_item.class, tips_position) }}
+        {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon, public_item.class, tips_position, mode) }}
     {% endfor %}
         <a
             href="#"

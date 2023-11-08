@@ -22,12 +22,16 @@
                     <div class="ui basic right aligned fitted segment">
                         <div class="inline field">
                             <label for="nbshow">{{ _T('Records per page:') }}</label>
-                            <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
+                            <div class="ui dropdown selection autosubmit">
+                                <input type="hidden" name="nbshow" value="{{ numrows }}">
+                                <i class="dropdown icon"></i>
+                                <div class="text">{% if numrows == 0 %}{{ _T('All') }}{% else %}{{ numrows }}{% endif %}</div>
+                                <div class="menu">
                                 {% for key, value in nbshow_options %}
-                                    <option value="{{ key }}"{% if key == numrows %} selected="selected"{% endif %}>{{ value }}</option>
+                                    <div class="item{% if key == numrows %} active selected {% endif %}" data-value="{{ key }}">{{ value }}</div>
                                 {% endfor %}
-                            </select>
-                            <noscript><span><input type="submit" value="{{ _T('Change') }}" class="ui button" /></span></noscript>
+                                </div>
+                            </div>
                         </div>
                     </div>
         {% endif %}
@@ -152,10 +156,14 @@
             {% endif %}
                 $('.batch-select-action').before(_checklinks);
                 $('.batch-select-action').dropdown({
-                    onChange: function(value, text, $selectedItem) {
+                    action: function(text, value, element) {
                         if (!_checkselection()) {
                             return false;
                         }
+                        // Hide dropdown
+                        var element = element.parentElement !== undefined ? element : element[0];
+                        var dropdown = element.parentElement.parentElement;
+                        $(dropdown).dropdown('hide');
                         // Handle direct download actions.
                         if (value.endsWith('__directdownload')) {
                             const _value = value.split('__');
