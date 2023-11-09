@@ -83,7 +83,7 @@ class Reminders
      * Load reminders
      *
      * @param Db      $zdb    Database instance
-     * @param string  $type   Reminder type
+     * @param integer $type   Reminder type
      * @param boolean $nomail Get reminders for members who do not have email address
      *
      * @return void

@@ -192,15 +192,15 @@ class Plugins
      * <var>$priority</var> is an integer. Modules are sorted by priority and name.
      * Lowest priority comes first.
      *
-     * @param string  $name     Module name
-     * @param string  $desc     Module description
-     * @param string  $author   Module author name
-     * @param string  $version  Module version
-     * @param string  $compver  Galette version compatibility
-     * @param string  $route    Module route name
-     * @param string  $date     Module release date
-     * @param string  $acls     Module routes ACLs
-     * @param integer $priority Module priority
+     * @param string   $name     Module name
+     * @param string   $desc     Module description
+     * @param string   $author   Module author name
+     * @param string   $version  Module version
+     * @param string   $compver  Galette version compatibility
+     * @param string   $route    Module route name
+     * @param string   $date     Module release date
+     * @param string   $acls     Module routes ACLs
+     * @param ?integer $priority Module priority
      *
      * @return void
      */

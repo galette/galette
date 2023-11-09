@@ -689,6 +689,7 @@ class Group
             }
         } while ($group = $group->getParentGroup());
 
+        //@phpstan-ignore-next-line
         return true;
     }
 

@@ -189,6 +189,7 @@ abstract class CrudController extends AbstractController
      */
     protected function getIdsToRemove(&$args, $post)
     {
+        /** @var  null|array|string $ids */
         $ids = null;
         if (isset($post['id'])) {
             $ids = $post['id'];
@@ -210,6 +211,7 @@ abstract class CrudController extends AbstractController
         }
 
         //add to $args if needed
+        //@phpstan-ignore-next-line
         if (is_array($ids)) {
             $args['ids'] = $ids;
         } elseif (!isset($args['id']) && $ids) {

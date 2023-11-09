@@ -337,7 +337,7 @@ class Preferences
      * Check if all fields referenced in the default array does exists,
      * create them if not
      *
-     * @return void|false
+     * @return boolean
      */
     private function checkUpdate()
     {
@@ -392,6 +392,8 @@ class Preferences
                 Analog::INFO
             );
         }
+
+        return true;
     }
 
     /**
@@ -1041,7 +1043,7 @@ class Preferences
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */

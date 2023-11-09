@@ -176,18 +176,20 @@ class Contributions
     /**
      * Builds the SELECT statement
      *
-     * @param array $fields fields list to retrieve
-     * @param bool  $count  true if we want to count members
-     *                      (not applicable from static calls), defaults to false
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $count  true if we want to count members
+     *                       (not applicable from static calls), defaults to false
      *
-     * @return string SELECT statement
+     * @return Select SELECT statement
      */
-    private function buildSelect($fields, $count = false)
+    private function buildSelect(?array $fields, bool $count = false): Select
     {
         try {
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
+            $fieldsList = ['*'];
+            if (is_array($fields) && count($fields)) {
+                $fieldsList = $fields;
+            }
+
 
             $select = $this->zdb->select(self::TABLE, 'a');
             $select->columns($fieldsList);
@@ -499,50 +501,10 @@ class Contributions
     public function remove($ids, History $hist, $transaction = true)
     {
         $list = array();
-        if (is_numeric($ids)) {
-            //we've got only one identifier
-            $list[] = $ids;
-        } else {
+        if (is_array($ids)) {
             $list = $ids;
-        }
-
-        if (is_array($list)) {
-            try {
-                if ($transaction) {
-                    $this->zdb->connection->beginTransaction();
-                }
-                $select = $this->zdb->select(self::TABLE);
-                $select->where->in(self::PK, $list);
-                $contributions = $this->zdb->execute($select);
-                foreach ($contributions as $contribution) {
-                    $c = new Contribution($this->zdb, $this->login, $contribution);
-                    $res = $c->remove(false);
-                    if ($res === false) {
-                        throw new \Exception();
-                    }
-                }
-                if ($transaction) {
-                    $this->zdb->connection->commit();
-                }
-                $hist->add(
-                    str_replace(
-                        '%list',
-                        print_r($list, true),
-                        _T("Contributions deleted (%list)")
-                    )
-                );
-                return true;
-            } catch (Throwable $e) {
-                if ($transaction) {
-                    $this->zdb->connection->rollBack();
-                }
-                Analog::log(
-                    'An error occurred trying to remove contributions | ' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
-                throw $e;
-            }
+        } elseif (is_numeric($ids)) {
+            $list = [(int)$ids];
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
@@ -550,6 +512,43 @@ class Contributions
                 Analog::WARNING
             );
             return false;
+        }
+
+        try {
+            if ($transaction) {
+                $this->zdb->connection->beginTransaction();
+            }
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->in(self::PK, $list);
+            $contributions = $this->zdb->execute($select);
+            foreach ($contributions as $contribution) {
+                $c = new Contribution($this->zdb, $this->login, $contribution);
+                $res = $c->remove(false);
+                if ($res === false) {
+                    throw new \Exception();
+                }
+            }
+            if ($transaction) {
+                $this->zdb->connection->commit();
+            }
+            $hist->add(
+                str_replace(
+                    '%list',
+                    print_r($list, true),
+                    _T("Contributions deleted (%list)")
+                )
+            );
+            return true;
+        } catch (Throwable $e) {
+            if ($transaction) {
+                $this->zdb->connection->rollBack();
+            }
+            Analog::log(
+                'An error occurred trying to remove contributions | ' .
+                $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
         }
     }
 }

@@ -608,7 +608,7 @@ abstract class DynamicField
 
         if (
             (!isset($values['field_name']) || $values['field_name'] == '')
-            && get_class($this) != '\Galette\DynamicField\Separator'
+            && !$this instanceof Separator
         ) {
             $this->errors[] = _T('Missing required field name!');
         } else {

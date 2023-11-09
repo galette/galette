@@ -1,7 +1,7 @@
 parameters:
     parallel:
         maximumNumberOfProcesses: 2
-    level: 3
+    level: 4
     paths:
         - galette/lib/
     scanFiles:
@@ -11,6 +11,8 @@ parameters:
         - galette/config/galette_tcpdf_config.php
     scanDirectories:
         - galette/includes/
+    dynamicConstantNames:
+        - GALETTE_NIGHTLY
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Attribute class .*\\Inject does not exist./'

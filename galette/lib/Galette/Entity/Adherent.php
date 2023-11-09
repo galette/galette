@@ -1316,30 +1316,29 @@ class Adherent
                     $this->errors[] = _T("- Non-valid E-Mail address!") .
                         ' (' . $this->getFieldLabel($field) . ')';
                 }
-                if ($field == 'email_adh') {
-                    try {
-                        $select = $this->zdb->select(self::TABLE);
-                        $select->columns(
-                            array(self::PK)
-                        )->where(array('email_adh' => $value));
-                        if (!empty($this->_id)) {
-                            $select->where->notEqualTo(
-                                self::PK,
-                                $this->_id
-                            );
-                        }
 
-                        $results = $this->zdb->execute($select);
-                        if ($results->count() !== 0) {
-                            $this->errors[] = _T("- This E-Mail address is already used by another member!");
-                        }
-                    } catch (Throwable $e) {
-                        Analog::log(
-                            'An error occurred checking member email uniqueness.',
-                            Analog::ERROR
+                try {
+                    $select = $this->zdb->select(self::TABLE);
+                    $select->columns(
+                        array(self::PK)
+                    )->where(array('email_adh' => $value));
+                    if (!empty($this->_id)) {
+                        $select->where->notEqualTo(
+                            self::PK,
+                            $this->_id
                         );
-                        $this->errors[] = _T("An error has occurred while looking if login already exists.");
                     }
+
+                    $results = $this->zdb->execute($select);
+                    if ($results->count() !== 0) {
+                        $this->errors[] = _T("- This E-Mail address is already used by another member!");
+                    }
+                } catch (Throwable $e) {
+                    Analog::log(
+                        'An error occurred checking member email uniqueness.',
+                        Analog::ERROR
+                    );
+                    $this->errors[] = _T("An error has occurred while looking if login already exists.");
                 }
                 break;
             case 'login_adh':

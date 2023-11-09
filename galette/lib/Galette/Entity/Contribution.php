@@ -698,11 +698,6 @@ class Contribution
                     );
                 }
 
-                if ($edit === false) {
-                    throw new \Exception(
-                        'An error occurred updating contribution # ' . $this->_id . '!'
-                    );
-                }
                 $event = 'contribution.edit';
             }
             //update deadline
@@ -1482,7 +1477,7 @@ class Contribution
         }
 
         //admin and staff users can edit, as well as member itself
-        if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
+        if (!$this->id || $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 

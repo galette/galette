@@ -53,8 +53,6 @@ use Laminas\Db\Adapter\Adapter;
  */
 class PluginInstall extends Install
 {
-    private $versions_mapper = [];
-
     /**
      * Main constructor
      */

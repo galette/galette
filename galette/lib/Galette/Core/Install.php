@@ -80,7 +80,6 @@ class Install
 
     protected $_step;
     private $_mode;
-    private $_version;
     private $_installed_version;
 
     private $_db_type;
@@ -106,7 +105,6 @@ class Install
     {
         $this->_step = self::STEP_CHECK;
         $this->_mode = null;
-        $this->_version = str_replace('v', '', GALETTE_VERSION);
         $this->_db_connected = false;
         $this->_db_prefix = null;
     }
@@ -1140,7 +1138,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @param I18n  $i18n  I18n
      * @param Db    $zdb   Database instance
-     * @param Login $login Loged in instance
+     * @param Login $login Logged in instance
      *
      * @return boolean
      */
@@ -1302,7 +1300,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             if (isset($this->versions_mapper[$db_ver])) {
                 return $this->versions_mapper[$db_ver];
             } else {
-                return (string)$db_ver;
+                return $db_ver;
             }
         } catch (\LogicException $e) {
             return false;

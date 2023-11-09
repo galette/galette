@@ -127,7 +127,6 @@ class HistoryController extends AbstractController
     public function historyFilter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $error_detected = [];
 
         if ($this->session->filter_history !== null) {
             $filters = $this->session->filter_history;
@@ -163,16 +162,6 @@ class HistoryController extends AbstractController
         }
 
         $this->session->filter_history = $filters;
-
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
 
         return $response
             ->withStatus(301)

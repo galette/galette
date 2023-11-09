@@ -94,13 +94,13 @@ class Transactions
      *
      * @param bool    $as_trans return the results as an array of
      *                          Transaction object.
-     * @param array   $fields   field(s) name(s) to get. Should be a string or
+     * @param ?array  $fields   field(s) name(s) to get. Should be a string or
      *                          an array. If null, all fields will be returned
      * @param boolean $count    true if we want to count members
      *
      * @return Transaction[]|ArrayObject
      */
-    public function getList($as_trans = false, $fields = null, $count = true)
+    public function getList(bool $as_trans = false, ?array $fields = null, bool $count = true): array|ArrayObject
     {
         try {
             $select = $this->buildSelect($fields, $count);
@@ -129,13 +129,13 @@ class Transactions
     /**
      * Builds the SELECT statement
      *
-     * @param array $fields fields list to retrieve
-     * @param bool  $count  true if we want to count members
-     *                      (not applicable from static calls), defaults to false
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $count  true if we want to count members
+     *                       (not applicable from static calls), defaults to false
      *
      * @return Select SELECT statement
      */
-    private function buildSelect($fields, $count = false)
+    private function buildSelect(?array $fields, bool $count = false): Select
     {
         try {
             $select = $this->zdb->select(self::TABLE, 't');

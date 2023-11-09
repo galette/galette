@@ -217,11 +217,13 @@ abstract class PdfModel
     public function store()
     {
         $title = $this->title;
+        //@phpstan-ignore-next-line
         if ($title === null || trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
+        //@phpstan-ignore-next-line
         if ($subtitle === null || trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }

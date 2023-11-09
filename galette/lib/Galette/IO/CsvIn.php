@@ -422,6 +422,7 @@ class CsvIn extends Csv implements FileInterface
                 $member->dynamicsValidate($dfields);
                 $errors = $member->getErrors();
                 if (count($errors) > $errcnt) {
+                    //@phpstan-ignore-next-line
                     $lcnt = ($errcnt > 0 ? $errcnt - 1 : 0);
                     $cnt_err = count($errors);
                     for ($i = $lcnt; $i < $cnt_err; ++$i) {

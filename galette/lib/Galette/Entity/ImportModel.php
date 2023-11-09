@@ -119,19 +119,15 @@ class ImportModel
     public function remove(Db $zdb)
     {
         try {
-            $result = $zdb->db->query(
+            $zdb->db->query(
                 'TRUNCATE TABLE ' . PREFIX_DB . self::TABLE,
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            if ($result) {
-                $this->id = null;
-                $this->fields = null;
-                $this->creation_date = null;
-                return true;
-            }
-
-            return false;
+            $this->id = null;
+            $this->fields = null;
+            $this->creation_date = null;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to remove import model ' . $e->getMessage(),
@@ -194,7 +190,7 @@ class ImportModel
     /**
      * Get fields
      *
-     * @return array
+     * @return ?array
      */
     public function getFields()
     {

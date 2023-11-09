@@ -82,7 +82,7 @@ class CsvOut extends Csv
      * @param string         $separator The CSV separator (either '\t', ';' or ','
      *                                  are accepted)
      * @param string         $quote     how does fields should be quoted
-     * @param bool           $titles    does export shows column titles or not.
+     * @param array|false    $titles    does export shows column titles or not.
      *                                  Defaults to false.
      * @param resource|false $file      export to a file on disk. A file pointer
      *                                  should be passed here. Defaults to false.
@@ -115,7 +115,7 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if ($titles && !is_array($titles)) {
+        if (!is_array($titles)) {
             $row = $results[0];
             foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
@@ -125,7 +125,7 @@ class CsvOut extends Csv
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } elseif ($titles && is_array($titles) && count($titles) > 1) {
+        } elseif (count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),
@@ -321,7 +321,7 @@ class CsvOut extends Csv
                 );
                 return self::FILE_NOT_WRITABLE;
             }
-            return $export['filename'];
+            return (string)$export['filename'];
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while exporting | ' . $e->getMessage(),
@@ -406,13 +406,13 @@ class CsvOut extends Csv
      *
      * @param string $id export's id to run
      *
-     * @return string filename used
+     * @return ?string filename used
      */
     public function runParametedExport($id)
     {
         //try first to run from YAML configuration file
         $run = $this->runYamlParametedExport($id);
-        if ($run !== null) {
+        if ($run !== null && $run !== false) {
             return $run;
         }
 
@@ -420,5 +420,7 @@ class CsvOut extends Csv
         if (file_exists($this->legacy_parameted_file)) {
             return $this->runXmlParametedExport($id);
         }
+
+        return null;
     }
 }

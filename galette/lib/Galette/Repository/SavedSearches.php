@@ -129,18 +129,19 @@ class SavedSearches
     /**
      * Builds the SELECT statement
      *
-     * @param array $fields fields list to retrieve
-     * @param bool  $count  true if we want to count members
-     *                      (not applicable from static calls), defaults to false
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $count  true if we want to count members
+     *                       (not applicable from static calls), defaults to false
      *
      * @return Select SELECT statement
      */
-    private function buildSelect($fields, $count = false)
+    private function buildSelect(?array $fields, bool $count = false): Select
     {
         try {
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
+            $fieldsList = ['*'];
+            if ($fields !== null && count($fields)) {
+                $fieldsList = $fields;
+            }
 
             $select = $this->zdb->select(self::TABLE, 's');
             $select->columns($fieldsList);

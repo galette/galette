@@ -589,11 +589,11 @@ class Members
     /**
      * Builds the SELECT statement
      *
-     * @param int   $mode   the current mode (see self::SHOW_*)
-     * @param array $fields fields list to retrieve
-     * @param bool  $photos true if we want to get only members with photos
-     *                      Default to false, only relevant for SHOW_PUBLIC_LIST
-     * @param bool  $count  true if we want to count members, defaults to false
+     * @param int    $mode   the current mode (see self::SHOW_*)
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $photos true if we want to get only members with photos
+     *                       Default to false, only relevant for SHOW_PUBLIC_LIST
+     * @param bool   $count  true if we want to count members, defaults to false
      *
      * @return Select SELECT statement
      */
@@ -605,9 +605,11 @@ class Members
             if ($fields != null && is_array($fields) && !in_array('id_adh', $fields)) {
                 $fields[] = 'id_adh';
             }
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : $fields) : (array)'*';
+
+            $fieldsList = ['*'];
+            if (is_array($fields) && count($fields)) {
+                $fieldsList = $fields;
+            }
 
             $select = $zdb->select(self::TABLE, 'a');
 
@@ -974,7 +976,7 @@ class Members
      * provided fields list (those that are SELECT'ed).
      *
      * @param string $field_name Field name to order by
-     * @param array  $fields     SELECTE'ed fields
+     * @param ?array $fields     SELECTE'ed fields
      *
      * @return boolean
      */
@@ -1514,23 +1516,6 @@ class Members
 
                         $qry .= $qop . ' ' . $fs['search'];
                     }
-                } elseif ($fs['field'] == 'status_label') {
-                    $qry_pattern = '%p%field %op %value';
-                    $qry .= str_replace(
-                        [
-                            '%p',
-                            '%field',
-                            '%op',
-                            '%value'
-                        ],
-                        [
-                            'status.',
-                            'libelle_statut',
-                            $qop,
-                            $zdb->platform->quoteValue($fs['search'])
-                        ],
-                        $qry_pattern
-                    );
                 } else {
                     $field = $prefix . $fs['field'];
                     if ($zdb->isPostgres()) {

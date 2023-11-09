@@ -669,13 +669,6 @@ class MembersController extends CrudController
         $fc = $this->fields_config;
         $fc->filterVisible($this->login, $fields);
 
-        //add status label search
-        if ($pos = array_search(Status::PK, array_keys($fields))) {
-            $fields = array_slice($fields, 0, $pos, true) +
-                ['status_label'  => ['label' => _T('Status label')]] +
-                array_slice($fields, $pos, count($fields) - 1, true);
-        }
-
         //dynamic fields
         $member = new Adherent($this->zdb);
         $member
@@ -1432,7 +1425,6 @@ class MembersController extends CrudController
             );
 
         $success_detected = [];
-        $warning_detected = [];
         $error_detected = [];
 
         if ($this->isSelfMembership() && !isset($post[Adherent::PK])) {
@@ -1637,14 +1629,6 @@ class MembersController extends CrudController
                 }
             }
 
-            if (count($warning_detected) > 0) {
-                foreach ($warning_detected as $warning) {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        $warning
-                    );
-                }
-            }
             if (count($success_detected) > 0) {
                 foreach ($success_detected as $success) {
                     $this->flash->addMessage(

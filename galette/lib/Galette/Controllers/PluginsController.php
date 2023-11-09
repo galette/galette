@@ -176,18 +176,15 @@ class PluginsController extends AbstractController
         $error_detected = [];
 
         $plugid = $id;
-        $plugin = $this->plugins->getModules($plugid);
-
-        if ($plugin === null) {
+        if (!$this->plugins->moduleExists($plugid)) {
             Analog::log(
                 'Unable to load plugin `' . $plugid . '`!',
                 Analog::URGENT
             );
-            //FIXME: use proper error page
-            /*$notFound = $this->notFoundHandler;
-            return $notFound($request, $response);*/
             return $response->withStatus(404);
         }
+
+        $plugin = $this->plugins->getModules($plugid);
 
         $install = null;
         $mdplugin = md5($plugin['root']);

@@ -472,51 +472,48 @@ class MailingHistory extends History
     public function removeEntries($ids, History $hist)
     {
         $list = array();
-        if (is_numeric($ids)) {
-            //we've got only one identifier
-            $list[] = $ids;
-        } else {
+        if (is_array($ids)) {
             $list = $ids;
-        }
-
-        if (is_array($list)) {
-            try {
-                foreach ($list as $id) {
-                    $mailing = new Mailing($this->preferences, [], $id);
-                    $mailing->removeAttachments();
-                }
-
-                $this->zdb->connection->beginTransaction();
-
-                //delete members
-                $delete = $this->zdb->delete(self::TABLE);
-                $delete->where->in(self::PK, $list);
-                $this->zdb->execute($delete);
-
-                //commit all changes
-                $this->zdb->connection->commit();
-
-                //add an history entry
-                $hist->add(
-                    _T("Delete mailing entries")
-                );
-
-                return true;
-            } catch (Throwable $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'Unable to delete selected mailing history entries |' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
-                return false;
-            }
+        } elseif (is_numeric($ids)) {
+            $list = [(int)$ids];
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
                 'Asking to remove mailing entries, but without ' .
                 'providing an array or a single numeric value.',
                 Analog::WARNING
+            );
+            return false;
+        }
+
+        try {
+            foreach ($list as $id) {
+                $mailing = new Mailing($this->preferences, [], $id);
+                $mailing->removeAttachments();
+            }
+
+            $this->zdb->connection->beginTransaction();
+
+            //delete members
+            $delete = $this->zdb->delete(self::TABLE);
+            $delete->where->in(self::PK, $list);
+            $this->zdb->execute($delete);
+
+            //commit all changes
+            $this->zdb->connection->commit();
+
+            //add an history entry
+            $hist->add(
+                _T("Delete mailing entries")
+            );
+
+            return true;
+        } catch (Throwable $e) {
+            $this->zdb->connection->rollBack();
+            Analog::log(
+                'Unable to delete selected mailing history entries |' .
+                $e->getMessage(),
+                Analog::ERROR
             );
             return false;
         }
