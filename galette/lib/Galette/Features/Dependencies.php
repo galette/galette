@@ -78,15 +78,32 @@ trait Dependencies
     );
 
     /**
+     * Set dependencies
+     *
+     * @param array $deps Dependencies to set
+     *
+     * @return $this
+     */
+    public function setDeps(array $deps): self
+    {
+        $this->_deps = array_merge(
+            $this->_deps,
+            $deps
+        );
+        return $this;
+    }
+
+    /**
      * Reset dependencies to load
      *
      * @return $this
      */
     public function disableAllDeps(): self
     {
-        foreach ($this->_deps as &$dep) {
-            $dep = false;
-        }
+        $this->_deps = array_fill_keys(
+            array_keys($this->_deps),
+            false
+        );
         return $this;
     }
 

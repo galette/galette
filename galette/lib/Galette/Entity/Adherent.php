@@ -191,15 +191,6 @@ class Adherent
     private $_row_classes;
 
     private $_self_adh = false;
-    protected array $_deps = array(
-        'picture'   => true,
-        'groups'    => true,
-        'dues'      => true,
-        'parent'    => false,
-        'children'  => false,
-        'dynamics'  => false,
-        'socials'   => false
-    );
 
     private $zdb;
     private $preferences;
@@ -234,16 +225,10 @@ class Adherent
 
         if ($deps !== null) {
             if (is_array($deps)) {
-                $this->_deps = array_merge(
-                    $this->_deps,
-                    $deps
-                );
+                $this->setDeps($deps);
             } elseif ($deps === false) {
                 //no dependencies
-                $this->_deps = array_fill_keys(
-                    array_keys($this->_deps),
-                    false
-                );
+                $this->disableAllDeps();
             } else {
                 Analog::log(
                     '$deps should be an array, ' . gettype($deps) . ' given!',
