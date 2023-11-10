@@ -167,7 +167,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if login.isAdmin() or login.isStaff() %}
+    {% if (login.isAdmin() or login.isStaff()) and member is not defined %}
         <a
             class="ui tiny labeled icon button"
             href="{{ url_for("addContribution", {type: constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}"
