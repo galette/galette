@@ -385,6 +385,8 @@
                 {% set value = member.sdue_free %}
             {% elseif column.field_id == 'sexe_adh' %}
                 {% set value = member.sgender %}
+            {% elseif column.field_id == 'ddn_adh' %}
+                {% set lrclass = lrclass ~ ' collapsing' %}
             {% endif %}
 
             {# If value has not been set, take the generic value #}

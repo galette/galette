@@ -215,10 +215,6 @@ class ListsConfig extends FieldsConfig
             case 'date_modif_adh':
                 $field->label = _T('Modified');
                 break;
-            case 'ddn_adh':
-                //TRANS: see https://www.urbandictionary.com/define.php?term=b-day
-                $field->label = _T('b-day');
-                break;
             case 'tel_adh':
                 $field->label = _T('Phone');
                 break;
