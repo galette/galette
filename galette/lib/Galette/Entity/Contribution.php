@@ -303,7 +303,7 @@ class Contribution
      */
     public function load($id)
     {
-        if (!$this->login->isLogged()) {
+        if (!$this->login->isLogged() && $this->login->id == '') {
             return false;
         }
 
