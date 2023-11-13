@@ -9,7 +9,7 @@
         <div class="ui bottom attached accordion-styled segment">
             <form action="{{ url_for('dynamicTranslations') }}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
                 <div class="inline field">
-                    <div class="ui dropdown selection autosubmit">
+                    <div class="ui fluid dropdown selection autosubmit">
                         <input type="hidden" name="text_orig" value="{{ text_orig }}">
                         <i class="dropdown icon"></i>
                         <div class="text">{{ text_orig }}</div>
