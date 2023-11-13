@@ -92,7 +92,7 @@ jobs:
       fail-fast: false
 
     env:
-      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags'))) }}
+      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'develop' || startsWith(github.ref, 'refs/tags'))) }}
       DB: ${{ matrix.db-image }}
 
     services:
@@ -210,7 +210,7 @@ jobs:
       fail-fast: false
 
     env:
-      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags'))) }}
+      skip: ${{ matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'develop' || startsWith(github.ref, 'refs/tags'))) }}
       DB: ${{ matrix.db-image }}
 
     services:
