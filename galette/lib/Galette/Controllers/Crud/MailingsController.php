@@ -90,7 +90,9 @@ class MailingsController extends CrudController
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            unset($this->session->mailing);
             $this->session->redirect_mailing = null;
+            unset($this->session->redirect_mailing);
         }
 
         $params = array();
@@ -110,10 +112,8 @@ class MailingsController extends CrudController
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         } else {
-            if (isset($this->session->filter_mailing)) {
-                $filters = $this->session->filter_mailing;
-            } elseif (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
+            if (isset($this->session->filter_members_sendmail)) {
+                $filters = $this->session->filter_members_sendmail;
             } else {
                 $filters = new MembersList();
             }
@@ -235,12 +235,11 @@ class MailingsController extends CrudController
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            unset($this->session->mailing);
             $this->session->redirect_mailing = null;
-            if (isset($this->session->filter_mailing)) {
-                $filters = $this->session->filter_mailing;
-                $filters->selected = [];
-                $this->session->filter_mailing = $filters;
-            }
+            unset($this->session->redirect_mailing);
+            $this->session->filter_members_sendmail = null;
+            unset($this->session->filter_members_sendmail);
 
             return $response
                 ->withStatus(301)
@@ -257,7 +256,7 @@ class MailingsController extends CrudController
             $error_detected[] = _T("Trying to load mailing while email is disabled in preferences.");
             $goto = $this->routeparser->urlFor('slash');
         } else {
-            $filters = $this->session->filter_members ?? new MembersList();
+            $filters = $this->session->filter_members_sendmail ?? new MembersList();
 
             if (
                 $this->session->mailing !== null
@@ -390,8 +389,7 @@ class MailingsController extends CrudController
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
-                    $filters->selected = null;
-                    $this->session->filter_members = $filters;
+                    $this->session->filter_members_sendmail = null;
                     $this->session->mailing = null;
                     $this->session->redirect_mailing = null;
                     $success_detected[] = _T("Mailing has been successfully sent!");

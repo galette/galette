@@ -341,7 +341,7 @@ class MembersController extends CrudController
         $value = null,
         $type = null
     ): Response {
-        $varname = 'public_filter_' . $type;
+        $varname = $this->getFilterName(['prefix' => 'public', 'suffix' => $type]);
         if (isset($this->session->$varname)) {
             $filters = $this->session->$varname;
         } else {
@@ -398,7 +398,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        $varname = 'public_filter_' . $type;
+        $varname = $this->getFilterName(['prefix' => 'public', 'suffix' => $type]);
         if (isset($this->session->$varname)) {
             $filters = $this->session->$varname;
         } else {
@@ -434,8 +434,8 @@ class MembersController extends CrudController
      */
     public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
+        if (isset($this->session->{$this->getFilterName()})) {
+            $filters = $this->session->{$this->getFilterName()};
         } else {
             $filters = new MembersList();
         }
@@ -467,7 +467,7 @@ class MembersController extends CrudController
         $filters->setViewPagination($this->routeparser, $this->view, false);
         $filters->setViewCommonsFilters($this->preferences, $this->view);
 
-        $this->session->filter_members = $filters;
+        $this->session->{$this->getFilterName()} = $filters;
 
         // display page
         $this->view->render(
@@ -498,14 +498,14 @@ class MembersController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $filters = $this->session->filter_members ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName()} ?? new MembersList();
 
         //reinitialize filters
         if (isset($post['clear_filter'])) {
             $filters = new MembersList();
         } elseif (isset($post['clear_adv_filter'])) {
-            $this->session->filter_members = null;
-            unset($this->session->filter_members);
+            $this->session->{$this->getFilterName()} = null;
+            unset($this->session->{$this->getFilterName()});
 
             return $response
                 ->withStatus(301)
@@ -635,7 +635,7 @@ class MembersController extends CrudController
                 );
         }
 
-        $this->session->filter_members = $filters;
+        $this->session->{$this->getFilterName()} = $filters;
 
         return $response
             ->withStatus(301)
@@ -652,8 +652,8 @@ class MembersController extends CrudController
      */
     public function advancedSearch(Request $request, Response $response): Response
     {
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
+        if (isset($this->session->{$this->getFilterName()})) {
+            $filters = $this->session->{$this->getFilterName()};
             if (!$filters instanceof AdvancedMembersList) {
                 $filters = new AdvancedMembersList($filters);
             }
@@ -737,7 +737,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        $filters = $this->session->ajax_members_filters ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(['prefix' => 'ajax'])} ?? new MembersList();
 
         if ($option == 'page') {
             $filters->current_page = (int)$value;
@@ -770,7 +770,7 @@ class MembersController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
 
-        $this->session->ajax_members_filters = $filters;
+        $this->session->{$this->getFilterName(['prefix' => 'ajax'])} = $filters;
 
         $selected_members = null;
         $unreachables_members = null;
@@ -869,61 +869,35 @@ class MembersController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
-            if (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
+            if (isset($this->session->{$this->getFilterName()})) {
+                $filters = $this->session->{$this->getFilterName()};
             } else {
                 $filters = new MembersList();
             }
 
             $filters->selected = $post['entries_sel'];
-            $this->session->filter_members = $filters;
+            $knowns = [
+                'cards' => 'pdf-members-cards',
+                'labels' => 'pdf-members-labels',
+                'sendmail' => 'mailing',
+                'attendance_sheet' => 'attendance_sheet_details',
+                'csv' => 'csv-memberslist',
+                'delete' => 'removeMembers',
+                'masschange' => 'masschangeMembers',
+                'masscontributions' => 'massAddContributionsChooseType'
+            ];
 
-            if (isset($post['cards'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('pdf-members-cards'));
-            }
-
-            if (isset($post['labels'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('pdf-members-labels'));
-            }
-
-            if (isset($post['sendmail'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('mailing') . '?mailing_new=new');
-            }
-
-            if (isset($post['attendance_sheet'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('attendance_sheet_details'));
-            }
-
-            if (isset($post['csv'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('csv-memberslist'));
-            }
-
-            if (isset($post['delete'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('removeMembers'));
-            }
-
-            if (isset($post['masschange'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('masschangeMembers'));
-            }
-
-            if (isset($post['masscontributions'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('massAddContributionsChooseType'));
+            foreach ($knowns as $known => $redirect_url) {
+                if (isset($post[$known])) {
+                    $this->session->{$this->getFilterName(['suffix' => $known])} = $filters;
+                    $redirect_url = $this->routeparser->urlFor($redirect_url);
+                    if ($known === 'sendmail') {
+                        $redirect_url .= '?mailing_new=new';
+                    }
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $redirect_url);
+                }
             }
 
             throw new \RuntimeException('Does not know what to batch :(');
@@ -947,7 +921,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member id/array of members id
+     * @param ?integer $id       Member id/array of members id
      * @param string   $action   null or 'add'
      *
      * @return Response
@@ -1117,7 +1091,7 @@ class MembersController extends CrudController
      */
     public function massChange(Request $request, Response $response): Response
     {
-        $filters = $this->session->filter_members;
+        $filters = $this->session->{$this->getFilterName(['suffix' => 'masschange'])} ?? new MembersList();
 
         $data = [
             'id'            => $filters->selected,
@@ -1222,7 +1196,7 @@ class MembersController extends CrudController
             }
         }
 
-        $filters = $this->session->filter_members;
+        $filters = $this->session->{$this->getFilterName(['suffix' => 'masschange'])};
         $data = [
             'id'            => $filters->selected,
             'redirect_uri'  => $this->routeparser->urlFor('members')
@@ -1744,7 +1718,8 @@ class MembersController extends CrudController
             );
         } else {
             //batch members removal
-            $filters = $this->session->filter_members;
+            $filters = $this->session->{$this->getFilterName(['suffix' => 'delete'])};
+            $this->session->{$this->getFilterName(['suffix' => 'delete'])} = $filters;
             return str_replace(
                 '%count',
                 count($filters->selected),
@@ -1763,8 +1738,8 @@ class MembersController extends CrudController
      */
     protected function doDelete(array $args, array $post)
     {
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
+        if (isset($this->session->{$this->getFilterName(['suffix' => 'delete'])})) {
+            $filters = $this->session->{$this->getFilterName(['suffix' => 'delete'])};
         } else {
             $filters = new MembersList();
         }
@@ -1813,8 +1788,8 @@ class MembersController extends CrudController
     {
         $navigate = array();
 
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
+        if (isset($this->session->{$this->getFilterName()})) {
+            $filters = $this->session->{$this->getFilterName()};
         } else {
             $filters = new MembersList();
         }
@@ -1867,6 +1842,16 @@ class MembersController extends CrudController
      */
     public function getFilterName(array $args = null): string
     {
-        return 'filter_members';
+        $filter_name = 'filter_members';
+
+        if (isset($args['prefix'])) {
+            $filter_name = $args['prefix'] . '_' . $filter_name;
+        }
+
+        if (isset($args['suffix'])) {
+            $filter_name .= '_' . $args['suffix'];
+        }
+
+        return $filter_name;
     }
 }
