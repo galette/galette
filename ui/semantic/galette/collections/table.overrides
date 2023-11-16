@@ -31,45 +31,89 @@ td.emptylist {
     text-align: center;
     font-style: italic;
 }
+@media only screen and (max-width: @largestMobileScreen) {
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr:hover,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr:hover > td {
+        background: @activeLineBackgroundColor !important;
+    }
+}
 
 /*-------------------------
      Membership status
 --------------------------*/
 #legende .table th.cotis-ok,
-.ui.ui.table.listing tbody tr > td.cotis-ok {
+.ui.ui.table.listing tbody tr.cotis-ok > td {
     background-color: @cotisOkBackgroundColor;
 }
 #legende .table th.cotis-never,
-.ui.ui.table.listing tbody tr > td.cotis-never {
+.ui.ui.table.listing tbody tr.cotis-never > td {
     background-color: @cotisNeverBackgroundColor;
 }
 #legende .table th.cotis-exempt,
-.ui.ui.table.listing tbody tr > td.cotis-exempt {
+.ui.ui.table.listing tbody tr.cotis-exempt > td {
     background-color: @cotisExemptBackgroundColor;
 }
 #legende .table th.cotis-soon,
-.ui.ui.table.listing tbody tr > td.cotis-soon {
+.ui.ui.table.listing tbody tr.cotis-soon > td {
     background-color: @cotisSoonBackgroundColor;
 }
 #legende .table th.cotis-late,
 #legende .table th.transaction-uncomplete,
-.ui.ui.table.listing tbody tr > td.cotis-late,
-.ui.ui.table.listing tbody tr > td.transaction-uncomplete {
+.ui.ui.table.listing tbody tr.cotis-late > td,
+.ui.ui.table.listing tbody tr.transaction-uncomplete > td {
     background-color: @cotisLateBackgroundColor;
 }
 #legende .table th.cotis-lastday,
-.ui.ui.table.listing tbody tr > td.cotis-lastday {
+.ui.ui.table.listing tbody tr.cotis-lastday > td {
     background-color: @cotisLastdayBackgroundColor;
 }
 #legende .table th.cotis-normal,
 #legende .table th.transaction-normal,
-.ui.ui.table.listing tbody tr > td.cotis-normal,
-.ui.ui.table.listing tbody tr > td.transaction-normal {
+.ui.ui.table.listing tbody tr.cotis-normal > td,
+.ui.ui.table.listing tbody tr.transaction-normal > td {
     background-color: @cotisOkBackgroundColor;
 }
 #legende .table th.cotis-give,
-.ui.ui.table.listing tbody tr > td.cotis-give {
+.ui.ui.table.listing tbody tr.cotis-give > td {
     background-color: @cotisLateBackgroundColor;
+}
+@media only screen and (max-width: @largestMobileScreen) {
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-ok,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-ok > td {
+        background-color: @cotisOkBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-never,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-never > td {
+        background-color: @cotisNeverBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-exempt,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-exempt > td {
+        background-color: @cotisExemptBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-soon,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-soon > td {
+        background-color: @cotisSoonBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-late,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-late > td,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.transaction-uncomplete,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.transaction-uncomplete > td {
+        background-color: @cotisLateBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-lastday,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-lastday > td {
+        background-color: @cotisLastdayBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-normal,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-normal > td,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.transaction-normal,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.transaction-normal > td {
+        background-color: @cotisOkBackgroundColor;
+    }
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-give,
+    .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr.cotis-give > td {
+        background-color: @cotisLateBackgroundColor;
+    }
 }
 
 /*-------------------------
@@ -87,14 +131,24 @@ td.emptylist {
 /*------------------
      Plugins list
 -------------------*/
-th.plugins {
+tr.plugins th {
    padding-top: 1rem;
    padding-bottom: 1rem;
-   background: #d9f7d8;
+   background: @pluginsActiveBackground;
 }
 
-th.inactives.plugins {
-    background: #ffead8;
+tr.inactives.plugins th {
+    background: @pluginsInactiveBackground;
     border-top: @rowBorder;
     border-bottom: @rowBorder;
+}
+@media only screen and (max-width: @largestMobileScreen) {
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins > th {
+        background: @pluginsActiveBackground;
+    }
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.inactives.plugins,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.inactives.plugins > th {
+        background: @pluginsInactiveBackground;
+    }
 }

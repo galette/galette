@@ -15,8 +15,8 @@
     }
 } %}
 
-{% macro draw_actions(rclass, member, login) %}
-                    <td class="{{ rclass }} center actions_row">
+{% macro draw_actions(member, login) %}
+                    <td class="center actions_row">
     {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
     {% for action in actions %}
         {{ macros.drawListAction(action.label, action.route, action.icon, action.extra_class ?? null) }}
@@ -287,11 +287,10 @@
 
 {% block body %}
 {% for ordre, member in members %}
-    {% set rclass = member.getRowClass() %}
-                    <tr>
+                    <tr class="{{ member.getRowClass() }}">
     {% for column in galette_list %}
         {% if column.field_id == 'id_adh' %}
-                        <td class="{{ rclass }} right" data-scope="id">
+                        <td class="right" data-scope="id">
             {% if preferences.pref_show_id %}
                         {{ member.id }}
             {% else %}
@@ -299,7 +298,7 @@
             {% endif %}
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
-                        <td class="{{ rclass }} username_row" data-scope="row">
+                        <td class="username_row" data-scope="row">
                             <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
             {% if member.isCompany() %}
                             <span>
@@ -350,19 +349,15 @@
                             <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
                         </td>
         {% else %}
-            {% set lrclass = rclass %}
             {% set propname = column.propname %}
             {% set value = null %}
 
             {% if column.field_id == 'nom_adh' %}
                 {% set value = member.sfullname %}
             {% elseif column.field_id == 'pseudo_adh' %}
-                {% set lrclass = rclass %}
                 {% set value = attribute(member, propname) %}
             {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
-                {% set lrclass = rclass %}
             {% elseif column.field_id == 'id_statut' %}
-                {% set lrclass = rclass %}
                 {% set value = member.sstatus %}
             {% elseif column.field_id == 'titre_adh' %}
                 {% if member.title is iterable %}
@@ -386,7 +381,7 @@
             {% elseif column.field_id == 'sexe_adh' %}
                 {% set value = member.sgender %}
             {% elseif column.field_id == 'ddn_adh' %}
-                {% set lrclass = lrclass ~ ' collapsing' %}
+                {% set lrclass = 'collapsing' %}
             {% endif %}
 
             {# If value has not been set, take the generic value #}
@@ -401,7 +396,7 @@
                 {% set value = value|e('html') %}
             {% endif %}
 
-                        <td class="{{ lrclass }}" data-title="{{ column.label }}">
+                        <td{% if lrclass is defined %} class="{{ lrclass }}"{% endif %} data-title="{{ column.label }}">
             {# Display column.
                 A check is done here to adapt display, this is may not the best way to go
                 but for now, that works as expected.
@@ -422,7 +417,7 @@
                         </td>
         {% endif %}
     {% endfor %}
-                    {{ _self.draw_actions(rclass, member, login) }}
+                    {{ _self.draw_actions(member, login) }}
                     </tr>
 {% else %}
                     <tr><td colspan="{{ galette_list|length + 1 }}" class="emptylist">{{ _T('No member has been found') }}</td></tr>

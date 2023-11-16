@@ -139,15 +139,14 @@
 {% block body %}
     {% for ordre, transaction in list %}
         {% set mid = transaction.member %}
-        {% set cclass = transaction.getRowClass() %}
         {% if member is defined %}
             {% set mname = member.sname %}
         {% else %}
             {% set mname = memberName({id: mid}) %}
         {% endif %}
 
-        <tr>
-            <td class="{{ cclass }}" data-scope="row">
+        <tr class="{{ transaction.getRowClass() }}">
+            <td data-scope="row">
                 {% if preferences.pref_show_id %}
                     {{ transaction.id }}
                 {% else %}
@@ -159,45 +158,45 @@
                             </a>
                         </span>
             </td>
-            <td class="{{ cclass }}" data-title="{{ _T("Date") }}">{{ transaction.date }}</td>
-            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-                <td class="{{ cclass }}" data-title="{{ _T("Member") }}">
-                    {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
-                        <a
-                                href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
-                                title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
-                        >
-                            <i class="filter grey small icon" aria-hidden="true"></i>
-                        </a>
-                    {% endif %}
-                    <a
-                            href="{{ url_for("member", {"id": mid}) }}"
-                            title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
-                    >
-                        {{ mname }}
-                    </a>
-                </td>
+            <td data-title="{{ _T("Date") }}">{{ transaction.date }}</td>
+        {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+            <td data-title="{{ _T("Member") }}">
+            {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
+                <a
+                    href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
+                    title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
+                >
+                    <i class="filter grey small icon" aria-hidden="true"></i>
+                </a>
             {% endif %}
-            <td class="{{ cclass }}" data-title="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
-            <td class="actions_row {{ cclass }}" data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
-            {% if login.isAdmin() or login.isStaff() %}
-                <td class="{{ cclass }} center">
-                    <a
-                            href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
-                            class="action"
-                    >
-                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
-                    </a>
-                    <a
-                            href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
-                            class="delete"
-                    >
-                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
-                    </a>
-                </td>
-            {% endif %}
+                <a
+                    href="{{ url_for("member", {"id": mid}) }}"
+                    title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                >
+                    {{ mname }}
+                </a>
+            </td>
+        {% endif %}
+            <td data-title="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
+            <td class="actions_row data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
+        {% if login.isAdmin() or login.isStaff() %}
+            <td class="center">
+                <a
+                    href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
+                    class="action"
+                >
+                    <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                </a>
+                <a
+                    href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
+                    class="delete"
+                >
+                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                </a>
+            </td>
+        {% endif %}
         </tr>
     {% else %}
         <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}" class="emptylist">{{ _T("no transaction") }}</td></tr>

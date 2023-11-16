@@ -54,3 +54,6 @@
 @cotisSoonBackgroundColor   : #ffe9ab;
 @cotisLateBackgroundColor   : #ffe9e9;
 @cotisLastdayBackgroundColor: #ffebd3;
+
+@pluginsActiveBackground    : #d9f7d8;
+@pluginsInactiveBackground  : #ffead8;

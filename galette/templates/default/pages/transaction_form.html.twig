@@ -123,22 +123,21 @@
                             <tbody>
             {% for ordre, contrib in contribs %}
                 {% set mid = contrib.member %}
-                {% set cclass = contrib.getRowClass() %}
-                                <tr>
-                                    <td class="{{ cclass }} center">
+                                <tr class="{{ contrib.getRowClass() }}">
+                                    <td class="center">
                                         {{ ordre + 1 }}
                                     </td>
-                                    <td class="{{ cclass }} center">{{ contrib.date }}</td>
-                                    <td class="{{ cclass }} center">{{ contrib.begin_date }}</td>
-                                    <td class="{{ cclass }} center">{{ contrib.end_date }}</td>
-                                    <td class="{{ cclass }}">{{ contrib.duration }}</td>
+                                    <td class="center">{{ contrib.date }}</td>
+                                    <td class="center">{{ contrib.begin_date }}</td>
+                                    <td class="center">{{ contrib.end_date }}</td>
+                                    <td>{{ contrib.duration }}</td>
                 {% if login.isAdmin() or login.isStaff() %}
-                                    <td class="{{ cclass }}">{{ memberName({'id': mid}) }}</td>
+                                    <td>{{ memberName({'id': mid}) }}</td>
                 {% endif %}
-                                    <td class="{{ cclass }}">{{ contrib.type.libelle }}</td>
-                                    <td class="{{ cclass }} right">{{ contrib.amount }}</td>
+                                    <td>{{ contrib.type.libelle }}</td>
+                                    <td class="right">{{ contrib.amount }}</td>
                 {% if login.isAdmin() or login.isStaff() %}
-                                    <td class="{{ cclass }} actions_row">
+                                    <td class="actions_row">
                                         <a
                                             href="{{ url_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
                                             class="delete"

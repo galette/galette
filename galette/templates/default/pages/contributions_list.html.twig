@@ -221,15 +221,14 @@
 {% block body %}
     {% for ordre, contribution in list %}
         {% set mid = contribution.member %}
-        {% set cclass = contribution.getRowClass() %}
         {% if contribution.isFee() %}
             {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
         {% else %}
             {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_DONATION') %}
         {% endif %}
 
-        <tr{% if mode == 'ajax' %} class="contribution_row" id="row_{{ contribution.id }}"{% endif %}>
-            <td class="{{ cclass }}" data-scope="row">
+        <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
+            <td data-scope="row">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                     <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
                 {% else %}
@@ -267,11 +266,11 @@
                     <i class="ui icon">&nbsp;</i>
                 {% endif %}
             </td>
-            <td class="{{ cclass }}" data-title="{{ _T("Date") }}">{{ contribution.date }}</td>
-            <td class="{{ cclass }}" data-title="{{ _T("Begin") }}">{{ contribution.begin_date }}</td>
-            <td class="{{ cclass }}" data-title="{{ _T("End") }}">{{ contribution.end_date }}</td>
+            <td data-title="{{ _T("Date") }}">{{ contribution.date }}</td>
+            <td data-title="{{ _T("Begin") }}">{{ contribution.begin_date }}</td>
+            <td data-title="{{ _T("End") }}">{{ contribution.end_date }}</td>
             {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-                <td class="{{ cclass }}" data-title="{{ _T("Member") }}">
+                <td data-title="{{ _T("Member") }}">
                     {% if member is defined %}
                         {% set mname = member.sname %}
                     {% else %}
@@ -294,12 +293,12 @@
                     </a>
                 </td>
             {% endif %}
-            <td class="{{ cclass }}" data-title="{{ _T("Type") }}">{{ contribution.type.libelle }}</td>
-            <td class="{{ cclass }}" data-title="{{ _T("Amount") }}">{{ contribution.amount }}</td>
-            <td class="{{ cclass }}" data-title="{{ _T("Payment type") }}">{{ contribution.spayment_type }}</td>
-            <td class="{{ cclass }}" data-title="{{ _T("Duration") }}">{{ contribution.duration }}</td>
+            <td data-title="{{ _T("Type") }}">{{ contribution.type.libelle }}</td>
+            <td data-title="{{ _T("Amount") }}">{{ contribution.amount }}</td>
+            <td data-title="{{ _T("Payment type") }}">{{ contribution.spayment_type }}</td>
+            <td data-title="{{ _T("Duration") }}">{{ contribution.duration }}</td>
             {% if mode != 'ajax' %}
-                <td class="actions_row {{ cclass }} center">
+                <td class="actions_row center">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
                     >

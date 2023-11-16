@@ -14,8 +14,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th colspan="6" class="center aligned plugins"><strong>{{ _T('Active plugins') }}</strong></th>
+            <tr class="plugins">
+                <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
             <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
@@ -51,8 +51,8 @@
                 <td colspan="6">{{ _T('No active plugin.') }}</td>
             </tr>
 {% endfor %}
-            <tr>
-                <th colspan="6" class="center aligned inactives plugins"><strong>{{ _T('Inactive plugins') }}</strong></th>
+            <tr class="inactives plugins">
+                <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
             <thead>
             <tr>

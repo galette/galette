@@ -15,10 +15,9 @@
             <tbody>
 {% for member in members_list %}
     {% if excluded is not defined or excluded != member.id %}
-        {% set rclass = member.getRowClass() %}
-                <tr>
-                    <td class="{{ rclass }} right">{{ member.id }}</td>
-                    <td class="{{ rclass }} username_row">
+                <tr class="{{ member.getRowClass() }}">
+                    <td class="right">{{ member.id }}</td>
+                    <td class="username_row">
                     {% if member.isCompany() %}
                         <span>
                             <i class="ui building outline icon tooltip" aria-hidden="true"></i>
@@ -59,7 +58,7 @@
                     {% endif %}
                     <a href="{{ url_for('member', {'id': member.id}) }}" class="choice">{{ member.sfullname }}</a>
                     </td>
-                    <td class="{{ rclass }}">{{ member.zipcode }} {{ member.town }}</td>
+                    <td>{{ member.zipcode }} {{ member.town }}</td>
                 </tr>
     {% endif %}
 {% else %}
