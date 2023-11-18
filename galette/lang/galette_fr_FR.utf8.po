@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-18 15:28+0100\n"
-"PO-Revision-Date: 2023-11-06 06:18+0000\n"
+"PO-Revision-Date: 2023-11-18 16:12+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.2-dev\n"
+"X-Generator: Weblate 5.2\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -5091,7 +5091,7 @@ msgstr "Retour à la page d'accueil de Galette"
 
 #: ../../tempcache/elements/navigation/navigation_topbar.html.twig:43
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: ../../tempcache/elements/navigation/navigation_topbar.html.twig:59
 #: ../../tempcache/page.html.twig:161
@@ -6719,10 +6719,8 @@ msgstr ""
 "vos modifications."
 
 #: ../../tempcache/pages/groups_list.html.twig:404
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "Click on a row to select a member"
-msgstr "Vous devez sélectionner un membre du bureau"
+msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
 
 #: ../../tempcache/pages/index.html.twig:112
 #: ../../tempcache/pages/index.html.twig:118
@@ -7997,10 +7995,8 @@ msgid "Member of:"
 msgstr "Membre de :"
 
 #: ../../tempcache/pages/member_form.html.twig:734
-#, fuzzy
-#| msgid "In any of selected groups"
 msgid "Click on a row to select a group"
-msgstr "Dans n'importe lequel des groupes sélectionnés"
+msgstr "Cliquez sur une ligne pour sélectionner un groupe"
 
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:63
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:71
