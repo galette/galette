@@ -15,10 +15,10 @@
 # ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-18 15:28+0100\n"
-"PO-Revision-Date: 2023-10-19 18:33+0000\n"
-"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2023-11-19 06:42+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.2\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -138,7 +138,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:254
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:256
 msgid "Trying to load mailing while email is disabled in preferences."
-msgstr "حاول اعادة تحميل البريد عندما  لا يعمل البريد بكفائة"
+msgstr "حاول اعادة تحميل البريد عندما لا يعمل البريد بكفائة"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:274
