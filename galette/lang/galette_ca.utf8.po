@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-18 15:28+0100\n"
-"PO-Revision-Date: 2023-11-06 06:18+0000\n"
+"PO-Revision-Date: 2023-11-19 06:42+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2-dev\n"
+"X-Generator: Weblate 5.2\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -1086,7 +1086,7 @@ msgstr "CVS base de dades Exporta"
 #: ../lib/Galette/Controllers/CsvController.php:181
 #, fuzzy
 msgid "Table %table is empty, and has not been exported."
-msgstr "La taula del 10% està buida i no s'ha exportat."
+msgstr "La taula del %table està buida i no s'ha exportat."
 
 #: ../lib/Galette/Controllers/CsvController.php:199
 #, php-format
@@ -1142,7 +1142,7 @@ msgstr "No s'ha pujat cap fitxer!"
 #: ../lib/Galette/Controllers/CsvController.php:464
 #, fuzzy, php-format
 msgid "Remove %1$s file %2$s"
-msgstr "Elimina el $1$s fitxer %2$s"
+msgstr "Elimina el %1$s fitxer %2$s"
 
 #: ../lib/Galette/Controllers/CsvController.php:517
 #, php-format
@@ -1326,12 +1326,12 @@ msgstr "Actualitza els models"
 #: ../lib/Galette/Core/Gaptcha.php:103
 #, fuzzy, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr "Quant és el 5%$s més el 2%$s?"
+msgstr "Quant és el %1$s més el 2%$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, fuzzy, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr "Quant s'ha afegit el $1 al $2?"
+msgstr "Quant s'ha afegit el %1$s al %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, fuzzy, php-format
@@ -1344,22 +1344,22 @@ msgstr ""
 #: ../lib/Galette/Core/Gaptcha.php:108
 #, fuzzy, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr "Quant és el 5%$s menys el 2%$s?"
+msgstr "Quant és el %1$s menys el %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:109
 #, fuzzy, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr "Quant és el 5%$ en què jubilem el 2%$?"
+msgstr "Quant és el %1$s en què jubilem el %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
 #, fuzzy, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr "Quant és el preu de la retirada de l'u per cent2$ a l'u per cent1$?"
+msgstr "Quant és el preu de la retirada %2$s a %1$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, fuzzy, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr "Tinc un $Galettes que en dono un $2$. Quantes Galettes tinc?"
+msgstr "Tinc %1$s Galettes que en dono %2$s. Quantes Galettes tinc?"
 
 #: ../lib/Galette/Core/Pagination.php:279
 #, fuzzy
@@ -9427,9 +9427,8 @@ msgid "Account activity"
 msgstr "Activitat del compte"
 
 #: ../../tempcache/pages/advanced_search.html.twig:200
-#, fuzzy
 msgid "With email:"
-msgstr "Amb correu electrònic"
+msgstr "Amb correu electrònic:"
 
 #: ../../tempcache/pages/advanced_search.html.twig:272
 #: ../../tempcache/pages/advanced_search.html.twig:314
@@ -9465,7 +9464,6 @@ msgstr "Cerca de grups avançats"
 
 #: ../../tempcache/pages/advanced_search.html.twig:538
 #: ../../tempcache/pages/advanced_search.html.twig:1053
-#, fuzzy
 msgid "Experimental"
 msgstr "Experimental"
 
@@ -9585,24 +9583,20 @@ msgid "Details"
 msgstr "Detalls"
 
 #: ../../tempcache/pages/500.html.twig:91
-#, fuzzy
 msgid "Type:"
-msgstr "Tipus"
+msgstr "Tipus:"
 
 #: ../../tempcache/pages/500.html.twig:101
-#, fuzzy
 msgid "Code:"
-msgstr "Codi"
+msgstr "Codi:"
 
 #: ../../tempcache/pages/500.html.twig:121
-#, fuzzy
 msgid "File:"
-msgstr "Fitxer"
+msgstr "Fitxer:"
 
 #: ../../tempcache/pages/500.html.twig:131
-#, fuzzy
 msgid "Line:"
-msgstr "Línia"
+msgstr "Línia:"
 
 #: ../../tempcache/pages/500.html.twig:142
 #, fuzzy
@@ -9621,7 +9615,7 @@ msgstr ""
 #: ../../tempcache/pages/export.html.twig:79
 #, fuzzy
 msgid "The following files have been written on disk:"
-msgstr "S'han escrit els següents fitxers al disc"
+msgstr "S'han escrit els següents fitxers al disc:"
 
 #: ../../tempcache/pages/export.html.twig:114
 #, fuzzy
@@ -9629,9 +9623,8 @@ msgid "Existing exports"
 msgstr "Exportacions existents"
 
 #: ../../tempcache/pages/export.html.twig:120
-#, fuzzy
 msgid "The following exports already seems to exist on the disk:"
-msgstr "Les següents exportacions ja semblen existir al disc"
+msgstr "Les següents exportacions ja semblen existir al disc:"
 
 #: ../../tempcache/pages/export.html.twig:238
 #, fuzzy
@@ -9749,27 +9742,22 @@ msgid "(at least %i characters)"
 msgstr "(almenys caràcters de percentatge)"
 
 #: ../../tempcache/components/forms/password.html.twig:47
-#, fuzzy
 msgid "Password confirmation:"
-msgstr "Confirmació de la contrasenya"
+msgstr "Confirmació de contrasenya:"
 
 #: ../../tempcache/components/forms/groups.html.twig:178
-#, fuzzy
 msgid "Manage user's groups"
-msgstr "Gestiona els grups d'usuaris"
+msgstr "Gestionar els grups d'usuaris"
 
 #: ../../tempcache/components/forms/groups.html.twig:191
-#, fuzzy
 msgid "Manage user's managed groups"
-msgstr "Gestiona els grups gestionats per l'usuari"
+msgstr "Gestionar els grups gestionats per l'usuari"
 
 #: ../../tempcache/components/forms/company.html.twig:60
-#, fuzzy
 msgid "Is company?"
-msgstr "És l'empresa?"
+msgstr "És empresa?"
 
 #: ../../tempcache/components/forms/company.html.twig:60
-#, fuzzy
 msgid "Is member a company?"
 msgstr "És membre d'una empresa?"
 
@@ -9811,9 +9799,8 @@ msgid "Not supplied"
 msgstr "No subministrat"
 
 #: ../../tempcache/components/forms/picture.html.twig:40
-#, fuzzy
 msgid "Picture:"
-msgstr "Imatge"
+msgstr "Imatge:"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:209
 #, fuzzy
