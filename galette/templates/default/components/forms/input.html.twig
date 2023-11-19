@@ -77,7 +77,7 @@
     </div>
     {% endif %}
     {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
-    {% if example is defined %}<span class="exemple">{{ example }}</span>{% endif %}
+    {% if example is defined %}<span class="exemple">{{ example|raw }}</span>{% endif %}
 {% if notag is not defined %}
 </div>
 {% endif %}
