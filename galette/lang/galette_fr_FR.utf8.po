@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-18 15:28+0100\n"
-"PO-Revision-Date: 2023-11-18 16:12+0000\n"
+"PO-Revision-Date: 2023-11-19 06:42+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -824,7 +824,7 @@ msgstr "Récupération de mot de passe"
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 "L’envoi de courriel est désactivé dans les préférences. Contactez votre "
-"administrateur Galette."
+"administrateur Galette"
 
 #: ../lib/Galette/Controllers/AuthController.php:352
 #, php-format
