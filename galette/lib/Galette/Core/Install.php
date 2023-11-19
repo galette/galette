@@ -1176,7 +1176,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 $this->getAdminLogin(),
                 $this->getAdminPass()
             );
-            $this->proceedReport(_T("Preferences"), $res);
+            $this->proceedReport(_T("Settings"), $res);
 
             //Install contributions types
             $res = $ct->installInit();

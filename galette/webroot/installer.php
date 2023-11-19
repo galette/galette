@@ -318,7 +318,7 @@ if (count($error_detected) > 0) {
                                 <div class="step<?php if ($install->isDbCheckStep()) echo ' active'; elseif (!$install->isStepPassed(GaletteInstall::STEP_DB_CHECKS)) echo ' disabled'; ?>">
                                     <i class="key icon<?php if($install->isStepPassed(GaletteInstall::STEP_DB_CHECKS)) { echo ' green'; } ?>"></i>
                                     <div class="content">
-                                        <div class="title"><?php echo _T("Database access/permissions"); ?></div>
+                                        <div class="title"><?php echo _T("Database access and permissions"); ?></div>
                                     </div>
                                 </div>
 <?php
