@@ -1,4 +1,4 @@
-<aside id="sidemenu" class="ui computer only toc{% if login.getCompactMenu() %} compact_menu{% endif %}">
+<aside id="sidemenu" class="ui computer toc{% if login.getCompactMenu() %} compact_menu{% endif %}">
     {% include "elements/logged_user.html.twig" with {
             ui: "menu"
     } %}
@@ -13,12 +13,12 @@
     </div>
 {% endif %}
 
-    <div class="ui vertical{% if not login.getCompactMenu() %} accordion compact{% else %} tiny icon{% endif %} fluid menu">
+    <nav class="ui vertical{% if not login.getCompactMenu() %} accordion compact{% else %} tiny icon{% endif %} fluid menu" aria-label="{{ _T('Main menu') }}">
         {% set mode = login.getCompactMenu() ? "compact" : "default" %}
         {% include "elements/navigation/navigation_items.html.twig" with {
                 mode: mode
         } %}
-    </div>
+    </nav>
 
     <div class="ui basic fitted segment">
         <div class="ui toggle mini checkbox">

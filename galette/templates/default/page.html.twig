@@ -7,9 +7,10 @@
         } %}
     </head>
     <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %} nojs">
+        <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
-        <div class="pusher">
+        <main class="pusher">
             <div id="main" class="{% if not login.isLogged() %}container{% else %} full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
 {%  if login.isLogged() %}
     {% include 'elements/navigation/navigation_aside.html.twig' %}
@@ -23,9 +24,18 @@
                             <div class="sub header">{% if preferences.pref_slogan %}{{ __(preferences.pref_slogan) }}{% endif %}</div>
                         </div>
                     </div>
+                    <a id="main-content" tabindex="-1"></a>
                     <h1 class="ui block center aligned header" style="position: relative">
 {% else %}
                     <div class="ui horizontal basic segments header">
+                        <div class="ui right aligned compact segment">
+                            <nav class="ui compact tiny menu" aria-label="{{ _T('Language menu') }}">
+                                {% include "elements/language.html.twig" with {
+                                        ui: "dropdown"
+                                } %}
+                            </nav>
+                        </div>
+                        <a id="main-content" tabindex="-1"></a>
                         <div class="ui center aligned segment">
                             <h1>
 {% endif %}
@@ -33,35 +43,16 @@
                             </h1>
 {% if login.isLogged() %}
                         </div>
-                        <div class="ui right aligned compact segment">
-                            <div class="ui compact tiny menu">
-            {% if cur_route != 'mailing' and existing_mailing == true %}
-                                <a
-                                    id="recup_mailing"
-                                    href="{{ url_for("mailing") }}"
-                                    class="ui blue tooltip item"
-                                    title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
-                                    data-position="bottom right"
-                                >
-                                    <i class="paper plane outline blue icon" aria-hidden="true"></i>
-                                    <span class="displaynone">{{ _T("Existing mailing") }}</span>
-                                </a>
-            {% endif %}
-                                {% include "elements/language.html.twig" with {
-                                        ui: "dropdown"
-                                } %}
-                            </div>
-                        </div>
                     </div>
 {% endif %}
                     <div class="main-content">
                         {% include "elements/messages_inline.html.twig" %}
                         {% block content %}{{ _T('Page content') }}{% endblock %}
                     </div>
-                    {% include "elements/footer.html.twig" %}
                 </section>
             </div>
-        </div>
+        </main>
+        {% include "elements/footer.html.twig" %}
         <a href="#" id="back2top" class="circular big ui icon button" title="{{ _T("Back to top") }}">
             <i class="arrow up icon" aria-hidden="true"></i>
         </a>

@@ -1,26 +1,13 @@
 <header id="top-navbar" class="ui top fixed menu">
-    <div class="ui fluid container">
-        <a class="toc item" tabindex="0">
-            <i class="sidebar icon" aria-hidden="true"></i>
-            <span class="displaynone">{{ _T("Menu") }}</span>
-        </a>
-        {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
-            <a
-                id="recup_mailing"
-                href="{{ url_for("mailing") }}"
-                class="ui blue tooltip item"
-                title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
-                data-position="bottom right"
-            >
-                <i class="paper plane outline blue icon" aria-hidden="true"></i>
-                <span class="displaynone">{{ _T("Existing mailing") }}</span>
-            </a>
-        {% endif %}
-        <div class="header item">
-            <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
-            <span>{{ preferences.pref_nom }}</span>
-        </div>
-
+    <a class="toc item" tabindex="0">
+        <i class="sidebar icon" aria-hidden="true"></i>
+        <span class="visually-hidden">{{ _T("Menu") }}</span>
+    </a>
+    <div class="header item">
+        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
+        <span>{{ preferences.pref_nom }}</span>
+    </div>
+    <nav class="ui fluid container">
         {% include "elements/navigation/public_pages.html.twig" with {
                 tips_position: "bottom center",
                 sign_in: true,
@@ -37,5 +24,5 @@
                 {% include "elements/modes.html.twig" %}
             </div>
         {% endif %}
-    </div>
+    </nav>
 </header>

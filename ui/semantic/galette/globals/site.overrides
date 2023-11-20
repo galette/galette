@@ -5,8 +5,28 @@
 /*---------------
      Global
 ----------------*/
+/* Content using displaynone is ignored by screen readers */
 .displaynone {
   display: none !important;
+}
+
+/* Content using visually-hidden is read by screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  clip: rect(1px,1px,1px,1px);
+  word-wrap: normal;
+  overflow: hidden;
+
+  &.focusable:active,
+  &.focusable:focus {
+      position: static !important;
+      width: auto;
+      height: auto;
+      clip: auto;
+      overflow: visible;
+  }
 }
 
 .exemple,
@@ -41,6 +61,33 @@ a,
     }
 }
 
+/*---------------------------------
+     Go to main content link
+----------------------------------*/
+.skiptocontent {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: @invertedTextColor;
+  outline: 0;
+  background-color: @black;
+
+  &.focusable:hover,
+  &.focusable:focus {
+    position: absolute !important;
+    width: 100%;
+    z-index: 102;
+    padding: 1rem .5rem;
+    text-align: center;
+    outline: none;
+  }
+
+  &.focusable:hover {
+    color: @invertedTextColor;
+    text-decoration: underline;
+  }
+}
+
 /*--------------------------------
      Base layout and navigation
 ---------------------------------*/
@@ -53,6 +100,7 @@ html {
       flex-direction: column;
       justify-content: center;
       height: 100%;
+      padding-bottom: 120px;
 
       img.logo {
         margin-top: 1rem;
@@ -61,9 +109,16 @@ html {
   }
 }
 
-body.pushable:not(.loggedin) > .pusher {
+body.pushable:not(.loggedin) {
+  & > .pusher {
     display: flex;
     justify-content: center;
+    padding-bottom: 120px;
+  }
+  main ~ footer.ui.segment {
+    margin-top: -120px;
+    z-index: 2;
+  }
 }
 
 .loggedin #main {
@@ -114,6 +169,12 @@ aside .ui.vertical.menu {
   max-width: 100%;
 }
 
+.loggedin .content {
+  .ui.horizontal.segments.header {
+    flex-direction: row-reverse;
+  }
+}
+
 footer,
 footer .ui.horizontal.list .list > .item,
 footer .ui.horizontal.list > .item{
@@ -121,7 +182,7 @@ footer .ui.horizontal.list > .item{
 }
 
 @media only screen and (max-width: 991px) {
-  #top-navbar .item:not(.header):not(.toc):not(#recup_mailing) {
+  #top-navbar nav {
     display: none;
   }
   .sidebar.uncover + .fixed.menu .toc i::before {
@@ -143,6 +204,15 @@ footer .ui.horizontal.list > .item{
     padding-top: 0;
   }
 
+  #sidebarmenu {
+    display: none;
+  }
+  .ui.visible.left.sidebar ~ .pusher {
+    transform: translate3d(0, 0, 0) !important;
+    &.dimmed::after {
+      display: none;
+    }
+  }
   #top-navbar div.item a.button.darkmode span {
     display: none;
   }
@@ -207,6 +277,7 @@ footer .ui.horizontal.list > .item{
     display: block;
   }
 
+  html:not(.public_page) body:not(.front-page) main ~ footer.ui.segment,
   body:not(.front-page) section.content {
     margin-left: 260px;
     flex: 1 1 auto;
@@ -253,6 +324,7 @@ footer .ui.horizontal.list > .item{
     width: 350px;
   }
 
+  html:not(.public_page) body:not(.front-page) main ~ footer.ui.segment,
   body:not(.front-page) section.content {
     margin-left: 350px;
   }

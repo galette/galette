@@ -1,6 +1,6 @@
-        <footer class="ui basic center aligned segment">
+        <footer class="ui basic center aligned segment{% if login.getCompactMenu() %} extended{% endif %}">
             <div class="row">
-                <nav class="ui horizontal bulleted link list">
+                <div class="ui horizontal bulleted link list">
                     <a href="https://galette.eu" class="item">
                         <i class="icon globe europe" aria-hidden="true"></i>
                         {{ _T("Website") }}
@@ -13,10 +13,10 @@
                         <i class="icon mastodon" aria-hidden="true"></i>
                         @galette
                     </a>
-                </nav>
+                </div>
             </div>
             <div class="row">
-                <nav class="ui horizontal bulleted link list">
+                <div class="ui horizontal bulleted link list">
                     <a id="copyright" href="https://galette.eu/" class="item">
                         <i class="icon cookie bite" aria-hidden="true"></i>
                         Galette {{ constant('GALETTE_DISPLAY_VERSION') }}
@@ -27,7 +27,7 @@
                         {{ _T("System information") }}
                     </a>
 {% endif %}
-                </nav>
+                </div>
 {% if login.isLogged() and cur_route == 'dashboard' %}
                 {# Comply with the Twemoji project's requirements about attribution #}
                 <!--

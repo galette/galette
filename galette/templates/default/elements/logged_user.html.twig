@@ -28,7 +28,7 @@
         </div>
     {% else %}
         {% if not login.getCompactMenu() %}
-            <div class="{{ component_classes }}">
+            <nav class="{{ component_classes }}" aria-label="{{ _T('User menu') }}">
                 <div class="ui item">
                     <i class="user circle big icon" aria-hidden="true"></i>
                     {{ login.loggedInAs()|raw }}
@@ -42,7 +42,7 @@
                                 title="{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}"
                             >
                                 <i class="icon adjust" aria-hidden="true"></i>
-                                <span class="displaynone">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
+                                <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
                             </a>
                             <a
                                 class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
@@ -51,19 +51,19 @@
                                 data-position="bottom right"
                             >
                                 <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
-                                <span class="displaynone">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
+                                <span class="visually-hidden">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
                             </a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </nav>
             {% include "elements/modes.html.twig" %}
         {% else %}
             {% set component_classes = "ui vertical centered tiny icon fluid menu" %}
-            <div id="logoutmenu" class="{{ component_classes }}">
+            <nav id="logoutmenu" class="{{ component_classes }}" aria-label="{{ _T('User menu') }}">
                 <div class="ui dropdown navigation item no-touch tooltip" data-html="{{ login.loggedInAs()|raw }}" data-position="right center">
                     <i class="user circle icon" aria-hidden="true"></i>
-                    <span class="displaynone">{{ login.loggedInAs()|raw }}</span>
+                    <span class="visually-hidden">{{ login.loggedInAs()|raw }}</span>
                     <i class="dropdown icon" aria-hidden="true"></i>
                     <div class="menu">
                         <div class="item">
@@ -88,7 +88,7 @@
                     data-position="right center"
                 >
                     <i class="icon adjust" aria-hidden="true"></i>
-                    <span class="displaynone">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
+                    <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
                 </a>
                 <a
                     class="item{% if login.isImpersonated() %} purple{% else %} red{% endif %}"
@@ -97,9 +97,9 @@
                     data-position="right center"
                 >
                     <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
-                    <span class="displaynone">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
+                    <span class="visually-hidden">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
                 </a>
-            </div>
+            </nav>
         {% endif %}
     {% endif %}
 {% endif %}

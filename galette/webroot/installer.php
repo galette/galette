@@ -246,6 +246,7 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
     </head>
     <body class="pushable">
+        <a href="#main-content" class="skiptocontent visually-hidden focusable"><?php echo _T("Skip to content"); ?></a>
         <header id="top-navbar" class="ui fixed menu bgcolor">
             <div class="ui wide container">
                 <div class="header item">
@@ -267,12 +268,13 @@ foreach ($i18n->getList() as $langue) {
                 </div>
             </div>
         </header>
-        <div class="pusher">
-            <div id="main" class="ui wide container">
+        <main class="pusher">
+            <section id="main" class="ui wide container">
                 <div class="ui basic segment">
                     <div class="ui basic center aligned fitted segment">
                         <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.png"/>
                     </div>
+                    <a id="main-content" tabindex="-1"></a>
                     <h1 class="ui block center aligned header">
                         <?php echo $install->getStepTitle(); ?>
                     </h1>
@@ -432,8 +434,8 @@ if ($install->isCheckStep()) {
                         </nav>
                     </div>
                 </footer>
-            </div>
-        </div>
+            </section>
+        </main>
         <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
         <script type="text/javascript" src="./themes/default/ui/semantic.min.js"></script>
     </body>

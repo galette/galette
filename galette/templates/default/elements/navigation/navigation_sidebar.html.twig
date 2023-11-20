@@ -1,4 +1,4 @@
-    <div id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
+    <nav id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
 {% if not login.isLogged() %}
     {% if cur_route != "login" %}
         {% import "macros.twig" as menus_macros %}
@@ -32,4 +32,4 @@
         <div class="ui basic center aligned segment">
             {% include "elements/modes.html.twig" %}
         </div>
-    </div>
+    </nav>
