@@ -207,8 +207,6 @@ $(function() {
     $('.jsenabled .jsonly.read-only').removeClass('read-only');
     $('.jsenabled .jsonly.search-dropdown').removeClass('search-dropdown').addClass('search clearable selection dropdown');
 
-    $('#login').focus();
-
     _bindFomanticComponents();
 
     _bindDropdownsAutosubmit();

@@ -101,7 +101,7 @@
                     </select>
                 </div>
                 <div class="flexend field">
-                    <label for="filter_account" class="displaynone">{{ _T('among:') }}</label>
+                    <label for="filter_account" class="visually-hidden">{{ _T('among:') }}</label>
                     <select name="filter_account" class="ui search dropdown nochosen">
                         {% for key, value in filter_accounts_options %}
                             <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
@@ -109,7 +109,7 @@
                     </select>
                 </div>
                 <div class="flexend field">
-                    <label for="group_filter" class="displaynone">{{ _T('among:') }}</label>
+                    <label for="group_filter" class="visually-hidden">{{ _T('among:') }}</label>
                     <select name="group_filter" class="ui search dropdown nochosen">
                         <option value="0">{{ _T('Select a group') }}</option>
     {% for group in filter_groups_options %}
