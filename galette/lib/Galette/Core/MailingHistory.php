@@ -122,6 +122,13 @@ class MailingHistory extends History
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
                 }
 
+                $recipients = [];
+                if ($r['mailing_recipients'] != null) {
+                    //FIXME: error suppression with @ must be removed, see https://bugs.galette.eu/issues/1744
+                    $recipients = @unserialize($r['mailing_recipients']);
+                }
+                $r['mailing_recipients'] = $recipients;
+
                 $attachments = 0;
                 if (file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK])) {
                     $rdi = new \RecursiveDirectoryIterator(
