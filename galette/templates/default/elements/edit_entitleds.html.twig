@@ -23,7 +23,7 @@
             <tfoot>
                 <tr>
                     <td data-scope="row">
-                        <span class="displaynone">
+                        <span class="visually-hidden">
 {% if class == 'Status' %}
                             {{ _T("New status") }}
 {% else %}
@@ -33,7 +33,7 @@
                     </td>
                     <td class="left" data-title="{{ _T("Name") }}">
                         <div class="required field">
-                            <label for="name" class="displaynone">{{ _T("Name") }}</label>
+                            <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
                             <input size="40" type="text" name="{{ fields.libelle }}" required="required"/>
                         </div>
                     </td>

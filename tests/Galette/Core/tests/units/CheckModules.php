@@ -102,7 +102,7 @@ class CheckModules extends TestCase
 
         $html = $checks->toHtml();
         $this->assertStringNotContainsString('green check icon', $html);
-        $this->assertSame(1197, strlen($html));
+        $this->assertSame(1221, strlen($html));
     }
 
     /**

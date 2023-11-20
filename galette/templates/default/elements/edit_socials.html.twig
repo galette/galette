@@ -8,7 +8,7 @@
                     <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
                     <a href="#" class="ui icon red button delete delsocial" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}">
                         <i class="trash icon" aria-hidden="true"></i>
-                        <span class="displaynone">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}</span>
+                        <span class="visually-hidden">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}</span>
                     </a>
                 </div>
             </div>

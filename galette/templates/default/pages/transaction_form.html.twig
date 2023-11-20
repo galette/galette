@@ -95,7 +95,7 @@
                                             >
                                                 <i class="plus tiny icon" aria-hidden="true"></i>
                                                 <i class="user check icon" aria-hidden="true"></i>
-                                                <span class="displaynone">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
+                                                <span class="visually-hidden">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
                                             </a>
                                             <a
                                                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ transaction.id }}"
@@ -104,7 +104,7 @@
                                             >
                                                 <i class="plus tiny icon" aria-hidden="true"></i>
                                                 <i class="gift icon" aria-hidden="true"></i>
-                                                <span class="displaynone">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
+                                                <span class="visually-hidden">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
                                             </a>
                                             <a
                                                 href="#"
@@ -113,7 +113,7 @@
                                                 id="contribslist"
                                             >
                                                 <i class="receipt icon" aria-hidden="true"></i>
-                                                <span class="displaynone">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
+                                                <span class="visually-hidden">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
                                             </a>
                                         </div>
                                     </th>

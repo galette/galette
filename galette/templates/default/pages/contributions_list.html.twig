@@ -259,7 +259,7 @@
                         </span>
                     {% if contribution.isTransactionPart() %}
                         <i class="ui link icon" aria-hidden="true"></i>
-                        <span class="displaynone">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                        <span class="visually-hidden">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                     {% endif %}
                 {% endif %}
                 {% if not contribution.isTransactionPart() %}
