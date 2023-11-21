@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-18 15:28+0100\n"
-"PO-Revision-Date: 2023-11-18 15:28+0100\n"
+"POT-Creation-Date: 2023-11-21 09:05+0100\n"
+"PO-Revision-Date: 2023-11-21 09:05+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -165,7 +165,7 @@ msgstr "Remove mailing #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:718
 #: ../../tempcache/pages/mailing_form.html.twig:559
-#: ../../tempcache/pages/mailings_list.html.twig:463
+#: ../../tempcache/pages/mailings_list.html.twig:485
 msgid "Mailing preview"
 msgstr "Mailing preview"
 
@@ -522,6 +522,7 @@ msgid "Saved searches"
 msgstr "Saved searches"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:300
+#: ../../tempcache/pages/saved_searches_list.html.twig:218
 msgid "Remove saved search"
 msgstr "Remove saved search"
 
@@ -539,7 +540,7 @@ msgid "An SQL error has occurred while loading search."
 msgstr "An SQL error has occurred while loading search."
 
 #: ../lib/Galette/Controllers/GaletteController.php:108
-#: ../../tempcache/elements/footer.html.twig:79
+#: ../../tempcache/elements/footer.html.twig:83
 msgid "System information"
 msgstr "System information"
 
@@ -550,7 +551,8 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: ../lib/Galette/Controllers/GaletteController.php:243
-#: ../lib/Galette/Core/Galette.php:334 ../lib/Galette/Core/Galette.php:617
+#: ../lib/Galette/Core/Install.php:1179 ../lib/Galette/Core/Galette.php:334
+#: ../lib/Galette/Core/Galette.php:617
 msgid "Settings"
 msgstr "Settings"
 
@@ -773,10 +775,10 @@ msgstr "Authentication failed"
 
 #: ../lib/Galette/Controllers/AuthController.php:168
 #: ../../tempcache/elements/logged_user.html.twig:119
-#: ../../tempcache/elements/logged_user.html.twig:192
-#: ../../tempcache/elements/logged_user.html.twig:210
-#: ../../tempcache/elements/logged_user.html.twig:332
-#: ../../tempcache/elements/logged_user.html.twig:350
+#: ../../tempcache/elements/logged_user.html.twig:194
+#: ../../tempcache/elements/logged_user.html.twig:212
+#: ../../tempcache/elements/logged_user.html.twig:336
+#: ../../tempcache/elements/logged_user.html.twig:354
 msgid "Log off"
 msgstr "Log off"
 
@@ -1079,20 +1081,20 @@ msgstr "Email: '%s' has not been modified!"
 msgid "Email: '%s' has been successfully modified."
 msgstr "Email: '%s' has been successfully modified."
 
-#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:303
+#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:305
 msgid "Checks"
 msgstr "Checks"
 
-#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:309
+#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:311
 #: ../../tempcache/modals/plugin_initdb.html.twig:386
 msgid "Installation mode"
 msgstr "Installation mode"
 
-#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:315
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:317
 msgid "Database"
 msgstr "Database"
 
-#: ../lib/Galette/Core/Install.php:131
+#: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:323
 msgid "Database access and permissions"
 msgstr "Database access and permissions"
 
@@ -1108,11 +1110,11 @@ msgstr "Datapase upgrade"
 msgid "Tables Creation"
 msgstr "Tables Creation"
 
-#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:356
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:358
 msgid "Admin parameters"
 msgstr "Admin parameters"
 
-#: ../lib/Galette/Core/Install.php:146 ../webroot/installer.php:365
+#: ../lib/Galette/Core/Install.php:146 ../webroot/installer.php:367
 #: ../../tempcache/pages/desktop.html.twig:86
 msgid "Telemetry"
 msgstr "Telemetry"
@@ -1121,7 +1123,7 @@ msgstr "Telemetry"
 msgid "Galette initialization"
 msgstr "Galette initialization"
 
-#: ../lib/Galette/Core/Install.php:152 ../webroot/installer.php:377
+#: ../lib/Galette/Core/Install.php:152 ../webroot/installer.php:379
 #: ../../tempcache/modals/plugin_initdb.html.twig:451
 msgid "End!"
 msgstr "End!"
@@ -1157,10 +1159,6 @@ msgstr "Config file already exists and is up to date"
 #: ../lib/Galette/Core/Install.php:1126
 msgid "Unable to create configuration file (%path)"
 msgstr "Unable to create configuration file (%path)"
-
-#: ../lib/Galette/Core/Install.php:1179
-msgid "Preferences"
-msgstr "Preferences"
 
 #: ../lib/Galette/Core/Install.php:1187
 #: ../../tempcache/pages/advanced_search.html.twig:494
@@ -1262,7 +1260,7 @@ msgstr "All"
 msgid "Logged in as:<br/>%login"
 msgstr "Logged in as:<br/>%login"
 
-#: ../lib/Galette/Core/MailingHistory.php:507
+#: ../lib/Galette/Core/MailingHistory.php:514
 msgid "Delete mailing entries"
 msgstr "Delete mailing entries"
 
@@ -1682,7 +1680,7 @@ msgstr "Please define constant \"GALETTE_URI\" with the path to your instance."
 #: ../lib/Galette/Core/Preferences.php:1152 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Entity/Texts.php:214
 #: ../../tempcache/pages/history.html.twig:323
-#: ../../tempcache/pages/mailings_list.html.twig:274
+#: ../../tempcache/pages/mailings_list.html.twig:296
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
@@ -2119,7 +2117,7 @@ msgstr "Unspecified"
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:141
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:434
 #: ../../tempcache/pages/configuration_core_fields.html.twig:186
-#: ../../tempcache/pages/mailings_list.html.twig:195
+#: ../../tempcache/pages/mailings_list.html.twig:217
 #: ../../tempcache/pages/advanced_search.html.twig:469
 #: ../../tempcache/pages/advanced_search.html.twig:1413
 #: ../../tempcache/pages/advanced_search.html.twig:1763
@@ -2142,7 +2140,7 @@ msgstr "Yes"
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:133
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:426
 #: ../../tempcache/pages/configuration_core_fields.html.twig:205
-#: ../../tempcache/pages/mailings_list.html.twig:211
+#: ../../tempcache/pages/mailings_list.html.twig:233
 #: ../../tempcache/pages/advanced_search.html.twig:485
 #: ../../tempcache/pages/advanced_search.html.twig:1421
 #: ../../tempcache/pages/advanced_search.html.twig:1765
@@ -2871,8 +2869,8 @@ msgstr "Comments:"
 #: ../../tempcache/pages/import.html.twig:90
 #: ../../tempcache/pages/import.html.twig:147
 #: ../../tempcache/pages/contribution_form.html.twig:282
-#: ../../tempcache/pages/mailings_list.html.twig:97
-#: ../../tempcache/pages/mailings_list.html.twig:303
+#: ../../tempcache/pages/mailings_list.html.twig:119
+#: ../../tempcache/pages/mailings_list.html.twig:325
 #: ../../tempcache/pages/transactions_list.html.twig:268
 #: ../../tempcache/pages/transactions_list.html.twig:364
 #: ../../tempcache/pages/export.html.twig:132
@@ -3009,8 +3007,8 @@ msgstr "Jabber"
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../lib/Galette/Entity/Social.php:369 ../webroot/installer.php:414
-#: ../../tempcache/elements/footer.html.twig:44
+#: ../lib/Galette/Entity/Social.php:369 ../webroot/installer.php:416
+#: ../../tempcache/elements/footer.html.twig:48
 msgid "Website"
 msgstr "Website"
 
@@ -3358,39 +3356,40 @@ msgstr "The username cannot contain the @ character"
 msgid "Galette Installation"
 msgstr "Galette Installation"
 
-#: ../webroot/installer.php:252
+#: ../webroot/installer.php:249 ../../tempcache/public_page.html.twig:73
+#: ../../tempcache/page.html.twig:65
+msgid "Skip to content"
+msgstr "Skip to content"
+
+#: ../webroot/installer.php:253
 msgid "Galette installation"
 msgstr "Galette installation"
 
-#: ../webroot/installer.php:283
+#: ../webroot/installer.php:285
 #: ../../tempcache/elements/messages_inline.html.twig:86
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
-#: ../webroot/installer.php:321
-msgid "Database access/permissions"
-msgstr "Database access/permissions"
-
-#: ../webroot/installer.php:330
+#: ../webroot/installer.php:332
 #: ../../tempcache/modals/plugin_initdb.html.twig:417
 msgid "Version selection"
 msgstr "Version selection"
 
-#: ../webroot/installer.php:336
+#: ../webroot/installer.php:338
 #: ../../tempcache/modals/plugin_initdb.html.twig:436
 msgid "Database upgrade"
 msgstr "Database upgrade"
 
-#: ../webroot/installer.php:345
+#: ../webroot/installer.php:347
 #: ../../tempcache/modals/plugin_initdb.html.twig:434
 msgid "Database installation"
 msgstr "Database installation"
 
-#: ../webroot/installer.php:371
+#: ../webroot/installer.php:373
 msgid "Galette initialisation"
 msgstr "Galette initialisation"
 
-#: ../webroot/installer.php:418 ../../tempcache/elements/footer.html.twig:51
+#: ../webroot/installer.php:420 ../../tempcache/elements/footer.html.twig:55
 msgid "Documentation"
 msgstr "Documentation"
 
@@ -4387,7 +4386,7 @@ msgstr "Temporary images"
 
 #: ../install/steps/check.php:75
 #: ../../tempcache/pages/mailing_form.html.twig:243
-#: ../../tempcache/pages/mailings_list.html.twig:331
+#: ../../tempcache/pages/mailings_list.html.twig:353
 msgid "Attachments"
 msgstr "Attachments"
 
@@ -4737,8 +4736,8 @@ msgstr "Sheet type"
 #: ../../tempcache/pages/contribution_form.html.twig:506
 #: ../../tempcache/pages/contribution_form.html.twig:548
 #: ../../tempcache/pages/contribution_form.html.twig:600
-#: ../../tempcache/pages/mailings_list.html.twig:126
-#: ../../tempcache/pages/mailings_list.html.twig:143
+#: ../../tempcache/pages/mailings_list.html.twig:148
+#: ../../tempcache/pages/mailings_list.html.twig:165
 #: ../../tempcache/pages/transactions_list.html.twig:77
 #: ../../tempcache/pages/transactions_list.html.twig:94
 #: ../../tempcache/pages/advanced_search.html.twig:281
@@ -4838,8 +4837,8 @@ msgstr "Existing variables"
 #: ../../tempcache/pages/mailing_form.html.twig:630
 #: ../../tempcache/pages/mailing_form.html.twig:695
 #: ../../tempcache/pages/preferences.html.twig:2573
-#: ../../tempcache/pages/mailings_list.html.twig:453
-#: ../../tempcache/pages/mailings_list.html.twig:463
+#: ../../tempcache/pages/mailings_list.html.twig:475
+#: ../../tempcache/pages/mailings_list.html.twig:485
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:178
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
@@ -4984,27 +4983,16 @@ msgstr "Home"
 msgid "Go back to Galette homepage"
 msgstr "Go back to Galette homepage"
 
-#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:43
+#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:42
 msgid "Menu"
 msgstr "Menu"
 
-#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:59
-#: ../../tempcache/page.html.twig:161
-msgid ""
-"A mailing exists in the current session. Click here if you want to resume or "
-"cancel it."
-msgstr ""
-"A mailing exists in the current session. Click here if you want to resume or "
-"cancel it."
+#: ../../tempcache/elements/navigation/navigation_aside.html.twig:89
+msgid "Main menu"
+msgstr "Main menu"
 
-#: ../../tempcache/elements/navigation/navigation_topbar.html.twig:66
-#: ../../tempcache/pages/members_list.html.twig:1160
-#: ../../tempcache/page.html.twig:168
-msgid "Existing mailing"
-msgstr "Existing mailing"
-
-#: ../../tempcache/elements/navigation/navigation_aside.html.twig:111
-#: ../../tempcache/elements/navigation/navigation_aside.html.twig:118
+#: ../../tempcache/elements/navigation/navigation_aside.html.twig:113
+#: ../../tempcache/elements/navigation/navigation_aside.html.twig:120
 msgid "Compact menu"
 msgstr "Compact menu"
 
@@ -5015,30 +5003,35 @@ msgstr "Subscribe"
 #: ../../tempcache/elements/navigation/public_pages.html.twig:132
 #: ../../tempcache/elements/navigation/public_pages.html.twig:142
 #: ../../tempcache/elements/logged_user.html.twig:82
-#: ../../tempcache/elements/logged_user.html.twig:154
-#: ../../tempcache/elements/logged_user.html.twig:164
-#: ../../tempcache/elements/logged_user.html.twig:293
-#: ../../tempcache/elements/logged_user.html.twig:304
+#: ../../tempcache/elements/logged_user.html.twig:156
+#: ../../tempcache/elements/logged_user.html.twig:166
+#: ../../tempcache/elements/logged_user.html.twig:297
+#: ../../tempcache/elements/logged_user.html.twig:308
 msgid "Disable dark mode"
 msgstr "Disable dark mode"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:134
 #: ../../tempcache/elements/navigation/public_pages.html.twig:144
 #: ../../tempcache/elements/logged_user.html.twig:84
-#: ../../tempcache/elements/logged_user.html.twig:156
-#: ../../tempcache/elements/logged_user.html.twig:166
-#: ../../tempcache/elements/logged_user.html.twig:295
-#: ../../tempcache/elements/logged_user.html.twig:306
+#: ../../tempcache/elements/logged_user.html.twig:158
+#: ../../tempcache/elements/logged_user.html.twig:168
+#: ../../tempcache/elements/logged_user.html.twig:299
+#: ../../tempcache/elements/logged_user.html.twig:310
 msgid "Enable dark mode"
 msgstr "Enable dark mode"
 
 #: ../../tempcache/elements/logged_user.html.twig:117
-#: ../../tempcache/elements/logged_user.html.twig:190
-#: ../../tempcache/elements/logged_user.html.twig:208
-#: ../../tempcache/elements/logged_user.html.twig:330
-#: ../../tempcache/elements/logged_user.html.twig:348
+#: ../../tempcache/elements/logged_user.html.twig:192
+#: ../../tempcache/elements/logged_user.html.twig:210
+#: ../../tempcache/elements/logged_user.html.twig:334
+#: ../../tempcache/elements/logged_user.html.twig:352
 msgid "Unimpersonate"
 msgstr "Unimpersonate"
+
+#: ../../tempcache/elements/logged_user.html.twig:133
+#: ../../tempcache/elements/logged_user.html.twig:233
+msgid "User menu"
+msgstr "User menu"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:44
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:115
@@ -5483,7 +5476,7 @@ msgstr ""
 "available since this is *not* a regular member."
 
 #: ../../tempcache/elements/modes.html.twig:45
-#: ../../tempcache/pages/mailings_list.html.twig:312
+#: ../../tempcache/pages/mailings_list.html.twig:334
 msgid "Superadmin"
 msgstr "Superadmin"
 
@@ -5948,13 +5941,13 @@ msgstr "Record"
 
 #: ../../tempcache/pages/contributions_list.html.twig:115
 #: ../../tempcache/pages/history.html.twig:124
-#: ../../tempcache/pages/mailings_list.html.twig:119
+#: ../../tempcache/pages/mailings_list.html.twig:141
 msgid "since"
 msgstr "since"
 
 #: ../../tempcache/pages/contributions_list.html.twig:132
 #: ../../tempcache/pages/history.html.twig:141
-#: ../../tempcache/pages/mailings_list.html.twig:136
+#: ../../tempcache/pages/mailings_list.html.twig:158
 #: ../../tempcache/pages/transactions_list.html.twig:87
 msgid "until"
 msgstr "until"
@@ -5962,7 +5955,7 @@ msgstr "until"
 #: ../../tempcache/pages/contributions_list.html.twig:157
 #: ../../tempcache/pages/history.html.twig:247
 #: ../../tempcache/pages/members_list.html.twig:372
-#: ../../tempcache/pages/mailings_list.html.twig:221
+#: ../../tempcache/pages/mailings_list.html.twig:243
 #: ../../tempcache/pages/transactions_list.html.twig:106
 msgid "Apply filters"
 msgstr "Apply filters"
@@ -5970,7 +5963,7 @@ msgstr "Apply filters"
 #: ../../tempcache/pages/contributions_list.html.twig:162
 #: ../../tempcache/pages/history.html.twig:252
 #: ../../tempcache/pages/members_list.html.twig:377
-#: ../../tempcache/pages/mailings_list.html.twig:226
+#: ../../tempcache/pages/mailings_list.html.twig:248
 #: ../../tempcache/pages/transactions_list.html.twig:111
 #: ../../tempcache/pages/advanced_search.html.twig:1532
 msgid "Filter"
@@ -5980,7 +5973,7 @@ msgstr "Filter"
 #: ../../tempcache/pages/history.html.twig:257
 #: ../../tempcache/pages/members_list.html.twig:392
 #: ../../tempcache/pages/members_list.html.twig:433
-#: ../../tempcache/pages/mailings_list.html.twig:231
+#: ../../tempcache/pages/mailings_list.html.twig:253
 #: ../../tempcache/pages/transactions_list.html.twig:116
 msgid "Reset all filters to defaults"
 msgstr "Reset all filters to defaults"
@@ -5989,7 +5982,7 @@ msgstr "Reset all filters to defaults"
 #: ../../tempcache/pages/history.html.twig:262
 #: ../../tempcache/pages/members_list.html.twig:397
 #: ../../tempcache/pages/members_list.html.twig:438
-#: ../../tempcache/pages/mailings_list.html.twig:236
+#: ../../tempcache/pages/mailings_list.html.twig:258
 #: ../../tempcache/pages/transactions_list.html.twig:121
 #: ../../tempcache/pages/advanced_search.html.twig:1540
 msgid "Clear filter"
@@ -6366,7 +6359,7 @@ msgid "Members that have an email address:"
 msgstr "Members that have an email address:"
 
 #: ../../tempcache/pages/members_list.html.twig:331
-#: ../../tempcache/pages/mailings_list.html.twig:179
+#: ../../tempcache/pages/mailings_list.html.twig:201
 #: ../../tempcache/pages/advanced_search.html.twig:214
 #: ../../tempcache/pages/advanced_search.html.twig:453
 msgid "Don't care"
@@ -6472,6 +6465,11 @@ msgstr "No member has been found"
 #: ../../tempcache/pages/members_list.html.twig:1089
 msgid "Search title"
 msgstr "Search title"
+
+#: ../../tempcache/pages/members_list.html.twig:1160
+#: ../../tempcache/pages/mailings_list.html.twig:106
+msgid "Existing mailing"
+msgstr "Existing mailing"
 
 #: ../../tempcache/pages/members_list.html.twig:1160
 msgid ""
@@ -6823,8 +6821,8 @@ msgid "Mailing information"
 msgstr "Mailing information"
 
 #: ../../tempcache/pages/mailing_form.html.twig:83
-#: ../../tempcache/pages/mailings_list.html.twig:97
-#: ../../tempcache/pages/mailings_list.html.twig:309
+#: ../../tempcache/pages/mailings_list.html.twig:119
+#: ../../tempcache/pages/mailings_list.html.twig:331
 msgid "Sender"
 msgstr "Sender"
 
@@ -6842,8 +6840,8 @@ msgid "other"
 msgstr "other"
 
 #: ../../tempcache/pages/mailing_form.html.twig:137
-#: ../../tempcache/pages/mailings_list.html.twig:97
-#: ../../tempcache/pages/mailings_list.html.twig:319
+#: ../../tempcache/pages/mailings_list.html.twig:119
+#: ../../tempcache/pages/mailings_list.html.twig:341
 msgid "Recipients"
 msgstr "Recipients"
 
@@ -6915,7 +6913,7 @@ msgid "Modifiy mailing"
 msgstr "Modifiy mailing"
 
 #: ../../tempcache/pages/mailing_form.html.twig:549
-#: ../../tempcache/pages/mailings_list.html.twig:453
+#: ../../tempcache/pages/mailings_list.html.twig:475
 msgid "An error occurred displaying preview :("
 msgstr "An error occurred displaying preview :("
 
@@ -7711,45 +7709,53 @@ msgstr "An error occurred sending test email :("
 msgid "Create new mailing"
 msgstr "Create new mailing"
 
-#: ../../tempcache/pages/mailings_list.html.twig:97
-#: ../../tempcache/pages/mailings_list.html.twig:154
-#: ../../tempcache/pages/mailings_list.html.twig:325
+#: ../../tempcache/pages/mailings_list.html.twig:100
+msgid ""
+"A mailing exists in the current session. Click here if you want to resume or "
+"cancel it."
+msgstr ""
+"A mailing exists in the current session. Click here if you want to resume or "
+"cancel it."
+
+#: ../../tempcache/pages/mailings_list.html.twig:119
+#: ../../tempcache/pages/mailings_list.html.twig:176
+#: ../../tempcache/pages/mailings_list.html.twig:347
 msgid "Subject"
 msgstr "Subject"
 
-#: ../../tempcache/pages/mailings_list.html.twig:97
+#: ../../tempcache/pages/mailings_list.html.twig:119
 msgid "Att."
 msgstr "Att."
 
-#: ../../tempcache/pages/mailings_list.html.twig:97
-#: ../../tempcache/pages/mailings_list.html.twig:341
+#: ../../tempcache/pages/mailings_list.html.twig:119
+#: ../../tempcache/pages/mailings_list.html.twig:363
 msgid "Sent"
 msgstr "Sent"
 
-#: ../../tempcache/pages/mailings_list.html.twig:164
+#: ../../tempcache/pages/mailings_list.html.twig:186
 msgid "Sent mailings:"
 msgstr "Sent mailings:"
 
-#: ../../tempcache/pages/mailings_list.html.twig:297
+#: ../../tempcache/pages/mailings_list.html.twig:319
 msgid "Mailing entry %id"
 msgstr "Mailing entry %id"
 
-#: ../../tempcache/pages/mailings_list.html.twig:367
+#: ../../tempcache/pages/mailings_list.html.twig:389
 #, php-format
 msgid "Display mailing '%subject' details in preview window"
 msgstr "Display mailing '%subject' details in preview window"
 
-#: ../../tempcache/pages/mailings_list.html.twig:381
+#: ../../tempcache/pages/mailings_list.html.twig:403
 #, php-format
 msgid "Use mailing '%subject' as a template for a new one"
 msgstr "Use mailing '%subject' as a template for a new one"
 
-#: ../../tempcache/pages/mailings_list.html.twig:394
+#: ../../tempcache/pages/mailings_list.html.twig:416
 #, php-format
 msgid "Delete mailing '%subject'"
 msgstr "Delete mailing '%subject'"
 
-#: ../../tempcache/pages/mailings_list.html.twig:413
+#: ../../tempcache/pages/mailings_list.html.twig:435
 msgid "No sent mailing has been stored in the database yet."
 msgstr "No sent mailing has been stored in the database yet."
 
@@ -7786,10 +7792,6 @@ msgstr "Show parameters"
 #: ../../tempcache/pages/saved_searches_list.html.twig:204
 msgid "Load saved search"
 msgstr "Load saved search"
-
-#: ../../tempcache/pages/saved_searches_list.html.twig:218
-msgid "Delete saved search"
-msgstr "Delete saved search"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:237
 msgid "no search"
@@ -8417,11 +8419,11 @@ msgstr "Select an option"
 msgid "delete"
 msgstr "delete"
 
-#: ../../tempcache/public_page.html.twig:177 ../../tempcache/page.html.twig:201
+#: ../../tempcache/public_page.html.twig:182 ../../tempcache/page.html.twig:184
 msgid "Back to top"
 msgstr "Back to top"
 
-#: ../../tempcache/public_page.html.twig:197
+#: ../../tempcache/public_page.html.twig:202
 msgid "Public page content"
 msgstr "Public page content"
 
@@ -8429,6 +8431,10 @@ msgstr "Public page content"
 msgid "Ajax page content"
 msgstr "Ajax page content"
 
-#: ../../tempcache/page.html.twig:228
+#: ../../tempcache/page.html.twig:140
+msgid "Language menu"
+msgstr "Language menu"
+
+#: ../../tempcache/page.html.twig:211
 msgid "Page content"
 msgstr "Page content"
