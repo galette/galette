@@ -19,7 +19,8 @@
     {% if file_exists(localprintstylesheet) %}
         <link rel="stylesheet" type="text/css" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}galette_print_local.css" media="print" />
     {% endif %}
-        <link rel="shortcut icon" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png" />
+        <link rel="icon" type="image/png" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png" />
+        <link rel="apple-touch-icon" type="image/png" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png">
 
         <script type="text/javascript" src="{{ base_path() }}/assets/js/jquery.min.js"></script>
 
