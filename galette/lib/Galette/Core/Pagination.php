@@ -274,13 +274,13 @@ abstract class Pagination
 
         if ($this->current_page != 1) {
             $paginate .= $this->getLink(
-                '&lt;&lt;',
+                '<i class="fast backward small icon" aria-hidden="true"></i>',
                 $this->getHref(1),
                 preg_replace("(%i)", $next, _T("First page"))
             );
 
             $paginate .= $this->getLink(
-                '&lt;',
+                '<i class="step backward small icon" aria-hidden="true"></i>',
                 $this->getHref($previous),
                 preg_replace("(%i)", $previous, _T("Previous page (%i)"))
             );
@@ -308,13 +308,13 @@ abstract class Pagination
         }
         if ($this->current_page != $this->pages) {
             $paginate .= $this->getLink(
-                '&gt;',
+                '<i class="step forward small icon" aria-hidden="true"></i>',
                 $this->getHref($next),
                 preg_replace("(%i)", $next, _T("Next page (%i)"))
             );
 
             $paginate .= $this->getLink(
-                '&gt;&gt;',
+                '<i class="fast forward small icon" aria-hidden="true"></i>',
                 $this->getHref($this->pages),
                 preg_replace("(%i)", $this->pages, _T("Last page (%i)"))
             );
