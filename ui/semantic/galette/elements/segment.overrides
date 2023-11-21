@@ -7,7 +7,7 @@
 ------------------------------*/
 .ui.horizontal.segments.header {
   color: darken(@textColor, 15);
-  background: rgba(255, 182, 25, 0.7);
+  background: @galetteHeaderBackground;
   margin: 0;
 
   & > .segment {

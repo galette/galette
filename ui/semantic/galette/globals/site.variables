@@ -4,16 +4,17 @@
 
 @fontName                   : 'PT Sans';
 
-@galetteBackgroundImage     : 'themes/galette/assets/images/bg.png';
-@galetteBackgroundImageRtl  : 'themes/galette/assets/images/bg-rtl.png';
-@galetteNavBackground       : rgba(99, 107, 112, .3);
-@galetteColor               : #ffb619;
-@lightGaletteColor          : #ffda8b;
-
 @red                        : #d22828;
 @blue                       : #2f69b3;
 @green                      : #087d24;
 @grey                       : #636b70;
+
+@galetteColor               : #ffb619;
+@lightGaletteColor          : saturate(lighten(@galetteColor, 22), 15);
+@galetteHeaderBackground    : fade(@galetteColor, 70);
+@galetteNavBackground       : fade(@grey, 30);
+@galetteBackgroundImage     : 'themes/galette/assets/images/bg.png';
+@galetteBackgroundImageRtl  : 'themes/galette/assets/images/bg-rtl.png';
 
 @primaryColor               : @galetteColor;
 @secondaryColor             : @grey;
