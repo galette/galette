@@ -528,6 +528,7 @@ ul.leaders span + span {
   }
 
   .displaynone,
+  .visually-hidden,
   #top-navbar,
   aside.toc,
   #recup_mailing,
@@ -538,9 +539,7 @@ ul.leaders span + span {
   .infoline .right.aligned.segment,
   .actions_row,
   .ui.pagination.menu,
-  section.content .main-content > footer,
-  section.content .main-content + footer,
-  section.vertically.centered .main-content + footer,
+  main ~ footer.ui.segment,
   #back2top {
     display: none !important;
   }
