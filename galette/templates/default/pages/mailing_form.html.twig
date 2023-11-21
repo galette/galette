@@ -363,13 +363,14 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('.members-selection a.choice').click(function(e){
-                e.preventDefault();
-                var _mid = this.href.match(/.*\/(\d+)$/)[1];
-                var _mname = $(this).text();
+            $('#listing tbody tr').click(function(event){
+                event.preventDefault();
+                var _mlink = $(this).find('.username_row a');
+                var _mid = _mlink[0].href.match(/.*\/(\d+)$/)[1];
+                var _mname = _mlink.text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '" class="item"><i class="user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
+                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();
@@ -379,7 +380,7 @@
                     });
                 }
                 return false;
-            });
+            }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a member")|e('js') }}');
 
             $('.members-selection .pagination a').click(function(){
                 var _members = new Array();
