@@ -36,14 +36,14 @@
 # Nolan <nolanwelch@outlook.com>, 2022.
 # Dragos <dragos@duckly.com>, 2022.
 # Javier <javier.fserrador@gmail.com>, 2022.
-# gallegonovato <fran-carro@hotmail.es>, 2022.
+# gallegonovato <fran-carro@hotmail.es>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-21 09:05+0100\n"
-"PO-Revision-Date: 2023-10-04 11:27+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2023-11-21 12:53+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.2\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -3449,7 +3449,7 @@ msgstr "Instalación de Galette"
 #: ../webroot/installer.php:249 ../../tempcache/public_page.html.twig:73
 #: ../../tempcache/page.html.twig:65
 msgid "Skip to content"
-msgstr ""
+msgstr "Ir al contenido"
 
 #: ../webroot/installer.php:253
 msgid "Galette installation"
@@ -5022,10 +5022,8 @@ msgid "Menu"
 msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:89
-#, fuzzy
-#| msgid "Main"
 msgid "Main menu"
-msgstr "Principal"
+msgstr "Menú principal"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:113
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:120
@@ -8422,10 +8420,8 @@ msgid "Ajax page content"
 msgstr ""
 
 #: ../../tempcache/page.html.twig:140
-#, fuzzy
-#| msgid "Language:"
 msgid "Language menu"
-msgstr "Lengua:"
+msgstr "Menú de idiomas"
 
 #: ../../tempcache/page.html.twig:211
 msgid "Page content"
