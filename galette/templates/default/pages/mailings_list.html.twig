@@ -26,6 +26,16 @@
         <i class="plus circle green icon" aria-hidden="true"></i>
         {{ _T('Create new mailing') }}
     </a>
+    {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
+    <a
+        href="{{ url_for("mailing") }}"
+        class="action ui tiny labeled icon button tooltip"
+        title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
+    >
+        <i class="paper plane outline blue icon" aria-hidden="true"></i>
+        {{ _T("Existing mailing") }}
+    </a>
+    {% endif %}
 {% endblock %}
 
 {% block header %}
