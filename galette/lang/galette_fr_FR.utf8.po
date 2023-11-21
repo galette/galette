@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-21 09:05+0100\n"
-"PO-Revision-Date: 2023-11-19 06:42+0000\n"
+"PO-Revision-Date: 2023-11-21 12:53+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3436,10 +3436,8 @@ msgstr "Installation de Galette"
 
 #: ../webroot/installer.php:249 ../../tempcache/public_page.html.twig:73
 #: ../../tempcache/page.html.twig:65
-#, fuzzy
-#| msgid "Emails content"
 msgid "Skip to content"
-msgstr "Contenu des courriels"
+msgstr "Aller au contenu"
 
 #: ../webroot/installer.php:253
 msgid "Galette installation"
@@ -5095,10 +5093,8 @@ msgid "Menu"
 msgstr "Menu"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:89
-#, fuzzy
-#| msgid "Main"
 msgid "Main menu"
-msgstr "Global"
+msgstr "Menu principal"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:113
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:120
@@ -5139,10 +5135,8 @@ msgstr "Quitter l'imposture"
 
 #: ../../tempcache/elements/logged_user.html.twig:133
 #: ../../tempcache/elements/logged_user.html.twig:233
-#, fuzzy
-#| msgid "Username"
 msgid "User menu"
-msgstr "Identifiant"
+msgstr "Menu utilisateur"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:44
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:115
@@ -8581,10 +8575,8 @@ msgid "Ajax page content"
 msgstr "Contenu de la page ajax"
 
 #: ../../tempcache/page.html.twig:140
-#, fuzzy
-#| msgid "Language:"
 msgid "Language menu"
-msgstr "Langue :"
+msgstr "Menu des langues"
 
 #: ../../tempcache/page.html.twig:211
 msgid "Page content"
