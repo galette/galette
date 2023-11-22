@@ -12,7 +12,7 @@
 
 <div class="{{ component_classes }}{% if i18n.isRtl() %} rtl{% endif %}" title="{{ _T("Choose your language") }}">
 {% if header == true %}
-    <div class="image header title"{% if ui == 'item'%}data-fold="fold-language" tabindex="0"{% endif %}>
+    <div class="image header title"{% if ui == 'item'%} data-fold="fold-language" tabindex="0"{% endif %}>
 {% endif %}
         <i class="icon language" aria-hidden="true"></i>
         <span>{{ galette_lang }}</span>
