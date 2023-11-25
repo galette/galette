@@ -175,10 +175,12 @@
             {% if login.isAdmin() or login.isStaff() %}
                         // Handle delete.
                         } else if (value == 'delete') {
+                            {% set removal_extra_data = removal_extra_data is defined ? removal_extra_data : "" %}
+                            {% set extra_data = "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" ~ removal_extra_data %}
                             {% include "elements/js/removal.js.twig" with {
                                 selector: ".batch-delete",
                                 deleteurl: url_for(batch.route.name, batch.route.args|default([])),
-                                extra_data: "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()",
+                                extra_data: extra_data,
                                 method: "POST",
                                 loader: "button",
                                 loader_parent: ".batch-select-action"
