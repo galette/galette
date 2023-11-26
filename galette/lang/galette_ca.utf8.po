@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-11-21 09:05+0100\n"
-"PO-Revision-Date: 2023-11-19 06:42+0000\n"
+"PO-Revision-Date: 2023-11-26 09:04+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2\n"
+"X-Generator: Weblate 5.2.1-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -774,7 +774,6 @@ msgstr "No s'ha pogut obtenir la llista de grups."
 
 #: ../lib/Galette/Controllers/PdfController.php:547
 #: ../lib/Galette/Core/Install.php:1203 ../lib/Galette/Core/Galette.php:411
-#, fuzzy
 msgid "PDF models"
 msgstr "Models PDF"
 
@@ -908,14 +907,14 @@ msgid "Your account (%s) do not contain any valid email address"
 msgstr "El vostre compte (%s) no conté cap adreça electrònica vàlida"
 
 #: ../lib/Galette/Controllers/AuthController.php:409
-#, fuzzy, php-format
+#, php-format
 msgid "Mails address %s does not exist"
-msgstr "L'adreçament dels correus no existeix"
+msgstr "L'adreça de correu %s no existeix"
 
 #: ../lib/Galette/Controllers/AuthController.php:415
 #, fuzzy, php-format
 msgid "Login %s does not exist"
-msgstr "L'inici de sessió no existeix"
+msgstr "Login %s no existeix"
 
 #: ../lib/Galette/Controllers/AuthController.php:446
 #, fuzzy
@@ -1039,7 +1038,6 @@ msgstr "Neteja els registres"
 
 #: ../lib/Galette/Controllers/PluginsController.php:83
 #: ../lib/Galette/Core/Galette.php:341 ../lib/Galette/Core/Galette.php:625
-#, fuzzy
 msgid "Plugins"
 msgstr "Connectors"
 
@@ -1059,7 +1057,7 @@ msgstr "El nom del connector ha estat desactivat"
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:249
 #, fuzzy
 msgid "Translate labels"
-msgstr "Tradueix les etiquetes"
+msgstr "Traduir etiquetes"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:119
 #, php-format
@@ -1203,24 +1201,21 @@ msgid "Installation mode"
 msgstr "Mode d'instal·lació"
 
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:317
-#, fuzzy
 msgid "Database"
 msgstr "Base de dades"
 
 #: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:323
-#, fuzzy
 msgid "Database access and permissions"
 msgstr "Accés i permisos de la base de dades"
 
 #: ../lib/Galette/Core/Install.php:134
-#, fuzzy
 msgid "Previous version selection"
 msgstr "Selecció de versió anterior"
 
 #: ../lib/Galette/Core/Install.php:137
 #, fuzzy
 msgid "Datapase upgrade"
-msgstr "Actualitza dadespase"
+msgstr "Actualització de dades"
 
 #: ../lib/Galette/Core/Install.php:140
 #, fuzzy
@@ -1239,7 +1234,6 @@ msgid "Telemetry"
 msgstr "Telemesura"
 
 #: ../lib/Galette/Core/Install.php:149
-#, fuzzy
 msgid "Galette initialization"
 msgstr "Inicialització de Galette"
 
