@@ -90,6 +90,28 @@ class Reminders
      */
     private function loadToRemind(Db $zdb, $type, $nomail = false)
     {
+        global $preferences;
+
+        $limit_now = new \DateTime();
+        $limit_now->sub(new \DateInterval('P1D'));
+        $limit_now->setTime(23, 59, 59);
+        if ($preferences->pref_beg_membership != '') {
+            //case beginning of membership
+            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            $limit_date = new \DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
+            while ($limit_now <= $limit_date) {
+                $limit_date->sub(new \DateInterval('P1Y'));
+            }
+        } elseif ($preferences->pref_membership_ext != '') {
+            //case membership extension
+            $limit_date = clone $limit_now;
+            $limit_date->sub(new \DateInterval('P' . $preferences->pref_membership_ext . 'M'));
+        } else {
+            throw new \RuntimeException(
+                'Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!'
+            );
+        }
+
         $this->toremind = array();
         $select = $zdb->select(Members::TABLE, 'a');
         $select->columns([Members::PK, 'date_echeance']);
@@ -145,6 +167,15 @@ class Reminders
         $results = $zdb->execute($select);
 
         foreach ($results as $r) {
+            if ($r->last_reminder !== null && $r->last_reminder != '') {
+                $last_reminder = new \DateTime($r->last_reminder);
+                if ($limit_date >= $last_reminder) {
+                    //last reminder has been sent too long ago, must be ignored
+                    $r->reminder_type = $type;
+                    $r->last_reminder = '';
+                }
+            }
+
             if ($r->reminder_type < $type) {
                 //sent impending, but is now late. reset last remind.
                 $r->reminder_type = $type;
@@ -167,8 +198,7 @@ class Reminders
                             if ($r->last_reminder === null || $r->last_reminder == '') {
                                 $date_checked = true;
                             } else {
-                                $last_reminder = new \DateTime($r->last_reminder);
-                                if ($now >= $second && $second > $last_reminder) {
+                                if ($now >= $second && $last_reminder >= $limit_date && $second > $last_reminder) {
                                     $date_checked = true;
                                 }
                             }
@@ -185,7 +215,7 @@ class Reminders
                                 $date_checked = true;
                             } else {
                                 $last_reminder = new \DateTime($r->last_reminder);
-                                if ($now >= $second && $second > $last_reminder) {
+                                if ($now >= $second && $last_reminder >= $limit_date && $second > $last_reminder) {
                                     $date_checked = true;
                                 }
                             }
