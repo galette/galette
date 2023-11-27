@@ -21,11 +21,18 @@
 
 namespace Galette\Repository;
 
+use DateTime;
 use Galette\Core\Db;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Analog\Analog;
+use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\IsNull;
+use Laminas\Db\Sql\Predicate\Operator;
+use Laminas\Db\Sql\Predicate\PredicateSet;
+use Laminas\Db\Sql\Select;
+use Throwable;
 
 /**
  * Reminders
@@ -38,10 +45,13 @@ class Reminders
     public const TABLE = 'reminders';
     public const PK = 'reminder_id';
 
+    private Db $zdb;
+
     /** @var array<int> */
     private array $selected;
-    /** @var array<int> */
+    /** @var array<int, array<string,mixed>> */
     private array $toremind;
+    private StatementInterface $select_stmt;
 
     /**
      * Main constructor
@@ -58,131 +68,166 @@ class Reminders
     }
 
     /**
-     * Load reminders
+     * Load late members
      *
-     * @param Db      $zdb    Database instance
-     * @param integer $type   Reminder type
      * @param boolean $nomail Get reminders for members who do not have email address
      *
      * @return void
      */
-    private function loadToRemind(Db $zdb, int $type, bool $nomail = false): void
+    private function loadLate(bool $nomail = false): void
     {
-        $this->toremind = array();
-        $select = $zdb->select(Members::TABLE, 'a');
-        $select->columns([Members::PK, 'date_echeance']);
-        $select->join(
-            array('r' => PREFIX_DB . self::TABLE),
-            'a.' . Members::PK . '=r.reminder_dest',
-            array(
-                'last_reminder' => new Expression('MAX(reminder_date)'),
-                'reminder_type' => new Expression('MAX(reminder_type)')
-            ),
-            $select::JOIN_LEFT
-        )->join(
-            array('parent' => PREFIX_DB . Members::TABLE),
-            'a.parent_id=parent.' . Members::PK,
-            array(),
-            $select::JOIN_LEFT
-        );
-
-        if ($nomail === false) {
-            //per default, limit to members who have an email address
-            $select->where(
-                '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND parent.email_adh != \'\')'
-            );
-        } else {
-            $select->where(
-                '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (parent.email_adh = \'\' OR parent.email_adh IS NULL)'
-            );
-        }
-
-        $select->where('a.activite_adh=true')
-            ->where('a.bool_exempt_adh=false');
-
         $now = new \DateTime();
-        $due_date = clone $now;
-        $due_date->modify('+30 days');
-        if ($type === Reminder::LATE) {
-            $select->where->LessThan(
-                'a.date_echeance',
-                $now->format('Y-m-d')
-            );
-        } else {
-            $select->where->greaterThanOrEqualTo(
-                'a.date_echeance',
-                $now->format('Y-m-d')
-            )->lessThanOrEqualTo(
-                'a.date_echeance',
-                $due_date->format('Y-m-d')
-            );
+        $filters = new MembersList();
+        $filters->filter_account = Members::ACTIVE_ACCOUNT;
+        $filters->membership_filter = Members::MEMBERSHIP_LATE;
+        $filters->email_filter = ($nomail === false ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
+
+        $members = new Members($filters);
+        $members_list = $members->getList(true);
+
+        if (!count($members_list)) {
+            return;
         }
 
-        $select->group('a.id_adh');
+        foreach ($members_list as $member) {
+            //per default, no reminder is sent.
+            $toremind = false;
 
-        $results = $zdb->execute($select);
+            //for each member, check if there are existing reminders send since $limit_date
+            $reminders = $this->select_stmt->execute(
+                [
+                    'reminder_type' => Reminder::LATE,
+                    'reminder_dest' => $member->id
+                ]
+            );
 
-        foreach ($results as $r) {
-            if ($r->reminder_type < $type) {
-                //sent impending, but is now late. reset last remind.
-                $r->reminder_type = $type;
-                $r->last_reminder = '';
-            }
+            $due_date = new DateTime($member->due_date);
+            //reminders 30 days and 60 days after
+            $first = clone $due_date;
+            $second = clone $due_date;
+            $first->modify('+30 days');
+            $second->modify('+60 days');
 
-            if ($r->reminder_type === null || (int)$r->reminder_type === $type) {
-                $date_checked = false;
-
-                $due_date = new \DateTime($r->date_echeance);
-
-                switch ($type) {
-                    case Reminder::IMPENDING:
-                        //reminders 30 days and 7 days before
-                        $first = clone $due_date;
-                        $second = clone $due_date;
-                        $first->modify('-30 days');
-                        $second->modify('-7 days');
-                        if ($now >= $first || $now >= $second) {
-                            if ($r->last_reminder === null || $r->last_reminder == '') {
-                                $date_checked = true;
-                            } else {
-                                $last_reminder = new \DateTime($r->last_reminder);
-                                if ($now >= $second && $second > $last_reminder) {
-                                    $date_checked = true;
-                                }
-                            }
-                        }
-                        break;
-                    case Reminder::LATE:
-                        //reminders 30 days and 60 days after
-                        $first = clone $due_date;
-                        $second = clone $due_date;
-                        $first->modify('+30 days');
-                        $second->modify('+60 days');
-                        if ($now >= $first || $now >= $second) {
-                            if ($r->last_reminder === null || $r->last_reminder == '') {
-                                $date_checked = true;
-                            } else {
-                                $last_reminder = new \DateTime($r->last_reminder);
-                                if ($now >= $second && $second > $last_reminder) {
-                                    $date_checked = true;
-                                }
-                            }
-                        }
-                        break;
-                }
-
-                if ($date_checked) {
-                    $pk = Members::PK;
-                    $this->toremind[] = $r->$pk;
+            if ($reminders->count() > 0) {
+                //a reminder of this type already exists in period
+                $reminder = $reminders->current();
+                $last_reminder = new DateTime($reminder['reminder_date']);
+                if ($now >= $second && $second > $last_reminder) {
+                    $toremind = true;
+                } elseif ($now > $first && $first > $last_reminder) {
+                    $toremind = true;
                 }
             } else {
-                Analog::log(
-                    'Reminder does not suits current requested type ' .
-                    print_r($r, true),
-                    Analog::DEBUG
-                );
+                //no existing reminder. Just check if we exceed first reminder date to send it
+                if ($now >= $first) {
+                    $toremind = true;
+                }
+            }
+
+            if ($toremind === true) {
+                $this->toremind[Reminder::LATE][$member->id] = $member;
             }
         }
+    }
+
+    /**
+     * Load late members
+     *
+     * @param boolean $nomail Get reminders for members who do not have email address
+     *
+     * @return void
+     */
+    private function loadImpendings(bool $nomail = false): void
+    {
+        $now = new \DateTime();
+        $filters = new MembersList();
+        $filters->filter_account = Members::ACTIVE_ACCOUNT;
+        $filters->membership_filter = Members::MEMBERSHIP_NEARLY;
+        $filters->email_filter = ($nomail === false ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
+
+        $members = new Members($filters);
+        $members_list = $members->getList(true);
+
+        if (!count($members_list)) {
+            return;
+        }
+
+        foreach ($members_list as $member) {
+            //per default, no reminder is sent.
+            $toremind = false;
+
+            //for each member, check if there are existing reminders send since $limit_date
+            $reminders = $this->select_stmt->execute(
+                [
+                    'reminder_type' => Reminder::IMPENDING,
+                    'reminder_dest' => $member->id
+                ]
+            );
+
+            $due_date = new DateTime($member->due_date);
+            //reminders 30 days and 7 days before
+            $first = clone $due_date;
+            $second = clone $due_date;
+            $first->modify('-30 days');
+            $second->modify('-7 days');
+
+            if ($reminders->count() > 0) {
+                //a reminder of this type already exists in period. Do not remind until date has been checked.
+                $toremind = false;
+
+                $reminder = $reminders->current();
+                $last_reminder = new DateTime($reminder['reminder_date']);
+
+                if ($now >= $second && $second > $last_reminder) {
+                    //current date is after second reminder
+                    $toremind = true;
+                } elseif ($now >= $first && $first > $last_reminder) {
+                    //current date is after first reminder
+                    $toremind = true;
+                }
+            } else {
+                //no existing reminder. Just check if we exceed first reminder date to send it
+                if ($now >= $first) {
+                    $toremind = true;
+                }
+            }
+
+            if ($toremind === true) {
+                $this->toremind[Reminder::IMPENDING][$member->id] = $member;
+            }
+        }
+    }
+
+    /**
+     * Get limit date calculated from preferences
+     *
+     * @return DateTime
+     * @throws Throwable
+     */
+    private function getLimitDate(): DateTime
+    {
+        global $preferences;
+
+        $limit_now = new \DateTime();
+        $limit_now->setTime(23, 59, 59);
+        if ($preferences->pref_beg_membership != '') {
+            //case beginning of membership
+            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            $limit_date = new \DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
+            while ($limit_now <= $limit_date) {
+                $limit_date->sub(new \DateInterval('P1Y'));
+            }
+        } elseif ($preferences->pref_membership_ext != '') {
+            //case membership extension
+            $limit_date = clone $limit_now;
+            $limit_date->sub(new \DateInterval('P' . $preferences->pref_membership_ext . 'M'));
+        } else {
+            throw new \RuntimeException(
+                'Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!'
+            );
+        }
+
+        return $limit_date;
     }
 
     /**
@@ -195,42 +240,52 @@ class Reminders
      */
     public function getList(Db $zdb, bool $nomail = false): array
     {
-        $types = array();
+        $this->zdb = $zdb;
+        $this->toremind = [
+            Reminder::IMPENDING => [],
+            Reminder::LATE => []
+        ];
+
+        $limit_date = $this->getLimitDate();
+        $select = $this->zdb->select(Reminder::TABLE);
+        $select->where(
+            [
+                'reminder_type' => ':reminder_type',
+                'reminder_dest' => ':reminder_dest'
+            ]
+        );
+        $select->where->greaterThanOrEqualTo(
+            'reminder_date',
+            $limit_date->format('Y-m-d')
+        );
+        $select->order('reminder_date DESC')
+            ->limit(1);
+
+        $this->select_stmt = $this->zdb->sql->prepareStatementForSqlObject($select);
+
         $reminders = array();
+        $m = new Members();
 
-        foreach ($this->selected as $s) {
-            $this->loadToRemind($zdb, $s, $nomail);
-
-            if (count($this->toremind) > 0) {
-                //and then get list
-                $m = new Members();
-                $members = $m->getArrayList(
-                    $this->toremind,
-                    null,
-                    false,
-                    true,
-                    null,
-                    false,
-                    true
-                );
-                $types[$s] = $members;
-            }
+        if (in_array(Reminder::LATE, $this->selected)) {
+            $this->loadLate($nomail);
         }
 
-        if (is_array($types)) {
-            foreach ($types as $type => $members) {
-                //load message
-                if (is_array($members)) {
-                    foreach ($members as $member) {
-                        $reminder = new Reminder();
-                        $reminder->type = $type;
-                        $reminder->dest = $member;
+        if (in_array(Reminder::IMPENDING, $this->selected)) {
+            $this->loadImpendings($nomail);
+        }
 
-                        $reminders[] = $reminder;
-                    }
+        foreach ($this->toremind as $type => $members) {
+            if (is_array($members)) {
+                foreach ($members as $member) {
+                    $reminder = new Reminder();
+                    $reminder->type = $type;
+                    $reminder->dest = $member;
+
+                    $reminders[] = $reminder;
                 }
             }
         }
+
         return $reminders;
     }
 }

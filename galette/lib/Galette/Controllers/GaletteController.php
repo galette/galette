@@ -800,7 +800,6 @@ class GaletteController extends AbstractController
             Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
-        //TODO: filter on reminder may take care of parent email as well
         $mail = ($mail === 'withmail' ?
             Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
