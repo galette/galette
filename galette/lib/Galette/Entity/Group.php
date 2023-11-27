@@ -326,7 +326,7 @@ class Group
             if ($transaction) {
                 $zdb->connection->rollBack();
             }
-            if (!$zdb->isPostgres() && $e->getCode() == 23000 || $zdb->isPostgres() && $e->getCode() == 23503) {
+            if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
                     str_replace(
                         '%group',

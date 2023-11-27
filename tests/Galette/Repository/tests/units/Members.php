@@ -1164,4 +1164,50 @@ class Members extends GaletteTestCase
         $list = $members->getArrayList($selected, ['nom_adh', 'prenom_adh']);
         $this->assertCount(4, $list);
     }
+
+    /**
+     * Test getMembersList
+     *
+     * @return void
+     */
+    public function testRemoveMembers(): void
+    {
+        $members = new \Galette\Repository\Members();
+
+        //Filter on inactive accounts
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_account = \Galette\Repository\Members::INACTIVE_ACCOUNT;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
+
+        $member_data = $list->current();
+        $member = new \Galette\Entity\Adherent($this->zdb, $member_data[\Galette\Entity\Adherent::PK]);
+        //var_export($member);
+
+        //add member as sender for a mailing
+        $mailhist = new \Galette\Core\MailingHistory($this->zdb, $this->login, $this->preferences);
+
+        $values = array(
+            'mailing_sender'            => $member->id,
+            'mailing_sender_name'       => 'test',
+            'mailing_sender_address'    => 'test@test.com',
+            'mailing_subject'           => $this->seed,
+            'mailing_body'              => 'a mailing',
+            'mailing_date'              => '2015-01-01 00:00:00',
+            'mailing_recipients'        => serialize([]),
+            'mailing_sent'              => true
+        );
+        $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
+        $insert->values($values);
+        $this->zdb->execute($insert);
+        $mailing_id = $this->zdb->getLastGeneratedValue($mailhist);
+
+        $this->assertFalse($members->removeMembers($member->id));
+        $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
+        //remove mailing so member can be removed
+        $this->assertTrue($mailhist->removeEntries($mailing_id, $this->history));
+        $this->assertTrue($members->removeMembers($member->id));
+    }
 }

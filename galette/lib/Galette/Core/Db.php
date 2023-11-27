@@ -797,7 +797,7 @@ class Db
                 $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
-            if ($sql instanceof Insert && $this->isDuplicateException($e)) {
+            if ($this->isDuplicateException($sql, $e)) {
                 throw new \OverflowException('Duplicate entry', 0, $e);
             }
             throw $e;
@@ -939,16 +939,34 @@ class Db
     /**
      * Check if current exception is on a duplicate key
      *
+     * @param SqlInterface $sql       SQL object
+     * @param Throwable    $exception Exception to check
+     *
+     * @return boolean
+     */
+    public function isDuplicateException(SqlInterface $sql, Throwable $exception): bool
+    {
+        return $sql instanceof Insert && $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->errorInfo[1] === 1062)
+                || ($this->isPostgres() && $exception->getCode() == 23505)
+            )
+        ;
+    }
+
+    /**
+     * Check if current exception is related to a remaining foreign key
+     *
      * @param Throwable $exception Exception to check
      *
      * @return boolean
      */
-    public function isDuplicateException($exception)
+    public function isForeignKeyException(Throwable $exception): bool
     {
         return $exception instanceof \PDOException
             && (
-                (!$this->isPostgres() && $exception->getCode() == 23000)
-                || ($this->isPostgres() && $exception->getCode() == 23505)
+                (!$this->isPostgres() && in_array($exception->errorInfo[1], [1217, 1451]))
+                || ($this->isPostgres() && $exception->getCode() == 23503)
             )
         ;
     }

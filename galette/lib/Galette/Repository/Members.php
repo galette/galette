@@ -423,7 +423,7 @@ class Members
             if ($zdb->connection->inTransaction()) {
                 $zdb->connection->rollBack();
             }
-            if ($e->getCode() == 23000) {
+            if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
                     'Member still have existing dependencies in the ' .
                     'database, maybe a mailing or some content from a ' .
