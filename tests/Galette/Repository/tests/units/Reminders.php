@@ -36,14 +36,13 @@
 
 namespace Galette\Repository\test\units;
 
-use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
 
 /**
  * Reminders repository tests
  *
  * @category  Repository
- * @name      Remoinders
+ * @name      Reminders
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2020-2023 The Galette Team
@@ -158,7 +157,6 @@ class Reminders extends GaletteTestCase
         $this->assertCount(0, $reminders->getList($this->zdb));
         $this->assertCount(0, $lreminders->getList($this->zdb));
         $this->assertCount(0, $ireminders->getList($this->zdb));
-
 
         //create a close to be expired contribution
         $due_date = clone $now;
