@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.1', '8.2', '8.3-rc' ]
+        php-versions: [ '8.1', '8.3' ]
 
     steps:
       - name: PHP
@@ -86,9 +86,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - { php-version: "8.2", db-image: "mysql:5.6", always: false}
-          - { php-version: "8.2", db-image: "mariadb:10.3", always: false}
-          - { php-version: "8.2", db-image: "postgres:10", always: true}
+          - { php-version: "8.3", db-image: "mysql:5.6", always: false}
+          - { php-version: "8.3", db-image: "mariadb:10.3", always: false}
+          - { php-version: "8.3", db-image: "postgres:10", always: true}
       fail-fast: false
 
     env:
@@ -194,19 +194,12 @@ jobs:
           - { php-version: "8.1", db-image: "postgres:11", coverage: none, always: false }
           - { php-version: "8.1", db-image: "postgres:16", coverage: none, always: false }
           #higher stable php version
-          - { php-version: "8.2", db-image: "mysql:5.7", coverage: none, always: true}
-          - { php-version: "8.2", db-image: "mysql:8.1", coverage: none, always: false }
-          - { php-version: "8.2", db-image: "mariadb:10.4", coverage: none, always: true}
-          - { php-version: "8.2", db-image: "mariadb:11", coverage: none, always: false }
-          - { php-version: "8.2", db-image: "postgres:11", coverage: none, always: true}
-          - { php-version: "8.2", db-image: "postgres:16", coverage: 'xdebug', always: true }
-          #unstable php version
-          - { php-version: "8.3-rc", db-image: "mysql:5.7", coverage: none, always: false }
-          - { php-version: "8.3-rc", db-image: "mysql:8.1", coverage: none, always: false }
-          - { php-version: "8.3-rc", db-image: "mariadb:10.4", coverage: none, always: false }
-          - { php-version: "8.3-rc", db-image: "mariadb:11", coverage: none, always: false }
-          - { php-version: "8.3-rc", db-image: "postgres:11", coverage: none, always: false }
-          - { php-version: "8.3-rc", db-image: "postgres:16", coverage: none, always: false }
+          - { php-version: "8.3", db-image: "mysql:5.7", coverage: none, always: true }
+          - { php-version: "8.3", db-image: "mysql:8.1", coverage: none, always: false }
+          - { php-version: "8.3", db-image: "mariadb:10.4", coverage: none, always: true }
+          - { php-version: "8.3", db-image: "mariadb:11", coverage: none, always: false }
+          - { php-version: "8.3", db-image: "postgres:11", coverage: none, always: true }
+          - { php-version: "8.3", db-image: "postgres:16", coverage: 'xdebug', always: true }
       fail-fast: false
 
     env:
@@ -324,7 +317,7 @@ jobs:
       - name: Upload code coverage (scrutinizer)
         run: |
           cd galette
-          composer require scrutinizer/ocular
+          composer require scrutinizer/ocular --ignore-platform-reqs
           cd ..
           php galette/vendor/bin/ocular code-coverage:upload --format=php-clover tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'xdebug'
