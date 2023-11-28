@@ -351,6 +351,7 @@
         {% else %}
             {% set propname = column.propname %}
             {% set value = null %}
+            {% set lrclass = null %}
 
             {% if column.field_id == 'nom_adh' %}
                 {% set value = member.sfullname %}
