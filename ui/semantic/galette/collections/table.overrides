@@ -37,6 +37,12 @@ td.emptylist {
         background: @activeLineBackgroundColor !important;
     }
 }
+@media only screen and (min-width: @tabletBreakpoint) {
+    .large-table-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}
 
 /*-------------------------
      Membership status
