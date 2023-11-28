@@ -54,7 +54,7 @@
     {% if list_type is defined and list_type == 'cards' %}
                 <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
     {% else %}
-                <div class="ui basic fitted segment loader_selector">
+                <div class="ui basic fitted segment loader_selector large-table-wrapper">
                     <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
                         <thead>
                             <tr>
@@ -94,11 +94,11 @@
                     </table>
     {% endif %}
 
+            </div>
+
             {% if form is defined and mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
                 {{ macros.drawBatchActionsList(batch_actions) }}
             {% endif %}
-
-            </div>
 
             {% if is_paginated %}
             <div class="ui basic center aligned fitted segment">
