@@ -1184,7 +1184,6 @@ class Members extends GaletteTestCase
 
         $member_data = $list->current();
         $member = new \Galette\Entity\Adherent($this->zdb, $member_data[\Galette\Entity\Adherent::PK]);
-        //var_export($member);
 
         //add member as sender for a mailing
         $mailhist = new \Galette\Core\MailingHistory($this->zdb, $this->login, $this->preferences);
