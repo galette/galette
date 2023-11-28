@@ -380,8 +380,6 @@
                 {% set value = member.sdue_free %}
             {% elseif column.field_id == 'sexe_adh' %}
                 {% set value = member.sgender %}
-            {% elseif column.field_id == 'ddn_adh' %}
-                {% set lrclass = 'collapsing' %}
             {% endif %}
 
             {# If value has not been set, take the generic value #}
@@ -396,7 +394,7 @@
                 {% set value = value|e('html') %}
             {% endif %}
 
-                        <td{% if lrclass is defined %} class="{{ lrclass }}"{% endif %} data-title="{{ column.label }}">
+                        <td data-title="{{ column.label }}">
             {# Display column.
                 A check is done here to adapt display, this is may not the best way to go
                 but for now, that works as expected.
