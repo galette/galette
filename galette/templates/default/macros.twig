@@ -10,7 +10,7 @@
             <i class="dropdown icon" aria-hidden="true"></i>
             <div class="menu">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null, null, 'right center') }}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, item.icon ?? null, null, 'right center') }}
                 {% endfor %}
             </div>
         </div>
@@ -23,7 +23,7 @@
             </div>
             <div class="content{% if cur_route in my_routes %} active{% endif %}">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title, item.route, item.icon ?? null, null, null, mode) }}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, item.icon ?? null, null, null, mode) }}
                 {% endfor %}
             </div>
         </div>
@@ -41,7 +41,7 @@
     <a
             href="{{ url_for(route.name, route.args|default([])) }}"
             class="{{ class }}"
-            title="{{ title }}"
+            {% if title %}title="{{ title }}"{% endif %}
             {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
             {% if mode != "default" %}tabindex="-1"{% endif %}
     >

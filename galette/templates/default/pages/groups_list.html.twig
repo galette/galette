@@ -45,7 +45,7 @@
                     </a>
         {% endif %}
         {% if login.isAdmin() or login.isStaff() %}
-                    <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon fluid button tooltip" id="newgroup" title="{{ _T("New group") }}">
+                    <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon fluid button tooltip" id="newgroup">
                         <i class="plus circle green icon" aria-hidden="true"></i>
                         {{ _T("New group") }}
                     </a>

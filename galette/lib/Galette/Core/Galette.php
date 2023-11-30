@@ -190,7 +190,6 @@ class Galette
                     ],
                     [
                         'label' => _T("Saved searches"),
-                        'title' => _T("Saved searches"),
                         'route' => [
                             'name' => 'searches'
                         ]
@@ -376,7 +375,6 @@ class Galette
                             ],
                             [
                                 'label' => _T("Manage statuses"),
-                                'title' => _T("Manage statuses"),
                                 'route' => [
                                     'name' => 'entitleds',
                                     'args' => ['class' => 'status'],
@@ -493,7 +491,6 @@ class Galette
                 'items' => [
                     [
                         'label' => _T("Members list"),
-                        'title' => _T("Members list"),
                         'route' => [
                             'name' => 'publicList',
                             'args' => ['type' => 'list']
@@ -502,7 +499,6 @@ class Galette
                     ],
                     [
                         'label' => _T("Trombinoscope"),
-                        'title' => _T("Trombinoscope"),
                         'route' => [
                             'name' => 'publicList',
                             'args' => ['type' => 'trombi']

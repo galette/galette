@@ -4,7 +4,7 @@
     {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
     {% for public_menu in public_menus %}
         {% for public_item in public_menu.items %}
-            {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
+            {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
         {% endfor %}
     {% endfor %}
 
@@ -13,7 +13,6 @@
     {% if preferences.pref_bool_selfsubscribe == true and not is_current_url("subscribe") %}
         {% set public_items = public_items|merge([{
             'label': _T("Subscribe"),
-            'title': _T("Subscribe"),
             'route': {'name': 'subscribe'},
             'icon': 'add user',
             'class': 'ui basic button'
@@ -22,7 +21,6 @@
     {% if not is_current_url("login") %}
         {% set public_items = public_items|merge([{
             'label': _T("Login"),
-            'title': _T("Login"),
             'route': {'name': 'slash'},
             'icon': 'sign in alt',
             'class': 'ui primary button'
@@ -30,7 +28,7 @@
     {% endif %}
 
     {% for public_item in public_items %}
-        {{ menus_macros.renderMenuItem(public_item.label, public_item.title, public_item.route, public_item.icon, public_item.class, tips_position, mode) }}
+        {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon, public_item.class, tips_position, mode) }}
     {% endfor %}
         <a
             href="#"
