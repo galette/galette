@@ -114,9 +114,10 @@ body.pushable:not(.loggedin) {
     display: flex;
     justify-content: center;
   }
-  main ~ footer.ui.segment {
-    margin-top: -120px;
+  footer.page-footer {
+    position: relative;
     z-index: 2;
+    margin-top: -120px;
   }
 }
 
@@ -178,6 +179,44 @@ footer,
 footer .ui.horizontal.list .list > .item,
 footer .ui.horizontal.list > .item{
   font-size: .95rem;
+}
+footer.page-footer {
+  position: relative;
+  background-color: @pageBackground;
+}
+main.pusher ~ footer.page-footer {
+  transition: transform .5s ease;
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: "";
+    background: @lightTextColor;
+    overflow: hidden;
+    opacity: 0;
+    transition: all .5s;
+    will-change: opacity;
+  }
+}
+main.pusher.dimmed {
+  & ~ footer.page-footer {
+    transform: translate3d(260px, 0, 0);
+    &:after {
+      width: 100% !important;
+      height: 100% !important;
+      opacity: 1 !important;
+    }
+  }
+  &.closing ~ footer.page-footer {
+    transform: translate3d(0, 0, 0);
+    z-index: 1;
+    &:after {
+      opacity: 0 !important;
+    }
+  }
+}
+body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
+  z-index: 2;
 }
 
 @media only screen and (max-width: @largestMobileScreen) {
@@ -282,7 +321,7 @@ footer .ui.horizontal.list > .item{
     display: block;
   }
 
-  html:not(.public_page) body:not(.front-page) main ~ footer.ui.segment,
+  html:not(.public_page) body:not(.front-page) footer.page-footer .footer-wrapper,
   body:not(.front-page) section.content {
     margin-left: 260px;
     flex: 1 1 auto;
@@ -329,7 +368,7 @@ footer .ui.horizontal.list > .item{
     width: 350px;
   }
 
-  html:not(.public_page) body:not(.front-page) main ~ footer.ui.segment,
+  html:not(.public_page) body:not(.front-page) footer.page-footer .footer-wrapper,
   body:not(.front-page) section.content {
     margin-left: 350px;
   }
@@ -539,7 +578,7 @@ ul.leaders span + span {
   .infoline .right.aligned.segment,
   .actions_row,
   .ui.pagination.menu,
-  main ~ footer.ui.segment,
+  footer.page-footer,
   #back2top {
     display: none !important;
   }
