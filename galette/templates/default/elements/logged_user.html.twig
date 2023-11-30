@@ -61,7 +61,7 @@
         {% else %}
             {% set component_classes = "ui vertical centered tiny icon fluid menu" %}
             <nav id="logoutmenu" class="{{ component_classes }}" aria-label="{{ _T('User menu') }}">
-                <div class="ui dropdown navigation item no-touch tooltip" data-html="{{ login.loggedInAs()|raw }}" data-position="right center">
+                <div class="ui dropdown navigation item tooltip" data-html="{{ login.loggedInAs()|raw }}" data-position="right center">
                     <i class="user circle icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ login.loggedInAs()|raw }}</span>
                     <i class="dropdown icon" aria-hidden="true"></i>

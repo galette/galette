@@ -78,9 +78,10 @@
             var _addDynFieldAjaxMapper = function(){
                 $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
                 $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
-                $('.no-touch .modal-form a[title], .no-touch .modal-form .tooltip').popup({
+                $('.modal-form a[title], .modal-form .tooltip').popup({
                     variation: 'inverted',
-                    inline: false
+                    inline: false,
+                    addTouchEvents: false,
                 });
             }
 

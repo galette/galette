@@ -28,10 +28,6 @@
 
 /* Fomantic UI components */
 var _bindFomanticComponents = function() {
-    if (!("ontouchstart" in document.documentElement) || !("no-touch" in document.documentElement.classList)) {
-        document.documentElement.classList.add("no-touch");
-    }
-
     var
         $sidebar         = $('.ui.sidebar'),
         $dropdown        = $('.ui.dropdown:not(.navigation, .autosubmit), select:not(.nochosen)'),
@@ -39,10 +35,11 @@ var _bindFomanticComponents = function() {
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
-        $popup           = $('.no-touch a[title], .no-touch .tooltip'),
-        $menuPopupRight  = $('.no-touch .ui.vertical.accordion.menu a[title]'),
-        $menuPopupBottom = $('.no-touch .ui.top.fixed.menu a.item[title]'),
-        $menuPopupLeft   = $('.no-touch .ui.dropdown.right-aligned a[title]')
+        $popup           = $('a[title], .tooltip'),
+        $infoPopup       = $('i.circular.primary.icon.info.tooltip'),
+        $menuPopupRight  = $('.ui.vertical.accordion.menu a[title]'),
+        $menuPopupBottom = $('.ui.top.fixed.menu a.item[title]'),
+        $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title]')
     ;
 
     $sidebar.sidebar('attach events', '.toc.item');
@@ -85,7 +82,17 @@ var _bindFomanticComponents = function() {
     $popup
         .popup({
             variation: 'inverted',
-            inline: false
+            inline: false,
+            addTouchEvents: false,
+        })
+    ;
+    /* Touch events are allowed on info icons popups.
+     */
+    $infoPopup
+        .popup({
+            variation: 'inverted',
+            inline: false,
+            addTouchEvents: true,
         })
     ;
     /* Position right on the main accordion menu.
@@ -96,7 +103,8 @@ var _bindFomanticComponents = function() {
             variation: 'inverted',
             delay: {
                 show: 300
-            }
+            },
+            addTouchEvents: false,
         })
     ;
     /* Position bottom on the top fixed menu.
@@ -104,7 +112,8 @@ var _bindFomanticComponents = function() {
     $menuPopupBottom
         .popup({
             position: 'center bottom',
-            variation: 'inverted'
+            variation: 'inverted',
+            addTouchEvents: false,
         })
     ;
     /* Position left on the top right language dropdown menu.
@@ -115,7 +124,8 @@ var _bindFomanticComponents = function() {
             variation: 'inverted',
             delay: {
                 show: 300
-            }
+            },
+            addTouchEvents: false,
         })
     ;
 }

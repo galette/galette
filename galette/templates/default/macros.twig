@@ -4,7 +4,7 @@
         {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
     {% endfor %}
     {% if mode == "compact" %}
-        <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown navigation item no-touch tooltip" data-html="{{ title }}" data-position="right center">
+        <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown navigation item tooltip" data-html="{{ title }}" data-position="right center">
             <i class="{{ icon }} icon" aria-hidden="true"></i>
             <span class="visually-hidden">{{ title }}</span>
             <i class="dropdown icon" aria-hidden="true"></i>

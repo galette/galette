@@ -23,7 +23,7 @@
     <div class="ui basic fitted segment">
         <div class="ui toggle mini checkbox">
             <input type="checkbox" name="compactmenu" id="compactmenu" class="hidden"{% if login.getCompactMenu() %} checked="checked"{% endif %}>
-            <label for="compactmenu"{% if login.getCompactMenu() %} class="no-touch tooltip" data-html="{{ _T("Compact menu") }}"{% endif %}>
+            <label for="compactmenu"{% if login.getCompactMenu() %} class="tooltip" data-html="{{ _T("Compact menu") }}"{% endif %}>
                 {% if not login.getCompactMenu() %}{{ _T("Compact menu") }}{% endif %}
             </label>
         </div>

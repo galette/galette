@@ -7,7 +7,7 @@
                 width="{{ member.picture.getOptimalWidth() }}"
                 height="{{ member.picture.getOptimalHeight() }}"
                 alt="{{ _T("Picture") }}"
-                class="green no-touch tooltip"
+                class="green tooltip"
         {# Drag'n drop is disabled on member form #}
         {% if (hidden_elements is not defined) %}
                 data-html="{{ _T("Drag and drop an image file to change the picture") }}">
