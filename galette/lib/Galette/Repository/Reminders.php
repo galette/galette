@@ -198,6 +198,7 @@ class Reminders
                             if ($r->last_reminder === null || $r->last_reminder == '') {
                                 $date_checked = true;
                             } else {
+                                $last_reminder = new \DateTime($r->last_reminder);
                                 if ($now >= $second && $last_reminder >= $limit_date && $second > $last_reminder) {
                                     $date_checked = true;
                                 }
