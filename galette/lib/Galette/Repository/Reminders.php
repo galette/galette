@@ -119,8 +119,8 @@ class Reminders
             array('r' => PREFIX_DB . self::TABLE),
             'a.' . Members::PK . '=r.reminder_dest',
             array(
-                'last_reminder' => new Expression('MAX(reminder_date)'),
-                'reminder_type' => new Expression('MAX(reminder_type)')
+                'last_reminder' => 'reminder_date',
+                'reminder_type' => 'reminder_type'
             ),
             $select::JOIN_LEFT
         )->join(
@@ -142,7 +142,8 @@ class Reminders
         }
 
         $select->where('a.activite_adh=true')
-            ->where('a.bool_exempt_adh=false');
+            ->where('a.bool_exempt_adh=false')
+            ->where('a.date_echeance IS NOT NULL');
 
         $now = new \DateTime();
         $due_date = clone $now;
@@ -152,6 +153,7 @@ class Reminders
                 'a.date_echeance',
                 $now->format('Y-m-d')
             );
+            $select->where('r.reminder_date = (SELECT MAX(reminder_date) FROM ' . PREFIX_DB . self::TABLE . ' WHERE reminder_dest = a.id_adh AND reminder_type = ' . Reminder::LATE . ')');
         } else {
             $select->where->greaterThanOrEqualTo(
                 'a.date_echeance',
@@ -160,6 +162,7 @@ class Reminders
                 'a.date_echeance',
                 $due_date->format('Y-m-d')
             );
+            $select->where('r.reminder_date = (SELECT MAX(reminder_date) FROM ' . PREFIX_DB . self::TABLE . ' WHERE reminder_dest = a.id_adh AND reminder_type = ' . Reminder::IMPENDING . ')');
         }
 
         $select->group('a.id_adh');
