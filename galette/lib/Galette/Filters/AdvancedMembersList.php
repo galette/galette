@@ -234,7 +234,7 @@ class AdvancedMembersList extends MembersList
             || $this->_contrib_begin_date_begin != null
             || $this->_contrib_begin_date_end != null
             || $this->_contrib_end_date_begin != null
-            || $this->_contrib_begin_date_end != null
+            || $this->_contrib_end_date_end != null
             || $this->_contrib_min_amount != null
             || $this->_contrib_max_amount != null
             || count($this->_contrib_dynamic) > 0
