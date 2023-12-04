@@ -48,7 +48,7 @@
                     {% for dashboard_entry in dashboard_entries %}
                         {{ macros.dashboardCard(
                             dashboard_entry.label,
-                            dashboard_entry.title,
+                            dashboard_entry.title ?? null,
                             dashboard_entry.route,
                             dashboard_entry.icon,
                         ) }}
