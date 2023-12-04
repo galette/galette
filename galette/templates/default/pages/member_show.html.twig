@@ -91,7 +91,7 @@
 
                     {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
                     {% for action in actions %}
-                                {{ macros.drawDetailedAction(action.label, action.title, action.route, action.icon) }}
+                                {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
                     {% endfor %}
                 {% endif %}
                                 </div>
