@@ -27,9 +27,9 @@
                     {{ loop.index1 }}
                 {% endif %}
             </td>
-            <td class="left" data-title="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
-            <td class="left" data-title="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
-            <td class="left" data-title="{{ _T("Search parameters") }}">
+            <td class="left" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
+            <td class="left" data-col-label="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
+            <td class="left" data-col-label="{{ _T("Search parameters") }}">
                 <details class="ui basic styled accordion">
                     <summary class="title">
                         <i class="info circle primary icon" aria-hidden="true"></i> {{ _T("Show parameters") }}

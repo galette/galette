@@ -31,13 +31,13 @@
 {% endif %}
                         </span>
                     </td>
-                    <td class="left" data-title="{{ _T("Name") }}">
+                    <td class="left" data-col-label="{{ _T("Name") }}">
                         <div class="required field">
                             <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
                             <input size="40" type="text" name="{{ fields.libelle }}" required="required"/>
                         </div>
                     </td>
-                    <td class="left" data-title="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
+                    <td class="left" data-col-label="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
 {% if class == 'ContributionsTypes' %}
                         <select name="{{ fields.third }}" class="ui dropdown nochosen">
                             <option value="0" selected="selected">{{ _T("No") }}</option>
@@ -68,7 +68,7 @@
                             </a>
                         </span>
                     </td>
-                    <td class="left" data-title="{{ _T("Name") }}">
+                    <td class="left" data-col-label="{{ _T("Name") }}">
                         {% if class == 'Status' %}
                             {% if entry.extra < 30 %}
                                 <span>
@@ -81,7 +81,7 @@
                         {% endif %}
                         {{ entry.name|escape }}
                     </td>
-                    <td data-title="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
+                    <td data-col-label="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
     {% if class == 'ContributionsTypes' %}
         {% if entry.extra == 1 %}
                             {{ _T("Yes") }}

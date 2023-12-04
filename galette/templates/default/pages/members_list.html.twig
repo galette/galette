@@ -394,7 +394,7 @@
                 {% set value = value|e('html') %}
             {% endif %}
 
-                        <td data-title="{{ column.label }}">
+                        <td data-col-label="{{ column.label }}">
             {# Display column.
                 A check is done here to adapt display, this is may not the best way to go
                 but for now, that works as expected.

@@ -132,12 +132,12 @@
                             {{ _T('Mailing entry %id')|replace({'%id': log.mailing_id}) }}
                         </span>
             </td>
-            <td class="" data-title="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
-            <td data-title="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
-            <td data-title="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
-            <td data-title="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
-            <td class="center" data-title="{{ _T('Attachments') }}">{{ log.attachments }}</td>
-            <td class="center{% if log.mailing_sent == 1 %} use{% endif %}" data-title="{{ _T('Sent') }}">
+            <td data-col-label="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
+            <td data-col-label="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
+            <td data-col-label="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
+            <td data-col-label="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
+            <td class="center" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
+            <td class="center{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
                 {% if log.mailing_sent == 1 %}
                     <i class="ui thumbs up green icon" aria-hidden="true"></i>
                 {% else %}

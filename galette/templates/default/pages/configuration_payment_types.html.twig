@@ -18,7 +18,7 @@
                                     {{ _T("Add payment type") }}
                                 </span>
                             </td>
-                            <td class="left" data-title="{{ _T("Label") }}">
+                            <td class="left" data-col-label="{{ _T("Label") }}">
                                 <div class="required field">
                                     <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
                                     <input size="20" type="text" name="name" required="required"/>
@@ -48,7 +48,7 @@
                                     </a>
                                 </span>
                             </td>
-                            <td class="left" data-title="{{ _T("Name") }}">{{ ptype.getName() }}</td>
+                            <td class="left" data-col-label="{{ _T("Name") }}">{{ ptype.getName() }}</td>
                             <td class="center actions_row">
                                 <a
                                     href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}"

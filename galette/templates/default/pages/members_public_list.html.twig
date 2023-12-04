@@ -83,11 +83,11 @@
                     {{ member.sfullname }}
                 {% endif %}
             </td>
-            <td class="{{ rclass }}" data-title="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
+            <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
             {% if login.isLogged() %}
-                <td class="{{ rclass }}" data-title="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+                <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
             {% endif %}
-            <td class="{{ rclass }}" data-title="{{ _T('Information') }}">{{ member.others_infos }}</td>
+            <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
         </tr>
     {% else %}
         <tr>

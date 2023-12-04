@@ -158,9 +158,9 @@
                             </a>
                         </span>
             </td>
-            <td data-title="{{ _T("Date") }}">{{ transaction.date }}</td>
+            <td data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
         {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-            <td data-title="{{ _T("Member") }}">
+            <td data-col-label="{{ _T("Member") }}">
             {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
                 <a
                     href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
@@ -177,10 +177,10 @@
                 </a>
             </td>
         {% endif %}
-            <td data-title="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
-            <td class="actions_row data-title="{{ _T("Amount") }}">{{ transaction.amount }}</td>
+            <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
+            <td data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
         {% if login.isAdmin() or login.isStaff() %}
-            <td class="center">
+            <td class="center actions_row">
                 <a
                     href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
                     class="action"

@@ -116,11 +116,11 @@
                         {{ _T("History entry %id")|replace({"%id": loop.index}) }}
                     </span>
             </td>
-            <td class="" data-title="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
-            <td class="" data-title="{{ _T("IP") }}">{{ log.ip_log }}</td>
-            <td data-title="{{ _T("User") }}">{{ log.adh_log }}</td>
-            <td data-title="{{ _T("Action") }}">{{ log.action_log|escape }}</td>
-            <td data-title="{{ _T("Description") }}">
+            <td data-col-label="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
+            <td data-col-label="{{ _T("IP") }}">{{ log.ip_log }}</td>
+            <td data-col-label="{{ _T("User") }}">{{ log.adh_log }}</td>
+            <td data-col-label="{{ _T("Action") }}">{{ log.action_log|escape }}</td>
+            <td data-col-label="{{ _T("Description") }}">
                 {{ log.text_log|escape }}
             {% if log.sql_log %}
                     <div class="tooltip title" title="{{ _T("Show associated query") }}">

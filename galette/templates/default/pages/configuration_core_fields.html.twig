@@ -19,7 +19,7 @@
             </div>
             <div class="content">
                 <div class="ui basic fitted segment">
-                    <div class="ui three column stackable grid">
+                    <div class="ui three column stackable grid core-fields-properties">
                         <div class="middle aligned row">
                             <div class="column">
                                 <span class="ui fluid label">{{ _T("Field name") }}</span>
@@ -39,11 +39,11 @@
         {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
             {% set fid = field.field_id %}
                     <li class="ui segment">
-                        <div class="ui three column stackable grid">
+                        <div class="ui three column stackable grid core-fields-listing">
                             <div class="middle aligned row">
                                 <div class="column">
                                     <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
-                                    <span data-title="{{ _T("Field name") }}" class="fieldname">
+                                    <span data-prop-label="{{ _T("Field name") }}" class="fieldname">
                                         <input type="hidden" name="fields[]" value="{{ fid }}"/>
                                         <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
                                         <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
@@ -51,7 +51,7 @@
                                     </span>
                                 </div>
                                 <div class="column">
-                                    <span data-title="{{ _T("Required") }}" class="yesno" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
+                                    <span data-prop-label="{{ _T("Required") }}" class="yesno" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
                                         <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
                                         <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
                                         <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
@@ -59,7 +59,7 @@
                                     </span>
                                 </div>
                                 <div class="column">
-                                    <span data-title="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                                    <span data-prop-label="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
                                         <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown nochosen">
                                             <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
                                             <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>

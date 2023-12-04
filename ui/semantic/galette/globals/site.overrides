@@ -223,6 +223,40 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
   html.public_page .ui.ui.ui.container:not(.fluid) {
     width: 100%;
   }
+  .core-lists-properties,
+  .core-fields-properties {
+    display: none !important;
+  }
+  .core-lists-listing,
+  .core-fields-listing {
+    i.arrows.alternate {
+      display: block;
+      margin: 1rem auto;
+      &::before {
+        display: block;
+      }
+    }
+  }
+  .core-lists-listing {
+    span[data-prop-label] {
+      display: block;
+      text-align: center;
+      &::before {
+          display: block;
+          content: attr(data-prop-label);
+          text-align: center;
+          font-weight: bold;
+      }
+    }
+  }
+  .core-fields-listing {
+    span[data-prop-label]::before {
+        display: inline-block;
+        content: attr(data-prop-label);
+        width: 10em;
+        font-weight: bold;
+    }
+  }
 }
 
 @media only screen and (max-width: 991px) {

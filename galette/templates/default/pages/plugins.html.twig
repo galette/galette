@@ -20,10 +20,10 @@
 {% for name, plugin in plugins_list %}
             <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
                 <td data-scope="row"><a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
-                <td data-title="{{ _T('Description') }}">{{ plugin.desc }}</td>
-                <td data-title="{{ _T('Author') }}">{{ plugin.author }}</td>
-                <td data-title="{{ _T('Version') }}">{{ plugin.version }}</td>
-                <td data-title="{{ _T('Release date') }}">{{ plugin.date }}</td>
+                <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
+                <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
+                <td data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
+                <td data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
                 <td class="actions_row">
                     <a
                         href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
@@ -64,7 +64,7 @@
 {% for name, plugin in plugins_disabled_list %}
             <tr>
                 <td data-scope="row">{{ name }}</td>
-                <td data-title="{{ _T('Cause') }}" colspan="4">
+                <td data-col-label="{{ _T('Cause') }}" colspan="4">
                     {% if plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_MISS') %}
                         {{ _T('A required file is missing') }}
                     {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}

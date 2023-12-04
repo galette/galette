@@ -32,6 +32,31 @@ td.emptylist {
     font-style: italic;
 }
 @media only screen and (max-width: @largestMobileScreen) {
+    table.ui.table.listing:not(.unstackable) {
+        & > thead {
+            display: none !important;
+        }
+        & td {
+            &[data-scope="id"] {
+                float: left;
+            }
+            &[data-scope="row"] {
+                font-weight: bold;
+                input[type="checkbox"] {
+                    float: right;
+                }
+            }
+            &[data-col-label]::before {
+                display: inline-block;
+                content: attr(data-col-label);
+                width: 10em;
+                font-weight: bold;
+            }
+            &.actions_row {
+                text-align: center;
+            }
+        }
+    }
     .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr:hover,
     .ui.ui.ui.ui.table.listing:not(.unstackable) > tbody > tr:hover > td {
         background: @activeLineBackgroundColor !important;

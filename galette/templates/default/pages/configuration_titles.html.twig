@@ -19,13 +19,13 @@
                                 {{ _T("Add title") }}
                             </span>
                         </td>
-                        <td class="left" data-title="{{ _T("Short form") }}">
+                        <td class="left" data-col-label="{{ _T("Short form") }}">
                             <div class="required field">
                                 <label for="short_label" class="visually-hidden">{{ _T("Short form") }}</label>
                                 <input size="20" type="text" name="short_label" required="required"/>
                             </div>
                         </td>
-                        <td class="left" data-title="{{ _T("Long form") }}">
+                        <td class="left" data-col-label="{{ _T("Long form") }}">
                             <div class="required field">
                                 <label for="long_label" class="visually-hidden">{{ _T("Long form") }}</label>
                                 <input size="20" type="text" name="long_label" required="required"/>
@@ -55,8 +55,8 @@
                                 </a>
                             </span>
                         </td>
-                        <td class="left" data-title="{{ _T("Short form") }}">{{ title.short|escape }}</td>
-                        <td class="left" data-title="{{ _T("Long form") }}">{{ title.long|escape }}</td>
+                        <td class="left" data-col-label="{{ _T("Short form") }}">{{ title.short|escape }}</td>
+                        <td class="left" data-col-label="{{ _T("Long form") }}">{{ title.long|escape }}</td>
                         <td class="center actions_row">
                             <a
                                 href="{{ url_for('editTitle', {'id': title.id}) }}"

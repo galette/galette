@@ -53,10 +53,10 @@
                                     <td data-scope="row">
                                         <a href="{{ url_for("getCsv", {"type": "export", "file": export.name}) }}">{{ export.name }}</a>
                                     </td>
-                                    <td data-title="{{ _T('Date') }}">
+                                    <td data-col-label="{{ _T('Date') }}">
                                         {{ export.date }}
                                     </td>
-                                    <td data-title="{{ _T('Size') }}">
+                                    <td data-col-label="{{ _T('Size') }}">
                                         {{ export.size }}
                                     </td>
                                     <td class="actions_row">
@@ -85,7 +85,7 @@
                     <div class="active content field">
 {% if parameted|length > 0 %}
                         <p>{{ _T('Which parameted export(s) do you want to run?') }}</p>
-                        <table class="listing ui celled striped table">
+                        <table class="ui celled striped table">
                             <thead>
                                 <tr>
                                     <th class="small_head"/>
@@ -96,13 +96,13 @@
                             <tbody>
     {% for param in parameted %}
                                 <tr>
-                                    <td data-scope="id">
+                                    <td class="collapsing" data-scope="id">
                                         <input type="checkbox" name="export_parameted[]" id="{{ param.id }}" value="{{ param.id }}"/>
                                     </td>
                                     <td data-scope="row">
                                         <label for="{{ param.id }}">{{ param.name }}</label>
                                     </td>
-                                    <td data-title="{{ _T('Description') }}">
+                                    <td data-col-label="{{ _T('Description') }}">
                                         <label for="{{ param.id }}">{{ param.description }}</label>
                                     </td>
                                 </tr>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="active content field">
                         <p>{{ _T('Additionnaly, which table(s) do you want to export?') }}</p>
-                        <table class="listing same ui celled striped table">
+                        <table class="same ui celled striped table">
                             <thead>
                                 <tr>
                                     <th class="small_head"/>
@@ -133,7 +133,7 @@
                             <tbody>
     {% for table in tables_list %}
                                 <tr>
-                                    <td>
+                                    <td class="collapsing">
                                         <input type="checkbox" name="export_tables[]" id="{{ table }}" value="{{ table }}"/>
                                     </td>
                                     <td class="left">

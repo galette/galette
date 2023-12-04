@@ -14,7 +14,7 @@
                 </div>
                 <div class="jsonly disabled ui bottom attached accordion-styled segment">
                     <div class="ui basic fitted segment">
-                        <div class="ui two column stackable grid">
+                        <div class="ui two column stackable grid core-lists-properties">
                             <div class="middle aligned row">
                                 <div class="column">
                                     <span class="ui fluid label">{{ _T("Field name") }}</span>
@@ -29,17 +29,17 @@
     {% for col, field in listed_fields %}
             {% set fid = field.field_id %}
                         <li class="{% if fid == 'id_adh' or fid == 'list_adh_name' %}nosort ui-state-disabled {% endif %}ui segment">
-                            <div class="ui two column stackable grid">
+                            <div class="ui two column stackable grid core-lists-listing">
                                 <div class="middle aligned row">
                                     <div class="column">
                                         <i class="arrows alternate icon" aria-hidden="true"></i>
-                                        <span data-title="{{ _T("Field name") }}">
+                                        <span data-prop-label="{{ _T("Field name") }}">
                                             <input type="hidden" name="fields[]" value="{{ fid }}"/>
                                             {{ field.label }}
                                         </span>
                                     </div>
                                     <div class="column">
-                                        <span data-title="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                                        <span data-prop-label="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
                     {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
                     {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
                     {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
@@ -61,7 +61,7 @@
                 </div>
                 <div class="jsonly disabled ui bottom attached accordion-styled segment">
                     <div class="ui basic fitted segment">
-                        <div class="ui two column stackable grid">
+                        <div class="ui two column stackable grid core-lists-properties">
                             <div class="middle aligned row">
                                 <div class="column">
                                     <span class="ui fluid label">{{ _T("Field name") }}</span>
@@ -76,17 +76,17 @@
     {% for col, field in remaining_fields %}
             {% set fid = field.field_id %}
                         <li class="ui segment">
-                            <div class="ui two column stackable grid">
+                            <div class="ui two column stackable grid core-lists-listing">
                                 <div class="middle aligned row">
                                     <div class="column">
                                         <i class="arrows alternate icon" aria-hidden="true"></i>
-                                        <span data-title="{{ _T("Field name") }}">
+                                        <span data-prop-label="{{ _T("Field name") }}">
                                             <input type="hidden" name="rfields[]" value="{{ fid }}"/>
                                             {{ field.label }}
                                         </span>
                                     </div>
                                     <div class="column">
-                                        <span data-title="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                                        <span data-prop-label="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
                     {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
                     {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
                     {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
