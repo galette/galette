@@ -45,17 +45,35 @@ html {
     --header-foreground: #fff;
     --searchbar-background: #fff;
     --font-family: PtSans, Arial, sans-serif;
+    --top-height: 200px;
 }
 
-#nav-sync {
-    top: 36px !important;
+#titlearea table {
+  width: 100%;
 }
-
-#nav-tree-contents {
-    margin-top: 40px;
+#titlearea table tbody tr {
+  height: auto !important;
 }
-
+#projectlogo img {
+  width: 129px;
+  height: 60px;
+  max-height: none !important;
+  padding-top: 12px;
+}
+#projectalign {
+  display: none;
+}
+#projectversion {
+  color: var(--side-nav-foreground);
+  padding-top: 25px;
+  text-align: center;
+}
 .sm-dox a span.sub-arrow,
 .sm-dox a:hover span.sub-arrow {
     color: var(--primary-color);
+}
+@media screen and (min-width: 767px) {
+  #doc-content {
+    padding-top: calc(var(--top-height) - 180px);
+  }
 }
