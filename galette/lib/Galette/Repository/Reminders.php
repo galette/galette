@@ -93,7 +93,6 @@ class Reminders
         global $preferences;
 
         $limit_now = new \DateTime();
-        $limit_now->sub(new \DateInterval('P1D'));
         $limit_now->setTime(23, 59, 59);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
