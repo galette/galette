@@ -8,39 +8,37 @@
 ### English
 
 Galette is a membership management web application towards non profit organizations; released under GPLv3.
-You'll find a [detailled description on Galette's website](http://galette.eu/dc/index.php/pages/%C3%80-propos?navlang=en).
+You'll find a [detailled description on Galette's website](https://galette.eu/site/about/).
 
 * website: https://galette.eu
-* bugs and features: http://bugs.galette.eu/projects/galette
+* bugs and features: https://bugs.galette.eu/projects/galette
 * mailing lists:
   * users: https://listengine.tuxfamily.org/lists.galette.eu/users/
   * developpers: https://listengine.tuxfamily.org/lists.galette.eu/devel/
 * documentation: https://doc.galette.eu/en/develop
 * translation: https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
-* translation (documentation) : https://translate.zanata.org/project/view/galettedoc
 
 To use Galette, you can either:
 
 * download latest stable version available from [Galette website](https://galette.eu)
-* use the [nightly build](http://download.tuxfamily.org/galette/galette-dev.tar.bz2) to test new features
-* use [Galette soure code from repository](http://doc.galette.eu/en/develop/development/git.html) (make sure you install third party dependencies), this solution requires some technical skills
+* use the [nightly build](https://download.tuxfamily.org/galette/galette-dev.tar.bz2) to test new features
+* use [Galette soure code from repository](https://doc.galette.eu/en/develop/source_code.html) (make sure you install third party dependencies), this solution requires some technical skills
 
 ### Français
 
 Galette est un outil de gestion d’adhérents et de cotisations en ligne à destination des associations, sous license GPLV3.
-Vous trouverez une [description détaillée sur le site web de Galette](http://galette.eu/dc/index.php/pages/%C3%80-propos?navlang=fr).
+Vous trouverez une [description détaillée sur le site web de Galette](https://galette.eu/site/fr/a-propos/).
 
 * site web : https://galette.eu
-* bogues et fonctionnalités : http://bugs.galette.eu/projects/galette
+* bogues et fonctionnalités : https://bugs.galette.eu/projects/galette
 * liste de diffusion :
   * utilisateurs : https://listengine.tuxfamily.org/lists.galette.eu/users/
   * développeurs : https://listengine.tuxfamily.org/lists.galette.eu/devel/
 * documentation : https://doc.galette.eu/fr/develop
 * traduction : https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
-* traduction (documentation) : https://translate.zanata.org/project/view/galettedoc
 
 Pour utiliser Galette, vous pouvez, au choix :
 
 * télécharger la dernière version stable depuis le [site web de Galette](https://galette.eu)
-* utiliser [l'archive quotidienne (nightly build)](http://download.tuxfamily.org/galette/galette-dev.tar.bz2) pour tester les nouvelles fonctionnalités
-* utiliser [le code source de Galette depuis le dépôt](http://doc.galette.eu/en/develop/development/git.html) (assurez-vous d'installer les biliothèques tierces), cette solution requiert quelques compétences techniques
+* utiliser [l'archive quotidienne (nightly build)](https://download.tuxfamily.org/galette/galette-dev.tar.bz2) pour tester les nouvelles fonctionnalités
+* utiliser [le code source de Galette depuis le dépôt](https://doc.galette.eu/fr/develop/source_code.html) (assurez-vous d'installer les biliothèques tierces), cette solution requiert quelques compétences techniques
