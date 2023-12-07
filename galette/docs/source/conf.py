@@ -16,7 +16,7 @@ copyright = '2004-2023, The Galette Team'
 author = 'Johan Cwiklinski'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0rc3'
+release = '1.0.0'
 
 
 # -- General configuration ---------------------------------------------------

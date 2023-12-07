@@ -7,7 +7,7 @@
 
 ### English
 
-[![Download most recent Galette release (1.0.0rc3)](https://img.shields.io/badge/1.0.0rc3-Latest_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://download.tuxfamily.org/galette/dev/galette-1.0.0-rc3-20231122-a9c2ed838d.tar.bz2)
+[![Download most recent Galette release (1.0.0)](https://img.shields.io/badge/1.0.0-Latest_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://download.tuxfamily.org/galette/galette-1.0.0.tar.bz2)
 [![Download Galette development (nightly) build](https://img.shields.io/badge/nightly-Galette_development-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://download.tuxfamily.org/galette/galette-dev.tar.bz2)
 
 Galette is a membership management web application towards non profit organizations; released under GPLv3.
@@ -29,7 +29,7 @@ To use Galette, you can either:
 
 ### Français
 
-[![Télécharger la version de Galette la plus récente (1.0.0rc3)](https://img.shields.io/badge/1.0.0rc3-Dernière_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://download.tuxfamily.org/galette/dev/galette-1.0.0-rc3-20231122-a9c2ed838d.tar.bz2)
+[![Télécharger la version de Galette la plus récente (1.0.0)](https://img.shields.io/badge/1.0.0-Dernière_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://download.tuxfamily.org/galette/galette-1.0.0.tar.bz2)
 [![Télécharger la version de développement (nighly) de Galette](https://img.shields.io/badge/nightly-Galette_développement-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://download.tuxfamily.org/galette/galette-dev.tar.bz2)
 
 Galette est un outil de gestion d’adhérents et de cotisations en ligne à destination des associations, sous license GPLV3.
