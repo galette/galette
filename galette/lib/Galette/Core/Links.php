@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4 - 2020-03-11
@@ -50,7 +50,7 @@ use Galette\Entity\Contribution;
  * @name      Links
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4 - 2020-03-11
@@ -98,13 +98,12 @@ class Links
                 'id'        => $id
             ]);
 
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Temporary link for `' . $target . '-' . $id . '` has been removed.',
-                    Analog::DEBUG
-                );
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Temporary link for `' . $target . '-' . $id . '` has been removed.',
+                Analog::DEBUG
+            );
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred removing old temporary link ' .
@@ -160,15 +159,12 @@ class Links
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
 
-            $add = $this->zdb->execute($insert);
-            if ($add) {
-                Analog::log(
-                    'New temporary link set for `' . $target . '-' . $id . '`.',
-                    Analog::DEBUG
-                );
-                return base64_encode($hash);
-            }
-            return false;
+            $this->zdb->execute($insert);
+            Analog::log(
+                'New temporary link set for `' . $target . '-' . $id . '`.',
+                Analog::DEBUG
+            );
+            return base64_encode($hash);
         } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add temporary link entry. " .
@@ -205,15 +201,12 @@ class Links
                 'creation_date',
                 $date->format('Y-m-d H:i:s')
             );
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Expired temporary links has been deleted.',
-                    Analog::DEBUG
-                );
-                return true;
-            }
-            return false;
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Expired temporary links has been deleted.',
+                Analog::DEBUG
+            );
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting expired temporary links. ' .
@@ -230,7 +223,7 @@ class Links
      * @param string $hash the hash, base64 encoded
      * @param string $code Code sent to validate link
      *
-     * @return false if hash is not valid, array otherwise
+     * @return array|false false if hash is not valid, array otherwise
      */
     public function isHashValid($hash, $code)
     {

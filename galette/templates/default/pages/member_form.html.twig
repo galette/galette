@@ -1,0 +1,422 @@
+{% extends parent_tpl %}
+
+{% block content %}
+<form action="{% if self_adh %}{{ url_for("storeselfmembers") }}{% elseif not member.id %}{{ url_for("doAddMember") }}{% else %}{{ url_for("doEditMember", {"id": member.id}) }}{% endif %}" method="post" enctype="multipart/form-data" id="form" class="ui form{% if member.id %} edit-member{% endif %}">
+    {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
+<div class="ui stackable grid">
+    <div class="row">
+        <div class="sixteen wide tablet six wide computer five wide widescreen column order-2">
+            <div class="position-sticky">
+        {% if member.id %}
+                <div class="ui basic clearing horizontally fitted segment">
+
+                    <div class="ui left floated basic fitted segment">
+                        {% include "elements/navigate.html.twig" with {"mpath": "editMember"} %}
+                    </div>
+
+                    <div class="ui right floated basic fitted segment">
+                        <div class="ui small spaced buttons">
+                    {% if member.id %}
+                            <button type="submit" name="valid" class="action ui labeled icon primary button">
+                                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+                            </button>
+                    {% endif %}
+                            <a
+                                href="{{ url_for("member", {"id": member.id}) }}"
+                                class="ui basic labeled icon button"
+                            >
+                                <i class="eye outline icon" aria-hidden="true"></i>
+                                {{ _T("Display") }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% include "elements/member_card.html.twig" %}
+        {% endif %}
+    {% endif %}
+
+    {% if not self_adh and members.list is defined and members.list|length > 0 %}
+                <div class="ui basic horizontally fitted segment">
+                    <div class="ui segment">
+        {% if member.hasParent() and not member.isDuplicate() %}
+                        <div class="field">
+                            <div class="ui label">
+                                <i class="linkify icon" aria-hidden="true"></i>
+                                {{ _T("Attached to:") }}
+                            </div>
+                            <div class="ui celled list">
+                                <a href="{{ url_for("member", {"id": member.parent.id}) }}" class="item">{{ member.parent.sfullname }}</a>
+                            </div>
+            {% if not member.id %}
+                            <input type="hidden" name="parent_id" value="{{ member.parent.id }}"/>
+            {% endif %}
+                        </div>
+            {% if login.isAdmin() or login.isStaff() and (addchild is not defined or not addchild) %}
+                        <div class="field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+                                <label for="detach_parent">{{ _T("Detach?") }}</label>
+                            </div>
+                        </div>
+            {% endif %}
+        {% elseif (login.isAdmin() or login.isStaff()) and not member.hasChildren() %}
+                        <div class="field">
+                            <div id="attach-checkbox" class="ui{% if member.isDuplicate() %} checked{% endif %} toggle checkbox">
+                                <input type="checkbox" name="attach" id="attach" value="1"{% if member.isDuplicate() %} checked="checked"{% endif %}/>
+                                <label for="attach"><i class="linkify icon" aria-hidden="true"></i> {{ _T("Attach member") }}</label>
+                            </div>
+                        </div>
+                        <span id="parent_id_elt" class="">
+                            <div id="parent_id" class="jsonly search-dropdown ui input nochosen paginated">
+                                <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
+                                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                                <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
+                                <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
+                                <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
+                                <div class="jsonly displaynone menu">
+            {% for k, v in members.list %}
+                                    <div class="item" data-value="{{ k }}">{{ v }}</div>
+            {% endfor %}
+                                </div>
+                            </div>
+                        </span>
+            {% if member.isDuplicate() %}
+                        <input type="hidden" name="duplicate" value="1" />
+            {% endif %}
+        {% elseif member.hasChildren() %}
+                        <div class="field">
+                            <div class="ui label">
+                                <i class="linkify icon" aria-hidden="true"></i>
+                                {{ _T("Parent of:") }}
+                            </div>
+                            <div class="ui celled list">
+            {% for child in member.children %}
+                                <a href="{{ url_for("member", {"id": child.id}) }}" class="item">{{ child.sfullname }}</a>
+            {% endfor %}
+                            </div>
+                        </div>
+        {% endif %}
+                    </div>
+                </div>
+    {% endif %}
+
+    {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
+            </div>
+        </div>
+        <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
+    {% endif %}
+            {# Main form entries #}
+            {% include "components/form.html.twig" %}
+
+            {# Dynamic entries #}
+            {% include "components/dynamic_fields.html.twig" with {object: member} %}
+
+    {% if not member.id and not self_adh %}
+        {% if login.isAdmin() or login.isStaff() %}
+            <div class="ui center aligned yellow segment">
+                <div class="inline field">
+                    <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
+                    <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown nochosen">
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
+                    </select>
+                </div>
+            </div>
+        {% else %}
+            <input type="hidden" name="redirect_on_create" value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"/>
+        {% endif %}
+        {% if addchild is defined and addchild %}
+            <input type="hidden" name="addchild" value="true"/>
+        {% endif %}
+    {% endif %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff())) %}
+            <div class="ui center aligned yellow segment">
+                <div class="inline field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1"{% if preferences.pref_bool_mailowner or member.sendEMail() %} checked="checked"{% endif %}/>
+                        <label for="mail_confirm">
+        {% if member.id %}
+                            {{ _T("Notify member his account has been modified") }}
+        {% else %}
+                            {{ _T("Notify member his account has been created") }}
+        {% endif %}
+                        </label>
+                        <br/>
+                        <span class="exemple">
+        {% if member.id %}
+                            {{ _T("Member will be notified by email his account has been modified.") }}
+        {% else %}
+                            {{ _T("Member will receive his username and password by email, if he has an address.") }}
+        {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+            <div class="ui basic center aligned fitted segment">
+                <button type="submit" name="valid" class="action ui labeled icon primary button">
+                    <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+                </button>
+            {% for entry in hidden_elements %}
+                {% if entry.field_id != 'mdp_adh' %}
+                    {% set title = null %}
+                    {% set tip = null %}
+                    {% set size = null %}
+                    {% set propname = entry.propname %}
+                    {% if entry.field_id == 'activite_adh' %}
+                        {% set value = member.isActive() %}
+                    {% else %}
+                        {% set value = attribute(member, propname) %}
+                    {% endif %}
+                    {% set checked = null %}
+                    {% set example = null %}
+
+                    {% if value != '' and entry.field_id != 'parent_id' %}
+                        {% include "components/forms/hidden.html.twig" with {
+                                name: entry.field_id,
+                                id: entry.field_id,
+                                value: value
+                        } %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% include "components/forms/csrf.html.twig" %}
+            </div>
+
+    {% if member.id or not self_adh and members.list is defined and members.list|length > 0 %}
+        </div>
+    </div>
+</div>
+    {% endif %}
+</form>
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
+
+            $(function() {
+                $('#company_field.nocompany').addClass('displaynone');
+                $('#is_company').change(function(){
+                    $('#company_field').toggleClass('displaynone');
+                });
+
+{% if not self_adh %}
+                {# Groups popup #}
+                $('#btngroups, #btnmanagedgroups').click(function(){
+                    var _managed = false;
+                    if ( $(this).attr('id') == 'btnmanagedgroups' ) {
+                        _managed = true;
+                    }
+                    var _groups = [];
+                    var _form = (_managed) ? 'managed' : 'user';
+                    $('#' + _form + 'groups_form input').each(function(){
+                        _group = $(this).val().split('|');
+                        _groups[_groups.length] = {
+                            id: _group[0],
+                            name: _group[1]
+                        };
+                    });
+                    $.ajax({
+                        url: '{{ url_for("ajax_groups") }}',
+                        type: "POST",
+                        data: {
+                            ajax: true,
+                            groups: _groups,
+                            managed: _managed
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#groups_field'
+                        } %},
+                        success: function(res){
+                            _groups_dialog(res, _groups, _managed);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying groups interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                    return false;
+                });
+
+                var _groups_dialog = function(res, _groups, _managed){
+                    var _title = '{{ _T("Groups selection")|e('js') }}';
+                    if ( _managed ) {
+                        _title = '{{ _T("Managed groups selection")|e('js') }}';
+                    }
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title: "_title",
+                        modal_content: "res",
+                        modal_class: "groups-selection fullscreen",
+                        modal_content_class: "scrolling",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js")
+                    } %}
+                    _groups_ajax_mapper(res, _groups, _managed);
+                }
+
+                var _groups_ajax_mapper = function(res, _groups, _managed){
+                    $('#btnvalid').click(function(){
+                        //remove actual groups
+                        var _form = (_managed) ? 'managed' : 'user';
+                        $('#' + _form + 'groups_form').empty();
+                        var _groups = new Array();
+                        var _groups_str = '<br/><strong>';
+                        if ( _managed ) {
+                            _groups_str += '{{ _T("Manager for:")|e('js') }}';
+                        } else {
+                            _groups_str += '{{ _T("Member of:")|e('js') }}';
+                        }
+                        _groups_str += '</strong> ';
+
+                        $('li[id^="group_"]').each(function(){
+                            //get group values
+                            _gid = this.id.substring(6, this.id.length);
+                            _gname = $(this).text();
+                            _groups[_groups.length] = this.id.substring(6, this.id.length);
+                            var _iname = (_managed) ? 'groups_managed_adh' : 'groups_adh';
+                            $('#' + _form + 'groups_form').append(
+                                '<input type="hidden" value="' +
+                                _gid + '|' + _gname + '|' +
+                                '" name="' + _iname + '[]">'
+                            );
+                            if ( _groups.length > 1 ) {
+                                _groups_str += ', ';
+                            }
+                            _groups_str += _gname;
+                        });
+                        $('#' + _form + 'groups').html(_groups_str);
+                        $('.groups-selection').modal('hide');
+                    });
+
+                    //Remap links
+                    var _none = $('#none_selected').clone();
+                    $('li input[type=checkbox]').click(function(e){
+                        e.stopPropagation();
+                    });
+                    $('li[id^="group_"]').click(function(){
+                        $(this).remove();
+                        if ( $('#selected_groups ul li').length == 0 ) {
+                            $('#selected_groups ul').append(_none);
+                        }
+                    });
+
+                    //Select a row
+                    $('#listing tbody tr').click(function(event){
+                        event.preventDefault();
+                        var _glink = $(this).find('.username_row a');
+                        var _gid = _glink[0].href.match(/.*\/(\d+)$/)[1];
+                        var _gname = _glink.text();
+                        $('#none_selected').remove()
+                        if ( $('#group_' + _gid).length == 0 ) {
+                            var _li = '<li id="group_' + _gid + '" class="item">'
+                                    + '<i class="icons" aria-hidden="true"><i class="users icon"><i class="top right corner minus icon"></i></i></i>'
+                                    + '<span class="ui content">' + _gname + '</span></li>';
+                            $('#selected_groups ul').append(_li);
+                            $('#group_' + _gid).click(function(){
+                                $(this).remove();
+                                if ( $('#selected_groups ul li').length == 0 ) {
+                                    $('#selected_groups ul').append(_none);
+                                }
+                            });
+                        }
+                        return false;
+                    }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a group")|e('js') }}');
+                }
+
+    {% if not self_adh and not member.hasChildren() %}
+                {# Parent selection #}
+        {% if not member.isDuplicate() %}
+                $('#parent_id_elt').addClass('displaynone');
+        {% endif %}
+                $('#attach-checkbox').checkbox({
+                    onChecked: function() {
+                        $('#parent_id_elt').removeClass('displaynone');
+                    },
+                    onUnchecked: function() {
+                        $('#parent_id_elt').addClass('displaynone');
+                    }
+                });
+    {% endif %}
+
+    {% if not self_adh %}
+        {% if parent_fields|length > 0 %}
+                $('#detach_parent').on('change', function(){
+                    var _checked = $(this).is(':checked');
+                    var _changes = '';
+            {% for req in parent_fields %}
+                    _changes += '#{{ req }}';
+                {% if not loop.last %}
+                    _changes += ',';
+                {% endif %}
+            {% endfor %}
+                    if (_checked) {
+                        $(_changes).attr('required', 'required');
+                    } else {
+                        $(_changes).removeAttr('required');
+                    }
+                });
+
+                $('#parent_id').on('change', function(){
+                    var _hasParent = $(this).attr('value') != '';
+                    var _changes = '';
+            {% for req in parent_fields %}
+                    _changes += '#{{ req }}';
+                {% if not loop.last %}
+                    _changes += ',';
+                {% endif %}
+            {% endfor %}
+                    if (_hasParent) {
+                        $(_changes).removeAttr('required');
+                    } else {
+                        $(_changes).attr('required', 'required');
+                    }
+                });
+        {% endif %}
+    {% endif %}
+
+                $('#ddn_adh').on('blur', function() {
+                    var _bdate = $(this).val();
+                    if ('{{ _T("Y-m-d") }}' === 'Y-m-d') {
+                        _bdate = new Date(_bdate);
+                    } else {
+                        //try for dd/mm/yyyy
+                        var _dparts = _bdate.split("/");
+                        _bdate = new Date(_dparts[2], _dparts[1] - 1, _dparts[0]);
+                    }
+
+                    if (! isNaN(_bdate.getTime())) {
+                        var _today = new Date();
+                        var _age = Math.floor((_today-_bdate) / (365.25 * 24 * 60 * 60 * 1000));
+                        $('#member_age').html('{{ _T(" (%age years old)") }}'.replace(/%age/, _age))
+                    } else {
+                        $('#member_age').html('');
+                    }
+                });
+
+    {% if preferences.pref_force_picture_ratio == 1 %}
+                // Show photo cropping preferences on file selection
+                let _photo_new = document.getElementById('photo_new');
+                _photo_new.addEventListener('change', function () {
+                    if (_photo_new.files.length > 0) {
+                        let _crop_focus = document.getElementById('crop_focus_field');
+                        _crop_focus.classList.remove('displaynone');
+                        $('#crop_focus_field').transition('glow');
+                        return;
+                    }
+                });
+    {% endif %}
+{% endif %}
+            });
+        </script>
+{% endblock %}

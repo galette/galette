@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-08-27
@@ -45,9 +45,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
-use Galette\Entity\Title;
 use Galette\Repository\Titles;
-use Galette\IO\FileTrait;
 use Galette\Repository\Members;
 
 /**
@@ -57,7 +55,7 @@ use Galette\Repository\Members;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-08-27
@@ -166,7 +164,7 @@ class CsvIn extends Csv implements FileInterface
      * @param array       $members_fields_cats Members fields categories
      * @param boolean     $dryrun              Run in dry run mode (do not store in database)
      *
-     * @return boolean
+     * @return bool|int
      */
     public function import(
         Db $zdb,
@@ -333,7 +331,8 @@ class CsvIn extends Csv implements FileInterface
                     if ($this->_fields[$col] == 'titre_adh' && !empty($column)) {
                         if ($this->titles === null) {
                             //load existing titles
-                            $this->titles = Titles::getList($this->zdb);
+                            $titles = new Titles($this->zdb);
+                            $this->titles = $titles->getList();
                         }
                         if (!isset($this->titles[$column])) {
                             $this->addError(
@@ -423,6 +422,7 @@ class CsvIn extends Csv implements FileInterface
                 $member->dynamicsValidate($dfields);
                 $errors = $member->getErrors();
                 if (count($errors) > $errcnt) {
+                    //@phpstan-ignore-next-line
                     $lcnt = ($errcnt > 0 ? $errcnt - 1 : 0);
                     $cnt_err = count($errors);
                     for ($i = $lcnt; $i < $cnt_err; ++$i) {

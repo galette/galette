@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Test translation features.
  *
  * example (see galette/lan/Makefile for up to date command):
  * xgettext translations.php --keyword=_T --keyword=__ --keyword=_Tn:1,2 --keyword=_Tx:1c,2 --keyword=_Tnx:1c,2,3  -L PHP --from-code=UTF-8 --add-comments=TRANS --force-po -o php_translations.pot
  */
+
 _T('Translation, no domain');
 __('Another known syntax');
 _T('Translation, galette domain', 'galette');

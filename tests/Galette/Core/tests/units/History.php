@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2016-2021 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2016-11-26
  */
@@ -60,8 +59,8 @@ class History extends GaletteTestCase
      */
     public function testConstants()
     {
-        $this->string(\Galette\Core\History::TABLE)->isIdenticalTo('logs');
-        $this->string(\Galette\Core\History::PK)->isIdenticalTo('id_log');
+        $this->assertSame('logs', \Galette\Core\History::TABLE);
+        $this->assertSame('id_log', \Galette\Core\History::PK);
     }
 
     /**
@@ -74,54 +73,57 @@ class History extends GaletteTestCase
         $this->i18n->changeLanguage('en_US');
         //nothing in the logs at the beginning
         $list = $this->history->getHistory();
-        $this->array($list)->hasSize(0);
+        $this->assertCount(0, $list);
 
         //add some entries
         $add = $this->history->add(
             'Test',
             'Something was added from tests'
         );
-        $this->boolean($add)->isTrue();
+        $this->assertTrue($add);
 
         $add = $this->history->add(
             'Test',
             'Something else was added from tests',
             'SELECT * FROM none WHERE non ORDER BY none'
         );
-        $this->boolean($add)->isTrue();
+        $this->assertTrue($add);
 
         $add = $this->history->add(
             'AnotherTest',
             'And something else, again'
         );
-        $this->boolean($add)->isTrue();
+        $this->assertTrue($add);
 
         //check what has been stored
         $list = $this->history->getHistory();
-        $this->array($list)->hasSize(3);
+        $this->assertCount(3, $list);
 
         $actions = $this->history->getActionsList();
-        $this->array($actions)
-            ->hasSize(2)
-            ->string[0]->isIdenticalTo('AnotherTest')
-            ->string[1]->isIdenticalTo('Test');
+        $this->assertSame(
+            $actions,
+            [
+                'AnotherTest',
+                'Test'
+            ]
+        );
 
         //some filtering
         $this->history->filters->action_filter = 'Test';
         $list = $this->history->getHistory();
-        $this->array($list)->hasSize(2);
+        $this->assertCount(2, $list);
 
         $this->history->filters->start_date_filter = date('Y-m-d');
         $this->history->filters->end_date_filter = date('Y-m-d');
         $list = $this->history->getHistory();
-        $this->array($list)->hasSize(2);
+        $this->assertCount(2, $list);
 
         //let's clean now
         $cleaned = $this->history->clean();
-        $this->boolean($cleaned)->isTrue();
+        $this->assertTrue($cleaned);
 
         $list = $this->history->getHistory();
-        $this->array($list)->hasSize(1);
+        $this->assertCount(1, $list);
 
         $this->cleanHistory();
     }

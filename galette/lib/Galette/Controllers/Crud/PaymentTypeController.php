@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2021 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-09
@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Repository\PaymentTypes;
 use Galette\Entity\PaymentType;
 use Analog\Analog;
@@ -50,7 +50,7 @@ use Analog\Analog;
  * @name      PaymentTypeController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-09
@@ -71,6 +71,7 @@ class PaymentTypeController extends CrudController
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -111,7 +112,7 @@ class PaymentTypeController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_paymentstypes.tpl',
+            'pages/configuration_payment_types.html.twig',
             [
                 'page_title'        => _T("Payment types management"),
                 'list'              => $list
@@ -131,6 +132,7 @@ class PaymentTypeController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filters
+        return $response;
     }
 
     // /CRUD - Read
@@ -148,14 +150,17 @@ class PaymentTypeController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ptype = new PaymentType($this->zdb, $id);
+        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+
 
         // display page
         $this->view->render(
             $response,
-            'edit_paymenttype.tpl',
+            'pages/configuration_payment_type_form.html.twig',
             [
                 'page_title'    => _T("Edit payment type"),
-                'ptype'         => $ptype
+                'ptype'         => $ptype,
+                'mode'         => $mode
             ]
         );
         return $response;
@@ -194,51 +199,47 @@ class PaymentTypeController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
+        $error_detected = [];
+        $msg = null;
+
         $ptype = new PaymentType($this->zdb, $id);
         $ptype->name = $post['name'];
-        $res = $ptype->store();
+        if (isset($post['name']) && $post['name'] != '') {
+            $res = $ptype->store();
+        } else {
+            $res = false;
+            $error_detected[] = _T("Missing required payment type's name!");
+        }
         $redirect_uri = $this->redirectUri($this->getArgs($request));
 
         if (!$res) {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has not been added!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has not been added!")
                 );
             } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has not been modified!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has not been modified!")
                 );
                 //redirect to payment type edition
-                $redirect_uri = $this->router->pathFor('editPaymentType', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => $id]);
             }
         } else {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has been successfully added.")
-                    )
+                $msg = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has been successfully added.")
                 );
             } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $ptype->getName(),
-                        _T("Payment type '%s' has been successfully modified.")
-                    )
+                $msg = preg_replace(
+                    '(%s)',
+                    $ptype->getName(),
+                    _T("Payment type '%s' has been successfully modified.")
                 );
             }
         }
@@ -251,6 +252,20 @@ class PaymentTypeController extends CrudController
                     $warning
                 );
             }
+        }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                $msg
+            );
         }
 
         return $response
@@ -271,7 +286,7 @@ class PaymentTypeController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('paymentTypes');
+        return $this->routeparser->urlFor('paymentTypes');
     }
 
     /**
@@ -283,7 +298,7 @@ class PaymentTypeController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemovePaymentType',
             ['id' => $args['id'] ?? null]
         );

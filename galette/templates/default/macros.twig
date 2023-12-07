@@ -1,0 +1,111 @@
+{% macro renderMenu(title, icon, items, mode) %}
+    {% set my_routes = [] %}
+    {% for item in items %}
+        {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
+    {% endfor %}
+    {% if mode == "compact" %}
+        <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown navigation item tooltip" data-html="{{ title }}" data-position="right center">
+            <i class="{{ icon }} icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ title }}</span>
+            <i class="dropdown icon" aria-hidden="true"></i>
+            <div class="menu">
+                {% for item in items %}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, item.icon ?? null, null, 'right center') }}
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="item">
+            <div class="image header title{% if cur_route in my_routes %} active{% endif %}" data-fold="fold-{{ icon|replace({' ': '-'}) }}" tabindex="0">
+                <i class="{{ icon }} icon" aria-hidden="true"></i>
+                {{ title }}
+                <i class="dropdown icon" aria-hidden="true"></i>
+            </div>
+            <div class="content{% if cur_route in my_routes %} active{% endif %}">
+                {% for item in items %}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, item.icon ?? null, null, null, mode) }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro renderMenuItem(label, title, route, icon, class, tips_position, mode) %}
+    {% if class is empty %}
+        {% if is_current_url(route.name, route.args|default([])) or (cur_route in route.aliases ?? [] and route.sub_select ?? true == true) %}
+            {% set class = "active item" %}
+        {% else %}
+            {% set class = "item" %}
+        {% endif %}
+    {% endif %}
+    <a
+            href="{{ url_for(route.name, route.args|default([])) }}"
+            class="{{ class }}"
+            {% if title %}title="{{ title }}"{% endif %}
+            {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
+            {% if mode != "default" %}tabindex="-1"{% endif %}
+    >
+        {% if icon %}
+            <i class="{{ icon }} icon" aria-hidden="true"></i>
+        {% endif %}
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro dashboardCard(label, title, route, icon) %}
+    <a class="ui card" href="{{ url_for(route.name, route.args|default([])) }}"{% if title %} title="{{ title }}"{% endif %}>
+        <div class="content">
+            <div class="ui header">
+                <em data-emoji="{{ icon }}" class="medium" aria-hidden="true"></em>
+                <div class="content">
+                    {{ label }}
+                </div>
+            </div>
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro drawListAction(title, route, icon, extra_class) %}
+    <a
+            href="{{ url_for(route.name, route.args|default([])) }}"
+            class="{{ extra_class|default('') }} tooltip"
+            title="{{ title }}"
+    >
+        <i class="ui {{ icon }} icon" aria-hidden="true"></i>
+        <span class="visually-hidden">{{ title }}</span>
+    </a>
+{% endmacro %}
+
+{% macro drawDetailedAction(label, title, route, icon) %}
+    <a
+        href="{{ url_for(route.name, route.args|default([])) }}"
+        title="{{ title }}"
+        class="ui item"
+    >
+        <i class="{{ icon }} icon" aria-hidden="true"></i>
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro drawBatchActionsList(batch_actions) %}
+    <div class="checkboxes ui basic horizontal segments">
+        <div class="ui basic fitted segment batch-selection">
+            <div class="ui blue tertiary dropdown icon button batch-select-action">
+                <i class="tasks icon" aria-hidden="true"></i>
+                {{ _T('For the selection:') }}
+                <i class="dropdown icon" aria-hidden="true"></i>
+                <div class="menu">
+                {% for batch_action in batch_actions %}
+                    {{ _self.drawBatchAction(batch_action.name, batch_action.label, batch_action.icon, batch_action.title ?? null) }}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro drawBatchAction(name, label, icon, title) %}
+    <span class="ui item batch-action batch-{{ name }}" data-value="{{ name }}"{% if title %} title="{{ title }}"{% endif %}>
+        <i class="{{ icon }} icon" aria-hidden="true"></i> {{ label }}
+    </span>
+{% endmacro %}

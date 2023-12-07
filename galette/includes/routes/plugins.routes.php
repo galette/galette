@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2015-2020 The Galette Team
+ * Copyright © 2015-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,25 +28,26 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2020 The Galette Team
+ * @copyright 2015-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.9dev 2015-10-28
  */
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 
 $app->group(
     '/plugins',
-    function () use ($authenticate) {
-        $container = $this->getContainer();
+    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate, $showPublicPages) {
+        /** @var $container \DI\Container */
+        $container = $app->getContainer();
         $modules = $container->get('plugins')->getModules();
 
         //Global route to access plugin resources (CSS, JS, images, ...)
-        $this->get(
+        $app->get(
             '/{plugin}/res/{path:.*}',
-            function (Request $request, Response $response, $plugin, $path) {
+            function (Request $request, Response $response, $plugin, $path) use ($container) {
                 $ext = pathinfo($path)['extension'];
                 $auth_ext = [
                     'js'    => 'text/javascript',
@@ -54,10 +55,12 @@ $app->group(
                     'png'   => 'image/png',
                     'jpg'   => 'image/jpg',
                     'jpeg'  => 'image/jpg',
-                    'gif'   => 'image/gif'
+                    'gif'   => 'image/gif',
+                    'svg'   => 'image/svg+xml',
+                    'map'   => 'application/json'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
-                    $file = $this->get('plugins')->getFile(
+                    $file = $container->get('plugins')->getFile(
                         $plugin,
                         $path
                     );
@@ -68,9 +71,13 @@ $app->group(
                     $body->write(file_get_contents($file));
                     return $response;
                 } else {
-                    $this->halt(
-                        500,
-                        _T("Invalid extension!")
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Invalid extension %1$s (%2$s)!',
+                            $ext,
+                            $path
+                        ),
+                        404
                     );
                 }
             }
@@ -80,14 +87,14 @@ $app->group(
         foreach ($modules as $module_id => $module) {
             $container->set('Plugin ' . $module['name'], ['module' => $module, 'module_id' => $module_id]);
 
-            $this->group(
+            $app->group(
                 '/' . $module['route'],
                 //$module_id may be used in included _routes.php from plugin.
-                function () use ($module, $module_id, $authenticate) {
+                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $showPublicPages, $container) {
                     //Plugin home: give information
-                    $this->get(
+                    $app->get(
                         '',
-                        function ($request, $response) use ($module) {
+                        function ($request, $response) use ($module, $container) {
                             $params = [
                                 'page_title'    => $module['name'],
                                 'name'          => $module['name'],
@@ -95,13 +102,13 @@ $app->group(
                                 'date'          => $module['date'],
                                 'author'        => $module['author']
                             ];
-                            if ($this->get('login')->isAdmin()) {
+                            if ($container->get('login')->isAdmin()) {
                                 $params['module'] = $module;
                             }
                             // display page
-                            $this->get('view')->render(
+                            $container->get(\Slim\Views\Twig::class)->render(
                                 $response,
-                                'plugin_info.tpl',
+                                'pages/plugin_info.html.twig',
                                 $params
                             );
                             return $response;

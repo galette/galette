@@ -1,0 +1,13 @@
+/*
+* Tweemoji v13.1 by @twitter - https://twemoji.twitter.com/ - @twitter
+* License - CC-BY 4.0 - https://creativecommons.org/licenses/by/4.0/
+*/
+
+/*******************************
+             Emoji
+*******************************/
+
+/*--------------
+    Path
+---------------*/
+@emojiPath: "themes/galette/assets/emojis/";

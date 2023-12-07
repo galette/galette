@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2016-11-09
  */
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * CheckModules tests class
@@ -46,26 +45,25 @@ use atoum;
  * @name      CheckModules
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-11-09
  */
-class CheckModules extends atoum
+class CheckModules extends TestCase
 {
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
             $zdb = new \Galette\Core\Db();
-            $this->array($zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $zdb->getWarnings());
         }
+        parent::tearDown();
     }
 
     /**
@@ -76,16 +74,12 @@ class CheckModules extends atoum
     public function testAllOK()
     {
         $checks = new \Galette\Core\CheckModules();
-        $this->boolean($checks->isValid())->isTrue();
-        $this->integer(count($checks->getGoods()))
-            ->isLessThanOrEqualTo(10)
-            ->isGreaterThanOrEqualTo(6);
-        $this->array($checks->getMissings())
-            ->isEmpty();
-        $this->array($checks->getShoulds())
-            ->isEmpty();
-        $this->boolean($checks->isGood('mbstring'))
-            ->isTrue();
+        $this->assertTrue($checks->isValid());
+        $this->assertGreaterThanOrEqual(6, count($checks->getGoods()));
+        $this->assertLessThanOrEqual(10, count($checks->getGoods()));
+        $this->assertSame([], $checks->getMissings());
+        $this->assertSame([], $checks->getShoulds());
+        $this->assertTrue($checks->isGood('mbstring'));
     }
 
     /**
@@ -95,21 +89,20 @@ class CheckModules extends atoum
      */
     public function testAllKO()
     {
-        $this->assert('All PHP extensions missing')
-            ->given($checks = new \Galette\Core\CheckModules(false))
-            ->if($this->function->extension_loaded = false)
-            ->then
-                ->if($checks->doCheck())
-                    ->then
-                        ->array($checks->getGoods())
-                            ->hasSize(0)
-                        ->array($checks->getShoulds())
-                            ->hasSize(3)
-                        ->array($checks->getMissings())
-                            ->hasSize(6)
-                        ->string($checks->toHtml())
-                            ->notContains('icon-valid.png')
-                            ->hasLength(1032);
+        $checks = $this->getMockBuilder(\Galette\Core\CheckModules::class)
+            ->setConstructorArgs([false])
+            ->onlyMethods(array('isExtensionLoaded'))
+            ->getMock();
+        $checks->method('isExtensionLoaded')->willReturn(false);
+
+        $checks->doCheck(false);
+        $this->assertSame(0, count($checks->getGoods()));
+        $this->assertSame(3, count($checks->getShoulds()));
+        $this->assertSame(6, count($checks->getMissings()));
+
+        $html = $checks->toHtml();
+        $this->assertStringNotContainsString('green check icon', $html);
+        $this->assertSame(1221, strlen($html));
     }
 
     /**
@@ -122,8 +115,7 @@ class CheckModules extends atoum
         $checks = new \Galette\Core\CheckModules();
         $checks->doCheck();
         $html = $checks->toHtml();
-        $this->string($html)
-            ->notContains('icon-invalid.png')
-            ->length->isGreaterThanOrEqualTo(908);
+        $this->assertStringNotContainsString('icon-invalid.png', $html);
+        $this->assertGreaterThanOrEqual(908, strlen($html));
     }
 }

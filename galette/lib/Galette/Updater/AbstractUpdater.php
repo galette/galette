@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-07-21
@@ -38,6 +38,7 @@ namespace Galette\Updater;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Core\Install;
 
 /**
  * Galette abstract updater script
@@ -46,7 +47,7 @@ use Galette\Core\Db;
  * @name      AbstractUpdater
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-07-21
@@ -105,7 +106,7 @@ abstract class AbstractUpdater
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
      *
-     * @return Boolean|Exception
+     * @return void
      */
     final public function run($zdb, $installer)
     {
@@ -306,6 +307,7 @@ abstract class AbstractUpdater
                 return true;
             }
         }
+        return false;
     }
 
     /**

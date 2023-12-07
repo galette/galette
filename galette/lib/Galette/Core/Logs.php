@@ -52,7 +52,6 @@ use Analog\Analog;
  */
 class Logs
 {
-
     /**
      * Clean old logs (older than one month per default)
      *

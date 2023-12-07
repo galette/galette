@@ -1,0 +1,85 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+        <div class="ui top attached accordion-styled header">
+            {{ _T("Choose an entry") }}
+        </div>
+        <div class="ui bottom attached accordion-styled segment">
+            <form action="{{ url_for('changeText') }}" method="post" enctype="multipart/form-data" class="ui form">
+                <div class="fields">
+                    <div class="inline field">
+                        <label for="sel_lang">{{ _T("Language:") }}</label>
+                        <div class="ui dropdown selection autosubmit">
+                            <input type="hidden" name="sel_lang" value="{{ cur_lang }}">
+                            <i class="dropdown icon"></i>
+                            <div class="text">{{ cur_lang_name }}</div>
+                            <div class="menu">
+                            {% for langue in langlist %}
+                                <div class="item{% if cur_lang == langue.getID() %} active selected {% endif %}" data-value="{{ langue.getID() }}">{{ langue.getName() }}</div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inline field">
+                        <label for="sel_ref">{{ _T("Reference:") }}</label>
+                        <div class="ui dropdown selection autosubmit">
+                            <input type="hidden" name="sel_ref" value="{{ cur_ref }}">
+                            <i class="dropdown icon"></i>
+                            <div class="text">{% for ref in reflist %}{% if cur_ref == ref.tref %}{{ ref.tcomment }}{% endif %}{% endfor %}</div>
+                            <div class="menu">
+                            {% for ref in reflist %}
+                                <div class="item{% if cur_ref == ref.tref %} active selected {% endif %}" data-value="{{ ref.tref }}">{{ ref.tcomment }}</div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'components/forms/csrf.html.twig' %}
+                </div>
+            </form>
+        </div>
+
+        <form action="{{ url_for('texts') }}" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui top attached accordion-styled header">
+                {{ mtxt.tcomment }}
+            </div>
+            <div class="ui bottom attached accordion-styled segment">
+                <div class="active content field">
+                    <div class="field">
+                        <label for="tsubject">{{ _T("Email Subject") }}</label>
+                        <div class="ui corner labeled input">
+                            <input type="text" name="text_subject" id="tsubject" value="{{ mtxt.tsubject }}" maxlength="255" size="32" class="codeeditor"/>
+                            <div class="ui corner label"></div>
+                        </div>
+                        <span class="exemple">{{ _T("(Max 255 characters)") }}</span>
+                    </div>
+                    <div class="field">
+                        <label id="body_label" for="text_body">{{ _T("Email Body:") }}</label>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="text_body" id="text_body" cols="64" rows="15" class="codeeditor">{{ mtxt.tbody }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui basic center aligned segment">
+                <input type="hidden" name="cur_lang"  value="{{ cur_lang }}"/>
+                <input type="hidden" name="cur_ref" value="{{ cur_ref }}"/>
+                <input type="hidden" name="valid" id="valid" value="1"/>
+                <button type="submit" class="ui labeled icon primary button action">
+                    <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+                </button>
+                {% include 'components/forms/csrf.html.twig' %}
+            </div>
+        </form>
+        {% include 'modals/replacements_legend.html.twig' with {'legends': texts.getLegend(), 'cur_ref': cur_ref} %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                _addLegendButton('.ui.corner.label');
+                _handleLegend();
+                _bindFomanticComponents();
+            });
+        </script>
+{% endblock %}

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.6dev - 2021-10-23
@@ -36,9 +36,9 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Core\GaletteMail;
 use Galette\Features\I18n;
-use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Expression;
 use Throwable;
 use Galette\Core\Db;
@@ -51,7 +51,7 @@ use Analog\Analog;
  * @name      Social
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.6dev - 2021-10-23
@@ -117,6 +117,7 @@ class Social
             $select->limit(1)->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
+            /** @var ArrayObject $res */
             $res = $results->current();
             $this->loadFromRs($res);
         } catch (Throwable $e) {
@@ -176,11 +177,11 @@ class Social
     /**
      * Load social from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         $this->id = $rs->{self::PK};
         $this->setLinkedMember((int)$rs->{Adherent::PK});
@@ -249,7 +250,7 @@ class Social
             $delete->where([self::PK => $ids]);
             $this->zdb->execute($delete);
             Analog::log(
-                'Social #' . implode(', #', $ids)  . ' deleted successfully.',
+                'Social #' . implode(', #', $ids) . ' deleted successfully.',
                 Analog::INFO
             );
             return true;
@@ -272,6 +273,19 @@ class Social
     public function __get(string $name)
     {
         return $this->$name;
+    }
+
+    /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return bool
+     */
+    public function __isset(string $name)
+    {
+        return property_exists($this, $name);
     }
 
     /**

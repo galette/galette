@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2017-03-07
  */
 
 namespace Galette\IO\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * News tests class
@@ -46,27 +45,27 @@ use atoum;
  * @name      News
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-03-07
  */
-class News extends atoum
+class News extends TestCase
 {
-    private $i18n;
+    private string $local_url;
+    private \Galette\Core\I18n $i18n;
 
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->i18n = new \Galette\Core\I18n();
         global $i18n;
         $i18n = $this->i18n;
+        $this->local_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
     }
 
     /**
@@ -79,10 +78,9 @@ class News extends atoum
         //ensure allow_url_fopen is on
         ini_set('allow_url_fopen', true);
         //load news without caching
-        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true);
+        $news = new \Galette\IO\News($this->local_url, true);
         $posts = $news->getPosts();
-        $this->array($posts)
-            ->size->isGreaterThan(0);
+        $this->assertGreaterThan(0, count($posts));
     }
 
     /**
@@ -93,20 +91,19 @@ class News extends atoum
     public function testCacheNews()
     {
         //will use default lang to build RSS URL
-        $file = GALETTE_CACHE_DIR . md5('https://galette.eu/site/fr/feed.xml') . '.cache';
+        $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
 
-        //ensure file does not exists
-        $this->boolean(file_exists($file))->isFalse;
+        //ensure file does not exist
+        $this->assertFalse(file_exists($file));
 
         //load news with caching
-        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
+        $news = new \Galette\IO\News($this->local_url);
 
         $posts = $news->getPosts();
-        $this->array($posts)
-            ->size->isGreaterThan(0);
+        $this->assertGreaterThan(0, count($posts));
 
         //ensure file does exists
-        $this->boolean(file_exists($file))->isTrue;
+        $this->assertTrue(file_exists($file));
 
         $dformat = 'Y-m-d H:i:s';
         $mdate = \DateTime::createFromFormat(
@@ -121,9 +118,9 @@ class News extends atoum
             new \DateInterval('PT25H')
         );
         $touched = touch($file, $expired->getTimestamp());
-        $this->boolean($touched)->isTrue;
+        $this->assertTrue($touched);
 
-        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
+        $news = new \Galette\IO\News($this->local_url);
         $mnewdate = \DateTime::createFromFormat(
             $dformat,
             date(
@@ -132,7 +129,7 @@ class News extends atoum
             )
         );
         $isnewdate = $mnewdate > $mdate;
-        $this->boolean($isnewdate)->isTrue;
+        $this->assertTrue($isnewdate);
 
         //drop file finally
         unlink($file);
@@ -146,11 +143,12 @@ class News extends atoum
      */
     public function testLoadNewsWExeption()
     {
-        $this->assert('News cannot be loaded')
-            ->if($this->function->ini_get = 0)
-            ->given($news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true))
-            ->then
-                ->array($news->getPosts())
-                ->hasSize(0);
+        $news = $this->getMockBuilder(\Galette\IO\News::class)
+            ->setConstructorArgs(array($this->local_url, true))
+            ->onlyMethods(array('allowURLFOpen'))
+            ->getMock();
+        $news->method('allowURLFOpen')->willReturn(false);
+
+        $this->assertCount(0, $news->getPosts());
     }
 }

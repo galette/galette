@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -38,8 +38,10 @@ namespace Galette\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Analog\Analog;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use DI\Container;
+use Slim\Routing\RouteContext;
+use Slim\Routing\RouteParser;
 
 /**
  * Galette Slim change language middleware
@@ -48,7 +50,7 @@ use DI\Container;
  * @name      Language
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -57,7 +59,7 @@ class Language
 {
     private $i18n;
     private $session;
-    private $router;
+    private $routeparser;
 
     /**
      * Constructor
@@ -68,24 +70,26 @@ class Language
     {
         $this->i18n = $container->get('i18n');
         $this->session = $container->get('session');
-        $this->router = $container->get('router');
+        $this->routeparser = $container->get(RouteParser::class);
     }
 
     /**
      * Middleware invokable class
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
-     * @param  \Psr\Http\Message\ResponseInterface      $response PSR7 response
-     * @param  callable                                 $next     Next middleware
+     * @param  Request        $request PSR7 request
+     * @param  RequestHandler $handler Request handler
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return Response
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function __invoke(Request $request, RequestHandler $handler): Response
     {
+        $response = $handler->handle($request);
+
         $get = $request->getQueryParams();
 
         if (isset($get['ui_pref_lang'])) {
-            $route = $request->getAttribute('route');
+            $routeContext = RouteContext::fromRequest($request);
+            $route = $routeContext->getRoute();
 
             $route_name = $route->getName();
             $arguments = $route->getArguments();
@@ -93,14 +97,17 @@ class Language
             $this->i18n->changeLanguage($get['ui_pref_lang']);
             $this->session->i18n = $this->i18n;
 
-            return $response->withRedirect(
-                $this->router->pathFor(
-                    $route_name,
-                    $arguments
-                ),
-                301
-            );
+            $response = new \Slim\Psr7\Response();
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor(
+                        $route_name,
+                        $arguments
+                    )
+                )
+                ->withStatus(301);
         }
-        return $next($request, $response);
+        return $response;
     }
 }

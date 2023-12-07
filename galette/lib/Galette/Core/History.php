@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
@@ -41,7 +41,6 @@ use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Adapter;
-use Galette\Core\Preferences;
 use Laminas\Db\Sql\Select;
 
 /**
@@ -51,10 +50,12 @@ use Laminas\Db\Sql\Select;
  * @name      History
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
+ *
+ * @property HistoryList $filters
  */
 
 class History
@@ -284,7 +285,7 @@ class History
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     protected function buildOrderClause()
     {
@@ -313,7 +314,7 @@ class History
      *
      * @param Select $select Original select
      *
-     * @return string SQL WHERE clause
+     * @return void
      */
     private function buildWhereClause(Select $select)
     {
@@ -343,6 +344,7 @@ class History
                 );
             }
 
+            //@phpstan-ignore-next-line
             if ($this->filters->action_filter != null && $this->filters->action_filter != '0') {
                 $select->where->equalTo(
                     'action_log',
@@ -383,9 +385,7 @@ class History
 
             $k = $this->getPk();
             $this->count = $result->$k;
-            if ($this->count > 0) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count history | ' . $e->getMessage(),
@@ -398,9 +398,9 @@ class History
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -411,39 +411,36 @@ class History
 
         $forbidden = array();
         if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'fdate':
-                    //return formatted datemime
-                    try {
-                        $d = new \DateTime($this->$name);
-                        return $d->format(__("Y-m-d H:i:s"));
-                    } catch (Throwable $e) {
-                        //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$name . ') | ' .
-                            $e->getMessage(),
-                            Analog::INFO
-                        );
-                        return $this->$name;
-                    }
-                    break;
-                default:
-                    return $this->$name;
-                    break;
-            }
+            return $this->$name;
         } else {
             Analog::log(
-                '[History] Unable to get proprety `' . $name . '`',
+                '[History] Unable to get property `' . $name . '`',
                 Analog::WARNING
             );
         }
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (isset($this->$name)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -463,7 +460,7 @@ class History
             }
         } else {
             Analog::log(
-                '[History] Unable to set proprety `' . $name . '`',
+                '[History] Unable to set property `' . $name . '`',
                 Analog::WARNING
             );
         }

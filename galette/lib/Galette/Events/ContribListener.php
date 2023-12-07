@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 2020-08-25
@@ -41,17 +41,15 @@ use Galette\Core\GaletteMail;
 use Galette\Core\History;
 use Galette\Core\Links;
 use Galette\Core\Login;
-use Galette\Core\Password;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Texts;
 use Analog\Analog;
-use League\Event\Event;
-use League\Event\ListenerAcceptorInterface;
-use League\Event\ListenerProviderInterface;
+use League\Event\ListenerRegistry;
+use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
-use Slim\Router;
+use Slim\Routing\RouteParser;
 
 /**
  * Event listener for contributions
@@ -60,17 +58,17 @@ use Slim\Router;
  * @name      MemberListener
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 2020-08-25
  */
-class ContribListener implements ListenerProviderInterface
+class ContribListener implements ListenerSubscriber
 {
     /** @var Preferences */
     private $preferences;
-    /** @var Router */
-    private $router;
+    /** @var RouteParser */
+    private $routeparser;
     /** @var History */
     private $history;
     /** @var Messages */
@@ -84,7 +82,7 @@ class ContribListener implements ListenerProviderInterface
      * Constructor
      *
      * @param Preferences $preferences Preferences instance
-     * @param Router      $router      Router instance
+     * @param RouteParser $routeparser RouteParser instance
      * @param History     $history     History instance
      * @param Messages    $flash       Messages instance
      * @param Login       $login       Login instance
@@ -92,14 +90,14 @@ class ContribListener implements ListenerProviderInterface
      */
     public function __construct(
         Preferences $preferences,
-        Router $router,
+        RouteParser $routeparser,
         History $history,
         Messages $flash,
         Login $login,
         Db $zdb
     ) {
         $this->preferences = $preferences;
-        $this->router = $router;
+        $this->routeparser = $routeparser;
         $this->history = $history;
         $this->flash = $flash;
         $this->login = $login;
@@ -109,16 +107,16 @@ class ContribListener implements ListenerProviderInterface
     /**
      * Set up contribution listeners
      *
-     * @param ListenerAcceptorInterface $acceptor Listener
+     * @param ListenerRegistry $acceptor Listener
      *
      * @return void
      */
-    public function provideListeners(ListenerAcceptorInterface $acceptor)
+    public function subscribeListeners(ListenerRegistry $acceptor): void
     {
-        $acceptor->addListener(
+        $acceptor->subscribeTo(
             'contribution.add',
-            function ($event, $contrib) {
-                $this->contributionAdded($event, $contrib);
+            function (GaletteEvent $event) {
+                $this->contributionAdded($event->getObject());
             }
         );
     }
@@ -126,12 +124,11 @@ class ContribListener implements ListenerProviderInterface
     /**
      * Contribution added listener
      *
-     * @param Event        $event   Raised event
      * @param Contribution $contrib Added contribution
      *
      * @return void
      */
-    public function contributionAdded(Event $event, Contribution $contrib)
+    public function contributionAdded(Contribution $contrib)
     {
         Analog::log(
             '[' . get_class($this) . '] Event contribution.add emitted for #' . $contrib->id,
@@ -181,7 +178,7 @@ class ContribListener implements ListenerProviderInterface
 
         $texts = new Texts(
             $this->preferences,
-            $this->router,
+            $this->routeparser,
         );
         $texts
             ->setMember($member)
@@ -207,7 +204,7 @@ class ContribListener implements ListenerProviderInterface
             $links = new Links($this->zdb);
             if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
                 $link_card = $this->preferences->getURL() .
-                    $this->router->pathFor('directlink', ['hash' => $hash]);
+                    $this->routeparser->urlFor('directlink', ['hash' => $hash]);
             }
         }
         $texts->setMemberCardLink($link_card);
@@ -219,7 +216,7 @@ class ContribListener implements ListenerProviderInterface
             $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
             if ($hash = $links->generateNewLink($ltype, $contrib->id)) {
                 $link_pdf = $this->preferences->getURL() .
-                    $this->router->pathFor('directlink', ['hash' => $hash]);
+                    $this->routeparser->urlFor('directlink', ['hash' => $hash]);
             }
         }
         $texts->setContribLink($link_pdf);
@@ -273,7 +270,7 @@ class ContribListener implements ListenerProviderInterface
 
         $texts = new Texts(
             $this->preferences,
-            $this->router
+            $this->routeparser
         );
         $texts
             ->setMember($member)

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2020 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2020 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -37,8 +37,10 @@
 namespace Galette\Core;
 
 use Analog\Analog;
+use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
+use Laminas\Db\ResultSet\ResultSet;
 
 /**
  * Mailing features
@@ -47,7 +49,7 @@ use Galette\IO\File;
  * @name      Mailing
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -65,9 +67,10 @@ use Galette\IO\File;
  * @property-read array $errors
  * @property-read array $recipients
  * @property-read string|false $tmp_path
- * @property-read array $attachments
+ * @property array $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address
+ * @property integer $history_id
  */
 class Mailing extends GaletteMail
 {
@@ -179,17 +182,25 @@ class Mailing extends GaletteMail
     /**
      * Loads a mailing from history
      *
-     * @param ResultSet $rs  Mailing entry
-     * @param boolean   $new True if we create a 'new' mailing,
-     *                       false otherwise (from preview for example)
+     * @param ArrayObject $rs  Mailing entry
+     * @param boolean     $new True if we create a 'new' mailing,
+     *                         false otherwise (from preview for example)
      *
      * @return boolean
      */
-    public function loadFromHistory($rs, $new = true)
+    public function loadFromHistory(ArrayObject $rs, $new = true)
     {
         global $zdb;
 
-        $orig_recipients = unserialize($rs->mailing_recipients);
+        try {
+            $orig_recipients = unserialize($rs->mailing_recipients);
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Unable to unserialize recipients for mailing ' . $rs->mailing_id,
+                Analog::ERROR
+            );
+            $orig_recipients = [];
+        }
 
         $_recipients = array();
         $mdeps = ['parent' => true];
@@ -218,6 +229,7 @@ class Mailing extends GaletteMail
             }
             $this->history_id = $rs->mailing_id;
         }
+        return true;
     }
 
     /**
@@ -265,7 +277,7 @@ class Mailing extends GaletteMail
     /**
      * Apply final header to email and send it :-)
      *
-     * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     * @return int
      */
     public function send()
     {
@@ -283,7 +295,7 @@ class Mailing extends GaletteMail
      *
      * @param array $members Array of Adherent objects
      *
-     * @return void
+     * @return bool
      */
     public function setRecipients($members)
     {
@@ -305,7 +317,7 @@ class Mailing extends GaletteMail
                 }
             }
         }
-        parent::setRecipients($m);
+        return parent::setRecipients($m);
     }
 
     /**
@@ -322,7 +334,7 @@ class Mailing extends GaletteMail
         }
 
         if (!file_exists($this->tmp_path)) {
-            //directory does not exists, create it
+            //directory does not exist, create it
             mkdir($this->tmp_path);
         }
 
@@ -349,7 +361,7 @@ class Mailing extends GaletteMail
      *
      * @param int $id Mailing history id
      *
-     * @return boolean
+     * @return void
      */
     public function moveAttachments($id)
     {
@@ -435,7 +447,7 @@ class Mailing extends GaletteMail
      * @param boolean $temp Remove only tmporary attachments,
      *                      to avoid history breaking
      *
-     * @return void
+     * @return void|false
      */
     public function removeAttachments($temp = false)
     {
@@ -499,9 +511,9 @@ class Mailing extends GaletteMail
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -510,32 +522,23 @@ class Mailing extends GaletteMail
             switch ($name) {
                 case 'alt_message':
                     return $this->cleanedHtml();
-                    break;
                 case 'step':
                     return $this->current_step;
-                    break;
                 case 'subject':
                     return $this->getSubject();
-                    break;
                 case 'message':
                     return $this->getMessage();
-                    break;
                 case 'wrapped_message':
                     return $this->getWrappedMessage();
-                    break;
                 case 'html':
                     return $this->isHTML();
-                    break;
                 case 'mail':
                 case '_mail':
                     return $this->getPhpMailer();
-                    break;
                 case 'errors':
                     return $this->getErrors();
-                    break;
                 case 'recipients':
                     return $this->mrecipients;
-                    break;
                 case 'tmp_path':
                     if (isset($this->tmp_path) && trim($this->tmp_path) !== '') {
                         return $this->tmp_path;
@@ -543,23 +546,20 @@ class Mailing extends GaletteMail
                         //no attachments
                         return false;
                     }
-                    break;
                 case 'attachments':
                     return $this->attachments;
-                    break;
                 case 'sender_name':
                     return $this->getSenderName();
-                    break;
                 case 'sender_address':
                     return $this->getSenderAddress();
-                    break;
+                case 'history_id':
+                    return $this->$name;
                 default:
                     Analog::log(
                         '[' . get_class($this) . 'Trying to get ' . $name,
                         Analog::DEBUG
                     );
                     return $this->$name;
-                    break;
             }
         } else {
             Analog::log(
@@ -571,10 +571,45 @@ class Mailing extends GaletteMail
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('ordered');
+        if (!in_array($name, $forbidden)) {
+            switch ($name) {
+                case 'alt_message':
+                case 'step':
+                case 'subject':
+                case 'message':
+                case 'wrapped_message':
+                case 'html':
+                case 'mail':
+                case '_mail':
+                case 'errors':
+                case 'recipients':
+                case 'tmp_path':
+                case 'attachments':
+                case 'sender_name':
+                case 'sender_address':
+                    return true;
+            }
+            return isset($this->$name);
+        }
+
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -622,11 +657,9 @@ class Mailing extends GaletteMail
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
+                    '[' . get_class($this) . '] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
-                return false;
-                break;
         }
     }
 }

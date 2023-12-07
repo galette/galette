@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2021 The Galette Team
+ * Copyright © 2014-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,48 +28,31 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2021 The Galette Team
+ * @copyright 2014-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
  */
 
 use Galette\Controllers\Crud;
+use Slim\Routing\RouteCollectorProxy;
 
-$showPublicPages = function ($request, $response, $next) use ($container) {
-    $login = $container->get('login');
-    $preferences = $container->get('preferences');
-
-    if (!$preferences->showPublicPages($login)) {
-        $this->get('flash')->addMessage('error', _T("Unauthorized"));
-
-        return $response
-            ->withStatus(403)
-            ->withHeader(
-                'Location',
-                $this->get('router')->pathFor('slash')
-            );
-    }
-
-    return $next($request, $response);
-};
-
-$app->group('/public', function () {
+$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
     //public members list
-    $this->get(
+    $app->get(
         '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',
         [Crud\MembersController::class, 'publicList']
     )->setName('publicList');
 
     //members list filtering
-    $this->post(
+    $app->post(
         '/{type:list|trombi}/filter[/{from}]',
         [Crud\MembersController::class, 'filterPublicList']
     )->setName('filterPublicList');
 
-    $this->get(
+    $app->get(
         '/members[/{option:page|order}/{value:\d+|\w+}]',
-        function ($request, $response, string $option = null, string $value = null) {
+        function ($request, $response, string $option = null, string $value = null) use ($routeparser) {
             $args = ['type' => 'list'];
             if ($option !== null && $value !== null) {
                 $args['option'] = $option;
@@ -77,17 +60,17 @@ $app->group('/public', function () {
             }
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->get('router')->pathFor('publicList', $args));
+                ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
 
-    $this->get(
+    $app->get(
         '/trombinoscope',
-        function ($request, $response) {
+        function ($request, $response) use ($routeparser) {
             $args = ['type' => 'trombi'];
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->get('router')->pathFor('publicList', $args));
+                ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
 })->add($showPublicPages);

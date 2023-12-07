@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\History;
 use Galette\Filters\HistoryList;
 use Analog\Analog;
@@ -50,7 +50,7 @@ use Analog\Analog;
  * @name      HistoryController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -101,12 +101,12 @@ class HistoryController extends AbstractController
         $logs = $this->history->getHistory();
 
         //assign pagination variables to the template and add pagination links
-        $this->history->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+        $this->history->filters->setViewPagination($this->routeparser, $this->view);
 
         // display page
         $this->view->render(
             $response,
-            'history.tpl',
+            'pages/history.html.twig',
             array(
                 'page_title'        => _T("Logs"),
                 'logs'              => $logs,
@@ -127,7 +127,6 @@ class HistoryController extends AbstractController
     public function historyFilter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $error_detected = [];
 
         if ($this->session->filter_history !== null) {
             $filters = $this->session->filter_history;
@@ -145,17 +144,11 @@ class HistoryController extends AbstractController
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
-                try {
-                    if (isset($post['start_date_filter'])) {
-                        $field = _T("start date filter");
-                        $filters->start_date_filter = $post['start_date_filter'];
-                    }
-                    if (isset($post['end_date_filter'])) {
-                        $field = _T("end date filter");
-                        $filters->end_date_filter = $post['end_date_filter'];
-                    }
-                } catch (Throwable $e) {
-                    $error_detected[] = $e->getMessage();
+                if (isset($post['start_date_filter'])) {
+                    $filters->start_date_filter = $post['start_date_filter'];
+                }
+                if (isset($post['end_date_filter'])) {
+                    $filters->end_date_filter = $post['end_date_filter'];
                 }
             }
 
@@ -170,19 +163,9 @@ class HistoryController extends AbstractController
 
         $this->session->filter_history = $filters;
 
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('history'));
+            ->withHeader('Location', $this->routeparser->urlFor('history'));
     }
 
     /**
@@ -200,7 +183,7 @@ class HistoryController extends AbstractController
         $success = false;
 
         $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] : $this->router->pathFor('slash');
+            $post['redirect_uri'] : $this->routeparser->urlFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -239,7 +222,8 @@ class HistoryController extends AbstractController
                 ->withStatus(301)
                 ->withHeader('Location', $uri);
         } else {
-            return $response->withJson(
+            return $this->withJson(
+                $response,
                 [
                     'success'   => $success
                 ]
@@ -258,17 +242,17 @@ class HistoryController extends AbstractController
     public function confirmHistoryFlush(Request $request, Response $response): Response
     {
         $data = [
-            'redirect_uri'  => $this->router->pathFor('history')
+            'redirect_uri'  => $this->routeparser->urlFor('history')
         ];
 
         // display page
         $this->view->render(
             $response,
-            'confirm_removal.tpl',
+            'modals/confirm_removal.html.twig',
             array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => _T('Flush the logs'),
-                'form_url'      => $this->router->pathFor('doFlushHistory'),
+                'form_url'      => $this->routeparser->urlFor('doFlushHistory'),
                 'cancel_uri'    => $data['redirect_uri'],
                 'data'          => $data
             )

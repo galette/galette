@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4-dev - 2019-12-03
@@ -55,7 +55,7 @@ use Galette\Filters\MembersList;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4-dev - 2019-12-03
@@ -69,15 +69,14 @@ class MembersCsv extends CsvOut
     private $login;
     private $members_fields;
     private $fields_config;
-    private $filters;
 
     /**
      * Default constructor
      *
-     * @param Db    $zdb            Db instance
-     * @param Login $login          Login instance
-     * @param array $members_fields Members fields
-     * @param array $fields_config  Fields configuration
+     * @param Db           $zdb            Db instance
+     * @param Login        $login          Login instance
+     * @param array        $members_fields Members fields
+     * @param FieldsConfig $fields_config  Fields configuration
      */
     public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
     {
@@ -93,7 +92,7 @@ class MembersCsv extends CsvOut
     /**
      * Export members CSV
      *
-     * @param MembersList $filters Current filtrs
+     * @param MembersList $filters Current filters
      *
      * @return void
      */
@@ -102,6 +101,7 @@ class MembersCsv extends CsvOut
         $export_fields = null;
         if (file_exists(GALETTE_CONFIG_PATH . 'local_export_fields.inc.php')) {
             include_once GALETTE_CONFIG_PATH . 'local_export_fields.inc.php';
+            //@phpstan-ignore-next-line
             $export_fields = $fields;
         }
 
@@ -158,8 +158,8 @@ class MembersCsv extends CsvOut
         $s = new Status($this->zdb);
         $statuses = $s->getList();
 
-        $t = new Titles();
-        $titles = $t->getList($this->zdb);
+        $t = new Titles($this->zdb);
+        $titles = $t->getList();
 
         foreach ($members_list as &$member) {
             if (isset($member->id_statut)) {

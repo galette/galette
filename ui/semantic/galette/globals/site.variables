@@ -1,0 +1,60 @@
+/*******************************
+     Galette Global Variables
+*******************************/
+
+@fontName                   : 'PT Sans';
+
+@red                        : #d22828;
+@blue                       : #2f69b3;
+@green                      : #087d24;
+@grey                       : #636b70;
+
+@galetteColor               : #ffb619;
+@lightGaletteColor          : saturate(lighten(@galetteColor, 22), 15);
+@galetteHeaderBackground    : fade(@galetteColor, 70);
+@galetteNavBackground       : fade(@grey, 30);
+@galetteBackgroundImage     : 'themes/galette/assets/images/bg.png';
+@galetteBackgroundImageRtl  : 'themes/galette/assets/images/bg-rtl.png';
+
+@primaryColor               : @galetteColor;
+@secondaryColor             : @grey;
+
+@lightPrimaryColor          : @lightGaletteColor;
+@lightSecondaryColor        : @lightGrey;
+
+@textColor                  : @grey;
+
+@linkColor                  : @blue;
+
+@primaryColorHover          : if(iscolor(@primaryColor), saturate(darken(@primaryColor, 7), 10, relative), @primaryColor);
+
+@redTextColor               : darken(@red, 9);
+@orangeTextColor            : darken(@orange, 25);
+@yellowTextColor            : #714f00;
+@greenTextColor             : darken(@green, 8);
+@blueTextColor              : darken(@blue, 8);
+@infoTextColor              : #1f657b;
+
+@oddLineBackgroundColor     : #f9f9f9;
+@evenLineBackgroundColor    : #eeeeee;
+@activeLineBackgroundColor  : #dfecff;
+
+@borderColor                : lighten(@textColor, 30);
+@solidBorderColor           : lighten(@textColor, 30);
+@internalBorderColor        : lighten(@textColor, 40);
+
+@inputColor                 : @textColor;
+@inputPlaceholderColor      : lighten(@inputColor, 25);
+@inputPlaceholderFocusColor : lighten(@inputColor, 10);
+
+@toggleLaneBackground       : rgba(0,0,0,.15);
+
+@cotisOkBackgroundColor     : #e1fde1;
+@cotisNeverBackgroundColor  : @oddLineBackgroundColor;
+@cotisExemptBackgroundColor : @cotisOkBackgroundColor;
+@cotisSoonBackgroundColor   : #ffe9ab;
+@cotisLateBackgroundColor   : #ffe9e9;
+@cotisLastdayBackgroundColor: #ffebd3;
+
+@pluginsActiveBackground    : #d9f7d8;
+@pluginsInactiveBackground  : #ffead8;

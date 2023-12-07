@@ -1,0 +1,11 @@
+{% extends "components/forms/select.html.twig" %}
+
+{% block element %}
+    {% set values = "" %}
+    <select name="titre_adh" id="titre_adh" class="ui dropdown nochosen"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required is defined and required == true %} required="required"{% endif %}>
+        <option value="{% if required is defined and required == true %}-1{% endif %}">{{ _T("Not supplied") }}</option>
+{% for title in titles_list %}
+        <option value="{{ title.id }}"{% if member.title != null and member.title.id == title.id %} selected="selected"{% endif %}>{{ title.long }}</option>
+{% endfor %}
+    </select>
+{% endblock %}

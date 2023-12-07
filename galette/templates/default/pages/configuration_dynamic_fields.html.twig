@@ -1,0 +1,145 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <div class="ui stackable pointing inverted menu">
+{% for key, form in all_forms %}
+        <a href="{{ url_for('configureDynamicFields', {'form_name': key}) }}" class="item{% if form_name == key %} active{% endif %}" data-tab="{{ key }}">{{ form }}</a>
+{% endfor %}
+    </div>
+{% for key, form in all_forms %}
+    <div class="ui{% if form_name == key %} active{% endif %} tab segment" data-tab="{{ key }}">
+    {% if form_name == key %}
+        {% include 'elements/edit_dynamic_fields.html.twig' %}
+    {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                $('.pointing.menu .item').tab({
+                    auto: true,
+                    path: '{{ url_for('configureDynamicFields', {'form_name': ''}) }}',
+                    onLoad: function(tabPath, parameterArray, historyEvent) {
+                        _addDynField();
+                        _editDynField();
+                        _transDynField();
+                        _removeItems();
+                        _bindFomanticComponents();
+                    }
+                });
+            });
+
+            var _addDynField = function() {
+                var _form_name;
+                $('.addfield').click(function(e){
+                    e.preventDefault();
+                    var _this = $(this);
+                    var _href = _this.attr('href');
+
+                    $.ajax({
+                        url: _href,
+                        type: "GET",
+                        datatype: 'json',
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '.addfield',
+                            loader: 'button'
+                        } %},
+                        success: function(res){
+                            var _res = $(res);
+
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("New dynamic field")|e("js"),
+                                modal_content: "_res",
+                                modal_class: "tiny",
+                                modal_onshow: "_addDynFieldAjaxMapper();",
+                                modal_approve_text: _T("Add")|e('js'),
+                                modal_approve_icon: "plus",
+                                modal_approve_color: "green",
+                                modal_cancel_text: _T("Close")|e("js")
+                            } %}
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                });
+            }
+            _addDynField();
+
+            var _addDynFieldAjaxMapper = function(){
+                $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
+                $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
+                $('.modal-form a[title], .modal-form .tooltip').popup({
+                    variation: 'inverted',
+                    inline: false,
+                    addTouchEvents: false,
+                });
+            }
+
+            {% set modal_onapprove = "
+                $('.modal-form form #redirect_uri').val(window.location.href);
+                $('.modal-form form').submit();
+            " %}
+
+            var _editDynField = function() {
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-edit",
+                    modal_title_twig: _T("Edit field")|e("js"),
+                    modal_class: "tiny",
+                    modal_content_class: "scrolling",
+                    modal_onapprove: modal_onapprove
+                } %}
+            }
+            _editDynField();
+
+            {% set extra_success = "
+                $('.modal-form form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: 'POST',
+                        datatype: 'json',
+                        data: _data,
+                        error: function() {
+                            $.modal({
+                                title: '%error%',
+                                class: 'mini',
+                                actions: [{
+                                    text: '%close%',
+                                    icon: 'times',
+                                    class: 'icon labeled cancel'
+                                }],
+                                className: {
+                                    modal: 'ui redalert modal',
+                                    title: 'center aligned header',
+                                    content: 'center aligned content',
+                                    actions: 'center aligned actions'
+                                }
+                            }).modal('show');
+                        }
+                    });
+                });
+            " %}
+            var _transDynField = function() {
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-translate",
+                    extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
+                    modal_title_twig: _T("Translate labels")|e("js"),
+                    modal_content_class: "scrolling",
+                    modal_onapprove: modal_onapprove
+                } %}
+            }
+            _transDynField();
+        </script>
+{% endblock %}

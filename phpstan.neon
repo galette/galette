@@ -1,0 +1,20 @@
+parameters:
+    parallel:
+        maximumNumberOfProcesses: 2
+    level: 4
+    paths:
+        - galette/lib/
+    scanFiles:
+        - galette/config/paths.inc.php
+        - galette/config/versions.inc.php
+        - galette/config/config.inc.php.dist
+        - galette/config/galette_tcpdf_config.php
+    scanDirectories:
+        - galette/includes/
+    dynamicConstantNames:
+        - GALETTE_NIGHTLY
+    ignoreErrors:
+        - '/Instantiated class XHProfRuns_Default not found/'
+        - '/Attribute class .*\\Inject does not exist./'
+        - '/Cannot access property .* on .*ArrayObject.*/'
+        - '/Access to an undefined property ArrayObject.*/'

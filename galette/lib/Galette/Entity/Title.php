@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.4dev - 2013-01-27
@@ -36,6 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Galette\Core\Db;
 use Throwable;
 use Analog\Analog;
 
@@ -46,10 +48,16 @@ use Analog\Analog;
  * @name      Title
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-04
+ *
+ * @property int $id
+ * @property string $short
+ * @property ?string $long
+ * @property-read string $tshort
+ * @property-read string $tlong
  */
 
 class Title
@@ -112,11 +120,11 @@ class Title
     /**
      * Load title from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         $pk = self::PK;
         $this->id = $rs->$pk;
@@ -136,7 +144,7 @@ class Title
      *
      * @return boolean
      */
-    public function store($zdb)
+    public function store(Db $zdb)
     {
         $data = array(
             'short_label'   => strip_tags($this->short),
@@ -218,7 +226,6 @@ class Title
         switch ($name) {
             case 'id':
                 return $this->$name;
-                break;
             case 'short':
             case 'long':
                 if (
@@ -228,7 +235,6 @@ class Title
                     $name = 'short';
                 }
                 return $this->$name;
-                break;
             case 'tshort':
             case 'tlong':
                 $rname = null;
@@ -247,7 +253,6 @@ class Title
                 } else {
                     return $this->$rname;
                 }
-                break;
             default:
                 Analog::log(
                     'Unable to get Title property ' . $name,
@@ -255,6 +260,28 @@ class Title
                 );
                 break;
         }
+    }
+
+    /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'id':
+            case 'short':
+            case 'long':
+            case 'tshort':
+            case 'tlong':
+                return true;
+        }
+
+        return false;
     }
 
     /**

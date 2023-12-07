@@ -8,7 +8,7 @@
  * PHP version 5
  *
  * Copyright © 2017 GLPI and Contributors
- * Copyright © 2017-2018 The Galette Team
+ * Copyright © 2017-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,7 +30,7 @@
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
@@ -51,17 +51,17 @@ use Galette\Core\Plugins;
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
  */
 class Telemetry
 {
-    private $zdb;
-    private $prefs;
-    private $plugins;
-    private $quick = false;
+    private Db $zdb;
+    private Preferences $prefs;
+    private Plugins $plugins;
+    private bool $quick = false;
 
     /**
      * Constructor
@@ -144,35 +144,34 @@ class Telemetry
      */
     public function grabWebserverInfos()
     {
-        $headers = false;
-        $engine  = '';
-        $version = '';
+        $server = [
+            'engine'  => '',
+            'version' => '',
+        ];
 
-        // check if host is present (do no throw php warning in contrary of get_headers)
-        if (PHP_SAPI !== 'cli') {
-            $headers = get_headers($this->prefs->getURL());
+        if (PHP_SAPI == 'cli' || !filter_var(gethostbyname(parse_url($this->prefs->getURL(), PHP_URL_HOST)), FILTER_VALIDATE_IP)) {
+            // Do not try to get headers if hostname cannot be resolved
+            return $server;
         }
 
-        if (is_array($headers)) {
-            //BEGIN EXTRACTING SERVER DETAILS
-            $pattern = '#^Server:*#i';
-            $matches = preg_grep($pattern, $headers);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->prefs->getURL());
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
 
-            if (count($matches)) {
-                $infos = current($matches);
-                $pattern = '#Server: ([^ ]+)/([^ ]+)#i';
-                preg_match($pattern, $infos, $srv_infos);
-                if (count($srv_infos) == 3) {
-                    $engine  = $srv_infos[1];
-                    $version = $srv_infos[2];
-                }
+        // disable SSL certificate validation (wildcard, self-signed)
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        if ($response = curl_exec($ch)) {
+            $headers = substr($response, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+            $header_matches = [];
+            if (preg_match('/^Server: (?<engine>[^ ]+)\/(?<version>[^ ]+)/im', $headers, $header_matches)) {
+                $server['engine']  = $header_matches['engine'];
+                $server['version'] = $header_matches['version'];
             }
         }
-
-        $server = [
-            'engine'    => $engine,
-            'version'   => $version
-        ];
 
         return $server;
     }
@@ -207,9 +206,17 @@ class Telemetry
      */
     public function grabOsInfos()
     {
+        $distro = false;
+        if (file_exists('/etc/redhat-release')) {
+            $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/redhat-release'));
+        }
+        if (file_exists('/etc/fedora-release')) {
+            $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
+        }
+
         $os = [
             'family'       => php_uname('s'),
-            'distribution' => '',
+            'distribution' => ($distro ?: ''),
             'version'      => php_uname('r')
         ];
 
@@ -433,6 +440,23 @@ class Telemetry
     public function isRegistered()
     {
         return $this->getRegistrationDate() != false;
+    }
+
+    /**
+     * Should telemetry information sent again?
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function shouldRenew(): bool
+    {
+        $now = new \DateTime();
+        $sent = new \DateTime($this->prefs->pref_telemetry_date);
+        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
+        if ($now > $sent && !isset($_COOKIE['renew_telemetry'])) {
+            return true;
+        }
+        return false;
     }
 
     /**

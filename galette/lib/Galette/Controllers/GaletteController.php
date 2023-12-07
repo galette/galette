@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2021 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -38,8 +38,8 @@ namespace Galette\Controllers;
 
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\Logo;
 use Galette\Core\PrintLogo;
 use Galette\Core\Galette;
@@ -62,7 +62,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -103,7 +103,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'sysinfos.tpl',
+            'pages/sysinfos.html.twig',
             array(
                 'page_title'    => _T("System information"),
                 'rawinfos'      => $raw_infos
@@ -150,7 +150,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'desktop.tpl',
+            'pages/desktop.html.twig',
             $params
         );
         return $response;
@@ -182,20 +182,19 @@ class GaletteController extends AbstractController
             'pref_etiq_cols'        => 1,
             'pref_etiq_rows'        => 1,
             'pref_etiq_corps'       => 1,
-            'pref_card_abrev'       => 1,
-            'pref_card_strip'       => 1,
             'pref_card_marges_v'    => 1,
             'pref_card_marges_h'    => 1,
             'pref_card_hspace'      => 1,
             'pref_card_vspace'      => 1
         );
 
-        if ($this->login->isSuperAdmin() && GALETTE_MODE !== Galette::MODE_DEMO) {
+        if ($this->login->isSuperAdmin() && !Galette::isDemo()) {
             $required['pref_admin_login'] = 1;
         }
 
         $prefs_fields = $this->preferences->getFieldsNames();
         // collect data
+        $pref = [];
         foreach ($prefs_fields as $fieldname) {
             $pref[$fieldname] = $this->preferences->$fieldname;
         }
@@ -215,7 +214,7 @@ class GaletteController extends AbstractController
                 $entry != '.'
                 && $entry != '..'
                 && is_dir($full_entry)
-                && file_exists($full_entry . '/page.tpl')
+                && file_exists($full_entry . '/page.html.twig')
             ) {
                 $themes[] = $entry;
             }
@@ -233,10 +232,13 @@ class GaletteController extends AbstractController
         $m = new Members();
         $s = new Status($this->zdb);
 
+        //Active tab on page
+        $tab = $request->getQueryParams()['tab'] ?? 'general';
+
         // display page
         $this->view->render(
             $response,
-            'preferences.tpl',
+            'pages/preferences.html.twig',
             array(
                 'page_title'            => _T("Settings"),
                 'staff_members'         => $m->getStaffMembersList(true),
@@ -258,7 +260,8 @@ class GaletteController extends AbstractController
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
                 ),
                 'paymenttypes'          => $ptlist,
-                'osocials'              => new Social($this->zdb)
+                'osocials'              => new Social($this->zdb),
+                'tab'                   => $tab
             )
         );
         return $response;
@@ -292,7 +295,7 @@ class GaletteController extends AbstractController
                 $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($_FILES['logo'])) {
+                if (!Galette::isDemo() && isset($_FILES['logo'])) {
                     if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
@@ -315,7 +318,7 @@ class GaletteController extends AbstractController
                     }
                 }
 
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($post['del_logo'])) {
+                if (!Galette::isDemo() && isset($post['del_logo'])) {
                     if (!$this->logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {
@@ -324,7 +327,7 @@ class GaletteController extends AbstractController
                 }
 
                 // Card logo upload
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($_FILES['card_logo'])) {
+                if (!Galette::isDemo() && isset($_FILES['card_logo'])) {
                     if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['card_logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
@@ -347,7 +350,7 @@ class GaletteController extends AbstractController
                     }
                 }
 
-                if (GALETTE_MODE !== Galette::MODE_DEMO && isset($post['del_card_logo'])) {
+                if (!Galette::isDemo() && isset($post['del_card_logo'])) {
                     if (!$this->print_logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {
@@ -379,10 +382,14 @@ class GaletteController extends AbstractController
                 }
             }
         }
-
+        if (isset($post['tab']) && $post['tab'] != 'general') {
+            $tab = '?tab=' . $post['tab'];
+        } else {
+            $tab = '';
+        }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('preferences'));
+            ->withHeader('Location', $this->routeparser->urlFor('preferences') . $tab);
     }
 
     /**
@@ -442,12 +449,13 @@ class GaletteController extends AbstractController
             }
         }
 
-        if (!$request->isXhr()) {
+        if (!($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('preferences'));
+                ->withHeader('Location', $this->routeparser->urlFor('preferences'));
         } else {
-            return $response->withJson(
+            return $this->withJson(
+                $response,
                 [
                     'sent'  => $sent
                 ]
@@ -478,7 +486,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'charts.tpl',
+            'pages/charts.html.twig',
             array(
                 'page_title'        => _T("Charts"),
                 'charts'            => $charts->getCharts(),
@@ -511,7 +519,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'config_fields.tpl',
+            'pages/configuration_core_fields.html.twig',
             $params
         );
         return $response;
@@ -575,7 +583,7 @@ class GaletteController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureCoreFields'));
+            ->withHeader('Location', $this->routeparser->urlFor('configureCoreFields'));
     }
 
     /**
@@ -604,7 +612,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'config_lists.tpl',
+            'pages/configuration_core_lists.html.twig',
             $params
         );
         return $response;
@@ -643,7 +651,7 @@ class GaletteController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureListFields', $this->getArgs($request)));
+            ->withHeader('Location', $this->routeparser->urlFor('configureListFields', $this->getArgs($request)));
     }
 
     /**
@@ -656,7 +664,7 @@ class GaletteController extends AbstractController
      */
     public function reminders(Request $request, Response $response): Response
     {
-        $texts = new Texts($this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->routeparser);
 
         $previews = array(
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
@@ -669,7 +677,7 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'reminder.tpl',
+            'pages/reminder.html.twig',
             [
                 'page_title'                => _T("Reminders"),
                 'previews'                  => $previews,
@@ -697,7 +705,7 @@ class GaletteController extends AbstractController
         $success_detected = [];
 
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->routeparser);
         $selected = null;
         if (isset($post['reminders'])) {
             $selected = $post['reminders'];
@@ -720,7 +728,7 @@ class GaletteController extends AbstractController
                         ->setDb($this->zdb)
                         ->setLogin($this->login)
                         ->setPreferences($this->preferences)
-                        ->setRouter($this->router)
+                        ->setRouteParser($this->routeparser)
                     ;
                     //send reminders by email
                     $sent = $reminder->send($texts, $this->history, $this->zdb);
@@ -746,7 +754,7 @@ class GaletteController extends AbstractController
                         ->withStatus(307)
                         ->withHeader(
                             'Location',
-                            $this->router->pathFor('pdf-members-labels') . '?session_var=' . $session_var
+                            $this->routeparser->urlFor('pdf-members-labels') . '?session_var=' . $session_var
                         );
                 } else {
                     $error_detected[] = _T("There are no member to proceed.");
@@ -787,7 +795,7 @@ class GaletteController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('reminders'));
+            ->withHeader('Location', $this->routeparser->urlFor('reminders'));
     }
 
     /**
@@ -819,7 +827,7 @@ class GaletteController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('members'));
+            ->withHeader('Location', $this->routeparser->urlFor('members'));
     }
 
     /**
@@ -836,12 +844,25 @@ class GaletteController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'directlink.tpl',
+            'pages/directlink.html.twig',
             array(
                 'hash'          => $hash,
                 'page_title'    => _T('Download document')
             )
         );
+        return $response;
+    }
+
+    /**
+     * Main route
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function favicon(Request $request, Response $response): Response
+    {
         return $response;
     }
 }

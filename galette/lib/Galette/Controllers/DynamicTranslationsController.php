@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\L10n;
 use Analog\Analog;
 
@@ -49,7 +49,7 @@ use Analog\Analog;
  * @name      DynamicTranslationsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -150,10 +150,12 @@ class DynamicTranslationsController extends AbstractController
 
         $params['text_orig'] = $text_orig;
 
+        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+
         // display page
         $this->view->render(
             $response,
-            'traduire_libelles.tpl',
+            'pages/configuration_dynamic_translations.html.twig',
             $params
         );
         return $response;
@@ -170,12 +172,20 @@ class DynamicTranslationsController extends AbstractController
     public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $post['text_orig'] = htmlspecialchars($post['text_orig'], ENT_QUOTES);
+        if (isset($post['redirect_uri'])) {
+            $redirect_url = $post['redirect_uri'];
+            unset($post['redirect_uri']);
+        } else {
+            $redirect_url = $this->routeparser->urlFor(
+                'dynamicTranslations',
+                ['text_orig' => $post['text_orig']]
+            );
+        }
         $error_detected = [];
 
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($post['new']) && $post['new'] == 'true') {
-                //create translation if it does not exists yet
+                //create translation if it does not exist yet
                 $res = $this->l10n->addDynamicTranslation(
                     $post['text_orig']
                 );
@@ -237,9 +247,6 @@ class DynamicTranslationsController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor(
-                'dynamicTranslations',
-                ['text_orig' => $post['text_orig']]
-            ));
+            ->withHeader('Location', $redirect_url);
     }
 }

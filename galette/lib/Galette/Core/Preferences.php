@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2021 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @category  Core
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -53,7 +53,7 @@ use Galette\Repository\Members;
  * @name      Preferences
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -101,6 +101,9 @@ use Galette\Repository\Members;
  * @property string $pref_etiq_cols
  * @property string $pref_etiq_rows
  * @property string $pref_etiq_corps
+ * @property boolean $pref_etiq_border
+ * @property boolean $pref_force_picture_ratio
+ * @property string $pref_member_picture_ratio
  * @property string $pref_card_abrev
  * @property string $pref_card_strip
  * @property string $pref_card_tcol
@@ -144,7 +147,8 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_edit_groups
  * @property boolean $pref_bool_groupsmanagers_mailings
  * @property boolean $pref_bool_groupsmanagers_exports
- * @property-read string $vpref_email_newadh Comma separated list of mail senders
+ * @property-read array $vpref_email_newadh list of mail senders
+ * @property-read array $vpref_email list of mail senders
  */
 class Preferences
 {
@@ -236,7 +240,10 @@ class Preferences
         'pref_etiq_cols'    =>    2,
         'pref_etiq_rows'    =>    7,
         'pref_etiq_corps'    =>    12,
+        'pref_etiq_border'    =>    true,
         /* Preferences for members cards */
+        'pref_force_picture_ratio'    =>    false,
+        'pref_member_picture_ratio'    =>    'square_ratio',
         'pref_card_abrev'    =>    'GALETTE',
         'pref_card_strip'    =>    'Gestion d\'Adherents en Ligne Extrêmement Tarabiscotée',
         'pref_card_tcol'    =>    '#FFFFFF',
@@ -293,6 +300,7 @@ class Preferences
         'pref_lang',
         'pref_numrows',
         'pref_log',
+        'pref_statut',
         'pref_etiq_marges_v',
         'pref_etiq_marges_h',
         'pref_etiq_hspace',
@@ -302,8 +310,6 @@ class Preferences
         'pref_etiq_cols',
         'pref_etiq_rows',
         'pref_etiq_corps',
-        'pref_card_abrev',
-        'pref_card_strip',
         'pref_card_marges_v',
         'pref_card_marges_h',
         'pref_card_hspace',
@@ -331,7 +337,7 @@ class Preferences
      * Check if all fields referenced in the default array does exists,
      * create them if not
      *
-     * @return void
+     * @return boolean
      */
     private function checkUpdate()
     {
@@ -386,6 +392,8 @@ class Preferences
                 Analog::INFO
             );
         }
+
+        return true;
     }
 
     /**
@@ -490,7 +498,7 @@ class Preferences
     public function check(array $values, Login $login)
     {
         $insert_values = array();
-        if ($login->isSuperAdmin() && GALETTE_MODE !== Galette::MODE_DEMO) {
+        if ($login->isSuperAdmin() && !Galette::isDemo()) {
             $this->required[] = 'pref_admin_login';
         }
 
@@ -506,7 +514,7 @@ class Preferences
         }
 
         //cleanup fields for demo
-        if (GALETTE_MODE == Galette::MODE_DEMO) {
+        if (Galette::isDemo()) {
             unset(
                 $insert_values['pref_admin_login'],
                 $insert_values['pref_admin_pass'],
@@ -516,7 +524,7 @@ class Preferences
 
         // missing relations
         if (
-            GALETTE_MODE !== Galette::MODE_DEMO
+            !Galette::isDemo()
             && isset($insert_values['pref_mail_method'])
         ) {
             if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
@@ -590,7 +598,7 @@ class Preferences
             }
         }
 
-        if (GALETTE_MODE !== Galette::MODE_DEMO && isset($values['pref_admin_pass_check'])) {
+        if (!Galette::isDemo() && isset($values['pref_admin_pass_check'])) {
             // Check passwords. Hash will be done into the Preferences class
             if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
                 $this->errors[] = _T("Passwords mismatch");
@@ -605,7 +613,7 @@ class Preferences
                     unset($insert_values['pref_postal_staff_member']);
                 }
             } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
-                if (!isset($value) || $value < 1) {
+                if ($value < 1) {
                     $this->errors[] = _T("You have to select a staff member");
                 }
             }
@@ -615,8 +623,7 @@ class Preferences
         foreach ($insert_values as $champ => $valeur) {
             if (
                 $login->isSuperAdmin()
-                || (!$login->isSuperAdmin()
-                && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
+                || $champ != 'pref_admin_pass' && $champ != 'pref_admin_login'
             ) {
                 if (
                     ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
@@ -668,7 +675,7 @@ class Preferences
                 }
                 break;
             case 'pref_admin_login':
-                if (GALETTE_MODE === Galette::MODE_DEMO) {
+                if (Galette::isDemo()) {
                     Analog::log(
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
@@ -685,10 +692,6 @@ class Preferences
                 }
                 break;
             case 'pref_numrows':
-                if (!is_numeric($value) || $value < 0) {
-                    $this->errors[] = _T("- The numbers and measures have to be integers!");
-                }
-                break;
             case 'pref_etiq_marges_h':
             case 'pref_etiq_marges_v':
             case 'pref_etiq_hspace':
@@ -702,10 +705,6 @@ class Preferences
             case 'pref_card_marges_h':
             case 'pref_card_hspace':
             case 'pref_card_vspace':
-                // prevent division by zero
-                if ($fieldname == 'pref_numrows' && $value == '0') {
-                    $value = '10';
-                }
                 if (!is_numeric($value) || $value < 0) {
                     $this->errors[] = _T("- The numbers and measures have to be integers!");
                 }
@@ -723,7 +722,7 @@ class Preferences
                 }
                 break;
             case 'pref_admin_pass':
-                if (GALETTE_MODE == Galette::MODE_DEMO) {
+                if (Galette::isDemo()) {
                     Analog::log(
                         'Trying to set superadmin pass while in DEMO.',
                         Analog::WARNING
@@ -793,7 +792,7 @@ class Preferences
 
             foreach (self::$defaults as $k => $v) {
                 if (
-                    GALETTE_MODE == Galette::MODE_DEMO
+                    Galette::isDemo()
                     && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
                 ) {
                     continue;
@@ -923,9 +922,8 @@ class Preferences
                 case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
                     //pages are publically visibles
                     return true;
-                    break;
                 case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                    //pages should be displayed only for up to date members
+                    //pages should be displayed only for up-to-date members
                     if (
                         $login->isUp2Date()
                         || $login->isAdmin()
@@ -935,7 +933,6 @@ class Preferences
                     } else {
                         return false;
                     }
-                    break;
                 case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
                     //pages should be displayed only for staff and admins
                     if ($login->isAdmin() || $login->isStaff()) {
@@ -943,11 +940,9 @@ class Preferences
                     } else {
                         return false;
                     }
-                    break;
                 default:
                     //should never be there
                     return false;
-                    break;
             }
         } else {
             return false;
@@ -957,18 +952,18 @@ class Preferences
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
         $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $virtuals = array('vpref_email', 'vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
-                GALETTE_MODE === Galette::MODE_DEMO
+                Galette::isDemo()
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
@@ -985,7 +980,7 @@ class Preferences
                     }
                 }
 
-                if (in_array($name, ['pref_email_newadh'])) {
+                if (in_array($name, ['vpref_email', 'pref_email_newadh'])) {
                     $values = explode(',', $value);
                     $value = $values[0]; //take first as default
                 }
@@ -997,6 +992,34 @@ class Preferences
             return explode(',', $this->prefs[$virtual]);
         } elseif ($name === 'socials') {
             return $this->socials;
+        } else {
+            Analog::log(
+                'Preference `' . $name . '` is not set or is forbidden',
+                Analog::INFO
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('defaults');
+        $virtuals = array('vpref_email', 'vpref_email_newadh');
+
+        if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
+            return true;
+        } elseif (in_array($name, $virtuals)) {
+            return true;
+        } elseif ($name === 'socials') {
+            return true;
         } else {
             Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',
@@ -1020,7 +1043,7 @@ class Preferences
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -1033,7 +1056,7 @@ class Preferences
                 . $name . ')',
                 Analog::WARNING
             );
-            return false;
+            return;
         }
 
         if (
@@ -1041,7 +1064,7 @@ class Preferences
             || $name == 'pref_email_newadh'
             || $name == 'pref_email_reply_to'
         ) {
-            if (GALETTE_MODE === Galette::MODE_DEMO) {
+            if (Galette::isDemo()) {
                 Analog::log(
                     'Trying to set pref_email while in DEMO.',
                     Analog::WARNING
@@ -1087,6 +1110,14 @@ class Preferences
      */
     public function getDefaultURL()
     {
+        if (defined('GALETTE_CRON')) {
+            if (defined('GALETTE_URI')) {
+                return GALETTE_URI;
+            } else {
+                throw new \RuntimeException(_T('Please define constant "GALETTE_URI" with the path to your instance.'));
+            }
+        }
+
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
         $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
         return $uri;
@@ -1201,7 +1232,7 @@ class Preferences
      */
     public function getMailSignature(): string
     {
-        global $router;
+        global $routeparser;
 
         $signature = $this->pref_mail_sign;
 
@@ -1209,7 +1240,7 @@ class Preferences
             return '';
         }
 
-        $this->setPreferences($this)->setRouter($router);
+        $this->setPreferences($this)->setRouteparser($routeparser);
         $this->setPatterns(
             $this->getMainPatterns() + $this->getSignaturePatterns()
         );

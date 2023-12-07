@@ -1,0 +1,34 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ url_for('doAddEntitled', {'class': url_class}) }}" method="post" class="tabbed ui form">
+        {% include 'elements/edit_entitleds.html.twig' %}
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            {% set modal_onapprove = "
+                $('.modal-form form #redirect_uri').val(window.location.href);
+                $('.modal-form form').submit();
+            " %}
+            {% if url_class == "status" %}
+                {% set modal_title_twig = _T("Edit status")|e("js") %}
+            {% elseif url_class == "contributions-types" %}
+                {% set modal_title_twig = _T("Edit contribution type")|e("js") %}
+            {% endif %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-edit",
+                modal_title_twig: modal_title_twig,
+                modal_class: "mini",
+                modal_onapprove: modal_onapprove
+            } %}
+
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
+        });
+    </script>
+{% endblock %}

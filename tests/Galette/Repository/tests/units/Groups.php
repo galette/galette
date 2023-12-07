@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,9 +28,8 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-10
  */
@@ -46,24 +45,24 @@ use Galette\GaletteTestCase;
  * @name      Groups
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-10
  */
 class Groups extends GaletteTestCase
 {
-    private $parents = [];
-    private $children = [];
-    private $subchildren = [];
-    protected $seed = '855224771456';
+    private array $parents = [];
+    private array $children = [];
+    private array $subchildren = [];
+    protected int $seed = 855224771456;
 
     /**
      * Tear down tests
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->deleteGroups();
     }
@@ -80,10 +79,10 @@ class Groups extends GaletteTestCase
         //Clean managers
         $zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
 
-        $groups = $this->groupsProvider();
+        $groups = self::groupsProvider();
         foreach ($groups as $group) {
             foreach ($group['children'] as $child) {
                 $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
@@ -105,7 +104,7 @@ class Groups extends GaletteTestCase
         //Clean logs
         $zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
     }
 
@@ -114,7 +113,7 @@ class Groups extends GaletteTestCase
      *
      * @return array[]
      */
-    protected function groupsProvider(): array
+    public static function groupsProvider(): array
     {
         return [
             [
@@ -163,7 +162,7 @@ class Groups extends GaletteTestCase
     {
         $group = new \Galette\Entity\Group();
         $group->setName($parent_name);
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $parent_id = $group->getId();
         $this->parents[] = $group->getId();
 
@@ -171,7 +170,7 @@ class Groups extends GaletteTestCase
             $group = new \Galette\Entity\Group();
             $group->setName($child);
             $group->setParentGroup($parent_id);
-            $this->boolean($group->store())->isTrue();
+            $this->assertTrue($group->store());
             $sub_id = $group->getId();
             $this->children[] = $group->getId();
 
@@ -179,7 +178,7 @@ class Groups extends GaletteTestCase
                 $group = new \Galette\Entity\Group();
                 $group->setName($subchild);
                 $group->setParentGroup($sub_id);
-                $this->boolean($group->store())->isTrue();
+                $this->assertTrue($group->store());
                 $this->subchildren[] = $group->getId();
             }
         }
@@ -192,17 +191,22 @@ class Groups extends GaletteTestCase
      */
     public function testGetSimpleList()
     {
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
         $list = \Galette\Repository\Groups::getSimpleList();
-        $this->array($list)->hasSize(17);
+        $this->assertCount(17, $list);
 
         foreach ($list as $group_name) {
-            $this->string($group_name)->isNotEmpty();
+            $this->assertNotEmpty($group_name);
         }
 
         $list = \Galette\Repository\Groups::getSimpleList(true);
-        $this->array($list)->hasSize(17);
+        $this->assertCount(17, $list);
         foreach ($list as $group) {
-            $this->object($group)->isInstanceOf(\Galette\Entity\Group::class);
+            $this->assertInstanceOf(\Galette\Entity\Group::class, $group);
         }
     }
 
@@ -215,13 +219,18 @@ class Groups extends GaletteTestCase
     {
         $this->logSuperAdmin();
 
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
 
         $parents_list = $groups->getList(false);
-        $this->array($parents_list)->hasSize(3);
+        $this->assertCount(3, $parents_list);
 
         $parents_list = $groups->getList(true);
-        $this->array($parents_list)->hasSize(17);
+        $this->assertCount(17, $parents_list);
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
@@ -229,18 +238,18 @@ class Groups extends GaletteTestCase
         $europe = $result->{\Galette\Entity\Group::PK};
 
         $children_list = $groups->getList(true, $europe);
-        $this->array($children_list)->hasSize(4);
+        $this->assertCount(4, $children_list);
 
         //set manager on one group, impersonate him, and check it gets only one group
         $this->getMemberOne();
         $group = new \Galette\Entity\Group((int)$europe);
-        $this->boolean($group->setManagers([$this->adh]))->isTrue();
+        $this->assertTrue($group->setManagers([$this->adh]));
 
         $this->login->impersonate($this->adh->id);
 
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
         $parents_list = $groups->getList();
-        $this->array($parents_list)->hasSize(1);
+        $this->assertCount(1, $parents_list);
     }
 
     /**
@@ -250,11 +259,16 @@ class Groups extends GaletteTestCase
      */
     public function testUniqueness()
     {
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
         $group = new \Galette\Entity\Group();
         $group->setLogin($this->login);
         $unique_name = 'One group to rule them all';
         $group->setName($unique_name);
-        $this->boolean($group->store())->isTrue();
+        $this->assertTrue($group->store());
         $group_id = $group->getId();
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
@@ -268,14 +282,14 @@ class Groups extends GaletteTestCase
         $france = $result->{\Galette\Entity\Group::PK};
 
         //name already exists - not unique
-        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name))->isFalse();
+        $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name));
         //name does not exist on another level - unique
-        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, $europe))->isTrue();
+        $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, $europe));
         //name is the current one - unique
-        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, null, $group_id))->isTrue();
+        $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name, null, $group_id));
 
         //tests on another level
-        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france))->isFalse();
-        $this->boolean(\Galette\Repository\Groups::isUnique($this->zdb, 'Creuse', $france))->isTrue();
+        $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france));
+        $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, 'Creuse', $france));
     }
 }

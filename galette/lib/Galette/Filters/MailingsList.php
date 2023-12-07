@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-11-26
@@ -49,9 +49,17 @@ use Galette\Core\MailingHistory;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property ?string $start_date_filter
+ * @property string $raw_start_date_filter
+ * @property ?string $end_date_filter
+ * @property string $raw_end_date_filter
+ * @property int $sender_filter
+ * @property int $sent_filter
+ * @property ?string $subject_filter
  */
 
 class MailingsList extends Pagination
@@ -89,7 +97,7 @@ class MailingsList extends Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     protected function getDefaultOrder()
     {
@@ -114,9 +122,9 @@ class MailingsList extends Pagination
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -132,10 +140,8 @@ class MailingsList extends Pagination
                 switch ($name) {
                     case 'raw_start_date_filter':
                         return $this->start_date_filter;
-                        break;
                     case 'raw_end_date_filter':
                         return $this->end_date_filter;
-                        break;
                     case 'start_date_filter':
                     case 'end_date_filter':
                         try {
@@ -158,7 +164,7 @@ class MailingsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[MailingsList] Unable to get proprety `' . $name . '`',
+                    '[MailingsList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -166,10 +172,29 @@ class MailingsList extends Pagination
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (in_array($name, $this->pagination_fields)) {
+            return true;
+        } elseif (in_array($name, $this->list_fields)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -240,7 +265,7 @@ class MailingsList extends Pagination
 
                                 throw new \Exception(
                                     str_replace(
-                                        array('%field', '%format'),
+                                        array('%field', '%formats'),
                                         array(
                                             $field,
                                             implode(', ', $formats)
@@ -254,7 +279,7 @@ class MailingsList extends Pagination
                         }
                     } catch (Throwable $e) {
                         Analog::log(
-                            'Wrong date format. field: ' . $key .
+                            'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .
                             __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO

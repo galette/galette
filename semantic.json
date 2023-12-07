@@ -1,0 +1,23 @@
+{
+  "base": "semantic/",
+  "paths": {
+    "source": {
+      "config": "src/theme.config",
+      "definitions": "src/definitions/",
+      "site": "src/site/",
+      "themes": "src/themes/"
+    },
+    "output": {
+      "packaged": "../galette/webroot/themes/default/ui/",
+      "uncompressed": "../galette/webroot/themes/default/ui/components/",
+      "compressed": "../galette/webroot/themes/default/ui/components/",
+      "themes": "../galette/webroot/themes/default/ui/themes/"
+    },
+    "clean": "dist/"
+  },
+  "permission": "644",
+  "autoInstall": true,
+  "rtl": "both",
+  "components": ["reset", "site", "button", "container", "divider", "header", "icon", "input", "label", "list", "loader", "segment", "step", "form", "grid", "menu", "message", "table", "card", "item", "accordion", "checkbox", "dimmer", "dropdown", "popup", "sidebar", "tab", "transition", "text", "calendar", "toast", "modal", "api", "search", "emoji"],
+  "version": "2.9.3"
+}

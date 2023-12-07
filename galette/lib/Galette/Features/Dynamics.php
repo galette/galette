@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2021 The Galette Team
+ * Copyright © 2017-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2021 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-26
@@ -36,6 +36,8 @@
 
 namespace Galette\Features;
 
+use Galette\Entity\Adherent;
+use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
@@ -50,7 +52,7 @@ use Galette\Entity\DynamicFieldsHandle;
  * @name      Dynamics
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2021 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-26
@@ -58,6 +60,8 @@ use Galette\Entity\DynamicFieldsHandle;
 
 trait Dynamics
 {
+    use Dependencies;
+
     /** @var string */
     protected $name_pattern = 'info_field_';
 
@@ -82,7 +86,7 @@ trait Dynamics
     /**
      * Get dynamic fields
      *
-     * @return array
+     * @return DynamicFieldsHandle
      */
     public function getDynamicFields()
     {
@@ -99,7 +103,7 @@ trait Dynamics
      * @param array $required Array of required fields
      * @param array $disabled Array of disabled fields
      *
-     * @return boolean
+     * @return bool
      */
     protected function dynamicsCheck(array $post, array $required, array $disabled)
     {
@@ -161,14 +165,14 @@ trait Dynamics
                 } else {
                     if ($fields[$field_id] instanceof File) {
                         //delete checkbox
-                        $filename = sprintf(
-                            'member_%d_field_%d_value_%d',
-                            $this->id,
-                            $field_id,
-                            $val_index
-                        );
+                        $filename = $fields[$field_id]->getFileName($this->id, $val_index);
                         if (file_exists(GALETTE_FILES_PATH . $filename)) {
                             unlink(GALETTE_FILES_PATH . $filename);
+                        } elseif (!$this instanceof Adherent) {
+                            $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
+                            if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
+                                unlink(GALETTE_FILES_PATH . $test_filename);
+                            }
                         }
                         $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                     } else {
@@ -216,14 +220,15 @@ trait Dynamics
 
             return $valid;
         }
+        return false;
     }
 
     /**
      * Stores dynamic fields
      *
-     * @param boolean $transaction True if a transaction already exists
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     protected function dynamicsStore($transaction = false)
     {
@@ -255,11 +260,6 @@ trait Dynamics
         $store = false;
 
         foreach ($files as $key => $file) {
-            // if the field is disabled, skip it
-            if (isset($disabled[$key])) {
-                continue;
-            }
-
             if (substr($key, 0, 11) != $this->name_pattern) {
                 continue;
             }
@@ -308,8 +308,13 @@ trait Dynamics
                 continue;
             }
 
+            $form_name = $this->getFormName();
+            if ($form_name === 'adh') {
+                $form_name = 'member'; //for compatibility with existing files
+            }
             $new_filename = sprintf(
-                'member_%d_field_%d_value_%d',
+                '%s_%d_field_%d_value_%d',
+                $form_name,
                 $this->id,
                 $field_id,
                 $val_index
@@ -332,9 +337,9 @@ trait Dynamics
     /**
      * Remove dynamic fields values
      *
-     * @param boolean $transaction True if a transaction already exists
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     protected function dynamicsRemove($transaction = false)
     {
@@ -368,7 +373,7 @@ trait Dynamics
      * @param array  $values Dynamic fields values
      * @param string $prefix Prefix to replace, default to 'dynfield_'
      *
-     * @return void
+     * @return bool
      */
     public function dynamicsValidate($values, $prefix = 'dynfield_')
     {
@@ -377,5 +382,15 @@ trait Dynamics
             $dfields[str_replace($prefix, $this->name_pattern, $key)] = $value;
         }
         return $this->dynamicsCheck($dfields, [], []);
+    }
+
+    /**
+     * Get form name
+     *
+     * @return string
+     */
+    public function getFormName(): string
+    {
+        return array_search(get_class($this), DynamicFieldsSet::getClasses());
     }
 }

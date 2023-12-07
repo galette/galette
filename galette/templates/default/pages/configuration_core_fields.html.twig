@@ -1,0 +1,248 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <div class="jsonly displaynone ui basic fitted segment">
+        <a class="ui labeled icon button collapse">
+            <i class="angle double down icon" aria-hidden="true"></i>
+            {{ _T("Expand all") }}
+        </a>
+    </div>
+    <form action="{{ url_for('configureCoreFields') }}" method="post" id="config_fields_form" class="ui form">
+    <div id="members_tab">
+{% for category in categories %}
+    {% set catname = category.category %}
+        <div class="galetteform ui styled fluid accordion field">
+            <div class="ui title">
+                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                {{ _T(catname) }}
+                <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
+            </div>
+            <div class="content">
+                <div class="ui basic fitted segment">
+                    <div class="ui three column stackable grid core-fields-properties">
+                        <div class="middle aligned row">
+                            <div class="column">
+                                <span class="ui fluid label">{{ _T("Field name") }}</span>
+                            </div>
+                            <div class="column">
+                                <span class="ui fluid label">{{ _T("Required") }}</span>
+                            </div>
+                            <div class="column">
+                                <span class="ui fluid label">{{ _T("Permissions") }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul id="sortable_{{ loop.index }}" class="sortable-items">
+    {% set fs = category.id_field_category %}
+    {% for col, field in categorized_fields[fs] %}
+        {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
+            {% set fid = field.field_id %}
+                    <li class="ui segment">
+                        <div class="ui three column stackable grid core-fields-listing">
+                            <div class="middle aligned row">
+                                <div class="column">
+                                    <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
+                                    <span data-prop-label="{{ _T("Field name") }}" class="fieldname">
+                                        <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                                        <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
+                                        <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
+                                        {{ field.label }}
+                                    </span>
+                                </div>
+                                <div class="column">
+                                    <span data-prop-label="{{ _T("Required") }}" class="yesno" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
+                                        <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
+                                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                                        <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
+                                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                                    </span>
+                                </div>
+                                <div class="column">
+                                    <span data-prop-label="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                                        <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown nochosen">
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::STAFF') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %} selected="selected"{% endif %}>{{ _T("Staff member") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::MANAGER') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %} selected="selected"{% endif %}>{{ _T("Group manager") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_READ') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %} selected="selected"{% endif %}>{{ _T("Read only") }}</option>
+                                            <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_WRITE') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %} selected="selected"{% endif %}>{{ _T("Read/Write") }}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+        {% endif %}
+    {% endfor %}
+                </ul>
+            </div>
+            <input type="hidden" name="categories[]" id="category{{ loop.index }}" value="{{ category.id_field_category }}"/>
+        </div>
+{% endfor %}
+    </div>
+    <div class="jsonly hidden ui basic fitted segment">
+        <a class="ui labeled icon button collapse">
+            <i class="angle double down icon" aria-hidden="true"></i>
+            {{ _T("Expand all") }}
+        </a>
+    </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="module">
+
+        var _initSortable = function(){
+            var _categories = document.getElementById('members_tab');
+
+            var _nestedSortables = [].slice.call(document.querySelectorAll('.sortable-items'));
+            for (var i = 0; i < _nestedSortables.length; i++) {
+                new Sortable(_nestedSortables[i], {
+                    group: 'nested',
+                    animation: 150,
+                    ghostClass: 'yellow',
+                    fallbackOnBody: true,
+                    swapThreshold: 0.65,
+                    onAdd: function (evt) {
+                        var _item = evt.item;
+                        var _category = _item.parentElement.parentElement.parentElement.querySelectorAll('input[name^=categories]')[0].attributes.value.nodeValue;
+                        _item.classList.add('yellow');
+                        _item.querySelectorAll('input[name$=category]')[0].setAttribute('value', _category);
+                    },
+                    onUpdate: function (evt) {
+                        var _item = evt.item;
+                        _item.classList.add('yellow');
+                    }
+                });
+            }
+
+            new Sortable(_categories, {
+                animation: 150,
+                ghostClass: 'yellow',
+                onUpdate: function (evt) {
+                    var _item = evt.item;
+                    _item.classList.add('yellow');
+                }
+            });
+        }
+
+
+        var _bindCollapse = function() {
+            $('.collapse').click(function(){
+                var _this = $(this);
+                var _buttons = $('.collapse');
+                var _expandTxt = '<i class="angle double down icon" aria-hidden="true"></i> {{ _T("Expand all") }}';
+                var _collapseTxt = '<i class="angle double up icon" aria-hidden="true"></i> {{ _T("Collapse all") }}';
+                var _isExpand = false;
+                var _icon = _this.children('.icon');
+                if( _icon.is('.down') ) {
+                    _buttons.html(_collapseTxt);
+                } else {
+                    _isExpand = true;
+                    _buttons.html(_expandTxt);
+                }
+                if (_isExpand == true) {
+                    $('.ui.accordion.galetteform').accordion('close', 0);
+                } else {
+                    $('.ui.accordion.galetteform').accordion('open', 0);
+                }
+            });
+        }
+
+        var _warnings = [];
+        var _checkCoherence = function(index, elt){
+            var _elt = $(elt);
+            var _disabled = _elt.find('.yesno input:disabled, .access input:disabled');
+            if ( _disabled.length == 0 ) {
+                var _required = parseInt(_elt.find('.yesno input:checked').val());
+                var _accessible = parseInt(_elt.find('.access option:selected').val());
+
+
+                if ( _required === 1 && _accessible === 0 ) {
+                    _elt.addClass('red');
+                    _warnings[_warnings.length] = _elt;
+                }
+            }
+        }
+
+        var _bindForm = function(){
+            $('#config_fields_form').submit(function(){
+
+                _warnings = [];
+                $('#members_tab .segment').removeClass('red');
+                $('.fields_list li').each(_checkCoherence);
+
+                if ( _warnings.length > 0 ) {
+                    var _w = $('#warnings');
+
+                    _w.find('li').remove();
+                    $.each(_warnings, function(i,w){
+                        var _val = w[0].getElementsByClassName('fieldname')[0].textContent.trim();
+                        _w.find('ul').append('<li>' + _val + '</li>');
+                    });
+
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title: "_w.find('.header')",
+                        modal_content: "_w.find('.content')",
+                        modal_class: "tiny",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        }
+
+        $(function() {
+            $('body').append($('<div id="warnings" title="{{ _T("Warning")|e("js") }}"><div class="header">{{ _T("Some warnings has been thrown:")|e("js") }}</div><div class="content"><ul></ul><p class="center aligned">{{ _T("Please correct above warnings to continue.") }}</p></div></div>').hide());
+
+            _bindForm();
+
+            _bindCollapse();
+
+            _initSortable();
+
+            $('#add_category').click(function() {
+                var _fieldsets = $('fieldset[id^=cat_]');
+                var _cat_iter = _fieldsets.length + 1;
+
+                var _fs = $(_fieldsets[0]).clone();
+                _fs.attr('id', 'cat_' + _cat_iter).children('ul').attr('id', 'sortable_' + _cat_iter);
+                _fs.find('li:not(.listing)').remove();
+
+                var _legend = _fs.children('legend');
+                var _a = _legend.children('a');
+
+                _legend.html('<input type="text" name="categories[]" id="category' + _cat_iter + '" value="New category #' + _cat_iter + '"/>');
+                _legend.prepend(_a);
+                _a.spinDown();
+
+                $('#members_tab').append(_fs);
+                _initSortable();
+                _bindCollapse();
+
+                $(this).attr('href', '#cat_' + _cat_iter);
+                //Getting
+                var _url = document.location.toString();
+                if (_url.match('#')) { // the URL contains an anchor
+                    var _url = _url.split('#')[0];
+                }
+                _url += '#cat_' + _cat_iter;
+
+                document.location = _url;
+                _legend.children(':input').focus();
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

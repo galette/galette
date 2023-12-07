@@ -76,6 +76,7 @@ trait FileTrait
     protected $allowed_extensions = array();
     protected $allowed_mimes = array();
     protected $maxlenght;
+    protected $mincropsize;
 
     public static $mime_types = array(
         'txt'       => 'text/plain',
@@ -181,10 +182,11 @@ trait FileTrait
     /**
      * Initialization
      *
-     * @param string $dest       File destination directory
-     * @param array  $extensions Array of permitted extensions
-     * @param array  $mimes      Array of permitted mime types
-     * @param int    $maxlenght  Maximum lenght for each file
+     * @param string $dest        File destination directory
+     * @param array  $extensions  Array of permitted extensions
+     * @param array  $mimes       Array of permitted mime types
+     * @param int    $maxlenght   Maximum lenght for each file
+     * @param int    $mincropsize Minimum image side size required for cropping
      *
      * @return void
      */
@@ -192,7 +194,8 @@ trait FileTrait
         $dest,
         $extensions = null,
         $mimes = null,
-        $maxlenght = null
+        $maxlenght = null,
+        $mincropsize = null
     ) {
         if ($dest !== null && substr($dest, -1) !== '/') {
             //normalize path
@@ -209,6 +212,11 @@ trait FileTrait
             $this->maxlenght = $maxlenght;
         } else {
             $this->maxlenght = self::MAX_FILE_SIZE;
+        }
+        if ($mincropsize !== null) {
+            $this->mincropsize = $mincropsize;
+        } else {
+            $this->mincropsize = self::MIN_CROP_SIZE;
         }
     }
 
@@ -237,7 +245,7 @@ trait FileTrait
      * @param object  $file the uploaded file
      * @param boolean $ajax If the file cames from an ajax call (dnd)
      *
-     * @return true|false result of the storage process
+     * @return true|false|int result of the storage process
      */
     public function store($file, $ajax = false)
     {
@@ -259,7 +267,6 @@ trait FileTrait
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
             );
-            $extension = strtolower($matches[2]);
         } else {
             $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $this->name, $errmatches);
@@ -327,7 +334,6 @@ trait FileTrait
             return self::NEW_FILE_EXISTS;
         }
 
-        $in_place = false;
         if ($ajax === true) {
             $in_place = rename($tmpfile, $new_file);
         } else {
@@ -337,7 +343,7 @@ trait FileTrait
         if ($in_place === false) {
             return self::CANT_WRITE;
         }
-        return $in_place;
+        return true;
     }
 
     /**
@@ -492,6 +498,12 @@ trait FileTrait
                     '|%d|',
                     $this->maxlenght,
                     _T("File is too big. Maximum allowed size is %dKo")
+                );
+                break;
+            case self::IMAGE_TOO_SMALL:
+                $error = sprintf(
+                    _T("Image is too small. The minimum image side size allowed is %spx"),
+                    $this->mincropsize
                 );
                 break;
             case self::MIME_NOT_ALLOWED:

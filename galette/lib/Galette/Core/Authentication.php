@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2020 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2020 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -43,16 +43,16 @@ namespace Galette\Core;
  * @name      Authentication
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
  *
- * @property  string $login
- * @property  string $name
- * @property  string $surname
- * @property  integer $id
- * @property  string $lang
+ * @property  ?string $login
+ * @property  ?string $name
+ * @property  ?string $surname
+ * @property  ?integer $id
+ * @property  ?string $lang
  * @property  array $managed_groups
  */
 
@@ -77,6 +77,8 @@ abstract class Authentication
     protected $uptodate = false;
     protected $managed_groups = [];
     protected $cron = false;
+    protected $compact_menu = false;
+    protected $dark_mode = false;
 
     /**
      * Logs in user.
@@ -262,8 +264,28 @@ abstract class Authentication
     }
 
     /**
+     * Get compact menu mode
+     *
+     * @return bool
+     */
+    public function getCompactMenu(): bool
+    {
+        return $this->logged && isset($_COOKIE['galette_compact_menu']) && $_COOKIE['galette_compact_menu'];
+    }
+
+    /**
+     * Is dark mode enabled?
+     *
+     * @return bool
+     */
+    public function isDarkModeEnabled(): bool
+    {
+        return isset($_COOKIE['galette_dark_mode']) && $_COOKIE['galette_dark_mode'];
+    }
+
+    /**
      * Is user currently up to date?
-     * An up to date member is active and either due free, or with up to date
+     * An up-to-date member is active and either due free, or with up-to-date
      * subscription
      *
      * @return bool
@@ -299,7 +321,7 @@ abstract class Authentication
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed
      */
     public function __get($name)
     {
@@ -315,6 +337,25 @@ abstract class Authentication
             return false;
         }
     }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
+        if (isset($this->$name) && !in_array($name, $forbidden)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * get user access level

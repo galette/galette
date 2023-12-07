@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://galette.eu/site/feed.xml" rel="self" type="application/atom+xml"/><link href="https://galette.eu/site/" rel="alternate" type="text/html" hreflang="en"/><updated>2023-10-11T19:16:11+02:00</updated><id>https://galette.eu/site/feed.xml</id><title type="html">Galette</title><subtitle>Gestionnaire d'Adhérents en Ligne Extrêmement Tarabiscoté mais Tellement Efficace</subtitle><author><name>Johan Cwiklinski</name></author><entry><title type="html">Galette 1.0.0rc1</title><link href="https://galette.eu/site/post/2023/09/06/galette-1-0-0rc1.html" rel="alternate" type="text/html" title="Galette 1.0.0rc1"/><published>2023-09-06T08:00:00+02:00</published><updated>2023-09-06T08:00:00+02:00</updated><id>https://galette.eu/site/post/2023/09/06/galette-1-0-0rc1</id><content type="html" xml:base="https://galette.eu/site/post/2023/09/06/galette-1-0-0rc1.html">&lt;p&gt;After months of work, I’m very pleased to announce Galette is on the road to the 1.0.0 release!&lt;/p&gt;
+
+&lt;p&gt;Latest stable version is now quite old and is not fully compatible with recent PHP releases.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, database schema has not been changed at all, you can take an eye to 1.0.0 keeping your existing data as is. Don’t forget to do a backup anyway, keep in mind this is a RC release.&lt;/p&gt;
+
+&lt;p&gt;Under the hood, a lot of work has been done to improve code quality and maintainability; we also have switched from quite dead third party libraries to more recent/maintained ones.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Modern UI&lt;/li&gt;
+  &lt;li&gt;Template rendering is now assumed by Twig instead of Smarty&lt;/li&gt;
+  &lt;li&gt;LibreJS compatibility&lt;/li&gt;
+  &lt;li&gt;Major improvements on UI/UX and also responsiveness&lt;/li&gt;
+  &lt;li&gt;Use of YAML files instead of XML for exports configuration&lt;/li&gt;
+  &lt;li&gt;New preference to show/hide borders around PDF member cards&lt;/li&gt;
+  &lt;li&gt;WebP image support&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/develop/changelog.html#v1000"&gt;Galette 1.0.0 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p&gt;All plugins needs to be updated as well, use the nightly archive available for each one, see &lt;a href="https://doc.galette.eu/en/develop/plugins/"&gt;plugins documentation&lt;/a&gt; ;-)&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/dev/galette-1.0.0-rc1-20230905-cd4d1429cd.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/1.0.0rc1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 1.0.0rc1" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><category term="rc"/><summary type="html">After months of work, I’m very pleased to announce Galette is on the road to the 1.0.0 release!</summary></entry><entry><title type="html">Galette new release (0.9.6.1)!</title><link href="https://galette.eu/site/post/2021/12/16/galette-0-9-6-1.html" rel="alternate" type="text/html" title="Galette new release (0.9.6.1)!"/><published>2021-12-16T05:50:00+01:00</published><updated>2021-12-16T05:50:00+01:00</updated><id>https://galette.eu/site/post/2021/12/16/galette-0-9-6-1</id><content type="html" xml:base="https://galette.eu/site/post/2021/12/16/galette-0-9-6-1.html">&lt;p&gt;A very big thank to everyone involved in this release :)&lt;/p&gt;
+
+&lt;p&gt;This is a minor release, providing several bugfixes and some background enhancements:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fix language detection priority not respected&lt;/li&gt;
+  &lt;li&gt;No composer platform check&lt;/li&gt;
+  &lt;li&gt;Fix html2text for php 8&lt;/li&gt;
+  &lt;li&gt;Fix social networks replacements&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0961"&gt;Galette 0.9.6.1 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.6.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.6.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.6.1" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thank to everyone involved in this release :)</summary></entry><entry><title type="html">Galette new major release (0.9.6)!</title><link href="https://galette.eu/site/post/2021/11/29/galette-0-9-6.html" rel="alternate" type="text/html" title="Galette new major release (0.9.6)!"/><published>2021-11-29T18:11:57+01:00</published><updated>2021-11-29T18:11:57+01:00</updated><id>https://galette.eu/site/post/2021/11/29/galette-0-9-6</id><content type="html" xml:base="https://galette.eu/site/post/2021/11/29/galette-0-9-6.html">&lt;p&gt;This is a major release, which brings a few new features and bugfixes as usual, but this one also fix some security issues (CVE-2021-41262, CVE-2021-41261, CVE-2021-41260).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Upgrade is highly recommended.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Social networks/contact externalization&lt;/li&gt;
+  &lt;li&gt;Add member number&lt;/li&gt;
+  &lt;li&gt;Export contributions as CSV&lt;/li&gt;
+  &lt;li&gt;Drop group name uniqueness at same level&lt;/li&gt;
+  &lt;li&gt;Add CSRF protection&lt;/li&gt;
+  &lt;li&gt;Enhance groups managers capacities&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0960"&gt;Galette 0.9.6 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, some required background changes (CSRF checks) has made almost all plugins incompatible, and it is required to update them, see &lt;a href="https://doc.galette.eu/en/master/plugins/"&gt;plugins documentation&lt;/a&gt; ;-)&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.6.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.6-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.6" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">This is a major release, which brings a few new features and bugfixes as usual, but this one also fix some security issues (CVE-2021-41262, CVE-2021-41261, CVE-2021-41260).</summary></entry><entry><title type="html">Galette new release (0.9.5.2)!</title><link href="https://galette.eu/site/post/2021/11/07/galette-0-9-5-2.html" rel="alternate" type="text/html" title="Galette new release (0.9.5.2)!"/><published>2021-11-07T06:50:00+01:00</published><updated>2021-11-07T06:50:00+01:00</updated><id>https://galette.eu/site/post/2021/11/07/galette-0-9-5-2</id><content type="html" xml:base="https://galette.eu/site/post/2021/11/07/galette-0-9-5-2.html">&lt;p&gt;This release brings a few bugfixes.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Update translations&lt;/li&gt;
+  &lt;li&gt;Work on PHP 8.1 compatibility and tests improvements&lt;/li&gt;
+  &lt;li&gt;Fix members list issue with titles column displayed&lt;/li&gt;
+  &lt;li&gt;Fix members list ordering&lt;/li&gt;
+  &lt;li&gt;Fix missing emails texts insertion&lt;/li&gt;
+  &lt;li&gt;Drop duplicate check on saved searches&lt;/li&gt;
+  &lt;li&gt;Fix some silent errors&lt;/li&gt;
+  &lt;li&gt;Some data were missing checking passwords against personal data&lt;/li&gt;
+  &lt;li&gt;Fix gateway timeout sending emails with SSL SMTP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0952"&gt;Galette 0.9.5.2 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.5.2.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5.2-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5.2" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">This release brings a few bugfixes.</summary></entry><entry><title type="html">Galette new release (0.9.5.1)!</title><link href="https://galette.eu/site/post/2021/10/23/galette-0-9-5-1.html" rel="alternate" type="text/html" title="Galette new release (0.9.5.1)!"/><published>2021-10-23T07:30:00+02:00</published><updated>2021-10-23T07:30:00+02:00</updated><id>https://galette.eu/site/post/2021/10/23/galette-0-9-5-1</id><content type="html" xml:base="https://galette.eu/site/post/2021/10/23/galette-0-9-5-1.html">&lt;p&gt;Due to personal reasons, the previous major release has not been announced, but was available to download. Please see &lt;a href="/site/post/2021/07/23/galette-0-9-5.html"&gt;Galette 0.9.5 news&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A very big thanks as well to everyone involved in this release, especially:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Weblate contributors, many translations have been done,&lt;/li&gt;
+  &lt;li&gt;community members who do tests during the development phases, many issues has been fixed,&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This release brings a few new features and bugfixes as usual.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mass change dynamic fields&lt;/li&gt;
+  &lt;li&gt;Mass add contributions&lt;/li&gt;
+  &lt;li&gt;Members can manage their children and create new ones&lt;/li&gt;
+  &lt;li&gt;Fix overlapping menu in mobile&lt;/li&gt;
+  &lt;li&gt;Fix advanced search with dynamic fields&lt;/li&gt;
+  &lt;li&gt;Fix new user registration email&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0951"&gt;Galette 0.9.5.1 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.5.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5.1" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">Due to personal reasons, the previous major release has not been announced, but was available to download. Please see Galette 0.9.5 news.</summary></entry><entry><title type="html">Galette new major release (0.9.5)!</title><link href="https://galette.eu/site/post/2021/07/23/galette-0-9-5.html" rel="alternate" type="text/html" title="Galette new major release (0.9.5)!"/><published>2021-07-23T09:00:00+02:00</published><updated>2021-07-23T09:00:00+02:00</updated><id>https://galette.eu/site/post/2021/07/23/galette-0-9-5</id><content type="html" xml:base="https://galette.eu/site/post/2021/07/23/galette-0-9-5.html">&lt;p&gt;A very big thanks as well to everyone involved in this release, especially:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Weblate contributors, many translations have been done,&lt;/li&gt;
+  &lt;li&gt;community members who do tests during the development phases, many issues has been fixed,&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is a major release, which brings a few new features and bugfixes as usual, but this one also fix some security issues (CVE-2021-21319).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PDF and emails variables homogenisation; add variables for dynamic fields,&lt;/li&gt;
+  &lt;li&gt;Add dynamic files on contributions and transactions&lt;/li&gt;
+  &lt;li&gt;Rework database fields length&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some bugs have also been fixed; including PHP 8.0 issues among others. See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v095"&gt;Galette 0.9.5 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, some required background changes (on dependency injection library) has made all plugins incompatible, and it is required to update them, see &lt;a href="https://doc.galette.eu/en/master/plugins/"&gt;plugins documentation&lt;/a&gt; ;-)&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.5.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thanks as well to everyone involved in this release, especially: Weblate contributors, many translations have been done, community members who do tests during the development phases, many issues has been fixed, …</summary></entry><entry><title type="html">Galette new bugfixes release (0.9.4.2)</title><link href="https://galette.eu/site/post/2020/11/01/galette-0-9-4-2.html" rel="alternate" type="text/html" title="Galette new bugfixes release (0.9.4.2)"/><published>2020-11-01T11:07:03+01:00</published><updated>2020-11-01T11:07:03+01:00</updated><id>https://galette.eu/site/post/2020/11/01/galette-0-9-4-2</id><content type="html" xml:base="https://galette.eu/site/post/2020/11/01/galette-0-9-4-2.html">&lt;p&gt;A very big thank to everyone involved in this release :)&lt;/p&gt;
+
+&lt;p&gt;This is a minor release, providing several bugfixes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Issues on mailing instantiation, in core and plugins&lt;/li&gt;
+  &lt;li&gt;Fix issues on mailings attachments&lt;/li&gt;
+  &lt;li&gt;Post contribution script was called too early&lt;/li&gt;
+  &lt;li&gt;Fix cards colors on new installations&lt;/li&gt;
+  &lt;li&gt;First and last name were inverted in core PDF member card&lt;/li&gt;
+  &lt;li&gt;Print logo was the one used, but not the one displayed in preferences&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0942"&gt;Galette 0.9.4.2 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.4.2.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4.2-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4.2" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thank to everyone involved in this release :)</summary></entry><entry><title type="html">Galette new bugfixes release (0.9.4.1)</title><link href="https://galette.eu/site/post/2020/10/18/galette-0-9-4-1.html" rel="alternate" type="text/html" title="Galette new bugfixes release (0.9.4.1)"/><published>2020-10-18T16:05:13+02:00</published><updated>2020-10-18T16:05:13+02:00</updated><id>https://galette.eu/site/post/2020/10/18/galette-0-9-4-1</id><content type="html" xml:base="https://galette.eu/site/post/2020/10/18/galette-0-9-4-1.html">&lt;p&gt;A very big thank to everyone involved in this release :)&lt;/p&gt;
+
+&lt;p&gt;This is a minor release, providing several bugfixes and some background enhancements:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Translation improvements,&lt;/li&gt;
+  &lt;li&gt;Several issues regarding reminders,&lt;/li&gt;
+  &lt;li&gt;Several issues on booleans in dynamic fields and mass changes,&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0941"&gt;Galette 0.9.4.1 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p&gt;Code cleaning has continued, new checks on code quality has been set up; and a few issues has also been fixed on release archive.&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.4.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4.1" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thank to everyone involved in this release :)</summary></entry><entry><title type="html">Galette new major release (0.9.4) - Community sponsored!</title><link href="https://galette.eu/site/post/2020/07/04/galette-0-9-4.html" rel="alternate" type="text/html" title="Galette new major release (0.9.4) - Community sponsored!"/><published>2020-07-04T15:47:04+02:00</published><updated>2020-07-04T15:47:04+02:00</updated><id>https://galette.eu/site/post/2020/07/04/galette-0-9-4</id><content type="html" xml:base="https://galette.eu/site/post/2020/07/04/galette-0-9-4.html">&lt;p&gt;This release is dedicated to contributors of my new working station pool &lt;strong&gt;thank you very much&lt;/strong&gt;!&lt;/p&gt;
+
+&lt;p&gt;&lt;a data-fancybox="gallery" href="/site/assets/images/thanks.jpg"&gt;
+    &lt;img src="/site/assets/resized/thanks-800x183.jpg" alt="" srcset="/site/assets/resized/thanks-800x183.jpg 800w,/site/assets/resized/thanks-400x91.jpg 400w, /site/assets/images/thanks.jpg 3089w" sizes="100vw" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A very big thanks as well to everyone involved in this release, especially:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;community members who brings features/fix,&lt;/li&gt;
+  &lt;li&gt;Weblate contributors, many translations have been done,&lt;/li&gt;
+  &lt;li&gt;community members who do tests during the development phases, many issues has been fixed,&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://apicy.fr"&gt;APiCy&lt;/a&gt; association, which sponsored direct download links sent in mails,&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is a major release, which brings a few new features as usual:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Customizable password security level (complexity, blacklist, …)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a data-fancybox="gallery" href="/site/assets/images/screenshots/prefs_security.png" title="Password security preferences"&gt;
+    &lt;img src="/site/assets/resized/prefs_security-400x104.png" alt="Password security preferences" srcset="/site/assets/resized/prefs_security-400x104.png 400w, /site/assets/images/screenshots/prefs_security.png 757w" sizes="100vw" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Choose and order visible fields on members list&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a data-fancybox="gallery" href="/site/assets/images/screenshots/default_memberslist.png" title="Members list with default configuration"&gt;
+    &lt;img src="/site/assets/resized/default_memberslist-800x193.png" alt="Members list with default configuration" srcset="/site/assets/resized/default_memberslist-800x193.png 800w,/site/assets/resized/default_memberslist-400x96.png 400w, /site/assets/images/screenshots/default_memberslist.png 1079w" sizes="100vw" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a data-fancybox="gallery" href="/site/assets/images/screenshots/custom_memberslist.png" title="Members list with custom configuration"&gt;
+    &lt;img src="/site/assets/resized/custom_memberslist-800x193.png" alt="Members list with custom configuration" srcset="/site/assets/resized/custom_memberslist-800x193.png 800w,/site/assets/resized/custom_memberslist-400x96.png 400w, /site/assets/images/screenshots/custom_memberslist.png 1079w" sizes="100vw" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Support of RTL languages in PDF&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a data-fancybox="gallery" href="/site/assets/images/screenshots/rtl_pdf.png" title="RTL support in produced PDF"&gt;
+    &lt;img src="/site/assets/resized/rtl_pdf-800x186.png" alt="RTL support in produced PDF" srcset="/site/assets/resized/rtl_pdf-800x186.png 800w,/site/assets/resized/rtl_pdf-400x93.png 400w, /site/assets/images/screenshots/rtl_pdf.png 1545w" sizes="100vw" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And also:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CSV imports now handles dynamic fields and already encrypted passwords&lt;/li&gt;
+  &lt;li&gt;Send invoice/receipt or membercard direct download links in emails&lt;/li&gt;
+  &lt;li&gt;Offer last months when using beginning of membership date&lt;/li&gt;
+  &lt;li&gt;Members can print their own invoices/receipts&lt;/li&gt;
+  &lt;li&gt;Possibility to use member’s deadline instead of year in PDF cards&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some bugs have also been fixed; including PHP 7.4 and CSV import issues among others. See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v094"&gt;Galette 0.9.4 changelog&lt;/a&gt; for all details.&lt;/p&gt;
+
+&lt;p&gt;A big work has been done under the hood; the code has been cleaned and reorganized a bit, unit tests has been added and more work has been done on code quality.&lt;/p&gt;
+
+&lt;p&gt;All official plugins, as well as documentation can now be &lt;a href="https://hosted.weblate.org/projects/galette"&gt;translated&lt;/a&gt; in the same languages as Galette itself! Setting up all that was a big work, but even if this has been done very recently, translations have already started :-)&lt;/p&gt;
+
+&lt;p&gt;Most of the plugins have also been updated, please refer to &lt;a href="https://doc.galette.eu/en/master/plugins/"&gt;plugins documentation&lt;/a&gt; to know more ;-)&lt;/p&gt;
+
+&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.4.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">This release is dedicated to contributors of my new working station pool thank you very much!</summary></entry><entry><title type="html">New website for Galette!</title><link href="https://galette.eu/site/post/2020/05/28/new-website.html" rel="alternate" type="text/html" title="New website for Galette!"/><published>2020-05-28T19:14:04+02:00</published><updated>2020-05-28T19:14:04+02:00</updated><id>https://galette.eu/site/post/2020/05/28/new-website</id><content type="html" xml:base="https://galette.eu/site/post/2020/05/28/new-website.html">&lt;p&gt;We are proud to announce the brand new Galette website!&lt;/p&gt;
+
+&lt;p&gt;It’s been a while since the old one did not receive any real update, and it has several issues on localization (for example, menu was no longer translated into english).&lt;/p&gt;
+
+&lt;p&gt;I’ve decided to make use of a vacation week to work on that. Old website was using &lt;a href="https://dotclear.org"&gt;Dotclear&lt;/a&gt;, we’ve switched to &lt;a href="https://jekyllrb.com"&gt;Jekyll&lt;/a&gt; now. All source code is &lt;a href="https://git.tuxfamily.org/galette/website.git"&gt;publicly available&lt;/a&gt; (a &lt;a href="https://github.com/galette/website"&gt;mirror is available on GitHub&lt;/a&gt; as well). Pages and posts are licensed under the terms of the &lt;a href="https://creativecommons.org/licenses/by-sa/4.0"&gt;Creative Commons CC-BY-SA 4.0 license&lt;/a&gt; and the “source code” under the terms of the &lt;a href="https://www.gnu.org/licenses/quick-guide-gplv3.en.html"&gt;GPL version 3 license&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;All posts have just been migrated (with a few fixes sometimes), and all pages has been entirely rewritten. I had to deal with some internationalization issues, but I guess I’ve been able to address them all… Please also note that new website has been built “mobile first” in mind; therefore navigation on mobile devices should be better than it was.&lt;/p&gt;
+
+&lt;p&gt;In the end, I hope I’ll be able to use a translation platform to get the website translated in other languages; it seems Weblate does not support markdown/html contents yet; I’ll have to investigate a bit.&lt;/p&gt;
+
+&lt;p&gt;If you find errors, &lt;a href="https://bugs.galette.eu/projects/website"&gt;please open an issue&lt;/a&gt;. Of course, you can also provide a git patch or open a pull request on GitHub :-)&lt;/p&gt;
+
+&lt;p&gt;I’d like to thanks “GruiicK” on &lt;a href="/site/contact/#irc"&gt;IRC&lt;/a&gt;/&lt;a href="/site/contact/#matrix"&gt;Matrix&lt;/a&gt; for his precious help (as usual!) reviewing this new website, and also to “Hiob”!&lt;/p&gt;
+
+&lt;p&gt;Happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><summary type="html">We are proud to announce the brand new Galette website!</summary></entry></feed>

@@ -1,0 +1,65 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ url_for('doAdminTools') }}" method="post" class="ui form">
+        <div class="ui icon yellow icon message with-transition">
+            <i class="exclamation triangle icon" aria-hidden="true"></i>
+            <div class="content">
+                {{ _T("Make sure you've done a backup of the database before using any of the following tools!") }}
+            </div>
+        </div>
+        <div class="ui top attached accordion-styled header">
+            {{ _T('Select actions(s)') }}
+        </div>
+        <div class="ui bottom attached accordion-styled segment">
+            <div class="active content field">
+                <div class="field inline">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="inittexts" id="inittexts"/>
+                        <label for="inittexts" title="{{ _T('Reset all emails contents to their default values') }}">
+                            {{ _T('Reset emails contents') }}
+                            <i class="circular inverted primary small icon info tooltip" title="{{ _T('Reset all emails contents to their default values') }}" aria-hidden="true"></i>
+                            <span class="exemple">{{ _T('(all existing values will be removed)') }}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="field inline">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="initfields" id="initfields"/>
+                        <label for="initfields" title="{{ _T('Reset all emails contents to their default values') }}">
+                            {{ _T('Reset fields configuration') }}
+                            <i class="circular inverted primary small icon info tooltip" data-html="{{ _T('Reset all emails contents to their default values') }}<br/>{{ _T('This includes fields positions, order, visibility, access levels and mandatory marks.') }}" aria-hidden="true"></i>
+                            <span class="exemple">{{ _T('(all existing values will be removed)') }}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="field inline">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="initpdfmodels" id="initpdfmodels"/>
+                        <label for="initpdfmodels" title="{{ _T('Reset all PDF models to their default values') }}">
+                            {{ _T('Reinitialize PDF models') }}
+                            <i class="circular inverted primary small icon info tooltip" title="{{ _T('Reset all PDF models to their default values') }}" aria-hidden="true"></i>
+                            <span class="exemple">{{ _T('(all existing values will be removed)') }}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="field inline">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="emptylogins" id="emptylogins"/>
+                        <label for="emptylogins" title="{{ _T('Fill all empty login and passwords') }}">
+                            {{ _T('Generate empty logins and passwords') }}
+                            <i class="circular inverted primary small icon info tooltip" title="{{ _T('Fill all empty login and passwords') }}" aria-hidden="true"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="database icon" aria-hidden="true"></i>
+                {{ _T('Go') }}
+            </button>
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+{% endblock %}

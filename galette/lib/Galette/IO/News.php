@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-11
@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use Galette\Core\Galette;
 use Throwable;
 use Analog\Analog;
 
@@ -46,7 +47,7 @@ use Analog\Analog;
  * @name      News
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-11
@@ -76,7 +77,7 @@ class News
         $this->feed_url = $this->getFeedURL($url);
 
         //only if cache should be used
-        if ($nocache === false && GALETTE_MODE !== 'DEV') {
+        if ($nocache === false && !Galette::isDebugEnabled()) {
             if (!$this->checkCache()) {
                 $this->makeCache();
             } else {
@@ -163,7 +164,7 @@ class News
         }
 
         if ($refresh_cache === true) {
-            $this->makeCache(false);
+            $this->makeCache();
         }
     }
 
@@ -189,7 +190,7 @@ class News
     private function parseFeed()
     {
         try {
-            if (!ini_get('allow_url_fopen')) {
+            if (!$this->allowURLFOpen()) {
                 throw new \RuntimeException(
                     'allow_url_fopen is set to false; cannot load news.'
                 );
@@ -295,5 +296,15 @@ class News
         }
 
         return $url;
+    }
+
+    /**
+     * Check if allow_url_fopen is enabled
+     *
+     * @return boolean
+     */
+    protected function allowURLFOpen(): bool
+    {
+        return ini_get('allow_url_fopen');
     }
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additionnal_html_class is defined %} {{ additionnal_html_class }}{% endif %}">
+    <head>
+        {% include 'elements/header.html.twig' with {
+            galette_lang: galette_lang
+        } %}
+    </head>
+    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() %} loggedin{% endif %} nojs">
+        <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
+        {% include 'elements/navigation/navigation_sidebar.html.twig' %}
+        {% include 'elements/navigation/navigation_topbar.html.twig' %}
+        <main class="pusher">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
+{% if login.isLogged() %}
+                {% include "elements/navigation/navigation_aside.html.twig" %}
+{% endif %}
+                <section class="{% if login.isLogged() %}content{% else %}vertically centered{% endif %}">
+{% if not login.isLogged() %}
+                    <div class="ui basic center aligned fitted segment">
+                        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="logo"/>
+                        <div class="ui large header">
+                            {{ preferences.pref_nom }}
+                            <div class="sub header">{% if preferences.pref_slogan %}{{ __(preferences.pref_slogan) }}{% endif %}</div>
+                        </div>
+                    </div>
+                    <a id="main-content" tabindex="-1"></a>
+                    <h1 class="ui block center aligned header" style="position: relative">
+{% else %}
+                    <div class="ui horizontal basic segments header">
+                        <a id="main-content" tabindex="-1"></a>
+                        <div class="ui center aligned segment">
+                            <h1>
+{% endif %}
+                                {{ page_title }}
+                            </h1>
+{% if login.isLogged() %}
+                        </div>
+                    </div>
+{% endif %}
+                    <div class="main-content">
+                        {% include "elements/messages_inline.html.twig" %}
+                        {% block content %}{{ _T("Public page content") }}{% endblock %}
+                    </div>
+                </section>
+            </div>
+        </main>
+        {% include "elements/footer.html.twig" %}
+        <a href="#" id="back2top" class="circular big ui icon button" title="{{ _T("Back to top") }}">
+            <i class="arrow up icon" aria-hidden="true"></i>
+        </a>
+        {% include "elements/scripts.html.twig" %}
+        {% block javascripts %}{% endblock %}
+</body>
+</html>

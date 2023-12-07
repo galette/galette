@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2021 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -36,8 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
-use Galette\Core;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
@@ -49,10 +49,17 @@ use Analog\Analog;
  * @name      SavedSearch
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.3dev - 2019-03-25
+ *
+ * @property integer $id
+ * @property string $name
+ * @property array $parameters
+ * @property integer $author_id
+ * @property string $creation_date
+ * @property string $form
  */
 
 class SavedSearch
@@ -110,6 +117,7 @@ class SavedSearch
             }
 
             $results = $this->zdb->execute($select);
+            /** @var ArrayObject $res */
             $res = $results->current();
 
             $this->loadFromRs($res);
@@ -126,11 +134,11 @@ class SavedSearch
     /**
      * Load a saved search from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         $pk = self::PK;
         $this->id = $rs->$pk;
@@ -279,7 +287,9 @@ class SavedSearch
                     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
                     $parameters = [];
                     foreach ((array)$this->parameters as $key => $parameter) {
+                        //@phpstan-ignore-next-line
                         if (isset($members_fields[$key])) {
+                            //@phpstan-ignore-next-line
                             $key = $members_fields[$key]['label'];
                         }
                         if (is_array($parameter) || is_object($parameter)) {
@@ -288,7 +298,6 @@ class SavedSearch
                         $parameters[$key] = $parameter;
                     }
                     return $parameters;
-                    break;
                 default:
                     if (!property_exists($this, $name)) {
                         Analog::log(
@@ -299,9 +308,36 @@ class SavedSearch
                     } else {
                         return $this->$name;
                     }
-                    break;
             }
         }
+    }
+
+    /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $forbidden = [];
+        $virtuals = ['sparameters'];
+        if (
+            in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$name)
+        ) {
+            switch ($name) {
+                case 'creation_date':
+                case 'sparameters':
+                    return true;
+                default:
+                    return property_exists($this, $name);
+            }
+        }
+        return false;
     }
 
     /**

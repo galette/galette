@@ -162,20 +162,22 @@ class PdfMembersCards extends Pdf
         $print_logo = new PrintLogo();
         $this->logofile = $print_logo->getPath();
 
-        // Set logo size to max width 30 mm or max height 25 mm
+        // Set logo size to max width 30mm (113px) or max height 17mm (64px)
         $ratio = $print_logo->getWidth() / $print_logo->getHeight();
-        if ($ratio < 1) {
-            if ($print_logo->getHeight() > 16) {
-                $this->hlogo = 20;
+        if ($ratio < 1.71) {
+            if ($print_logo->getHeight() > 64) {
+                $this->hlogo = 17;
             } else {
-                $this->hlogo = $print_logo->getHeight();
+                // Convert original pixels size to millimeters
+                $this->hlogo = $print_logo->getHeight() / 3.78;
             }
             $this->wlogo = round($this->hlogo * $ratio);
         } else {
-            if ($print_logo->getWidth() > 16) {
+            if ($print_logo->getWidth() > 113) {
                 $this->wlogo = 30;
             } else {
-                $this->wlogo = $print_logo->getWidth();
+                // Convert original pixels size to millimeters
+                $this->wlogo = $print_logo->getWidth() / 3.78;
             }
             $this->hlogo = round($this->wlogo / $ratio);
         }
@@ -199,7 +201,7 @@ class PdfMembersCards extends Pdf
 
             // Compute card position on page
             $col = $nb_card % $this->nbcol;
-            $row = ($nb_card / $this->nbcol) % $this->nbrow;
+            $row = (int)(($nb_card / $this->nbcol)) % $this->nbrow;
             // Set origin
             $x0 = $this->xorigin + $col * (round($this->wi) + round($this->hspacing));
             $y0 = $this->yorigin + $row * (round($this->he) + round($this->vspacing));
@@ -277,9 +279,12 @@ class PdfMembersCards extends Pdf
 
             $this->SetFontSize(8);
 
-            $xid = $x0 + $this->wi - $this->GetStringWidth($member->id, self::FONT, 'B', 8) - 0.2;
-            $this->SetXY($xid, $y0 + 28);
-            $this->writeHTML('<strong>' . $member->id . '</strong>', false, 0);
+            if (!empty($this->preferences->pref_show_id) || !empty($member->number)) {
+                $member_id = (!empty($member->number)) ? $member->number : $member->id;
+                $xid = $x0 + $this->wi - $this->GetStringWidth($member_id, self::FONT, 'B', 8) - 0.2;
+                $this->SetXY($xid, $y0 + 28);
+                $this->writeHTML('<strong>' . $member_id . '</strong>', false, 0);
+            }
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);

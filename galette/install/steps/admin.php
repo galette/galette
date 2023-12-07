@@ -37,36 +37,38 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 ?>
-                <h2><?php echo $install->getStepTitle(); ?></h2>
-                <form id="adminform" action="installer.php" method="post">
-                    <fieldset class="cssform">
-                        <legend class="ui-state-active ui-corner-top"><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></legend>
-                        <p>
-                            <label for="install_adminlogin" class="bline"><?php echo _T("Username:"); ?></label>
-                            <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if (isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>" required autofocus/>
-                        </p>
-                        <p>
-                            <label for="install_adminpass" class="bline"><?php echo _T("Password:"); ?></label>
-                            <input type="password" name="install_adminpass" id="install_adminpass" value="" required/>
-                        </p>
-                        <p>
-                            <label for="install_adminpass_verif" class="bline"><?php echo _T("Retype password:"); ?></label>
-                            <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" required/>
-                        </p>
-                    </fieldset>
-                    <p id="btn_box">
-                        <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
-                    </p>
-                </form>
-                <script type="text/javascript">
-                    $(function(){
-                        $('#adminform').submit(function(){
-                            if ( $('#install_adminpass').val() == $('#install_adminpass_verif').val() ) {
-                                return true;
-                            } else {
-                                alert("<?php echo _T("Password mismatch!") ?>");
-                                return false;
-                            }
-                        });
-                    });
-                </script>
+<form id="adminform" action="installer.php" method="post" class="ui form">
+    <h2><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></h2>
+    <div class="field required inline">
+        <label for="install_adminlogin"><?php echo _T("Username:"); ?></label>
+        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if (isset($_POST['install_adminlogin'])) echo $_POST['install_adminlogin']; ?>" required autofocus/>
+    </div>
+    <div class="field required inline">
+        <label for="install_adminpass"><?php echo _T("Password:"); ?></label>
+        <input type="password" name="install_adminpass" id="install_adminpass" value="" required/>
+    </div>
+    <div class="field required inline">
+        <label for="install_adminpass_verif"><?php echo _T("Retype password:"); ?></label>
+        <input type="password" name="install_adminpass_verif" id="install_adminpass_verif" value="" required/>
+    </div>
+
+    <div class="ui section divider"></div>
+
+    <div class="ui equal width grid">
+        <div class="right aligned column">
+            <button type="submit" class="ui right labeled primary icon button"><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function(){
+        $('#adminform').submit(function(){
+            if ( $('#install_adminpass').val() == $('#install_adminpass_verif').val() ) {
+                return true;
+            } else {
+                alert("<?php echo _T("Password mismatch!") ?>");
+                return false;
+            }
+        });
+    });
+</script>

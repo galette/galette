@@ -1,0 +1,94 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+/*-------------------------------------
+    Style for "codeeditor" textareas
+    and text inputs
+--------------------------------------*/
+
+.ui.form input[type="text"].codeeditor,
+.ui.input textarea.codeeditor,
+.ui.form textarea.codeeditor {
+  font-family: monospace;
+}
+
+/*--------------------
+    Gaptcha Input
+---------------------*/
+.ui.form input[type="gaptcha"] {
+  width: 100px;
+  vertical-align: top;
+}
+
+.ui.form input[type="gaptcha"] {
+  font-family: @inputFont;
+  margin: 0;
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+
+  line-height: @inputLineHeight;
+  padding: @inputPadding;
+  font-size: @inputFontSize;
+
+  background: @inputBackground;
+  border: @inputBorder;
+  color: @inputColor;
+  border-radius: @inputBorderRadius;
+  box-shadow: @inputBoxShadow;
+  transition: @inputTransition;
+}
+
+/*--------------------
+      Fields
+---------------------*/
+.ui .fields:first-child:last-child {
+  margin-bottom: 0;
+}
+
+/*-------------------------
+      Filters' fields
+--------------------------*/
+.filters .fields .fields {
+  margin: 0;
+}
+
+.filters .fields .field.flexend {
+  display: flex;
+  align-items: flex-end;
+}
+
+/*--------------------------
+      Free search fields
+---------------------------*/
+.ui.form .data.inline.fields {
+  margin-bottom: 0;
+}
+
+/*--------------------------
+      Focus state
+---------------------------*/
+.ui.form input[type="color"]:focus,
+.ui.form input[type="date"]:focus,
+.ui.form input[type="datetime-local"]:focus,
+.ui.form input[type="email"]:focus,
+.ui.form input[type="file"]:focus,
+.ui.form input[type="month"]:focus,
+.ui.form input[type="number"]:focus,
+.ui.form input[type="password"]:focus,
+.ui.form input[type="search"]:focus,
+.ui.form input[type="tel"]:focus,
+.ui.form input[type="text"]:focus,
+.ui.form input[type="time"]:focus,
+.ui.form input[type="url"]:focus,
+.ui.form input[type="week"]:focus,
+.ui.form input[type="checkbox"]:focus,
+.ui.form input[type="radio"]:focus,
+.ui.checkbox:not(.invisible) input:focus ~ label::before,
+.ui.file.input input[type="file"]:focus + label.ui.button:not(.basic):not(.tertiary),
+.ui.form textarea:focus,
+.ui.form .ui.search.dropdown > input.search:focus,
+.main-content .ui.dropdown:not(.tertiary):focus {
+  outline: 3px solid @blueFocus;
+}

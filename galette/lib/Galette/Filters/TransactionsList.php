@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016-2021 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2021 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     june, 12th 2016
@@ -48,21 +48,21 @@ use Galette\Core\Pagination;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2021 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
- * @property date $start_date_filter
- * @property date $end_date_filter
- * @property integer $filtre_cotis_adh
+ * @property ?string $start_date_filter
+ * @property ?string $end_date_filter
+ * @property ?integer $filtre_cotis_adh
  * @property boolean $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
+ * @property ?integer $max_amount
  */
 
 class TransactionsList extends Pagination
 {
-
     public const ORDERBY_DATE = 0;
     public const ORDERBY_MEMBER = 3;
     public const ORDERBY_AMOUNT = 5;
@@ -73,6 +73,7 @@ class TransactionsList extends Pagination
     private $end_date_filter;
     private $filtre_cotis_adh;
     private $filtre_cotis_children = false;
+    private $max_amount;
 
     protected $list_fields = array(
         'start_date_filter',
@@ -97,7 +98,7 @@ class TransactionsList extends Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     protected function getDefaultOrder()
     {
@@ -121,9 +122,9 @@ class TransactionsList extends Pagination
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -139,11 +140,19 @@ class TransactionsList extends Pagination
                 switch ($name) {
                     case 'start_date_filter':
                     case 'end_date_filter':
+                        if ($this->$name === null) {
+                            return $this->$name;
+                        }
                         try {
-                            if ($this->$name !== null) {
-                                $d = new \DateTime($this->$name);
-                                return $d->format(__("Y-m-d"));
+                            $d = \DateTime::createFromFormat(__("Y-m-d"), $this->$name);
+                            if ($d === false) {
+                                //try with non localized date
+                                $d = \DateTime::createFromFormat("Y-m-d", $this->$name);
+                                if ($d === false) {
+                                    throw new \Exception('Incorrect format');
+                                }
                             }
+                            return $d->format(__("Y-m-d"));
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
@@ -153,7 +162,6 @@ class TransactionsList extends Pagination
                             );
                             return $this->$name;
                         }
-                        break;
                     case 'rstart_date_filter':
                     case 'rend_date_filter':
                         //same as above, but raw format
@@ -164,11 +172,30 @@ class TransactionsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[TransactionsList] Unable to get proprety `' . $name . '`',
+                    '[TransactionsList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
         }
+    }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (in_array($name, $this->pagination_fields)) {
+            return true;
+        } elseif (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -246,7 +273,7 @@ class TransactionsList extends Pagination
 
                                 throw new \Exception(
                                     str_replace(
-                                        array('%field', '%format'),
+                                        array('%field', '%formats'),
                                         array(
                                             $field,
                                             implode(', ', $formats)

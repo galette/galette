@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2021 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-20
@@ -36,21 +36,15 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Galette\DynamicFields\File;
+use Galette\DynamicFields\Separator;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\Sql\Expression;
-use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
-use Galette\DynamicFields\Separator;
-use Galette\DynamicFields\Text;
-use Galette\DynamicFields\Line;
-use Galette\DynamicFields\Choice;
-use Galette\DynamicFields\Date;
-use Galette\DynamicFields\Boolean;
-use Galette\DynamicFields\File;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\DynamicFieldsSet;
 
@@ -62,7 +56,7 @@ use Galette\Repository\DynamicFieldsSet;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -108,24 +102,11 @@ class DynamicFieldsHandle
      *
      * @param mixed $object Object instance
      *
-     * @return array|false
+     * @return bool
      */
     public function load($object)
     {
-        switch (get_class($object)) {
-            case 'Galette\Entity\Adherent':
-                $this->form_name = 'adh';
-                break;
-            case 'Galette\Entity\Contribution':
-                $this->form_name = 'contrib';
-                break;
-            case 'Galette\Entity\Transaction':
-                $this->form_name = 'trans';
-                break;
-            default:
-                throw new \RuntimeException('Class ' . get_class($object) . ' does not handle dynamic fields!');
-                break;
-        }
+        $this->form_name = $object->getFormName();
 
         try {
             $this->item_id = $object->id;
@@ -140,7 +121,22 @@ class DynamicFieldsHandle
                         $field = $this->dynamic_fields[$f->{DynamicField::PK}];
                         if ($field->hasFixedValues()) {
                             $choices = $field->getValues();
-                            $f->text_val = $choices[$f->field_val];
+                            if (!isset($choices[$f->field_val])) {
+                                if ($idx = array_search($f->field_val, $choices)) {
+                                    //text has been stored (from CSV import?), but we want the index
+                                    $f->text_val = $f->field_val;
+                                    $f->field_val = $idx;
+                                } else {
+                                    //something went wrong here :(
+                                    Analog::log(
+                                        'Dynamic choice value "' . $f->field_val . '" does not exists!',
+                                        Analog::WARNING
+                                    );
+                                    $f->text_val = $f->field_val;
+                                }
+                            } else {
+                                $f->text_val = $choices[$f->field_val];
+                            }
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
@@ -188,6 +184,24 @@ class DynamicFieldsHandle
     public function getFields(): array
     {
         return $this->dynamic_fields;
+    }
+
+    /**
+     * Get fields for search pages
+     *
+     * @return array
+     */
+    public function getSearchFields(): array
+    {
+        $dynamics = $this->dynamic_fields;
+
+        foreach ($dynamics as $key => $field) {
+            if ($field instanceof Separator || $field instanceof File) {
+                unset($dynamics[$key]);
+            }
+        }
+
+        return $dynamics;
     }
 
     /**
@@ -370,12 +384,12 @@ class DynamicFieldsHandle
     /**
      * Handle values that have been removed
      *
-     * @return boolean
+     * @return void
      */
     private function handleRemovals()
     {
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
-        $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
+        $this->dynamic_fields = $fields->getList($this->form_name);
 
         $results = $this->getCurrentFields();
 
@@ -495,7 +509,7 @@ class DynamicFieldsHandle
     /**
      * Get current fields resultset
      *
-     * @return ResulSet
+     * @return ArrayObject
      */
     protected function getCurrentFields()
     {

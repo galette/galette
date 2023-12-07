@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -36,11 +36,13 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Core\Galette;
+use Galette\IO\File;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 
@@ -51,7 +53,7 @@ use Analog\Analog;
  * @name      DynamicFieldsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -77,7 +79,7 @@ class DynamicFieldsController extends CrudController
             'form_name'         => $form_name,
             'action'            => 'add',
             'perm_names'        => DynamicField::getPermsNames(),
-            'mode'              => ($request->isXhr() ? 'ajax' : ''),
+            'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'field_type_names'  => DynamicField::getFieldsTypesNames()
         ];
 
@@ -89,7 +91,7 @@ class DynamicFieldsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'editer_champ.tpl',
+            'pages/configuration_dynamic_field_form.html.twig',
             $params
         );
         return $response;
@@ -112,6 +114,12 @@ class DynamicFieldsController extends CrudController
         $error_detected = [];
         $warning_detected = [];
 
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+        }
+
         $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
 
         try {
@@ -125,7 +133,7 @@ class DynamicFieldsController extends CrudController
                 $e->getMessage(),
                 Analog::ERROR
             );
-            if (GALETTE_MODE == 'DEV') {
+            if (Galette::isDebugEnabled()) {
                 throw $e;
             }
             $error_detected[] = _T('An error occurred adding dynamic field :(');
@@ -163,7 +171,7 @@ class DynamicFieldsController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         'addDynamicField',
                         ['form_name' => $form_name]
                     )
@@ -174,7 +182,7 @@ class DynamicFieldsController extends CrudController
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor(
+                        $this->routeparser->urlFor(
                             'editDynamicField',
                             [
                                 'form_name' => $form_name,
@@ -188,7 +196,7 @@ class DynamicFieldsController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         'configureDynamicFields',
                         ['form_name' => $form_name]
                     )
@@ -230,15 +238,15 @@ class DynamicFieldsController extends CrudController
             'page_title'        => _T("Dynamic fields configuration")
         ];
 
-        $tpl = 'configurer_fiches.tpl';
+        $tpl = 'pages/configuration_dynamic_fields.html.twig';
         //Render directly template if we called from ajax,
         //render in a full page otherwise
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
-            $tpl = 'configurer_fiche_content.tpl';
+            $tpl = 'elements/edit_dynamic_fields.html.twig';
         } else {
             $all_forms = DynamicField::getFormsNames();
             $params['all_forms'] = $all_forms;
@@ -264,6 +272,123 @@ class DynamicFieldsController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filtering
+        return $response;
+    }
+
+    /**
+     * Get a dynamic file
+     *
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $form_name Form name
+     * @param integer  $id        Object ID
+     * @param integer  $fid       Dynamic fields ID
+     * @param integer  $pos       Dynamic field position
+     * @param string   $name      File name
+     *
+     * @return Response
+     */
+    public function getDynamicFile(
+        Request $request,
+        Response $response,
+        string $form_name,
+        int $id,
+        int $fid,
+        int $pos,
+        string $name
+    ): Response {
+        $object_class = DynamicFieldsSet::getClasses()[$form_name];
+        if ($object_class === 'Galette\Entity\Adherent') {
+            $object = new $object_class($this->zdb);
+        } else {
+            $object = new $object_class($this->zdb, $this->login);
+        }
+
+        $object
+            ->disableAllDeps()
+            ->enableDep('dynamics')
+            ->load($id);
+        $fields = $object->getDynamicFields()->getFields();
+        $field = $fields[$fid] ?? null;
+
+        $denied = null;
+        if (!$object->canShow($this->login)) {
+            if (!isset($fields[$fid])) {
+                //field does not exist or access is forbidden
+                $denied = true;
+            } else {
+                $denied = false;
+            }
+        }
+
+        if ($denied === true) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            $route_name = 'member';
+            if ($form_name == 'contrib') {
+                $route_name = 'contribution';
+            } elseif ($form_name == 'trans') {
+                $route_name = 'transaction';
+            }
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor(
+                        $route_name,
+                        ['id' => $id]
+                    )
+                );
+        }
+
+        $filename = $field->getFileName($id, $pos);
+
+        if ($form_name !== 'member' && !file_exists(GALETTE_FILES_PATH . $filename)) {
+            //handle old names for non adh dynamic files
+            $test_filename = $field->getFileName($id, $pos, 'member');
+            if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
+                //rename old file to new name
+                rename(GALETTE_FILES_PATH . $test_filename, GALETTE_FILES_PATH . $filename);
+            }
+        }
+
+        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+            $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
+
+            $response = $response->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Type', $type)
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $name . '"')
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents(GALETTE_FILES_PATH . $filename));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Psr7\Stream($stream));
+        } else {
+            Analog::log(
+                'A request has been made to get a dynamic file named `' .
+                $filename . '` that does not exists.',
+                Analog::WARNING
+            );
+
+            $this->flash->addMessage(
+                'error_detected',
+                _T("The file does not exists or cannot be read :(")
+            );
+
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('member', ['id' => $id])
+                );
+        }
     }
 
     // /CRUD - Read
@@ -294,7 +419,7 @@ class DynamicFieldsController extends CrudController
                 );
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('configureDynamicFields'));
+                    ->withHeader('Location', $this->routeparser->urlFor('configureDynamicFields'));
             }
         }
 
@@ -303,14 +428,14 @@ class DynamicFieldsController extends CrudController
             'action'        => 'edit',
             'form_name'     => $form_name,
             'perm_names'    => DynamicField::getPermsNames(),
-            'mode'          => ($request->isXhr() ? 'ajax' : ''),
+            'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'df'            => $df
         ];
 
         // display page
         $this->view->render(
             $response,
-            'editer_champ.tpl',
+            'pages/configuration_dynamic_field_form.html.twig',
             $params
         );
         return $response;
@@ -331,6 +456,12 @@ class DynamicFieldsController extends CrudController
         $post = $request->getParsedBody();
         $post['form_name'] = $form_name;
 
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+        }
+
         $error_detected = [];
         $warning_detected = [];
 
@@ -348,7 +479,7 @@ class DynamicFieldsController extends CrudController
                 $e->getMessage(),
                 Analog::ERROR
             );
-            if (GALETTE_MODE == 'DEV') {
+            if (Galette::isDebugEnabled()) {
                 throw $e;
             }
             $error_detected[] = _T('An error occurred editing dynamic field :(');
@@ -386,7 +517,7 @@ class DynamicFieldsController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         'editDynamicField',
                         [
                             'form_name' => $form_name,
@@ -399,7 +530,7 @@ class DynamicFieldsController extends CrudController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         'configureDynamicFields',
                         ['form_name' => $form_name]
                     )
@@ -419,7 +550,7 @@ class DynamicFieldsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('configureDynamicFields');
+        return $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $args['form_name']]);
     }
 
     /**
@@ -431,7 +562,7 @@ class DynamicFieldsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveDynamicField',
             ['id' => $args['id'], 'form_name' => $args['form_name']]
         );
@@ -452,12 +583,7 @@ class DynamicFieldsController extends CrudController
                 'error_detected',
                 _T("Requested field does not exists!")
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor('configureDynamicFields', ['form_name' => $args['form_name']])
-                );
+            return _T("Requested field does not exists!");
         }
 
         return sprintf(
@@ -517,6 +643,6 @@ class DynamicFieldsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form_name' => $form_name]));
+            ->withHeader('Location', $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $form_name]));
     }
 }

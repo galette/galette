@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2018 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2020 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -45,7 +45,7 @@ use Analog\Analog;
  * @name      i18n
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2020 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -58,11 +58,12 @@ class I18n
     private $name;
     private $abbrev;
 
-    public const DEFAULT_LANG = 'fr_FR';
+    public const DEFAULT_LANG = 'en_US';
 
     private $dir = 'lang/';
     private $path;
 
+    private $langs = [];
     private $rtl_langs = [
         'ar',
         'az',
@@ -92,7 +93,7 @@ class I18n
                     explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
                         list($l, $q) = array_merge(explode(';q=', $el), [1]);
-                        $res[$l] = (float) $q;
+                        $res[$l] = (float)$q;
                         return $res;
                     },
                     []
@@ -142,19 +143,14 @@ class I18n
 
         setlocale(LC_ALL, $this->getLongID());
 
-        if (
-            putenv("LANG=" . $this->getLongID())
-            or putenv("LANGUAGE=" . $this->getLongID())
-            or putenv("LC_ALL=" . $this->getLongID())
-        ) {
-            $textdomain = realpath(GALETTE_ROOT . 'lang');
-            //main translation domain
-            $domain = 'galette';
-            bindtextdomain($domain, $textdomain);
-            //set default translation domain and encoding
-            textdomain($domain);
-            bind_textdomain_codeset($domain, 'UTF-8');
-        }
+        $textdomain = realpath(GALETTE_ROOT . 'lang');
+        //main translation domain
+        $domain = 'galette';
+        bindtextdomain($domain, $textdomain);
+        //set default translation domain and encoding
+        textdomain($domain);
+        bind_textdomain_codeset($domain, 'UTF-8');
+
         if ($translator) {
             $translator->setLocale($this->getLongID());
         }
@@ -309,11 +305,13 @@ class I18n
                 $langs[$real_lang] = [
                     'long'      => $lang,
                     'shortname' => $parsed_lang['language'] ?? '',
-                    'longname'  => ucfirst(
+                    'longname'  => mb_convert_case(
                         \Locale::getDisplayLanguage(
                             $lang,
                             $real_lang
-                        )
+                        ),
+                        MB_CASE_TITLE,
+                        'UTF-8'
                     )
                 ];
             }

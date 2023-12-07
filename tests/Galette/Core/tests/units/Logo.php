@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2017-07-08
  */
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Picture tests class
@@ -46,23 +45,21 @@ use atoum;
  * @name      Logo
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-07-08
  */
-class Logo extends atoum
+class Logo extends TestCase
 {
-    private $zdb;
+    private \Galette\Core\Db $zdb;
 
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         global $zdb;
         $this->zdb = new \Galette\Core\Db();
@@ -72,14 +69,12 @@ class Logo extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame($this->zdb->getWarnings(), []);
         }
     }
 
@@ -94,17 +89,16 @@ class Logo extends atoum
         $zdb = $this->zdb;
         $expected_path = realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.png');
 
-        $this->given($this->newTestedInstance)
-            ->then
-                ->variable($this->testedInstance->getDestDir())->isNull()
-                ->variable($this->testedInstance->getFileName())->isNull()
-                ->string($this->testedInstance->getPath())->isIdenticalTo($expected_path)
-                ->string($this->testedInstance->getMime())->isIdenticalTo('image/png')
-                ->string($this->testedInstance->getFormat())->isIdenticalTo('png')
-                ->boolean($this->testedInstance->isCustom())->isFalse()
-                ->integer($this->testedInstance->getOptimalWidth())->isIdenticalTo(129)
-                ->integer($this->testedInstance->getOptimalHeight())->isIdenticalTo(60)
-                ->integer($this->testedInstance->getWidth())->isIdenticalTo(129)
-                ->integer($this->testedInstance->getHeight())->isIdenticalTo(60);
+        $instance = new \Galette\Core\Logo($this->zdb);
+        $this->assertNull($instance->getDestDir());
+        $this->assertNull($instance->getFileName());
+        $this->assertSame($expected_path, $instance->getPath());
+        $this->assertSame('image/png', $instance->getMime());
+        $this->assertSame('png', $instance->getFormat());
+        $this->assertFalse($instance->isCustom());
+        $this->assertSame(129, $instance->getOptimalWidth());
+        $this->assertSame(60, $instance->getOptimalHeight());
+        $this->assertSame(129, $instance->getWidth());
+        $this->assertSame(60, $instance->getHeight());
     }
 }

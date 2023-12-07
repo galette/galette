@@ -1,0 +1,45 @@
+<div id="legende{{ cur_ref }}" class="texts_legend ui large modal" title="{{ _T("Existing variables") }}">
+    <div class="header">{{ _T('Existing variables') }}</div>
+    <div class="scrolling content">
+        <table class="ui very basic table">
+    {% for legend in legends %}
+        <tr>
+            <th colspan="4">
+                {{ legend.title }}
+            </th>
+        </tr>
+        {% for pattern in legend.patterns %}
+            {% if loop.index0 % 2 == 0 %}
+                <tr>
+            {% endif %}
+            <th><tt>{{ pattern.pattern|trim('/') }}</tt></th>
+            <td class="back">
+                {% if pattern.title is defined %}{{ pattern.title }}{% endif %}
+            </td>
+            {% if loop.index0 % 2 != 0 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+        </table>
+    </div>
+    <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T('Close') }}</div></div>
+</div>
+<script type="text/javascript">
+
+    var _addLegendButton = function(selector) {
+        $(selector).append('<a class="btnlegend"><i class="circular inverted primary link icon info tooltip" aria-hidden="true"></i> <span class="ui special popup">{{ _T("Show existing variables")|e('js') }}</span></a>');
+    };
+
+    var _handleLegend = function(selector) {
+        if (typeof selector == 'undefined') {
+            selector = '{{ cur_ref }}';
+        }
+        $('#legende' + selector).modal().modal('hide');
+
+        $('.btnlegend').unbind('click').click(function(){
+            $('#legende' + selector).modal('show');
+            return false;
+        });
+    };
+</script>

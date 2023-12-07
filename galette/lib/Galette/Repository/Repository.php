@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-26
@@ -48,7 +48,7 @@ use Galette\Core\Login;
  * @name      Repository
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-26
@@ -151,7 +151,7 @@ abstract class Repository
     /**
      * Add default values in database
      *
-     * @param boolean $check_first Check first if it seem initialized, defaults to true
+     * @param boolean $check_first Check first if it seems initialized, defaults to true
      *
      * @return boolean
      */
@@ -193,7 +193,7 @@ abstract class Repository
      * provided fields list (those that are SELECT'ed).
      *
      * @param string $field_name Field name to order by
-     * @param array  $fields     SELECTE'ed fields
+     * @param ?array $fields     SELECTE'ed fields
      *
      * @return boolean
      */

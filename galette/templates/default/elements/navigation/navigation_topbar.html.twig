@@ -1,0 +1,28 @@
+<header id="top-navbar" class="ui top fixed menu">
+    <a class="toc item" tabindex="0">
+        <i class="sidebar icon" aria-hidden="true"></i>
+        <span class="visually-hidden">{{ _T("Menu") }}</span>
+    </a>
+    <div class="header item">
+        <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
+        <span>{{ preferences.pref_nom }}</span>
+    </div>
+    <nav class="ui fluid container">
+        {% include "elements/navigation/public_pages.html.twig" with {
+                tips_position: "bottom center",
+                sign_in: true,
+                sign_in_side: 'right',
+                mode: "default"
+        } %}
+
+        {% include "elements/language.html.twig" with {
+                ui: "dropdown"
+        } %}
+
+        {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
+            <div class="item">
+                {% include "elements/modes.html.twig" %}
+            </div>
+        {% endif %}
+    </nav>
+</header>

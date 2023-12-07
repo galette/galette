@@ -1,0 +1,88 @@
+{# Enable dismissable messages #}
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+
+{# Apply transitions on inline messages #}
+$('.message.with-transition')
+  .transition('flash')
+;
+
+{# Let's see if there are success messages to show #}
+{% set successes = flash.getMessage('success_detected') %}
+{% if success_detected is defined and success_detected is iterable %}
+    {% for s in success_detected %}
+        {% set successes = successes|merge([s]) %}
+    {% endfor %}
+{% endif %}
+{% if successes is iterable and successes|length > 0 %}
+    {% for success in successes %}
+        $('body')
+          .toast({
+            displayTime: 'auto',
+            position: 'bottom right',
+            message: '{{ success|e('js') }}',
+            showIcon: 'check circle outline',
+            class: 'success'
+          })
+        ;
+    {% endfor %}
+{% endif %}
+
+{# Renew telemetry #}
+{% if renew_telemetry is defined and renew_telemetry %}
+    $('body')
+      .toast({
+        displayTime: 0,
+        position: 'bottom right',
+        message: "{{ _T("Your telemetry data are more than one year old.")|e('js') }} {{ _T("Do you want to send it again?")|e('js') }}",
+        classActions: 'bottom attached',
+        actions:    [{
+          text: "{{ _T("Yes")|e('js') }}",
+          class: 'green',
+          click: function() {
+              $.ajax({
+                  url:  '{{ url_for('telemetryInfos') }}',
+                  success: function(data) {
+                      $('#telemetry_panel .tdata').append(data);
+                      $('#telemetry_panel').modal('show');
+                  }
+              });
+          }
+        },{
+          text: "{{ _T("No") }}",
+          class: 'red',
+          click: function() {
+              Cookies.set(
+                  'renew_telemetry',
+                  1,
+                  {
+                      expires: 365,
+                      path: '/'
+                  }
+              );
+              $(this).toast('close');
+          }
+        },{
+          text: "{{ _T("Later") }}",
+          class: 'blue',
+          click: function() {
+              Cookies.set(
+                  'renew_telemetry',
+                  1,
+                  {
+                      expires: 182,
+                      path: '/'
+                  }
+              );
+              $(this).toast('close');
+          }
+        }]
+      })
+    ;
+{% endif %}

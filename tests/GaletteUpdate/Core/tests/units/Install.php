@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,9 +28,8 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2021-05-06
  */
@@ -38,6 +37,7 @@
 namespace Galette\Core\test\units;
 
 use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Update tests
@@ -46,40 +46,33 @@ use atoum;
  * @name      Install
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-05-06
  */
-class Install extends atoum
+class Install extends TestCase
 {
-    private $install;
-    private $zdb;
-    private $flash_data;
-    private $flash;
-    private $mocked_router;
-    private $container;
+    private \Galette\Core\Db $zdb;
+    private array $flash_data;
+    private \Slim\Flash\Messages $flash;
+    private \DI\Container $container;
 
     /**
      * Set up tests
      *
-     * @param stgring $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         setlocale(LC_ALL, 'en_US');
 
-        $this->mocked_router = new \mock\Slim\Router();
-        $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
-            return $name;
-        };
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
 
-        $app =  new \Galette\Core\SlimApp();
+        $gapp =  new \Galette\Core\SlimApp();
+        $app = $gapp->getApp();
         $plugins = new \Galette\Core\Plugins();
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
@@ -87,8 +80,6 @@ class Install extends atoum
 
         $container->set('flash', $this->flash);
         $container->set(Slim\Flash\Messages::class, $this->flash);
-        $container->set('router', $this->mocked_router);
-        $container->set(Slim\Router::class, $this->mocked_router);
 
         $this->container = $container;
 
@@ -98,15 +89,23 @@ class Install extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        if (TYPE_DB === 'mysql') {
+            $this->assertSame([], $this->zdb->getWarnings());
+        }
+    }
+
+    /**
+     * Test if current database version is supported
      *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function testDbSupport()
     {
-        if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
-        }
+        $this->assertTrue($this->zdb->isEngineSUpported());
     }
 
     /**
@@ -122,12 +121,12 @@ class Install extends atoum
             $this->zdb->type_db,
             '0.6'
         );
-        $this->array($update_scripts)->size->isGreaterThan(5);
+        $this->assertGreaterThan(5, count($update_scripts));
 
         $install->setMode(\Galette\Core\Install::UPDATE);
         $errors = [];
         $install->setDbType($this->zdb->type_db, $errors);
-        $this->array($errors)->isIdenticalTo([]);
+        $this->assertSame([], $errors);
 
         $install->setInstalledVersion('0.60');
         $install->setTablesPrefix(PREFIX_DB);
@@ -135,10 +134,13 @@ class Install extends atoum
 
         $report = $install->getInitializationReport();
         foreach ($report as $entry) {
-            $this->boolean($entry['res'])->isTrue(($entry['debug'] ?? '') . "\n" . ($entry['query'] ?? ''));
+            $this->assertTrue(
+                $entry['res'],
+                ($entry['debug'] ?? '') . "\n" . ($entry['query'] ?? '')
+            );
         }
 
-        $this->boolean($exec)->isTrue();
-        $this->string($this->zdb->getDbVersion())->isIdenticalTo(GALETTE_DB_VERSION);
+        $this->assertTrue($exec);
+        $this->assertSame(GALETTE_DB_VERSION, $this->zdb->getDbVersion());
     }
 }

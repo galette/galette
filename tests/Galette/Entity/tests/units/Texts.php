@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,18 +28,17 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2019-12-20
  */
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Text tests
@@ -48,14 +47,14 @@ use Zend\Db\Adapter\Adapter;
  * @name      Texts
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     2020-01-18
+ * @since     2019-12-20
  */
 class Texts extends GaletteTestCase
 {
-    private $remove = [];
+    private array $remove = [];
 
     /**
      * Test getList
@@ -71,11 +70,11 @@ class Texts extends GaletteTestCase
         $texts->installInit();
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
-        $this->array($list)->hasSize($count_texts);
+        $this->assertCount($count_texts, $list);
 
         foreach (array_keys($this->i18n->getArrayList()) as $lang) {
             $list = $texts->getRefs($lang);
-            $this->array($list)->hasSize($count_texts);
+            $this->assertCount($count_texts, $list);
         }
 
         if ($this->zdb->isPostgres()) {
@@ -83,8 +82,7 @@ class Texts extends GaletteTestCase
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)
-                 ->isGreaterThanOrEqualTo($count_texts, 'Incorrect texts sequence ' . $result->last_value);
+            $this->assertGreaterThanOrEqual($count_texts, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
 
             $this->zdb->db->query(
                 'SELECT setval(\'' . PREFIX_DB . $texts::TABLE . '_id_seq\', 1)',
@@ -96,15 +94,14 @@ class Texts extends GaletteTestCase
         $texts->installInit(false);
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
-        $this->array($list)->hasSize($count_texts);
+        $this->assertCount($count_texts, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($texts::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->integer($result->last_value)
-                 ->isGreaterThanOrEqualTo(12, 'Incorrect texts sequence ' . $result->last_value);
+            $this->assertGreaterThanOrEqual(12, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
         }
     }
 }

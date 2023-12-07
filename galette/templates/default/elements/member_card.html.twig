@@ -1,0 +1,62 @@
+<div id="member_card" class="ui horizontal fluid card">
+    {% if not (member.picture.path ends with '/default/images/default.png') %}
+    <div class="image">
+        <img
+                id="photo_adh"
+                src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
+                width="{{ member.picture.getOptimalWidth() }}"
+                height="{{ member.picture.getOptimalHeight() }}"
+                alt="{{ _T("Picture") }}"
+                class="green tooltip"
+        {# Drag'n drop is disabled on member form #}
+        {% if (hidden_elements is not defined) %}
+                data-html="{{ _T("Drag and drop an image file to change the picture") }}">
+        <span class="ui bottom left corner tiny label">
+            <i class="download icon" aria-hidden="true"></i>
+        </span>
+        {% else %}
+        >
+        {% endif %}
+    </div>
+    {% endif %}
+    <div class="content">
+        <div class="header aligned">
+            {{ member.sname }}
+        </div>
+        <div class="meta aligned">
+            <span>{{ member.sstatus }}</span>
+        </div>
+        <div class="description">
+            <div class="ui relaxed divided list">
+                {% if member.phone or member.gsm %}
+                    <div class="item">
+                        <div class="content">
+                            <span class="header">{{ _T("Phone") }}</span>
+                            <div class="description">
+                                {% if member.phone %}
+                                    {{ member.phone }}
+                                {% endif %}
+                                {% if member.gsm %}
+                                    {% if member.phone %}, {% endif %}
+                                    {{ member.gsm }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if member.getEmail() %}
+                    <div class="item">
+                        <div class="content">
+                            <span class="blue header">{{ _T("Email") }}</span>
+                            <div class="description">{{ member.getEMail() }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="extra {{ member.getRowClass() }} content">
+        <i class="icon receipt" aria-hidden="true"></i>
+        {{ member.getDues()|escape }}
+    </div>
+</div>

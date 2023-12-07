@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.0dev - 2016-02-21
@@ -50,7 +50,7 @@ use Analog\Analog;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.0dev - 2016-02-21
@@ -164,19 +164,18 @@ class PdfAttendanceSheet extends Pdf
         $this->PageHeader($this->doc_title);
 
         if ($this->sheet_date) {
-            $date_fmt = null;
-            if (PHP_OS === 'Linux') {
-                $format = _T("%A, %B %#d%O %Y");
-                $format = str_replace(
-                    '%O',
-                    date('S', $this->sheet_date->getTimestamp()),
-                    $format
-                );
-                $date_fmt = strftime($format, $this->sheet_date->getTimestamp());
-            } else {
-                $format = __("Y-m-d");
-                $date_fmt = $this->sheet_date->format($format);
-            }
+            $format = __("MMMM, EEEE d y");
+            $formatter = new \IntlDateFormatter(
+                $this->i18n->getLongID(),
+                \IntlDateFormatter::FULL,
+                \IntlDateFormatter::NONE,
+                \date_default_timezone_get(),
+                \IntlDateFormatter::GREGORIAN,
+                $format
+            );
+            $datetime = new \DateTimeImmutable($this->sheet_date->format('Y-m-d'));
+            $date = \DateTime::createFromImmutable($datetime);
+            $date_fmt = mb_convert_case($formatter->format($date), MB_CASE_TITLE);
             $this->Cell(190, 7, $date_fmt, 0, 1, 'C');
         }
 
@@ -242,5 +241,6 @@ class PdfAttendanceSheet extends Pdf
     public function withImages()
     {
         $this->wimages = true;
+        return $this;
     }
 }

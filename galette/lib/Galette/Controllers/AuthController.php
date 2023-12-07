@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -36,8 +36,8 @@
 
 namespace Galette\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
@@ -51,7 +51,7 @@ use Galette\Entity\Texts;
  * @name      AuthController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -66,7 +66,7 @@ class AuthController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $r        Redirect after login
      *
-     * @return void
+     * @return Response
      */
     public function login(Request $request, Response $response, string $r = null)
     {
@@ -83,7 +83,7 @@ class AuthController extends AbstractController
             // display page
             $this->view->render(
                 $response,
-                'index.tpl',
+                'pages/index.html.twig',
                 array(
                     'page_title'    => _T("Login"),
                 )
@@ -100,7 +100,7 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function doLogin(Request $request, Response $response)
     {
@@ -115,7 +115,7 @@ class AuthController extends AbstractController
             );
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('login'));
+                ->withHeader('Location', $this->routeparser->urlFor('login'));
         }
 
         if ($nick === $this->preferences->pref_admin_login) {
@@ -150,7 +150,7 @@ class AuthController extends AbstractController
         } else {
             $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
-            return $response->withStatus(301)->withHeader('Location', $this->router->pathFor('login'));
+            return $response->withStatus(301)->withHeader('Location', $this->routeparser->urlFor('login'));
         }
     }
 
@@ -160,7 +160,7 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function logout(Request $request, Response $response)
     {
@@ -169,7 +169,7 @@ class AuthController extends AbstractController
         \RKA\Session::destroy();
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->routeparser->urlFor('slash'));
     }
 
     /**
@@ -179,7 +179,7 @@ class AuthController extends AbstractController
      * @param Response $response PSR Response
      * @param integer  $id       Member to impersonate
      *
-     * @return void
+     * @return Response
      */
     public function impersonate(Request $request, Response $response, int $id)
     {
@@ -213,7 +213,7 @@ class AuthController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->routeparser->urlFor('slash'));
     }
 
     /**
@@ -222,7 +222,7 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function unimpersonate(Request $request, Response $response)
     {
@@ -237,7 +237,7 @@ class AuthController extends AbstractController
         );
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->routeparser->urlFor('slash'));
     }
 
     /**
@@ -256,7 +256,7 @@ class AuthController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'lostpasswd.tpl',
+            'pages/password_lost.html.twig',
             array(
                 'page_title'    => _T("Password recovery")
             )
@@ -276,10 +276,10 @@ class AuthController extends AbstractController
     public function retrievePassword(Request $request, Response $response, int $id_adh = null): Response
     {
         $from_admin = false;
-        $redirect_url = $this->router->pathFor('slash');
+        $redirect_url = $this->routeparser->urlFor('slash');
         if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
             $from_admin = true;
-            $redirect_url = $this->router->pathFor('member', ['id' => $id_adh]);
+            $redirect_url = $this->routeparser->urlFor('member', ['id' => $id_adh]);
         }
 
         if (
@@ -312,7 +312,7 @@ class AuthController extends AbstractController
         if ($adh->id != '') {
             //account has been found, proceed
             if (GaletteMail::isValidEmail($adh->email)) {
-                $texts = new Texts($this->preferences, $this->router);
+                $texts = new Texts($this->preferences, $this->routeparser);
                 $texts
                     ->setMember($adh)
                     ->setNoContribution();
@@ -449,14 +449,14 @@ class AuthController extends AbstractController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('password-lost')
+                    $this->routeparser->urlFor('password-lost')
                 );
         }
 
         // display page
         $this->view->render(
             $response,
-            'change_passwd.tpl',
+            'pages/password_recover.html.twig',
             array(
                 'hash'          => $hash,
                 'page_title'    => _T("Password recovery")
@@ -483,7 +483,7 @@ class AuthController extends AbstractController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor('password-recovery', ['hash' => $post['hash']])
+                    $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
                 );
         }
 
@@ -527,7 +527,7 @@ class AuthController extends AbstractController
                             ->withStatus(301)
                             ->withHeader(
                                 'Location',
-                                $this->router->pathFor('slash')
+                                $this->routeparser->urlFor('slash')
                             );
                     }
                 }
@@ -545,7 +545,7 @@ class AuthController extends AbstractController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor('password-recovery', ['hash' => $post['hash']])
+                $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
             );
     }
 }

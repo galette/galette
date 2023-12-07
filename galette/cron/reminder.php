@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2020 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2020 The Galette Team
+ * @copyright 2013-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-08
@@ -42,13 +42,9 @@ use Galette\Filters\MembersList;
 /** @ignore */
 require_once __DIR__ . '/../includes/galette.inc.php';
 
-//TODO: should be replaced with a DI\App (see LightSlimApp)
-$app = new \Slim\App(
-    array(
-        'templates.path'    => GALETTE_ROOT . 'templates/default/',
-        'mode'              => 'CRON'
-    )
-);
+$gapp = new \Galette\Core\LightSlimApp('CRON');
+$app = $gapp->getApp();
+
 session_start();
 require_once __DIR__ . '/../includes/dependencies.php';
 
@@ -57,12 +53,28 @@ if (isset($needs_update) && $needs_update === true) {
     die(1);
 }
 
-/** TODO: login is now handled in dependencies.php; the cron case should be aswell */
+/**
+ * Authentication middleware
+ */
+$authenticate = new \Galette\Middleware\Authenticate($container);
+
+require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
 if ($cron) {
     $container->get('login')->logCron(basename($argv[0], '.php'));
+    define('GALETTE_CRON', true);
 }
 
 if (!$container->get('login')->isCron()) {
+    die(1);
+}
+
+if ($cron && !defined('GALETTE_URI')) {
+    echo _T('Please define constant "GALETTE_URI" with the path to your instance.') . "\n";
     die(1);
 }
 
@@ -70,6 +82,8 @@ $texts = new Texts(
     $container->get('preferences')
 );
 $reminders = new Reminders();
+$success_detected = [];
+$error_detected = [];
 
 $list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {
@@ -112,7 +126,7 @@ if (count($error_detected) > 0) {
         echo $e . "\n";
         $count++;
     }
-    //we can also print additionnal information.
+    //we can also print additional information.
     if (count($success_detected) > 0) {
         echo "\n";
         echo str_replace(

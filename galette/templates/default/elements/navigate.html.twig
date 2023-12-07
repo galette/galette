@@ -1,0 +1,21 @@
+{% if navigate is defined and navigate|length != 0 %}
+    <nav class="ui mini inverted pagination menu">
+        <a
+            {% if navigate.prev is defined %}href="{{ url_for(mpath, {"id": navigate.prev}) }}"{% endif %}
+            class="item{% if navigate.prev is not defined %} disabled{% endif %}"
+            title="{{ _T("Previous")|escape }}"
+        >
+            <i class="step backward icon" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _T("Previous") }}</span>
+        </a>
+        <div class="item">{{ navigate.pos }} / {{ navigate.count }}</div>
+        <a
+            {% if navigate.next is defined %}href="{{ url_for(mpath, {"id": navigate.next}) }}"{% endif %}
+            class="item{% if navigate.next is not defined %} disabled{% endif %}"
+            title="{{ _T("Next")|escape }}"
+        >
+            <span class="visually-hidden">{{ _T("Next") }}</span>
+            <i class="step forward icon" aria-hidden="true"></i>
+        </a>
+    </nav>
+{% endif %}

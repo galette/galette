@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016-2021 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2021 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2016-09-24
  */
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Preferences tests class
@@ -46,32 +45,30 @@ use atoum;
  * @name      FieldsConfig
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2021 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-09-24
  */
-class FieldsConfig extends atoum
+class FieldsConfig extends TestCase
 {
-    private $fields_config = null;
-    private $zdb;
-    private $members_fields;
-    private $members_fields_cats;
+    private ?\Galette\Entity\FieldsConfig $fields_config = null;
+    private \Galette\Core\Db $zdb;
+    private array $members_fields;
+    private array $members_fields_cats;
 
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
 
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         $this->members_fields_cats = $members_fields_cats;
 
         $this->fields_config = new \Galette\Entity\FieldsConfig(
@@ -106,7 +103,7 @@ class FieldsConfig extends atoum
             'sexe_adh',
             'parent_id'
         ];
-        $this->array($nrequired)->isIdenticalTo($expected);
+        $this->assertSame($expected, $nrequired);
     }
 
     /**
@@ -116,10 +113,8 @@ class FieldsConfig extends atoum
      */
     public function testInstallInit()
     {
-        $result = $this->fields_config->installInit(
-            $this->zdb
-        );
-        $this->boolean($result)->isTrue();
+        $result = $this->fields_config->installInit();
+        $this->assertTrue($result);
 
         //new object with values loaded from database to compare
         $fields_config = new \Galette\Entity\FieldsConfig(
@@ -141,13 +136,13 @@ class FieldsConfig extends atoum
             'cp_adh'        => 1,
             'ville_adh'     => 1
         ];
-        $this->array($required)->isEqualTo($expected);
+        $this->assertEquals($expected, $required);
 
         $isrequired = $fields_config->isRequired('login_adh');
-        $this->boolean($isrequired)->isTrue();
+        $this->assertTrue($isrequired);
 
         $isrequired = $fields_config->isRequired('info_adh');
-        $this->boolean($isrequired)->isFalse();
+        $this->assertFalse($isrequired);
 
         $lists_config = new \Galette\Entity\ListsConfig(
             $this->zdb,
@@ -156,18 +151,19 @@ class FieldsConfig extends atoum
             $this->members_fields_cats,
             true
         );
-        $this->boolean($lists_config->load())->isTrue();
+        $this->assertTrue($lists_config->load());
 
         $visibles = $fields_config->getVisibilities();
-        $this->array($visibles)
-             ->hasSize(
-                 count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]) +
-                 count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]) +
-                 count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]) +
-                 count($lists_config->getAclMapping())
-             )
-            ->integer['id_adh']->isIdenticalTo(0)
-            ->integer['nom_adh']->isIdenticalTo(1);
+        $this->assertCount(
+            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]) +
+            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]) +
+            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]) +
+            count($lists_config->getAclMapping()),
+            $visibles
+        );
+
+        $this->assertSame(0, $visibles['id_adh']);
+        $this->assertSame(1, $visibles['nom_adh']);
     }
 
     /**
@@ -179,14 +175,10 @@ class FieldsConfig extends atoum
      */
     private function countCategorizedFields($categorized)
     {
-        $this->array($categorized)
-            ->hasSize(3);
-        $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
-            ->hasSize(13);
-        $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE])
-            ->hasSize(11);
-        $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT])
-            ->hasSize(10);
+        $this->assertCount(3, $categorized);
+        $this->assertCount(13, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
+        $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]);
+        $this->assertCount(10, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
     }
 
     /**
@@ -200,19 +192,19 @@ class FieldsConfig extends atoum
         $fields_config->load();
 
         $required_mdp = $fields_config->getRequired()['mdp_adh'];
-        $this->boolean($required_mdp)->isTrue();
+        $this->assertTrue($required_mdp);
 
         $cat = \Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE;
         $required_mdp = $fields_config->getCategorizedFields()[$cat][6]['required'];
-        $this->boolean($required_mdp)->isTrue();
+        $this->assertTrue($required_mdp);
 
         $fields_config->setNotRequired('mdp_adh');
 
         $required_mdp = $fields_config->getRequired();
-        $this->array($required_mdp)->notHasKey('mdp_adh');
+        $this->assertFalse(isset($required_mdp['mdp_adh']));
 
         $required_mdp = $fields_config->getCategorizedFields()[$cat][6]['required'];
-        $this->boolean($required_mdp)->isFalse();
+        $this->assertFalse($required_mdp);
     }
 
     /**
@@ -225,13 +217,13 @@ class FieldsConfig extends atoum
         $this->fields_config->load();
 
         $visible = $this->fields_config->getVisibility('nom_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
+        $this->assertSame(\Galette\Entity\FieldsConfig::USER_WRITE, $visible);
 
         $visible = $this->fields_config->getVisibility('id_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
+        $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $visible);
 
         $visible = $this->fields_config->getVisibility('info_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::STAFF);
+        $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $visible);
     }
 
     /**
@@ -249,8 +241,8 @@ class FieldsConfig extends atoum
 
         //town
         $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2];
-        $this->boolean($town['required'])->isTrue();
-        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
+        $this->assertTrue($town['required']);
+        $this->assertSame(\Galette\Entity\FieldsConfig::USER_WRITE, $town['visible']);
 
         $town['required'] = false;
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
@@ -262,17 +254,17 @@ class FieldsConfig extends atoum
         $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 
-        $this->boolean($fields_config->setFields($fields))->isTrue();
+        $this->assertTrue($fields_config->setFields($fields));
 
         $fields_config->load();
         $fields = $fields_config->getCategorizedFields();
 
         $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2];
-        $this->boolean($town['required'])->isFalse();
-        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
+        $this->assertFalse($town['required']);
+        $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $town['visible']);
 
         $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][13];
-        $this->array($gsm2)->isIdenticalTo($gsm);
+        $this->assertSame($gsm, $gsm2);
     }
 
     /**
@@ -282,9 +274,9 @@ class FieldsConfig extends atoum
      */
     public function testIsSelfExcluded()
     {
-        $this->boolean($this->fields_config->isSelfExcluded('bool_admin_adh'))->isTrue();
-        $this->boolean($this->fields_config->isSelfExcluded('info_adh'))->isTrue();
-        $this->boolean($this->fields_config->isSelfExcluded('nom_adh'))->isFalse();
+        $this->assertTrue($this->fields_config->isSelfExcluded('bool_admin_adh'));
+        $this->assertTrue($this->fields_config->isSelfExcluded('info_adh'));
+        $this->assertFalse($this->fields_config->isSelfExcluded('nom_adh'));
     }
 
     /**
@@ -306,7 +298,7 @@ class FieldsConfig extends atoum
                 break;
             }
         }
-        $this->boolean($exists)->isTrue();
+        $this->assertTrue($exists);
 
         $delete = $this->zdb->delete(\Galette\Entity\FieldsConfig::TABLE);
         $delete->where(
@@ -316,14 +308,15 @@ class FieldsConfig extends atoum
             ]
         );
         $res = $this->zdb->execute($delete);
-        $this->integer($res->count())->isIdenticalTo(1);
+        $this->assertSame(1, $res->count());
 
         $fields_config->load();
 
         $categorized = $fields_config->getCategorizedFields();
-        $this->integer(
+        $this->assertSame(
+            13,
             count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
-        )->isIdenticalTo(13);
+        );
 
         //new object instanciation should add missing field back
         $fields_config = new \Galette\Entity\FieldsConfig(
@@ -334,7 +327,7 @@ class FieldsConfig extends atoum
         );
 
         $categorized = $fields_config->getCategorizedFields();
-        $this->array($categorized)->isIdenticalTo($categorized_init);
+        $this->assertSame($categorized_init, $categorized);
     }
 
     /**
@@ -346,11 +339,11 @@ class FieldsConfig extends atoum
     {
         $this->zdb->db->query(
             'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
         $this->zdb->db->query(
             'DELETE FROM ' . PREFIX_DB . \Galette\Entity\FieldsCategories::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
 
         //new object instanciation should add missing fieldis and categories
@@ -375,53 +368,50 @@ class FieldsConfig extends atoum
         $fields_config = $this->fields_config;
         $fields_config->load();
 
-        $admin_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($admin_login)->isAdmin = true;
+        $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $admin_login->method('isAdmin')->willReturn(true);
 
         $elements = $fields_config->getDisplayElements($admin_login);
-        $this->array($elements)
-            ->hasSize(3);
+        $this->assertCount(3, $elements);
 
-        $this->object($elements[0])->isInstanceOf('\stdClass');
-        $this->integer($elements[0]->id)->isIdenticalTo(1);
-        $this->array($elements[0]->elements)->hasSize(8);
+        $this->assertInstanceOf('\stdClass', $elements[0]);
+        $this->assertSame(1, $elements[0]->id);
+        $this->assertCount(8, $elements[0]->elements);
 
-        $this->object($elements[1])->isInstanceOf('\stdClass');
-        $this->integer($elements[1]->id)->isIdenticalTo(3);
-        $this->array($elements[1]->elements)->hasSize(8);
+        $this->assertInstanceOf('\stdClass', $elements[1]);
+        $this->assertSame(3, $elements[1]->id);
+        $this->assertCount(8, $elements[1]->elements);
 
-        $this->object($elements[2])->isInstanceOf('\stdClass');
-        $this->integer($elements[2]->id)->isIdenticalTo(2);
-        $this->array($elements[2]->elements)
-            ->hasSize(10)
-            ->hasKey('info_adh');
+        $this->assertInstanceOf('\stdClass', $elements[2]);
+        $this->assertSame(2, $elements[2]->id);
+        $this->assertCount(10, $elements[2]->elements);
+        $this->assertTrue(isset($elements[2]->elements['info_adh']));
 
-        $user_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($user_login)->isUp2Date = true;
+        $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isUp2Date'))
+            ->getMock();
+        $user_login->method('isUp2Date')->willReturn(true);
+
 
         $elements = $fields_config->getDisplayElements($user_login);
-        $this->array($elements)
-            ->hasSize(3);
+        $this->assertCount(3, $elements);
 
-        $this->object($elements[0])->isInstanceOf('\stdClass');
-        $this->integer($elements[0]->id)->isIdenticalTo(1);
-        $this->array($elements[0]->elements)->hasSize(7);
+        $this->assertInstanceOf('\stdClass', $elements[0]);
+        $this->assertSame(1, $elements[0]->id);
+        $this->assertCount(7, $elements[0]->elements);
 
-        $this->object($elements[1])->isInstanceOf('\stdClass');
-        $this->integer($elements[1]->id)->isIdenticalTo(3);
-        $this->array($elements[1]->elements)->hasSize(8);
+        $this->assertInstanceOf('\stdClass', $elements[1]);
+        $this->assertSame(3, $elements[1]->id);
+        $this->assertCount(8, $elements[1]->elements);
 
-        $this->object($elements[2])->isInstanceOf('\stdClass');
-        $this->integer($elements[2]->id)->isIdenticalTo(2);
-        $this->array($elements[2]->elements)
-            ->hasSize(4)
-            ->notHasKey('info_adh');
+        $this->assertInstanceOf('\stdClass', $elements[2]);
+        $this->assertSame(2, $elements[2]->id);
+        $this->assertCount(4, $elements[2]->elements);
+        $this->assertFalse(isset($elements[2]->elements['info_adh']));
     }
 
     /**
@@ -434,107 +424,98 @@ class FieldsConfig extends atoum
         $fields_config = $this->fields_config;
         $fields_config->load();
 
-        $admin_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($admin_login)->isAdmin = true;
+        $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $admin_login->method('isAdmin')->willReturn(true);
 
         $elements = $fields_config->getFormElements($admin_login, false);
-        $this->array($elements)
-            ->hasSize(2)
-            ->hasKeys(['fieldsets', 'hiddens']);
+        $this->assertCount(2, $elements);
+        $this->assertTrue(isset($elements['fieldsets']));
+        $this->assertTrue(isset($elements['hiddens']));
 
-        $this->array($elements['fieldsets'])
-            ->hasSize(3);
+        $this->assertCount(3, $elements['fieldsets']);
 
-        $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
-        $this->array($elements['fieldsets'][0]->elements)->hasSize(11);
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
+        $this->assertSame(1, $elements['fieldsets'][0]->id);
+        $this->assertCount(11, $elements['fieldsets'][0]->elements);
 
-        $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
+        $this->assertSame(3, $elements['fieldsets'][1]->id);
+        $this->assertCount(8, $elements['fieldsets'][1]->elements);
 
-        $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
-        $this->array($elements['fieldsets'][2]->elements)
-            ->hasSize(10)
-            ->hasKey('info_adh');
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][2]);
+        $this->assertSame(2, $elements['fieldsets'][2]->id);
+        $this->assertCount(10, $elements['fieldsets'][2]->elements);
+        $this->assertTrue(isset($elements['fieldsets'][2]->elements['info_adh']));
 
-        $this->array($elements['hiddens'])
-            ->hasSize(2);
+        $this->assertCount(2, $elements['hiddens']);
 
-        $user_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($user_login)->isUp2Date = true;
+        $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isUp2Date'))
+            ->getMock();
+        $user_login->method('isUp2Date')->willReturn(true);
 
         $elements = $fields_config->getFormElements($user_login, false);
-        $this->array($elements)
-            ->hasSize(2)
-            ->hasKeys(['fieldsets', 'hiddens']);
+        $this->assertCount(2, $elements);
+        $this->assertTrue(isset($elements['fieldsets']));
+        $this->assertTrue(isset($elements['hiddens']));
 
-        $this->array($elements['fieldsets'])
-            ->hasSize(3);
+        $this->assertCount(3, $elements['fieldsets']);
 
-        $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
-        $this->array($elements['fieldsets'][0]->elements)->hasSize(10);
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
+        $this->assertSame(1, $elements['fieldsets'][0]->id);
+        $this->assertCount(10, $elements['fieldsets'][0]->elements);
 
-        $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
+        $this->assertSame(3, $elements['fieldsets'][1]->id);
+        $this->assertCount(8, $elements['fieldsets'][1]->elements);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
-        $this->boolean($mail->required)->isFalse(); //email is not required per default
+        $this->assertFalse($mail->required); //email is not required per default
 
-        $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
-        $this->array($elements['fieldsets'][2]->elements)
-            ->hasSize(4)
-            ->notHasKey('info_adh');
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][2]);
+        $this->assertSame(2, $elements['fieldsets'][2]->id);
+        $this->assertCount(4, $elements['fieldsets'][2]->elements);
+        $this->assertFalse(isset($elements['fieldsets'][2]->elements['info_adh']));
 
         $login = $elements['fieldsets'][2]->elements['login_adh'];
-        $this->boolean($login->required)->isTrue();
+        $this->assertTrue($login->required);
         $pass  = $elements['fieldsets'][2]->elements['mdp_adh'];
-        $this->boolean($pass->required)->isTrue();
+        $this->assertTrue($pass->required);
 
-        $this->array($elements['hiddens'])
-            ->hasSize(2);
+        $this->assertCount(2, $elements['hiddens']);
 
         //form elements for self subscription
-        $no_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
+        $no_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->getMock();
+
         $elements = $fields_config->getFormElements($no_login, false, true);
-        $this->array($elements)
-            ->hasSize(2)
-            ->hasKeys(['fieldsets', 'hiddens']);
+        $this->assertCount(2, $elements);
+        $this->assertTrue(isset($elements['fieldsets']));
+        $this->assertTrue(isset($elements['hiddens']));
 
-        $this->array($elements['fieldsets'])
-            ->hasSize(3);
+        $this->assertCount(3, $elements['fieldsets']);
 
-        $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
-        $this->array($elements['fieldsets'][0]->elements)->hasSize(10);
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
+        $this->assertSame(1, $elements['fieldsets'][0]->id);
+        $this->assertCount(10, $elements['fieldsets'][0]->elements);
 
-        $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
-        $this->array($elements['fieldsets'][1]->elements)->hasSize(8);
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
+        $this->assertSame(3, $elements['fieldsets'][1]->id);
+        $this->assertCount(8, $elements['fieldsets'][1]->elements);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
-        $this->boolean($mail->required)->isTrue(); //email is required for self subscription
+        $this->assertTrue($mail->required); //email is required for self subscription
 
-        $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
-        $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
-        $this->array($elements['fieldsets'][2]->elements)
-            ->hasSize(4)
-            ->notHasKey('info_adh');
+        $this->assertInstanceOf('\stdClass', $elements['fieldsets'][2]);
+        $this->assertSame(2, $elements['fieldsets'][2]->id);
+        $this->assertCount(4, $elements['fieldsets'][2]->elements);
+        $this->assertFalse(isset($elements['fieldsets'][2]->elements['info_adh']));
 
-        $this->array($elements['hiddens'])
-             ->hasSize(2);
+        $this->assertCount(2, $elements['hiddens']);
     }
 }

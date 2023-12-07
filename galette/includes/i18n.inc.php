@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2020 The Galette Team
+ * Copyright © 2003-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,7 +30,7 @@
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2020 The Galette Team
+ * @copyright 2003-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
@@ -41,8 +41,7 @@ if (!defined('GALETTE_ROOT')) {
 }
 
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
-use Galette\Core\L10n;
+use Galette\Core\Galette;
 
 $i18n->updateEnv();
 global $language;
@@ -92,7 +91,7 @@ function _T($string, $domain = 'galette', $nt = true)
     if (!$trans) {
         $trans = $string;
 
-        if (GALETTE_MODE == 'DEV' && $nt === true) {
+        if (Galette::isDebugEnabled() && $nt === true) {
             $trans .= ' (not translated)';
         }
     }
@@ -145,7 +144,7 @@ function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
     if (!$trans) {
         $trans = ($count > 1 ? $plural : $singular);
 
-        if (GALETTE_MODE == 'DEV' && $nt === true) {
+        if (Galette::isDebugEnabled() && $nt === true) {
             $trans .= ' (not translated)';
         }
     }
@@ -183,7 +182,7 @@ function _Tx($context, $string, $domain = 'galette', $nt = true)
     if (!$trans) {
         $trans = $ret;
 
-        if (GALETTE_MODE == 'DEV' && $nt === true) {
+        if (Galette::isDebugEnabled() && $nt === true) {
             $trans .= ' (not translated)';
         }
     }
@@ -236,7 +235,7 @@ function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = t
     if (!$trans) {
         $trans = $ret;
 
-        if (GALETTE_MODE == 'DEV' && $nt === true) {
+        if (Galette::isDebugEnabled() && $nt === true) {
             $trans .= ' (not translated)';
         }
     }

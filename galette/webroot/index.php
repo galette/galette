@@ -49,7 +49,7 @@ $cm = new Galette\Core\CheckModules(false);
 $cm->doCheck(false); //do not load with translations!
 
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !$cm->isValid()) {
-    header('location: compat_test.php');
+    header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');
     die(1);
 }
 

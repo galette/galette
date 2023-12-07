@@ -1,0 +1,11 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+.ui.right.aligned.toggle.checkbox label {
+    font-weight: bold;
+}
+.ui.right.aligned.toggle.checkbox input:checked ~ label,
+.ui.right.aligned.toggle.checkbox input:active ~ label {
+ color: @textColor !important;
+}

@@ -1,0 +1,74 @@
+{% extends 'elements/list.html.twig' %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count search", "%count searches", nb)|replace({"%count": nb}),
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#'},
+        {'label': _T("Creation date")},
+        {'label': _T("Name")},
+        {'label': _T("Parameters")}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% for search in searches %}
+        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+            <td data-scope="row">
+                {% if preferences.pref_show_id %}
+                    {{ search.id }}
+                {% else %}
+                    {{ loop.index1 }}
+                {% endif %}
+            </td>
+            <td class="left" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
+            <td class="left" data-col-label="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
+            <td class="left" data-col-label="{{ _T("Search parameters") }}">
+                <details class="ui basic styled accordion">
+                    <summary class="title">
+                        <i class="info circle primary icon" aria-hidden="true"></i> {{ _T("Show parameters") }}
+                    </summary>
+                    <div class="content">
+        {% for key, parameter in search.sparameters %}
+                        <strong>{{ key }}:</strong> {{ parameter }}{% if not loop.last %}<br />{% endif %}
+        {% endfor %}
+                    </div>
+                </details>
+            </td>
+            <td class="center actions_row">
+                <a
+                        href="{{ url_for("loadSearch", {"id": search.id}) }}"
+                >
+                    <i class="ui search icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Load saved search") }}</span>
+                </a>
+
+                <a
+                        href="{{ url_for("removeSearch", {"id": search.id}) }}"
+                        class="delete"
+                >
+                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Remove saved search") }}</span>
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="emptylist">{{ _T("no search") }}</td></tr>
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                {% include "elements/js/removal.js.twig" with {
+                    single_action: "true"
+                } %}
+            });
+        </script>
+{% endblock %}

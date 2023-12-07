@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -36,6 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Galette\Core\Db;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -47,7 +49,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      ImportModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -96,11 +98,11 @@ class ImportModel
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $this->id = $r->model_id;
         $this->fields = unserialize($r->model_fields);
@@ -114,22 +116,18 @@ class ImportModel
      *
      * @return boolean
      */
-    public function remove($zdb)
+    public function remove(Db $zdb)
     {
         try {
-            $result = $zdb->db->query(
+            $zdb->db->query(
                 'TRUNCATE TABLE ' . PREFIX_DB . self::TABLE,
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            if ($result) {
-                $this->id = null;
-                $this->fields = null;
-                $this->creation_date = null;
-                return true;
-            }
-
-            return false;
+            $this->id = null;
+            $this->fields = null;
+            $this->creation_date = null;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to remove import model ' . $e->getMessage(),
@@ -146,7 +144,7 @@ class ImportModel
      *
      * @return boolean
      */
-    public function store($zdb)
+    public function store(Db $zdb)
     {
         try {
             $values = array(
@@ -192,7 +190,7 @@ class ImportModel
     /**
      * Get fields
      *
-     * @return array
+     * @return ?array
      */
     public function getFields()
     {
@@ -221,7 +219,7 @@ class ImportModel
      *
      * @param array $fields Fields list
      *
-     * @return void
+     * @return ImportModel
      */
     public function setFields($fields)
     {

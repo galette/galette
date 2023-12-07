@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.73dev 2012-10-16
@@ -53,7 +53,7 @@ use Galette\Repository\PaymentTypes;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
@@ -77,7 +77,7 @@ use Galette\Repository\PaymentTypes;
  * @property array $payments_types
  * @property integer $contrib_min_amount
  * @property integer $contrib_max_amount
- * @property string $contrib_dynamic
+ * @property array $contrib_dynamic
  * @property array $free_search
  * @property array $groups_search
  * @property integer $groups_search_log_op
@@ -101,7 +101,6 @@ use Galette\Repository\PaymentTypes;
 
 class AdvancedMembersList extends MembersList
 {
-
     public const OP_AND = 0;
     public const OP_OR = 1;
 
@@ -235,7 +234,7 @@ class AdvancedMembersList extends MembersList
             || $this->_contrib_begin_date_begin != null
             || $this->_contrib_begin_date_end != null
             || $this->_contrib_end_date_begin != null
-            || $this->_contrib_begin_date_end != null
+            || $this->_contrib_end_date_end != null
             || $this->_contrib_min_amount != null
             || $this->_contrib_max_amount != null
             || count($this->_contrib_dynamic) > 0
@@ -302,7 +301,7 @@ class AdvancedMembersList extends MembersList
      *
      * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -391,10 +390,36 @@ class AdvancedMembersList extends MembersList
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (
+            in_array($name, $this->pagination_fields)
+            || in_array($name, $this->memberslist_fields)
+        ) {
+            return true;
+        } else {
+            if (
+                in_array($name, $this->advancedmemberslist_fields)
+                || in_array($name, $this->virtuals_advancedmemberslist_fields)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */

@@ -1,0 +1,16 @@
+{% if show_inline is not defined %}
+<div class="field">
+{% else %}
+<div class="field">
+{% endif %}
+    <label for="{{ varname }}">{% if label is defined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}</label>
+    <select name="{{ varname }}" id="{{ varname }}" class="ui search dropdown nochosen">
+{% if empty is defined %}
+        <option value="{{ empty.value }}">{{ empty.label }}</option>
+{% endif %}
+{% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll') %}
+{% for ptype in ptypes %}
+        <option value="{{ ptype.id }}"{% if current == ptype.id %} selected="selected"{% endif %}>{{ ptype.getName() }}</option>
+{% endfor %}
+    </select>
+</div>

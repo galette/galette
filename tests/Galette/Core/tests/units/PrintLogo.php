@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2017-07-08
  */
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Picture tests class
@@ -46,23 +45,21 @@ use atoum;
  * @name      PrintLogo
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-07-08
  */
-class PrintLogo extends atoum
+class PrintLogo extends TestCase
 {
-    private $zdb;
+    private \Galette\Core\Db $zdb;
 
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         global $zdb;
         $this->zdb = new \Galette\Core\Db();
@@ -72,14 +69,12 @@ class PrintLogo extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -93,14 +88,14 @@ class PrintLogo extends atoum
         global $zdb;
         $zdb = $this->zdb;
         $logo = new \Galette\Core\PrintLogo();
-        $this->variable($logo->getDestDir())->isNull();
-        $this->variable($logo->getFileName())->isNull();
+        $this->assertNull($logo->getDestDir());
+        $this->assertNull($logo->getFileName());
 
         $expected_path = realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.png');
-        $this->string($logo->getPath())->isIdenticalTo($expected_path);
+        $this->assertSame($expected_path, $logo->getPath());
 
-        $this->string($logo->getMime())->isIdenticalTo('image/png');
-        $this->string($logo->getFormat())->isIdenticalTo('png');
-        $this->boolean($logo->isCustom())->isFalse();
+        $this->assertSame('image/png', $logo->getMime());
+        $this->assertSame('png', $logo->getFormat());
+        $this->assertFalse($logo->isCustom());
     }
 }

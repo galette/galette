@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     march, 3rd 2009
@@ -38,6 +38,7 @@ namespace Galette\Filters;
 
 use Analog\Analog;
 use Galette\Core\Pagination;
+use Galette\Core\Preferences;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
 
@@ -49,15 +50,15 @@ use Galette\Repository\Members;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
  * @property string $filter_str
- * @property string $field_filter
- * @property string $membership_filter
+ * @property integer $field_filter
+ * @property integer $membership_filter
  * @property integer $filter_account
- * @property string $email_filter
+ * @property integer $email_filter
  * @property integer $group_filter
  * @property array $selected
  * @property array $unreachable
@@ -102,7 +103,7 @@ class MembersList extends Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     protected function getDefaultOrder()
     {
@@ -131,9 +132,9 @@ class MembersList extends Pagination
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -157,10 +158,29 @@ class MembersList extends Pagination
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (in_array($name, $this->pagination_fields)) {
+            return true;
+        } elseif (in_array($name, $this->memberslist_fields)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -262,11 +282,11 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Preferences $prefs Preferences instance
-     * @param Smarty      $view  Smarty template reference
+     * @param mixed       $view  Template reference
      *
      * @return void
      */
-    public function setViewCommonsFilters($prefs, \Smarty $view)
+    public function setViewCommonsFilters(Preferences $prefs, $view)
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),
@@ -282,12 +302,12 @@ class MembersList extends Pagination
             $filter_options[Members::FILTER_ID] = _T("Member ID");
         }
 
-        $view->assign(
+        $view->getEnvironment()->addGlobal(
             'field_filter_options',
             $filter_options
         );
 
-        $view->assign(
+        $view->getEnvironment()->addGlobal(
             'membership_filter_options',
             array(
                 Members::MEMBERSHIP_ALL     => _T("All members"),
@@ -301,7 +321,7 @@ class MembersList extends Pagination
             )
         );
 
-        $view->assign(
+        $view->getEnvironment()->addGlobal(
             'filter_accounts_options',
             array(
                 Members::ALL_ACCOUNTS       => _T("All accounts"),

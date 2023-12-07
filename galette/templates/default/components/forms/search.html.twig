@@ -1,0 +1,12 @@
+{% include "components/forms/input.html.twig" with {
+        type: "text",
+        name: entry.field_id,
+        id: entry.field_id,
+        required: entry.required,
+        disabled: entry.disabled,
+        label: entry.label,
+        autocomplete: "off",
+        search_id: entry.field_id ~ '_field',
+        elt_class: 'prompt'
+    }
+%}

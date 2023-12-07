@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2021 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-31
@@ -36,6 +36,8 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -54,7 +56,7 @@ use Galette\Filters\TransactionsList;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -92,13 +94,13 @@ class Transactions
      *
      * @param bool    $as_trans return the results as an array of
      *                          Transaction object.
-     * @param array   $fields   field(s) name(s) to get. Should be a string or
+     * @param ?array  $fields   field(s) name(s) to get. Should be a string or
      *                          an array. If null, all fields will be returned
      * @param boolean $count    true if we want to count members
      *
-     * @return Transaction[]|ResultSet
+     * @return Transaction[]|ArrayObject
      */
-    public function getList($as_trans = false, $fields = null, $count = true)
+    public function getList(bool $as_trans = false, ?array $fields = null, bool $count = true): array|ArrayObject
     {
         try {
             $select = $this->buildSelect($fields, $count);
@@ -108,6 +110,7 @@ class Transactions
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
+                    /** @var ArrayObject $row */
                     $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
             } else {
@@ -119,36 +122,33 @@ class Transactions
                 'Cannot list transactions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
     /**
      * Builds the SELECT statement
      *
-     * @param array $fields fields list to retrieve
-     * @param bool  $count  true if we want to count members
-     *                      (not applicable from static calls), defaults to false
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $count  true if we want to count members
+     *                       (not applicable from static calls), defaults to false
      *
-     * @return string SELECT statement
+     * @return Select SELECT statement
      */
-    private function buildSelect($fields, $count = false)
+    private function buildSelect(?array $fields, bool $count = false): Select
     {
         try {
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
-
             $select = $this->zdb->select(self::TABLE, 't');
-            $select->columns(
-                array(
+            if ($fields === null || !count($fields)) {
+                $fields = array(
                     'trans_date',
                     'trans_id',
                     'trans_desc',
                     'id_adh',
                     'trans_amount'
-                )
-            )->join(
+                );
+            }
+            $select->columns($fields)->join(
                 array('a' => PREFIX_DB . Adherent::TABLE),
                 't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
                 array('nom_adh', 'prenom_adh')
@@ -167,7 +167,7 @@ class Transactions
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -196,22 +196,20 @@ class Transactions
 
             $k = self::PK;
             $this->count = $result->$k;
-            if ($this->count > 0) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count transactions | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     private function buildOrderClause()
     {
@@ -244,13 +242,13 @@ class Transactions
      *
      * @param Select $select Original select
      *
-     * @return string SQL WHERE clause
+     * @return void
      */
     private function buildWhereClause($select)
     {
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->start_date_filter);
+                $d = new \DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
@@ -258,7 +256,7 @@ class Transactions
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->end_date_filter);
+                $d = new \DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
@@ -281,7 +279,7 @@ class Transactions
                     );
                     if (
                         !$member->hasParent() ||
-                        $member->hasParent() && $member->parent->id != $this->login->id
+                        $member->parent->id != $this->login->id
                     ) {
                         Analog::log(
                             'Trying to display transactions for member #' . $member->id .
@@ -339,12 +337,12 @@ class Transactions
     /**
      * Remove specified transactions
      *
-     * @param interger|array $ids  Transactions identifiers to delete
-     * @param History        $hist History
+     * @param array|integer $ids  Transactions identifiers to delete
+     * @param History       $hist History
      *
      * @return boolean
      */
-    public function remove($ids, History $hist)
+    public function remove(array|int $ids, History $hist)
     {
         $list = array();
         if (is_numeric($ids)) {
@@ -354,42 +352,32 @@ class Transactions
             $list = $ids;
         }
 
-        if (is_array($list)) {
-            $res = true;
-            try {
-                $this->zdb->connection->beginTransaction();
+        try {
+            $this->zdb->connection->beginTransaction();
 
-                $select = $this->zdb->select(self::TABLE);
-                $select->where->in(self::PK, $list);
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->in(self::PK, $list);
 
-                $results = $this->zdb->execute($select);
-                foreach ($results as $transaction) {
-                    $c = new Transaction($this->zdb, $this->login, $transaction);
-                    $res = $c->remove($hist, false);
-                    if ($res === false) {
-                        throw new \Exception();
-                    }
+            $results = $this->zdb->execute($select);
+            foreach ($results as $transaction) {
+                /** @var ArrayObject $transaction */
+                $c = new Transaction($this->zdb, $this->login, $transaction);
+                $res = $c->remove($hist, false);
+                if ($res === false) {
+                    throw new \Exception();
                 }
-                $this->zdb->connection->commit();
-                $hist->add(
-                    "Transactions deleted (" . print_r($list, true) . ')'
-                );
-                return true;
-            } catch (Throwable $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'An error occurred trying to remove transactions | ' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
-                return false;
             }
-        } else {
-            //not numeric and not an array: incorrect.
+            $this->zdb->connection->commit();
+            $hist->add(
+                "Transactions deleted (" . print_r($list, true) . ')'
+            );
+            return true;
+        } catch (Throwable $e) {
+            $this->zdb->connection->rollBack();
             Analog::log(
-                'Asking to remove transaction, but without providing ' .
-                'an array or a single numeric value.',
-                Analog::WARNING
+                'An error occurred trying to remove transactions | ' .
+                $e->getMessage(),
+                Analog::ERROR
             );
             return false;
         }

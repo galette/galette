@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,15 +28,13 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-12-09
  */
 
 namespace Galette\Core;
-
-use Analog\Analog;
 
 /**
  * Plugin controllers trait
@@ -45,7 +43,7 @@ use Analog\Analog;
  * @name      PluginControllerTrait
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-12-09
@@ -55,8 +53,8 @@ trait PluginControllerTrait
 {
     /**
      * Something like:
-     * Inject("Plugin Galette Name")
-     * @var integer
+     * #[Inject("Plugin Galette Name")]
+     * @var array
      */
     protected $module_info;
 
@@ -77,5 +75,17 @@ trait PluginControllerTrait
     protected function getModuleRoute()
     {
         return $this->module_info['module']['route'];
+    }
+
+    /**
+     * Get plugin template name for Twig
+     *
+     * @param $name Template name
+     *
+     * @return string
+     */
+    protected function getTemplate($name): string
+    {
+        return sprintf('@%s/%s.html.twig', $this->plugins->getClassName($this->getModuleId()), $name);
     }
 }

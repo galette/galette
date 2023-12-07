@@ -73,7 +73,7 @@ if (!defined('GALETTE_TCPDF_PATH')) {
 if ( !defined('GALETTE_SLIM_VIEWS_PATH') ) {
     define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views');
 }*/
-if ( !defined('GALETTE_XHPROF_PATH') ) {
+if (!defined('GALETTE_XHPROF_PATH')) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
 }
 
@@ -119,4 +119,8 @@ if (!defined('GALETTE_TEMPIMAGES_PATH')) {
 }
 if (!defined('GALETTE_TELEMETRY_URI')) {
     define('GALETTE_TELEMETRY_URI', 'https://telemetry.galette.eu/');
+}
+
+if (!defined('GALETTE_TPL_THEME_DIR')) {
+    define('GALETTE_TPL_THEME_DIR', GALETTE_ROOT . 'templates/default/');
 }

@@ -1,0 +1,126 @@
+<div class="ui stackable grid align-items-center">
+    <div class="eleven wide column">
+        <table id="listing" class="listing select_members{% if not multiple %} single{% endif %} ui celled table">
+            <thead>
+                <tr>
+                    <th class="listing id_row">#</th>
+                    <th class="listing left">
+                        {{ _T("Name") }}
+                    </th>
+                    <th class="listing left">
+                        {{ _T("Zip - Town") }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+{% for member in members_list %}
+    {% if excluded is not defined or excluded != member.id %}
+                <tr class="{{ member.getRowClass() }}">
+                    <td class="right">{{ member.id }}</td>
+                    <td class="username_row">
+                    {% if member.isCompany() %}
+                        <span>
+                            <i class="ui building outline icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Company") }}</span>
+                        </span>
+                    {% elseif member.isMan() %}
+                        <span>
+                            <i class="ui male icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Man") }}</span>
+                        </span>
+                    {% elseif member.isWoman() %}
+                        <span>
+                            <i class="ui female icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Woman") }}</span>
+                        </span>
+                    {% else %}
+                        <span>
+                            <i class="ui icon" aria-hidden="true"></i>
+                        </span>
+                    {% endif %}
+                    {% if member.isAdmin() %}
+                        <span>
+                            <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Administrator") }}</span>
+                        </span>
+                    {% elseif member.isStaff() %}
+                        <span>
+                            <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Staff member") }}</span>
+                        </span>
+                    {% elseif member.getManagedGroups() %}
+                        <span>
+                            <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T('Group manager') }}</span>
+                        </span>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
+                    <a href="{{ url_for('member', {'id': member.id}) }}" class="choice">{{ member.sfullname }}</a>
+                    </td>
+                    <td>{{ member.zipcode }} {{ member.town }}</td>
+                </tr>
+    {% endif %}
+{% else %}
+                <tr><td colspan="3" class="emptylist">{{ _T("no member") }}</td></tr>
+{% endfor %}
+            </tbody>
+{% if is_paginated %}
+            <tfoot>
+            {# keep this one after "tbody" element to prevent display issues #}
+                <tr>
+                    <td colspan="3" class="center">
+                        <div class="ui basic left aligned fitted segment">
+                            <div class="ui inverted pagination stackable menu">
+                                <div class="header item">
+                                    {{ _T('Pages:') }}
+                                </div>
+                                {{ pagination|raw }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+{% endif %}
+        </table>
+    </div>
+{% if multiple %}
+    <div class="five wide column">
+        <section id="selected_members" class="ui basic fitted segment">
+            <div class="ui top attached accordion-styled header">
+                {{ _T("Selected members") }}
+            </div>
+            <div class="ui bottom attached accordion-styled segment">
+    {% for recipient in selected_members %}
+    {% else %}
+                <p id="none_selected">{{ _T("No members has been selected yet.") }}</p>
+    {% endfor %}
+                <ul class="ui middle aligned relaxed divided selection list">
+    {% for recipient in selected_members %}
+                    <li id="member_{{ recipient.id }}" class="item">
+                        <i class="ui user minus icon" aria-hidden="true"></i>
+                        <span class="ui content">{{ recipient.sfullname }}</span>
+                    </li>
+    {% endfor %}
+    {% if unreachables_members is defined and unreachables_members|length > 0 %}
+        {% for recipient in unreachables_members %}
+                    <li id="member_{{ recipient.id }}" class="item">
+                        <i class="icons">
+                            <i class="dont disabled icon" aria-hidden="true"></i>
+                            <i class="top right corner minus icon" aria-hidden="true"></i>
+                        </i>
+                        <span class="ui disabled content">{{ recipient.sfullname }}</span>
+                    </li>
+        {% endfor %}
+    {% endif %}
+                </ul>
+            </div>
+            <div class="ui basic center aligned fitted segment">
+                <button class="ui fluid primary button" id="btnvalid">{{ _T("Validate") }}</button>
+                {% if the_id is defined %}
+                    <input type="hidden" name="the_id" id="the_id" value="{{ the_id }}"/>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+{% endif %}

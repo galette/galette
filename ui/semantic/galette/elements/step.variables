@@ -1,0 +1,12 @@
+/*******************************
+    Galette Variable Overrides
+*******************************/
+
+/* -------------------
+       States
+-------------------- */
+
+/* Active */
+@activeBackground: @lightPrimaryColor;
+@activeColor: @textColor;
+@activeIconColor: @textColor;

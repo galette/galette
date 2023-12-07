@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -37,8 +37,10 @@
 namespace Galette\Controllers;
 
 use Psr\Container\ContainerInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
+use Slim\Routing\RouteContext;
+use Slim\Routing\RouteParser;
 
 /**
  * Galette abstract controller
@@ -47,7 +49,7 @@ use Slim\Http\Response;
  * @name      AbstractController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -57,100 +59,94 @@ abstract class AbstractController
 {
     private $container;
     /**
-     * @Inject
      * @var \Galette\Core\Db
      */
+    #[Inject]
     protected $zdb;
     /**
-     * @Inject
      * @var \Galette\Core\Login
      */
+    #[Inject]
     protected $login;
     /**
-     * @Inject
      * @var \Galette\Core\Preferences
      */
+    #[Inject]
     protected $preferences;
     /**
-     * @Inject
-     * @var \Slim\Views\Smarty
+     * @var \Slim\Views\Twig
      */
     protected $view;
     /**
-     * @Inject
      * @var \Galette\Core\Logo
      */
+    #[Inject]
     protected $logo;
     /**
-     * @Inject
      * @var \Galette\Core\PrintLogo
      */
+    #[Inject]
     protected $print_logo;
     /**
-     * @Inject("plugins")
      * @var \Galette\Core\Plugins
      */
+    #[Inject]
     protected $plugins;
     /**
-     * @Inject
-     * @var \Slim\Router
+     * @var \Slim\Routing\RouteParser
      */
-    protected $router;
+    #[Inject]
+    protected $routeparser;
     /**
-     * @Inject
      * @var \Galette\Core\History
      */
+    #[Inject]
     protected $history;
     /**
-     * @Inject
      * @var \Galette\Core\I18n
      */
+    #[Inject]
     protected $i18n;
     /**
-     * @Inject
      * @var \Galette\Core\L10n
      */
+    #[Inject]
     protected $l10n;
     /**
-     * @Inject("session")
+     * Session
      */
+    #[Inject("session")]
     protected $session;
     /**
-     * @Inject
      * @var \Slim\Flash\Messages
      */
+    #[Inject]
     protected $flash;
     /**
-     * @Inject
      * @var \Galette\Entity\FieldsConfig
      */
+    #[Inject]
     protected $fields_config;
     /**
-     * @Inject
      * @var \Galette\Entity\ListsConfig
      */
+    #[Inject]
     protected $lists_config;
     /**
-     * @Inject("members_fields")
      * @var array
      */
+    #[Inject("members_fields")]
     protected $members_fields;
     /**
-     * @Inject("members_form_fields")
      * @var array
      */
+    #[Inject("members_form_fields")]
     protected $members_form_fields;
     /**
-     * @Inject("members_fields_cats")
      * @var array
      */
+    #[Inject("members_fields_cats")]
     protected $members_fields_cats;
-
-    /**
-     * @Inject
-     * @var \Galette\Handlers\NotFound
-     */
-    protected $notFoundHandler;
 
     /**
      * Constructor
@@ -164,10 +160,10 @@ abstract class AbstractController
         $this->zdb = $container->get('zdb');
         $this->login = $container->get('login');
         $this->preferences = $container->get('preferences');
-        $this->view = $container->get('view');
+        $this->view = $container->get(\Slim\Views\Twig::class);
         $this->logo = $container->get('logo');
         $this->print_logo = $container->get('print_logo');
-        $this->router = $container->get('router');
+        $this->routeparser = $container->get(RouteParser::class);
         $this->history = $container->get('history');
         $this->i18n = $container->get('i18n');
         $this->l10n = $container->get('l10n');
@@ -175,10 +171,10 @@ abstract class AbstractController
         $this->flash = $container->get('flash');
         $this->fields_config = $container->get('fields_config');
         $this->lists_config = $container->get('lists_config');
-        $this->notFoundHandler = $container->get('notFoundHandler');
         $this->members_fields = $container->get('members_fields');
         $this->members_form_fields = $container->get('members_form_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
+        $this->plugins = $container->get('plugins');
     }
 
     /**
@@ -223,22 +219,22 @@ abstract class AbstractController
                     ) {
                         return $response
                             ->withStatus(301)
-                            ->withHeader('Location', $this->router->pathFor('dashboard'));
+                            ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
                     } else {
                         return $response
                             ->withStatus(301)
-                            ->withHeader('Location', $this->router->pathFor('members'));
+                            ->withHeader('Location', $this->routeparser->urlFor('members'));
                     }
                 } else {
                     return $response
                         ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('dashboard'));
+                        ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
                 }
             }
         } else {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('login'));
+                ->withHeader('Location', $this->routeparser->urlFor('login'));
         }
     }
 
@@ -251,13 +247,15 @@ abstract class AbstractController
      */
     private function getGaletteBaseUrl(Request $request)
     {
+        $routeContext = RouteContext::fromRequest($request);
+
         $url = preg_replace(
             [
                 '|index\.php|',
                 '|https?://' . $_SERVER['HTTP_HOST'] . '(:\d+)?' . '|'
             ],
             ['', ''],
-            $request->getUri()->getBaseUrl()
+            $routeContext->getBasePath()
         );
         if (strlen($url) && substr($url, -1) !== '/') {
             $url .= '/';
@@ -275,8 +273,26 @@ abstract class AbstractController
      */
     protected function getArgs(Request $request): array
     {
-        $route = $request->getAttribute('route');
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
         $args = $route->getArguments();
         return $args;
+    }
+
+    /**
+     * Get a JSON response
+     *
+     * @param Response $response Response instance
+     * @param array    $data     Data to send
+     * @param int      $status   HTTP status code
+     *
+     * @return Response
+     */
+    protected function withJson(Response $response, array $data, int $status = 200): Response
+    {
+        $response = $response->withStatus($status);
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($data));
+        return $response;
     }
 }

@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2021 The Galette Team
+ * Copyright © 2003-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2021 The Galette Team
+ * @copyright 2003-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -52,7 +52,7 @@ use Galette\Entity\Adherent;
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-16
@@ -97,13 +97,11 @@ class Password extends AbstractPassword
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id_adh]);
 
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Temporary passwords for `' . $id_adh . '` has been removed.',
-                    Analog::DEBUG
-                );
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Temporary passwords for `' . $id_adh . '` has been removed.',
+                Analog::DEBUG
+            );
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -141,18 +139,14 @@ class Password extends AbstractPassword
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
 
-            $add = $this->zdb->execute($insert);
-            if ($add) {
-                Analog::log(
-                    'New passwords temporary set for `' . $id_adh . '`.',
-                    Analog::DEBUG
-                );
-                $this->setPassword($password);
-                $this->setHash($hash);
-                return true;
-            } else {
-                return false;
-            }
+            $this->zdb->execute($insert);
+            Analog::log(
+                'New passwords temporary set for `' . $id_adh . '`.',
+                Analog::DEBUG
+            );
+            $this->setPassword($password);
+            $this->setHash($hash);
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add temporary password entry. " .
@@ -168,7 +162,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    protected function cleanExpired(): bool
+    public function cleanExpired(): bool
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));
@@ -179,13 +173,11 @@ class Password extends AbstractPassword
                 'date_crea_tmp_passwd',
                 $date->format('Y-m-d H:i:s')
             );
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Old Temporary passwords have been deleted.',
-                    Analog::DEBUG
-                );
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Old Temporary passwords have been deleted.',
+                Analog::DEBUG
+            );
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -245,14 +237,12 @@ class Password extends AbstractPassword
                 array('tmp_passwd' => $hash)
             );
 
-            $del = $this->zdb->execute($delete);
-            if ($del) {
-                Analog::log(
-                    'Used hash has been successfully remove',
-                    Analog::DEBUG
-                );
-                return true;
-            }
+            $this->zdb->execute($delete);
+            Analog::log(
+                'Used hash has been successfully remove',
+                Analog::DEBUG
+            );
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred attempting to delete used hash' .

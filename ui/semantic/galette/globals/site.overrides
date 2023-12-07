@@ -1,0 +1,619 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+/*---------------
+     Global
+----------------*/
+/* Content using displaynone is ignored by screen readers */
+.displaynone {
+  display: none !important;
+}
+
+/* Content using visually-hidden is read by screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  clip: rect(1px,1px,1px,1px);
+  word-wrap: normal;
+  overflow: hidden;
+
+  &.focusable:active,
+  &.focusable:focus {
+      position: static !important;
+      width: auto;
+      height: auto;
+      clip: auto;
+      overflow: visible;
+  }
+}
+
+.exemple,
+.disabled,
+.disabled a {
+  color: @unselectedTextColor;
+}
+
+.inactive-account {
+  color: lighten(@grey, 15);
+  font-style: italic;
+}
+
+.language span {
+  text-transform: uppercase;
+}
+
+.error-trace pre {
+  overflow-x: auto;
+}
+
+/*---------------------------------------------------------------
+     Override outline on links and navigation elements
+----------------------------------------------------------------*/
+a,
+.ui.button:not(.tertiary),
+.compact_menu .ui.dropdown.item,
+.ui.dropdown.language,
+.infoline .ui.dropdown:not(.tertiary) {
+    &:focus-visible {
+        outline: 3px solid @blueFocus;
+    }
+}
+
+/*---------------------------------
+     Go to main content link
+----------------------------------*/
+.skiptocontent {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: @invertedTextColor;
+  outline: 0;
+  background-color: @black;
+
+  &.focusable:hover,
+  &.focusable:focus {
+    position: absolute !important;
+    width: 100%;
+    z-index: 102;
+    padding: 1rem .5rem;
+    text-align: center;
+    outline: none;
+  }
+
+  &.focusable:hover {
+    color: @invertedTextColor;
+    text-decoration: underline;
+  }
+}
+
+/*--------------------------------
+     Base layout and navigation
+---------------------------------*/
+html {
+  overflow: hidden;
+
+  &.public_page {
+    section.vertically.centered {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      padding-bottom: 120px;
+
+      img.logo {
+        margin-top: 1rem;
+      }
+    }
+  }
+}
+
+body.pushable:not(.loggedin) {
+  & > .pusher {
+    display: flex;
+    justify-content: center;
+  }
+  footer.page-footer {
+    position: relative;
+    z-index: 2;
+    margin-top: -120px;
+  }
+}
+
+.loggedin #main {
+  background-image: url(@galetteBackgroundImage);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  .main-content {
+    padding: 1.25rem;
+  }
+}
+.loggedin #main.rtl {
+  background-image: url(@galetteBackgroundImageRtl);
+  background-position: left top;
+}
+#top-navbar {
+  background: @lightGrey;
+}
+
+#top-navbar.ui.menu .item img.logo {
+  margin-right: 1.5rem;
+  max-height: 2.5rem;
+  width: auto;
+}
+
+#top-navbar div.item a.button:not(:first-child) {
+  margin-left: .5rem;
+}
+
+.ui.grid.align-items-center {
+  align-items: center;
+}
+
+.ui.grid > aside.column:not(.row) {
+  padding-bottom: 2rem;
+}
+
+.ui.fixed.menu + .pusher {
+  padding-top: 3.8rem;
+}
+
+aside.toc,
+.ui.segments.header .compact.segment.right {
+  display: none;
+}
+
+aside .ui.vertical.menu {
+  width: auto;
+  max-width: 100%;
+}
+
+.loggedin .content {
+  .ui.horizontal.segments.header {
+    flex-direction: row-reverse;
+  }
+}
+
+footer,
+footer .ui.horizontal.list .list > .item,
+footer .ui.horizontal.list > .item{
+  font-size: .95rem;
+}
+footer.page-footer {
+  position: relative;
+  background-color: @pageBackground;
+}
+main.pusher ~ footer.page-footer {
+  transition: transform .5s ease;
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: "";
+    background: @lightTextColor;
+    overflow: hidden;
+    opacity: 0;
+    transition: all .5s;
+    will-change: opacity;
+  }
+}
+main.pusher.dimmed {
+  & ~ footer.page-footer {
+    transform: translate3d(260px, 0, 0);
+    &:after {
+      width: 100% !important;
+      height: 100% !important;
+      opacity: 1 !important;
+    }
+  }
+  &.closing ~ footer.page-footer {
+    transform: translate3d(0, 0, 0);
+    z-index: 1;
+    &:after {
+      opacity: 0 !important;
+    }
+  }
+}
+body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
+  z-index: 2;
+}
+
+@media only screen and (max-width: @largestMobileScreen) {
+  html.public_page .ui.ui.ui.container:not(.fluid) {
+    width: 100%;
+  }
+  .core-lists-properties,
+  .core-fields-properties {
+    display: none !important;
+  }
+  .core-lists-listing,
+  .core-fields-listing {
+    i.arrows.alternate {
+      display: block;
+      margin: 1rem auto;
+      &::before {
+        display: block;
+      }
+    }
+  }
+  .core-lists-listing {
+    span[data-prop-label] {
+      display: block;
+      text-align: center;
+      &::before {
+          display: block;
+          content: attr(data-prop-label);
+          text-align: center;
+          font-weight: bold;
+      }
+    }
+  }
+  .core-fields-listing {
+    span[data-prop-label]::before {
+        display: inline-block;
+        content: attr(data-prop-label);
+        width: 10em;
+        font-weight: bold;
+    }
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  #top-navbar nav {
+    display: none;
+  }
+  .sidebar.uncover + .fixed.menu .toc i::before {
+    content: '\f00d';
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  html {
+      overflow-x: visible;
+      -webkit-overflow-scrolling: auto;
+  }
+  .loggedin .ui.top.menu:not(.vertical):not(.tabular):not(.tabs),
+  .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header,
+  .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.toc {
+    display: none;
+  }
+  .loggedin .ui.fixed.menu + .pusher {
+    padding-top: 0;
+  }
+
+  #sidebarmenu {
+    display: none;
+  }
+  .ui.visible.left.sidebar ~ .pusher {
+    transform: translate3d(0, 0, 0) !important;
+    &.dimmed::after {
+      display: none;
+    }
+  }
+  #top-navbar div.item a.button.darkmode span {
+    display: none;
+  }
+
+  aside.computer.toc {
+    background: @galetteNavBackground;
+  }
+
+  aside.toc {
+    display: block;
+    position: fixed !important;
+    height: 100%;
+    overflow-y: scroll;
+    width: 260px;
+    padding: 1.25rem;
+    &.compact_menu {
+      z-index: 1001;
+      width: 85px;
+      overflow-y: initial;
+      #logoutmenu {
+        .ui.dropdown .menu > .item:hover,
+        .ui.dropdown .menu > .active.item {
+          background: @white !important;
+          color: @textColor !important;
+          font-weight: 400 !important;
+          cursor: default;
+        }
+        .brand.header {
+          max-width: 500px;
+          white-space: normal;
+        }
+      }
+      .ui.menu .dropdown.item.active-menu {
+        background: @lightGaletteColor;
+      }
+      .ui.toggle.checkbox {
+        line-height: 1rem;
+        input {
+          width: 3rem;
+          height: 1rem;
+          &:checked ~ label::after {
+            left: 1.35rem;
+          }
+        }
+        label {
+          min-height: 1rem;
+          padding-left: 4rem;
+          &::before {
+            width: 2.4rem;
+            height: 1rem;
+          }
+          &::after {
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .ui.segments.header .compact.segment.right {
+    display: block;
+  }
+
+  html:not(.public_page) body:not(.front-page) footer.page-footer .footer-wrapper,
+  body:not(.front-page) section.content {
+    margin-left: 260px;
+    flex: 1 1 auto;
+    &.extended {
+      margin-left: 85px;
+    }
+  }
+
+  section.desktop .container {
+    max-width: 695px;
+    margin: 0 auto;
+  }
+
+  /*
+   * .pusher doesn't play well with sticky position children.
+   * It is required for sidebars, which are only used at the moment on
+   * lower resolutions. So it is safe to reset its overflow property.
+   *
+   */
+  body.pushable > .pusher:not(.overflowing) {
+    overflow: unset;
+  }
+  .position-sticky {
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  aside.computer.toc {
+    .ui.text.compact.small.fluid.menu {
+      font-size: .8em;
+
+      .ui.buttons .button {
+        padding: .5em;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  aside.toc {
+    width: 350px;
+  }
+
+  html:not(.public_page) body:not(.front-page) footer.page-footer .footer-wrapper,
+  body:not(.front-page) section.content {
+    margin-left: 350px;
+  }
+
+  section.desktop .container {
+    max-width: 850px;
+  }
+}
+
+/*---------------------------------
+    Desktop main activities
+----------------------------------*/
+#main-activities a i {
+  opacity: .6;
+}
+
+#main-activities a:hover i {
+  opacity: 1;
+  color: @primaryColor;
+}
+
+#main-activities .header {
+  color: @textColor;
+}
+
+/*-------------------------
+      Spacings
+--------------------------*/
+.filters .segment .button,
+.infoline .segments .fitted.segment .label,
+.infoline .segments .fitted.segment .tiny.button,
+#groups_field .button {
+  margin-bottom: 0.75em;
+}
+
+/*-----------------------
+    Sortable items
+------------------------*/
+ul.sortable-items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sortable-items {
+  .ui.segment {
+    cursor: move;
+    background-color: @evenLineBackgroundColor;
+
+    &:hover {
+      background-color: @activeLineBackgroundColor;
+    }
+  }
+}
+
+/*--------------------
+    Leading dots
+---------------------*/
+ul.leaders {
+  display: block!important;
+  padding: 0;
+  overflow-x: hidden;
+  list-style: none;
+  overflow: hidden;
+}
+ul.leaders li {
+  position: relative;
+}
+ul.leaders li:before {
+  width: 100%;
+  content: "";
+  border-bottom: 1px dotted @textColor;
+  height: 1rem;
+  position: absolute;
+  bottom: .5rem;
+  z-index: -1;
+}
+ul.leaders span:first-child {
+  padding-right: 0.33em;
+  background: white
+}
+ul.leaders span + span {
+  padding-left: 0.33em;
+  position: absolute;
+  background: white;
+  right: 0;
+}
+
+/*-------------------------
+    Back top top button
+--------------------------*/
+#back2top {
+  display: none;
+  position: fixed;
+  right: .5rem;
+  bottom: .5rem;
+  z-index: 2;
+  border: 1px solid @borderColor;
+}
+
+/*------------------------------------------------
+    Fix conflicts between SUI and icons classes
+-------------------------------------------------*/
+.ui.card.icon {
+  width: auto;
+  display: inline-block;
+  margin-right: .25rem;
+  box-shadow: none !important;
+}
+
+/*---------------------------------
+    Fix Summernote modal display
+----------------------------------*/
+
+.note-modal-backdrop,
+.note-modal .note-group-select-from-files {
+  display: none !important;
+}
+
+.note-modal.open {
+  background: rgba(0,0,0,0.5);
+}
+
+.note-modal .note-modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  margin: 30px 0;
+}
+
+.required .note-editable {
+  font-weight: normal;
+}
+
+.note-modal .note-modal-footer {
+  height: 62px;
+}
+
+.note-modal .note-btn {
+  padding: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .note-modal-content {
+    margin: 0;
+  }
+}
+
+/*-----------------------------
+    Summernote display
+------------------------------*/
+.field .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {
+    background-color: #fff;
+}
+.ui.corner.labeled .note-editor {
+  width: 100%;
+}
+
+/*-------------------------
+    Print stylesheet
+--------------------------*/
+@media print {
+  html,
+  body.pushable,
+  body.pushable > .pusher {
+    overflow: unset;
+  }
+
+  body,
+  body.pushable {
+    background: #fff;
+  }
+
+  html.public_page section.vertically.centered {
+    justify-content: start;
+  }
+
+  .ui.fixed.menu + .pusher {
+    padding-top: 0;
+  }
+
+  .loggedin #main {
+    background-image: none;
+  }
+  body:not(.loggedin) #main {
+    width: 100%;
+  }
+
+  .logo {
+    margin-top: 0 !important;
+  }
+
+  table.listing tbody tr:hover > td {
+    background-color: inherit !important;
+  }
+
+  .displaynone,
+  .visually-hidden,
+  #top-navbar,
+  aside.toc,
+  #recup_mailing,
+  form.filters,
+  .ui.horizontal.checkboxes.segments,
+  table input[type=checkbox],
+  .infoline .button,
+  .infoline .right.aligned.segment,
+  .actions_row,
+  .ui.pagination.menu,
+  footer.page-footer,
+  #back2top {
+    display: none !important;
+  }
+}

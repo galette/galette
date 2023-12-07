@@ -107,7 +107,6 @@ class ExternalScript
                 break;
             default:
                 throw new \RuntimeException('Unknown protocol.');
-                break;
         }
 
         Analog::log(
@@ -243,7 +242,7 @@ class ExternalScript
                 //closes pipes and process
                 fclose($pipes[1]);
                 fclose($pipes[2]);
-                $exit = proc_close($process);
+                proc_close($process);
 
                 if (trim($this->output) === '') {
                     $result = true;
@@ -268,7 +267,7 @@ class ExternalScript
     /**
      * Get full output (only relevant is method is file)
      *
-     * @return array
+     * @return string
      */
     public function getOutput()
     {

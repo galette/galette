@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2021 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-27
@@ -40,14 +40,13 @@ use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
-use Laminas\Db\Adapter\Driver\ConnectionInterface;
+use Laminas\Db\Adapter\Driver\AbstractConnection;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
-use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Insert;
 use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Delete;
-use Laminas\Db\ResultSet;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\SqlInterface;
 
@@ -58,7 +57,7 @@ use Laminas\Db\Sql\SqlInterface;
  * @name      Db
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
  * @since     Available since 0.7dev - 2011-07-27
@@ -66,7 +65,7 @@ use Laminas\Db\Sql\SqlInterface;
  * @property Adapter $db
  * @property Sql $sql
  * @property DriverInterface $driver
- * @property ConnectionInterface $connection
+ * @property AbstractConnection $connection
  * @property PlatformInterface $platform
  * @property string $query_string
  * @property string $type_db
@@ -191,7 +190,7 @@ class Db
      *
      * @param boolean $check_table Check if table exists, defaults to false
      *
-     * @return float
+     * @return string
      *
      * @throw LogicException
      */
@@ -219,7 +218,7 @@ class Db
                     ''
                 );
             } else {
-                return 0.63;
+                return '0.63';
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -237,7 +236,7 @@ class Db
      */
     public function checkDbVersion()
     {
-        if (GALETTE_MODE === 'DEV') {
+        if (Galette::isDebugEnabled()) {
             Analog::log(
                 'Database version not checked in DEV mode.',
                 Analog::INFO
@@ -257,7 +256,7 @@ class Db
      *
      * @param string $table Table name
      *
-     * @return array
+     * @return ResultSet
      */
     public function selectAll($table)
     {
@@ -278,6 +277,8 @@ class Db
      * @param string $db   database name
      *
      * @return true
+     *
+     * @throws \Exception|Throwable
      */
     public static function testConnectivity(
         $type,
@@ -287,14 +288,13 @@ class Db
         $port = null,
         $db = null
     ) {
-        $_type = null;
         try {
             if ($type === self::MYSQL) {
                 $_type = 'Pdo_Mysql';
             } elseif ($type === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception();
+                throw new \Exception('Unknown database type');
             }
 
             $_options = array(
@@ -563,6 +563,7 @@ class Db
             $prefix = PREFIX_DB;
         }
 
+        $table = '';
         try {
             $tables = $this->getTables($prefix);
 
@@ -775,7 +776,7 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return StatementInterface|ResultSet\ResultSet
+     * @return ResultSet
      */
     public function execute($sql)
     {
@@ -796,7 +797,7 @@ class Db
                 $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
-            if ($sql instanceof Insert && $this->isDuplicateException($e)) {
+            if ($this->isDuplicateException($sql, $e)) {
                 throw new \OverflowException('Duplicate entry', 0, $e);
             }
             throw $e;
@@ -828,6 +829,29 @@ class Db
             case 'type_db':
                 return $this->type_db;
         }
+    }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the variable we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'db':
+            case 'sql':
+            case 'driver':
+            case 'connection':
+            case 'platform':
+            case 'query_string':
+            case 'type_db':
+                return true;
+        }
+        return property_exists($this, $name);
     }
 
     /**
@@ -915,16 +939,34 @@ class Db
     /**
      * Check if current exception is on a duplicate key
      *
+     * @param SqlInterface $sql       SQL object
+     * @param Throwable    $exception Exception to check
+     *
+     * @return boolean
+     */
+    public function isDuplicateException(SqlInterface $sql, Throwable $exception): bool
+    {
+        return $sql instanceof Insert && $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->errorInfo[1] === 1062)
+                || ($this->isPostgres() && $exception->getCode() == 23505)
+            )
+        ;
+    }
+
+    /**
+     * Check if current exception is related to a remaining foreign key
+     *
      * @param Throwable $exception Exception to check
      *
      * @return boolean
      */
-    public function isDuplicateException($exception)
+    public function isForeignKeyException(Throwable $exception): bool
     {
         return $exception instanceof \PDOException
             && (
-                (!$this->isPostgres() && $exception->getCode() == 23000)
-                || ($this->isPostgres() && $exception->getCode() == 23505)
+                (!$this->isPostgres() && in_array($exception->errorInfo[1], [1217, 1451]))
+                || ($this->isPostgres() && $exception->getCode() == 23503)
             )
         ;
     }
@@ -959,7 +1001,7 @@ class Db
      */
     protected function log($query)
     {
-        if (GALETTE_MODE == 'DEV' || defined('GALETTE_SQL_DEBUG')) {
+        if (Galette::isSqlDebugEnabled()) {
             $logfile = GALETTE_LOGS_PATH . 'galette_sql.log';
             file_put_contents($logfile, $query . "\n", FILE_APPEND);
         }
@@ -974,6 +1016,7 @@ class Db
      */
     public function getLastGeneratedValue($entity): int
     {
+        /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres() ?
                 PREFIX_DB . $entity::TABLE . '_id_seq'
@@ -996,5 +1039,52 @@ class Db
         }
 
         return $warnings;
+    }
+
+    /**
+     * Is current database engine supported?
+     *
+     * @return bool
+     */
+    public function isEngineSUpported(): bool
+    {
+        $infos = $this->getInfos();
+        $version = $infos['version'];
+        if ($this->isPostgres()) {
+            $min_version = GALETTE_PGSQL_MIN;
+        } else {
+            $min_version = preg_match('/-MariaDB/', $version) ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+        }
+
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+        return version_compare($version, $min_version, '>=');
+    }
+
+    /**
+     * Get not supported database version message
+     *
+     * @return string
+     */
+    public function getUnsupportedMessage(): string
+    {
+        $infos = $this->getInfos();
+        $version = $infos['version'];
+        $engine = null;
+        if ($this->isPostgres()) {
+            $engine = 'PostgreSQL';
+            $min_version = GALETTE_PGSQL_MIN;
+        } else {
+            $engine = preg_match('/-MariaDB/', $version) ? 'MariaDB' : 'MySQL';
+            $min_version = preg_match('/-MariaDB/', $version) ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+        }
+
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+
+        return sprintf(
+            _T('Minimum version for %1$s engine is %2$s, %1$s %3$s found!'),
+            $engine,
+            $min_version,
+            $version
+        );
     }
 }

@@ -1,17 +1,19 @@
 {
   "name": "Galette",
-  "version": "0.9.3",
+  "version": "1.0.0",
   "description": "[Galette](https://galette.eu) is a Free/Libre Open Source membership management web application dedicated towards non profit organizations.",
   "main": "galette-main.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "build": "webpack",
-    "build-dist": "webpack --mode=production",
-    "watch": "webpack --watch",
-    "clean": "rm -rf ./webroot/js/libs/",
-    "gulp": "gulp"
+    "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets && rm -rf galette/webroot/themes",
+    "fomantic-install": "cd node_modules/fomantic-ui && npx gulp install",
+    "install-deps": "npm run clean && cd galette && composer install -o --ignore-platform-reqs && cd .. && npm install && npm run fomantic-install",
+    "first-build": "npm run fomantic-install && gulp",
+    "build": "gulp",
+    "rebuild": "npm run install-deps && gulp",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -20,27 +22,31 @@
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "clean-css": "^4.2.3",
-    "css-loader": "^3.5.3",
-    "del": "^5.1.0",
-    "file-loader": "^4.3.0",
+    "browser-sync": "^2.29.3",
+    "clean-css": "^5.3.2",
+    "css-loader": "^6.8.1",
+    "del": "^6.1.1",
+    "file-loader": "^6.2.0",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
-    "gulp-cli": "^2.2.0",
+    "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
-    "gulp-replace": "^1.0.0",
+    "gulp-download": "^0.0.1",
+    "gulp-replace": "^1.1.4",
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
-    "uglify-js": "^3.9.1"
+    "uglify-js": "^3.17.4"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
-    "jquery": "^3.5.0",
-    "jquery-ui": "^1.12.1",
-    "jquery-ui-dist": "^1.12.1",
-    "js-cookie": "^3.0.1",
-    "jstree": "^3.3.9",
-    "selectize": "^0.12.6",
-    "summernote": "^0.8.18"
+    "chart.js": "^4.4.0",
+    "chartjs-plugin-autocolors": "^0.2.2",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "darkreader": "^4.9.67",
+    "fomantic-ui": "^2.9.3",
+    "jquery": "^3.7.1",
+    "js-cookie": "^3.0.5",
+    "sortablejs": "^1.15.0",
+    "summernote": "^0.8.20",
+    "twemoji-emojis": "^14.1.0"
   }
 }

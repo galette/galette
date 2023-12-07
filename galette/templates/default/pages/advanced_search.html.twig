@@ -1,0 +1,774 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+        <form action="{{ url_for('filter-memberslist') }}" method="post" class="ui form advanced-search">
+            <div class="galetteform ui styled fluid accordion field">
+                <div class="active ui title">
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    {{ _T('Simple search') }}
+                </div>
+                <div class="active content">
+                    <div class="four fields">
+                        <div class="field">
+                            <label for="filter_str">{{ _T('Search:') }}</label>
+                            <input type="text" name="filter_str" id="filter_str" value="{{ filters.filter_str }}" type="search" placeholder="{{ _T('Enter a value') }}"/>
+                        </div>
+                        <div class="field">
+                            <label for="field_filter">{{ _T('in:') }}</label>
+                            <select name="field_filter" class="ui search dropdown nochosen">
+    {% for key, value in field_filter_options %}
+                                <option value="{{ key }}"{% if key == filters.field_filter %} selected="selected"{% endif %}>{{ value }}</option>
+    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="membership_filter">{{ _T('Membership status') }}</label>
+                            <select id="membership_filter" name="membership_filter" class="ui search dropdown nochosen">
+    {% for key, value in membership_filter_options %}
+                                    <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
+    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="filter_account">{{ _T('Account activity') }}</label>
+                            <select id="filter_account" name="filter_account" class="ui search dropdown nochosen">
+    {% for key, value in filter_accounts_options %}
+                                    <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
+    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="group_filter">{{ _T('Member of group') }}</label>
+                            <select name="group_filter" id="group_filter" class="ui search dropdown nochosen">
+                                <option value="0">{{ _T('Select a group') }}</option>
+{% for group in filter_groups_options %}
+                                <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getIndentName()|raw }}</option>
+{% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inline fields">
+                        <label for="email_filter">{{ _T('With email:') }}</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_dc_email" value="{{ constant("Galette\\Repository\\Members::FILTER_DC_EMAIL") }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_DC_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_dc_email">{{ _T("Don't care") }}</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_with_email" value="{{ constant("Galette\\Repository\\Members::FILTER_W_EMAIL") }}"{% if filters.email_filter == constant("Galette\\Repository\\Members::FILTER_W_EMAIL") %} checked="checked"{% endif %}>
+                                <label for="filter_with_email">{{ _T('With') }}</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_without_email" value="{{ constant("Galette\\Repository\\Members::FILTER_WO_EMAIL") }}"{% if filters.email_filter == constant("Galette\\Repository\\Members::FILTER_WO_EMAIL") %} checked="checked"{% endif %}>
+                                <label for="filter_without_email">{{ _T('Without') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="galetteform ui styled fluid accordion field">
+                <div class="active ui title">
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    {{ _T('Advanced search') }}
+                </div>
+                <div class="active content">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ _T('Birth date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="birth_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="birth-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{{ filters.birth_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="birth_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="birth-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{{ filters.birth_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{ _T('Creation date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="creation_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="creation-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.creation_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="creation_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="creation-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.creation_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ _T('Modification date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="modif_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="modification-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.modif_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="modif_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="modification-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.modif_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{ _T('Due date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="due_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="due-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.due_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="due_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="due-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.due_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <div class="grouped fields">
+                                <label for="show_public_infos">{{ _T('Show public infos') }}</label>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="show_public_infos" id="show_public_infos_dc" value="{{ constant("Galette\\Repository\\Members::FILTER_DC_PUBINFOS") }}"{% if filters.show_public_infos == constant("Galette\\Repository\\Members::FILTER_DC_PUBINFOS") %} checked="checked"{% endif %}>
+                                        <label for="show_public_infos_dc" >{{ _T("Don't care") }}</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="show_public_infos" id="show_public_infos_yes" value="{{ constant("Galette\\Repository\\Members::FILTER_W_PUBINFOS") }}"{% if filters.show_public_infos == constant("Galette\\Repository\\Members::FILTER_W_PUBINFOS") %} checked="checked"{% endif %}>
+                                        <label for="show_public_infos_yes" >{{ _T('Yes') }}</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="show_public_infos" id="show_public_infos_no" value="{{ constant("Galette\\Repository\\Members::FILTER_WO_PUBINFOS") }}"{% if filters.show_public_infos == constant("Galette\\Repository\\Members::FILTER_WO_PUBINFOS") %} checked="checked"{% endif %}>
+                                        <label for="show_public_infos_no" >{{ _T('No') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="status">{{ _T('Status') }}</label>
+                            <select name="status[]" id="status" multiple="" class="ui search dropdown nochosen">
+                                <option value="">{{ _T('Status') }}</option>
+    {% for key, value in statuts %}
+                                    <option value="{{ key }}"{% if key in filters.status %} selected="selected"{% endif %}>{{ value }}</option>
+    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
+            <div class="jsonly disabled galetteform ui styled fluid accordion field">
+                <div class="active ui title">
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    {{ _T('Advanced groups search') }} ({{ _T('Experimental') }})
+                    <a
+                        href="#"
+                        id="addbutton_g"
+                        class="ui tiny compact icon green button tooltip"
+                        title="{{ _T('Add new group search criteria') }}"
+                    >
+                        <i class="plus icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T('Add new group search criteria') }}</span>
+                    </a>
+                </div>
+                <div class="active content">
+                    <div class="field">
+                        <select name="groups_logical_operator" class="operator_selector ui search dropdown nochosen">
+                          <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if filters.groups_search_log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('In all selected groups') }}</option>
+                          <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if filters.groups_search_log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('In any of selected groups') }}</option>
+                        </select>
+                    </div>
+                    <ul id="gs_sortable" class="sortable-items">
+                    {% for gs in filters.groups_search %}
+                        <li class="even ui segment unstackable items">
+                            <div class="ui item">
+                                <div class="ui image">
+                                    <i class="arrows alternate icon" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <select name="groups_search[]" class="group_selector ui search dropdown nochosen">
+                                        <option value="">{{ _T('Select a group') }}</option>
+                        {% for group in filter_groups_options %}
+                                        <option value="{{ group.getId() }}"{% if gs.group == group.getId() %} selected="selected"{% endif %}>{{ group.getName() }}</option>
+                        {% endfor %}
+                                    </select>
+                                    <a
+                                        href="#"
+                                        class="ui small compact red icon button filtered fright tooltip delete delcriteria"
+                                        title="{{ _T('Remove criteria') }}"
+                                    >
+                                        <i class="trash alt icon" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{{ _T('Remove criteria') }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                     </ul>
+                </div>
+            </div>
+
+            <div class="galetteform ui styled fluid accordion field">
+                <div class="active ui title">
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    {{ _T('Within contributions') }}
+                </div>
+                <div class="active content">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ _T('Creation date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="contrib_creation_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="contrib-creation-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                            <input id="contrib_creation_date_begin" name="contrib_creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_creation_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="contrib_creation_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="contrib-creation-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                            <input id="contrib_creation_date_end" name="contrib_creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_creation_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{ _T('Begin date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="contrib_begin_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="contrib-begin-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                            <input id="contrib_begin_date_begin" name="contrib_begin_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_begin_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="contrib_begin_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="contrib-begin-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                            <input id="contrib_begin_date_end" name="contrib_begin_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{{ filters.contrib_begin_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{ _T('End date') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="contrib_end_date_begin">{{ _T('beetween') }}</label>
+                                    <div class="ui calendar" id="contrib-end-rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                            <input id="contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.contrib_end_date_begin }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="contrib_end_date_end">{{ _T('and') }}</label>
+                                    <div class="ui calendar" id="contrib-end-rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon" aria-hidden="true"></i>
+                                                <input id="contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{{ filters.contrib_end_date_end }}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>{{ _T('Amount') }}</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label for="contrib_min_amount">{{ _T('beetween') }}</label>
+                                    <input id="contrib_min_amount" name="contrib_min_amount" type="text" maxlength="10" size="10" value="{{ filters.contrib_min_amount }}"/>
+                                </div>
+                                <div class="field">
+                                    <label for="contrib_max_amount">{{ _T('and') }}</label>
+                                    <input id="contrib_max_amount" name="contrib_max_amount" type="text" maxlength="10" size="10" value="{{ filters.contrib_max_amount }}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label for="contributions_types">{{ _T('Type') }}</label>
+                            <select name="contributions_types[]" id="contributions_types" multiple="" class="ui dropdown nochosen">
+                                <option value="">{{ _T('Type') }}</option>
+
+                            {% for key, value in contributions_types %}
+                                    <option value="{{ key }}"{% if key == filters.contributions_types %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="payments_types">{{ _T('Payment type') }}</label>
+                            <select name="payments_types[]" id="payments_types" multiple="" class="ui dropdown nochosen">
+                                <option value="">{{ _T('Payment type') }}</option>
+                            {% for key, value in payments_types %}
+                                <option value="{{ key }}"{% if key == filters.payments_types %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+{% for field in contrib_dynamics %}
+                    <div class="field">
+    {% set fid = field.getId() %}
+    {% if get_class(field) == "Galette\\DynamicFields\\Choice" %}
+        {% set rid = "cdsc_" ~ fid %}
+    {% else %}
+        {% set rid = "cds_" ~ fid %}
+    {% endif %}
+    {% if get_class(field) != "Galette\\DynamicFields\\Boolean" %}
+                        <label for="cds{% if get_class(field) == "Galette\\DynamicFields\\Choice" %}c{% endif %}_{{ field.getId() }}">{{ field.getName() }}</label>
+    {% endif %}
+    {% if get_class(field) == "Galette\\DynamicFields\\Line" %}
+                        <input type="text" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" value="{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}" />
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Text" %}
+                        <textarea name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}">{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}</textarea>
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Choice" %}
+                        <select name="cdsc_{{ field.getId() }}[]" id="cdsc_{{ field.getId() }}" multiple="multiple" class="ui dropdown nochosen">
+                            <option value="">{{ _T('Select') }}</option>
+        {% for k, choice in field.getValues() %}
+                            <option value="{{ k }}"{% if attribute(filters.contrib_dynamic, fid) is defined and k in attribute(filters.contrib_dynamic, fid) %} selected="selected"{% endif %}>{{ choice }}</option>
+        {% endfor %}
+                        </select>
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Boolean" %}
+        <div class="ui right aligned toggle checkbox">
+            <input type="checkbox" name="cds_{{ field.getId() }}" id="cds_{{ field.getId() }}" value="1" {% if attribute(filters.contrib_dynamic, fid) is defined %} checked="checked"{% endif %}/>
+            <label for="cds_{{ field.getId() }}">{{ field.getName() }}</label>
+        </div>
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Date" %}
+                    <div class="ui calendar" id="cds_{{ field.getId() }}-rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input id="cds_{{ field.getId() }}" name="cds_{{ field.getId() }}" type="text" class="due_date" maxlength="10" size="10" value="{% if attribute(filters.contrib_dynamic, fid) is defined %}{{ attribute(filters.contrib_dynamic, fid) }}{% endif %}" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
+                        </div>
+                    </div>
+    {% endif %}
+                    </div>
+{% endfor %}
+                </div>
+            </div>
+                <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
+                <div class="jsonly disabled galetteform ui styled fluid accordion field">
+                    <div class="active ui title">
+                        <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                        {{ _T('Free search') }} ({{ _T('Experimental') }})
+                        <a
+                            href="#"
+                            id="addbutton"
+                            class="ui tiny compact icon green button tooltip"
+                            title="{{ _T('Add new free search criteria') }}"
+                        >
+                            <i class="plus icon" aria-hidden="true"></i>
+                            <span class="visually-hidden">{{ _T('Add new free search criteria') }}</span>
+                        </a>
+                    </div>
+                    <div class="active content">
+                        <ul id="fs_sortable" class="sortable-items">
+{% for fs in filters.free_search %}
+                            <li class="even ui segment unstackable items">
+                                <div class="ui item">
+                                    <div class="ui image">
+                                        <i class="arrows alternate icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="inline fields">
+                                        <select name="free_logical_operator[]" class="operator_selector ui selection dropdown nochosen">
+                                            <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AND") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AND") %} selected="selected"{% endif %}>{{ _T('and') }}</option>
+                                            <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_OR") }}"{% if fs.log_op == constant("Galette\\Filters\\AdvancedMembersList::OP_OR") %} selected="selected"{% endif %}>{{ _T('or') }}</option>
+                                        </select>
+                                        <div class="field_selector ui search selection dropdown origselect nochosen">
+                                            <input type="hidden" name="free_field[]" value="{{ fs.field }}">
+                                            <i class="dropdown icon"></i>
+                                            <div class="text">{{ _T('Select a field') }}</div>
+                                            <div class="menu">
+    {% for key, field in search_fields %}
+        {% if fs.field == key %}
+            {% if key starts with 'date_' or key == 'ddn_adh' %}
+                {% set type = constant("Galette\\DynamicFields\\DynamicField::DATE") %}
+            {% elseif key == constant("Galette\\Entity\\Status::PK") %}
+                {% set type = constant("Galette\\DynamicFields\\DynamicField::CHOICE") %}
+                {% set fvalues = statuts %}
+            {% elseif key == 'sexe_adh' %}
+                {% set type = constant("Galette\\DynamicFields\\DynamicField::CHOICE") %}
+                {% set fvalues = {
+                        (constant("Galette\\Entity\\Adherent::NC")): _T('Unspecified'),
+                        (constant("Galette\\Entity\\Adherent::MAN")): _T('Man'),
+                        (constant("Galette\\Entity\\Adherent::WOMAN")): _T('Woman')
+                } %}
+            {% else %}
+                {% set type = constant("Galette\\DynamicFields\\DynamicField::LINE") %}
+            {% endif %}
+        {% endif %}
+                                                <div class="item{% if fs.field == key %} active selected{% endif %}" data-value="{{ key }}">{{ field.label }}</div>
+    {% endfor %}
+    {% for field in adh_dynamics %}
+        {% if get_class(field) != "Galette\\DynamicFields\\Separator" %}
+            {% set fid = field.getId() %}
+            {% set rid = "dyn_" ~ fid %}
+            {% if fs.field == rid %}
+                {% set cur_field = field %}
+            {% endif %}
+        {% endif %}
+                                                <div class="item{% if fs.field == rid %} active selected{% endif %}" data-value="dyn_{{ field.getId() }}">{{ field.getName() }}</div>
+    {% endfor %}
+    {% for type, label in adh_socials %}
+        {% set rid = "socials_" ~ type %}
+        {% if fs.field == rid %}
+            {% set cur_field = type %}
+        {% endif %}
+                                                <div class="item{% if fs.field == rid %} active selected{% endif %}" data-value="socials_{{ type }}">{{ label }}</div>
+    {% endfor %}
+                                            </div>
+                                        </div>
+    {# may not be defined #}
+    {#  #}
+    {% if type is not defined %}{% set type = null %}{% endif %}
+                                        <div class="data inline fields">
+                                            <input type="hidden" name="free_type[]" value="{% if cur_field is defined %}{{ cur_field.getType() }}{% endif %}"/>
+    {% if cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
+                                            <select name="free_query_operator[]" class="free_operator ui selection dropdown nochosen">
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
+                                            </select>
+                                            <select name="free_text[]" class="free_text ui search dropdown nochosen">
+        {% if cur_field is defined and get_class(cur_field) == "Galette\\DynamicFields\\Choice" %}
+            {% for key, value in cur_field.getValues() %}
+                                                <option value="{{ key }}"{% if key == fs.search %} selected="selected"{% endif %}>{{ value }}</option>
+            {% endfor %}
+        {% else %}
+            {% for key, value in fvalues %}
+                                                <option value="{{ key }}"{% if key == fs.search %} selected="selected"{% endif %}>{{ value }}</option>
+            {% endfor %}
+        {% endif %}
+                                            </select>
+    {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Date" or type == constant("Galette\\DynamicFields\\DynamicField::DATE")) %}
+                                            <select name="free_query_operator[]" class="free_operator ui selection dropdown nochosen">
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") %} selected="selected"{% endif %}>{{ _T('before') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") %} selected="selected"{% endif %}>{{ _T('after') }}</option>
+                                            </select>
+                                            <input type="text" name="free_text[]" value="{{ fs.search|date(_T('Y-m-d')) }}" class="modif_date" maxlength="10" size="10"/>
+                                            <span class="exemple">{{ _T('(yyyy-mm-dd format)') }}</span>
+    {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Boolean" or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN")) %}
+                                            <select name="free_query_operator[]" class="free_operator ui selection dropdown nochosen">
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
+                                            </select>
+                                            <input type="radio" name="free_text[]" id="free_text_yes" value="1"{% if fs.search == 1 %} checked="checked"{% endif %}/><label for="free_text_yes">{{ _T('Yes') }}</label>
+                                            <input type="radio" name="free_text[]" id="free_text_no" value="0"{% if fs.search == 0 %} checked="checked"{% endif %}/><label for="free_text_no">{{ _T('No') }}</label>
+    {% else %}
+                                            <select name="free_query_operator[]" class="free_operator ui selection dropdown nochosen">
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") %} selected="selected"{% endif %}>{{ _T('contains') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") %} selected="selected"{% endif %}>{{ _T('do not contains') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") %} selected="selected"{% endif %}>{{ _T('starts with') }}</option>
+                                                <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") %} selected="selected"{% endif %}>{{ _T('ends with') }}</option>
+                                            </select>
+                                            <input type="text" name="free_text[]" value="{{ fs.search }}"{% if cur_field is defined and get_class(cur_field) == "Galette\\DynamicFields\\Text" %} class="large"{% endif %}/>
+    {% endif %}
+                                        </div>
+                                        <a
+                                            href="#"
+                                            class="ui small compact red icon button filtered fright tooltip delete delcriteria"
+                                            title="{{ _T('Remove criteria') }}"
+                                        >
+                                            <i class="trash alt icon" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ _T('Remove criteria') }}</span>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </li>
+{% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            <div class="ui basic center aligned segment">
+                <button type="submit" class="ui labeled icon primary button action">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T('Filter') }}
+                </button>
+                <input type="hidden" name="advanced_filtering" value="true" />
+                <button type="submit" name="clear_adv_filter" class="ui labeled icon button delete">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
+                {% include "components/forms/csrf.html.twig" %}
+            </div>
+        </form>
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            var _operators = {
+                op_equals: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }},
+                    name: "{{ _T('is') }}"
+                },
+                op_contains: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_CONTAINS") }},
+                    name: "{{ _T('contains') }}"
+                },
+                op_not_equals: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }},
+                    name: "{{ _T('is not') }}"
+                },
+                op_not_contains: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_CONTAINS") }},
+                    name: "{{ _T('do not contains') }}"
+                },
+                op_starts_with: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") }},
+                    name: "{{ _T('starts with') }}"
+                },
+                op_ends_with: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") }},
+                    name: "{{ _T('ends with') }}"
+                },
+                op_before: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }},
+                    name: "{{ _T('before') }}"
+                },
+                op_after: {
+                    id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }},
+                    name: "{{ _T('after') }}"
+                },
+            };
+
+            var _fields = {
+{% for key, field in search_fields %}
+    {% if key starts with 'date_' or key == 'ddn_adh' %}
+        {% set type = constant("Galette\\DynamicFields\\DynamicField::DATE") %}
+    {% elseif key == constant("Galette\\Entity\\Status::PK") %}
+        {% set type = constant("Galette\\DynamicFields\\DynamicField::CHOICE") %}
+        {% set fvalues = statuts %}
+    {% elseif key == 'sexe_adh' %}
+        {% set type = constant("Galette\\DynamicFields\\DynamicField::CHOICE") %}
+        {% set fvalues = {
+                (constant("Galette\\Entity\\Adherent::NC")): _T('Unspecified'),
+                (constant("Galette\\Entity\\Adherent::MAN")): _T('Man'),
+                (constant("Galette\\Entity\\Adherent::WOMAN")): _T('Woman')
+        } %}
+    {% else %}
+        {% set type = constant("Galette\\DynamicFields\\DynamicField::LINE") %}
+    {% endif %}
+                {{ key }}: { type:'{{ type }}'{% if fvalues is defined %}, values: {{ fvalues|json_encode|raw }}{% endif %} },
+{% endfor %}
+{% for field in adh_dynamics %}
+    {% if get_class(field) == "Galette\\DynamicFields\\Separator" %}
+            {# do nothing #}
+    {% elseif get_class(field) == "Galette\\DynamicFields\\Choice" %}
+                dyn_{{ field.getId() }}: { type:'{{ field.getType() }}', values: {{ field.getValues()|json_encode|raw }} },
+    {% else %}
+                dyn_{{ field.getId() }}: { type:'{{ field.getType() }}' },
+    {% endif %}
+{% endfor %}
+            };
+
+            {% include "elements/js/calendar.js.twig" with {selector: '.fs-calendar'} %}
+
+            var _fs_dropdown = function(selector) {
+                if ( !selector ) {
+                    selector = '.origselect';
+                }
+
+                $(selector).dropdown({
+                    action: function(text, value, element) {
+                        var element = element.parentElement !== undefined ? element : element[0];
+                        var dropdown = element.parentElement.parentElement;
+                        $(dropdown).find('div.text').html(text);
+                        $(dropdown).dropdown('set selected', value);
+                        $(dropdown).dropdown('hide');
+
+                        var _field = _fields[value];
+                        var _type = _field.type;
+                        var _html;
+                        switch(_type) {
+                            /* FIXME */
+                            case '{{ constant('Galette\\DynamicFields\\DynamicField::BOOLEAN') }}':
+                                _html  = _getOperatorSelector(['op_equals']);
+                                _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"/><label for="free_text_no">{{ _T('No') }}</label>';
+                                break;
+                            case '{{ constant('Galette\\DynamicFields\\DynamicField::CHOICE') }}':
+                                _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
+                                var _options = '';
+                                if (Array.isArray(_field.values)) {
+                                    for (var i = 0; i < _field.values.length; i++) {
+                                        _options += '<option value="' + i + '">' + _field.values[i] + '</option>';
+                                    }
+                                } else {
+                                    for (key in _field.values) {
+                                        _options += '<option value="' + key + '">' + _field.values[key] + '</option>';
+                                    }
+                                }
+                                _html += '<select name="free_text[]" class="ui search selection dropdown nochosen">' + _options + '</select>';
+                                break;
+                            case '{{ constant('Galette\\DynamicFields\\DynamicField::DATE') }}':
+                                _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
+                                _html += '<div class="ui calendar fs-calendar">'
+                                _html += '<div class="ui input left icon">'
+                                _html += '<i class="calendar icon" aria-hidden="true"></i>'
+                                _html += '<input type="text" name="free_text[]" class="modif_date" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>';
+                                _html += '</div>'
+                                _html += '</div>'
+                                break;
+                            default:
+                                _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
+                                _html += '<input type="text" name="free_text[]"/>';
+                                break;
+
+                        }
+                        _html += '<input type="hidden" name="free_type[]" value="' + _type + '"/>';
+                        _current_fields = element.parentElement.parentElement.parentElement;
+                        $(_current_fields).find('div.data').html(_html);
+                        $(_current_fields).find('div.data .ui.dropdown').dropdown('refresh');
+                        _calendarWidget('.fs-calendar');
+                    }
+                });
+            }
+
+            var _newFilter = function(elt) {
+                elt.find('div.data').html('');
+                elt.find('.item.selected').removeClass('active').removeClass('selected');
+                elt.find('.origselect').dropdown('set value', '');
+                elt.find('.origselect').find('div.text').html('{{ _T("Select a field") }}');
+            }
+            var _rmFilter = function(elt) {
+                if ( !elt ) {
+                    elt = $('li');
+                }
+                elt.find('.delcriteria').click(function(){
+                    var _this = $(this);
+                    if ( _this.parents('ul').find('li').length > 1 ) {
+                        _this.parent('div').parent('.item').parent('li').remove();
+                    } else {
+                        _newFilter(_this.parent('div').parent('.item').parent('li'));
+                    }
+                    return false;
+                });
+            }
+            var _getOperatorSelector = function(list) {
+                var _options = '';
+                for (var i = 0; i < list.length; i++) {
+                    var _operator = _operators[list[i]];
+                    _options += '<option value="' + _operator.id + '">' + _operator.name + '</option>';
+                }
+                return '<select name="free_query_operator[]" class="free_operator ui selection dropdown nochosen">' + _options + '</select>';
+            }
+
+            var _initSortable = function(){
+                var _freesearch = document.getElementById('fs_sortable');
+                var _groupsearch = document.getElementById('gs_sortable');
+
+                new Sortable(_freesearch, {
+                    animation: 150,
+                    ghostClass: 'yellow',
+                    filter: '.filtered',
+                    onUpdate: function (evt) {
+                        var _item = evt.item;
+                        _item.classList.add('yellow');
+                    }
+                });
+
+                new Sortable(_groupsearch, {
+                    animation: 150,
+                    ghostClass: 'yellow',
+                    filter: '.filtered',
+                    onAdd: function (evt) {
+                        var _item = evt.item;
+                        _item.classList.add('yellow');
+                    }
+                });
+            }
+
+            $(function(){
+                _initSortable();
+                _fs_dropdown();
+                _rmFilter();
+
+               $('#addbutton_g').click(function(){
+                    $('#gs_sortable li:first')
+                            .clone() // copy
+                            .insertAfter('#gs_sortable li:last'); // where
+                    $('#gs_sortable li:last .ui.dropdown').dropdown('refresh');
+                    _fs_dropdown();
+                    _rmFilter();
+                    return false;
+                });
+
+                $('#addbutton').click(function(){
+                    $('#fs_sortable li:first')
+                            .clone() // copy
+                            .insertAfter('#fs_sortable li:last'); // where
+                    $('#fs_sortable li:last .ui.dropdown:not(.origselect)').dropdown('refresh');
+                    _fs_dropdown();
+                    _rmFilter();
+                    return false;
+                });
+            });
+        </script>
+{% endblock %}

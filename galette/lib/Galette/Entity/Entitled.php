@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2021 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -52,7 +53,7 @@ use Galette\Features\I18n;
  * @name      Entitled
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -130,6 +131,7 @@ abstract class Entitled
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
+                /** @var ArrayObject $result */
                 $result = $results->current();
                 $this->loadFromRS($result);
 
@@ -154,11 +156,11 @@ abstract class Entitled
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $pk = $this->fpk;
         $this->id = $r->$pk;
@@ -257,7 +259,7 @@ abstract class Entitled
             $select->columns($fields);
 
             if ($this->order_field !== false) {
-                $select->order($this->order_field, $this->fpk);
+                $select->order($this->order_field);
             }
             if ($extent !== null) {
                 if ($extent === true) {
@@ -372,7 +374,7 @@ abstract class Entitled
      * @param boolean $translated Do we want translated or original label?
      *                            Defaults to true.
      *
-     * @return string
+     * @return string|int
      */
     public function getLabel($id, $translated = true)
     {
@@ -424,7 +426,7 @@ abstract class Entitled
      * @param integer $extra Extra values (priority for statuses,
      *                       extension for contributions types, ...)
      *
-     * @return integer id if success ; -1 : DB error ; -2 : label already exists
+     * @return bool|integer  -2 : label already exists
      */
     public function add($label, $extra)
     {
@@ -486,7 +488,7 @@ abstract class Entitled
      * @param integer $extra Extra values (priority for statuses,
      *                       extension for contributions types, ...)
      *
-     * @return ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|boolean
      */
     public function update($id, $label, $extra)
     {
@@ -496,8 +498,6 @@ abstract class Entitled
             /* get() already logged and set $this->error. */
             return self::ID_NOT_EXITS;
         }
-
-        $class = get_class($this);
 
         try {
             $oldlabel = $ret->{$this->flabel};
@@ -511,7 +511,7 @@ abstract class Entitled
             $update->set($values);
             $update->where([$this->fpk => $id]);
 
-            $ret = $this->zdb->execute($update);
+            $this->zdb->execute($update);
 
             if ($oldlabel != $label) {
                 $this->deleteTranslation($oldlabel);
@@ -540,7 +540,7 @@ abstract class Entitled
      *
      * @param integer $id Entry ID
      *
-     * @return ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|boolean
      */
     public function delete($id)
     {
@@ -604,7 +604,7 @@ abstract class Entitled
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to check if ' . $this->getType . ' `' . $id .
+                'Unable to check if ' . $this->getType() . ' `' . $id .
                 '` is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -630,9 +630,9 @@ abstract class Entitled
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -646,17 +646,37 @@ abstract class Entitled
             switch ($name) {
                 case 'libelle':
                     return _T($this->label);
-                    break;
                 case 'extension':
                     return $this->third;
-                    break;
                 default:
                     return $this->$name;
-                    break;
             }
         } else {
             return false;
         }
+    }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $forbidden = array();
+        $virtuals = array('extension', 'libelle');
+        if (
+            in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$name)
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

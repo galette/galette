@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\Galette;
 use Galette\Core\Install;
 use Galette\Core\PluginInstall;
@@ -52,7 +52,7 @@ use Analog\Analog;
  * @name      PluginsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -78,7 +78,7 @@ class PluginsController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'plugins.tpl',
+            'pages/plugins.html.twig',
             array(
                 'page_title'            => _T("Plugins"),
                 'plugins_list'          => $plugins_list,
@@ -100,7 +100,7 @@ class PluginsController extends AbstractController
      */
     public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
-        if (GALETTE_MODE !== Galette::MODE_DEMO) {
+        if (!Galette::isDemo()) {
             $plugins = $this->plugins;
             $reload_plugins = false;
             if ($action == 'activate') {
@@ -149,7 +149,7 @@ class PluginsController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('plugins'));
+            ->withHeader('Location', $this->routeparser->urlFor('plugins'));
     }
 
     /**
@@ -163,7 +163,7 @@ class PluginsController extends AbstractController
      */
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {
-        if (GALETTE_MODE === Galette::MODE_DEMO) {
+        if (Galette::isDemo()) {
             Analog::log(
                 'Trying to access plugin database initialization in DEMO mode.',
                 Analog::WARNING
@@ -176,16 +176,15 @@ class PluginsController extends AbstractController
         $error_detected = [];
 
         $plugid = $id;
-        $plugin = $this->plugins->getModules($plugid);
-
-        if ($plugin === null) {
+        if (!$this->plugins->moduleExists($plugid)) {
             Analog::log(
                 'Unable to load plugin `' . $plugid . '`!',
                 Analog::URGENT
             );
-            $notFound = $this->notFoundHandler;
-            return $notFound($request, $response);
+            return $response->withStatus(404);
         }
+
+        $plugin = $this->plugins->getModules($plugid);
 
         $install = null;
         $mdplugin = md5($plugin['root']);
@@ -260,12 +259,7 @@ class PluginsController extends AbstractController
                 break;
             case 'i2':
             case 'u2':
-                if (!defined('GALETTE_THEME_DIR')) {
-                    define('GALETTE_THEME_DIR', './themes/default/');
-                }
-
-                $install_plugin = true;
-                //not used here, but from include
+                $install_plugin = true; //not used here, but from include
                 $zdb = $this->zdb;
                 ob_start();
                 include_once GALETTE_ROOT . '/install/steps/db_checks.php';
@@ -354,14 +348,14 @@ class PluginsController extends AbstractController
             'istep'         => $istep,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
-            'mode'          => ($request->isXhr() ? 'ajax' : ''),
+            'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'error_detected' => $error_detected
         ];
 
         // display page
         $this->view->render(
             $response,
-            'plugin_initdb.tpl',
+            'modals/plugin_initdb.html.twig',
             $params
         );
         return $response;

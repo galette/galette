@@ -1,0 +1,220 @@
+{% extends 'elements/list.html.twig' %}
+
+{% set nb = history.getCount() %}
+
+{% set form = {
+    'order': {
+        'name': "mailings"
+    }
+} %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count entry", "%count entries", history.getCount())|replace({"%count": history.getCount()}),
+        'route': {
+            'name': 'mailings_filter'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline_actions %}
+    <a
+        class="action ui tiny labeled icon button"
+        href="{{ url_for('mailing') }}?mailing_new=true"
+    >
+        <i class="plus circle green icon" aria-hidden="true"></i>
+        {{ _T('Create new mailing') }}
+    </a>
+    {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
+    <a
+        href="{{ url_for("mailing") }}"
+        class="action ui tiny labeled icon button tooltip"
+        title="{{ _T("A mailing exists in the current session. Click here if you want to resume or cancel it.") }}"
+    >
+        <i class="paper plane outline blue icon" aria-hidden="true"></i>
+        {{ _T("Existing mailing") }}
+    </a>
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#'},
+        {'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE")},
+        {'label': _T('Sender'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
+        {'label': _T('Recipients')},
+        {'label': _T('Subject'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
+        {'label': _T('Att.')},
+        {'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT")}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <form action="{{ url_for('mailings_filter') }}" method="post" class="ui form filters">
+        <div class="ui secondary yellow segment">
+            <div class="three fields">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{{ _T('since') }}</label>
+                        <div class="ui calendar" id="mailings-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon" aria-hidden="true"></i>
+                                <input placeholder="{{ _T('(yyyy-mm-dd format)') }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{{ _T('until') }}</label>
+                        <div class="ui calendar" id="mailings-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon" aria-hidden="true"></i>
+                                <input placeholder="{{ _T('(yyyy-mm-dd format)') }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="subject_filter">{{ _T('Subject') }}</label>
+                    <input type="text" name="subject_filter" id="subject_filter" value="{{ history.filters.subject_filter }}"/>
+                </div>
+                <div class="field">
+                        <label for="sent_filter">{{ _T('Sent mailings:') }}</label>
+                    <div class="inline fields">
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="sent_filter" id="filter_dc_sent" value="{{ constant("Galette\\Core\\MailingHistory::FILTER_DC_SENT") }}"{% if history.filters.sent_filter == constant("Galette\\Core\\MailingHistory::FILTER_DC_SENT") %} checked="checked"{% endif %}>
+                                <label for="filter_dc_sent" >{{ _T("Don't care") }}</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="sent_filter" id="filter_sent" value="{{ constant("Galette\\Core\\MailingHistory::FILTER_SENT") }}"{% if history.filters.sent_filter == constant("Galette\\Core\\MailingHistory::FILTER_SENT") %} checked="checked"{% endif %}>
+                                <label for="filter_sent" >{{ _T('Yes') }}</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="sent_filter" id="filter_not_sent" value="{{ constant("Galette\\Core\\MailingHistory::FILTER_NOT_SENT") }}"{% if history.filters.sent_filter == constant("Galette\\Core\\MailingHistory::FILTER_NOT_SENT") %} checked="checked"{% endif %}>
+                                <label for="filter_not_sent" >{{ _T('No') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui right aligned basic fitted segment field">
+                <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T('Filter') }}
+                </button>
+                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
+            </div>
+        </div>
+        {% include "components/forms/csrf.html.twig" %}
+    </form>
+{% endblock %}
+
+{% block body %}
+    {% for log in logs %}
+        {% set date_format = _T('Y-m-d H:i:s') %}
+        <tr>
+            <td data-scope="row">
+                {% if preferences.pref_show_id %}
+                    {{ log.mailing_id }}
+                {% else %}
+                    {{ loop.index }}
+                {% endif %}
+                <span class="visually-hidden">
+                            {{ _T('Mailing entry %id')|replace({'%id': log.mailing_id}) }}
+                        </span>
+            </td>
+            <td data-col-label="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
+            <td data-col-label="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
+            <td data-col-label="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
+            <td data-col-label="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
+            <td class="center" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
+            <td class="center{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
+                {% if log.mailing_sent == 1 %}
+                    <i class="ui thumbs up green icon" aria-hidden="true"></i>
+                {% else %}
+                    <i class="ui thumbs down red icon" aria-hidden="true"></i>
+                {% endif %}
+            </td>
+            <td class="center actions_row">
+                <a
+                        href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
+                        class="showdetails"
+                >
+                    <i class="ui eye green icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
+                </a>
+                <a
+                        href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
+                >
+                    <i class="ui clone blue icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
+                </a>
+                <a
+                        href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
+                        class="delete"
+                >
+                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="8" class="emptylist">{{ _T('No sent mailing has been stored in the database yet.') }}</td></tr>
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        {% include "elements/js/removal.js.twig" with {
+            single_action: "true"
+        } %}
+
+        {# Preview popup #}
+        $('.showdetails').click(function(){
+            $.ajax({
+                url: $(this).attr('href'),
+                type: "POST",
+                data: {
+                    ajax: true,
+                },
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
+                success: function(res){
+                    _preview_dialog(res);
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying preview :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+            return false;
+        });
+
+        var _preview_dialog = function(res){
+            {% include "elements/js/modal.js.twig" with {
+                modal_title_twig: _T("Mailing preview")|e("js"),
+                modal_content: "res",
+                modal_class: "scrolling",
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
+            } %}
+        }
+    </script>
+{% endblock %}

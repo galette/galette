@@ -1,0 +1,80 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <div id="mass_change"{% if mode != 'ajax' %} class="center"{% else %} class="ui modal"{% endif %}>
+    {% if mode == 'ajax' %}
+        <div class="header">
+    {% else %}
+        <h2>
+    {% endif %}
+            {{ page_title }}
+    {% if mode != 'ajax' %}
+        </h2>
+    {% else %}
+        </div>
+        <div class="content scrolling">
+    {% endif %}
+            <form action="{{ form_url }}" method="post" class="ui form">
+            {% if changes is not defined %}
+                <p>{{ _T("Only checked fields will be updated.") }}</p>
+                {# Form entries #}
+                {% include "components/form.html.twig" with {masschange: true} %}
+                {# Dynamic entries #}
+                {% include "components/dynamic_fields.html.twig" with {object: member, masschange: true} %}
+            {% else %}
+                <p>{{ _T("You are about to proceed following changes for selected members:") }}</p>
+                <ul>
+                {% for field, change in changes %}
+                    {% set display_value = change.value %}
+                    {% if field == 'id_statut' %}
+                        {% set display_value = statuts[display_value] %}
+                    {% endif %}
+                    {% if field == 'titre_adh' %}
+                        {% set display_value = titles_list[display_value].long %}
+                    {% endif %}
+                    {% if field == 'sexe_adh' %}
+                        {% if display_value == constant('Galette\\Entity\\Adherent::NC') %}
+                            {% set display_value = _T("Unspecified") %}
+                        {% endif %}
+                        {% if display_value == constant('Galette\\Entity\\Adherent::WOMAN') %}
+                            {% set display_value = _T("Woman") %}
+                        {% endif %}
+                        {% if display_value == constant('Galette\\Entity\\Adherent::MAN') %}
+                            {% set display_value = _T("Man") %}
+                        {% endif %}
+                    {% endif %}
+                    <li>
+                        <input type="hidden" name="{{ field }}" value="{{ change.value }}"/>
+                        {{ change.label }} {{ display_value }}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+    {% if mode != 'ajax' %}
+                <div class="ui basic center aligned segment">
+    {% endif %}
+                    {% if mode != 'ajax' %}
+                        <input type="submit" id="masschange" class="ui button" value="{% if changes is not defined %}{{ _T("Edit") }}{% else %}{{ _T("OK") }}{% endif %}"/>
+                        <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
+                    {% endif %}
+                    <input type="hidden" name="confirm" value="1"/>
+                    {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
+                    {% for key, value in data %}
+                        {% if value is iterable %}
+                            {% for val in value %}
+                        <input type="hidden" name="{{ key }}[]" value="{{ val }}"/>
+                            {% endfor %}
+                        {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                        {% endif %}
+                    {% endfor %}
+                    {% include "components/forms/csrf.html.twig" %}
+    {% if mode != 'ajax' %}
+                </div>
+    {% endif %}
+            </form>
+    {% if mode == 'ajax' %}
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

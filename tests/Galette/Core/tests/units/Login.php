@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,9 +28,8 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2016-12-05
  */
@@ -46,28 +45,30 @@ use Galette\GaletteTestCase;
  * @name      Login
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-12-05
  */
 class Login extends GaletteTestCase
 {
-    protected $seed = 320112365;
-    private $login_adh = 'dumas.roger';
-    private $mdp_adh = 'sd8)AvtE|*';
+    protected int $seed = 320112365;
+    private string $login_adh = 'dumas.roger';
+    private string $mdp_adh = 'sd8)AvtE|*';
 
     /**
      * Cleanup after tests
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        parent::tearDown();
     }
 
     /**
@@ -77,32 +78,31 @@ class Login extends GaletteTestCase
      */
     public function testDefaults()
     {
-        $this->boolean($this->login->isLogged())->isFalse();
-        $this->boolean($this->login->isStaff())->isFalse();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isSuperAdmin())->isFalse();
-        $this->boolean($this->login->isActive())->isFalse();
-        $this->boolean($this->login->isCron())->isFalse();
-        $this->boolean($this->login->isUp2Date())->isFalse();
-        $this->boolean($this->login->isImpersonated())->isFalse();
+        $this->assertFalse($this->login->isLogged());
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isSuperAdmin());
+        $this->assertFalse($this->login->isActive());
+        $this->assertFalse($this->login->isCron());
+        $this->assertFalse($this->login->isUp2Date());
+        $this->assertFalse($this->login->isImpersonated());
     }
 
     /**
-     * Test not logged in users Impersonating
+     * Test not logged-in users Impersonating
      *
      * @return void
      */
     public function testNotLoggedCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isLogged'))
+            ->getMock();
+        $login->method('isLogged')->willReturn(false);
 
-        $this->calling($login)->isLogged = false;
-        $this
-            ->exception(
-                function () use ($login) {
-                    $login->impersonate(1);
-                }
-            )->hasMessage('Only superadmin can impersonate!');
+        $this->expectExceptionMessage('Only superadmin can impersonate!');
+        $login->impersonate(1);
     }
 
     /**
@@ -112,18 +112,18 @@ class Login extends GaletteTestCase
      */
     public function testStaffCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
 
-        $this->calling($login)->isLogged = true;
-        $this->calling($login)->isStaff = true;
-        $this->calling($login)->isAdmin = false;
-        $this->calling($login)->isSuperAdmin = false;
-        $this
-            ->exception(
-                function () use ($login) {
-                    $login->impersonate(1);
-                }
-            )->hasMessage('Only superadmin can impersonate!');
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $this->expectExceptionMessage('Only superadmin can impersonate!');
+        $login->impersonate(1);
     }
 
     /**
@@ -133,17 +133,18 @@ class Login extends GaletteTestCase
      */
     public function testAdminCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->calling($login)->isLogged = true;
-        $this->calling($login)->isStaff = true;
-        $this->calling($login)->isAdmin = true;
-        $this->calling($login)->isSuperAdmin = false;
-        $this
-            ->exception(
-                function () use ($login) {
-                    $login->impersonate(1);
-                }
-            )->hasMessage('Only superadmin can impersonate!');
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(true);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        $this->expectExceptionMessage('Only superadmin can impersonate!');
+        $login->impersonate(1);
     }
 
     /**
@@ -153,16 +154,27 @@ class Login extends GaletteTestCase
      */
     public function testImpersonateExistsWException()
     {
-        $zdb = new \mock\Galette\Core\Db();
-        $this->calling($zdb)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
-                throw new \LogicException('Error executing query!', 123);
-            }
-        };
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
 
-        $login = new \mock\Galette\Core\Login($zdb, $this->i18n);
-        $this->calling($login)->isSuperAdmin = true;
-        $this->boolean($login->impersonate(1))->isFalse();
+        $zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($zdb, $this->i18n))
+            ->onlyMethods(array('isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isSuperAdmin')->willReturn(true);
+
+        $this->assertFalse($login->impersonate(1));
     }
 
     /**
@@ -172,21 +184,25 @@ class Login extends GaletteTestCase
      */
     public function testSuperadminCanImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
-        $this->calling($login)->isSuperAdmin = true;
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isSuperAdmin')->willReturn(true);
 
         ///We're faking, Impersonating won't work but will not throw any exception
-        $this->boolean($login->impersonate(1))->isFalse();
+        $this->assertFalse($login->impersonate(1));
     }
 
     /**
-     * Test return requesting an inexisting property
+     * Test return requesting a non-existing property
      *
      * @return void
      */
     public function testInexistingGetter()
     {
-        $this->boolean($this->login->doesnotexists)->isFalse();
+        $this->assertFalse($this->login->doesnotexists);
     }
 
     /**
@@ -196,8 +212,8 @@ class Login extends GaletteTestCase
      */
     public function testLoginExists()
     {
-        $this->boolean($this->login->loginExists('exists'))->isFalse();
-        $this->boolean($this->login->loginExists('doesnotexists'))->isFalse();
+        $this->assertFalse($this->login->loginExists('exists'));
+        $this->assertFalse($this->login->loginExists('doesnotexists'));
     }
 
     /**
@@ -207,15 +223,23 @@ class Login extends GaletteTestCase
      */
     public function testLoginExistsWException()
     {
-        $zdb = new \mock\Galette\Core\Db();
-        $this->calling($zdb)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
-                throw new \LogicException('Error executing query!', 123);
-            }
-        };
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        if ($o instanceof \Laminas\Db\Sql\Select) {
+                            throw new \LogicException('Error executing query!', 123);
+                        }
+                    }
+                )
+            );
 
         $login = new \Galette\Core\Login($zdb, $this->i18n);
-        $this->boolean($login->loginExists('doesnotexists'))->isTrue();
+        $this->assertTrue($login->loginExists('doesnotexists'));
     }
 
     /**
@@ -226,14 +250,14 @@ class Login extends GaletteTestCase
     public function testLogAdmin()
     {
         $this->login->logAdmin('superadmin', $this->preferences);
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isStaff())->isFalse();
-        $this->boolean($this->login->isAdmin())->isTrue();
-        $this->boolean($this->login->isSuperAdmin())->isTrue();
-        $this->boolean($this->login->isActive())->isTrue();
-        $this->boolean($this->login->isCron())->isFalse();
-        $this->boolean($this->login->isUp2Date())->isFalse();
-        $this->boolean($this->login->isImpersonated())->isFalse();
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isStaff());
+        $this->assertTrue($this->login->isAdmin());
+        $this->assertTrue($this->login->isSuperAdmin());
+        $this->assertTrue($this->login->isActive());
+        $this->assertFalse($this->login->isCron());
+        $this->assertFalse($this->login->isUp2Date());
+        $this->assertFalse($this->login->isImpersonated());
 
         //test logout
         $this->login->logOut();
@@ -261,7 +285,7 @@ class Login extends GaletteTestCase
             $status = new \Galette\Entity\Status($this->zdb);
             if (count($status->getList()) === 0) {
                 $res = $status->installInit();
-                $this->boolean($res)->isTrue();
+                $this->assertTrue($res);
             }
 
             $data = [
@@ -303,24 +327,24 @@ class Login extends GaletteTestCase
             if (is_array($check)) {
                 var_dump($check);
             }
-            $this->boolean($check)->isTrue();
+            $this->assertTrue($check);
 
             $store = $this->adh->store();
-            $this->boolean($store)->isTrue();
+            $this->assertTrue($store);
         } else {
             $this->adh = new \Galette\Entity\Adherent($this->zdb, $results->current());
         }
     }
 
     /**
-     * Look for a login that does exists
+     * Look for a login that does exist
      *
      * @return void
      */
     public function testLoginExistsDb()
     {
         $this->createUser();
-        $this->boolean($this->login->loginExists($this->login))->isTrue();
+        $this->assertTrue($this->login->loginExists($this->login));
     }
 
     /**
@@ -331,8 +355,8 @@ class Login extends GaletteTestCase
     public function testLogin()
     {
         $this->createUser();
-        $this->boolean($this->login->login('doenotexists', 'empty'))->isFalse();
-        $this->boolean($this->login->login($this->login_adh, $this->mdp_adh))->isTrue();
+        $this->assertFalse($this->login->login('doenotexists', 'empty'));
+        $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
     }
 
     /**
@@ -345,7 +369,7 @@ class Login extends GaletteTestCase
         global $translator;
 
         $this->createUser();
-        $this->boolean($this->login->login($this->login_adh, $this->mdp_adh))->isTrue();
+        $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
 
         /** Should get message in the right locale but doesn't... */
         $this->i18n->changeLanguage('en_US');
@@ -354,14 +378,15 @@ class Login extends GaletteTestCase
             'galette',
             $this->login->lang
         );
-        $this->string($this->login->loggedInAs())->isIdenticalTo(
+        $this->assertSame(
             str_replace(
                 '%login',
                 'Barre Olivier (dumas.roger)',
                 $tstring
-            )
+            ),
+            $this->login->loggedInAs()
         );
-        $this->string($this->login->loggedInAs(true))->isIdenticalTo('Barre Olivier (dumas.roger)');
+        $this->assertSame('Barre Olivier (dumas.roger)', $this->login->loggedInAs(true));
     }
 
     /**
@@ -372,23 +397,18 @@ class Login extends GaletteTestCase
     public function testLogCron()
     {
         $this->login->logCron('reminder');
-        $this->boolean($this->login->isLogged())->isTrue();
-        $this->boolean($this->login->isStaff())->isFalse();
-        $this->boolean($this->login->isAdmin())->isFalse();
-        $this->boolean($this->login->isSuperAdmin())->isFalse();
-        $this->boolean($this->login->isActive())->isFalse();
-        $this->boolean($this->login->isCron())->isTrue();
-        $this->boolean($this->login->isUp2Date())->isFalse();
-        $this->boolean($this->login->isImpersonated())->isFalse();
-        $this->string($this->login->login)->isIdenticalTo('cron');
+        $this->assertTrue($this->login->isLogged());
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isSuperAdmin());
+        $this->assertFalse($this->login->isActive());
+        $this->assertTrue($this->login->isCron());
+        $this->assertFalse($this->login->isUp2Date());
+        $this->assertFalse($this->login->isImpersonated());
+        $this->assertSame('cron', $this->login->login);
 
-        $this->when(
-            function () {
-                $this->login->logCron('filename');
-            }
-        )->error()
-            ->withMessage('Not authorized!')
-            ->withType(E_USER_ERROR)
-            ->exists();
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Not authorized!');
+        $this->login->logCron('filename');
     }
 }

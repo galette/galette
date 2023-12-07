@@ -36,7 +36,7 @@
  */
 
 if (!defined('GALETTE_ROOT')) {
-       die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 use Analog\Analog;

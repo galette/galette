@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2020 The Galette Team
+ * Copyright © 2014-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2020 The Galette Team
+ * @copyright 2014-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-27
@@ -39,7 +39,6 @@ use Galette\Controllers\CsvController;
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\PdfController;
 use Galette\Entity\Adherent;
-use Galette\Middleware\MembersNavigate;
 
 //self subscription
 $app->get(
@@ -76,17 +75,17 @@ $app->get(
 $app->get(
     '/member/{id:\d+}',
     [Crud\MembersController::class, 'show']
-)->setName('member')->add($authenticate)->add(MembersNavigate::class);
+)->setName('member')->add($authenticate);
 
 $app->get(
     '/member/edit/{id:\d+}',
     [Crud\MembersController::class, 'edit']
-)->setName('editMember')->add($authenticate)->add(MembersNavigate::class);
+)->setName('editMember')->add($authenticate);
 
 $app->get(
     '/member/add',
     [Crud\MembersController::class, 'add']
-)->setName('addMember')->add($authenticate)->add(MembersNavigate::class);
+)->setName('addMember')->add($authenticate);
 
 $app->get(
     '/member/add/child',
@@ -223,11 +222,6 @@ $app->post(
     '/ajax/group/members',
     [Crud\GroupsController::class, 'ajaxMembers']
 )->setName('ajaxGroupMembers')->add($authenticate);
-
-$app->get(
-    '/member/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
-    [Crud\MembersController::class, 'getDynamicFile']
-)->setName('getDynamicFile')->add($authenticate);
 
 $app->get(
     '/members/mass-change',

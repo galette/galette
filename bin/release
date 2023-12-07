@@ -328,16 +328,27 @@ def add_libs(rel_name, galette_archive):
     p1 = subprocess.Popen(npm_cmd, shell=True, cwd=npm_dir)
     p1.wait()
 
-    #run gulp install script for assets
-    wp_cmd = 'npm run-script gulp build'
+    #build the UI assets
+    wp_cmd = 'npm run first-build'
     p1 = subprocess.Popen(wp_cmd, shell=True, cwd=npm_dir)
     p1.wait()
 
     #node modules are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
 
+    #UI sources and some built assets are no longer needed
+    shutil.rmtree(os.path.join(npm_dir, 'semantic'))
+    shutil.rmtree(os.path.join(npm_dir, 'ui'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/components'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/themes/basic'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/themes/github'))
+    shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/themes/material'))
+    os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.js'))
+    os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.css'))
+    os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.rtl.css'))
+
     #install php dependencies
-    composer_cmd = 'composer install --no-dev'
+    composer_cmd = 'composer install --ignore-platform-reqs --no-dev'
     composer_dir = os.path.join(src_dir, rel_name, 'galette')
     print(composer_dir)
     p1 = subprocess.Popen(composer_cmd, shell=True, cwd=composer_dir)
@@ -352,6 +363,8 @@ def add_libs(rel_name, galette_archive):
         'package-lock.json',
         'phpcs-rules.xml',
         'composer.lock',
+        '.composer-require-checker.config.json',
+        'semantic.json',
         os.path.join('galette', 'composer.json'),
         os.path.join('galette', 'composer.lock'),
         os.path.join('galette', 'post_contribution_test.php')
@@ -362,6 +375,12 @@ def add_libs(rel_name, galette_archive):
 
     if os.path.exists(os.path.join(src_dir, rel_name, 'patches')):
         shutil.rmtree(os.path.join(src_dir, rel_name, 'patches'))
+
+    if os.path.exists(os.path.join(src_dir, rel_name, 'tests')):
+        shutil.rmtree(os.path.join(src_dir, rel_name, 'tests'))
+
+    if os.path.exists(os.path.join(src_dir, rel_name, '.github')):
+        shutil.rmtree(os.path.join(src_dir, rel_name, '.github'))
 
     #cleanup vendors
     for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):

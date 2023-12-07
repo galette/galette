@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2020 The Galette Team
+ * Copyright © 2010-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2020 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-03
@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Slim\Routing\RouteParser;
 use Slim\Slim;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
@@ -48,7 +49,7 @@ use Laminas\Db\Sql\Select;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2014 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  *
@@ -69,7 +70,7 @@ abstract class Pagination
     private $pages = 1;
     private $counter = null;
     protected $view;
-    protected $router;
+    protected $routeparser;
 
     public const ORDER_ASC = 'ASC';
     public const ORDER_DESC = 'DESC';
@@ -94,7 +95,7 @@ abstract class Pagination
     /**
      * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @return int|string
      */
     abstract protected function getDefaultOrder();
 
@@ -132,10 +133,10 @@ abstract class Pagination
     {
         $actual = $this->ordered;
         if ($actual == self::ORDER_ASC) {
-                $this->ordered = self::ORDER_DESC;
+            $this->ordered = self::ORDER_DESC;
         }
         if ($actual == self::ORDER_DESC) {
-                $this->ordered = self::ORDER_ASC;
+            $this->ordered = self::ORDER_ASC;
         }
     }
 
@@ -225,20 +226,36 @@ abstract class Pagination
     }
 
     /**
-     * Creates pagination links and assign some usefull variables to the
-     * Smarty template
+     * Creates pagination links and assign some useful variables to the template
      *
-     * @param Router  $router     Application instance
-     * @param Smarty  $view       View instance
-     * @param boolean $restricted Do not permit to display all
+     * @param RouteParser $routeparser Application instance
+     * @param mixed       $view        View instance
+     * @param boolean     $restricted  Do not permit to display all
+     *
+     * @return void
+     *
+     * @deprecated 1.0.0 use setViewPagination
+     */
+    public function setSmartyPagination(RouteParser $routeparser, $view, $restricted = true)
+    {
+        $this->setViewPagination($routeparser, $view, $restricted);
+    }
+
+    /**
+     * Creates pagination links and assign some useful variables to the template
+     *
+     * @param RouteParser $routeparser Application instance
+     * @param mixed       $view        View instance
+     * @param boolean     $restricted  Do not permit to display all
      *
      * @return void
      */
-    public function setSmartyPagination(\Slim\Router $router, \Smarty $view, $restricted = true)
+    public function setViewPagination(RouteParser $routeparser, $view, $restricted = true)
     {
+        $is_paginated = true;
         $paginate = null;
         $this->view = $view;
-        $this->router = $router;
+        $this->routeparser = $routeparser;
 
         //Create pagination links
         if ($this->current_page < 11) {
@@ -257,13 +274,13 @@ abstract class Pagination
 
         if ($this->current_page != 1) {
             $paginate .= $this->getLink(
-                '&lt;&lt;',
+                '<i class="fast backward small icon" aria-hidden="true"></i>',
                 $this->getHref(1),
                 preg_replace("(%i)", $next, _T("First page"))
             );
 
             $paginate .= $this->getLink(
-                '&lt;',
+                '<i class="step backward small icon" aria-hidden="true"></i>',
                 $this->getHref($previous),
                 preg_replace("(%i)", $previous, _T("Previous page (%i)"))
             );
@@ -272,7 +289,7 @@ abstract class Pagination
         for ($i = $idepart; $i <= $ifin; $i++) {
             if ($i == $this->current_page) {
                 $paginate .= $this->getLink(
-                    "-&nbsp;$i&nbsp;-",
+                    "$i",
                     $this->getHref($this->current_page),
                     preg_replace(
                         "(%i)",
@@ -291,16 +308,19 @@ abstract class Pagination
         }
         if ($this->current_page != $this->pages) {
             $paginate .= $this->getLink(
-                '&gt;',
+                '<i class="step forward small icon" aria-hidden="true"></i>',
                 $this->getHref($next),
                 preg_replace("(%i)", $next, _T("Next page (%i)"))
             );
 
             $paginate .= $this->getLink(
-                '&gt;&gt;',
+                '<i class="fast forward small icon" aria-hidden="true"></i>',
                 $this->getHref($this->pages),
                 preg_replace("(%i)", $this->pages, _T("Last page (%i)"))
             );
+        }
+        if ($this->current_page == 1 && $this->current_page == $this->pages) {
+            $is_paginated = false;
         }
 
         $options = array(
@@ -314,15 +334,16 @@ abstract class Pagination
             $options[0] = _T("All");
         }
 
-        //Now, we assign common variables to Smarty template
-        $view->assign('nb_pages', $this->pages);
-        $view->assign('page', $this->current_page);
-        $view->assign('numrows', $this->show);
-        $view->assign('pagination', $paginate);
-        $view->assign('nbshow_options', $options);
+        //Now, we assign common variables to template
+        $view->getEnvironment()->addGlobal('nb_pages', $this->pages);
+        $view->getEnvironment()->addGlobal('page', $this->current_page);
+        $view->getEnvironment()->addGlobal('numrows', $this->show);
+        $view->getEnvironment()->addGlobal('is_paginated', $is_paginated);
+        $view->getEnvironment()->addGlobal('pagination', $paginate);
+        $view->getEnvironment()->addGlobal('nbshow_options', $options);
 
         $this->view = null;
-        $this->router = null;
+        $this->routeparser = null;
     }
 
     /**
@@ -337,13 +358,13 @@ abstract class Pagination
      */
     private function getLink($content, $url, $title, $current = false)
     {
-        $tabs = "\t\t\t\t\t\t";
-        $link = $tabs . "<li";
         if ($current === true) {
-            $link .= " class=\"current\" ";
+            $active = "active ";
+        } else {
+            $active = "";
         }
-        $link .= "><a href=\"" . $url . "\" " .
-            "title=\"" . $title . "\">" . $content . "</a></li>\n";
+        $link = "<a href=\"" . $url . "\" " .
+            "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
         return $link;
     }
 
@@ -361,12 +382,12 @@ abstract class Pagination
             'value'     => $page
         ];
 
-        if ($this->view->getTemplateVars('cur_subroute')) {
-            $args['type'] = $this->view->getTemplateVars('cur_subroute');
+        if ($this->view->getEnvironment()->getGlobals()['cur_subroute']) {
+            $args['type'] = $this->view->getEnvironment()->getGlobals()['cur_subroute'];
         }
 
-        $href = $this->router->pathFor(
-            $this->view->getTemplateVars('cur_route'),
+        $href = $this->routeparser->urlFor(
+            $this->view->getEnvironment()->getGlobals()['cur_route'],
             $args
         );
         return $href;
@@ -375,9 +396,9 @@ abstract class Pagination
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -393,10 +414,26 @@ abstract class Pagination
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (in_array($name, $this->pagination_fields)) {
+            return true;
+        }
+        return property_exists($this, $name);
+    }
+
+    /**
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2021 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -36,6 +36,8 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
+use Galette\Entity\Status;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -52,7 +54,7 @@ use Galette\Core\Db;
  * @name      Groups
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -169,6 +171,7 @@ class Groups
             $results = $this->zdb->execute($select);
 
             foreach ($results as $row) {
+                /** @var ArrayObject $row */
                 $group = new Group($row);
                 $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;
@@ -355,6 +358,7 @@ class Groups
             }
             return true;
         } catch (Throwable $e) {
+            $te = clone $e;
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
@@ -370,7 +374,7 @@ class Groups
                 $msg . ' |' . implode("\n", $messages),
                 Analog::ERROR
             );
-            throw $e;
+            throw $te;
         }
     }
 
@@ -473,6 +477,10 @@ class Groups
         $select = $this->zdb->select(Adherent::TABLE, 'adh');
         $select->columns(
             [Adherent::PK]
+        )->join(
+            array('status' => PREFIX_DB . Status::TABLE),
+            'a.' . Status::PK . '=status.' . Status::PK,
+            array('priorite_statut')
         )->join(
             array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
             'adh.' . Adherent::PK . '=b.' . Adherent::PK,

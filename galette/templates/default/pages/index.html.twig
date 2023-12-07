@@ -1,0 +1,40 @@
+{% extends 'public_page.html.twig' %}
+
+{% set body_class = "front_page" %}
+
+{% block content %}
+                <form action="{{ url_for('dologin') }}" method="post" class="ui form">
+    {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
+                    <div class="ui segments">
+    {% endif %}
+                        <div class="ui segment">
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon" aria-hidden="true"></i><label for="login" class="visually-hidden">{{ _T("Username:") }}</label>
+                                    <input type="text" name="login" id="login" autofocus placeholder="{{ _T("Username:") }}"/>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="lock icon" aria-hidden="true"></i><label for="password" class="visually-hidden">{{ _T("Password:") }}</label>
+                                    <input type="password" name="password" id="password" placeholder="{{ _T("Password:") }}"/>
+                                </div>
+                            </div>
+                            <input type="submit" class="ui fluid large primary submit button" value="{{ _T("Login") }}"/>
+                            <input type="hidden" name="ident" value="1" />
+                            {% include "components/forms/csrf.html.twig" %}
+                        </div>
+    {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
+                        <div class="ui center aligned secondary segment">
+                            <a
+                                href="{{ url_for('password-lost') }}"
+                                class="password-lost"
+                            >
+                                <i class="icon unlock alt" aria-hidden="true"></i>
+                                {{ _T("Lost your password?") }}
+                            </a>
+                        </div>
+                    </div>
+    {% endif %}
+                </form>
+{% endblock %}

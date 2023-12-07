@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -38,8 +38,8 @@ namespace Galette\Controllers\Crud;
 
 use Throwable;
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
@@ -53,7 +53,7 @@ use Analog\Analog;
  * @name      GroupsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-06
@@ -99,7 +99,7 @@ class GroupsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $id]));
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $id]));
     }
 
 
@@ -119,12 +119,19 @@ class GroupsController extends CrudController
                 'Trying to check if group name is unique without name specified',
                 Analog::INFO
             );
-            return $response->withJson(
-                ['success' => false, 'message' => htmlentities(_T("Group name is missing!"))]
+            return $this->withJson(
+                $response,
+                [
+                    'success' => false,
+                    'message' => htmlentities(_T("Group name is missing!"))
+                ]
             );
         } else {
-            return $response->withJson(
-                ['success' => Groups::isUnique($this->zdb, $post['gname'])]
+            return $this->withJson(
+                $response,
+                [
+                    'success' => Groups::isUnique($this->zdb, $post['gname'])
+                ]
             );
         }
     }
@@ -160,8 +167,7 @@ class GroupsController extends CrudController
                     'Trying to display group ' . $id . ' without appropriate permissions',
                     Analog::INFO
                 );
-                $response->setStatus(403);
-                return $response;
+                return $response->withStatus(403);
             }
         }
 
@@ -177,16 +183,26 @@ class GroupsController extends CrudController
             }
         }
 
+        $parent_groups = [];
+        foreach ($groups_list as $parent_group) {
+            if ($group->canSetParentGroup($parent_group)) {
+                $parent_groups[] = $parent_group;
+            }
+        }
+
+        //Active tab on page
+        $tab = $request->getQueryParams['tab'] ?? 'group_information';
+
         // display page
         $this->view->render(
             $response,
-            'gestion_groupes.tpl',
+            'pages/groups_list.html.twig',
             array(
                 'page_title'            => _T("Groups"),
-                'require_tree'          => true,
                 'groups_root'           => $groups_root,
-                'groups'                => $groups_list,
-                'group'                 => $group
+                'parent_groups'         => $parent_groups,
+                'group'                 => $group,
+                'tab'                   => $tab
             )
         );
         return $response;
@@ -205,13 +221,16 @@ class GroupsController extends CrudController
         $post = $request->getParsedBody();
         $id = $post['id_group'];
         $group = new Group((int)$id);
+        if (!$group->canEdit($this->login)) {
+            throw new \RuntimeException('Trying to edit group without appropriate permissions');
+        }
 
         $groups = new Groups($this->zdb, $this->login);
 
         // display page
         $this->view->render(
             $response,
-            'group.tpl',
+            'elements/group.html.twig',
             array(
                 'mode'      => 'ajax',
                 'groups'    => $groups->getList(),
@@ -238,7 +257,7 @@ class GroupsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'ajax_groups.tpl',
+            'elements/ajax_groups.html.twig',
             array(
                 'mode'              => 'ajax',
                 'groups_list'       => $groups->getList(),
@@ -277,7 +296,7 @@ class GroupsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'group_persons.tpl',
+            'elements/group_persons.html.twig',
             [
                 'persons'       => $persons,
                 'person_mode'   => $mode
@@ -297,6 +316,7 @@ class GroupsController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filters
+        return $response;
     }
 
     // /CRUD - Read
@@ -314,6 +334,7 @@ class GroupsController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -329,6 +350,9 @@ class GroupsController extends CrudController
     {
         $post = $request->getParsedBody();
         $group = new Group($id);
+        if (!$group->canEdit($this->login)) {
+            throw new \RuntimeException('Trying to edit group without appropriate permissions');
+        }
 
         $group->setName($post['group_name']);
         try {
@@ -338,22 +362,21 @@ class GroupsController extends CrudController
                 $group->detach();
             }
 
+            $m = new Members();
+
             //handle group managers
-            $managers_id = [];
             if (isset($post['managers'])) {
                 $managers_id = $post['managers'];
+                $managers = $m->getArrayList($managers_id);
+                $group->setManagers($managers);
             }
-            $m = new Members();
-            $managers = $m->getArrayList($managers_id);
-            $group->setManagers($managers);
 
             //handle group members
-            $members_id = [];
             if (isset($post['members'])) {
                 $members_id = $post['members'];
+                $members = $m->getArrayList($members_id);
+                $group->setMembers($members);
             }
-            $members = $m->getArrayList($members_id);
-            $group->setMembers($members);
 
             $store = $group->store();
             if ($store === true) {
@@ -379,9 +402,14 @@ class GroupsController extends CrudController
             );
         }
 
+        if (isset($post['tab']) && $post['tab'] != 'general') {
+            $tab = '?tab=' . $post['tab'];
+        } else {
+            $tab = '';
+        }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $group->getId()]));
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $group->getId()]) . $tab);
     }
 
     /**
@@ -420,7 +448,8 @@ class GroupsController extends CrudController
             $result = $group->store();
         }
 
-        return $response->withJson(
+        return $this->withJson(
+            $response,
             [
                 'success'   =>  $result
             ]
@@ -439,7 +468,7 @@ class GroupsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('groups');
+        return $this->routeparser->urlFor('groups');
     }
 
     /**
@@ -451,7 +480,7 @@ class GroupsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveGroup',
             ['id' => (int)$args['id']]
         );

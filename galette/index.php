@@ -34,4 +34,4 @@
  * @link      http://galette.tuxfamily.org
  */
 
-header('location:webroot/index.php');
+header('location:webroot/');

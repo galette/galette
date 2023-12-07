@@ -1,0 +1,55 @@
+{% if object.getDynamicFields() is not empty and object.getDynamicFields().getFields()|length > 0 %}
+<div class="ui basic fitted segment">
+    <div class="ui styled fluid accordion row">
+        <div class="active title">
+            <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+            {{ _T("Additionnal fields:") }}
+        </div>
+        <div class="active content field">
+            <table class="ui very basic striped stackable padded table">
+                {% for field in object.getDynamicFields().getFields() %}
+                    {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
+                <tr>
+                    <td colspan="2"><div class="ui horizontal divider">{{ field.getName()|escape }}</div></td>
+                </tr>
+                    {% else %}
+                <tr>
+                    <th class="three wide column">{{ field.getName()|escape }}</th>
+                    <td>
+                        {% for field_data in object.getDynamicFields().getValues(field.getId()) %}
+                            {% set value = field_data.field_val|escape|default("") %}
+                            {% if get_class(field) == 'Galette\\DynamicFields\\Choice' %}
+                                {% if field_data.text_val is defined %}
+                                    {% set value = field_data.text_val %}
+                                {% else %}
+                                    {% set value = "" %}
+                                {% endif %}
+                            {% elseif get_class(field) == 'Galette\\DynamicFields\\Text' %}
+                                {% set value = field_data.field_val|escape|nl2br|default("") %}
+                            {% endif %}
+                            {% if not loop.first %}<br />{% endif %}
+                            {% if get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
+                                {% if value %}
+                        {{ _T("Yes") }}
+                                {% else %}
+                        {{ _T("No") }}
+                                {% endif %}
+                            {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
+                                <a href="{{ url_for("getDynamicFile", {"form_name": object.getFormName(), "id": object.id, "fid": field.getId(), "pos": loop.index, "name": value}) }}">{{ value }}</a>
+                            {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isValidEmail", value) %}
+                                <a href="mailto:{{ value }}">{{ value }}</a>
+                            {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isUrl", value) %}
+                                <a href="{{ value }}" target="_blank" title="{{ _T("Open '%s' in a new window")|replace({"%s": value}) }}">{{ value }}</a>
+                            {% else %}
+                                {{ value|raw }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}

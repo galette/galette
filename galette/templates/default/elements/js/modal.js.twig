@@ -1,0 +1,163 @@
+{#
+/**
+ * @file
+ * Fomantic UI Modal.
+ *
+ * Copyright © 2009-2023 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @category  Authentication
+ * @package   Galette
+ *
+ * @author    Guillaume Agniéray <dev@agnieray.net>
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009-2023 The Galette Team
+ * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or later
+ * @link      https://galette.eu
+ * @since     Available since 1.0dev - 2023-02-23
+ *
+ * Available variables:
+ *
+ * - modal_selector: existing inline HTML modal.
+ * - modal_without_title: true to hide modal's header.
+ * - modal_title: value coming from js code.
+ * - modal_title_twig: value coming from twig.
+ * - modal_without_content: true to hide modal's content.
+ * - modal_content: value coming from js code.
+ * - modal_content_twig: value coming from twig.
+ * - modal_class: class(es) applied on modal.
+ * - modal_content_class: class(es) applied on modal's content.
+ * - modal_other_options: hash to add other options { option: value }.
+ * - modal_onshow: modal's onShow callback.
+ * - modal_onhidden: modal's onHidden callback.
+ * - modal_onapprove: modal's onApprove callback.
+ * - modal_ondeny: modal's onDeny callback.
+ * - modal_additional_button: hash to add a third button { text, icon, color, click }.
+ * - modal_deny_only: true hides the approve button.
+ * - modal_approve_text: modal's approve button's text.
+ * - modal_approve_icon: modal's approve button's icon.
+ * - modal_approve_color: modal's approve button's color.
+ * - modal_approve_click: modal's approve button's onclick event.
+ * - modal_cancel_text: modal's cancel button's icon.
+ * - modal_cancel_icon: modal's cancel button's icon.
+ * - modal_cancel_color: modal's cancel button's icon.
+ * - modal_cancel_click: modal's cancel button's onclick event.
+ * - modal_classname: string to override default Fomantic UI classes.
+ *
+ */
+#}
+
+{% if modal_selector is not defined %}
+    $.modal({
+    {% if modal_without_title is not defined %}
+        title: {% if modal_title_twig is defined %}'{{ modal_title_twig }}'{% elseif modal_title is defined %}{{ modal_title|raw }}{% endif %},
+    {% endif %}
+    {% if modal_without_content is not defined %}
+        content: {% if modal_content_twig is defined %}'{{ modal_content_twig }}'{% elseif modal_content is defined %}{{ modal_content|raw }}{% endif %},
+    {% endif %}
+{% else %}
+    $('{{ modal_selector }}').modal({
+{% endif %}
+        class: 'modal-form{% if modal_class is defined %} {{ modal_class }}{% endif %}',
+        classContent: '{% if modal_content_class is defined %}{{ modal_content_class }}{% endif %}',
+{% if modal_other_options is defined and modal_other_options is iterable %}
+    {% for key, value in modal_other_options %}
+        {% if key == "observeChanges" and value == "1" %}
+            {{ key }}: true,
+        {% else %}
+            {{ key }}: "{{ value }}",
+        {% endif %}
+    {% endfor %}
+{% endif %}
+        onShow: function() {
+{% if modal_onshow is defined %}
+            {{ modal_onshow|raw }}
+{% else %}
+            return true;
+{% endif %}
+        },
+        onHidden: function() {
+{% if modal_onhidden is defined %}
+            {{ modal_onhidden|raw }}
+{% else %}
+            $(this).modal('hide dimmer').remove();
+{% endif %}
+        },
+        onApprove: function() {
+{% if modal_onapprove is defined %}
+            {{ modal_onapprove|raw }}
+{% elseif modal_deny_only is not defined %}
+            $('.modal-form form').submit();
+{% endif %}
+        },
+        onDeny: function() {
+{% if modal_ondeny is defined %}
+            {{ modal_ondeny|raw }}
+{% else %}
+            return true;
+{% endif %}
+        },
+        actions: [
+{% if modal_additional_button is defined and modal_additional_button is iterable %}
+            {
+    {% for key, value in modal_additional_button %}
+        {% if key == "click" %}
+                {{ key }}: {{ value|raw }},
+        {% else %}
+                {{ key }}: "{{ value }}",
+        {% endif %}
+    {% endfor %}
+            },
+{% endif %}
+{% if modal_deny_only is not defined %}
+            {
+                text: '{% if modal_approve_text is not defined %}{{ _T("Continue")|e("js") }}{% else %}{{ modal_approve_text }}{% endif %}',
+                icon: '{% if modal_approve_icon is not defined %}arrow right{% else %}{{ modal_approve_icon }}{% endif %}',
+                class: '{% if modal_approve_color is not defined %}primary{% else %}{{ modal_approve_color }}{% endif %} icon labeled approve',
+                click: {
+{% if modal_approve_click is defined %}
+                    {{ modal_approve_click|raw }}
+{% endif %}
+                }
+            },
+{% endif %}
+            {
+                text: '{% if modal_cancel_text is not defined %}{{ _T("Cancel")|e("js") }}{% else %}{{ modal_cancel_text }}{% endif %}',
+                icon: '{% if modal_cancel_icon is not defined %}times{% else %}{{ modal_cancel_icon }}{% endif %}',
+                class: '{% if modal_cancel_color is defined %}{{ modal_cancel_color }} {% endif %}icon labeled cancel',
+                click: {
+{% if modal_cancel_click is defined %}
+                    {{ modal_cancel_click|raw }}
+{% endif %}
+                }
+            }
+        ],
+{% if modal_classname is defined %}
+    {% if modal_classname == "redalert" %}
+        className: {
+            modal: 'ui redalert modal',
+            title: 'center aligned header',
+            content: 'center aligned content',
+            actions: 'center aligned actions'
+        }
+    {% else %}
+        className: {
+            {{ modal_classname|raw }}
+        }
+    {% endif %}
+{% endif %}
+    }).modal('show');

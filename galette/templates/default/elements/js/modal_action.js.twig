@@ -1,0 +1,130 @@
+{#
+/**
+ * @file
+ * Single click event using Fomantic UI Modal.
+ *
+ * Copyright © 2009-2023 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @category  Authentication
+ * @package   Galette
+ *
+ * @author    Guillaume Agniéray <dev@agnieray.net>
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009-2023 The Galette Team
+ * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or later
+ * @link      https://galette.eu
+ * @since     Available since 1.0dev - 2023-02-17
+ *
+ * Available variables:
+ *
+ * - selector: actionable element.
+ * - actionurl: URL where to send the request.
+ * - method: HTTP method to use for the request.
+ * - datatype: type of data expected in response.
+ * - extra_success: additionnal code at the begining of the success callback.
+ *
+ * - loader_selector: element on which to apply the loader.
+ * - loader: loader's variation to use (on button, action's list or page dimmer).
+ * - loader_text: text to display in the loader.
+ *
+ * - modal_title: value coming from js code.
+ * - modal_title_twig: value coming from twig.
+ * - modal_content: value coming from js code.
+ * - modal_content_twig: value coming from twig.
+ * - modal_class: class(es) applied on modal.
+ * - modal_content_class: class(es) applied on modal's content.
+ * - modal_onapprove: modal's onApprove callback.
+ * - modal_approve_text: modal's approve button's text.
+ * - modal_approve_icon: modal's approve button's icon.
+ * - modal_cancel_text: modal's cancel button's text.
+ *
+ * @see loader.js.twig
+ * @see modal.js.twig
+ *
+ */
+#}
+
+{% set selector = selector is defined ? selector : ".single-custom-action" %}
+{% set method = method is defined ? method : "GET" %}
+{% set datatype = datatype is defined ? datatype : "html" %}
+{% if loader is not defined %}
+    {% set loader = 'action' %}
+    {% set loader_text = loader_text is defined ? loader_text : _T('Loading...') %}
+{% endif %}
+{% set loader_selector = loader_selector is defined ? loader_selector : ".loader_selector" %}
+
+{% set modal_title = modal_title_twig is defined ? modal_title_twig : modal_title %}
+{% set modal_content = modal_content_twig is defined ? modal_content_twig : "res" %}
+{% set modal_class = modal_class is defined ? modal_class : null %}
+{% set modal_content_class = modal_content_class is defined ? modal_content_class : null %}
+{% set modal_onapprove = modal_onapprove is defined ? modal_onapprove : null %}
+{% set modal_approve_text = modal_approve_text is defined ? modal_approve_text : _T("Save")|e("js") %}
+{% set modal_approve_icon = modal_approve_icon is defined ? modal_approve_icon : "save" %}
+{% set modal_cancel_text = modal_cancel_text is defined ? modal_cancel_text : _T("Close")|e("js") %}
+
+    $('{{ selector }}').click(function(event) {
+        event.preventDefault();
+        var _this = $(this);
+        var _url = _this.attr('href');
+        $.ajax({
+            url: {% if actionurl is not defined %}_url{% else %}'{{ actionurl|raw }}'{% endif %},
+            method: "{{ method }}",
+            datatype: "{{ datatype }}",
+            {% include "elements/js/loader.js.twig" with {
+                loader: loader,
+                selector: loader_selector,
+                loader_text: loader_text
+            } %},
+            success: function(res) {
+{% if extra_success is defined %}
+                {{ extra_success|raw }}
+{% endif %}
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title: modal_title,
+                    modal_content: modal_content,
+                    modal_class: modal_class,
+                    modal_content_class: modal_content_class,
+                    modal_onshow: "_actionAjaxMapper();",
+                    modal_onapprove: modal_onapprove,
+                    modal_approve_text: modal_approve_text,
+                    modal_approve_icon: modal_approve_icon,
+                    modal_cancel_text: modal_cancel_text,
+                } %}
+            },
+            error: function() {
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                    modal_without_content: true,
+                    modal_class: "mini",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "redalert",
+                } %}
+            }
+        });
+    });
+
+    var _actionAjaxMapper = function(){
+        $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
+        $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
+        $('.modal-form a[title], .modal-form .tooltip').popup({
+            variation: 'inverted',
+            inline: false,
+            addTouchEvents: false,
+        });
+    }

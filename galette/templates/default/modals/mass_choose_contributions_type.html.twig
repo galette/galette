@@ -1,0 +1,49 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <div id="mass_contributions"{% if mode != 'ajax' %} class="center"{% else %} class="ui modal"{% endif %}>
+    {% if mode == 'ajax' %}
+        <div class="header">
+    {% else %}
+        <h2>
+    {% endif %}
+            {{ page_title }}
+    {% if mode != 'ajax' %}
+        </h2>
+    {% else %}
+        </div>
+        <div class="content">
+    {% endif %}
+            <form action="{{ form_url }}" method="post" class="ui form">
+                <div class="inline field">
+                    <label for="type">{{ _T("Contribution type") }}</label>
+                    <select name="type" id="type" class="ui dropdown">
+                        <option value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}">{{ _T("Membership") }}</option>
+                        <option value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}">{{ _T("Donation") }}</option>
+                    </select>
+                </div>
+    {% if mode != 'ajax' %}
+                <div class="ui basic center aligned segment">
+                        <input type="submit" id="masschange" class="ui button" value="{{ _T("OK") }}"/>
+                        <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
+    {% endif %}
+                    {% if mode == 'ajax' %}<input type="hidden" name="ajax" value="true"/>{% endif %}
+                    {% for key, value in data %}
+                        {% if value is iterable %}
+                            {% for val in value %}
+                        <input type="hidden" name="{{ key }}[]" value="{{ val }}"/>
+                            {% endfor %}
+                        {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                        {% endif %}
+                    {% endfor %}
+                    {% include "components/forms/csrf.html.twig" %}
+    {% if mode != 'ajax' %}
+                </div>
+    {% endif %}
+            </form>
+    {% if mode == 'ajax' %}
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

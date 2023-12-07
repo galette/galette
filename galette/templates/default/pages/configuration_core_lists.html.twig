@@ -1,0 +1,152 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <noscript>
+        <div class="ui basic fitted center aligned segment">
+            <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
+        </div>
+    </noscript>
+    <form action="{{ url_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
+        <div id="members_tab" class="ui grid">
+            <div class="eight wide column">
+                <div class="ui top attached accordion-styled header">
+                    {{ _T("Fields in list") }}
+                </div>
+                <div class="jsonly disabled ui bottom attached accordion-styled segment">
+                    <div class="ui basic fitted segment">
+                        <div class="ui two column stackable grid core-lists-properties">
+                            <div class="middle aligned row">
+                                <div class="column">
+                                    <span class="ui fluid label">{{ _T("Field name") }}</span>
+                                </div>
+                                <div class="column">
+                                    <span class="ui fluid label">{{ _T("Permissions") }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="listed_fields" class="sortable-items">
+    {% for col, field in listed_fields %}
+            {% set fid = field.field_id %}
+                        <li class="{% if fid == 'id_adh' or fid == 'list_adh_name' %}nosort ui-state-disabled {% endif %}ui segment">
+                            <div class="ui two column stackable grid core-lists-listing">
+                                <div class="middle aligned row">
+                                    <div class="column">
+                                        <i class="arrows alternate icon" aria-hidden="true"></i>
+                                        <span data-prop-label="{{ _T("Field name") }}">
+                                            <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                                            {{ field.label }}
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span data-prop-label="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %}{{ _T("Group manager") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %}{{ _T("Read only") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %}{{ _T("Read/Write") }}{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="eight wide column">
+                <div class="ui top attached accordion-styled header">
+                    {{ _T("Available fields") }}
+                </div>
+                <div class="jsonly disabled ui bottom attached accordion-styled segment">
+                    <div class="ui basic fitted segment">
+                        <div class="ui two column stackable grid core-lists-properties">
+                            <div class="middle aligned row">
+                                <div class="column">
+                                    <span class="ui fluid label">{{ _T("Field name") }}</span>
+                                </div>
+                                <div class="column">
+                                    <span class="ui fluid label">{{ _T("Permissions") }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="remaining_fields" class="sortable-items">
+    {% for col, field in remaining_fields %}
+            {% set fid = field.field_id %}
+                        <li class="ui segment">
+                            <div class="ui two column stackable grid core-lists-listing">
+                                <div class="middle aligned row">
+                                    <div class="column">
+                                        <i class="arrows alternate icon" aria-hidden="true"></i>
+                                        <span data-prop-label="{{ _T("Field name") }}">
+                                            <input type="hidden" name="rfields[]" value="{{ fid }}"/>
+                                            {{ field.label }}
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span data-prop-label="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %}{{ _T("Group manager") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %}{{ _T("Read only") }}{% endif %}
+                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %}{{ _T("Read/Write") }}{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+        </div>
+        {% include "components/forms/csrf.html.twig" %}
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="module">
+        var _initSortable = function(){
+            var _listed = document.getElementById('listed_fields');
+            var _remaining = document.getElementById('remaining_fields');
+
+            new Sortable(_listed, {
+                group: 'lists',
+                animation: 150,
+                ghostClass: 'yellow',
+                onAdd: function (evt) {
+                    var _item = evt.item;
+                    _item.classList.add('yellow');
+                    _item.getElementsByTagName('input')[0].setAttribute('name', 'fields[]');
+                },
+                onUpdate: function (evt) {
+                    var _item = evt.item;
+                    _item.classList.add('yellow');
+                }
+            });
+
+            new Sortable(_remaining, {
+                group: 'lists',
+                animation: 150,
+                ghostClass: 'yellow',
+                onAdd: function (evt) {
+                    var _item = evt.item;
+                    _item.classList.add('yellow');
+                    _item.getElementsByTagName('input')[0].setAttribute('name', 'rfields[]');
+                }
+            });
+        }
+
+        $(function() {
+            _initSortable();
+        });
+    </script>
+{% endblock %}

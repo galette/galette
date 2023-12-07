@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-06-02
@@ -36,6 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Galette\Events\GaletteEvent;
 use Galette\Features\Socials;
 use Throwable;
 use Analog\Analog;
@@ -58,7 +60,7 @@ use Galette\Features\Dynamics;
  * @name      Adherent
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 02-06-2009
@@ -66,9 +68,9 @@ use Galette\Features\Dynamics;
  * @property integer $id
  * @property integer|Title $title Either a title id or an instance of Title
  * @property string $stitle Title label
- * @property string company_name
+ * @property string $company_name
  * @property string $name
- * @property string $surname
+ * @property ?string $surname
  * @property string $nickname
  * @property string $birthdate Localized birthdate
  * @property string $rbirthdate Raw birthdate
@@ -114,11 +116,11 @@ use Galette\Features\Dynamics;
  * @property string $sname
  * @property string $saddress
  * @property string $contribstatus State of member contributions
- * @property string $days_remaining
+ * @property integer $days_remaining
  * @property-read integer $parent_id
  * @property Social $social Social networks/Contact
  * @property string $number Member number
- *
+ * @property-read bool $self_adh
  */
 class Adherent
 {
@@ -181,7 +183,7 @@ class Adherent
     private $_groups = [];
     private $_managed_groups = [];
     private $_parent;
-    private $_children;
+    private $_children = [];
     private $_duplicate = false;
     private $_socials;
     private $_number;
@@ -189,15 +191,6 @@ class Adherent
     private $_row_classes;
 
     private $_self_adh = false;
-    private $_deps = array(
-        'picture'   => true,
-        'groups'    => true,
-        'dues'      => true,
-        'parent'    => false,
-        'children'  => false,
-        'dynamics'  => false,
-        'socials'   => false
-    );
 
     private $zdb;
     private $preferences;
@@ -232,16 +225,10 @@ class Adherent
 
         if ($deps !== null) {
             if (is_array($deps)) {
-                $this->_deps = array_merge(
-                    $this->_deps,
-                    $deps
-                );
+                $this->setDeps($deps);
             } elseif ($deps === false) {
                 //no dependencies
-                $this->_deps = array_fill_keys(
-                    array_keys($this->_deps),
-                    false
-                );
+                $this->disableAllDeps();
             } else {
                 Analog::log(
                     '$deps should be an array, ' . gettype($deps) . ' given!',
@@ -304,7 +291,9 @@ class Adherent
                 return false;
             }
 
-            $this->loadFromRS($results->current());
+            /** @var ArrayObject $result */
+            $result = $results->current();
+            $this->loadFromRS($result);
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -335,8 +324,9 @@ class Adherent
             }
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-            if ($result) {
+            if ($results->count() > 0) {
+                /** @var ArrayObject $result */
+                $result = $results->current();
                 $this->loadFromRS($result);
             }
             return true;
@@ -353,11 +343,11 @@ class Adherent
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r): void
+    private function loadFromRS(ArrayObject $r): void
     {
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
@@ -450,7 +440,7 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if (!$this->_parent instanceof Adherent) {
+        if ($this->_parent !== null && !$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
             $this->_parent = new Adherent($this->zdb, (int)$this->_parent, $deps);
         }
@@ -540,8 +530,8 @@ class Adherent
     private function checkDues(): void
     {
         //how many days since our beloved member has been created
-        $date_now = new \DateTime();
-        $this->_oldness = $date_now->diff(
+        $now = new \DateTime();
+        $this->_oldness = $now->diff(
             new \DateTime($this->_creation_date)
         )->days;
 
@@ -553,21 +543,28 @@ class Adherent
             if ($this->_due_date == '') {
                 $this->_row_classes .= ' cotis-never';
             } else {
-                $date_end = new \DateTime($this->_due_date);
-                $date_diff = $date_now->diff($date_end);
-                $this->_days_remaining = ($date_diff->invert == 1)
-                    ? $date_diff->days * -1
-                    : $date_diff->days;
-
-                if ($this->_days_remaining == 0) {
-                    $this->_row_classes .= ' cotis-lastday';
-                } elseif ($this->_days_remaining < 0) {
+                // To count the days remaining, the next begin date is required.
+                $due_date = new \DateTime($this->_due_date);
+                $next_begin_date = clone $due_date;
+                $next_begin_date->add(new \DateInterval('P1D'));
+                $date_diff = $now->diff($next_begin_date);
+                $this->_days_remaining = $date_diff->days;
+                // Active
+                if ($date_diff->invert == 0 && $date_diff->days >= 0) {
+                    $this->_days_remaining = $date_diff->days;
+                    if ($this->_days_remaining <= 30) {
+                        if ($date_diff->days == 0) {
+                            $this->_row_classes .= ' cotis-lastday';
+                        }
+                        $this->_row_classes .= ' cotis-soon';
+                    } else {
+                        $this->_row_classes .= ' cotis-ok';
+                    }
+                // Expired
+                } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
+                    $this->_days_remaining = $date_diff->days;
                     //check if member is still active
                     $this->_row_classes .= $this->isActive() ? ' cotis-late' : ' cotis-old';
-                } elseif ($this->_days_remaining < 30) {
-                    $this->_row_classes .= ' cotis-soon';
-                } else {
-                    $this->_row_classes .= ' cotis-ok';
                 }
             }
         }
@@ -745,7 +742,7 @@ class Adherent
      */
     public function getRowClass(bool $public = false): string
     {
-        $strclass = ($this->isActive()) ? 'active' : 'inactive';
+        $strclass = ($this->isActive()) ? 'active-account' : 'inactive-account';
         if ($public === false) {
             $strclass .= $this->_row_classes;
         }
@@ -760,10 +757,20 @@ class Adherent
     public function getDues(): string
     {
         $ret = '';
-        $date_now = new \DateTime();
+        $never_contributed = false;
+        $now = new \DateTime();
+        // To count the days remaining, the next begin date is required.
+        if ($this->_due_date === null) {
+            $this->_due_date = $now->format('Y-m-d');
+            $never_contributed = true;
+        }
+        $due_date = new \DateTime($this->_due_date);
+        $next_begin_date = clone $due_date;
+        $next_begin_date->add(new \DateInterval('P1D'));
+        $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
-        } elseif ($this->_due_date == '') {
+        } elseif ($never_contributed === true) {
             $patterns = array('/%days/', '/%date/');
             $cdate = new \DateTime($this->_creation_date);
             $replace = array(
@@ -779,20 +786,32 @@ class Adherent
             } else {
                 $ret = _T("Never contributed");
             }
+        // Last active or first expired day
         } elseif ($this->_days_remaining == 0) {
-            $ddate = new \DateTime($this->_due_date);
-            $date_diff = $date_now->diff($ddate);
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
-        } elseif ($this->_days_remaining < 0) {
-            $ddate = new \DateTime($this->_due_date);
+        // Active
+        } elseif ($date_diff->invert == 0 && $this->_days_remaining > 0) {
             $patterns = array('/%days/', '/%date/');
             $replace = array(
-                $this->_days_remaining * -1,
-                $ddate->format(__("Y-m-d"))
+                $this->_days_remaining,
+                $due_date->format(__("Y-m-d"))
+            );
+            $ret = preg_replace(
+                $patterns,
+                $replace,
+                _T("%days days remaining (ending on %date)")
+            );
+        // Expired
+        } elseif ($date_diff->invert == 1 && $this->_days_remaining > 0) {
+            $patterns = array('/%days/', '/%date/');
+            $replace = array(
+                // We need the number of days expired, not the number of days remaining.
+                $this->_days_remaining + 1,
+                $due_date->format(__("Y-m-d"))
             );
             if ($this->_active) {
                 $ret = preg_replace(
@@ -803,18 +822,6 @@ class Adherent
             } else {
                 $ret = _T("No longer member");
             }
-        } else {
-            $ddate = new \DateTime($this->_due_date);
-            $patterns = array('/%days/', '/%date/');
-            $replace = array(
-                $this->_days_remaining,
-                $ddate->format(__("Y-m-d"))
-            );
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("%days days remaining (ending on %date)")
-            );
         }
         return $ret;
     }
@@ -942,11 +949,11 @@ class Adherent
      */
     private function getFieldLabel(string $field): string
     {
-        $label = $this->fields[$field]['label'];
+        $label = $this->fields[$field]['label'] ?? '';
         //replace "&nbsp;"
         $label = str_replace('&nbsp;', ' ', $label);
         //remove trailing ':' and then trim
-        $label = trim(trim($label ?? '', ':'));
+        $label = trim(trim($label, ':'));
         return $label;
     }
 
@@ -992,14 +999,14 @@ class Adherent
             //member is due free, he's up to date.
             return true;
         } else {
-            //let's check from end date, if present
+            //let's check from due date, if present
             if ($this->_due_date == null) {
                 return false;
             } else {
-                $ech = new \DateTime($this->_due_date);
+                $due_date = new \DateTime($this->_due_date);
                 $now = new \DateTime();
                 $now->setTime(0, 0, 0);
-                return $ech >= $now;
+                return $due_date >= $now;
             }
         }
     }
@@ -1076,6 +1083,7 @@ class Adherent
             if (isset($values[$key])) {
                 $value = $values[$key];
                 if ($value !== true && $value !== false) {
+                    //@phpstan-ignore-next-line
                     $value = trim($value ?? '');
                 }
             } elseif (empty($this->_id)) {
@@ -1175,15 +1183,19 @@ class Adherent
             $this->_parent = null;
         }
 
-        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff()) {
+        if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
             if (!isset($values['groups_adh'])) {
                 $this->errors[] = _T('You have to select a group you own!');
             } else {
+                $owned_group = false;
                 foreach ($values['groups_adh'] as $group) {
                     list($gid) = explode('|', $group);
-                    if (!$login->isGroupManager($gid)) {
-                        $this->errors[] = _T('You have to select a group you own!');
+                    if ($login->isGroupManager($gid)) {
+                        $owned_group = true;
                     }
+                }
+                if ($owned_group === false) {
+                    $this->errors[] = _T('You have to select a group you own!');
                 }
             }
         }
@@ -1304,30 +1316,29 @@ class Adherent
                     $this->errors[] = _T("- Non-valid E-Mail address!") .
                         ' (' . $this->getFieldLabel($field) . ')';
                 }
-                if ($field == 'email_adh') {
-                    try {
-                        $select = $this->zdb->select(self::TABLE);
-                        $select->columns(
-                            array(self::PK)
-                        )->where(array('email_adh' => $value));
-                        if (!empty($this->_id)) {
-                            $select->where->notEqualTo(
-                                self::PK,
-                                $this->_id
-                            );
-                        }
 
-                        $results = $this->zdb->execute($select);
-                        if ($results->count() !== 0) {
-                            $this->errors[] = _T("- This E-Mail address is already used by another member!");
-                        }
-                    } catch (Throwable $e) {
-                        Analog::log(
-                            'An error occurred checking member email uniqueness.',
-                            Analog::ERROR
+                try {
+                    $select = $this->zdb->select(self::TABLE);
+                    $select->columns(
+                        array(self::PK)
+                    )->where(array('email_adh' => $value));
+                    if (!empty($this->_id)) {
+                        $select->where->notEqualTo(
+                            self::PK,
+                            $this->_id
                         );
-                        $this->errors[] = _T("An error has occurred while looking if login already exists.");
                     }
+
+                    $results = $this->zdb->execute($select);
+                    if ($results->count() !== 0) {
+                        $this->errors[] = _T("- This E-Mail address is already used by another member!");
+                    }
+                } catch (Throwable $e) {
+                    Analog::log(
+                        'An error occurred checking member email uniqueness.',
+                        Analog::ERROR
+                    );
+                    $this->errors[] = _T("An error has occurred while looking if login already exists.");
                 }
                 break;
             case 'login_adh':
@@ -1531,7 +1542,6 @@ class Adherent
                 }
             }
 
-            $success = false;
             if (empty($this->_id)) {
                 //we're inserting a new member
                 unset($values[self::PK]);
@@ -1558,7 +1568,6 @@ class Adherent
                             $this->sname
                         );
                     }
-                    $success = true;
 
                     $event = 'member.add';
                 } else {
@@ -1596,21 +1605,18 @@ class Adherent
                         $this->sname
                     );
                 }
-                $success = true;
                 $event = 'member.edit';
             }
 
             //dynamic fields
-            if ($success) {
-                $success = $this->dynamicsStore();
-                $this->storeSocials($this->id);
-            }
+            $this->dynamicsStore();
+            $this->storeSocials($this->id);
 
             //send event at the end of process, once all has been stored
             if ($event !== null) {
-                $emitter->emit($event, $this);
+                $emitter->dispatch(new GaletteEvent($event, $this));
             }
-            return $success;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -1635,7 +1641,7 @@ class Adherent
                 array('date_modif_adh' => $modif_date)
             )->where([self::PK => $this->_id]);
 
-            $edit = $this->zdb->execute($update);
+            $this->zdb->execute($update);
             $this->_modification_date = $modif_date;
         } catch (Throwable $e) {
             Analog::log(
@@ -1707,21 +1713,21 @@ class Adherent
             }
             switch ($name) {
                 case 'sadmin':
+                    return (($this->isAdmin()) ? _T("Yes") : _T("No"));
                 case 'sdue_free':
+                    return (($this->isDueFree()) ? _T("Yes") : _T("No"));
                 case 'sappears_in_list':
+                    return (($this->appearsInMembersList()) ? _T("Yes") : _T("No"));
                 case 'sstaff':
                     return (($this->$real) ? _T("Yes") : _T("No"));
-                    break;
                 case 'sactive':
-                    return (($this->$real) ? _T("Active") : _T("Inactive"));
-                    break;
+                    return (($this->isActive()) ? _T("Active") : _T("Inactive"));
                 case 'stitle':
                     if (isset($this->_title) && $this->_title instanceof Title) {
                         return $this->_title->tshort;
                     } else {
                         return null;
                     }
-                    break;
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->_status);
@@ -1809,6 +1815,82 @@ class Adherent
     }
 
     /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset(string $name)
+    {
+        $forbidden = array(
+            'admin', 'staff', 'due_free', 'appears_in_list', 'active',
+            'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
+        );
+        if (!defined('GALETTE_TESTS')) {
+            $forbidden[] = 'password'; //keep that for tests only
+        }
+
+        $virtuals = array(
+            'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
+            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
+            'rbirthdate', 'sgender', 'contribstatus',
+        );
+
+        $socials = array('website', 'msn', 'jabber', 'icq');
+
+        if (in_array($name, $forbidden)) {
+            Analog::log(
+                'Calling property "' . $name . '" directly is discouraged.',
+                Analog::WARNING
+            );
+            switch ($name) {
+                case 'admin':
+                case 'staff':
+                case 'due_free':
+                case 'appears_in_list':
+                case 'active':
+                case 'duplicate':
+                case 'groups':
+                case 'managed_groups':
+                    return true;
+            }
+
+            return false;
+        }
+
+        if (in_array($name, $virtuals)) {
+            return true;
+        }
+
+        //for backward compatibility
+        if (in_array($name, $socials)) {
+            return true;
+        }
+
+        if (substr($name, 0, 1) !== '_') {
+            $rname = '_' . $name;
+        } else {
+            $rname = $name;
+        }
+
+        switch ($name) {
+            case 'id':
+            case 'id_statut':
+            case 'address':
+            case 'birthdate':
+            case 'creation_date':
+            case 'modification_date':
+            case 'due_date':
+            case 'parent_id':
+                return true;
+            default:
+                return property_exists($this, $rname);
+        }
+    }
+
+    /**
      * Get member email
      * If member does not have an email address, but is attached to
      * another member, we'll take information from its parent.
@@ -1818,7 +1900,7 @@ class Adherent
     public function getEmail(): string
     {
         $email = $this->_email;
-        if (empty($email)) {
+        if (empty($email) && $this->hasParent()) {
             $this->loadParent();
             $email = $this->parent->email;
         }
@@ -1937,11 +2019,12 @@ class Adherent
     /**
      * Handle files (photo and dynamics files)
      *
-     * @param array $files Files sent
+     * @param array $files    Files sent
+     * @param array $cropping Cropping properties
      *
      * @return array|true
      */
-    public function handleFiles(array $files)
+    public function handleFiles(array $files, array $cropping = null)
     {
         $this->errors = [];
         // picture upload
@@ -1949,7 +2032,11 @@ class Adherent
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
                 if ($files['photo']['tmp_name'] != '') {
                     if (is_uploaded_file($files['photo']['tmp_name'])) {
-                        $res = $this->picture->store($files['photo']);
+                        if ($this->preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
+                            $res = $this->picture->store($files['photo'], false, $cropping);
+                        } else {
+                            $res = $this->picture->store($files['photo']);
+                        }
                         if ($res < 0) {
                             $this->errors[]
                                 = $this->picture->getErrorMessage($res);
@@ -2179,85 +2266,5 @@ class Adherent
         $this->_parent = $id;
         $this->loadParent();
         return $this;
-    }
-
-    /**
-     * Reset dependencies to load
-     *
-     * @return $this
-     */
-    public function disableAllDeps(): self
-    {
-        foreach ($this->_deps as &$dep) {
-            $dep = false;
-        }
-        return $this;
-    }
-
-    /**
-     * Enable all dependencies to load
-     *
-     * @return $this
-     */
-    public function enableAllDeps(): self
-    {
-        foreach ($this->_deps as &$dep) {
-            $dep = true;
-        }
-        return $this;
-    }
-
-    /**
-     * Enable a load dependency
-     *
-     * @param string $name Dependency name
-     *
-     * @return $this
-     */
-    public function enableDep(string $name): self
-    {
-        if (!isset($this->_deps[$name])) {
-            Analog::log(
-                'dependency ' . $name . ' does not exists!',
-                Analog::WARNING
-            );
-        } else {
-            $this->_deps[$name] = true;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Enable a load dependency
-     *
-     * @param string $name Dependency name
-     *
-     * @return $this
-     */
-    public function disableDep(string $name): self
-    {
-        if (!isset($this->_deps[$name])) {
-            Analog::log(
-                'dependency ' . $name . ' does not exists!',
-                Analog::WARNING
-            );
-        } else {
-            $this->_deps[$name] = false;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Is load dependency enabled?
-     *
-     * @param string $name Dependency name
-     *
-     * @return boolean
-     */
-    protected function isDepEnabled(string $name): bool
-    {
-        return $this->_deps[$name];
     }
 }

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Repository\Titles;
 use Galette\Entity\Title;
 use Analog\Analog;
@@ -50,7 +50,7 @@ use Analog\Analog;
  * @name      TitlesController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -71,6 +71,7 @@ class TitlesController extends CrudController
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -101,15 +102,15 @@ class TitlesController extends CrudController
      */
     public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
-        $titles = Titles::getList($this->zdb);
+        $titles = new Titles($this->zdb);
 
         // display page
         $this->view->render(
             $response,
-            'gestion_titres.tpl',
+            'pages/configuration_titles.html.twig',
             [
                 'page_title'        => _T("Titles management"),
-                'titles_list'       => $titles
+                'titles_list'       => $titles->getList()
             ]
         );
         return $response;
@@ -126,6 +127,7 @@ class TitlesController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filtering
+        return $response;
     }
 
     // /CRUD - Read
@@ -143,14 +145,16 @@ class TitlesController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         $title = new Title($id);
+        $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         // display page
         $this->view->render(
             $response,
-            'edit_title.tpl',
+            'pages/configuration_title_form.html.twig',
             [
                 'page_title'    => _T("Edit title"),
-                'title'         => $title
+                'title'         => $title,
+                'mode'         => $mode
             ]
         );
         return $response;
@@ -189,55 +193,66 @@ class TitlesController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
+        $error_detected = [];
+        $msg = null;
+
         $title = new Title($id);
         $title->short = $post['short_label'];
         $title->long = $post['long_label'];
-        $res = $title->store($this->zdb);
+        if ((isset($post['short_label']) && $post['short_label'] != '') && (isset($post['long_label']) && $post['long_label'] != '')) {
+            $res = $title->store($this->zdb);
+        } else {
+            $res = false;
+            $error_detected[] = _T("Missing required title's short or long form!");
+        }
         $redirect_uri = $this->redirectUri($this->getArgs($request));
 
         if (!$res) {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has not been added!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $title->short !== null ? $title->short : '',
+                    _T("Title '%s' has not been added!")
                 );
             } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has not been modified!")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $title->short !== null ? $title->short : '',
+                    _T("Title '%s' has not been modified!")
                 );
 
-                $redirect_uri = $this->router->pathFor('editTitle', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => $id]);
             }
         } else {
             if ($id === null) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has been successfully added.")
-                    )
+                $error_detected[] = preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has been successfully added.")
                 );
             } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    preg_replace(
-                        '(%s)',
-                        $title->short,
-                        _T("Title '%s' has been successfully modified.")
-                    )
+                $msg = preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has been successfully modified.")
                 );
             }
         }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                $msg
+            );
+        }
+
         return $response
             ->withStatus(301)
             ->withHeader('Location', $redirect_uri);
@@ -255,7 +270,7 @@ class TitlesController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('titles');
+        return $this->routeparser->urlFor('titles');
     }
 
     /**
@@ -267,7 +282,7 @@ class TitlesController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveTitle',
             ['id' => $args['id']]
         );

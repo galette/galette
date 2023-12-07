@@ -1,0 +1,66 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <div id="confirm_removal"{% if mode == 'ajax' %} class="center"{% else %} title="{{ page_title }}"{% endif %}>
+    {% if mode == 'ajax' %}<div class="header">{{ page_title }}</div>{% endif %}
+    <form action="{{ form_url }}" method="post" class="ui form">
+    {% if mode != 'ajax' %}
+        <div class="ui segment">
+            <div class="content">
+    {% endif %}
+    {% if with_cascade is defined %}
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="cascade" id="cascade" value="true" title="{{ _T("Delete all associated data") }}"/>
+                        <label for="cascade">{{ _T("Cascade delete") }}</label>
+                    </div>
+                </div>
+    {% endif %}
+    {% if mode != 'ajax' %}
+        {% if message is defined %}
+                <div class="ui warning message">
+        {% endif %}
+    {% endif %}
+    {% if message is defined %}
+                    <p>{{ message }}</p>
+    {% endif %}
+    {% if mode != 'ajax' %}
+        {% if message is defined %}
+                </div>
+        {% endif %}
+                <div class="ui red message">
+    {% endif %}
+                    <p>{{ _T("Are you sure you want to proceed?") }}<br/>{{ _T("This can't be undone.") }}</p>
+    {% if mode != 'ajax' %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if mode != 'ajax' %}
+        <div class="ui basic center aligned segment">
+                <input type="submit" id="delete" value="{{ _T("Remove") }}" class="ui primary button action"/>
+                <a href="{{ cancel_uri }}" class="ui button" id="btncancel">{{ _T("Cancel") }}</a>
+    {% endif %}
+            <input type="hidden" name="confirm" value="1"/>
+    {% if mode == 'ajax' %}
+                <input type="hidden" name="ajax" value="true"/>
+    {% endif %}
+            {% for key, value in data %}
+                {% if value is iterable %}
+                    {% for val in value %}
+                <input type="hidden" name="{{ key }}[]" value="{{ val }}"/>
+                    {% endfor %}
+                {% else %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}"/>
+                {% endif %}
+            {% endfor %}
+            {% include 'components/forms/csrf.html.twig' %}
+    {% if mode != 'ajax' %}
+        </div>
+    {% endif %}
+    </form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

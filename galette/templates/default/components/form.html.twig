@@ -1,0 +1,140 @@
+            {% for fieldset in fieldsets %}
+            <div class="galetteform fieldset-{{ fieldset.id }} ui styled fluid accordion field">
+                <div class="active title">
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    {{ _T(fieldset.label) }}
+                </div>
+                <div class="active content field">
+                    <div class="ui three column stackable grid">
+                    {% if masschange is not defined and not self_adh and fieldset.id == '1' %}
+                        <div class="sixteen wide field column">
+                            {% include "components/forms/picture.html.twig" %}
+                        </div>
+                    {% endif %}
+                    {% if groups is defined and groups|length != 0 and loop.last and (masschange is not defined or masschange == false) %}
+                        <div class="sixteen wide field column">
+                            {% include "components/forms/groups.html.twig" %}
+                        </div>
+                    {% endif %}
+                    {% for entry in fieldset.elements %}
+                        <div class="field column">
+                        {% set template = "text.html.twig" %}
+                        {% set title = null %}
+                        {% set tip = null %}
+                        {% set size = null %}
+                        {% set propname = entry.propname %}
+                        {% set value = null %}
+                        {% set example = null %}
+
+                        {% if entry.type == constant('Galette\\Entity\\FieldsConfig::TYPE_BOOL') %}
+                            {% set template = "checkbox.html.twig" %}
+                            {% set value = "1" %}
+                        {% endif %}
+                        {% if entry.field_id == 'titre_adh' %}
+                            {% set template = "titles.html.twig" %}
+                            {% set value = member.title %}
+                        {% endif %}
+                        {% if entry.field_id == 'pref_lang' %}
+                            {% set template = "lang.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id == 'sexe_adh' %}
+                            {% set template = "gender.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id == 'societe_adh' %}
+                            {% set template = "company.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id starts with 'date_' or entry.field_id == 'ddn_adh' %}
+                            {% set template = "date.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id == 'adresse_adh' %}
+                            {% set template = "address.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id == 'mdp_adh' %}
+                            {% if not self_adh %}
+                                {% set template = "password.html.twig" %}
+                            {% else %}
+                                {% set template = "captcha.html.twig" %}
+                            {% endif %}
+                        {% endif %}
+                        {% if entry.field_id == 'info_adh' or entry.field_id == 'info_public_adh' %}
+                            {% set template = "textarea.html.twig" %}
+                            {% if entry.field_id == 'info_adh' %}
+                                {% set example = _T("This comment is only displayed for admins and staff members.") %}
+                            {% else %}
+                                {% if login.isAdmin() or login.isStaff() %}
+                                    {% set example = _T("This comment is reserved to the member.") %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                        {% if entry.field_id == 'activite_adh' %}
+                            {% set template = "account.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id == 'id_statut' %}
+                            {% set template = "status.html.twig" %}
+                        {% endif %}
+                        {% if entry.field_id == 'ville_adh' or entry.field_id == 'lieu_naissance' or entry.field_id == 'pays_adh' %}
+                            {% set template = "search.html.twig" %}
+                        {% endif %}
+
+                        {% if entry.field_id == 'gpgid' %}
+                            {% set size = "8" %}
+                        {% endif %}
+                        {% if entry.field_id == 'email_adh' %}
+                            {% set size = "30" %}
+                        {% endif %}
+                        {% if entry.field_id == 'fingerprint' %}
+                            {% set size = "40" %}
+                        {% endif %}
+                        {% if entry.field_id == 'bool_display_info' %}
+                            {% set title = _T("Do member want to appear publically?") %}
+                            {% set tip = _T("If you check this box (and if you are up to date with your contributions), your full name and other information will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.") %}
+                            {% set checked = member.appearsInMembersList() %}
+                        {% endif %}
+                        {% if entry.field_id == 'login_adh' %}
+                            {% set example = _T("(at least %i characters)")|replace({"%i": 2}) %}
+                        {% endif %}
+
+                        {% if entry.field_id == 'bool_admin_adh' %}
+                            {% set checked = member.isAdmin() %}
+                        {% endif %}
+                        {% if entry.field_id == 'bool_exempt_adh' %}
+                            {% set checked = member.isDueFree() %}
+                        {% endif %}
+                        {% if entry.field_id == 'parent_id' %}
+                            {% set value = member.parent.id %}
+                        {% endif %}
+                        {% if entry.field_id == 'activite_adh' %}
+                            {% set value = member.isActive() %}
+                        {% endif %}
+
+                        {# If value has not been set, take the generic value #}
+                        {% if not value and propname != 'password' %}
+                            {% set value = attribute(member, propname) %}
+                        {% endif %}
+
+                        {% include "components/forms/" ~ template with {
+                                name: entry.field_id,
+                                id: entry.field_id,
+                                value: value,
+                                required: entry.required,
+                                readonly: entry.readonly,
+                                disabled: entry.disabled,
+                                label: entry.label,
+                                title: title,
+                                size: size,
+                                tip: tip,
+                                compile_id: "input_" ~ entry.field_id,
+                                checked: checked ?? false,
+                                masschange: masschange ?? false
+                        } %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+                {# Social networks attached to the contact information fieldset #}
+                {% if fieldset.id == 3 and not (masschange ?? false) %}
+                    {% include "elements/edit_socials.html.twig" with {socials: member.socials} %}
+                {% endif %}
+            {% endfor %}

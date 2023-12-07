@@ -1,0 +1,20 @@
+/*******************************
+    Galette Overrides
+*******************************/
+
+.edit-member {
+  .fieldset-1 .ui.items > .item {
+    & > .content {
+      padding: 0;
+    }
+  }
+}
+
+.advanced-search {
+  #gs_sortable,
+  #fs_sortable {
+    .ui.items > .item .image {
+      width: auto !important;
+    }
+  }
+}

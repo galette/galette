@@ -1,0 +1,84 @@
+{% if tip_html is defined and tip_html != '' %}
+    {% set tip = tip_html %}
+{% endif %}
+
+{% block component %}
+{% if notag is not defined %}
+<div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'field' }}{% if required is defined and required == true %} required{% endif %}">
+{% endif %}
+    {% if type is defined and type == 'checkbox' %}
+        <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
+    {% else %}
+    {% block label %}
+        <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
+        {% if masschange ?? false %}
+            {# Add a checkbox for fields to change on mass edition #}
+            <input type="checkbox" name="mass_{{ entry.field_id }}" class="mass_checkbox"/>
+        {% endif %}
+            {{ label }}
+        </label>
+    {% endblock %}
+    {% endif %}
+    {% if type is defined and type == 'password' %}
+        <div class="ui input">
+    {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
+        <div class="ui corner labeled input">
+    {% elseif (rightlabel is defined and rightlabel != '') and (type is defined and type == 'text') %}
+        <div class="ui right labeled input">
+    {% elseif search_id is defined %}
+        <div id="{{ search_id }}" class="ui search field input">
+            <div class="ui icon input">
+    {% endif %}
+    {% block element %}
+                <input
+                    type="{{ type }}"
+                    name="{{ name ?? id }}"
+                    id="{{ id }}"
+                    value="{% if value is not same as null %}{{ value }}{% endif %}"
+                    {% if required is defined and required == true %} required="required"{% endif %}
+                    {% if readonly is defined and readonly == true %} readonly="readonly"{% endif %}
+                    {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
+                    {% if title is defined %} title="{{ title }}"{% endif %}
+                    {% if maxlength is defined %} maxlength="{{ maxlength }}"{% endif %}
+                    {% if elt_class is defined %} class="{{ elt_class }}"{% endif %}
+                    {% if autocomplete is defined %} autocomplete="{{ autocomplete }}"{% endif %}
+                    {% if autofocus is defined %} autofocus{% endif %}
+                    {% if size is defined %} size="{{ size }}"{% endif %}
+                    {% if checked is defined and checked == true %} checked{% endif %}
+                />
+    {% endblock %}
+    {% if search_id is defined %}
+                <i class="jsonly displaynone search icon" aria-hidden="true"></i>
+            </div>
+        </div>
+    {% elseif (rightlabel is defined and rightlabel != '') and (type is defined and type == 'text') %}
+            <div class="ui basic label">
+                {{ rightlabel }}
+            </div>
+        </div>
+    {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
+            <div class="ui corner label">
+                <i class="circular inverted primary small icon info tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
+            </div>
+        </div>
+    {% elseif type is defined and type == 'password' %}
+        </div>
+    {% endif %}
+    {% if type is defined and type == 'checkbox' %}
+    {% block label_after %}
+        <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
+        {% if masschange ?? false %}
+            {# Add a checkbox for fields to change on mass edition #}
+            <input type="checkbox" name="mass_{{ entry.field_id }}" class="mass_checkbox"/>
+        {% endif %}
+            {{ label }}
+        </label>
+    {% endblock %}
+    </div>
+    {% endif %}
+    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
+    {% if example is defined %}<span class="exemple">{{ example|raw }}</span>{% endif %}
+{% if notag is not defined %}
+</div>
+{% endif %}
+{% endblock %}

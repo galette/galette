@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
@@ -36,10 +36,10 @@
 
 namespace Galette\Core;
 
+use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
-use Galette\Core\Db;
-use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Laminas\Db\Sql\Expression;
@@ -51,10 +51,12 @@ use Laminas\Db\Sql\Expression;
  * @name      MailingHistory
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
+ *
+ * @property MailingsList $filters
  */
 class MailingHistory extends History
 {
@@ -75,8 +77,6 @@ class MailingHistory extends History
     private $sender_name;
     private $sender_address;
     private $sent = false;
-
-    private $senders;
 
     /**
      * Default constructor
@@ -122,6 +122,13 @@ class MailingHistory extends History
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
                 }
 
+                $recipients = [];
+                if ($r['mailing_recipients'] != null) {
+                    //FIXME: error suppression with @ must be removed, see https://bugs.galette.eu/issues/1744
+                    $recipients = @unserialize($r['mailing_recipients']);
+                }
+                $r['mailing_recipients'] = $recipients;
+
                 $attachments = 0;
                 if (file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK])) {
                     $rdi = new \RecursiveDirectoryIterator(
@@ -154,7 +161,7 @@ class MailingHistory extends History
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     protected function buildOrderClause()
     {
@@ -183,7 +190,7 @@ class MailingHistory extends History
      *
      * @param Select $select Original select
      *
-     * @return string SQL WHERE clause
+     * @return void
      */
     private function buildWhereClause($select)
     {
@@ -273,9 +280,7 @@ class MailingHistory extends History
 
             $k = self::PK;
             $this->count = $result->$k;
-            if ($this->count > 0) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count history | ' . $e->getMessage(),
@@ -288,11 +293,11 @@ class MailingHistory extends History
     /**
      * Load mailing from an existing one
      *
-     * @param Db             $zdb     Database instance
-     * @param integer        $id      Model identifier
-     * @param GaletteMailing $mailing Mailing object
-     * @param boolean        $new     True if we create a 'new' mailing,
-     *                                false otherwise (from preview for example)
+     * @param Db      $zdb     Database instance
+     * @param integer $id      Model identifier
+     * @param Mailing $mailing Mailing object
+     * @param boolean $new     True if we create a 'new' mailing,
+     *                         false otherwise (from preview for example)
      *
      * @return boolean
      */
@@ -303,6 +308,7 @@ class MailingHistory extends History
             $select->where(['mailing_id' => $id]);
 
             $results = $zdb->execute($select);
+            /** @var ArrayObject $result */
             $result = $results->current();
 
             return $mailing->loadFromHistory($result, $new);
@@ -348,12 +354,14 @@ class MailingHistory extends History
                 //existing stored mailing. Just update row.
                 $this->update();
             }
+            return true;
         } else {
             Analog::log(
                 '[' . __METHOD__ .
                 '] Mailing should be an instance of Mailing',
                 Analog::ERROR
             );
+            return false;
         }
     }
 
@@ -453,7 +461,7 @@ class MailingHistory extends History
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurend storing Mailing | ' . $e->getMessage(),
+                'An error occurred storing Mailing | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -471,51 +479,48 @@ class MailingHistory extends History
     public function removeEntries($ids, History $hist)
     {
         $list = array();
-        if (is_numeric($ids)) {
-            //we've got only one identifier
-            $list[] = $ids;
-        } else {
+        if (is_array($ids)) {
             $list = $ids;
-        }
-
-        if (is_array($list)) {
-            try {
-                foreach ($list as $id) {
-                    $mailing = new Mailing($this->preferences, [], $id);
-                    $mailing->removeAttachments();
-                }
-
-                $this->zdb->connection->beginTransaction();
-
-                //delete members
-                $delete = $this->zdb->delete(self::TABLE);
-                $delete->where->in(self::PK, $list);
-                $this->zdb->execute($delete);
-
-                //commit all changes
-                $this->zdb->connection->commit();
-
-                //add an history entry
-                $hist->add(
-                    _T("Delete mailing entries")
-                );
-
-                return true;
-            } catch (Throwable $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'Unable to delete selected mailing history entries |' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
-                return false;
-            }
+        } elseif (is_numeric($ids)) {
+            $list = [(int)$ids];
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
                 'Asking to remove mailing entries, but without ' .
                 'providing an array or a single numeric value.',
                 Analog::WARNING
+            );
+            return false;
+        }
+
+        try {
+            foreach ($list as $id) {
+                $mailing = new Mailing($this->preferences, [], $id);
+                $mailing->removeAttachments();
+            }
+
+            $this->zdb->connection->beginTransaction();
+
+            //delete members
+            $delete = $this->zdb->delete(self::TABLE);
+            $delete->where->in(self::PK, $list);
+            $this->zdb->execute($delete);
+
+            //commit all changes
+            $this->zdb->connection->commit();
+
+            //add an history entry
+            $hist->add(
+                _T("Delete mailing entries")
+            );
+
+            return true;
+        } catch (Throwable $e) {
+            $this->zdb->connection->rollBack();
+            Analog::log(
+                'Unable to delete selected mailing history entries |' .
+                $e->getMessage(),
+                Analog::ERROR
             );
             return false;
         }

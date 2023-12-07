@@ -1,0 +1,38 @@
+{# This file contains common html headers to include for Galette Twig rendering. #}
+        <title>{% if preferences.pref_slogan != "" %}{{ __(preferences.pref_slogan) }} - {% endif %}{% if page_title != "" %}{{ page_title }} - {% endif %}Galette {{ constant('GALETTE_VERSION') }}</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic{% if i18n.isRtl() %}.rtl{% endif %}.min.css" />
+
+    {% if html_editor %}
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/codemirror.css">
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/summernote.min.css" />
+    {% endif %}
+
+    {# Let's see if a local CSS exists and include it #}
+    {% set localstylesheet = constant('_CURRENT_THEME_PATH') ~ "galette_local.css" %}
+    {% if file_exists(localstylesheet) %}
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}galette_local.css" />
+    {% endif %}
+    {# Let's see if a local print CSS exists and include it #}
+    {% set localprintstylesheet = constant('_CURRENT_THEME_PATH') ~ "galette_print_local.css" %}
+    {% if file_exists(localprintstylesheet) %}
+        <link rel="stylesheet" type="text/css" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}galette_print_local.css" media="print" />
+    {% endif %}
+        <link rel="icon" type="image/png" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png" />
+        <link rel="apple-touch-icon" type="image/png" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png">
+
+        <script type="text/javascript" src="{{ base_path() }}/assets/js/jquery.min.js"></script>
+
+{# If some additional headers should be added from plugins, we load the relevant template file
+   We have to use a template file, so Twig will do its work (like replacing variables). #}
+{% if plugin_headers|length != 0 %}
+    {% for mid, header in plugin_headers %}
+        {% include header with {'module_id': mid} %}
+    {% endfor %}
+{% endif %}
+
+{% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
+{% if login.isDarkModeEnabled() and file_exists(darkcssfile) %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('getDarkCSS') }}">
+{% endif %}

@@ -72,7 +72,6 @@ use Analog\Analog;
  */
 class XHProf
 {
-
     // this can be overloaded in config/config_path.php
     public const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
     public const XHPROF_URL  = '/xhprof';
@@ -132,7 +131,7 @@ class XHProf
      */
     public function stop()
     {
-        if (self::$run) {
+        if (self::$run && function_exists('xhprof_disable')) {
             $data = xhprof_disable();
 
             $incl = (defined('GALETTE_XHPROF_PATH') ? GALETTE_XHPROF_PATH : self::XHPROF_PATH);
@@ -140,6 +139,7 @@ class XHProf
             include_once $incl . '/utils/xhprof_runs.php';
 
             $runs = new \XHProfRuns_Default();
+            // @phpstan-ignore-next-line
             $id   = $runs->save_run($data, 'galette-' . GALETTE_VERSION);
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);

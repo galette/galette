@@ -1,0 +1,152 @@
+{% extends 'elements/list.html.twig' %}
+
+{% set nb = history.getCount() %}
+{% set filters = history.filters %}
+{% set no_action = true %}
+
+{% set form = {
+    'order': {
+        'name': "history"
+    }
+} %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count entry", "%count entries", history.getCount())|replace({"%count": history.getCount()}),
+        'route': {
+            'name': 'history_filter'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline_actions %}
+    <a
+        id="delete"
+        class="ui tiny labeled icon button"
+        href="{{ url_for("flushHistory") }}"
+    >
+        <i class="trash red icon" aria-hidden="true"></i>
+        {{ _T("Flush the logs") }}
+    </a>
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#'},
+        {'label': _T("Date"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_DATE")},
+        {'label': _T("IP"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_IP")},
+        {'label': _T("User"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_USER")},
+        {'label': _T('Action'), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION")},
+        {'label': _T("Description")}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+<form action="{{ url_for("history_filter") }}" method="post" class="ui form filters">
+    <div class="ui secondary yellow segment">
+        <div class="four fields">
+            <div class="two fields">
+                <div class="field">
+                    <label for="start_date_filter">{{ _T("since") }}</label>
+                    <div class="ui calendar" id="contrib-rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="end_date_filter">{{ _T("until") }}</label>
+                    <div class="ui calendar" id="contrib-rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {% set users = history.getUsersList() %}
+                {% if users|length > 0 %}
+                    <label for="user_filter">{{ _T("Member") }}</label>
+                    <select name="user_filter" id="user_filter" class="ui search dropdown nochosen">
+                        <option value="0"{% if history.filters.user_filter == 0 %} selected="selected"{% endif %}>{{ _T("Select an user") }}</option>
+                        {% for user in users %}
+                            <option value="{{ user }}"{% if history.filters.user_filter == user %} selected="selected"{% endif %}>{{ user }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="field">
+                {% set actions = history.getActionsList() %}
+                {% if actions|length > 0 %}
+                    <label for="action_filter">{{ _T("Action") }}</label>
+                    <select name="action_filter" id="action_filter" class="ui search dropdown nochosen">
+                        <option value="0">{{ _T("Select an action") }}</option>
+                        {% for action in actions %}
+                            <option value="{{ action|escape }}"{% if history.filters.action_filter == action %} selected="selected"{% endif %}>{{ action|escape }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="ui right aligned basic fitted segment field flexend">
+                <button type="submit" class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T('Filter') }}
+                </button>
+                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
+            </div>
+        </div>
+    </div>
+    {% include "components/forms/csrf.html.twig" %}
+</form>
+{% endblock %}
+
+{% block body %}
+    {% for log in logs %}
+        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+            <td data-scope="row">
+                {{ loop.index }}
+                <span class="visually-hidden">
+                        {{ _T("History entry %id")|replace({"%id": loop.index}) }}
+                    </span>
+            </td>
+            <td data-col-label="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
+            <td data-col-label="{{ _T("IP") }}">{{ log.ip_log }}</td>
+            <td data-col-label="{{ _T("User") }}">{{ log.adh_log }}</td>
+            <td data-col-label="{{ _T("Action") }}">{{ log.action_log|escape }}</td>
+            <td data-col-label="{{ _T("Description") }}">
+                {{ log.text_log|escape }}
+            {% if log.sql_log %}
+                    <div class="tooltip title" title="{{ _T("Show associated query") }}">
+                        <i class="dropdown icon" aria-hidden="true"></i>
+                        {{ _T("Show associated query") }}
+                    </div>
+                    <div class="content">
+                        <div class="ui grey inverted segment">{{ log.sql_log|escape }}</div>
+                    </div>
+                </div>
+            {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="6" class="emptylist">{{ _T("logs are empty") }}</td></tr>
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                {% include "elements/js/removal.js.twig" with {
+                    selector: "#delete",
+                    loader: "button",
+                    single_action: "true"
+                } %}
+            });
+        </script>
+{% endblock %}

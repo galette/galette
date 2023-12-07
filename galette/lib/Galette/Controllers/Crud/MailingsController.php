@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2020 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -39,8 +39,8 @@ namespace Galette\Controllers\Crud;
 use Throwable;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
@@ -57,7 +57,7 @@ use Analog\Analog;
  * @name      MailingsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -90,14 +90,16 @@ class MailingsController extends CrudController
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            unset($this->session->mailing);
             $this->session->redirect_mailing = null;
+            unset($this->session->redirect_mailing);
         }
 
         $params = array();
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !GALETTE_MODE === Galette::MODE_DEMO
+            && !Galette::isDemo()
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
@@ -108,12 +110,10 @@ class MailingsController extends CrudController
             );
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('slash'));
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         } else {
-            if (isset($this->session->filter_mailing)) {
-                $filters = $this->session->filter_mailing;
-            } elseif (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
+            if (isset($this->session->filter_members_sendmail)) {
+                $filters = $this->session->filter_members_sendmail;
             } else {
                 $filters = new MembersList();
             }
@@ -134,7 +134,7 @@ class MailingsController extends CrudController
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
                 $members = $m->getList(true);
-                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
+                $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
                     count($filters->selected) == 0
@@ -151,12 +151,8 @@ class MailingsController extends CrudController
                         _T('No member selected for mailing!')
                     );
 
-                    if (isset($profiler)) {
-                        $profiler->stop();
-                    }
-
                     $redirect_url = ($this->session->redirect_mailing !== null) ?
-                        $this->session->redirect_mailing : $this->router->pathFor('members');
+                        $this->session->redirect_mailing : $this->routeparser->urlFor('members');
 
                     return $response
                         ->withStatus(301)
@@ -200,7 +196,7 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mailing_adherents.tpl',
+            'pages/mailing_form.html.twig',
             array_merge(
                 array(
                     'page_title' => _T("Mailing")
@@ -225,8 +221,8 @@ class MailingsController extends CrudController
         $error_detected = [];
         $success_detected = [];
 
-        $goto = $this->router->pathFor('mailings');
-        $redirect_url = $this->session->redirect_mailing ?? $this->router->pathFor('members');
+        $goto = $this->routeparser->urlFor('mailings');
+        $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
 
         //We're done :-)
         if (
@@ -239,12 +235,11 @@ class MailingsController extends CrudController
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            unset($this->session->mailing);
             $this->session->redirect_mailing = null;
-            if (isset($this->session->filter_mailing)) {
-                $filters = $this->session->filter_mailing;
-                $filters->selected = [];
-                $this->session->filter_mailing = $filters;
-            }
+            unset($this->session->redirect_mailing);
+            $this->session->filter_members_sendmail = null;
+            unset($this->session->filter_members_sendmail);
 
             return $response
                 ->withStatus(301)
@@ -253,23 +248,18 @@ class MailingsController extends CrudController
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
-            && !GALETTE_MODE === Galette::MODE_DEMO
+            && !Galette::isDemo()
         ) {
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
             );
             $error_detected[] = _T("Trying to load mailing while email is disabled in preferences.");
-            $goto = $this->router->pathFor('slash');
+            $goto = $this->routeparser->urlFor('slash');
         } else {
-            if (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
-            } else {
-                $filters = new MembersList();
-            }
+            $filters = $this->session->filter_members_sendmail ?? new MembersList();
 
             if (
                 $this->session->mailing !== null
-                && !isset($post['mailing_cancel'])
             ) {
                 $mailing = $this->session->mailing;
             } else {
@@ -290,7 +280,7 @@ class MailingsController extends CrudController
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
-                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
             if (
@@ -331,7 +321,7 @@ class MailingsController extends CrudController
                         break;
                 }
 
-                $mailing->html = (isset($post['mailing_html'])) ? true : false;
+                $mailing->html = isset($post['mailing_html']);
 
                 //handle attachments
                 if (isset($_FILES['attachment'])) {
@@ -373,7 +363,7 @@ class MailingsController extends CrudController
                     $mailing->current_step = Mailing::STEP_START;
                 }
                 //until mail is sent (above), we redirect to mailing page
-                $goto = $this->router->pathFor('mailing');
+                $goto = $this->routeparser->urlFor('mailing');
             }
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
@@ -399,8 +389,7 @@ class MailingsController extends CrudController
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
-                    $filters->selected = null;
-                    $this->session->filter_members = $filters;
+                    $this->session->filter_members_sendmail = null;
                     $this->session->mailing = null;
                     $this->session->redirect_mailing = null;
                     $success_detected[] = _T("Mailing has been successfully sent!");
@@ -429,7 +418,7 @@ class MailingsController extends CrudController
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
                     $this->session->redirect_mailing = null;
-                    $goto = $this->router->pathFor('mailings');
+                    $goto = $this->routeparser->urlFor('mailings');
                 }
             }
         }
@@ -498,19 +487,20 @@ class MailingsController extends CrudController
         $this->session->filter_mailings = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+        $mailhist->filters->setViewPagination($this->routeparser, $this->view);
         $history_list = $mailhist->getHistory();
         //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+        $mailhist->filters->setViewPagination($this->routeparser, $this->view);
 
         // display page
         $this->view->render(
             $response,
-            'gestion_mailings.tpl',
+            'pages/mailings_list.html.twig',
             array(
                 'page_title'        => _T("Mailings"),
                 'logs'              => $history_list,
-                'history'           => $mailhist
+                'history'           => $mailhist,
+                'filters'           => $filters
             )
         );
         return $response;
@@ -527,7 +517,6 @@ class MailingsController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $error_detected = [];
 
         if ($this->session->filter_mailings !== null) {
             $filters = $this->session->filter_mailings;
@@ -545,15 +534,11 @@ class MailingsController extends CrudController
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
-                try {
-                    if (isset($post['start_date_filter'])) {
-                        $filters->start_date_filter = $post['start_date_filter'];
-                    }
-                    if (isset($post['end_date_filter'])) {
-                        $filters->end_date_filter = $post['end_date_filter'];
-                    }
-                } catch (Throwable $e) {
-                    $error_detected[] = $e->getMessage();
+                if (isset($post['start_date_filter'])) {
+                    $filters->start_date_filter = $post['start_date_filter'];
+                }
+                if (isset($post['end_date_filter'])) {
+                    $filters->end_date_filter = $post['end_date_filter'];
                 }
             }
 
@@ -573,19 +558,9 @@ class MailingsController extends CrudController
 
         $this->session->filter_mailings = $filters;
 
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('mailings'));
+            ->withHeader('Location', $this->routeparser->urlFor('mailings'));
     }
 
     /**
@@ -600,6 +575,7 @@ class MailingsController extends CrudController
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -614,6 +590,7 @@ class MailingsController extends CrudController
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
+        return $response;
     }
 
     // /CRUD - Update
@@ -628,7 +605,7 @@ class MailingsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('mailings');
+        return $this->routeparser->urlFor('mailings');
     }
 
     /**
@@ -640,7 +617,7 @@ class MailingsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveMailing',
             ['id' => $args['id'] ?? null]
         );
@@ -692,7 +669,7 @@ class MailingsController extends CrudController
         // check for ajax mode
         $ajax = false;
         if (
-            $request->isXhr()
+            ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -736,15 +713,15 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mailing_preview.tpl',
+            'modals/mailing_preview.html.twig',
             [
                 'page_title'    => _T("Mailing preview"),
                 'mailing_id'    => $id,
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $mailing->getSenderName() . ' &lt;' .
-                    $mailing->getSenderAddress() . '&gt;',
+                'sender'        => $mailing->getSenderName() . ' <' .
+                    $mailing->getSenderAddress() . '>',
                 'attachments'   => $attachments
 
             ]
@@ -791,17 +768,20 @@ class MailingsController extends CrudController
         $mailing = $this->session->mailing;
 
         $m = new Members();
+        $members = [];
 
-        $members = $m->getArrayList(
-            $post['recipients'],
-            null,
-            false,
-            true,
-            null,
-            false,
-            false,
-            true
-        );
+        if (isset($post['recipients'])) {
+            $members = $m->getArrayList(
+                $post['recipients'],
+                null,
+                false,
+                true,
+                null,
+                false,
+                false,
+                true
+            );
+        }
         $mailing->setRecipients($members);
 
         $this->session->mailing = $mailing;
@@ -809,7 +789,7 @@ class MailingsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'mailing_recipients.tpl',
+            'elements/mailing_recipients.html.twig',
             [
                 'mailing'       => $mailing
 

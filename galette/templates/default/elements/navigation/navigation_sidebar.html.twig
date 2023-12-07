@@ -1,0 +1,35 @@
+    <nav id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
+{% if not login.isLogged() %}
+    {% if cur_route != "login" %}
+        {% import "macros.twig" as menus_macros %}
+        {% set item = {
+            'label': _T("Home"),
+            'title': _T("Go back to Galette homepage"),
+            'route': {'name': 'slash', 'alias': 'login'},
+            'icon': 'home'
+        } %}
+        {{ menus_macros.renderMenuItem(item.label, item.title, item.route, item.icon, null, 'right center') }}
+    {% endif %}
+
+    {% include "elements/navigation/public_pages.html.twig" with {
+            tips_position: "right center",
+            sign_in: true,
+            mode: "default"
+    } %}
+{% else %}
+    {% include "elements/navigation/navigation_items.html.twig" with {
+            mode: "default"
+    } %}
+{% endif %}
+    {% include "elements/language.html.twig" with {
+            ui: "item"
+    } %}
+{% if login.isLogged() %}
+        {% include "elements/logged_user.html.twig" with {
+                ui: "item"
+        } %}
+{% endif %}
+        <div class="ui basic center aligned segment">
+            {% include "elements/modes.html.twig" %}
+        </div>
+    </nav>

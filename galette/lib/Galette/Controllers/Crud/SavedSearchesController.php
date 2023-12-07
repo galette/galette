@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-03
@@ -38,8 +38,8 @@ namespace Galette\Controllers\Crud;
 
 use Throwable;
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\SavedSearch;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
@@ -54,7 +54,7 @@ use Analog\Analog;
  * @name      SavedSearchesController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-03
@@ -75,6 +75,7 @@ class SavedSearchesController extends CrudController
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -87,7 +88,7 @@ class SavedSearchesController extends CrudController
      */
     public function doAdd(Request $request, Response $response): Response
     {
-        if ($request->isPost()) {
+        if ($request->getMethod() === 'POST') {
             $post = $request->getParsedBody();
         } else {
             $post = $request->getQueryParams();
@@ -145,13 +146,13 @@ class SavedSearchesController extends CrudController
             }
         }
 
-        if ($request->isGet()) {
+        if ($request->getMethod() === 'GET') {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         } else {
             //called from ajax, return json
-            return $response->withJson(['success' => $check]);
+            return $this->withJson($response, ['success' => $check]);
         }
     }
 
@@ -191,14 +192,14 @@ class SavedSearchesController extends CrudController
         $list = $searches->getList(true);
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+        $filters->setViewPagination($this->routeparser, $this->view, false);
 
         $this->session->filter_savedsearch = $filters;
 
         // display page
         $this->view->render(
             $response,
-            'saved_searches.tpl',
+            'pages/saved_searches_list.html.twig',
             array(
                 'page_title'        => _T("Saved searches"),
                 'searches'          => $list,
@@ -268,7 +269,7 @@ class SavedSearchesController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('searches');
+        return $this->routeparser->urlFor('searches');
     }
 
     /**
@@ -280,7 +281,7 @@ class SavedSearchesController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveSearch',
             ['id' => $args['id'] ?? null]
         );
@@ -354,28 +355,28 @@ class SavedSearchesController extends CrudController
                 'success_detected',
                 _T("Saved search loaded")
             );
+
+            $parameters = $sco->parameters;
+
+            if (isset($parameters['free_search'])) {
+                $filters = new AdvancedMembersList();
+            } else {
+                $filters = new MembersList();
+            }
+
+            foreach ($parameters as $key => $value) {
+                $filters->$key = $value;
+            }
+            $this->session->filter_members = $filters;
         } catch (Throwable $e) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("An SQL error has occurred while loading search.")
             );
         }
-        $parameters = (array)$sco->parameters;
-
-        $filters = null;
-        if (isset($parameters['free_search'])) {
-            $filters = new AdvancedMembersList();
-        } else {
-            $filters = new MembersList();
-        }
-
-        foreach ($parameters as $key => $value) {
-            $filters->$key = $value;
-        }
-        $this->session->filter_members = $filters;
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('members'));
+            ->withHeader('Location', $this->routeparser->urlFor('members'));
     }
 }

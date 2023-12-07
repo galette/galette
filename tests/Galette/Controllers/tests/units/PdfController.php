@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,17 +28,18 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2020-11-21
  */
 
 namespace Galette\Controllers\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Request;
 
 /**
  * PDF controller tests
@@ -47,25 +48,23 @@ use Galette\GaletteTestCase;
  * @name      PdfController
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-12-06
  */
 class PdfController extends GaletteTestCase
 {
-    protected $seed = 58144569971203;
+    protected int $seed = 58144569971203;
 
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
-        parent::beforeTestMethod($method);
+        parent::setUp();
 
         $this->initModels();
         $this->initStatus();
@@ -84,7 +83,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->zdb = new \Galette\Core\Db();
 
@@ -100,6 +99,17 @@ class PdfController extends GaletteTestCase
     }
 
     /**
+     * Cleanup after class
+     *
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        $self = new self(__METHOD__);
+        $self->tearDown();
+    }
+
+    /**
      * Test store models
      *
      * @return void
@@ -107,43 +117,43 @@ class PdfController extends GaletteTestCase
     public function testStoreModels()
     {
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
-        $this->string($model->title)->isIdenticalTo('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}');
+        $this->assertSame('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}', $model->title);
 
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/models/pdf'
-            ]
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('http://localhost/models/pdf'),
+            new Headers(['Content-Type' => ['application/json']]),
+            [],
+            [],
+            $sfactory->createStream()
         );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
-
-        $body = new \Slim\Http\RequestBody();
-        $body->write(
-            json_encode([
+        $request = $request->withParsedBody(
+            [
                 'store' => true,
                 'models_id' => \Galette\Entity\PdfModel::INVOICE_MODEL,
                 'model_type' => \Galette\Entity\PdfModel::INVOICE_MODEL,
                 'model_title' => 'DaTitle'
-            ])
+            ]
         );
 
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $response = new \Slim\Http\Response();
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         $test_response = $controller->storeModels($request, $response);
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'success_detected' => [
-                'Model has been successfully stored!'
-            ]
-        ]);
+        $this->assertSame(
+            [
+                'success_detected' => [
+                    'Model has been successfully stored!'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
 
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
-        $this->string($model->title)->isIdenticalTo('DaTitle');
+        $this->assertSame('DaTitle', $model->title);
     }
 
     /**
@@ -154,80 +164,101 @@ class PdfController extends GaletteTestCase
     public function testMembersCards()
     {
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/members/card/' . $this->adh->id
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'text/html');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/card/' . $this->adh->id),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test with non-logged-in user
         $test_response = $controller->membersCards($request, $response, $this->adh->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['me']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(302);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'You do not have permission for requested URL.'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'You do not have permission for requested URL.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
 
         //test logged-in as superadmin
         $this->logSuperAdmin();
         $test_response = null;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->membersCards($request, $response, $this->adh->id);
-                }
-            )->isNotEmpty();
 
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="cards.pdf"');
+        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $test_response = $controller->membersCards($request, $response, $this->adh->id);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
 
         //test no selection
-        $test_response = null;
         $test_response = $controller->membersCards($request, $response);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'No member was selected, please check at least one name.'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'No member was selected, please check at least one name.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
+    }
 
-        //test again from filters
-        $test_response = null;
+    /**
+     * Test filtered membersCards
+     *
+     * @return void
+     */
+    public function testFilteredMembersCards()
+    {
+        $this->getMemberOne();
+
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/card/' . $this->adh->id),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
+        $controller = new \Galette\Controllers\PdfController($this->container);
+
+        //test logged-in as superadmin
+        $this->logSuperAdmin();
+
+        //test with filters
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
         $this->session->filter_members = $filters;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->membersCards($request, $response);
-                }
-            )->isNotEmpty();
+
+        $this->expectOutputRegex('/^%PDF-\d.\d.');
+        $test_response = $controller->membersCards($request, $response);
 
         unset($this->session->filter_members);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="cards.pdf"');
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 
     /**
@@ -239,33 +270,34 @@ class PdfController extends GaletteTestCase
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/members/labels'
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'text/html');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/labels'),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test with non-logged-in user
         $test_response = $controller->membersLabels($request, $response, $this->adh->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'No member was selected, please check at least one name.'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'No member was selected, please check at least one name.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
 
         //test again from filters
@@ -273,17 +305,13 @@ class PdfController extends GaletteTestCase
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
         $this->session->filter_members = $filters;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->membersLabels($request, $response);
-                }
-            )->isNotEmpty();
 
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="labels_print_filename.pdf"');
+        $this->expectOutputRegex('/^%PDF-\d\.\d');
+        $test_response = $controller->membersLabels($request, $response);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="labels_print_filename.pdf"', $test_response->getHeader('Content-Disposition')[0]);
         unset($this->session->filter_members);
 
         //test logged-in as superadmin
@@ -291,32 +319,58 @@ class PdfController extends GaletteTestCase
         //test no selection
         $test_response = null;
         $test_response = $controller->membersCards($request, $response);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'No member was selected, please check at least one name.'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'No member was selected, please check at least one name.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
+    }
+
+    /**
+     * Test filtered membersLabels
+     *
+     * @return void
+     */
+    public function testFilteredMembersLabels()
+    {
+        unset($this->session->filter_members);
+        $this->getMemberOne();
+
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/labels'),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
+        $controller = new \Galette\Controllers\PdfController($this->container);
+
+        //test logged-in as superadmin
+        $this->logSuperAdmin();
 
         //test again from filters
-        $test_response = null;
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
         $this->session->filter_members = $filters;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->membersCards($request, $response);
-                }
-            )->isNotEmpty();
 
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="cards.pdf"');
+        $this->expectOutputRegex('/^%PDF-\d\.\d');
+        $test_response = $controller->membersCards($request, $response);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 
     /**
@@ -328,49 +382,46 @@ class PdfController extends GaletteTestCase
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/members/labels'
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'text/html');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/members/labels'),
+            new Headers(['Content-Type' => ['text/html']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test with non-logged-in user
         $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['me']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(302);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'You do not have permission for requested URL.'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'You do not have permission for requested URL.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
 
         //test logged-in as superadmin
         $this->logSuperAdmin();
         $test_response = null;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
-                }
-            )->isNotEmpty();
 
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="adherent_form.' . $this->adh->id . '.pdf"');
+        $this->expectOutputRegex('/^%PDF-\d\.\d/');
+        $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="adherent_form.' . $this->adh->id . '.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 
     /**
@@ -381,59 +432,52 @@ class PdfController extends GaletteTestCase
     public function testAttendanceSheet()
     {
         $this->getMemberOne();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/attendance-sheet'
-            ]
+
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/attendance-sheet'),
+            new Headers(['Content-Type' => ['application/json']]),
+            [],
+            [],
+            $sfactory->createStream()
         );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $response = new \Slim\Http\Response();
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test no selection
         $test_response = null;
         $test_response = $controller->membersCards($request, $response);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['members']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'No member was selected, please check at least one name.'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'No member was selected, please check at least one name.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
 
         //test with selection
-        $body = new \Slim\Http\RequestBody();
-        $body->write(
-            json_encode([
+        $request = $request->withParsedBody(
+            [
                 'selection' => [$this->adh->id]
-            ])
+            ]
         );
 
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
         $test_response = null;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->attendanceSheet($request, $response);
-                }
-            )->isNotEmpty();
 
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="attendance_sheet.pdf"');
+        $this->expectOutputRegex('/^%PDF-\d\.\d/');
+        $test_response = $controller->attendanceSheet($request, $response);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="attendance_sheet.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 
     /**
@@ -445,51 +489,45 @@ class PdfController extends GaletteTestCase
     {
         $this->getMemberOne();
         $this->createContribution();
-        $environment = \Slim\Http\Environment::mock(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/contribution/print/' . $this->contrib->id
-            ]
-        );
-        $uri = \Slim\Http\Uri::createFromEnvironment($environment);
-        $headers = \Slim\Http\Headers::createFromEnvironment($environment);
-        $cookies = [];
-        $serverParams = $environment->all();
 
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $response = new \Slim\Http\Response();
+        $ufactory = new \Slim\Psr7\Factory\UriFactory();
+        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+
+        $request = new Request(
+            'POST',
+            $ufactory->createUri('/contribution/print/' . $this->contrib->id),
+            new Headers(['Content-Type' => ['application/json']]),
+            [],
+            [],
+            $sfactory->createStream()
+        );
+
+        $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
 
         //test not logged
         $test_response = $controller->contribution($request, $response, $this->contrib->id);
-        $this->array($test_response->getHeaders())->isIdenticalTo(['Location' => ['contributions']]);
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(301);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->array($this->flash_data['slimFlash'])->isIdenticalTo([
-            'error_detected' => [
-                'Unable to load contribution #' . $this->contrib->id . '!'
-            ]
-        ]);
+        $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    'Unable to load contribution #' . $this->contrib->id . '!'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
 
         //test superadmin
         $this->logSuperAdmin();
-        $body = new \Slim\Http\RequestBody();
-        $request = new \Slim\Http\Request('POST', $uri, $headers, $cookies, $serverParams, $body);
-        $request = $request->withHeader('Content-Type', 'application/json');
         $test_response = null;
-        $this
-            ->output(
-                function () use ($controller, $request, $response, &$test_response) {
-                    $test_response = $controller->contribution($request, $response, $this->contrib->id);
-                }
-            )->isNotEmpty();
 
-        $this->integer($test_response->getStatusCode())->isIdenticalTo(200);
-        $this->boolean($test_response->isServerError())->isFalse();
-        $this->string($test_response->getHeader('Content-type')[0])->isIdenticalTo('application/pdf');
-        $this->string($test_response->getHeader('Content-Disposition')[0])->isIdenticalTo('attachment;filename="contribution_' . $this->contrib->id . '_invoice.pdf"');
+        $this->expectOutputRegex('/^%PDF-\d\.\d\/');
+        $test_response = $controller->contribution($request, $response, $this->contrib->id);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="contribution_' . $this->contrib->id . '_invoice.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 }

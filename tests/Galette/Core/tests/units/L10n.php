@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2020-07-05
@@ -36,7 +36,7 @@
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * L10n tests class
@@ -45,25 +45,23 @@ use atoum;
  * @name      L10n
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-07-05
  */
-class L10n extends atoum
+class L10n extends TestCase
 {
-    private $zdb;
-    private $i18n;
-    private $l10n;
+    private \Galette\Core\Db $zdb;
+    private \Galette\Core\I18n $i18n;
+    private \Galette\Core\L10n $l10n;
 
     /**
      * Set up tests
      *
-     * @param string $method Tested method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n(
@@ -78,14 +76,12 @@ class L10n extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         //cleanup dynamic translations
         $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
@@ -111,21 +107,19 @@ class L10n extends atoum
         ]);
         $select->where(['text_orig' => 'A text for test']);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
 
-        $this->boolean($this->l10n->addDynamicTranslation('A text for test'))->isTrue();
+        $this->assertTrue($this->l10n->addDynamicTranslation('A text for test'));
 
-        $langs = array_keys($this->i18n->langs);
+        $langs = array_keys($this->i18n->getArrayList());
 
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(count($langs));
+        $this->assertSame(count($langs), $results->count());
 
         foreach ($results as $result) {
-            $this->boolean(in_array(str_replace('.utf8', '', $result['text_locale']), $langs))->isTrue();
-            $this->integer((int)$result['text_nref'])->isIdenticalTo(1);
-            $this->string($result['text_trans'])->isIdenticalTo(
-                ($result['text_locale'] == 'en_US' ? 'A text for test' : '')
-            );
+            $this->assertTrue(in_array(str_replace('.utf8', '', $result['text_locale']), $langs));
+            $this->assertSame(1, (int)$result['text_nref']);
+            $this->assertSame(($result['text_locale'] == 'en_US' ? 'A text for test' : ''), $result['text_trans']);
         }
 
         $this->i18n->changeLanguage('fr_FR');
@@ -138,21 +132,19 @@ class L10n extends atoum
         ]);
         $select->where(['text_orig' => 'Un texte de test']);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
 
-        $this->boolean($this->l10n->addDynamicTranslation('Un texte de test'))->isTrue();
+        $this->assertTrue($this->l10n->addDynamicTranslation('Un texte de test'));
 
-        $langs = array_keys($this->i18n->langs);
+        $langs = array_keys($this->i18n->getArrayList());
 
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(count($langs));
+        $this->assertSame(count($langs), $results->count());
 
         foreach ($results as $result) {
-            $this->boolean(in_array(str_replace('.utf8', '', $result['text_locale']), $langs))->isTrue();
-            $this->integer((int)$result['text_nref'])->isIdenticalTo(1);
-            $this->string($result['text_trans'])->isIdenticalTo(
-                ($result['text_locale'] == 'fr_FR.utf8' ? 'Un texte de test' : '')
-            );
+            $this->assertTrue(in_array(str_replace('.utf8', '', $result['text_locale']), $langs));
+            $this->assertSame(1, (int)$result['text_nref']);
+            $this->assertSame(($result['text_locale'] == 'fr_FR.utf8' ? 'Un texte de test' : ''), $result['text_trans']);
         }
     }
 }

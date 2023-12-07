@@ -1,0 +1,97 @@
+{% extends "page.html.twig" %}
+
+{% block content %}
+        <form id="send_reminders" action="{{ url_for("doReminders") }}" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui top attached accordion-styled header">
+                {{ _T("Choose wich reminder(s) you want to send:") }}
+            </div>
+            <div class="ui bottom attached accordion-styled segment">
+                <div class="active content field">
+                    <div class="inline field{% if count_impending == 0 and count_impending_nomail == 0 %} disabled{% endif %}">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="reminders[]" id="reminder_impending" value="{{ constant("Galette\\Entity\\Reminder::IMPENDING") }}"{% if count_impending == 0 and count_impending_nomail == 0 %} disabled="disabled"{% endif %}/>
+                            <label for="reminder_impending">{{ _T("Impending due date") }}</label>
+                        </div>
+                        <a class="show_previews" id="impending" href="#impending_preview">({{ _T("preview") }})</a> -
+                        <a href="{{ url_for("reminders-filter", {"membership": "nearly", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_impending}) }}</a>
+                        <a href="{{ url_for("reminders-filter", {"membership": "nearly", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_impending_nomail}) }}</a>
+                    </div>
+                    <div class="inline field{% if count_late == 0 and count_late_nomail == 0 %} disabled{% endif %}">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="reminders[]" id="reminder_late" value="{{ constant("Galette\\Entity\\Reminder::LATE") }}"{% if count_late == 0 and count_late_nomail == 0 %} disabled="disabled"{% endif %}/>
+                            <label for="reminder_late">{{ _T("Late") }}</label>
+                        </div>
+                        <a class="show_previews" id="late" href="#impending_preview">({{ _T("preview") }})</a> -
+                        <a href="{{ url_for("reminders-filter", {"membership": "late", "mail": "withmail"}) }}">{{ _T("%s members with an email address")|replace({"%s": count_late}) }}</a>
+                        <a href="{{ url_for("reminders-filter", {"membership": "late", "mail": "withoutmail"}) }}">{{ _T("%s members without email address")|replace({"%s": count_late_nomail}) }}</a>
+                    </div>
+                    <div class="inline field{% if count_impending_nomail == 0 and count_late_nomail == 0 %} disabled{% endif %}">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{% if count_impending_nomail == 0 and count_late_nomail == 0 %} disabled="disabled"{% endif %}/>
+                            <label for="reminder_wo_mail">{{ _T("Generate labels for members without email address") }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui basic center aligned segment">
+                <button type="submit" name="valid" class="ui labeled icon primary button">
+                    <i class="rocket icon" aria-hidden="true"></i>
+                    {{ _T("Send") }}
+                </button>
+                {% include "components/forms/csrf.html.twig" %}
+            </div>
+        </form>
+{% for key, preview in previews %}
+        <div id="{{ key }}_preview" class="preview ui modal">
+            <div class="header">{{ preview.tcomment }}</div>
+            <div class="scrolling content">
+                <div class="ui basic segments form">
+                    <div class="ui segment">
+                        <div class="inline field">
+                            <label>{{ _T("Subject:") }}</label>
+                            <span>{{ preview.tsubject }}</span>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <div class="field">
+                            <label>{{ _T("Message:") }}</label>
+                            <span>{{ preview.tbody|nl2br }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui cancel button">{{ _T("Close") }}</div>
+            </div>
+        </div>
+{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function(){
+                $('.preview').modal('hide');
+                $('.show_previews').click(function(){
+                    $('#' + $(this).attr('id') + '_preview').modal('show');
+                    return false;
+                });
+                $('#send_reminders').submit(function(){
+                    var _this = $(this);
+                    var _checked = _this.find('input[type=checkbox]:checked').length;
+                    if ( _checked == 0 ) {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("No reminder selected")|e("js"),
+                            modal_content_twig: _T("Please make sure to select at least one reminder.")|e("js"),
+                            modal_class: "tiny",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+            });
+        </script>
+{% endblock %}

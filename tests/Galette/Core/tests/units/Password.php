@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2013-10-22
  */
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Password tests class
@@ -46,24 +45,22 @@ use atoum;
  * @name      Password
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
  */
-class Password extends atoum
+class Password extends TestCase
 {
-    private $pass = null;
-    private $zdb;
+    private ?\Galette\Core\Password $pass = null;
+    private \Galette\Core\Db $zdb;
 
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->pass = new \Galette\Core\Password($this->zdb, false);
@@ -72,14 +69,12 @@ class Password extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -94,17 +89,17 @@ class Password extends atoum
 
         for ($i = 0; $i < 200; $i++) {
             $random = $this->pass->makeRandomPassword(15);
-            $this->string($random)->hasLength(15);
+            $this->assertSame(15, strlen($random));
 
             $exists = in_array($random, $results);
-            $this->boolean($exists)->isFalse();
+            $this->assertFalse($exists);
 
             $results[] = $random;
-            $this->array($results)->hasSize($i + 1);
+            $this->assertCount($i + 1, $results);
         }
 
         $random = $this->pass->makeRandomPassword();
-        $this->string($random)->hasLength(\Galette\Core\Password::DEFAULT_SIZE);
+        $this->assertSame(\Galette\Core\Password::DEFAULT_SIZE, strlen($random));
     }
 
     /**
@@ -123,7 +118,7 @@ class Password extends atoum
         $status = new \Galette\Entity\Status($this->zdb);
         if (count($status->getList()) === 0) {
             $res = $status->installInit();
-            $this->boolean($res)->isTrue();
+            $this->assertTrue($res);
         }
         $insert = $this->zdb->insert(\Galette\Entity\Adherent::TABLE);
         $insert->values(
@@ -166,25 +161,24 @@ class Password extends atoum
         $id_adh = $this->createMember();
         $pass = $this->pass;
         $res = $pass->generateNewPassword($id_adh);
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
         $new_pass = $pass->getNewPassword();
-        $this->string($new_pass)
-            ->hasLength($pass::DEFAULT_SIZE);
+        $this->assertSame($pass::DEFAULT_SIZE, strlen($new_pass));
         $hash = $pass->getHash();
-        $this->string($hash)->hasLength(60);
+        $this->assertSame(60, strlen($hash));
 
         $is_valid = $pass->isHashValid($hash);
-        $this->variable($is_valid)->isNotNull();
+        $this->assertNotNull($is_valid);
 
         $select = $this->zdb->select(\Galette\Core\Password::TABLE);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
         $removed = $pass->removeHash($hash);
-        $this->boolean($removed)->isTrue();
+        $this->assertTrue($removed);
 
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
 
         $this->deleteMember();
     }
@@ -213,12 +207,12 @@ class Password extends atoum
 
         $select = $this->zdb->select(\Galette\Core\Password::TABLE);
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
         $pass = new \Galette\Core\Password($this->zdb, true);
 
         $results = $this->zdb->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
 
         $this->deleteMember();
     }
@@ -230,14 +224,22 @@ class Password extends atoum
      */
     public function testGenerateNewPasswordWException()
     {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->generateNewPassword(12);
-        $this->boolean($res)->isFalse();
+        $this->assertFalse($res);
     }
 
     /**
@@ -247,14 +249,22 @@ class Password extends atoum
      */
     public function testGenerateNewPasswordWFalseInsert()
     {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            return false;
-        };
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->generateNewPassword(12);
-        $this->boolean($res)->isFalse();
+        $this->assertFalse($res);
     }
 
     /**
@@ -264,12 +274,21 @@ class Password extends atoum
      */
     public function testCleanExpiredWException()
     {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
 
-        $pass = new \Galette\Core\Password($this->zdb, true);
+        $this->zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
+
+        $pass = new \Galette\Core\Password($this->zdb, false);
+        $this->assertFalse($pass->cleanExpired());
     }
 
     /**
@@ -279,14 +298,22 @@ class Password extends atoum
      */
     public function testIsHashValidWException()
     {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->isHashValid('thehash');
-        $this->boolean($res)->isFalse();
+        $this->assertFalse($res);
     }
 
     /**
@@ -296,13 +323,21 @@ class Password extends atoum
      */
     public function testRemoveHashWException()
     {
-        $this->zdb = new \mock\Galette\Core\Db();
-        $this->calling($this->zdb)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
+        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->zdb->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->removeHash('thehash');
-        $this->boolean($res)->isFalse();
+        $this->assertFalse($res);
     }
 }

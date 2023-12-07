@@ -1,0 +1,49 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+/*---------------------------------------------
+     Accordions' title brackground color
+----------------------------------------------*/
+.ui.styled.accordion .title,
+.ui.styled.accordion .accordion .title {
+  background: @styledTitleBackground;
+}
+
+/*-------------------------------------------------
+     Advanced search filters' brackground color
+--------------------------------------------------*/
+.ui.form.advanced-search .ui.styled.accordion > .content {
+   background: @secondaryBackground;
+}
+
+/*-------------------------------------------------------
+     Max height for accordions displayed in listings
+--------------------------------------------------------*/
+.listing td .ui.accordion {
+   width: 100%;
+   max-height: 200px;
+   overflow: auto
+}
+
+/*-------------------------------------------------------
+     Reset style of accordions applied on details
+--------------------------------------------------------*/
+details.ui.basic.styled.accordion .title {
+  background: transparent;
+  color: @textColor;
+}
+
+/*--------------------------------
+     Tree accordion style
+---------------------------------*/
+.ui.accordion.tree .nochild {
+   padding: .5em 0;
+}
+
+/*-------------
+     No JS
+--------------*/
+.nojs .ui.accordion.menu:not(.styled) .title ~ .content:not(.ui) {
+   display:block;
+}

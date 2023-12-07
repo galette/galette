@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-14
  */
 
 namespace Galette\DynamicFields\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dynamic separator test
@@ -46,24 +45,22 @@ use atoum;
  * @name      Separator
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-14
  */
-class Separator extends atoum
+class Separator extends TestCase
 {
-    private $zdb;
-    private $separator;
+    private \Galette\Core\Db $zdb;
+    private \Galette\DynamicFields\Separator $separator;
 
     /**
      * Set up tests
      *
-     * @param string $method Current test method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->separator = new \Galette\DynamicFields\Separator($this->zdb);
@@ -77,8 +74,7 @@ class Separator extends atoum
     public function testConstructor()
     {
         $o = new \Galette\DynamicFields\Separator($this->zdb, 10);
-        $this->variable($o->getId())
-            ->isIdenticalTo(null);
+        $this->assertNull($o->getId());
     }
 
     /**
@@ -88,8 +84,7 @@ class Separator extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->separator->getTypeName())
-            ->isIdenticalTo(_T('separator'));
+        $this->assertSame(_T('separator'), $this->separator->getTypeName());
     }
 
     /**
@@ -100,50 +95,50 @@ class Separator extends atoum
     public function testBaseProperties()
     {
         $muliple = $this->separator->isMultiValued();
-        $this->boolean($muliple)->isFalse();
+        $this->assertFalse($muliple);
 
         $required = $this->separator->isRequired();
-        $this->boolean($required)->isFalse();
+        $this->assertFalse($required);
 
         $name = $this->separator->getName();
-        $this->variable($name)->isIdenticalTo('');
+        $this->assertSame('', $name);
 
         $has_fixed_values = $this->separator->hasFixedValues();
-        $this->boolean($has_fixed_values)->isFalse();
+        $this->assertFalse($has_fixed_values);
 
         $has_data = $this->separator->hasData();
-        $this->boolean($has_data)->isFalse();
+        $this->assertFalse($has_data);
 
         $has_w = $this->separator->hasWidth();
-        $this->boolean($has_w)->isFalse();
+        $this->assertFalse($has_w);
 
         $has_h = $this->separator->hasHeight();
-        $this->boolean($has_h)->isFalse();
+        $this->assertFalse($has_h);
 
         $has_s = $this->separator->hasSize();
-        $this->boolean($has_s)->isFalse();
+        $this->assertFalse($has_s);
 
         $perms = $this->separator->getPerm();
-        $this->variable($perms)->isNull();
+        $this->assertNull($perms);
 
         $width = $this->separator->getWidth();
-        $this->variable($width)->isNull();
+        $this->assertNull($width);
 
         $height = $this->separator->getHeight();
-        $this->variable($height)->isNull();
+        $this->assertNull($height);
 
         $repeat = $this->separator->getRepeat();
-        $this->variable($repeat)->isNull();
+        $this->assertNull($repeat);
 
         $repeat = $this->separator->isRepeatable();
-        $this->boolean($repeat)->isFalse();
+        $this->assertFalse($repeat);
 
         $size = $this->separator->getSize();
-        $this->variable($size)->isNull();
+        $this->assertNull($size);
 
         $values = $this->separator->getValues();
-        $this->boolean($values)->isFalse();
+        $this->assertFalse($values);
 
-        $this->boolean($this->separator->hasPermissions())->isFalse();
+        $this->assertFalse($this->separator->hasPermissions());
     }
 }

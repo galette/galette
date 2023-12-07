@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2021 The Galette Team
+ * Copyright © 2010-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2021 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -57,7 +58,7 @@ use Laminas\Db\Sql\Select;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -66,8 +67,11 @@ class Contributions
     public const TABLE = Contribution::TABLE;
     public const PK = Contribution::PK;
 
+    private $filters = false;
     private $count = null;
 
+    private $zdb;
+    private $login;
     private $sum;
     private $current_selection;
 
@@ -95,7 +99,7 @@ class Contributions
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return Contribution[]
+     * @return Contribution[]|ArrayObject
      */
     public function getListFromTransaction($trans_id)
     {
@@ -113,7 +117,7 @@ class Contributions
      *                            returned
      * @param boolean $count      true if we want to count members
      *
-     * @return Contribution[]
+     * @return Contribution[]|ArrayObject[]|false
      */
     public function getArrayList(array $ids, bool $as_contrib = false, array $fields = null, bool $count = true)
     {
@@ -141,7 +145,7 @@ class Contributions
      *                            returned
      * @param boolean $count      true if we want to count members
      *
-     * @return Contribution[]|ResultSet
+     * @return Contribution[]|ArrayObject
      */
     public function getList($as_contrib = false, $fields = null, $count = true)
     {
@@ -172,18 +176,20 @@ class Contributions
     /**
      * Builds the SELECT statement
      *
-     * @param array $fields fields list to retrieve
-     * @param bool  $count  true if we want to count members
-     *                      (not applicable from static calls), defaults to false
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $count  true if we want to count members
+     *                       (not applicable from static calls), defaults to false
      *
-     * @return string SELECT statement
+     * @return Select SELECT statement
      */
-    private function buildSelect($fields, $count = false)
+    private function buildSelect(?array $fields, bool $count = false): Select
     {
         try {
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
+            $fieldsList = ['*'];
+            if (is_array($fields) && count($fields)) {
+                $fieldsList = $fields;
+            }
+
 
             $select = $this->zdb->select(self::TABLE, 'a');
             $select->columns($fieldsList);
@@ -238,10 +244,7 @@ class Contributions
 
             $k = self::PK;
             $this->count = $result->$k;
-
-            if ($this->count > 0) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count contributions | ' . $e->getMessage(),
@@ -273,8 +276,9 @@ class Contributions
 
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
-
-            $this->sum = round($result->contribsum, 2);
+            if ($result->contribsum) {
+                $this->sum = round($result->contribsum, 2);
+            }
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
@@ -287,7 +291,7 @@ class Contributions
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array SQL ORDER clauses
      */
     private function buildOrderClause()
     {
@@ -337,7 +341,7 @@ class Contributions
      *
      * @param Select $select Original select
      *
-     * @return string SQL WHERE clause
+     * @return void
      */
     private function buildWhereClause(Select $select)
     {
@@ -414,7 +418,7 @@ class Contributions
                     );
                     if (
                         !$member->hasParent() ||
-                        $member->hasParent() && $member->parent->id != $this->login->id
+                        $member->parent->id != $this->login->id
                     ) {
                         Analog::log(
                             'Trying to display contributions for member #' . $member->id .
@@ -497,51 +501,10 @@ class Contributions
     public function remove($ids, History $hist, $transaction = true)
     {
         $list = array();
-        if (is_numeric($ids)) {
-            //we've got only one identifier
-            $list[] = $ids;
-        } else {
+        if (is_array($ids)) {
             $list = $ids;
-        }
-
-        if (is_array($list)) {
-            $res = true;
-            try {
-                if ($transaction) {
-                    $this->zdb->connection->beginTransaction();
-                }
-                $select = $this->zdb->select(self::TABLE);
-                $select->where->in(self::PK, $list);
-                $contributions = $this->zdb->execute($select);
-                foreach ($contributions as $contribution) {
-                    $c = new Contribution($this->zdb, $this->login, $contribution);
-                    $res = $c->remove(false);
-                    if ($res === false) {
-                        throw new \Exception();
-                    }
-                }
-                if ($transaction) {
-                    $this->zdb->connection->commit();
-                }
-                $hist->add(
-                    str_replace(
-                        '%list',
-                        print_r($list, true),
-                        _T("Contributions deleted (%list)")
-                    )
-                );
-                return true;
-            } catch (Throwable $e) {
-                if ($transaction) {
-                    $this->zdb->connection->rollBack();
-                }
-                Analog::log(
-                    'An error occurred trying to remove contributions | ' .
-                    $e->getMessage(),
-                    Analog::ERROR
-                );
-                throw $e;
-            }
+        } elseif (is_numeric($ids)) {
+            $list = [(int)$ids];
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
@@ -549,6 +512,43 @@ class Contributions
                 Analog::WARNING
             );
             return false;
+        }
+
+        try {
+            if ($transaction) {
+                $this->zdb->connection->beginTransaction();
+            }
+            $select = $this->zdb->select(self::TABLE);
+            $select->where->in(self::PK, $list);
+            $contributions = $this->zdb->execute($select);
+            foreach ($contributions as $contribution) {
+                $c = new Contribution($this->zdb, $this->login, $contribution);
+                $res = $c->remove(false);
+                if ($res === false) {
+                    throw new \Exception();
+                }
+            }
+            if ($transaction) {
+                $this->zdb->connection->commit();
+            }
+            $hist->add(
+                str_replace(
+                    '%list',
+                    print_r($list, true),
+                    _T("Contributions deleted (%list)")
+                )
+            );
+            return true;
+        } catch (Throwable $e) {
+            if ($transaction) {
+                $this->zdb->connection->rollBack();
+            }
+            Analog::log(
+                'An error occurred trying to remove contributions | ' .
+                $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
         }
     }
 }

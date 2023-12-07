@@ -1,0 +1,139 @@
+{% if part == "dialog" %}
+        <div id="telemetry_panel" class="texts_legend ui modal">
+            <div class="header"></div>
+            <div class="scrolling content">
+                <p>{{ _T("Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent.") }}</p>
+                <p>{{ _T("Nothing is automated in the process; it's up to you to send (or resend) data.") }}<br/>{{ _T("You can review below the raw data that would be send if you press the 'Send' button.") }}.<br/>{{ _T("Also note that all data are sent over a <strong>HTTPS secured connection</strong>.") }}</p>
+                <div class="tdata">
+                </div>
+            </div>
+        </div>
+{% endif %}
+{% if part == "jsdialog" %}
+                $('#telemetry_panel').modal({
+                    title: '{{ _T("Send telemetry information")|e('js') }}',
+                    class: 'large',
+                    onApprove: function() {
+                            $.ajax({
+                                url:  '{{ url_for('telemetrySend') }}',
+                                method: 'POST',
+                                {% include "elements/js/loader.js.twig" with {
+                                    loader: 'button',
+                                    selector: '#telemetry'
+                                } %},
+                                success: function(data) {
+                                    if (data.success) {
+    {% if orig is defined and orig == 'desktop' %}
+                                        $('#telemetry').remove();
+                                        if ($('#share a').length == 0) {
+                                            $('#share').remove();
+                                        }
+    {% endif %}
+    {% if renew_telemetry is defined %}
+                                        $('#renewbox').remove();
+                                        Cookies.set(
+                                            'renew_telemetry',
+                                            1,
+                                            {
+                                                expires: 365,
+                                                path: '/'
+                                            }
+                                        );
+    {% endif %}
+                                    }
+                                    {% include "elements/js/modal.js.twig" with {
+                                        modal_without_title: true,
+                                        modal_content: "data.message",
+                                        modal_class: "tiny",
+                                        modal_deny_only: true,
+                                        modal_cancel_text: _T("Close")|e('js')
+                                    } %}
+                                },
+                                error: function() {
+                                    {% include "elements/js/modal.js.twig" with {
+                                        modal_title_twig: _T("An error occurred sending telemetry information :(")|e("js"),
+                                        modal_without_content: true,
+                                        modal_class: "mini",
+                                        modal_deny_only: true,
+                                        modal_cancel_text: _T("Close")|e("js"),
+                                        modal_classname: "redalert",
+                                    } %}
+                                }
+                            });
+                    },
+                    onDeny: function() {
+                            $(this).find('.tdata').empty();
+                    },
+                    onHidden: function() {
+                            $(this).find('.tdata').empty();
+                    },
+                    actions: [{
+                        text    : '{{ _T("Send")|e('js') }}',
+                        icon    : 'share',
+                        class   : 'primary icon labeled approve'
+                    }, {
+                        text    : '{{ _T("Cancel")|e('js') }}',
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
+                    }]
+                });
+
+                $('#telemetry').on('click', function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url:  '{{ url_for('telemetryInfos') }}',
+                        success: function(data) {
+                            $('#telemetry_panel .tdata').append(data);
+                            $('#telemetry_panel').modal('show');
+                        }
+
+                    });
+                });
+    {% if renew_telemetry is defined %}
+            $('#norenew').on('click', function() {
+                Cookies.set(
+                    'renew_telemetry',
+                    1,
+                    {
+                        expires: 365,
+                        path: '/'
+                    }
+                );
+                window.location.reload();
+            });
+            $('#renewlater').on('click', function() {
+                Cookies.set(
+                    'renew_telemetry',
+                    1,
+                    {
+                        expires: 182,
+                        path: '/'
+                    }
+                );
+                window.location.reload();
+            });
+    {% endif %}
+{% endif %}
+{% if part == "jsregister" %}
+            $('#register').on('click', function(e) {
+                $.ajax({
+                    url:  '{{ url_for('setRegistered') }}',
+                    success: function(data) {
+    {%  if orig is defined and orig == 'desktop' %}
+                        $('#register').remove();
+                        if ($('#share a').length == 0) {
+                            $('#share').remove();
+                        }
+    {% endif %}
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_without_title: true,
+                            modal_content: "data.message",
+                            modal_class: "tiny",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js")
+                        } %}
+                    }
+                });
+            });
+{% endif %}

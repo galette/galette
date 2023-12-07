@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2021 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2019-09-21
@@ -36,6 +36,8 @@
 
 namespace Galette\Repository;
 
+use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -53,7 +55,7 @@ use Galette\Entity\Adherent;
  * @name      SavedSearches
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2021 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2019-09-21
@@ -63,6 +65,9 @@ class SavedSearches
     public const TABLE = SavedSearch::TABLE;
     public const PK = SavedSearch::PK;
 
+    private $filters = false;
+    private $zdb;
+    private $login;
     private $count = null;
 
     /**
@@ -94,7 +99,7 @@ class SavedSearches
      *                           returned
      * @param boolean $count     true if we want to count
      *
-     * @return SavedSearch[]|ResultSet
+     * @return SavedSearch[]|ArrayObject
      */
     public function getList($as_search = false, $fields = null, $count = true)
     {
@@ -124,18 +129,19 @@ class SavedSearches
     /**
      * Builds the SELECT statement
      *
-     * @param array $fields fields list to retrieve
-     * @param bool  $count  true if we want to count members
-     *                      (not applicable from static calls), defaults to false
+     * @param ?array $fields fields list to retrieve
+     * @param bool   $count  true if we want to count members
+     *                       (not applicable from static calls), defaults to false
      *
-     * @return string SELECT statement
+     * @return Select SELECT statement
      */
-    private function buildSelect($fields, $count = false)
+    private function buildSelect(?array $fields, bool $count = false): Select
     {
         try {
-            $fieldsList = ($fields != null)
-                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
-                            : implode(', ', $fields)) : (array)'*';
+            $fieldsList = ['*'];
+            if ($fields !== null && count($fields)) {
+                $fieldsList = $fields;
+            }
 
             $select = $this->zdb->select(self::TABLE, 's');
             $select->columns($fieldsList);
@@ -168,7 +174,7 @@ class SavedSearches
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select)
     {
         try {
             $countSelect = clone $select;
@@ -186,10 +192,7 @@ class SavedSearches
 
             $k = self::PK;
             $this->count = $result->$k;
-
-            if ($this->count > 0) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count saved searches | ' . $e->getMessage(),
@@ -202,7 +205,7 @@ class SavedSearches
     /**
      * Builds the order clause
      *
-     * @return string SQL ORDER clause
+     * @return array
      */
     private function buildOrderClause()
     {
@@ -241,8 +244,7 @@ class SavedSearches
             $list = $ids;
         }
 
-        if (is_array($list)) {
-            $res = true;
+        if (count($list)) {
             try {
                 if ($transaction) {
                     $this->zdb->connection->beginTransaction();
@@ -252,9 +254,9 @@ class SavedSearches
                 $searches = $this->zdb->execute($select);
                 foreach ($searches as $search) {
                     $s = new SavedSearch($this->zdb, $this->login, $search);
-                    $res = $s->remove(false);
+                    $res = $s->remove();
                     if ($res === false) {
-                        throw new \Exception();
+                        throw new \Exception('Cannot remove saved search');
                     }
                 }
                 if ($transaction) {

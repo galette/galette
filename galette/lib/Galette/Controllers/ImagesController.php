@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -36,11 +36,10 @@
 
 namespace Galette\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
-use Analog\Analog;
 
 /**
  * Galette images controller
@@ -49,7 +48,7 @@ use Analog\Analog;
  * @name      ImageController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -57,7 +56,6 @@ use Analog\Analog;
 
 class ImagesController extends AbstractController
 {
-
     /**
      * Send response
      *
@@ -78,7 +76,7 @@ class ImagesController extends AbstractController
         fwrite($stream, file_get_contents($picture->getPath()));
         rewind($stream);
 
-        return $response->withBody(new \Slim\Http\Stream($stream));
+        return $response->withBody(new \Slim\Psr7\Stream($stream));
     }
 
     /**

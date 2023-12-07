@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2022 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-08
@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
@@ -54,7 +54,7 @@ use Analog\Analog;
  * @name      TransactionsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2022 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -171,7 +171,7 @@ class TransactionsController extends ContributionsController
 
         // members
         $m = new Members();
-        $members = $m->getSelectizedMembers(
+        $members = $m->getDropdownMembers(
             $this->zdb,
             $this->login,
             $trans->member > 0 ? $trans->member : null
@@ -190,7 +190,7 @@ class TransactionsController extends ContributionsController
         // display page
         $this->view->render(
             $response,
-            'ajouter_transaction.tpl',
+            'pages/transaction_form.html.twig',
             $params
         );
         return $response;
@@ -289,7 +289,7 @@ class TransactionsController extends ContributionsController
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor(
+                        $this->routeparser->urlFor(
                             'addContribution',
                             $rparams
                         ) . '?' . Transaction::PK . '=' . $trans->id .
@@ -307,7 +307,7 @@ class TransactionsController extends ContributionsController
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('contributions', ['type' => 'transactions'])
+                        $this->routeparser->urlFor('contributions', ['type' => 'transactions'])
                     );
             }
         } else {
@@ -332,7 +332,7 @@ class TransactionsController extends ContributionsController
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->router->pathFor(
+                    $this->routeparser->urlFor(
                         ($action == 'add' ? 'addTransaction' : 'editTransaction'),
                         $args
                     )
@@ -366,7 +366,7 @@ class TransactionsController extends ContributionsController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor(
+            ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
                 ['id' => $id]
             ));
@@ -398,7 +398,7 @@ class TransactionsController extends ContributionsController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor(
+            ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
                 ['id' => $id]
             ));

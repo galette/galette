@@ -1,0 +1,212 @@
+{% set mode = mode|default('') %}
+{% set is_paginated = is_paginated ?? (nb > 0) %}
+{% set is_public = is_public ?? false %}
+
+{% extends (mode == 'ajax') ? "ajax.html.twig" : is_public ? "public_page.html.twig" : "page.html.twig" %}
+{% import "macros.twig" as macros %}
+
+{% block content %}
+    {% if mode == 'ajax' %}
+        <div id="main-container">
+    {% endif %}
+    {% block search %}{% endblock %}
+    {% block infoline %}
+        <form action="{% if infoline.route is defined %}{{ url_for(infoline.route.name, infoline.route.args|default([])) }}{% endif %}" method="post" class="ui form">
+            <div class="infoline">
+                <div class="ui basic horizontal segments">
+                    <div class="ui basic fitted segment">
+                        <div class="ui label">{{ infoline.label }}</div>
+                        {% block infoline_actions %}{% endblock %}
+                    </div>
+        {% if infoline.route is defined %}
+                    <div class="ui basic right aligned fitted segment">
+                        <div class="inline field">
+                            <label for="nbshow">{{ _T('Records per page:') }}</label>
+                            <div class="ui dropdown selection autosubmit">
+                                <input type="hidden" name="nbshow" value="{{ numrows }}">
+                                <i class="dropdown icon"></i>
+                                <div class="text">{% if numrows == 0 %}{{ _T('All') }}{% else %}{{ numrows }}{% endif %}</div>
+                                <div class="menu">
+                                {% for key, value in nbshow_options %}
+                                    <div class="item{% if key == numrows %} active selected {% endif %}" data-value="{{ key }}">{{ value }}</div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        {% endif %}
+                </div>
+            </div>
+            {% if mode != 'ajax' %}
+                {% include "components/forms/csrf.html.twig" %}
+            {% endif %}
+        </form>
+    {% endblock %}
+    {% if form is defined %}
+        <form action="{%  if form.route is defined %}{{ url_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
+            <div class="ui basic fitted segment">
+
+            {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
+                {{ macros.drawBatchActionsList(batch_actions) }}
+            {% endif %}
+    {% endif %}
+
+    {% if list_type is defined and list_type == 'cards' %}
+                <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
+    {% else %}
+                <div class="ui basic fitted segment loader_selector large-table-wrapper">
+                    <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
+                        <thead>
+                            <tr>
+                        {% block header %}
+                            {% for column in columns %}
+                                <th class="left">
+                                    {% if form is defined and column.order is defined %}
+                                    <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
+                                        {{ column.label }}
+                                        {% if filters.orderby == column.order %}
+                                            {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
+                                                <i class="ui angle down icon tooltip" aria-hidden="true"></i>
+                                            {% else %}
+                                                <i class="ui angle up icon tooltip" aria-hidden="true"></i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </a>
+                                    {% else %}
+                                        {{ column.label }}
+                                    {% endif %}
+                                </th>
+                            {% endfor %}
+                            {% if mode != 'ajax' and no_action is not defined or no_action == false %}
+                                <th class="actions_row">{{ _T('Actions') }}</th>
+                            {% endif %}
+                        {% endblock %}
+                            </tr>
+                        </thead>
+                        <tbody>
+    {% endif %}
+                            {% block body %}{% endblock %}
+    {% if list_type is not defined %}
+                        </tbody>
+                        <tfoot>
+                            {% block footer %}{% endblock %}
+                        </tfoot>
+                    </table>
+    {% endif %}
+
+            </div>
+
+            {% if form is defined and mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
+                {{ macros.drawBatchActionsList(batch_actions) }}
+            {% endif %}
+
+            {% if is_paginated %}
+            <div class="ui basic center aligned fitted segment">
+                <div class="ui inverted pagination stackable menu">
+                    <div class="header item">
+                        {{ _T('Pages:') }}
+                    </div>
+                    {{ pagination|raw }}
+                </div>
+            </div>
+            {% endif %}
+
+    {% if form is defined %}
+            {% block extra_form %}{% endblock %}
+            {% include "components/forms/csrf.html.twig" %}
+        </form>
+    {% endif %}
+        {% block legend %}{% endblock %}
+    {% if mode == 'ajax' %}
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% set _legend_block = block('legend') %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
+        var _checkselection = function() {
+            var _checked = $('#listform').find('input[type=checkbox]:checked').length;
+            if ( _checked == 0 ) {
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: batch.modal.title|e("js"),
+                    modal_content_twig: batch.modal.content|e("js"),
+                    modal_class: "tiny",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "redalert",
+                } %}
+                return false;
+            } else {
+                return true;
+            }
+        }
+    {% endif %}
+        $(function(){
+    {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
+            var _init_page = function(res){
+        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+                {# Use of Javascript to draw specific elements that are not relevant if JS is inactive #}
+                var _checklinks = '<a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a>' +
+                    ' | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a> | ';
+            {% if _legend_block is not empty %}
+                var _legendlink = '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
+            {% endif %}
+                $('.batch-select-action').before(_checklinks);
+                $('.batch-select-action').dropdown({
+                    action: function(text, value, element) {
+                        if (!_checkselection()) {
+                            return false;
+                        }
+                        // Hide dropdown
+                        var element = element.parentElement !== undefined ? element : element[0];
+                        var dropdown = element.parentElement.parentElement;
+                        $(dropdown).dropdown('hide');
+                        // Handle direct download actions.
+                        if (value.endsWith('__directdownload')) {
+                            const _value = value.split('__');
+                            var value = _value[0];
+                            var _form = $('#listform');
+                                _form.append($('<input id="directdownload" type="hidden" name="' + value + '" value="true"/>'));
+                            _form.submit();
+                            $('#directdownload').remove();
+            {% if login.isAdmin() or login.isStaff() %}
+                        // Handle delete.
+                        } else if (value == 'delete') {
+                            {% set removal_extra_data = removal_extra_data is defined ? removal_extra_data : "" %}
+                            {% set extra_data = "delete: true, entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" ~ removal_extra_data %}
+                            {% include "elements/js/removal.js.twig" with {
+                                selector: ".batch-delete",
+                                deleteurl: url_for(batch.route.name, batch.route.args|default([])),
+                                extra_data: extra_data,
+                                method: "POST",
+                                loader: "button",
+                                loader_parent: ".batch-select-action"
+                            } %}
+            {% endif %}
+                        }
+                        // Handle other custom list actions.
+            {% if batch_selection is defined %}
+                        {% block batch_selection %}{% endblock %}
+            {% endif %}
+                    }
+                });
+            {% if _legend_block is not empty %}
+                $('.batch-selection').after(_legendlink);
+            {% endif %}
+                _bind_check('entries_sel');
+        {% endif %}
+            }
+            _init_page();
+    {% endif %}
+    {% if _legend_block is not empty %}
+            _bind_legend();
+    {% endif %}
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
+        });
+    </script>
+{% endblock %}

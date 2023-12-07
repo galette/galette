@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2017-05-14
  */
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Picture tests class
@@ -46,16 +45,16 @@ use atoum;
  * @name      Picture
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2017-05-14
  */
-class Picture extends atoum
+class Picture extends TestCase
 {
-    private $zdb;
-    private $picture;
-    private $expected_badchars = [
+    private \Galette\Core\Db $zdb;
+    private \Galette\Core\Picture $picture;
+    private array $expected_badchars = [
         '.',
         '\\',
         "'",
@@ -73,11 +72,9 @@ class Picture extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Method name
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->picture = new \Galette\Core\Picture();
@@ -86,14 +83,12 @@ class Picture extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
     }
 
@@ -105,21 +100,24 @@ class Picture extends atoum
     public function testDefaults()
     {
         $picture = new \Galette\Core\Picture();
-        $this->variable($picture->getDestDir())->isNull();
-        $this->variable($picture->getFileName())->isNull();
+        $this->assertNull($picture->getDestDir());
+        $this->assertNull($picture->getFileName());
 
-        $expected_exts = ['jpeg', 'jpg', 'png', 'gif'];
-        $this->string($picture->getAllowedExts())->isIdenticalTo(implode(', ', $expected_exts));
+        $expected_exts = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
+        $this->assertSame(implode(', ', $expected_exts), $picture->getAllowedExts());
 
         $expected_mimes = [
             'jpg'    =>    'image/jpeg',
             'png'    =>    'image/png',
-            'gif'    =>    'image/gif'
+            'gif'    =>    'image/gif',
+            'webp'   =>    'image/webp'
         ];
-        $this->array($picture->getAllowedMimeTypes())->isIdenticalTo($expected_mimes);
+        $this->assertSame($expected_mimes, $picture->getAllowedMimeTypes());
 
-        $this->string($this->picture->getBadChars())
-            ->isIdenticalTo('`' . implode('`, `', $this->expected_badchars) . '`');
+        $this->assertSame(
+            '`' . implode('`, `', $this->expected_badchars) . '`',
+            $this->picture->getBadChars()
+        );
     }
 
     /**
@@ -129,14 +127,14 @@ class Picture extends atoum
      */
     public function testSetters()
     {
-        $this->variable($this->picture->getDestDir())->isNull();
-        $this->variable($this->picture->getFileName())->isNull();
+        $this->assertNull($this->picture->getDestDir());
+        $this->assertNull($this->picture->getFileName());
 
         $this->picture->setDestDir(__DIR__);
-        $this->string($this->picture->getDestDir())->isIdenticalTo(__DIR__);
+        $this->assertSame(__DIR__, $this->picture->getDestDir());
 
         $this->picture->setFileName('myfile.png');
-        $this->string($this->picture->getFileName())->isIdenticalTo('myfile.png');
+        $this->assertSame('myfile.png', $this->picture->getFileName());
     }
 
     /**
@@ -148,18 +146,18 @@ class Picture extends atoum
     public function testFileInfoMimeType()
     {
         $url = realpath(GALETTE_ROOT . '../tests/fake_image.jpg');
-        $this->variable($url)->isNotFalse();
-        $this->variable($this->picture->getMimeType($url))->isIdenticalTo('image/jpeg');
+        $this->assertNotFalse($url);
+        $this->assertSame('image/jpeg', $this->picture->getMimeType($url));
 
         $url = realpath(GALETTE_ROOT . '../galette/webroot/themes/default/images/galette.png');
-        $this->variable($url)->isNotFalse();
-        $this->variable($this->picture->getMimeType($url))->isIdenticalTo('image/png');
+        $this->assertNotFalse($url);
+        $this->assertSame('image/png', $this->picture->getMimeType($url));
 
-        $url = realpath(GALETTE_ROOT . '../galette/webroot/themes/default/images/english.gif');
-        $this->variable($url)->isNotFalse();
-        $this->variable($this->picture->getMimeType($url))->isIdenticalTo('image/gif');
+        $url = realpath(GALETTE_ROOT . '../tests/test.gif');
+        $this->assertNotFalse($url);
+        $this->assertSame('image/gif', $this->picture->getMimeType($url));
 
-        $this->variable($this->picture->getMimeType(__DIR__ . '/Picture.php'))->isIdenticalTo('text/x-php');
+        $this->assertSame('text/x-php', $this->picture->getMimeType(__DIR__ . '/Picture.php'));
     }
 
     /**
@@ -173,7 +171,7 @@ class Picture extends atoum
     /*public function testMimeContentTypeMimeType()
     {
         $url = realpath(GALETTE_ROOT . '../tests/fake_image.jpg');
-        $this->variable($url)->isNotFalse();
+        $this->assertNotFalse($url);
 
         $this->assert('FileInfo extension missing')
             ->given($picture = new \Galette\Core\Picture())
@@ -199,7 +197,7 @@ class Picture extends atoum
                 'name'      => 'file-with-' . $badchar . '-char.jpg',
                 'tmp_name'  => 'none'
             ];
-            $this->integer($this->picture->store($file))->isIdenticalTo($expected);
+            $this->assertSame($expected, $this->picture->store($file));
         }
 
         $files = [
@@ -218,7 +216,7 @@ class Picture extends atoum
                 'size'      => \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100
             ];
             //Will fail on filesize, but this is OK, filenames and extensions have been checked :)
-            $this->integer($this->picture->store($file))->isIdenticalTo(\Galette\Core\Picture::FILE_TOO_BIG);
+            $this->assertSame(\Galette\Core\Picture::FILE_TOO_BIG, $this->picture->store($file));
         }
     }
 
@@ -229,21 +227,37 @@ class Picture extends atoum
      */
     public function testErrorMessages()
     {
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILENAME))
-            ->isIdenticalTo('File name is invalid, it should not contain any special character or space.');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_EXTENSION))
-            ->isIdenticalTo('File extension is not allowed, only jpeg, jpg, png, gif files are.');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::FILE_TOO_BIG))
-            ->isIdenticalTo('File is too big. Maximum allowed size is 1024Ko');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::MIME_NOT_ALLOWED))
-            ->isIdenticalTo('Mime-Type not allowed');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILE))
-            ->isIdenticalTo('File does not comply with requirements.');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::CANT_WRITE))
-            ->isIdenticalTo('Unable to write file or temporary file');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::SQL_ERROR))
-            ->isIdenticalTo('An SQL error has occurred.');
-        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::SQL_BLOB_ERROR))
-            ->isIdenticalTo('An SQL error has occurred.');
+        $this->assertSame(
+            'File name is invalid, it should not contain any special character or space.',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILENAME)
+        );
+        $this->assertSame(
+            'File extension is not allowed, only jpeg, jpg, png, gif, webp files are.',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_EXTENSION)
+        );
+        $this->assertSame(
+            'File is too big. Maximum allowed size is 2048Ko',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::FILE_TOO_BIG)
+        );
+        $this->assertSame(
+            'Mime-Type not allowed',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::MIME_NOT_ALLOWED)
+        );
+        $this->assertSame(
+            'File does not comply with requirements.',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILE)
+        );
+        $this->assertSame(
+            'Unable to write file or temporary file',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::CANT_WRITE)
+        );
+        $this->assertSame(
+            'An SQL error has occurred.',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::SQL_ERROR)
+        );
+        $this->assertSame(
+            'An SQL error has occurred.',
+            $this->picture->getErrorMessage(\Galette\Core\Picture::SQL_BLOB_ERROR)
+        );
     }
 }

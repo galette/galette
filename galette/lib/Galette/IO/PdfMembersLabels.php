@@ -142,11 +142,13 @@ class PdfMembersLabels extends Pdf
                 $this->AddPage();
             }
             // Set font
-            $this->SetFont(self::FONT, 'B', $this->preferences->pref_etiq_corps);
+            $this->SetFont(self::FONT, '', $this->preferences->pref_etiq_corps);
+            // Set line height ratio
+            $this->SetCellHeightRatio(1.35);
 
             // Compute label position
             $col = $nb_etiq % $this->preferences->pref_etiq_cols;
-            $row = ($nb_etiq / $this->preferences->pref_etiq_cols)
+            $row = (int)($nb_etiq / $this->preferences->pref_etiq_cols)
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
             $x = $this->xorigin + $col * (
@@ -158,48 +160,33 @@ class PdfMembersLabels extends Pdf
                 round($this->preferences->pref_etiq_vspace)
             );
             // Draw a frame around the label
-            $this->Rect($x, $y, $this->lw, $this->lh);
-            // Print full name
-            $this->SetXY($x, $y);
-            $this->Cell($this->lw, $this->line_h, $member->sfullname, 0, 0, 'L', 0);
-            // Print first line of address
-            $this->SetFont(self::FONT, '', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->line_h);
+            if ($this->preferences->pref_etiq_border) {
+                $this->Rect($x, $y, $this->lw, $this->lh);
+            }
 
-            //calculte font size to display address
+            // Prepare full address
+            $full_address_array = array();
+            $full_address_array[] = $member->sfullname;
+            // Transform member's address in array and merge it with $full_address_array
+            $address_array = explode(PHP_EOL, $member->address);
+            $full_address_array = array_merge($full_address_array, $address_array);
+            $full_address_array[] = $member->zipcode . ' ' . $member->town;
+            $full_address_array[] = $member->country;
+            $full_address = implode(PHP_EOL, $full_address_array);
+            // Find longest line in full address
+            $address_lengths = array_map('strlen', $full_address_array);
+            $address_longest = $full_address_array[array_search(max($address_lengths), $address_lengths)];
+            // Calculate font size to always display full address inside the frame
             $max_text_size = $this->preferences->pref_etiq_hsize;
             $this->fixSize(
-                $member->address,
+                $address_longest,
                 $max_text_size,
                 $this->preferences->pref_etiq_corps
             );
+            // Print full address
+            $this->writeHTMLCell($this->lw, $this->line_h, $x, $y, nl2br($full_address), 0, 0, 0, true, 'L', true);
 
-            $this->Cell($this->lw, $this->line_h, $member->address, 0, 0, 'L', 0);
-
-            // Print zip code and town
-            $this->SetFont(self::FONT, 'B', $this->preferences->pref_etiq_corps);
-            $text = $member->zipcode . ' - ' . $member->town;
-            $this->fixSize(
-                $text,
-                $max_text_size,
-                $this->preferences->pref_etiq_corps,
-                'B'
-            );
-
-            $this->SetXY($x, $y + $this->line_h * 3);
-            $this->Cell(
-                $this->lw,
-                $this->line_h,
-                $text,
-                0,
-                0,
-                'L',
-                0
-            );
-            // Print country
-            $this->SetFont(self::FONT, 'I', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->line_h * 4);
-            $this->Cell($this->lw, $this->line_h, $member->country, 0, 0, 'R', 0);
+            // Next label
             $nb_etiq++;
         }
     }

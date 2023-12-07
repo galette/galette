@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-25
@@ -51,7 +51,7 @@ use Galette\Entity\PdfReceipt;
  * @name      PdfModels
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-25
@@ -176,7 +176,7 @@ class PdfModels extends Repository
                 }
 
                 if ($exists === false) {
-                    //model does not exists in database, insert it.
+                    //model does not exist in database, insert it.
                     $missing[] = $default;
                 }
             }
@@ -197,6 +197,7 @@ class PdfModels extends Repository
             }
             throw $e;
         }
+        return false;
     }
 
     /**
@@ -239,6 +240,7 @@ class PdfModels extends Repository
     {
         if (!count($this->defaults)) {
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+            //@phpstan-ignore-next-line
             $this->defaults = $pdfmodels_fields;
         }
         return parent::loadDefaults();

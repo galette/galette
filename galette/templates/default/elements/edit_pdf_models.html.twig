@@ -1,0 +1,70 @@
+        <form action="{{ url_for('pdfModels') }}" method="post" enctype="multipart/form-data" class="form ui">
+            <div class="ui basic fitted segment">
+{% if model.id != 1 %}
+                    <div class="field">
+                        <label for="title_{{ model.id }}">{{ _T("Title") }}</label>
+                        <div class="ui corner labeled input">
+                            <input type="text" name="model_title" id="title_{{ model.id }}" class="codeeditor" value="{{ model.title|escape }}"/>
+                            <div class="ui corner label"></div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="subtitle_{{ model.id }}">{{ _T("Subtitle") }}</label>
+                        <div class="ui corner labeled input">
+                            <input type="text" name="model_subtitle" id="subtitle_{{ model.id }}" class="codeeditor" value="{{ model.subtitle|escape }}"/>
+                            <div class="ui corner label"></div>
+                        </div>
+                    </div>
+{% endif %}
+                    <div class="field">
+                        <label for="header_{{ model.id }}">{{ _T("Header") }}</label>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="model_header" id="header_{{ model.id }}" class="codeeditor">{{ model.header }}</textarea>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="footer_{{ model.id }}">{{ _T("Footer") }}</label>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="model_footer" id="footer_{{ model.id }}" class="codeeditor">{{ model.footer }}</textarea>
+                        </div>
+                    </div>
+{% if model.id != 1 %}
+                    <div class="field">
+                        <label for="body_{{ model.id }}">{{ _T("Body") }}</label>
+                        <div class="ui corner labeled input">
+                            <div class="ui corner label"></div>
+                            <textarea name="model_body" id="body_{{ model.id }}" class="codeeditor">{{ model.body }}</textarea>
+                        </div>
+                    </div>
+{% endif %}
+                    <div class="field nolegend">
+                        <label for="styles_{{ model.id }}">{{ _T("CSS styles") }}</label>
+                        <textarea name="model_styles" id="styles_{{ model.id }}" class="codeeditor">{{ model.styles }}</textarea>
+                    </div>
+{% if model.id > 4 %}
+                    <div class="field">
+                        <label for="type_{{ model.id }}">{{ _T("Type") }}</label>
+                        <select name="model_type" id="type_{{ model.id }}" class="ui dropdown nochosen" required>
+                            <option value="">{{ _T("Select") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\PdfModel::INVOICE_MODEL') }}">{{ _T("Invoice") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\PdfModel::RECEIPT_MODEL') }}">{{ _T("Receipt") }}</option>
+                            <option value="{{ constant('Galette\\Entity\\PdfModel::ADHESION_FORM_MODEL') }}">{{ _T("Adhesion form") }}</option>
+                        </select>
+                    </div>
+{% endif %}
+            </div>
+            <div class="ui basic fitted segment actions">
+                <input type="hidden" name="store" value="true"/>
+                <input type="hidden" name="model_id" value="{{ model.id }}"/>
+{% if model.id <= 4 %}
+                <input type="hidden" name="model_type" value="{{ model.type }}"/>
+{% endif %}
+                <button type="submit" class="ui labeled icon primary button action">
+                    <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+                </button>
+                {% include 'components/forms/csrf.html.twig' %}
+            </div>
+        </form>
+        {% include 'modals/replacements_legend.html.twig' with {'legends': model.getLegend(), 'cur_ref': model.id} %}

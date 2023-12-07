@@ -1,0 +1,68 @@
+/*******************************
+        Galette Overrides
+*******************************/
+
+/*-------------
+     No JS
+--------------*/
+.nojs select[multiple].ui.dropdown {
+  height: 7rem;
+}
+
+/*------------------------------
+     Compact menu dropdowns
+-------------------------------*/
+.compact_menu .ui.dropdown .dropdown.icon {
+    margin: 0;
+    float: none;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*--------------------------
+     Language dropdown
+---------------------------*/
+.ui.language.dropdown.rtl .menu {
+    left: auto;
+    right: 0;
+}
+
+/*------------------------
+     Search dropdown
+-------------------------*/
+.ui.search.selection.paginated.dropdown {
+    > .ui.mini.button {
+        display: none;
+    }
+    > input.search {
+        width: 100%;
+    }
+    &.visible > .ui.mini.button {
+        display: block;
+        margin-right: 0;
+        //cursor: pointer;
+        font-size: .85714286em;
+        position: absolute;
+        top: .3rem;
+        opacity: .6;
+        z-index: 3;
+        &:hover {
+            opacity: 1;
+        }
+        &.next-results {
+            right: 2.5em;
+        }
+        &.prev-results {
+            right: 5em;
+        }
+    }
+    &.visible > .remove.icon {
+        right: 8.5em;
+    }
+}
+.ui.search.selection.paginated.dropdown,
+.ui.search.selection.paginated.dropdown > input.search {
+    padding: .67857143em 6.5em .67857143em 1em;
+}

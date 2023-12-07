@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,9 +28,8 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2021-10-26
  */
@@ -46,25 +45,23 @@ use Galette\GaletteTestCase;
  * @name      Social
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-10-26
  */
 class Social extends GaletteTestCase
 {
-    protected $seed = '25568744158';
+    protected int $seed = 25568744158;
 
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        parent::afterTestMethod($method);
+        parent::tearDown();
 
         $this->deleteSocials();
 
@@ -75,8 +72,6 @@ class Social extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
-
-        $this->cleanHistory();
     }
 
     /**
@@ -100,22 +95,22 @@ class Social extends GaletteTestCase
         $social = new \Galette\Entity\Social($this->zdb);
 
         //setters and getters
-        $this->object($social->setType('mytype'))->isInstanceOf('\Galette\Entity\Social');
-        $this->string($social->type)->isIdenticalTo('mytype');
+        $this->assertInstanceOf(\Galette\Entity\Social::class, $social->setType('mytype'));
+        $this->assertSame('mytype', $social->type);
 
-        $this->object($social->setUrl('myurl'))->isInstanceOf('\Galette\Entity\Social');
-        $this->string($social->url)->isIdenticalTo('myurl');
+        $this->assertInstanceOf(\Galette\Entity\Social::class, $social->setUrl('myurl'));
+        $this->assertSame('myurl', $social->url);
 
         //null as member id for Galette main preferences
-        $this->object($social->setLinkedMember(null))->isInstanceOf('\Galette\Entity\Social');
-        $this->variable($social->id_adh)->isNull();
-        $this->variable($social->member)->isNull();
+        $this->assertInstanceOf(\Galette\Entity\Social::class, $social->setLinkedMember(null));
+        $this->assertNull($social->id_adh);
+        $this->assertNull($social->member);
 
         $this->getMemberTwo();
-        $this->object($social->setLinkedMember($this->adh->id))->isInstanceOf(\Galette\Entity\Social::class);
-        $this->integer($social->id_adh)->isIdenticalTo($this->adh->id);
-        $this->object($social->member)->isInstanceOf(\Galette\Entity\Adherent::class);
-        $this->string($social->member->name)->isIdenticalTo($this->adh->name);
+        $this->assertInstanceOf(\Galette\Entity\Social::class, $social->setLinkedMember($this->adh->id));
+        $this->assertSame($this->adh->id, $social->id_adh);
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $social->member);
+        $this->assertSame($this->adh->name, $social->member->name);
     }
 
     /**
@@ -126,12 +121,12 @@ class Social extends GaletteTestCase
     public function testGetSystemTypes()
     {
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->array($social->getSystemTypes())->hasSize(9);
-        $this->array($social->getSystemTypes())->isIdenticalTo($social->getSystemTypes(true));
-        $this->array($social->getSystemTypes(false))->hasSize(9);
+        $this->assertCount(9, $social->getSystemTypes());
+        $this->assertSame($social->getSystemTypes(true), $social->getSystemTypes());
+        $this->assertCount(9, $social->getSystemTypes(false));
 
-        $this->string($social->getSystemType(\Galette\Entity\Social::TWITTER))->isIdenticalTo('Twitter');
-        $this->string($social->getSystemType(\Galette\Entity\Social::TWITTER, false))->isIdenticalTo('twitter');
+        $this->assertSame('Twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER));
+        $this->assertSame('twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER, false));
     }
 
     /**
@@ -141,58 +136,58 @@ class Social extends GaletteTestCase
      */
     public function testGetListForMember(): void
     {
-        $this->array(\Galette\Entity\Social::getListForMember(null))->isEmpty();
+        $this->assertEmpty(\Galette\Entity\Social::getListForMember(null));
 
         $this->getMemberTwo();
-        $this->array(\Galette\Entity\Social::getListForMember($this->adh->id))->isEmpty();
+        $this->assertEmpty(\Galette\Entity\Social::getListForMember($this->adh->id));
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('mastodon URL')
                 ->setLinkedMember($this->adh->id)
                 ->store()
-        )->isTrue();
+        );
 
         $socials = \Galette\Entity\Social::getListForMember($this->adh->id);
-        $this->array($socials)->HasSize(1);
+        $this->assertCount(1, $socials);
         $social = array_pop($socials);
-        $this->string($social->type)->isIdenticalTo(\Galette\Entity\Social::MASTODON);
-        $this->integer($social->id_adh)->isIdenticalTo($this->adh->id);
-        $this->string($social->url)->isIdenticalTo('mastodon URL');
+        $this->assertSame(\Galette\Entity\Social::MASTODON, $social->type);
+        $this->assertSame($this->adh->id, $social->id_adh);
+        $this->assertSame('mastodon URL', $social->url);
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Galette mastodon URL')
                 ->setLinkedMember(null)
                 ->store()
-        )->isTrue();
+        );
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType(\Galette\Entity\Social::JABBER)
                 ->setUrl('Galette jabber')
                 ->setLinkedMember(null)
                 ->store()
-        )->isTrue();
+        );
 
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->boolean(
+        $this->assertTrue(
             $social
                 ->setType(\Galette\Entity\Social::MASTODON)
                 ->setUrl('Another Galette mastodon URL')
                 ->setLinkedMember(null)
                 ->store()
-        )->isTrue();
+        );
 
-        $this->array(\Galette\Entity\Social::getListForMember(null))->hasSize(3);
-        $this->array(\Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER))->hasSize(1);
+        $this->assertCount(3, \Galette\Entity\Social::getListForMember(null));
+        $this->assertCount(1, \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::JABBER));
 
-        $this->boolean($social->remove())->isTrue();
-        $this->array(\Galette\Entity\Social::getListForMember(null))->hasSize(2);
+        $this->assertTrue($social->remove());
+        $this->assertCount(2, \Galette\Entity\Social::getListForMember(null));
     }
 }

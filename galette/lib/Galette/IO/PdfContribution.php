@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-07-07
@@ -36,6 +36,8 @@
 
 namespace Galette\IO;
 
+use Galette\Core\Db;
+use Galette\Core\Preferences;
 use Galette\Entity\Contribution;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
@@ -49,7 +51,7 @@ use Analog\Analog;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-07-07
@@ -58,7 +60,6 @@ use Analog\Analog;
 class PdfContribution extends Pdf
 {
     private $contrib;
-    private $pdf;
     private $model;
     private $path;
 
@@ -69,7 +70,7 @@ class PdfContribution extends Pdf
      * @param Db           $zdb     Database instance
      * @param Preferences  $prefs   Preferences instance
      */
-    public function __construct(Contribution $contrib, $zdb, $prefs)
+    public function __construct(Contribution $contrib, Db $zdb, $prefs)
     {
         $this->contrib = $contrib;
 
@@ -103,11 +104,11 @@ class PdfContribution extends Pdf
     /**
      * Download PDF from browser
      *
-     * @return void
+     * @return string
      */
-    public function download()
+    public function download(): string
     {
-        $this->Output($this->filename, 'D');
+        return $this->Output($this->filename, 'D');
     }
 
     /**

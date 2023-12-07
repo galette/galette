@@ -5,7 +5,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2018 The Galette Team
+ * Copyright © 2003-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,143 +28,164 @@
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2018 The Galette Team
+ * @copyright 2003-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Views\SmartyPlugins;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Routing\RouteContext;
+use Slim\Routing\RouteParser;
+use Slim\Views\Twig;
 
 $container = $app->getContainer();
 
-// -----------------------------------------------------------------------------
-// Error handling
-// -----------------------------------------------------------------------------
-
-$container->set('errorHandler', function ($c) {
-    return new Galette\Handlers\Error($c->get('view'), true);
-});
-
-$container->set('phpErrorHandler', function ($c) {
-    return new Galette\Handlers\PhpError($c->get('view'), true);
-});
-
-$container->set('notFoundHandler', function ($c) {
-    return new Galette\Handlers\NotFound($c->get('view'));
-});
+$routeParser = $app->getRouteCollector()->getRouteParser();
+$container->set(RouteParser::class, $routeParser);
 
 // -----------------------------------------------------------------------------
 // Service providers
 // -----------------------------------------------------------------------------
 
-// Register Smarty View helper
-//TODO: old way - to drop
 $container->set(
-    'view',
-    DI\get('Slim\Views\Smarty')
+    \Slim\Routing\RouteCollector::class,
+    function () use ($app) {
+        return $app->getRouteCollector();
+    }
 );
-$container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
-    $view = new \Slim\Views\Smarty(
-        rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
+
+// Register View helper
+$container->set('Slim\Views\Twig', function (ContainerInterface $c) {
+
+    $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
+    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
+        $dir = $module['root'] . '/templates/' . $c->get('preferences')->pref_theme;
+        if (!is_dir($dir)) {
+            continue;
+        }
+        $templates[$c->get('plugins')->getClassName($module_id)] = $dir;
+    }
+
+    $view = Twig::create(
+        $templates,
         [
-            'cacheDir' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
-            'compileDir' => rtrim(GALETTE_COMPILE_DIR, DIRECTORY_SEPARATOR),
-            'pluginsDir' => [
-                GALETTE_ROOT . 'includes/smarty_plugins'
-            ]
+            'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
+            'debug' => \Galette\Core\Galette::isDebugEnabled(),
+            'strict_variables' => \Galette\Core\Galette::isDebugEnabled()
         ]
     );
 
-    // Add Slim specific plugins
-    $basepath = str_replace(
-        'index.php',
-        '',
-        $c->get('request')->getUri()->getBasePath()
-    );
-    $smartyPlugins = new SmartyPlugins($c->get('router'), $basepath);
-    $view->registerPlugin('function', 'path_for', [$smartyPlugins, 'pathFor']);
-    $view->registerPlugin('function', 'base_url', [$smartyPlugins, 'baseUrl']);
-
-    $smarty = $view->getSmarty();
-    $smarty->inheritance_merge_compiled_includes = false;
-
-    $smarty->assign('flash', $c->get('flash'));
-
-    $smarty->assign('login', $c->get('login'));
-    $smarty->assign('logo', $c->get('logo'));
-    $smarty->assign('tpl', $smarty);
-    $smarty->assign('headers', $c->get('plugins')->getTplHeaders());
-    $smarty->assign('plugin_actions', $c->get('plugins')->getTplAdhActions());
-    $smarty->assign(
-        'plugin_batch_actions',
-        $c->get('plugins')->getTplAdhBatchActions()
-    );
-    $smarty->assign(
-        'plugin_detailled_actions',
-        $c->get('plugins')->getTplAdhDetailledActions()
-    );
-    $smarty->assign('scripts_dir', 'js/');
-    $smarty->assign('jquery_dir', 'js/jquery/');
-    $smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
-    $smarty->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
-    $smarty->assign('galette_base_path', './');
-    $smarty->assign('GALETTE_VERSION', GALETTE_VERSION);
-    $smarty->assign('GALETTE_MODE', GALETTE_MODE);
-    $smarty->assign('GALETTE_DISPLAY_ERRORS', GALETTE_DISPLAY_ERRORS);
-    $smarty->assign('_CURRENT_THEME_PATH', _CURRENT_THEME_PATH);
-
-    /*if ($this->parserConfigDir) {
-        $instance->setConfigDir($this->parserConfigDir);
-    }*/
-
-    $smarty->assign('template_subdir', GALETTE_THEME);
-    foreach ($c->get('plugins')->getTplAssignments() as $k => $v) {
-        $smarty->assign($k, $v);
+    //Twig extensions
+    $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
+    if (\Galette\Core\Galette::isDebugEnabled()) {
+        $view->addExtension(new \Twig\Extension\DebugExtension());
     }
-    /** galette_lang should be removed and languages used instead */
-    $smarty->assign('galette_lang', $c->get('i18n')->getAbbrev());
-    $smarty->assign('galette_lang_name', $c->get('i18n')->getName());
-    $smarty->assign('languages', $c->get('i18n')->getList());
-    $smarty->assign('i18n', $c->get('i18n'));
-    $smarty->assign('plugins', $c->get('plugins'));
-    $smarty->assign('preferences', $c->get('preferences'));
-    $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);
-    $smarty->assign('pref_theme', $c->get('preferences')->pref_theme);
-    $smarty->assign('pref_statut', $c->get('preferences')->pref_statut);
-    $smarty->assign(
-        'pref_editor_enabled',
-        $c->get('preferences')->pref_editor_enabled
+    //End Twig extensions
+
+    //Twig functions
+    $function = new \Twig\TwigFunction('__', function ($string, $domain = 'galette') {
+        return __($string, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_T', function ($string, $domain = 'galette') {
+        return _T($string, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_Tn', function ($singular, $plural, $count, $domain = 'galette') {
+        return _Tn($singular, $plural, $count, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_Tx', function ($context, $string, $domain = 'galette') {
+        return _Tx($context, $string, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('_Tnx', function ($context, $singular, $plural, $count, $domain = 'galette') {
+        return _Tnx($context, $singular, $plural, $count, $domain);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('file_exists', function ($file) {
+        return file_exists($file);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('get_class', function ($object) {
+        return get_class($object);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
+        extract($params[0]);
+        return Galette\Entity\Adherent::getSName($c->get('zdb'), $id);
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $function = new \Twig\TwigFunction('statusLabel', function (...$params) {
+        extract($params);
+        global $statuses_list;
+        return $statuses_list[$id];
+    });
+    $view->getEnvironment()->addFunction($function);
+
+    $view->getEnvironment()->addFunction(
+        new \Twig\TwigFunction('callstatic', function ($class, $method, ...$args) {
+            if (!class_exists($class)) {
+                throw new \Exception("Cannot call static method $method on Class $class: Invalid Class");
+            }
+
+            if (!method_exists($class, $method)) {
+                throw new \Exception("Cannot call static method $method on Class $class: Invalid method");
+            }
+
+            return forward_static_call_array([$class, $method], $args);
+        })
     );
-    $smarty->assign('pref_mail_method', $c->get('preferences')->pref_mail_method);
-    $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
-    $smarty->assign('contentcls', null);
-    $smarty->assign('additionnal_html_class', null);
-    $smarty->assign('error_detected', null);
-    $smarty->assign('warning_detected', null);
-    $smarty->assign('success_detected', null);
-    $smarty->assign('require_tree', null);
-    $smarty->assign('html_editor', null);
-    $smarty->assign('require_charts', null);
-    $smarty->assign('require_mass', null);
-    $smarty->assign('autocomplete', null);
+    //End Twig functions
+
+    //Twig globals
+    $view->getEnvironment()->addGlobal('flash', $c->get('flash'));
+    $view->getEnvironment()->addGlobal('login', $c->get('login'));
+    $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
+
+    $view->getEnvironment()->addGlobal('plugin_headers', $c->get('plugins')->getTplHeaders());
+
+    // galette_lang should be removed and languages used instead
+    $view->getEnvironment()->addGlobal('galette_lang', $c->get('i18n')->getAbbrev());
+    $view->getEnvironment()->addGlobal('galette_lang_name', $c->get('i18n')->getName());
+    $view->getEnvironment()->addGlobal('languages', $c->get('i18n')->getList());
+    $view->getEnvironment()->addGlobal('i18n', $c->get('i18n'));
+    $view->getEnvironment()->addGlobal('plugins', $c->get('plugins'));
+    $view->getEnvironment()->addGlobal('preferences', $c->get('preferences'));
+    $view->getEnvironment()->addGlobal('existing_mailing', $c->get('session')->mailing !== null);
+    $view->getEnvironment()->addGlobal('html_editor', false);
+    $view->getEnvironment()->addGlobal('require_charts', false);
+    $view->getEnvironment()->addGlobal('require_mass', false);
+    $view->getEnvironment()->addGlobal('autocomplete', false);
     if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
-        $now = new \DateTime();
-        $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
-        if ($now > $sent && !$_COOKIE['renew_telemetry']) {
-            $smarty->assign('renew_telemetry', true);
+        $telemetry = new \Galette\Util\Telemetry(
+            $c->get('zdb'),
+            $c->get('preferences'),
+            $c->get('plugins')
+        );
+        if ($telemetry->shouldRenew()) {
+            $view->getEnvironment()->addGlobal('renew_telemetry', true);
         }
     }
 
-    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
-        $smarty->addTemplateDir(
-            $module['root'] . '/templates/' . $c->get('preferences')->pref_theme,
-            $module['route']
-        );
-    }
+    $view->getEnvironment()->addGlobal('cur_route', null);
+    $view->getEnvironment()->addGlobal('cur_subroute', null);
+    $view->getEnvironment()->addGlobal('navigate', null);
+
+    //TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+    $view->getEnvironment()->addGlobal('fui_dateformatter', __("YYYY-MM-DD"));
+    //End Twig globals
+
     return $view;
 });
 
@@ -241,11 +262,6 @@ $container->set('Galette\Core\Login', function (ContainerInterface $c) {
     return $login;
 });
 
-/*$container->set('session', function (ContainerInterface $c) {
-    $session = new \RKA\Session();
-    return $session;
-});*/
-
 //TODO: old way - to drop
 $container->set(
     'logo',
@@ -268,7 +284,7 @@ $container->set(
 $container->set('Galette\Core\History', \DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
-    include_once GALETTE_ROOT . 'includes/core_acls.php';
+    include GALETTE_ROOT . 'includes/core_acls.php';
     $acls = $core_acls;
 
     foreach ($c->get('plugins')->getModules() as $plugin) {
@@ -293,7 +309,7 @@ $container->set('texts_fields', function (ContainerInterface $c) {
 });
 
 $container->set('members_fields', function (ContainerInterface $c) {
-    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+    include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
 });
 
@@ -308,7 +324,7 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
 });
 
 $container->set('members_fields_cats', function (ContainerInterface $c) {
-    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+    include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
 });
 
@@ -355,31 +371,6 @@ $container->set('Galette\Entity\ListsConfig', function (ContainerInterface $c) {
     return $fc;
 });
 
-$container->set('cache', function (ContainerInterface $c) {
-    $adapter = null;
-    if (function_exists('wincache_ucache_add')) {
-        //since APCu is not known to work on windows
-        $adapter = 'wincache';
-    } elseif (function_exists('apcu_fetch')) {
-        $adapter = 'apcu';
-    }
-    if ($adapter !== null) {
-        $uuid = $c->get('galette.mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
-        $cache = Laminas\Cache\StorageFactory::factory([
-            'adapter'   => $adapter,
-            'options'   => [
-                'namespace' => str_replace(
-                    ['%version', '%uuid'],
-                    [GALETTE_VERSION, $uuid],
-                    'galette_%version_%uuid'
-                )
-            ]
-        ]);
-        return $cache;
-    }
-    return null;
-});
-
 //TODO: old way - to drop
 $container->set(
     'translator',
@@ -408,26 +399,19 @@ $container->set('Galette\Core\Translator', function (ContainerInterface $c) {
     }
 
     $translator->setLocale($c->get('i18n')->getLongID());
-    if (
-        !$c->has('galette.mode')
-        || $c->get('galette.mode') !== 'INSTALL'
-        && $c->get('galette.mode') !== 'NEED_UPDATE'
-    ) {
-        $translator->setCache($c->get('cache'));
-    }
     return $translator;
 });
 
 // Add Event manager to dependency.
 $container->set(
     'event_manager',
-    DI\create('Slim\Event\SlimEventManager')
+    DI\create(\League\Event\EventDispatcher::class)
         ->method(
-            'useListenerProvider',
+            'subscribeListenersFrom',
             DI\get('Galette\Events\MemberListener')
         )
         ->method(
-            'useListenerProvider',
+            'subscribeListenersFrom',
             DI\get('Galette\Events\ContribListener')
         )
 );
@@ -441,9 +425,11 @@ $container->set(
 
 $container->set(
     'csrf',
-    function (ContainerInterface $c) {
+    function (ContainerInterface $c) use ($app) {
+        $responseFactory = $app->getResponseFactory();
         $storage = null;
         $guard = new \Slim\Csrf\Guard(
+            $responseFactory,
             'csrf',
             $storage,
             null,
@@ -453,11 +439,15 @@ $container->set(
         );
 
         $exclusions = $c->get('CsrfExclusions');
-        $guard->setFailureCallable(function (ServerRequestInterface $request, ResponseInterface $response, $next) use ($exclusions) {
+        $guard->setFailureHandler(function (ServerRequestInterface $request, RequestHandler $handler) use ($exclusions) {
+            $response = $handler->handle($request);
+            $routeContext = RouteContext::fromRequest($request);
+            $route = $routeContext->getRoute();
+
             foreach ($exclusions as $exclusion) {
-                if (preg_match($exclusion, $request->getAttribute('route')->getname())) {
+                if (preg_match($exclusion, $route->getname())) {
                     //route is excluded form CSRF checks
-                    return $next($request, $response);
+                    return $response;
                 }
             }
             Analog::log(
@@ -485,7 +475,7 @@ if (
     $hist = $container->get('history');
     $l10n = $container->get('l10n');
     $emitter = $container->get('event_manager');
-    $router = $container->get('router');
+    $routeparser = $container->get(RouteParser::class);
 }
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');

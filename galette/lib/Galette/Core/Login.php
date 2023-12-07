@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2020 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2020 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use ArrayObject;
 use Throwable;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
@@ -51,7 +52,7 @@ use RKA\Session;
  * @name      Login
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -210,16 +211,15 @@ class Login extends Authentication
     /**
      * Populate object after successful login
      *
-     * @param \ArrayObject $row User information
+     * @param ArrayObject $row User information
      *
      * @return void
      */
-    private function logUser(\ArrayObject $row)
+    private function logUser(ArrayObject $row)
     {
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
         $this->id = $row->id_adh;
         $this->login = $row->login_adh;
-        $this->passe = $row->mdp_adh;
         $this->admin = $row->bool_admin_adh;
         $this->name = $row->nom_adh;
         $this->surname = $row->prenom_adh;
@@ -264,7 +264,7 @@ class Login extends Authentication
      *
      * @param int $id Member ID
      *
-     * @return boolean
+     * @return bool
      */
     public function impersonate($id)
     {
@@ -309,7 +309,7 @@ class Login extends Authentication
      *
      * @param string $user the username
      *
-     * @return true if the username already exists, false otherwise
+     * @return bool
      */
     public function loginExists($user)
     {
@@ -322,7 +322,7 @@ class Login extends Authentication
                 /* We got results, user already exists */
                 return true;
             } else {
-                /* No results, user does not exists yet :) */
+                /* No results, user does not exist yet :) */
                 return false;
             }
         } catch (Throwable $e) {
@@ -338,7 +338,7 @@ class Login extends Authentication
     /**
      * Is impersonated
      *
-     * @return boolean
+     * @return bool
      */
     public function isImpersonated()
     {

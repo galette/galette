@@ -1,0 +1,830 @@
+{% extends 'elements/list.html.twig' %}
+
+{% import "macros.twig" as macros %}
+
+{% set basic_table = true %}
+
+{% set nb = nb_members %}
+
+{% set form = {
+    'order': {
+        'name': 'members'
+    },
+    'route': {
+        'name': 'batch-memberslist'
+    }
+} %}
+
+{% macro draw_actions(member, login) %}
+                    <td class="center actions_row">
+    {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
+    {% for action in actions %}
+        {{ macros.drawListAction(action.label, action.route, action.icon, action.extra_class ?? null) }}
+    {% endfor %}
+                    </td>
+{% endmacro %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filter-memberslist'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline_actions %}
+    {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_member) %}
+        <a
+                class="ui tiny labeled icon button"
+                href="{{ url_for("addMember") }}"
+        >
+            <i class="plus circle green icon" aria-hidden="true"></i>
+            {{ _T("Add a member") }}
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [] %}
+    {% for column in galette_list %}
+        {% if column.field_id == 'id_adh' %}
+            {% if preferences.pref_show_id %}
+                {% set columns = columns|merge([
+                    {
+                        label: _T('Mbr id'),
+                        order: constant("Galette\\Repository\\Members::ORDERBY_ID")
+                    }
+                ]) %}
+            {% else %}
+                {% set columns = columns|merge([
+                    {label: '#'}
+                ]) %}
+            {% endif %}
+        {% else %}
+            {% set columns = columns|merge([
+                {
+                    label: column.label,
+                    order: column.field_id
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <form action="{{ url_for('filter-memberslist') }}" method="post" id="members_list_search_filter" class="ui form filters">
+        <div class="ui secondary yellow segment">
+{% if adv_filters is not defined or not adv_filters %}
+            <div class="five fields">
+                <div class="field">
+                    <label for="filter_str">{{ _T('Search:') }}</label>
+                    <input type="text" name="filter_str" id="filter_str" value="{{ filters.filter_str }}" type="search" placeholder="{{ _T('Enter a value') }}"/>
+                </div>
+                <div class="field">
+                    <label for="field_filter">{{ _T('in:') }}</label>
+                    <select name="field_filter" id="field_filter" class="ui search dropdown nochosen">
+    {% for key, value in field_filter_options %}
+                        <option value="{{ key }}"{% if key == filters.field_filter %} selected="selected"{% endif %}>{{ value }}</option>
+    {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="filter_str">{{ _T('among:') }}</label>
+                    <select name="membership_filter" class="ui search dropdown nochosen">
+                        {% for key, value in membership_filter_options %}
+                            <option value="{{ key }}"{% if key == filters.membership_filter %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flexend field">
+                    <label for="filter_account" class="visually-hidden">{{ _T('among:') }}</label>
+                    <select name="filter_account" class="ui search dropdown nochosen">
+                        {% for key, value in filter_accounts_options %}
+                            <option value="{{ key }}"{% if key == filters.filter_account %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flexend field">
+                    <label for="group_filter" class="visually-hidden">{{ _T('among:') }}</label>
+                    <select name="group_filter" class="ui search dropdown nochosen">
+                        <option value="0">{{ _T('Select a group') }}</option>
+    {% for group in filter_groups_options %}
+                        <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getIndentName()|raw }}</option>
+    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <div class="inline fields">
+                        <label for="email_filter">{{ _T('Members that have an email address:') }}</label>
+                        <div class="field inline">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_dc_email" value="{{ constant('Galette\\Repository\\Members::FILTER_DC_EMAIL') }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_DC_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_dc_email">{{ _T("Don't care") }}</label>
+                            </div>
+                        </div>
+                        <div class="field inline">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_with_email" value="{{ constant('Galette\\Repository\\Members::FILTER_W_EMAIL') }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_W_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_with_email">{{ _T('With') }}</label>
+                            </div>
+                        </div>
+                        <div class="field inline">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_without_email" value="{{ constant('Galette\\Repository\\Members::FILTER_WO_EMAIL') }}"{% if filters.email_filter == constant('Galette\\Repository\\Members::FILTER_WO_EMAIL') %} checked="checked"{% endif %}>
+                                <label for="filter_without_email">{{ _T('Without') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui right aligned basic fitted segment field">
+                    <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                        <i class="search icon" aria-hidden="true"></i>
+                        {{ _T('Filter') }}
+                    </button>
+                    <button type="submit"  class="tooltip action ui labeled icon button" title="{{ _T('Save selected criteria') }}" name="savesearch" id="savesearch">
+                        <i class="save blue icon" aria-hidden="true"></i>
+                        {{ _T('Save') }}
+                    </button>
+                    <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        {{ _T('Clear filter') }}
+                    </button>
+                </div>
+            </div>
+{% else %}
+            <div class="field">
+                <span class="ui primary ribbon label">{{ _T('Advanced search mode') }}</span>
+                <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Save current advanced search criteria') }}" name="savesearch" id="savesearch">
+                    <i class="save icon" aria-hidden="true"></i>
+                    {{ _T('Save') }}
+                </button>
+                <button type="submit" class="tooltip action ui labeled icon button" title="{{ _T('Change search criteria') }}" name="adv_criteria">
+                    <i class="edit blue icon" aria-hidden="true"></i>
+                    {{ _T('Change criteria') }}
+                </button>
+                <input type="hidden" name="advanced_search" value="1" class="ui button"/>
+                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T('Clear filter') }}
+                </button>
+                <div class="ui basic fluid accordion">
+                    <div class="title">
+                        <i class="dropdown icon" aria-hidden="true"></i>
+                        {{ _T('Show/hide query') }}
+                    </div>
+                    <div class="content">
+                        <div id="sql_qry" class="ui grey inverted segment">{{ filters.query }}</div>
+                    </div>
+                </div>
+            </div>
+{% endif %}
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+{% endblock %}
+
+{% block legend %}
+    {% if nb_members != 0 %}
+        <div id="legende" title="{{ _T('Legend') }}" class="ui modal">
+            <div class="header">{{ _T('Legend') }}</div>
+            <div class="content">
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th class="back">{{ _T('Name') }}</th>
+                            <td class="back">{{ _T('Active account') }}</td>
+                            <th class="inactive-account back">{{ _T('Name') }}</th>
+                            <td class="back">{{ _T('Inactive account') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="cotis-ok color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Membership in order') }}</td>
+                            <th class="cotis-soon color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Membership will expire soon (&lt;30d)') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="cotis-never color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Never contributed') }}</td>
+                            <th class="cotis-late color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Lateness in fee') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th class="" colspan="4">{{ _T('Actions') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th class="action">
+                                <i class="ui user edit blue icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T('Modification') }}</td>
+                            <th>
+                                <i class="ui receipt green icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T('Contributions') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="delete">
+                                <i class="ui user times red icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T('Deletion') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th colspan="4">{{ _T('User status/interactions') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Send an email') }}</td>
+                            <th><i class="ui building icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Is a company') }}</td>
+                        </tr>
+
+                        <tr>
+                            <th><i class="ui male icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Is a man') }}</td>
+                            <th><i class="ui female icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Is a woman') }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="ui user shield red icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Admin') }}</td>
+                            <th><i class="ui user tie orange icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Staff member') }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="ui users cog orange icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Group manager') }}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T('Close') }}</div></div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+{% for ordre, member in members %}
+                    <tr class="{{ member.getRowClass() }}">
+    {% for column in galette_list %}
+        {% if column.field_id == 'id_adh' %}
+                        <td class="right" data-scope="id">
+            {% if preferences.pref_show_id %}
+                        {{ member.id }}
+            {% else %}
+                        {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+            {% endif %}
+                        </td>
+        {% elseif column.field_id == 'list_adh_name' %}
+                        <td class="username_row" data-scope="row">
+                            <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
+            {% if member.isCompany() %}
+                            <span>
+                                <i class="ui building outline icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Is a company') }}</span>
+                            </span>
+            {%  elseif member.isMan() %}
+                            <span>
+                                <i class="ui male icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Is a man') }}</span>
+                            </span>
+            {%  elseif member.isWoman() %}
+                            <span>
+                                <i class="ui female icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Is a woman') }}</span>
+                            </span>
+            {% else %}
+                            <i class="ui icon" aria-hidden="true"></i>
+            {% endif %}
+            {% if member.email != '' %}
+                            <a href="mailto:{{ member.email }}">
+                                <i class="ui envelope outline teal icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Mail') }}</span>
+                            </a>
+
+            {% else %}
+                            <i class="ui icon" aria-hidden="true"></i>
+            {% endif %}
+            {% if member.isAdmin() %}
+                            <span>
+                                <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Admin') }}</span>
+                            </span>
+            {% elseif member.isStaff() %}
+                            <span>
+                                <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Staff member') }}</span>
+                            </span>
+            {% elseif member.getManagedGroups() %}
+                            <span>
+                                <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T('Group manager') }}</span>
+                            </span>
+            {% else %}
+                            <i class="ui icon" aria-hidden="true"></i>
+            {% endif %}
+                        {% set mid = member.id %}
+                            <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
+                        </td>
+        {% else %}
+            {% set propname = column.propname %}
+            {% set value = null %}
+
+            {% if column.field_id == 'nom_adh' %}
+                {% set value = member.sfullname %}
+            {% elseif column.field_id == 'pseudo_adh' %}
+                {% set value = attribute(member, propname) %}
+            {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
+            {% elseif column.field_id == 'id_statut' %}
+                {% set value = member.sstatus %}
+            {% elseif column.field_id == 'titre_adh' %}
+                {% if member.title is iterable %}
+                    {% set value = member.title.long %}
+                {% endif %}
+            {% elseif column.field_id == 'pref_lang' %}
+                {% set value = i18n.getNameFromId(member.language) %}
+            {% elseif column.field_id == 'adresse_adh' %}
+                {% set value = member.saddress|e('html')|nl2br %}
+                {% set escaped = true %}
+            {% elseif column.field_id == 'bool_display_info' %}
+                {% set value = member.sappears_in_list %}
+            {% elseif column.field_id == 'activite_adh' %}
+                {% set value = member.sactive %}
+            {% elseif column.field_id == 'id_statut' %}
+                {% set value = member.sstatus %}
+            {% elseif column.field_id == 'bool_admin_adh' %}
+                {% set value = member.sadmin %}
+            {% elseif column.field_id == 'bool_exempt_adh' %}
+                {% set value = member.sdue_free %}
+            {% elseif column.field_id == 'sexe_adh' %}
+                {% set value = member.sgender %}
+            {% endif %}
+
+            {# If value has not been set, take the generic value #}
+            {% if not value %}
+                {% set propvalue = attribute(member, propname) %}
+                {% if propvalue %}
+                    {% set value = propvalue|e('html') %}
+                {% else %}
+                    {% set value = propvalue %}
+                {% endif %}
+            {% elseif escaped is not defined %}
+                {% set value = value|e('html') %}
+            {% endif %}
+
+                        <td data-col-label="{{ column.label }}">
+            {# Display column.
+                A check is done here to adapt display, this is may not the best way to go
+                but for now, that works as expected.
+            #}
+            {% if value %}
+                {% if column.field_id == 'email_adh' %}
+                                <a href="mailto:{{ value }}">{{ value }}</a>
+                {% elseif column.field_id == 'tel_adh' or column.field_id == 'gsm_adh' %}
+                                <a href="tel:{{ value }}">{{ value }}</a>
+                {% elseif column.field_id == 'parent_id' %}
+                                <a href="{{ url_for("member", {"id": member.parent}) }}">{{ memberName({"id": member.parent}) }}</a>
+                {% elseif column.field_id == 'ddn_adh' %}
+                                {{ value }} {{ member.getAge() }}
+                {% else %}
+                                {{ value|raw }}
+                {% endif %}
+            {% endif %}
+                        </td>
+        {% endif %}
+    {% endfor %}
+                    {{ _self.draw_actions(member, login) }}
+                    </tr>
+{% else %}
+                    <tr><td colspan="{{ galette_list|length + 1 }}" class="emptylist">{{ _T('No member has been found') }}</td></tr>
+{% endfor %}
+{% endblock %}
+
+{% if nb_members != 0 and (login.isGroupManager() and (preferences.pref_bool_groupsmanagers_exports or preferences.pref_bool_groupsmanagers_mailings) or login.isAdmin() or login.isStaff()) %}
+    {% set batch = {
+        'route': {
+            'name': 'batch-memberslist'
+        },
+        'modal': {
+            'title': _T("No member selected"),
+            'content': _T("Please make sure to select at least one member from the list to perform this action.")
+        }
+    } %}
+    {% set batch_actions = callstatic('\\Galette\\Core\\Galette', 'getBatchActions') %}
+{% endif %}
+
+{% block batch_selection %}
+                    else if (value == 'sendmail') {
+    {% if existing_mailing == true %}
+                        _sendmail(true);
+    {% else %}
+                        _sendmail();
+    {% endif %}
+                    }
+                    else if (value == 'attendance_sheet') {
+                        _attendance_sheet_details();
+                    }
+
+                    else if (value == 'masscontributions') {
+                        _masscontributions();
+                    }
+
+                    else if (value == 'masschange') {
+                        _masschange();
+                    }
+{% endblock %}
+
+{% block javascripts %}
+    {% set batch_selection = ['masschange', 'masscontributions', 'sendmail', 'attendance_sheet_details'] %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
+        $(function(){
+            $('#savesearch').on('click', function(e) {
+                e.preventDefault();
+
+                $('body').modal({
+                    title: '{{ _T("Search title")|e('js') }}',
+                    class: 'tiny',
+                    content: '<div class="ui input"><input type="text" name="search_title" id="search_title"/></div>',
+                    onApprove: function() {
+                        var _form = $('#members_list_search_filter');
+                        var _data = _form.serialize();
+                        _data = _data + "&search_title=" + $('#search_title').val();
+                        $.ajax({
+                            url: '{{ url_for('saveSearch') }}',
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {% include "elements/js/loader.js.twig" with {
+                                loader: "action",
+                                selector: ".loader_selector"
+                            } %},
+                            success: function(res) {
+                                $.ajax({
+                                    url: '{{ url_for('ajaxMessages') }}',
+                                    method: "GET",
+                                    success: function (message) {
+                                        $('#asso_name').after(message);
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    actions: [{
+                        text    : '{{ _T("Save")|e('js') }}',
+                        icon    : 'save',
+                        class   : 'icon labeled primary approve'
+                    }, {
+                        text    : '{{ _T("Cancel")|e('js') }}',
+                        icon    : 'times',
+                        class   : 'icon labeled cancel'
+                    }]
+                }).modal('show');
+            });
+
+        });
+{% if nb_members != 0 %}
+        var _sendmail = function(existing){
+            var _form = $('#listform');
+                _form.append($('<input type="hidden" name="sendmail" value="true"/>'));
+                _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
+                _form.append($('<input type="hidden" name="mailing" value="true"/>'));
+            var _redirect = '{{ url_for('mailing') }}';
+
+            if (existing) {
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Existing mailing")|e("js"),
+                    modal_content_twig: _T("A mailing already exists. Do you want to create a new one or resume the existing?")|e("js"),
+                    modal_class: "tiny",
+                    modal_onapprove: "_form.submit();",
+                    modal_approve_text: _T("New")|e("js"),
+                    modal_approve_icon: "plus",
+                    modal_approve_color: "green",
+                    modal_additional_button: {
+                        text: _T("Resume")|e("js"),
+                        icon: "edit",
+                        class: "blue",
+                        click: "function() { location.href = _redirect; }"
+                    }
+                } %}
+            } else {
+                _form.submit();
+            }
+        }
+        var _attendance_sheet_details = function(){
+            $.ajax({
+                url: '{{ url_for('attendance_sheet_details') }}',
+                type: "POST",
+                data: {
+                    ajax: true,
+                    selection: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                        return $(this).val();
+                    }).get()
+                },
+                dataType: 'html',
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
+                success: function(res){
+                    var _res = $(res);
+
+                    $('body').append(_res);
+
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_selector: "#attendance_sheet_details",
+                        modal_without_title: true,
+                        modal_class: "tiny",
+                        modal_onshow: "_batchAjaxMapper();",
+                        modal_onapprove: "$('#attendance_sheet_details form').submit();"
+                    } %}
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying attendance sheet details interface :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+        }
+        var _masscontributions = function(){
+            $.ajax({
+                url: '{{ url_for('batch-memberslist') }}',
+                type: "POST",
+                data: {
+                    ajax: true,
+                    masscontributions: true,
+                    entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                        return $(this).val();
+                    }).get()
+                },
+                datatype: 'html',
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
+                success: function(res){
+                    var _res = $(res);
+
+                    $('body').append(_res);
+
+                    _res.find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {% include "elements/js/loader.js.twig" with {
+                                loader: "action",
+                                selector: ".loader_selector"
+                            } %},
+                            success: function(data, status, xhr) {
+                                var _res = $(data);
+
+                                $('#mass_contributions').remove();
+                                $('body').append(_res);
+
+                                _res.find('form').on('submit', function(e) {
+                                    e.preventDefault();
+                                    var _form = $(this);
+                                    var _data = _form.serialize();
+                                    $.ajax({
+                                        url: _form.attr('action'),
+                                        type: "POST",
+                                        data: _data,
+                                        datatype: 'json',
+                                        {% include "elements/js/loader.js.twig" with {
+                                            loader: "action",
+                                            selector: ".loader_selector"
+                                        } %},
+                                        success: function(res) {
+                                            window.location.href = _form.find('input[name=redirect_uri]').val();
+                                        },
+                                        error: function() {
+                                            $('#mass_contributions').modal('hide dimmer').remove();
+                                            {% include "elements/js/modal.js.twig" with {
+                                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                                modal_without_content: true,
+                                                modal_class: "mini",
+                                                modal_deny_only: true,
+                                                modal_cancel_text: _T("Close")|e("js"),
+                                                modal_classname: "redalert",
+                                            } %}
+                                        }
+                                    });
+                                });
+
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_selector: "#mass_contributions",
+                                    modal_without_title: true,
+                                    modal_content_class: "scrolling",
+                                    modal_onshow: "_batchAjaxMapper();_formValidationInModal('#mass_contributions');",
+                                    modal_onapprove: "var submitted = _formSubmitInModal('#mass_contributions');if (!submitted){return false;}"
+                                } %}
+                            },
+                            error: function() {
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
+                            }
+                        });
+                    });
+
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_selector: "#mass_contributions",
+                        modal_without_title: true,
+                        modal_class: "mini",
+                        modal_onshow: "_batchAjaxMapper();",
+                        modal_onapprove: "$('#mass_contributions form').submit();"
+                    } %}
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+        }
+        var _masschange = function(){
+            $.ajax({
+                url: '{{ url_for('batch-memberslist') }}',
+                type: "POST",
+                data: {
+                    ajax: true,
+                    masschange: true,
+                    entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                        return $(this).val();
+                    }).get()
+                },
+                datatype: 'json',
+                {% include "elements/js/loader.js.twig" with {
+                    loader: "action",
+                    selector: ".loader_selector"
+                } %},
+                success: function(res){
+                    var _res = $(res);
+
+                    $('body').append(_res);
+
+                    _res.find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {% include "elements/js/loader.js.twig" with {
+                                loader: "action",
+                                selector: ".loader_selector"
+                            } %},
+                            success: function(data, status, xhr) {
+                                var _res = $(data);
+
+                                $('#mass_change').remove();
+                                $('body').append(_res);
+
+                                _res.find('form').on('submit', function(e) {
+                                    e.preventDefault();
+                                    var _form = $(this);
+                                    var _data = _form.serialize();
+                                    $.ajax({
+                                        url: _form.attr('action'),
+                                        type: "POST",
+                                        data: _data,
+                                        datatype: 'json',
+                                        {% include "elements/js/loader.js.twig" with {
+                                            loader: "action",
+                                            selector: ".loader_selector"
+                                        } %},
+                                        success: function(res) {
+                                            window.location.href = _form.find('input[name=redirect_uri]').val();
+                                        },
+                                        error: function() {
+                                            {% include "elements/js/modal.js.twig" with {
+                                                modal_title_twig: _T("An error occurred :(")|e("js"),
+                                                modal_without_content: true,
+                                                modal_class: "mini",
+                                                modal_deny_only: true,
+                                                modal_cancel_text: _T("Close")|e("js"),
+                                                modal_classname: "redalert",
+                                            } %}
+                                        }
+                                    });
+                                });
+
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_selector: "#mass_change",
+                                    modal_without_title: true,
+                                    modal_onapprove: "$('#mass_change form').submit();"
+                                } %}
+                            },
+                            error: function() {
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
+                            }
+                        });
+                    });
+
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_selector: "#mass_change",
+                        modal_without_title: true,
+                        modal_content_class: "scrolling",
+                        modal_onshow: "_massCheckboxes('#mass_change');_batchAjaxMapper();",
+                        modal_onapprove: "$('#mass_change form').submit();"
+                    } %}
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+        }
+        var _batchAjaxMapper = function(){
+            $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
+            $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
+            $('.modal-form a[title], .modal-form .tooltip').popup({
+                variation: 'inverted',
+                inline: false,
+                addTouchEvents: false,
+            });
+            {% include 'elements/js/calendar.js.twig' with {
+                selector: ".modal-form [id$='rangestart'], .modal-form [id$='rangeend']"
+            } %}
+        }
+        var _formValidationInModal = function(modal){
+            $(modal +' form').form({
+                inline: true,
+                autoCheckRequired: true,
+                prompt: {
+                    empty: '{{ _T("Required field!")|e("js") }}'
+                }
+            })
+        }
+        var _formSubmitInModal = function(modal){
+            var validated = $(modal +' form').form('is valid');
+            if(validated) {
+                $(modal +' form').submit();
+                $(modal).modal('hide dimmer').remove();
+            } else {
+                $(modal +' form').form('validate form');
+                return false;
+            }
+        }
+{% endif %}
+    </script>
+{% endblock %}

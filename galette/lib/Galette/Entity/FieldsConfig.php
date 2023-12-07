@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-26
@@ -53,7 +53,7 @@ use Galette\Core\Authentication;
  * @name      FieldsConfig
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-26
@@ -175,6 +175,7 @@ class FieldsConfig
             $this->core_db_fields = [];
 
             foreach ($results as $k) {
+                /** @var ArrayObject $k */
                 $field = $this->buildField($k);
                 $this->core_db_fields[$k->field_id] = $field;
             }
@@ -237,7 +238,6 @@ class FieldsConfig
      */
     protected function buildLists()
     {
-
         $this->categorized_fields = [];
         $this->all_required = [];
         $this->all_visibles = [];
@@ -402,9 +402,9 @@ class FieldsConfig
             );
             $this->zdb->execute($delete);
             //take care of fields categories, for db relations
-            $categories->installInit($this->zdb);
+            $categories->installInit();
 
-            $fields = array_keys($this->defaults);
+            $params = [];
             foreach ($fields as $f) {
                 //build default config for each field
                 $params[] = array(
@@ -699,7 +699,7 @@ class FieldsConfig
      *
      * @param string $field The requested field
      *
-     * @return boolean
+     * @return integer
      */
     public function getVisibility($field)
     {
@@ -757,7 +757,6 @@ class FieldsConfig
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
-            $params = null;
             foreach ($this->categorized_fields as $cat) {
                 foreach ($cat as $pos => $field) {
                     if (in_array($field['field_id'], $this->non_required)) {
@@ -817,8 +816,6 @@ class FieldsConfig
      */
     public function migrateRequired()
     {
-        $old_required = null;
-
         try {
             $select = $this->zdb->select('required');
             $select->from(PREFIX_DB . 'required');
@@ -918,7 +915,7 @@ class FieldsConfig
                 $required = $this->zdb->isPostgres() ? 'false' : 0;
             }
 
-            $list_visible = $f['list_visible'] ?? false;
+            $list_visible = $d['list_visible'] ?? false;
             if ($list_visible === false) {
                 $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
             }

@@ -1,0 +1,54 @@
+{% if selector is not defined %}
+    {% set selector = "[id$='rangestart'], [id$='rangeend']" %}
+{% endif %}
+
+    var _calendarDays = '{{ __("S,M,T,W,T,F,S") }}';
+    var _calendarMonths = [
+        '{{ __("January") }}',
+        '{{ __("February") }}',
+        '{{ __("March") }}',
+        '{{ __("April") }}',
+        '{{ __("May") }}',
+        '{{ __("June") }}',
+        '{{ __("July") }}',
+        '{{ __("August") }}',
+        '{{ __("September") }}',
+        '{{ __("October") }}',
+        '{{ __("November") }}',
+        '{{ __("December") }}'
+    ];
+    var _calendarMonthsShort = [
+        '{{ __("Jan") }}',
+        '{{ __("Feb") }}',
+        '{{ __("Mar") }}',
+        '{{ __("Apr") }}',
+        '{{ __("May") }}',
+        '{{ __("Jun") }}',
+        '{{ __("Jul") }}',
+        '{{ __("Aug") }}',
+        '{{ __("Sep") }}',
+        '{{ __("Oct") }}',
+        '{{ __("Nov") }}',
+        '{{ __("Dec") }}'
+    ];
+    var _calendarToday = '{{ __("Today") }}';
+    var _calendarNow = '{{ __("Now") }}';
+    var _dateFormatter = '{{ fui_dateformatter }}';
+    function _calendarWidget(selector) {
+        $(selector).calendar({
+            type: 'date',
+            firstDayOfWeek: 1,
+            monthFirst: false,
+            text: {
+                days: _calendarDays.split(','),
+                months: _calendarMonths,
+                monthsShort: _calendarMonthsShort,
+                today: _calendarToday,
+                now: _calendarNow,
+            },
+            formatter: {
+                date: _dateFormatter,
+            }
+        });
+    };
+    _calendarWidget("{{ selector|raw }}");

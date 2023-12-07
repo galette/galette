@@ -1,0 +1,47 @@
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+{% set name = fields.libelle %}
+{% set id = fields.id %}
+{% set field = fields.third %}
+    <form action="{% if class == 'Status' %}{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_statut}) }}{% else %}{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': entry.id_type_cotis}) }}{% endif %}" method="post" class="ui form">
+{% if mode != 'ajax' %}
+        <div class="ui segment">
+{% endif %}
+            <div class="required field inline">
+                <label for="{{ name }}">{{ _T("Name:") }}</label>
+                <input type="text" name="{{ name }}" id="{{ name }}" value="{% if class == 'Status' %}{{ entry.libelle_statut }}{% else %}{{ entry.libelle_type_cotis }}{% endif %}" required="required" />
+            </div>
+{% if class == 'Status' %}
+            <div class="field inline">
+                <label for="{{ field }}">
+                    {{ _T("Priority:") }}
+                </label>
+                <input type="text" size="4" name="{{ field }}" id="{{ field }}" value="{{ entry.priorite_statut }}" />
+            </div>
+            <p class="exemple">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</p>
+{% elseif class == 'ContributionsTypes' %}
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="{{ field }}" id="{{ field }}" value="1"{% if entry.cotis_extension == 1 %} checked="checked"{% endif %} />
+                <label for="{{ field }}">
+                    {{ _T("Extends membership?") }}
+                </label>
+            </div>
+{% endif %}
+        </div>
+
+        <input type="hidden" name="mod" id="mod" value="{% if class == 'Status' %}{{ entry.id_statut }}{% else %}{{ entry.id_type_cotis }}{% endif %}"/>
+        <input type="hidden" name="class" value="{{ class }}" />
+
+{% if mode != 'ajax' %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i>
+                {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+        </div>
+{% endif %}
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}

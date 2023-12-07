@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2020-05-16
  */
 
 namespace Galette\Entity\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * ListsConfig tests class
@@ -46,18 +45,18 @@ use atoum;
  * @name      ListsConfig
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2020-05-16
  */
-class ListsConfig extends atoum
+class ListsConfig extends TestCase
 {
-    private $lists_config = null;
-    private $zdb;
-    private $members_fields;
-    private $members_fields_cats;
-    private $default_lists = [
+    private ?\Galette\Entity\ListsConfig $lists_config = null;
+    private \Galette\Core\Db $zdb;
+    private array $members_fields;
+    private array $members_fields_cats;
+    private array $default_lists = [
         'id_adh',
         'list_adh_name',
         'pseudo_adh',
@@ -69,17 +68,15 @@ class ListsConfig extends atoum
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
 
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         $this->members_fields_cats = $members_fields_cats;
 
         $this->lists_config = new \Galette\Entity\ListsConfig(
@@ -94,14 +91,12 @@ class ListsConfig extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->resetListsConfig();
     }
@@ -118,7 +113,7 @@ class ListsConfig extends atoum
             $new_list[] = $this->lists_config->getField($key);
         }
 
-        $this->boolean($this->lists_config->setListFields($new_list))->isTrue();
+        $this->assertTrue($this->lists_config->setListFields($new_list));
     }
 
     /**
@@ -131,18 +126,18 @@ class ListsConfig extends atoum
         $this->lists_config->load();
 
         $visible = $this->lists_config->getVisibility('nom_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
+        $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $visible);
 
         //must be the same than nom_adh
         $visible = $this->lists_config->getVisibility('list_adh_name');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
+        $this->assertSame(\Galette\Entity\FieldsConfig::USER_WRITE, $visible);
 
         $visible = $this->lists_config->getVisibility('id_statut');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::STAFF);
+        $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $visible);
 
         //must be the same than id_statut
         $visible = $this->lists_config->getVisibility('list_adh_contribstatus');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::STAFF);
+        $this->assertSame(\Galette\Entity\FieldsConfig::STAFF, $visible);
     }
 
     /**
@@ -159,12 +154,12 @@ class ListsConfig extends atoum
         $fields = $lists_config->getCategorizedFields();
 
         $list = $lists_config->getListedFields();
-        $this->array($list)->hasSize(6);
+        $this->assertCount(6, $list);
 
         $expecteds = $this->default_lists;
         foreach ($expecteds as $k => $expected) {
-            $this->string($list[$k]['field_id'])->isIdenticalTo($expected);
-            $this->integer($list[$k]['list_position'])->isIdenticalTo($k);
+            $this->assertSame($expected, $list[$k]['field_id']);
+            $this->assertSame($k, $list[$k]['list_position']);
         }
 
         $expecteds = [
@@ -181,30 +176,30 @@ class ListsConfig extends atoum
         foreach ($expecteds as $key) {
             $new_list[] = $lists_config->getField($key);
         }
-        $this->boolean($lists_config->setListFields($new_list))->isTrue();
+        $this->assertTrue($lists_config->setListFields($new_list));
 
         $list = $lists_config->getListedFields();
-        $this->array($list)->hasSize(7);
+        $this->assertCount(7, $list);
 
         foreach ($expecteds as $k => $expected) {
-            $this->string($list[$k]['field_id'])->isIdenticalTo($expected);
-            $this->integer($list[$k]['list_position'])->isIdenticalTo($k);
+            $this->assertSame($expected, $list[$k]['field_id']);
+            $this->assertSame($k, $list[$k]['list_position']);
         }
 
         $field = $lists_config->getField('pseudo_adh');
-        $this->integer($field['list_position'])->isIdenticalTo(-1);
-        $this->boolean($field['list_visible'])->isFalse();
+        $this->assertSame(-1, $field['list_position']);
+        $this->assertFalse($field['list_visible']);
 
         $field = $lists_config->getField('date_modif_adh');
-        $this->integer($field['list_position'])->isIdenticalTo(-1);
-        $this->boolean($field['list_visible'])->isFalse();
+        $this->assertSame(-1, $field['list_position']);
+        $this->assertFalse($field['list_visible']);
 
         // copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
         //town
         $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2]; //3 in FieldsConfig but 2 here.
-        $this->string($town['field_id'])->isIdenticalTo('ville_adh');
-        $this->boolean($town['required'])->isTrue();
-        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
+        $this->assertSame('ville_adh', $town['field_id']);
+        $this->assertTrue($town['required']);
+        $this->assertSame(\Galette\Entity\FieldsConfig::USER_WRITE, $town['visible']);
 
         $town['required'] = false;
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
@@ -216,17 +211,17 @@ class ListsConfig extends atoum
         $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 
-        $this->boolean($lists_config->setFields($fields))->isTrue();
+        $this->assertTrue($lists_config->setFields($fields));
 
         $lists_config->load();
         $fields = $lists_config->getCategorizedFields();
 
         $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2]; //3 in FieldsConfig but 2 here.
-        $this->boolean($town['required'])->isFalse();
-        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
+        $this->assertFalse($town['required']);
+        $this->assertSame(\Galette\Entity\FieldsConfig::NOBODY, $town['visible']);
 
         $gsm2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][11]; //13 in FieldsConfig but 11 here
-        $this->array($gsm2)->isIdenticalTo($gsm);
+        $this->assertSame($gsm, $gsm2);
         // /copied from FieldsConfig::testSetFields to ensure it works as expected from here.
     }
 
@@ -241,40 +236,35 @@ class ListsConfig extends atoum
         $lists_config->load();
 
         //admin
-        $superadmin_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($superadmin_login)->isSuperAdmin = true;
+        $superadmin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isSuperAdmin'))
+            ->getMock();
+        $superadmin_login->method('isSuperAdmin')->willReturn(true);
 
         $expecteds = $this->default_lists;
         $elements = $lists_config->getDisplayElements($superadmin_login);
-        $this->array($elements)
-            ->hasSize(count($this->default_lists));
+        $this->assertCount(count($this->default_lists), $elements);
 
         //admin
-        $admin_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($admin_login)->isAdmin = true;
+        $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $admin_login->method('isAdmin')->willReturn(true);
 
-        $expecteds = $this->default_lists;
         $elements = $lists_config->getDisplayElements($admin_login);
-        $this->array($elements)
-            ->hasSize(count($this->default_lists));
+        $this->assertCount(count($this->default_lists), $elements);
 
         //staff
-        $staff_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($staff_login)->isStaff = true;
+        $staff_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isStaff'))
+            ->getMock();
+        $staff_login->method('isStaff')->willReturn(true);
 
-        $expecteds = $this->default_lists;
         $elements = $lists_config->getDisplayElements($staff_login);
-        $this->array($elements)
-             ->hasSize(count($this->default_lists));
+        $this->assertCount(count($this->default_lists), $elements);
 
         //following tests will have lower ACLS (cannot see status)
         $expecteds = [
@@ -288,50 +278,47 @@ class ListsConfig extends atoum
             $new_list[] = $lists_config->getField($key);
         }
 
-
         //group manager
-        $manager_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($manager_login)->isGroupManager = true;
+        $manager_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isGroupManager'))
+            ->getMock();
+        $manager_login->method('isGroupManager')->willReturn(true);
 
         $elements = $lists_config->getDisplayElements($manager_login);
-        $this->array($elements)
-            ->hasSize(count($new_list));
+        $this->assertCount(count($new_list), $elements);
 
-        //to keep last know rank. May switch from 2 to 6 because of bield visibility.
+        //to keep last know rank. May switch from 2 to 6 because of field visibility.
         $last_ok = -1;
         foreach ($expecteds as $k => $expected) {
-            $this->string($new_list[$k]['field_id'])->isIdenticalTo($expected);
+            $this->assertSame($expected, $new_list[$k]['field_id']);
             if ($new_list[$k]['list_position'] != $k - 1) {
-                $this->integer($new_list[$k]['list_position'])->isGreaterThan($last_ok);
+                $this->assertGreaterThan($last_ok, $new_list[$k]['list_position']);
                 $last_ok = $new_list[$k]['list_position'];
             } else {
-                $this->integer($new_list[$k]['list_position'])->isIdenticalTo($k);
+                $this->assertSame($k, $new_list[$k]['list_position']);
             }
         }
 
         //simplemember
-        $user_login = new \mock\Galette\Core\Login(
-            $this->zdb,
-            new \Galette\Core\I18n()
-        );
-        $this->calling($user_login)->isUp2Date = true;
+        $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isUp2Date'))
+            ->getMock();
+        $user_login->method('isUp2Date')->willReturn(true);
 
         $elements = $lists_config->getDisplayElements($user_login);
-        $this->array($elements)
-            ->hasSize(count($new_list));
+        $this->assertCount(count($new_list), $elements);
 
-        //to keep last know rank. May switch from 2 to 6 because of bield visibility.
+        //to keep last know rank. May switch from 2 to 6 because of field visibility.
         $last_ok = -1;
         foreach ($expecteds as $k => $expected) {
-            $this->string($new_list[$k]['field_id'])->isIdenticalTo($expected);
+            $this->assertSame($expected, $new_list[$k]['field_id']);
             if ($new_list[$k]['list_position'] != $k - 1) {
-                $this->integer($new_list[$k]['list_position'])->isGreaterThan($last_ok);
+                $this->assertGreaterThan($last_ok, $new_list[$k]['list_position']);
                 $last_ok = $new_list[$k]['list_position'];
             } else {
-                $this->integer($new_list[$k]['list_position'])->isIdenticalTo($k);
+                $this->assertSame($k, $new_list[$k]['list_position']);
             }
         }
     }

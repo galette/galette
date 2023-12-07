@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2021 The Galette Team
+ * @copyright 2007-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7-dev - 2007-10-07
@@ -72,7 +72,7 @@ if (!$installed && !$installer) {
 
 if (
     file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
-    && !defined('GALETTE_TESTS') && !$cron
+    && !defined('GALETTE_TESTS')
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
@@ -100,14 +100,14 @@ if (
 }
 
 define('GALETTE_NIGHTLY', false);
-define('GALETTE_VERSION', 'v0.9.6.1');
+define('GALETTE_VERSION', 'v1.0.0');
 
 //Version to display
 if (!defined('GALETTE_HIDE_VERSION')) {
     define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
 }
 
-define('GALETTE_COMPAT_VERSION', '0.9.6');
+define('GALETTE_COMPAT_VERSION', '1.0.0');
 define('GALETTE_DB_VERSION', '0.960');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
@@ -124,13 +124,6 @@ if (!isset($_COOKIE['show_galette_dashboard'])) {
     );
 }
 
-if (!defined('GALETTE_DISPLAY_ERRORS')) {
-    if (GALETTE_MODE === \Galette\Core\Galette::MODE_DEV) {
-        define('GALETTE_DISPLAY_ERRORS', 1);
-    } else {
-        define('GALETTE_DISPLAY_ERRORS', 0);
-    }
-}
 ini_set('display_errors', (defined('GALETTE_TESTS') ? '1' : '0'));
 
 /*------------------------------------------------------------------------------
@@ -149,7 +142,7 @@ Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
 
 if (!defined('GALETTE_LOG_LVL')) {
-    if (GALETTE_MODE === 'DEV') {
+    if (\Galette\Core\Galette::isDebugEnabled()) {
         define('GALETTE_LOG_LVL', Analog::DEBUG);
     } elseif (defined('GALETTE_TESTS')) {
         define('GALETTE_LOG_LVL', Analog::NOTICE);
@@ -207,13 +200,6 @@ if (!$installer and !defined('GALETTE_TESTS')) {
             '_CURRENT_THEME_PATH',
             GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
         );
-
-        if (!defined('GALETTE_TPL_SUBDIR')) {
-            define(
-                'GALETTE_TPL_SUBDIR',
-                'templates/' . $preferences->pref_theme . '/'
-            );
-        }
 
         if (!defined('GALETTE_THEME')) {
             define(

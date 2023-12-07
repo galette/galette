@@ -1,0 +1,92 @@
+{#
+/**
+ * @file
+ * Show and hide loaders on ajax requests.
+ *
+ * Copyright © 2009-2023 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @category  Authentication
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2009-2023 The Galette Team
+ * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or later
+ * @link      https://galette.eu
+ * @since     Available since 1.0dev - 2022-06-08
+ *
+ * Available variables:
+ *
+ * - selector: element on which to apply the loader.
+ * - loader: loader's variation to use (on button, action's list or page dimmer).
+ * - loader_text: text to display in the loader.
+ *
+ */
+#}
+
+{% if (loader is not defined) %}
+    {% set loader = (selector is not defined) ? 'dimmer' : 'inverted dimmer' %}
+    {% set loader_parent = (selector is not defined) ? 'body' : selector %}
+    {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
+{% elseif (loader == 'button') %}
+    {% set loader = loader %}
+    {% set loader_parent = (selector is defined) ? selector %}
+{% elseif (loader == 'action') %}
+    {% set loader = 'inverted dimmer' %}
+    {% set loader_parent = (selector is defined) ? selector %}
+    {% set loader_text = (loader_text is defined) ? loader_text : _T('Loading...') %}
+{% else %}
+    {% set loader = loader ~ ' loader' %}
+    {% set loader_parent = (selector is defined) ? selector %}
+{% endif %}
+
+    beforeSend: function() {
+        var _loader = $('<div class="ui active {{ loader }}"><div class="ui{% if (loader_text is defined) %} text{% endif %} loader">{% if (loader_text is defined) %}{{ loader_text|e('js') }}{% endif %}</div></div>');
+
+{% if (loader == 'button') %}
+        $('{{ loader_parent }}').addClass('loading');
+{% else %}
+    {% if (loader == 'action' or loader ends with 'dimmer') %}
+        $('{{ loader_parent }} .dimmer:not(.modals)').remove();
+    {% elseif (loader ends with 'loader') %}
+        $('{{ loader_parent }} .loader').remove();
+    {% endif %}
+    $('{{ loader_parent }}').append(_loader);
+{% endif %}
+
+{% if extra_beforesend is defined %}
+        {{ extra_beforesend|raw }}
+{% endif %}
+
+    },
+    complete: function() {
+
+{% if (loader == 'button') %}
+        $('{{ loader_parent }}').removeClass('loading');
+{% else %}
+    {% if (loader ends with 'dimmer') %}
+        $('{{ loader_parent }} .dimmer:not(.modals)').remove();
+    {% elseif (loader ends with 'loader') %}
+        $('{{ loader_parent }} .loader').remove();
+    {% endif %}
+{% endif %}
+
+{% if extra_complete is defined %}
+        {{ extra_complete|raw }}
+{% endif %}
+
+    }

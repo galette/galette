@@ -1,0 +1,40 @@
+<div class="field ui items">
+    <label>{{ _T("Picture:") }}</label>
+    <div class="item">
+        <div class="content">
+    {% if member.hasPicture() == 1 %}
+            <div class="extra ui basic fitted segment">
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" name="del_photo" id="del_photo" value="1"/>
+                    <label for="del_photo" class="labelalign">{{ _T("Delete image") }}</label>
+                </div>
+            </div>
+    {% endif %}
+            <div class="description">
+                <div class="ui file action input">
+                    <input id="photo_new" type="file" name="photo"/>
+                    <label for="photo_new" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
+                        <i class="blue upload icon" aria-hidden="true"></i>
+                        {% if member.hasPicture() == 1 %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                    </label>
+                </div>
+            </div>
+    {% if preferences.pref_force_picture_ratio == 1 %}
+            {% set system_ratio = (preferences.pref_member_picture_ratio == 'square_ratio') ? _T("Square (1:1)") : (preferences.pref_member_picture_ratio == 'portrait_ratio') ? _T("Portrait (3:4)") : (preferences.pref_member_picture_ratio == 'landscape_ratio') ? _T("Landscape (4:3)") %}
+            <div id="crop_focus_field" class="extra ui basic fitted segment displaynone">
+                <div class="inline field">
+                    <label for="crop_focus">{{ _T("Cropping focus") }}</label>
+                    <select name="crop_focus" id="crop_focus" class="ui dropdown nochosen">
+                        <option value="center">{{ _T("Center") }}</option>
+                        <option value="top">{{ _T("Top") }}</option>
+                        <option value="bottom">{{ _T("Bottom") }}</option>
+                        <option value="left">{{ _T("Left") }}</option>
+                        <option value="right">{{ _T("Right") }}</option>
+                    </select>
+                    <i class="tooltip circular inverted primary small icon info" data-html="{{ _T("Choose the area of the original image to preserve after cropping to the final ratio defined in the settings : %ratio")|replace({"%ratio": system_ratio}) }}" aria-hidden="true"></i>
+                </div>
+            </div>
+    {% endif %}
+        </div>
+    </div>
+</div>

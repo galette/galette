@@ -1,0 +1,77 @@
+{% set selector = (selector is defined) ? selector %}
+{% set loader = (loader is defined) ? loader %}
+{% set extra_data = (extra_data is defined) ? extra_data : '' %}
+
+
+$('{{ selector }}').parent('.input').parent('{{ selector ~ '_field'|e('js') }}').append($('<meter max="4" class="password-strength-meter"></meter><span class="password-strength-text"></span>'));
+$('{{ selector }}').on('keyup', function() {
+    var _this = $(this);
+    $.ajax({
+        url: '{{ url_for("checkPassword") }}',
+        type: 'POST',
+        data: {
+            value: $('{{ selector }}').val(),
+            {{ extra_data|raw }}
+        },
+        {% include "elements/js/loader.js.twig" with {
+                selector: selector ~ '_field',
+                loader: loader
+        } %},
+        success: function(res) {
+            var _field = _this.parent('.input').parent('{{ selector ~ '_field'|e('js') }}');
+            var _meter = _field.find('.password-strength-meter');
+
+            _meter.val(res.score);
+            var _txt = _field.find('span.password-strength-text');
+
+            //reset
+            _field.find('.passtips').remove();
+            _txt.attr('class', 'password-strength-text');
+            _txt.html('');
+            _meter.attr('class', 'password-strength-meter');
+            _meter.attr('title', '');
+
+            if (res.valid) {
+                _txt.append($('<i class="ui check circle green icon" aria-hidden="true"></i> <span>{{ _T("Password is valid :)")|e('js') }}</span>'));
+                _txt.addClass('use');
+            } else {
+                _txt.append($('<i class="ui times circle red icon" aria-hidden="true"></i> <span>{{ _T("Password is not valid!")|e('js') }}</span>'));
+
+                _txt.append(' (');
+                for (i = 0; i < res.errors.length; i++) {
+                    if (i > 0) {
+                        _txt.append(', ');
+                    }
+                    _txt.append(res.errors[i]);
+                }
+                _txt.append(')');
+                _txt.addClass('delete');
+            }
+
+            if (res.warnings) {
+                _meter.addClass('tooltip');
+                var _tip = $('<span class="passtips tip"></span>');
+                _tip.hide();
+                for (i = 0; i < res.warnings.length; i++) {
+                    if (i > 0) {
+                        _tip.append('<br/>');
+                    }
+                    _tip.append(res.warnings[i]);
+                }
+                _meter.after(_tip);
+            }
+        },
+        error: function () {
+            {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occured checking password :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+        }
+    });
+
+});
+

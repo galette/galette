@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2021 The Galette Team
+ * Copyright © 2011-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2021 The Galette Team
+ * @copyright 2011-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-31
@@ -36,6 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Galette\Events\GaletteEvent;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -52,7 +54,7 @@ use Galette\Features\Dynamics;
  * @name      Transaction
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2021 The Galette Team
+ * @copyright 2010-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -87,11 +89,11 @@ class Transaction
     /**
      * Default constructor
      *
-     * @param Db                 $zdb   Database instance
-     * @param Login              $login Login instance
-     * @param null|int|ResultSet $args  Either a ResultSet row or its id for to load
-     *                                  a specific transaction, or null to just
-     *                                  instantiate object
+     * @param Db                   $zdb   Database instance
+     * @param Login                $login Login instance
+     * @param null|int|ArrayObject $args  Either a ResultSet row or its id for to load
+     *                                    a specific transaction, or null to just
+     *                                    instantiate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -130,7 +132,7 @@ class Transaction
                 'propname' => 'member'
             )
         );
-        if ($args == null || is_int($args)) {
+        if ($args === null || is_int($args)) {
             $this->_date = date("Y-m-d");
 
             if (is_int($args) && $args > 0) {
@@ -185,8 +187,9 @@ class Transaction
             }
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-            if ($result) {
+            if ($results->count() > 0) {
+                /** @var ArrayObject $result */
+                $result = $results->current();
                 $this->loadFromRS($result);
                 return true;
             } else {
@@ -231,7 +234,7 @@ class Transaction
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
-                $rem = $c->remove($cids, $hist, false);
+                $c->remove($cids, $hist, false);
             }
 
             //remove transaction itself
@@ -252,7 +255,7 @@ class Transaction
                 $this->zdb->connection->commit();
             }
 
-            $emitter->emit('transaction.remove', $this);
+            $emitter->dispatch(new GaletteEvent('transaction.remove', $this));
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
@@ -270,11 +273,11 @@ class Transaction
     /**
      * Populate object from a resultset row
      *
-     * @param ResultSet $r the resultset row
+     * @param ArrayObject $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS($r)
+    private function loadFromRS(ArrayObject $r)
     {
         $pk = self::PK;
         $this->_id = $r->$pk;
@@ -323,7 +326,11 @@ class Transaction
                             try {
                                 $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                                 if ($d === false) {
-                                    throw new \Exception('Incorrect format');
+                                    //try with non localized date
+                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
+                                    if ($d === false) {
+                                        throw new \Exception('Incorrect format');
+                                    }
                                 }
                                 $this->$prop = $d->format('Y-m-d');
                             } catch (Throwable $e) {
@@ -430,7 +437,6 @@ class Transaction
                 $values[$field] = $this->$prop;
             }
 
-            $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
@@ -445,7 +451,6 @@ class Transaction
                         _T("Transaction added"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
-                    $success = true;
                     $event = 'transaction.add';
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
@@ -466,20 +471,17 @@ class Transaction
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                 }
-                $success = true;
                 $event = 'transaction.edit';
             }
 
             //dynamic fields
-            if ($success) {
-                $success = $this->dynamicsStore(true);
-            }
+            $this->dynamicsStore(true);
 
             $this->zdb->connection->commit();
 
             //send event at the end of process, once all has been stored
             if ($event !== null) {
-                $emitter->emit($event, $this);
+                $emitter->dispatch(new GaletteEvent($event, $this));
             }
 
             return true;
@@ -591,9 +593,9 @@ class Transaction
     /**
      * Global getter method
      *
-     * @param string $name name of the property we want to retrive
+     * @param string $name name of the property we want to retrieve
      *
-     * @return false|object the called property
+     * @return mixed the called property
      */
     public function __get($name)
     {
@@ -641,6 +643,26 @@ class Transaction
             );
             return false;
         }
+    }
+
+    /**
+     * Global isset method
+     * Required for twig to access properties via __get
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $forbidden = array();
+
+        $rname = '_' . $name;
+        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -700,7 +722,7 @@ class Transaction
         }
 
         //admin and staff users can edit, as well as member itself
-        if (!$this->id || $this->id && $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
+        if (!$this->id || $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2013-02-05
  */
 
 namespace Galette\Core\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Database tests class
@@ -46,23 +45,22 @@ use atoum;
  * @name      Db
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-02-05
  */
-class Db extends atoum
+class Db extends TestCase
 {
-    private $db;
+    private \Galette\Core\Db $db;
+    private array $have_warnings = [];
 
     /**
      * Set up tests
      *
-     * @param stgring $method Method tested
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->db = new \Galette\Core\Db();
     }
@@ -70,24 +68,14 @@ class Db extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql' and $method !== 'testExecuteWException') {
-            $this->array($this->db->getWarnings())->isIdenticalTo([]);
+        if (TYPE_DB === 'mysql') {
+            $this->assertEquals($this->db->getWarnings(), $this->have_warnings);
         }
-    }
 
-    /**
-     * Cleanup after tests
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
         $this->db = new \Galette\Core\Db();
         $delete = $this->db->delete(\Galette\Entity\Title::TABLE);
         $delete->where([\Galette\Entity\Title::PK => '150']);
@@ -103,8 +91,7 @@ class Db extends atoum
     {
         $db = new \Galette\Core\Db();
         $type = $db->type_db;
-        $this->string($type)
-            ->isIdenticalTo(TYPE_DB);
+        $this->assertSame(TYPE_DB, $type);
 
         $dsn = array(
             'TYPE_DB'   => TYPE_DB,
@@ -121,25 +108,18 @@ class Db extends atoum
 
         switch (TYPE_DB) {
             case 'pgsql':
-                $this->boolean($is_pg)
-                    ->isTrue();
-                $this->string($type)
-                    ->isIdenticalTo(\Galette\Core\Db::PGSQL);
+                $this->assertTrue($is_pg);
+                $this->assertSame(\Galette\Core\Db::PGSQL, $type);
                 break;
             case \Galette\Core\Db::MYSQL:
-                $this->boolean($is_pg)
-                    ->isFalse();
-                $this->string($type)
-                    ->isIdenticalTo(\Galette\Core\Db::MYSQL);
+                $this->assertFalse($is_pg);
+                $this->assertSame(\Galette\Core\Db::MYSQL, $type);
                 break;
         }
 
-        $this->exception(
-            function () use ($dsn) {
-                $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
-                $db = new \Galette\Core\Db($dsn);
-            }
-        );
+        $this->expectException(\Exception::class);
+        $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
+        $db = new \Galette\Core\Db($dsn);
     }
 
     /**
@@ -157,7 +137,7 @@ class Db extends atoum
             PORT_DB,
             NAME_DB
         );
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
     }
 
     /**
@@ -179,17 +159,13 @@ class Db extends atoum
         );
         $result = $this->db->grantCheck();
 
-        $this->array($result)
-            ->hasSize(6)
-            ->isIdenticalTo($expected);
+        $this->assertSame($expected, $result);
 
         //in update mode, we need alter
         $result = $this->db->grantCheck('u');
 
         $expected['alter'] = true;
-        $this->array($result)
-            ->hasSize(7)
-            ->isIdenticalTo($expected);
+        $this->assertSame($result, $expected);
     }
 
     /**
@@ -202,89 +178,129 @@ class Db extends atoum
         $atoum = $this;
 
         //test insert failing
-        $this->db = new \mock\Galette\Core\Db();
-        $this->calling($this->db)->execute = function ($o) {
-            if ($o instanceof \Zend\Db\Sql\Insert) {
-                throw new \LogicException('Error executing query!', 123);
-            }
-        };
+        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->db->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        if ($o instanceof \Laminas\Db\Sql\Insert) {
+                            throw new \LogicException('Error executing query!', 123);
+                        }
+                    }
+                )
+            );
 
         $result = $this->db->grantCheck('u');
 
-        $this->array($result)
-            ->boolean['create']->isTrue()
-            ->boolean['alter']->isTrue()
-            ->object['insert']->isInstanceOf('\LogicException')
-            ->boolean['update']->isFalse()
-            ->boolean['select']->isFalse()
-            ->boolean['delete']->isFalse()
-            ->boolean['drop']->isTrue();
+        $this->assertTrue($result['create']);
+        $this->assertTrue($result['alter']);
+        $this->assertInstanceOf(\LogicException::class, $result['insert']);
+        $this->assertFalse($result['update']);
+        $this->assertFalse($result['select']);
+        $this->assertFalse($result['delete']);
+        $this->assertTrue($result['drop']);
 
         //test select failing
-        $this->calling($this->db)->execute = function ($o) use ($atoum) {
-            if ($o instanceof \Zend\Db\Sql\Select) {
-                throw new \LogicException('Error executing query!', 123);
-            } else {
-                $rs = new \mock\Zend\Db\ResultSet();
-                $atoum->calling($rs)->count = 1;
-                return $rs;
-            }
-        };
+        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->db->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        if ($o instanceof \Laminas\Db\Sql\Select) {
+                            throw new \LogicException('Error executing query!', 123);
+                        } else {
+                            $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
+                                ->onlyMethods(array('count'))
+                                ->getMock();
+                            $rs->method('count')
+                                ->willReturn(1);
+                            return $rs;
+                        }
+                    }
+                )
+            );
 
         $result = $this->db->grantCheck('u');
 
-        $this->array($result)
-            ->boolean['create']->isTrue()
-            ->boolean['alter']->isTrue()
-            ->boolean['insert']->isTrue()
-            ->boolean['update']->isTrue()
-            ->object['select']->isInstanceOf('\LogicException')
-            ->boolean['delete']->isTrue()
-            ->boolean['drop']->isTrue();
+        $this->assertTrue($result['create']);
+        $this->assertTrue($result['alter']);
+        $this->assertTrue($result['insert']);
+        $this->assertTrue($result['update']);
+        $this->assertInstanceOf(\LogicException::class, $result['select']);
+        $this->assertTrue($result['delete']);
+        $this->assertTrue($result['drop']);
 
         //test update failing
-        $this->calling($this->db)->execute = function ($o) use ($atoum) {
-            if ($o instanceof \Zend\Db\Sql\Update) {
-                throw new \LogicException('Error executing query!', 123);
-            } else {
-                $rs = new \mock\Zend\Db\ResultSet();
-                $atoum->calling($rs)->count = 1;
-                return $rs;
-            }
-        };
+        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->db->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        if ($o instanceof \Laminas\Db\Sql\Update) {
+                            throw new \LogicException('Error executing query!', 123);
+                        } else {
+                            $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
+                                ->onlyMethods(array('count'))
+                                ->getMock();
+                            $rs->method('count')
+                                ->willReturn(1);
+                            return $rs;
+                        }
+                    }
+                )
+            );
 
         $result = $this->db->grantCheck('u');
 
-        $this->array($result)
-            ->boolean['create']->isTrue()
-            ->boolean['alter']->isTrue()
-            ->boolean['insert']->isTrue()
-            ->object['update']->isInstanceOf('\LogicException')
-            ->boolean['select']->isTrue()
-            ->boolean['delete']->isTrue()
-            ->boolean['drop']->isTrue();
+        $this->assertTrue($result['create']);
+        $this->assertTrue($result['alter']);
+        $this->assertTrue($result['insert']);
+        $this->assertInstanceOf(\LogicException::class, $result['update']);
+        $this->assertTrue($result['select']);
+        $this->assertTrue($result['delete']);
+        $this->assertTrue($result['drop']);
 
         //test delete failing
-        $this->calling($this->db)->execute = function ($o) use ($atoum) {
-            if ($o instanceof \Zend\Db\Sql\Delete) {
-                throw new \LogicException('Error executing query!', 123);
-            } else {
-                $rs = new \mock\Zend\Db\ResultSet();
-                $atoum->calling($rs)->count = 1;
-                return $rs;
-            }
-        };
+        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+
+        $this->db->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($o) {
+                        if ($o instanceof \Laminas\Db\Sql\Delete) {
+                            throw new \LogicException('Error executing query!', 123);
+                        } else {
+                            $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
+                                ->onlyMethods(array('count'))
+                                ->getMock();
+                            $rs->method('count')
+                                ->willReturn(1);
+                            return $rs;
+                        }
+                    }
+                )
+            );
 
         $result = $this->db->grantCheck('u');
 
-        $this->array($result)
-            ->boolean['create']->isTrue()
-            ->boolean['alter']->isTrue()
-            ->boolean['insert']->isTrue()
-            ->boolean['update']->isTrue()
-            ->boolean['select']->isTrue()
-            ->object['delete']->isInstanceOf('\LogicException')
-            ->boolean['drop']->isTrue();
+        $this->assertTrue($result['create']);
+        $this->assertTrue($result['alter']);
+        $this->assertTrue($result['insert']);
+        $this->assertTrue($result['update']);
+        $this->assertTrue($result['select']);
+        $this->assertInstanceOf(\LogicException::class, $result['delete']);
+        $this->assertTrue($result['drop']);
     }
 
     /**
@@ -298,12 +314,10 @@ class Db extends atoum
 
         switch (TYPE_DB) {
             case 'pgsql':
-                $this->boolean($is_pg)
-                    ->isTrue();
+                $this->assertTrue($is_pg);
                 break;
             default:
-                $this->boolean($is_pg)
-                    ->isFalse();
+                $this->assertFalse($is_pg);
                 break;
         }
     }
@@ -318,29 +332,25 @@ class Db extends atoum
         switch (TYPE_DB) {
             case 'pgsql':
                 $type = $this->db->type_db;
-                $this->string($type)
-                    ->isIdenticalTo('pgsql');
+                $this->assertSame('pgsql', $type);
                 break;
             case 'mysql':
                 $type = $this->db->type_db;
-                $this->string($type)
-                    ->isIdenticalTo('mysql');
+                $this->assertSame('mysql', $type);
                 break;
         }
 
         $db = $this->db->db;
-        $this->object($db)->isInstanceOf('Zend\Db\Adapter\Adapter');
+        $this->assertInstanceOf('Laminas\Db\Adapter\Adapter', $db);
 
         $sql = $this->db->sql;
-        $this->object($sql)->isInstanceOf('Zend\Db\Sql\Sql');
+        $this->assertInstanceOf('Laminas\Db\Sql\Sql', $sql);
 
         $connection = $this->db->connection;
-        $this->object($connection)
-            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
+        $this->assertInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Connection', $connection);
 
         $driver = $this->db->driver;
-        $this->object($driver)
-            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
+        $this->assertInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Pdo', $driver);
     }
 
     /**
@@ -365,7 +375,7 @@ class Db extends atoum
                 'WHERE `p`.`nom_pref` = \'pref_nom\'';
         }
 
-        $this->string($query)->isIdenticalTo($expected);
+        $this->assertSame($expected, $query);
     }
 
     /**
@@ -376,7 +386,7 @@ class Db extends atoum
     public function testSelectAll()
     {
         $all = $this->db->selectAll('preferences');
-        $this->object($all)->isInstanceOf('Zend\Db\ResultSet\ResultSet');
+        $this->assertInstanceOf('Laminas\Db\ResultSet\ResultSet', $all);
     }
 
     /**
@@ -399,12 +409,12 @@ class Db extends atoum
         $select->where(['t.id_title' => $data['id_title']]);
 
         $results = $this->db->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
         if (TYPE_DB === 'pgsql') {
             $data['id_title'] = (int)$data['id_title'];
         }
-        $this->array((array)$results->current())->isEqualTo($data);
+        $this->assertEquals((array)$results->current(), $data);
     }
 
     /**
@@ -414,6 +424,15 @@ class Db extends atoum
      */
     public function testUpdate()
     {
+        $insert = $this->db->insert('titles');
+        $data = [
+            'id_title'      => '150',
+            'short_label'   => 'Dr',
+            'long_label'    => 'Doctor'
+        ];
+        $insert->values($data);
+        $res = $this->db->execute($insert);
+
         $update = $this->db->update('titles');
         $data = [
             'long_label'    => 'DoctorS'
@@ -426,18 +445,18 @@ class Db extends atoum
         $results = $this->db->execute($select);
 
         $long_label = $results->current()->long_label;
-        $this->string($long_label)->isIdenticalTo('Doctor');
+        $this->assertSame('Doctor', $long_label);
 
         $update->set($data);
         $update->where($where);
         $res = $this->db->execute($update);
-        $this->integer($res->count())->isIdenticalTo(1);
+        $this->assertSame(1, $res->count());
 
         $results = $this->db->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
         $long_label = $results->current()->long_label;
-        $this->string($long_label)->isIdenticalTo('DoctorS');
+        $this->assertSame('DoctorS', $long_label);
     }
 
     /**
@@ -447,20 +466,29 @@ class Db extends atoum
      */
     public function testDelete()
     {
+        $insert = $this->db->insert('titles');
+        $data = [
+            'id_title'      => '150',
+            'short_label'   => 'Dr',
+            'long_label'    => 'Doctor'
+        ];
+        $insert->values($data);
+        $res = $this->db->execute($insert);
+
         $delete = $this->db->delete('titles');
         $where = ['id_title' => 150];
 
         $select = $this->db->select('titles', 't');
         $select->where($where);
         $results = $this->db->execute($select);
-        $this->integer($results->count())->isIdenticalTo(1);
+        $this->assertSame(1, $results->count());
 
         $delete->where($where);
         $res = $this->db->execute($delete);
-        $this->integer($res->count())->isIdenticalTo(1);
+        $this->assertSame(1, $res->count());
 
         $results = $this->db->execute($select);
-        $this->integer($results->count())->isIdenticalTo(0);
+        $this->assertSame(0, $results->count());
     }
 
     /**
@@ -471,10 +499,10 @@ class Db extends atoum
     public function testDbVersion()
     {
         $db_version = $this->db->getDbVersion();
-        $this->variable($db_version)->isIdenticalTo(GALETTE_DB_VERSION);
+        $this->assertSame(GALETTE_DB_VERSION, $db_version);
 
         $res = $this->db->checkDbVersion();
-        $this->boolean($res)->isTrue();
+        $this->assertTrue($res);
     }
 
     /**
@@ -484,20 +512,21 @@ class Db extends atoum
      */
     public function testDbVersionWException()
     {
-        $this->db = new \mock\Galette\Core\Db();
-        $this->calling($this->db)->execute = function ($o) {
-            throw new \LogicException('Error executing query!', 123);
-        };
+        $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(array('execute'))
+            ->getMock();
+        $this->db->method('execute')
+            ->will(
+                $this->returnCallback(
+                    function ($table, $where) {
+                        throw new \LogicException('Error executing query!', 123);
+                    }
+                )
+            );
 
-        $db = $this->db;
-        $this
-            ->exception(
-                function () use ($db) {
-                    $db->getDbVersion();
-                }
-            )->isInstanceOf('\LogicException');
-
-        $this->boolean($db->checkDbVersion())->isFalse();
+        $this->expectException('LogicException');
+        $this->db->getDbVersion();
+        $this->assertFalse($this->db->checkDbVersion());
     }
 
     /**
@@ -509,21 +538,21 @@ class Db extends atoum
     {
         $cols = $this->db->getColumns('preferences');
 
-        $this->array($cols)->hasSize(3);
+        $this->assertCount(3, $cols);
 
         $columns = array();
         foreach ($cols as $c) {
             $columns[] = $c->getName();
         }
 
-        $this->array($columns)
-            ->containsValues(
-                array(
-                    'id_pref',
-                    'nom_pref',
-                    'val_pref'
-                )
-            );
+        $this->assertSame(
+            array(
+                'id_pref',
+                'nom_pref',
+                'val_pref'
+            ),
+            array_values($columns)
+        );
     }
 
     /**
@@ -577,9 +606,7 @@ class Db extends atoum
         sort($tables);
         sort($expected);
 
-        $this->array($tables)
-            ->hasSize(count($expected), print_r($tables, true) . ' ' . print_r($expected, true))
-            ->isIdenticalTo($expected);
+        $this->assertSame($expected, $tables);
     }
 
     /**
@@ -589,11 +616,8 @@ class Db extends atoum
      */
     public function testConvertToUtf()
     {
-        if (TYPE_DB === \Galette\Core\Db::MYSQL) {
-            $convert = $this->db->convertToUTF();
-
-            $this->variable($convert)->isNull();
-        }
+        $convert = $this->db->convertToUTF();
+        $this->assertNull($convert);
     }
 
     /**
@@ -609,8 +633,7 @@ class Db extends atoum
             "'somethin'' to \"quote\"'" :
             "'somethin\\' to \\\"quote\\\"'";
 
-        $this->string($quoted)
-            ->isIdenticalTo($expected);
+        $this->assertSame($expected, $quoted);
     }
 
     /**
@@ -624,8 +647,7 @@ class Db extends atoum
         $select->where(['p.nom_pref' => 'azerty']);
         $results = $this->db->execute($select);
 
-        $this->object($results)
-            ->isInstanceOf('\Zend\Db\ResultSet\ResultSet');
+        $this->assertInstanceOf('\Laminas\Db\ResultSet\ResultSet', $results);
     }
 
     /**
@@ -635,15 +657,21 @@ class Db extends atoum
      */
     public function testExecuteWException()
     {
+        $this->have_warnings = [
+            new \ArrayObject(
+                [
+                    'Level' => 'Error',
+                    'Code' => 1054,
+                    'Message' => "Unknown column 'p.notknown' in 'where clause'"
+                ]
+            )
+        ];
         $select = $this->db->select('preferences', 'p');
         $select->where(['p.nom_pref' => 'azerty']);
+        $select->where(['p.notknown' => 'azerty']);
 
-        $this->exception(
-            function () use ($select) {
-                $select->where(['p.notknown' => 'azerty']);
-                $results = $this->db->execute($select);
-            }
-        )->isInstanceOf('\PDOException');
+        $this->expectException('\PDOException');
+        $results = $this->db->execute($select);
     }
 
     /**
@@ -655,10 +683,9 @@ class Db extends atoum
     {
         $db = $this->db;
         $serialized = serialize($db);
-        $this->string($serialized)
-            ->isNotNull();
+        $this->assertNotNull($serialized);
 
         $unserialized = unserialize($serialized);
-        $this->object($unserialized)->isInstanceOf('Galette\Core\Db');
+        $this->assertInstanceOf('Galette\Core\Db', $unserialized);
     }
 }

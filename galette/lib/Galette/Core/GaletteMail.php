@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2021 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-12-10
@@ -47,7 +47,7 @@ use PHPMailer\PHPMailer\PHPMailer;
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -116,7 +116,7 @@ class GaletteMail
                 //if we want to send emails using a smtp server
                 $this->mail->IsSMTP();
                 // enables SMTP debug information
-                if (GALETTE_MODE == 'DEV') {
+                if (Galette::isDebugEnabled()) {
                     $this->mail->SMTPDebug = 4;
                     //cannot use a callable here; this prevents class to be serialized
                     //see https://bugs.galette.eu/issues/1468
@@ -134,7 +134,7 @@ class GaletteMail
                     $this->mail->Port = 587;
                 } else {
                     $this->mail->Host = $this->preferences->pref_mail_smtp_host;
-                    $this->mail->SMTPAuth   = $this->preferences->pref_mail_smtp_auth;
+                    $this->mail->SMTPAuth = $this->preferences->pref_mail_smtp_auth;
 
                     if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or
@@ -202,7 +202,7 @@ class GaletteMail
      *
      * @param array $recipients Array (mail=>name) of all recipients
      *
-     * @return boolean
+     * @return bool
      */
     public function setRecipients($recipients)
     {
@@ -212,26 +212,31 @@ class GaletteMail
             $this->initMailer();
         }
 
-        $this->recipients = array();
-        foreach ($recipients as $mail => $name) {
-            if (self::isValidEmail($mail)) {
-                $this->recipients[$mail] = $name;
-                $this->mail->AddBCC($mail, $name);
-            } else {
-                //one of addresses is not valid :
-                //- set $res to false
-                //- clear BCCs
-                //- log an INFO
-                $res = false;
-                Analog::log(
-                    '[' . get_class($this) .
-                    '] One of recipients address is not valid.',
-                    Analog::INFO
-                );
-                $this->mail->ClearBCCs();
-                break;
+        if (!empty($recipients)) {
+            $this->recipients = array();
+            foreach ($recipients as $mail => $name) {
+                if (self::isValidEmail($mail)) {
+                    $this->recipients[$mail] = $name;
+                    $this->mail->AddBCC($mail, $name);
+                } else {
+                    //one of addresses is not valid :
+                    //- set $res to false
+                    //- clear BCCs
+                    //- log an INFO
+                    $res = false;
+                    Analog::log(
+                        '[' . get_class($this) .
+                        '] One of recipients address is not valid.',
+                        Analog::INFO
+                    );
+                    $this->mail->ClearBCCs();
+                    break;
+                }
             }
+        } else {
+            $this->mail->ClearBCCs();
         }
+
         return $res;
     }
 
@@ -266,7 +271,7 @@ class GaletteMail
             $this->mail->IsHTML(true);
         } else {
             //the email is plaintext :)
-            $this->mail->AltBody = null;
+            $this->mail->AltBody = '';
             $this->mail->IsHTML(false);
         }
 
@@ -356,7 +361,7 @@ class GaletteMail
      *
      * @param string $address the email address to check
      *
-     * @return true if address is valid, false otherwise
+     * @return bool
      */
     public static function isValidEmail($address)
     {
@@ -375,7 +380,7 @@ class GaletteMail
      *
      * @param string $url the url to check
      *
-     * @return true if address is string is an url, false otherwise
+     * @return bool
      */
     public static function isUrl($url)
     {
@@ -395,7 +400,7 @@ class GaletteMail
     /**
      * Clean a string embedding html, producing AltText for html emails
      *
-     * @return current message in plaintext format
+     * @return string current message in plaintext format
      */
     protected function cleanedHtml()
     {
@@ -419,7 +424,7 @@ class GaletteMail
      *
      * @param boolean $set The value to set
      *
-     * @return boolean
+     * @return bool
      */
     public function isHTML($set = null)
     {

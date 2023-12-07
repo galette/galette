@@ -1,0 +1,55 @@
+<div id="groups_field" class="field">
+    <label>{{ _T("Groups:") }}</label>
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+    <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
+    {% endif %}
+    <span id="usergroups_form">
+    {% if member.id %}
+        {% for group in groups %}
+            {% if member.isGroupMember(group.getName()) %}
+            <input type="hidden" name="groups_adh[]" value="{{ group.getId() }}|{{ group.getName() }}"/>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </span>
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+    <span id="managedgroups_form">
+        {% if member.id %}
+            {% for group in groups %}
+                {% if member.isGroupManager(group.getName()) %}
+                <input type="hidden" name="groups_managed_adh[]" value="{{ group.getId() }}|{{ group.getName() }}"/>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </span>
+    {% endif %}
+    {% if member.id %}
+    <div class="ui large labels">
+        {% for group in groups %}
+            {% if member.isGroupMember(group.getName()) or member.isGroupManager(group.getName()) %}
+                <span class="ui label">
+                {% if member.isGroupMember(group.getName()) %}
+                    <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}" aria-hidden="true"></i>
+                {% endif %}
+                {% if member.isGroupManager(group.getName()) %}
+                    <i class="ui shield icon tooltip" title="{{ _T("Group manager") }}" aria-hidden="true"></i>
+                {% endif %}
+                    {{ group.getName() }}
+                </span>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if login.isGroupManager() %}
+    <a class="jsonly disabled ui icon button" id="btngroups" tabindex="0">
+        <i class="user tag icon" aria-hidden="true"></i>
+        {{ _T("Manage user's groups") }}
+    </a>
+    {% endif %}
+    {% if login.isAdmin() or login.isStaff() %}
+    <a class="jsonly disabled ui icon button" id="btnmanagedgroups" tabindex="0">
+        <i class="user shield icon" aria-hidden="true"></i>
+        {{ _T("Manage user's managed groups") }}
+    </a>
+    {% endif %}
+</div>

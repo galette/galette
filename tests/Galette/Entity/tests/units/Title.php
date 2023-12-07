@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,17 +28,16 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2019-12-14
  */
 
 namespace Galette\Entity\test\units;
 
-use atoum;
-use Zend\Db\Adapter\Adapter;
+use PHPUnit\Framework\TestCase;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Status tests
@@ -47,24 +46,22 @@ use Zend\Db\Adapter\Adapter;
  * @name      Title
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2019-12-14
  */
-class Title extends atoum
+class Title extends TestCase
 {
-    private $zdb;
-    private $remove = [];
+    private \Galette\Core\Db $zdb;
+    private array $remove = [];
 
     /**
      * Set up tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
     }
@@ -72,14 +69,12 @@ class Title extends atoum
     /**
      * Tear down tests
      *
-     * @param string $method Calling method
-     *
      * @return void
      */
-    public function afterTestMethod($method)
+    public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->array($this->zdb->getWarnings())->isIdenticalTo([]);
+            $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->deleteTitle();
     }
@@ -100,7 +95,7 @@ class Title extends atoum
         //Clean logs
         $this->zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
     }
 
@@ -115,39 +110,33 @@ class Title extends atoum
         $zdb = $this->zdb;
 
         $titles = new \Galette\Repository\Titles($this->zdb);
-        if (count($titles->getList($this->zdb)) === 0) {
-            $res = $titles->installInit($this->zdb);
-            $this->boolean($res)->isTrue();
+        if (count($titles->getList()) === 0) {
+            $res = $titles->installInit();
+            $this->assertTrue($res);
         }
 
         $title = new \Galette\Entity\Title();
 
         $title->short = 'Te.';
         $title->long = 'Test';
-        $this->boolean($title->store($this->zdb))->isTrue();
+        $this->assertTrue($title->store($this->zdb));
 
         $id = $title->id;
         $this->remove[] = $id;
         $title = new \Galette\Entity\Title($id); //reload
 
         $title->long = 'Test title';
-        $this->boolean($title->store($this->zdb))->isTrue();
+        $this->assertTrue($title->store($this->zdb));
         $title = new \Galette\Entity\Title($id); //reload
 
-        $this->string($title->long)->isIdenticalTo('Test title');
+        $this->assertSame('Test title', $title->long);
 
         $title = new \Galette\Entity\Title(\Galette\Entity\Title::MR);
-        $this->exception(
-            function () use ($title) {
-                $title->remove($this->zdb);
-            }
-        )
-            ->hasMessage('You cannot delete Mr. or Mrs. titles!')
-            ->isInstanceOf('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete Mr. or Mrs. titles!');
+        $title->remove($this->zdb);
 
         $title = new \Galette\Entity\Title($id); //reload
-        $this->boolean(
-            $title->remove($this->zdb)
-        )->isTrue();
+        $this->assertTrue($title->remove($this->zdb));
     }
 }

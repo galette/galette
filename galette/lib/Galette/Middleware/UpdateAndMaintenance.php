@@ -10,7 +10,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2015-2020 The Galette Team
+ * Copyright © 2015-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2020 The Galette Team
+ * @copyright 2015-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2015-10-31
@@ -42,17 +42,19 @@ namespace Galette\Middleware;
 use Galette\Core\I18n;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Routing\RouteContext;
 
 /**
  * Galette's Slim middleware for Update and Maintenance
  *
- * Renders maintainance and needs update pages, as 503 (service not available)
+ * Renders maintenance and needs update pages, as 503 (service not available)
  *
  * @category  Middleware
  * @name      UpdateAndMaintenance
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2020 The Galette Team
+ * @copyright 2015-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2015-10-31
@@ -98,14 +100,14 @@ class UpdateAndMaintenance
     /**
      * Middleware invokable class
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
-     * @param  \Psr\Http\Message\ResponseInterface      $response PSR7 response
-     * @param  callable                                 $next     Next middleware
+     * @param Request        $request PSR7 request
+     * @param RequestHandler $handler PSR7 request handler
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return Response
      */
-    public function __invoke(Request $request, Response $response, $next): Response
+    public function __invoke(Request $request, RequestHandler $handler): Response
     {
+        $response = new \Slim\Psr7\Response();
         $response
             ->withStatus(503)
             ->withHeader('Content-type', 'text/html')
@@ -123,11 +125,9 @@ class UpdateAndMaintenance
      */
     private function renderPage(Request $request, $contents)
     {
-        $path = str_replace(
-            'index.php',
-            '',
-            $request->getUri()->getBasePath()
-        );
+        $routeContext = RouteContext::fromRequest($request);
+        $routeParser = $routeContext->getRouteParser();
+        $path = $routeParser->urlFor('slash');
 
         //add ending / if missing
         if (
@@ -138,20 +138,28 @@ class UpdateAndMaintenance
             $path .= '/';
         }
 
-        $css_path = $path . GALETTE_THEME;
+        $theme_path = $path . GALETTE_THEME;
 
         $body = "<!DOCTYPE html>
-<html lang=\"" . $this->i18n->getAbbrev() . "\">
+<html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
     <head>
         <title>" . _T("Galette needs update!") . "</title>
         <meta charset=\"UTF-8\"/>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css_path . "galette.css\"/>
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "../../assets/css/galette-main.bundle.min.css\"/>
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "ui/semantic.min.css\"/>
+        <link rel=\"shortcut icon\" href=\"" . $theme_path . "images/favicon.png\"/>
     </head>
-    <body class=\"notup2date\">
-        <p class=\"center\">
-            <img src=\"" . $css_path . "images/galette.png\" alt=\"\"/>
-        </p>
-        <div id=\"errorbox\">" . $contents . "</div>
+    <body class=\"notup2date pushable\">
+        <div class=\"pusher\">
+            <div id=\"main\" class=\"ui container\">
+                <div class=\"ui basic segment\">
+                    <div class=\"ui basic center aligned fitted segment\">
+                        <img src=\"" . $theme_path . "images/galette.png\" alt=\"[ Galette ]\"/>
+                    </div>
+                    <div class=\"ui center aligned message\">" . $contents . "</div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>";
         return $body;
@@ -166,7 +174,7 @@ class UpdateAndMaintenance
      */
     private function maintenancePage(Request $request)
     {
-        $contents = "<h1>" . _T("Galette is currently under maintenance!") . "</h1>
+        $contents = "<div class=\"header\">" . _T("Galette is currently under maintenance!") . "</div>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
         return $this->renderPage($request, $contents);
     }

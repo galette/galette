@@ -1,0 +1,115 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+<div class="ui stackable pointing inverted menu tabbed">
+    <a href="{{ url_for('importModel') }}?tab=current" class="item{{ tab == 'current' ? ' active' }}" data-tab="current">{{ _T('Current model') }}</a>
+    <a href="{{ url_for('importModel') }}?tab=change" class="item{{ tab == 'change' ? ' active' }}" data-tab="change">{{ _T('Change model') }}</a>
+</div>
+<div class="ui{{ tab == 'current' ? ' active' }} tab segment" data-tab="current">
+    <table class="listing ui celled striped table">
+        <div class="ui small header">
+            {% if defaults_loaded %}
+                {{ _T('Default fields') }}
+            {% else %}
+                {{ _T('Model parameted on %date')|replace({'%date': model.getCreationDate()}) }}
+            {% endif %}
+        </div>
+        <thead>
+            <tr>
+                <th>{{ _T('Field') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for field in fields %}
+            <tr>
+        {% if members_fields[field] is not defined %}
+                <td>{{ _T('Missing field \'%field\'')|replace({'%field': field}) }}</td>
+        {% else %}
+                <td>{{ members_fields[field]['label']|replace({':': ''}) }}</td>
+        {% endif %}
+            </tr>
+    {% endfor %}
+    </table>
+    <div class="ui basic center aligned segment">
+        <div class="ui wrapping spaced buttons">
+            <a class="ui labeled icon primary button" href="{{ url_for('getImportModel') }}">
+                <i class="file csv icon" aria-hidden="true"></i>
+                {{ _T('Generate empty CSV file') }}
+            </a>
+            {% if not defaults_loaded %}
+            <a
+                id="delete"
+                class="ui labeled icon button delete tooltip"
+                href="{{ url_for('importModel') }}?remove=true"
+                title="{{ _T('Remove model and back to defaults') }}"
+            >
+                <i class="trash icon" aria-hiden="true"></i>
+                {{ _T('Remove model') }}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="ui{{ tab == 'change' ? ' active' }} tab segment" data-tab="change">
+    <form action="{{ url_for('storeImportModel') }}" method="POST" class="ui form" id="modelform">
+        <table class="listing ui celled striped table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ _T('Field') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for k, field in members_fields %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="fields[]" id="field_{{ k }}" value="{{ k }}"{% if k in fields %} checked="checked"{% endif %}/>
+                    </td>
+                    <td>
+                        <label for="field_{{ k }}">{{ field['label']|replace({':': ''}) }}</label>
+                    </td>
+                </tr>
+        {% endfor %}
+        </table>
+        <div class="ui basic center aligned segment">
+            <button type="submit" name="store-model" id="store-model" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i>
+                {{ _T('Store new model') }}
+            </button>
+            {% include "components/forms/csrf.html.twig" %}
+        </div>
+    </form>
+</div>
+<div class="ui basic center aligned segment">
+    <a
+        class="ui labeled icon button"
+        href="{{ url_for('import') }}"
+    >
+        <i class="arrow left icon" aria-hidden="true"></i>
+        {{ _T('Go back to import page') }}
+    </a>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(function() {
+        $('#store-model').click(function() {
+            var _checked = $('#modelform').find('input[type=checkbox]:checked').length;
+            if ( _checked == 0 ) {
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("No field selected")|e("js"),
+                    modal_content_twig: _T("Please make sure to select at least one field from the list to perform this action.")|e("js"),
+                    modal_class: "tiny",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "redalert",
+                } %}
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });
+</script>
+{% endblock %}

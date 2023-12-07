@@ -1,0 +1,21 @@
+{% extends "components/forms/input.html.twig" %}
+
+{% block label %}
+    {{ parent() }}
+{% endblock %}
+
+{% block element %}
+    <textarea
+        name="{{ name ?? id }}"
+        id="{{ id }}"
+        cols="{{ cols ?? 50 }}"
+        rows="{{ rows ?? 6 }}"
+        {% if required is defined and required == true %} required="required"{% endif %}
+        {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
+        {% if title is defined %} title="{{ title }}"{% endif %}
+        {% if maxlength is defined %} maxlength="{{ maxlength }}"{% endif %}
+        {% if elt_class is defined %} class="{{ elt_class }}"{% endif %}
+        {% if autocomplete is defined %} autocomplete="{{ autocomplete }}"{% endif %}
+        {% if size is defined %} size="{{ size }}"{% endif %}
+        >{% if value is not same as(null) %}{{ value }}{% endif %}</textarea><br/>
+{% endblock %}

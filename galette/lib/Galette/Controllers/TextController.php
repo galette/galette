@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,17 +28,16 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-06-08
  */
 
 namespace Galette\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\Texts;
 use Analog\Analog;
 
@@ -49,7 +48,7 @@ use Analog\Analog;
  * @name      TextController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-06-08
@@ -65,7 +64,7 @@ class TextController extends AbstractController
      * @param string   $lang     Language
      * @param string   $ref      Ref code
      *
-     * @return void
+     * @return Response
      */
     public function list(Request $request, Response $response, string $lang = null, string $ref = null)
     {
@@ -78,7 +77,7 @@ class TextController extends AbstractController
 
         $texts = new Texts(
             $this->preferences,
-            $this->router
+            $this->routeparser
         );
 
         $texts->setCurrent($ref);
@@ -87,13 +86,14 @@ class TextController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'gestion_textes.tpl',
+            'pages/configuration_texts.html.twig',
             [
                 'page_title'        => _T("Automatic emails texts edition"),
                 'texts'             => $texts,
-                'reflist'           => $texts->getRefs(),
+                'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
                 'cur_lang'          => $lang,
+                'cur_lang_name'     => $this->i18n->getNameFromId($lang),
                 'cur_ref'           => $ref,
                 'mtxt'              => $mtxt,
             ]
@@ -107,7 +107,7 @@ class TextController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function change(Request $request, Response $response)
     {
@@ -116,7 +116,7 @@ class TextController extends AbstractController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor(
+                $this->routeparser->urlFor(
                     'texts',
                     [
                         'lang'  => $post['sel_lang'],
@@ -132,19 +132,19 @@ class TextController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
     public function edit(Request $request, Response $response)
     {
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->routeparser);
 
         //set the language
         $cur_lang = $post['cur_lang'];
         //set the text entry
         $cur_ref = $post['cur_ref'];
 
-        $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->router);
+        $mtxt = $texts->getTexts($cur_ref, $cur_lang);
         $res = $texts->setTexts(
             $cur_ref,
             $cur_lang,
@@ -176,7 +176,7 @@ class TextController extends AbstractController
             ->withStatus(301)
             ->withHeader(
                 'Location',
-                $this->router->pathFor(
+                $this->routeparser->urlFor(
                     'texts',
                     [
                         'lang'  => $cur_lang,

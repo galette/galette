@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,16 +28,15 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-11
  */
 
 namespace Galette\DynamicFields\test\units;
 
-use atoum;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dynamic choice test
@@ -46,24 +45,22 @@ use atoum;
  * @name      Choice
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-11-11
  */
-class Choice extends atoum
+class Choice extends TestCase
 {
-    private $zdb;
-    private $choice;
+    private \Galette\Core\Db $zdb;
+    private \Galette\DynamicFields\Choice $choice;
 
     /**
      * Set up tests
      *
-     * @param string $method Current test method
-     *
      * @return void
      */
-    public function beforeTestMethod($method)
+    public function setUp(): void
     {
         $this->zdb = new \Galette\Core\Db();
         $this->choice = new \Galette\DynamicFields\Choice($this->zdb);
@@ -77,8 +74,7 @@ class Choice extends atoum
     public function testConstructor()
     {
         $o = new \Galette\DynamicFields\Choice($this->zdb, 10);
-        $this->variable($o->getId())
-            ->isNull();
+        $this->assertNull($o->getId());
     }
 
     /**
@@ -88,8 +84,7 @@ class Choice extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->choice->getTypeName())
-            ->isIdenticalTo(_T('choice'));
+        $this->assertSame(_T('choice'), $this->choice->getTypeName());
     }
 
     /**
@@ -100,50 +95,50 @@ class Choice extends atoum
     public function testBaseProperties()
     {
         $muliple = $this->choice->isMultiValued();
-        $this->boolean($muliple)->isFalse();
+        $this->assertFalse($muliple);
 
         $required = $this->choice->isRequired();
-        $this->boolean($required)->isFalse();
+        $this->assertFalse($required);
 
         $name = $this->choice->getName();
-        $this->variable($name)->isIdenticalTo('');
+        $this->assertSame('', $name);
 
         $has_fixed_values = $this->choice->hasFixedValues();
-        $this->boolean($has_fixed_values)->isTrue();
+        $this->assertTrue($has_fixed_values);
 
         $has_data = $this->choice->hasData();
-        $this->boolean($has_data)->isTrue();
+        $this->assertTrue($has_data);
 
         $has_w = $this->choice->hasWidth();
-        $this->boolean($has_w)->isFalse();
+        $this->assertFalse($has_w);
 
         $has_h = $this->choice->hasHeight();
-        $this->boolean($has_h)->isFalse();
+        $this->assertFalse($has_h);
 
         $has_s = $this->choice->hasSize();
-        $this->boolean($has_s)->isFalse();
+        $this->assertFalse($has_s);
 
         $perms = $this->choice->getPerm();
-        $this->variable($perms)->isNull();
+        $this->assertNull($perms);
 
         $width = $this->choice->getWidth();
-        $this->variable($width)->isNull();
+        $this->assertNull($width);
 
         $height = $this->choice->getHeight();
-        $this->variable($height)->isNull();
+        $this->assertNull($height);
 
         $repeat = $this->choice->getRepeat();
-        $this->variable($repeat)->isNull();
+        $this->assertNull($repeat);
 
         $repeat = $this->choice->isRepeatable();
-        $this->boolean($repeat)->isFalse();
+        $this->assertFalse($repeat);
 
         $size = $this->choice->getSize();
-        $this->variable($size)->isNull();
+        $this->assertNull($size);
 
         $values = $this->choice->getValues();
-        $this->boolean($values)->isFalse();
+        $this->assertFalse($values);
 
-        $this->boolean($this->choice->hasPermissions())->isTrue();
+        $this->assertTrue($this->choice->hasPermissions());
     }
 }

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
@@ -36,6 +36,9 @@
 
 namespace Galette\IO;
 
+use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
+use Symfony\Component\Yaml\Yaml;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -47,7 +50,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
@@ -57,9 +60,9 @@ class CsvOut extends Csv
 {
     public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
-    private $rs;
     private $parameted_path;
-    private $parameted_file = 'exports.xml';
+    private $legacy_parameted_file = 'exports.xml';
+    private $parameted_file = 'exports.yaml';
 
     /**
      * Default constructor
@@ -69,27 +72,25 @@ class CsvOut extends Csv
         parent::__construct(self::DEFAULT_DIRECTORY);
         $this->parameted_path = GALETTE_CONFIG_PATH;
         $this->parameted_file = $this->parameted_path . $this->parameted_file;
+        $this->legacy_parameted_file = $this->parameted_path . $this->legacy_parameted_file;
     }
 
     /**
      * Export Array result set to CSV
      *
-     * @param array  $rs        Results as an array
-     * @param string $separator The CSV separator (either '\t', ';' or ','
-     *                          are accepted)
-     * @param char   $quote     how does fields should be quoted
-     * @param bool   $titles    does export shows column titles or not.
-     *                          Defaults to false.
-     * @param object $file      export to a file on disk. A file pointer
-     *                          should be passed here. Defaults to false.
+     * @param ResultSet      $rs        Results as an array
+     * @param string         $separator The CSV separator (either '\t', ';' or ','
+     *                                  are accepted)
+     * @param string         $quote     how does fields should be quoted
+     * @param array|false    $titles    does export shows column titles or not.
+     *                                  Defaults to false.
+     * @param resource|false $file      export to a file on disk. A file pointer
+     *                                  should be passed here. Defaults to false.
      *
      * @return string CSV result
      */
     public function export($rs, $separator, $quote, $titles = false, $file = false)
     {
-        if (!$rs) {
-            return '';
-        }
         //switch back to the default separator if not in accepted_separators array
         if (!in_array($separator, $this->accepted_separators)) {
             $separator = self::DEFAULT_SEPARATOR;
@@ -101,10 +102,11 @@ class CsvOut extends Csv
 
         $this->result = '';
         $results = [];
-        foreach ($rs as $row) {
-            $results[] = $row;
+        if (count($rs) > 0) {
+            foreach ($rs as $row) {
+                $results[] = $row;
+            }
         }
-        $this->max = count($results);
         $this->separator = $separator;
         $this->quote = $quote;
         //dubbing quote for escaping
@@ -113,7 +115,7 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if ($titles && !is_array($titles)) {
+        if (!is_array($titles)) {
             $row = $results[0];
             foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
@@ -123,7 +125,7 @@ class CsvOut extends Csv
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } elseif ($titles && is_array($titles) && count($titles) > 1) {
+        } elseif (count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),
@@ -147,7 +149,7 @@ class CsvOut extends Csv
                     $elts[] = $this->quote . str_replace(
                         $this->quote,
                         $this->escaped,
-                        $v
+                        $v ?? ''
                     ) . $this->quote;
                 }
 
@@ -164,7 +166,7 @@ class CsvOut extends Csv
 
     /**
      * Write export.
-     * If a file is defined, export will be outpoutted into it.
+     * If a file is defined, export will be outputted into it.
      *   If not, it will be returned
      *
      * @param bool $last true if we write the latest line
@@ -192,15 +194,32 @@ class CsvOut extends Csv
      *
      * @param string $id Parameted export identifier
      *
-     * @return string
+     * @return ?string
      */
     public function getParamedtedExportName($id)
     {
-        $xml = simplexml_load_file($this->parameted_file);
-        $xpath = $xml->xpath(
-            '/exports/export[@id=\'' . $id . '\'][1]/@name'
-        );
-        return (string)$xpath[0];
+        //check first in YAML configuration file
+        $data = Yaml::parseFile($this->parameted_file);
+        foreach ($data as $export) {
+            if (!isset($export['inactive']) || $export['inactive']) {
+                $keys = array_keys($export);
+                $anid = array_shift($keys);
+                if ($anid == $id) {
+                    return $export['name'];
+                }
+            }
+        }
+
+        //if id has not been found, look for it in legacy XML configuration file
+        if (file_exists($this->legacy_parameted_file)) {
+            $xml = simplexml_load_file($this->legacy_parameted_file);
+            $xpath = $xml->xpath(
+                '/exports/export[@id=\'' . $id . '\'][1]/@name'
+            );
+            return (string)$xpath[0];
+        }
+
+        return null;
     }
 
     /**
@@ -210,34 +229,53 @@ class CsvOut extends Csv
      */
     public function getParametedExports()
     {
-        $parameted = array();
+        $parameted = [];
 
-        $xml = simplexml_load_file($this->parameted_file);
+        //first, load legacy config; if exists
+        if (file_exists($this->legacy_parameted_file)) {
+            $xml = simplexml_load_file($this->legacy_parameted_file);
 
-        foreach ($xml->export as $export) {
-            if (!($export['inactive'] == 'inactive')) {
-                $parameted[] = array(
-                    'id'          => (string)$export['id'],
-                    'name'        => (string)$export['name'],
-                    'description' => (string)$export['description']
-                );
+            foreach ($xml->export as $export) {
+                if (!($export['inactive'] == 'inactive')) {
+                    $id = (string)$export['id'];
+                    $parameted[$id] = array(
+                        'id' => $id,
+                        'name' => (string)$export['name'],
+                        'description' => (string)$export['description']
+                    );
+                }
             }
         }
+
+        //then, load config from YAML file
+        $data = Yaml::parseFile($this->parameted_file);
+        foreach ($data as $export) {
+            if (!isset($export['inactive']) || $export['inactive']) {
+                $keys = array_keys($export);
+                $id = array_shift($keys);
+                $parameted[$id] = [
+                    'id'    => $id,
+                    'name' => $export['name'],
+                    'description' => $export['description']
+                ];
+            }
+        }
+
         return $parameted;
     }
 
     /**
-     * Run selected export
+     * Run selected export parameted as XML
      *
      * @param string $id export's id to run
      *
-     * @return string filename used
+     * @return string|int filename used or error code
      */
-    public function runParametedExport($id)
+    private function runXmlParametedExport($id)
     {
         global $zdb;
 
-        $xml = simplexml_load_file($this->parameted_file);
+        $xml = simplexml_load_file($this->legacy_parameted_file);
 
         $xpath = $xml->xpath(
             '/exports/export[@id=\'' . $id . '\'][not(@inactive)][1]'
@@ -283,6 +321,76 @@ class CsvOut extends Csv
                 );
                 return self::FILE_NOT_WRITABLE;
             }
+            return (string)$export['filename'];
+        } catch (Throwable $e) {
+            Analog::log(
+                'An error occurred while exporting | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return self::DB_ERROR;
+        }
+    }
+
+    /**
+     * Run selected export parameted as YAML
+     *
+     * @param string $id export's id to run
+     *
+     * @return string|int|false filename used, error code or failure
+     */
+    private function runYamlParametedExport($id)
+    {
+        global $zdb;
+
+        $export = [];
+        $data = Yaml::parseFile($this->parameted_file);
+        foreach ($data as $anexport) {
+            if (!isset($anexport['inactive']) || $anexport['inactive']) {
+                $keys = array_keys($anexport);
+                $anid = array_shift($keys);
+                if ($anid == $id) {
+                    $export = $anexport;
+                }
+            }
+        }
+
+        if ($export['inactive'] ?? false) {
+            return false;
+        }
+
+        try {
+            $results = $zdb->db->query(
+                str_replace('galette_', PREFIX_DB, $export['query']),
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
+            $filename = self::DEFAULT_DIRECTORY . $export['filename'];
+
+            $fp = fopen($filename, 'w');
+            if ($fp) {
+                $separator = $export['separator'] ?? self::DEFAULT_SEPARATOR;
+                $quote = $export['quote'] ?? self::DEFAULT_QUOTE;
+                $title = [];
+                if (isset($export['headers'])) {
+                    if ($export['headers'] === false) {
+                        //No title
+                        $title = false;
+                    } else {
+                        foreach ($export['headers'] as $header) {
+                            $title[] = (string)$header;
+                        }
+                    }
+                }
+
+                $this->export($results, $separator, $quote, $title, $fp);
+                fclose($fp);
+            } else {
+                Analog::log(
+                    'File ' . $filename . ' is not writeable.',
+                    Analog::ERROR
+                );
+                return self::FILE_NOT_WRITABLE;
+            }
             return $export['filename'];
         } catch (Throwable $e) {
             Analog::log(
@@ -291,5 +399,28 @@ class CsvOut extends Csv
             );
             return self::DB_ERROR;
         }
+    }
+
+    /**
+     * Run selected export
+     *
+     * @param string $id export's id to run
+     *
+     * @return ?string filename used
+     */
+    public function runParametedExport($id)
+    {
+        //try first to run from YAML configuration file
+        $run = $this->runYamlParametedExport($id);
+        if ($run !== null && $run !== false) {
+            return $run;
+        }
+
+        //if nothing has been run yet, look into legacy XML configuration file
+        if (file_exists($this->legacy_parameted_file)) {
+            return $this->runXmlParametedExport($id);
+        }
+
+        return null;
     }
 }

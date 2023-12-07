@@ -1,0 +1,108 @@
+{% if selector is not defined %}
+    {% set selector = '.delete' %}
+{% endif %}
+{% if loader is not defined %}
+    {% set loader = 'action' %}
+{% endif %}
+{% if loader_selector is not defined %}
+    {% set loader_selector = '.loader_selector' %}
+{% endif %}
+
+    //handle removals
+{% if single_action is defined %}
+    var _removeItems = function() {
+        $('{{ selector }}').off('click').on('click', function(event) {
+            event.preventDefault();
+            var _this = $(this);
+{% endif %}
+{% if extra_check is defined %}
+            {{ extra_check }}
+{% endif %}
+{% if method is not defined %}
+    {% set method = 'GET' %}
+{% endif %}
+            $.ajax({
+                url: {% if deleteurl is not defined %}_this.attr('href'){% else %}'{{ deleteurl|raw }}'{% endif %},
+                type: "{{ method }}",
+                data: {
+                    ajax: true,
+{% if extra_data is defined %}
+                    {{ extra_data|raw }}
+{% endif %}
+                },
+                datatype: 'json',
+                {% include 'elements/js/loader.js.twig' with {
+                    loader: loader,
+                    selector: loader_selector
+                } %},
+                success: function(res){
+                    var _res = $(res);
+                    _res.find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {% include 'elements/js/loader.js.twig' with {
+                                loader: loader,
+                                selector: loader_selector
+                            } %},
+                            success: function(res){
+                                if (res.success) {
+                                    window.location.href = _form.find('input[name=redirect_uri]').val();
+                                } else {
+                                    $.ajax({
+                                        url: '{{ url_for("ajaxMessages") }}',
+                                        method: "GET",
+                                        success: function (message) {
+                                            $('.main-content .message').remove();
+                                            $('.main-content').prepend(message);
+                                        }
+                                    });
+                                }
+                            },
+                            error: function() {
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
+                            }
+                        });
+                    });
+
+                    var _title = _res.find('.header');
+
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title: "_title",
+                        modal_class: "tiny",
+                        modal_content: "_res",
+                        modal_onapprove: "$('#confirm_removal form').submit();",
+                        modal_approve_text: _T("Remove")|e('js'),
+                        modal_approve_icon: 'trash',
+                        modal_approve_color: 'red',
+                        modal_classname: "redalert"
+                    } %}
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+{% if single_action is defined %}
+        });
+    }
+    _removeItems();
+{% endif %}

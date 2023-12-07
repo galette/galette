@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,86 +28,69 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2017 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.4dev - 2013-02-03
  */
 
 define('GALETTE_ROOT', __DIR__ . '/../');
-define('GALETTE_THEME_DIR', './themes/default/');
 require_once GALETTE_ROOT . '/vendor/autoload.php';
 require_once GALETTE_ROOT . 'config/versions.inc.php';
 require_once GALETTE_ROOT . 'config/paths.inc.php';
 
 $phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<');
+$php_message = PHP_VERSION;
+if (!$phpok) {
+    $php_message .= sprintf(' (%s minimum required)', GALETTE_PHP_MIN);
+}
 $cm = new Galette\Core\CheckModules(false);
 $cm->doCheck(false); //do not load with translations!
 ?>
 <html>
     <head>
         <title>Galette compatibility tests</title>
-        <link rel="stylesheet" type="text/css" href="themes/default/galette.css"/>
-        <style type="text/css">
-            h1 {
-                margin-top: .5em;
-                text-align: center;
-            }
-            h2 {
-                font-size: 1.2em;
-                text-align: center;
-            }
-            div {
-                width: 20em;
-                margin: 0 auto;
-            }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            li {
-                clear: right;
-                border-bottom: .1em dotted;
-                padding: .2em 0;
-            }
-            li img, span.Missing, span.Ok {
-                font-weight: bold;
-                float: right;
-            }
-            .Missing {
-                color: red;
-            }
-            .Ok {
-                color: green;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
+        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic.min.css" />
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
-    <body>
-        <h1>
-            <img src="themes/default/images/galette.png"/>
-            <br/>Compatibility tests
-        </h1>
-    <?php
-    if (!$phpok
-        || !$cm->isValid()
-    ) {
-        echo '<h2 class="Missing">Something is wrong :(</h2>';
-    } else {
-        echo '<h2 class="Ok">Everything is OK :)</h2>';
-    }
-    ?>
-        <div>
-            <ul>
-                <li>
-                    PHP version:
-                    <span class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></span>
-                </li>
-    <?php
-    echo $cm->toHtml(false);
-    ?>
-            </ul>
+    <body class="pushable">
+        <div class="pusher">
+            <div id="main" class="ui container">
+                <div class="ui basic segment">
+                    <div class="ui basic center aligned fitted segment">
+                        <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.png"/>
+                    </div>
+                    <h1 class="ui block center aligned header">Compatibility tests</h1>
+                    <div class="ui segment">
+                        <div id="main" class="text ui container">
+                <?php
+                if (!$phpok
+                    || !$cm->isValid()
+                ) {
+                    echo '<p class="ui red center aligned message">Something is wrong :(</p>';
+                } else {
+                    echo '<p class="ui green center aligned message">Everything is OK :)</p>';
+                }
+                ?>
+                            <ul class="leaders">
+                                <li>
+                                    <span>PHP <strong class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo $php_message; ?></strong></span>
+                                    <span><i class="ui <?php echo ($phpok) ? 'green check' : 'red times'; ?> icon"></i></span>
+                                </li>
+                <?php
+                echo $cm->toHtml(false);
+                ?>
+                            </ul>
+                <?php
+                if ($cm->isValid() && $phpok) {
+                    echo '<p class="ui center aligned message">You can now <a href="./installer.php">install Galette</a></p>';
+                }
+                ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-09
@@ -37,8 +37,8 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Status;
 use Galette\Repository\Members;
@@ -51,7 +51,7 @@ use Analog\Analog;
  * @name      EntitledsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2020-06-07
@@ -72,6 +72,7 @@ class EntitledsController extends CrudController
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
+        return $response;
     }
 
     /**
@@ -123,7 +124,7 @@ class EntitledsController extends CrudController
             case 'contributions-types':
                 $className = 'ContributionsTypes';
                 $entitled = new ContributionsTypes($this->zdb);
-                $params['page_title'] = _T("Contribution types");
+                $params['page_title'] = _T("Contributions types");
                 break;
         }
 
@@ -134,8 +135,8 @@ class EntitledsController extends CrudController
         $list = $entitled->getCompleteList();
         $params['entries'] = $list;
 
-        if (count($entitled->errors) > 0) {
-            foreach ($entitled->errors as $error) {
+        if (count($entitled->getErrors()) > 0) {
+            foreach ($entitled->getErrors() as $error) {
                 $this->flash->addMessage(
                     'error_detected',
                     $error
@@ -146,7 +147,7 @@ class EntitledsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'gestion_intitules.tpl',
+            'pages/configuration_entitleds.html.twig',
             $params
         );
         return $response;
@@ -163,6 +164,7 @@ class EntitledsController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         //no filters
+        return $response;
     }
 
     // /CRUD - Read
@@ -205,10 +207,12 @@ class EntitledsController extends CrudController
         $entry = $entitled->get($id);
         $params['entry'] = $entry;
 
+        $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
+
         // display page
         $this->view->render(
             $response,
-            'editer_intitule.tpl',
+            'pages/configuration_entitled_form.html.twig',
             $params
         );
         return $response;
@@ -249,6 +253,15 @@ class EntitledsController extends CrudController
     ): Response {
         $post = $request->getParsedBody();
 
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+        }
+
+        $error_detected = [];
+        $msg = null;
+
         switch ($class) {
             case 'status':
                 $entitled = new Status($this->zdb);
@@ -256,41 +269,57 @@ class EntitledsController extends CrudController
             case 'contributions-types':
                 $entitled = new ContributionsTypes($this->zdb);
                 break;
+            default:
+                throw new \RuntimeException('Unknown entitled class');
         }
 
         $label = trim($post[$entitled::$fields['libelle']]);
-        $field = trim($post[$entitled::$fields['third']] ?? 0);
+        $field = (int)trim($post[$entitled::$fields['third']] ?? 0);
 
-        $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
+        if ($label != '') {
+            $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
+        } else {
+            $ret = false;
+            $error_detected[] = _T('Missing required %type name!');
+        }
+        $redirect_uri = $this->routeparser->urlFor('entitleds', ['class' => $class]);
 
         if ($ret !== true) {
-            $msg_type = 'error_detected';
-            $msg = $action === 'add' ?
+            $error_detected[] = $action === 'add' ?
                 _T("%type has not been added :(") : _T("%type #%id has not been updated");
+            if ($action === 'edit') {
+                $redirect_uri = $this->routeparser->urlFor('editEntitled', ['id' => $id, 'class' => $class]);
+            }
         } else {
-            $msg_type = 'success_detected';
             $msg = $action === 'add' ?
                 _T("%type has been successfully added!") : _T("%type #%id has been successfully updated!");
         }
 
-        $this->flash->addMessage(
-            $msg_type,
-            str_replace(
-                ['%type', '%id'],
-                [$entitled->getI18nType(), $id],
-                $msg
-            )
-        );
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        ['%type', '%id'],
+                        [$entitled->getI18nType(), $id],
+                        $error
+                    )
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace(
+                    ['%type', '%id'],
+                    [$entitled->getI18nType(), $id],
+                    $msg
+                )
+            );
+        }
 
         return $response
             ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->router->pathFor(
-                    'entitleds',
-                    ['class' => $class]
-                )
-            );
+            ->withHeader('Location', $redirect_uri);
     }
 
 
@@ -306,7 +335,7 @@ class EntitledsController extends CrudController
      */
     public function redirectUri(array $args)
     {
-        return $this->router->pathFor('entitleds', ['class' => $args['class']]);
+        return $this->routeparser->urlFor('entitleds', ['class' => $args['class']]);
     }
 
     /**
@@ -318,7 +347,7 @@ class EntitledsController extends CrudController
      */
     public function formUri(array $args)
     {
-        return $this->router->pathFor(
+        return $this->routeparser->urlFor(
             'doRemoveEntitled',
             [
                 'class' => $args['class'],

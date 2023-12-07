@@ -1,0 +1,18 @@
+/*******************************
+         Galette Overrides
+*******************************/
+
+/*--------------------------------------
+         Default modal header style
+---------------------------------------*/
+.ui.modal:not(.inverted) > .header {
+    background: @primaryColor url(themes/galette/assets/images/bg.png) no-repeat;
+}
+
+/*------------------------------
+         Removal
+-------------------------------*/
+.ui.redalert.modal > .header {
+    background-color: @red;
+    color: @invertedHeaderColor;
+}

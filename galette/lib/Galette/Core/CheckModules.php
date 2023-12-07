@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-03-12
@@ -43,7 +43,7 @@ namespace Galette\Core;
  * @name      CheckModules
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-03-12
@@ -102,8 +102,8 @@ class CheckModules
                     $mstring = _T("either 'mysql' or 'pgsql' PDO driver");
                 }
                 if (
-                    !extension_loaded('pdo_mysql')
-                    && !extension_loaded('pdo_pgsql')
+                    !$this->isExtensionLoaded('pdo_mysql')
+                    && !$this->isExtensionLoaded('pdo_pgsql')
                 ) {
                     $this->missing[] = $mstring;
                 } else {
@@ -111,7 +111,7 @@ class CheckModules
                 }
             } else {
                 $mstring = str_replace('%s', $name, $string);
-                if (!extension_loaded($name)) {
+                if (!$this->isExtensionLoaded($name)) {
                     if ($required) {
                         $this->missing[] = $mstring;
                     } else {
@@ -134,36 +134,26 @@ class CheckModules
     public function toHtml($translated = true)
     {
         $html = null;
-        $img_dir = null;
-        if (defined('GALETTE_THEME_DIR')) {
-            $img_dir = GALETTE_THEME_DIR . 'images/';
-        } else {
-            $img_dir = GALETTE_TPL_SUBDIR . 'images/';
-        }
 
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
-                $html .= '<li><span>' . $m . '</span><span><img src="' .
-                    $img_dir . 'icon-invalid.png" alt="' .
-                    $ko . '"/></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui red times icon" aria-hidden="true"></i><span class="visually-hidden">' .
+                    $ko . '</span></span></li>';
             }
         }
 
         if (count($this->good) > 0) {
             $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
-                $html .= '<li><span>' . $m . '</span><span><img src="' .
-                    $img_dir . 'icon-valid.png" alt="' .
-                    $ok . '"/></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui green check icon" aria-hidden="true"></i><span class="visually-hidden">' .
+                    $ok . '</span></span></li>';
             }
         }
 
         if (count($this->should) > 0) {
             foreach ($this->should as $m) {
-                $html .= '<li><span>' . $m . '</span><span><img src="' .
-                    $img_dir . 'icon-warning.png" alt=""' .
-                    '/></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui yellow exclamation circle icon" aria-hidden="true"></i></span></li>';
             }
         }
 
@@ -220,5 +210,17 @@ class CheckModules
     public function getMissings()
     {
         return $this->missing;
+    }
+
+    /**
+     * Check if a module is loaded
+     *
+     * @param string $ext Module name
+     *
+     * @return bool
+     */
+    protected function isExtensionLoaded(string $ext): bool
+    {
+        return extension_loaded($ext);
     }
 }

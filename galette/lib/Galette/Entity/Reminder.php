@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
@@ -50,10 +51,15 @@ use Galette\Core\History;
  * @name      Reminder
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2021 The Galette Team
+ * @copyright 2009-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
+ *
+ * @property-read integer $member_id
+ * @property integer $type
+ * @property Adherent $dest
+ * @property string $date
  */
 
 class Reminder
@@ -128,11 +134,11 @@ class Reminder
     /**
      * Load reminder from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs($rs)
+    private function loadFromRs(ArrayObject $rs)
     {
         global $zdb;
 
@@ -230,9 +236,12 @@ class Reminder
 
         $this->success = false;
 
+        // When late, the number of days expired is required, not the number of days remaining.
         $type_name = 'late';
+        $days_remaining = $this->dest->days_remaining + 1;
         if ($this->type === self::IMPENDING) {
             $type_name = 'impending';
+            $days_remaining = $this->dest->days_remaining;
         }
 
         if ($this->hasMail()) {
@@ -263,7 +272,7 @@ class Reminder
                 array(
                     $this->dest->sname,
                     $this->dest->getEmail(),
-                    $this->dest->days_remaining
+                    $days_remaining
                 ),
                 _T("%name <%mail> (%days days)")
             );
@@ -303,7 +312,7 @@ class Reminder
                 array(
                     $this->dest->sname,
                     $this->dest->id,
-                    $this->dest->days_remaining
+                    $days_remaining
                 ),
                 _T("%name (#%id - %days days)")
             );
@@ -340,6 +349,8 @@ class Reminder
             case 'type':
             case 'date':
                 return $this->$name;
+            case 'comment':
+                return $this->comment;
             default:
                 Analog::log(
                     'Unable to get Reminder property ' . $name,
@@ -347,6 +358,26 @@ class Reminder
                 );
                 break;
         }
+    }
+
+    /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'member_id':
+            case 'type':
+            case 'date':
+            case 'comment':
+                return true;
+        }
+        return false;
     }
 
     /**

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019 The Galette Team
+ * Copyright © 2019-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -37,8 +37,8 @@
 namespace Galette\Controllers;
 
 use Throwable;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Analog\Analog;
 
 /**
@@ -48,7 +48,7 @@ use Analog\Analog;
  * @name      CrudController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -144,7 +144,7 @@ abstract class CrudController extends AbstractController
         // display page
         $this->view->render(
             $response,
-            'confirm_removal.tpl',
+            'modals/confirm_removal.html.twig',
             $this->getconfirmDeleteParams($request)
         );
         return $response;
@@ -167,7 +167,7 @@ abstract class CrudController extends AbstractController
         ];
 
         return [
-            'mode'          => $request->isXhr() ? 'ajax' : '',
+            'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
             'page_title'    => $this->confirmRemoveTitle($args),
             'form_url'      => $this->formUri($args),
             'cancel_uri'    => $this->cancelUri($args),
@@ -180,7 +180,7 @@ abstract class CrudController extends AbstractController
      *
      * In simple cases, we get the ID in the route arguments; but for
      * batchs, it should be found elsewhere.
-     * In post values, we look for id key, as well as all {sthing}_sel keys (like members_sel or contrib_sel)
+     * In post values, we look for id key, as well as all entries_sel keys
      *
      * @param array $args Request arguments
      * @param array $post POST values
@@ -189,6 +189,7 @@ abstract class CrudController extends AbstractController
      */
     protected function getIdsToRemove(&$args, $post)
     {
+        /** @var  null|array|string $ids */
         $ids = null;
         if (isset($post['id'])) {
             $ids = $post['id'];
@@ -196,18 +197,10 @@ abstract class CrudController extends AbstractController
             $ids = $args['id'];
         }
 
-        //look for {sthing}_sel as multiple ids selection (members_sel, contrib_sel, and so on)
-        if (is_array($post) && count($post)) {
-            $selecteds = preg_grep('/.+_sel$/', array_keys($post));
-            if (count($selecteds) == 1 && !isset($args['id'])) {
-                $ids = $post[array_shift($selecteds)];
-            } elseif (count($selecteds) > 1) {
-                //maybe an error to have multiple {type}_sel in same post request.
-                Analog::log(
-                    'Several {sthing}_sel variables in same post request should be avoid.',
-                    ANalog::WARNING
-                );
-            }
+        if ($ids === null && method_exists($this, 'getFilterName')) {
+            $filter_name = $this->getFilterName($args);
+            $filters = $this->session->$filter_name;
+            $ids = $filters->selected;
         }
 
         //type
@@ -218,6 +211,7 @@ abstract class CrudController extends AbstractController
         }
 
         //add to $args if needed
+        //@phpstan-ignore-next-line
         if (is_array($ids)) {
             $args['ids'] = $ids;
         } elseif (!isset($args['id']) && $ids) {
@@ -290,8 +284,7 @@ abstract class CrudController extends AbstractController
             );
         } else {
             try {
-                $ids = $this->getIdsToRemove($args, $post);
-
+                $this->getIdsToRemove($args, $post);
                 $res = $this->doDelete($args, $post);
                 if ($res === true) {
                     $this->flash->addMessage(
@@ -320,11 +313,7 @@ abstract class CrudController extends AbstractController
                 ->withStatus(301)
                 ->withHeader('Location', $uri);
         } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
+            return $this->withJson($response, ['success'   => $success]);
         }
     }
 

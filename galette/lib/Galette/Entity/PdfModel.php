@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -36,6 +36,8 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
+use Slim\Routing\RouteParser;
 use Throwable;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
@@ -51,7 +53,7 @@ use Laminas\Db\Sql\Expression;
  * @name      PdfModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -60,10 +62,15 @@ use Laminas\Db\Sql\Expression;
  * @property string $name
  * @property integer $type
  * @property string $header
+ * @property-read string $hheader
  * @property string $footer
+ * @property-read string $hfooter
  * @property string $title
+ * @property-read string $htitle
  * @property string $subtitle
+ * @property-read string $hsubtitle
  * @property string $body
+ * @property-read string $hbody
  * @property string $styles
  * @property PdfMain $parent
  */
@@ -102,7 +109,7 @@ abstract class PdfModel
     public function __construct(Db $zdb, Preferences $preferences, $type, $args = null)
     {
         global $container, $login;
-        $this->router = $container->get('router');
+        $this->routeparser = $container->get(RouteParser::class);
         $this->preferences = $preferences;
         $this
             ->setDb($zdb)
@@ -150,7 +157,9 @@ abstract class PdfModel
                     throw new \RuntimeException('Model not found!');
                 }
             } else {
-                $this->loadFromRs($results->current());
+                /** @var ArrayObject $result */
+                $result = $results->current();
+                $this->loadFromRs($result);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -165,11 +174,11 @@ abstract class PdfModel
     /**
      * Load model from a db ResultSet
      *
-     * @param ResultSet $rs ResultSet
+     * @param ArrayObject $rs ResultSet
      *
      * @return void
      */
-    protected function loadFromRs($rs)
+    protected function loadFromRs(ArrayObject $rs)
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -208,11 +217,13 @@ abstract class PdfModel
     public function store()
     {
         $title = $this->title;
+        //@phpstan-ignore-next-line
         if ($title === null || trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
+        //@phpstan-ignore-next-line
         if ($subtitle === null || trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }
@@ -356,7 +367,6 @@ abstract class PdfModel
 
                 $value .= $this->styles;
                 return $value;
-                break;
             case 'hheader':
             case 'hfooter':
             case 'htitle':
@@ -378,7 +388,6 @@ abstract class PdfModel
 
                 $value = $this->proceedReplacements($prop_value);
                 return $value;
-                break;
             default:
                 Analog::log(
                     'Unable to get PdfModel property ' . $name,
@@ -386,6 +395,40 @@ abstract class PdfModel
                 );
                 break;
         }
+    }
+
+    /**
+     * Isset
+     * Required for twig to access properties via __get
+     *
+     * @param string $name Property name
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        switch ($name) {
+            case 'id':
+            case 'name':
+            case 'header':
+            case 'footer':
+            case 'body':
+            case 'title':
+            case 'subtitle':
+            case 'type':
+            case 'styles':
+            case 'patterns':
+            case 'replaces':
+            case 'hstyles':
+            case 'hheader':
+            case 'hfooter':
+            case 'htitle':
+            case 'hsubtitle':
+            case 'hbody':
+                return true;
+        }
+
+        return false;
     }
 
     /**
@@ -443,11 +486,11 @@ abstract class PdfModel
             case 'footer':
             case 'body':
                 if ($value === null || trim($value) === '') {
-                    if ($name !== 'body' && get_class($this) === 'PdfMain') {
+                    if ($name !== 'body' && get_class($this) === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
                         );
-                    } elseif ($name === 'body' && get_class($this) !== 'PdfMain') {
+                    } elseif ($name === 'body' && get_class($this) !== PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("body should not be empty!")
                         );

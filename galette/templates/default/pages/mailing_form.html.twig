@@ -1,0 +1,486 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+{% if preferences.pref_mail_method == constant('Galette\\Core\\Mailing::METHOD_DISABLED') and not callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
+        <div id="errorbox" class="ui negative icon message">
+            <i class="ban icon" aria-hidden="true"></i>
+            <div class="content">
+                <p>{{ _T("Email sent is disabled in the preferences. Ask galette admin") }}</p>
+            </div>
+        </div>
+{% elseif mailing_saved is not defined %}
+        <form action="{{ url_for('doMailing') }}" id="listform" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                        {{ _T("Mailing information") }}
+                    </div>
+                    <div class="active content field">
+                        <div class="three fields">
+                            <div class="field">
+                                <label for="sender">{{ _T("Sender") }}</label>
+                                <select name="sender" id="sender" class="ui dropdown nochosen">
+                                    <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}">{{ _T("from preferences") }}</option>
+                                {% if not login.isSuperAdmin() %}
+                                    <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}">{{ _T("current logged in user") }}</option>
+                                {% endif %}
+                                    <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_OTHER') }}">{{ _T("other") }}</option>
+                                </select>
+                            </div>
+                            <div class="field required">
+                                <label for="sender_name">{{ _T("Name") }}</label>
+                                <input type="text" name="sender_name" id="sender_name" value="{{ preferences.pref_email_nom }}" disabled="disabled"/>
+                            </div>
+                            <div class="field required">
+                                <label for="sender_address">{{ _T("Address") }}</label>
+                                <input type="text" name="sender_address" id="sender_address" value="{{ preferences.pref_email }}" disabled="disabled"/>
+                            </div>
+                        </div>
+                        <div class="ui section divider"></div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>{{ _T("Recipients") }}</label>
+                                {% include "elements/mailing_recipients.html.twig" %}
+                                {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_SENT') %}
+                                    {% set path = url_for('members') %}
+                                    {% set text = _T("Go back to members list") %}
+                                {% else %}
+                                    {% set path = '#' %}
+                                    {% set text = _T("Manage selected members") %}
+                                {% endif %}
+                                <a
+                                    id="btnusers"
+                                    href="{{ path }}"
+                                    class="jsonly disabled ui labeled icon button"
+                                >
+                                    <i class="blue users icon" aria-hidden="true"></i>
+                                    {{ text }}
+                                </a>
+                                <noscript>
+                                    <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
+                                </noscript>
+                            </div>
+    {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_START') %}
+                            <div class="field">
+                            {% if attachments|length > 0 %}
+                                <div class="ui tiny header">
+                                    <i class="paperclip icon" aria-hidden="true"></i>
+                                    <div class="content">{{ _T("Existing attachments:") }}</div>
+                                </div>
+                                <div id="existing_attachments" class="ui middle aligned divided selection list">
+                                {% for attachment in attachments %}
+                                    <div class="item">
+                                        <div class="content">
+                                            <a
+                                                href="?remove_attachment={{ attachment.getFileName() }}"
+                                                class="rm_attachement delete"
+                                            >
+                                                <i class="ui trash alt red icon tooltip" aria-hidden="true"></i>
+                                                <span class="ui special popup">{{ _T("Remove attachment") }}</span>
+                                            </a>
+                                            {{ attachment.getFileName() }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="ui tiny header">
+                                    <i class="paperclip icon" aria-hidden="true"></i>
+                                    <div class="content">{{ _T("Attachments") }}</div>
+                                </div>
+                            {% endif %}
+                                <div class="ui file action input">
+                                    <div class="ui corner labeled input">
+                                        <input type="file" name="attachment[]" id="attachment" multiple="multiple"/>
+                                        <div class="ui corner label">
+                                            <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers.") }}" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <label for="attachment" class="ui button">
+                                        <i class="blue upload icon" aria-hidden="true"></i>
+                                        {{ _T("Add attachment") }}
+                                    </label>
+                                </div>
+                            </div>
+    {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_START') %}
+
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                        {{ _T("Write your mailing") }}
+                    </div>
+                    <div class="active content field">
+                        <div class="field required">
+                            <label for="mailing_objet">{{ _T("Object:") }}</label>
+                            <input type="text" name="mailing_objet" id="mailing_objet" value="{{ mailing.subject }}" size="80" required/>
+                        </div>
+                        <div class="field required">
+                            <label for="mailing_corps">{{ _T("Message:") }}</label>
+                            <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{% if mailing.message %}{{ mailing.message|escape }}{% endif %}</textarea>
+                            <input type="hidden" name="html_editor_active" id="html_editor_active" value="{% if html_editor_active %}1{% else %}0{% endif %}"/>
+                        </div>
+                        <div class="ui basic horizontal equal width segments">
+                            <div class="ui basic fitted segment">
+                                <div class="ui toggle checkbox">
+                                    <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {% if mailing.html == 1 or preferences.pref_editor_enabled == 1 %}checked="checked"{% endif %}/>
+                                    <label for="mailing_html">{{ _T("Interpret HTML") }}</label>
+                                </div>
+                            </div>
+                            <div id="summernote_toggler" class="jsonly hidden ui basic fitted right aligned segment">
+                                <a class="ui blue tertiary button" href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{{ _T("Activate HTML editor") }}</a>
+                            </div>
+                        </div>
+                        <div class="inline field">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui basic center aligned segment">
+                <div class="ui wrapping spaced buttons">
+                    <button type="submit" name="mailing_go" id="btnpreview" class="ui labeled icon button">
+                        <i class="eye blue icon" aria-hidden="true"></i>
+                        {{ _T("Preview") }}
+                    </button>
+                    <button type="submit" name="mailing_save" class="ui labeled icon button action">
+                        <i class="save green icon" aria-hidden="true"></i>
+                        {{ _T("Save") }}
+                    </button>
+                    <button type="submit" name="mailing_confirm" class="ui labeled icon button {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled" disabled="disabled{% endif %}">
+                        <i class="rocket red icon" aria-hidden="true"></i>
+                        {{ _T("Send") }}
+                    </button>
+                    <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
+                        <i class="times icon" aria-hidden="true"></i>
+                        {{ _T("Cancel mailing") }}
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+        {% if mailing.current_step == constant('Galette\\Core\\Mailing::STEP_PREVIEW') %}
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="jsonly hidden icon dropdown" aria-hidden="true"></i>
+                        {{ _T("Preview your mailing") }}
+                    </div>
+                    <div class="active content field">
+                        <table class="ui very basic striped unstackable table">
+                            <tbody>
+                                <tr>
+                                    <th class="two wide">{{ _T("Subject:") }}</th>
+                                    <td>{{ mailing.subject }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="two wide">{{ _T("Message:") }}</th>
+                                    <td>
+            {% if mailing.html %}
+                                        {{ mailing.message }}
+            {% else %}
+                                        <pre>{{ mailing.wrapped_message }}</pre>
+            {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui basic center aligned segment">
+                <div class="ui wrapped wrapping spaced buttons">
+                    <button type="submit" name="mailing_reset" class="ui labeled icon button">
+                        <i class="backward icon" aria-hidden="true"></i>
+                        {{ _T("Modifiy mailing") }}
+                    </button>
+                    <button type="submit" name="mailing_confirm"{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} class="ui labeled icon button disabled" disabled="disabled"{% else %} class="ui labeled icon button"{% endif %}>
+                        <i class="rocket icon" aria-hidden="true"></i>
+                        {{ _T("Send") }}
+                    </button>
+                    <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
+                        <i class="trash red icon" aria-hidden="true"></i>
+                        {{ _T("Cancel mailing") }}
+                    </button>
+
+                    <input type="hidden" name="mailing_objet" value="{{ mailing.subject }}"/>
+                    <input type="hidden" name="mailing_corps" value="{% if mailing.message %}{{ mailing.message|escape }}{% endif %}"/>
+                </div>
+            </div>
+        {% endif %}
+            {% include "components/forms/csrf.html.twig" %}
+        </form>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+{% if (preferences.pref_mail_method != constant('Galette\\Core\\Mailing::METHOD_DISABLED') or not callstatic('\\Galette\\Core\\Galette', 'isDemo')) and mailing_saved is not defined %}
+    {% if mailing.current_step != constant('Galette\\Core\\Mailing::STEP_SENT') %}
+<script type="text/javascript">
+    $(function() {
+        {# Preview popup #}
+        $('#btnpreview').click(function(){
+            var _sender = $('#sender').val();
+            var _sender_name = $('#sender_name').val();
+            var _sender_address = $('#sender_address').val();
+            var _subject = $('#mailing_objet').val();
+            var _body = $('#mailing_corps').val();
+            var _html = $('#mailing_html').is(':checked');
+            var _attachments = [];
+            $('#existing_attachments .item').each(function(){
+                _attachments[_attachments.length] = $(this).text();
+            });
+            $.ajax({
+                url: '{{ url_for('mailingPreview') }}',
+                type: "POST",
+                data: {
+                    sender: _sender,
+                    sender_name: _sender_name,
+                    sender_address: _sender_address,
+                    subject: _subject,
+                    body: _body,
+                    html: _html,
+                    attachments: _attachments
+                },
+                {% include "elements/js/loader.js.twig" with {
+                    selector: '#btnpreview',
+                    loader: 'button'
+                } %},
+                success: function(res){
+                    _preview_dialog(res);
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying preview :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+            return false;
+        });
+
+        var _preview_dialog = function(res){
+            {% include "elements/js/modal.js.twig" with {
+                modal_title_twig: _T("Mailing preview")|e("js"),
+                modal_content: "res",
+                modal_content_class: "scrolling",
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
+            } %}
+        }
+
+        {# Members popup #}
+        $('#btnusers').click(function(){
+            $.ajax({
+                url: '{{ url_for('ajaxMembers') }}',
+                type: "POST",
+                data: {
+                    multiple: true
+                },
+                {% include "elements/js/loader.js.twig" with {
+                    selector: '#btnusers',
+                    loader: 'button'
+                } %},
+                success: function(res){
+                    _members_dialog(res);
+                },
+                error: function() {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                }
+            });
+            return false;
+        });
+
+        var _members_dialog = function(res){
+            {% include "elements/js/modal.js.twig" with {
+                modal_title_twig: _T("Members selection")|e("js"),
+                modal_content: "res",
+                modal_class: "members-selection fullscreen",
+                modal_content_class: "scrolling",
+                modal_deny_only: true,
+                modal_cancel_text: _T("Close")|e("js")
+            } %}
+            _members_ajax_mapper(res);
+        }
+
+        var _members_ajax_mapper = function(res){
+            $('#btnvalid').click(function(){
+                //first, let's store new recipients in mailing object
+                var _recipients = new Array();
+                $('li[id^="member_"]').each(function(){
+                    _recipients[_recipients.length] = this.id.substring(7, this.id.length);
+                });
+                $.ajax({
+                    url: '{{ url_for('mailingRecipients') }}',
+                    type: "POST",
+                    data: {
+                        recipients: _recipients
+                    },
+                    {% include "elements/js/loader.js.twig" with {
+                        selector: '#btnvalid',
+                        loader: 'button'
+                    } %},
+                    success: function(res){
+                        $('#unreachables_count').remove();
+                        $('#recipients_count').replaceWith(res);
+                        $('.members-selection').modal('hide');
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+            });
+            //Remap links
+            var _none = $('#none_selected').clone();
+            $('li[id^="member_"]').click(function(){
+                $(this).remove();
+                if ( $('#selected_members ul li').length == 0 ) {
+                    $('#selected_members ul').append(_none);
+                }
+            });
+            $('#listing tbody tr').click(function(event){
+                event.preventDefault();
+                var _mlink = $(this).find('.username_row a');
+                var _mid = _mlink[0].href.match(/.*\/(\d+)$/)[1];
+                var _mname = _mlink.text();
+                $('#none_selected').remove()
+                if ( $('#member_' + _mid).length == 0 ) {
+                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
+                    $('#selected_members ul').append(_li);
+                    $('#member_' + _mid).click(function(){
+                        $(this).remove();
+                        if ( $('#selected_members ul li').length == 0 ) {
+                            $('#selected_members ul').append(_none);
+                        }
+                    });
+                }
+                return false;
+            }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a member")|e('js') }}');
+
+            $('.members-selection .pagination a').click(function(){
+                var _members = new Array();
+                var _unreach = new Array();
+                $('li[id^="member_"]').each(function(){
+                    var _mid = this.id.substring(7, this.id.length);
+                    if ($(this).hasClass('unreachables')) {
+                        _unreach[_unreach.length] = _mid;
+                    } else {
+                        _members[_members.length] = _mid;
+                    }
+                });
+
+                $.ajax({
+                    url: this.href,
+                    type: "POST",
+                    data: {
+                        multiple: true,
+                        members: _members,
+                        unreachables: _unreach
+                    },
+                    {% include "elements/js/loader.js.twig" with {
+                        loader: '#listing'
+                    } %},
+                    success: function(res){
+                        $('#listing').remove();
+                        var _listing = $($.parseHTML(res)).find('#listing');
+                        $('.members-selection .eleven.wide.column').append(_listing);
+                        _members_ajax_mapper(res);
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+                return false;
+            });
+        }
+
+        {% set modal_onapprove = "window.location.href = '" ~ url_for('mailing') ~ "' + _link.attr('href');" %}
+        $('.rm_attachement').click(function(event){
+            event.preventDefault();
+            var _link = $(this);
+            {% set modal_content = _T("Are you sure you want to remove this attachment?") ~ '<br/>' ~ _T("This will immediately remove attachment from disk and cannot be undone.") %}
+            {% include "elements/js/modal.js.twig" with {
+                modal_title_twig: _T("Remove attachment")|e("js"),
+                modal_content_twig: modal_content|e("js"),
+                modal_class: "tiny",
+                modal_onapprove: modal_onapprove,
+                modal_approve_text: _T("Remove")|e('js'),
+                modal_approve_icon: "trash",
+                modal_approve_color: "red",
+                modal_cancel_text: _T("Cancel")|e("js"),
+                modal_classname: "redalert",
+            } %}
+        });
+
+        $('#sender').on('change', function() {
+            var _this = $(this);
+            var _sender_name = $('#sender_name');
+            var _sender_address = $('#sender_address');
+            var _editable = false;
+            var _val = _this.val();
+            switch (_val) {
+                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}':
+                    _sender_name.val('{{ preferences.pref_email_nom|e('js') }}');
+                    _sender_address.val('{{ preferences.pref_email|e('js') }}');
+                    break;
+
+        {% if not login.isSuperAdmin() %}
+                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}':
+                    _sender_name.val('{{ sender_current['name']|e('js') }}');
+                    _sender_address.val('{{ sender_current['email']|e('js') }}');
+                    break;
+        {% endif %}
+                case '{{ constant('Galette\\Core\\GaletteMail::SENDER_OTHER') }}':
+                    _sender_name.val('');
+                    _sender_address.val('');
+                    _editable = true;
+                    break;
+            }
+
+            if (_editable) {
+                _sender_name.removeAttr('disabled');
+                _sender_address.removeAttr('disabled');
+                $('#sender + span').removeClass('disabled');
+            } else {
+                _sender_name.attr('disabled', 'disabled');
+                _sender_address.attr('disabled', 'disabled');
+                $('#sender + span').addClass('disabled');
+            }
+        });
+    });
+</script>
+    {% endif %}
+{% endif %}
+{% endblock %}

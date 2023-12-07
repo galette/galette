@@ -1,0 +1,363 @@
+{% extends 'elements/list.html.twig' %}
+
+{% set basic_table = true %}
+
+{% set form = {
+    'route': {
+        'name': "batch-contributionslist",
+        'args': {"type": "contributions"}
+    },
+    'order': {
+        'name': "contributions",
+        'args': {"type": "contributions"}
+    }
+} %}
+
+{% if nb != 0 and (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+    {% set batch = {
+        'route': {
+            'name': 'batch-contributionslist',
+            'args': {"type": "contributions"}
+        },
+        'modal': {
+            'title': _T("No contribution selected"),
+            'content': _T("Please make sure to select at least one contribution from the list to perform this action.")
+        }
+    } %}
+    {% set batch_actions = [
+        {
+            'name': 'delete',
+            'label': _T("Delete"),
+            'icon': 'trash red'
+        },
+        {
+            'name': 'csv__directdownload',
+            'label': _T("Export as CSV"),
+            'icon': 'file csv'
+        }
+    ] %}
+{% endif %}
+
+{% block search %}
+    <form action="{{ url_for("payments_filter", {"type": "contributions"}) }}" method="post" class="ui form filters">
+    <div class="ui secondary yellow segment">
+        <div class="four fields">
+            <div class="field">
+                <label for="date_field">{{ _T("Show contributions by") }}</label>
+                <select name="date_field" id="date_field" class="ui search dropdown nochosen">
+                    <option value="{{ constant("Galette\\Filters\\ContributionsList::DATE_BEGIN") }}"{% if filters.date_field == constant('Galette\\Filters\\ContributionsList::DATE_BEGIN') %} selected="selected"{% endif %}>{{ _T("Begin") }}</option>
+                    <option value="{{ constant("Galette\\Filters\\ContributionsList::DATE_END") }}"{% if filters.date_field == constant('Galette\\Filters\\ContributionsList::DATE_END') %} selected="selected"{% endif %}>{{ _T("End") }}</option>
+                    <option value="{{ constant("Galette\\Filters\\ContributionsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ContributionsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Record") }}</option>
+                </select>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="start_date_filter">{{ _T("since") }}</label>
+                    <div class="ui calendar" id="contrib-rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="end_date_filter">{{ _T("until") }}</label>
+                    <div class="ui calendar" id="contrib-rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {% include "components/forms/payment_types.html.twig" with {
+                    current: filters.payment_type_filter,
+                    varname: "payment_type_filter",
+                    show_inline: "",
+                    classname: "",
+                    empty: {'value': -1, 'label': _T("Select")}
+                } %}
+            </div>
+                <div class="ui right aligned basic fitted segment field flexend">
+                    <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                        <i class="search icon" aria-hidden="true"></i>
+                        {{ _T("Filter") }}
+                    </button>
+                    <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        {{ _T("Clear filter") }}
+                    </button>
+            </div>
+        </div>
+    </div>
+    {% if member is defined and mode != 'ajax' %}
+        {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
+            <div class="ui compact vertically fitted segment">
+            <div class="ui horizontal list">
+            <span class="ui primary ribbon label">
+            {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
+            {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                <a
+                    href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
+                >
+                    <i class="icon times tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">
+                        {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                            {{ _T("Show all your contributions") }}
+                        {% else %}
+                            {{ _T("Show all members contributions") }}
+                        {% endif %}
+                    </span>
+                </a>
+            {% endif %}
+        {% endif %}
+        {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
+        </span>
+        {% if login.isAdmin() or login.isStaff() %}
+            <div class="item">
+                <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
+                    <i class="ui user blue icon" aria-hidden="true"></i>
+                    {{ _T("See member profile") }}
+                </a>
+            </div>
+            <div class="item">
+                <a href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
+                    <i class="ui user check green icon" aria-hidden="true"></i>
+                    {{ _T("Add a membership fee") }}
+                </a>
+            </div>
+            <div class="item">
+                <a href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
+                    <i class="ui gift green icon" aria-hidden="true"></i>
+                    {{ _T("Add a donation") }}
+                </a>
+            </div>
+        {% endif %}
+        </div>
+        </div>
+    {% endif %}
+    {% if member is defined %}
+        <div class="{{ member.getRowClass() }}{% if not member.isActive() %} inactive-account{% endif %} ui center aligned segment">
+            {{ member.getDues() }}
+        </div>
+    {% endif %}
+
+    {% if mode == 'ajax'%}
+        <input type="hidden" name="ajax" value="true"/>
+        <input type="hidden" name="max_amount" value="{{ filters.max_amount }}"/>
+        <input type="hidden" name="filtre_transactions" value="{{ filters.filtre_transactions }}"/>
+    {% else %}
+        {% include "components/forms/csrf.html.twig" %}
+    {% endif %}
+    </form>
+{% endblock %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count contribution", "%count contributions", nb)|replace({"%count": nb}),
+        'route': {
+            'name': 'payments_filter',
+            'args': {
+                'type': 'contributions'
+            }
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline_actions %}
+    {% if (login.isAdmin() or login.isStaff()) and member is not defined %}
+        <a
+            class="ui tiny labeled icon button"
+            href="{{ url_for("addContribution", {type: constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}"
+        >
+            <i class="ui user check green icon" aria-hidden="true"></i>
+            {{ _T("Add a membership fee") }}
+        </a>
+        <a
+            class="ui tiny labeled icon button"
+            href="{{ url_for("addContribution", {type: constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}"
+        >
+            <i class="ui gift green icon" aria-hidden="true"></i>
+            {{ _T("Add a donation") }}
+        </a>
+
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#', 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID")},
+        {'label': _T("Date"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE")},
+        {'label': _T("Begin"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_BEGIN_DATE")},
+        {'label': _T("End"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE")}
+    ] %}
+
+    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T('Type'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_TYPE")},
+        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT")},
+        {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAYMENT_TYPE")},
+        {'label': _T("Duration")}
+    ]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {% if nb != 0 %}
+        <tr>
+            <th class="right" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% else %}9{% endif %}">
+                {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
+            </th>
+        </tr>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for ordre, contribution in list %}
+        {% set mid = contribution.member %}
+        {% if contribution.isFee() %}
+            {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
+        {% else %}
+            {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_DONATION') %}
+        {% endif %}
+
+        <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
+            <td data-scope="row">
+                {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
+                    <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
+                {% else %}
+                    <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
+                {% endif %}
+                {% if preferences.pref_show_id %}
+                    {{ contribution.id }}
+                {% else %}
+                    {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+                {% endif %}
+                {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
+                    <span class="displaynone">
+                            <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
+                                {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
+                            </a>
+                        </span>
+                    {% if contribution.isTransactionPart() %}
+                        <a
+                                href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                        >
+                            <i class="ui linkify icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <span class="displaynone">
+                            {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
+                        </span>
+                    {% if contribution.isTransactionPart() %}
+                        <i class="ui link icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                    {% endif %}
+                {% endif %}
+                {% if not contribution.isTransactionPart() %}
+                    <i class="ui icon">&nbsp;</i>
+                {% endif %}
+            </td>
+            <td data-col-label="{{ _T("Date") }}">{{ contribution.date }}</td>
+            <td data-col-label="{{ _T("Begin") }}">{{ contribution.begin_date }}</td>
+            <td data-col-label="{{ _T("End") }}">{{ contribution.end_date }}</td>
+            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+                <td data-col-label="{{ _T("Member") }}">
+                    {% if member is defined %}
+                        {% set mname = member.sname %}
+                    {% else %}
+                        {# FIXME #}
+                        {% set mname = memberName({'id': mid}) %}
+                    {% endif %}
+                    {% if filters.filtre_cotis_adh == "" %}
+                        <a
+                                href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": mid}) }}"
+                                title="{{ _T("Show only '%name' contributions")|replace({"%name": mname}) }}"
+                        >
+                            <i class="ui filter grey small icon" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                    <a
+                            href="{{ url_for("member", {"id": mid}) }}"
+                            title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                    >
+                        {{ mname }}
+                    </a>
+                </td>
+            {% endif %}
+            <td data-col-label="{{ _T("Type") }}">{{ contribution.type.libelle }}</td>
+            <td data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
+            <td data-col-label="{{ _T("Payment type") }}">{{ contribution.spayment_type }}</td>
+            <td data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
+            {% if mode != 'ajax' %}
+                <td class="actions_row center">
+                    <a
+                            href="{{ url_for("printContribution", {"id": contribution.id}) }}"
+                    >
+                        <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
+                    </a>
+                    {% if (login.isAdmin() or login.isStaff()) %}
+                        <a
+                                href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
+                                class="action"
+                        >
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
+                        </a>
+                        <a
+                                href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
+                                class="delete"
+                        >
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
+                        </a>
+                    {% endif %}
+                </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% elseif login.isAdmin() or login.isStaff() %}11{% else %}10{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
+    {% endfor %}
+{% endblock %}
+
+{% block legend %}
+    <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+        <div class="header">{{ _T("Legend") }}</div>
+        <div class="content">
+            <table class="ui stripped table">
+                {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+                    <tr>
+                        <th class="action">
+                            <i class="ui edit blue icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Modification") }}</td>
+                    </tr>
+                    <tr>
+                        <th class="delete">
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Deletion") }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th class="cotis-normal color-sample">&nbsp;</th>
+                    <td class="back">{{ _T("Contribution") }}</td>
+                </tr>
+                <tr>
+                    <th class="cotis-give color-sample">&nbsp;</th>
+                    <td class="back">{{ _T("Gift") }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
+    </div>
+{% endblock %}

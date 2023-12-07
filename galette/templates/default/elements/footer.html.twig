@@ -1,0 +1,52 @@
+    <footer class="page-footer{% if login.getCompactMenu() %} extended"{% endif %}">
+        <div class="ui center aligned basic padded segment footer-wrapper">
+            <div class="row">
+                <div class="ui horizontal bulleted link list">
+                    <a href="https://galette.eu" class="item">
+                        <i class="icon globe europe" aria-hidden="true"></i>
+                        {{ _T("Website") }}
+                    </a>
+                    <a href="https://doc.galette.eu" class="item">
+                        <i class="icon book" aria-hidden="true"></i>
+                       {{ _T("Documentation") }}
+                    </a>
+                    <a href="https://framapiaf.org/@galette" class="item">
+                        <i class="icon mastodon" aria-hidden="true"></i>
+                        @galette
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="ui horizontal bulleted link list">
+                    <a id="copyright" href="https://galette.eu/" class="item">
+                        <i class="icon cookie bite" aria-hidden="true"></i>
+                        Galette {{ constant('GALETTE_DISPLAY_VERSION') }}
+                    </a>
+{% if login.isLogged() and (login.isAdmin() or login.isStaff()) %}
+                    <a id="sysinfos" href="{{ url_for('sysinfos') }}" class="item">
+                        <i class="icon cogs" aria-hidden="true"></i>
+                        {{ _T("System information") }}
+                    </a>
+{% endif %}
+                </div>
+{% if login.isLogged() and cur_route == 'dashboard' %}
+                {# Comply with the Twemoji project's requirements about attribution #}
+                <!--
+                    Emojis used by Galette's core and its official plugins on the dashboard
+                    are licensed under CC-BY 4.0 <https://creativecommons.org/licenses/by/4.0/>
+                    by Twemoji <https://twemoji.twitter.com/>
+                -->
+{% endif %}
+            </div>
+{# Display footer line, if it does exists #}
+{% if preferences.pref_footer != '' %}
+            <div class="row">
+                <div class="ui padded grid">
+                    <div class="ui sixteen wide column">
+                        {{ preferences.pref_footer|raw }}
+                    </div>
+                </div>
+            </div>
+{% endif %}
+        </div>
+    </footer>

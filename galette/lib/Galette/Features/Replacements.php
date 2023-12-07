@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2021 The Galette Team
+ * Copyright © 2020-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-20
@@ -45,12 +45,13 @@ use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
+use Galette\Entity\Reminder;
 use Galette\Entity\Texts;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
-use Slim\Router;
+use Slim\Routing\RouteParser;
 
 /**
  * Replacements feature
@@ -59,7 +60,7 @@ use Slim\Router;
  * @name      Replacements
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
  * @since     2020-12-20
@@ -72,27 +73,27 @@ trait Replacements
     private $dynamic_patterns = [];
 
     /**
-     * @Inject("zdb")
      * @var Db
      */
+    #[Inject("zdb")]
     protected $zdb;
 
     /**
-     * @Inject("login")
      * @var Login
      */
+    #[Inject("login")]
     protected $login;
 
     /**
-     * @Inject("preferences")
      * @var Preferences
      */
+    #[Inject("preferences")]
     protected $preferences;
 
     /**
-     * @var Router
+     * @var RouteParser
      */
-    protected $router;
+    protected $routeparser;
 
     /**
      * Get dynamic patterns
@@ -132,6 +133,7 @@ trait Replacements
                         break;
                     case '':
                     case 'VALUE':
+                    default:
                         $skey = $key;
                         $title = _T('Value for dynamic field "%s"');
                         break;
@@ -224,6 +226,7 @@ trait Replacements
                 'pattern'          => '/{ASSO_LOGO}/',
             ],
             'date_now'              => [
+                //TRANS: see https://www.php.net/manual/datetime.format.php
                 'title'     => _T('Current date (Y-m-d)'),
                 'pattern'   => '/{DATE_NOW}/'
             ],
@@ -296,6 +299,10 @@ trait Replacements
             'adh_address'       =>  [
                 'title'     => _T("Address"),
                 'pattern'   => '/{ADDRESS_ADH}/',
+            ],
+            'adh_address_multi'    => [
+                'title'     => sprintf('%s (%s)', _T('Address'), _T('with break lines')),
+                'pattern'   => '/{ADDRESS_ADH_MULTI}/',
             ],
             'adh_zip'           =>  [
                 'title'     => _T("Zipcode"),
@@ -476,11 +483,13 @@ trait Replacements
         }
 
         $logo = new Logo();
-        $logo_elt = '<img' .
-            ' src="' . $this->preferences->getURL() . $this->router->pathFor('logo') . '"' .
-            ' width="' . $logo->getOptimalWidth() . '"' .
-            ' height="' . $logo->getOptimalHeight() . '"' .
-            '/>';
+
+        $logo_elt = sprintf(
+            '<img src="%1$s" width="%2$s" height="%3$s" />',
+            '@' . base64_encode(file_get_contents($logo->getPath())),
+            $logo->getOptimalWidth(),
+            $logo->getOptimalHeight()
+        );
 
         $this->setReplacements(
             array(
@@ -490,8 +499,9 @@ trait Replacements
                 'asso_address_multi' => $address_multi,
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
+                //TRANS: see https://www.php.net/manual/datetime.format.php
                 'date_now'           => date(_T('Y-m-d')),
-                'login_uri'          => $this->preferences->getURL() . $this->router->pathFor('login'),
+                'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
             )
         );
 
@@ -545,7 +555,7 @@ trait Replacements
      *
      * @param Contribution $contrib Contribution
      *
-     * @return PdfModel
+     * @return self
      */
     public function setContribution(Contribution $contrib): self
     {
@@ -591,13 +601,14 @@ trait Replacements
      *
      * @param Adherent $member Member
      *
-     * @return PdfModel
+     * @return self
      */
     public function setMember(Adherent $member): self
     {
         global $login;
 
         $address = $member->getAddress();
+        $address_multi = preg_replace("/\n/", "<br>", $address);
 
         if ($member->isMan()) {
             $gender = _T("Man");
@@ -634,6 +645,7 @@ trait Replacements
                 'adh_profession'    => $member->job,
                 'adh_company'       => $member->company_name,
                 'adh_address'       => $address,
+                'adh_address_multi' => $address_multi,
                 'adh_zip'           => $member->getZipcode(),
                 'adh_town'          => $member->getTown(),
                 'adh_country'       => $member->getCountry(),
@@ -646,7 +658,7 @@ trait Replacements
                 'adh_groups'        => $group_list,
                 'adh_dues'          => $member->getDues(),
                 'days_remaining'    => $member->days_remaining,
-                'days_expired'      => ($member->days_remaining * -1),
+                'days_expired'      => (int)$member->days_remaining + 1,
                 //Handle COMPANY_NAME_ADH... https://bugs.galette.eu/issues/1530
                 '_adh_company'      => $member->company_name,
                 //Handle old names for variables ... https://bugs.galette.eu/issues/1393
@@ -672,7 +684,7 @@ trait Replacements
      * @param array  $dynamic_fields Dynamic fields
      * @param mixed  $object         Related object (Adherent, Contribution, ...)
      *
-     * @return PdfModel
+     * @return self
      */
     public function setDynamicFields(string $form_name, array $dynamic_fields, $object): self
     {
@@ -740,9 +752,10 @@ trait Replacements
                             $value .= sprintf(
                                 $spattern,
                                 $this->preferences->getURL(),
-                                $this->router->pathFor(
+                                $this->routeparser->urlFor(
                                     'getDynamicFile',
                                     [
+                                        'form_name' => $form_name,
                                         'id' => $object->id,
                                         'fid' => $field_id,
                                         'pos' => ++$pos,
@@ -840,15 +853,15 @@ trait Replacements
     }
 
     /**
-     * Set Router dependency
+     * Set RouteParser dependency
      *
-     * @param Router $router Router instance
+     * @param RouteParser $routeparser RouteParser instance
      *
      * @return $this
      */
-    public function setRouter(Router $router): self
+    public function setRouteparser(RouteParser $routeparser): self
     {
-        $this->router = $router;
+        $this->routeparser = $routeparser;
         return $this;
     }
 
@@ -861,8 +874,6 @@ trait Replacements
      */
     protected function proceedReplacements(string $source): string
     {
-        $replaced = $source;
-
         //handle translations
         $callback = static function ($matches) {
             return _T($matches[1]);

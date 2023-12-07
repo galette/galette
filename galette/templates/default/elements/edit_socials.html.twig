@@ -1,0 +1,91 @@
+{% if tabbed ?? false == true %}
+<div id="social" class="ui{{ tab == 'social' ? ' active' }} tab segment" data-tab="social">
+    {% block social_edit %}
+        {% for social in socials %}
+            <div class="inline field stored">
+                <label for="social_{{ social.id }}">{{ social.getSystemType(social.type) }}</label>
+                <div class="ui right action input">
+                    <input type="text" name="social_{{ social.id }}" id="social_{{ social.id }}" value="{{ social.url }}" class="large"/>
+                    <a href="#" class="ui icon red button delete delsocial" title="{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}">
+                        <i class="trash icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Remove %type")|replace({"%type": social.getSystemType(social.type)})|e() }}</span>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+            {% if socials|length() > 0 %}<div class="ui divider"></div>{% endif %}
+            <div class="field addsocial">
+                <label>{{ _T("Add new social network") }}</label>
+                <div class="combo-social fields">
+                    <div class="field">
+                        <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
+                            <option value="">{{ _T("Choose or enter your own...") }}</option>
+                            {% for social_type in osocials.getSystemTypes(false) %}
+                                <option value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50"/>
+                    </div>
+                </div>
+                <a href="#" class="ui tiny green labeled icon button action addsocial">
+                    <i class="plus icon" aria-hidden="true"></i>
+                    {{ _T("Add") }}
+                </a>
+            </div>
+            <script type="text/javascript">
+                var _dropdown = function(selector) {
+                    if ( !selector ) {
+                        selector = '.socials_dropdown';
+                    }
+
+                    $(selector).dropdown({
+                        allowAdditions: true
+                    });
+                }
+
+                var _rmFilter = function(elt) {
+                    if ( typeof elt == 'undefined') {
+                        elt = $('#social .stored');
+                    }
+                    elt.find('.delsocial').click(function(e){
+                        e.preventDefault();
+                        var _this = $(this);
+                        _this.parents('.field.stored').remove();
+                    });
+                }
+
+                $(function(){
+                    _rmFilter();
+                    _dropdown();
+
+                    $('.addsocial').click(function(e){
+                        e.preventDefault();
+
+                        var _newindex = $(this).parents('.addsocial').find('.combo-social:last select').attr('id').replace('social_new_type_', '');
+                        ++_newindex;
+                        $(this).parents('.addsocial').find ('.combo-social:last')
+                            .clone() // copy
+                            .insertAfter('#social .combo-social:last') // where
+                            .find('select').attr('id', 'social_new_type_' + _newindex).attr('name', 'social_new_type_' + _newindex)
+                            .parent().parent().parent().find('input').attr('id', 'social_new_value_' + _newindex).attr('name', 'social_new_value_' + _newindex)
+                        ;
+
+                        _dropdown();
+                    });
+                });
+            </script>
+    {% endblock %}
+</div>
+{% else %}
+    <div id="social" class="ui styled fluid accordion field">
+        <div class="active title">
+            <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+            {{ _T("Social networks") }}
+        </div>
+        <div class="active content field">
+            {{ block('social_edit') }}
+        </div>
+    </div>
+{% endif %}

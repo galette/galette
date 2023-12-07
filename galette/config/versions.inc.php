@@ -35,5 +35,7 @@
  * @since     Available since 0.7dev - 2009-03-13
  */
 
-define('GALETTE_PHP_MIN', '7.3');
-define('JQUERY_MARKITUP_VERSION', '1.1.14');
+define('GALETTE_PHP_MIN', '8.1');
+define('GALETTE_MYSQL_MIN', '5.7');
+define('GALETTE_MARIADB_MIN', '10.4');
+define('GALETTE_PGSQL_MIN', '11')  ;

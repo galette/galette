@@ -1,0 +1,79 @@
+/* custom.css */
+@font-face {
+  font-family: "PtSans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("ptsans-regular-webfont.woff2") format("woff2"),
+    url("ptsans-regular-webfont.woff") format("woff");
+}
+
+@font-face {
+  font-family: "PtSans";
+  font-style: normal;
+  font-weight: bold;
+  src: url("ptsans-bold-webfont.woff2") format("woff2"),
+    url("ptsans-bold-webfont.woff") format("woff");
+}
+
+@font-face {
+  font-family: "PtSans";
+  font-style: italic;
+  font-weight: bold;
+  src: url("ptsans-bolditalic-webfont.woff2") format("woff2"),
+    url("ptsans-bolditalic-webfont.woff") format("woff");
+}
+
+@font-face {
+  font-family: "PtSans";
+  font-style: italic;
+  font-weight: normal;
+  src: url("ptsans-italic-webfont.woff2") format("woff2"),
+    url("ptsans-italic-webfont.woff") format("woff");
+}
+
+html {
+    /* define light-mode variable overrides here */
+    --primary-color: #EF9F06;
+    --primary-dark-color: #E18400;
+    --primary-light-color: #FAB32B;
+    --primary-lighter-color: #FFD482;
+    --primary-lightest-color: #FFE8BD;
+    --page-foreground-color: #6B6B6B;
+    --side-nav-background: #636B70;
+    --side-nav-foreground: #fff;
+    --header-background: #636B70;
+    --header-foreground: #fff;
+    --searchbar-background: #fff;
+    --font-family: PtSans, Arial, sans-serif;
+    --top-height: 200px;
+}
+
+#titlearea table {
+  width: 100%;
+}
+#titlearea table tbody tr {
+  height: auto !important;
+}
+#projectlogo img {
+  width: 129px;
+  height: 60px;
+  max-height: none !important;
+  padding-top: 12px;
+}
+#projectalign {
+  display: none;
+}
+#projectversion {
+  color: var(--side-nav-foreground);
+  padding-top: 25px;
+  text-align: center;
+}
+.sm-dox a span.sub-arrow,
+.sm-dox a:hover span.sub-arrow {
+    color: var(--primary-color);
+}
+@media screen and (min-width: 767px) {
+  #doc-content {
+    padding-top: calc(var(--top-height) - 180px);
+  }
+}

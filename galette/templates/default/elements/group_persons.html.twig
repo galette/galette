@@ -1,0 +1,85 @@
+                <div class="ui basic fitted segment loader_selector">
+                    <table class="listing ui celled striped table">
+                        <thead>
+                            <tr>
+                                <th class="left">
+                                    {{ _T("Name") }}
+                                </th>
+                                <th class="left">
+                                    {{ _T("Nickname") }}
+                                </th>
+                                {% if login.isSuperAdmin() %}
+                                <th>&nbsp;</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+{% for person in persons %}
+                            <tr>
+                                <td class="username_row">
+                                <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
+                                {% if person.isCompany() %}
+                                    <span>
+                                        <i class="ui building outline icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Company") }}</span>
+                                    </span>
+                                {% elseif person.isMan() %}
+                                    <span>
+                                        <i class="ui male icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Man") }}</span>
+                                    </span>
+                                {% elseif person.isWoman() %}
+                                    <span>
+                                        <i class="ui female icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Woman") }}</span>
+                                    </span>
+                                {% else %}
+                                    <i class="ui icon" aria-hidden="true"></i>
+                                {% endif %}
+                                {% if person.isAdmin() %}
+                                    <span>
+                                        <i class="ui user shield red icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Administrator") }}</span>
+                                    </span>
+                                {% elseif person.isStaff() %}
+                                    <span>
+                                        <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Staff member") }}</span>
+                                    </span>
+                                {% elseif person.getManagedGroups() %}
+                                    <span>
+                                        <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T('Group manager') }}</span>
+                                    </span>
+                                {% else %}
+                                    <i class="ui icon" aria-hidden="true"></i>
+                                {% endif %}
+                                <a href="{{ url_for("member", {"id": person.id}) }}">{{ person.sfullname }}</a>
+                                </td>
+                                <td class="">{{ person.nickname|escape }}</td>
+    {% if login.isSuperAdmin() %}
+                                <td class="actions_row">
+                                    <a
+                                            href="{{ url_for("impersonate", {"id": person.id}) }}"
+                                    >
+                                        <i class="ui user secret grey icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("Log in in as %membername")|replace({"%membername": person.sname}) }}</span>
+                                    </a>
+                                </td>
+                            </tr>
+    {% endif %}
+{% else %}
+                            <tr>
+                                <td colspan="2">
+    {% if person_mode == 'members' %}
+                                    {{ _T("No member attached") }}
+    {% else %}
+                                    {{ _T("No manager attached") }}
+    {% endif %}
+                                </td>
+                            </tr>
+{% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+

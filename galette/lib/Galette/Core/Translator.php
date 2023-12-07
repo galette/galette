@@ -52,7 +52,6 @@ use Laminas\I18n\Translator\Translator as ZTranslator;
 
 class Translator extends ZTranslator
 {
-
     /**
      * Do a translation exist for string
      *

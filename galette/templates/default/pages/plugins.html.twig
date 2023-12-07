@@ -1,0 +1,230 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <table class="listing ui celled striped table">
+        <!--<caption>{{ _T('Active plugins') }}</caption>-->
+        <thead>
+            <tr>
+                <th class="listing">{{ _T('Name') }}</th>
+                <th class="listing">{{ _T('Description') }}</th>
+                <th class="listing">{{ _T('Author') }}</th>
+                <th class="listing">{{ _T('Version') }}</th>
+                <th class="listing">{{ _T('Release date') }}</th>
+                <th class="listing actions_row"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="plugins">
+                <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
+            </tr>
+{% for name, plugin in plugins_list %}
+            <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
+                <td data-scope="row"><a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
+                <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
+                <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
+                <td data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
+                <td data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
+                <td class="actions_row">
+                    <a
+                        href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
+                        class="toggleActivation use"
+                    >
+                        <i class="ui toggle on red icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
+                    </a>
+    {% if plugins.needsDatabase(name) %}
+                    <a
+                        href="{{ url_for("pluginInitDb", {"id": name}) }}"
+                        id="initdb_{{ name }}"
+                        class="initdb action"
+                    >
+                        <i class="ui database blue icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
+                    </a>
+    {% else %}
+                    <i class="ui icon">&nbsp;</i>
+    {% endif %}
+                </td>
+            </tr>
+{% else %}
+            <tr>
+                <td colspan="6">{{ _T('No active plugin.') }}</td>
+            </tr>
+{% endfor %}
+            <tr class="inactives plugins">
+                <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
+            </tr>
+            <thead>
+            <tr>
+                <th class="listing">{{ _T('Name') }}</th>
+                <th class="listing" colspan="4">{{ _T('Cause') }}</th>
+                <th class="listing actions_row"></th>
+            </tr>
+            </thead>
+{% for name, plugin in plugins_disabled_list %}
+            <tr>
+                <td data-scope="row">{{ name }}</td>
+                <td data-col-label="{{ _T('Cause') }}" colspan="4">
+                    {% if plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_MISS') %}
+                        {{ _T('A required file is missing') }}
+                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}
+                        {{ _T('Incompatible with current version') }}
+                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_EXPLICIT') %}
+                        {{ _T('Explicitely disabled') }}
+                    {% else %}
+                        {{ _T('Unknown') }}
+                    {% endif %}
+                </td>
+                <td class="actions_row">
+                    <a
+                        href="{{ url_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
+                        class="toggleActivation delete"
+                    >
+                        <i class="ui toggle on grey icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
+                    </a>
+                    <i class="ui icon">&nbsp;</i>
+                </td>
+            </tr>
+{% else %}
+            <tr>
+                <td colspan="5">{{ _T('No inactive plugin.') }}</td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+    {% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
+            $('.initdb, a.toggleActivation').click(function(){
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Application runs under demo mode. This functionnality is not enabled, sorry.")|e("js"),
+                    modal_without_content: true,
+                    modal_class: "mini",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e("js"),
+                    modal_classname: "redalert",
+                } %}
+                return false;
+            });
+    {% else %}
+            {# Plugin init popup #}
+            var _btnuser_mapping = function(){
+                $('.initdb').click(function(){
+                    var _plugin = this.id.substring(7);
+                    var _url = $(this).attr('href');
+                    $.ajax({
+                        url: _url,
+                        type: "GET",
+                        {% include "elements/js/loader.js.twig" %},
+                        success: function(res){
+                            _initdb_dialog(res, _plugin);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying plugin database initialization interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                    return false;
+                });
+            }
+            _btnuser_mapping();
+
+            var _initdb_dialog = function(res, plugin) {
+                var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title: "_title.replace('%name', plugin)",
+                    modal_content: "res",
+                    modal_class: "initdb-modal large",
+                    modal_content_class: "scrolling",
+                    modal_other_options: {
+                        observeChanges: true,
+                        closable: false
+                    },
+                    modal_onapprove: "$('#plugins_initdb_form').submit();return false;",
+                    modal_approve_text: _T("Next step")|e("js"),
+                    modal_cancel_text: _T("Close")|e("js")
+                } %}
+                _initdb_bindings(res, plugin);
+            };
+
+            var _initdb_bindings = function(res, plugin){
+                //$('.initdb-modal input:submit, .initdb-modal .button, .initdb-modal input:reset' );
+                $('#plugins_initdb_form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                        _data += '&ajax=true&next=true';
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: "POST",
+                        data: _data,
+                        datatype: 'json',
+                        {% include "elements/js/loader.js.twig" %},
+                        success: function(res) {
+                            $('#plugins_initdb_form').remove();
+                            $('#plugins_initdb_ajax').append(res);
+                            if (!$.trim($('#plugins_initdb_form .form-actions').html())){
+                                $('.initdb-modal .approve').remove();
+                            }
+                            _initdb_bindings(res);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying plugin database initialization interface :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                });
+            };
+
+            $('.info-plugin').click(function(event){
+                event.preventDefault();
+                var _this = $(this);
+                var _url = _this.attr('href');
+                $.ajax({
+                    url: _url,
+                    type: "GET",
+                    datatype: 'json',
+                    {% include "elements/js/loader.js.twig" %},
+                    success: function(res) {
+                        var _content = $($.parseHTML(res)).find('div.main-content').children();
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title: "_this.html()",
+                            modal_content: "_content",
+                            modal_class: "large",
+                            modal_content_class: "scrolling",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js")
+                        } %}
+                    },
+                    error: function() {
+                        {% include "elements/js/modal.js.twig" with {
+                            modal_title_twig: _T("An error occurred :(")|e("js"),
+                            modal_without_content: true,
+                            modal_class: "mini",
+                            modal_deny_only: true,
+                            modal_cancel_text: _T("Close")|e("js"),
+                            modal_classname: "redalert",
+                        } %}
+                    }
+                });
+            });
+    {% endif %}
+        });
+    </script>
+{% endblock %}

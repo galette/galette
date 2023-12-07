@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
@@ -47,7 +47,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      Install
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
@@ -62,8 +62,9 @@ class Install
     public const STEP_DB_UPGRADE = 5;
     public const STEP_DB_INSTALL = 6;
     public const STEP_ADMIN = 7;
-    public const STEP_GALETTE_INIT = 8;
-    public const STEP_END = 9;
+    public const STEP_TELEMETRY = 8;
+    public const STEP_GALETTE_INIT = 9;
+    public const STEP_END = 10;
 
     public const INSTALL = 'i';
     public const UPDATE = 'u';
@@ -77,9 +78,8 @@ class Install
         '0.704' => '0.76'
     );
 
-    private $_step;
+    protected $_step;
     private $_mode;
-    private $_version;
     private $_installed_version;
 
     private $_db_type;
@@ -88,6 +88,7 @@ class Install
     private $_db_name;
     private $_db_user;
     private $_db_pass;
+    private $_db_prefix;
 
     private $_db_connected;
     private $_report;
@@ -104,7 +105,6 @@ class Install
     {
         $this->_step = self::STEP_CHECK;
         $this->_mode = null;
-        $this->_version = str_replace('v', '', GALETTE_VERSION);
         $this->_db_connected = false;
         $this->_db_prefix = null;
     }
@@ -142,6 +142,9 @@ class Install
             case self::STEP_ADMIN:
                 $step_title = _T("Admin parameters");
                 break;
+            case self::STEP_TELEMETRY:
+                $step_title = _T("Telemetry");
+                break;
             case self::STEP_GALETTE_INIT:
                 $step_title = _T("Galette initialization");
                 break;
@@ -155,23 +158,22 @@ class Install
     /**
      * HTML validation image
      *
-     * @param boolean $arg Argument
+     * @param bool $arg Argument
      *
-     * @return html string
+     * @return string html string
      */
     public function getValidationImage($arg)
     {
-        $img_name = ($arg === true) ? 'valid' : 'invalid';
-        $src = GALETTE_THEME_DIR . 'images/icon-' . $img_name . '.png';
+        $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<img src="' . $src . '" alt="' . $alt . '"/>';
+        $img = '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="visually-hidden">' . $alt . '</span>';
         return $img;
     }
 
     /**
      * Get current mode
      *
-     * @return char
+     * @return string
      */
     public function getMode()
     {
@@ -201,7 +203,7 @@ class Install
     /**
      * Set installation mode
      *
-     * @param char $mode Requested mode
+     * @param string $mode Requested mode
      *
      * @return void
      */
@@ -303,7 +305,7 @@ class Install
      */
     public function postCheckDb()
     {
-        return $this->_step > self::STEP_DB_CHECKS;
+        return $this->_step >= self::STEP_DB_CHECKS;
     }
 
     /**
@@ -312,7 +314,7 @@ class Install
      * @param string $type Database type
      * @param array  $errs Errors array
      *
-     * @return boolean
+     * @return Install
      */
     public function setDbType($type, &$errs)
     {
@@ -324,6 +326,7 @@ class Install
             default:
                 $errs[] = _T("Database type unknown");
         }
+        return $this;
     }
 
     /**
@@ -451,8 +454,9 @@ class Install
     /**
      * Test database connection
      *
-     * @return true|array true if connection was successfull,
-     * an array with some infos otherwise
+     * @return true
+     *
+     * @throws \Exception
      */
     public function testDbConnexion()
     {
@@ -584,6 +588,7 @@ class Install
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
         $sql_update_scripts = array();
+        $update_scripts = [];
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {
@@ -621,14 +626,13 @@ class Install
     /**
      * Execute SQL scripts
      *
-     * @param Galette\Core\Db $zdb   Database instance
-     * @param string          $spath Path to scripts
+     * @param Db     $zdb   Database instance
+     * @param string $spath Path to scripts
      *
-     * @return boolean
+     * @return bool
      */
-    public function executeScripts($zdb, $spath = null)
+    public function executeScripts(Db $zdb, $spath = null)
     {
-        $queries_results = array();
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
         $this->_report = array();
@@ -718,6 +722,7 @@ class Install
      */
     public function executeSql($zdb, $sql_query)
     {
+        $queries_results = array();
         $fatal_error = false;
 
         // begin : copyright (2002) the phpbb group (support@phpbb.com)
@@ -778,7 +783,7 @@ class Install
                 $zdb->connection->rollBack();
             } catch (\PDOException $e) {
                 //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || (!$zdb->isPostgres() && !str_contains($e->getMessage(), 'no active transaction'))) {
+                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
                     throw $e;
                 }
             }
@@ -787,7 +792,7 @@ class Install
                 $zdb->connection->commit();
             } catch (\PDOException $e) {
                 //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || (!$zdb->isPostgres() && !str_contains($e->getMessage(), 'no active transaction'))) {
+                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
                     throw $e;
                 }
             }
@@ -872,6 +877,26 @@ class Install
     }
 
     /**
+     * Set step to telemetry
+     *
+     * @return void
+     */
+    public function atTelemetryStep()
+    {
+        $this->_step = self::STEP_TELEMETRY;
+    }
+
+    /**
+     * Are we at telemetry step?
+     *
+     * @return boolean
+     */
+    public function isTelemetryStep()
+    {
+        return $this->_step === self::STEP_TELEMETRY;
+    }
+
+    /**
      * Set step to Galette initialization
      *
      * @return void
@@ -953,7 +978,7 @@ class Install
             $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
             if ($conf !== false) {
                 if (!isset($post_data['install_dbtype'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/TYPE_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -963,7 +988,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbhost'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/HOST_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -973,7 +998,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbport'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/PORT_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -983,7 +1008,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbuser'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/USER_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -993,7 +1018,7 @@ class Install
                     }
                 }
                 if (!isset($post_data['install_dbname'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/NAME_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -1005,7 +1030,7 @@ class Install
 
 
                 if (!isset($post_data['install_dbprefix'])) {
-                    $res = preg_match(
+                    preg_match(
                         '/PREFIX_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -1016,7 +1041,7 @@ class Install
                 }
 
                 if ($pass === true) {
-                    $res = preg_match(
+                    preg_match(
                         '/PWD_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
@@ -1078,7 +1103,7 @@ class Install
         $conffile = GALETTE_CONFIG_PATH . 'config.inc.php';
         if (
             is_writable(GALETTE_CONFIG_PATH)
-            && (!file_exists($conffile) || file_exists($conffile) && is_writable($conffile))
+            && (!file_exists($conffile) || is_writable($conffile))
             && $fd = @fopen($conffile, 'w')
         ) {
                 $data = "<?php
@@ -1113,7 +1138,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @param I18n  $i18n  I18n
      * @param Db    $zdb   Database instance
-     * @param Login $login Loged in instance
+     * @param Login $login Logged in instance
      *
      * @return boolean
      */
@@ -1128,7 +1153,9 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $fc = new \Galette\Entity\FieldsConfig(
                 $zdb,
                 \Galette\Entity\Adherent::TABLE,
+                //@phpstan-ignore-next-line
                 $members_fields,
+                //@phpstan-ignore-next-line
                 $members_fields_cats,
                 true
             );
@@ -1137,7 +1164,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $login = new \Galette\Core\Login($zdb, $i18n);
             //$fc = new \Galette\Entity\FieldsCategories();
             $texts = new \Galette\Entity\Texts($preferences);
-            $titles = new \Galette\Repository\Titles();
+            $titles = new \Galette\Repository\Titles($zdb);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
 
@@ -1149,7 +1176,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 $this->getAdminLogin(),
                 $this->getAdminPass()
             );
-            $this->proceedReport(_T("Preferences"), $res);
+            $this->proceedReport(_T("Settings"), $res);
 
             //Install contributions types
             $res = $ct->installInit();
@@ -1168,12 +1195,12 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->proceedReport(_T("Mails texts"), $res);
 
             //Install titles
-            $res = $titles->installInit($zdb);
+            $res = $titles->installInit();
             $this->proceedReport(_T("Titles"), $res);
 
             //Install PDF models
             $res = $models->installInit(false);
-            $this->proceedReport(_T("PDF Models"), $res);
+            $this->proceedReport(_T("PDF models"), $res);
 
             return !$this->_error;
         } elseif ($this->isUpgrade()) {
@@ -1182,15 +1209,16 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->proceedReport(_T("Update preferences"), true);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
-            $res = $models->installInit(true);
+            $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
 
             $texts = new \Galette\Entity\Texts($preferences);
-            $res = $texts->installInit(true);
+            $texts->installInit(true);
             $this->proceedReport(_T("Mails texts"), true);
 
             return true;
         }
+        return false;
     }
 
     /**
@@ -1263,7 +1291,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @param Db $zdb Database instance
      *
-     * @return string
+     * @return string|false
      */
     public function getCurrentVersion($zdb)
     {

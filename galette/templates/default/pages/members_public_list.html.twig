@@ -1,0 +1,99 @@
+{% extends 'elements/list.html.twig' %}
+
+{% set nb = members|length %}
+{% set no_action = true %}
+{% set is_public = not login.isLogged() %}
+
+{% set form = {
+    'order': {
+        'name': 'publicList',
+        'args': {
+            "type": "list"
+        }
+    }
+} %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filterPublicList',
+            'args': {
+                "type": "list"
+            }
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
+        {'label': _T("Nickname"), order: constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")},
+    ] %}
+
+    {% if login.isLogged() %}
+        {% set columns = columns|merge([
+            {'label': _T("Email")}
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T("Information")}
+    ]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <div class="ui icon info visible message">
+        <i class="info circle blue icon" aria-hidden="true"></i>
+        <div class="content">
+            {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% for member in members %}
+        {% set rclass = member.getRowClass() %}
+        <tr>
+            <td class="{{ rclass }} username_row" data-scope="row">
+                {% if member.isCompany() %}
+                    <span>
+                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a company') }}</span>
+                    </span>
+                {%  elseif member.isMan() %}
+                    <span>
+                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a man') }}</span>
+                    </span>
+                {%  elseif member.isWoman() %}
+                    <span>
+                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a woman') }}</span>
+                    </span>
+                {% else %}
+                    <i class="ui icon" aria-hidden="true"></i>
+                {% endif %}
+                {% if member.website != '' %}
+                    <a href="{{ member.website }}">{{ member.sfullname }}</a>
+                {% else %}
+                    {{ member.sfullname }}
+                {% endif %}
+            </td>
+            <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
+            {% if login.isLogged() %}
+                <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+            {% endif %}
+            <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td class="emptylist" colspan="4">
+                {{ _T('No member to show') }}
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}

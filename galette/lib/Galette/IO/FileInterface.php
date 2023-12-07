@@ -54,9 +54,11 @@ interface FileInterface
     public const INVALID_FILENAME = -1;
     public const INVALID_EXTENSION = -2;
     public const FILE_TOO_BIG = -3;
-    public const MIME_NOT_ALLOWED = -4;
-    public const NEW_FILE_EXISTS = -5;
-    public const INVALID_FILE = -6;
-    public const CANT_WRITE = -7;
-    public const MAX_FILE_SIZE = 1024;
+    public const IMAGE_TOO_SMALL = -4;
+    public const MIME_NOT_ALLOWED = -5;
+    public const NEW_FILE_EXISTS = -6;
+    public const INVALID_FILE = -7;
+    public const CANT_WRITE = -8;
+    public const MAX_FILE_SIZE = 2048;
+    public const MIN_CROP_SIZE = 267;
 }
