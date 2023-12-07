@@ -73,6 +73,7 @@ quick_gen_project_*
 # Test stuff
 tests/coverage/
 tests/mageekguy.atoum.phar
+tests/tests-data
 
 # Bundled libs
 galette/vendor/
