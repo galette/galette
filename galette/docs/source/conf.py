@@ -12,7 +12,7 @@ subprocess.call('doxygen', shell=True)
 # -- Project information -----------------------------------------------------
 
 project = 'Galette API'
-copyright = '2023, Johan Cwiklinski'
+copyright = '2004-2023, The Galette Team'
 author = 'Johan Cwiklinski'
 
 # The full version, including alpha/beta/rc tags

@@ -9,5 +9,5 @@ To generate the documentation, just run from galette doc (current) directory:
 
 HTML files will be generated into *apidocs* directory.
 
-API documentation is generated every night along with the nighlty archive;
+API documentation is generated every night along with the nightly archive;
 you can see it at: https://apidoc.galette.eu
