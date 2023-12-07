@@ -3,6 +3,43 @@ Changes
 
 0.9.6.1 -> 1.0.0
 
+- Modern UI
+- Major improvements on UI/UX and also responsiveness
+- Use of YAML files instead of XML for exports configuration
+- New preference to show/hide borders around PDF member cards
+- WebP image support
+- Removed free search on advanced search
+- Check for minimal database version at install
+- Resize and crop member picture to a fixed ratio
+- Update issues (not defined constants)
+- Fatal error when cookie not set after login
+- Sort members by status
+- Several PHP 8.1 compatibility fixes
+- Groups manager cannot edit their own information
+- Inconsistent count and display of reminders members
+- Minimum PHP version not displayed on compat page
+- Simple members can't access their list of contributions
+- Contributions mass removal
+- Disable inline images in mailings
+- Issue editing members with wrong values imported in dynamic choice fields
+- Parent group removed when a manager edit a group
+- Fix logo size on member card
+- Fix timeout using logo on PDF member cards
+- Fix dynamic files on contributions and transactions
+- Drop required fields on PDF member cards
+- Parent group can be lost when a groupmanager edits a group
+- Mass add contribution fail if data is missing
+- Dynamic contribution fields not rendered on advanced search
+- Dynamic contributions choice fields on advanced search fail using postgres
+- Several minor issues with RTL languages on PDF generation
+- Issues on transactions search with some date formats
+- Selected members were not reset creating a new mailing
+- Template rendering is now assumed by Twig instead of Smarty
+- Use of Fomantic UI framework for whole display
+- Update third party libraries
+- No longer use atoum (dead project) for testing
+- LibreJS compatibility
+
 0.9.6 -> 0.9.6.1
 - Fix language detection priority not respected
 - No composer platform check
@@ -148,7 +185,7 @@ Changes
 - Fix dynamic translations removal
 - Check for session extension presence
 - Redo multiple status selection in advanced search
-* Fix user search by nickname in dropdowns
+- Fix user search by nickname in dropdowns
 
 0.9.2.1 -> 0.9.3
 
