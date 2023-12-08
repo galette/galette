@@ -297,7 +297,7 @@ trait Dynamics
                 );
                 $this->errors[] = preg_replace(
                     '|%d|',
-                    $max_size,
+                    (string)$max_size,
                     _T("File is too big. Maximum allowed size is %dKo")
                 );
                 continue;
@@ -320,7 +320,7 @@ trait Dynamics
                 $tmp_filename,
                 GALETTE_FILES_PATH . $new_filename
             );
-            $this->dynamics->setValue($this->id, $field_id, $val_index, $file['name']);
+            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file['name']);
             $store = true;
         }
 

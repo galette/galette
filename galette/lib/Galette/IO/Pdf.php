@@ -357,7 +357,7 @@ class Pdf extends \TCPDF
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
         if ($title !== null) {
-            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
+            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), false);
         }
         $yend = $this->getY(); //store position at the end of the text
 

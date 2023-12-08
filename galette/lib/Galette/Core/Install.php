@@ -342,11 +342,11 @@ class Install
     /**
      * Set connection information
      *
-     * @param string $host Database host
-     * @param string $port Database port
-     * @param string $name Database name
-     * @param string $user Database user name
-     * @param string $pass Database user's password
+     * @param string  $host Database host
+     * @param string  $port Database port
+     * @param string  $name Database name
+     * @param string  $user Database username
+     * @param ?string $pass Database user's password
      *
      * @return void
      */
@@ -1277,7 +1277,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     /**
      * Set installed version if we're upgrading
      *
-     * @param string $version Installed version
+     * @param ?string $version Installed version
      *
      * @return void
      */

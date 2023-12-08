@@ -81,8 +81,8 @@ class ContributionsTypes extends Entitled
     /**
      * Default constructor
      *
-     * @param Db          $zdb  Database
-     * @param ArrayObject $args Optional existing result set
+     * @param Db    $zdb  Database
+     * @param mixed $args Optional existing result set
      */
     public function __construct(Db $zdb, $args = null)
     {

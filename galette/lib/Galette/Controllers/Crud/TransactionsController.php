@@ -89,7 +89,7 @@ class TransactionsController extends ContributionsController
      */
     public function doAdd(Request $request, Response $response, string $type = null): Response
     {
-        return $this->doEdit($request, $response, $type);
+        return $this->doEdit($request, $response, null, $type);
     }
 
     // /CRUD - Create
@@ -201,8 +201,8 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param string   $type     Transaction type
+     * @param ?integer $id       Transaction id
+     * @param ?string  $type     Transaction type
      *
      * @return Response
      */
@@ -325,7 +325,7 @@ class TransactionsController extends ContributionsController
 
             $args = [];
             if ($trans_id !== null) {
-                $args['id'] = $id;
+                $args['id'] = (string)$id;
             }
             //redirect to calling action
             return $response
@@ -368,7 +368,7 @@ class TransactionsController extends ContributionsController
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
-                ['id' => $id]
+                ['id' => (string)$id]
             ));
     }
 
@@ -400,7 +400,7 @@ class TransactionsController extends ContributionsController
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
-                ['id' => $id]
+                ['id' => (string)$id]
             ));
     }
 

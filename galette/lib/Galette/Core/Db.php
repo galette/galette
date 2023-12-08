@@ -722,6 +722,7 @@ class Db
             );
         } else {
             return $this->sql->select(
+                //@phpstan-ignore-next-line
                 array(
                     $alias => PREFIX_DB . $table
                 )

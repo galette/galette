@@ -1274,7 +1274,7 @@ class Adherent
                         if ($years <= -200) {
                             $this->errors[] = str_replace(
                                 '%years',
-                                $years * -1,
+                                (string)($years * -1),
                                 _T('- Members must be less than 200 years old (currently %years)!')
                             );
                         }
@@ -1341,7 +1341,7 @@ class Adherent
                 if (strlen($value) < 2) {
                     $this->errors[] = str_replace(
                         '%i',
-                        2,
+                        '2',
                         _T("- The username must be composed of at least %i characters!")
                     );
                 } else {
@@ -1996,7 +1996,7 @@ class Adherent
 
         return str_replace(
             '%age',
-            $d->diff(new \DateTime())->y,
+            (string)$d->diff(new \DateTime())->y,
             _T(' (%age years old)')
         );
     }

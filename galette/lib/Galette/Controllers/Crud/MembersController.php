@@ -272,7 +272,7 @@ class MembersController extends CrudController
             //member does not exist!
             $this->flash->addMessage(
                 'error_detected',
-                str_replace('%id', $id, _T("No member #%id."))
+                str_replace('%id', (string)$id, _T("No member #%id."))
             );
 
             return $response
@@ -1118,7 +1118,7 @@ class MembersController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Mass change %count members')
                 ),
                 'form_url'      => $this->routeparser->urlFor('masschangeMembersReview'),
@@ -1215,7 +1215,7 @@ class MembersController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Review mass change %count members')
                 ),
                 'form_url'      => $this->routeparser->urlFor('massstoremembers'),
@@ -1343,7 +1343,7 @@ class MembersController extends CrudController
                 'success_detected',
                 str_replace(
                     '%count',
-                    $mass,
+                    (string)$mass,
                     _T('%count members has been changed successfully!')
                 )
             );
@@ -1420,7 +1420,7 @@ class MembersController extends CrudController
                 throw new \RuntimeException(
                     str_replace(
                         '%id',
-                        $member->id,
+                        (string)$member->id,
                         'No right to store member #%id'
                     )
                 );
@@ -1494,7 +1494,7 @@ class MembersController extends CrudController
         }
 
         // Validation
-        $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
+        $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
         if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
             // regular fields
             $valid = $member->check($post, $required, $disabled);
@@ -1574,7 +1574,7 @@ class MembersController extends CrudController
                 }
 
                 if (isset($post['del_photo'])) {
-                    if (!$member->picture->delete($member->id)) {
+                    if (!$member->picture->delete()) {
                         $error_detected[] = _T("Delete failed");
                         $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
                         Analog::log(
@@ -1627,7 +1627,7 @@ class MembersController extends CrudController
                             $redirect_url = $this->routeparser->urlFor('addMember');
                             break;
                         case Adherent::AFTER_ADD_SHOW:
-                            $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
+                            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
                             break;
                         case Adherent::AFTER_ADD_LIST:
                             $redirect_url = $this->routeparser->urlFor('members');
@@ -1642,7 +1642,7 @@ class MembersController extends CrudController
                         ['type' => 'fee']
                     ) . '?id_adh=' . $member->id;
                 } else {
-                    $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
+                    $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
                 }
             } else {
                 //store entity in session
@@ -1654,7 +1654,7 @@ class MembersController extends CrudController
                     if ($member->id) {
                         $redirect_url = $this->routeparser->urlFor(
                             'editMember',
-                            ['id'    => $member->id]
+                            ['id'    => (string)$member->id]
                         );
                     } else {
                         $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
@@ -1722,7 +1722,7 @@ class MembersController extends CrudController
             $this->session->{$this->getFilterName(['suffix' => 'delete'])} = $filters;
             return str_replace(
                 '%count',
-                count($filters->selected),
+                (string)count($filters->selected),
                 _T('You are about to remove %count members.')
             );
         }

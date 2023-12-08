@@ -45,7 +45,7 @@ use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;

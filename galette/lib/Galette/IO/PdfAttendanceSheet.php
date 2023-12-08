@@ -89,7 +89,7 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_date !== null) {
                 $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
             }
-            $this->Cell(0, 10, $head_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');
+            $this->Cell(0, 10, $head_title, 0, 0, 'C', false, '', 0, false, 'M', 'M');
         }
     }
 
@@ -182,15 +182,15 @@ class PdfAttendanceSheet extends Pdf
         // Header
         $this->SetFont('', 'B');
         $this->SetFillColor(255, 255, 255);
-        $this->Cell(110, 7, _T("Name"), 1, 0, 'C', 1);
-        $this->Cell(80, 7, _T("Signature"), 1, 1, 'C', 1);
+        $this->Cell(110, 7, _T("Name"), 1, 0, 'C', true);
+        $this->Cell(80, 7, _T("Signature"), 1, 1, 'C', true);
 
         // Data
         $this->SetFont('');
         $mcount = 0;
         foreach ($members as $m) {
             $mcount++;
-            $this->Cell(10, 16, $mcount, ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0, 'R');
+            $this->Cell(10, 16, (string)$mcount, ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0, 'R');
 
             if ($m->hasPicture() && $this->wimages) {
                 $p = $m->picture->getPath();

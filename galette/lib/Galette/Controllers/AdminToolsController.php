@@ -147,7 +147,7 @@ class AdminToolsController extends AbstractController
             if ($res === true) {
                 $success_detected[] = str_replace(
                     '%i',
-                    $members->getCount(),
+                    (string)$members->getCount(),
                     _T("Logins and passwords have been successfully filled (%i processed).")
                 );
             } else {

@@ -182,11 +182,11 @@ trait FileTrait
     /**
      * Initialization
      *
-     * @param string $dest        File destination directory
-     * @param array  $extensions  Array of permitted extensions
-     * @param array  $mimes       Array of permitted mime types
-     * @param int    $maxlenght   Maximum lenght for each file
-     * @param int    $mincropsize Minimum image side size required for cropping
+     * @param ?string $dest        File destination directory
+     * @param array   $extensions  Array of permitted extensions
+     * @param array   $mimes       Array of permitted mime types
+     * @param int     $maxlenght   Maximum length for each file
+     * @param int     $mincropsize Minimum image side size required for cropping
      *
      * @return void
      */
@@ -240,10 +240,10 @@ trait FileTrait
     }
 
     /**
-     * Stores an file on the disk
+     * Stores a file on the disk
      *
-     * @param object  $file the uploaded file
-     * @param boolean $ajax If the file cames from an ajax call (dnd)
+     * @param array   $file the uploaded file
+     * @param boolean $ajax If the file comes from an ajax call (dnd)
      *
      * @return true|false|int result of the storage process
      */

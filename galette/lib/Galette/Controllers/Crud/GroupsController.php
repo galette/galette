@@ -93,13 +93,13 @@ class GroupsController extends CrudController
         $group->setName($name);
         $group->store();
         if (!$this->login->isSuperAdmin()) {
-            $group->setManagers(new Adherent($this->zdb, $this->login->id));
+            $group->setManagers([new Adherent($this->zdb, $this->login->id)]);
         }
         $id = $group->getId();
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $id]));
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$id]));
     }
 
 
@@ -409,7 +409,7 @@ class GroupsController extends CrudController
         }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $group->getId()]) . $tab);
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]) . $tab);
     }
 
     /**
@@ -482,7 +482,7 @@ class GroupsController extends CrudController
     {
         return $this->routeparser->urlFor(
             'doRemoveGroup',
-            ['id' => (int)$args['id']]
+            ['id' => (string)$args['id']]
         );
     }
 

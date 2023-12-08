@@ -85,9 +85,9 @@ class PdfGroups extends Pdf
             10,
             _T("Members by groups"),
             0,
-            false,
-            'C',
             0,
+            'C',
+            false,
             '',
             0,
             false,
@@ -176,10 +176,10 @@ class PdfGroups extends Pdf
 
             $this->SetFont('', 'B');
             $this->SetFillColor(255, 255, 255);
-            $this->Cell(80, 7, _T("Name"), 1, 0, 'C', 1);
-            $this->Cell(50, 7, _T("Email"), 1, 0, 'C', 1);
-            $this->Cell(30, 7, _T("Phone"), 1, 0, 'C', 1);
-            $this->Cell(30, 7, _T("GSM"), 1, 1, 'C', 1);
+            $this->Cell(80, 7, _T("Name"), 1, 0, 'C', true);
+            $this->Cell(50, 7, _T("Email"), 1, 0, 'C', true);
+            $this->Cell(30, 7, _T("Phone"), 1, 0, 'C', true);
+            $this->Cell(30, 7, _T("GSM"), 1, 1, 'C', true);
 
             $this->SetFont('', 'B');
 

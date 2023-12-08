@@ -221,7 +221,7 @@ class TitlesController extends CrudController
                     _T("Title '%s' has not been modified!")
                 );
 
-                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {

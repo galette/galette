@@ -425,8 +425,8 @@ class Picture implements FileInterface
     /**
      * Stores an image on the disk and in the database
      *
-     * @param object  $file     The uploaded file
-     * @param boolean $ajax     If the image cames from an ajax call (dnd)
+     * @param array   $file     The uploaded file
+     * @param boolean $ajax     If the image comes from an ajax call (dnd)
      * @param array   $cropping Cropping properties
      *
      * @return bool|int
@@ -680,7 +680,7 @@ class Picture implements FileInterface
                 $file = $existing_disk[$valid->id_adh];
                 $this->storeInDb(
                     $zdb,
-                    $file['id'],
+                    (int)$file['id'],
                     $this->store_path . $file['id'] . '.' . $file['ext'],
                     $file['ext']
                 );

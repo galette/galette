@@ -303,7 +303,7 @@ class SavedSearchesController extends CrudController
             $filters = $this->session->filter_savedsearch;
             return str_replace(
                 '%count',
-                count($filters->selected),
+                (string)count($filters->selected),
                 _T('You are about to remove %count searches.')
             );
         }

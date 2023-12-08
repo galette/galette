@@ -442,7 +442,7 @@ class PdfController extends AbstractController
                 'error_detected',
                 str_replace(
                     '%id',
-                    $id,
+                    (string)$id,
                     _T("Unable to load contribution #%id!")
                 )
             );
@@ -711,7 +711,7 @@ class PdfController extends AbstractController
                     'error_detected',
                     str_replace(
                         '%id',
-                        $id,
+                        (string)$id,
                         _T("Unable to load contribution #%id!")
                     )
                 );

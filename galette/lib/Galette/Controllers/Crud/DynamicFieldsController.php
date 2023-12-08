@@ -338,7 +338,7 @@ class DynamicFieldsController extends CrudController
                     'Location',
                     $this->routeparser->urlFor(
                         $route_name,
-                        ['id' => $id]
+                        ['id' => (string)$id]
                     )
                 );
         }
@@ -386,7 +386,7 @@ class DynamicFieldsController extends CrudController
             return $response
                 ->withHeader(
                     'Location',
-                    $this->routeparser->urlFor('member', ['id' => $id])
+                    $this->routeparser->urlFor('member', ['id' => (string)$id])
                 );
         }
     }

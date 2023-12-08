@@ -78,11 +78,11 @@ class CsvOut extends Csv
     /**
      * Export Array result set to CSV
      *
-     * @param ResultSet      $rs        Results as an array
+     * @param mixed          $rs        Results as an array
      * @param string         $separator The CSV separator (either '\t', ';' or ','
      *                                  are accepted)
      * @param string         $quote     how does fields should be quoted
-     * @param array|false    $titles    does export shows column titles or not.
+     * @param array|boolean  $titles    does export shows column titles or not.
      *                                  Defaults to false.
      * @param resource|false $file      export to a file on disk. A file pointer
      *                                  should be passed here. Defaults to false.

@@ -201,7 +201,7 @@ class AuthController extends AbstractController
         } else {
             $msg = str_replace(
                 '%id',
-                $id,
+                (string)$id,
                 _T("Unable to impersonate as %id")
             );
             $this->flash->addMessage(
@@ -279,7 +279,7 @@ class AuthController extends AbstractController
         $redirect_url = $this->routeparser->urlFor('slash');
         if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
             $from_admin = true;
-            $redirect_url = $this->routeparser->urlFor('member', ['id' => $id_adh]);
+            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
         }
 
         if (
@@ -512,7 +512,7 @@ class AuthController extends AbstractController
                         $this->history->add(
                             str_replace(
                                 '%s',
-                                $id_adh,
+                                (string)$id_adh,
                                 _T("Password changed for member '%s'.")
                             )
                         );

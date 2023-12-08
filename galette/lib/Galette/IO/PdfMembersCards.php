@@ -272,7 +272,7 @@ class PdfMembersCards extends Pdf
                 $this->year_font_size
             ) - 0.2;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
 
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -283,12 +283,12 @@ class PdfMembersCards extends Pdf
                 $member_id = (!empty($member->number)) ? $member->number : $member->id;
                 $xid = $x0 + $this->wi - $this->GetStringWidth($member_id, self::FONT, 'B', 8) - 0.2;
                 $this->SetXY($xid, $y0 + 28);
-                $this->writeHTML('<strong>' . $member_id . '</strong>', false, 0);
+                $this->writeHTML('<strong>' . $member_id . '</strong>', false, false);
             }
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
 
             // Abbrev: Adapt font size to text length
             $this->fixSize(
@@ -298,7 +298,7 @@ class PdfMembersCards extends Pdf
                 'B'
             );
             $this->SetXY($x0 + 27, $y0 + 12);
-            $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, 0);
+            $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, false);
 
             // Name: Adapt font size to text length
             $this->SetTextColor(0);
@@ -310,7 +310,7 @@ class PdfMembersCards extends Pdf
             );
             $this->SetXY($x0 + 27, $this->getY() + 4);
             //$this->setX($x0 + 27);
-            $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, 0);
+            $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, false);
 
             // Email (adapt too)
             $this->fixSize(
@@ -320,7 +320,7 @@ class PdfMembersCards extends Pdf
                 'B'
             );
             $this->setX($x0 + 27);
-            $this->writeHTML('<strong>' . $email . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $email . '</strong>', false, false);
 
             // Lower colored strip with long text
             $this->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -338,7 +338,7 @@ class PdfMembersCards extends Pdf
                 0,
                 0,
                 'C',
-                1
+                true
             );
 
             // Draw a gray frame around the card

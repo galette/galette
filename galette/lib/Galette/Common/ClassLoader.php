@@ -160,7 +160,9 @@ class ClassLoader
      */
     public function register()
     {
-        spl_autoload_register(array($this, 'loadClass'));
+        spl_autoload_register(function (string $class): void {
+            $this->loadClass($class);
+        });
     }
 
     /**
@@ -180,7 +182,7 @@ class ClassLoader
      *
      * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
      */
-    public function loadClass($className)
+    public function loadClass($className): bool
     {
         if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;

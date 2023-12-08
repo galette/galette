@@ -184,7 +184,7 @@ class PdfMembersLabels extends Pdf
                 $this->preferences->pref_etiq_corps
             );
             // Print full address
-            $this->writeHTMLCell($this->lw, $this->line_h, $x, $y, nl2br($full_address), 0, 0, 0, true, 'L', true);
+            $this->writeHTMLCell($this->lw, $this->line_h, $x, $y, nl2br($full_address), 0, 0, false, true, 'L', true);
 
             // Next label
             $nb_etiq++;

@@ -226,7 +226,7 @@ class PaymentTypeController extends CrudController
                     _T("Payment type '%s' has not been modified!")
                 );
                 //redirect to payment type edition
-                $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {

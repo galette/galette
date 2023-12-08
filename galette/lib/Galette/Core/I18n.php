@@ -76,7 +76,7 @@ class I18n
      * Default constructor.
      * Initialize default language and set environment variables
      *
-     * @param bool $lang true if there were a language change
+     * @param string|false $lang true if there were a language change
      *
      * @return void
      */

@@ -749,7 +749,7 @@ class Preferences
                     $this->errors[] = _T("- Invalid format of beginning of membership.");
                 } else {
                     $now = getdate();
-                    if (!checkdate($beg_membership[1], $beg_membership[0], $now['year'])) {
+                    if (!checkdate((int)$beg_membership[1], (int)$beg_membership[0], $now['year'])) {
                         $this->errors[] = _T("- Invalid date for beginning of membership.");
                     }
                 }

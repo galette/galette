@@ -249,7 +249,7 @@ class ContributionsController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Mass add contribution on %count members')
                 ),
                 'data'          => $data,
@@ -297,7 +297,7 @@ class ContributionsController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Mass add contribution on %count members')
                 ),
                 'form_url'      => $this->routeparser->urlFor('doMassAddContributions'),
@@ -748,7 +748,7 @@ class ContributionsController extends CrudController
                     'error_detected',
                     str_replace(
                         '%id',
-                        $id,
+                        (string)$id,
                         _T("Unable to load contribution #%id!")
                     )
                 );

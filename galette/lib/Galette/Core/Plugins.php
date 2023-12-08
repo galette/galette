@@ -604,7 +604,7 @@ class Plugins
     /**
      * Get module namespace
      *
-     * @param integer $id Module ID
+     * @param string $id Module ID
      *
      * @return string
      */
@@ -616,8 +616,8 @@ class Plugins
     /**
      * Get module class name
      *
-     * @param integer $id   Module ID
-     * @param bool    $full Include namespace, defaults to false
+     * @param string $id   Module ID
+     * @param bool   $full Include namespace, defaults to false
      *
      * @return string
      */
