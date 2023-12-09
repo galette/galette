@@ -1287,16 +1287,11 @@ class Adherent
                         __("Y-m-d") . ' | ' . $e->getMessage(),
                         Analog::INFO
                     );
-                    $this->errors[] = str_replace(
-                        array(
-                            '%date_format',
-                            '%field'
-                        ),
-                        array(
-                            __("Y-m-d"),
-                            $this->getFieldLabel($field)
-                        ),
-                        _T("- Wrong date format (%date_format) for %field!")
+                    $this->errors[] = sprintf(
+                        //TRANS %1$s is the expected dat format, %2$s the field label
+                        _T('- Wrong date format (%1$s) for %2$s!'),
+                        __("Y-m-d"),
+                        $this->getFieldLabel($field)
                     );
                 }
                 break;

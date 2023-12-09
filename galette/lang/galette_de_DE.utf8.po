@@ -2685,8 +2685,8 @@ msgstr "Benötigtes Feld %field fehlt"
 #: ../lib/Galette/Entity/Contribution.php:460
 #: ../lib/Galette/Entity/Contribution.php:1352
 #, php-format
-msgid "- Wrong date format (%date_format) for %field!"
-msgstr "- Falsches Datumsformat (%date_format) für Feld %field!"
+msgid "- Wrong date format (%1$s) for %2$s!"
+msgstr "- Falsches Datumsformat (%1$s) für Feld %2$s!"
 
 #: ../lib/Galette/Entity/ListsConfig.php:213
 msgid "Is admin"
@@ -3415,9 +3415,9 @@ msgstr "Filter für Enddatum"
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:319
 #, php-format
-msgid "Unknown date format for %field.<br/>Know formats are: %formats"
+msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr ""
-"Unbekanntes Datumsformat für %field.<br/>Bekannte Formate sind: %formats"
+"Unbekanntes Datumsformat für %1$s.<br/>Bekannte Formate sind: %2$s"
 
 #: ../webroot/installer.php:146
 msgid "No host"

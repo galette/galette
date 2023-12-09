@@ -272,13 +272,11 @@ class TransactionsList extends Pagination
                                 }
 
                                 throw new \Exception(
-                                    str_replace(
-                                        array('%field', '%formats'),
-                                        array(
-                                            $field,
-                                            implode(', ', $formats)
-                                        ),
-                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
+                                    sprintf(
+                                        //TRANS: %1$s is field name, %2$s is list of known date formats
+                                        _T('Unknown date format for %1$s.<br/>Know formats are: %2$s'),
+                                        $field,
+                                        implode(', ', $formats)
                                     )
                                 );
                             }

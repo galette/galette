@@ -2630,8 +2630,8 @@ msgstr "Відсутнє обов'язкове поле %field"
 #: ../lib/Galette/Entity/Contribution.php:460
 #: ../lib/Galette/Entity/Contribution.php:1352
 #, php-format
-msgid "- Wrong date format (%date_format) for %field!"
-msgstr "- Неправильний формат дати (%date_format) для %field!"
+msgid "- Wrong date format (%1$s) for %2$s!"
+msgstr "- Неправильний формат дати (%1$s) для %2$s!"
 
 #: ../lib/Galette/Entity/ListsConfig.php:213
 msgid "Is admin"
@@ -3363,8 +3363,8 @@ msgstr "добірка дати завершення"
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:319
 #, php-format
-msgid "Unknown date format for %field.<br/>Know formats are: %formats"
-msgstr "Невідомий формат дати для %field.<br>Відомі формати: %formats"
+msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
+msgstr "Невідомий формат дати для %1$s.<br/>Відомі формати: %2$s"
 
 #: ../webroot/installer.php:146
 msgid "No host"

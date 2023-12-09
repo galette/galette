@@ -195,16 +195,11 @@ trait Dynamics
                                     __("Y-m-d") . ' | ' . $e->getMessage(),
                                     Analog::INFO
                                 );
-                                $this->errors[] = str_replace(
-                                    array(
-                                        '%date_format',
-                                        '%field'
-                                    ),
-                                    array(
-                                        __("Y-m-d"),
-                                        $fields[$field_id]->getName()
-                                    ),
-                                    _T("- Wrong date format (%date_format) for %field!")
+                                $this->errors[] = sprintf(
+                                    //TRANS: %1$s date format, %2$s is the field name
+                                    _T('- Wrong date format (%1$s) for %2$s!'),
+                                    __("Y-m-d"),
+                                    $fields[$field_id]->getName()
                                 );
                             }
                         }

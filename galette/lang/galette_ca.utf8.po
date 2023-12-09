@@ -2981,8 +2981,8 @@ msgstr "Falta el camp obligatori del percentatge"
 #: ../lib/Galette/Entity/Contribution.php:460
 #: ../lib/Galette/Entity/Contribution.php:1352
 #, php-format
-msgid "- Wrong date format (%date_format) for %field!"
-msgstr "- Format de data incorrecte (%date_format) per %field!"
+msgid "- Wrong date format (%1$s) for %2$s!"
+msgstr "- Format de data incorrecte (%1$s) per %2$s!"
 
 #: ../lib/Galette/Entity/ListsConfig.php:213
 #, fuzzy
@@ -3842,9 +3842,9 @@ msgstr "filtre de data final"
 #: ../lib/Galette/Filters/MailingsList.php:273
 #: ../lib/Galette/Filters/ContributionsList.php:319
 #, php-format
-msgid "Unknown date format for %field.<br/>Know formats are: %formats"
+msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr ""
-"Format de data desconegut per a %field. Els formats<br>know són %formats"
+"Format de data desconegut per a %1$s.<br/>Els formats know són %2$s"
 
 #: ../webroot/installer.php:146
 #, fuzzy
