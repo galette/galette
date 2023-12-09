@@ -3843,8 +3843,7 @@ msgstr "filtre de data final"
 #: ../lib/Galette/Filters/ContributionsList.php:319
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
-msgstr ""
-"Format de data desconegut per a %1$s.<br/>Els formats know són %2$s"
+msgstr "Format de data desconegut per a %1$s.<br/>Els formats know són %2$s"
 
 #: ../webroot/installer.php:146
 #, fuzzy

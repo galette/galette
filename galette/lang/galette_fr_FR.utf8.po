@@ -3407,8 +3407,7 @@ msgstr "filtre date de fin"
 #: ../lib/Galette/Filters/ContributionsList.php:319
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
-msgstr ""
-"Format de date inconnu pour %1$s.<br/>Les formats connus sont : %2$s"
+msgstr "Format de date inconnu pour %1$s.<br/>Les formats connus sont : %2$s"
 
 #: ../webroot/installer.php:146
 msgid "No host"
