@@ -360,7 +360,7 @@
             {% elseif column.field_id == 'id_statut' %}
                 {% set value = member.sstatus %}
             {% elseif column.field_id == 'titre_adh' %}
-                {% if member.title is iterable %}
+                {% if member.title is not null %}
                     {% set value = member.title.long %}
                 {% endif %}
             {% elseif column.field_id == 'pref_lang' %}
