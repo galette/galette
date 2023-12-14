@@ -490,7 +490,7 @@
                         </div>
                         <br/>
                         <a
-                            href="{{ url_for('testEmail') }}#mail"
+                            href="{{ url_for('testEmail') }}"
                             id="btnmail"
                             class="ui labeled icon button"
                         >
@@ -921,8 +921,7 @@
                 $('#btnmail').on('click', function(e) {
                     e.preventDefault();
                     var _this = $(this);
-                    var _value = $('#pref_email_newadh').val();
-                    var _input = '<div class="ui input"><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>';
+                    var _input = '<div class="ui input"><input type="text" name="email_adress" id="email_adress" value=""/></div>';
                     $('body').modal({
                         title: '{{ _T("Enter the email adress")|e('js') }}',
                         class: 'tiny',
@@ -943,8 +942,15 @@
                                     $.ajax({
                                         url: '{{ url_for('ajaxMessages') }}',
                                         method: "GET",
-                                        success: function (message) {
-                                            $('#testEmail').prepend(message);
+                                        success: function(message) {
+                                            var message_inline = new DOMParser().parseFromString(message, 'text/html');
+                                            var message_content = message_inline.body.querySelectorAll('div.content');
+                                            $('body').toast({
+                                                position: 'bottom right',
+                                                message: message_content,
+                                                showIcon: 'check circle outline',
+                                                class: 'success'
+                                            });
                                         }
                                     });
                                 },
