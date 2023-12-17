@@ -196,6 +196,7 @@ class Adherent
     private $preferences;
     private $fields;
     private $history;
+    private $_due_status = Contribution::STATUS_UNKNOWN;
 
     private $parent_fields = [
         'adresse_adh',
@@ -538,10 +539,12 @@ class Adherent
         if ($this->isDueFree()) {
             //no fee required, we don't care about dates
             $this->_row_classes .= ' cotis-exempt';
+            $this->_due_status = Contribution::STATUS_DUEFREE;
         } else {
             //ok, fee is required. Let's check the dates
             if ($this->_due_date == '') {
                 $this->_row_classes .= ' cotis-never';
+                $this->_due_status = Contribution::STATUS_NEVER;
             } else {
                 // To count the days remaining, the next begin date is required.
                 $due_date = new \DateTime($this->_due_date);
@@ -557,16 +560,35 @@ class Adherent
                             $this->_row_classes .= ' cotis-lastday';
                         }
                         $this->_row_classes .= ' cotis-soon';
+                        $this->_due_status = Contribution::STATUS_IMPENDING;
                     } else {
                         $this->_row_classes .= ' cotis-ok';
+                        $this->_due_status = Contribution::STATUS_UPTODATE;
                     }
                 // Expired
                 } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
                     $this->_days_remaining = $date_diff->days;
                     //check if member is still active
-                    $this->_row_classes .= $this->isActive() ? ' cotis-late' : ' cotis-old';
+                    if ($this->isActive()) {
+                        $this->_row_classes .= ' cotis-late';
+                        $this->_due_status = Contribution::STATUS_LATE;
+                    } else {
+                        $this->_row_classes .= ' cotis-old';
+                        $this->_due_status = Contribution::STATUS_OLD;
+                    }
                 }
             }
+        }
+
+        if (!$this->isActive()) {
+            //anyway, if a member is no longer active, its due status is old.
+            $this->_due_status = Contribution::STATUS_OLD;
+        }
+
+        if ($this->_due_status === Contribution::STATUS_UNKNOWN) {
+            throw new \RuntimeException(
+                'Unable to determine due status for member #' . $this->_id
+            );
         }
     }
 
@@ -2261,5 +2283,15 @@ class Adherent
         $this->_parent = $id;
         $this->loadParent();
         return $this;
+    }
+
+    /**
+     * Get current due status
+     *
+     * @return int
+     */
+    public function getDueStatus(): int
+    {
+        return $this->_due_status;
     }
 }

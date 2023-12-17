@@ -92,6 +92,14 @@ class Contribution
     public const TYPE_FEE = 'fee';
     public const TYPE_DONATION = 'donation';
 
+    public const STATUS_NEVER = -1;
+    public const STATUS_UNKNOWN = 0;
+    public const STATUS_UPTODATE = 1;
+    public const STATUS_DUEFREE = 2;
+    public const STATUS_IMPENDING = 3;
+    public const STATUS_LATE = 4;
+    public const STATUS_OLD = 5;
+
     private $_id;
     private $_date;
     private $_member;

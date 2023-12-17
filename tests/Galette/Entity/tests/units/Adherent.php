@@ -65,6 +65,8 @@ class Adherent extends GaletteTestCase
         parent::tearDown();
         $this->zdb = new \Galette\Core\Db();
 
+        $this->cleanContributions();
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $delete->where('parent_id IS NOT NULL');
@@ -819,5 +821,117 @@ class Adherent extends GaletteTestCase
                 $nick,
             )
         );
+    }
+
+    /**
+     * Change member active status
+     *
+     * @param bool $active Activation status
+     *
+     * @return void
+     */
+    private function changeMemberActivation(bool $active): void
+    {
+        $check = $this->adh->check(['activite_adh' => $active], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($this->adh->store());
+        $this->assertTrue($this->adh->load($this->adh->id));
+    }
+
+    /**
+     * Test getDueStatus
+     *
+     * @return void
+     */
+    public function testGetDueStatus()
+    {
+        $now = new \DateTime();
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
+
+        $this->getMemberOne();
+
+        $this->assertTrue($this->adh->isActive());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_NEVER, $this->adh->getDueStatus());
+
+        //non-active members always have OLD due status
+        $this->changeMemberActivation(false);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
+        $this->changeMemberActivation(true);
+
+        //create a close to be expired contribution
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P30D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        //member is up-to-date, close to be expired
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isActive());
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_IMPENDING, $this->adh->getDueStatus());
+
+        //non-active members always have OLD due status
+        $this->changeMemberActivation(false);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
+        $this->changeMemberActivation(true);
+
+        //create an expired contribution, 29 days ago
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P29D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        //member is late, but for less than 30 days, no reminder to send
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isActive());
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_LATE, $this->adh->getDueStatus());
+
+        //non-active members always have OLD due status
+        $this->changeMemberActivation(false);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
+        $this->changeMemberActivation(true);
+    }
+
+    /**
+     * Clean created contributions
+     *
+     * @return void
+     */
+    private function cleanContributions(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
     }
 }
