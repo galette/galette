@@ -88,7 +88,7 @@ class Reminders
      *
      * @return void
      */
-    private function loadToRemind(Db $zdb, $type, $nomail = false)
+    private function loadToRemind(Db $zdb, int $type, bool $nomail = false): void
     {
         $this->toremind = array();
         $select = $zdb->select(Members::TABLE, 'a');
@@ -215,7 +215,7 @@ class Reminders
      *
      * @return array
      */
-    public function getList(Db $zdb, $nomail = false)
+    public function getList(Db $zdb, bool $nomail = false): array
     {
         $this->types = array();
         $this->reminders = array();

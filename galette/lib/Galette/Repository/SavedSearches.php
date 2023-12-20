@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
@@ -65,19 +66,19 @@ class SavedSearches
     public const TABLE = SavedSearch::TABLE;
     public const PK = SavedSearch::PK;
 
-    private $filters = false;
-    private $zdb;
-    private $login;
-    private $count = null;
+    private SavedSearchesList $filters;
+    private Db $zdb;
+    private Login $login;
+    private ?int $count = null;
 
     /**
      * Default constructor
      *
-     * @param Db                $zdb     Database
-     * @param Login             $login   Login
-     * @param SavedSearchesList $filters Filtering
+     * @param Db                 $zdb     Database
+     * @param Login              $login   Login
+     * @param ?SavedSearchesList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, SavedSearchesList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -92,19 +93,17 @@ class SavedSearches
     /**
      * Get saved searches list
      *
-     * @param bool    $as_search return the results as an array of
-     *                           SavedSearch object.
-     * @param array   $fields    field(s) name(s) to get. Should be a string or
-     *                           an array. If null, all fields will be
-     *                           returned
-     * @param boolean $count     true if we want to count
+     * @param bool   $as_search return the results as an array of
+     *                          SavedSearch object.
+     * @param ?array $fields    field(s) name(s) to get. Should be a string or
+     *                          an array. If null, all fields will be returned
      *
-     * @return SavedSearch[]|ArrayObject
+     * @return array<int, SavedSearch>|ResultSet
      */
-    public function getList($as_search = false, $fields = null, $count = true)
+    public function getList(bool $as_search = false, ?array $fields = null): array|ResultSet
     {
         try {
-            $select = $this->buildSelect($fields, $count);
+            $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
             $searches = array();
@@ -130,12 +129,10 @@ class SavedSearches
      * Builds the SELECT statement
      *
      * @param ?array $fields fields list to retrieve
-     * @param bool   $count  true if we want to count members
-     *                       (not applicable from static calls), defaults to false
      *
      * @return Select SELECT statement
      */
-    private function buildSelect(?array $fields, bool $count = false): Select
+    private function buildSelect(?array $fields): Select
     {
         try {
             $fieldsList = ['*'];
@@ -153,9 +150,7 @@ class SavedSearches
 
             $select->order(self::buildOrderClause());
 
-            if ($count) {
-                $this->proceedCount($select);
-            }
+            $this->proceedCount($select);
 
             return $select;
         } catch (Throwable $e) {
@@ -174,7 +169,7 @@ class SavedSearches
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -207,7 +202,7 @@ class SavedSearches
      *
      * @return array
      */
-    private function buildOrderClause()
+    private function buildOrderClause(): array
     {
         $order = array();
         $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
@@ -220,7 +215,7 @@ class SavedSearches
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -234,7 +229,7 @@ class SavedSearches
      *
      * @return boolean
      */
-    public function remove($ids, History $hist, $transaction = true)
+    public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
         $list = array();
         if (is_numeric($ids)) {

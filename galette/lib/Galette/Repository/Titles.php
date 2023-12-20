@@ -63,7 +63,7 @@ class Titles
     public const MRS = 2;
     public const MISS = 3;
 
-    private static $defaults = array(
+    private static array $defaults = array(
         array(
             'id_title'      => 1,
             'short_label'   => 'Mr.',
@@ -93,7 +93,7 @@ class Titles
      *
      * @return Title[]
      */
-    public function getList()
+    public function getList(): array
     {
         $select = $this->zdb->select(self::TABLE);
         $select->order(self::PK);
@@ -115,7 +115,7 @@ class Titles
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         try {
             //first, we drop all values
@@ -173,7 +173,7 @@ class Titles
      *
      * @return string
      */
-    public static function getTitle($title)
+    public static function getTitle(int $title): string
     {
         global $zdb;
 

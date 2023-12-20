@@ -58,8 +58,8 @@ use Galette\DynamicFields\DynamicField;
 
 class DynamicFieldsSet
 {
-    private $zdb;
-    private $login;
+    private Db $zdb;
+    private Login $login;
 
     /**
      * Main constructor
@@ -76,7 +76,7 @@ class DynamicFieldsSet
     /**
      * Get form names and associated classes
      *
-     * @return string[]
+     * @return array<string, string>
      */
     public static function getClasses(): array
     {
@@ -94,7 +94,7 @@ class DynamicFieldsSet
      *
      * @return DynamicField[]
      */
-    public function getList($form_name)
+    public function getList(string $form_name): array
     {
         $select = $this->zdb->select(DynamicField::TABLE);
         $where = ['field_form' => $form_name];

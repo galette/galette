@@ -60,7 +60,7 @@ class PaymentTypes extends Repository
      *
      * @return PaymentType[]
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         global $zdb, $preferences, $login;
         $ptypes = new self($zdb, $preferences, $login);
@@ -72,7 +72,7 @@ class PaymentTypes extends Repository
      *
      * @return PaymentType[]
      */
-    public function getList()
+    public function getList(): array
     {
         try {
             $select = $this->zdb->select(PaymentType::TABLE, 'a');
@@ -96,11 +96,11 @@ class PaymentTypes extends Repository
     /**
      * Add default payment types in database
      *
-     * @param boolean $check_first Check first if it seem initialized
+     * @param boolean $check_first Check first if it seems initialized
      *
      * @return boolean
      */
-    public function installInit($check_first = true)
+    public function installInit(bool $check_first = true): bool
     {
         try {
             $ent = $this->entity;
@@ -160,7 +160,7 @@ class PaymentTypes extends Repository
      *
      * @return boolean
      */
-    protected function checkUpdate()
+    protected function checkUpdate(): bool
     {
         try {
             $ent = $this->entity;
@@ -211,7 +211,7 @@ class PaymentTypes extends Repository
      *
      * @return void
      */
-    private function insert($table, $values)
+    private function insert(string $table, array $values): void
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
@@ -236,7 +236,7 @@ class PaymentTypes extends Repository
      *
      * @return array
      */
-    protected function loadDefaults()
+    protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);

@@ -141,13 +141,7 @@ class Transactions extends GaletteTestCase
     {
         $this->logSuperAdmin();
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
-        $list = $transactions->getList(true, null, false);
-
-        $this->assertIsArray($list);
-        $this->assertCount(0, $list);
-        $this->assertNull($transactions->getCount());
-
-        $list = $transactions->getList(true, null, true);
+        $list = $transactions->getList(true, null);
 
         $this->assertIsArray($list);
         $this->assertCount(0, $list);

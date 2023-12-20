@@ -87,18 +87,12 @@ class Contributions extends GaletteTestCase
     {
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
-        $list = $contributions->getList(true, null, false);
-
-        $this->assertIsArray($list);
-        $this->assertCount(0, $list);
-        $this->assertNull($contributions->getCount());
-        $this->assertNull($contributions->getSum());
 
         $list = $contributions->getList(true, null, true);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());
-        $this->assertNull($contributions->getSum());
+        $this->assertSame(0.0, $contributions->getSum());
         $member2 = $this->getMemberTwo();
         $this->getMemberOne();
         $this->createContribution();
@@ -234,10 +228,14 @@ class Contributions extends GaletteTestCase
 
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
+        $contrib = array_pop($list);
+        $this->assertTrue($contrib instanceof \Galette\Entity\Contribution);
 
         $list = $contributions->getArrayList([$this->contrib->id], false);
         $this->assertIsArray($list);
         $this->assertCount(1, $list);
+        $contrib = array_pop($list);
+        $this->assertFalse($contrib instanceof \Galette\Entity\Contribution);
     }
 
     /**

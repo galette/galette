@@ -62,9 +62,9 @@ use Galette\Core\Db;
 class Groups
 {
     /** @var Db */
-    private $zdb;
+    private Db $zdb;
     /** @var Login */
-    private $login;
+    private Login $login;
 
     /**
      * Constructor
@@ -126,7 +126,7 @@ class Groups
      *
      * @return Group[]
      */
-    public function getList(bool $full = true, int $id = null): array
+    public function getList(bool $full = true, ?int $id = null): array
     {
         try {
             $select = $this->zdb->select(Group::TABLE, 'ggroup');
@@ -262,7 +262,7 @@ class Groups
      *
      * @return boolean
      */
-    public static function addMemberToGroups($adh, $groups, $manager = false, $transaction = false)
+    public static function addMemberToGroups(Adherent $adh, array $groups, bool $manager = false, bool $transaction = false): bool
     {
         global $zdb, $login;
 
@@ -385,7 +385,7 @@ class Groups
      *
      * @return void
      */
-    public static function removeMembersFromGroups(array $ids)
+    public static function removeMembersFromGroups(array $ids): void
     {
         global $zdb;
 
@@ -414,7 +414,7 @@ class Groups
      *
      * @return void
      */
-    public static function removeMemberFromGroups($id)
+    public static function removeMemberFromGroups(int $id): void
     {
         self::removeMembersFromGroups([$id]);
     }
@@ -424,12 +424,12 @@ class Groups
      *
      * @param Db       $zdb     Database instance
      * @param string   $name    Requested name
-     * @param int|null $parent  Parent groupe (defaults to null)
+     * @param int|null $parent  Parent group (defaults to null)
      * @param int|null $current Current ID to be excluded (defaults to null)
      *
      * @return boolean
      */
-    public static function isUnique(Db $zdb, string $name, int $parent = null, int $current = null)
+    public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null)
     {
         try {
             $select = $zdb->select(Group::TABLE);
@@ -465,7 +465,7 @@ class Groups
      *
      * @return array|false
      */
-    public function getManagerUsers(array $groups = [])
+    public function getManagerUsers(array $groups = []): array|false
     {
         if (!$this->login->isGroupManager()) {
             return false;

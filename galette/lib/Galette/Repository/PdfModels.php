@@ -63,7 +63,7 @@ class PdfModels extends Repository
      *
      * @return PdfModel[]
      */
-    public function getList()
+    public function getList(): array
     {
         try {
             $select = $this->zdb->select(PdfModel::TABLE, 'a');
@@ -88,11 +88,11 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
-     * @param boolean $check_first Check first if it seem initialized
+     * @param boolean $check_first Check first if it seems initialized
      *
      * @return boolean
      */
-    public function installInit($check_first = true)
+    public function installInit(bool $check_first = true): bool
     {
         try {
             $ent = $this->entity;
@@ -157,7 +157,7 @@ class PdfModels extends Repository
      *
      * @return boolean
      */
-    protected function checkUpdate()
+    protected function checkUpdate(): bool
     {
         try {
             $ent = $this->entity;
@@ -208,7 +208,7 @@ class PdfModels extends Repository
      *
      * @return void
      */
-    private function insert($table, $values)
+    private function insert(string $table, array $values): void
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
@@ -236,7 +236,7 @@ class PdfModels extends Repository
      *
      * @return array
      */
-    protected function loadDefaults()
+    protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';

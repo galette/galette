@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
@@ -65,19 +66,19 @@ class Transactions
     public const TABLE = Transaction::TABLE;
     public const PK = Transaction::PK;
 
-    private $count = null;
-    private $zdb;
-    private $login;
-    private $filters;
+    private int $count = 0;
+    private Db $zdb;
+    private Login $login;
+    private ?TransactionsList $filters;
 
     /**
      * Default constructor
      *
-     * @param Db               $zdb     Database
-     * @param Login            $login   Login
-     * @param TransactionsList $filters Filtering
+     * @param Db                $zdb     Database
+     * @param Login             $login   Login
+     * @param ?TransactionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, ?TransactionsList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -92,18 +93,17 @@ class Transactions
     /**
      * Get transactions list
      *
-     * @param bool    $as_trans return the results as an array of
-     *                          Transaction object.
-     * @param ?array  $fields   field(s) name(s) to get. Should be a string or
-     *                          an array. If null, all fields will be returned
-     * @param boolean $count    true if we want to count members
+     * @param bool   $as_trans return the results as an array of
+     *                         Transaction object.
+     * @param ?array $fields   field(s) name(s) to get. Should be a string or
+     *                         an array. If null, all fields will be returned
      *
-     * @return Transaction[]|ArrayObject
+     * @return array<int, Transaction>|ResultSet
      */
-    public function getList(bool $as_trans = false, ?array $fields = null, bool $count = true): array|ArrayObject
+    public function getList(bool $as_trans = false, ?array $fields = null): array|ResultSet
     {
         try {
-            $select = $this->buildSelect($fields, $count);
+            $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
             $transactions = array();
@@ -130,12 +130,10 @@ class Transactions
      * Builds the SELECT statement
      *
      * @param ?array $fields fields list to retrieve
-     * @param bool   $count  true if we want to count members
-     *                       (not applicable from static calls), defaults to false
      *
      * @return Select SELECT statement
      */
-    private function buildSelect(?array $fields, bool $count = false): Select
+    private function buildSelect(?array $fields): Select
     {
         try {
             $select = $this->zdb->select(self::TABLE, 't');
@@ -157,9 +155,7 @@ class Transactions
             $this->buildWhereClause($select);
             $select->order(self::buildOrderClause());
 
-            if ($count) {
-                $this->proceedCount($select);
-            }
+            $this->proceedCount($select);
 
             return $select;
         } catch (Throwable $e) {
@@ -178,7 +174,7 @@ class Transactions
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -211,7 +207,7 @@ class Transactions
      *
      * @return array SQL ORDER clauses
      */
-    private function buildOrderClause()
+    private function buildOrderClause(): array
     {
         $order = array();
 
@@ -244,7 +240,7 @@ class Transactions
      *
      * @return void
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -329,7 +325,7 @@ class Transactions
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -342,7 +338,7 @@ class Transactions
      *
      * @return boolean
      */
-    public function remove(array|int $ids, History $hist)
+    public function remove(array|int $ids, History $hist): bool
     {
         $list = array();
         if (is_numeric($ids)) {

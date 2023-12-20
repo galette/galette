@@ -38,6 +38,7 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Core\Login;
 
@@ -55,13 +56,13 @@ use Galette\Core\Login;
  */
 abstract class Repository
 {
-    protected $zdb;
-    protected $preferences;
-    protected $entity;
-    protected $login;
-    protected $filters;
-    protected $defaults = [];
-    protected $prefix;
+    protected Db $zdb;
+    protected Preferences $preferences;
+    protected string $entity;
+    protected Login $login;
+    protected Pagination $filters;
+    protected array $defaults = [];
+    protected string $prefix;
 
     /**
      * Main constructor
@@ -69,17 +70,17 @@ abstract class Repository
      * @param Db          $zdb         Database instance
      * @param Preferences $preferences Galette preferences
      * @param Login       $login       Logged in instance
-     * @param string      $entity      Related entity class name
-     * @param string      $ns          Related entity namespace
+     * @param ?string     $entity      Related entity class name
+     * @param ?string     $ns          Related entity namespace
      * @param string      $prefix      Prefix (for plugins)
      */
     public function __construct(
         Db $zdb,
         Preferences $preferences,
         Login $login,
-        $entity = null,
-        $ns = null,
-        $prefix = ''
+        ?string $entity = null,
+        ?string $ns = null,
+        string $prefix = ''
     ) {
         $this->zdb = $zdb;
         $this->preferences = $preferences;
@@ -146,7 +147,7 @@ abstract class Repository
      *
      * @return Object[]
      */
-    abstract public function getList();
+    abstract public function getList(): array;
 
     /**
      * Add default values in database
@@ -155,14 +156,14 @@ abstract class Repository
      *
      * @return boolean
      */
-    abstract public function installInit($check_first = true);
+    abstract public function installInit(bool $check_first = true): bool;
 
     /**
      * Get filters
      *
-     * @return Object
+     * @return Pagination
      */
-    protected function getFilters()
+    protected function getFilters(): Pagination
     {
         return $this->filters;
     }
@@ -170,13 +171,14 @@ abstract class Repository
     /**
      * Set filters
      *
-     * @param Object $filters Filters
+     * @param Pagination $filters Filters
      *
-     * @return void
+     * @return self
      */
-    protected function setFilters($filters)
+    protected function setFilters(Pagination $filters): self
     {
         $this->filters = $filters;
+        return $this;
     }
 
     /**
@@ -184,12 +186,13 @@ abstract class Repository
      *
      * @return array
      */
-    protected function loadDefaults()
+    protected function loadDefaults(): array
     {
         return $this->defaults;
     }
+
     /**
-     * Is field allowed to order? it shoulsd be present in
+     * Is field allowed to order? it should be present in
      * provided fields list (those that are SELECT'ed).
      *
      * @param string $field_name Field name to order by
@@ -197,7 +200,7 @@ abstract class Repository
      *
      * @return boolean
      */
-    protected function canOrderBy($field_name, $fields)
+    protected function canOrderBy(string $field_name, ?array $fields): bool
     {
         if ($fields === null) {
             return true;

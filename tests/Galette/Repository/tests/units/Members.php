@@ -608,7 +608,6 @@ class Members extends GaletteTestCase
         $this->mids = $mids;
 
         $members = new \Galette\Repository\Members();
-        $this->assertFalse($members->removeMembers('notanid'));
         $this->assertTrue($members->removeMembers($torm));
 
         $list = $members->getList();

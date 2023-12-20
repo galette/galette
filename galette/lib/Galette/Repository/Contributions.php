@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -53,7 +54,7 @@ use Laminas\Db\Sql\Select;
 /**
  * Contributions class for galette
  *
- * @name Contributions
+ * @name      Contributions
  * @category  Repository
  * @package   Galette
  *
@@ -67,22 +68,22 @@ class Contributions
     public const TABLE = Contribution::TABLE;
     public const PK = Contribution::PK;
 
-    private $filters = false;
-    private $count = null;
+    private ContributionsList $filters;
+    private int $count = 0;
 
-    private $zdb;
-    private $login;
-    private $sum;
-    private $current_selection;
+    private Db $zdb;
+    private Login $login;
+    private float $sum = 0;
+    private array $current_selection;
 
     /**
      * Default constructor
      *
-     * @param Db                $zdb     Database
-     * @param Login             $login   Login
-     * @param ContributionsList $filters Filtering
+     * @param Db                 $zdb     Database
+     * @param Login              $login   Login
+     * @param ?ContributionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, ?ContributionsList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -99,9 +100,9 @@ class Contributions
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return Contribution[]|ArrayObject
+     * @return Contribution[]
      */
-    public function getListFromTransaction($trans_id)
+    public function getListFromTransaction(int $trans_id): array
     {
         $this->filters->from_transaction = $trans_id;
         return $this->getList(true);
@@ -110,16 +111,14 @@ class Contributions
     /**
      * Get contributions list for a specific transaction
      *
-     * @param array   $ids        an array of members id that has been selected
-     * @param bool    $as_contrib return the results as an array of
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
+     * @param array  $ids        an array of members id that has been selected
+     * @param bool   $as_contrib return the results as an array of
+     * @param ?array $fields     field(s) name(s) to get. Should be a string or
+     *                           an array. If null, all fields will be returned
      *
-     * @return Contribution[]|ArrayObject[]|false
+     * @return array<int, Contribution>|false
      */
-    public function getArrayList(array $ids, bool $as_contrib = false, array $fields = null, bool $count = true)
+    public function getArrayList(array $ids, bool $as_contrib = false, ?array $fields = null): array|false
     {
         if (count($ids) < 1) {
             Analog::log('No contribution selected.', Analog::INFO);
@@ -127,7 +126,7 @@ class Contributions
         }
 
         $this->current_selection = $ids;
-        $list = $this->getList($as_contrib, $fields, $count);
+        $list = $this->getList($as_contrib, $fields);
         $array_list = [];
         foreach ($list as $entry) {
             $array_list[] = $entry;
@@ -138,19 +137,17 @@ class Contributions
     /**
      * Get contributions list
      *
-     * @param bool    $as_contrib return the results as an array of
-     *                            Contribution object.
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
+     * @param bool   $as_contrib return the results as an array of
+     *                           Contribution object.
+     * @param ?array $fields     field(s) name(s) to get. Should be a string or
+     *                           an array. If null, all fields will be returned
      *
-     * @return Contribution[]|ArrayObject
+     * @return array<int, Contribution>|ResultSet
      */
-    public function getList($as_contrib = false, $fields = null, $count = true)
+    public function getList(bool $as_contrib = false, ?array $fields = null): array|ResultSet
     {
         try {
-            $select = $this->buildSelect($fields, $count);
+            $select = $this->buildSelect($fields);
 
             $this->filters->setLimits($select);
 
@@ -177,12 +174,10 @@ class Contributions
      * Builds the SELECT statement
      *
      * @param ?array $fields fields list to retrieve
-     * @param bool   $count  true if we want to count members
-     *                       (not applicable from static calls), defaults to false
      *
      * @return Select SELECT statement
      */
-    private function buildSelect(?array $fields, bool $count = false): Select
+    private function buildSelect(?array $fields): Select
     {
         try {
             $fieldsList = ['*'];
@@ -205,9 +200,7 @@ class Contributions
 
             $this->calculateSum($select);
 
-            if ($count) {
-                $this->proceedCount($select);
-            }
+            $this->proceedCount($select);
 
             return $select;
         } catch (Throwable $e) {
@@ -226,7 +219,7 @@ class Contributions
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -261,7 +254,7 @@ class Contributions
      *
      * @return void
      */
-    private function calculateSum(Select $select)
+    private function calculateSum(Select $select): void
     {
         try {
             $sumSelect = clone $select;
@@ -293,7 +286,7 @@ class Contributions
      *
      * @return array SQL ORDER clauses
      */
-    private function buildOrderClause()
+    private function buildOrderClause(): array
     {
         $order = array();
 
@@ -343,7 +336,7 @@ class Contributions
      *
      * @return void
      */
-    private function buildWhereClause(Select $select)
+    private function buildWhereClause(Select $select): void
     {
         $field = 'date_debut_cotis';
 
@@ -395,7 +388,7 @@ class Contributions
                 );
             }
 
-            if ($this->filters->max_amount !== null && is_int($this->filters->max_amount)) {
+            if ($this->filters->max_amount !== null) {
                 $select->where(
                     '(montant_cotis <= ' . $this->filters->max_amount .
                     ' OR montant_cotis IS NULL)'
@@ -474,7 +467,7 @@ class Contributions
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -482,9 +475,9 @@ class Contributions
     /**
      * Get sum
      *
-     * @return int
+     * @return float
      */
-    public function getSum()
+    public function getSum(): float
     {
         return $this->sum;
     }
@@ -498,7 +491,7 @@ class Contributions
      *
      * @return boolean
      */
-    public function remove($ids, History $hist, $transaction = true)
+    public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
         $list = array();
         if (is_array($ids)) {
