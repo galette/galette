@@ -185,7 +185,6 @@ class Contributions
                 $fieldsList = $fields;
             }
 
-
             $select = $this->zdb->select(self::TABLE, 'a');
             $select->columns($fieldsList);
 

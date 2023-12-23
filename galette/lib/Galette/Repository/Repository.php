@@ -41,6 +41,8 @@ use Galette\Core\Db;
 use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Core\Login;
+use Laminas\Db\ResultSet\ResultSet;
+use stdClass;
 
 /**
  * Repositories
@@ -130,7 +132,7 @@ abstract class Repository
     /**
      * Get entity instance
      *
-     * @return Object
+     * @return stdClass
      */
     public function getEntity()
     {
@@ -145,9 +147,9 @@ abstract class Repository
     /**
      * Get list
      *
-     * @return Object[]
+     * @return array<int, stdClass>|ResultSet
      */
-    abstract public function getList(): array;
+    abstract public function getList(): array|ResultSet;
 
     /**
      * Add default values in database
