@@ -41,6 +41,7 @@ use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
+use Slim\Views\Twig;
 
 /**
  * Members list filters and paginator
@@ -68,19 +69,19 @@ use Galette\Repository\Members;
 class MembersList extends Pagination
 {
     //filters
-    private $_filter_str;
-    private $_field_filter;
-    private $_membership_filter;
-    private $_filter_account;
-    private $_email_filter;
-    private $_group_filter;
+    private ?string $_filter_str = null;
+    private ?int $_field_filter = null;
+    private ?int $_membership_filter = null;
+    private ?int $_filter_account = null;
+    private ?int $_email_filter = null;
+    private ?int $_group_filter = null;
 
-    private $_selected;
-    private $_unreachable;
+    private array $_selected = [];
+    private array $_unreachable = [];
 
-    protected $query;
+    protected string $query;
 
-    protected $memberslist_fields = array(
+    protected array $memberslist_fields = array(
         'filter_str',
         'field_filter',
         'membership_filter',
@@ -105,7 +106,7 @@ class MembersList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return 'nom_adh';
     }
@@ -115,7 +116,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         global $preferences;
 
@@ -136,7 +137,7 @@ class MembersList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
@@ -165,7 +166,7 @@ class MembersList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -184,7 +185,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);
@@ -282,11 +283,11 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Preferences $prefs Preferences instance
-     * @param mixed       $view  Template reference
+     * @param Twig        $view  Template reference
      *
      * @return void
      */
-    public function setViewCommonsFilters(Preferences $prefs, $view)
+    public function setViewCommonsFilters(Preferences $prefs, Twig $view): void
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),

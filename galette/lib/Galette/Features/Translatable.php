@@ -51,17 +51,17 @@ namespace Galette\Features;
 
 trait Translatable
 {
-    protected $old_name;
-    protected $name;
+    protected ?string $old_name = null;
+    protected ?string $name = null;
 
     /**
      * Get field name
      *
      * @param boolean $translated Get translated or raw name
      *
-     * @return String
+     * @return string
      */
-    public function getName($translated = true)
+    public function getName(bool $translated = true): string
     {
         if (empty($this->name)) {
             return '';

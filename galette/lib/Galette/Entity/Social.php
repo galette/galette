@@ -76,30 +76,30 @@ class Social
     public const DISCORD = 'discord';
 
     /** @var Db */
-    private $zdb;
+    private Db $zdb;
     /** @var int */
-    private $id;
+    private int $id;
     /** @var string */
-    private $type;
+    private string $type;
     /** @var string */
-    private $url;
+    private string $url;
     /** @var int */
-    private $id_adh;
-    /** @var Adherent */
-    private $member;
+    private ?int $id_adh;
+    /** @var Adherent|null */
+    private ?Adherent $member = null;
 
     /**
      * Main constructor
      *
-     * @param Db    $zdb  Database instance
-     * @param mixed $args Arguments
+     * @param Db                   $zdb  Database instance
+     * @param int|ArrayObject|null $args Arguments
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, int|ArrayObject $args = null)
     {
         $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
-        } elseif (is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRs($args);
         }
     }
@@ -182,7 +182,7 @@ class Social
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRs(ArrayObject $rs): void
     {
         $this->id = $rs->{self::PK};
         $this->setLinkedMember((int)$rs->{Adherent::PK});
@@ -198,7 +198,7 @@ class Social
     public function store(): bool
     {
         try {
-            if ($this->id !== null && $this->id > 0) {
+            if (isset($this->id) && $this->id > 0) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set(['url' => $this->url])->where(
                     [self::PK => $this->id]
@@ -284,7 +284,7 @@ class Social
      *
      * @return bool
      */
-    public function __isset(string $name)
+    public function __isset(string $name): bool
     {
         return property_exists($this, $name);
     }
@@ -312,7 +312,7 @@ class Social
      *
      * @param string $type Type
      *
-     * @return $this
+     * @return self
      */
     public function setType(string $type): self
     {
@@ -325,7 +325,7 @@ class Social
      *
      * @param int|null $id Member id
      *
-     * @return $this
+     * @return self
      */
     public function setLinkedMember(int $id = null): self
     {
@@ -341,7 +341,7 @@ class Social
      *
      * @param string $url Value to set
      *
-     * @return $this
+     * @return self
      */
     public function setUrl(string $url): self
     {

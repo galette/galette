@@ -74,7 +74,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    protected function sendResponse(Response $response, $filepath, $filename): Response
+    protected function sendResponse(Response $response, string $filepath, string $filename): Response
     {
         if (file_exists($filepath)) {
             $response = $response->withHeader('Content-Description', 'File Transfer')

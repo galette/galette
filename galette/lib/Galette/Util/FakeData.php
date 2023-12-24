@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2018 The Galette Team
+ * Copyright © 2017-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2018 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
@@ -58,7 +58,7 @@ use Galette\Entity\PaymentType;
  * @name      FakeData
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @see       https://github.com/fzaninotto/Faker
@@ -66,7 +66,7 @@ use Galette\Entity\PaymentType;
  */
 class FakeData
 {
-    private $report = [
+    private array $report = [
         'success'   => [],
         'errors'    => [],
         'warnings'  => []
@@ -79,7 +79,7 @@ class FakeData
      *
      * @return boolean
      */
-    public function addPhoto(Adherent $member)
+    public function addPhoto(Adherent $member): bool
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
         if (!defined('GALETTE_TESTS')) {
@@ -121,7 +121,7 @@ class FakeData
      *
      * @return void
      */
-    protected function addSuccess($msg)
+    protected function addSuccess(string $msg): void
     {
         $this->report['success'][] = $msg;
     }
@@ -133,7 +133,7 @@ class FakeData
      *
      * @return void
      */
-    protected function addError($msg)
+    protected function addError(string $msg): void
     {
         $this->report['errors'][] = $msg;
     }
@@ -145,7 +145,7 @@ class FakeData
      *
      * @return void
      */
-    protected function addWarning($msg)
+    protected function addWarning(string $msg): void
     {
         $this->report['warnings'][] = $msg;
     }
@@ -155,7 +155,7 @@ class FakeData
      *
      * @return array
      */
-    public function getReport()
+    public function getReport(): array
     {
         return $this->report;
     }

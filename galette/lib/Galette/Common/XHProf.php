@@ -76,14 +76,14 @@ class XHProf
     public const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
     public const XHPROF_URL  = '/xhprof';
 
-    private static $run = false;
+    private static bool $run = false;
 
     /**
      * Default constructor
      *
      * @param string $msg Message(default '')
      */
-    public function __construct($msg = '')
+    public function __construct(string $msg = '')
     {
         $this->start($msg);
     }
@@ -105,7 +105,7 @@ class XHProf
      *
      * @return void
      */
-    public function start($msg = '')
+    public function start(string $msg = ''): void
     {
         if (
             !self::$run
@@ -129,7 +129,7 @@ class XHProf
      *
      * @return void
      */
-    public function stop()
+    public function stop(): void
     {
         if (self::$run && function_exists('xhprof_disable')) {
             $data = xhprof_disable();

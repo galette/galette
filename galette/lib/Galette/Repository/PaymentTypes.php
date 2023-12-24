@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -58,7 +59,7 @@ class PaymentTypes extends Repository
     /**
      * Get payments types
      *
-     * @return PaymentType[]
+     * @return array<int, PaymentType>
      */
     public static function getAll(): array
     {
@@ -70,9 +71,9 @@ class PaymentTypes extends Repository
     /**
      * Get list
      *
-     * @return PaymentType[]
+     * @return array<int, PaymentType>|ResultSet
      */
-    public function getList(): array
+    public function getList(): array|ResultSet
     {
         try {
             $select = $this->zdb->select(PaymentType::TABLE, 'a');

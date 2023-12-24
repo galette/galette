@@ -39,6 +39,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
@@ -65,30 +66,30 @@ class DynamicFieldsHandle
 {
     public const TABLE = 'dynamic_fields';
 
-    private $dynamic_fields = [];
-    private $current_values = [];
-    private $form_name;
+    private array $dynamic_fields = [];
+    private array $current_values = [];
+    private string $form_name;
     private $item_id;
 
-    private $errors = array();
+    private array $errors = array();
 
-    private $zdb;
-    private $login;
+    private Db $zdb;
+    private Login $login;
 
-    private $insert_stmt;
-    private $update_stmt;
-    private $delete_stmt;
+    private StatementInterface $insert_stmt;
+    private StatementInterface $update_stmt;
+    private StatementInterface $delete_stmt;
 
-    private $has_changed = false;
+    private bool $has_changed = false;
 
     /**
      * Default constructor
      *
-     * @param Db    $zdb      Database instance
-     * @param Login $login    Login instance
-     * @param mixed $instance Object instance
+     * @param Db      $zdb      Database instance
+     * @param Login   $login    Login instance
+     * @param ?object $instance Object instance
      */
-    public function __construct(Db $zdb, Login $login, $instance = null)
+    public function __construct(Db $zdb, Login $login, object $instance = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -100,11 +101,11 @@ class DynamicFieldsHandle
     /**
      * Load dynamic fields values for specified object
      *
-     * @param mixed $object Object instance
+     * @param object $object Object instance
      *
      * @return bool
      */
-    public function load($object)
+    public function load(object $object): bool
     {
         $this->form_name = $object->getFormName();
 
@@ -211,7 +212,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getValues($field): array
+    public function getValues(int $field): array
     {
         if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
@@ -228,14 +229,14 @@ class DynamicFieldsHandle
     /**
      * Set field value
      *
-     * @param integer $item  Item ID
-     * @param integer $field Field ID
-     * @param integer $index Value index
-     * @param mixed   $value Value
+     * @param ?integer   $item  Item ID
+     * @param integer    $field Field ID
+     * @param integer    $index Value index
+     * @param string|int $value Value
      *
      * @return void
      */
-    public function setValue($item, $field, $index, $value)
+    public function setValue(?int $item, int $field, int $index, string|int $value): void
     {
         $idx = $index - 1;
         $input = [
@@ -255,13 +256,12 @@ class DynamicFieldsHandle
     /**
      * Unset field value
      *
-     * @param integer $item  Item ID
      * @param integer $field Field ID
      * @param integer $index Value index
      *
      * @return void
      */
-    public function unsetValue($item, $field, $index)
+    public function unsetValue(int $field, int $index): void
     {
         $idx = $index - 1;
         if (isset($this->current_values[$field][$idx])) {
@@ -272,12 +272,12 @@ class DynamicFieldsHandle
     /**
      * Store values
      *
-     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
-     * @param boolean $transaction True if a transaction already exists
+     * @param ?integer $item_id     Curent item id to use (will be used if current item_id is 0)
+     * @param boolean  $transaction True if a transaction already exists
      *
      * @return boolean
      */
-    public function storeValues($item_id = null, $transaction = false)
+    public function storeValues(int $item_id = null, bool $transaction = false): bool
     {
         try {
             if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
@@ -386,7 +386,7 @@ class DynamicFieldsHandle
      *
      * @return void
      */
-    private function handleRemovals()
+    private function handleRemovals(): void
     {
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $this->dynamic_fields = $fields->getList($this->form_name);
@@ -421,7 +421,7 @@ class DynamicFieldsHandle
 
         if (count($fromdb)) {
             foreach ($fromdb as $entry) {
-                if ($this->delete_stmt === null) {
+                if (!isset($this->delete_stmt)) {
                     $delete = $this->zdb->delete(self::TABLE);
                     $delete->where([
                         'item_id'       => ':item_id',
@@ -457,7 +457,7 @@ class DynamicFieldsHandle
      *
      * @return boolean
      */
-    public function hasChanged()
+    public function hasChanged(): bool
     {
         return $this->has_changed;
     }
@@ -465,12 +465,12 @@ class DynamicFieldsHandle
     /**
      * Remove values
      *
-     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
-     * @param boolean $transaction True if a transaction already exists
+     * @param ?integer $item_id     Curent item id to use (will be used if current item_id is 0)
+     * @param boolean  $transaction True if a transaction already exists
      *
      * @return boolean
      */
-    public function removeValues($item_id = null, $transaction = false)
+    public function removeValues(int $item_id = null, bool $transaction = false): bool
     {
         try {
             if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
@@ -509,9 +509,9 @@ class DynamicFieldsHandle
     /**
      * Get current fields resultset
      *
-     * @return ArrayObject
+     * @return ResultSet
      */
-    protected function getCurrentFields()
+    protected function getCurrentFields(): ResultSet
     {
         $select = $this->zdb->select(self::TABLE, 'd');
         $select->join(

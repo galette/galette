@@ -67,13 +67,13 @@ class Texts
         getLegend as protected trait_getLegend;
     }
 
-    private $all_texts;
+    private ArrayObject $all_texts;
     public const TABLE = "texts";
     public const PK = 'tid';
     public const DEFAULT_REF = 'sub';
 
-    private $defaults;
-    private $current;
+    private array $defaults;
+    private ?string $current;
 
     /**
      * Main constructor
@@ -117,7 +117,7 @@ class Texts
      *
      * @return array
      */
-    protected function getMailPatterns($legacy = true): array
+    protected function getMailPatterns(bool $legacy = true): array
     {
         $m_patterns = [
             'breakline'     => [
@@ -151,7 +151,7 @@ class Texts
         ];
 
         //clean based on current ref and onlyfor
-        if ($this->current !== null) {
+        if (!empty($this->current)) {
             foreach ($m_patterns as $key => $m_pattern) {
                 if (
                     isset($m_pattern['onlyfor'])
@@ -168,7 +168,7 @@ class Texts
     /**
      * Set emails replacements
      *
-     * @return $this
+     * @return self
      */
     public function setMail(): self
     {
@@ -188,9 +188,9 @@ class Texts
      *
      * @param Password $password Password instance
      *
-     * @return Texts
+     * @return self
      */
-    public function setChangePasswordURI(Password $password): Texts
+    public function setChangePasswordURI(Password $password): self
     {
         $this->setReplacements([
             'change_pass_uri'   => $this->preferences->getURL() .
@@ -205,9 +205,9 @@ class Texts
     /**
      * Set validity link
      *
-     * @return Texts
+     * @return self
      */
-    public function setLinkValidity(): Texts
+    public function setLinkValidity(): self
     {
         $link_validity = new \DateTime();
         $link_validity->add(new \DateInterval('PT24H'));
@@ -220,9 +220,9 @@ class Texts
      *
      * @param string $link Link
      *
-     * @return Texts
+     * @return self
      */
-    public function setMemberCardLink(string $link): Texts
+    public function setMemberCardLink(string $link): self
     {
         $this->setReplacements(['link_membercard' => $link]);
         return $this;
@@ -233,9 +233,9 @@ class Texts
      *
      * @param string $link Link
      *
-     * @return Texts
+     * @return self
      */
-    public function setContribLink(string $link): Texts
+    public function setContribLink(string $link): self
     {
         $this->setReplacements(['link_contribpdf' => $link]);
         return $this;
@@ -249,7 +249,7 @@ class Texts
      *
      * @return ArrayObject of all text fields for one language.
      */
-    public function getTexts($ref, $lang)
+    public function getTexts(string $ref, string $lang): ArrayObject
     {
         global $i18n;
 
@@ -343,7 +343,7 @@ class Texts
      *
      * @return bool
      */
-    public function setTexts($ref, $lang, $subject, $body)
+    public function setTexts(string $ref, string $lang, string $subject, string $body): bool
     {
         try {
             $values = array(
@@ -378,7 +378,7 @@ class Texts
      *
      * @return array: list of references used for texts
      */
-    public function getRefs(string $lang = I18n::DEFAULT_LANG)
+    public function getRefs(string $lang = I18n::DEFAULT_LANG): array
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -407,10 +407,10 @@ class Texts
      *
      * @param boolean $check_first Check first if it seems initialized
      *
-     * @return boolean|Exception false if no need to initialize, true if data
-     *                           has been initialized, Exception if error
+     * @return boolean false if no need to initialize, true if data has been initialized, Exception if error
+     * @throws Throwable
      */
-    public function installInit($check_first = true)
+    public function installInit(bool $check_first = true): bool
     {
         try {
             //first of all, let's check if data seem to have already
@@ -457,8 +457,8 @@ class Texts
                     'Default texts were successfully stored into database.',
                     Analog::INFO
                 );
-                return true;
             }
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default texts.' . $e->getMessage(),
@@ -473,7 +473,7 @@ class Texts
      *
      * @return boolean
      */
-    private function checkUpdate()
+    private function checkUpdate(): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -527,7 +527,7 @@ class Texts
      *
      * @return string
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->proceedReplacements($this->all_texts->tsubject);
     }
@@ -537,7 +537,7 @@ class Texts
      *
      * @return string
      */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->proceedReplacements($this->all_texts->tbody);
     }
@@ -549,7 +549,7 @@ class Texts
      *
      * @return void
      */
-    private function insert(array $values)
+    private function insert(array $values): void
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
@@ -573,7 +573,7 @@ class Texts
      *
      * @return array
      */
-    public function getAllDefaults()
+    public function getAllDefaults(): array
     {
         global $i18n;
 
@@ -592,7 +592,7 @@ class Texts
      *
      * @return array
      */
-    public function getDefaultTexts($lang = 'en_US')
+    public function getDefaultTexts(string $lang = 'en_US'): array
     {
         global $i18n;
 
@@ -648,7 +648,7 @@ class Texts
      *
      * @param string $ref Reference
      *
-     * @return Texts
+     * @return self
      */
     public function setCurrent(string $ref): self
     {

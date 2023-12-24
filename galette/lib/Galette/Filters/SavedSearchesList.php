@@ -63,7 +63,7 @@ class SavedSearchesList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return 'creation_date';
     }
@@ -73,7 +73,7 @@ class SavedSearchesList extends Pagination
      *
      * @return string ASC or DESC
      */
-    protected function getDefaultDirection()
+    protected function getDefaultDirection(): string
     {
         return self::ORDER_DESC;
     }

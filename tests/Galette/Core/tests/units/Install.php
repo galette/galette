@@ -349,6 +349,7 @@ class Install extends TestCase
      */
     public function testDbInstallStep()
     {
+        $errors = array();
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
             HOST_DB,

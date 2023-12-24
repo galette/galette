@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2021-10-25
@@ -46,15 +46,15 @@ use Galette\Entity\Social;
  * @name      Replacements
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2021-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.eu
- * @since     2020-12-20
+ * @since     2021-10-25
  */
 
 trait Socials
 {
-    protected $socials_input = [];
+    protected array $socials_input = [];
 
     /**
      * Check socials
@@ -63,7 +63,7 @@ trait Socials
      *
      * @return void
      */
-    protected function checkSocials(array $post)
+    protected function checkSocials(array $post): void
     {
         $this->socials_input = [];
         foreach ($post as $key => $value) {

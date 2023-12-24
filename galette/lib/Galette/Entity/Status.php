@@ -61,13 +61,13 @@ class Status extends Entitled
 
     public const ID_NOT_EXITS = -1;
 
-    public static $fields = array(
+    public static array $fields = array(
         'id'        => 'id_statut',
         'libelle'   => 'libelle_statut',
         'third'     => 'priorite_statut'
     );
 
-    protected static $defaults = array(
+    protected static array $defaults = array(
         array('id' => 1, 'libelle' => 'President', 'priority' => 0),
         array('id' => 2, 'libelle' => 'Treasurer', 'priority' => 10),
         array('id' => 3, 'libelle' => 'Secretary', 'priority' => 20),
@@ -83,10 +83,10 @@ class Status extends Entitled
     /**
      * Default constructor
      *
-     * @param Db          $zdb  Database
-     * @param ArrayObject $args Optional existing result set
+     * @param Db           $zdb  Database
+     * @param ?ArrayObject $args Optional existing result set
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, ArrayObject $args = null)
     {
         parent::__construct(
             $zdb,
@@ -105,7 +105,7 @@ class Status extends Entitled
      *
      * @return string
      */
-    protected function getType()
+    protected function getType(): string
     {
         return 'status';
     }
@@ -115,7 +115,7 @@ class Status extends Entitled
      *
      * @return string
      */
-    public function getI18nType()
+    public function getI18nType(): string
     {
         return _T("status");
     }
@@ -127,7 +127,7 @@ class Status extends Entitled
      *
      * @return integer -2 : ID does not exist ; -1 : DB error ; 0 : success.
      */
-    public function delete($id)
+    public function delete(int $id): int
     {
         if ((int)$id === self::DEFAULT_STATUS) {
             throw new \RuntimeException(_T("You cannot delete default status!"));

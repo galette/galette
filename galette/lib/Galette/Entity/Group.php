@@ -66,16 +66,16 @@ class Group
     public const MEMBER_TYPE = 0;
     public const MANAGER_TYPE = 1;
 
-    private $id;
-    private $group_name;
-    private $parent_group;
-    private $managers;
-    private $members;
-    private $groups;
-    private $creation_date;
-    private $count_members;
-    private $isempty;
-    private $login;
+    private int $id;
+    private string $group_name;
+    private ?Group $parent_group = null;
+    private ?array $managers = null;
+    private ?array $members = null;
+    private ?array $groups = null;
+    private string $creation_date;
+    private int $count_members;
+    private bool $isempty;
+    private Login $login;
 
     /**
      * Default constructor
@@ -84,13 +84,13 @@ class Group
      *                                   a specific group, or null to just
      *                                   instanciate object
      */
-    public function __construct($args = null)
+    public function __construct(ArrayObject|int $args = null)
     {
         if ($args === null || is_int($args)) {
             if (is_int($args) && $args > 0) {
                 $this->load($args);
             }
-        } elseif (is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         }
     }
@@ -98,11 +98,11 @@ class Group
     /**
      * Loads a group from its id
      *
-     * @param int $id the identifiant for the group to load
+     * @param int $id the identifier for the group to load
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load($id)
+    public function load(int $id): bool
     {
         global $zdb;
 
@@ -134,7 +134,7 @@ class Group
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
         $this->id = (int)$r->id_group;
         $this->group_name = $r->group_name;
@@ -155,11 +155,11 @@ class Group
      *
      * @return void
      */
-    private function loadPersons($type)
+    private function loadPersons(int $type): void
     {
         global $zdb;
 
-        if ($this->id) {
+        if (isset($this->id)) {
             try {
                 $join = null;
                 switch ($type) {
@@ -221,7 +221,7 @@ class Group
      *
      * @return void
      */
-    private function loadSubGroups()
+    private function loadSubGroups(): void
     {
         global $zdb;
 
@@ -270,7 +270,7 @@ class Group
      *
      * @return boolean
      */
-    public function remove($cascade = false)
+    public function remove(bool $cascade = false): bool
     {
         global $zdb;
         $transaction = false;
@@ -353,7 +353,7 @@ class Group
      *
      * @return boolean
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->isempty;
     }
@@ -363,7 +363,7 @@ class Group
      *
      * @return boolean
      */
-    public function detach()
+    public function detach(): bool
     {
         global $zdb, $hist;
 
@@ -405,7 +405,7 @@ class Group
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         global $zdb, $hist;
 
@@ -413,7 +413,7 @@ class Group
         if ($this->parent_group) {
             $parent_group = $this->parent_group->getId();
         }
-        if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->getId())) {
+        if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
             Analog::log(
                 'Group name is not unique at requested level',
                 Analog::WARNING
@@ -425,7 +425,6 @@ class Group
 
         try {
             $values = array(
-                self::PK     => $this->id,
                 'group_name' => $this->group_name
             );
 
@@ -435,7 +434,6 @@ class Group
 
             if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new group
-                unset($values[self::PK]);
                 $this->creation_date = date("Y-m-d H:i:s");
                 $values['creation_date'] = $this->creation_date;
 
@@ -459,6 +457,7 @@ class Group
                 }
             } else {
                 //we're editing an existing group
+                $values[self::PK] = $this->id;
                 $update = $zdb->update(self::TABLE);
                 $update
                     ->set($values)
@@ -494,7 +493,7 @@ class Group
      *
      * @return boolean
      */
-    public function isManager(Login $login)
+    public function isManager(Login $login): bool
     {
         if ($login->isAdmin() || $login->isStaff()) {
             //admins as well as staff members are managers for all groups!
@@ -519,9 +518,9 @@ class Group
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**
@@ -529,7 +528,7 @@ class Group
      *
      * @return integer
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         if ($this->parent_group) {
             return $this->parent_group->getLevel() + 1;
@@ -540,14 +539,14 @@ class Group
     /**
      * Get the full name of the group "foo / bar"
      *
-     * @return string
+     * @return ?string
      */
-    public function getFullName()
+    public function getFullName(): ?string
     {
         if ($this->parent_group) {
             return $this->parent_group->getFullName() . ' / ' . $this->group_name;
         }
-        return $this->group_name;
+        return $this->group_name ?? null;
     }
 
     /**
@@ -569,32 +568,32 @@ class Group
     /**
      * Get the indented short name of the group "  >> bar"
      *
-     * @return string
+     * @return ?string
      */
-    public function getIndentName()
+    public function getIndentName(): ?string
     {
         if (($level = $this->getLevel())) {
             return str_repeat("&nbsp;", 3 * $level) . '&raquo; ' . $this->group_name;
         }
-        return $this->group_name;
+        return $this->group_name ?? null;
     }
 
     /**
      * Get group name
      *
-     * @return string
+     * @return ?string
      */
-    public function getName()
+    public function getName(): ?string
     {
-        return $this->group_name;
+        return $this->group_name ?? null;
     }
 
     /**
      * Get group members
      *
-     * @return Adherent[]
+     * @return array<int, Adherent>
      */
-    public function getMembers()
+    public function getMembers(): array
     {
         if (!is_array($this->members)) {
             $this->loadPersons(self::MEMBER_TYPE);
@@ -605,9 +604,9 @@ class Group
     /**
      * Get groups managers
      *
-     * @return Adherent[]
+     * @return array<int, Adherent>
      */
-    public function getManagers()
+    public function getManagers(): array
     {
         if (!is_array($this->managers)) {
             $this->loadPersons(self::MANAGER_TYPE);
@@ -618,9 +617,9 @@ class Group
     /**
      * Get subgroups
      *
-     * @return Group[]
+     * @return array<int, Group>
      */
-    public function getGroups()
+    public function getGroups(): array
     {
         if (!is_array($this->groups)) {
             $this->loadSubGroups();
@@ -633,7 +632,7 @@ class Group
      *
      * @return Group|null
      */
-    public function getParentGroup()
+    public function getParentGroup(): ?Group
     {
         return $this->parent_group;
     }
@@ -645,7 +644,7 @@ class Group
      *
      * @return string
      */
-    public function getCreationDate($formatted = true)
+    public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
             $date = new \DateTime($this->creation_date);
@@ -662,9 +661,9 @@ class Group
      *
      * @return int
      */
-    public function getMemberCount($force = false)
+    public function getMemberCount(bool $force = false): int
     {
-        if (isset($this->members) && is_array($this->members)) {
+        if (isset($this->members)) {
             return count($this->members);
         } elseif (isset($this->count_members)) {
             return $this->count_members;
@@ -682,9 +681,9 @@ class Group
      *
      * @param string $name Group name
      *
-     * @return Group
+     * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->group_name = $name;
         return $this;
@@ -697,7 +696,7 @@ class Group
      *
      * @return boolean
      */
-    public function canSetParentGroup(Group $group)
+    public function canSetParentGroup(Group $group): bool
     {
         do {
             if ($group->getId() == $this->getId()) {
@@ -713,9 +712,9 @@ class Group
      *
      * @param int $id Parent group identifier
      *
-     * @return Group
+     * @return self
      */
-    public function setParentGroup($id)
+    public function setParentGroup(int $id): self
     {
         $group = new Group((int)$id);
 
@@ -916,9 +915,9 @@ class Group
      *
      * @param Login $login Login instance
      *
-     * @return Group
+     * @return self
      */
-    public function setLogin(Login $login)
+    public function setLogin(Login $login): self
     {
         $this->login = $login;
         return $this;

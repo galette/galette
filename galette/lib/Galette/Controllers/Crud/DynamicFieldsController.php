@@ -68,7 +68,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
@@ -102,7 +102,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
@@ -210,20 +210,20 @@ class DynamicFieldsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request   PSR Request
-     * @param Response       $response  PSR Response
-     * @param string         $option    One of 'page' or 'order'
-     * @param string|integer $value     Value of the option
-     * @param string         $form_name Form name
+     * @param Request             $request   PSR Request
+     * @param Response            $response  PSR Response
+     * @param string|null         $option    One of 'page' or 'order'
+     * @param integer|string|null $value     Value of the option
+     * @param string              $form_name Form name
      *
      * @return Response
      */
     public function list(
         Request $request,
         Response $response,
-        $option = null,
-        $value = null,
-        $form_name = 'adh'
+        string $option = null,
+        int|string $value = null,
+        string $form_name = 'adh'
     ): Response {
         if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
@@ -400,11 +400,11 @@ class DynamicFieldsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param integer  $id        Dynamic field id
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id, $form_name = null): Response
+    public function edit(Request $request, Response $response, int $id, string $form_name = null): Response
     {
         $df = null;
         if ($this->session->dynamicfieldtype) {
@@ -447,11 +447,11 @@ class DynamicFieldsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param integer  $id        Dynamic field id
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id = null, string $form_name = null): Response
+    public function doEdit(Request $request, Response $response, int $id, string $form_name = null): Response
     {
         $post = $request->getParsedBody();
         $post['form_name'] = $form_name;
@@ -548,7 +548,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $args['form_name']]);
     }
@@ -560,7 +560,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveDynamicField',
@@ -575,7 +575,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
@@ -600,7 +600,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $field_id = (int)$post['id'];
         $field = DynamicField::loadFieldType($this->zdb, $field_id);

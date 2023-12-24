@@ -186,7 +186,7 @@ abstract class AbstractController
      *
      * @return Response
      */
-    protected function galetteRedirect(Request $request, Response $response)
+    protected function galetteRedirect(Request $request, Response $response): Response
     {
         //reinject flash messages so they're not lost
         $flashes = $this->flash->getMessages();
@@ -245,7 +245,7 @@ abstract class AbstractController
      *
      * @return string
      */
-    private function getGaletteBaseUrl(Request $request)
+    private function getGaletteBaseUrl(Request $request): string
     {
         $routeContext = RouteContext::fromRequest($request);
 

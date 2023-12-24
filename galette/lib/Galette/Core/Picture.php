@@ -37,6 +37,8 @@
 namespace Galette\Core;
 
 use ArrayObject;
+use Laminas\Db\Adapter\Driver\StatementInterface;
+use Laminas\Db\Sql\Select;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
@@ -69,22 +71,22 @@ class Picture implements FileInterface
     public const TABLE = 'pictures';
     public const PK = Adherent::PK;
 
-    protected $tbl_prefix = '';
+    protected string $tbl_prefix = '';
 
-    protected $id;
-    protected $db_id;
-    protected $height;
-    protected $width;
-    protected $optimal_height;
-    protected $optimal_width;
-    protected $file_path;
-    protected $format;
-    protected $mime;
-    protected $has_picture = false;
-    protected $store_path = GALETTE_PHOTOS_PATH;
-    protected $max_width = 200;
-    protected $max_height = 200;
-    private $insert_stmt;
+    protected string|int $id;
+    protected int $db_id;
+    protected int $height;
+    protected int $width;
+    protected int $optimal_height;
+    protected int $optimal_width;
+    protected string $file_path;
+    protected string $format;
+    protected string $mime;
+    protected bool $has_picture = false;
+    protected string $store_path = GALETTE_PHOTOS_PATH;
+    protected int $max_width = 200;
+    protected int $max_height = 200;
+    private StatementInterface $insert_stmt;
 
     /**
      * Default constructor.
@@ -138,7 +140,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
@@ -166,7 +168,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if file is present on FS, false otherwise
      */
-    private function checkFileOnFS()
+    private function checkFileOnFS(): bool
     {
         $file_wo_ext = $this->store_path . $this->id;
         if (file_exists($file_wo_ext . '.jpg')) {
@@ -199,7 +201,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if file is present in the DB, false otherwise
      */
-    private function checkFileInDB()
+    private function checkFileInDB(): bool
     {
         global $zdb;
 
@@ -243,9 +245,9 @@ class Picture implements FileInterface
     /**
      * Returns the relevant query to check if picture exists in database.
      *
-     * @return string SELECT query
+     * @return Select SELECT query
      */
-    protected function getCheckFileQuery()
+    protected function getCheckFileQuery(): Select
     {
         global $zdb;
         $class = get_class($this);
@@ -262,11 +264,11 @@ class Picture implements FileInterface
     }
 
     /**
-     * Gets the default picture to show, anyways
+     * Gets the default picture to show, anyway
      *
      * @return void
      */
-    protected function getDefaultPicture()
+    protected function getDefaultPicture(): void
     {
         $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/default.png');
         $this->format = 'png';
@@ -279,7 +281,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    private function setSizes()
+    private function setSizes(): void
     {
         list($width, $height) = getimagesize($this->file_path);
         $this->height = $height;
@@ -291,13 +293,13 @@ class Picture implements FileInterface
             if ($this->height > $this->max_height) {
                 $ratio = $this->max_height / $this->height;
                 $this->optimal_height = $this->max_height;
-                $this->optimal_width = $this->width * $ratio;
+                $this->optimal_width = (int)($this->width * $ratio);
             }
         } else {
             if ($this->width > $this->max_width) {
                 $ratio = $this->max_width / $this->width;
                 $this->optimal_width = $this->max_width;
-                $this->optimal_height = $this->height * $ratio;
+                $this->optimal_height = (int)($this->height * $ratio);
             }
         }
     }
@@ -317,9 +319,9 @@ class Picture implements FileInterface
      *
      * @param Response $response Response
      *
-     * @return object the binary file
+     * @return Response the binary file
      */
-    public function display(Response $response)
+    public function display(Response $response): Response
     {
         $response = $response->withHeader('Content-Type', $this->mime)
             ->withHeader('Content-Transfer-Encoding', 'binary')
@@ -341,7 +343,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if image was successfully deleted, false otherwise
      */
-    public function delete($transaction = true)
+    public function delete(bool $transaction = true): bool
     {
         global $zdb;
         $class = get_class($this);
@@ -427,11 +429,11 @@ class Picture implements FileInterface
      *
      * @param array   $file     The uploaded file
      * @param boolean $ajax     If the image comes from an ajax call (dnd)
-     * @param array   $cropping Cropping properties
+     * @param ?array  $cropping Cropping properties
      *
      * @return bool|int
      */
-    public function store($file, $ajax = false, $cropping = null)
+    public function store(array $file, bool $ajax = false, array $cropping = null)
     {
         /** TODO: fix max size (by preferences ?) */
         global $zdb;
@@ -555,7 +557,7 @@ class Picture implements FileInterface
      *
      * @return bool|int
      */
-    private function storeInDb(Db $zdb, $id, $file, $ext)
+    private function storeInDb(Db $zdb, int $id, string $file, string $ext): bool|int
     {
         $f = fopen($file, 'r');
         $picture = '';
@@ -568,8 +570,10 @@ class Picture implements FileInterface
 
         try {
             $zdb->connection->beginTransaction();
-            $stmt = $this->insert_stmt;
-            if ($stmt == null) {
+
+            if (isset($this->insert_stmt)) {
+                $stmt = $this->insert_stmt;
+            } else {
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
                     array(
@@ -618,7 +622,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    public function missingInDb(Db $zdb)
+    public function missingInDb(Db $zdb): void
     {
         $existing_disk = array();
 
@@ -697,15 +701,15 @@ class Picture implements FileInterface
     /**
      * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string $source   The source image
-     * @param string $ext      File's extension
-     * @param string $dest     The destination image.
-     *                         If null, we'll use the source image. Defaults to null
-     * @param array  $cropping Cropping properties
+     * @param string  $source   The source image
+     * @param string  $ext      File's extension
+     * @param ?string $dest     The destination image.
+     *                          If null, we'll use the source image. Defaults to null
+     * @param ?array  $cropping Cropping properties
      *
      * @return boolean
      */
-    private function resizeImage($source, $ext, $dest = null, $cropping = null)
+    private function resizeImage(string $source, string $ext, string $dest = null, array $cropping = null): bool
     {
         $class = get_class($this);
 
@@ -926,7 +930,7 @@ class Picture implements FileInterface
      *
      * @return int optimal height
      */
-    public function getOptimalHeight()
+    public function getOptimalHeight(): int
     {
         return (int)round($this->optimal_height, 1);
     }
@@ -936,7 +940,7 @@ class Picture implements FileInterface
      *
      * @return int current height
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
@@ -946,7 +950,7 @@ class Picture implements FileInterface
      *
      * @return int optimal width
      */
-    public function getOptimalWidth()
+    public function getOptimalWidth(): int
     {
         return (int)round($this->optimal_width, 1);
     }
@@ -956,7 +960,7 @@ class Picture implements FileInterface
      *
      * @return int current width
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
@@ -966,7 +970,7 @@ class Picture implements FileInterface
      *
      * @return string
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return $this->format;
     }
@@ -976,7 +980,7 @@ class Picture implements FileInterface
      *
      * @return bool True if a picture matches adherent's id, false otherwise
      */
-    public function hasPicture()
+    public function hasPicture(): bool
     {
         return $this->has_picture;
     }
@@ -986,7 +990,7 @@ class Picture implements FileInterface
      *
      * @return string full file path
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->file_path;
     }
@@ -996,7 +1000,7 @@ class Picture implements FileInterface
      *
      * @return string
      */
-    public function getMime()
+    public function getMime(): string
     {
         return $this->mime;
     }
@@ -1008,7 +1012,7 @@ class Picture implements FileInterface
      *
      * @return string Localized message
      */
-    public function getErrorMessage($code)
+    public function getErrorMessage($code): string
     {
         $error = null;
         switch ($code) {

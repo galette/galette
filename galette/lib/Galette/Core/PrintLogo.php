@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2023 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -52,19 +52,19 @@ namespace Galette\Core;
 */
 class PrintLogo extends Logo
 {
-    protected $id = 'custom_print_logo';
+    protected string|int $id = 'custom_print_logo';
     //database wants a member id (integer), not a string.
     //Will be used to query the correct id
-    protected $db_id = 999999;
+    protected int $db_id = 999999;
 
     /**
-     * Gets the default picture to show, anyways
+     * Gets the default picture to show, anyway
      *
      * @see Logo::getDefaultPicture()
      *
      * @return void
      */
-    protected function getDefaultPicture()
+    protected function getDefaultPicture(): void
     {
         //if we are here, we want to serve default logo
         $pic = new Logo();

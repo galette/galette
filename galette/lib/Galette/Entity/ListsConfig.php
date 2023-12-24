@@ -58,14 +58,14 @@ use Galette\Core\Authentication;
  */
 class ListsConfig extends FieldsConfig
 {
-    protected $listed_fields = array();
+    protected array $listed_fields = array();
 
     /**
      * Fields that are not part of lists
      *
      * @var array
      */
-    private $non_list_elements = array(
+    private array $non_list_elements = array(
         'mdp_adh',
         'info_adh',
         'info_public_adh',
@@ -78,7 +78,7 @@ class ListsConfig extends FieldsConfig
      *
      * @var array
      */
-    private $acl_mapping = array(
+    private array $acl_mapping = array(
         'list_adh_name'             => 'nom_adh',
         'list_adh_contribstatus'    => 'id_statut'
     );
@@ -104,7 +104,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return void
      */
-    protected function buildLists()
+    protected function buildLists(): void
     {
         //Specific list fields does not have rights; fix this from mapping
         //Cannot be done preparing fields, cannot be sure of the order it is processed
@@ -129,7 +129,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return void
      */
-    protected function addToLists(array $field)
+    protected function addToLists(array $field): void
     {
         if (in_array($field['field_id'], $this->non_list_elements)) {
             return;
@@ -148,7 +148,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return array
      */
-    public function getDisplayElements(Login $login)
+    public function getDisplayElements(Login $login): array
     {
         global $preferences;
 
@@ -204,9 +204,9 @@ class ListsConfig extends FieldsConfig
      *
      * @param stdClass $field Field data
      *
-     * @return stdClass
+     * @return void
      */
-    private function handleLabel($field)
+    private function handleLabel(stdClass $field): void
     {
         switch ($field->field_id) {
             case 'bool_admin_adh':
@@ -225,8 +225,6 @@ class ListsConfig extends FieldsConfig
 
         $field->label = trim(str_replace('&nbsp;', ' ', $field->label));
         $field->label = preg_replace('/\s?:$/', '', $field->label);
-
-        return $field;
     }
 
     /**
@@ -273,7 +271,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return boolean
      */
-    public function setListFields($fields)
+    public function setListFields(array $fields): bool
     {
         $this->listed_fields = $fields;
         return $this->storeList();
@@ -284,7 +282,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return boolean
      */
-    private function storeList()
+    private function storeList(): bool
     {
         $class = get_class($this);
 
@@ -370,7 +368,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return integer
      */
-    public function getVisibility($field)
+    public function getVisibility(string $field): int
     {
         if (in_array($field, $this->non_list_elements)) {
             return self::NOBODY;

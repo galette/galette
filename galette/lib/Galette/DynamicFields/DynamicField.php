@@ -94,32 +94,32 @@ abstract class DynamicField
     public const DEFAULT_MAX_FILE_SIZE = 1024;
     public const VALUES_FIELD_LENGTH = 100;
 
-    protected $has_data = false;
-    protected $has_width = false;
-    protected $has_height = false;
-    protected $has_size = false;
-    protected $multi_valued = false;
-    protected $fixed_values = false;
-    protected $has_permissions = true;
+    protected bool $has_data = false;
+    protected bool $has_width = false;
+    protected bool $has_height = false;
+    protected bool $has_size = false;
+    protected bool $multi_valued = false;
+    protected bool $fixed_values = false;
+    protected bool $has_permissions = true;
 
-    protected $id;
-    protected $index;
-    protected $perm;
-    protected $required;
-    protected $width;
-    protected $height;
-    protected $repeat;
-    protected $size;
-    protected $old_size;
-    protected $values;
-    protected $form;
-    protected $information;
-    protected $name;
-    protected $old_name;
+    protected ?int $id = null;
+    protected ?int $index = null;
+    protected ?int $perm = null;
+    protected bool $required = false;
+    protected ?int $width = null;
+    protected ?int $height = null;
+    protected ?int $repeat = null;
+    protected ?int $size = null;
+    protected ?int $old_size = null;
+    protected string|array|false $values = false;
+    protected string $form;
+    protected ?string $information = null;
+    protected ?string $name = null;
+    protected ?string $old_name = null;
 
-    protected $errors = [];
+    protected array $errors = [];
 
-    protected $zdb;
+    protected Db $zdb;
 
     /**
      * Default constructor
@@ -146,7 +146,7 @@ abstract class DynamicField
      *
      * @return DynamicField|false
      */
-    public static function loadFieldType(Db $zdb, int $id)
+    public static function loadFieldType(Db $zdb, int $id): DynamicField|false
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -181,7 +181,7 @@ abstract class DynamicField
      *
      * @return DynamicField
      */
-    public static function getFieldType(Db $zdb, int $t, int $id = null)
+    public static function getFieldType(Db $zdb, int $t, int $id = null): DynamicField
     {
         $df = null;
         switch ($t) {
@@ -288,7 +288,7 @@ abstract class DynamicField
      *
      * @return void
      */
-    private function loadFixedValues()
+    private function loadFixedValues(): void
     {
         try {
             $val_select = $this->zdb->select(
@@ -347,7 +347,7 @@ abstract class DynamicField
      */
     public function hasData(): bool
     {
-        return (bool)$this->has_data;
+        return $this->has_data;
     }
 
     /**
@@ -357,7 +357,7 @@ abstract class DynamicField
      */
     public function hasWidth(): bool
     {
-        return (bool)$this->has_width;
+        return $this->has_width;
     }
 
     /**
@@ -367,7 +367,7 @@ abstract class DynamicField
      */
     public function hasHeight(): bool
     {
-        return (bool)$this->has_height;
+        return $this->has_height;
     }
 
     /**
@@ -377,7 +377,7 @@ abstract class DynamicField
      */
     public function hasSize(): bool
     {
-        return (bool)$this->has_size;
+        return $this->has_size;
     }
 
     /**
@@ -387,7 +387,7 @@ abstract class DynamicField
      */
     public function isMultiValued(): bool
     {
-        return (bool)$this->multi_valued;
+        return $this->multi_valued;
     }
 
     /**
@@ -397,7 +397,7 @@ abstract class DynamicField
      */
     public function hasFixedValues(): bool
     {
-        return (bool)$this->fixed_values;
+        return $this->fixed_values;
     }
 
     /**
@@ -407,7 +407,7 @@ abstract class DynamicField
      */
     public function hasPermissions(): bool
     {
-        return (bool)$this->has_permissions;
+        return $this->has_permissions;
     }
 
     /**
@@ -437,7 +437,7 @@ abstract class DynamicField
      */
     public function isRequired(): bool
     {
-        return (bool)$this->required;
+        return $this->required;
     }
 
     /**
@@ -467,7 +467,7 @@ abstract class DynamicField
      */
     public function isRepeatable(): bool
     {
-        return $this->repeat != null && trim($this->repeat) != '' && (int)$this->repeat >= 0;
+        return $this->repeat != null && $this->repeat >= 0;
     }
 
     /**
@@ -581,7 +581,7 @@ abstract class DynamicField
      *
      * @return array|string|false
      */
-    public function getValues(bool $imploded = false)
+    public function getValues(bool $imploded = false): array|string|false
     {
         if (!is_array($this->values)) {
             return false;
@@ -601,7 +601,7 @@ abstract class DynamicField
      *
      * @return bool
      */
-    public function check(array $values)
+    public function check(array $values): bool
     {
         $this->errors = [];
         $this->warnings = [];
@@ -628,7 +628,7 @@ abstract class DynamicField
             }
         }
 
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             if (!isset($values['form_name']) || $values['form_name'] == '') {
                 $this->errors[] = _T('Missing required form!');
             } else {
@@ -686,7 +686,7 @@ abstract class DynamicField
             $this->values = $fixed_values;
         }
 
-        if ($this->id == null) {
+        if (!isset($this->id)) {
             $this->index = $this->getNewIndex();
         }
 
@@ -711,7 +711,7 @@ abstract class DynamicField
             return false;
         }
 
-        $isnew = ($this->id === null);
+        $isnew = (!isset($this->id));
         if ($this->old_name !== null) {
             $this->deleteTranslation($this->old_name);
             $this->addTranslation($this->name);
@@ -866,7 +866,7 @@ abstract class DynamicField
                 )
             );
 
-            if ($this->id !== null) {
+            if (isset($this->id)) {
                 $select->where->addPredicate(
                     new PredicateExpression(
                         'field_id NOT IN (?)',
@@ -886,6 +886,7 @@ abstract class DynamicField
                 'An error occurred checking field duplicity' . $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
         return $duplicated;
     }
@@ -926,7 +927,7 @@ abstract class DynamicField
                 )
             )->where(
                 array(
-                    self::PK        => $this->id
+                    self::PK => $this->id
                 )
             );
             $this->zdb->execute($update);

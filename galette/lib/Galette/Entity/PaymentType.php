@@ -67,8 +67,8 @@ class PaymentType
     public const TABLE = 'paymenttypes';
     public const PK = 'type_id';
 
-    private $zdb;
-    private $id;
+    private Db $zdb;
+    private int $id;
 
     public const OTHER = 6;
     public const CASH = 1;
@@ -80,15 +80,15 @@ class PaymentType
     /**
      * Main constructor
      *
-     * @param Db    $zdb  Database instance
-     * @param mixed $args Arguments
+     * @param Db                   $zdb  Database instance
+     * @param ArrayObject|int|null $args Arguments
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
         $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRs($args);
         }
     }
@@ -100,7 +100,7 @@ class PaymentType
      *
      * @return void
      */
-    private function load($id)
+    private function load(int $id): void
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -128,7 +128,7 @@ class PaymentType
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRs(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = $rs->$pk;
@@ -140,13 +140,13 @@ class PaymentType
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         $data = array(
             'type_name' => $this->name
         );
         try {
-            if ($this->id !== null && $this->id > 0) {
+            if (isset($this->id) && $this->id > 0) {
                 if ($this->old_name !== null) {
                     $this->deleteTranslation($this->old_name);
                     $this->addTranslation($this->name);
@@ -184,7 +184,7 @@ class PaymentType
      *
      * @return boolean
      */
-    public function remove()
+    public function remove(): bool
     {
         $id = (int)$this->id;
         if ($this->isSystemType()) {
@@ -218,7 +218,7 @@ class PaymentType
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         switch ($name) {
             case 'id':
@@ -241,7 +241,7 @@ class PaymentType
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'id':
@@ -260,7 +260,7 @@ class PaymentType
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'name':
@@ -290,7 +290,7 @@ class PaymentType
      *
      * @return array
      */
-    public function getSystemTypes($translated = true)
+    public function getSystemTypes(bool $translated = true): array
     {
         if ($translated) {
             $systypes = [
@@ -320,7 +320,7 @@ class PaymentType
      * @return boolean
      *
      */
-    public function isSystemType()
+    public function isSystemType(): bool
     {
         return isset($this->getSystemTypes()[$this->id]);
     }
@@ -330,7 +330,7 @@ class PaymentType
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

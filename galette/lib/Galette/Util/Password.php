@@ -55,12 +55,12 @@ use Galette\Entity\Adherent;
  */
 class Password
 {
-    protected $preferences;
-    protected $errors = [];
-    protected $strength_errors = [];
-    protected $strength = null;
-    protected $blacklisted = false;
-    protected $personal_infos = [];
+    protected Preferences $preferences;
+    protected array $errors = [];
+    protected array $strength_errors = [];
+    protected ?int $strength = null;
+    protected bool $blacklisted = false;
+    protected array $personal_infos = [];
 
     /**
      * Default constructor
@@ -79,7 +79,7 @@ class Password
      *
      * @return boolean
      */
-    public function isValid($password)
+    public function isValid(string $password): bool
     {
         $this->errors = []; //reset
 
@@ -120,7 +120,7 @@ class Password
      *
      * @return boolean
      */
-    public function isBlacklisted($password)
+    public function isBlacklisted(string $password): bool
     {
         if (!$this->preferences->pref_password_blacklist) {
             return false;
@@ -133,13 +133,13 @@ class Password
     }
 
     /**
-     * Calculate pasword strength
+     * Calculate password strength
      *
      * @param string $password Password to check
      *
      * @return integer
      */
-    public function calculateStrength($password)
+    public function calculateStrength(string $password): int
     {
         $strength = 0;
 
@@ -177,7 +177,7 @@ class Password
      *
      * @return integer
      */
-    public function getStrenght()
+    public function getStrenght(): int
     {
         return $this->strength;
     }
@@ -187,7 +187,7 @@ class Password
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -197,7 +197,7 @@ class Password
      *
      * @return array
      */
-    public function getStrenghtErrors()
+    public function getStrenghtErrors(): array
     {
         return $this->strength_errors;
     }
@@ -207,7 +207,7 @@ class Password
      *
      * @return array
      */
-    public function getBlacklistedPasswords()
+    public function getBlacklistedPasswords(): array
     {
         $file = GALETTE_DATA_PATH . '/blacklist.txt';
 
@@ -230,7 +230,7 @@ class Password
      *
      * @return array
      */
-    public function addPersonalInformation(array $infos)
+    public function addPersonalInformation(array $infos): array
     {
         $this->personal_infos = array_merge(
             $this->personal_infos,
@@ -244,9 +244,9 @@ class Password
      *
      * @param Adherent $adh Adherent instance
      *
-     * @return Password
+     * @return self
      */
-    public function setAdherent(Adherent $adh)
+    public function setAdherent(Adherent $adh): self
     {
         $infos = [
             $adh->name,

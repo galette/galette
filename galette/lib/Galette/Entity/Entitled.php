@@ -71,38 +71,45 @@ abstract class Entitled
 
     public const ID_NOT_EXITS = -1;
 
-    private $zdb;
-    private $table;
-    private $fpk;
-    private $flabel;
-    private $fthird;
-    private $used;
+    private Db $zdb;
+    private string $table;
+    private string $fpk;
+    private string $flabel;
+    private string $fthird;
+    private string $used;
 
-    public static $fields;
-    protected static $defaults;
+    public static array $fields;
+    protected static array $defaults;
 
     /** @var string|false */
-    protected $order_field = false;
+    protected string|false $order_field = false;
 
-    private $id;
-    private $label;
-    private $third;
+    private int $id;
+    private string $label = '';
+    private string $third = '';
 
-    private $errors = array();
+    private array $errors = array();
 
     /**
      * Default constructor
      *
-     * @param Db     $zdb    Database
-     * @param string $table  Table name
-     * @param string $fpk    Primary key field name
-     * @param string $flabel Label fields name
-     * @param string $fthird The third field name
-     * @param string $used   Table name for isUsed function
-     * @param mixed  $args   Either an int or a resultset to load
+     * @param Db                   $zdb    Database
+     * @param string               $table  Table name
+     * @param string               $fpk    Primary key field name
+     * @param string               $flabel Label fields name
+     * @param string               $fthird The third field name
+     * @param string               $used   Table name for isUsed function
+     * @param int|ArrayObject|null $args   Either an int or a resultset to load
      */
-    public function __construct(Db $zdb, $table, $fpk, $flabel, $fthird, $used, $args = null)
-    {
+    public function __construct(
+        Db $zdb,
+        string $table,
+        string $fpk,
+        string $flabel,
+        string $fthird,
+        string $used,
+        int|ArrayObject $args = null
+    ) {
         $this->zdb = $zdb;
         $this->table = $table;
         $this->fpk = $fpk;
@@ -111,7 +118,7 @@ abstract class Entitled
         $this->used = $used;
         if (is_int($args)) {
             $this->load($args);
-        } elseif (is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         }
     }
@@ -123,7 +130,7 @@ abstract class Entitled
      *
      * @return boolean true if query succeed, false otherwise
      */
-    public function load($id)
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select($this->table);
@@ -160,7 +167,7 @@ abstract class Entitled
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
         $pk = $this->fpk;
         $this->id = $r->$pk;
@@ -176,7 +183,7 @@ abstract class Entitled
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         $class = get_class($this);
 
@@ -239,9 +246,9 @@ abstract class Entitled
      *
      * @param boolean|null $extent Filter on (non) cotisations types
      *
-     * @return array|false
+     * @return array
      */
-    public function getList(bool $extent = null)
+    public function getList(bool $extent = null): array
     {
         $list = array();
 
@@ -289,9 +296,9 @@ abstract class Entitled
     /**
      * Complete list
      *
-     * @return array of all objects if succeeded, false otherwise
+     * @return array of all objects
      */
-    public function getCompleteList()
+    public function getCompleteList(): array
     {
         $list = array();
 
@@ -332,13 +339,13 @@ abstract class Entitled
     }
 
     /**
-     * Get a entry
+     * Get an entry
      *
      * @param integer $id Entry ID
      *
-     * @return mixed|false Row if succeed ; false: no such id
+     * @return ArrayObject|false Row if succeed ; false: no such id
      */
-    public function get($id)
+    public function get(int $id): ArrayObject|false
     {
         if (!is_numeric($id)) {
             $this->errors[] = _T("ID must be an integer!");
@@ -376,7 +383,7 @@ abstract class Entitled
      *
      * @return string|int
      */
-    public function getLabel($id, $translated = true)
+    public function getLabel(int $id, bool $translated = true): string|int
     {
         $res = $this->get($id);
         if ($res === false) {
@@ -394,7 +401,7 @@ abstract class Entitled
      *
      * @return int|false Return id if it exists false otherwise
      */
-    public function getIdByLabel($label)
+    public function getIdByLabel(string $label): int|false
     {
         try {
             $pk = $this->fpk;
@@ -428,7 +435,7 @@ abstract class Entitled
      *
      * @return bool|integer  -2 : label already exists
      */
-    public function add($label, $extra)
+    public function add(string $label, int $extra): bool|int
     {
         // Avoid duplicates.
         $label = strip_tags($label);
@@ -490,7 +497,7 @@ abstract class Entitled
      *
      * @return self::ID_NOT_EXITS|boolean
      */
-    public function update($id, $label, $extra)
+    public function update(int $id, string $label, int $extra): int|bool
     {
         $label = strip_tags($label);
         $ret = $this->get($id);
@@ -542,7 +549,7 @@ abstract class Entitled
      *
      * @return self::ID_NOT_EXITS|boolean
      */
-    public function delete($id)
+    public function delete(int $id): int|bool
     {
         $ret = $this->get($id);
         if (!$ret) {
@@ -588,7 +595,7 @@ abstract class Entitled
      *
      * @return boolean
      */
-    public function isUsed($id)
+    public function isUsed(int $id): bool
     {
         try {
             $select = $this->zdb->select($this->used);
@@ -618,14 +625,14 @@ abstract class Entitled
      *
      * @return string
      */
-    abstract protected function getType();
+    abstract protected function getType(): string;
 
     /**
      * Get translated textual representation
      *
      * @return string
      */
-    abstract public function getI18nType();
+    abstract public function getI18nType(): string;
 
     /**
      * Global getter method
@@ -634,7 +641,7 @@ abstract class Entitled
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = array();
         $virtuals = array('extension', 'libelle');
@@ -664,7 +671,7 @@ abstract class Entitled
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array();
         $virtuals = array('extension', 'libelle');

@@ -36,10 +36,12 @@
 
 namespace Galette\Middleware;
 
+use Galette\Core\I18n;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use DI\Container;
+use RKA\Session;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 
@@ -57,9 +59,9 @@ use Slim\Routing\RouteParser;
  */
 class Language
 {
-    private $i18n;
-    private $session;
-    private $routeparser;
+    private I18n $i18n;
+    private Session $session;
+    private RouteParser $routeparser;
 
     /**
      * Constructor
@@ -95,6 +97,7 @@ class Language
             $arguments = $route->getArguments();
 
             $this->i18n->changeLanguage($get['ui_pref_lang']);
+            //@phpstan-ignore-next-line
             $this->session->i18n = $this->i18n;
 
             $response = new \Slim\Psr7\Response();

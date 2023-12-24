@@ -60,9 +60,9 @@ class L10n
     public const TABLE = 'l10n';
 
     /** @var Db */
-    private $zdb;
+    private Db $zdb;
     /** @var I18n */
-    private $i18n;
+    private I18n $i18n;
 
     /**
      * Default constructor.
@@ -83,7 +83,7 @@ class L10n
      *
      * @return boolean
      */
-    public function addDynamicTranslation($text_orig)
+    public function addDynamicTranslation(string $text_orig): bool
     {
         try {
             foreach ($this->i18n->getList() as $lang) {
@@ -156,7 +156,7 @@ class L10n
      *
      * @return boolean
      */
-    public function deleteDynamicTranslation($text_orig)
+    public function deleteDynamicTranslation(string $text_orig): bool
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);
@@ -196,7 +196,7 @@ class L10n
      *
      * @return boolean
      */
-    public function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
+    public function updateDynamicTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
         try {
             //check if translation already exists
@@ -254,7 +254,7 @@ class L10n
      *
      * @return string
      */
-    public function getDynamicTranslation($text_orig, $text_locale)
+    public function getDynamicTranslation(string $text_orig, string $text_locale): string
     {
         try {
             $select = $this->zdb->select(self::TABLE);

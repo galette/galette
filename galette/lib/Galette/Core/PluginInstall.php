@@ -65,10 +65,9 @@ class PluginInstall extends Install
     /**
      * Test database connection
      *
-     * @return true|array true if connection was successfull,
-     * an array with some infos otherwise
+     * @return boolean
      */
-    public function testDbConnexion()
+    public function testDbConnexion(): bool
     {
         //installing plugin, DB connection is already ok
         return true;
@@ -79,7 +78,7 @@ class PluginInstall extends Install
      *
      * @return void
      */
-    public function atPreviousStep()
+    public function atPreviousStep(): void
     {
         if ($this->_step > 0) {
             if (
@@ -111,11 +110,11 @@ class PluginInstall extends Install
      *
      * @param I18n  $i18n  I18n
      * @param Db    $zdb   Database instance
-     * @param Login $login Loged in instance
+     * @param Login $login Logged in instance
      *
      * @return boolean
      */
-    public function initObjects(I18n $i18n, Db $zdb, Login $login)
+    public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
         return false;
     }

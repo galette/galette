@@ -72,7 +72,7 @@ class Transaction
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
 
-    private $_id;
+    private int $_id;
     private $_date;
     private $_amount;
     private $_description;
@@ -95,7 +95,7 @@ class Transaction
      *                                    a specific transaction, or null to just
      *                                    instantiate object
      */
-    public function __construct(Db $zdb, Login $login, $args = null)
+    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -138,7 +138,7 @@ class Transaction
             if (is_int($args) && $args > 0) {
                 $this->load($args);
             }
-        } elseif (is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         }
 
@@ -152,7 +152,7 @@ class Transaction
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load($id)
+    public function load(int $id): bool
     {
         if (!$this->login->isLogged()) {
             Analog::log(
@@ -217,7 +217,7 @@ class Transaction
      *
      * @return boolean
      */
-    public function remove(History $hist, $transaction = true)
+    public function remove(History $hist, bool $transaction = true): bool
     {
         global $emitter;
 
@@ -277,7 +277,7 @@ class Transaction
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
         $this->_id = $r->$pk;
@@ -300,7 +300,7 @@ class Transaction
      *
      * @return true|array
      */
-    public function check($values, $required, $disabled)
+    public function check(array $values, array $required, array $disabled)
     {
         $this->errors = array();
 
@@ -384,7 +384,7 @@ class Transaction
             }
         }
 
-        if ($this->_id != '') {
+        if (isset($this->_id)) {
             $dispatched = $this->getDispatchedAmount();
             if ($dispatched > $this->_amount) {
                 $this->errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
@@ -416,7 +416,7 @@ class Transaction
      *
      * @return boolean
      */
-    public function store(History $hist)
+    public function store(History $hist): bool
     {
         global $emitter;
 
@@ -429,7 +429,9 @@ class Transaction
             /** FIXME: quote? */
             foreach ($fields as $field) {
                 $prop = '_' . $this->_fields[$field]['propname'];
-                $values[$field] = $this->$prop;
+                if (isset($this->$prop)) {
+                    $values[$field] = $this->$prop;
+                }
             }
 
             if (!isset($this->_id) || $this->_id == '') {
@@ -529,7 +531,7 @@ class Transaction
      *
      * @return double
      */
-    public function getMissingAmount()
+    public function getMissingAmount(): float
     {
         if (empty($this->_id)) {
             return (double)$this->amount;
@@ -564,7 +566,7 @@ class Transaction
      *
      * @return array
      */
-    public function getDbFields(Db $zdb)
+    public function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
@@ -579,7 +581,7 @@ class Transaction
      *
      * @return string current transaction row class
      */
-    public function getRowClass()
+    public function getRowClass(): string
     {
         return ($this->getMissingAmount() == 0) ?
             'transaction-normal' : 'transaction-uncomplete';
@@ -592,7 +594,7 @@ class Transaction
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = array();
 
@@ -616,7 +618,7 @@ class Transaction
                     }
                     break;
                 case 'id':
-                    if ($this->$rname !== null) {
+                    if (isset($this->$rname) && $this->$rname !== null) {
                         return (int)$this->$rname;
                     }
                     return null;
@@ -648,7 +650,7 @@ class Transaction
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array();
 
@@ -667,7 +669,7 @@ class Transaction
      *
      * @return string
      */
-    public function getFieldLabel($field)
+    public function getFieldLabel(string $field): string
     {
         $label = $this->_fields[$field]['label'];
         //replace "&nbsp;"
@@ -684,7 +686,7 @@ class Transaction
      *
      * @return array|true
      */
-    public function handleFiles($files)
+    public function handleFiles(array $files)
     {
         $this->errors = [];
 

@@ -55,7 +55,7 @@ use Galette\Core\Pagination;
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
  * @property ?integer $filtre_cotis_adh
- * @property boolean $filtre_cotis_children
+ * @property integer|false $filtre_cotis_children
  * @property integer $date_field
  * @property ?integer $payment_type_filter
  * @property boolean $filtre_transactions
@@ -83,20 +83,20 @@ class ContributionsList extends Pagination
     public const DATE_RECORD = 2;
 
     //filters
-    private $date_field = null;
-    private $start_date_filter = null;
-    private $end_date_filter = null;
-    private $payment_type_filter = null;
-    private $filtre_cotis_adh = null;
-    private $filtre_cotis_children = false;
-    private $filtre_transactions = false;
+    private ?int $date_field = null;
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?int $payment_type_filter = null;
+    private ?int $filtre_cotis_adh = null;
+    private int|false $filtre_cotis_children = false;
+    private bool $filtre_transactions = false;
 
-    private $from_transaction = false;
-    private $max_amount = null;
+    private int|false $from_transaction = false;
+    private ?int $max_amount = null;
 
-    private $selected = [];
+    private array $selected = [];
 
-    protected $list_fields = array(
+    protected array $list_fields = array(
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
@@ -109,7 +109,7 @@ class ContributionsList extends Pagination
         'selected'
     );
 
-    protected $virtuals_list_fields = array(
+    protected array $virtuals_list_fields = array(
         'rstart_date_filter',
         'rend_date_filter'
     );
@@ -127,7 +127,7 @@ class ContributionsList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_BEGIN_DATE;
     }
@@ -139,7 +139,7 @@ class ContributionsList extends Pagination
      *
      * @return void
      */
-    public function reinit($ajax = false)
+    public function reinit(bool $ajax = false): void
     {
         parent::reinit();
         $this->date_field = self::DATE_BEGIN;
@@ -164,7 +164,7 @@ class ContributionsList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         Analog::log(
             '[ContributionsList] Getting property `' . $name . '`',
@@ -225,7 +225,7 @@ class ContributionsList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -244,7 +244,7 @@ class ContributionsList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);

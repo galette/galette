@@ -50,11 +50,11 @@ namespace Galette\Core;
  */
 class CheckModules
 {
-    private $good = array();
-    private $should = array();
-    private $missing = array();
+    private array $good = array();
+    private array $should = array();
+    private array $missing = array();
 
-    private $modules = [
+    private array $modules = [
         //name      => required
         'SimpleXML' => true,
         'gd'        => true,
@@ -73,7 +73,7 @@ class CheckModules
      *
      * @param boolean $do Whether to do checks, defaults to true
      */
-    public function __construct($do = true)
+    public function __construct(bool $do = true)
     {
         if ($do === true) {
             $this->doCheck();
@@ -81,7 +81,7 @@ class CheckModules
     }
 
     /**
-     * Check various modules and dispatch them beetween:
+     * Check various modules and dispatch them between:
      * - good: module that are present,
      * - may: modules that may be present but are not,
      * - should: modules that should be present but are not,
@@ -91,7 +91,7 @@ class CheckModules
      *
      * @return void
      */
-    public function doCheck($translated = true)
+    public function doCheck(bool $translated = true): void
     {
         $string = ($translated ? _T("'%s' module") : "'%s' module");
         foreach ($this->modules as $name => $required) {
@@ -131,7 +131,7 @@ class CheckModules
      *
      * @return string
      */
-    public function toHtml($translated = true)
+    public function toHtml(bool $translated = true): string
     {
         $html = null;
 
@@ -165,7 +165,7 @@ class CheckModules
      *
      * @return boolean
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return count($this->missing) === 0;
     }
@@ -177,7 +177,7 @@ class CheckModules
      *
      * @return boolean
      */
-    public function isGood($module)
+    public function isGood(string $module): bool
     {
         return isset($this->good[$module]);
     }
@@ -187,17 +187,17 @@ class CheckModules
      *
      * @return array
      */
-    public function getGoods()
+    public function getGoods(): array
     {
         return $this->good;
     }
 
     /**
-     * Retrieve should modules
+     * Retrieve modules that should be present
      *
      * @return array
      */
-    public function getShoulds()
+    public function getShoulds(): array
     {
         return $this->should;
     }
@@ -207,7 +207,7 @@ class CheckModules
      *
      * @return array
      */
-    public function getMissings()
+    public function getMissings(): array
     {
         return $this->missing;
     }

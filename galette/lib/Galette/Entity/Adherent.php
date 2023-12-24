@@ -188,37 +188,37 @@ class Adherent
     private $_socials;
     private $_number;
 
-    private $_row_classes;
+    private string $_row_classes;
 
-    private $_self_adh = false;
+    private bool $_self_adh = false;
 
-    private $zdb;
-    private $preferences;
-    private $fields;
-    private $history;
-    private $_due_status = Contribution::STATUS_UNKNOWN;
+    private Db $zdb;
+    private Preferences $preferences;
+    private array $fields;
+    private History $history;
+    private int $_due_status = Contribution::STATUS_UNKNOWN;
 
-    private $parent_fields = [
+    private array $parent_fields = [
         'adresse_adh',
         'cp_adh',
         'ville_adh',
         'email_adh'
     ];
 
-    private $errors = [];
+    private array $errors = [];
 
-    private $sendmail = false;
+    private bool $sendmail = false;
 
     /**
      * Default constructor
      *
-     * @param Db               $zdb  Database instance
-     * @param mixed            $args Either a ResultSet row, its id or its
-     *                               login or its email for to load s specific
-     *                               member, or null to just instantiate object
-     * @param false|array|null $deps Dependencies configuration, see Adherent::$_deps
+     * @param Db                          $zdb  Database instance
+     * @param ArrayObject|string|int|null $args Either a ResultSet row, its id or its
+     *                                          login or its email for to load s specific
+     *                                          member, or null to just instantiate object
+     * @param false|array|null            $deps Dependencies configuration, see Adherent::$_deps
      */
-    public function __construct(Db $zdb, $args = null, $deps = null)
+    public function __construct(Db $zdb, ArrayObject|int|string $args = null, array|false $deps = null)
     {
         global $i18n;
 
@@ -261,7 +261,7 @@ class Adherent
                     $this->loadDynamicFields();
                 }
             }
-        } elseif (is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         } elseif (is_string($args)) {
             $this->loadFromLoginOrMail($args);
@@ -536,6 +536,7 @@ class Adherent
             new \DateTime($this->_creation_date)
         )->days;
 
+        $this->_row_classes = '';
         if ($this->isDueFree()) {
             //no fee required, we don't care about dates
             $this->_row_classes .= ' cotis-exempt';
@@ -766,7 +767,7 @@ class Adherent
     {
         $strclass = ($this->isActive()) ? 'active-account' : 'inactive-account';
         if ($public === false) {
-            $strclass .= $this->_row_classes;
+            $strclass .= $this->_row_classes ?? '';
         }
         return $strclass;
     }
@@ -886,8 +887,8 @@ class Adherent
     /**
      * Get member name with correct case
      *
-     * @param string        $name    Member name
-     * @param string        $surname Member surname
+     * @param ?string       $name    Member name
+     * @param ?string       $surname Member surname
      * @param false|Title   $title   Member title to show or false
      * @param false|integer $id      Member id to display or false
      * @param false|string  $nick    Member nickname to display or false
@@ -897,9 +898,9 @@ class Adherent
     public static function getNameWithCase(
         ?string $name,
         ?string $surname,
-        $title = false,
-        $id = false,
-        $nick = false
+        Title|bool $title = false,
+        int|bool $id = false,
+        string|bool $nick = false
     ): string {
         $str = '';
 
@@ -1062,7 +1063,7 @@ class Adherent
      *
      * @return true|array
      */
-    public function check(array $values, array $required, array $disabled)
+    public function check(array $values, array $required, array $disabled): array|bool
     {
         global $login;
 
@@ -1839,7 +1840,7 @@ class Adherent
      *
      * @return bool
      */
-    public function __isset(string $name)
+    public function __isset(string $name): bool
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
@@ -2036,12 +2037,12 @@ class Adherent
     /**
      * Handle files (photo and dynamics files)
      *
-     * @param array $files    Files sent
-     * @param array $cropping Cropping properties
+     * @param array  $files    Files sent
+     * @param ?array $cropping Cropping properties
      *
      * @return array|true
      */
-    public function handleFiles(array $files, array $cropping = null)
+    public function handleFiles(array $files, array $cropping = null): array|bool
     {
         $this->errors = [];
         // picture upload

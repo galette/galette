@@ -39,7 +39,6 @@ namespace Galette\Controllers;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Texts;
-use Analog\Analog;
 
 /**
  * Galette texts controller
@@ -61,12 +60,12 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $lang     Language
-     * @param string   $ref      Ref code
+     * @param ?string  $lang     Language
+     * @param ?string  $ref      Ref code
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $lang = null, string $ref = null)
+    public function list(Request $request, Response $response, string $lang = null, string $ref = null): Response
     {
         if ($lang === null) {
             $lang = $this->preferences->pref_lang;
@@ -109,7 +108,7 @@ class TextController extends AbstractController
      *
      * @return Response
      */
-    public function change(Request $request, Response $response)
+    public function change(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         return $response
@@ -134,7 +133,7 @@ class TextController extends AbstractController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response)
+    public function edit(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $texts = new Texts($this->preferences, $this->routeparser);

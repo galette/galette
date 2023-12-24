@@ -93,14 +93,14 @@ class TitlesController extends CrudController
     /**
      * Titles list page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         $titles = new Titles($this->zdb);
 
@@ -179,7 +179,7 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Title id
+     * @param ?integer $id       Title id
      *
      * @return Response
      */
@@ -268,7 +268,7 @@ class TitlesController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('titles');
     }
@@ -280,7 +280,7 @@ class TitlesController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveTitle',
@@ -295,7 +295,7 @@ class TitlesController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $title = new Title((int)$args['id']);
         return sprintf(
@@ -312,7 +312,7 @@ class TitlesController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $title = new Title((int)$args['id']);
         return $title->remove($this->zdb);

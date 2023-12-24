@@ -77,7 +77,7 @@ class MembersController extends CrudController
     use BatchList;
 
     /** @var bool */
-    private $is_self_membership = false;
+    private bool $is_self_membership = false;
 
     // CRUD - Create
 
@@ -326,20 +326,20 @@ class MembersController extends CrudController
     /**
      * Public pages (trombinoscope, public list)
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param string         $type     List type (either list or trombi)
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     * @param string|null         $type     List type (either list or trombi)
      *
      * @return Response
      */
     public function publicList(
         Request $request,
         Response $response,
-        $option = null,
-        $value = null,
-        $type = null
+        string $option = null,
+        string|int $value = null,
+        string $type = null
     ): Response {
         $varname = $this->getFilterName(['prefix' => 'public', 'suffix' => $type]);
         if (isset($this->session->$varname)) {
@@ -425,14 +425,14 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName()})) {
             $filters = $this->session->{$this->getFilterName()};
@@ -726,14 +726,14 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string|null    $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
      *
      * @return Response
      */
-    public function ajaxList(Request $request, Response $response, string $option = null, $value = null): Response
+    public function ajaxList(Request $request, Response $response, string $option = null, string|int $value = null): Response
     {
         $post = $request->getParsedBody();
 
@@ -1531,7 +1531,7 @@ class MembersController extends CrudController
 
                     if ($this->login->isGroupManager()) {
                         //add/remove user from groups
-                        $groups_adh = $post['groups_adh'] ?? null;
+                        $groups_adh = $post['groups_adh'] ?? [];
                         $add_groups = Groups::addMemberToGroups(
                             $member,
                             $groups_adh
@@ -1543,7 +1543,7 @@ class MembersController extends CrudController
                     }
                     if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
                         //add/remove manager from groups
-                        $managed_groups_adh = $post['groups_managed_adh'] ?? null;
+                        $managed_groups_adh = $post['groups_managed_adh'] ?? [];
                         $add_groups = Groups::addMemberToGroups(
                             $member,
                             $managed_groups_adh,
@@ -1679,7 +1679,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('members');
     }
@@ -1691,7 +1691,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveMember',
@@ -1706,7 +1706,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         if (isset($args['id_adh']) || isset($args['id'])) {
             //one member removal
@@ -1736,7 +1736,7 @@ class MembersController extends CrudController
      *
      * @return bool
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         if (isset($this->session->{$this->getFilterName(['suffix' => 'delete'])})) {
             $filters = $this->session->{$this->getFilterName(['suffix' => 'delete'])};

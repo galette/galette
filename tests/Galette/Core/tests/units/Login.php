@@ -86,7 +86,7 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isCron());
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
-        $this->assertFalse($this->login->lang);
+        $this->assertNull($this->login->lang);
     }
 
     /**
@@ -201,6 +201,8 @@ class Login extends GaletteTestCase
      */
     public function testInexistingGetter()
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Property doesnotexists is not set!');
         $this->assertFalse($this->login->doesnotexists);
     }
 
@@ -227,14 +229,12 @@ class Login extends GaletteTestCase
             ->getMock();
 
         $zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        if ($o instanceof \Laminas\Db\Sql\Select) {
-                            throw new \LogicException('Error executing query!', 123);
-                        }
+            ->willReturnCallback(
+                function ($o) {
+                    if ($o instanceof \Laminas\Db\Sql\Select) {
+                        throw new \LogicException('Error executing query!', 123);
                     }
-                )
+                }
             );
 
         $login = new \Galette\Core\Login($zdb, $this->i18n);
@@ -344,7 +344,7 @@ class Login extends GaletteTestCase
     public function testLoginExistsDb()
     {
         $this->createUser();
-        $this->assertTrue($this->login->loginExists($this->login));
+        $this->assertTrue($this->login->loginExists('dumas.roger'));
     }
 
     /**

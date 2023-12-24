@@ -83,23 +83,23 @@ class Mailing extends GaletteMail
     public const MIME_TEXT = 'text/plain';
     public const MIME_DEFAULT = self::MIME_TEXT;
 
-    private $id;
+    private string|int $id;
 
-    private $unreachables = array();
-    private $mrecipients = array();
-    private $current_step;
+    private array $unreachables = array();
+    private array $mrecipients = array();
+    private int $current_step;
 
-    private $mime_type;
+    private string $mime_type;
 
-    private $tmp_path;
-    private $history_id;
+    private ?string $tmp_path;
+    private int $history_id;
 
     /**
      * Default constructor
      *
      * @param Preferences $preferences Preferences instance
      * @param array       $members     An array of members
-     * @param int         $id          Identifier, defaults to null
+     * @param ?integer    $id          Identifier, defaults to null
      */
     public function __construct(Preferences $preferences, array $members = [], int $id = null)
     {
@@ -142,11 +142,11 @@ class Mailing extends GaletteMail
     /**
      * Generate temporary path
      *
-     * @param string $id Random id, defautls to null
+     * @param ?string $id Random id, defaults to null
      *
      * @return void
      */
-    private function generateTmpPath($id = null)
+    private function generateTmpPath(string $id = null): void
     {
         if ($id === null) {
             $id = $this->generateNewId();
@@ -159,7 +159,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function loadAttachments()
+    private function loadAttachments(): void
     {
         $dir = '';
         if (
@@ -188,7 +188,7 @@ class Mailing extends GaletteMail
      *
      * @return boolean
      */
-    public function loadFromHistory(ArrayObject $rs, $new = true)
+    public function loadFromHistory(ArrayObject $rs, bool $new = true): bool
     {
         global $zdb;
 
@@ -239,7 +239,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function copyAttachments($id)
+    private function copyAttachments(int $id): void
     {
         $source_dir = GALETTE_ATTACHMENTS_PATH . $id . '/';
         $dest_dir = GALETTE_ATTACHMENTS_PATH . $this->id . '/';
@@ -279,7 +279,7 @@ class Mailing extends GaletteMail
      *
      * @return int
      */
-    public function send()
+    public function send(): int
     {
         $m = array();
         foreach ($this->mrecipients as $member) {
@@ -297,7 +297,7 @@ class Mailing extends GaletteMail
      *
      * @return bool
      */
-    public function setRecipients($members)
+    public function setRecipients(array $members): bool
     {
         $m = array();
         $this->mrecipients = array();
@@ -327,7 +327,7 @@ class Mailing extends GaletteMail
      *
      * @return true|int error code
      */
-    public function store($files)
+    public function store(array $files): bool|int
     {
         if ($this->tmp_path === null) {
             $this->generateTmpPath();
@@ -363,7 +363,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function moveAttachments($id)
+    public function moveAttachments(int $id): void
     {
         if (
             isset($this->tmp_path)
@@ -394,7 +394,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function removeAttachment($name)
+    public function removeAttachment(string $name): void
     {
         $to_remove = null;
         if (
@@ -444,12 +444,12 @@ class Mailing extends GaletteMail
     /**
      * Remove mailing attachments
      *
-     * @param boolean $temp Remove only tmporary attachments,
+     * @param boolean $temp Remove only temporary attachments,
      *                      to avoid history breaking
      *
-     * @return void|false
+     * @return boolean
      */
-    public function removeAttachments($temp = false)
+    public function removeAttachments(bool $temp = false): bool
     {
         $to_remove = null;
         if (
@@ -483,6 +483,7 @@ class Mailing extends GaletteMail
             }
             rmdir($to_remove);
         }
+        return true;
     }
 
     /**
@@ -492,7 +493,7 @@ class Mailing extends GaletteMail
      *
      * @return string Localized message
      */
-    public function getAttachmentErrorMessage($code)
+    public function getAttachmentErrorMessage(int $code): string
     {
         $f = new File($this->tmp_path);
         return $f->getErrorMessage($code);
@@ -503,7 +504,7 @@ class Mailing extends GaletteMail
      *
      * @return boolean
      */
-    public function existsInHistory()
+    public function existsInHistory(): bool
     {
         return isset($this->history_id);
     }
@@ -515,7 +516,7 @@ class Mailing extends GaletteMail
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = array('ordered');
         if (!in_array($name, $forbidden)) {
@@ -578,7 +579,7 @@ class Mailing extends GaletteMail
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array('ordered');
         if (!in_array($name, $forbidden)) {
@@ -613,7 +614,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'subject':

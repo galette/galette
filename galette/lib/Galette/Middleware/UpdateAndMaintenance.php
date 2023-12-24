@@ -72,7 +72,7 @@ class UpdateAndMaintenance
     /**
      * @var I18n
      */
-    protected $i18n;
+    protected I18n $i18n;
 
     /**
      * Constructor
@@ -80,7 +80,7 @@ class UpdateAndMaintenance
      * @param I18n         $i18n     I18n instance
      * @param callable|int $callback Callable or local constant
      */
-    public function __construct(I18n $i18n, $callback = self::MAINTENANCE)
+    public function __construct(I18n $i18n, callable|int $callback = self::MAINTENANCE)
     {
         $this->i18n = $i18n;
 
@@ -123,7 +123,7 @@ class UpdateAndMaintenance
      *
      * @return string
      */
-    private function renderPage(Request $request, $contents)
+    private function renderPage(Request $request, string $contents): string
     {
         $routeContext = RouteContext::fromRequest($request);
         $routeParser = $routeContext->getRouteParser();
@@ -172,7 +172,7 @@ class UpdateAndMaintenance
      *
      * @return string
      */
-    private function maintenancePage(Request $request)
+    private function maintenancePage(Request $request): string
     {
         $contents = "<div class=\"header\">" . _T("Galette is currently under maintenance!") . "</div>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
@@ -186,7 +186,7 @@ class UpdateAndMaintenance
      *
      * @return string
      */
-    private function needsUpdatePage(Request $request)
+    private function needsUpdatePage(Request $request): string
     {
         $contents = "<h1>" . _T("Galette needs update!") . "</h1>
             <p>" . _T("Your Galette database is not present, or not up to date.") . "</p>

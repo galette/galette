@@ -53,7 +53,7 @@ use Galette\Updater\AbstractUpdater;
  */
 class UpgradeTo08 extends AbstractUpdater
 {
-    protected $db_version = '0.80';
+    protected ?string $db_version = '0.80';
 
     /**
      * Main constructor
@@ -69,7 +69,7 @@ class UpgradeTo08 extends AbstractUpdater
      *
      * @return boolean
      */
-    protected function update()
+    protected function update(): bool
     {
         $dirs = array(
             'logs',
@@ -122,9 +122,9 @@ class UpgradeTo08 extends AbstractUpdater
      *
      * @param string $dirname Directory name to move
      *
-     * @return boolean
+     * @return void
      */
-    private function moveDataDir($dirname)
+    private function moveDataDir(string $dirname): void
     {
         //all directories should not be moved
         $nomove = array(

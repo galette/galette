@@ -59,7 +59,7 @@ class SysInfos
      *
      * @return string
      */
-    public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins)
+    public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins): string
     {
         $telemetry = new \Galette\Util\Telemetry($zdb, $prefs, $plugins);
 

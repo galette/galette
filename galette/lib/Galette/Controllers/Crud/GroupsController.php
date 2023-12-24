@@ -142,16 +142,21 @@ class GroupsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param integer        $id       Member id to check rights
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
+     * @param ?integer            $id       Member id to check rights
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null, $id = null): Response
-    {
+    public function list(
+        Request $request,
+        Response $response,
+        string $option = null,
+        int|string $value = null,
+        int $id = null
+    ): Response {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
         $group->setLogin($this->login);
@@ -466,7 +471,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('groups');
     }
@@ -478,7 +483,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveGroup',
@@ -493,7 +498,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $group = new Group((int)$args['id']);
         return sprintf(
@@ -510,7 +515,7 @@ class GroupsController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $group = new Group((int)$post['id']);
         $group->setLogin($this->login);

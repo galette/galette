@@ -155,9 +155,9 @@ class Preferences
     use Replacements;
     use Socials;
 
-    protected $preferences; //redefined from Replacements feature - avoid circular dependency
-    private $prefs;
-    private $errors = [];
+    protected Preferences $preferences; //redefined from Replacements feature - avoid circular dependency
+    private array $prefs;
+    private array $errors = [];
 
     public const TABLE = 'preferences';
     public const PK = 'nom_pref';
@@ -189,12 +189,12 @@ class Preferences
     /** Very strong password strength */
     public const PWD_VERY_STRONG = 4;
 
-    private static $fields = array(
+    private static array $fields = array(
         'nom_pref',
         'val_pref'
     );
 
-    private static $defaults = array(
+    private static array $defaults = array(
         'pref_admin_login'    =>    'admin',
         'pref_admin_pass'    =>    'admin',
         'pref_nom'        =>    'Galette',
@@ -292,10 +292,10 @@ class Preferences
     );
 
     /** @var Social[] */
-    private $socials;
+    private array $socials;
 
     // flagging required fields
-    private $required = array(
+    private array $required = array(
         'pref_nom',
         'pref_lang',
         'pref_numrows',
@@ -324,7 +324,7 @@ class Preferences
      *
      * @return void
      */
-    public function __construct(Db $zdb, $load = true)
+    public function __construct(Db $zdb, bool $load = true)
     {
         $this->zdb = $zdb;
         if ($load) {
@@ -339,7 +339,7 @@ class Preferences
      *
      * @return boolean
      */
-    private function checkUpdate()
+    private function checkUpdate(): bool
     {
         $proceed = false;
         $params = array();
@@ -401,7 +401,7 @@ class Preferences
      *
      * @return boolean
      */
-    public function load()
+    public function load(): bool
     {
         $this->prefs = array();
 
@@ -429,9 +429,10 @@ class Preferences
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return boolean|\Exception
+     * @return boolean
+     * @throws Throwable
      */
-    public function installInit($lang, $adm_login, $adm_pass)
+    public function installInit(string $lang, string $adm_login, string $adm_pass): bool
     {
         try {
             //first, we drop all values
@@ -482,7 +483,7 @@ class Preferences
      *
      * @return array
      */
-    public function getFieldsNames()
+    public function getFieldsNames(): array
     {
         return array_keys($this->prefs);
     }
@@ -495,7 +496,7 @@ class Preferences
      *
      * @return boolean
      */
-    public function check(array $values, Login $login)
+    public function check(array $values, Login $login): bool
     {
         $insert_values = array();
         if ($login->isSuperAdmin() && !Galette::isDemo()) {
@@ -647,7 +648,7 @@ class Preferences
      *
      * @return mixed
      */
-    public function validateValue($fieldname, $value)
+    public function validateValue(string $fieldname, $value)
     {
         global $login;
 
@@ -777,7 +778,7 @@ class Preferences
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         try {
             $this->zdb->connection->beginTransaction();
@@ -846,7 +847,7 @@ class Preferences
      *
      * @return string postal address
      */
-    public function getPostalAddress()
+    public function getPostalAddress(): string
     {
         $regs = array(
             '/%name/',
@@ -907,13 +908,13 @@ class Preferences
     }
 
     /**
-     * Are public pages visibles?
+     * Are public pages visible?
      *
-     * @param Authentication $login Authenticaqtion instance
+     * @param Authentication $login Authentication instance
      *
      * @return boolean
      */
-    public function showPublicPages(Authentication $login)
+    public function showPublicPages(Authentication $login): bool
     {
         if ($this->prefs['pref_bool_publicpages']) {
             //if public pages are actives, let's check if we
@@ -956,7 +957,7 @@ class Preferences
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = array('defaults');
         $virtuals = array('vpref_email', 'vpref_email_newadh');
@@ -1009,7 +1010,7 @@ class Preferences
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array('defaults');
         $virtuals = array('vpref_email', 'vpref_email_newadh');
@@ -1034,7 +1035,7 @@ class Preferences
      *
      * @return array
      */
-    public function getDefaults()
+    public function getDefaults(): array
     {
         return self::$defaults;
     }
@@ -1047,7 +1048,7 @@ class Preferences
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         //does this pref exists ?
         if (!array_key_exists($name, self::$defaults)) {
@@ -1092,7 +1093,7 @@ class Preferences
      *
      * @return string
      */
-    public function getURL()
+    public function getURL(): string
     {
         $url = null;
         if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
@@ -1108,7 +1109,7 @@ class Preferences
      *
      * @return string
      */
-    public function getDefaultURL()
+    public function getDefaultURL(): string
     {
         if (defined('GALETTE_CRON')) {
             if (defined('GALETTE_URI')) {
@@ -1140,11 +1141,11 @@ class Preferences
     }
 
     /**
-     * Get last telemetry date
+     * Get last telemetry registration date
      *
      * @return string|null
      */
-    public function getRegistrationDate()
+    public function getRegistrationDate(): ?string
     {
         $rawdate = $this->prefs['pref_registration_date'];
         if ($rawdate) {
@@ -1161,7 +1162,7 @@ class Preferences
      *
      * @return array
      */
-    public function checkCardsSizes()
+    public function checkCardsSizes(): array
     {
         $warning_detected = [];
         //check page width
@@ -1195,7 +1196,7 @@ class Preferences
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -1260,7 +1261,7 @@ class Preferences
      *
      * @return array
      */
-    protected function getSignaturePatterns($legacy = true): array
+    protected function getSignaturePatterns(bool $legacy = true): array
     {
         $s_patterns = [];
         $social = new Social($this->zdb);

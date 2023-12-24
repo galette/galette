@@ -39,6 +39,8 @@ namespace Galette\Controllers\Crud;
 use Galette\Features\BatchList;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
+use Galette\Filters\ContributionsList;
+use Galette\Filters\TransactionsList;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -386,16 +388,21 @@ class ContributionsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param string         $type     One of 'transactions' or 'contributions'
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
+     * @param ?string             $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null, $type = null): Response
-    {
+    public function list(
+        Request $request,
+        Response $response,
+        string $option = null,
+        int|string $value = null,
+        string $type = null
+    ): Response {
         $ajax = false;
         $get = $request->getQueryParams();
 
@@ -430,9 +437,11 @@ class ContributionsController extends CrudController
         }
 
         if (isset($this->session->$filter_name)) {
+            /** @var ContributionsList|TransactionsList $filters */
             $filters = $this->session->$filter_name;
         } else {
             $filter_class = '\\Galette\\Filters\\' . ucwords($raw_type . 'List');
+            /** @var ContributionsList|TransactionsList $filters */
             $filters = new $filter_class();
         }
 
@@ -488,7 +497,7 @@ class ContributionsController extends CrudController
                     );
                 }
             }
-            $filters->filtre_cotis_children = $value;
+            $filters->filtre_cotis_children = (int)$value;
         }
 
         $class = '\\Galette\\Entity\\' . ucwords(trim($raw_type, 's'));
@@ -517,7 +526,7 @@ class ContributionsController extends CrudController
         }
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->routeparser, $this->view);
+        $filters->setViewPagination($this->routeparser, $this->view);
 
         $tpl_vars = [
             'page_title'        => $raw_type === 'contributions' ?
@@ -536,7 +545,7 @@ class ContributionsController extends CrudController
             $tpl_vars['member'] = $member;
         }
 
-        if ($filters->filtre_cotis_children != false) {
+        if ($filters->filtre_cotis_children !== false) {
             $member = new Adherent(
                 $this->zdb,
                 $filters->filtre_cotis_children,
@@ -567,9 +576,9 @@ class ContributionsController extends CrudController
     /**
      * List page for logged-in member
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     One of 'transactions' or 'contributions'
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param string|null $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
@@ -786,11 +795,11 @@ class ContributionsController extends CrudController
      * @param Response $response PSR Response
      * @param string   $action   Action ('edit' or 'add')
      * @param string   $type     Contribution type
-     * @param integer  $id       Contribution id
+     * @param ?integer $id       Contribution id
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, $action, string $type, $id = null): Response
+    public function store(Request $request, Response $response, string $action, string $type, int $id = null): Response
     {
         $post = $request->getParsedBody();
         $url_args = [
@@ -818,7 +827,11 @@ class ContributionsController extends CrudController
             $this->session->contribution = null;
         } else {
             if ($id === null) {
-                $contrib = new Contribution($this->zdb, $this->login);
+                $args = [
+                    'type' => $post[ContributionsTypes::PK],
+                    'adh' => $post[Adherent::PK]
+                ];
+                $contrib = new Contribution($this->zdb, $this->login, $args);
             } else {
                 $contrib = new Contribution($this->zdb, $this->login, $id);
             }
@@ -909,7 +922,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('contributions', ['type' => $args['type']]);
     }
@@ -921,7 +934,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveContribution',
@@ -936,7 +949,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $raw_type = null;
 
@@ -972,7 +985,7 @@ class ContributionsController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $raw_type = null;
         switch ($args['type']) {

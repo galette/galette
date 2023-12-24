@@ -62,13 +62,13 @@ class ContributionsTypes extends Entitled
 
     public const ID_NOT_EXITS = -1;
 
-    public static $fields = array(
+    public static array $fields = array(
         'id'        => 'id_type_cotis',
         'libelle'   => 'libelle_type_cotis',
         'third'     => 'cotis_extension'
     );
 
-    protected static $defaults = array(
+    protected static array $defaults = array(
         array('id' => 1, 'libelle' => 'annual fee', 'extension' => '1'),
         array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => '1'),
         array('id' => 3, 'libelle' => 'company fee', 'extension' => '1'),
@@ -81,10 +81,10 @@ class ContributionsTypes extends Entitled
     /**
      * Default constructor
      *
-     * @param Db    $zdb  Database
-     * @param mixed $args Optional existing result set
+     * @param Db                   $zdb  Database
+     * @param int|ArrayObject|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, int|ArrayObject $args = null)
     {
         parent::__construct(
             $zdb,
@@ -103,7 +103,7 @@ class ContributionsTypes extends Entitled
      *
      * @return string
      */
-    protected function getType()
+    protected function getType(): string
     {
         return 'contribution type';
     }
@@ -113,7 +113,7 @@ class ContributionsTypes extends Entitled
      *
      * @return string
      */
-    public function getI18nType()
+    public function getI18nType(): string
     {
         return _T("contribution type");
     }
@@ -121,10 +121,10 @@ class ContributionsTypes extends Entitled
     /**
      * Does current type give membership extension?
      *
-     * @return Boolean
+     * @return boolean
      */
-    public function isExtension()
+    public function isExtension(): bool
     {
-        return $this->third;
+        return (bool)$this->third;
     }
 }

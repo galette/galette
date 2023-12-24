@@ -40,6 +40,7 @@ use Slim\Routing\RouteParser;
 use Slim\Slim;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
+use Slim\Views\Twig;
 
 /**
  * Pagination and ordering facilities
@@ -63,19 +64,19 @@ use Laminas\Db\Sql\Select;
 
 abstract class Pagination
 {
-    private $current_page;
-    private $orderby;
-    private $ordered;
-    private $show;
-    private $pages = 1;
-    private $counter = null;
-    protected $view;
-    protected $routeparser;
+    private int $current_page;
+    private int|string $orderby;
+    private string $ordered;
+    private int $show;
+    private int $pages = 1;
+    private ?int $counter = null;
+    protected ?Twig $view;
+    protected ?RouteParser $routeparser;
 
     public const ORDER_ASC = 'ASC';
     public const ORDER_DESC = 'DESC';
 
-    protected $pagination_fields = array(
+    protected array $pagination_fields = array(
         'current_page',
         'orderby',
         'ordered',
@@ -97,14 +98,14 @@ abstract class Pagination
      *
      * @return int|string
      */
-    abstract protected function getDefaultOrder();
+    abstract protected function getDefaultOrder(): int|string;
 
     /**
      * Return the default direction for ordering
      *
      * @return string ASC or DESC
      */
-    protected function getDefaultDirection()
+    protected function getDefaultDirection(): string
     {
         return self::ORDER_ASC;
     }
@@ -114,14 +115,14 @@ abstract class Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         global $preferences;
 
         $this->current_page = 1;
         $this->orderby = $this->getDefaultOrder();
         $this->ordered = $this->getDefaultDirection();
-        $this->show = (int)$preferences->pref_numrows;
+        $this->show = $preferences->pref_numrows;
     }
 
     /**
@@ -129,7 +130,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function invertorder()
+    public function invertorder(): void
     {
         $actual = $this->ordered;
         if ($actual == self::ORDER_ASC) {
@@ -145,7 +146,7 @@ abstract class Pagination
      *
      * @return self::ORDER_ASC|self::ORDER_DESC
      */
-    public function getDirection()
+    public function getDirection(): string
     {
         return $this->ordered;
     }
@@ -157,7 +158,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setDirection($direction)
+    public function setDirection(string $direction): void
     {
         if ($direction == self::ORDER_ASC || $direction == self::ORDER_DESC) {
             $this->ordered = $direction;
@@ -178,7 +179,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setLimits(Select $select)
+    public function setLimits(Select $select): void
     {
         if ($this->show !== 0) {
             $select->limit($this->show);
@@ -195,7 +196,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setCounter($c)
+    public function setCounter(int $c): void
     {
         $this->counter = (int)$c;
         $this->countPages();
@@ -206,7 +207,7 @@ abstract class Pagination
      *
      * @return void
      */
-    protected function countPages()
+    protected function countPages(): void
     {
         if ($this->show !== 0) {
             if ($this->counter % $this->show == 0) {
@@ -229,28 +230,12 @@ abstract class Pagination
      * Creates pagination links and assign some useful variables to the template
      *
      * @param RouteParser $routeparser Application instance
-     * @param mixed       $view        View instance
-     * @param boolean     $restricted  Do not permit to display all
-     *
-     * @return void
-     *
-     * @deprecated 1.0.0 use setViewPagination
-     */
-    public function setSmartyPagination(RouteParser $routeparser, $view, $restricted = true)
-    {
-        $this->setViewPagination($routeparser, $view, $restricted);
-    }
-
-    /**
-     * Creates pagination links and assign some useful variables to the template
-     *
-     * @param RouteParser $routeparser Application instance
-     * @param mixed       $view        View instance
+     * @param Twig        $view        View instance
      * @param boolean     $restricted  Do not permit to display all
      *
      * @return void
      */
-    public function setViewPagination(RouteParser $routeparser, $view, $restricted = true)
+    public function setViewPagination(RouteParser $routeparser, Twig $view, bool $restricted = true): void
     {
         $is_paginated = true;
         $paginate = null;
@@ -342,6 +327,8 @@ abstract class Pagination
         $view->getEnvironment()->addGlobal('pagination', $paginate);
         $view->getEnvironment()->addGlobal('nbshow_options', $options);
 
+        //resetting prevents following error:
+        //PHP Fatal error:  Uncaught Exception: Serialization of '[...]' is not allowed in [no active file]:0
         $this->view = null;
         $this->routeparser = null;
     }
@@ -356,7 +343,7 @@ abstract class Pagination
      *
      * @return string
      */
-    private function getLink($content, $url, $title, $current = false)
+    private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
         if ($current === true) {
             $active = "active ";
@@ -375,7 +362,7 @@ abstract class Pagination
      *
      * @return string
      */
-    protected function getHref($page)
+    protected function getHref(int $page): string
     {
         $args = [
             'option'    => 'page',
@@ -400,7 +387,7 @@ abstract class Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (in_array($name, $this->pagination_fields)) {
             return $this->$name;
@@ -421,7 +408,7 @@ abstract class Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -437,7 +424,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'ordered':

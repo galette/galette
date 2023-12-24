@@ -62,7 +62,7 @@ class Galette extends GaletteTestCase
     public function testGitVersion()
     {
         $gitversion = \Galette\Core\Galette::gitVersion();
-        $this->assertStringStartsWith(GALETTE_VERSION, $gitversion);
+        $this->assertStringStartsWith(str_replace('-dev', '', GALETTE_VERSION), $gitversion);
         $this->assertSame(
             1,
             preg_match(

@@ -52,7 +52,7 @@ namespace Galette\Core;
  * @property  ?string $name
  * @property  ?string $surname
  * @property  ?integer $id
- * @property  ?string $lang
+ * @property  string $lang
  * @property  array $managed_groups
  */
 
@@ -64,21 +64,19 @@ abstract class Authentication
     public const ACCESS_ADMIN = 3;
     public const ACCESS_SUPERADMIN = 4;
 
-    protected $login;
-    protected $name;
-    protected $surname;
-    protected $admin = false;
-    protected $id;
-    protected $lang;
-    protected $logged = false;
-    protected $active = false;
-    protected $superadmin = false;
-    protected $staff = false;
-    protected $uptodate = false;
-    protected $managed_groups = [];
-    protected $cron = false;
-    protected $compact_menu = false;
-    protected $dark_mode = false;
+    protected string $login;
+    protected string $name;
+    protected ?string $surname;
+    protected bool $admin = false;
+    protected int $id;
+    protected string $lang;
+    protected bool $logged = false;
+    protected bool $active = false;
+    protected bool $superadmin = false;
+    protected bool $staff = false;
+    protected bool $uptodate = false;
+    protected array $managed_groups = [];
+    protected bool $cron = false;
 
     /**
      * Logs in user.
@@ -88,7 +86,7 @@ abstract class Authentication
      *
      * @return boolean
      */
-    abstract public function logIn($user, $passe);
+    abstract public function logIn(string $user, string $passe): bool;
 
     /**
      * Does this login already exists ?
@@ -96,9 +94,9 @@ abstract class Authentication
      *
      * @param string $user the username
      *
-     * @return true if the username already exists, false otherwise
+     * @return boolean true if the username already exists, false otherwise
      */
-    abstract public function loginExists($user);
+    abstract public function loginExists(string $user): bool;
 
     /**
      * Login for the superuser
@@ -106,9 +104,9 @@ abstract class Authentication
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
      *
-     * @return void
+     * @return bool
      */
-    public function logAdmin($login, Preferences $preferences)
+    public function logAdmin(string $login, Preferences $preferences): bool
     {
         $this->logged = true;
         $this->name = 'Admin';
@@ -121,6 +119,7 @@ abstract class Authentication
         $this->lang = $preferences->pref_lang;
         //a flag for super admin only, since it's not a regular user
         $this->superadmin = true;
+        return true;
     }
 
     /**
@@ -129,9 +128,9 @@ abstract class Authentication
      * @param string      $name        Service name
      * @param Preferences $preferences Preferences instance
      *
-     * @return void
+     * @return bool
      */
-    public function logCron($name, Preferences $preferences)
+    public function logCron($name, Preferences $preferences): bool
     {
         //known cronable files
         $ok = array('reminder');
@@ -141,6 +140,7 @@ abstract class Authentication
             $this->cron = true;
             $this->login = 'cron';
             $this->lang = $preferences->pref_lang;
+            return true;
         } else {
             trigger_error('Not authorized!', E_USER_ERROR);
         }
@@ -149,20 +149,21 @@ abstract class Authentication
     /**
      * Log out user and unset variables
      *
-     * @return void
+     * @return bool
      */
-    public function logOut()
+    public function logOut(): bool
     {
-        $this->id = null;
+        unset($this->id);
         $this->logged = false;
-        $this->name = null;
-        $this->login = null;
+        unset($this->name);
+        unset($this->login);
         $this->admin = false;
         $this->active = false;
         $this->superadmin = false;
         $this->staff = false;
         $this->uptodate = false;
-        $this->lang = null;
+        unset($this->lang);
+        return true;
     }
 
     /**
@@ -170,7 +171,7 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function isLogged()
+    public function isLogged(): bool
     {
         return $this->logged;
     }
@@ -182,7 +183,7 @@ abstract class Authentication
      */
     public function isAdmin(): bool
     {
-        return (bool)$this->admin;
+        return $this->admin;
     }
 
     /**
@@ -192,7 +193,7 @@ abstract class Authentication
      */
     public function isSuperAdmin(): bool
     {
-        return (bool)$this->superadmin;
+        return $this->superadmin;
     }
 
     /**
@@ -202,7 +203,7 @@ abstract class Authentication
      */
     public function isActive(): bool
     {
-        return (bool)$this->active;
+        return $this->active;
     }
 
     /**
@@ -212,7 +213,7 @@ abstract class Authentication
      */
     public function isStaff(): bool
     {
-        return (bool)$this->staff;
+        return $this->staff;
     }
 
     /**
@@ -222,7 +223,7 @@ abstract class Authentication
      */
     public function isCron(): bool
     {
-        return (bool)$this->cron;
+        return $this->cron;
     }
 
     /**
@@ -234,7 +235,7 @@ abstract class Authentication
      *
      * @return boolean
      */
-    public function isGroupManager($id_group = null): bool
+    public function isGroupManager(array|int $id_group = null): bool
     {
         $manager = false;
         if ($this->isAdmin() || $this->isStaff()) {
@@ -243,7 +244,7 @@ abstract class Authentication
             if ($id_group === null) {
                 $manager = count($this->managed_groups) > 0;
             } else {
-                $groups = (array)$id_group;
+                $groups = is_array($id_group) ? $id_group : (array)$id_group;
 
                 foreach ($groups as $group) {
                     if (in_array($group, $this->managed_groups)) {
@@ -295,7 +296,7 @@ abstract class Authentication
      */
     public function isUp2Date(): bool
     {
-        return (bool)$this->uptodate;
+        return $this->uptodate;
     }
 
     /**
@@ -303,11 +304,11 @@ abstract class Authentication
      *
      * @param boolean $only_name If we want only the name without any additional text
      *
-     * @return String
+     * @return string
      */
-    public function loggedInAs($only_name = false)
+    public function loggedInAs(bool $only_name = false): string
     {
-        $n = $this->name . ' ' . $this->surname . ' (' . $this->login . ')';
+        $n = $this->name . ' ' . ($this->surname ?? '') . ' (' . $this->login . ')';
         if ($only_name === false) {
             return str_replace(
                 '%login',
@@ -326,18 +327,30 @@ abstract class Authentication
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
-        if (isset($this->$name) && !in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'id':
+        if (in_array($name, $forbidden)) {
+            throw new \RuntimeException('Property ' . $name . ' is forbidden!');
+        }
+
+        switch ($name) {
+            case 'id':
+                if (isset($this->$name)) {
                     return (int)$this->$name;
-                default:
+                }
+                return null;
+            case 'login':
+            case 'lang':
+                if (isset($this->$name)) {
                     return $this->$name;
-            }
-        } else {
-            return false;
+                }
+                return null;
+            default:
+                if (!isset($this->$name)) {
+                    throw new \RuntimeException('Property ' . $name . ' is not set!');
+                }
+                return $this->$name;
         }
     }
 
@@ -349,7 +362,7 @@ abstract class Authentication
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
         if (isset($this->$name) && !in_array($name, $forbidden)) {
@@ -365,7 +378,7 @@ abstract class Authentication
      *
      * @return integer
      */
-    public function getAccessLevel()
+    public function getAccessLevel(): int
     {
 
         if ($this->isSuperAdmin()) {

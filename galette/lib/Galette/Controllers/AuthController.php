@@ -64,11 +64,11 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $r        Redirect after login
+     * @param ?string  $r        Redirect after login
      *
      * @return Response
      */
-    public function login(Request $request, Response $response, string $r = null)
+    public function login(Request $request, Response $response, string $r = null): Response
     {
         //store redirect path if any
         if (
@@ -102,7 +102,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function doLogin(Request $request, Response $response)
+    public function doLogin(Request $request, Response $response): Response
     {
         $nick = $request->getParsedBody()['login'];
         $password = $request->getParsedBody()['password'];
@@ -162,7 +162,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function logout(Request $request, Response $response)
+    public function logout(Request $request, Response $response): Response
     {
         $this->login->logOut();
         $this->history->add(_T("Log off"));
@@ -181,7 +181,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function impersonate(Request $request, Response $response, int $id)
+    public function impersonate(Request $request, Response $response, int $id): Response
     {
         $success = $this->login->impersonate($id);
 
@@ -224,7 +224,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function unimpersonate(Request $request, Response $response)
+    public function unimpersonate(Request $request, Response $response): Response
     {
         $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
@@ -269,7 +269,7 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id_adh   Member id
+     * @param ?integer $id_adh   Member id
      *
      * @return Response
      */

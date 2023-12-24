@@ -64,7 +64,7 @@ class Galette
      *
      * @return string
      */
-    public static function gitVersion($time = false)
+    public static function gitVersion(bool $time = false): string
     {
         $galette_version = GALETTE_VERSION;
 

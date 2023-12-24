@@ -55,7 +55,7 @@ use Galette\Core\Pagination;
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
  * @property ?integer $filtre_cotis_adh
- * @property boolean $filtre_cotis_children
+ * @property integer|false $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
  * @property ?integer $max_amount
@@ -69,20 +69,20 @@ class TransactionsList extends Pagination
     public const ORDERBY_ID = 8;
 
     //filters
-    private $start_date_filter;
-    private $end_date_filter;
-    private $filtre_cotis_adh;
-    private $filtre_cotis_children = false;
-    private $max_amount;
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?int $filtre_cotis_adh = null;
+    private int|false $filtre_cotis_children = false;
+    private ?int $max_amount = null;
 
-    protected $list_fields = array(
+    protected array $list_fields = array(
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
         'filtre_cotis_children'
     );
 
-    protected $virtuals_list_fields = array(
+    protected array $virtuals_list_fields = array(
         'rstart_date_filter',
         'rend_date_filter'
     );
@@ -100,7 +100,7 @@ class TransactionsList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
     }
@@ -110,7 +110,7 @@ class TransactionsList extends Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         parent::reinit();
         $this->start_date_filter = null;
@@ -126,7 +126,7 @@ class TransactionsList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         Analog::log(
             '[TransactionsList] Getting property `' . $name . '`',
@@ -187,7 +187,7 @@ class TransactionsList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -206,7 +206,7 @@ class TransactionsList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);

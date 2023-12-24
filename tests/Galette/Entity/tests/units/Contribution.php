@@ -107,8 +107,6 @@ class Contribution extends GaletteTestCase
     {
         $contrib = $this->contrib;
         $this->assertNull($contrib->id);
-        $this->assertNull($contrib->isFee());
-        $this->assertNull($contrib->is_cotis);
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
         $this->assertNull($contrib->end_date);
@@ -138,8 +136,6 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib::getDueDate($this->zdb, 1));
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
-        $this->assertSame('donation', $contrib->getRawType());
-        $this->assertSame('Donation', $contrib->getTypeLabel());
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
     }
@@ -167,12 +163,10 @@ class Contribution extends GaletteTestCase
         $contrib->amount = 0;
         $this->assertNull($contrib->amount);
         $contrib->amount = 42;
-        $this->assertSame(42, $contrib->amount);
+        $this->assertSame(42.0, $contrib->amount);
         $contrib->amount = '42';
-        $this->assertSame('42', $contrib->amount);
+        $this->assertSame(42.0, $contrib->amount);
 
-        $contrib->type = 'not a type';
-        $this->assertNull($contrib->type);
         $contrib->type = 156;
         $this->assertInstanceOf('\Galette\Entity\ContributionsTypes', $contrib->type);
         $this->assertFalse($contrib->type->id);

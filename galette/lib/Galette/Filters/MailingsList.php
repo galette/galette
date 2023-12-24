@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Mailiungs history lists filters and paginator
+ * Mailings history lists filters and paginator
  *
  * PHP version 5
  *
@@ -44,7 +44,7 @@ use Galette\Core\MailingHistory;
 /**
  * Mailings history lists filters and paginator
  *
- * @name      ContributionsList
+ * @name      MailingsList
  * @category  Filters
  * @package   Galette
  *
@@ -62,7 +62,7 @@ use Galette\Core\MailingHistory;
  * @property ?string $subject_filter
  */
 
-class MailingsList extends Pagination
+class MailingsList extends HistoryList
 {
     public const ORDERBY_DATE = 0;
     public const ORDERBY_SENDER = 1;
@@ -70,13 +70,13 @@ class MailingsList extends Pagination
     public const ORDERBY_SENT = 3;
 
     //filters
-    private $start_date_filter = null;
-    private $end_date_filter = null;
-    private $sender_filter = 0;
-    private $sent_filter = MailingHistory::FILTER_DC_SENT;
-    private $subject_filter = null;
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private int $sender_filter = 0;
+    private int $sent_filter = MailingHistory::FILTER_DC_SENT;
+    private ?string $subject_filter = null;
 
-    protected $list_fields = array(
+    protected array $list_fields = array(
         'start_date_filter',
         'raw_start_date_filter',
         'end_date_filter',
@@ -99,7 +99,7 @@ class MailingsList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
     }
@@ -109,7 +109,7 @@ class MailingsList extends Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         parent::reinit();
         $this->start_date_filter = null;
@@ -126,7 +126,7 @@ class MailingsList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         Analog::log(
             '[MailingsList] Getting property `' . $name . '`',
@@ -179,7 +179,7 @@ class MailingsList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -198,7 +198,7 @@ class MailingsList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);

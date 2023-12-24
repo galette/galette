@@ -69,16 +69,16 @@ class Reminder
     public const TABLE = 'reminders';
     public const PK = 'reminder_id';
 
-    private $id;
-    private $type;
-    private $dest;
-    private $date;
+    private int $id;
+    private int $type;
+    private Adherent $dest;
+    private string $date;
     /** @var boolean */
-    private $success = false;
+    private bool $success = false;
     /** @var boolean */
-    private $nomail;
-    private $comment;
-    private $msg;
+    private bool $nomail;
+    private string $comment;
+    private string $msg;
 
     public const IMPENDING = 1;
     public const LATE = 2;
@@ -86,20 +86,15 @@ class Reminder
     /**
      * Main constructor
      *
-     * @param mixed $args Arguments
+     * @param ArrayObject|int|null $args Arguments
      */
-    public function __construct($args = null)
+    public function __construct(ArrayObject|int $args = null)
     {
         if ($args !== null) {
             if (is_int($args)) {
                 $this->load($args);
-            } elseif (is_object($args)) {
+            } elseif ($args instanceof ArrayObject) {
                 $this->loadFromRs($args);
-            } else {
-                Analog::log(
-                    __METHOD__ . ': unknonw arg',
-                    Analog::WARNING
-                );
             }
         }
     }
@@ -111,7 +106,7 @@ class Reminder
      *
      * @return void
      */
-    private function load($id)
+    private function load(int $id): void
     {
         global $zdb;
         try {
@@ -138,7 +133,7 @@ class Reminder
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRs(ArrayObject $rs): void
     {
         global $zdb;
 
@@ -167,7 +162,7 @@ class Reminder
      *
      * @return boolean
      */
-    private function store($zdb)
+    private function store(Db $zdb): bool
     {
         $now = new \DateTime();
         $data = array(
@@ -206,7 +201,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->success;
     }
@@ -216,7 +211,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function hasMail()
+    public function hasMail(): bool
     {
         return !$this->nomail;
     }
@@ -230,7 +225,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function send(Texts $texts, History $hist, Db $zdb)
+    public function send(Texts $texts, History $hist, Db $zdb): bool
     {
         global $preferences;
 
@@ -329,7 +324,7 @@ class Reminder
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->msg;
     }
@@ -341,7 +336,7 @@ class Reminder
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         switch ($name) {
             case 'member_id':
@@ -368,7 +363,7 @@ class Reminder
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'member_id':
@@ -388,7 +383,7 @@ class Reminder
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'type':

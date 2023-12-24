@@ -80,23 +80,23 @@ class FieldsConfig
     public const TYPE_RADIO = 10;
     public const TYPE_SELECT = 11;
 
-    protected $zdb;
-    protected $core_db_fields = array();
-    protected $all_required = array();
-    protected $all_visibles = array();
-    protected $categorized_fields = array();
-    protected $table;
-    protected $defaults = null;
-    protected $cats_defaults = null;
+    protected Db $zdb;
+    protected array $core_db_fields = array();
+    protected array $all_required = array();
+    protected array $all_visibles = array();
+    protected array $categorized_fields = array();
+    protected string $table;
+    protected ?array $defaults = null;
+    protected ?array $cats_defaults = null;
 
-    private $staff_fields = array(
+    private array $staff_fields = array(
         'activite_adh',
         'id_statut',
         'bool_exempt_adh',
         'date_crea_adh',
         'info_adh'
     );
-    private $admin_fields = array(
+    private array $admin_fields = array(
         'bool_admin_adh'
     );
 
@@ -106,7 +106,7 @@ class FieldsConfig
      * Fields that are not visible in the
      * form should not be visible here.
      */
-    private $non_required = array(
+    private array $non_required = array(
         'id_adh',
         'date_echeance',
         'bool_display_info',
@@ -123,12 +123,12 @@ class FieldsConfig
         'parent_id'
     );
 
-    private $non_form_elements = array(
+    private array $non_form_elements = array(
         'date_echeance',
         'date_modif_adh'
     );
 
-    private $non_display_elements = array(
+    private array $non_display_elements = array(
         'date_echeance',
         'mdp_adh',
         'titre_adh',
@@ -163,7 +163,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function load()
+    public function load(): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -236,7 +236,7 @@ class FieldsConfig
      *
      * @return void
      */
-    protected function buildLists()
+    protected function buildLists(): void
     {
         $this->categorized_fields = [];
         $this->all_required = [];
@@ -254,7 +254,7 @@ class FieldsConfig
      *
      * @return void
      */
-    protected function addToLists(array $field)
+    protected function addToLists(array $field): void
     {
         if ($field['position'] >= 0) {
             $this->categorized_fields[$field['category']][] = $field;
@@ -276,7 +276,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function isRequired($field)
+    public function isRequired(string $field): bool
     {
         return isset($this->all_required[$field]);
     }
@@ -289,7 +289,7 @@ class FieldsConfig
      *
      * @return void
      */
-    public function setNotRequired($field)
+    public function setNotRequired(string $field): void
     {
         if (isset($this->all_required[$field])) {
             unset($this->all_required[$field]);
@@ -312,7 +312,7 @@ class FieldsConfig
      *
      * @return void
      */
-    private function checkUpdate()
+    private function checkUpdate(): void
     {
         $class = get_class($this);
 
@@ -389,7 +389,7 @@ class FieldsConfig
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         try {
             $fields = array_keys($this->defaults);
@@ -440,7 +440,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getNonRequired()
+    public function getNonRequired(): array
     {
         return $this->non_required;
     }
@@ -454,7 +454,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getFormElements(Login $login, $new, $selfs = false)
+    public function getFormElements(Login $login, bool $new, bool $selfs = false): array
     {
         global $preferences;
 
@@ -597,7 +597,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getDisplayElements(Login $login)
+    public function getDisplayElements(Login $login): array
     {
         global $preferences;
 
@@ -679,7 +679,7 @@ class FieldsConfig
      *
      * @return array of all required fields. Field names = keys
      */
-    public function getRequired()
+    public function getRequired(): array
     {
         return $this->all_required;
     }
@@ -689,7 +689,7 @@ class FieldsConfig
      *
      * @return array of all visibles fields
      */
-    public function getVisibilities()
+    public function getVisibilities(): array
     {
         return $this->all_visibles;
     }
@@ -701,7 +701,7 @@ class FieldsConfig
      *
      * @return integer
      */
-    public function getVisibility($field)
+    public function getVisibility(string $field): int
     {
         return $this->all_visibles[$field];
     }
@@ -711,7 +711,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getCategorizedFields()
+    public function getCategorizedFields(): array
     {
         return $this->categorized_fields;
     }
@@ -723,7 +723,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function setFields($fields)
+    public function setFields(array $fields): bool
     {
         $this->categorized_fields = $fields;
         return $this->store();
@@ -734,7 +734,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    private function store()
+    private function store(): bool
     {
         $class = get_class($this);
 
@@ -814,7 +814,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function migrateRequired()
+    public function migrateRequired(): bool
     {
         try {
             $select = $this->zdb->select('required');
@@ -893,7 +893,7 @@ class FieldsConfig
      *
      * @return void
      */
-    private function insert($values)
+    private function insert(array $values): void
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
@@ -942,7 +942,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function isSelfExcluded($name)
+    public function isSelfExcluded(string $name): bool
     {
         return in_array(
             $name,
@@ -993,7 +993,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getMassiveFormElements(array $fields, Login $login)
+    public function getMassiveFormElements(array $fields, Login $login): array
     {
         $this->filterVisible($login, $fields);
 
@@ -1031,7 +1031,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getField($name): array
+    public function getField(string $name): array
     {
         if (!isset($this->core_db_fields[$name])) {
             throw new \UnexpectedValueException("$name fied does not exists");

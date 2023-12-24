@@ -36,6 +36,8 @@
 
 namespace Galette\Core;
 
+use Laminas\Db\Sql\Select;
+
 /**
  * This class stores and serve the logo.
  * If no custom logo is found, we take galette's default one.
@@ -51,11 +53,11 @@ namespace Galette\Core;
  */
 class Logo extends Picture
 {
-    protected $id = 'custom_logo';
+    protected string|int $id = 'custom_logo';
     //database wants a member id (integer), not a string.
     //  Will be used to query the correct id
-    protected $db_id = 0;
-    protected $custom = true;
+    protected int $db_id = 0;
+    protected bool $custom = true;
 
     /**
      * Default constructor.
@@ -66,13 +68,13 @@ class Logo extends Picture
     }
 
     /**
-     * Gets the default picture to show, anyways
+     * Gets the default picture to show, anyway
      *
      * @see Picture::getDefaultPicture()
      *
      * @return void
      */
-    protected function getDefaultPicture()
+    protected function getDefaultPicture(): void
     {
         $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/galette.png');
         $this->format = 'png';
@@ -85,9 +87,9 @@ class Logo extends Picture
      *
      * @see picture::getCheckFileQuery()
      *
-     * @return string SELECT query
+     * @return Select SELECT query
      */
-    protected function getCheckFileQuery()
+    protected function getCheckFileQuery(): Select
     {
         global $zdb;
 
@@ -107,7 +109,7 @@ class Logo extends Picture
      *
      * @return boolean
      */
-    public function isCustom()
+    public function isCustom(): bool
     {
         return $this->custom;
     }

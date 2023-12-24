@@ -106,34 +106,9 @@ class PdfModels extends GaletteTestCase
      */
     public function testGetList()
     {
-        global $container, $zdb;
+        global $zdb;
         $zdb = $this->zdb; //globals '(
-        $container = new class {
-            /**
-             * Get (only router)
-             *
-             * @param string $name Param name
-             *
-             * @return mixed
-             */
-            public function get($name)
-            {
-                $router = new class {
-                    /**
-                     * Get path ('')
-                     *
-                     * @param sttring $name Route name
-                     *
-                     * @return string
-                     */
-                    public function urlFor($name)
-                    {
-                        return '';
-                    }
-                };
-                return $router;
-            }
-        };
+
         $_SERVER['HTTP_HOST'] = '';
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);

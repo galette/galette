@@ -66,9 +66,9 @@ class Password extends AbstractPassword
     /** @var integer Overrides default password size */
     public const DEFAULT_SIZE = 50;
     /** @var string Overrides default character set */
-    protected $chars = 'abcdefghjkmnpqrstuvwxyz0123456789&@{[]}%#+*:ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789&@{[]}%#+*:ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-    private $zdb;
+    private Db $zdb;
 
     /**
      * Default constructor

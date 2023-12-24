@@ -63,17 +63,17 @@ trait Dynamics
     use Dependencies;
 
     /** @var string */
-    protected $name_pattern = 'info_field_';
+    protected string $name_pattern = 'info_field_';
 
     /** @var DynamicFieldsHandle */
-    protected $dynamics;
+    protected DynamicFieldsHandle $dynamics;
 
     /**
      * Load dynamic fields for member
      *
      * @return void
      */
-    private function loadDynamicFields()
+    private function loadDynamicFields(): void
     {
         if (!property_exists($this, 'login')) {
             global $login;
@@ -88,9 +88,9 @@ trait Dynamics
      *
      * @return DynamicFieldsHandle
      */
-    public function getDynamicFields()
+    public function getDynamicFields(): DynamicFieldsHandle
     {
-        if (null === $this->dynamics) {
+        if (empty($this->dynamics)) {
             $this->loadDynamicFields();
         }
         return $this->dynamics;
@@ -105,9 +105,9 @@ trait Dynamics
      *
      * @return bool
      */
-    protected function dynamicsCheck(array $post, array $required, array $disabled)
+    protected function dynamicsCheck(array $post, array $required, array $disabled): bool
     {
-        if ($this->dynamics === null) {
+        if (!isset($this->dynamics)) {
             Analog::log(
                 'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
@@ -139,7 +139,7 @@ trait Dynamics
                 ];
             }
 
-            //some fields may be mising in posted values (checkboxes)
+            //some fields may be missing in posted values (checkboxes)
             foreach ($fields as $field) {
                 $pattern = '/' . $this->name_pattern . $field->getId() . '_(\d)/';
                 if ($field instanceof Boolean && !preg_grep($pattern, array_keys($dynamic_fields))) {
@@ -207,7 +207,7 @@ trait Dynamics
                         if ($value !== null && trim($value) !== '') {
                             $this->dynamics->setValue($this->id, $field_id, $val_index, $value);
                         } else {
-                            $this->dynamics->unsetValue($this->id, $field_id, $val_index);
+                            $this->dynamics->unsetValue($field_id, $val_index);
                         }
                     }
                 }
@@ -225,9 +225,9 @@ trait Dynamics
      *
      * @return bool
      */
-    protected function dynamicsStore($transaction = false)
+    protected function dynamicsStore(bool $transaction = false): bool
     {
-        if ($this->dynamics === null) {
+        if (!isset($this->dynamics)) {
             Analog::log(
                 'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
@@ -248,7 +248,7 @@ trait Dynamics
      *
      * @return void
      */
-    protected function dynamicsFiles($files)
+    protected function dynamicsFiles(array $files): void
     {
         $this->loadDynamicFields();
         $fields = $this->dynamics->getFields();
@@ -336,9 +336,9 @@ trait Dynamics
      *
      * @return bool
      */
-    protected function dynamicsRemove($transaction = false)
+    protected function dynamicsRemove(bool $transaction = false): bool
     {
-        if ($this->dynamics === null) {
+        if (!isset($this->dynamics)) {
             Analog::log(
                 'Dynamics fields have not been loaded, cannot be removed. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
@@ -349,14 +349,12 @@ trait Dynamics
         return $return;
     }
 
-
-
     /**
      * Get errors
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -370,7 +368,7 @@ trait Dynamics
      *
      * @return bool
      */
-    public function dynamicsValidate($values, $prefix = 'dynfield_')
+    public function dynamicsValidate(array $values, string $prefix = 'dynfield_'): bool
     {
         $dfields = [];
         foreach ($values as $key => $value) {

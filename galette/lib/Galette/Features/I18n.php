@@ -56,7 +56,7 @@ use Laminas\Db\Sql\Expression;
 
 trait I18n
 {
-    protected $warnings = [];
+    protected array $warnings = [];
 
     /**
      * Add a translation stored in the database
@@ -65,7 +65,7 @@ trait I18n
      *
      * @return boolean
      */
-    protected function addTranslation($text_orig)
+    protected function addTranslation(string $text_orig): bool
     {
         global $i18n;
 
@@ -149,7 +149,7 @@ trait I18n
      *
      * @return boolean
      */
-    protected function updateTranslation($text_orig, $text_locale, $text_trans)
+    protected function updateTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
         try {
             //check if translation already exists
@@ -213,7 +213,7 @@ trait I18n
      *
      * @return boolean
      */
-    protected function deleteTranslation($text_orig)
+    protected function deleteTranslation(string $text_orig): bool
     {
         try {
             $delete = $this->zdb->delete(L10n::TABLE);
@@ -246,7 +246,7 @@ trait I18n
      *
      * @return array
      */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         return $this->warnings;
     }

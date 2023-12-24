@@ -62,15 +62,15 @@ class Plugins
     public const DISABLED_EXPLICIT = 2;
 
     protected $path;
-    protected $modules = array();
-    protected $disabled = array();
-    protected $csrf_exclusions = array();
+    protected array $modules = array();
+    protected array $disabled = array();
+    protected array $csrf_exclusions = array();
 
-    protected $id;
-    protected $mroot;
+    protected ?string $id;
+    protected ?string $mroot;
 
-    protected $preferences;
-    protected $autoload = false;
+    protected Preferences $preferences;
+    protected bool $autoload = false;
 
     /**
      * Register autoloaders for all plugins
@@ -80,7 +80,7 @@ class Plugins
      *
      * @return void
      */
-    public function autoload($path)
+    public function autoload(string $path): void
     {
         $this->path = explode(PATH_SEPARATOR, $path);
         $this->autoload = true;
@@ -92,7 +92,7 @@ class Plugins
      *
      * @return void
      */
-    protected function parseModules()
+    protected function parseModules(): void
     {
         foreach ($this->path as $root) {
             if (!is_dir($root) || !is_readable($root)) {
@@ -158,12 +158,12 @@ class Plugins
      * @param Preferences $preferences Galette's Preferences
      * @param string      $path        could be a separated list of paths
      *                                 (path separator depends on your OS).
-     * @param string      $lang        Indicates if we need to load a lang file on plugin
+     * @param ?string     $lang        Indicates if we need to load a lang file on plugin
      *                                 loading.
      *
      * @return void
      */
-    public function loadModules(Preferences $preferences, $path, $lang = null)
+    public function loadModules(Preferences $preferences, string $path, string $lang = null): void
     {
         $this->preferences = $preferences;
         $this->path = explode(PATH_SEPARATOR, $path);
@@ -175,7 +175,9 @@ class Plugins
 
         // Load translation, _prepend and ns_file
         foreach ($this->modules as $id => $m) {
-            $this->loadModuleL10N($id, $lang);
+            if ($lang !== null) {
+                $this->loadModuleL10N($id, $lang);
+            }
             $this->loadEventProviders($id);
             $this->overridePrefs($id);
         }
@@ -192,29 +194,29 @@ class Plugins
      * <var>$priority</var> is an integer. Modules are sorted by priority and name.
      * Lowest priority comes first.
      *
-     * @param string   $name     Module name
-     * @param string   $desc     Module description
-     * @param string   $author   Module author name
-     * @param string   $version  Module version
-     * @param string   $compver  Galette version compatibility
-     * @param string   $route    Module route name
-     * @param string   $date     Module release date
-     * @param string   $acls     Module routes ACLs
-     * @param ?integer $priority Module priority
+     * @param string  $name     Module name
+     * @param string  $desc     Module description
+     * @param string  $author   Module author name
+     * @param string  $version  Module version
+     * @param ?string $compver  Galette version compatibility
+     * @param ?string $route    Module route name
+     * @param ?string $date     Module release date
+     * @param ?array  $acls     Module routes ACLs
+     * @param integer $priority Module priority
      *
      * @return void
      */
     public function register(
-        $name,
-        $desc,
-        $author,
-        $version,
-        $compver = null,
-        $route = null,
-        $date = null,
-        $acls = null,
-        $priority = 1000
-    ) {
+        string $name,
+        string $desc,
+        string $author,
+        string $version,
+        string $compver = null,
+        string $route = null,
+        string $date = null,
+        array $acls = null,
+        ?int $priority = 1000
+    ): void {
         if ($compver === null) {
             //plugin compatibility missing!
             Analog::log(
@@ -254,7 +256,7 @@ class Plugins
      *
      * @return void
      */
-    public function resetModulesList()
+    public function resetModulesList(): void
     {
         $this->modules = array();
     }
@@ -267,7 +269,7 @@ class Plugins
      * @return void
      * @throws Exception
      */
-    public function deactivateModule($id)
+    public function deactivateModule(string $id): void
     {
         if (!isset($this->modules[$id])) {
             throw new Exception(_T("No such module."));
@@ -290,7 +292,7 @@ class Plugins
      * @return void
      * @throws Exception
      */
-    public function activateModule($id)
+    public function activateModule(string $id): void
     {
         if (!isset($this->disabled[$id])) {
             throw new Exception(_T("No such module."));
@@ -315,11 +317,11 @@ class Plugins
      *
      * @return void
      */
-    public function loadModuleL10N($id, $language)
+    public function loadModuleL10N(string $id, string $language): void
     {
         global $translator;
 
-        if (!$language || !isset($this->modules[$id])) {
+        if (empty($language) || !isset($this->modules[$id])) {
             return;
         }
 
@@ -352,7 +354,7 @@ class Plugins
      *
      * @return void
      */
-    public function loadEventProviders($id)
+    public function loadEventProviders(string $id): void
     {
         global $emitter;
 
@@ -369,11 +371,11 @@ class Plugins
      * Returns all modules associative array or only one module if <var>$id</var>
      * is present.
      *
-     * @param string $id Optional module ID
+     * @param ?string $id Optional module ID
      *
      * @return array
      */
-    public function getModules($id = null)
+    public function getModules(string $id = null): array
     {
         if ($id && isset($this->modules[$id])) {
             return $this->modules[$id];
@@ -388,7 +390,7 @@ class Plugins
      *
      * @return boolean
      */
-    public function moduleExists($id)
+    public function moduleExists(string $id): bool
     {
         return isset($this->modules[$id]);
     }
@@ -398,7 +400,7 @@ class Plugins
      *
      * @return array
      */
-    public function getDisabledModules()
+    public function getDisabledModules(): array
     {
         return $this->disabled;
     }
@@ -408,9 +410,9 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return string
+     * @return ?string
      */
-    public function moduleRoot($id)
+    public function moduleRoot(string $id): ?string
     {
         return $this->moduleInfo($id, 'root');
     }
@@ -431,9 +433,9 @@ class Plugins
      *
      * @return mixed module's information
      */
-    public function moduleInfo($id, $info)
+    public function moduleInfo(string $id, string $info)
     {
-        return isset($this->modules[$id][$info]) ? $this->modules[$id][$info] : null;
+        return $this->modules[$id][$info] ?? null;
     }
 
     /**
@@ -444,7 +446,7 @@ class Plugins
      *
      * @return 1|-1 1 if a has the highest priority, -1 otherwise
      */
-    private function sortModules($a, $b)
+    private function sortModules(array $a, array $b): int
     {
         if ($a['priority'] == $b['priority']) {
             return strcasecmp($a['name'], $b['name']);
@@ -460,7 +462,7 @@ class Plugins
      *
      * @return string  Concatenated templates path for requested module
      */
-    public function getTemplatesPath($id)
+    public function getTemplatesPath(string $id): string
     {
         return $this->moduleRoot($id) . '/templates/' . $this->preferences->pref_theme;
     }
@@ -472,7 +474,7 @@ class Plugins
      *
      * @return string Concatenated templates path for requested module
      */
-    public function getTemplatesPathFromName($name)
+    public function getTemplatesPathFromName(string $name): string
     {
         foreach (array_keys($this->getModules()) as $r) {
             $mod = $this->getModules($r);
@@ -501,13 +503,13 @@ class Plugins
     }
 
     /**
-     * Does module needs a database?
+     * Does module need a database?
      *
      * @param string $id Module's ID
      *
      * @return boolean
      */
-    public function needsDatabase($id)
+    public function needsDatabase(string $id): bool
     {
         if (isset($this->modules[$id])) {
             $d = $this->modules[$id]['root'] . '/scripts/';
@@ -528,7 +530,7 @@ class Plugins
      *
      * @return void
      */
-    public function overridePrefs($id)
+    public function overridePrefs(string $id): void
     {
         $overridables = ['pref_adhesion_form'];
 
@@ -552,7 +554,7 @@ class Plugins
      *
      * @return array
      */
-    public function getAcls()
+    public function getAcls(): array
     {
         $acls = [];
         foreach ($this->modules as $module) {
@@ -564,12 +566,12 @@ class Plugins
     /**
      * Retrieve a file that should be publicly exposed
      *
-     * @param int    $id   Module id
+     * @param string $id   Module id
      * @param string $path File path
      *
      * @return string
      */
-    public function getFile($id, $path)
+    public function getFile(string $id, string $path): string
     {
         if (isset($this->modules[$id])) {
             $file = $this->modules[$id]['root'] . '/webroot/' . $path;
@@ -590,7 +592,7 @@ class Plugins
      *
      * @return void
      */
-    private function setDisabled($cause)
+    private function setDisabled(int $cause): void
     {
         $this->disabled[$this->id] = array(
             'root'          => $this->mroot,
@@ -608,7 +610,7 @@ class Plugins
      *
      * @return string
      */
-    public function getNamespace($id)
+    public function getNamespace(string $id): string
     {
         return str_replace(' ', '', $this->modules[$id]['name']);
     }
@@ -616,12 +618,12 @@ class Plugins
     /**
      * Get module class name
      *
-     * @param string $id   Module ID
-     * @param bool   $full Include namespace, defaults to false
+     * @param string  $id   Module ID
+     * @param boolean $full Include namespace, defaults to false
      *
      * @return string
      */
-    public function getClassName($id, $full = false)
+    public function getClassName(string $id, bool $full = false): string
     {
         $class = sprintf('PluginGalette%1$s', ucfirst($this->modules[$id]['route']));
         if ($full === true) {
@@ -635,7 +637,7 @@ class Plugins
      *
      * @param array $exclusions Array of regular expressions patterns to be excluded
      *
-     * @return $this
+     * @return self
      */
     public function setCsrfExclusions(array $exclusions): self
     {

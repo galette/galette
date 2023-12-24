@@ -148,14 +148,13 @@ class ExternalScript
      *
      * @return boolean
      */
-    public function send($params)
+    public function send(array $params): bool
     {
-        if (!is_array($params) || count($params) == 0) {
+        if (count($params) == 0) {
             throw new \RuntimeException(__METHOD__ . ': parameters are mandatory.');
         }
 
         $uri = $this->uri;
-        $result = null;
 
         switch ($this->method) {
             case 'get':

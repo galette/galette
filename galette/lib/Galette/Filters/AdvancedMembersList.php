@@ -113,28 +113,28 @@ class AdvancedMembersList extends MembersList
     public const OP_BEFORE = 6;
     public const OP_AFTER = 7;
 
-    private $_creation_date_begin;
-    private $_creation_date_end;
-    private $_modif_date_begin;
-    private $_modif_date_end;
-    private $_due_date_begin;
-    private $_due_date_end;
-    private $_birth_date_begin;
-    private $_birth_date_end;
-    private $_show_public_infos = Members::FILTER_DC_PUBINFOS;
-    private $_status = array();
-    private $_contrib_creation_date_begin;
-    private $_contrib_creation_date_end;
-    private $_contrib_begin_date_begin;
-    private $_contrib_begin_date_end;
-    private $_contrib_end_date_begin;
-    private $_contrib_end_date_end;
-    private $_contributions_types;
-    private $_payments_types;
-    private $_contrib_min_amount;
-    private $_contrib_max_amount;
+    private ?string $_creation_date_begin = null;
+    private ?string $_creation_date_end = null;
+    private ?string $_modif_date_begin = null;
+    private ?string $_modif_date_end = null;
+    private ?string $_due_date_begin = null;
+    private ?string $_due_date_end = null;
+    private ?string $_birth_date_begin = null;
+    private ?string $_birth_date_end = null;
+    private int $_show_public_infos = Members::FILTER_DC_PUBINFOS;
+    private array $_status = array();
+    private ?string $_contrib_creation_date_begin = null;
+    private ?string $_contrib_creation_date_end = null;
+    private ?string $_contrib_begin_date_begin = null;
+    private ?string $_contrib_begin_date_end = null;
+    private ?string $_contrib_end_date_begin = null;
+    private ?string $_contrib_end_date_end = null;
+    private array $_contributions_types = array();
+    private array $_payments_types = array();
+    private ?int $_contrib_min_amount = null;
+    private ?int $_contrib_max_amount = null;
 
-    protected $advancedmemberslist_fields = array(
+    protected array $advancedmemberslist_fields = array(
         'creation_date_begin',
         'creation_date_end',
         'modif_date_begin',
@@ -161,7 +161,7 @@ class AdvancedMembersList extends MembersList
         'groups_search_log_op'
     );
 
-    protected $virtuals_advancedmemberslist_fields = array(
+    protected array $virtuals_advancedmemberslist_fields = array(
         'rcreation_date_begin',
         'rcreation_date_end',
         'rmodif_date_begin',
@@ -180,7 +180,7 @@ class AdvancedMembersList extends MembersList
     );
 
     //an empty free search criteria to begin
-    private $_free_search = array(
+    private array $_free_search = array(
         'empty' => array(
             'field'     => '',
             'search'    => '',
@@ -190,25 +190,25 @@ class AdvancedMembersList extends MembersList
     );
 
     //an empty group search criteria to begin
-    private $_groups_search = array(
+    private array $_groups_search = array(
         'empty' => array(
             'group'    => '',
         )
     );
 
     //defaults to 'OR' for group search
-    private $_groups_search_log_op = self::OP_OR;
+    private int $_groups_search_log_op = self::OP_OR;
 
 
     //an empty contributions dynamic field criteria to begin
-    private $_contrib_dynamic = array();
+    private array $_contrib_dynamic = array();
 
     /**
      * Default constructor
      *
-     * @param MembersList $simple A simple filter search to keep
+     * @param ?MembersList $simple A simple filter search to keep
      */
-    public function __construct($simple = null)
+    public function __construct(MembersList $simple = null)
     {
         parent::__construct();
         if ($simple instanceof MembersList) {
@@ -226,7 +226,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return boolean
      */
-    public function withinContributions()
+    public function withinContributions(): bool
     {
         if (
             $this->_contrib_creation_date_begin != null
@@ -252,7 +252,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         parent::reinit();
 
@@ -303,7 +303,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
 
         Analog::log(
@@ -397,7 +397,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (
             in_array($name, $this->pagination_fields)
@@ -415,6 +415,7 @@ class AdvancedMembersList extends MembersList
 
         return false;
     }
+
     /**
      * Global setter method
      *
@@ -423,7 +424,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         global $zdb, $preferences, $login;
 
@@ -709,7 +710,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return boolean
      */
-    public static function isValidFreeSearch($data)
+    public static function isValidFreeSearch(array $data): bool
     {
         if (!is_array($data)) {
             Analog::log(

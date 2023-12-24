@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2023 The Galette Team
+ * Copyright © 2007-2024 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -37,13 +37,13 @@
 namespace Galette\Core;
 
 use ArrayObject;
+use Laminas\Db\Sql\Select;
 use Throwable;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Analog\Analog;
-use RKA\Session;
 
 /**
  * Default authentication class for galette
@@ -52,7 +52,7 @@ use RKA\Session;
  * @name      Login
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -62,9 +62,9 @@ class Login extends Authentication
     public const TABLE = Adherent::TABLE;
     public const PK = 'login_adh';
 
-    private $zdb;
-    private $i18n;
-    private $impersonated = false;
+    private Db $zdb;
+    private I18n $i18n;
+    private bool $impersonated = false;
 
     /**
      * Instanciate object
@@ -84,23 +84,25 @@ class Login extends Authentication
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
      *
-     * @return void
+     * @return bool
      */
-    public function logAdmin($login, Preferences $preferences)
+    public function logAdmin(string $login, Preferences $preferences): bool
     {
         parent::logAdmin($login, $preferences);
         $this->impersonated = false;
+        return true;
     }
 
     /**
      * Log out user and unset variables
      *
-     * @return void
+     * @return bool
      */
-    public function logOut()
+    public function logOut(): bool
     {
         parent::logOut();
         $this->impersonated = false;
+        return true;
     }
 
     /**
@@ -111,7 +113,7 @@ class Login extends Authentication
      *
      * @return boolean
      */
-    public function logIn($user, $passe)
+    public function logIn(string $user, string $passe): bool
     {
         try {
             $select = $this->select();
@@ -182,9 +184,9 @@ class Login extends Authentication
     /**
      * Get select query without where clause
      *
-     * @return \Laminas\Db\Sql\Select
+     * @return Select
      */
-    private function select()
+    private function select(): Select
     {
         $select = $this->zdb->select(self::TABLE, 'a');
         $select->columns(
@@ -215,7 +217,7 @@ class Login extends Authentication
      *
      * @return void
      */
-    private function logUser(ArrayObject $row)
+    private function logUser(ArrayObject $row): void
     {
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
         $this->id = $row->id_adh;
@@ -266,7 +268,7 @@ class Login extends Authentication
      *
      * @return bool
      */
-    public function impersonate($id)
+    public function impersonate(int $id): bool
     {
         if (!$this->isSuperAdmin()) {
             throw new \RuntimeException(
@@ -311,7 +313,7 @@ class Login extends Authentication
      *
      * @return bool
      */
-    public function loginExists($user)
+    public function loginExists(string $user): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -340,7 +342,7 @@ class Login extends Authentication
      *
      * @return bool
      */
-    public function isImpersonated()
+    public function isImpersonated(): bool
     {
         return $this->impersonated;
     }

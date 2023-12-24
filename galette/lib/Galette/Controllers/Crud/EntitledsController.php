@@ -80,7 +80,7 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $class    Entitled class
+     * @param ?string  $class    Entitled class
      *
      * @return Response
      */
@@ -95,20 +95,20 @@ class EntitledsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param string         $class    Entitled class from url
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
+     * @param string|null         $class    Entitled class from url
      *
      * @return Response
      */
     public function list(
         Request $request,
         Response $response,
-        $option = null,
-        $value = null,
-        $class = null
+        string $option = null,
+        int|string $value = null,
+        string $class = null
     ): Response {
         $className = null;
         $entitled = null;
@@ -176,7 +176,7 @@ class EntitledsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param integer  $id       Entitled id
-     * @param string   $class    Entitled class from url
+     * @param ?string  $class    Entitled class from url
      *
      * @return Response
      */
@@ -224,7 +224,7 @@ class EntitledsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param integer  $id       Entitled id
-     * @param string   $class    Entitled class from url
+     * @param ?string  $class    Entitled class from url
      *
      * @return Response
      */
@@ -238,8 +238,8 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $class    Entitled class from url
-     * @param integer  $id       Entitled id
+     * @param ?string  $class    Entitled class from url
+     * @param ?integer $id       Entitled id
      * @param string   $action   Action
      *
      * @return Response
@@ -333,7 +333,7 @@ class EntitledsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('entitleds', ['class' => $args['class']]);
     }
@@ -345,7 +345,7 @@ class EntitledsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveEntitled',
@@ -363,7 +363,7 @@ class EntitledsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $class = null;
         switch ($args['class']) {
@@ -391,7 +391,7 @@ class EntitledsController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $class = null;
         switch ($args['class']) {

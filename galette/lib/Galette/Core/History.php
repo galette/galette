@@ -63,26 +63,26 @@ class History
     public const TABLE = 'logs';
     public const PK = 'id_log';
 
-    protected $count;
-    protected $zdb;
-    protected $login;
-    protected $preferences;
-    protected $filters;
+    protected int $count;
+    protected Db $zdb;
+    protected Login $login;
+    protected Preferences $preferences;
+    protected HistoryList $filters;
 
-    protected $users;
-    protected $actions;
+    protected array $users;
+    protected array $actions;
 
-    protected $with_lists = true;
+    protected bool $with_lists = true;
 
     /**
      * Default constructor
      *
-     * @param Db          $zdb         Database
-     * @param Login       $login       Login
-     * @param Preferences $preferences Preferences
-     * @param HistoryList $filters     Filtering
+     * @param Db           $zdb         Database
+     * @param Login        $login       Login
+     * @param Preferences  $preferences Preferences
+     * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, $filters = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, HistoryList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -105,7 +105,7 @@ class History
      *
      * @return string
      */
-    public static function findUserIPAddress()
+    public static function findUserIPAddress(): string
     {
         if (
             defined('GALETTE_X_FORWARDED_FOR_INDEX')
@@ -126,7 +126,7 @@ class History
      *
      * @return bool true if entry was successfully added, false otherwise
      */
-    public function add($action, $argument = '', $query = '')
+    public function add(string $action, string $argument = '', string $query = ''): bool
     {
         if ($this->preferences->pref_log == Preferences::LOG_DISABLED) {
             //logs are disabled
@@ -144,7 +144,7 @@ class History
             $values = array(
                 'date_log'   => date('Y-m-d H:i:s'),
                 'ip_log'     => $ip,
-                'adh_log'    => $this->login->login,
+                'adh_log'    => $this->login->login ?? '',
                 'action_log' => $action,
                 'text_log'   => $argument,
                 'sql_log'    => $query
@@ -169,26 +169,18 @@ class History
      *
      * @return boolean
      */
-    public function clean()
+    public function clean(): bool
     {
         try {
-            $result = $this->zdb->db->query(
+            $this->zdb->db->query(
                 'TRUNCATE TABLE ' . $this->getTableName(true),
                 Adapter::QUERY_MODE_EXECUTE
             );
-
-            if (!$result) {
-                Analog::log(
-                    'An error occurred cleaning history. ',
-                    Analog::WARNING
-                );
-                $this->add('Error flushing logs');
-                return false;
-            }
             $this->add('Logs flushed');
             $this->filters = new HistoryList();
             return true;
         } catch (Throwable $e) {
+            $this->add('Error flushing logs');
             Analog::log(
                 'Unable to flush logs. | ' . $e->getMessage(),
                 Analog::WARNING
@@ -202,7 +194,7 @@ class History
      *
      * @return array
      */
-    public function getHistory()
+    public function getHistory(): array
     {
         try {
             $select = $this->zdb->select($this->getTableName());
@@ -238,7 +230,7 @@ class History
      *
      * @return void
      */
-    private function buildLists(Select $select)
+    private function buildLists(Select $select): void
     {
         try {
             $usersSelect = clone $select;
@@ -287,7 +279,7 @@ class History
      *
      * @return array SQL ORDER clauses
      */
-    protected function buildOrderClause()
+    protected function buildOrderClause(): array
     {
         $order = array();
 
@@ -316,7 +308,7 @@ class History
      *
      * @return void
      */
-    private function buildWhereClause(Select $select)
+    private function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -337,6 +329,7 @@ class History
                 );
             }
 
+            //@phpstan-ignore-next-line
             if ($this->filters->user_filter != null && $this->filters->user_filter != '0') {
                 $select->where->equalTo(
                     'adh_log',
@@ -367,7 +360,7 @@ class History
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -384,7 +377,7 @@ class History
             $result = $results->current();
 
             $k = $this->getPk();
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
@@ -402,7 +395,7 @@ class History
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         Analog::log(
             '[History] Getting property `' . $name . '`',
@@ -428,7 +421,7 @@ class History
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (isset($this->$name)) {
             return true;
@@ -444,7 +437,7 @@ class History
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         Analog::log(
             '[History] Setting property `' . $name . '`',
@@ -473,7 +466,7 @@ class History
      *
      * @return string
      */
-    protected function getTableName($prefixed = false)
+    protected function getTableName(bool $prefixed = false): string
     {
         if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
@@ -487,7 +480,7 @@ class History
      *
      * @return string
      */
-    protected function getPk()
+    protected function getPk(): string
     {
         return self::PK;
     }
@@ -497,9 +490,9 @@ class History
      *
      * @param HistoryList $filters Filters
      *
-     * @return History
+     * @return self
      */
-    public function setFilters(HistoryList $filters)
+    public function setFilters(HistoryList $filters): self
     {
         $this->filters = $filters;
         return $this;
@@ -510,7 +503,7 @@ class History
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -520,7 +513,7 @@ class History
      *
      * @return array
      */
-    public function getUsersList()
+    public function getUsersList(): array
     {
         return $this->users;
     }
@@ -530,7 +523,7 @@ class History
      *
      * @return array
      */
-    public function getActionsList()
+    public function getActionsList(): array
     {
         return $this->actions;
     }

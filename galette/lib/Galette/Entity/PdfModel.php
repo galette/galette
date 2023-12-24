@@ -72,6 +72,7 @@ use Laminas\Db\Sql\Expression;
  * @property string $body
  * @property-read string $hbody
  * @property string $styles
+ * @property string $hstyles
  * @property PdfMain $parent
  */
 
@@ -87,26 +88,26 @@ abstract class PdfModel
     public const RECEIPT_MODEL = 3;
     public const ADHESION_FORM_MODEL = 4;
 
-    private $id;
-    private $name;
-    private $type;
-    private $header;
-    private $footer;
-    private $title;
-    private $subtitle;
-    private $body;
-    private $styles;
-    private $parent;
+    private ?int $id = null;
+    private string $name;
+    private int $type;
+    private ?string $header;
+    private ?string $footer;
+    private ?string $title;
+    private ?string $subtitle;
+    private ?string $body;
+    private ?string $styles = '';
+    private ?PdfModel $parent = null;
 
     /**
      * Main constructor
      *
-     * @param Db          $zdb         Database instance
-     * @param Preferences $preferences Galette preferences
-     * @param int         $type        Model type
-     * @param mixed       $args        Arguments
+     * @param Db                   $zdb         Database instance
+     * @param Preferences          $preferences Galette preferences
+     * @param int                  $type        Model type
+     * @param ArrayObject|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, $type, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {
         global $container, $login;
         $this->routeparser = $container->get(RouteParser::class);
@@ -118,7 +119,7 @@ abstract class PdfModel
 
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRs($args);
         } else {
             $this->load($type);
@@ -136,7 +137,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function load($id, $init = true)
+    protected function load(int $id, bool $init = true): void
     {
         global $login;
 
@@ -178,7 +179,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function loadFromRs(ArrayObject $rs)
+    protected function loadFromRs(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -214,7 +215,7 @@ abstract class PdfModel
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         $title = $this->title;
         //@phpstan-ignore-next-line
@@ -273,7 +274,7 @@ abstract class PdfModel
      *
      * @return string
      */
-    public static function getTypeClass(int $type)
+    public static function getTypeClass(int $type): string
     {
         $class = null;
         switch ($type) {
@@ -304,9 +305,9 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function checkChars($value, $chars, $field, $empty = false)
+    protected function checkChars(string $value, int $chars, string $field, bool $empty = false): void
     {
-        if ($value !== null && trim($value) !== '') {
+        if (trim($value) !== '') {
             if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
                     str_replace(
@@ -336,7 +337,7 @@ abstract class PdfModel
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         global $lang;
 
@@ -355,7 +356,7 @@ abstract class PdfModel
             case 'replaces':
                 return $this->$name ?? '';
             case 'hstyles':
-                $value = null;
+                $value = '';
 
                 //get header and footer from parent if not defined in current model
                 if (
@@ -405,7 +406,7 @@ abstract class PdfModel
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'id':
@@ -439,7 +440,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'type':

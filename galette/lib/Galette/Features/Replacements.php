@@ -68,32 +68,32 @@ use Slim\Routing\RouteParser;
 
 trait Replacements
 {
-    private $patterns = [];
-    private $replaces = [];
-    private $dynamic_patterns = [];
+    private array $patterns = [];
+    private array $replaces = [];
+    private array $dynamic_patterns = [];
 
     /**
      * @var Db
      */
     #[Inject("zdb")]
-    protected $zdb;
+    protected Db $zdb;
 
     /**
      * @var Login
      */
     #[Inject("login")]
-    protected $login;
+    protected Login $login;
 
     /**
      * @var Preferences
      */
     #[Inject("preferences")]
-    protected $preferences;
+    protected Preferences $preferences;
 
     /**
      * @var RouteParser
      */
-    protected $routeparser;
+    protected RouteParser $routeparser;
 
     /**
      * Get dynamic patterns
@@ -157,7 +157,7 @@ trait Replacements
      *
      * @param array $patterns Patterns to add
      *
-     * @return $this
+     * @return self
      */
     protected function setPatterns(array $patterns): self
     {
@@ -389,7 +389,7 @@ trait Replacements
      *
      * @return array
      */
-    protected function getContributionPatterns($legacy = true): array
+    protected function getContributionPatterns(bool $legacy = true): array
     {
         $dynamic_patterns = $this->getDynamicPatterns('contrib', $legacy);
 
@@ -469,7 +469,7 @@ trait Replacements
     /**
      * Set main replacements
      *
-     * @return $this
+     * @return self
      */
     public function setMain(): self
     {
@@ -511,7 +511,7 @@ trait Replacements
     /**
      * Set contribution and proceed related replacements
      *
-     * @return $this
+     * @return self
      */
     public function setNoContribution(): self
     {
@@ -680,13 +680,13 @@ trait Replacements
     /**
      * Set dynamic fields and proceed related replacements
      *
-     * @param string $form_name      Form name
-     * @param array  $dynamic_fields Dynamic fields
-     * @param mixed  $object         Related object (Adherent, Contribution, ...)
+     * @param string  $form_name      Form name
+     * @param array   $dynamic_fields Dynamic fields
+     * @param ?object $object         Related object (Adherent, Contribution, ...)
      *
      * @return self
      */
-    public function setDynamicFields(string $form_name, array $dynamic_fields, $object): self
+    public function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
     {
         $uform_name = strtoupper($form_name);
 
@@ -818,7 +818,7 @@ trait Replacements
      *
      * @param Db $db Db instance
      *
-     * @return $this
+     * @return self
      */
     public function setDb(Db $db): self
     {
@@ -831,7 +831,7 @@ trait Replacements
      *
      * @param Login $login Login instance
      *
-     * @return $this
+     * @return self
      */
     public function setLogin(Login $login): self
     {
@@ -844,7 +844,7 @@ trait Replacements
      *
      * @param Preferences $preferences Preferences instance
      *
-     * @return $this
+     * @return self
      */
     public function setPreferences(Preferences $preferences): self
     {
@@ -857,7 +857,7 @@ trait Replacements
      *
      * @param RouteParser $routeparser RouteParser instance
      *
-     * @return $this
+     * @return self
      */
     public function setRouteparser(RouteParser $routeparser): self
     {

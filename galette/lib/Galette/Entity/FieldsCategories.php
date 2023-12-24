@@ -58,9 +58,9 @@ class FieldsCategories
     public const TABLE = 'fields_categories';
     public const PK = 'id_field_category';
 
-    private $defaults;
+    private array $defaults;
 
-    private $zdb;
+    private Db $zdb;
 
     public const ADH_CATEGORY_IDENTITY = 1;
     public const ADH_CATEGORY_GALETTE = 2;
@@ -72,7 +72,7 @@ class FieldsCategories
      * @param Db    $zdb      Database
      * @param array $defaults default values
      */
-    public function __construct(Db $zdb, $defaults)
+    public function __construct(Db $zdb, array $defaults)
     {
         $this->zdb = $zdb;
         $this->defaults = $defaults;
@@ -85,7 +85,7 @@ class FieldsCategories
      *
      * @return array
      */
-    public static function getList($zdb)
+    public static function getList(Db $zdb): array
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -115,7 +115,7 @@ class FieldsCategories
      *
      * @return boolean
      */
-    public static function setCategories(Db $zdb, $categories)
+    public static function setCategories(Db $zdb, array $categories): bool
     {
         try {
             $zdb->connection->beginTransaction();
@@ -150,11 +150,10 @@ class FieldsCategories
     /**
      * Set default fields categories at install time
      *
-     *
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         try {
             //first, we drop all values

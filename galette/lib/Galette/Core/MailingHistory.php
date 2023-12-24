@@ -67,16 +67,16 @@ class MailingHistory extends History
     public const FILTER_SENT = 1;
     public const FILTER_NOT_SENT = 2;
 
-    private $mailing = null;
-    private $id;
-    private $date;
-    private $subject;
-    private $message;
-    private $recipients;
-    private $sender;
-    private $sender_name;
-    private $sender_address;
-    private $sent = false;
+    private ?Mailing $mailing = null;
+    private int $id;
+    private string $date;
+    private string $subject;
+    private string $message;
+    private array $recipients;
+    private int $sender;
+    private ?string $sender_name;
+    private ?string $sender_address;
+    private bool $sent = false;
 
     /**
      * Default constructor
@@ -89,7 +89,6 @@ class MailingHistory extends History
      */
     public function __construct(Db $zdb, Login $login, Preferences $preferences, MailingsList $filters = null, Mailing $mailing = null)
     {
-        //@phpstan-ignore-next-line
         parent::__construct($zdb, $login, $preferences, $filters);
         $this->mailing = $mailing;
     }
@@ -99,7 +98,7 @@ class MailingHistory extends History
      *
      * @return array
      */
-    public function getHistory()
+    public function getHistory(): array
     {
         try {
             $select = $this->zdb->select($this->getTableName(), 'a');
@@ -164,7 +163,7 @@ class MailingHistory extends History
      *
      * @return array SQL ORDER clauses
      */
-    protected function buildOrderClause()
+    protected function buildOrderClause(): array
     {
         $order = array();
 
@@ -193,7 +192,7 @@ class MailingHistory extends History
      *
      * @return void
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -263,7 +262,7 @@ class MailingHistory extends History
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -302,7 +301,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public static function loadFrom(Db $zdb, $id, $mailing, $new = true)
+    public static function loadFrom(Db $zdb, int $id, Mailing $mailing, bool $new = true): bool
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -330,7 +329,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function storeMailing($sent = false)
+    public function storeMailing(bool $sent = false): bool
     {
         if ($this->mailing instanceof Mailing) {
             if ($this->mailing->sender_name != null) {
@@ -371,7 +370,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function update()
+    public function update(): bool
     {
         try {
             $_recipients = array();
@@ -420,7 +419,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         try {
             $_recipients = array();
@@ -477,22 +476,9 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function removeEntries($ids, History $hist)
+    public function removeEntries(int|array $ids, History $hist): bool
     {
-        $list = array();
-        if (is_array($ids)) {
-            $list = $ids;
-        } elseif (is_numeric($ids)) {
-            $list = [(int)$ids];
-        } else {
-            //not numeric and not an array: incorrect.
-            Analog::log(
-                'Asking to remove mailing entries, but without ' .
-                'providing an array or a single numeric value.',
-                Analog::WARNING
-            );
-            return false;
-        }
+        $list = is_array($ids) ? $ids : [$ids];
 
         try {
             foreach ($list as $id) {
@@ -534,7 +520,7 @@ class MailingHistory extends History
      *
      * @return string
      */
-    protected function getTableName($prefixed = false)
+    protected function getTableName(bool $prefixed = false): string
     {
         if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
@@ -548,7 +534,7 @@ class MailingHistory extends History
      *
      * @return string
      */
-    protected function getPk()
+    protected function getPk(): string
     {
         return self::PK;
     }
@@ -558,7 +544,7 @@ class MailingHistory extends History
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }

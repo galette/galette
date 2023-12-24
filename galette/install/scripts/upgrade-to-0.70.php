@@ -52,7 +52,7 @@ use Galette\Updater\AbstractUpdater;
  */
 class UpgradeTo070 extends AbstractUpdater
 {
-    protected $db_version = '0.700';
+    protected ?string $db_version = '0.700';
 
     /**
      * Main constructor
@@ -68,7 +68,7 @@ class UpgradeTo070 extends AbstractUpdater
      *
      * @return boolean
      */
-    protected function update()
+    protected function update(): bool
     {
         $this->zdb->convertToUTF($this->installer->getTablesPrefix());
         return true;

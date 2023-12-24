@@ -66,17 +66,17 @@ use Slim\Routing\RouteParser;
 class ContribListener implements ListenerSubscriber
 {
     /** @var Preferences */
-    private $preferences;
+    private Preferences $preferences;
     /** @var RouteParser */
-    private $routeparser;
+    private RouteParser $routeparser;
     /** @var History */
-    private $history;
+    private History $history;
     /** @var Messages */
-    private $flash;
+    private Messages $flash;
     /** @var Login */
-    private $login;
+    private Login $login;
     /** @var Db */
-    private $zdb;
+    private Db $zdb;
 
     /**
      * Constructor
@@ -128,7 +128,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    public function contributionAdded(Contribution $contrib)
+    public function contributionAdded(Contribution $contrib): void
     {
         Analog::log(
             '[' . get_class($this) . '] Event contribution.add emitted for #' . $contrib->id,
@@ -151,7 +151,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function sendContribEmail(Contribution $contrib, $new)
+    private function sendContribEmail(Contribution $contrib, bool $new): void
     {
         if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
             //if email has been disabled in the preferences, we should not be here ;
@@ -254,7 +254,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function sendAdminEmail(Contribution $contrib, $new)
+    private function sendAdminEmail(Contribution $contrib, bool $new): void
     {
         if (
             $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED
@@ -325,7 +325,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function callPostContributionScript($contrib)
+    private function callPostContributionScript(Contribution $contrib): void
     {
         //if an external script has been configured, we call it
         if ($this->preferences->pref_new_contrib_script) {

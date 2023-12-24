@@ -62,9 +62,9 @@ abstract class AbstractPassword
     /** Default password size */
     public const DEFAULT_SIZE = 8;
 
-    protected $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
-    protected $hash = null;
-    protected $new_password;
+    protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
+    protected ?string $hash = null;
+    protected string $new_password;
 
     /**
      * Generates a random password based on default salt
@@ -127,11 +127,12 @@ abstract class AbstractPassword
      *
      * @param string $password Password
      *
-     * @return void
+     * @return self
      */
-    protected function setPassword(string $password): void
+    protected function setPassword(string $password): self
     {
         $this->new_password = $password;
+        return $this;
     }
 
     /**
@@ -139,10 +140,11 @@ abstract class AbstractPassword
      *
      * @param string $hash Hash
      *
-     * @return void
+     * @return self
      */
-    protected function setHash(string $hash): void
+    protected function setHash(string $hash): self
     {
         $this->hash = $hash;
+        return $this;
     }
 }

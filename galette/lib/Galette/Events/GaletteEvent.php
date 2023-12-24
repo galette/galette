@@ -53,16 +53,16 @@ use League\Event\HasEventName;
 class GaletteEvent implements HasEventName
 {
     /** @var string */
-    private $name;
-    private $object;
+    private string $name;
+    private object $object;
 
     /**
      * Constructor
      *
      * @param string $name   Event name
-     * @param mixed  $object Event object
+     * @param object $object Event object
      */
-    public function __construct(string $name, /*object|array*/ $object)
+    public function __construct(string $name, object $object)
     {
         $this->name = $name;
         $this->object = $object;

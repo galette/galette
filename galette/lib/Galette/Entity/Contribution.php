@@ -67,7 +67,7 @@ use Galette\Features\Dynamics;
  * @property string $date
  * @property DateTime $raw_date
  * @property integer $member
- * @property ContributionsTypes|int $type
+ * @property ContributionsTypes $type
  * @property double $amount
  * @property integer $payment_type
  * @property double $orig_amount
@@ -100,31 +100,31 @@ class Contribution
     public const STATUS_LATE = 4;
     public const STATUS_OLD = 5;
 
-    private $_id;
-    private $_date;
-    private $_member;
-    private $_type;
-    private $_amount;
-    private $_payment_type;
-    private $_orig_amount;
-    private $_info;
-    private $_begin_date;
-    private $_end_date;
-    private $_transaction = null;
-    private $_is_cotis;
-    private $_extension;
+    private int $_id;
+    private ?string $_date = null;
+    private ?int $_member = null;
+    private ?ContributionsTypes $_type = null;
+    private ?float $_amount = null;
+    private ?int $_payment_type;
+    private ?float $_orig_amount = null;
+    private ?string $_info = null;
+    private ?string $_begin_date = null;
+    private ?string $_end_date = null;
+    private ?Transaction $_transaction = null;
+    private bool $_is_cotis;
+    private ?int $_extension = null;
 
     //fields list and their translation
-    private $_fields;
+    private array $_fields;
 
     /** @var Db */
-    private $zdb;
+    private Db $zdb;
     /** @var Login */
-    private $login;
+    private Login $login;
     /** @var array */
-    private $errors;
+    private array $errors = [];
 
-    private $sendmail = false;
+    private bool $sendmail = false;
 
     /**
      * Default constructor
@@ -135,13 +135,13 @@ class Contribution
      *                                          a specific contribution, or a type id
      *                                          to just instantiate object
      */
-    public function __construct(Db $zdb, Login $login, $args = null)
+    public function __construct(Db $zdb, Login $login, int|array|ArrayObject $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
 
         global $preferences;
-        $this->_payment_type = (int)$preferences->pref_default_paymenttype;
+        $this->_payment_type = $preferences->pref_default_paymenttype;
 
         /*
          * Fields configuration. Each field is an array and must reflect:
@@ -212,11 +212,11 @@ class Contribution
             if (isset($args['trans'])) {
                 $this->_transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
                 if (!isset($this->_member)) {
-                    $this->_member = (int)$this->_transaction->member;
+                    $this->_member = $this->_transaction->member;
                 }
                 $this->_amount = $this->_transaction->getMissingAmount();
             }
-            $this->type = (int)$args['type'];
+            $this->setContributionType((int)$args['type']);
             //calculate begin date for membership fee
             $this->_begin_date = $this->_date;
             if ($this->_is_cotis) {
@@ -251,7 +251,7 @@ class Contribution
      *
      * @return void
      */
-    private function retrieveEndDate()
+    private function retrieveEndDate(): void
     {
         global $preferences;
 
@@ -309,7 +309,7 @@ class Contribution
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load($id)
+    public function load(int $id): bool
     {
         if (!$this->login->isLogged() && $this->login->id == '') {
             return false;
@@ -366,7 +366,7 @@ class Contribution
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
         $this->_id = (int)$r->$pk;
@@ -396,7 +396,7 @@ class Contribution
             $this->_transaction = new Transaction($this->zdb, $this->login, (int)$r->$transpk);
         }
 
-        $this->type = (int)$r->id_type_cotis;
+        $this->setContributionType((int)$r->id_type_cotis);
         $this->loadDynamicFields();
     }
 
@@ -410,7 +410,7 @@ class Contribution
      *
      * @return true|array
      */
-    public function check($values, $required, $disabled)
+    public function check(array $values, array $required, array $disabled): bool|array
     {
         global $preferences;
         $this->errors = array();
@@ -472,7 +472,7 @@ class Contribution
                         break;
                     case ContributionsTypes::PK:
                         if ($value != '') {
-                            $this->type = (int)$value;
+                            $this->setContributionType((int)$value);
                         }
                         break;
                     case 'montant_cotis':
@@ -492,7 +492,7 @@ class Contribution
                         );
                         $ptlist = $ptypes->getList();
                         if (isset($ptlist[$value])) {
-                            $this->_payment_type = $value;
+                            $this->_payment_type = (int)$value;
                         } else {
                             $this->errors[] = _T("- Unknown payment type");
                         }
@@ -578,7 +578,7 @@ class Contribution
      * @return boolean|string True if all is ok, false if error,
      * error message if overlap
      */
-    public function checkOverlap()
+    public function checkOverlap(): bool|string
     {
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
@@ -633,7 +633,7 @@ class Contribution
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         global $hist, $emitter;
 
@@ -652,12 +652,13 @@ class Contribution
             $fields = self::getDbFields($this->zdb);
             foreach ($fields as $field) {
                 $prop = '_' . $this->_fields[$field]['propname'];
+                if (!isset($this->$prop)) {
+                    continue;
+                }
                 switch ($field) {
                     case ContributionsTypes::PK:
                     case Transaction::PK:
-                        if (isset($this->$prop)) {
-                            $values[$field] = $this->$prop->id;
-                        }
+                        $values[$field] = $this->$prop->id;
                         break;
                     default:
                         $values[$field] = $this->$prop;
@@ -736,11 +737,11 @@ class Contribution
     }
 
     /**
-     * Update member dead line
+     * Update member deadline
      *
      * @return boolean
      */
-    private function updateDeadline()
+    private function updateDeadline(): bool
     {
         try {
             $due_date = self::getDueDate($this->zdb, $this->_member);
@@ -777,7 +778,7 @@ class Contribution
      *
      * @return boolean
      */
-    public function remove($transaction = true)
+    public function remove(bool $transaction = true): bool
     {
         global $emitter;
 
@@ -824,10 +825,10 @@ class Contribution
      *
      * @return string
      */
-    public function getFieldLabel($field)
+    public function getFieldLabel(string $field): string
     {
         $label = $this->_fields[$field]['label'];
-        if ($this->isFee() && $field == 'date_debut_cotis') {
+        if ($field == 'date_debut_cotis' && !empty($this->_is_cotis) && $this->isFee()) {
             $label = $this->_fields[$field]['cotlabel'];
         }
         //replace "&nbsp;"
@@ -844,7 +845,7 @@ class Contribution
      *
      * @return array
      */
-    public static function getDbFields(Db $zdb)
+    public static function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
@@ -859,7 +860,7 @@ class Contribution
      *
      * @return string current contribution row class
      */
-    public function getRowClass()
+    public function getRowClass(): string
     {
         return ($this->_end_date != $this->_begin_date && $this->_is_cotis) ?
             'cotis-normal' : 'cotis-give';
@@ -868,12 +869,12 @@ class Contribution
     /**
      * Retrieve member due date
      *
-     * @param Db      $zdb       Database instance
-     * @param integer $member_id Member identifier
+     * @param Db       $zdb       Database instance
+     * @param ?integer $member_id Member identifier
      *
-     * @return string
+     * @return string|null
      */
-    public static function getDueDate(Db $zdb, $member_id)
+    public static function getDueDate(Db $zdb, ?int $member_id): ?string
     {
         if (!$member_id) {
             return '';
@@ -922,7 +923,7 @@ class Contribution
      *
      * @return boolean
      */
-    public static function unsetTransactionPart(Db $zdb, Login $login, $trans_id, $contrib_id)
+    public static function unsetTransactionPart(Db $zdb, Login $login, int $trans_id, int $contrib_id): bool
     {
         try {
             //first, we check if contribution is part of transaction
@@ -963,7 +964,7 @@ class Contribution
      *
      * @return boolean
      */
-    public static function setTransactionPart(Db $zdb, $trans_id, $contrib_id)
+    public static function setTransactionPart(Db $zdb, int $trans_id, int $contrib_id): bool
     {
         try {
             $update = $zdb->update(self::TABLE);
@@ -988,7 +989,7 @@ class Contribution
      *
      * @return boolean
      */
-    public function isFee()
+    public function isFee(): bool
     {
         return $this->_is_cotis;
     }
@@ -1000,7 +1001,7 @@ class Contribution
      *
      * @return boolean
      */
-    public function isTransactionPartOf($id)
+    public function isTransactionPartOf(int $id): bool
     {
         if ($this->isTransactionPart()) {
             return $id == $this->_transaction->id;
@@ -1014,7 +1015,7 @@ class Contribution
      *
      * @return boolean
      */
-    public function isTransactionPart()
+    public function isTransactionPart(): bool
     {
         return $this->_transaction != null;
     }
@@ -1023,18 +1024,18 @@ class Contribution
      * Execute post contribution script
      *
      * @param ExternalScript $es     External script to execute
-     * @param array          $extra  Extra information on contribution
+     * @param ?array         $extra  Extra information on contribution
      *                               Defaults to null
-     * @param array          $pextra Extra information on payment
+     * @param ?array         $pextra Extra information on payment
      *                               Defaults to null
      *
-     * @return mixed Script return value on success, values and script output on fail
+     * @return string|bool Script return value on success, values and script output on fail
      */
     public function executePostScript(
         ExternalScript $es,
-        $extra = null,
-        $pextra = null
-    ) {
+        array $extra = null,
+        array $pextra = null
+    ): string|bool {
         global $preferences;
 
         $payment = array(
@@ -1057,7 +1058,7 @@ class Contribution
         }
 
         $contrib = array(
-            'id'        => (int)$this->_id,
+            'id'        => $this->_id,
             'date'      => $this->_date,
             'type'      => $this->getRawType(),
             'amount'    => $this->amount,
@@ -1115,7 +1116,7 @@ class Contribution
      *
      * @return string
      */
-    public function getRawType()
+    public function getRawType(): string
     {
         if ($this->isFee()) {
             return 'membership';
@@ -1129,7 +1130,7 @@ class Contribution
      *
      * @return string
      */
-    public function getTypeLabel()
+    public function getTypeLabel(): string
     {
         if ($this->isFee()) {
             return _T("Membership");
@@ -1162,7 +1163,7 @@ class Contribution
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
 
         $forbidden = array('is_cotis');
@@ -1227,7 +1228,7 @@ class Contribution
                     }
                     break;
                 case 'duration':
-                    if ($this->_is_cotis) {
+                    if (isset($this->_is_cotis)) {
                         // Caution : the end_date stored is actually the due date.
                         // Adding a day to compute the next_begin_date is required
                         // to return the right number of months.
@@ -1242,13 +1243,19 @@ class Contribution
                 case 'spayment_type':
                     return $this->getPaymentType(true);
                 case 'model':
-                    if ($this->_is_cotis === null) {
+                    if (!isset($this->_is_cotis)) {
                         return null;
                     }
                     return ($this->isFee()) ?
                         PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
                 default:
-                    return $this->$rname;
+                    if (property_exists($this, $rname)) {
+                        if (isset($this->$rname)) {
+                            return $this->$rname;
+                        }
+                    } else {
+                        throw new \LogicException("Property '" . __CLASS__ . "::$rname' does not exist!");
+                    }
             }
         } else {
             Analog::log(
@@ -1267,7 +1274,7 @@ class Contribution
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array('is_cotis');
         $virtuals = array('duration', 'spayment_type', 'model', 'raw_date',
@@ -1300,7 +1307,7 @@ class Contribution
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         global $preferences;
 
@@ -1320,21 +1327,7 @@ class Contribution
                     }
                     break;
                 case 'type':
-                    if (is_int($value)) {
-                        //set type
-                        $this->$rname = new ContributionsTypes($this->zdb, $value);
-                        //set is_cotis according to type
-                        if ($this->$rname->extension == 1) {
-                            $this->_is_cotis = true;
-                        } else {
-                            $this->_is_cotis = false;
-                        }
-                    } else {
-                        Analog::log(
-                            'Trying to set a type from an id that is not an integer.',
-                            Analog::WARNING
-                        );
-                    }
+                    $this->setContributionType($value);
                     break;
                 case 'begin_date':
                     try {
@@ -1407,9 +1400,9 @@ class Contribution
      *
      * @param boolean $send True (default) to send creation email
      *
-     * @return Contribution
+     * @return self
      */
-    public function setSendmail(bool $send = true)
+    public function setSendmail(bool $send = true): self
     {
         $this->sendmail = $send;
         return $this;
@@ -1420,7 +1413,7 @@ class Contribution
      *
      * @return boolean
      */
-    public function sendEMail()
+    public function sendEMail(): bool
     {
         return $this->sendmail;
     }
@@ -1432,7 +1425,7 @@ class Contribution
      *
      * @return array|true
      */
-    public function handleFiles($files)
+    public function handleFiles(array $files): bool|array
     {
         $this->errors = [];
 
@@ -1502,5 +1495,33 @@ class Contribution
         }
 
         return false;
+    }
+
+    /**
+     * Set contribution type and determine if it is a contribution or a donation
+     *
+     * @param int|null $type Type
+     *
+     * @return self
+     */
+    public function setContributionType(?int $type): self
+    {
+        if (is_int($type)) {
+            //set type
+            $this->_type = new ContributionsTypes($this->zdb, $type);
+            //set is_cotis according to type
+            if ($this->_type->extension == 1) {
+                $this->_is_cotis = true;
+            } else {
+                $this->_is_cotis = false;
+            }
+        } else {
+            Analog::log(
+                'Trying to set a type from an id that is not an integer.',
+                Analog::WARNING
+            );
+        }
+
+        return $this;
     }
 }

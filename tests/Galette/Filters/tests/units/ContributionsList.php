@@ -107,8 +107,8 @@ class ContributionsList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
 
         //set filter on children
-        $filters->filtre_cotis_children = true;
-        $this->assertTrue($filters->filtre_cotis_children);
+        $filters->filtre_cotis_children = 5;
+        $this->assertSame(5, $filters->filtre_cotis_children);
 
         $filters->date_field = \Galette\Filters\ContributionsList::DATE_END;
         $this->assertSame(\Galette\Filters\ContributionsList::DATE_END, $filters->date_field);
@@ -122,11 +122,8 @@ class ContributionsList extends GaletteTestCase
         $filters->filtre_cotis_adh = 42;
         $this->assertSame(42, $filters->filtre_cotis_adh);
 
-        $filters->filtre_cotis_children = true;
-        $this->assertTrue($filters->filtre_cotis_children);
-
-        $filters->from_transaction = true;
-        $this->assertTrue($filters->from_transaction);
+        $filters->from_transaction = 18;
+        $this->assertSame(18, $filters->from_transaction);
 
         $filters->max_amount = 42;
         $this->assertSame(42, $filters->max_amount);

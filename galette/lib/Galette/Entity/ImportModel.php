@@ -59,16 +59,16 @@ class ImportModel
     public const TABLE = 'import_model';
     public const PK = 'model_id';
 
-    private $id;
-    private $fields;
-    private $creation_date;
+    private ?int $id;
+    private ?array $fields;
+    private ?string $creation_date;
 
     /**
      * Loads model
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load()
+    public function load(): bool
     {
         global $zdb;
 
@@ -102,7 +102,7 @@ class ImportModel
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
         $this->id = $r->model_id;
         $this->fields = unserialize($r->model_fields);
@@ -116,7 +116,7 @@ class ImportModel
      *
      * @return boolean
      */
-    public function remove(Db $zdb)
+    public function remove(Db $zdb): bool
     {
         try {
             $zdb->db->query(
@@ -144,7 +144,7 @@ class ImportModel
      *
      * @return boolean
      */
-    public function store(Db $zdb)
+    public function store(Db $zdb): bool
     {
         try {
             $values = array(
@@ -192,7 +192,7 @@ class ImportModel
      *
      * @return ?array
      */
-    public function getFields()
+    public function getFields(): ?array
     {
         return $this->fields;
     }
@@ -204,7 +204,7 @@ class ImportModel
      *
      * @return string
      */
-    public function getCreationDate($formatted = true)
+    public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
             $date = new \DateTime($this->creation_date);
@@ -219,9 +219,9 @@ class ImportModel
      *
      * @param array $fields Fields list
      *
-     * @return ImportModel
+     * @return self
      */
-    public function setFields($fields)
+    public function setFields(array $fields): self
     {
         $this->fields = $fields;
         return $this;

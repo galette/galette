@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Soundasleep\Html2Text;
 use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -68,21 +69,21 @@ class GaletteMail
     public const SENDER_CURRENT = 1;
     public const SENDER_OTHER = 2;
 
-    private $sender_name;
-    private $sender_address;
-    private $subject;
-    private $message;
-    private $html;
-    private $word_wrap = 70;
-    private $timeout = 300;
+    private string $sender_name;
+    private string $sender_address;
+    private string $subject;
+    private string $message;
+    private bool $html = false;
+    private int $word_wrap = 70;
+    private int $timeout = 300;
 
-    private $errors = array();
-    private $recipients = array();
+    private array $errors = array();
+    private array $recipients = array();
 
-    private $mail = null;
-    protected $attachments = array();
+    private PHPMailer|null $mail = null;
+    protected array $attachments = array();
 
-    private $preferences;
+    private Preferences $preferences;
 
     /**
      * Constructor
@@ -103,7 +104,7 @@ class GaletteMail
      *
      * @return void
      */
-    private function initMailer()
+    private function initMailer(): void
     {
         global $i18n;
 
@@ -200,11 +201,11 @@ class GaletteMail
      * For mailing convenience, all recipients will be added as BCC,
      * regular recipient will be the sender.
      *
-     * @param array $recipients Array (mail=>name) of all recipients
+     * @param array<string, string> $recipients Array (mail=>name) of all recipients
      *
      * @return bool
      */
-    public function setRecipients($recipients)
+    public function setRecipients(array $recipients): bool
     {
         $res = true;
 
@@ -245,7 +246,7 @@ class GaletteMail
      *
      * @return integer Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
      */
-    public function send()
+    public function send(): int
     {
         if ($this->mail === null) {
             $this->initMailer();
@@ -263,7 +264,6 @@ class GaletteMail
         } else {
             $this->mail->AddReplyTo($this->getSenderAddress());
         }
-
 
         if ($this->html) {
             //the email is html :(
@@ -363,7 +363,7 @@ class GaletteMail
      *
      * @return bool
      */
-    public static function isValidEmail($address)
+    public static function isValidEmail(string $address): bool
     {
         $valid = PHPMailer::ValidateAddress($address);
         if (!$valid) {
@@ -382,7 +382,7 @@ class GaletteMail
      *
      * @return bool
      */
-    public static function isUrl($url)
+    public static function isUrl(string $url): bool
     {
         $valid = preg_match(
             '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
@@ -402,10 +402,10 @@ class GaletteMail
      *
      * @return string current message in plaintext format
      */
-    protected function cleanedHtml()
+    protected function cleanedHtml(): string
     {
         $html = $this->message;
-        $txt = \Soundasleep\Html2Text::convert($html);
+        $txt = Html2Text::convert($html);
         return $txt;
     }
 
@@ -414,7 +414,7 @@ class GaletteMail
      *
      * @return PHPMailer object
      */
-    protected function getPhpMailer()
+    protected function getPhpMailer(): PHPMailer
     {
         return $this->mail;
     }
@@ -422,11 +422,11 @@ class GaletteMail
     /**
      * Is the email HTML formatted?
      *
-     * @param boolean $set The value to set
+     * @param ?boolean $set The value to set
      *
      * @return bool
      */
-    public function isHTML($set = null)
+    public function isHTML(bool $set = null): bool
     {
         if (is_bool($set)) {
             $this->html = $set;
@@ -439,7 +439,7 @@ class GaletteMail
      *
      * @return string
      */
-    public function getSenderName()
+    public function getSenderName(): string
     {
         return $this->sender_name;
     }
@@ -449,7 +449,7 @@ class GaletteMail
      *
      * @return string
      */
-    public function getSenderAddress()
+    public function getSenderAddress(): string
     {
         return $this->sender_address;
     }
@@ -459,7 +459,7 @@ class GaletteMail
      *
      * @return string The subject
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -469,7 +469,7 @@ class GaletteMail
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -479,7 +479,7 @@ class GaletteMail
      *
      * @return string The message
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -489,7 +489,7 @@ class GaletteMail
      *
      * @return string Wrapped message
      */
-    public function getWrappedMessage()
+    public function getWrappedMessage(): string
     {
         if ($this->word_wrap > 0) {
             if ($this->mail === null) {
@@ -510,9 +510,9 @@ class GaletteMail
      *
      * @param string $subject The subject
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setSubject($subject)
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
         return $this;
@@ -523,9 +523,9 @@ class GaletteMail
      *
      * @param string $message The message
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setMessage($message)
+    public function setMessage(string $message): self
     {
         $this->message = $message;
         return $this;
@@ -537,9 +537,9 @@ class GaletteMail
      * @param string $name    Sender name
      * @param string $address Sender address
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setSender($name, $address)
+    public function setSender(string $name, string $address): self
     {
         $this->sender_name = $name;
         $this->sender_address = $address;
@@ -551,9 +551,9 @@ class GaletteMail
      *
      * @param integer $timeout SMTP timeout
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): self
     {
         $this->timeout = $timeout;
         return $this;

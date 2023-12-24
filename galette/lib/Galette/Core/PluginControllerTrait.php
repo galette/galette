@@ -56,23 +56,24 @@ trait PluginControllerTrait
      * #[Inject("Plugin Galette Name")]
      * @var array
      */
-    protected $module_info;
+    protected array $module_info;
 
     /**
      * Get plugin module ID
      *
      * @return string
      */
-    protected function getModuleId()
+    protected function getModuleId(): string
     {
         return $this->module_info['module_id'];
     }
 
     /**
      * Get plugin module route namespace
+     *
      * @return string
      */
-    protected function getModuleRoute()
+    protected function getModuleRoute(): string
     {
         return $this->module_info['module']['route'];
     }
@@ -80,11 +81,11 @@ trait PluginControllerTrait
     /**
      * Get plugin template name for Twig
      *
-     * @param $name Template name
+     * @param string $name Template name
      *
      * @return string
      */
-    protected function getTemplate($name): string
+    protected function getTemplate(string $name): string
     {
         return sprintf('@%s/%s.html.twig', $this->plugins->getClassName($this->getModuleId()), $name);
     }

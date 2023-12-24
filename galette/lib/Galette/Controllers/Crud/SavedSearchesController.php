@@ -118,18 +118,11 @@ class SavedSearchesController extends CrudController
 
         $sco = new SavedSearch($this->zdb, $this->login);
         if ($check = $sco->check($post)) {
-            if (!$res = $sco->store()) {
-                if ($res === false) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("An SQL error has occurred while storing search.")
-                    );
-                } else {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        _T("This search is already saved.")
-                    );
-                }
+            if (!$sco->store()) {
+                $this->flash->addMessage(
+                    'warning_detected',
+                    _T("This search is already saved.")
+                );
             } else {
                 $this->flash->addMessage(
                     'success_detected',
@@ -162,14 +155,14 @@ class SavedSearchesController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         if (isset($this->session->filter_savedsearch)) {
             $filters = $this->session->filter_savedsearch;
@@ -267,7 +260,7 @@ class SavedSearchesController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('searches');
     }
@@ -279,7 +272,7 @@ class SavedSearchesController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveSearch',
@@ -294,7 +287,7 @@ class SavedSearchesController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         if (isset($args['id'])) {
             return _T('Remove saved search');
@@ -317,7 +310,7 @@ class SavedSearchesController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         if (isset($this->session->filter_savedsearch)) {
             $filters = $this->session->filter_savedsearch;

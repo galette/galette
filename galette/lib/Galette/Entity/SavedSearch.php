@@ -67,25 +67,25 @@ class SavedSearch
     public const TABLE = 'searches';
     public const PK = 'search_id';
 
-    private $zdb;
-    private $id;
-    private $name;
-    private $parameters = [];
-    private $author_id;
-    private $creation_date;
-    private $form;
+    private Db $zdb;
+    private int $id;
+    private string $name;
+    private array $parameters = [];
+    private ?int $author_id = null;
+    private ?string $creation_date;
+    private string $form;
 
-    private $login;
-    private $errors = [];
+    private Login $login;
+    private array $errors = [];
 
     /**
      * Main constructor
      *
-     * @param Db    $zdb   Database instance
-     * @param Login $login Login instance
-     * @param mixed $args  Arguments
+     * @param Db                   $zdb   Database instance
+     * @param Login                $login Login instance
+     * @param ArrayObject|int|null $args  Arguments
      */
-    public function __construct(Db $zdb, Login $login, $args = null)
+    public function __construct(Db $zdb, Login $login, ArrayObject|int $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -93,7 +93,7 @@ class SavedSearch
 
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRs($args);
         }
     }
@@ -105,7 +105,7 @@ class SavedSearch
      *
      * @return void
      */
-    private function load($id)
+    private function load(int $id): void
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -138,7 +138,7 @@ class SavedSearch
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRs(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = $rs->$pk;
@@ -156,7 +156,7 @@ class SavedSearch
      *
      * @return boolean
      */
-    public function check($values)
+    public function check(array $values): bool
     {
         $this->errors = [];
         $mandatory = [
@@ -178,7 +178,7 @@ class SavedSearch
             $this->errors = array_merge($this->errors, $mandatory);
         }
 
-        if ($this->id === null && !$this->login->isSuperAdmin()) {
+        if (!isset($this->id) && !$this->login->isSuperAdmin()) {
             //set author for new searches
             $this->author_id = $this->login->id;
         }
@@ -189,9 +189,9 @@ class SavedSearch
     /**
      * Store saved search in database
      *
-     * @return boolean|null
+     * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         $parameters = json_encode($this->parameters);
         $data = array(
@@ -226,9 +226,9 @@ class SavedSearch
      *
      * @return boolean
      */
-    public function remove()
+    public function remove(): bool
     {
-        $id = (int)$this->id;
+        $id = $this->id;
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
@@ -257,7 +257,7 @@ class SavedSearch
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $forbidden = [];
         $virtuals = ['sparameters'];
@@ -320,7 +320,7 @@ class SavedSearch
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = [];
         $virtuals = ['sparameters'];
@@ -348,7 +348,7 @@ class SavedSearch
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'form':
@@ -393,7 +393,7 @@ class SavedSearch
      *
      * @return array
      */
-    public function getKnownForms()
+    public function getKnownForms(): array
     {
         return [
             'Adherent'
@@ -405,7 +405,7 @@ class SavedSearch
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }

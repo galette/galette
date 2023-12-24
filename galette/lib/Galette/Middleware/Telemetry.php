@@ -36,6 +36,9 @@
 
 namespace Galette\Middleware;
 
+use Galette\Core\Db;
+use Galette\Core\Plugins;
+use Galette\Core\Preferences;
 use Throwable;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -57,9 +60,9 @@ use DI\Container;
  */
 class Telemetry
 {
-    private $zdb;
-    private $preferences;
-    private $plugins;
+    private Db $zdb;
+    private Preferences $preferences;
+    private Plugins $plugins;
 
     /**
      * Constructor

@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
 
@@ -57,12 +58,12 @@ abstract class PdfContribution extends PdfModel
     /**
      * Main constructor
      *
-     * @param Db          $zdb         Database instance
-     * @param Preferences $preferences Galette preferences
-     * @param int         $type        Model type
-     * @param mixed       $args        Arguments
+     * @param Db                   $zdb         Database instance
+     * @param Preferences          $preferences Galette preferences
+     * @param int                  $type        Model type
+     * @param ArrayObject|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, int $type, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {
         parent::__construct($zdb, $preferences, $type, $args);
 

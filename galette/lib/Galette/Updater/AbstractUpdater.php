@@ -58,15 +58,15 @@ abstract class AbstractUpdater
     public const REPORT_ERROR = 1;
     public const REPORT_WARNING = 2;
 
-    protected $sql_scripts = null;
-    protected $db_version = null;
-    private $engines = array(
+    protected ?array $sql_scripts = null;
+    protected ?string $db_version = null;
+    private array $engines = array(
         Db::MYSQL   => Db::MYSQL,
         Db::PGSQL   => Db::PGSQL,
     );
-    protected $zdb;
-    protected $installer;
-    private $report = array();
+    protected Db $zdb;
+    protected Install $installer;
+    private array $report = array();
 
     /**
      * Main constructor
@@ -87,7 +87,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    private function hasSql()
+    private function hasSql(): bool
     {
         return !($this->sql_scripts === null);
     }
@@ -108,7 +108,7 @@ abstract class AbstractUpdater
      *
      * @return void
      */
-    final public function run($zdb, $installer)
+    final public function run(Db $zdb, Install $installer): void
     {
         $this->zdb = $zdb;
         $this->installer = $installer;
@@ -151,15 +151,15 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    abstract protected function update();
+    abstract protected function update(): bool;
 
     /**
      * Pre stuff, if any.
-     * Will be extecuted first.
+     * Will be executed first.
      *
      * @return boolean
      */
-    protected function preUpdate()
+    protected function preUpdate(): bool
     {
         return true;
     }
@@ -172,7 +172,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    private function sql($zdb, $installer)
+    private function sql(Db $zdb, Install $installer): bool
     {
         $script = $this->sql_scripts[TYPE_DB];
 
@@ -192,7 +192,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    protected function postUpdate()
+    protected function postUpdate(): bool
     {
         return true;
     }
@@ -204,7 +204,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    protected function setSqlScripts($version)
+    protected function setSqlScripts(string $version): bool
     {
         $scripts = $this->getSqlScripts($version);
         if (
@@ -243,7 +243,7 @@ abstract class AbstractUpdater
      *
      * @return array
      */
-    private function getSqlScripts($version)
+    private function getSqlScripts(string $version): array
     {
         $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
         $scripts = array();
@@ -270,7 +270,7 @@ abstract class AbstractUpdater
      *
      * @return void
      */
-    public function addReportEntry($msg, $type)
+    public function addReportEntry(string $msg, int $type): void
     {
         $res = true;
         if ($type === self::REPORT_ERROR) {
@@ -290,7 +290,7 @@ abstract class AbstractUpdater
      *
      * @return void
      */
-    public function addError($msg)
+    public function addError(string $msg): void
     {
         $this->addReportEntry($msg, self::REPORT_ERROR);
     }
@@ -300,7 +300,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         foreach ($this->report as $report) {
             if ($report['type'] === self::REPORT_ERROR) {
@@ -315,7 +315,7 @@ abstract class AbstractUpdater
      *
      * @return array
      */
-    public function getReport()
+    public function getReport(): array
     {
         return $this->report;
     }
@@ -325,7 +325,7 @@ abstract class AbstractUpdater
      *
      * @return void
      */
-    private function updateDbVersion()
+    private function updateDbVersion(): void
     {
         $update = $this->zdb->update('database');
         $update->set(

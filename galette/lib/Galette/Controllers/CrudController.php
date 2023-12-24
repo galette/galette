@@ -84,14 +84,14 @@ abstract class CrudController extends AbstractController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    abstract public function list(Request $request, Response $response, $option = null, $value = null): Response;
+    abstract public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response;
 
     /**
      * List filtering
@@ -182,12 +182,12 @@ abstract class CrudController extends AbstractController
      * batchs, it should be found elsewhere.
      * In post values, we look for id key, as well as all entries_sel keys
      *
-     * @param array $args Request arguments
-     * @param array $post POST values
+     * @param array  $args Request arguments
+     * @param ?array $post POST values
      *
      * @return null|integer|integer[]
      */
-    protected function getIdsToRemove(&$args, $post)
+    protected function getIdsToRemove(array &$args, ?array $post): int|array|null
     {
         /** @var  null|array|string $ids */
         $ids = null;
@@ -228,7 +228,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    abstract public function redirectUri(array $args);
+    abstract public function redirectUri(array $args): string;
 
     /**
      * Get cancel URI
@@ -237,7 +237,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    public function cancelUri(array $args)
+    public function cancelUri(array $args): string
     {
         return $this->redirectUri($args);
     }
@@ -249,7 +249,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    abstract public function formUri(array $args);
+    abstract public function formUri(array $args): string;
 
     /**
      * Get confirmation removal page title
@@ -258,7 +258,7 @@ abstract class CrudController extends AbstractController
      *
      * @return string
      */
-    abstract public function confirmRemoveTitle(array $args);
+    abstract public function confirmRemoveTitle(array $args): string;
 
     /**
      * Removal
@@ -325,6 +325,6 @@ abstract class CrudController extends AbstractController
      *
      * @return boolean
      */
-    abstract protected function doDelete(array $args, array $post);
+    abstract protected function doDelete(array $args, array $post): bool;
     // /CRUD - Delete
 }

@@ -250,13 +250,6 @@ class Adherent extends GaletteTestCase
         );
 
         $this->assertSame($deps, $adh->deps);
-
-        $adh = new \Galette\Entity\Adherent(
-            $this->zdb,
-            null,
-            'not an array'
-        );
-        $this->assertSame($this->default_deps, $adh->deps);
     }
 
     /**

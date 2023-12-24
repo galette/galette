@@ -328,12 +328,7 @@ class Members
                     }
                 }
 
-                $processed[] = [
-                    'id_adh' => $member->id_adh,
-                    'nom_adh' => $member->nom_adh,
-                    'prenom_adh' => $member->prenom_adh,
-                    'email_adh' => $member->email_adh
-                ];
+                $processed[] = $member;
             }
 
             //delete contributions

@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -61,9 +62,9 @@ class PdfModels extends Repository
     /**
      * Get models list
      *
-     * @return PdfModel[]
+     * @return array<int, PdfModel>|ResultSet
      */
-    public function getList(): array
+    public function getList(): array|ResultSet
     {
         try {
             $select = $this->zdb->select(PdfModel::TABLE, 'a');

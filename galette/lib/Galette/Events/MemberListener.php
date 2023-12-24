@@ -65,17 +65,17 @@ use Slim\Routing\RouteParser;
 class MemberListener implements ListenerSubscriber
 {
     /** @var Preferences */
-    private $preferences;
+    private Preferences $preferences;
     /** @var RouteParser */
-    private $routeparser;
+    private RouteParser $routeparser;
     /** @var History */
-    private $history;
+    private History $history;
     /** @var Messages */
-    private $flash;
+    private Messages $flash;
     /** @var Login */
-    private $login;
+    private Login $login;
     /** @var Db */
-    private $zdb;
+    private Db $zdb;
 
     /**
      * Constructor
@@ -134,7 +134,7 @@ class MemberListener implements ListenerSubscriber
      *
      * @return void
      */
-    public function memberAdded(Adherent $member)
+    public function memberAdded(Adherent $member): void
     {
         Analog::log(
             '[' . get_class($this) . '] Event member.add emitted for ' . $member->sfullname,
@@ -155,7 +155,7 @@ class MemberListener implements ListenerSubscriber
      *
      * @return void
      */
-    public function memberEdited(Adherent $member)
+    public function memberEdited(Adherent $member): void
     {
         Analog::log(
             '[' . get_class($this) . '] Event member.edit emitted for ' . $member->sfullname,
@@ -177,7 +177,7 @@ class MemberListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function sendMemberEmail(Adherent $member, $new)
+    private function sendMemberEmail(Adherent $member, bool $new): void
     {
         if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
             //if email has been disabled in the preferences, we should not be here ;
@@ -271,7 +271,7 @@ class MemberListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function sendAdminEmail(Adherent $member, $new)
+    private function sendAdminEmail(Adherent $member, bool $new): void
     {
         if (
             $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED

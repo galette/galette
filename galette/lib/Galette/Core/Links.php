@@ -37,6 +37,7 @@
 
 namespace Galette\Core;
 
+use DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -65,7 +66,7 @@ class Links
     public const TARGET_INVOICE    = 2;
     public const TARGET_RECEIPT    = 3;
 
-    private $zdb;
+    private Db $zdb;
 
     /**
      * Default constructor
@@ -73,7 +74,7 @@ class Links
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired links in database
      */
-    public function __construct(Db $zdb, $clean = true)
+    public function __construct(Db $zdb, bool $clean = true)
     {
         $this->zdb = $zdb;
         if ($clean === true) {
@@ -89,7 +90,7 @@ class Links
      *
      * @return boolean
      */
-    private function removeOldEntry($target, $id)
+    private function removeOldEntry(int $target, int $id): bool
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);
@@ -120,9 +121,9 @@ class Links
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
      *
-     * @return false|string
+     * @return string
      */
-    public function generateNewLink($target, $id)
+    public function generateNewLink(int $target, int $id): string
     {
         //first of all, we'll remove all existant entries for specified id
         $this->removeOldEntry($target, $id);
@@ -178,11 +179,11 @@ class Links
     /**
      * Get expiration date
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    private function getExpirationDate()
+    private function getExpirationDate(): DateTime
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('P1W'));
         return $date;
     }
@@ -192,7 +193,7 @@ class Links
      *
      * @return boolean
      */
-    protected function cleanExpired()
+    protected function cleanExpired(): bool
     {
         try {
             $date = $this->getExpirationDate();
@@ -225,7 +226,7 @@ class Links
      *
      * @return array|false false if hash is not valid, array otherwise
      */
-    public function isHashValid($hash, $code)
+    public function isHashValid(string $hash, string $code): array|bool
     {
         try {
             $hash = base64_decode($hash);

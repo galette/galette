@@ -303,7 +303,7 @@ class Groups
             );
 
             //we proceed, if groups has been specified
-            if (is_array($groups)) {
+            if (count($groups)) {
                 $insert = $zdb->insert($table);
                 $insert->values(
                     array(

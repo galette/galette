@@ -63,7 +63,7 @@ class LightSlimApp
      *
      * @param string $mode Galette mode
      */
-    public function __construct($mode = 'NEED_UPDATE')
+    public function __construct(string $mode = 'NEED_UPDATE')
     {
         $this->mode = $mode;
 

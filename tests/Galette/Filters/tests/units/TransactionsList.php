@@ -101,8 +101,8 @@ class TransactionsList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\TransactionsList::ORDER_ASC, $filters->ordered);
 
         //set filter on children
-        $filters->filtre_cotis_children = true;
-        $this->assertTrue($filters->filtre_cotis_children);
+        $filters->filtre_cotis_children = 18;
+        $this->assertSame(18, $filters->filtre_cotis_children);
 
         //reinit and test defaults are back
         $filters->reinit();

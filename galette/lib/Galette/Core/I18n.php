@@ -53,18 +53,18 @@ use Analog\Analog;
 
 class I18n
 {
-    private $id;
-    private $longid;
-    private $name;
-    private $abbrev;
+    private string $id;
+    private string $longid;
+    private string $name;
+    private string $abbrev;
 
     public const DEFAULT_LANG = 'en_US';
 
-    private $dir = 'lang/';
-    private $path;
+    private string $dir = 'lang/';
+    private string $path;
 
-    private $langs = [];
-    private $rtl_langs = [
+    private array $langs = [];
+    private array $rtl_langs = [
         'ar',
         'az',
         'fa',
@@ -80,7 +80,7 @@ class I18n
      *
      * @return void
      */
-    public function __construct($lang = false)
+    public function __construct(string|false $lang = false)
     {
         $this->path = GALETTE_ROOT . $this->dir;
         $this->guessLangs();
@@ -124,7 +124,7 @@ class I18n
      *
      * @return void
      */
-    public function changeLanguage($id)
+    public function changeLanguage(string $id): void
     {
         Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
         $this->load($id);
@@ -137,7 +137,7 @@ class I18n
      *
      * @return void
      */
-    public function updateEnv()
+    public function updateEnv(): void
     {
         global $translator;
 
@@ -163,7 +163,7 @@ class I18n
      *
      * @return void
      */
-    private function load($id)
+    private function load(string $id): void
     {
         if (!isset($this->langs[$id])) {
             $msg = 'Lang ' . $id . ' does not exist, switching to default.';
@@ -182,7 +182,7 @@ class I18n
      *
      * @return array list of all active languages
      */
-    public function getList()
+    public function getList(): array
     {
         $result = array();
         foreach (array_keys($this->langs) as $id) {
@@ -197,7 +197,7 @@ class I18n
      *
      * @return array
      */
-    public function getArrayList()
+    public function getArrayList(): array
     {
         $list = $this->getList();
         $al = array();
@@ -219,7 +219,7 @@ class I18n
      *
      * @return string name for specified identifier
      */
-    public function getNameFromId($id)
+    public function getNameFromId(string $id): string
     {
         if (isset($this->langs[$id])) {
             return $this->langs[$id]['longname'];
@@ -237,7 +237,7 @@ class I18n
      *
      * @return string current language identifier
      */
-    public function getID()
+    public function getID(): string
     {
         return $this->id;
     }
@@ -247,7 +247,7 @@ class I18n
      *
      * @return string current language long identifier
      */
-    public function getLongID()
+    public function getLongID(): string
     {
         return $this->longid;
     }
@@ -257,17 +257,17 @@ class I18n
      *
      * @return string current language name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Get current abreviation
+     * Get current abbreviation
      *
-     * @return string current language abreviation
+     * @return string current language abbreviation
      */
-    public function getAbbrev()
+    public function getAbbrev(): string
     {
         return $this->abbrev;
     }
@@ -279,7 +279,7 @@ class I18n
      *
      * @return  boolean
      */
-    public static function seemUtf8($str)
+    public static function seemUtf8(string $str): bool
     {
         return mb_check_encoding($str, 'UTF-8');
     }
@@ -288,11 +288,11 @@ class I18n
      * Guess available languages from directories
      * that are present in the lang directory.
      *
-     * Will store foud langs in class langs variable and return it.
+     * Will store found langs in class langs variable and return it.
      *
      * @return array
      */
-    public function guessLangs()
+    public function guessLangs(): array
     {
         $dir = new \DirectoryIterator($this->path);
         $langs = [];
@@ -326,7 +326,7 @@ class I18n
      *
      * @return boolean
      */
-    public function isRTL()
+    public function isRTL(): bool
     {
         return in_array(
             $this->getAbbrev(),

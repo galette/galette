@@ -56,7 +56,7 @@ use Galette\Core\Pagination;
  * @property ?string $raw_start_date_filter
  * @property ?string $end_date_filter
  * @property ?string $raw_end_date_filter
- * @property integer $user_filter
+ * @property ?string  $user_filter
  * @property ?string $action_filter
  */
 
@@ -68,12 +68,12 @@ class HistoryList extends Pagination
     public const ORDERBY_ACTION = 3;
 
     //filters
-    private $start_date_filter = null;
-    private $end_date_filter = null;
-    private $user_filter = 0;
-    private $action_filter = null;
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?string $user_filter = null;
+    private ?string $action_filter = null;
 
-    protected $list_fields = array(
+    protected array $list_fields = array(
         'start_date_filter',
         'raw_start_date_filter',
         'end_date_filter',
@@ -95,7 +95,7 @@ class HistoryList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
     }
@@ -105,7 +105,7 @@ class HistoryList extends Pagination
      *
      * @return string ASC or DESC
      */
-    protected function getDefaultDirection()
+    protected function getDefaultDirection(): string
     {
         return self::ORDER_DESC;
     }
@@ -115,12 +115,12 @@ class HistoryList extends Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         parent::reinit();
         $this->start_date_filter = null;
         $this->end_date_filter = null;
-        $this->user_filter = 0;
+        $this->user_filter = '0';
         $this->action_filter = null;
     }
 
@@ -131,7 +131,7 @@ class HistoryList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         Analog::log(
             '[HistoryList] Getting property `' . $name . '`',
@@ -184,7 +184,7 @@ class HistoryList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -203,7 +203,7 @@ class HistoryList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);

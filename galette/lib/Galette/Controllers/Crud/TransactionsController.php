@@ -69,7 +69,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param ?string  $type     Contribution type
      *
      * @return Response
      */
@@ -83,7 +83,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param ?string  $type     Contribution type
      *
      * @return Response
      */
@@ -105,12 +105,12 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param string   $action   Action
+     * @param ?integer $id       Transaction id
+     * @param ?string  $action   Action
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id = null, $action = 'edit'): Response
+    public function edit(Request $request, Response $response, int $id = null, string|null $action = 'edit'): Response
     {
         $trans = null;
 
@@ -350,7 +350,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function attach(Request $request, Response $response, int $id = null, int $cid = null): Response
+    public function attach(Request $request, Response $response, int $id, int $cid): Response
     {
         if (!Contribution::setTransactionPart($this->zdb, $id, $cid)) {
             $this->flash->addMessage(
@@ -382,7 +382,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function detach(Request $request, Response $response, int $id = null, int $cid = null): Response
+    public function detach(Request $request, Response $response, int $id, int $cid): Response
     {
         if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $id, $cid)) {
             $this->flash->addMessage(

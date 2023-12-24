@@ -70,7 +70,7 @@ class Install
     public const UPDATE = 'u';
 
     //db version/galette version mapper
-    private $versions_mapper = array(
+    private array $versions_mapper = array(
         '0.700' => '0.70',
         '0.701' => '0.71',
         '0.702' => '0.74',
@@ -78,25 +78,25 @@ class Install
         '0.704' => '0.76'
     );
 
-    protected $_step;
-    private $_mode;
+    protected int $_step;
+    private ?string $_mode;
     private $_installed_version;
 
-    private $_db_type;
-    private $_db_host;
-    private $_db_port;
-    private $_db_name;
-    private $_db_user;
-    private $_db_pass;
-    private $_db_prefix;
+    private string $_db_type;
+    private string $_db_host;
+    private string $_db_port;
+    private string $_db_name;
+    private string $_db_user;
+    private string $_db_pass;
+    private ?string $_db_prefix;
 
-    private $_db_connected;
-    private $_report;
+    private bool $_db_connected;
+    private array $_report;
 
-    private $_admin_login;
-    private $_admin_pass;
+    private string $_admin_login;
+    private string $_admin_pass;
 
-    private $_error;
+    private bool $_error;
 
     /**
      * Main constructor
@@ -114,7 +114,7 @@ class Install
      *
      * @return string
      */
-    public function getStepTitle()
+    public function getStepTitle(): string
     {
         $step_title = null;
         switch ($this->_step) {
@@ -162,7 +162,7 @@ class Install
      *
      * @return string html string
      */
-    public function getValidationImage($arg)
+    public function getValidationImage(bool $arg): string
     {
         $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
@@ -175,7 +175,7 @@ class Install
      *
      * @return string
      */
-    public function getMode()
+    public function getMode(): ?string
     {
         return $this->_mode;
     }
@@ -185,7 +185,7 @@ class Install
      *
      * @return boolean
      */
-    public function isInstall()
+    public function isInstall(): bool
     {
         return $this->_mode === self::INSTALL;
     }
@@ -195,7 +195,7 @@ class Install
      *
      * @return boolean
      */
-    public function isUpgrade()
+    public function isUpgrade(): bool
     {
         return $this->_mode === self::UPDATE;
     }
@@ -205,15 +205,17 @@ class Install
      *
      * @param string $mode Requested mode
      *
-     * @return void
+     * @return self
      */
-    public function setMode($mode)
+    public function setMode(string $mode): self
     {
         if ($mode === self::INSTALL || $mode === self::UPDATE) {
             $this->_mode = $mode;
         } else {
             throw new \UnexpectedValueException('Unknown mode "' . $mode . '"');
         }
+
+        return $this;
     }
 
     /**
@@ -221,7 +223,7 @@ class Install
      *
      * @return void
      */
-    public function atPreviousStep()
+    public function atPreviousStep(): void
     {
         if ($this->_step > 0) {
             if (
@@ -253,7 +255,7 @@ class Install
      *
      * @return boolean
      */
-    public function isCheckStep()
+    public function isCheckStep(): bool
     {
         return $this->_step === self::STEP_CHECK;
     }
@@ -263,7 +265,7 @@ class Install
      *
      * @return void
      */
-    public function atTypeStep()
+    public function atTypeStep(): void
     {
         $this->_step = self::STEP_TYPE;
     }
@@ -273,7 +275,7 @@ class Install
      *
      * @return boolean
      */
-    public function isTypeStep()
+    public function isTypeStep(): bool
     {
         return $this->_step === self::STEP_TYPE;
     }
@@ -283,7 +285,7 @@ class Install
      *
      * @return void
      */
-    public function atDbStep()
+    public function atDbStep(): void
     {
         $this->_step = self::STEP_DB;
     }
@@ -293,7 +295,7 @@ class Install
      *
      * @return boolean
      */
-    public function isDbStep()
+    public function isDbStep(): bool
     {
         return $this->_step === self::STEP_DB;
     }
@@ -303,7 +305,7 @@ class Install
      *
      * @return boolean
      */
-    public function postCheckDb()
+    public function postCheckDb(): bool
     {
         return $this->_step >= self::STEP_DB_CHECKS;
     }
@@ -314,9 +316,9 @@ class Install
      * @param string $type Database type
      * @param array  $errs Errors array
      *
-     * @return Install
+     * @return self
      */
-    public function setDbType($type, &$errs)
+    public function setDbType(string $type, array &$errs): self
     {
         switch ($type) {
             case Db::MYSQL:
@@ -334,7 +336,7 @@ class Install
      *
      * @return string
      */
-    public function getDbType()
+    public function getDbType(): string
     {
         return $this->_db_type;
     }
@@ -350,7 +352,7 @@ class Install
      *
      * @return void
      */
-    public function setDsn($host, $port, $name, $user, $pass)
+    public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): void
     {
         $this->_db_host = $host;
         $this->_db_port = $port;
@@ -364,11 +366,12 @@ class Install
      *
      * @param string $prefix Prefix
      *
-     * @return void
+     * @return self
      */
-    public function setTablesPrefix($prefix)
+    public function setTablesPrefix(string $prefix): self
     {
         $this->_db_prefix = $prefix;
+        return $this;
     }
 
     /**
@@ -376,7 +379,7 @@ class Install
      *
      * @return string
      */
-    public function getDbHost()
+    public function getDbHost(): string
     {
         return $this->_db_host;
     }
@@ -386,7 +389,7 @@ class Install
      *
      * @return string
      */
-    public function getDbPort()
+    public function getDbPort(): string
     {
         return $this->_db_port;
     }
@@ -396,7 +399,7 @@ class Install
      *
      * @return string
      */
-    public function getDbName()
+    public function getDbName(): string
     {
         return $this->_db_name;
     }
@@ -406,7 +409,7 @@ class Install
      *
      * @return string
      */
-    public function getDbUser()
+    public function getDbUser(): string
     {
         return $this->_db_user;
     }
@@ -416,7 +419,7 @@ class Install
      *
      * @return string
      */
-    public function getDbPass()
+    public function getDbPass(): string
     {
         return $this->_db_pass;
     }
@@ -426,7 +429,7 @@ class Install
      *
      * @return string
      */
-    public function getTablesPrefix()
+    public function getTablesPrefix(): string
     {
         return $this->_db_prefix;
     }
@@ -436,7 +439,7 @@ class Install
      *
      * @return void
      */
-    public function atDbCheckStep()
+    public function atDbCheckStep(): void
     {
         $this->_step = self::STEP_DB_CHECKS;
     }
@@ -446,7 +449,7 @@ class Install
      *
      * @return boolean
      */
-    public function isDbCheckStep()
+    public function isDbCheckStep(): bool
     {
         return $this->_step === self::STEP_DB_CHECKS;
     }
@@ -454,11 +457,11 @@ class Install
     /**
      * Test database connection
      *
-     * @return true
+     * @return boolean
      *
-     * @throws \Exception
+     * @throws Throwable
      */
-    public function testDbConnexion()
+    public function testDbConnexion(): bool
     {
         return Db::testConnectivity(
             $this->_db_type,

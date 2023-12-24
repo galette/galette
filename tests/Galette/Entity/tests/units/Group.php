@@ -107,9 +107,6 @@ class Group extends GaletteTestCase
         $this->assertNull($group->getName());
         $this->assertNull($group->getFullName());
         $this->assertNull($group->getIndentName());
-        $this->assertNull($group->getMembers());
-        $this->assertNull($group->getMembers());
-        $this->assertEmpty($group->getGroups());
         $this->assertNull($group->getParentGroup());
     }
 

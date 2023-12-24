@@ -93,14 +93,14 @@ class PaymentTypeController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         $ptypes = new PaymentTypes(
             $this->zdb,
@@ -185,7 +185,7 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Type id
+     * @param ?integer $id       Type id
      *
      * @return Response
      */
@@ -284,7 +284,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('paymentTypes');
     }
@@ -296,7 +296,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemovePaymentType',
@@ -311,7 +311,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
         return sprintf(
@@ -328,7 +328,7 @@ class PaymentTypeController extends CrudController
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
         return $ptype->remove();

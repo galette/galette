@@ -62,7 +62,7 @@ class DynamicTranslationsController extends AbstractController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param string   $text_orig Original translatext
+     * @param ?string  $text_orig Original text
      *
      * @return Response
      */

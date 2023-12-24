@@ -55,13 +55,13 @@ class Translator extends ZTranslator
     /**
      * Do a translation exist for string
      *
-     * @param string $message    String to check for
-     * @param string $textDomain Translation domain, defaults to "default"
-     * @param string $locale     Locale, defaults to null
+     * @param string  $message    String to check for
+     * @param string  $textDomain Translation domain, defaults to "default"
+     * @param ?string $locale     Locale, defaults to null
      *
      * @return boolean
      */
-    public function translationExists($message, $textDomain = 'default', $locale = null)
+    public function translationExists(string $message, string $textDomain = 'default', string $locale = null): bool
     {
         $locale = ($locale ?: $this->getLocale());
 
