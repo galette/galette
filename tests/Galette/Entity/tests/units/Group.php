@@ -251,6 +251,20 @@ class Group extends GaletteTestCase
         $children = $group->getGroups();
         $this->assertCount(1, $children);
         $this->assertSame('Another child group', $children[0]->getName());
+
+        $group = new \Galette\Entity\Group($child_id_2);
+        $this->assertSame(['A parent group'], $group->getParents());
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A second level child group');
+        $group->setParentGroup($child_id_2);
+        $this->assertTrue($group->store());
+        $child_id_3 = $group->getId();
+        $this->assertSame($child_id_2, $group->getParentGroup()->getId());
+
+        $group = new \Galette\Entity\Group($child_id_3);
+        $this->assertSame(['Another child group', 'A parent group'], $group->getParents());
+        $this->assertTrue($group->detach());
     }
 
     /**
