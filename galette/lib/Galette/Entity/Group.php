@@ -538,16 +538,30 @@ class Group
     }
 
     /**
-     * Get the full name of the group "foo / bar"
+     * Get the full name of the group
      *
-     * @return string
+     * @param boolean $formatted Return full name formatted as "foo / bar", array if false
+     *
+     * @return string|array
      */
-    public function getFullName()
+    public function getFullName($formatted = true)
     {
+        $fullname = [];
         if ($this->parent_group) {
-            return $this->parent_group->getFullName() . ' / ' . $this->group_name;
+            if ($formatted === true) {
+                return $this->parent_group->getFullName() . ' / ' . $this->group_name;
+            } else {
+                $fullname = array_merge($fullname, $this->parent_group->getFullName(false));
+                $fullname[] = $this->group_name;
+            }
+        } else {
+            $fullname[] = $this->group_name;
         }
-        return $this->group_name;
+        if ($formatted === true) {
+            return $this->group_name;
+        } else {
+            return $fullname;
+        }
     }
 
     /**
