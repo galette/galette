@@ -545,7 +545,7 @@ class Group
     public function getFullName()
     {
         if ($this->parent_group) {
-            return $this->parent_group->getFullName() . ' / ' . $this->group_name;
+            return $this->parent_group->getFullName() . ' → ' . $this->group_name;
         }
         return $this->group_name;
     }

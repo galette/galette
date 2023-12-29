@@ -21,7 +21,7 @@
 {% endmacro %}
 
 {% block content %}
-    {% set opened = group.getFullName()|split(' / ') %}
+    {% set opened = group.getFullName()|split(' → ') %}
     {% set selected = opened|last %}
     <div class="ui stackable grid">
         <div class="three wide column">
