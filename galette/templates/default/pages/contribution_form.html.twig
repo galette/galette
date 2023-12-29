@@ -30,7 +30,7 @@
                                     <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                                     <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
                                     <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
-                                    <div class="jsonly displaynone default text">{% if adh_selected == 0 %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
+                                    <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
                                     <div class="jsonly displaynone menu">
                             {% for k, v in members.list %}
                                         <div class="item" data-value="{{ k }}">{{ v }}</div>
@@ -263,53 +263,15 @@
 
 {% block javascripts %}
 <script type="text/javascript">
-    {% include "elements/js/choose_adh.js.twig" %}
-
-    $(function() {
-
     {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') and not contribution.id %}
-        $('#id_adh, #id_type_cotis').dropdown({
-            action: function(text, value, element) {
-                var element = element.parentElement !== undefined ? element : element[0];
-                var dropdown = element.parentElement.parentElement;
-                $(dropdown).find('div.text').html(text);
-                $(dropdown).dropdown('set selected', value);
-                $(dropdown).dropdown('hide');
-
-                var _member = $('#id_adh_input').val();
-                var _fee    = $('#id_type_cotis_input').val();
-
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url : '{{ url_for("contributionDates") }}',
-                    data: {
-                        member_id: _member,
-                        fee_id: _fee
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        selector: '#contribdetails'
-                    } %},
-                    success: function(res){
-                        $('#date_debut_cotis').val(res.date_debut_cotis);
-                        $('#date_fin_cotis').val(res.date_fin_cotis);
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred retrieving dates :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-
-            }
-        });
+        {% include "elements/js/choose_adh.js.twig" with {
+            new_contrib_onchange: true
+        } %}
+    {% else %}
+        {% include "elements/js/choose_adh.js.twig" %}
     {% endif %}
 
+    $(function() {
     {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
         $('#transaction_related').hide();
         $('#montant_cotis').on('keyup', function() {
