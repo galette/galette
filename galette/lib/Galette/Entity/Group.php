@@ -551,6 +551,22 @@ class Group
     }
 
     /**
+     * Get parents as an array
+     *
+     * @return array
+     */
+    public function getParents(): array
+    {
+        $parents = [];
+        $group = $this;
+        while($group = $group->getParentGroup()) {
+            $parents[] = $group->getName();
+        }
+        return $parents;
+    }
+
+
+    /**
      * Get the indented short name of the group "  >> bar"
      *
      * @return string

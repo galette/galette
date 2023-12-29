@@ -2,18 +2,18 @@
 
 {% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
 
-{% macro group_item(login, group, opened, selected) %}
-    <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in opened %} active{% endif %}{% else %}nochild{% endif %}">
+{% macro group_item(login, group, parents, selected) %}
+    <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in parents %} active{% endif %}{% else %}nochild{% endif %}">
         <i class="{% if group.getGroups()|length > 0 %}dropdown{% else %}empty{% endif %} icon" aria-hidden="true"></i>
         <a class="ui{% if group.getName() == selected %} primary{% endif %}{% if not login.isGroupManager(group.getId()) %} disabled{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
         </a>
     </div>
     {% if group.getGroups()|length > 0 %}
-    <div class="content{% if group.getName() in opened %} active{% endif %}">
+    <div class="content{% if group.getName() in parents %} active{% endif %}">
         <div class="accordion">
         {% for child_group in group.getGroups() %}
-            {{ _self.group_item(login, child_group, opened, selected) }}
+            {{ _self.group_item(login, child_group, parents, selected) }}
         {% endfor %}
         </div>
     </div>
@@ -21,8 +21,8 @@
 {% endmacro %}
 
 {% block content %}
-    {% set opened = group.getFullName()|split(' / ') %}
-    {% set selected = opened|last %}
+    {% set parents = group.getParents() %}
+    {% set selected = group.getName() %}
     <div class="ui stackable grid">
         <div class="three wide column">
     {% if group.getId() %}
@@ -30,7 +30,7 @@
             <div class="ui attached accordion-styled scrolling segment loader_selector">
                 <div class="ui tree accordion">
                 {% for group in groups_root %}
-                    {{ _self.group_item(login, group, opened, selected) }}
+                    {{ _self.group_item(login, group, parents, selected) }}
                 {% endfor %}
                 </div>
             </div>
