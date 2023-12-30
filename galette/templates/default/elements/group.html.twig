@@ -45,7 +45,7 @@
                         {{ pgroup.getName() }}
                         <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
                     {% else %}
-                        <div class="ui search selection dropdown nochosen">
+                        <div class="ui search compact selection dropdown nochosen">
                             <input type="hidden" name="parent_group" id="parent_group" value="{% if pgroup is defined %}{{ pgroup.getId() }}{% endif %}">
                             <i class="dropdown icon" aria-hidden="true"></i>
                             <div class="text">{% if pgroup is defined %}{{ pgroup.getName() }}{% endif %}</div>
