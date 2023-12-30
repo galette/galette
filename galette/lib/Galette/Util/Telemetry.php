@@ -207,10 +207,10 @@ class Telemetry
     public function grabOsInfos()
     {
         $distro = false;
-        if (file_exists('/etc/redhat-release')) {
+        if (@file_exists('/etc/redhat-release')) {
             $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/redhat-release'));
         }
-        if (file_exists('/etc/fedora-release')) {
+        if (@file_exists('/etc/fedora-release')) {
             $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
         }
 
