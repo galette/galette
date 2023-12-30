@@ -739,4 +739,102 @@ class Contribution extends GaletteTestCase
         $this->login->logOut();
         $this->assertFalse($this->login->isLogged());
     }
+
+    /**
+     * Test next year contribution
+     *
+     * @return void
+     */
+    public function testNextYear()
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //create contribution for member
+        $begin_date = new \DateTime(); // 2023-12-30
+        $ny_begin_date = clone $begin_date; // 2023-12-30
+        $end_date = clone $begin_date;
+        $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
+        $end_date->sub(new \DateInterval('P1D')); // 2023-12-29
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 1, //contribution
+            'montant_cotis' => 100,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $begin_date->format('Y-m-d'),
+            'date_debut_cotis' => $begin_date->format('Y-m-d'),
+            'duree_mois_cotis' => 12
+        ];
+        $this->createContrib($data);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
+        $this->assertSame(100.00, $contrib->amount);
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1, 'adh' => $this->adh->id]);
+        $this->assertSame($ny_begin_date->format('Y-m-d'), $contrib->begin_date);
+    }
+
+    /**
+     * Test next year contribution from a 0.9.x
+     *
+     * @return void
+     */
+    public function testNextYearFrom096()
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        //create contribution for member
+        $begin_date = new \DateTime(); // 2023-12-30
+        $ny_begin_date = clone $begin_date; // 2023-12-30
+        $end_date = clone $begin_date;
+        $due_date = clone $begin_date;
+
+        $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $insert = $this->zdb->insert(\Galette\Entity\Contribution::TABLE);
+        $insert->values(
+            [
+                'id_adh' => $this->adh->id,
+                'id_type_cotis' => 1, //contribution
+                'montant_cotis' => 100,
+                'type_paiement_cotis' => 3,
+                'info_cotis' => 'FAKER' . $this->seed,
+                'date_enreg' => $begin_date->format('Y-m-d'),
+                'date_debut_cotis' => $begin_date->format('Y-m-d'),
+                'date_fin_cotis' => $due_date->format('Y-m-d')
+            ]
+        );
+        $add = $this->zdb->execute($insert);
+        $this->assertSame(1, $add->count());
+        $contribution_id = (int)($add->getGeneratedValue() ?? $this->zdb->getLastGeneratedValue($contrib));
+
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(
+            array('date_echeance' => $due_date->format('Y-m-d'))
+        )->where(
+            [\Galette\Entity\Adherent::PK => $this->adh->id]
+        );
+        $this->zdb->execute($update);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contribution_id);
+        $this->assertSame(100.00, $contrib->amount);
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1, 'adh' => $this->adh->id, 'payment_type' => 1]);
+        $this->assertSame($ny_begin_date->format('Y-m-d'), $contrib->begin_date);
+
+        $check = $contrib->check(['type_paiement_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $contrib->store();
+        $this->assertTrue($store);
+    }
 }

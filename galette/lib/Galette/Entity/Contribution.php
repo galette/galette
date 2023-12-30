@@ -606,10 +606,17 @@ class Contribution
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
                 $result = $results->current();
-                $d = new \DateTime($result->date_debut_cotis);
+
+                $d_begin = new \DateTime($result->date_debut_cotis);
+                $d_end = new \DateTime($result->date_fin_cotis);
+
+                if ($d_begin->format('m-d') == $d_end->format('m-d') && $result->date_fin_cotis == $this->_begin_date) {
+                    //see https://bugs.galette.eu/issues/1762
+                    return true;
+                }
 
                 return _T("- Membership period overlaps period starting at ") .
-                    $d->format(__("Y-m-d"));
+                    $d_begin->format(__("Y-m-d"));
             }
             return true;
         } catch (Throwable $e) {
