@@ -263,7 +263,7 @@ class Group extends GaletteTestCase
         $this->assertSame($child_id_2, $group->getParentGroup()->getId());
 
         $group = new \Galette\Entity\Group($child_id_3);
-        $this->assertSame(['Another child group', 'A parent group'], $group->getParents());
+        $this->assertSame(['A parent group', 'Another child group'], $group->getParents());
         $this->assertTrue($group->detach());
     }
 
