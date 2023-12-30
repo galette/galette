@@ -559,7 +559,7 @@ class Group
     {
         $parents = [];
         $group = $this;
-        while($group = $group->getParentGroup()) {
+        while ($group = $group->getParentGroup()) {
             $parents[] = $group->getName();
         }
         return $parents;
