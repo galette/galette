@@ -477,8 +477,8 @@ class Contribution
                         break;
                     case 'montant_cotis':
                         $value = strtr($value, ',', '.');
-                        if (!empty($value)) {
-                            $this->_amount = $value;
+                        if (!empty($value) || $value === '0') {
+                            $this->_amount = (double)$value;
                         }
                         if (!is_numeric($value) && $value !== '') {
                             $this->errors[] = _T("- The amount must be an integer!");
