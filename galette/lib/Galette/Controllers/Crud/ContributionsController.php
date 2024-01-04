@@ -793,16 +793,16 @@ class ContributionsController extends CrudController
     public function store(Request $request, Response $response, $action, string $type, $id = null): Response
     {
         $post = $request->getParsedBody();
-        $args = [
+        $url_args = [
             'action'    => $action,
             'type'      => $type
         ];
         if ($id !== null) {
-            $args['id'] = $id;
+            $url_args['id'] = $id;
         }
 
         if ($action == 'edit' && isset($post['btnreload'])) {
-            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $args);
+            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
             $redirect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
                 ContributionsTypes::PK . '=' . $post[ContributionsTypes::PK] . '&' .
                 'montant_cotis=' . $post['montant_cotis'];
@@ -882,7 +882,7 @@ class ContributionsController extends CrudController
             //something went wrong.
             //store entity in session
             $this->session->contribution = $contrib;
-            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $args);
+            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
 
             //report errors
             foreach ($error_detected as $error) {
