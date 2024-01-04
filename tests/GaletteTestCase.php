@@ -579,14 +579,18 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Create contribution from data
      *
-     * @param array $data Data to use to create contribution
+     * @param array                         $data Data to use to create contribution
+     * @param ?\Galette\Entity\Contribution $contrib Contribution instance, if any
      *
      * @return \Galette\Entity\Contribution
      */
-    public function createContrib(array $data)
+    public function createContrib(array $data, \Galette\Entity\Contribution $contrib = null)
     {
-        $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
-        $contrib = $this->contrib;
+        if ($contrib === null) {
+            $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+            $contrib = $this->contrib;
+        }
+
         $check = $contrib->check($data, [], []);
         if (is_array($check)) {
             var_dump($check);
