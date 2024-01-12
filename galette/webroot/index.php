@@ -41,14 +41,20 @@ if (!defined('GALETTE_BASE_PATH')) {
 
 define('GALETTE_ROOT', __DIR__ . '/../');
 
+// check PHP version
+require_once GALETTE_ROOT . 'config/versions.inc.php';
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
+    header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');
+    die(1);
+}
+
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
-require_once GALETTE_ROOT . 'config/versions.inc.php';
 
 $cm = new Galette\Core\CheckModules(false);
 $cm->doCheck(false); //do not load with translations!
 
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !$cm->isValid()) {
+if (!$cm->isValid()) {
     header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');
     die(1);
 }
