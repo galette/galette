@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016-2023 The Galette Team
+ * Copyright © 2016-2024 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
+ * @copyright 2016-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-12-05
@@ -45,7 +45,7 @@ use Galette\GaletteTestCase;
  * @name      Login
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
+ * @copyright 2016-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2016-12-05
@@ -86,6 +86,7 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isCron());
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
+        $this->assertFalse($this->login->lang);
     }
 
     /**
@@ -258,6 +259,7 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isCron());
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
+        $this->assertSame($this->preferences->pref_lang, $this->login->lang);
 
         //test logout
         $this->login->logOut();
@@ -396,7 +398,7 @@ class Login extends GaletteTestCase
      */
     public function testLogCron()
     {
-        $this->login->logCron('reminder');
+        $this->login->logCron('reminder', $this->preferences);
         $this->assertTrue($this->login->isLogged());
         $this->assertFalse($this->login->isStaff());
         $this->assertFalse($this->login->isAdmin());
@@ -406,9 +408,10 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
         $this->assertSame('cron', $this->login->login);
+        $this->assertSame($this->preferences->pref_lang, $this->login->lang);
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Not authorized!');
-        $this->login->logCron('filename');
+        $this->login->logCron('filename', $this->preferences);
     }
 }
