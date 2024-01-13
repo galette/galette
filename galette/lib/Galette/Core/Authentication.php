@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -43,7 +43,7 @@ namespace Galette\Core;
  * @name      Authentication
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -126,11 +126,12 @@ abstract class Authentication
     /**
      * Authenticate from cron
      *
-     * @param string $name Service name
+     * @param string      $name        Service name
+     * @param Preferences $preferences Preferences instance
      *
      * @return void
      */
-    public function logCron($name)
+    public function logCron($name, Preferences $preferences)
     {
         //known cronable files
         $ok = array('reminder');
@@ -139,6 +140,7 @@ abstract class Authentication
             $this->logged = true;
             $this->cron = true;
             $this->login = 'cron';
+            $this->lang = $preferences->pref_lang;
         } else {
             trigger_error('Not authorized!', E_USER_ERROR);
         }
@@ -160,6 +162,7 @@ abstract class Authentication
         $this->superadmin = false;
         $this->staff = false;
         $this->uptodate = false;
+        $this->lang = null;
     }
 
     /**
