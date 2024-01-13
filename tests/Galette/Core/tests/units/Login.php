@@ -160,12 +160,10 @@ class Login extends GaletteTestCase
             ->getMock();
 
         $zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o) {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
