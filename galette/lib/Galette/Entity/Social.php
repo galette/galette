@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021-2023 The Galette Team
+ * Copyright © 2021-2024 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.6dev - 2021-10-23
@@ -51,7 +51,7 @@ use Analog\Analog;
  * @name      Social
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.6dev - 2021-10-23
@@ -73,6 +73,7 @@ class Social
     public const ICQ = 'icq';
     public const WEBSITE = 'website';
     public const BLOG = 'blog';
+    public const DISCORD = 'discord';
 
     /** @var Db */
     private $zdb;
@@ -367,7 +368,8 @@ class Social
                 self::JABBER => _T('Jabber'),
                 self::ICQ => _T('ICQ'),
                 self::WEBSITE => _T('Website'),
-                self::BLOG => _T('Blog')
+                self::BLOG => _T('Blog'),
+                self::DISCORD => _T('Discord')
             ];
         } else {
             $systypes = [
@@ -379,7 +381,8 @@ class Social
                 self::JABBER => 'jabber',
                 self::ICQ => 'icq',
                 self::WEBSITE => 'website',
-                self::BLOG => 'blog'
+                self::BLOG => 'blog',
+                self::DISCORD => 'discord'
             ];
         }
         return $systypes;

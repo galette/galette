@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021-2023 The Galette Team
+ * Copyright © 2021-2024 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-10-26
@@ -45,7 +45,7 @@ use Galette\GaletteTestCase;
  * @name      Social
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2021-10-26
@@ -121,9 +121,9 @@ class Social extends GaletteTestCase
     public function testGetSystemTypes()
     {
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->assertCount(9, $social->getSystemTypes());
+        $this->assertCount(10, $social->getSystemTypes());
         $this->assertSame($social->getSystemTypes(true), $social->getSystemTypes());
-        $this->assertCount(9, $social->getSystemTypes(false));
+        $this->assertCount(10, $social->getSystemTypes(false));
 
         $this->assertSame('Twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER));
         $this->assertSame('twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER, false));
