@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-10-19
@@ -45,7 +45,7 @@ use PHPUnit\Framework\TestCase;
  * @name      Preferences
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
@@ -613,7 +613,7 @@ class Preferences extends TestCase
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
         $this->assertCount(8, $legend['main']['patterns']);
-        $this->assertCount(9, $legend['socials']['patterns']);
+        $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [
             'title' => __('Mastodon'),
@@ -633,7 +633,7 @@ class Preferences extends TestCase
 
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
-        $this->assertCount(10, $legend['socials']['patterns']);
+        $this->assertCount(11, $legend['socials']['patterns']);
         $this->assertTrue(isset($legend['socials']['patterns']['asso_social_mynewtype']));
         $this->assertSame(
             [
