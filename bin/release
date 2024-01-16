@@ -99,7 +99,7 @@ def get_latest_version():
     last = None
     for tagref in tagrefs:
         tag = tagref.tag
-        if valid_version(tag.tag):
+        if tag != None and valid_version(tag.tag):
             #last minor version is always the last one :)
             if last == None or tag.tag > last:
                 last = tag.tag
