@@ -1,6 +1,18 @@
 Changes
 -------
 
+1.0.0 -> 1.0.1
+
+- Title in members list causes an error
+- Cannot enter a new social network name
+- Pagination and search on members list broken adding contribution
+- Contribution start date overload
+- Groups "accordion tree" not opened when a name contains a slash
+- open_basedir prevents files in /etc to be read
+- Some issues with contribution amount set to 0
+- Fatal error with PHP 7.4
+- Cron user does not have lang defined
+
 0.9.6.1 -> 1.0.0
 
 - Modern UI
