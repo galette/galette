@@ -12,13 +12,13 @@
 # Menna Ebraheam & Jana hesham <monymenna62@gmail.com>, 2022.
 # Hothaifa Jaber <i74ifa@icloud.com>, 2022.
 # AOSUS <aosus@protonmail.com>, 2022.
-# ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023.
+# ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-12-06 08:09+0100\n"
-"PO-Revision-Date: 2023-11-19 06:42+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-01-17 14:06+0000\n"
+"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.2\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -403,7 +403,7 @@ msgstr "حالات المستخدمين"
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
 #: ../lib/Galette/Core/Install.php:1183 ../lib/Galette/Core/Galette.php:386
 msgid "Contributions types"
-msgstr "نوع الإشتراك"
+msgstr "نوع المساهمات"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:193
 #: ../../tempcache/pages/configuration_entitleds.html.twig:83
@@ -1324,7 +1324,7 @@ msgstr "إضافة عضو"
 
 #: ../lib/Galette/Core/Galette.php:207
 msgid "Add new member in database"
-msgstr ""
+msgstr "إضافة عضو إلى قاعدة البيانات"
 
 #: ../lib/Galette/Core/Galette.php:216 ../lib/Galette/Core/Galette.php:579
 #: ../lib/Galette/DynamicFields/DynamicField.php:538
@@ -1477,7 +1477,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:387
 msgid "Manage contributions types"
-msgstr "إدارة أنواع الإشتراكات"
+msgstr "إدارة أنواع المساهمات"
 
 #: ../lib/Galette/Core/Galette.php:394
 msgid "Emails content"
@@ -1888,7 +1888,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:143
 #: ../../tempcache/pages/configuration_core_lists.html.twig:250
 msgid "Staff member"
-msgstr ""
+msgstr "عضو في المكتب"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:523
 #: ../../tempcache/elements/ajax_members.html.twig:130
@@ -2160,7 +2160,7 @@ msgstr "التوقيع"
 
 #: ../lib/Galette/IO/Charts.php:144 ../lib/Galette/Filters/MembersList.php:318
 msgid "Staff members"
-msgstr ""
+msgstr "أعضاء المكتب"
 
 #: ../lib/Galette/IO/Charts.php:183
 msgid "Due free"
@@ -2832,7 +2832,7 @@ msgstr "تحديث الصفقة"
 
 #: ../lib/Galette/Entity/ContributionsTypes.php:118
 msgid "contribution type"
-msgstr ""
+msgstr "نوع المساهمة"
 
 #: ../lib/Galette/Entity/Contribution.php:154
 #: ../../tempcache/pages/contribution_form.html.twig:112
@@ -2843,7 +2843,7 @@ msgstr "المساهِم:"
 #: ../lib/Galette/Entity/Contribution.php:158
 #: ../../tempcache/pages/contribution_form.html.twig:167
 msgid "Contribution type:"
-msgstr ""
+msgstr "نوع المساهمة:"
 
 #: ../lib/Galette/Entity/Contribution.php:166
 #: ../../tempcache/components/forms/payment_types.html.twig:53
@@ -2872,7 +2872,7 @@ msgstr "تعليقات:"
 #: ../../tempcache/pages/export.html.twig:132
 #: ../../tempcache/pages/export.html.twig:178
 msgid "Date"
-msgstr ""
+msgstr "التاريخ"
 
 #: ../lib/Galette/Entity/Contribution.php:178
 #: ../../tempcache/pages/contribution_form.html.twig:527
@@ -3505,7 +3505,7 @@ msgstr "تبرع مالي"
 
 #: ../includes/i18n.inc.php:304
 msgid "partnership"
-msgstr ""
+msgstr "شراكة"
 
 #: ../includes/i18n.inc.php:305
 msgid "reduced annual fee"
@@ -3640,10 +3640,8 @@ msgid "Failed CSRF check!"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:42
-#, fuzzy
-#| msgid "Members list"
 msgid "Member id:"
-msgstr "قائمة الأعضاء"
+msgstr "مُعرّف العضو ID:"
 
 #: ../includes/fields_defs/members_fields.php:52
 msgid "Status:"
@@ -4506,10 +4504,8 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:90
-#, fuzzy
-#| msgid "Contributions types"
 msgid "Contribution type"
-msgstr "نوع الإشتراك"
+msgstr "نوع المساهمة"
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:114
 #: ../../tempcache/modals/mass_add_contributions.html.twig:107
@@ -4978,11 +4974,11 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:91
 msgid "New status"
-msgstr ""
+msgstr "حالة جديدة"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:97
 msgid "New contribution type"
-msgstr ""
+msgstr "نوع مساهمة جديد"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:190
 #, php-format
@@ -5742,7 +5738,7 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:286
 #: ../../tempcache/pages/transactions_list.html.twig:373
 msgid "Member"
-msgstr ""
+msgstr "عضو"
 
 #: ../../tempcache/pages/transaction_form.html.twig:299
 msgid "Dispatched amount:"
@@ -6287,7 +6283,7 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:194
 #: ../../tempcache/pages/advanced_search.html.twig:79
 msgid "in:"
-msgstr ""
+msgstr "في:"
 
 #: ../../tempcache/pages/members_list.html.twig:223
 #: ../../tempcache/pages/members_list.html.twig:252
@@ -6706,7 +6702,7 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:73
 msgid "Select contributor and membership fee type"
-msgstr "حدد المساهِم ونوع رسوم العضوية"
+msgstr "حدد المساهِم ونوع مستحقات العضوية"
 
 #: ../../tempcache/pages/contribution_form.html.twig:79
 msgid "Select contributor and donation type"
@@ -6730,7 +6726,7 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:419
 msgid "Details of membership fee"
-msgstr ""
+msgstr "تفاصيل مستحقات العضوية"
 
 #: ../../tempcache/pages/contribution_form.html.twig:425
 msgid "Details of donation"
@@ -6742,11 +6738,11 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:577
 msgid "months"
-msgstr ""
+msgstr "أشهر"
 
 #: ../../tempcache/pages/contribution_form.html.twig:657
 msgid "Notify member"
-msgstr ""
+msgstr "إشعار العضو"
 
 #: ../../tempcache/pages/contribution_form.html.twig:664
 msgid "Member will receive a notification by email, if he has an address."
@@ -6793,11 +6789,11 @@ msgstr ""
 
 #: ../../tempcache/pages/mailing_form.html.twig:150
 msgid "Go back to members list"
-msgstr ""
+msgstr "العودة إلى قائمة الأعضاء"
 
 #: ../../tempcache/pages/mailing_form.html.twig:159
 msgid "Manage selected members"
-msgstr ""
+msgstr "إدارة الأعضاء الذين تم اختيارهم"
 
 #: ../../tempcache/pages/mailing_form.html.twig:181
 #: ../../tempcache/pages/configuration_core_lists.html.twig:55
@@ -6963,7 +6959,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:387
 msgid "-- Choose a staff member --"
-msgstr "- اختر أحد الموظفين -"
+msgstr "-- اختر أحد أعضاء المكتب --"
 
 #: ../../tempcache/pages/preferences.html.twig:417
 msgid "Footer text:"
@@ -7081,7 +7077,7 @@ msgstr "كل شخص"
 
 #: ../../tempcache/pages/preferences.html.twig:813
 msgid "Admin and staff only"
-msgstr ""
+msgstr "المدراء وأعضاء المكتب فقط"
 
 #: ../../tempcache/pages/preferences.html.twig:827
 msgid "Force member picture ratio"
@@ -7805,7 +7801,7 @@ msgstr "الفِرَق:"
 #: ../../tempcache/pages/advanced_search.html.twig:166
 #: ../../tempcache/components/forms/groups.html.twig:140
 msgid "Member of group"
-msgstr ""
+msgstr "عضو في فريق"
 
 #: ../../tempcache/pages/member_show.html.twig:714
 msgid "Not managed group"
@@ -7982,7 +7978,7 @@ msgstr ""
 
 #: ../../tempcache/pages/advanced_search.html.twig:137
 msgid "Account activity"
-msgstr ""
+msgstr "نشاط الحساب"
 
 #: ../../tempcache/pages/advanced_search.html.twig:200
 msgid "With email:"
@@ -8214,7 +8210,7 @@ msgstr "عرض لوح القيادة عند تسجيل الدخول"
 
 #: ../../tempcache/components/form.html.twig:235
 msgid "This comment is only displayed for admins and staff members."
-msgstr ""
+msgstr "لن يظهر هذا التعليق إلّا المدراء وأعضاء المكتب."
 
 #: ../../tempcache/components/form.html.twig:244
 msgid "This comment is reserved to the member."
