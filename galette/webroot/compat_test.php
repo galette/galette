@@ -35,7 +35,6 @@
  */
 
 define('GALETTE_ROOT', __DIR__ . '/../');
-require_once GALETTE_ROOT . '/vendor/autoload.php';
 require_once GALETTE_ROOT . 'config/versions.inc.php';
 require_once GALETTE_ROOT . 'config/paths.inc.php';
 
@@ -43,9 +42,11 @@ $phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<');
 $php_message = PHP_VERSION;
 if (!$phpok) {
     $php_message .= sprintf(' (%s minimum required)', GALETTE_PHP_MIN);
+} else {
+    require_once GALETTE_ROOT . '/vendor/autoload.php';
+    $cm = new Galette\Core\CheckModules(false);
+    $cm->doCheck(false); //do not load with translations!
 }
-$cm = new Galette\Core\CheckModules(false);
-$cm->doCheck(false); //do not load with translations!
 ?>
 <html>
     <head>
@@ -66,6 +67,7 @@ $cm->doCheck(false); //do not load with translations!
                         <div id="main" class="text ui container">
                 <?php
                 if (!$phpok
+                    || !isset($cm)
                     || !$cm->isValid()
                 ) {
                     echo '<p class="ui red center aligned message">Something is wrong :(</p>';
@@ -79,11 +81,13 @@ $cm->doCheck(false); //do not load with translations!
                                     <span><i class="ui <?php echo ($phpok) ? 'green check' : 'red times'; ?> icon"></i></span>
                                 </li>
                 <?php
-                echo $cm->toHtml(false);
+                if (isset($cm)) {
+                    echo $cm->toHtml(false);
+                }
                 ?>
                             </ul>
                 <?php
-                if ($cm->isValid() && $phpok) {
+                if ($phpok && isset($cm) && $cm->isValid()) {
                     echo '<p class="ui center aligned message">You can now <a href="./installer.php">install Galette</a></p>';
                 }
                 ?>

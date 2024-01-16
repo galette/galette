@@ -5,12 +5,17 @@
 
 <div class="ui stackable pointing inverted menu tabbed">
     <div class="item header">
-        <i class="users cog icon" aria-hidden="true"></i>
-        {{ group.getFullName() }} :
+        <div class="ui breadcrumb">
+            {% for parent in group.parents %}
+                <span class="section">{{ parent }}</span>
+                <i class="right angle icon divider"></i>
+            {% endfor %}
+            <span class="section active">{{ group.getName() }}</span>
+        </div>
     </div>
     <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_information" class="item{{ tab == 'group_information' ? ' active' }}" data-tab="group_information">{{ _T("Information") }}</a>
-    <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_managers" class="item{{ tab == 'group_managers' ? ' active' }}" data-tab="group_managers">{{ _T("Managers") }} ({{ managers|length }})</a>
-    <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_members" class="item{{ tab == 'group_members' ? ' active' }}" data-tab="group_members">{{ _T("Members") }} ({{ members|length }})</a>
+    <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_managers" class="item{{ tab == 'group_managers' ? ' active' }}" data-tab="group_managers"><i class="user shield icon" aria-hidden="true"></i>{{ _T("Managers") }} ({{ managers|length }})</a>
+    <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_members" class="item{{ tab == 'group_members' ? ' active' }}" data-tab="group_members"><i class="user icon" aria-hidden="true"></i>{{ _T("Members") }} ({{ members|length }})</a>
 </div>
 <form class="ui form" action="{{ url_for("doEditGroup", {"id": group.getId()}) }}" method="post" enctype="multipart/form-data" id="group_form">
     <div class="ui{{ tab == 'group_information' ? ' active' }} tab segment" data-tab="group_information">
@@ -40,7 +45,7 @@
                         {{ pgroup.getName() }}
                         <input type="hidden" name="parent_group" value="{{ pgroup.getId() }}"/>
                     {% else %}
-                        <div class="ui search selection dropdown nochosen">
+                        <div class="ui search compact selection dropdown nochosen">
                             <input type="hidden" name="parent_group" id="parent_group" value="{% if pgroup is defined %}{{ pgroup.getId() }}{% endif %}">
                             <i class="dropdown icon" aria-hidden="true"></i>
                             <div class="text">{% if pgroup is defined %}{{ pgroup.getName() }}{% endif %}</div>

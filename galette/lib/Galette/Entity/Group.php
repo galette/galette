@@ -551,6 +551,22 @@ class Group
     }
 
     /**
+     * Get parents as an array
+     *
+     * @return array
+     */
+    public function getParents(): array
+    {
+        $parents = [];
+        $group = $this;
+        while ($group = $group->getParentGroup()) {
+            array_unshift($parents, $group->getName());
+        }
+        return $parents;
+    }
+
+
+    /**
      * Get the indented short name of the group "  >> bar"
      *
      * @return string
@@ -615,7 +631,7 @@ class Group
     /**
      * Get parent group
      *
-     * @return Group
+     * @return Group|null
      */
     public function getParentGroup()
     {
@@ -689,7 +705,6 @@ class Group
             }
         } while ($group = $group->getParentGroup());
 
-        //@phpstan-ignore-next-line
         return true;
     }
 

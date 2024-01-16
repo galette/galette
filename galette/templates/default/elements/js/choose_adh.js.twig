@@ -158,8 +158,38 @@
             onShow: function() {
                 _chosenPages();
             },
-            onChange: function() {
+            onChange: function(text, value) {
                 _chosenPages();
+                {% if new_contrib_onchange is defined %}
+                    var _member = $('#id_adh_input').val();
+                    var _fee    = $('#id_type_cotis_input').val();
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url : '{{ url_for("contributionDates") }}',
+                        data: {
+                            member_id: _member,
+                            fee_id: _fee
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#contribdetails'
+                        } %},
+                        success: function(res){
+                            $('#date_debut_cotis').val(res.date_debut_cotis);
+                            $('#date_fin_cotis').val(res.date_fin_cotis);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred retrieving dates :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                {% endif %}
             },
             onHide: function() {
                 // Reset to defaults.

@@ -70,7 +70,7 @@
     {% endif %}
 {% else %}
                             <tr>
-                                <td colspan="2">
+                                <td colspan="{% if login.isSuperAdmin() %}3{% else %}2{% endif %}">
     {% if person_mode == 'members' %}
                                     {{ _T("No member attached") }}
     {% else %}
