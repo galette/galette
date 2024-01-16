@@ -7,9 +7,9 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @link      https://galette.eu
  * @since     2020-11-21
  */
 
@@ -47,9 +47,9 @@ use Galette\GaletteTestCase;
  * @name      PdfModel
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @link      https://galette.eu
  * @since     2020-11-21
  */
 class PdfModel extends GaletteTestCase
@@ -126,6 +126,7 @@ class PdfModel extends GaletteTestCase
             'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
             'asso_website'       => '/{ASSO_WEBSITE}/',
             'asso_logo'          => '/{ASSO_LOGO}/',
+            'asso_print_logo'    => '/{ASSO_PRINT_LOGO}/',
             'date_now'           => '/{DATE_NOW}/',
             'login_uri'          => '/{LOGIN_URI}/'
         ];
@@ -363,7 +364,7 @@ Au milieu
         $this->assertArrayHasKey('member', $legend);
         $this->assertArrayHasKey('contribution', $legend);
 
-        $this->assertCount(8, $legend['main']['patterns']);
+        $this->assertCount(9, $legend['main']['patterns']);
         $this->assertCount(28, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
         $this->assertCount(14, $legend['contribution']['patterns']);

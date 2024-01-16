@@ -7,9 +7,9 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
+ * @link      https://galette.eu
  * @since     2020-12-20
  */
 
@@ -60,9 +60,9 @@ use Slim\Routing\RouteParser;
  * @name      Replacements
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
+ * @link      https://galette.eu
  * @since     2020-12-20
  */
 
@@ -224,6 +224,10 @@ trait Replacements
             'asso_logo'             => [
                 'title'     => _T('Your organisation logo'),
                 'pattern'          => '/{ASSO_LOGO}/',
+            ],
+            'asso_print_logo'             => [
+                'title'     => _T('Your organisation logo (print specific)'),
+                'pattern'          => '/{ASSO_PRINT_LOGO}/',
             ],
             'date_now'              => [
                 //TRANS: see https://www.php.net/manual/datetime.format.php
@@ -483,12 +487,19 @@ trait Replacements
         }
 
         $logo = new Logo();
-
         $logo_elt = sprintf(
             '<img src="%1$s" width="%2$s" height="%3$s" />',
             '@' . base64_encode(file_get_contents($logo->getPath())),
             $logo->getOptimalWidth(),
             $logo->getOptimalHeight()
+        );
+
+        $print_logo = new Logo();
+        $print_logo_elt = sprintf(
+            '<img src="%1$s" width="%2$s" height="%3$s" />',
+            '@' . base64_encode(file_get_contents($print_logo->getPath())),
+            $print_logo->getOptimalWidth(),
+            $print_logo->getOptimalHeight()
         );
 
         $this->setReplacements(
@@ -499,6 +510,7 @@ trait Replacements
                 'asso_address_multi' => $address_multi,
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
+                'asso_print_logo'    => $print_logo_elt,
                 //TRANS: see https://www.php.net/manual/datetime.format.php
                 'date_now'           => date(_T('Y-m-d')),
                 'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
