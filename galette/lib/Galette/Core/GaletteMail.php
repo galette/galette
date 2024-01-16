@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-12-10
@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Galette\IO\File;
 use Soundasleep\Html2Text;
 use Throwable;
 use Analog\Analog;
@@ -48,7 +49,7 @@ use PHPMailer\PHPMailer\PHPMailer;
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-03-07
@@ -77,10 +78,13 @@ class GaletteMail
     private int $word_wrap = 70;
     private int $timeout = 300;
 
+    /** @var array<int, string> */
     private array $errors = array();
+    /** @var array<string, string> */
     private array $recipients = array();
 
     private PHPMailer|null $mail = null;
+    /** @var array<int,File> */
     protected array $attachments = array();
 
     private Preferences $preferences;
@@ -467,7 +471,7 @@ class GaletteMail
     /**
      * Retrieve array of errors
      *
-     * @return array
+     * @return array<int,string>
      */
     public function getErrors(): array
     {

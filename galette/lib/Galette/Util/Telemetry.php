@@ -81,7 +81,7 @@ class Telemetry
     /**
      * Grab telemetry information
      *
-     * @return array<string, array<string, string|array<string, string>>>
+     * @return array<string, array<string, string|array<string, string|array<string, string>>>>
      */
     public function getTelemetryInfos(): array
     {

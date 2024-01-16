@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2023 The Galette Team
+ * Copyright © 2007-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-07-06
@@ -45,7 +45,7 @@ use Analog\Analog;
  * @name      i18n
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-07-06
@@ -63,7 +63,9 @@ class I18n
     private string $dir = 'lang/';
     private string $path;
 
+    /** @var array<string,array<string,string>> */
     private array $langs = [];
+    /** @var array<int,string> */
     private array $rtl_langs = [
         'ar',
         'az',
@@ -180,7 +182,7 @@ class I18n
     /**
      * List languages
      *
-     * @return array list of all active languages
+     * @return array<int, I18n> list of all active languages
      */
     public function getList(): array
     {
@@ -195,7 +197,7 @@ class I18n
     /**
      * List languages as simple array
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getArrayList(): array
     {
@@ -290,7 +292,7 @@ class I18n
      *
      * Will store found langs in class langs variable and return it.
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function guessLangs(): array
     {

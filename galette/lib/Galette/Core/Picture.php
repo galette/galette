@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2006-2023 The Galette Team
+ * Copyright © 2006-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2023 The Galette Team
+ * @copyright 2006-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -55,7 +55,7 @@ use Galette\IO\FileTrait;
  * @package   Galette
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2023 The Galette Team
+ * @copyright 2006-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -63,7 +63,7 @@ class Picture implements FileInterface
 {
     use FileTrait;
 
-    //constants that will not be overrided
+    //constants that will not be overridden
     public const SQL_ERROR = -10;
     public const SQL_BLOB_ERROR = -11;
     //constants that can be overrided
@@ -427,13 +427,13 @@ class Picture implements FileInterface
     /**
      * Stores an image on the disk and in the database
      *
-     * @param array   $file     The uploaded file
-     * @param boolean $ajax     If the image comes from an ajax call (dnd)
-     * @param ?array  $cropping Cropping properties
+     * @param array<string, mixed>  $file     The uploaded file
+     * @param boolean               $ajax     If the image comes from an ajax call (dnd)
+     * @param ?array<string, mixed> $cropping Cropping properties
      *
      * @return bool|int
      */
-    public function store(array $file, bool $ajax = false, array $cropping = null)
+    public function store(array $file, bool $ajax = false, array $cropping = null): bool|int
     {
         /** TODO: fix max size (by preferences ?) */
         global $zdb;
@@ -680,7 +680,7 @@ class Picture implements FileInterface
             );
 
             foreach ($valids as $valid) {
-                /** @var ArrayObject $valid */
+                /** @var ArrayObject<string,mixed> $valid */
                 $file = $existing_disk[$valid->id_adh];
                 $this->storeInDb(
                     $zdb,
@@ -701,11 +701,11 @@ class Picture implements FileInterface
     /**
      * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string  $source   The source image
-     * @param string  $ext      File's extension
-     * @param ?string $dest     The destination image.
-     *                          If null, we'll use the source image. Defaults to null
-     * @param ?array  $cropping Cropping properties
+     * @param string                 $source   The source image
+     * @param string                 $ext      File's extension
+     * @param ?string                $dest     The destination image.
+     *                                         If null, we'll use the source image. Defaults to null
+     * @param ?array<string, mixed>  $cropping Cropping properties
      *
      * @return boolean
      */

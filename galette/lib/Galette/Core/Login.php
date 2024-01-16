@@ -239,7 +239,7 @@ class Login extends Authentication
     /**
      * Populate object after successful login
      *
-     * @param ArrayObject $row User information
+     * @param ArrayObject<string, int|string> $row User information
      *
      * @return void
      */

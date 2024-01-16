@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-02-09
@@ -50,7 +50,7 @@ use Laminas\Db\Sql\Select;
  * @name      History
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-02-09
@@ -69,7 +69,9 @@ class History
     protected Preferences $preferences;
     protected HistoryList $filters;
 
+    /** @var array<int, string> */
     protected array $users;
+    /** @var array<int, string> */
     protected array $actions;
 
     protected bool $with_lists = true;
@@ -192,7 +194,7 @@ class History
     /**
      * Get the entire history list
      *
-     * @return array
+     * @return array<int, object>
      */
     public function getHistory(): array
     {
@@ -277,7 +279,7 @@ class History
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<int, string> SQL ORDER clauses
      */
     protected function buildOrderClause(): array
     {
@@ -511,7 +513,7 @@ class History
     /**
      * Get users list
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getUsersList(): array
     {
@@ -521,7 +523,7 @@ class History
     /**
      * Get actions list
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getActionsList(): array
     {

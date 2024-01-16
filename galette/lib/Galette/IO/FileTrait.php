@@ -242,12 +242,12 @@ trait FileTrait
     /**
      * Stores a file on the disk
      *
-     * @param array   $file the uploaded file
-     * @param boolean $ajax If the file comes from an ajax call (dnd)
+     * @param array<int, string> $file the uploaded file
+     * @param boolean            $ajax If the file comes from an ajax call (dnd)
      *
-     * @return true|false|int result of the storage process
+     * @return bool|int result of the storage process
      */
-    public function store($file, $ajax = false)
+    public function store(array $file, bool $ajax = false): bool|int
     {
         $class = get_class($this);
 

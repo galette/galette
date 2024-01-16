@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4-dev - 2020-05-18
@@ -45,7 +45,7 @@ use Galette\Entity\Adherent;
  * @name      Galette
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4-dev - 2020-05-18
@@ -94,7 +94,7 @@ class Galette
     /**
      * Get all menus
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getAllMenus(): array
     {
@@ -106,7 +106,7 @@ class Galette
      *
      * @param bool $public Include public menus. Defaults to false
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getMenus(bool $public = false): array
     {
@@ -472,7 +472,7 @@ class Galette
     /**
      * Get public menus
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getPublicMenus(): array
     {
@@ -527,7 +527,7 @@ class Galette
     /**
      * Get dashboards
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getDashboards(): array
     {
@@ -686,7 +686,7 @@ class Galette
      *
      * @param Adherent $member Current member
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getListActions(Adherent $member): array
     {
@@ -806,7 +806,7 @@ class Galette
      *
      * @param Adherent $member Current member
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getDetailedActions(Adherent $member): array
     {
@@ -838,7 +838,7 @@ class Galette
     /**
      * Get members list batch actions
      *
-     * @return array
+     * @return array<string,array<string, string>>
      */
     public static function getBatchActions(): array
     {

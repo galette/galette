@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-08-27
@@ -51,7 +51,7 @@ use Laminas\Db\Sql\Expression;
  * @name      MailingHistory
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-08-27
@@ -72,6 +72,7 @@ class MailingHistory extends History
     private string $date;
     private string $subject;
     private string $message;
+    /** @var array<int, mixed> */
     private array $recipients;
     private int $sender;
     private ?string $sender_name;
@@ -96,7 +97,7 @@ class MailingHistory extends History
     /**
      * Get the entire history list
      *
-     * @return array
+     * @return array<int, object>
      */
     public function getHistory(): array
     {
@@ -161,7 +162,7 @@ class MailingHistory extends History
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<int, string> SQL ORDER clauses
      */
     protected function buildOrderClause(): array
     {
@@ -308,7 +309,7 @@ class MailingHistory extends History
             $select->where(['mailing_id' => $id]);
 
             $results = $zdb->execute($select);
-            /** @var ArrayObject $result */
+            /** @var ArrayObject<string, mixed> $result */
             $result = $results->current();
 
             return $mailing->loadFromHistory($result, $new);
@@ -471,8 +472,8 @@ class MailingHistory extends History
     /**
      * Remove specified entries
      *
-     * @param integer|array $ids  Mailing history entries identifiers
-     * @param History       $hist History instance
+     * @param integer|array<int> $ids  Mailing history entries identifiers
+     * @param History            $hist History instance
      *
      * @return boolean
      */

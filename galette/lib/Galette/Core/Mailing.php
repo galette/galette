@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-03-07
@@ -49,7 +49,7 @@ use Laminas\Db\ResultSet\ResultSet;
  * @name      Mailing
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-03-07
@@ -85,7 +85,9 @@ class Mailing extends GaletteMail
 
     private string|int $id;
 
+    /** @var array<int, Adherent> */
     private array $unreachables = array();
+    /** @var array<int, Adherent> */
     private array $mrecipients = array();
     private int $current_step;
 
@@ -97,9 +99,9 @@ class Mailing extends GaletteMail
     /**
      * Default constructor
      *
-     * @param Preferences $preferences Preferences instance
-     * @param array       $members     An array of members
-     * @param ?integer    $id          Identifier, defaults to null
+     * @param Preferences          $preferences Preferences instance
+     * @param array<int, Adherent> $members     An array of members
+     * @param ?integer             $id          Identifier, defaults to null
      */
     public function __construct(Preferences $preferences, array $members = [], int $id = null)
     {
@@ -182,9 +184,9 @@ class Mailing extends GaletteMail
     /**
      * Loads a mailing from history
      *
-     * @param ArrayObject $rs  Mailing entry
-     * @param boolean     $new True if we create a 'new' mailing,
-     *                         false otherwise (from preview for example)
+     * @param ArrayObject<string, mixed> $rs  Mailing entry
+     * @param boolean                    $new True if we create a 'new' mailing,
+     *                                        false otherwise (from preview for example)
      *
      * @return boolean
      */
@@ -293,7 +295,8 @@ class Mailing extends GaletteMail
     /**
      * Set mailing recipients
      *
-     * @param array $members Array of Adherent objects
+     * @phpstan-ignore-next-line
+     * @param array<int, Adherent> $members Array of Adherent objects
      *
      * @return bool
      */
@@ -323,7 +326,7 @@ class Mailing extends GaletteMail
     /**
      * Store maling attachments
      *
-     * @param array $files Array of uploaded files to store
+     * @param array<int, string> $files Array of uploaded files to store
      *
      * @return true|int error code
      */

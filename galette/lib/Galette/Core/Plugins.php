@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7 - 2009-03-09
@@ -49,7 +49,7 @@ use Galette\Core\Preferences;
  * @name      Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7 - 2009-03-09
@@ -61,9 +61,13 @@ class Plugins
     public const DISABLED_MISS     = 1;
     public const DISABLED_EXPLICIT = 2;
 
-    protected $path;
+    /** @var array<string> */
+    protected array $path;
+    /** @var array<string, array<string, mixed>> */
     protected array $modules = array();
+    /** @var array<string, array<string, mixed>> */
     protected array $disabled = array();
+    /** @var array<string> */
     protected array $csrf_exclusions = array();
 
     protected ?string $id;
@@ -194,15 +198,15 @@ class Plugins
      * <var>$priority</var> is an integer. Modules are sorted by priority and name.
      * Lowest priority comes first.
      *
-     * @param string  $name     Module name
-     * @param string  $desc     Module description
-     * @param string  $author   Module author name
-     * @param string  $version  Module version
-     * @param ?string $compver  Galette version compatibility
-     * @param ?string $route    Module route name
-     * @param ?string $date     Module release date
-     * @param ?array  $acls     Module routes ACLs
-     * @param integer $priority Module priority
+     * @param string                $name     Module name
+     * @param string                $desc     Module description
+     * @param string                $author   Module author name
+     * @param string                $version  Module version
+     * @param ?string               $compver  Galette version compatibility
+     * @param ?string               $route    Module route name
+     * @param ?string               $date     Module release date
+     * @param ?array<string,string> $acls     Module routes ACLs
+     * @param integer               $priority Module priority
      *
      * @return void
      */
@@ -373,7 +377,7 @@ class Plugins
      *
      * @param ?string $id Optional module ID
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getModules(string $id = null): array
     {
@@ -398,7 +402,7 @@ class Plugins
     /**
      * Returns all disabled modules in an array
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     public function getDisabledModules(): array
     {
@@ -441,8 +445,8 @@ class Plugins
     /**
      * Sort modules
      *
-     * @param array $a A module
-     * @param array $b Another module
+     * @param array<string, mixed> $a A module
+     * @param array<string, mixed> $b Another module
      *
      * @return 1|-1 1 if a has the highest priority, -1 otherwise
      */
@@ -488,7 +492,7 @@ class Plugins
     /**
      * For each module, returns the headers template file namespaced path, if present.
      *
-     * @return array of headers to include for all modules
+     * @return array<string> of headers to include for all modules
      */
     public function getTplHeaders(): array
     {
@@ -552,7 +556,7 @@ class Plugins
     /**
      * Get plugins routes ACLs
      *
-     * @return array
+     * @return array<string>
      */
     public function getAcls(): array
     {
@@ -635,7 +639,7 @@ class Plugins
     /**
      * Set CRSF excluded routes
      *
-     * @param array $exclusions Array of regular expressions patterns to be excluded
+     * @param array<string> $exclusions Array of regular expressions patterns to be excluded
      *
      * @return self
      */
@@ -648,7 +652,7 @@ class Plugins
     /**
      * Get CSRF excluded routes patterns
      *
-     * @return array
+     * @return array<string>
      */
     public function getCsrfExclusions(): array
     {
