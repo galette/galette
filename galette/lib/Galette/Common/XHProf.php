@@ -34,7 +34,7 @@
  * @package  XHProf
  * @author   Johan Cwiklinski <johan@x-tnd.be>
  * @license  MIT http://en.wikipedia.org/wiki/MIT_License
- * @link     http://codefury.net - http://galette.tuxfamily.org
+ * @link     http://codefury.net - https://galette.eu
  * @since    0.7.2dev 2012-1008
  */
 
@@ -67,7 +67,7 @@ use Analog\Analog;
  * @author   Johan Cwiklinski <johan@x-tnd.be>
  * @license  MIT http://en.wikipedia.org/wiki/MIT_License
  * @version  Release: 0.1
- * @link     http://codefury.net - http://galette.tuxfamily.org
+ * @link     http://codefury.net - https://galette.eu
  * @since    0.7.2dev 2012-10-08
  */
 class XHProf

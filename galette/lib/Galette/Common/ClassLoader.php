@@ -22,7 +22,7 @@
  * @author   Doctrine project <contact@doctrine-project.org>
  * @author   Johan Cwiklinski <johan@x-tnd.be>
  * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
- * @link     http://www.doctrine-project.org - http://galette.tuxfamily.org
+ * @link     http://www.doctrine-project.org - https://galette.eu
  * @since    ?
  */
 
@@ -41,7 +41,7 @@ namespace Galette\Common;
  * @package  ClassLoader
  * @author Roman Borschel <roman@code-factory.org>
  * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
- * @link     http://www.doctrine-project.org - http://galette.tuxfamily.org
+ * @link     http://www.doctrine-project.org - https://galette.eu
  * @since 2.0
  */
 class ClassLoader

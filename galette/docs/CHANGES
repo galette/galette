@@ -819,7 +819,7 @@ Changes and additions
 - groups management
 - add a dashboard (which displays latest news from the project
 - public pages (members list en trombinoscope)
-- handle plugins (see available plugins at http://galette.tuxfamily.org/documentation/fr/plugins/index.html#plugins)
+- handle plugins (see available plugins at https://doc.galette.eu/en/master/plugins/index.html)
 - CSV export of selected tables and/or parameted requests (https://mail.gna.org/public/galette-devel/2009-02/msg00006.html)
 - required fields management for members add/edition
 - multilingual management for subjects and messages automatically send from Galette (subscription, password lots, ...)

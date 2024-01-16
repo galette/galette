@@ -9,7 +9,7 @@
  *
  * Copyright © 2019-2023 The Galette Team
  *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @link      https://galette.eu
  * @since     2019-05-08
  */
 
@@ -48,7 +48,7 @@ use Laminas\Db\Adapter\Adapter;
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2019-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @link      https://galette.eu
  * @since     2019-05-08
  */
 class SavedSearch extends TestCase
