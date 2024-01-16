@@ -195,7 +195,7 @@ class Groups
      * @param int     $id       Member id
      * @param boolean $as_group Retrieve Group[] or int[]
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
@@ -209,7 +209,7 @@ class Groups
      * @param boolean $managed  Retrieve managed groups (defaults to false)
      * @param boolean $as_group Retrieve Group[] or int[]
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public static function loadGroups(int $id, bool $managed = false, bool $as_group = true): array
     {

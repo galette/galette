@@ -8,7 +8,7 @@
  * PHP version 5
  *
  * Copyright © 2017 GLPI and Contributors
- * Copyright © 2017-2023 The Galette Team
+ * Copyright © 2017-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -30,7 +30,7 @@
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9
@@ -52,7 +52,7 @@ use Galette\Core\Plugins;
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9
@@ -81,7 +81,7 @@ class Telemetry
     /**
      * Grab telemetry information
      *
-     * @return array
+     * @return array<string, array<string, string|array<string, string>>>
      */
     public function getTelemetryInfos(): array
     {
@@ -100,7 +100,7 @@ class Telemetry
     /**
      * Grab Galette part information
      *
-     * @return array
+     * @return array<string, string|array<string, string>>
      */
     public function grabGaletteInfos(): array
     {
@@ -130,7 +130,7 @@ class Telemetry
     /**
      * Grab DB part information
      *
-     * @return array
+     * @return array<string, string>
      */
     public function grabDbInfos(): array
     {
@@ -141,7 +141,7 @@ class Telemetry
     /**
      * Grab web server part information
      *
-     * @return array
+     * @return array<string, string>
      */
     public function grabWebserverInfos(): array
     {
@@ -180,7 +180,7 @@ class Telemetry
     /**
      * Grab PHP part information
      *
-     * @return array
+     * @return array<string, string|array<string, string>>
      */
     public function grabPhpInfos(): array
     {
@@ -203,7 +203,7 @@ class Telemetry
     /**
      * Grab OS part information
      *
-     * @return array
+     * @return array<string, string>
      */
     public function grabOsInfos(): array
     {
@@ -228,11 +228,10 @@ class Telemetry
      * Count
      *
      * @param string $table Table to query
-     * @param array  $where Where clause, if any
      *
      * @return integer
      */
-    public function getCount(string $table, array $where = []): int
+    public function getCount(string $table): int
     {
         $select = $this->zdb->select($table);
         $select->columns([
@@ -249,13 +248,12 @@ class Telemetry
      * Calculate average parts
      *
      * @param string $table Table to query
-     * @param array  $where Where clause, if any
      *
      * @return string
      */
-    private function getAverage(string $table, array $where = []): string
+    private function getAverage(string $table): string
     {
-        $count = $this->getCount($table, $where);
+        $count = $this->getCount($table);
 
         if ($count <= 50) {
             return '0-50';

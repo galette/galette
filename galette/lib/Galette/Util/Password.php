@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4
@@ -47,7 +47,7 @@ use Galette\Entity\Adherent;
  * @name      Password
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @see       https://github.com/rollerworks/PasswordStrengthValidator
@@ -56,10 +56,25 @@ use Galette\Entity\Adherent;
 class Password
 {
     protected Preferences $preferences;
+    /**
+     * Errors
+     *
+     * @var array<int, string>
+     */
     protected array $errors = [];
+    /**
+     * Strength errors
+     *
+     * @var array<int, string>
+     */
     protected array $strength_errors = [];
     protected ?int $strength = null;
     protected bool $blacklisted = false;
+    /**
+     * Personal information to check against
+     *
+     * @var array<int, string>
+     */
     protected array $personal_infos = [];
 
     /**
@@ -185,7 +200,7 @@ class Password
     /**
      * Get errors
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getErrors(): array
     {
@@ -195,7 +210,7 @@ class Password
     /**
      * Get strength errors
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getStrenghtErrors(): array
     {
@@ -205,7 +220,7 @@ class Password
     /**
      * Build password blacklist
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getBlacklistedPasswords(): array
     {
@@ -226,9 +241,9 @@ class Password
     /**
      * Add personal information to check against
      *
-     * @param array $infos Personal information
+     * @param array<int, string> $infos Personal information
      *
-     * @return array
+     * @return array<int, string>
      */
     public function addPersonalInformation(array $infos): array
     {

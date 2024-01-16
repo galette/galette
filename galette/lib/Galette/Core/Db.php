@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2023 The Galette Team
+ * Copyright © 2011-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-07-27
@@ -38,6 +38,7 @@ namespace Galette\Core;
 
 use Exception;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
+use Laminas\Db\Metadata\Object\ColumnObject;
 use Laminas\Db\Metadata\Source\Factory;
 use LogicException;
 use RuntimeException;
@@ -62,7 +63,7 @@ use Laminas\Db\Sql\SqlInterface;
  * @name      Db
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
  * @since     Available since 0.7dev - 2011-07-27
@@ -83,7 +84,7 @@ class Db
     private string $type_db;
     /** @var Sql */
     private Sql $sql;
-    /** @var array */
+    /** @var array<string,string> */
     private array $options;
     /** @var string */
     private string $last_query;
@@ -97,7 +98,7 @@ class Db
     /**
      * Main constructor
      *
-     * @param ?array $dsn Connection information
+     * @param ?array<string,string> $dsn Connection information
      *                    If not set, database constants will be used.
      * @throws Throwable
      */
@@ -350,7 +351,7 @@ class Db
      *
      * @param string $mode are we at install time (i) or update time (u) ?
      *
-     * @return array containing each test. Each array entry could
+     * @return array<string, bool|Throwable> containing each test. Each array entry could
      *           be either true or contains an exception or false if test did not
      *           run.
      */
@@ -513,7 +514,7 @@ class Db
      *
      * @param ?string $prefix Specified table prefix, PREFIX_DB if null
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getTables(string $prefix = null): array
     {
@@ -539,7 +540,7 @@ class Db
      *
      * @param string $table Table name
      *
-     * @return array
+     * @return array<int, ColumnObject>
      */
     public function getColumns(string $table): array
     {
@@ -868,7 +869,7 @@ class Db
     /**
      * Get database information
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getInfos(): array
     {
@@ -1038,7 +1039,7 @@ class Db
     /**
      * Get MySQL warnings
      *
-     * @return array
+     * @return array<array<string, string>>
      */
     public function getWarnings(): array
     {
