@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2023 The Galette Team
+ * Copyright © 2017-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2017-10-07
@@ -45,7 +45,7 @@ use PHPUnit\Framework\TestCase;
  * @name      Telemetry
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2017-10-07
@@ -138,20 +138,18 @@ class Telemetry extends TestCase
             ->onlyMethods(array('getCount'))
             ->getMock();
         $telemetry->method('getCount')
-            ->will(
-                $this->returnCallback(
-                    function ($table, $where) {
-                        switch ($table) {
-                            case \Galette\Entity\Adherent::TABLE:
-                                return 56;
-                            case \Galette\Entity\Contribution::TABLE:
-                                return 402;
-                            case \Galette\Entity\Transaction::TABLE:
-                                return 100;
-                        }
-                        return 0;
+            ->willReturnCallback(
+                function ($table) {
+                    switch ($table) {
+                        case \Galette\Entity\Adherent::TABLE:
+                            return 56;
+                        case \Galette\Entity\Contribution::TABLE:
+                            return 402;
+                        case \Galette\Entity\Transaction::TABLE:
+                            return 100;
                     }
-                )
+                    return 0;
+                }
             );
         $result = $telemetry->grabGaletteInfos();
 

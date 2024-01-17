@@ -99,7 +99,7 @@ class Db
      * Main constructor
      *
      * @param ?array<string,string> $dsn Connection information
-     *                    If not set, database constants will be used.
+     *                                   If not set, database constants will be used.
      * @throws Throwable
      */
     public function __construct(array $dsn = null)

@@ -701,11 +701,11 @@ class Picture implements FileInterface
     /**
      * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string                 $source   The source image
-     * @param string                 $ext      File's extension
-     * @param ?string                $dest     The destination image.
-     *                                         If null, we'll use the source image. Defaults to null
-     * @param ?array<string, mixed>  $cropping Cropping properties
+     * @param string                $source   The source image
+     * @param string                $ext      File's extension
+     * @param ?string               $dest     The destination image.
+     *                                        If null, we'll use the source image. Defaults to null
+     * @param ?array<string, mixed> $cropping Cropping properties
      *
      * @return boolean
      */
