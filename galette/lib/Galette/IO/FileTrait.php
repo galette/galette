@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.1 - 2014-09-18
@@ -45,7 +45,7 @@ use Analog\Analog;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.1 - 2014-09-18
@@ -242,8 +242,8 @@ trait FileTrait
     /**
      * Stores a file on the disk
      *
-     * @param array<int, string> $file the uploaded file
-     * @param boolean            $ajax If the file comes from an ajax call (dnd)
+     * @param array<string, string|int> $file the uploaded file
+     * @param boolean                   $ajax If the file comes from an ajax call (dnd)
      *
      * @return bool|int result of the storage process
      */

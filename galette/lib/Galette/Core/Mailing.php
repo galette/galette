@@ -326,7 +326,7 @@ class Mailing extends GaletteMail
     /**
      * Store maling attachments
      *
-     * @param array<int, string> $files Array of uploaded files to store
+     * @param array<string, string|int> $files Array of uploaded files to store
      *
      * @return true|int error code
      */
