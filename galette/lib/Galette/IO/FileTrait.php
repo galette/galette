@@ -73,7 +73,7 @@ trait FileTrait
     );
 
     protected string $name;
-    protected string $dest_dir;
+    protected ?string $dest_dir;
     /** @var array<string> */
     protected $allowed_extensions = array();
     /** @var array<string,string> */

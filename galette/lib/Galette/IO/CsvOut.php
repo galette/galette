@@ -78,19 +78,24 @@ class CsvOut extends Csv
     /**
      * Export Array result set to CSV
      *
-     * @param mixed          $rs        Results as an array
-     * @param string         $separator The CSV separator (either '\t', ';' or ','
-     *                                  are accepted)
-     * @param string         $quote     how does fields should be quoted
-     * @param array|boolean  $titles    does export shows column titles or not.
-     *                                  Defaults to false.
-     * @param resource|false $file      export to a file on disk. A file pointer
-     *                                  should be passed here. Defaults to false.
+     * @param array<int,mixed>    $rs        Results as an array
+     * @param string              $separator The CSV separator (either '\t', ';' or ','
+     *                                       are accepted)
+     * @param string              $quote     how does fields should be quoted
+     * @param array<string>|false $titles    does export shows column titles or not.
+     *                                       Defaults to false.
+     * @param resource|false      $file      export to a file on disk. A file pointer
+     *                                       should be passed here. Defaults to false.
      *
      * @return string CSV result
      */
-    public function export($rs, $separator, $quote, $titles = false, $file = false)
-    {
+    public function export(
+        $rs,
+        string $separator,
+        string $quote,
+        array|false $titles = false,
+        mixed $file = false //FIXME: replace resource from fopen() with SplFileObject
+    ): string {
         //switch back to the default separator if not in accepted_separators array
         if (!in_array($separator, $this->accepted_separators)) {
             $separator = self::DEFAULT_SEPARATOR;
@@ -121,7 +126,7 @@ class CsvOut extends Csv
                 $fields[] = $this->quote . str_replace(
                     $this->quote,
                     $this->escaped,
-                    $field
+                    (string)$field
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
@@ -225,7 +230,7 @@ class CsvOut extends Csv
     /**
      * Get al list of all parameted exports
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getParametedExports(): array
     {

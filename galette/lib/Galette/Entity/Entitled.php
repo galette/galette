@@ -246,7 +246,7 @@ abstract class Entitled
      *
      * @param boolean|null $extent Filter on (non) cotisations types
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getList(bool $extent = null): array
     {
