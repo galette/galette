@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -66,7 +66,7 @@ use Analog\Analog;
  * @name      GaletteController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -1675,7 +1675,7 @@ class MembersController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -1687,7 +1687,7 @@ class MembersController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -1702,7 +1702,7 @@ class MembersController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -1731,8 +1731,8 @@ class MembersController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return bool
      */
@@ -1782,7 +1782,7 @@ class MembersController extends CrudController
      *
      * @param int $id_adh Current member ID
      *
-     * @return array
+     * @return array<string,int>
      */
     private function handleNavigationLinks(int $id_adh): array
     {
@@ -1836,7 +1836,7 @@ class MembersController extends CrudController
     /**
      * Get filter name in session
      *
-     * @param array|null $args Route arguments
+     * @param array<string,mixed>|null $args Route arguments
      *
      * @return string
      */

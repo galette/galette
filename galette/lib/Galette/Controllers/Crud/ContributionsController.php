@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2020-05-08
@@ -57,7 +57,7 @@ use Galette\Repository\PaymentTypes;
  * @name      ContributionsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2020-05-02
@@ -918,7 +918,7 @@ class ContributionsController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -930,7 +930,7 @@ class ContributionsController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -945,7 +945,7 @@ class ContributionsController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -980,8 +980,8 @@ class ContributionsController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
@@ -1009,7 +1009,7 @@ class ContributionsController extends CrudController
     /**
      * Get filter name in session
      *
-     * @param array|null $args Route arguments
+     * @param array<string,mixed>|null $args Route arguments
      *
      * @return string
      */
