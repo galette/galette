@@ -59,6 +59,7 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
+use ArrayObject;
 
 /**
  * Members class for galette
@@ -512,7 +513,7 @@ class Members
      * @param boolean        $dues        True if load dues as Adherent dependency
      * @param boolean        $parent      True if load parent as Adherent dependency
      *
-     * @return Adherent[]|false
+     * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
     public function getArrayList(
         int|array $ids,

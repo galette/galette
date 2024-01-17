@@ -93,14 +93,14 @@ use Galette\Repository\Members;
  * @property string $pref_email_reply_to
  * @property string $pref_website
  * @property integer $pref_etiq_marges_v
- * @property string $pref_etiq_marges_h
- * @property string $pref_etiq_hspace
- * @property string $pref_etiq_vspace
- * @property string $pref_etiq_hsize
- * @property string $pref_etiq_vsize
- * @property string $pref_etiq_cols
- * @property string $pref_etiq_rows
- * @property string $pref_etiq_corps
+ * @property integer $pref_etiq_marges_h
+ * @property integer $pref_etiq_hspace
+ * @property integer $pref_etiq_vspace
+ * @property integer $pref_etiq_hsize
+ * @property integer $pref_etiq_vsize
+ * @property integer $pref_etiq_cols
+ * @property integer $pref_etiq_rows
+ * @property integer $pref_etiq_corps
  * @property boolean $pref_etiq_border
  * @property boolean $pref_force_picture_ratio
  * @property string $pref_member_picture_ratio

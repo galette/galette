@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2023 The Galette Team
+ * Copyright © 2011-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-11-11
@@ -47,20 +47,22 @@ use Analog\Analog;
  * @name      News
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-11-11
  */
 class News
 {
-    private $cache_filename = '%feed.cache';
-    private $show = 10;
+    private string $cache_filename = '%feed.cache';
+    private int $show = 10;
     //number of hours until cache will be invalid
-    private $cache_timeout = 24;
-    private $feed_url = null;
-    private $posts = [];
-    private $stream_opts = [
+    private int $cache_timeout = 24;
+    private ?string $feed_url = null;
+    /** @var array<int, array<string, string>> */
+    private array $posts = [];
+    /** @var array<string, array<string, int|string>> */
+    private array $stream_opts = [
         'http' => [
             'timeout' => 5
         ]
@@ -72,7 +74,7 @@ class News
      * @param string  $url     Feed URL
      * @param boolean $nocache Do not try to cache
      */
-    public function __construct($url, $nocache = false)
+    public function __construct(string $url, bool $nocache = false)
     {
         $this->feed_url = $this->getFeedURL($url);
 
@@ -93,7 +95,7 @@ class News
      *
      * @return boolean
      */
-    private function checkCache()
+    private function checkCache(): bool
     {
         $cfile = $this->getCacheFilename();
         if (file_exists($cfile)) {
@@ -130,7 +132,7 @@ class News
      *
      * @return boolean
      */
-    private function makeCache()
+    private function makeCache(): bool
     {
         $this->parseFeed();
         $cfile = $this->getCacheFilename();
@@ -150,7 +152,7 @@ class News
      *
      * @return void
      */
-    private function loadCache()
+    private function loadCache(): void
     {
         $cfile = $this->getCacheFilename();
         $data = unserialize(file_get_contents($cfile));
@@ -173,7 +175,7 @@ class News
      *
      * @return string
      */
-    private function getCacheFilename()
+    private function getCacheFilename(): string
     {
         return GALETTE_CACHE_DIR . str_replace(
             '%feed',
@@ -187,7 +189,7 @@ class News
      *
      * @return void
      */
-    private function parseFeed()
+    private function parseFeed(): void
     {
         try {
             if (!$this->allowURLFOpen()) {
@@ -252,9 +254,9 @@ class News
     /**
      * Get posts
      *
-     * @return array
+     * @return array<int, array<string, string>>
      */
-    public function getPosts()
+    public function getPosts(): array
     {
         return $this->posts;
     }
@@ -266,7 +268,7 @@ class News
      *
      * @return string
      */
-    public function getFeedURL($url)
+    public function getFeedURL(string $url): string
     {
         global $i18n;
 

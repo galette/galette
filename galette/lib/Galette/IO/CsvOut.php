@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
@@ -50,7 +50,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
@@ -60,9 +60,9 @@ class CsvOut extends Csv
 {
     public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
-    private $parameted_path;
-    private $legacy_parameted_file = 'exports.xml';
-    private $parameted_file = 'exports.yaml';
+    private string $parameted_path;
+    private string $legacy_parameted_file = 'exports.xml';
+    private string $parameted_file = 'exports.yaml';
 
     /**
      * Default constructor
@@ -173,7 +173,7 @@ class CsvOut extends Csv
      *
      * @return void
      */
-    private function write($last = false)
+    private function write(bool $last = false): void
     {
         if (
             $last && $this->file
@@ -196,7 +196,7 @@ class CsvOut extends Csv
      *
      * @return ?string
      */
-    public function getParamedtedExportName($id)
+    public function getParamedtedExportName(string $id): ?string
     {
         //check first in YAML configuration file
         $data = Yaml::parseFile($this->parameted_file);
@@ -227,7 +227,7 @@ class CsvOut extends Csv
      *
      * @return array
      */
-    public function getParametedExports()
+    public function getParametedExports(): array
     {
         $parameted = [];
 
@@ -271,7 +271,7 @@ class CsvOut extends Csv
      *
      * @return string|int filename used or error code
      */
-    private function runXmlParametedExport($id)
+    private function runXmlParametedExport(string $id): string|int
     {
         global $zdb;
 
@@ -338,7 +338,7 @@ class CsvOut extends Csv
      *
      * @return string|int|false filename used, error code or failure
      */
-    private function runYamlParametedExport($id)
+    private function runYamlParametedExport(string $id): string|int|false
     {
         global $zdb;
 
@@ -408,7 +408,7 @@ class CsvOut extends Csv
      *
      * @return ?string filename used
      */
-    public function runParametedExport($id)
+    public function runParametedExport(string $id): ?string
     {
         //try first to run from YAML configuration file
         $run = $this->runYamlParametedExport($id);

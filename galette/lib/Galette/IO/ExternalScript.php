@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-06-11
@@ -46,18 +46,18 @@ use Galette\Core\Preferences;
  * @name      ExternalScript
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2010-06-11
  */
 class ExternalScript
 {
-    private $protocol;
-    private $method;
-    private $uri;
-    private $as_json = true; //TODO: parametize?
-    private $output;
+    private string $protocol;
+    private string $method;
+    private string $uri;
+    private bool $as_json = true; //TODO: parametize?
+    private string $output;
 
     /**
      * Main constructor
@@ -110,7 +110,7 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' instancied with method ' . $this->method .
+            __CLASS__ . ' instanced with method ' . $this->method .
             ' and protocol ' . $this->protocol,
             Analog::INFO
         );
@@ -144,7 +144,7 @@ class ExternalScript
     /**
      * Send data
      *
-     * @param array $params Array of params to send
+     * @param array<string,mixed> $params Array of params to send
      *
      * @return boolean
      */
@@ -268,7 +268,7 @@ class ExternalScript
      *
      * @return string
      */
-    public function getOutput()
+    public function getOutput(): string
     {
         return $this->output;
     }

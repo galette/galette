@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4-dev - 2019-12-03
@@ -55,7 +55,7 @@ use Galette\Filters\MembersList;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4-dev - 2019-12-03
@@ -63,20 +63,21 @@ use Galette\Filters\MembersList;
 
 class MembersCsv extends CsvOut
 {
-    private $filename;
-    private $path;
-    private $zdb;
-    private $login;
-    private $members_fields;
-    private $fields_config;
+    private string $filename;
+    private string $path;
+    private Db $zdb;
+    private Login $login;
+    /** @var array<string,mixed> */
+    private array $members_fields;
+    private FieldsConfig $fields_config;
 
     /**
      * Default constructor
      *
-     * @param Db           $zdb            Db instance
-     * @param Login        $login          Login instance
-     * @param array        $members_fields Members fields
-     * @param FieldsConfig $fields_config  Fields configuration
+     * @param Db                  $zdb            Db instance
+     * @param Login               $login          Login instance
+     * @param array<string,mixed> $members_fields Members fields
+     * @param FieldsConfig        $fields_config  Fields configuration
      */
     public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
     {

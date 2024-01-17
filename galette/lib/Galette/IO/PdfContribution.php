@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-07-07
@@ -51,7 +51,7 @@ use Analog\Analog;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-07-07
@@ -59,9 +59,9 @@ use Analog\Analog;
 
 class PdfContribution extends Pdf
 {
-    private $contrib;
-    private $model;
-    private $path;
+    private Contribution $contrib;
+    private PdfModel $model;
+    private string $path;
 
     /**
      * Main constructor
@@ -70,7 +70,7 @@ class PdfContribution extends Pdf
      * @param Db           $zdb     Database instance
      * @param Preferences  $prefs   Preferences instance
      */
-    public function __construct(Contribution $contrib, Db $zdb, $prefs)
+    public function __construct(Contribution $contrib, Db $zdb, Preferences $prefs)
     {
         $this->contrib = $contrib;
 
@@ -118,7 +118,7 @@ class PdfContribution extends Pdf
      *
      * @return boolean
      */
-    public function store($path)
+    public function store(string $path): bool
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->path = $path . '/' . $this->filename;
@@ -139,7 +139,7 @@ class PdfContribution extends Pdf
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return realpath($this->path);
     }
@@ -149,7 +149,7 @@ class PdfContribution extends Pdf
      *
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }

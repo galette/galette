@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021 The Galette Team
+ * Copyright © 2021-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.2dev - 2014-11-30
@@ -39,6 +39,7 @@ namespace Galette\IO;
 use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
 use Analog\Analog;
+use Galette\Entity\Adherent;
 
 /**
  * Member card PDF
@@ -48,7 +49,7 @@ use Analog\Analog;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.2dev - 2014-11-30
@@ -61,25 +62,29 @@ class PdfMembersCards extends Pdf
     public const COLS = 2;
     public const ROWS = 6;
 
-    private $tcol;
-    private $scol;
-    private $bcol;
-    private $hcol;
-    private $xorigin;
-    private $yorigin;
-    private $wi;
-    private $he;
-    private $nbcol;
-    private $nbrow;
-    private $hspacing;
-    private $vspacing;
-    private $max_text_size;
-    private $year_font_size;
-    private $an_cot;
-    private $abrev;
-    private $wlogo;
-    private $hlogo;
-    private $logofile;
+    /** @var array<string,float|int> */
+    private array $tcol;
+    /** @var array<string,float|int> */
+    private array $scol;
+    /** @var array<string,float|int> */
+    private array $bcol;
+    /** @var array<string,float|int> */
+    private array $hcol;
+    private int $xorigin;
+    private int $yorigin;
+    private int $wi;
+    private int $he;
+    private int $nbcol;
+    private int $nbrow;
+    private int $hspacing;
+    private int $vspacing;
+    private int $max_text_size;
+    private int $year_font_size;
+    private string $an_cot;
+    private string $abrev;
+    private float $wlogo;
+    private float $hlogo;
+    private string $logofile;
 
     /**
      * Main constructor, set creator and author
@@ -98,7 +103,7 @@ class PdfMembersCards extends Pdf
      *
      * @return void
      */
-    private function init()
+    private function init(): void
     {
         // Set document information
         $this->SetTitle(_T("Member's Cards"));
@@ -186,11 +191,11 @@ class PdfMembersCards extends Pdf
     /**
      * Draw members cards
      *
-     * @param array $members Members
+     * @param array<Adherent> $members Members
      *
      * @return void
      */
-    public function drawCards($members)
+    public function drawCards(array $members): void
     {
         $nb_card = 0;
         foreach ($members as $member) {
@@ -352,7 +357,7 @@ class PdfMembersCards extends Pdf
      *
      * @return integer
      */
-    public static function getWidth()
+    public static function getWidth(): int
     {
         return defined('GALETTE_CARD_WIDTH') ? GALETTE_CARD_WIDTH : self::WIDTH;
     }
@@ -362,7 +367,7 @@ class PdfMembersCards extends Pdf
      *
      * @return integer
      */
-    public static function getHeight()
+    public static function getHeight(): int
     {
         return defined('GALETTE_CARD_HEIGHT') ? GALETTE_CARD_HEIGHT : self::HEIGHT;
     }
@@ -372,7 +377,7 @@ class PdfMembersCards extends Pdf
      *
      * @return integer
      */
-    public static function getCols()
+    public static function getCols(): int
     {
         return defined('GALETTE_CARD_COLS') ? GALETTE_CARD_COLS : self::COLS;
     }
@@ -382,7 +387,7 @@ class PdfMembersCards extends Pdf
      *
      * @return integer
      */
-    public static function getRows()
+    public static function getRows(): int
     {
         return defined('GALETTE_CARD_ROWS') ? GALETTE_CARD_ROWS : self::ROWS;
     }
