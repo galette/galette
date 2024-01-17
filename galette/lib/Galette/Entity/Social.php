@@ -118,7 +118,7 @@ class Social
             $select->limit(1)->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
-            /** @var ArrayObject $res */
+            /** @var ArrayObject<string, int|string> $res */
             $res = $results->current();
             $this->loadFromRs($res);
         } catch (Throwable $e) {

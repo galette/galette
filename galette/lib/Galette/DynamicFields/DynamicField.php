@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2023 The Galette Team
+ * Copyright © 2012-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.1dev - 2012-07-28
@@ -54,7 +54,7 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -154,7 +154,7 @@ abstract class DynamicField
 
             $results = $zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $field_type = $result->field_type;
                 $field_type = self::getFieldType($zdb, $field_type);
@@ -227,7 +227,7 @@ abstract class DynamicField
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRs($result);
             }

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2023 The Galette Team
+ * Copyright © 2011-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-07-31
@@ -57,7 +57,7 @@ use Galette\Filters\TransactionsList;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -93,10 +93,10 @@ class Transactions
     /**
      * Get transactions list
      *
-     * @param bool   $as_trans return the results as an array of
-     *                         Transaction object.
-     * @param ?array $fields   field(s) name(s) to get. Should be a string or
-     *                         an array. If null, all fields will be returned
+     * @param bool           $as_trans return the results as an array of
+     *                                 Transaction object.
+     * @param ?array<string> $fields   field(s) name(s) to get. Should be a string or
+     *                                 an array. If null, all fields will be returned
      *
      * @return array<int, Transaction>|ResultSet
      */
@@ -110,7 +110,7 @@ class Transactions
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
-                    /** @var ArrayObject $row */
+                    /** @var ArrayObject<string, int|string> $row */
                     $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
             } else {
@@ -129,7 +129,7 @@ class Transactions
     /**
      * Builds the SELECT statement
      *
-     * @param ?array $fields fields list to retrieve
+     * @param ?array<string> $fields fields list to retrieve
      *
      * @return Select SELECT statement
      */
@@ -205,7 +205,7 @@ class Transactions
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<string> SQL ORDER clauses
      */
     private function buildOrderClause(): array
     {
@@ -333,8 +333,8 @@ class Transactions
     /**
      * Remove specified transactions
      *
-     * @param array|integer $ids  Transactions identifiers to delete
-     * @param History       $hist History
+     * @param array<int>|integer $ids  Transactions identifiers to delete
+     * @param History            $hist History
      *
      * @return boolean
      */
@@ -356,7 +356,7 @@ class Transactions
 
             $results = $this->zdb->execute($select);
             foreach ($results as $transaction) {
-                /** @var ArrayObject $transaction */
+                /** @var ArrayObject<string, int|string> $transaction */
                 $c = new Transaction($this->zdb, $this->login, $transaction);
                 $res = $c->remove($hist, false);
                 if ($res === false) {
