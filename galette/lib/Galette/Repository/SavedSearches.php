@@ -93,10 +93,10 @@ class SavedSearches
     /**
      * Get saved searches list
      *
-     * @param bool   $as_search return the results as an array of
-     *                          SavedSearch object.
+     * @param bool           $as_search return the results as an array of
+     *                                  SavedSearch object.
      * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
-     *                          an array. If null, all fields will be returned
+     *                                  an array. If null, all fields will be returned
      *
      * @return array<int, SavedSearch>|ResultSet
      */
