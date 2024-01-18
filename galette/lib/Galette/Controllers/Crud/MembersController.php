@@ -1468,11 +1468,11 @@ class MembersController extends CrudController
 
         foreach ($fieldsets as $category) {
             foreach ($category->elements as $field) {
-                if ($field->required == true) {
+                if ($field->required) {
                     $required[$field->field_id] = true;
                 }
-                if ($field->disabled == true) {
-                    $disabled[$field->field_id] = true;
+                if ($field->disabled) {
+                    $disabled[] = $field->field_id;
                 } elseif (!isset($post[$field->field_id])) {
                     switch ($field->field_id) {
                         //unchecked booleans are not sent from form
@@ -1486,7 +1486,7 @@ class MembersController extends CrudController
             }
         }
 
-        $real_requireds = array_diff(array_keys($required), array_keys($disabled));
+        $real_requireds = array_diff(array_keys($required), array_values($disabled));
 
         // send email to member
         if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {

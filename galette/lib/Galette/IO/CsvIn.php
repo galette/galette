@@ -103,7 +103,7 @@ class CsvIn extends Csv implements FileInterface
     private array $_members_fields;
     /** @var array<string,mixed> */
     private array $_members_fields_cats;
-    /** @var array<string,int> */
+    /** @var array<string,bool> */
     private array $_required;
     /** @var array<int, string> */
     private array $statuses;
@@ -259,7 +259,7 @@ class CsvIn extends Csv implements FileInterface
 
         foreach (array_keys($config_required) as $field) {
             if (in_array($field, $this->_fields)) {
-                $this->_required[$field] = 1;
+                $this->_required[$field] = true;
             }
         }
 

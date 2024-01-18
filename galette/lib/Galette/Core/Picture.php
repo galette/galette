@@ -672,7 +672,7 @@ class Picture implements FileInterface
             //retrieve valid members ids
             $members = new Members();
             $valids = $members->getArrayList(
-                $existing_diff,
+                array_map('intval', $existing_diff),
                 null,
                 false,
                 false,

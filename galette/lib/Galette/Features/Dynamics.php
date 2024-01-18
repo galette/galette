@@ -99,9 +99,9 @@ trait Dynamics
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array<string, mixed> $post     Posted values
-     * @param array<string,int>    $required Array of required fields
-     * @param array<string>        $disabled Array of disabled fields
+     * @param array<string, mixed>   $post     Posted values
+     * @param array<string,int|bool> $required Array of required fields
+     * @param array<string>          $disabled Array of disabled fields
      *
      * @return bool
      */

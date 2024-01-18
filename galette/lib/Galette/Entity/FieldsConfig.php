@@ -87,7 +87,7 @@ class FieldsConfig
     protected array $all_required = array();
     /** @var array<string, int> */
     protected array $all_visibles = array();
-    /** @var array<int, array<string, mixed>> */
+    /** @var array<int, array<int, array<string, mixed>>> */
     protected array $categorized_fields = array();
     protected string $table;
     /** @var array<string, mixed>|null  */
@@ -721,7 +721,7 @@ class FieldsConfig
     /**
      * Get all fields with their categories
      *
-     * @return array<int, array<string, mixed>>
+     * @return array<int, array<int, array<string, mixed>>>
      */
     public function getCategorizedFields(): array
     {
@@ -731,7 +731,7 @@ class FieldsConfig
     /**
      * Set fields
      *
-     * @param array<int, array<string, mixed>> $fields categorized fields array
+     * @param array<int, array<int, array<string, mixed>>> $fields categorized fields array
      *
      * @return boolean
      */

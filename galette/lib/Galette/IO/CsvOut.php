@@ -78,14 +78,14 @@ class CsvOut extends Csv
     /**
      * Export Array result set to CSV
      *
-     * @param array<int,mixed>    $rs        Results as an array
-     * @param string              $separator The CSV separator (either '\t', ';' or ','
-     *                                       are accepted)
-     * @param string              $quote     how does fields should be quoted
-     * @param array<string>|false $titles    does export shows column titles or not.
-     *                                       Defaults to false.
-     * @param resource|false      $file      export to a file on disk. A file pointer
-     *                                       should be passed here. Defaults to false.
+     * @param ResultSet|array<int,mixed> $rs        Results as an array
+     * @param string                     $separator The CSV separator (either '\t', ';' or ','
+     *                                              are accepted)
+     * @param string                     $quote     how does fields should be quoted
+     * @param array<string>|bool         $titles    does export shows column titles or not.
+     *                                              Defaults to false.
+     * @param resource|false             $file      export to a file on disk. A file pointer
+     *                                              should be passed here. Defaults to false.
      *
      * @return string CSV result
      */
@@ -93,7 +93,7 @@ class CsvOut extends Csv
         $rs,
         string $separator,
         string $quote,
-        array|false $titles = false,
+        array|bool $titles = false,
         mixed $file = false //FIXME: replace resource from fopen() with SplFileObject
     ): string {
         //switch back to the default separator if not in accepted_separators array
@@ -120,7 +120,7 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if (!is_array($titles)) {
+        if ($titles === true) {
             $row = $results[0];
             foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
@@ -130,7 +130,7 @@ class CsvOut extends Csv
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } elseif (count($titles) > 1) {
+        } elseif (is_array($titles) && count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),

@@ -111,12 +111,14 @@ abstract class DynamicField
     protected ?int $repeat = null;
     protected ?int $size = null;
     protected ?int $old_size = null;
+    /** @var string|array<string>|false */
     protected string|array|false $values = false;
     protected string $form;
     protected ?string $information = null;
     protected ?string $name = null;
     protected ?string $old_name = null;
 
+    /** @var array<string> */
     protected array $errors = [];
 
     protected Db $zdb;
@@ -513,7 +515,7 @@ abstract class DynamicField
     /**
      * Retrieve permissions names for display
      *
-     * @return array
+     * @return array<int,string>
      */
     public static function getPermsNames(): array
     {
@@ -529,7 +531,7 @@ abstract class DynamicField
     /**
      * Retrieve forms names
      *
-     * @return array
+     * @return array<string,string>
      */
     public static function getFormsNames(): array
     {
@@ -579,7 +581,7 @@ abstract class DynamicField
      *
      * @param bool $imploded Whether to implode values
      *
-     * @return array|string|false
+     * @return array<string>|string|false
      */
     public function getValues(bool $imploded = false): array|string|false
     {
@@ -596,8 +598,8 @@ abstract class DynamicField
     /**
      * Check posted values validity
      *
-     * @param array $values All values to check, basically the $_POST array
-     *                      after sending the form
+     * @param array<string,mixed> $values All values to check, basically the $_POST array
+     *                                    after sending the form
      *
      * @return bool
      */
@@ -700,8 +702,8 @@ abstract class DynamicField
     /**
      * Store the field type
      *
-     * @param array $values All values to check, basically the $_POST array
-     *                      after sending the form
+     * @param array<string,mixed> $values All values to check, basically the $_POST array
+     *                                    after sending the form
      *
      * @return bool
      */
@@ -1020,7 +1022,7 @@ abstract class DynamicField
     /**
      * Retrieve fields types names
      *
-     * @return array
+     * @return array<int, string>
      */
     public static function getFieldsTypesNames(): array
     {
@@ -1039,7 +1041,7 @@ abstract class DynamicField
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -1049,7 +1051,7 @@ abstract class DynamicField
     /**
      * Get warnings
      *
-     * @return array
+     * @return array<string>
      */
     public function getWarnings(): array
     {
