@@ -73,27 +73,32 @@ class Transaction
     public const PK = 'trans_id';
 
     private int $_id;
-    private $_date;
-    private $_amount;
-    private $_description;
-    private $_member;
+    private string $_date;
+    private float $_amount;
+    private string $_description;
+    private int $_member;
 
-    //fields list and their translation
-    private $_fields;
+    /**
+     * fields list and their translation
+     *
+     * @var array<string, array<string, string>>
+     */
+    private array $_fields;
 
-    private $zdb;
-    private $login;
+    private Db $zdb;
+    private Login $login;
 
-    private $errors;
+    /** @var array<string> */
+    private array $errors;
 
     /**
      * Default constructor
      *
-     * @param Db                   $zdb   Database instance
-     * @param Login                $login Login instance
-     * @param null|int|ArrayObject $args  Either a ResultSet row or its id for to load
-     *                                    a specific transaction, or null to just
-     *                                    instantiate object
+     * @param Db                                       $zdb   Database instance
+     * @param Login                                    $login Login instance
+     * @param null|int|ArrayObject<string, int|string> $args  Either a ResultSet row or its id for to load
+     *                                                        a specific transaction, or null to just
+     *                                                        instantiate object
      */
     public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
     {
@@ -273,7 +278,7 @@ class Transaction
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string,int|string> $r the resultset row
      *
      * @return void
      */
@@ -293,14 +298,14 @@ class Transaction
     /**
      * Check posted values validity
      *
-     * @param array $values   All values to check, basically the $_POST array
-     *                        after sending the form
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string,mixed> $values   All values to check, basically the $_POST array
+     *                                      after sending the form
+     * @param array<string,int>   $required Array of required fields
+     * @param array<string>       $disabled Array of disabled fields
      *
-     * @return true|array
+     * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled)
+    public function check(array $values, array $required, array $disabled): bool|array
     {
         $this->errors = array();
 
@@ -352,8 +357,8 @@ class Transaction
                             $this->_member = (int)$value;
                             break;
                         case 'trans_amount':
-                            $this->_amount = $value;
                             $value = strtr($value, ',', '.');
+                            $this->_amount = (double)$value;
                             if (!is_numeric($value)) {
                                 $this->errors[] = _T("- The amount must be an integer!");
                             }
@@ -564,7 +569,7 @@ class Transaction
      *
      * @param Db $zdb Database instance
      *
-     * @return array
+     * @return array<string>
      */
     public function getDbFields(Db $zdb): array
     {
@@ -682,9 +687,9 @@ class Transaction
     /**
      * Handle files (dynamics files)
      *
-     * @param array $files Files sent
+     * @param array<string,mixed> $files Files sent
      *
-     * @return array|true
+     * @return array<string>|true
      */
     public function handleFiles(array $files)
     {

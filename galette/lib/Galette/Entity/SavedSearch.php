@@ -134,7 +134,7 @@ class SavedSearch
     /**
      * Load a saved search from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */

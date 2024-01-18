@@ -353,9 +353,9 @@ trait FileTrait
     /**
      * Get destination dir
      *
-     * @return string
+     * @return ?string
      */
-    public function getDestDir(): string
+    public function getDestDir(): ?string
     {
         return $this->dest_dir;
     }

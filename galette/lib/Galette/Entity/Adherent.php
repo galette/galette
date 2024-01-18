@@ -344,7 +344,7 @@ class Adherent
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
@@ -1056,14 +1056,14 @@ class Adherent
     /**
      * Check posted values validity
      *
-     * @param array $values   All values to check, basically the $_POST array
-     *                        after sending the form
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string,mixed> $values   All values to check, basically the $_POST array
+     *                                      after sending the form
+     * @param array<string,int>   $required Array of required fields
+     * @param array<string>       $disabled Array of disabled fields
      *
-     * @return true|array
+     * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled): array|bool
+    public function check(array $values, array $required, array $disabled): bool|array
     {
         global $login;
 

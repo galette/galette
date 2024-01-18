@@ -194,7 +194,7 @@ class FieldsConfig
     /**
      * Prepare a field (required data, automation)
      *
-     * @param ArrayObject $rset DB ResultSet row
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
      * @return ArrayObject
      */
@@ -210,7 +210,7 @@ class FieldsConfig
     /**
      * Prepare a field (required data, automation)
      *
-     * @param ArrayObject $rset DB ResultSet row
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
      * @return array
      */

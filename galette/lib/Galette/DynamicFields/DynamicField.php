@@ -243,7 +243,7 @@ abstract class DynamicField
     /**
      * Load field type from a db ResultSet
      *
-     * @param ArrayObject $rs     ResultSet
+     * @param ArrayObject<string, int|string> $rs     ResultSet
      * @param bool        $values Whether to load values. Defaults to true
      *
      * @return void
