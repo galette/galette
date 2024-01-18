@@ -60,7 +60,7 @@ class PdfInvoice extends PdfContribution
      *
      * @param Db                                      $zdb         Database instance
      * @param Preferences                             $preferences Galette preferences
-     * @param ArrayObject<string,int|string>|int|null $args Arguments
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
     public function __construct(Db $zdb, Preferences $preferences, ArrayObject|int $args = null)
     {
