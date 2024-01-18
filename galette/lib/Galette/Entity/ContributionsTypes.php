@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2023 The Galette Team
+ * Copyright © 2007-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-10-27
@@ -46,7 +46,7 @@ use ArrayObject;
  * @name      ContibutionTypes
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-10-27
@@ -81,8 +81,8 @@ class ContributionsTypes extends Entitled
     /**
      * Default constructor
      *
-     * @param Db                   $zdb  Database
-     * @param int|ArrayObject|null $args Optional existing result set
+     * @param Db                                      $zdb  Database
+     * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
     public function __construct(Db $zdb, int|ArrayObject $args = null)
     {

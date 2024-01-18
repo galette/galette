@@ -115,13 +115,14 @@ class Contribution
     private ?int $_extension = null;
 
     //fields list and their translation
+    /** @var array<string, array<string, string>>  */
     private array $_fields;
 
     /** @var Db */
     private Db $zdb;
     /** @var Login */
     private Login $login;
-    /** @var array */
+    /** @var array<string> */
     private array $errors = [];
 
     private bool $sendmail = false;
@@ -129,11 +130,11 @@ class Contribution
     /**
      * Default constructor
      *
-     * @param Db                         $zdb   Database
-     * @param Login                      $login Login instance
-     * @param null|int|array|ArrayObject $args  Either a ResultSet row to load
-     *                                          a specific contribution, or a type id
-     *                                          to just instantiate object
+     * @param Db                                                          $zdb   Database
+     * @param Login                                                       $login Login instance
+     * @param null|int|array<string,mixed>|ArrayObject<string,int|string> $args  Either a ResultSet row to load
+     *                                                                           a specific contribution, or a type id
+     *                                                                           to just instantiate object
      */
     public function __construct(Db $zdb, Login $login, int|array|ArrayObject $args = null)
     {
@@ -843,7 +844,7 @@ class Contribution
      *
      * @param Db $zdb Database instance
      *
-     * @return array
+     * @return array<string>
      */
     public static function getDbFields(Db $zdb): array
     {
@@ -1023,11 +1024,11 @@ class Contribution
     /**
      * Execute post contribution script
      *
-     * @param ExternalScript $es     External script to execute
-     * @param ?array         $extra  Extra information on contribution
-     *                               Defaults to null
-     * @param ?array         $pextra Extra information on payment
-     *                               Defaults to null
+     * @param ExternalScript       $es     External script to execute
+     * @param ?array<string,mixed> $extra  Extra information on contribution
+     *                                     Defaults to null
+     * @param ?array<string,mixed> $pextra Extra information on payment
+     *                                     Defaults to null
      *
      * @return string|bool Script return value on success, values and script output on fail
      */
@@ -1042,7 +1043,7 @@ class Contribution
             'type'  => $this->getPaymentType()
         );
 
-        if ($pextra !== null && is_array($pextra)) {
+        if ($pextra !== null) {
             $payment = array_merge($payment, $pextra);
         }
 
@@ -1051,7 +1052,7 @@ class Contribution
         }
 
         $voucher_path = null;
-        if ($this->_id !== null) {
+        if (isset($this->_id)) {
             $voucher = new PdfContribution($this, $this->zdb, $preferences);
             $voucher->store(GALETTE_CACHE_DIR . '/pdf_contribs');
             $voucher_path = $voucher->getPath();
@@ -1091,7 +1092,7 @@ class Contribution
             $contrib['member'] = $member;
         }
 
-        if ($extra !== null && is_array($extra)) {
+        if ($extra !== null) {
             $contrib = array_merge($contrib, $extra);
         }
 
@@ -1421,9 +1422,9 @@ class Contribution
     /**
      * Handle files (dynamics files)
      *
-     * @param array $files Files sent
+     * @param array<string, mixed> $files Files sent
      *
-     * @return array|true
+     * @return array<string>|true
      */
     public function handleFiles(array $files): bool|array
     {
@@ -1446,7 +1447,7 @@ class Contribution
     /**
      * Get required fields list
      *
-     * @return array
+     * @return array<string, int>
      */
     public function getRequired(): array
     {

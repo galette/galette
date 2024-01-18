@@ -78,7 +78,9 @@ abstract class Entitled
     private string $fthird;
     private string $used;
 
+    /** @var array<string, string> */
     public static array $fields;
+    /** @var array<int, array<string, mixed>> */
     protected static array $defaults;
 
     /** @var string|false */
@@ -94,13 +96,13 @@ abstract class Entitled
     /**
      * Default constructor
      *
-     * @param Db                   $zdb    Database
-     * @param string               $table  Table name
-     * @param string               $fpk    Primary key field name
-     * @param string               $flabel Label fields name
-     * @param string               $fthird The third field name
-     * @param string               $used   Table name for isUsed function
-     * @param int|ArrayObject|null $args   Either an int or a resultset to load
+     * @param Db                                      $zdb    Database
+     * @param string                                  $table  Table name
+     * @param string                                  $fpk    Primary key field name
+     * @param string                                  $flabel Label fields name
+     * @param string                                  $fthird The third field name
+     * @param string                                  $used   Table name for isUsed function
+     * @param int|ArrayObject<string,int|string>|null $args   Either an int or a resultset to load
      */
     public function __construct(
         Db $zdb,
