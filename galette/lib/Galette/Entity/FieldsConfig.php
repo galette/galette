@@ -81,14 +81,21 @@ class FieldsConfig
     public const TYPE_SELECT = 11;
 
     protected Db $zdb;
+    /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = array();
+    /** @var array<string, bool> */
     protected array $all_required = array();
+    /** @var array<string, int> */
     protected array $all_visibles = array();
+    /** @var array<int, array<string, mixed>> */
     protected array $categorized_fields = array();
     protected string $table;
+    /** @var array<string, mixed>|null  */
     protected ?array $defaults = null;
+    /** @var array<string, mixed>|null */
     protected ?array $cats_defaults = null;
 
+    /** @var array<string> */
     private array $staff_fields = array(
         'activite_adh',
         'id_statut',
@@ -96,15 +103,18 @@ class FieldsConfig
         'date_crea_adh',
         'info_adh'
     );
+    /** @var array<string> */
     private array $admin_fields = array(
         'bool_admin_adh'
     );
 
     public const TABLE = 'fields_config';
 
-    /*
+    /**
      * Fields that are not visible in the
      * form should not be visible here.
+     *
+     * @var array<string>
      */
     private array $non_required = array(
         'id_adh',
@@ -123,11 +133,13 @@ class FieldsConfig
         'parent_id'
     );
 
+    /** @var array<string> */
     private array $non_form_elements = array(
         'date_echeance',
         'date_modif_adh'
     );
 
+    /** @var array<string> */
     private array $non_display_elements = array(
         'date_echeance',
         'mdp_adh',
@@ -139,11 +151,11 @@ class FieldsConfig
     /**
      * Default constructor
      *
-     * @param Db      $zdb           Database
-     * @param string  $table         the table for which to get fields configuration
-     * @param array   $defaults      default values
-     * @param array   $cats_defaults default categories values
-     * @param boolean $install       Are we calling from installer?
+     * @param Db                   $zdb           Database
+     * @param string               $table         the table for which to get fields configuration
+     * @param array<string, mixed> $defaults      default values
+     * @param array<string, mixed> $cats_defaults default categories values
+     * @param boolean              $install       Are we calling from installer?
      */
     public function __construct(Db $zdb, string $table, array $defaults, array $cats_defaults, bool $install = false)
     {
@@ -196,7 +208,7 @@ class FieldsConfig
      *
      * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return ArrayObject
+     * @return ArrayObject<string, int|string>
      */
     protected function prepareField(ArrayObject $rset): ArrayObject
     {
@@ -212,7 +224,7 @@ class FieldsConfig
      *
      * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function buildField(ArrayObject $rset): array
     {
@@ -250,7 +262,7 @@ class FieldsConfig
     /**
      * Adds a field to lists
      *
-     * @param array $field Field values
+     * @param array<string,mixed> $field Field values
      *
      * @return void
      */
@@ -438,7 +450,7 @@ class FieldsConfig
     /**
      * Get non required fields
      *
-     * @return array
+     * @return array<string>
      */
     public function getNonRequired(): array
     {
@@ -452,7 +464,7 @@ class FieldsConfig
      * @param boolean $new   True when adding a new member
      * @param boolean $selfs True if we're called from self subscription page
      *
-     * @return array
+     * @return array<string, array<int,object>>
      */
     public function getFormElements(Login $login, bool $new, bool $selfs = false): array
     {
@@ -595,7 +607,7 @@ class FieldsConfig
      *
      * @param Login $login Login instance
      *
-     * @return array
+     * @return array<int,object>
      */
     public function getDisplayElements(Login $login): array
     {
@@ -677,7 +689,7 @@ class FieldsConfig
     /**
      * Get required fields
      *
-     * @return array of all required fields. Field names = keys
+     * @return array<string, bool> of all required fields. Field names = keys
      */
     public function getRequired(): array
     {
@@ -687,7 +699,7 @@ class FieldsConfig
     /**
      * Get visible fields
      *
-     * @return array of all visibles fields
+     * @return array<string,int> of all visibles fields
      */
     public function getVisibilities(): array
     {
@@ -709,7 +721,7 @@ class FieldsConfig
     /**
      * Get all fields with their categories
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     public function getCategorizedFields(): array
     {
@@ -719,7 +731,7 @@ class FieldsConfig
     /**
      * Set fields
      *
-     * @param array $fields categorized fields array
+     * @param array<int, array<string, mixed>> $fields categorized fields array
      *
      * @return boolean
      */
@@ -889,7 +901,7 @@ class FieldsConfig
     /**
      * Insert values in database
      *
-     * @param array $values Values to insert
+     * @param array<int,mixed> $values Values to insert
      *
      * @return void
      */
@@ -956,8 +968,8 @@ class FieldsConfig
     /**
      * Filter visible fields
      *
-     * @param Login $login  Login instance
-     * @param array $fields Fields list
+     * @param Login               $login  Login instance
+     * @param array<string,mixed> $fields Fields list
      *
      * @return void
      */
@@ -988,10 +1000,10 @@ class FieldsConfig
      * Get fields for massive changes
      * @see FieldsConfig::getFormElements
      *
-     * @param array $fields Member fields
-     * @param Login $login  Login instance
+     * @param array<string,mixed> $fields Member fields
+     * @param Login               $login  Login instance
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function getMassiveFormElements(array $fields, Login $login): array
     {
@@ -1029,12 +1041,12 @@ class FieldsConfig
      *
      * @param string $name Field name
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function getField(string $name): array
     {
         if (!isset($this->core_db_fields[$name])) {
-            throw new \UnexpectedValueException("$name fied does not exists");
+            throw new \UnexpectedValueException("$name field does not exists");
         }
         return $this->core_db_fields[$name];
     }

@@ -88,6 +88,7 @@ abstract class Entitled
     private string $label = '';
     private string $third = '';
 
+    /** @var array<string> */
     private array $errors = array();
 
     /**
@@ -296,7 +297,7 @@ abstract class Entitled
     /**
      * Complete list
      *
-     * @return array of all objects
+     * @return array<int, array<string,mixed>> of all objects
      */
     public function getCompleteList(): array
     {
@@ -343,7 +344,7 @@ abstract class Entitled
      *
      * @param integer $id Entry ID
      *
-     * @return ArrayObject|false Row if succeed ; false: no such id
+     * @return ArrayObject<string, int|string>|false Row if succeed ; false: no such id
      */
     public function get(int $id): ArrayObject|false
     {
@@ -689,7 +690,7 @@ abstract class Entitled
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {

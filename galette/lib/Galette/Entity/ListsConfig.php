@@ -58,12 +58,13 @@ use Galette\Core\Authentication;
  */
 class ListsConfig extends FieldsConfig
 {
+    /** @var array<int,array<string,mixed>> */
     protected array $listed_fields = array();
 
     /**
      * Fields that are not part of lists
      *
-     * @var array
+     * @var array<string>
      */
     private array $non_list_elements = array(
         'mdp_adh',
@@ -76,7 +77,7 @@ class ListsConfig extends FieldsConfig
     /**
      * ACL mapping for list elements not present in form configuration
      *
-     * @var array
+     * @var array<string,string>
      */
     private array $acl_mapping = array(
         'list_adh_name'             => 'nom_adh',
@@ -88,7 +89,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return array
+     * @return array<string, int|string>
      */
     protected function buildField(ArrayObject $rset): array
     {
@@ -125,7 +126,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Adds a field to lists
      *
-     * @param array $field Field values
+     * @param array<string,mixed> $field Field values
      *
      * @return void
      */
@@ -146,7 +147,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param Login $login Login instance
      *
-     * @return array
+     * @return array<int,object>
      */
     public function getDisplayElements(Login $login): array
     {
@@ -230,7 +231,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Get all fields for list
      *
-     * @return array
+     * @return array<int,array<string,mixed>>
      */
     public function getListedFields(): array
     {
@@ -240,7 +241,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Get remaining free fields for list
      *
-     * @return array
+     * @return array<string,array<string,mixed>>
      */
     public function getRemainingFields(): array
     {
@@ -267,7 +268,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Set fields
      *
-     * @param array $fields categorized fields array
+     * @param array<int,array<string,mixed>> $fields categorized fields array
      *
      * @return boolean
      */
@@ -354,7 +355,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Get ACL mapping for list elements not present in form configuration
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getAclMapping(): array
     {

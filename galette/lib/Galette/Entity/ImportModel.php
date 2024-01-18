@@ -60,6 +60,7 @@ class ImportModel
     public const PK = 'model_id';
 
     private ?int $id;
+    /** @var array<string>|null */
     private ?array $fields;
     private ?string $creation_date;
 
@@ -190,7 +191,7 @@ class ImportModel
     /**
      * Get fields
      *
-     * @return ?array
+     * @return ?array<string>
      */
     public function getFields(): ?array
     {
@@ -217,7 +218,7 @@ class ImportModel
     /**
      * Set fields
      *
-     * @param array $fields Fields list
+     * @param array<string> $fields Fields list
      *
      * @return self
      */

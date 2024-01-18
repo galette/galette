@@ -80,8 +80,8 @@ class PaymentType
     /**
      * Main constructor
      *
-     * @param Db                   $zdb  Database instance
-     * @param ArrayObject|int|null $args Arguments
+     * @param Db                                      $zdb  Database instance
+     * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
     public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
@@ -288,7 +288,7 @@ class PaymentType
      *
      * @param boolean $translated Return translated types (default) or not
      *
-     * @return array<string,string>
+     * @return array<int,string>
      */
     public function getSystemTypes(bool $translated = true): array
     {

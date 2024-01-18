@@ -69,8 +69,11 @@ class Group
     private int $id;
     private string $group_name;
     private ?Group $parent_group = null;
+    /** @var array<int,Adherent>|null */
     private ?array $managers = null;
+    /** @var array<int,Adherent>|null */
     private ?array $members = null;
+    /** @var array<int,Group>|null */
     private ?array $groups = null;
     private string $creation_date;
     private int $count_members;
@@ -80,9 +83,9 @@ class Group
     /**
      * Default constructor
      *
-     * @param null|int|ArrayObject $args Either a ResultSet row or its id for to load
-     *                                   a specific group, or null to just
-     *                                   instanciate object
+     * @param null|int|ArrayObject<string,int|string> $args Either a ResultSet row or its id for to load
+     *                                                      a specific group, or null to just
+     *                                                      instanciate object
      */
     public function __construct(ArrayObject|int $args = null)
     {
@@ -552,7 +555,7 @@ class Group
     /**
      * Get parents as an array
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getParents(): array
     {

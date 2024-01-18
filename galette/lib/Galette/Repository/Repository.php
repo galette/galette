@@ -63,7 +63,7 @@ abstract class Repository
     protected string $entity;
     protected Login $login;
     protected Pagination $filters;
-    /** @var array<string,mixed> */
+    /** @var array<int|string,mixed> */
     protected array $defaults = [];
     protected string $prefix;
 
