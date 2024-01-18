@@ -102,10 +102,10 @@ abstract class PdfModel
     /**
      * Main constructor
      *
-     * @param Db                   $zdb         Database instance
-     * @param Preferences          $preferences Galette preferences
-     * @param int                  $type        Model type
-     * @param ArrayObject|int|null $args        Arguments
+     * @param Db                                      $zdb         Database instance
+     * @param Preferences                             $preferences Galette preferences
+     * @param int                                     $type        Model type
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
     public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {

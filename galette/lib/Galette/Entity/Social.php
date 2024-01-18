@@ -55,6 +55,8 @@ use Analog\Analog;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.6dev - 2021-10-23
+ *
+ * @property string $url
  */
 
 class Social
@@ -91,8 +93,8 @@ class Social
     /**
      * Main constructor
      *
-     * @param Db                   $zdb  Database instance
-     * @param int|ArrayObject|null $args Arguments
+     * @param Db                                      $zdb  Database instance
+     * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
     public function __construct(Db $zdb, int|ArrayObject $args = null)
     {
@@ -136,7 +138,7 @@ class Social
      * @param int|null    $id_adh Member id
      * @param string|null $type   Type to retrieve
      *
-     * @return array
+     * @return array<int,Social>
      *
      * @throws Throwable
      */
@@ -236,7 +238,7 @@ class Social
     /**
      * Remove current social
      *
-     * @param array|null $ids IDs to remove, default to current id
+     * @param array<int>|null $ids IDs to remove, default to current id
      *
      * @return boolean
      */
@@ -354,7 +356,7 @@ class Social
      *
      * @param boolean $translated Return translated types (default) or not
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getSystemTypes(bool $translated = true): array
     {

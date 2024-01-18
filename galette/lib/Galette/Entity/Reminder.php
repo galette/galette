@@ -86,7 +86,7 @@ class Reminder
     /**
      * Main constructor
      *
-     * @param ArrayObject|int|null $args Arguments
+     * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
     public function __construct(ArrayObject|int $args = null)
     {

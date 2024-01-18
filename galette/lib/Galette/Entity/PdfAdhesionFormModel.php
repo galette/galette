@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,8 @@
  * @package   Galette
  *
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2023 The Galette Team
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.3dev - 2014-07-02
@@ -47,7 +48,8 @@ use Galette\Core\Preferences;
  * @name      PdfAdhesionFormModel
  * @package   Galette
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2023 The Galette Team
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.3dev - 2014-07-02
@@ -58,9 +60,9 @@ class PdfAdhesionFormModel extends PdfModel
     /**
      * Main constructor
      *
-     * @param Db              $zdb         Database instance
-     * @param Preferences     $preferences Galette preferences
-     * @param ArrayObject|int $args        Arguments
+     * @param Db                                      $zdb         Database instance
+     * @param Preferences                             $preferences Galette preferences
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
     public function __construct(Db $zdb, Preferences $preferences, ArrayObject|int $args = null)
     {

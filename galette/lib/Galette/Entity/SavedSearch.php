@@ -70,20 +70,22 @@ class SavedSearch
     private Db $zdb;
     private int $id;
     private string $name;
+    /** @var array<string, mixed> */
     private array $parameters = [];
     private ?int $author_id = null;
     private ?string $creation_date;
     private string $form;
 
     private Login $login;
+    /** @var array<string> */
     private array $errors = [];
 
     /**
      * Main constructor
      *
-     * @param Db                   $zdb   Database instance
-     * @param Login                $login Login instance
-     * @param ArrayObject|int|null $args  Arguments
+     * @param Db                                      $zdb   Database instance
+     * @param Login                                   $login Login instance
+     * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
     public function __construct(Db $zdb, Login $login, ArrayObject|int $args = null)
     {
@@ -152,7 +154,7 @@ class SavedSearch
     /**
      * Check and set values
      *
-     * @param array $values Values to set
+     * @param array<string, mixed> $values Values to set
      *
      * @return boolean
      */
@@ -286,7 +288,7 @@ class SavedSearch
                 case 'sparameters':
                     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
                     $parameters = [];
-                    foreach ((array)$this->parameters as $key => $parameter) {
+                    foreach ($this->parameters as $key => $parameter) {
                         //@phpstan-ignore-next-line
                         if (isset($members_fields[$key])) {
                             //@phpstan-ignore-next-line
@@ -391,7 +393,7 @@ class SavedSearch
     /**
      * Get known forms
      *
-     * @return array
+     * @return array<string>
      */
     public function getKnownForms(): array
     {
@@ -403,7 +405,7 @@ class SavedSearch
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {

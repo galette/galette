@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2020-11-21
@@ -47,7 +47,7 @@ use Galette\Core\Preferences;
  * @name      PdfContribution
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2020-11-21
@@ -58,10 +58,10 @@ abstract class PdfContribution extends PdfModel
     /**
      * Main constructor
      *
-     * @param Db                   $zdb         Database instance
-     * @param Preferences          $preferences Galette preferences
-     * @param int                  $type        Model type
-     * @param ArrayObject|int|null $args        Arguments
+     * @param Db                                      $zdb         Database instance
+     * @param Preferences                             $preferences Galette preferences
+     * @param int                                     $type        Model type
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
     public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {
@@ -75,7 +75,7 @@ abstract class PdfContribution extends PdfModel
     /**
      * Build legend array
      *
-     * @return array
+     * @return array<string,array<string,mixed>>
      */
     public function getLegend(): array
     {
