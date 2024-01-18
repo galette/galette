@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2023 The Galette Team
+ * Copyright © 2012-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     0.73dev 2012-10-16
@@ -53,7 +53,7 @@ use Galette\Repository\PaymentTypes;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  *
@@ -122,6 +122,7 @@ class AdvancedMembersList extends MembersList
     private ?string $_birth_date_begin = null;
     private ?string $_birth_date_end = null;
     private int $_show_public_infos = Members::FILTER_DC_PUBINFOS;
+    /** @var array<int> */
     private array $_status = array();
     private ?string $_contrib_creation_date_begin = null;
     private ?string $_contrib_creation_date_end = null;
@@ -129,11 +130,14 @@ class AdvancedMembersList extends MembersList
     private ?string $_contrib_begin_date_end = null;
     private ?string $_contrib_end_date_begin = null;
     private ?string $_contrib_end_date_end = null;
+    /** @var array<int> */
     private array $_contributions_types = array();
+    /** @var array<int> */
     private array $_payments_types = array();
     private ?int $_contrib_min_amount = null;
     private ?int $_contrib_max_amount = null;
 
+    /** @var array<string> */
     protected array $advancedmemberslist_fields = array(
         'creation_date_begin',
         'creation_date_end',
@@ -161,6 +165,7 @@ class AdvancedMembersList extends MembersList
         'groups_search_log_op'
     );
 
+    /** @var array<string> */
     protected array $virtuals_advancedmemberslist_fields = array(
         'rcreation_date_begin',
         'rcreation_date_end',
@@ -179,7 +184,11 @@ class AdvancedMembersList extends MembersList
         'search_fields'
     );
 
-    //an empty free search criteria to begin
+    /**
+     * an empty free search criteria to begin
+     *
+     * @var array<string,mixed>
+     */
     private array $_free_search = array(
         'empty' => array(
             'field'     => '',
@@ -189,7 +198,11 @@ class AdvancedMembersList extends MembersList
         )
     );
 
-    //an empty group search criteria to begin
+    /**
+     * an empty group search criteria to begin
+     *
+     * @var array<string,mixed>
+     */
     private array $_groups_search = array(
         'empty' => array(
             'group'    => '',
@@ -199,8 +212,11 @@ class AdvancedMembersList extends MembersList
     //defaults to 'OR' for group search
     private int $_groups_search_log_op = self::OP_OR;
 
-
-    //an empty contributions dynamic field criteria to begin
+    /**
+     * an empty contributions dynamic field criteria to begin
+     *
+     * @var array<string,mixed>
+     */
     private array $_contrib_dynamic = array();
 
     /**
@@ -706,20 +722,12 @@ class AdvancedMembersList extends MembersList
     /**
      * Validate free search internal array
      *
-     * @param array $data Array to validate
+     * @param array<string,mixed> $data Array to validate
      *
      * @return boolean
      */
     public static function isValidFreeSearch(array $data): bool
     {
-        if (!is_array($data)) {
-            Analog::log(
-                '[AdvancedMembersList] Value for free filter should be an '
-                . 'array (' . gettype($data) . ' given',
-                Analog::WARNING
-            );
-            return false;
-        }
         return isset($data['field'])
             && isset($data['search'])
             && isset($data['log_op'])

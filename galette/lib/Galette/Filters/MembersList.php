@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     march, 3rd 2009
@@ -51,7 +51,7 @@ use Slim\Views\Twig;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  *
@@ -76,11 +76,14 @@ class MembersList extends Pagination
     private ?int $_email_filter = null;
     private ?int $_group_filter = null;
 
+    /** @var array<int> */
     private array $_selected = [];
+    /** @var array<int> */
     private array $_unreachable = [];
 
     protected string $query;
 
+    /** @var array<string> */
     protected array $memberslist_fields = array(
         'filter_str',
         'field_filter',
