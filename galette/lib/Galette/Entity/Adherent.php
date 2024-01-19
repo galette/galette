@@ -144,7 +144,7 @@ class Adherent
 
     private ?int $_id;
     //Identity
-    private ?Title $_title;
+    private ?Title $_title = null;
     private ?string $_company_name;
     private ?string $_name;
     private ?string $_surname;
