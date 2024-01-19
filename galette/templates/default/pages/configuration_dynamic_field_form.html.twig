@@ -16,7 +16,7 @@
                 </div>
                 <div class="inline field">
                     <label for="field_perm">{{ _T("Permissions:") }}</label>
-                    <select name="field_perm" id="field_perm" class="ui dropdown nochosen">
+                    <select name="field_perm" id="field_perm" class="ui dropdown">
                         {% for key, value in perm_names %}
                             <option value="{{ key }}"{% if key == df.getPerm() %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
@@ -25,7 +25,7 @@
     {% if df.hasData() %}
                 <div class="inline field">
                     <label for="field_required">{{ _T("Required:") }}</label>
-                    <select name="field_required" id="field_required" class="ui dropdown nochosen">
+                    <select name="field_required" id="field_required" class="ui dropdown">
                         <option value="0" {% if not df.isRequired() %}selected="selected"{% endif %}>{{ _T("No") }}</option>
                         <option value="1" {% if df.isRequired() %}selected="selected"{% endif %}>{{ _T("Yes") }}</option>
                     </select>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="inline field">
                     <label for="field_perm">{{ _T("Visibility") }}</label>
-                    <select name="field_perm" id="field_perm" class="ui dropdown nochosen">
+                    <select name="field_perm" id="field_perm" class="ui dropdown">
                         {% set perm = 0 %}
                         {% if df is defined %}
                             {% set perm = df.getPerm() %}
@@ -114,7 +114,7 @@
                 </div>
                 <div class="inline field">
                     <label for="field_type">{{ _T("Type") }}</label>
-                    <select name="field_type" id="field_type" class="ui dropdown nochosen">
+                    <select name="field_type" id="field_type" class="ui dropdown">
                         {% set type = 0 %}
                         {% if df is defined %}
                             {% set type = df.getType() %}
@@ -126,7 +126,7 @@
                 </div>
                 <div class="inline field">
                     <label for="field_required">{{ _T("Required") }}</label>
-                    <select name="field_required" id="field_required" class="ui dropdown nochosen">
+                    <select name="field_required" id="field_required" class="ui dropdown">
                         <option value="0"{% if df is not defined or not df.isRequired() %} selected="selected"{% endif %}>{{ _T("No") }}</option>
                         <option value="1"{% if df is defined and df.isRequired() %} selected="selected"{% endif %}>{{ _T("Yes") }}</option>
                     </select>

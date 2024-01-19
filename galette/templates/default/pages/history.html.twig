@@ -71,7 +71,7 @@
                 {% set users = history.getUsersList() %}
                 {% if users|length > 0 %}
                     <label for="user_filter">{{ _T("Member") }}</label>
-                    <select name="user_filter" id="user_filter" class="ui search dropdown nochosen">
+                    <select name="user_filter" id="user_filter" class="ui search dropdown">
                         <option value="0"{% if history.filters.user_filter == 0 %} selected="selected"{% endif %}>{{ _T("Select an user") }}</option>
                         {% for user in users %}
                             <option value="{{ user }}"{% if history.filters.user_filter == user %} selected="selected"{% endif %}>{{ user }}</option>
@@ -83,7 +83,7 @@
                 {% set actions = history.getActionsList() %}
                 {% if actions|length > 0 %}
                     <label for="action_filter">{{ _T("Action") }}</label>
-                    <select name="action_filter" id="action_filter" class="ui search dropdown nochosen">
+                    <select name="action_filter" id="action_filter" class="ui search dropdown">
                         <option value="0">{{ _T("Select an action") }}</option>
                         {% for action in actions %}
                             <option value="{{ action|escape }}"{% if history.filters.action_filter == action %} selected="selected"{% endif %}>{{ action|escape }}</option>

@@ -16,7 +16,7 @@
                         </div>
                         <div class="field inline{% if required.id_adh is defined and required.id_adh == 1 %} required{% endif %}">
                             <label for="id_adh" >{{ _T("Originator:") }}</label>
-                            <div id="id_adh" class="jsonly search-dropdown ui input nochosen paginated"{% if required.id_adh is defined and required.id_adh == 1 %} required="required"{% endif %}>
+                            <div id="id_adh" class="jsonly search-dropdown ui input paginated"{% if required.id_adh is defined and required.id_adh == 1 %} required="required"{% endif %}>
                                 <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
                                 <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                                 <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>

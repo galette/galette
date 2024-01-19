@@ -39,7 +39,7 @@
                     </td>
                     <td class="left" data-col-label="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
 {% if class == 'ContributionsTypes' %}
-                        <select name="{{ fields.third }}" class="ui dropdown nochosen">
+                        <select name="{{ fields.third }}" class="ui dropdown">
                             <option value="0" selected="selected">{{ _T("No") }}</option>
                             <option value="1">{{ _T("Yes") }}</option>
                         </select>

@@ -20,7 +20,7 @@
                         <div class="three fields">
                             <div class="field">
                                 <label for="sender">{{ _T("Sender") }}</label>
-                                <select name="sender" id="sender" class="ui dropdown nochosen">
+                                <select name="sender" id="sender" class="ui dropdown">
                                     <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_PREFS') }}">{{ _T("from preferences") }}</option>
                                 {% if not login.isSuperAdmin() %}
                                     <option value="{{ constant('Galette\\Core\\GaletteMail::SENDER_CURRENT') }}">{{ _T("current logged in user") }}</option>

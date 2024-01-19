@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="column">
                                     <span data-prop-label="{{ _T("Permissions") }}" class="access" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
-                                        <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown nochosen">
+                                        <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown">
                                             <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
                                             <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>
                                             <option value="{{ constant('Galette\\Entity\\FieldsConfig::STAFF') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %} selected="selected"{% endif %}>{{ _T("Staff member") }}</option>

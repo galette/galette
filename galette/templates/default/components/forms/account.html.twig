@@ -1,7 +1,7 @@
 {% extends "components/forms/select.html.twig" %}
 
 {% block element %}
-    <select name="activite_adh" id="activite_adh" class="ui dropdown nochosen"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required is defined and required == 1 %} required="required"{% endif %}>
+    <select name="activite_adh" id="activite_adh" class="ui dropdown"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required is defined and required == 1 %} required="required"{% endif %}>
         <option value="1" {% if member.isActive() == 1 %}selected="selected"{% endif %}>{{ _T("Active") }}</option>
         <option value="0" {% if member.isActive() == 0 %}selected="selected"{% endif %}>{{ _T("Inactive") }}</option>
     </select>
