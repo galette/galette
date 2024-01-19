@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <span id="parent_id_elt" class="">
-                            <div id="parent_id" class="jsonly search-dropdown ui input nochosen paginated">
+                            <div id="parent_id" class="jsonly search-dropdown ui input paginated">
                                 <input id="parent_id_input" type="text" name="parent_id" value="{{ member.isDuplicate() and member.parent is defined and member.parent is not null ? member.parent.id }}" placeholder="{{ _T("Member ID") }}">
                                 <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
                                 <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
@@ -116,7 +116,7 @@
             <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
-                    <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown nochosen">
+                    <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown">
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>

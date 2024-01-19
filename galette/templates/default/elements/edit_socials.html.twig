@@ -18,7 +18,7 @@
                 <label>{{ _T("Add new social network") }}</label>
                 <div class="combo-social fields">
                     <div class="field">
-                        <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
+                        <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown">
                             <option value="">{{ _T("Choose or enter your own...") }}</option>
                             {% for social_type in osocials.getSystemTypes(false) %}
                                 <option value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</option>

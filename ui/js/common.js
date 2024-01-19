@@ -30,7 +30,7 @@
 var _bindFomanticComponents = function() {
     var
         $sidebar         = $('.ui.sidebar'),
-        $dropdown        = $('.ui.dropdown:not(.navigation, .autosubmit, .nochosen), select:not(.nochosen)'),
+        $dropdown        = $('.ui.dropdown:not(.navigation, .autosubmit), select'),
         $dropdownNav     = $('.ui.dropdown.navigation'),
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),

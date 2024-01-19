@@ -8,7 +8,7 @@
         id="{{ id }}"
         {% if required is defined and required == true %} required="required"{% endif %}
         {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
-        class="ui search dropdown nochosen"
+        class="ui search dropdown"
     >
     {% for option_value, option_label in values %}
         <option
