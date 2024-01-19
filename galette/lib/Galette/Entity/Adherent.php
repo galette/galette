@@ -191,7 +191,7 @@ class Adherent
     private bool $_duplicate = false;
     /** @var array<int,Social> */
     private array $_socials;
-    private string $_number;
+    private ?string $_number;
 
     private string $_row_classes;
 
@@ -1160,7 +1160,6 @@ class Adherent
                 if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
                 }
-                $this->$prop = $value;
 
                 // now, check validity
                 if ($value !== null && $value != '') {
