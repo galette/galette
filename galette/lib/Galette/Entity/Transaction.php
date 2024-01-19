@@ -75,7 +75,7 @@ class Transaction
     private int $_id;
     private string $_date;
     private float $_amount;
-    private string $_description;
+    private ?string $_description = null;
     private int $_member;
 
     /**
@@ -628,7 +628,7 @@ class Transaction
                     }
                     return null;
                 case 'amount':
-                    if ($this->$rname !== null) {
+                    if (isset($this->$rname)) {
                         return (double)$this->$rname;
                     }
                     return null;
