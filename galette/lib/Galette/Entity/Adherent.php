@@ -178,7 +178,7 @@ class Adherent
     private ?string $_due_date;
     private string $_others_infos;
     private string $_others_infos_admin;
-    private Picture $_picture;
+    private ?Picture $_picture = null;
     private int $_oldness;
     private ?int $_days_remaining = null;
     /** @var array<int, Group> */
