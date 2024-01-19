@@ -402,7 +402,7 @@ class Adherent extends GaletteTestCase
             }
         );
 
-        $data = ['id_statut' => ''];
+        $data = ['id_statut' => \Galette\Entity\Status::DEFAULT_STATUS];
         $check = $adh->check($data, [], []);
         $expected = ['You have to select a group you own!'];
         $this->assertSame($expected, $check);
