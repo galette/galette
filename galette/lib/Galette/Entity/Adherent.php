@@ -1160,6 +1160,7 @@ class Adherent
                 if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
                 }
+                $this->$prop = $value;
 
                 // now, check validity
                 if ($value !== null && $value != '') {
