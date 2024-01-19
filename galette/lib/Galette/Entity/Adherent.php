@@ -752,7 +752,7 @@ class Adherent
      */
     public function hasChildren(): bool
     {
-        if (!isset($this->children) ||$this->_children === null) {
+        if (!isset($this->children) || $this->_children === null) {
             if ($this->id) {
                 Analog::log(
                     'Children has not been loaded!',
