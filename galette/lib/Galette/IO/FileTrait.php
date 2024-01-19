@@ -72,7 +72,7 @@ trait FileTrait
         '|'    =>    '|'
     );
 
-    protected string $name;
+    protected ?string $name;
     protected ?string $dest_dir;
     /** @var array<string> */
     protected $allowed_extensions = array();
@@ -375,11 +375,11 @@ trait FileTrait
     /**
      * Get file name
      *
-     * @return string
+     * @return ?string
      */
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
-        return $this->name;
+        return $this->name ?? null;
     }
 
     /**

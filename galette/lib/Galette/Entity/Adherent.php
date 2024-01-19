@@ -180,7 +180,7 @@ class Adherent
     private string $_others_infos_admin;
     private Picture $_picture;
     private int $_oldness;
-    private int $_days_remaining;
+    private ?int $_days_remaining = null;
     /** @var array<int, Group> */
     private array $_groups = [];
     /** @var array<int, Group> */
@@ -819,7 +819,7 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         // Last active or first expired day
-        } elseif ($this->_days_remaining == 0) {
+        } elseif ($this->_days_remaining === 0) {
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
