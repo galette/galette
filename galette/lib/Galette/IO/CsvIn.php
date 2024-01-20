@@ -259,7 +259,7 @@ class CsvIn extends Csv implements FileInterface
 
         foreach (array_keys($config_required) as $field) {
             if (in_array($field, $this->_fields)) {
-                $this->_required[$field] = true;
+                $this->_required[$field] = $field;
             }
         }
 
