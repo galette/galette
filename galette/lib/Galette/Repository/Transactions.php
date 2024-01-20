@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
@@ -69,7 +70,7 @@ class Transactions
     private int $count = 0;
     private Db $zdb;
     private Login $login;
-    private ?TransactionsList $filters;
+    private TransactionsList $filters;
 
     /**
      * Default constructor
@@ -98,9 +99,9 @@ class Transactions
      * @param ?array<string> $fields   field(s) name(s) to get. Should be a string or
      *                                 an array. If null, all fields will be returned
      *
-     * @return array<int, Transaction>|ResultSet
+     * @return array<int, Transaction>|ResultSet|Result
      */
-    public function getList(bool $as_trans = false, ?array $fields = null): array|ResultSet
+    public function getList(bool $as_trans = false, ?array $fields = null): array|ResultSet|Result
     {
         try {
             $select = $this->buildSelect($fields);

@@ -72,7 +72,7 @@ class Pdf extends \TCPDF
 
     protected Preferences $preferences;
     protected I18n $i18n;
-    private ?PdfModel $model;
+    private PdfModel $model;
     private bool $paginated = false;
     protected string $filename;
 

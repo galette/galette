@@ -83,7 +83,7 @@ class GaletteMail
     /** @var array<string, string> */
     private array $recipients = array();
 
-    private PHPMailer|null $mail = null;
+    private PHPMailer $mail;
     /** @var array<int,File> */
     protected array $attachments = array();
 
@@ -213,7 +213,7 @@ class GaletteMail
     {
         $res = true;
 
-        if ($this->mail === null) {
+        if (!isset($this->mail)) {
             $this->initMailer();
         }
 
@@ -252,7 +252,7 @@ class GaletteMail
      */
     public function send(): int
     {
-        if ($this->mail === null) {
+        if (!isset($this->mail)) {
             $this->initMailer();
         }
 
@@ -335,7 +335,7 @@ class GaletteMail
                     "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
-                $this->mail = null;
+                unset($this->mail);
                 return self::MAIL_ERROR;
             } else {
                 $txt = '';
@@ -346,7 +346,7 @@ class GaletteMail
                     'An email has been sent to: ' . $txt,
                     Analog::INFO
                 );
-                $this->mail = null;
+                unset($this->mail);
                 return self::MAIL_SENT;
             }
         } catch (Throwable $e) {
@@ -355,7 +355,7 @@ class GaletteMail
                 Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
-            $this->mail = null;
+            unset($this->mail);
             return self::MAIL_ERROR;
         }
     }
@@ -397,8 +397,9 @@ class GaletteMail
                 '[GaletteMail] `' . $url . '` is not an url',
                 Analog::DEBUG
             );
+            return false;
         }
-        return $valid;
+        return true;
     }
 
     /**
@@ -496,7 +497,7 @@ class GaletteMail
     public function getWrappedMessage(): string
     {
         if ($this->word_wrap > 0) {
-            if ($this->mail === null) {
+            if (!isset($this->mail)) {
                 $this->initMailer();
             }
 

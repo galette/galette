@@ -122,7 +122,7 @@ class Members
 
     public const NON_STAFF_MEMBERS = 30;
 
-    private MembersList|AdvancedMembersList|null $filters;
+    private MembersList|AdvancedMembersList $filters;
     private int $count = 0;
     /** @var array<string> */
     private array $errors = array();
@@ -1766,7 +1766,7 @@ class Members
         $select->where('email_adh != \'\' AND email_adh IS NOT NULL');
         $rows = $zdb->execute($select);
         foreach ($rows as $row) {
-            $emails[$row->email_adh] = $row->{self::PK};
+            $emails[(string)$row->email_adh] = (int)$row->{self::PK};
         }
         return $emails;
     }
@@ -1811,7 +1811,7 @@ class Members
             foreach ($list_members as $member) {
                 $pk = Adherent::PK;
 
-                $members[$member->$pk] = Adherent::getNameWithCase(
+                $members[(int)$member->$pk] = Adherent::getNameWithCase(
                     $member->nom_adh,
                     $member->prenom_adh,
                     false,
