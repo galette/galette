@@ -36,6 +36,8 @@
 
 namespace Galette\Core;
 
+use Galette\Util\Telemetry;
+
 /**
  * Grab system information
  *
@@ -61,9 +63,9 @@ class SysInfos
      */
     public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins): string
     {
-        $telemetry = new \Galette\Util\Telemetry($zdb, $prefs, $plugins);
+        $telemetry = new Telemetry($zdb, $prefs, $plugins);
 
-        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
+        $str = str_pad('Galette version:', 20, '.') . ' ' . Galette::gitVersion(true) . "\n";
 
         if (Galette::isDemo()) {
             $str .= $this->getPluginsInfo($plugins);
