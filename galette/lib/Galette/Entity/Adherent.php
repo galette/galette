@@ -450,7 +450,7 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if (isset($this->_parent) && $this->_parent !== null && !$this->_parent instanceof Adherent) {
+        if (isset($this->_parent) && !$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
             $this->_parent = new Adherent($this->zdb, (int)$this->_parent, $deps);
         }

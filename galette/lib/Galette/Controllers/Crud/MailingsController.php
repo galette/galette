@@ -36,7 +36,6 @@
 
 namespace Galette\Controllers\Crud;
 
-use Throwable;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
 use Slim\Psr7\Request;
@@ -676,11 +675,9 @@ class MailingsController extends CrudController
             $ajax = true;
         }
 
-        $mailing = null;
         if ($id !== null) {
             $mailing = new Mailing($this->preferences);
             MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
-            $attachments = $mailing->attachments;
         } else {
             $mailing = $this->session->mailing;
 
@@ -707,8 +704,8 @@ class MailingsController extends CrudController
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
-            $attachments = $mailing->attachments;
         }
+        $attachments = $mailing->attachments;
 
         // display page
         $this->view->render(
@@ -730,12 +727,12 @@ class MailingsController extends CrudController
     }
 
     /**
-     * Preview attachement action
+     * Preview attachment action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param integer  $id       Mailing id
-     * @param integer  $pos      Attachement position in list
+     * @param integer  $pos      Attachment position in list
      *
      * @return Response
      */

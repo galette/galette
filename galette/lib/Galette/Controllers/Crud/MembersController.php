@@ -1406,6 +1406,7 @@ class MembersController extends CrudController
             $member->setSelfMembership();
 
             //check captcha
+            /** @var Gaptcha $gaptcha */
             $gaptcha = $this->session->gaptcha;
             if (!$gaptcha->check($post['gaptcha'])) {
                 $error_detected[] = _T('Invalid captcha');
