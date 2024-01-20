@@ -873,6 +873,8 @@
 
 {% block javascripts %}
         <script type="text/javascript">
+            {% include "elements/js/choose_social.js.twig" %}
+
             $(function(){
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %}
                 $('#smtp_parameters').addClass('displaynone');

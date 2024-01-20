@@ -1,0 +1,40 @@
+var _dropdownSocials = function() {
+    $('.socials-dropdown').dropdown({
+        allowAdditions: true,
+        onNoResults: function(searchValue) {
+            $(this).dropdown('set value', searchValue);
+        }
+    });
+}
+
+var _rmSocial = function(elt) {
+    if ( typeof elt == 'undefined') {
+        elt = $('#social .stored');
+    }
+    elt.find('.delsocial').click(function(e){
+        e.preventDefault();
+        var _this = $(this);
+        _this.parents('.field.stored').remove();
+    });
+}
+
+$(function(){
+    _rmSocial();
+    _dropdownSocials();
+
+    $('a.addsocial').click(function(e) {
+        e.preventDefault();
+
+        var _newindex = $(this).parents('.addsocial').find('.combo-social:last .socials-dropdown').attr('id').replace('social_new_type_', '');
+        ++_newindex;
+        $(this).parents('.addsocial').find ('.combo-social:last')
+            .clone() // copy
+            .insertAfter('#social .combo-social:last') // where
+            .find('.socials-dropdown').attr('id', 'social_new_type_' + _newindex).dropdown('clear')
+            .find('input:not(.search)').attr('id', 'social_new_type_input_' + _newindex).attr('name', 'social_new_type_' + _newindex)
+            .parent().parent().parent().find('input.value').attr('id', 'social_new_value_' + _newindex).attr('name', 'social_new_value_' + _newindex).val('')
+        ;
+
+        _dropdownSocials();
+    });
+});

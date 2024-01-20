@@ -198,6 +198,7 @@
 {% block javascripts %}
         <script type="text/javascript">
             {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
+            {% include "elements/js/choose_social.js.twig" %}
 
             $(function() {
                 $('#company_field.nocompany').addClass('displaynone');
