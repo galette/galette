@@ -1831,7 +1831,6 @@ class Adherent
                     }
                 }
                 return null;
-                break;
             case 'parent_id':
                 return ($this->_parent instanceof Adherent) ? $this->_parent->id : (int)$this->_parent;
             default:
@@ -1842,7 +1841,10 @@ class Adherent
                     );
                     return null;
                 } else {
-                    return $this->$rname ?? '';
+                    if (isset($this->$rname)) {
+                        return $this->$rname;
+                    }
+                    return null;
                 }
         }
     }
