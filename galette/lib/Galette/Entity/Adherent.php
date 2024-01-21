@@ -37,6 +37,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateTime;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\Socials;
@@ -144,7 +145,7 @@ class Adherent
 
     private ?int $_id;
     //Identity
-    private ?Title $_title = null;
+    private Title|string|null $_title = null;
     private ?string $_company_name;
     private ?string $_name;
     private ?string $_surname;
@@ -157,10 +158,10 @@ class Adherent
     private bool $_active;
     private int $_status;
     //Contact information
-    private ?string $_address;
-    private ?string $_zipcode;
-    private ?string $_town;
-    private ?string $_country;
+    private ?string $_address = null;
+    private ?string $_zipcode = null;
+    private ?string $_town = null;
+    private ?string $_country = null;
     private ?string $_phone;
     private ?string $_gsm;
     private ?string $_email;
@@ -191,7 +192,7 @@ class Adherent
     private bool $_duplicate = false;
     /** @var array<int,Social> */
     private array $_socials;
-    private ?string $_number;
+    private ?string $_number = null;
 
     private string $_row_classes;
 
@@ -540,9 +541,9 @@ class Adherent
     private function checkDues(): void
     {
         //how many days since our beloved member has been created
-        $now = new \DateTime();
+        $now = new DateTime();
         $this->_oldness = $now->diff(
-            new \DateTime($this->_creation_date)
+            new DateTime($this->_creation_date)
         )->days;
 
         $this->_row_classes = '';
@@ -557,7 +558,7 @@ class Adherent
                 $this->_due_status = Contribution::STATUS_NEVER;
             } else {
                 // To count the days remaining, the next begin date is required.
-                $due_date = new \DateTime($this->_due_date);
+                $due_date = new DateTime($this->_due_date);
                 $next_begin_date = clone $due_date;
                 $next_begin_date->add(new \DateInterval('P1D'));
                 $date_diff = $now->diff($next_begin_date);
@@ -790,26 +791,30 @@ class Adherent
     {
         $ret = '';
         $never_contributed = false;
-        $now = new \DateTime();
+        $now = new DateTime();
         // To count the days remaining, the next begin date is required.
         if (!isset($this->_due_date)) {
             $this->_due_date = $now->format('Y-m-d');
             $never_contributed = true;
         }
-        $due_date = new \DateTime($this->_due_date);
+        $due_date = new DateTime($this->_due_date);
         $next_begin_date = clone $due_date;
         $next_begin_date->add(new \DateInterval('P1D'));
         $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($never_contributed === true) {
-            $patterns = array('/%days/', '/%date/');
-            $cdate = new \DateTime($this->_creation_date);
-            $replace = array(
-                $this->_oldness,
-                $cdate->format(__("Y-m-d"))
-            );
             if ($this->_active) {
+                $patterns = array('/%days/', '/%date/');
+                $cdate = new DateTime($this->_creation_date);
+                if (!isset($this->_oldness)) {
+                    $this->checkDues();
+                }
+                $replace = array(
+                    $this->_oldness,
+                    $cdate->format(__("Y-m-d"))
+                );
+
                 $ret = preg_replace(
                     $patterns,
                     $replace,
@@ -1035,8 +1040,8 @@ class Adherent
             if (!isset($this->_due_date)) {
                 return false;
             } else {
-                $due_date = new \DateTime($this->_due_date);
-                $now = new \DateTime();
+                $due_date = new DateTime($this->_due_date);
+                $now = new DateTime();
                 $now->setTime(0, 0, 0);
                 return $due_date >= $now;
             }
@@ -1282,17 +1287,17 @@ class Adherent
             case 'ddn_adh':
             case 'date_echeance':
                 try {
-                    $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                    $d = DateTime::createFromFormat(__("Y-m-d"), $value);
                     if ($d === false) {
                         //try with non localized date
-                        $d = \DateTime::createFromFormat("Y-m-d", $value);
+                        $d = DateTime::createFromFormat("Y-m-d", $value);
                         if ($d === false) {
                             throw new \Exception('Incorrect format');
                         }
                     }
 
                     if ($field === 'ddn_adh') {
-                        $now = new \DateTime();
+                        $now = new DateTime();
                         $now->setTime(0, 0, 0);
                         $d->setTime(0, 0, 0);
 
@@ -1760,8 +1765,8 @@ class Adherent
                     return $status->getLabel($this->_status);
                 case 'sfullname':
                     return $this->getNameWithCase(
-                        $this->_name,
-                        $this->_surname,
+                        $this->_name ?? '',
+                        $this->_surname ?? '',
                         (isset($this->_title) ? $this->title : false)
                     );
                 case 'saddress':
@@ -1811,9 +1816,9 @@ class Adherent
             case 'creation_date':
             case 'modification_date':
             case 'due_date':
-                if ($this->$rname != '') {
+                if (isset($this->$rname) && $this->$rname != '') {
                     try {
-                        $d = new \DateTime($this->$rname);
+                        $d = new DateTime($this->$rname);
                         return $d->format(__("Y-m-d"));
                     } catch (Throwable $e) {
                         //oops, we've got a bad date :/
@@ -1825,6 +1830,7 @@ class Adherent
                         return $this->$rname;
                     }
                 }
+                return null;
                 break;
             case 'parent_id':
                 return ($this->_parent instanceof Adherent) ? $this->_parent->id : (int)$this->_parent;
@@ -1836,7 +1842,7 @@ class Adherent
                     );
                     return null;
                 } else {
-                    return $this->$rname;
+                    return $this->$rname ?? '';
                 }
         }
     }
@@ -2017,7 +2023,7 @@ class Adherent
             return '';
         }
 
-        $d = \DateTime::createFromFormat('Y-m-d', $this->_birthdate);
+        $d = DateTime::createFromFormat('Y-m-d', $this->_birthdate);
         if ($d === false) {
             Analog::log(
                 'Invalid birthdate: ' . $this->_birthdate,
@@ -2028,7 +2034,7 @@ class Adherent
 
         return str_replace(
             '%age',
-            (string)$d->diff(new \DateTime())->y,
+            (string)$d->diff(new DateTime())->y,
             _T(' (%age years old)')
         );
     }

@@ -466,7 +466,7 @@ class GaletteMail
      */
     public function getSubject(): string
     {
-        return $this->subject;
+        return $this->subject ?? '';
     }
 
     /**
@@ -486,7 +486,7 @@ class GaletteMail
      */
     public function getMessage(): string
     {
-        return $this->message;
+        return $this->message ?? '';
     }
 
     /**
