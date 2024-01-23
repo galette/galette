@@ -94,6 +94,32 @@ class Login extends Authentication
     }
 
     /**
+     * Authenticate from cron
+     *
+     * @param string      $name        Service name
+     * @param Preferences $preferences Preferences instance
+     *
+     * @return bool
+     */
+    public function logCron(string $name, Preferences $preferences): bool
+    {
+        //known cronable files
+        $ok = array('reminder');
+
+        if (in_array($name, $ok)) {
+            $this->logged = true;
+            $this->cron = true;
+            $this->login = 'cron';
+            $this->name = 'cron';
+            $this->lang = $preferences->pref_lang;
+            $this->i18n->changeLanguage($this->lang);
+            return true;
+        } else {
+            trigger_error('Not authorized!', E_USER_ERROR);
+        }
+    }
+
+    /**
      * Log out user and unset variables
      *
      * @return bool
