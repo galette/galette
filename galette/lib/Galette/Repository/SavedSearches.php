@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2019-09-21
@@ -56,7 +56,7 @@ use Galette\Entity\Adherent;
  * @name      SavedSearches
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2019-09-21
@@ -93,10 +93,10 @@ class SavedSearches
     /**
      * Get saved searches list
      *
-     * @param bool   $as_search return the results as an array of
-     *                          SavedSearch object.
-     * @param ?array $fields    field(s) name(s) to get. Should be a string or
-     *                          an array. If null, all fields will be returned
+     * @param bool           $as_search return the results as an array of
+     *                                  SavedSearch object.
+     * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
+     *                                  an array. If null, all fields will be returned
      *
      * @return array<int, SavedSearch>|ResultSet
      */
@@ -128,7 +128,7 @@ class SavedSearches
     /**
      * Builds the SELECT statement
      *
-     * @param ?array $fields fields list to retrieve
+     * @param ?array<string> $fields fields list to retrieve
      *
      * @return Select SELECT statement
      */
@@ -200,7 +200,7 @@ class SavedSearches
     /**
      * Builds the order clause
      *
-     * @return array
+     * @return array<string>
      */
     private function buildOrderClause(): array
     {
@@ -223,9 +223,9 @@ class SavedSearches
     /**
      * Remove specified searches
      *
-     * @param integer|array $ids         Searches identifiers to delete
-     * @param History       $hist        History
-     * @param boolean       $transaction True to begin a database transaction
+     * @param integer|array<int> $ids         Searches identifiers to delete
+     * @param History            $hist        History
+     * @param boolean            $transaction True to begin a database transaction
      *
      * @return boolean
      */

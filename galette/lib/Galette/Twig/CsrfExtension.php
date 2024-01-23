@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2022-2023 The Galette Team
+ * Copyright © 2022-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2022-2023 The Galette Team
+ * @copyright 2022-2024 The Galette Team
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 1.0dev - 2022-01-22
@@ -47,7 +47,7 @@ use Twig\Extension\GlobalsInterface;
  * @name      CsrfExtension
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2022-2023 The Galette Team
+ * @copyright 2022-2024 The Galette Team
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 1.0dev - 2022-01-22
@@ -73,7 +73,7 @@ class CsrfExtension extends AbstractExtension implements GlobalsInterface
     /**
      * Get globals
      *
-     * @return array
+     * @return array<string,null|string>
      */
     public function getGlobals(): array
     {

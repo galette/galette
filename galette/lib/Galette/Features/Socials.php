@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021-2023 The Galette Team
+ * Copyright © 2021-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2021-10-25
@@ -46,7 +46,7 @@ use Galette\Entity\Social;
  * @name      Replacements
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2021-10-25
@@ -54,12 +54,13 @@ use Galette\Entity\Social;
 
 trait Socials
 {
+    /** @var array<string,mixed> */
     protected array $socials_input = [];
 
     /**
      * Check socials
      *
-     * @param array $post User input
+     * @param array<string,mixed> $post User input
      *
      * @return void
      */
@@ -121,7 +122,8 @@ trait Socials
 
     /**
      * Get core registered types
-     * @return array
+     *
+     * @return array<string,string>
      */
     protected function getCoreRegisteredTypes(): array
     {
@@ -131,7 +133,7 @@ trait Socials
     /**
      * Get member registered types
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getMemberRegisteredTypes(): array
     {
@@ -143,7 +145,7 @@ trait Socials
      *
      * @param bool $core True for core type, false for members ones
      *
-     * @return array
+     * @return array<string,string>
      */
     protected function getRegisteredTypes(bool $core): array
     {

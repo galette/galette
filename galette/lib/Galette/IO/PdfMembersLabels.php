@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.2dev - 2014-12-01
@@ -38,6 +38,7 @@ namespace Galette\IO;
 
 use Galette\Core\Preferences;
 use Analog\Analog;
+use Galette\Entity\Adherent;
 
 /**
  * Member labels PDF
@@ -47,7 +48,7 @@ use Analog\Analog;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.2dev - 2014-12-01
@@ -55,11 +56,11 @@ use Analog\Analog;
 
 class PdfMembersLabels extends Pdf
 {
-    private $xorigin;
-    private $yorigin;
-    private $lw;
-    private $lh;
-    private $line_h;
+    private int $xorigin;
+    private int $yorigin;
+    private float $lw;
+    private float $lh;
+    private float $line_h;
 
     /**
      * Main constructor, set creator and author
@@ -79,7 +80,7 @@ class PdfMembersLabels extends Pdf
      *
      * @return void
      */
-    private function init()
+    private function init(): void
     {
         // Set document information
         $this->SetTitle(_T("Member's Labels"));
@@ -127,11 +128,11 @@ class PdfMembersLabels extends Pdf
     /**
      * Draw members cards
      *
-     * @param array $members Members
+     * @param array<Adherent> $members Members
      *
      * @return void
      */
-    public function drawLabels($members)
+    public function drawLabels(array $members): void
     {
         $nb_etiq = 0;
         foreach ($members as $member) {

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2023 The Galette Team
+ * Copyright © 2010-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
+ * @copyright 2010-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2010-03-03
@@ -50,7 +50,7 @@ use Slim\Views\Twig;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
+ * @copyright 2010-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  *
@@ -76,6 +76,7 @@ abstract class Pagination
     public const ORDER_ASC = 'ASC';
     public const ORDER_DESC = 'DESC';
 
+    /** @var array<string> */
     protected array $pagination_fields = array(
         'current_page',
         'orderby',

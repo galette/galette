@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-06-02
@@ -37,6 +37,8 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateTime;
+use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\Socials;
 use Throwable;
@@ -60,7 +62,7 @@ use Galette\Features\Dynamics;
  * @name      Adherent
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 02-06-2009
@@ -84,7 +86,7 @@ use Galette\Features\Dynamics;
  * @property string $address
  * @property string $zipcode
  * @property string $town
- * @property string $country
+ * @property ?string $country
  * @property string $phone
  * @property string $gsm
  * @property string $email
@@ -141,52 +143,56 @@ class Adherent
     public const AFTER_ADD_LIST = 4;
     public const AFTER_ADD_HOME = 5;
 
-    private $_id;
+    private ?int $_id;
     //Identity
-    private $_title;
-    private $_company_name;
-    private $_name;
-    private $_surname;
-    private $_nickname;
-    private $_birthdate;
-    private $_birth_place;
-    private $_gender;
-    private $_job;
-    private $_language;
-    private $_active;
-    private $_status;
+    private Title|string|null $_title = null;
+    private ?string $_company_name;
+    private ?string $_name;
+    private ?string $_surname;
+    private ?string $_nickname;
+    private ?string $_birthdate;
+    private ?string $_birth_place;
+    private int $_gender;
+    private string $_job;
+    private string $_language;
+    private bool $_active;
+    private int $_status;
     //Contact information
-    private $_address;
-    private $_zipcode;
-    private $_town;
-    private $_country;
-    private $_phone;
-    private $_gsm;
-    private $_email;
-    private $_gnupgid;
-    private $_fingerprint;
+    private ?string $_address = null;
+    private ?string $_zipcode = null;
+    private ?string $_town = null;
+    private ?string $_country = null;
+    private ?string $_phone;
+    private ?string $_gsm;
+    private ?string $_email;
+    private ?string $_gnupgid;
+    private ?string $_fingerprint;
     //Galette relative information
-    private $_appears_in_list;
-    private $_admin;
-    private $_staff = false;
-    private $_due_free;
-    private $_login;
-    private $_password;
-    private $_creation_date;
-    private $_modification_date;
-    private $_due_date;
-    private $_others_infos;
-    private $_others_infos_admin;
-    private $_picture;
-    private $_oldness;
-    private $_days_remaining;
-    private $_groups = [];
-    private $_managed_groups = [];
-    private $_parent;
-    private $_children = [];
-    private $_duplicate = false;
-    private $_socials;
-    private $_number;
+    private bool $_appears_in_list;
+    private bool $_admin;
+    private bool $_staff = false;
+    private bool $_due_free;
+    private ?string $_login;
+    private ?string $_password;
+    private string $_creation_date;
+    private string $_modification_date;
+    private ?string $_due_date;
+    private string $_others_infos;
+    private string $_others_infos_admin;
+    private ?Picture $_picture = null;
+    private int $_oldness;
+    private ?int $_days_remaining = null;
+    /** @var array<int, Group> */
+    private array $_groups = [];
+    /** @var array<int, Group> */
+    private array $_managed_groups = [];
+    private int|Adherent|null $_parent;
+    /** @var array<int, Adherent>|null */
+    private ?array $_children = [];
+    private bool $_duplicate = false;
+    /** @var array<int,Social> */
+    private array $_socials;
+    private ?string $_number = null;
 
     private string $_row_classes;
 
@@ -194,10 +200,12 @@ class Adherent
 
     private Db $zdb;
     private Preferences $preferences;
+    /** @var array<string, mixed> */
     private array $fields;
     private History $history;
     private int $_due_status = Contribution::STATUS_UNKNOWN;
 
+    /** @var array<string> */
     private array $parent_fields = [
         'adresse_adh',
         'cp_adh',
@@ -205,6 +213,7 @@ class Adherent
         'email_adh'
     ];
 
+    /** @var array<string> */
     private array $errors = [];
 
     private bool $sendmail = false;
@@ -212,14 +221,15 @@ class Adherent
     /**
      * Default constructor
      *
-     * @param Db                          $zdb  Database instance
-     * @param ArrayObject|string|int|null $args Either a ResultSet row, its id or its
-     *                                          login or its email for to load s specific
-     *                                          member, or null to just instantiate object
-     * @param false|array|null            $deps Dependencies configuration, see Adherent::$_deps
+     * @param Db                                              $zdb  Database instance
+     * @param ArrayObject<string, int|string>|string|int|null $args Either a ResultSet row, its id or its
+     *                                                              login or its email for to load s specific
+     *                                                              member, or null to just instantiate object
+     * @param false|array<string,bool>|null                   $deps Dependencies configuration, see Adherent::$_deps
      */
     public function __construct(Db $zdb, ArrayObject|int|string $args = null, array|false $deps = null)
     {
+        /** @var I18n $i18n */
         global $i18n;
 
         $this->zdb = $zdb;
@@ -292,7 +302,7 @@ class Adherent
                 return false;
             }
 
-            /** @var ArrayObject $result */
+            /** @var ArrayObject<string, int|string> $result */
             $result = $results->current();
             $this->loadFromRS($result);
             return true;
@@ -326,7 +336,7 @@ class Adherent
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRS($result);
             }
@@ -344,7 +354,7 @@ class Adherent
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
@@ -441,7 +451,7 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if ($this->_parent !== null && !$this->_parent instanceof Adherent) {
+        if (isset($this->_parent) && !$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
             $this->_parent = new Adherent($this->zdb, (int)$this->_parent, $deps);
         }
@@ -531,9 +541,9 @@ class Adherent
     private function checkDues(): void
     {
         //how many days since our beloved member has been created
-        $now = new \DateTime();
+        $now = new DateTime();
         $this->_oldness = $now->diff(
-            new \DateTime($this->_creation_date)
+            new DateTime($this->_creation_date)
         )->days;
 
         $this->_row_classes = '';
@@ -548,7 +558,7 @@ class Adherent
                 $this->_due_status = Contribution::STATUS_NEVER;
             } else {
                 // To count the days remaining, the next begin date is required.
-                $due_date = new \DateTime($this->_due_date);
+                $due_date = new DateTime($this->_due_date);
                 $next_begin_date = clone $due_date;
                 $next_begin_date->add(new \DateInterval('P1D'));
                 $date_diff = $now->diff($next_begin_date);
@@ -682,7 +692,7 @@ class Adherent
      */
     public function isMan(): bool
     {
-        return (int)$this->_gender === self::MAN;
+        return $this->_gender === self::MAN;
     }
 
     /**
@@ -692,7 +702,7 @@ class Adherent
      */
     public function isWoman(): bool
     {
-        return (int)$this->_gender === self::WOMAN;
+        return $this->_gender === self::WOMAN;
     }
 
 
@@ -743,7 +753,7 @@ class Adherent
      */
     public function hasChildren(): bool
     {
-        if ($this->_children === null) {
+        if (!isset($this->children) || $this->_children === null) {
             if ($this->id) {
                 Analog::log(
                     'Children has not been loaded!',
@@ -781,26 +791,30 @@ class Adherent
     {
         $ret = '';
         $never_contributed = false;
-        $now = new \DateTime();
+        $now = new DateTime();
         // To count the days remaining, the next begin date is required.
-        if ($this->_due_date === null) {
+        if (!isset($this->_due_date)) {
             $this->_due_date = $now->format('Y-m-d');
             $never_contributed = true;
         }
-        $due_date = new \DateTime($this->_due_date);
+        $due_date = new DateTime($this->_due_date);
         $next_begin_date = clone $due_date;
         $next_begin_date->add(new \DateInterval('P1D'));
         $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($never_contributed === true) {
-            $patterns = array('/%days/', '/%date/');
-            $cdate = new \DateTime($this->_creation_date);
-            $replace = array(
-                $this->_oldness,
-                $cdate->format(__("Y-m-d"))
-            );
             if ($this->_active) {
+                $patterns = array('/%days/', '/%date/');
+                $cdate = new DateTime($this->_creation_date);
+                if (!isset($this->_oldness)) {
+                    $this->checkDues();
+                }
+                $replace = array(
+                    $this->_oldness,
+                    $cdate->format(__("Y-m-d"))
+                );
+
                 $ret = preg_replace(
                     $patterns,
                     $replace,
@@ -810,7 +824,7 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         // Last active or first expired day
-        } elseif ($this->_days_remaining == 0) {
+        } elseif ($this->_days_remaining === 0) {
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
@@ -985,7 +999,7 @@ class Adherent
      *
      * @param Db $zdb Database instance
      *
-     * @return array
+     * @return array<string>
      */
     public static function getDbFields(Db $zdb): array
     {
@@ -1019,15 +1033,15 @@ class Adherent
         }
 
         if ($this->isDueFree()) {
-            //member is due free, he's up to date.
+            //member is due free, he's up-to-date.
             return true;
         } else {
             //let's check from due date, if present
-            if ($this->_due_date == null) {
+            if (!isset($this->_due_date)) {
                 return false;
             } else {
-                $due_date = new \DateTime($this->_due_date);
-                $now = new \DateTime();
+                $due_date = new DateTime($this->_due_date);
+                $now = new DateTime();
                 $now->setTime(0, 0, 0);
                 return $due_date >= $now;
             }
@@ -1037,9 +1051,9 @@ class Adherent
     /**
      * Set dependencies
      *
-     * @param Preferences $preferences Preferences instance
-     * @param array       $fields      Members fields configuration
-     * @param History     $history     History instance
+     * @param Preferences         $preferences Preferences instance
+     * @param array<string,mixed> $fields      Members fields configuration
+     * @param History             $history     History instance
      *
      * @return void
      */
@@ -1047,7 +1061,7 @@ class Adherent
         Preferences $preferences,
         array $fields,
         History $history
-    ) {
+    ): void {
         $this->preferences = $preferences;
         $this->fields = $fields;
         $this->history = $history;
@@ -1056,14 +1070,14 @@ class Adherent
     /**
      * Check posted values validity
      *
-     * @param array $values   All values to check, basically the $_POST array
-     *                        after sending the form
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string,mixed> $values   All values to check, basically the $_POST array
+     *                                      after sending the form
+     * @param array<string,bool>  $required Array of required fields
+     * @param array<string>       $disabled Array of disabled fields
      *
-     * @return true|array
+     * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled): array|bool
+    public function check(array $values, array $required, array $disabled): bool|array
     {
         global $login;
 
@@ -1146,7 +1160,7 @@ class Adherent
             }
 
             // if the field is enabled, check it
-            if (!isset($disabled[$key])) {
+            if (!in_array($key, $disabled)) {
                 // fill up the adherent structure
                 if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
@@ -1248,9 +1262,9 @@ class Adherent
      * Validate data for given key
      * Set valid data in current object, also resets errors list
      *
-     * @param string $field  Field name
-     * @param mixed  $value  Value we want to set
-     * @param array  $values All values, for some references
+     * @param string              $field  Field name
+     * @param mixed               $value  Value we want to set
+     * @param array<string,mixed> $values All values, for some references
      *
      * @return void
      */
@@ -1273,17 +1287,17 @@ class Adherent
             case 'ddn_adh':
             case 'date_echeance':
                 try {
-                    $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                    $d = DateTime::createFromFormat(__("Y-m-d"), $value);
                     if ($d === false) {
                         //try with non localized date
-                        $d = \DateTime::createFromFormat("Y-m-d", $value);
+                        $d = DateTime::createFromFormat("Y-m-d", $value);
                         if ($d === false) {
                             throw new \Exception('Incorrect format');
                         }
                     }
 
                     if ($field === 'ddn_adh') {
-                        $now = new \DateTime();
+                        $now = new DateTime();
                         $now->setTime(0, 0, 0);
                         $d->setTime(0, 0, 0);
 
@@ -1319,7 +1333,7 @@ class Adherent
                 }
                 break;
             case 'titre_adh':
-                if ($value !== null && $value !== '') {
+                if ($value !== '') {
                     if ($value == '-1') {
                         $this->$prop = null;
                     } elseif (!$value instanceof Title) {
@@ -1510,7 +1524,7 @@ class Adherent
                         $values[$field] = $this->zdb->isPostgres() ? 'false' : 0;
                     } elseif ($field === 'parent_id') {
                         //handle parents
-                        if ($this->_parent === null) {
+                        if (!isset($this->_parent)) {
                             $values['parent_id'] = new Expression('NULL');
                         } elseif ($this->parent instanceof Adherent) {
                             $values['parent_id'] = $this->_parent->id;
@@ -1555,7 +1569,7 @@ class Adherent
                 '_town'     => 'ville_adh'
             ];
             foreach ($notnull as $prop => $field) {
-                if ($this->$prop === null) {
+                if (!isset($this->$prop) || $this->$prop === null) {
                     $values[$field] = '';
                 }
             }
@@ -1751,8 +1765,8 @@ class Adherent
                     return $status->getLabel($this->_status);
                 case 'sfullname':
                     return $this->getNameWithCase(
-                        $this->_name,
-                        $this->_surname,
+                        $this->_name ?? '',
+                        $this->_surname ?? '',
                         (isset($this->_title) ? $this->title : false)
                     );
                 case 'saddress':
@@ -1791,7 +1805,7 @@ class Adherent
         switch ($name) {
             case 'id':
             case 'id_statut':
-                if ($this->$rname !== null) {
+                if (isset($this->$rname) && $this->$rname !== null) {
                     return (int)$this->$rname;
                 } else {
                     return null;
@@ -1802,9 +1816,9 @@ class Adherent
             case 'creation_date':
             case 'modification_date':
             case 'due_date':
-                if ($this->$rname != '') {
+                if (isset($this->$rname) && $this->$rname != '') {
                     try {
-                        $d = new \DateTime($this->$rname);
+                        $d = new DateTime($this->$rname);
                         return $d->format(__("Y-m-d"));
                     } catch (Throwable $e) {
                         //oops, we've got a bad date :/
@@ -1816,9 +1830,9 @@ class Adherent
                         return $this->$rname;
                     }
                 }
-                break;
+                return null;
             case 'parent_id':
-                return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
+                return ($this->_parent instanceof Adherent) ? $this->_parent->id : (int)$this->_parent;
             default:
                 if (!property_exists($this, $rname)) {
                     Analog::log(
@@ -1827,7 +1841,10 @@ class Adherent
                     );
                     return null;
                 } else {
-                    return $this->$rname;
+                    if (isset($this->$rname)) {
+                        return $this->$rname;
+                    }
+                    return null;
                 }
         }
     }
@@ -2004,11 +2021,11 @@ class Adherent
      */
     public function getAge(): string
     {
-        if ($this->_birthdate == null) {
+        if (!isset($this->_birthdate) && $this->_birthdate == null) {
             return '';
         }
 
-        $d = \DateTime::createFromFormat('Y-m-d', $this->_birthdate);
+        $d = DateTime::createFromFormat('Y-m-d', $this->_birthdate);
         if ($d === false) {
             Analog::log(
                 'Invalid birthdate: ' . $this->_birthdate,
@@ -2019,7 +2036,7 @@ class Adherent
 
         return str_replace(
             '%age',
-            (string)$d->diff(new \DateTime())->y,
+            (string)$d->diff(new DateTime())->y,
             _T(' (%age years old)')
         );
     }
@@ -2027,7 +2044,7 @@ class Adherent
     /**
      * Get parent inherited fields
      *
-     * @return array
+     * @return array<string>
      */
     public function getParentFields(): array
     {
@@ -2037,10 +2054,10 @@ class Adherent
     /**
      * Handle files (photo and dynamics files)
      *
-     * @param array  $files    Files sent
-     * @param ?array $cropping Cropping properties
+     * @param array<string,mixed>  $files    Files sent
+     * @param ?array<string,mixed> $cropping Cropping properties
      *
-     * @return array|true
+     * @return array<string>|true
      */
     public function handleFiles(array $files, array $cropping = null): array|bool
     {
@@ -2126,7 +2143,7 @@ class Adherent
     /**
      * Get current errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -2136,7 +2153,7 @@ class Adherent
     /**
      * Get user groups
      *
-     * @return array
+     * @return array<int, Group>
      */
     public function getGroups(): array
     {
@@ -2149,7 +2166,7 @@ class Adherent
     /**
      * Get user managed groups
      *
-     * @return array
+     * @return array<int, Group>
      */
     public function getManagedGroups(): array
     {

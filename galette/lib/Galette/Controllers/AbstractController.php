@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -49,7 +49,7 @@ use Slim\Routing\RouteParser;
  * @name      AbstractController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-02
@@ -57,6 +57,9 @@ use Slim\Routing\RouteParser;
 
 abstract class AbstractController
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
     /**
      * @var \Galette\Core\Db
@@ -113,7 +116,7 @@ abstract class AbstractController
     #[Inject]
     protected $l10n;
     /**
-     * Session
+     * @var \RKA\Session
      */
     #[Inject("session")]
     protected $session;
@@ -133,17 +136,17 @@ abstract class AbstractController
     #[Inject]
     protected $lists_config;
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     #[Inject("members_fields")]
     protected $members_fields;
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     #[Inject("members_form_fields")]
     protected $members_form_fields;
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     #[Inject("members_fields_cats")]
     protected $members_fields_cats;
@@ -269,7 +272,7 @@ abstract class AbstractController
      *
      * @param Request $request PSR Request
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function getArgs(Request $request): array
     {
@@ -282,9 +285,9 @@ abstract class AbstractController
     /**
      * Get a JSON response
      *
-     * @param Response $response Response instance
-     * @param array    $data     Data to send
-     * @param int      $status   HTTP status code
+     * @param Response            $response Response instance
+     * @param array<string,mixed> $data     Data to send
+     * @param int                 $status   HTTP status code
      *
      * @return Response
      */

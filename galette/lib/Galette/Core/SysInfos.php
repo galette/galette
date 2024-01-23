@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2012-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,13 +28,15 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.1dev - 2012-06-26
  */
 
 namespace Galette\Core;
+
+use Galette\Util\Telemetry;
 
 /**
  * Grab system information
@@ -61,9 +63,9 @@ class SysInfos
      */
     public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins): string
     {
-        $telemetry = new \Galette\Util\Telemetry($zdb, $prefs, $plugins);
+        $telemetry = new Telemetry($zdb, $prefs, $plugins);
 
-        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
+        $str = str_pad('Galette version:', 20, '.') . ' ' . Galette::gitVersion(true) . "\n";
 
         if (Galette::isDemo()) {
             $str .= $this->getPluginsInfo($plugins);

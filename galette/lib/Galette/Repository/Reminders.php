@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-13
@@ -49,7 +49,7 @@ use Laminas\Db\Sql\Expression;
  * @name      Reminders
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-13
@@ -60,19 +60,19 @@ class Reminders
     public const TABLE = 'reminders';
     public const PK = 'reminder_id';
 
-    private $selected;
-    private $types;
-    private $reminders;
-    private $toremind;
+    /** @var array<int> */
+    private array $selected;
+    /** @var array<int> */
+    private array $toremind;
 
     /**
      * Main constructor
      *
-     * @param array $selected Selected types for sending
+     * @param ?array<int> $selected Selected types for sending
      */
-    public function __construct($selected = null)
+    public function __construct(array $selected = null)
     {
-        if (isset($selected) && is_array($selected)) {
+        if (isset($selected)) {
             $this->selected = array_map('intval', $selected);
         } else {
             $this->selected = array(Reminder::IMPENDING, Reminder::LATE);
@@ -213,12 +213,12 @@ class Reminders
      * @param Db      $zdb    Database instance
      * @param boolean $nomail Get reminders for members who do not have email address
      *
-     * @return array
+     * @return array<Reminder>
      */
     public function getList(Db $zdb, bool $nomail = false): array
     {
-        $this->types = array();
-        $this->reminders = array();
+        $types = array();
+        $reminders = array();
 
         foreach ($this->selected as $s) {
             $this->loadToRemind($zdb, $s, $nomail);
@@ -235,12 +235,12 @@ class Reminders
                     false,
                     true
                 );
-                $this->types[$s] = $members;
+                $types[$s] = $members;
             }
         }
 
-        if (is_array($this->types)) {
-            foreach ($this->types as $type => $members) {
+        if (is_array($types)) {
+            foreach ($types as $type => $members) {
                 //load message
                 if (is_array($members)) {
                     foreach ($members as $member) {
@@ -248,11 +248,11 @@ class Reminders
                         $reminder->type = $type;
                         $reminder->dest = $member;
 
-                        $this->reminders[] = $reminder;
+                        $reminders[] = $reminder;
                     }
                 }
             }
         }
-        return $this->reminders;
+        return $reminders;
     }
 }

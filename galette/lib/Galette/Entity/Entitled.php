@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2023 The Galette Team
+ * Copyright © 2007-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-10-27
@@ -53,7 +53,7 @@ use Galette\Features\I18n;
  * @name      Entitled
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-10-27
@@ -78,7 +78,9 @@ abstract class Entitled
     private string $fthird;
     private string $used;
 
+    /** @var array<string, string> */
     public static array $fields;
+    /** @var array<int, array<string, mixed>> */
     protected static array $defaults;
 
     /** @var string|false */
@@ -88,18 +90,19 @@ abstract class Entitled
     private string $label = '';
     private string $third = '';
 
+    /** @var array<string> */
     private array $errors = array();
 
     /**
      * Default constructor
      *
-     * @param Db                   $zdb    Database
-     * @param string               $table  Table name
-     * @param string               $fpk    Primary key field name
-     * @param string               $flabel Label fields name
-     * @param string               $fthird The third field name
-     * @param string               $used   Table name for isUsed function
-     * @param int|ArrayObject|null $args   Either an int or a resultset to load
+     * @param Db                                      $zdb    Database
+     * @param string                                  $table  Table name
+     * @param string                                  $fpk    Primary key field name
+     * @param string                                  $flabel Label fields name
+     * @param string                                  $fthird The third field name
+     * @param string                                  $used   Table name for isUsed function
+     * @param int|ArrayObject<string,int|string>|null $args   Either an int or a resultset to load
      */
     public function __construct(
         Db $zdb,
@@ -138,7 +141,7 @@ abstract class Entitled
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRS($result);
 
@@ -163,7 +166,7 @@ abstract class Entitled
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
@@ -246,7 +249,7 @@ abstract class Entitled
      *
      * @param boolean|null $extent Filter on (non) cotisations types
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getList(bool $extent = null): array
     {
@@ -296,7 +299,7 @@ abstract class Entitled
     /**
      * Complete list
      *
-     * @return array of all objects
+     * @return array<int, array<string,mixed>> of all objects
      */
     public function getCompleteList(): array
     {
@@ -343,7 +346,7 @@ abstract class Entitled
      *
      * @param integer $id Entry ID
      *
-     * @return ArrayObject|false Row if succeed ; false: no such id
+     * @return ArrayObject<string, int|string>|false Row if succeed ; false: no such id
      */
     public function get(int $id): ArrayObject|false
     {
@@ -689,7 +692,7 @@ abstract class Entitled
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {

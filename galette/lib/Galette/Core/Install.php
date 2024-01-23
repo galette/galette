@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8 - 2013-01-09
@@ -47,7 +47,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      Install
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8 - 2013-01-09
@@ -70,6 +70,7 @@ class Install
     public const UPDATE = 'u';
 
     //db version/galette version mapper
+    /** @var array<string, string> */
     private array $versions_mapper = array(
         '0.700' => '0.70',
         '0.701' => '0.71',
@@ -80,7 +81,7 @@ class Install
 
     protected int $_step;
     private ?string $_mode;
-    private $_installed_version;
+    private ?string $_installed_version;
 
     private string $_db_type;
     private string $_db_host;
@@ -91,6 +92,7 @@ class Install
     private ?string $_db_prefix;
 
     private bool $_db_connected;
+    /** @var array<string, string> */
     private array $_report;
 
     private string $_admin_login;
@@ -313,8 +315,8 @@ class Install
     /**
      * Set database type
      *
-     * @param string $type Database type
-     * @param array  $errs Errors array
+     * @param string             $type Database type
+     * @param array<int, string> $errs Errors array
      *
      * @return self
      */
@@ -478,7 +480,7 @@ class Install
      *
      * @return boolean
      */
-    public function isDbConnected()
+    public function isDbConnected(): bool
     {
         return $this->_db_connected;
     }
@@ -488,7 +490,7 @@ class Install
      *
      * @return void
      */
-    public function atVersionSelection()
+    public function atVersionSelection(): void
     {
         $this->_step = self::STEP_VERSION;
     }
@@ -498,7 +500,7 @@ class Install
      *
      * @return boolean
      */
-    public function isVersionSelectionStep()
+    public function isVersionSelectionStep(): bool
     {
         return $this->_step === self::STEP_VERSION;
     }
@@ -508,7 +510,7 @@ class Install
      *
      * @return void
      */
-    public function atDbInstallStep()
+    public function atDbInstallStep(): void
     {
         $this->_step = self::STEP_DB_INSTALL;
     }
@@ -518,7 +520,7 @@ class Install
      *
      * @return boolean
      */
-    public function isDbinstallStep()
+    public function isDbinstallStep(): bool
     {
         return $this->_step === self::STEP_DB_INSTALL;
     }
@@ -528,7 +530,7 @@ class Install
      *
      * @return void
      */
-    public function atDbUpgradeStep()
+    public function atDbUpgradeStep(): void
     {
         $this->_step = self::STEP_DB_UPGRADE;
     }
@@ -538,7 +540,7 @@ class Install
      *
      * @return boolean
      */
-    public function isDbUpgradeStep()
+    public function isDbUpgradeStep(): bool
     {
         return $this->_step === self::STEP_DB_UPGRADE;
     }
@@ -547,11 +549,11 @@ class Install
     /**
      * Install/Update SQL scripts
      *
-     * @param string $path Path to scripts (defaults to core scripts)
+     * @param ?string $path Path to scripts (defaults to core scripts)
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getScripts($path = null)
+    public function getScripts(string $path = null): array
     {
         if ($path === null) {
             $path = GALETTE_ROOT . '/install';
@@ -574,20 +576,20 @@ class Install
     /**
      * List updates scripts from given path
      *
-     * @param string $path    Scripts path
-     * @param string $db_type Database type
-     * @param string $version Previous version, defaults to null
+     * @param string  $path    Scripts path
+     * @param string  $db_type Database type
+     * @param ?string $version Previous version, defaults to null
      *
-     * @return array If a previous version is provided, update scripts
-     *               file path from this one to the latest will be returned.
-     *               If no previous version is provided, that will return all
-     *               updates versions known.
+     * @return array<string, string>  If a previous version is provided, update scripts
+     *                file path from this one to the latest will be returned.
+     *                If no previous version is provided, that will return all
+     *                updates versions known.
      */
     public static function getUpdateScripts(
-        $path,
-        $db_type = 'mysql',
-        $version = null
-    ) {
+        string $path,
+        string $db_type = 'mysql',
+        string $version = null
+    ): array {
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
         $sql_update_scripts = array();
@@ -629,12 +631,12 @@ class Install
     /**
      * Execute SQL scripts
      *
-     * @param Db     $zdb   Database instance
-     * @param string $spath Path to scripts
+     * @param Db      $zdb   Database instance
+     * @param ?string $spath Path to scripts
      *
      * @return bool
      */
-    public function executeScripts(Db $zdb, $spath = null)
+    public function executeScripts(Db $zdb, string $spath = null): bool
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
@@ -721,9 +723,9 @@ class Install
      * @param Db     $zdb       Database instance
      * @param string $sql_query SQL instructions
      *
-     * @return boolean;
+     * @return boolean
      */
-    public function executeSql($zdb, $sql_query)
+    public function executeSql(Db $zdb, string $sql_query): bool
     {
         $queries_results = array();
         $fatal_error = false;
@@ -808,9 +810,9 @@ class Install
     /**
      * Retrieve database installation report
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getDbInstallReport()
+    public function getDbInstallReport(): array
     {
         return $this->_report;
     }
@@ -820,7 +822,7 @@ class Install
      *
      * @return void
      */
-    public function reinitReport()
+    public function reinitReport(): void
     {
         $this->_report = array();
     }
@@ -830,7 +832,7 @@ class Install
      *
      * @return void
      */
-    public function atAdminStep()
+    public function atAdminStep(): void
     {
         $this->_step = self::STEP_ADMIN;
     }
@@ -840,7 +842,7 @@ class Install
      *
      * @return boolean
      */
-    public function isAdminStep()
+    public function isAdminStep(): bool
     {
         return $this->_step === self::STEP_ADMIN;
     }
@@ -853,7 +855,7 @@ class Install
      *
      * @return void
      */
-    public function setAdminInfos($login, $pass)
+    public function setAdminInfos(string $login, string $pass): void
     {
         $this->_admin_login = $login;
         $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
@@ -864,7 +866,7 @@ class Install
      *
      * @return string
      */
-    public function getAdminLogin()
+    public function getAdminLogin(): string
     {
         return $this->_admin_login;
     }
@@ -874,7 +876,7 @@ class Install
      *
      * @return string
      */
-    public function getAdminPass()
+    public function getAdminPass(): string
     {
         return $this->_admin_pass;
     }
@@ -884,7 +886,7 @@ class Install
      *
      * @return void
      */
-    public function atTelemetryStep()
+    public function atTelemetryStep(): void
     {
         $this->_step = self::STEP_TELEMETRY;
     }
@@ -894,7 +896,7 @@ class Install
      *
      * @return boolean
      */
-    public function isTelemetryStep()
+    public function isTelemetryStep(): bool
     {
         return $this->_step === self::STEP_TELEMETRY;
     }
@@ -904,7 +906,7 @@ class Install
      *
      * @return void
      */
-    public function atGaletteInitStep()
+    public function atGaletteInitStep(): void
     {
         $this->_step = self::STEP_GALETTE_INIT;
     }
@@ -914,7 +916,7 @@ class Install
      *
      * @return boolean
      */
-    public function isGaletteInitStep()
+    public function isGaletteInitStep(): bool
     {
         return $this->_step === self::STEP_GALETTE_INIT;
     }
@@ -922,12 +924,12 @@ class Install
     /**
      * Load existing config
      *
-     * @param array $post_data      Data posted
-     * @param array $error_detected Errors array
+     * @param array<string, string> $post_data      Data posted
+     * @param array<int, string>    $error_detected Errors array
      *
      * @return void
      */
-    public function loadExistingConfig($post_data, &$error_detected)
+    public function loadExistingConfig(array $post_data, array &$error_detected): void
     {
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
             $existing = $this->loadExistingConfigFile($post_data);
@@ -961,12 +963,12 @@ class Install
     /**
      * Load contents from existing config file
      *
-     * @param array   $post_data Data posted
-     * @param boolean $pass      Retrieve password
+     * @param array<string, string> $post_data Data posted
+     * @param boolean               $pass      Retrieve password
      *
-     * @return array
+     * @return array<string, ?string>
      */
-    private function loadExistingConfigFile($post_data = array(), $pass = false)
+    private function loadExistingConfigFile(array $post_data = array(), bool $pass = false): array
     {
         $existing = array(
             'db_type'   => null,
@@ -1064,7 +1066,7 @@ class Install
      *
      * @return boolean
      */
-    public function writeConfFile()
+    public function writeConfFile(): bool
     {
         $error = false;
         $ret = array(
@@ -1145,7 +1147,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return boolean
      */
-    public function initObjects(I18n $i18n, Db $zdb, Login $login)
+    public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
         if ($this->isInstall()) {
             $preferences = new Preferences($zdb, false);
@@ -1227,12 +1229,12 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     /**
      * Proceed installation report for each Entity/Repository
      *
-     * @param string $msg Report message title
-     * @param mixed  $res Initialialization result
+     * @param string         $msg Report message title
+     * @param bool|Throwable $res Initialization result
      *
      * @return void
      */
-    private function proceedReport($msg, $res)
+    private function proceedReport(string $msg, bool|Throwable $res): void
     {
         $ret = array(
             'message'   => $msg,
@@ -1250,9 +1252,9 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     /**
      * Retrieve galette initialization report
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getInitializationReport()
+    public function getInitializationReport(): array
     {
         return $this->_report;
     }
@@ -1262,7 +1264,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return void
      */
-    public function atEndStep()
+    public function atEndStep(): void
     {
         $this->_step = self::STEP_END;
     }
@@ -1272,7 +1274,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return boolean
      */
-    public function isEndStep()
+    public function isEndStep(): bool
     {
         return $this->_step === self::STEP_END;
     }
@@ -1284,7 +1286,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return void
      */
-    public function setInstalledVersion($version)
+    public function setInstalledVersion(?string $version): void
     {
         $this->_installed_version = $version;
     }
@@ -1296,7 +1298,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return string|false
      */
-    public function getCurrentVersion($zdb)
+    public function getCurrentVersion(Db $zdb): string|false
     {
         try {
             $db_ver = $zdb->getDbVersion(true);
@@ -1317,7 +1319,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return boolean
      */
-    public function isStepPassed($step)
+    public function isStepPassed($step): bool
     {
         return $this->_step > $step;
     }

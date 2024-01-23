@@ -68,8 +68,11 @@ use Slim\Routing\RouteParser;
 
 trait Replacements
 {
+    /** @var array<string,array<string,string>> */
     private array $patterns = [];
+    /** @var array<string,?string> */
     private array $replaces = [];
+    /** @var array<string,array<string,string>> */
     private array $dynamic_patterns = [];
 
     /**
@@ -101,7 +104,7 @@ trait Replacements
      * @param string  $form_name Dynamic form name
      * @param boolean $legacy    Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getDynamicPatterns(string $form_name, bool $legacy = true): array
     {
@@ -155,7 +158,7 @@ trait Replacements
     /**
      * Set patterns
      *
-     * @param array $patterns Patterns to add
+     * @param array<string,array<string,string>> $patterns Patterns to add
      *
      * @return self
      */
@@ -163,11 +166,7 @@ trait Replacements
     {
         $toset = [];
         foreach ($patterns as $key => $info) {
-            if (is_array($info)) {
-                $toset[$key] = $info['pattern'];
-            } else {
-                $toset[$key] = $info;
-            }
+            $toset[$key] = $info['pattern'];
         }
 
         $this->patterns = array_merge(
@@ -181,7 +180,7 @@ trait Replacements
     /**
      * Set replacements
      *
-     * @param array $replaces Replacements to add
+     * @param array<string,?string> $replaces Replacements to add
      *
      * @return void
      */
@@ -196,7 +195,7 @@ trait Replacements
     /**
      * Get main patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     protected function getMainPatterns(): array
     {
@@ -246,7 +245,7 @@ trait Replacements
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     protected function getMemberPatterns(bool $legacy = true): array
     {
@@ -391,7 +390,7 @@ trait Replacements
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     protected function getContributionPatterns(bool $legacy = true): array
     {
@@ -692,9 +691,9 @@ trait Replacements
     /**
      * Set dynamic fields and proceed related replacements
      *
-     * @param string  $form_name      Form name
-     * @param array   $dynamic_fields Dynamic fields
-     * @param ?object $object         Related object (Adherent, Contribution, ...)
+     * @param string              $form_name      Form name
+     * @param array<string,mixed> $dynamic_fields Dynamic fields
+     * @param ?object             $object         Related object (Adherent, Contribution, ...)
      *
      * @return self
      */
@@ -796,7 +795,7 @@ trait Replacements
     /**
      * Build legend array
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getLegend(): array
     {
@@ -818,7 +817,7 @@ trait Replacements
     /**
      * Get configured replacements
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getReplacements(): array
     {
@@ -931,7 +930,7 @@ trait Replacements
     /**
      * Get patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getPatterns(): array
     {

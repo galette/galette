@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2023 The Galette Team
+ * Copyright © 2017-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9dev - 2017-05-26
@@ -52,7 +52,7 @@ use Galette\Entity\DynamicFieldsHandle;
  * @name      Dynamics
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9dev - 2017-05-26
@@ -99,9 +99,9 @@ trait Dynamics
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array $post     Posted values
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string, mixed>   $post     Posted values
+     * @param array<string,int|bool> $required Array of required fields
+     * @param array<string>          $disabled Array of disabled fields
      *
      * @return bool
      */
@@ -244,7 +244,7 @@ trait Dynamics
     /**
      * Store dynamic Files
      *
-     * @param array $files Posted files
+     * @param array<string, mixed> $files Posted files
      *
      * @return void
      */
@@ -352,7 +352,7 @@ trait Dynamics
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -363,8 +363,8 @@ trait Dynamics
      * Validate data for dynamic fields
      * Set valid data in current object, also resets errors list
      *
-     * @param array  $values Dynamic fields values
-     * @param string $prefix Prefix to replace, default to 'dynfield_'
+     * @param array<string> $values Dynamic fields values
+     * @param string        $prefix Prefix to replace, default to 'dynfield_'
      *
      * @return bool
      */

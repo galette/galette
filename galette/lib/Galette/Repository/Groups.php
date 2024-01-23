@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2023 The Galette Team
+ * Copyright © 2011-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-10-25
@@ -54,7 +54,7 @@ use Galette\Core\Db;
  * @name      Groups
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2011-10-25
@@ -83,7 +83,7 @@ class Groups
      *
      * @param boolean $as_groups Retrieve Group[]
      *
-     * @return array
+     * @return array<int, Group|string>
      */
     public static function getSimpleList(bool $as_groups = false): array
     {
@@ -171,7 +171,7 @@ class Groups
             $results = $this->zdb->execute($select);
 
             foreach ($results as $row) {
-                /** @var ArrayObject $row */
+                /** @var ArrayObject<string, int|string> $row */
                 $group = new Group($row);
                 $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;
@@ -195,7 +195,7 @@ class Groups
      * @param int     $id       Member id
      * @param boolean $as_group Retrieve Group[] or int[]
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
@@ -209,7 +209,7 @@ class Groups
      * @param boolean $managed  Retrieve managed groups (defaults to false)
      * @param boolean $as_group Retrieve Group[] or int[]
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public static function loadGroups(int $id, bool $managed = false, bool $as_group = true): array
     {
@@ -252,13 +252,13 @@ class Groups
     /**
      * Add a member to specified groups
      *
-     * @param Adherent $adh         Member
-     * @param array    $groups      Groups Groups list. Each entry must contain
-     *                              the group id, name each value separated
-     *                              by a pipe.
-     * @param boolean  $manager     Add member as manager, defaults to false
-     * @param boolean  $transaction Does a SQL transaction already exists? Defaults
-     *                              to false.
+     * @param Adherent      $adh         Member
+     * @param array<string> $groups      Groups Groups list. Each entry must contain
+     *                                   the group id, name each value separated
+     *                                   by a pipe.
+     * @param boolean       $manager     Add member as manager, defaults to false
+     * @param boolean       $transaction Does a SQL transaction already exists? Defaults
+     *                                   to false.
      *
      * @return boolean
      */
@@ -381,7 +381,7 @@ class Groups
     /**
      * Remove members from all their groups
      *
-     * @param array $ids Members ids
+     * @param array<int> $ids Members ids
      *
      * @return void
      */
@@ -460,10 +460,10 @@ class Groups
     /**
      * Get managed users id list
      *
-     * @param array $groups List of managed groups.
-     *                      If empty, Groups::loadManagedGroups() will be called
+     * @param array<int, Group|int> $groups List of managed groups.
+     *                                      If empty, Groups::loadManagedGroups() will be called
      *
-     * @return array|false
+     * @return array<int>|false
      */
     public function getManagerUsers(array $groups = []): array|false
     {

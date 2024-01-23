@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2018-2023 The Galette Team
+ * Copyright © 2018-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
+ * @copyright 2018-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -49,7 +49,7 @@ use Galette\Entity\PaymentType;
  * @name      PaymentTypes
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
+ * @copyright 2018-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -207,8 +207,8 @@ class PaymentTypes extends Repository
     /**
      * Insert values in database
      *
-     * @param string $table  Table name
-     * @param array  $values Values to insert
+     * @param string              $table  Table name
+     * @param array<string,mixed> $values Values to insert
      *
      * @return void
      */
@@ -235,7 +235,7 @@ class PaymentTypes extends Repository
     /**
      * Get defaults values
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function loadDefaults(): array
     {

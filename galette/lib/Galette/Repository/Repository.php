@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-26
@@ -51,7 +51,7 @@ use stdClass;
  * @name      Repository
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-26
@@ -63,6 +63,7 @@ abstract class Repository
     protected string $entity;
     protected Login $login;
     protected Pagination $filters;
+    /** @var array<int|string,mixed> */
     protected array $defaults = [];
     protected string $prefix;
 
@@ -186,7 +187,7 @@ abstract class Repository
     /**
      * Load and get default values
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function loadDefaults(): array
     {
@@ -197,8 +198,8 @@ abstract class Repository
      * Is field allowed to order? it should be present in
      * provided fields list (those that are SELECT'ed).
      *
-     * @param string $field_name Field name to order by
-     * @param ?array $fields     SELECTE'ed fields
+     * @param string         $field_name Field name to order by
+     * @param ?array<string> $fields     SELECTE'ed fields
      *
      * @return boolean
      */

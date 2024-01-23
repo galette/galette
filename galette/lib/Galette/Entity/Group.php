@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2023 The Galette Team
+ * Copyright © 2012-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2012-01-17
@@ -50,7 +50,7 @@ use Laminas\Db\Sql\Expression;
  * @name      Group
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2012-01-17
@@ -69,8 +69,11 @@ class Group
     private int $id;
     private string $group_name;
     private ?Group $parent_group = null;
+    /** @var array<int,Adherent>|null */
     private ?array $managers = null;
+    /** @var array<int,Adherent>|null */
     private ?array $members = null;
+    /** @var array<int,Group>|null */
     private ?array $groups = null;
     private string $creation_date;
     private int $count_members;
@@ -80,9 +83,9 @@ class Group
     /**
      * Default constructor
      *
-     * @param null|int|ArrayObject $args Either a ResultSet row or its id for to load
-     *                                   a specific group, or null to just
-     *                                   instanciate object
+     * @param null|int|ArrayObject<string,int|string> $args Either a ResultSet row or its id for to load
+     *                                                      a specific group, or null to just
+     *                                                      instanciate object
      */
     public function __construct(ArrayObject|int $args = null)
     {
@@ -130,7 +133,7 @@ class Group
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
@@ -552,7 +555,7 @@ class Group
     /**
      * Get parents as an array
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getParents(): array
     {

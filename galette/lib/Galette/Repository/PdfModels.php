@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
+ * @copyright 2011-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-25
@@ -52,7 +52,7 @@ use Galette\Entity\PdfReceipt;
  * @name      PdfModels
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-25
@@ -167,7 +167,7 @@ class PdfModels extends Repository
             $list->buffer();
 
             $missing = array();
-            foreach ($this->defaults as $default) {
+            foreach ($this->defaults as $key => $default) {
                 $exists = false;
                 foreach ($list as $model) {
                     if ($model->model_id == $default['model_id']) {
@@ -178,7 +178,7 @@ class PdfModels extends Repository
 
                 if ($exists === false) {
                     //model does not exist in database, insert it.
-                    $missing[] = $default;
+                    $missing[$key] = $default;
                 }
             }
 
@@ -204,8 +204,8 @@ class PdfModels extends Repository
     /**
      * Insert values in database
      *
-     * @param string $table  Table name
-     * @param array  $values Values to insert
+     * @param string              $table  Table name
+     * @param array<string,mixed> $values Values to insert
      *
      * @return void
      */
@@ -235,7 +235,7 @@ class PdfModels extends Repository
     /**
      * Load and get default PDF models
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function loadDefaults(): array
     {

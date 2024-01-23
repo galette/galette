@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -49,7 +49,7 @@ use Analog\Analog;
  * @name      SavedSearch
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.3dev - 2019-03-25
@@ -70,20 +70,22 @@ class SavedSearch
     private Db $zdb;
     private int $id;
     private string $name;
+    /** @var array<string, mixed> */
     private array $parameters = [];
     private ?int $author_id = null;
     private ?string $creation_date;
     private string $form;
 
     private Login $login;
+    /** @var array<string> */
     private array $errors = [];
 
     /**
      * Main constructor
      *
-     * @param Db                   $zdb   Database instance
-     * @param Login                $login Login instance
-     * @param ArrayObject|int|null $args  Arguments
+     * @param Db                                      $zdb   Database instance
+     * @param Login                                   $login Login instance
+     * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
     public function __construct(Db $zdb, Login $login, ArrayObject|int $args = null)
     {
@@ -117,7 +119,7 @@ class SavedSearch
             }
 
             $results = $this->zdb->execute($select);
-            /** @var ArrayObject $res */
+            /** @var ArrayObject<string, int|string> $res */
             $res = $results->current();
 
             $this->loadFromRs($res);
@@ -134,7 +136,7 @@ class SavedSearch
     /**
      * Load a saved search from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
@@ -152,7 +154,7 @@ class SavedSearch
     /**
      * Check and set values
      *
-     * @param array $values Values to set
+     * @param array<string, mixed> $values Values to set
      *
      * @return boolean
      */
@@ -286,7 +288,7 @@ class SavedSearch
                 case 'sparameters':
                     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
                     $parameters = [];
-                    foreach ((array)$this->parameters as $key => $parameter) {
+                    foreach ($this->parameters as $key => $parameter) {
                         //@phpstan-ignore-next-line
                         if (isset($members_fields[$key])) {
                             //@phpstan-ignore-next-line
@@ -391,7 +393,7 @@ class SavedSearch
     /**
      * Get known forms
      *
-     * @return array
+     * @return array<string>
      */
     public function getKnownForms(): array
     {
@@ -403,7 +405,7 @@ class SavedSearch
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016 The Galette Team
+ * Copyright © 2016-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9dev - 2016-09-11
@@ -40,6 +40,7 @@ use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
 use Analog\Analog;
 use Galette\Core\Login;
+use Galette\Entity\Group;
 
 /**
  * Groups list PDF
@@ -49,7 +50,7 @@ use Galette\Core\Login;
  * @package   Galette
  * @abstract  Class for expanding TCPDF.
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016 The Galette Team
+ * @copyright 2016-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9dev - 2016-09-11
@@ -59,7 +60,7 @@ class PdfGroups extends Pdf
 {
     public const SHEET_FONT = self::FONT_SIZE - 2;
 
-    private $doc_title;
+    private string $doc_title;
 
     /**
      * Main constructor, set creator and author
@@ -78,7 +79,7 @@ class PdfGroups extends Pdf
      *
      * @return void
      */
-    public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->Cell(
             0,
@@ -101,7 +102,7 @@ class PdfGroups extends Pdf
      *
      * @return void
      */
-    private function init()
+    private function init(): void
     {
         // Set document information
         $this->doc_title = _T("Members by groups");
@@ -128,12 +129,12 @@ class PdfGroups extends Pdf
     /**
      * Draw file
      *
-     * @param array $groups Groups list
-     * @param Login $login  Login instance
+     * @param array<Group> $groups Groups list
+     * @param Login        $login  Login instance
      *
      * @return void
      */
-    public function draw($groups, Login $login)
+    public function draw(array $groups, Login $login): void
     {
         $this->Open();
         $this->AddPage();

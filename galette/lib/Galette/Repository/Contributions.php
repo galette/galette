@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2023 The Galette Team
+ * Copyright © 2010-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
+ * @copyright 2010-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2010-03-11
@@ -59,7 +59,7 @@ use Laminas\Db\Sql\Select;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -74,6 +74,7 @@ class Contributions
     private Db $zdb;
     private Login $login;
     private float $sum = 0;
+    /** @var array<int> */
     private array $current_selection;
 
     /**
@@ -111,10 +112,10 @@ class Contributions
     /**
      * Get contributions list for a specific transaction
      *
-     * @param array  $ids        an array of members id that has been selected
-     * @param bool   $as_contrib return the results as an array of
-     * @param ?array $fields     field(s) name(s) to get. Should be a string or
-     *                           an array. If null, all fields will be returned
+     * @param array<int>     $ids        an array of members id that has been selected
+     * @param bool           $as_contrib return the results as an array of
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be returned
      *
      * @return array<int, Contribution>|false
      */
@@ -137,10 +138,10 @@ class Contributions
     /**
      * Get contributions list
      *
-     * @param bool   $as_contrib return the results as an array of
-     *                           Contribution object.
-     * @param ?array $fields     field(s) name(s) to get. Should be a string or
-     *                           an array. If null, all fields will be returned
+     * @param bool           $as_contrib return the results as an array of
+     *                                   Contribution object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be returned
      *
      * @return array<int, Contribution>|ResultSet
      */
@@ -173,7 +174,7 @@ class Contributions
     /**
      * Builds the SELECT statement
      *
-     * @param ?array $fields fields list to retrieve
+     * @param ?array<string> $fields fields list to retrieve
      *
      * @return Select SELECT statement
      */
@@ -283,7 +284,7 @@ class Contributions
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<string> SQL ORDER clauses
      */
     private function buildOrderClause(): array
     {
@@ -484,9 +485,9 @@ class Contributions
     /**
      * Remove specified contributions
      *
-     * @param integer|array $ids         Contributions identifiers to delete
-     * @param History       $hist        History
-     * @param boolean       $transaction True to begin a database transaction
+     * @param integer|array<int> $ids         Contributions identifiers to delete
+     * @param History            $hist        History
+     * @param boolean            $transaction True to begin a database transaction
      *
      * @return boolean
      */

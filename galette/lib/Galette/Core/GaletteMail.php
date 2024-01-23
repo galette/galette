@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-12-10
@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Galette\IO\File;
 use Soundasleep\Html2Text;
 use Throwable;
 use Analog\Analog;
@@ -48,7 +49,7 @@ use PHPMailer\PHPMailer\PHPMailer;
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-03-07
@@ -77,10 +78,13 @@ class GaletteMail
     private int $word_wrap = 70;
     private int $timeout = 300;
 
+    /** @var array<int, string> */
     private array $errors = array();
+    /** @var array<string, string> */
     private array $recipients = array();
 
-    private PHPMailer|null $mail = null;
+    private PHPMailer $mail;
+    /** @var array<int,File> */
     protected array $attachments = array();
 
     private Preferences $preferences;
@@ -209,7 +213,7 @@ class GaletteMail
     {
         $res = true;
 
-        if ($this->mail === null) {
+        if (!isset($this->mail)) {
             $this->initMailer();
         }
 
@@ -248,7 +252,7 @@ class GaletteMail
      */
     public function send(): int
     {
-        if ($this->mail === null) {
+        if (!isset($this->mail)) {
             $this->initMailer();
         }
 
@@ -331,7 +335,7 @@ class GaletteMail
                     "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
-                $this->mail = null;
+                unset($this->mail);
                 return self::MAIL_ERROR;
             } else {
                 $txt = '';
@@ -342,7 +346,7 @@ class GaletteMail
                     'An email has been sent to: ' . $txt,
                     Analog::INFO
                 );
-                $this->mail = null;
+                unset($this->mail);
                 return self::MAIL_SENT;
             }
         } catch (Throwable $e) {
@@ -351,7 +355,7 @@ class GaletteMail
                 Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
-            $this->mail = null;
+            unset($this->mail);
             return self::MAIL_ERROR;
         }
     }
@@ -393,8 +397,9 @@ class GaletteMail
                 '[GaletteMail] `' . $url . '` is not an url',
                 Analog::DEBUG
             );
+            return false;
         }
-        return $valid;
+        return true;
     }
 
     /**
@@ -461,13 +466,13 @@ class GaletteMail
      */
     public function getSubject(): string
     {
-        return $this->subject;
+        return $this->subject ?? '';
     }
 
     /**
      * Retrieve array of errors
      *
-     * @return array
+     * @return array<int,string>
      */
     public function getErrors(): array
     {
@@ -481,7 +486,7 @@ class GaletteMail
      */
     public function getMessage(): string
     {
-        return $this->message;
+        return $this->message ?? '';
     }
 
     /**
@@ -492,7 +497,7 @@ class GaletteMail
     public function getWrappedMessage(): string
     {
         if ($this->word_wrap > 0) {
-            if ($this->mail === null) {
+            if (!isset($this->mail)) {
                 $this->initMailer();
             }
 

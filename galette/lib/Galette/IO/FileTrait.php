@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.1 - 2014-09-18
@@ -45,7 +45,7 @@ use Analog\Analog;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.8.1 - 2014-09-18
@@ -56,7 +56,8 @@ trait FileTrait
     //array keys contain litteral value of each forbidden character
     //(to be used when showing an error).
     //Maybe is there a better way to handle this...
-    protected $bad_chars = array(
+    /** @var array<string,string> */
+    protected array $bad_chars = array(
         '.'    =>    '\.',
         '\\'    =>    '\\\\',
         "'"    =>    "'",
@@ -71,14 +72,17 @@ trait FileTrait
         '|'    =>    '|'
     );
 
-    protected $name;
-    protected $dest_dir;
+    protected ?string $name;
+    protected ?string $dest_dir;
+    /** @var array<string> */
     protected $allowed_extensions = array();
+    /** @var array<string,string> */
     protected $allowed_mimes = array();
-    protected $maxlenght;
-    protected $mincropsize;
+    protected int $maxlenght;
+    protected int $mincropsize;
 
-    public static $mime_types = array(
+    /** @var array<string,string> */
+    public static array $mime_types = array(
         'txt'       => 'text/plain',
         'htm'       => 'text/html',
         'html'      => 'text/html',
@@ -182,22 +186,22 @@ trait FileTrait
     /**
      * Initialization
      *
-     * @param ?string $dest        File destination directory
-     * @param array   $extensions  Array of permitted extensions
-     * @param array   $mimes       Array of permitted mime types
-     * @param int     $maxlenght   Maximum length for each file
-     * @param int     $mincropsize Minimum image side size required for cropping
+     * @param ?string               $dest        File destination directory
+     * @param ?array<int,string>    $extensions  Array of permitted extensions
+     * @param ?array<string,string> $mimes       Array of permitted mime types
+     * @param ?int                  $maxlenght   Maximum length for each file
+     * @param ?int                  $mincropsize Minimum image side size required for cropping
      *
      * @return void
      */
     protected function init(
-        $dest,
-        $extensions = null,
-        $mimes = null,
-        $maxlenght = null,
-        $mincropsize = null
-    ) {
-        if ($dest !== null && substr($dest, -1) !== '/') {
+        string|null $dest,
+        array $extensions = null,
+        array $mimes = null,
+        int $maxlenght = null,
+        int $mincropsize = null
+    ): void {
+        if ($dest !== null && !str_ends_with($dest, '/')) {
             //normalize path
             $dest .= '/';
         }
@@ -227,7 +231,7 @@ trait FileTrait
      *
      * @return boolean
      */
-    public function copyTo($dest)
+    public function copyTo(string $dest): bool
     {
         $res = copy(
             $this->dest_dir . $this->name,
@@ -242,12 +246,12 @@ trait FileTrait
     /**
      * Stores a file on the disk
      *
-     * @param array   $file the uploaded file
-     * @param boolean $ajax If the file comes from an ajax call (dnd)
+     * @param array<string, string|int> $file the uploaded file
+     * @param boolean                   $ajax If the file comes from an ajax call (dnd)
      *
-     * @return true|false|int result of the storage process
+     * @return bool|int result of the storage process
      */
-    public function store($file, $ajax = false)
+    public function store(array $file, bool $ajax = false): bool|int
     {
         $class = get_class($this);
 
@@ -349,9 +353,9 @@ trait FileTrait
     /**
      * Get destination dir
      *
-     * @return string
+     * @return ?string
      */
-    public function getDestDir()
+    public function getDestDir(): ?string
     {
         return $this->dest_dir;
     }
@@ -363,7 +367,7 @@ trait FileTrait
      *
      * @return void
      */
-    public function setDestDir($dir)
+    public function setDestDir(string $dir): void
     {
         $this->dest_dir = $dir;
     }
@@ -371,11 +375,11 @@ trait FileTrait
     /**
      * Get file name
      *
-     * @return string
+     * @return ?string
      */
-    public function getFileName()
+    public function getFileName(): ?string
     {
-        return $this->name;
+        return $this->name ?? null;
     }
 
     /**
@@ -385,17 +389,17 @@ trait FileTrait
      *
      * @return void
      */
-    public function setFileName($name)
+    public function setFileName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * Returns unauthorized characters litteral values quoted, comma separated values
+     * Returns unauthorized characters literal values quoted, comma separated values
      *
      * @return string comma separated disallowed characters
      */
-    public function getBadChars()
+    public function getBadChars(): string
     {
         return '`' . implode('`, `', array_keys($this->bad_chars)) . '`';
     }
@@ -403,9 +407,9 @@ trait FileTrait
     /**
      * Returns allowed extensions
      *
-     * @return string comma separated allowed extensiosn
+     * @return string comma separated allowed extensions
      */
-    public function getAllowedExts()
+    public function getAllowedExts(): string
     {
         return implode(', ', $this->allowed_extensions);
     }
@@ -413,9 +417,9 @@ trait FileTrait
     /**
      * Return the array of allowed mime types
      *
-     * @return array
+     * @return array<string,string>
      */
-    public function getAllowedMimeTypes()
+    public function getAllowedMimeTypes(): array
     {
         return $this->allowed_mimes;
     }
@@ -427,7 +431,7 @@ trait FileTrait
      *
      * @return string
      */
-    public static function getMimeType($file)
+    public static function getMimeType(string $file): string
     {
         $mime = null;
         $class = get_called_class();
@@ -478,7 +482,7 @@ trait FileTrait
      *
      * @return string Localized message
      */
-    protected function getErrorMessageFromCode($code)
+    protected function getErrorMessageFromCode(int $code): string
     {
         $error = _T("An error occurred.");
 
@@ -496,7 +500,7 @@ trait FileTrait
             case self::FILE_TOO_BIG:
                 $error = preg_replace(
                     '|%d|',
-                    $this->maxlenght,
+                    (string)$this->maxlenght,
                     _T("File is too big. Maximum allowed size is %dKo")
                 );
                 break;
@@ -531,7 +535,7 @@ trait FileTrait
      *
      * @return string Localized message
      */
-    public function getErrorMessage($code)
+    public function getErrorMessage(int $code): string
     {
         return $this->getErrorMessageFromCode($code);
     }
@@ -543,7 +547,7 @@ trait FileTrait
      *
      * @return string Localized message
      */
-    public function getPhpErrorMessage($error_code)
+    public function getPhpErrorMessage(int $error_code): string
     {
         switch ($error_code) {
             case UPLOAD_ERR_INI_SIZE:

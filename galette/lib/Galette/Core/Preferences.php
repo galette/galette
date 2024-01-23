@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2023 The Galette Team
+ * Copyright © 2007-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -27,7 +27,7 @@
  * @category  Core
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-10-14
@@ -53,7 +53,7 @@ use Galette\Repository\Members;
  * @name      Preferences
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
+ * @copyright 2007-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2007-10-14
@@ -93,14 +93,14 @@ use Galette\Repository\Members;
  * @property string $pref_email_reply_to
  * @property string $pref_website
  * @property integer $pref_etiq_marges_v
- * @property string $pref_etiq_marges_h
- * @property string $pref_etiq_hspace
- * @property string $pref_etiq_vspace
- * @property string $pref_etiq_hsize
- * @property string $pref_etiq_vsize
- * @property string $pref_etiq_cols
- * @property string $pref_etiq_rows
- * @property string $pref_etiq_corps
+ * @property integer $pref_etiq_marges_h
+ * @property integer $pref_etiq_hspace
+ * @property integer $pref_etiq_vspace
+ * @property integer $pref_etiq_hsize
+ * @property integer $pref_etiq_vsize
+ * @property integer $pref_etiq_cols
+ * @property integer $pref_etiq_rows
+ * @property integer $pref_etiq_corps
  * @property boolean $pref_etiq_border
  * @property boolean $pref_force_picture_ratio
  * @property string $pref_member_picture_ratio
@@ -156,7 +156,9 @@ class Preferences
     use Socials;
 
     protected Preferences $preferences; //redefined from Replacements feature - avoid circular dependency
+    /** @var array<string, bool|int|string> */
     private array $prefs;
+    /** @var array<string> */
     private array $errors = [];
 
     public const TABLE = 'preferences';
@@ -189,11 +191,13 @@ class Preferences
     /** Very strong password strength */
     public const PWD_VERY_STRONG = 4;
 
+    /** @var array<string> */
     private static array $fields = array(
         'nom_pref',
         'val_pref'
     );
 
+    /** @var array<string, bool|int|string> */
     private static array $defaults = array(
         'pref_admin_login'    =>    'admin',
         'pref_admin_pass'    =>    'admin',
@@ -295,6 +299,7 @@ class Preferences
     private array $socials;
 
     // flagging required fields
+    /** @var array<string> */
     private array $required = array(
         'pref_nom',
         'pref_lang',
@@ -481,7 +486,7 @@ class Preferences
     /**
      * Returns all preferences keys
      *
-     * @return array
+     * @return array<string>
      */
     public function getFieldsNames(): array
     {
@@ -491,8 +496,8 @@ class Preferences
     /**
      * Check values
      *
-     * @param array $values Values
-     * @param Login $login  Logged in user
+     * @param array<string, mixed> $values Values
+     * @param Login                $login  Logged in user
      *
      * @return boolean
      */
@@ -730,7 +735,7 @@ class Preferences
                     );
                 } else {
                     $pwcheck = new \Galette\Util\Password($this);
-                    $pwcheck->addPersonalInformation(['pref_admin_login' => $this->pref_admin_login]);
+                    $pwcheck->addPersonalInformation([$this->pref_admin_login]);
                     if (!$pwcheck->isValid($value)) {
                         $this->errors = array_merge(
                             $this->errors,
@@ -1033,7 +1038,7 @@ class Preferences
     /**
      * Get default preferences
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDefaults(): array
     {
@@ -1160,7 +1165,7 @@ class Preferences
      * Check member cards sizes
      * Always a A4/portrait
      *
-     * @return array
+     * @return array<string>
      */
     public function checkCardsSizes(): array
     {
@@ -1194,7 +1199,7 @@ class Preferences
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -1204,7 +1209,7 @@ class Preferences
     /**
      * Build legend array
      *
-     * @return array
+     * @return array<string, array<string, string>>
      */
     public function getLegend(): array
     {
@@ -1259,7 +1264,7 @@ class Preferences
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string, array<string, string>>
      */
     protected function getSignaturePatterns(bool $legacy = true): array
     {

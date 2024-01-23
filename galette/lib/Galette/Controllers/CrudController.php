@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -24,11 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Entity
+ * @category  Controllers
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -48,7 +48,7 @@ use Analog\Analog;
  * @name      CrudController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-08
@@ -151,11 +151,11 @@ abstract class CrudController extends AbstractController
     }
 
     /**
-     * Removal confirmation parameters, can be overriden
+     * Removal confirmation parameters, can be override
      *
      * @param Request $request PSR Request
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function getconfirmDeleteParams(Request $request): array
     {
@@ -182,14 +182,14 @@ abstract class CrudController extends AbstractController
      * batchs, it should be found elsewhere.
      * In post values, we look for id key, as well as all entries_sel keys
      *
-     * @param array  $args Request arguments
-     * @param ?array $post POST values
+     * @param array<string,mixed>  $args Request arguments
+     * @param ?array<string,mixed> $post POST values
      *
      * @return null|integer|integer[]
      */
     protected function getIdsToRemove(array &$args, ?array $post): int|array|null
     {
-        /** @var  null|array|string $ids */
+        /** @var  null|array<int>|string $ids */
         $ids = null;
         if (isset($post['id'])) {
             $ids = $post['id'];
@@ -224,7 +224,7 @@ abstract class CrudController extends AbstractController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -233,7 +233,7 @@ abstract class CrudController extends AbstractController
     /**
      * Get cancel URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -245,7 +245,7 @@ abstract class CrudController extends AbstractController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -254,7 +254,7 @@ abstract class CrudController extends AbstractController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -320,8 +320,8 @@ abstract class CrudController extends AbstractController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */

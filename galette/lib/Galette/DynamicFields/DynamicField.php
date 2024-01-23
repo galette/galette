@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2023 The Galette Team
+ * Copyright © 2012-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.1dev - 2012-07-28
@@ -54,7 +54,7 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
+ * @copyright 2012-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -111,12 +111,14 @@ abstract class DynamicField
     protected ?int $repeat = null;
     protected ?int $size = null;
     protected ?int $old_size = null;
+    /** @var string|array<string>|false */
     protected string|array|false $values = false;
     protected string $form;
     protected ?string $information = null;
     protected ?string $name = null;
     protected ?string $old_name = null;
 
+    /** @var array<string> */
     protected array $errors = [];
 
     protected Db $zdb;
@@ -154,7 +156,7 @@ abstract class DynamicField
 
             $results = $zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $field_type = $result->field_type;
                 $field_type = self::getFieldType($zdb, $field_type);
@@ -227,7 +229,7 @@ abstract class DynamicField
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRs($result);
             }
@@ -243,8 +245,8 @@ abstract class DynamicField
     /**
      * Load field type from a db ResultSet
      *
-     * @param ArrayObject $rs     ResultSet
-     * @param bool        $values Whether to load values. Defaults to true
+     * @param ArrayObject<string, int|string> $rs     ResultSet
+     * @param bool                            $values Whether to load values. Defaults to true
      *
      * @return void
      */
@@ -513,7 +515,7 @@ abstract class DynamicField
     /**
      * Retrieve permissions names for display
      *
-     * @return array
+     * @return array<int,string>
      */
     public static function getPermsNames(): array
     {
@@ -529,7 +531,7 @@ abstract class DynamicField
     /**
      * Retrieve forms names
      *
-     * @return array
+     * @return array<string,string>
      */
     public static function getFormsNames(): array
     {
@@ -579,7 +581,7 @@ abstract class DynamicField
      *
      * @param bool $imploded Whether to implode values
      *
-     * @return array|string|false
+     * @return array<string>|string|false
      */
     public function getValues(bool $imploded = false): array|string|false
     {
@@ -596,8 +598,8 @@ abstract class DynamicField
     /**
      * Check posted values validity
      *
-     * @param array $values All values to check, basically the $_POST array
-     *                      after sending the form
+     * @param array<string,mixed> $values All values to check, basically the $_POST array
+     *                                    after sending the form
      *
      * @return bool
      */
@@ -700,8 +702,8 @@ abstract class DynamicField
     /**
      * Store the field type
      *
-     * @param array $values All values to check, basically the $_POST array
-     *                      after sending the form
+     * @param array<string,mixed> $values All values to check, basically the $_POST array
+     *                                    after sending the form
      *
      * @return bool
      */
@@ -1020,7 +1022,7 @@ abstract class DynamicField
     /**
      * Retrieve fields types names
      *
-     * @return array
+     * @return array<int, string>
      */
     public static function getFieldsTypesNames(): array
     {
@@ -1039,7 +1041,7 @@ abstract class DynamicField
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -1049,7 +1051,7 @@ abstract class DynamicField
     /**
      * Get warnings
      *
-     * @return array
+     * @return array<string>
      */
     public function getWarnings(): array
     {

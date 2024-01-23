@@ -67,11 +67,13 @@ class Texts
         getLegend as protected trait_getLegend;
     }
 
+    /** @var ArrayObject<string, int|string> */
     private ArrayObject $all_texts;
     public const TABLE = "texts";
     public const PK = 'tid';
     public const DEFAULT_REF = 'sub';
 
+    /** @var array<int, mixed> */
     private array $defaults;
     private ?string $current;
 
@@ -115,7 +117,7 @@ class Texts
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string, array<string, string>>
      */
     protected function getMailPatterns(bool $legacy = true): array
     {
@@ -247,7 +249,7 @@ class Texts
      * @param string $ref  Reference of text to get
      * @param string $lang Language texts to get
      *
-     * @return ArrayObject of all text fields for one language.
+     * @return ArrayObject<string, int|string> of all text fields for one language.
      */
     public function getTexts(string $ref, string $lang): ArrayObject
     {
@@ -376,7 +378,7 @@ class Texts
      *
      * @param string $lang Requested language
      *
-     * @return array: list of references used for texts
+     * @return array<int,mixed> list of references used for texts
      */
     public function getRefs(string $lang = I18n::DEFAULT_LANG): array
     {
@@ -545,7 +547,7 @@ class Texts
     /**
      * Insert values in database
      *
-     * @param array $values Values to insert
+     * @param array<int, mixed> $values Values to insert
      *
      * @return void
      */
@@ -571,7 +573,7 @@ class Texts
     /**
      * Get default mail texts for all languages
      *
-     * @return array
+     * @return array<int,mixed>
      */
     public function getAllDefaults(): array
     {
@@ -590,7 +592,7 @@ class Texts
      *
      * @param string $lang Requested lang. Defaults to en_US
      *
-     * @return array
+     * @return array<int,mixed>
      */
     public function getDefaultTexts(string $lang = 'en_US'): array
     {
@@ -619,7 +621,7 @@ class Texts
     /**
      * Build legend array
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getLegend(): array
     {

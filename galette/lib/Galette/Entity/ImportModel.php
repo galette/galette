@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -49,7 +49,7 @@ use Laminas\Db\Adapter\Adapter;
  * @name      ImportModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -60,6 +60,7 @@ class ImportModel
     public const PK = 'model_id';
 
     private ?int $id;
+    /** @var array<string>|null */
     private ?array $fields;
     private ?string $creation_date;
 
@@ -98,7 +99,7 @@ class ImportModel
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
@@ -190,7 +191,7 @@ class ImportModel
     /**
      * Get fields
      *
-     * @return ?array
+     * @return ?array<string>
      */
     public function getFields(): ?array
     {
@@ -217,7 +218,7 @@ class ImportModel
     /**
      * Set fields
      *
-     * @param array $fields Fields list
+     * @param array<string> $fields Fields list
      *
      * @return self
      */

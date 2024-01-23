@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -53,7 +53,7 @@ use Laminas\Db\Sql\Expression;
  * @name      PdfModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -102,10 +102,10 @@ abstract class PdfModel
     /**
      * Main constructor
      *
-     * @param Db                   $zdb         Database instance
-     * @param Preferences          $preferences Galette preferences
-     * @param int                  $type        Model type
-     * @param ArrayObject|int|null $args        Arguments
+     * @param Db                                      $zdb         Database instance
+     * @param Preferences                             $preferences Galette preferences
+     * @param int                                     $type        Model type
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
     public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {
@@ -158,7 +158,7 @@ abstract class PdfModel
                     throw new \RuntimeException('Model not found!');
                 }
             } else {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRs($result);
             }
@@ -175,7 +175,7 @@ abstract class PdfModel
     /**
      * Load model from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2018-2023 The Galette Team
+ * Copyright © 2018-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
+ * @copyright 2018-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -50,7 +50,7 @@ use Galette\Features\Translatable;
  * @name      PaymentType
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
+ * @copyright 2018-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.2dev - 2018-07-23
@@ -80,8 +80,8 @@ class PaymentType
     /**
      * Main constructor
      *
-     * @param Db                   $zdb  Database instance
-     * @param ArrayObject|int|null $args Arguments
+     * @param Db                                      $zdb  Database instance
+     * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
     public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
@@ -124,7 +124,7 @@ class PaymentType
     /**
      * Load payment type from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
@@ -288,7 +288,7 @@ class PaymentType
      *
      * @param boolean $translated Return translated types (default) or not
      *
-     * @return array
+     * @return array<int,string>
      */
     public function getSystemTypes(bool $translated = true): array
     {

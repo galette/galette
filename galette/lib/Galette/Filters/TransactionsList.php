@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2016-2023 The Galette Team
+ * Copyright © 2016-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
+ * @copyright 2016-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     june, 12th 2016
@@ -48,7 +48,7 @@ use Galette\Core\Pagination;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
+ * @copyright 2016-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  *
@@ -75,6 +75,7 @@ class TransactionsList extends Pagination
     private int|false $filtre_cotis_children = false;
     private ?int $max_amount = null;
 
+    /** @var array<string> */
     protected array $list_fields = array(
         'start_date_filter',
         'end_date_filter',
@@ -82,6 +83,7 @@ class TransactionsList extends Pagination
         'filtre_cotis_children'
     );
 
+    /** @var array<string> */
     protected array $virtuals_list_fields = array(
         'rstart_date_filter',
         'rend_date_filter'

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.6dev - 2013-08-27
@@ -36,6 +36,8 @@
 
 namespace Galette\IO;
 
+use Galette\Core\I18n;
+use Galette\Entity\Title;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -55,7 +57,7 @@ use Galette\Repository\Members;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.6dev - 2013-08-27
@@ -68,10 +70,13 @@ class CsvIn extends Csv implements FileInterface
     public const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
     public const DATA_IMPORT_ERROR = -10;
 
-    protected $extensions = array('csv', 'txt');
+    /** @var array<string> */
+    protected array $extensions = array('csv', 'txt');
 
+    /** @var array<string> */
     private $_fields;
-    private $_default_fields = array(
+    /** @var array<string> */
+    private array $_default_fields = array(
         'nom_adh',
         'prenom_adh',
         'ddn_adh',
@@ -92,18 +97,25 @@ class CsvIn extends Csv implements FileInterface
         'info_adh'
     );
 
-    private $_dryrun = true;
+    private bool $_dryrun = true;
 
-    private $_members_fields;
-    private $_members_fields_cats;
-    private $_required;
-    private $statuses;
-    private $titles;
-    private $langs;
+    /** @var array<string,mixed>  */
+    private array $_members_fields;
+    /** @var array<string,mixed> */
+    private array $_members_fields_cats;
+    /** @var array<string,bool> */
+    private array $_required;
+    /** @var array<int, string> */
+    private array $statuses;
+    /** @var Title[]  */
+    private array $titles;
+    /** @var array<string,string> */
+    private array $langs;
+    /** @var array<string,int> */
     private $emails;
-    private $zdb;
-    private $preferences;
-    private $history;
+    private Db $zdb;
+    private Preferences $preferences;
+    private History $history;
 
     /**
      * Default constructor
@@ -146,7 +158,7 @@ class CsvIn extends Csv implements FileInterface
     /**
      * Get default fields
      *
-     * @return array
+     * @return array<string>
      */
     public function getDefaultFields()
     {
@@ -156,13 +168,13 @@ class CsvIn extends Csv implements FileInterface
     /**
      * Import members from CSV file
      *
-     * @param Db          $zdb                 Database instance
-     * @param Preferences $preferences         Preferences instance
-     * @param History     $history             History instance
-     * @param string      $filename            CSV filename
-     * @param array       $members_fields      Members fields
-     * @param array       $members_fields_cats Members fields categories
-     * @param boolean     $dryrun              Run in dry run mode (do not store in database)
+     * @param Db                  $zdb                 Database instance
+     * @param Preferences         $preferences         Preferences instance
+     * @param History             $history             History instance
+     * @param string              $filename            CSV filename
+     * @param array<string,mixed> $members_fields      Members fields
+     * @param array<string,mixed> $members_fields_cats Members fields categories
+     * @param boolean             $dryrun              Run in dry run mode (do not store in database)
      *
      * @return bool|int
      */
@@ -215,7 +227,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return boolean
      */
-    private function check($filename)
+    private function check(string $filename)
     {
         $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
         if (!$handle) {
@@ -309,12 +321,12 @@ class CsvIn extends Csv implements FileInterface
                         if (empty($column)) {
                             $column = Status::DEFAULT_STATUS;
                         } else {
-                            if ($this->statuses === null) {
+                            if (!isset($this->statuses)) {
                                 //load existing status
                                 $status = new Status($this->zdb);
                                 $this->statuses = $status->getList();
                             }
-                            if (!isset($this->statuses[$column])) {
+                            if (!isset($this->statuses[(int)$column])) {
                                 $this->addError(
                                     str_replace(
                                         '%status',
@@ -329,7 +341,7 @@ class CsvIn extends Csv implements FileInterface
 
                     //check for title
                     if ($this->_fields[$col] == 'titre_adh' && !empty($column)) {
-                        if ($this->titles === null) {
+                        if (!isset($this->titles)) {
                             //load existing titles
                             $titles = new Titles($this->zdb);
                             $this->titles = $titles->getList();
@@ -355,7 +367,7 @@ class CsvIn extends Csv implements FileInterface
                         if (isset($this->emails[$column])) {
                             $existing = $this->emails[$column];
                             $extra = ($existing == -1 ?
-                                _T("from another member in import") : str_replace('%id_adh', $existing, _T("from member %id_adh"))
+                                _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
                             );
                             $this->addError(
                                 str_replace(
@@ -373,8 +385,9 @@ class CsvIn extends Csv implements FileInterface
 
                     //check for language
                     if ($this->_fields[$col] == 'pref_lang') {
-                        if ($this->langs === null) {
+                        if (!isset($this->langs)) {
                             //load existing titles
+                            /** @var I18n $i18n */
                             global $i18n;
                             $this->langs = $i18n->getArrayList();
                         }

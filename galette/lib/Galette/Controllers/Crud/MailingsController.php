@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019-2023 The Galette Team
+ * Copyright © 2019-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -36,7 +36,6 @@
 
 namespace Galette\Controllers\Crud;
 
-use Throwable;
 use Galette\Controllers\CrudController;
 use Galette\Core\Galette;
 use Slim\Psr7\Request;
@@ -57,7 +56,7 @@ use Analog\Analog;
  * @name      MailingsController
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
+ * @copyright 2019-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.4dev - 2019-12-06
@@ -599,7 +598,7 @@ class MailingsController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -611,7 +610,7 @@ class MailingsController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -626,7 +625,7 @@ class MailingsController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
@@ -641,8 +640,8 @@ class MailingsController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
@@ -676,11 +675,9 @@ class MailingsController extends CrudController
             $ajax = true;
         }
 
-        $mailing = null;
         if ($id !== null) {
             $mailing = new Mailing($this->preferences);
             MailingHistory::loadFrom($this->zdb, $id, $mailing, false);
-            $attachments = $mailing->attachments;
         } else {
             $mailing = $this->session->mailing;
 
@@ -707,8 +704,8 @@ class MailingsController extends CrudController
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
-            $attachments = $mailing->attachments;
         }
+        $attachments = $mailing->attachments;
 
         // display page
         $this->view->render(
@@ -730,12 +727,12 @@ class MailingsController extends CrudController
     }
 
     /**
-     * Preview attachement action
+     * Preview attachment action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param integer  $id       Mailing id
-     * @param integer  $pos      Attachement position in list
+     * @param integer  $pos      Attachment position in list
      *
      * @return Response
      */

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017-2023 The Galette Team
+ * Copyright © 2017-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9
@@ -58,7 +58,7 @@ use Galette\Entity\PaymentType;
  * @name      FakeData
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
+ * @copyright 2017-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @see       https://github.com/fzaninotto/Faker
@@ -66,6 +66,9 @@ use Galette\Entity\PaymentType;
  */
 class FakeData
 {
+    /**
+     * @var array<string,array<string>>
+     */
     private array $report = [
         'success'   => [],
         'errors'    => [],
@@ -153,7 +156,7 @@ class FakeData
     /**
      * Get report
      *
-     * @return array
+     * @return array<string,array<string>>
      */
     public function getReport(): array
     {

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-02-28
@@ -59,6 +59,7 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
+use ArrayObject;
 
 /**
  * Members class for galette
@@ -68,7 +69,7 @@ use Galette\Core\Db;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  */
@@ -121,8 +122,9 @@ class Members
 
     public const NON_STAFF_MEMBERS = 30;
 
-    private MembersList|AdvancedMembersList|null $filters;
+    private MembersList|AdvancedMembersList $filters;
     private int $count = 0;
+    /** @var array<string> */
     private array $errors = array();
 
     /**
@@ -142,13 +144,13 @@ class Members
     /**
      * Get staff members list
      *
-     * @param bool    $as_members return the results as an array of
-     *                            Member object.
-     * @param ?array  $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
-     * @param boolean $limit      true to LIMIT query
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param boolean        $count      true if we want to count members
+     * @param boolean        $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
@@ -171,13 +173,13 @@ class Members
     /**
      * Get managed members list (for groups managers)
      *
-     * @param bool    $as_members return the results as an array of
-     *                            Member object.
-     * @param ?array  $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
-     * @param boolean $limit      true to LIMIT query
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param boolean        $count      true if we want to count members
+     * @param boolean        $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
@@ -200,16 +202,16 @@ class Members
     /**
      * Get members list
      *
-     * @param bool    $as_members return the results as an array of
-     *                            Member object.
-     * @param ?array  $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
-     * @param boolean $staff      true if we want only staff members
-     * @param boolean $managed    true if we want only managed groups
-     * @param boolean $limit      true if we want records pagination
-     * @param boolean $export     true if we are exporting
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param boolean        $count      true if we want to count members
+     * @param boolean        $staff      true if we want only staff members
+     * @param boolean        $managed    true if we want only managed groups
+     * @param boolean        $limit      true if we want records pagination
+     * @param boolean        $export     true if we are exporting
      *
      * @return Adherent[]|ResultSet
      */
@@ -281,7 +283,7 @@ class Members
     /**
      * Remove specified members
      *
-     * @param integer|array $ids Members identifiers to delete
+     * @param integer|array<int> $ids Members identifiers to delete
      *
      * @return boolean
      */
@@ -435,11 +437,11 @@ class Members
     /**
      * Get members list
      *
-     * @param boolean $as_members return the results as an array of
-     *                            Member object.
-     * @param ?array  $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
+     * @param boolean        $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
      *
      * @return Adherent[]|ResultSet
      */
@@ -502,16 +504,16 @@ class Members
     /**
      * Get list of members that has been selected
      *
-     * @param int|array $ids         an array of members id that has been selected
-     * @param ?array    $orderby     SQL order clause (optional)
-     * @param boolean   $with_photos Should photos be loaded?
-     * @param boolean   $as_members  Return Adherent[] or simple ResultSet
-     * @param ?array    $fields      Fields to use
-     * @param boolean   $export      True if we are exporting
-     * @param boolean   $dues        True if load dues as Adherent dependency
-     * @param boolean   $parent      True if load parent as Adherent dependency
+     * @param int|array<int> $ids         an array of members id that has been selected
+     * @param ?array<string> $orderby     SQL order clause (optional)
+     * @param boolean        $with_photos Should photos be loaded?
+     * @param boolean        $as_members  Return Adherent[] or simple ResultSet
+     * @param ?array<string> $fields      Fields to use
+     * @param boolean        $export      True if we are exporting
+     * @param boolean        $dues        True if load dues as Adherent dependency
+     * @param boolean        $parent      True if load parent as Adherent dependency
      *
-     * @return Adherent[]|false
+     * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
     public function getArrayList(
         int|array $ids,
@@ -577,11 +579,11 @@ class Members
     /**
      * Builds the SELECT statement
      *
-     * @param int    $mode   the current mode (see self::SHOW_*)
-     * @param ?array $fields fields list to retrieve
-     * @param bool   $photos true if we want to get only members with photos
-     *                       Default to false, only relevant for SHOW_PUBLIC_LIST
-     * @param bool   $count  true if we want to count members, defaults to false
+     * @param int            $mode   the current mode (see self::SHOW_*)
+     * @param ?array<string> $fields fields list to retrieve
+     * @param bool           $photos true if we want to get only members with photos
+     *                               Default to false, only relevant for SHOW_PUBLIC_LIST
+     * @param bool           $count  true if we want to count members, defaults to false
      *
      * @return Select SELECT statement
      */
@@ -893,9 +895,9 @@ class Members
     /**
      * Builds the order clause
      *
-     * @param Select $select Original select
-     * @param ?array $fields Fields list to ensure ORDER clause
-     *                       references selected fields. Optional.
+     * @param Select         $select Original select
+     * @param ?array<string> $fields Fields list to ensure ORDER clause
+     *                               references selected fields. Optional.
      *
      * @return Select
      */
@@ -963,8 +965,8 @@ class Members
      * Is field allowed to order? it should be present in
      * provided fields list (those that are SELECT'ed).
      *
-     * @param string $field_name Field name to order by
-     * @param ?array $fields     SELECTE'ed fields
+     * @param string         $field_name Field name to order by
+     * @param ?array<string> $fields     SELECTE'ed fields
      *
      * @return boolean
      */
@@ -1632,7 +1634,7 @@ class Members
     /**
      * Get reminders count based on members state of dues
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getRemindersCount(): array
     {
@@ -1739,7 +1741,7 @@ class Members
     /**
      * Get registered errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -1751,7 +1753,7 @@ class Members
      *
      * @param Db $zdb Database instance
      *
-     * @return array ['email' => 'id_adh']
+     * @return array<string,int> ['email' => 'id_adh']
      */
     public static function getEmails(Db $zdb): array
     {
@@ -1764,7 +1766,7 @@ class Members
         $select->where('email_adh != \'\' AND email_adh IS NOT NULL');
         $rows = $zdb->execute($select);
         foreach ($rows as $row) {
-            $emails[$row->email_adh] = $row->{self::PK};
+            $emails[(string)$row->email_adh] = (int)$row->{self::PK};
         }
         return $emails;
     }
@@ -1786,7 +1788,7 @@ class Members
      * @param Login    $login   Login instance
      * @param ?integer $current Current member
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getDropdownMembers(Db $zdb, Login $login, ?int $current = null): array
     {
@@ -1809,7 +1811,7 @@ class Members
             foreach ($list_members as $member) {
                 $pk = Adherent::PK;
 
-                $members[$member->$pk] = Adherent::getNameWithCase(
+                $members[(int)$member->$pk] = Adherent::getNameWithCase(
                     $member->nom_adh,
                     $member->prenom_adh,
                     false,

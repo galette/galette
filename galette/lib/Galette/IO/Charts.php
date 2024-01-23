@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2021 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.4dev - 2013-02-02
@@ -53,7 +53,7 @@ use Galette\Repository\Members;
  * @name      Charts
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2021 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.4dev - 2013-02-02
@@ -67,15 +67,17 @@ class Charts
     public const COMPANIES_OR_NOT = 'CompaniesOrNot';
     public const CONTRIBS_ALLTIME = 'ContribsAllTime';
 
-    private $types;
-    private $charts;
+    /** @var array<string>|null  */
+    private ?array $types;
+    /** @var array<string> */
+    private array $charts;
 
     /**
      * Default constructor
      *
-     * @param array $types Charts types to cache
+     * @param ?array<string> $types Charts types to cache
      */
-    public function __construct($types = null)
+    public function __construct(array $types = null)
     {
         if ($types !== null) {
             if (!is_array($types)) {
@@ -94,7 +96,7 @@ class Charts
      *
      * @return void
      */
-    private function load()
+    private function load(): void
     {
         foreach ($this->types as $t) {
             $classname = "getChart" . $t;
@@ -105,9 +107,9 @@ class Charts
     /**
      * Retrieve loaded charts
      *
-     * @return array
+     * @return array<string,string>
      */
-    public function getCharts()
+    public function getCharts(): array
     {
         return $this->charts;
     }
@@ -117,7 +119,7 @@ class Charts
      *
      * @return void
      */
-    private function getChartMembersStatusPie()
+    private function getChartMembersStatusPie(): void
     {
         global $zdb;
 
@@ -162,7 +164,7 @@ class Charts
      *
      * @return void
      */
-    private function getChartMembersStateDuePie()
+    private function getChartMembersStateDuePie(): void
     {
         global $zdb;
 
@@ -262,7 +264,7 @@ class Charts
      *
      * @return void
      */
-    private function getChartCompaniesOrNot()
+    private function getChartCompaniesOrNot(): void
     {
         global $zdb;
 
@@ -321,7 +323,7 @@ class Charts
      *
      * @return void
      */
-    private function getChartContribsTypesPie()
+    private function getChartContribsTypesPie(): void
     {
         global $zdb;
 
@@ -357,7 +359,7 @@ class Charts
      *
      * @return void
      */
-    private function getChartContribsAllTime()
+    private function getChartContribsAllTime(): void
     {
         /** @var Db $zdb */
         global $zdb;

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2023 The Galette Team
+ * Copyright © 2009-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-03-28
@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -47,7 +48,7 @@ use Galette\Core\Db;
  * @name      FieldsCategories
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
+ * @copyright 2009-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7dev - 2009-03-28
@@ -58,6 +59,7 @@ class FieldsCategories
     public const TABLE = 'fields_categories';
     public const PK = 'id_field_category';
 
+    /** @var array<string,mixed> */
     private array $defaults;
 
     private Db $zdb;
@@ -69,8 +71,8 @@ class FieldsCategories
     /**
      * Default constructor
      *
-     * @param Db    $zdb      Database
-     * @param array $defaults default values
+     * @param Db                  $zdb      Database
+     * @param array<string,mixed> $defaults default values
      */
     public function __construct(Db $zdb, array $defaults)
     {
@@ -83,7 +85,7 @@ class FieldsCategories
      *
      * @param Db $zdb Database
      *
-     * @return array
+     * @return array<ArrayObject<string, int|string>>
      */
     public static function getList(Db $zdb): array
     {
@@ -110,8 +112,8 @@ class FieldsCategories
     /**
      * Store the categories
      *
-     * @param Db    $zdb        Database
-     * @param array $categories Categories
+     * @param Db                $zdb        Database
+     * @param array<int,string> $categories Categories
      *
      * @return boolean
      */

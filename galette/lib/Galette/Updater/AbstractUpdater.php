@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2023 The Galette Team
+ * Copyright © 2013-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.6dev - 2013-07-21
@@ -47,7 +47,7 @@ use Galette\Core\Install;
  * @name      AbstractUpdater
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
+ * @copyright 2013-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.7.6dev - 2013-07-21
@@ -58,14 +58,29 @@ abstract class AbstractUpdater
     public const REPORT_ERROR = 1;
     public const REPORT_WARNING = 2;
 
+    /**
+     * SQL scripts to run
+     *
+     * @var array<string,string>
+     */
     protected ?array $sql_scripts = null;
     protected ?string $db_version = null;
+    /**
+     * Supported SQL engines
+     *
+     * @var array<string,string>
+     */
     private array $engines = array(
         Db::MYSQL   => Db::MYSQL,
         Db::PGSQL   => Db::PGSQL,
     );
     protected Db $zdb;
     protected Install $installer;
+    /**
+     * Report
+     *
+     * @var array<string,array<int|string>>
+     */
     private array $report = array();
 
     /**
@@ -241,7 +256,7 @@ abstract class AbstractUpdater
      *
      * @param string $version Scripts version
      *
-     * @return array
+     * @return array<string,string>
      */
     private function getSqlScripts(string $version): array
     {
@@ -313,7 +328,7 @@ abstract class AbstractUpdater
     /**
      * Get upgrade report
      *
-     * @return array
+     * @return array<string, array<int|string>>
      */
     public function getReport(): array
     {

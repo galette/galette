@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2021-2023 The Galette Team
+ * Copyright © 2021-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.6-dev - 2021-11-07
@@ -53,7 +53,7 @@ use Galette\Repository\PaymentTypes;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
+ * @copyright 2021-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     Available since 0.9.6-dev - 2021-11-07
@@ -61,11 +61,11 @@ use Galette\Repository\PaymentTypes;
 
 class ContributionsCsv extends CsvOut
 {
-    private $filename;
-    private $path;
-    private $zdb;
-    private $login;
-    private $type;
+    private string $filename;
+    private string $path;
+    private Db $zdb;
+    private Login $login;
+    private string $type;
 
     /**
      * Default constructor
@@ -116,7 +116,7 @@ class ContributionsCsv extends CsvOut
         $ctype = new ContributionsTypes($this->zdb);
 
         foreach ($contributions_list as &$contribution) {
-            /** @var ArrayObject $contribution */
+            /** @var ArrayObject<string, int|string> $contribution */
             if (isset($contribution->type_paiement_cotis)) {
                 //add textual payment type
                 $contribution->type_paiement_cotis = $ptypes[$contribution->type_paiement_cotis];

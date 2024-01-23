@@ -36,6 +36,8 @@
 
 namespace Galette\Core;
 
+use Galette\Entity\Group;
+
 /**
  * Abstract authentication class for galette
  *
@@ -53,7 +55,7 @@ namespace Galette\Core;
  * @property  ?string $surname
  * @property  ?integer $id
  * @property  string $lang
- * @property  array $managed_groups
+ * @property  array<int, Group|int> $managed_groups
  */
 
 abstract class Authentication
@@ -75,6 +77,7 @@ abstract class Authentication
     protected bool $superadmin = false;
     protected bool $staff = false;
     protected bool $uptodate = false;
+    /** @var array<int, Group|int> */
     protected array $managed_groups = [];
     protected bool $cron = false;
 
@@ -217,7 +220,7 @@ abstract class Authentication
      * If no group id is specified, check if user is manager for at
      * least one group.
      *
-     * @param array|int $id_group Group(s) identifier(s)
+     * @param array<int>|int $id_group Group(s) identifier(s)
      *
      * @return boolean
      */
@@ -246,7 +249,7 @@ abstract class Authentication
     /**
      * Get managed groups
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public function getManagedGroups(): array
     {
