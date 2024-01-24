@@ -1,13 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette Slim middleware for authentication
- *
- * PHP version 5
- *
- * Copyright © 2020-2024 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -23,15 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9.4dev - 2020-05-06
  */
 
 namespace Galette\Middleware;
@@ -50,14 +35,7 @@ use Slim\Routing\RouteParser;
 /**
  * Galette Slim middleware for authentication
  *
- * @category  Middleware
- * @name      Authenticate
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9.4dev - 2020-05-06
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Authenticate
 {

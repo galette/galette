@@ -1,15 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF class for galette
- * Traps tcpdf errors by overloading tcpdf::error method
- * Adds convenient method to convert color html codes
- *
- * PHP version 5
- *
- * Copyright © 2007-2023 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -25,16 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    John Perr <johnperr@abul.org>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.7dev - 2007-07-21
  */
 
 namespace Galette\IO;
@@ -53,16 +35,8 @@ require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
 /**
  * PDF class for galette
  *
- * @category  IO
- * @name      PDF
- * @package   Galette
- * @abstract  Class for expanding TCPDF.
- * @author    John Perr <johnperr@abul.org>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.7dev - 2007-07-21
+ * @author John Perr <johnperr@abul.org>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class Pdf extends \TCPDF

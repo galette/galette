@@ -1,16 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette Slim middleware for maintenance and needs update pages display.
- *
- * Relies on Slim modes. Set 'MAINT' for maintenance mode, and 'NEED_UPDATE' for the need update one.
- * Maintenance mode page will be displayed if current logged in user is not super admin.
- *
- * PHP version 5
- *
- * Copyright © 2015-2023 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -26,15 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9dev - 2015-10-31
  */
 
 namespace Galette\Middleware;
@@ -46,18 +28,14 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Routing\RouteContext;
 
 /**
- * Galette's Slim middleware for Update and Maintenance
+ * Galette Slim middleware for maintenance and needs update pages display.
+ *
+ * Relies on Slim modes. Set 'MAINT' for maintenance mode, and 'NEED_UPDATE' for the need update one.
+ * Maintenance mode page will be displayed if current logged in user is not super admin.
  *
  * Renders maintenance and needs update pages, as 503 (service not available)
  *
- * @category  Middleware
- * @name      UpdateAndMaintenance
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9dev - 2015-10-31
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class UpdateAndMaintenance
 {

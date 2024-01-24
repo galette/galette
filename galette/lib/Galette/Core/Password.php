@@ -1,14 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Password for galette. The original code was found
- * in includes/functions.inc.php
- *
- * PHP version 5
- *
- * Copyright © 2003-2023 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -24,17 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Frédéric Jacquot <gna@logeek.com>
- * @author    Georges Khaznadar (password encryption, images) <georges@unknow.org>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.7dev - 2009-02-28
  */
 
 namespace Galette\Core;
@@ -46,16 +28,9 @@ use Galette\Entity\Adherent;
 /**
  * Temporary password management
  *
- * @category  Core
- * @name      Password
- * @package   Galette
- * @author    Frédéric Jacquot <gna@logeek.com>
- * @author    Georges Khaznadar (password encryption, images) <georges@unknow.org>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.7dev - 2011-06-16
+ * @author Frédéric Jacquot <gna@logeek.com>
+ * @author Georges Khaznadar (password encryption, images) <georges@unknow.org>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class Password extends AbstractPassword

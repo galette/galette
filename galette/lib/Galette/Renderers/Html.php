@@ -1,13 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Error handler that overrides Slim's one
- *
- * PHP version 5
- *
- * Copyright © 2023 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -23,15 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Renderers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-02-11
  */
 
 namespace Galette\Renderers;
@@ -42,16 +27,9 @@ use Slim\Views\Twig;
 use Throwable;
 
 /**
- * HMTL error renderer
+ * HTML error renderer
  *
- * @category  Renderers
- * @name      Html
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-02-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Html implements ErrorRendererInterface
 {

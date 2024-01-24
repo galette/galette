@@ -1,13 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Generates fake data as example
- *
- * PHP version 5
- *
- * Copyright © 2017-2024 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -23,15 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Util
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9
  */
 
 namespace Galette\Util;
@@ -54,15 +39,7 @@ use Galette\Entity\PaymentType;
 /**
  * Generate random data
  *
- * @category  Util
- * @name      FakeData
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @see       https://github.com/fzaninotto/Faker
- * @since     Available since 0.9dev - 2017-02-20
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class FakeData
 {

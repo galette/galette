@@ -1,13 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette Arithmetic captcha
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * PHP version 5
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -23,15 +17,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9.5dev - 2020-11-08
  */
 
 namespace Galette\Core;
@@ -43,14 +28,7 @@ use Galette\Entity\Adherent;
 /**
  * Password image (captcha) for galette.
  *
- * @category  Core
- * @name      Gaptcha
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9.5dev - 2020-11-08
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Gaptcha
 {

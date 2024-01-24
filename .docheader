@@ -1,6 +1,5 @@
-{#
 /**
- * Copyright © 2003-2024 The Galette Team
+ * Copyright © 2003-%year% The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -17,13 +16,3 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
-#}
-{% extends "components/forms/select.html.twig" %}
-
-{% block element %}
-    <select name="id_statut" id="id_statut" class="ui dropdown"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required.id_statut is defined and required.id_statut == 1 %} required="required"{% endif %}>
-        {% for key, value in statuts %}
-            <option value="{{ key }}"{% if key == member.status %} selected="selected"{% endif %}>{{ value }}</option>
-        {% endfor %}
-    </select>
-{% endblock %}

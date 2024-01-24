@@ -29,8 +29,12 @@
      <rule ref="PSR12"/>
 
      <!-- Comments rules from PEAR standard -->
-     <rule ref="PEAR.Commenting.ClassComment"/>
-     <rule ref="PEAR.Commenting.FileComment"/>
+     <rule ref="PEAR.Commenting.ClassComment">
+         <exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag"/>
+         <exclude name="PEAR.Commenting.ClassComment.MissingPackageTag"/>
+         <exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag"/>
+         <exclude name="PEAR.Commenting.ClassComment.MissingLinkTag"/>
+     </rule>
      <rule ref="PEAR.Commenting.FunctionComment"/>
      <rule ref="PEAR.Commenting.InlineComment"/>
 </ruleset>

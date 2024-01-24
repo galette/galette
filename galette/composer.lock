@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "493df3e560936f2a6d908f78b36b7198",
+    "content-hash": "d9d666c177b29251a86016612325d3ca",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -2824,6 +2824,63 @@
                 "source": "https://github.com/friendsoftwig/twigcs/tree/6.2.0"
             },
             "time": "2023-01-13T16:02:00+00:00"
+        },
+        {
+            "name": "malukenho/docheader",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/malukenho/docheader.git",
+                "reference": "8d3a4c2f7717c2502b71a9bccad638c4dda0b4de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/malukenho/docheader/zipball/8d3a4c2f7717c2502b71a9bccad638c4dda0b4de",
+                "reference": "8d3a4c2f7717c2502b71a9bccad638c4dda0b4de",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "symfony/console": "^4.4 || ^5.4 || ^6.0",
+                "symfony/finder": "^4.4 || ^5.4 || ^6.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^9.0",
+                "mikey179/vfsstream": "^1.6.10",
+                "phpunit/phpunit": "^9.5",
+                "vimeo/psalm": "^4.23"
+            },
+            "bin": [
+                "bin/docheader"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DocHeader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jefersson Nathan",
+                    "email": "malukenho.dev@gmail.com"
+                }
+            ],
+            "description": "A small library to check header docs",
+            "homepage": "https://github.com/malukenho/docheader",
+            "keywords": [
+                "Code style",
+                "code standard",
+                "license"
+            ],
+            "support": {
+                "issues": "https://github.com/malukenho/docheader/issues",
+                "source": "https://github.com/malukenho/docheader/tree/1.0.0"
+            },
+            "time": "2022-07-12T09:10:09+00:00"
         },
         {
             "name": "myclabs/deep-copy",

@@ -79,6 +79,10 @@ jobs:
         run: |
           galette/vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
 
+      - name: Headers checks
+        run: |
+          ./galette/vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
+
   unsupported-dbs:
     runs-on: ubuntu-latest
     name: DB Fail on ${{ matrix.php-versions }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || ''}}
