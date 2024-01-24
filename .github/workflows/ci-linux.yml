@@ -61,7 +61,7 @@ jobs:
 
       - name: CS
         run: |
-          galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/
+          galette/vendor/bin/phpcs
 
       - name: Twig CS
         run: |
