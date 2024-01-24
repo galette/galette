@@ -56,7 +56,7 @@ abstract class GalettePlugin
     /**
      * Get plugins public menus
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getPublicMenuItems(): array
     {
@@ -73,7 +73,7 @@ abstract class GalettePlugin
     /**
      * Get plugins dashboards
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getDashboards(): array
     {
@@ -91,14 +91,14 @@ abstract class GalettePlugin
     /**
      * Extra public menus entries
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getPublicMenusItemsList(): array;
 
     /**
      * Get dashboards contents
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDashboardsContents(): array;
 
@@ -120,7 +120,7 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getDetailedActions(Adherent $member): array
     {
@@ -131,7 +131,7 @@ abstract class GalettePlugin
     /**
      * Get member batch actions
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getBatchActions(): array
     {
@@ -151,7 +151,7 @@ abstract class GalettePlugin
     /**
      * Get batch actions contents
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getBatchActionsContents(): array;
 
@@ -160,7 +160,7 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDetailedActionsContents(Adherent $member): array;
 }
