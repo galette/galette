@@ -81,6 +81,7 @@ use Galette\Features\Dynamics;
  * @property integer $duration
  * @property string $spayment_type
  * @property integer $model
+ * @property array<string, array<string, string>> $fields
  */
 class Contribution
 {

@@ -27,8 +27,8 @@
  * @category  Main
  * @package   Galette
  *
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
+ * @author    Frédéric Jacquot <gna@logeek.com>
+ * @author    Georges Khaznadar (i18n using gettext) <georges@unknow.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2003-2023 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version

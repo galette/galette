@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2020-2023 The Galette Team
+ * Copyright © 2020-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2020-12-27
@@ -45,7 +45,7 @@ use PHPUnit\Framework\TestCase;
  * @name      GaletteTestCase
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
+ * @copyright 2020-2024 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      https://galette.eu
  * @since     2020-12-27
@@ -579,7 +579,7 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Create contribution from data
      *
-     * @param array                         $data Data to use to create contribution
+     * @param array<string,mixed>           $data    Data to use to create contribution
      * @param ?\Galette\Entity\Contribution $contrib Contribution instance, if any
      *
      * @return \Galette\Entity\Contribution

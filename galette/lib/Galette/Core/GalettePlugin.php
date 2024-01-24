@@ -129,7 +129,7 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getListActions(Adherent $member): array
     {

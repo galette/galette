@@ -27,8 +27,8 @@
  * @category  Functions
  * @package   Galette
  *
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
+ * @author    Frédéric Jacquot <gna@logeek.com>
+ * @author    Georges Khaznadar (password encryption, images) <georges@unknow.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2003-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
