@@ -227,7 +227,7 @@ function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = t
 }
 
 /**
- * Get contextualized strign (simalates pgettext)
+ * Get contextualized string (simulates pgettext)
  *
  * @param string $string  The string to translate
  * @param string $context The context

@@ -22,8 +22,10 @@
 
 {% set body_class = "front_page" %}
 
+{%  block form_url %}{{ url_for('dologin') }}{% endblock %}
+
 {% block content %}
-                <form action="{{ url_for('dologin') }}" method="post" class="ui form">
+                <form action="{{ block('form_url') }}" method="post" class="ui form">
     {% if preferences.pref_mail_method != constant('\\Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
                     <div class="ui segments">
     {% endif %}

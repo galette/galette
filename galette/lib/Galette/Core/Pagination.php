@@ -177,7 +177,7 @@ abstract class Pagination
      */
     public function setCounter(int $c): void
     {
-        $this->counter = (int)$c;
+        $this->counter = $c;
         $this->countPages();
     }
 
