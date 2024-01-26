@@ -635,22 +635,30 @@ class Adherent
     /**
      * Is member manager of specified group?
      *
-     * @param string $group_name Group name
+     * @param ?string $group_name Group name
      *
      * @return boolean
      */
-    public function isGroupManager(string $group_name): bool
+    public function isGroupManager(?string $group_name): bool
     {
         if (!$this->isDepEnabled('groups')) {
             $this->loadGroups();
         }
 
-        foreach ($this->_managed_groups as $mg) {
-            if ($mg->getName() == $group_name) {
+        if ($group_name !== null) {
+            foreach ($this->_managed_groups as $mg) {
+                if ($mg->getName() == $group_name) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            if ($this->isAdmin() || $this->isStaff()) {
                 return true;
+            } else {
+                return count($this->managed_groups) > 0;
             }
         }
-        return false;
     }
 
     /**
