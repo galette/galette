@@ -180,7 +180,7 @@ abstract class AbstractController
         if ($this->login->isLogged()) {
             $urlRedirect = null;
             if ($this->session->urlRedirect !== null) {
-                $urlRedirect = $this->getGaletteBaseUrl($request) . $this->session->urlRedirect;
+                $urlRedirect = $this->session->urlRedirect;
                 $this->session->urlRedirect = null;
             }
 
@@ -217,31 +217,6 @@ abstract class AbstractController
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('login'));
         }
-    }
-
-    /**
-     * Get base URL fixed for proxies
-     *
-     * @param Request $request PSR Request
-     *
-     * @return string
-     */
-    private function getGaletteBaseUrl(Request $request): string
-    {
-        $routeContext = RouteContext::fromRequest($request);
-
-        $url = preg_replace(
-            [
-                '|index\.php|',
-                '|https?://' . $_SERVER['HTTP_HOST'] . '(:\d+)?' . '|'
-            ],
-            ['', ''],
-            $routeContext->getBasePath()
-        );
-        if (strlen($url) && substr($url, -1) !== '/') {
-            $url .= '/';
-        }
-        return $url;
     }
 
     /**
