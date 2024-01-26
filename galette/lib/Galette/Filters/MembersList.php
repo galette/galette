@@ -59,7 +59,7 @@ class MembersList extends Pagination
     /** @var array<int> */
     private array $_unreachable = [];
 
-    protected string $query;
+    protected string $query = '';
 
     /** @var array<string> */
     protected array $memberslist_fields = array(
