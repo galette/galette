@@ -67,7 +67,7 @@ class Install
     private string $_db_name;
     private string $_db_user;
     private string $_db_pass;
-    private ?string $_db_prefix;
+    private ?string $_db_prefix = null;
 
     private bool $_db_connected;
     /** @var array<string, string> */
@@ -314,11 +314,11 @@ class Install
     /**
      * Get database type
      *
-     * @return string
+     * @return ?string
      */
-    public function getDbType(): string
+    public function getDbType(): ?string
     {
-        return $this->_db_type;
+        return $this->_db_type ?? null;
     }
 
     /**
@@ -357,41 +357,41 @@ class Install
     /**
      * Retrieve database host
      *
-     * @return string
+     * @return ?string
      */
-    public function getDbHost(): string
+    public function getDbHost(): ?string
     {
-        return $this->_db_host;
+        return $this->_db_host ?? null;
     }
 
     /**
      * Retrieve database port
      *
-     * @return string
+     * @return ?string
      */
-    public function getDbPort(): string
+    public function getDbPort(): ?string
     {
-        return $this->_db_port;
+        return $this->_db_port ?? null;
     }
 
     /**
      * Retrieve database name
      *
-     * @return string
+     * @return ?string
      */
-    public function getDbName(): string
+    public function getDbName(): ?string
     {
-        return $this->_db_name;
+        return $this->_db_name ?? null;
     }
 
     /**
      * Retrieve database user
      *
-     * @return string
+     * @return ?string
      */
-    public function getDbUser(): string
+    public function getDbUser(): ?string
     {
-        return $this->_db_user;
+        return $this->_db_user ?? null;
     }
 
     /**
@@ -407,9 +407,9 @@ class Install
     /**
      * Retrieve tables prefix
      *
-     * @return string
+     * @return ?string
      */
-    public function getTablesPrefix(): string
+    public function getTablesPrefix(): ?string
     {
         return $this->_db_prefix;
     }
