@@ -77,7 +77,7 @@ class PdfAdhesionForm extends Pdf
      *
      * @return ?PdfModel
      */
-    protected function getModel():? PdfModel
+    protected function getModel(): ?PdfModel
     {
         $model = new PdfAdhesionFormModel($this->zdb, $this->prefs);
         $model->setMember($this->adh);

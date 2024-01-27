@@ -22,7 +22,7 @@
 
 {% set body_class = "front_page" %}
 
-{%  block form_url %}{{ url_for('dologin') }}{% endblock %}
+{% block form_url %}{{ url_for('dologin') }}{% endblock %}
 
 {% block content %}
                 <form action="{{ block('form_url') }}" method="post" class="ui form">
