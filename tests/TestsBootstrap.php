@@ -25,13 +25,15 @@
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-$basepath = null;
-if (file_exists('../galette/index.php')) {
-    $basepath = '../galette/';
-} elseif (file_exists('galette/index.php')) {
-    $basepath = 'galette/';
-} else {
-    die('Unable to define GALETTE_BASE_PATH :\'(');
+
+if (!isset($basepath)) {
+    if (file_exists('../galette/index.php')) {
+        $basepath = '../galette/';
+    } elseif (file_exists('galette/index.php')) {
+        $basepath = 'galette/';
+    } else {
+        die('Unable to define GALETTE_BASE_PATH :\'(');
+    }
 }
 
 $db = 'mysql';
@@ -53,7 +55,9 @@ define('GALETTE_BASE_PATH', $basepath);
 define('GALETTE_TESTS', true);
 define('GALETTE_TESTS_PATH', __DIR__);
 define('GALETTE_MODE', 'PROD');
-define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
+if (!defined('GALETTE_PLUGINS_PATH')) {
+    define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
+}
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 define('GALETTE_THEME', 'themes/default/');
 define('GALETTE_DATA_PATH', GALETTE_TESTS_PATH . '/tests-data/');
