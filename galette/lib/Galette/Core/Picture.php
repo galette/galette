@@ -123,7 +123,7 @@ class Picture implements FileInterface
     {
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
-        if (!$this->checkFileOnFS()) {
+        if (isset($this->id) && !$this->checkFileOnFS()) {
             //if file does not exist on the FileSystem,
             //check for it in the database
             //$this->checkFileInDB();
