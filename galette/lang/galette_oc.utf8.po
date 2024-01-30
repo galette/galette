@@ -1,13 +1,13 @@
 # Quentin PAGÈS <quentinantonin@free.fr>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
-# Pèire Bréchet <charrar@free.fr>, 2022.
+# Pèire Bréchet <charrar@free.fr>, 2022, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-12-06 08:09+0100\n"
-"PO-Revision-Date: 2023-11-19 06:42+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-01-31 11:01+0000\n"
+"Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
 "Language: oc\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.2\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:153
 msgid "Transaction"
@@ -59,43 +59,41 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:117
 msgid "Payment types management"
-msgstr "Gestion dei sòrtas de pagament"
+msgstr "Administracion dei sòrtas de pagament"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:161
 #: ../../tempcache/pages/configuration_payment_types.html.twig:254
 msgid "Edit payment type"
-msgstr ""
+msgstr "Modificar lo mòde de pagament"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:211
-#, fuzzy
-#| msgid "Manage payment types"
 msgid "Missing required payment type's name!"
-msgstr "Governar lei menas de pagament"
+msgstr "Governar lo mòde de pagament"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:220
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr "S'es pas pogut ajustar la mena de pagament «%s»!"
+msgstr "S'es pas pogut ajustar lo mòde de pagament «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:226
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr ""
+msgstr "Lo mòde de pagament \"%s\" es pas estat modificat !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:236
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr "La mena de pagament «%s» es estat ajustada."
+msgstr "Lo mòde de pagament «%s» es estat ajustat."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:242
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "Lo mòde de pagament \"%s\" es estat modificat."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:318
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Suprimir lo mòde de pagament %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:126
 msgid "Group name is missing!"
@@ -186,7 +184,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:238
 msgid "Dynamic fields configuration"
-msgstr ""
+msgstr "Configuracion dei camps dinamics"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:327
 #: ../lib/Galette/Controllers/Crud/MembersController.php:260
@@ -257,7 +255,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:477
 msgid "Members management"
-msgstr "Gestion de membres"
+msgstr "Administracion dei membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:711
 #: ../lib/Galette/Core/Galette.php:185
@@ -350,7 +348,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:112
 msgid "Titles management"
-msgstr "Gestion de títols"
+msgstr "Administracion dei títols"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:155
 #: ../../tempcache/pages/configuration_titles.html.twig:261
@@ -393,7 +391,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:127
 #: ../lib/Galette/Core/Install.php:1183 ../lib/Galette/Core/Galette.php:386
 msgid "Contributions types"
-msgstr ""
+msgstr "Menas de contribucions"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:193
 #: ../../tempcache/pages/configuration_entitleds.html.twig:83
@@ -403,7 +401,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:199
 #: ../../tempcache/pages/configuration_entitleds.html.twig:89
 msgid "Edit contribution type"
-msgstr ""
+msgstr "Modificar la mena de contribucion"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:283
 msgid "Missing required %type name!"
@@ -451,15 +449,15 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:524
 msgid "Contributions management"
-msgstr "Gestion de contribucions"
+msgstr "Administracion dei contribucions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:524
 msgid "Transactions management"
-msgstr "Gestion de transaccions"
+msgstr "Administracion dei transaccions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:658
 msgid "- Unknown payment type!"
-msgstr ""
+msgstr "- Mòde de pagament inconegut !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:716
 msgid "No contribution was selected, please check at least one."
@@ -561,7 +559,7 @@ msgstr "Paramètres"
 #: ../lib/Galette/Controllers/GaletteController.php:258
 #: ../lib/Galette/Filters/MembersList.php:327
 msgid "All accounts"
-msgstr "Totes los comptes"
+msgstr "Totei lei còmptes"
 
 #: ../lib/Galette/Controllers/GaletteController.php:259
 #: ../lib/Galette/Filters/MembersList.php:328
@@ -679,7 +677,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AjaxController.php:280
 msgid "Telemetry information has been sent. Thank you!"
-msgstr ""
+msgstr "Leis informacions de telemetria son estat mandadas. Granmercé !"
 
 #: ../lib/Galette/Controllers/AjaxController.php:306
 msgid "Thank you for registering!"
@@ -882,7 +880,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:73
 msgid "Administration tools"
-msgstr ""
+msgstr "Instruments d'administracion"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:112
@@ -926,20 +924,20 @@ msgstr ""
 #: ../lib/Galette/Controllers/HistoryController.php:111
 #: ../lib/Galette/Core/Galette.php:289 ../install/steps/check.php:74
 msgid "Logs"
-msgstr "Jornals"
+msgstr "Jornaus"
 
 #: ../lib/Galette/Controllers/HistoryController.php:203
 msgid "Logs have been flushed!"
-msgstr ""
+msgstr "L'istoric es estat mandat a l'escobilier !"
 
 #: ../lib/Galette/Controllers/HistoryController.php:215
 msgid "An error occurred trying to flush logs :("
-msgstr ""
+msgstr "Una error capitèt au moment de mandar l'istoric au bordilhier :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:254
 #: ../../tempcache/pages/history.html.twig:90
 msgid "Flush the logs"
-msgstr ""
+msgstr "Escafar l'istoric"
 
 #: ../lib/Galette/Controllers/PluginsController.php:83
 #: ../lib/Galette/Core/Galette.php:340 ../lib/Galette/Core/Galette.php:621
@@ -959,7 +957,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_payment_types.html.twig:293
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:250
 msgid "Translate labels"
-msgstr ""
+msgstr "Traduccion d'etiquetas"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:119
 #, php-format
@@ -974,7 +972,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:243
 msgid "Labels has been sucessfully translated!"
-msgstr ""
+msgstr "Leis etiquetas son estadas traduchas !"
 
 #: ../lib/Galette/Controllers/CsvController.php:128
 msgid "CVS database Export"
@@ -1073,12 +1071,12 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:305
 msgid "Checks"
-msgstr ""
+msgstr "Verificacions"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:311
 #: ../../tempcache/modals/plugin_initdb.html.twig:386
 msgid "Installation mode"
-msgstr ""
+msgstr "Modalitat de l'installacion"
 
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:317
 msgid "Database"
@@ -1086,7 +1084,7 @@ msgstr "Basa de donadas"
 
 #: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:323
 msgid "Database access and permissions"
-msgstr ""
+msgstr "Accès e permissions per la basa de donadas"
 
 #: ../lib/Galette/Core/Install.php:134
 msgid "Previous version selection"
@@ -1102,12 +1100,12 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:358
 msgid "Admin parameters"
-msgstr ""
+msgstr "Paramètres administrator"
 
 #: ../lib/Galette/Core/Install.php:146 ../webroot/installer.php:367
 #: ../../tempcache/pages/desktop.html.twig:86
 msgid "Telemetry"
-msgstr ""
+msgstr "Telemetria"
 
 #: ../lib/Galette/Core/Install.php:149
 msgid "Galette initialization"
@@ -1116,7 +1114,7 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:152 ../webroot/installer.php:379
 #: ../../tempcache/modals/plugin_initdb.html.twig:451
 msgid "End!"
-msgstr ""
+msgstr "Fin !"
 
 #: ../lib/Galette/Core/Install.php:168 ../lib/Galette/Core/CheckModules.php:147
 msgid "Ok"
@@ -1245,11 +1243,11 @@ msgstr "Tot"
 #: ../lib/Galette/Core/Authentication.php:312
 #, php-format
 msgid "Logged in as:<br/>%login"
-msgstr ""
+msgstr "Connectat per :<br>%login"
 
 #: ../lib/Galette/Core/MailingHistory.php:514
 msgid "Delete mailing entries"
-msgstr ""
+msgstr "Escafar leis intradas mandadas"
 
 #: ../lib/Galette/Core/Galette.php:126
 #, fuzzy
@@ -1297,7 +1295,7 @@ msgstr "Membres"
 
 #: ../lib/Galette/Core/Galette.php:177
 msgid "List of members"
-msgstr ""
+msgstr "Lista dei membres"
 
 #: ../lib/Galette/Core/Galette.php:178 ../lib/Galette/Core/Galette.php:548
 msgid "View, search into and filter member's list"
@@ -1375,10 +1373,8 @@ msgid "Send reminders to late members"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:273
-#, fuzzy
-#| msgid "Members management"
 msgid "Management"
-msgstr "Gestion de membres"
+msgstr "Administracion"
 
 #: ../lib/Galette/Core/Galette.php:277
 msgid "Manage groups"
@@ -1390,7 +1386,7 @@ msgstr "Veire e governar lei grops"
 
 #: ../lib/Galette/Core/Galette.php:290
 msgid "View application's logs"
-msgstr ""
+msgstr "Veire l'istoric de l'aplicacion"
 
 #: ../lib/Galette/Core/Galette.php:296
 msgid "Manage mailings"
@@ -1406,19 +1402,19 @@ msgstr "Teledescargaments"
 
 #: ../lib/Galette/Core/Galette.php:304
 msgid "Export some data in various formats"
-msgstr ""
+msgstr "Exportar lei donadas amb de formats divèrs"
 
 #: ../lib/Galette/Core/Galette.php:310 ../install/steps/check.php:73
 msgid "Imports"
-msgstr ""
+msgstr "Impòrts"
 
 #: ../lib/Galette/Core/Galette.php:311
 msgid "Import members from CSV files"
-msgstr ""
+msgstr "Telecargar leis aderents d'un fichier CSV locau"
 
 #: ../lib/Galette/Core/Galette.php:319
 msgid "Various charts"
-msgstr ""
+msgstr "Grafics divèrs"
 
 #: ../lib/Galette/Core/Galette.php:329 ../install/steps/check.php:71
 msgid "Configuration"
@@ -1436,7 +1432,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:347
 msgid "Core lists"
-msgstr ""
+msgstr "Listas dau còr"
 
 #: ../lib/Galette/Core/Galette.php:348
 msgid "Customize lists fields and order"
@@ -1444,7 +1440,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:355
 msgid "Core fields"
-msgstr ""
+msgstr "Camps dau còr"
 
 #: ../lib/Galette/Core/Galette.php:356
 msgid ""
@@ -1453,7 +1449,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:362
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Camps dinamics"
 
 #: ../lib/Galette/Core/Galette.php:363
 msgid "Manage additional fields for various forms"
@@ -1461,7 +1457,7 @@ msgstr "Governar lei camps suplementaris per lei formularis"
 
 #: ../lib/Galette/Core/Galette.php:371
 msgid "Translate additionnals fields labels"
-msgstr ""
+msgstr "Traduccion deis etiquetas per lei camps suplementaris"
 
 #: ../lib/Galette/Core/Galette.php:377
 msgid "Manage statuses"
@@ -1489,27 +1485,27 @@ msgstr "Governar lei modèles PDF"
 
 #: ../lib/Galette/Core/Galette.php:416
 msgid "Payment types"
-msgstr ""
+msgstr "Mòdes de pagament"
 
 #: ../lib/Galette/Core/Galette.php:417
 msgid "Manage payment types"
-msgstr "Governar lei menas de pagament"
+msgstr "Governar lei mòdes de pagament"
 
 #: ../lib/Galette/Core/Galette.php:424
 msgid "Empty adhesion form"
-msgstr ""
+msgstr "Formulari d'adesion vuege"
 
 #: ../lib/Galette/Core/Galette.php:425
 msgid "Download empty adhesion form"
-msgstr ""
+msgstr "Teledescargar un formulari d'adesion vuege"
 
 #: ../lib/Galette/Core/Galette.php:435
 msgid "Admin tools"
-msgstr ""
+msgstr "Instruments d'administracion"
 
 #: ../lib/Galette/Core/Galette.php:436
 msgid "Various administrative tools"
-msgstr ""
+msgstr "Instruments d'administracion divèrs"
 
 #: ../lib/Galette/Core/Galette.php:489
 msgid "Public pages"
@@ -2084,7 +2080,7 @@ msgstr "Femna"
 #: ../../tempcache/pages/advanced_search.html.twig:1670
 #: ../../tempcache/components/forms/gender.html.twig:112
 msgid "Unspecified"
-msgstr ""
+msgstr "Non indicat"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
@@ -2426,7 +2422,7 @@ msgstr ""
 #: ../lib/Galette/Filters/MembersList.php:293
 #: ../../tempcache/pages/preferences.html.twig:2070
 msgid "Member number"
-msgstr ""
+msgstr "Numèro d'aderent"
 
 #: ../lib/Galette/Features/Replacements.php:268
 #: ../lib/Galette/Features/Replacements.php:364
@@ -2453,11 +2449,11 @@ msgstr "Genre"
 #: ../lib/Galette/Features/Replacements.php:284
 #: ../../tempcache/pages/advanced_search.html.twig:266
 msgid "Birth date"
-msgstr ""
+msgstr "Data de naissença"
 
 #: ../lib/Galette/Features/Replacements.php:288
 msgid "Birth place"
-msgstr ""
+msgstr "Luòc de naissença"
 
 #: ../lib/Galette/Features/Replacements.php:292
 #: ../../tempcache/pages/preferences.html.twig:2062
@@ -2468,7 +2464,7 @@ msgstr "Profession"
 #: ../lib/Galette/Features/Replacements.php:360
 #: ../lib/Galette/Filters/MembersList.php:294
 msgid "Company name"
-msgstr ""
+msgstr "Rason sociala"
 
 #: ../lib/Galette/Features/Replacements.php:300
 #: ../lib/Galette/Features/Replacements.php:304
@@ -2499,7 +2495,7 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:344
 msgid "Member state of dues"
-msgstr ""
+msgstr "Estatut de l'adesion"
 
 #: ../lib/Galette/Features/Replacements.php:348
 msgid "Membership remaining days"
@@ -2561,7 +2557,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:853
 #: ../../tempcache/pages/advanced_search.html.twig:858
 msgid "Payment type"
-msgstr ""
+msgstr "Mòde de pagament"
 
 #: ../lib/Galette/Features/Replacements.php:438
 #: ../lib/Galette/Entity/Contribution.php:1095
@@ -2676,11 +2672,11 @@ msgstr "Plus membre"
 #: ../lib/Galette/Entity/Adherent.php:1188
 #: ../lib/Galette/Entity/Adherent.php:1198
 msgid "You have to select a group you own!"
-msgstr ""
+msgstr "Vos fau chausir un grope qu'administratz !"
 
 #: ../lib/Galette/Entity/Adherent.php:1270
 msgid "- Birthdate must be set in the past!"
-msgstr ""
+msgstr "- La data de naissença se deu dins lo passat, pecaire !"
 
 #: ../lib/Galette/Entity/Adherent.php:1278
 msgid "- Members must be less than 200 years old (currently %years)!"
@@ -2725,7 +2721,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1448
 msgid "Gender %gender does not exists!"
-msgstr ""
+msgstr "Lo genre %gender existís pas !"
 
 #: ../lib/Galette/Entity/Adherent.php:1561
 msgid "Self_subscription as a member: "
@@ -2816,7 +2812,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/ContributionsTypes.php:118
 msgid "contribution type"
-msgstr ""
+msgstr "mena de contribucion"
 
 #: ../lib/Galette/Entity/Contribution.php:154
 #: ../../tempcache/pages/contribution_form.html.twig:112
@@ -2827,12 +2823,12 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:158
 #: ../../tempcache/pages/contribution_form.html.twig:167
 msgid "Contribution type:"
-msgstr ""
+msgstr "Mena de contribucion :"
 
 #: ../lib/Galette/Entity/Contribution.php:166
 #: ../../tempcache/components/forms/payment_types.html.twig:53
 msgid "Payment type:"
-msgstr ""
+msgstr "Mòde de pagament :"
 
 #: ../lib/Galette/Entity/Contribution.php:170
 #: ../../tempcache/pages/contribution_form.html.twig:618
@@ -2884,7 +2880,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:494
 msgid "- Unknown payment type"
-msgstr ""
+msgstr "- Mòde de pagament inconegut"
 
 #: ../lib/Galette/Entity/Contribution.php:508
 msgid "- The duration must be a positive integer!"
@@ -3026,7 +3022,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:191
 msgid "You cannot delete system payment types!"
-msgstr ""
+msgstr "Podètz pas suprimir lei mòdes de pagament dau sistèma !"
 
 #: ../lib/Galette/Entity/PaymentType.php:297
 msgid "Other"
@@ -3355,11 +3351,11 @@ msgstr ""
 #: ../webroot/installer.php:347
 #: ../../tempcache/modals/plugin_initdb.html.twig:434
 msgid "Database installation"
-msgstr ""
+msgstr "Installacion de basa de donadas"
 
 #: ../webroot/installer.php:373
 msgid "Galette initialisation"
-msgstr ""
+msgstr "Inicializacion de Galeta"
 
 #: ../webroot/installer.php:420 ../../tempcache/elements/footer.html.twig:56
 msgid "Documentation"
@@ -3435,7 +3431,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:292
 msgid "Company cotisation"
-msgstr ""
+msgstr "Escotisson persona morala (membre associat)"
 
 #: ../includes/i18n.inc.php:293
 msgid "Donation in kind"
@@ -3471,7 +3467,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:301
 msgid "company fee"
-msgstr ""
+msgstr "escotisson persona morala (membre associat)"
 
 #: ../includes/i18n.inc.php:302
 msgid "donation in kind"
@@ -3503,11 +3499,11 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:309
 msgid "Mr."
-msgstr ""
+msgstr "Sr."
 
 #: ../includes/i18n.inc.php:310
 msgid "Mrs."
-msgstr ""
+msgstr "Da."
 
 #: ../includes/i18n.inc.php:311
 msgid "Miss"
@@ -3580,6 +3576,9 @@ msgid ""
 "website of the association. The amount of donations are free to be decided "
 "by the generous donor."
 msgstr ""
+"Lei contribucions minimalas per cada mena d'adesion se fixan sus lo site oeb "
+"de l'associacion. Lo montant dei dons, eu, es liure e laissat a "
+"l'apreciacion dei gents donators."
 
 #: ../includes/i18n.inc.php:331
 msgid "Required membership:"
@@ -3636,15 +3635,15 @@ msgstr "Nom:"
 
 #: ../includes/fields_defs/members_fields.php:70
 msgid "First name:"
-msgstr ""
+msgstr "Prenom :"
 
 #: ../includes/fields_defs/members_fields.php:78
 msgid "Company:"
-msgstr ""
+msgstr "Persona morala (membre associat) :"
 
 #: ../includes/fields_defs/members_fields.php:86
 msgid "Nickname:"
-msgstr ""
+msgstr "Escais :"
 
 #: ../includes/fields_defs/members_fields.php:96
 msgid "Title:"
@@ -3652,11 +3651,11 @@ msgstr "Títol :"
 
 #: ../includes/fields_defs/members_fields.php:104
 msgid "Birth date:"
-msgstr ""
+msgstr "Data de naissença :"
 
 #: ../includes/fields_defs/members_fields.php:112
 msgid "Gender:"
-msgstr ""
+msgstr "Genre :"
 
 #: ../includes/fields_defs/members_fields.php:120
 #: ../../tempcache/pages/preferences.html.twig:277
@@ -3753,7 +3752,7 @@ msgstr "Lenga :"
 
 #: ../includes/fields_defs/members_fields.php:282
 msgid "Birthplace:"
-msgstr ""
+msgstr "Luòc de naissença :"
 
 #: ../includes/fields_defs/members_fields.php:290
 msgid "Id GNUpg (GPG):"
@@ -3769,16 +3768,16 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:314
 msgid "Member number:"
-msgstr ""
+msgstr "Numèro d'aderent :"
 
 #: ../includes/fields_defs/members_fields.php:332
 msgid "State of dues"
-msgstr ""
+msgstr "Estat de la cotisacion"
 
 #: ../includes/fields_defs/texts_fields.php:40
 #: ../includes/fields_defs/texts_fields.php:48
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vòstreis Identificants"
 
 #: ../includes/fields_defs/texts_fields.php:41
 msgid ""
@@ -4035,7 +4034,7 @@ msgstr ""
 #: ../../tempcache/modals/plugin_initdb.html.twig:338
 #: ../../tempcache/pages/plugins.html.twig:377
 msgid "Next step"
-msgstr ""
+msgstr "Etapa seguenta"
 
 #: ../install/steps/admin.php:69
 msgid "Password mismatch!"
@@ -4205,11 +4204,11 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:184
 msgid "Check of the database"
-msgstr ""
+msgstr "Verificacion de la basa"
 
 #: ../install/steps/db_checks.php:186
 msgid "Database exists and connection parameters are OK."
-msgstr ""
+msgstr "La basa existís e lei paramètres de connexion son corrèctes."
 
 #: ../install/steps/db_checks.php:190
 msgid "Incompatible database version."
@@ -4225,13 +4224,15 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:204
 msgid "Unable to connect to the database"
-msgstr ""
+msgstr "Connexion a la basa impossibla"
 
 #: ../install/steps/db_checks.php:211
 msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 msgstr ""
+"La Basa es pas accessibla. Tornatz en arrier per marcar mai lei paramètres "
+"de connexion."
 
 #: ../install/steps/db_checks.php:216
 msgid "Permissions on the base"
@@ -4279,7 +4280,7 @@ msgstr ""
 
 #: ../install/steps/check.php:67
 msgid "Compilation"
-msgstr ""
+msgstr "Compilacion"
 
 #: ../install/steps/check.php:68
 msgid "Photos"
@@ -4297,19 +4298,19 @@ msgstr "Imatges temporaris"
 #: ../../tempcache/pages/mailing_form.html.twig:243
 #: ../../tempcache/pages/mailings_list.html.twig:353
 msgid "Attachments"
-msgstr "Fichièrs junts"
+msgstr "Fichiers jonhs"
 
 #: ../install/steps/check.php:76
 msgid "Files"
-msgstr "Fichièrs"
+msgstr "Fichiers"
 
 #: ../install/steps/check.php:88
 msgid "Welcome to the Galette Install!"
-msgstr ""
+msgstr "La Benvenguda per l'installacion de Galeta !"
 
 #: ../install/steps/check.php:91
 msgid "Galette requirements are met :)"
-msgstr ""
+msgstr "Lei preliminars de Galeta son valables :)"
 
 #: ../install/steps/check.php:95
 msgid ""
@@ -4327,15 +4328,15 @@ msgstr ""
 
 #: ../install/steps/check.php:109
 msgid "PHP Modules"
-msgstr ""
+msgstr "Modules PHP"
 
 #: ../install/steps/check.php:119
 msgid "Files permissions"
-msgstr ""
+msgstr "Permissions de fichiers"
 
 #: ../install/steps/check.php:137
 msgid "Files permissions are not OK!"
-msgstr ""
+msgstr "Lei permissions de fichiers son pas corrèctas !"
 
 #: ../install/steps/check.php:141
 msgid ""
@@ -4372,11 +4373,15 @@ msgstr ""
 #: ../install/steps/db.php:52
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
+"Alevat que o aguètz fach, creatz una basa de donadas e un utilizator per "
+"Galeta."
 
 #: ../install/steps/db.php:54
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
+"Lei drechs necessaris son CREAR, LEVAR, ELIMINAR, ACTUALIZAR, SELECCIONAR e "
+"INSERIR."
 
 #: ../install/steps/db.php:56
 msgid "Enter connection data for the existing database."
@@ -4419,15 +4424,16 @@ msgstr ""
 #: ../install/steps/type.php:45
 #: ../../tempcache/modals/plugin_initdb.html.twig:88
 msgid "New installation"
-msgstr ""
+msgstr "Installacion nòva"
 
 #: ../install/steps/type.php:48
 msgid "you're installing Galette for the first time"
-msgstr ""
+msgstr "installatz Galeta per premier còp"
 
 #: ../install/steps/type.php:49
 msgid "you wish to erase an older version of Galette without keeping your data"
 msgstr ""
+"volètz escafar una version anciana de Galeta sensa conservar lei donadas"
 
 #: ../install/steps/type.php:57
 #: ../../tempcache/modals/plugin_initdb.html.twig:116
@@ -4438,13 +4444,13 @@ msgstr "Actualizar"
 msgid ""
 "you already have installed Galette, and you want to upgrade to the latest "
 "version"
-msgstr ""
+msgstr "avètz ja installat Galeta, e volètz actualizar la darriera version"
 
 #: ../install/steps/type.php:62
 #: ../../tempcache/modals/plugin_initdb.html.twig:130
 #: ../../tempcache/pages/import.html.twig:56
 msgid "Warning: Don't forget to backup your current database."
-msgstr ""
+msgstr "Avís : pensatz ben de sauvar la basa de donadas correnta."
 
 #: ../install/steps/telemetry.php:51 ../../tempcache/pages/desktop.html.twig:81
 msgid "Send anonymous and imprecise data about your Galette instance"
@@ -4453,7 +4459,7 @@ msgstr ""
 #: ../install/steps/telemetry.php:53
 #: ../../tempcache/modals/telemetry.html.twig:66
 msgid "Send telemetry information"
-msgstr ""
+msgstr "Mandar leis informacions de telemetria"
 
 #: ../install/steps/telemetry.php:60
 #: ../../tempcache/pages/desktop.html.twig:100
@@ -4472,6 +4478,8 @@ msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
+"Lei donadas de telemetria son<strong>anonymas</strong> ;ren que tòque a "
+"vòstra asssociacion ò lei membres serà mandat."
 
 #: ../install/steps/telemetry.php:72
 #: ../../tempcache/modals/telemetry.html.twig:52
@@ -4482,7 +4490,7 @@ msgstr ""
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:90
 msgid "Contribution type"
-msgstr "Mena de contribucions"
+msgstr "Mena de contribucion"
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:114
 #: ../../tempcache/modals/mass_add_contributions.html.twig:107
@@ -4654,7 +4662,7 @@ msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142
 msgid "With photos?"
-msgstr ""
+msgstr "Amb fòtos ?"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:175
 msgid "Generate"
@@ -4736,7 +4744,7 @@ msgstr ""
 #: ../../tempcache/pages/member_show.html.twig:714
 #: ../../tempcache/pages/transactions_list.html.twig:513
 msgid "Close"
-msgstr "Clavar"
+msgstr "Plegar"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:139
 msgid "Show existing variables"
@@ -4755,7 +4763,7 @@ msgstr ""
 
 #: ../../tempcache/modals/telemetry.html.twig:118
 msgid "An error occurred sending telemetry information :("
-msgstr ""
+msgstr "Capitèt una error per lo mandadís deis informacions de telemetria :("
 
 #: ../../tempcache/modals/telemetry.html.twig:132
 #: ../../tempcache/pages/reminder.html.twig:162
@@ -4766,10 +4774,8 @@ msgid "Send"
 msgstr "Mandar"
 
 #: ../../tempcache/elements/language.html.twig:75
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose your language"
-msgstr "Cambiar la lenga"
+msgstr "Chausir la lenga"
 
 #: ../../tempcache/elements/language.html.twig:120
 #, php-format
@@ -4957,7 +4963,7 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:97
 msgid "New contribution type"
-msgstr ""
+msgstr "Mena de contribucion nòva"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:190
 #, php-format
@@ -4972,7 +4978,7 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:89
 #: ../../tempcache/elements/group_persons.html.twig:87
 msgid "Company"
-msgstr ""
+msgstr "Persona morala"
 
 #: ../../tempcache/elements/ajax_members.html.twig:182
 msgid "no member"
@@ -5015,7 +5021,7 @@ msgstr ""
 
 #: ../../tempcache/elements/ajax_groups.html.twig:167
 msgid "No groups has been selected yet."
-msgstr ""
+msgstr "Ges de grope seleccionat per ara."
 
 #: ../../tempcache/elements/js/calendar.js.twig:46
 msgid "S,M,T,W,T,F,S"
@@ -5247,7 +5253,7 @@ msgstr ""
 #: ../../tempcache/elements/js/messages.js.twig:110
 #: ../../tempcache/elements/messages_inline.html.twig:302
 msgid "Your telemetry data are more than one year old."
-msgstr ""
+msgstr "Vòstreis informacions de telemetria datan de mai d'un an."
 
 #: ../../tempcache/elements/js/messages.js.twig:112
 #: ../../tempcache/elements/messages_inline.html.twig:306
@@ -5371,7 +5377,7 @@ msgstr ""
 
 #: ../../tempcache/elements/list.html.twig:258
 msgid "Records per page:"
-msgstr ""
+msgstr "Enregistraments per pagina :"
 
 #: ../../tempcache/elements/list.html.twig:458
 msgid "(Un)Check all"
@@ -5410,11 +5416,11 @@ msgstr ""
 #: ../../tempcache/elements/group_persons.html.twig:200
 #: ../../tempcache/pages/groups_list.html.twig:356
 msgid "No member attached"
-msgstr ""
+msgstr "Ges de membre restacat"
 
 #: ../../tempcache/elements/group_persons.html.twig:206
 msgid "No manager attached"
-msgstr ""
+msgstr "Ges de responsable/a designat-da"
 
 #: ../../tempcache/elements/member_card.html.twig:59
 msgid "Picture"
@@ -5676,6 +5682,7 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:243
 msgid "Select a contribution type to create for dispatch transaction"
 msgstr ""
+"Chausissètz una mena de contribucion de crear per repartir la transaccion"
 
 #: ../../tempcache/pages/transaction_form.html.twig:208
 #: ../../tempcache/pages/contribution_form.html.twig:239
@@ -5948,7 +5955,7 @@ msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:698
 msgid "Print an invoice or a receipt (depending on contribution type)"
-msgstr ""
+msgstr "Estampar una factura ò un recebut (segon la mena de contribucion)"
 
 #: ../../tempcache/pages/contributions_list.html.twig:715
 msgid "Edit the contribution"
@@ -6043,7 +6050,7 @@ msgstr ""
 
 #: ../../tempcache/pages/admintools.html.twig:163
 msgid "Go"
-msgstr "Anar"
+msgstr "Zou"
 
 #: ../../tempcache/pages/configuration_titles.html.twig:61
 #: ../../tempcache/pages/configuration_titles.html.twig:85
@@ -6083,8 +6090,8 @@ msgstr ""
 #, php-format
 msgid "%count entry"
 msgid_plural "%count entries"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%count intrada"
+msgstr[1] "%count intradas"
 
 #: ../../tempcache/pages/history.html.twig:102
 #: ../../tempcache/pages/history.html.twig:327
@@ -6104,11 +6111,11 @@ msgstr "Accion"
 
 #: ../../tempcache/pages/history.html.twig:174
 msgid "Select an user"
-msgstr ""
+msgstr "Chausissètz un utilizator"
 
 #: ../../tempcache/pages/history.html.twig:216
 msgid "Select an action"
-msgstr ""
+msgstr "Chaussissètz una accion"
 
 #: ../../tempcache/pages/history.html.twig:315
 msgid "History entry %id"
@@ -6178,7 +6185,7 @@ msgstr ""
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
 "action."
-msgstr ""
+msgstr "Regardatz de chausir au mens un camp dins la lista avans de començar."
 
 #: ../../tempcache/pages/configuration_texts.html.twig:54
 msgid "Choose an entry"
@@ -6239,25 +6246,25 @@ msgstr "Recercar :"
 #: ../../tempcache/pages/members_list.html.twig:188
 #: ../../tempcache/pages/advanced_search.html.twig:73
 msgid "Enter a value"
-msgstr ""
+msgstr "Intrar una valor"
 
 #: ../../tempcache/pages/members_list.html.twig:194
 #: ../../tempcache/pages/advanced_search.html.twig:79
 msgid "in:"
-msgstr ""
+msgstr "dins :"
 
 #: ../../tempcache/pages/members_list.html.twig:223
 #: ../../tempcache/pages/members_list.html.twig:252
 #: ../../tempcache/pages/members_list.html.twig:281
 msgid "among:"
-msgstr ""
+msgstr "entre :"
 
 #: ../../tempcache/pages/members_list.html.twig:286
 #: ../../tempcache/pages/groups_list.html.twig:68
 #: ../../tempcache/pages/advanced_search.html.twig:171
 #: ../../tempcache/pages/advanced_search.html.twig:597
 msgid "Select a group"
-msgstr ""
+msgstr "Chausissètz un grope"
 
 #: ../../tempcache/pages/members_list.html.twig:317
 msgid "Members that have an email address:"
@@ -6268,17 +6275,17 @@ msgstr "Membres que tènon una adreiça electronica :"
 #: ../../tempcache/pages/advanced_search.html.twig:214
 #: ../../tempcache/pages/advanced_search.html.twig:453
 msgid "Don't care"
-msgstr ""
+msgstr "Sensa importància"
 
 #: ../../tempcache/pages/members_list.html.twig:347
 #: ../../tempcache/pages/advanced_search.html.twig:230
 msgid "With"
-msgstr ""
+msgstr "Amb"
 
 #: ../../tempcache/pages/members_list.html.twig:363
 #: ../../tempcache/pages/advanced_search.html.twig:246
 msgid "Without"
-msgstr ""
+msgstr "Sensa"
 
 #: ../../tempcache/pages/members_list.html.twig:382
 msgid "Save selected criteria"
@@ -6341,7 +6348,7 @@ msgstr ""
 #: ../../tempcache/pages/members_public_list.html.twig:147
 #: ../../tempcache/pages/members_public_list.html.twig:151
 msgid "Is a company"
-msgstr ""
+msgstr "Es una persona morala"
 
 #: ../../tempcache/pages/members_list.html.twig:602
 #: ../../tempcache/pages/members_list.html.twig:710
@@ -6365,7 +6372,7 @@ msgstr "Admin"
 
 #: ../../tempcache/pages/members_list.html.twig:1014
 msgid "No member has been found"
-msgstr ""
+msgstr "Ges de membre trobat"
 
 #: ../../tempcache/pages/members_list.html.twig:1077
 msgid "Search title"
@@ -6491,7 +6498,7 @@ msgstr ""
 
 #: ../../tempcache/pages/groups_list.html.twig:301
 msgid "Group managers selection"
-msgstr ""
+msgstr "Chausir lei responsables dau grope"
 
 #: ../../tempcache/pages/groups_list.html.twig:346
 msgid ""
@@ -6509,11 +6516,12 @@ msgstr ""
 
 #: ../../tempcache/pages/import.html.twig:66
 msgid "Existing files"
-msgstr ""
+msgstr "FIchiers corrents"
 
 #: ../../tempcache/pages/import.html.twig:79
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
+"Lei fichiers seguents pareisson lèsts per importar dins la basa de donada :"
 
 #: ../../tempcache/pages/import.html.twig:94
 #: ../../tempcache/pages/import.html.twig:156
@@ -6535,10 +6543,11 @@ msgstr ""
 #: ../../tempcache/pages/import.html.twig:198
 msgid "Run the import process, but do *not* store anything in the database"
 msgstr ""
+"Lançar l'importacion a blanc, sensa enregistrar ren dins la basa de donadas"
 
 #: ../../tempcache/pages/import.html.twig:202
 msgid "Dry run"
-msgstr ""
+msgstr "Faire un assai"
 
 #: ../../tempcache/pages/import.html.twig:215
 msgid "Import"
@@ -6553,20 +6562,20 @@ msgid ""
 "Use upload form below to send a new file on server, or copy it directly in "
 "the imports directory."
 msgstr ""
+"Servètz-vos dau formulari çai-sota per mandar un fichier sus lo servidor, ò "
+"copiatz-o directament dins lo dorsier impòrts."
 
 #: ../../tempcache/pages/import.html.twig:248
 msgid "Upload new file"
-msgstr ""
+msgstr "Telecargar un fichier novèu"
 
 #: ../../tempcache/pages/import.html.twig:259
 #: ../../tempcache/pages/preferences.html.twig:245
 #: ../../tempcache/pages/preferences.html.twig:1966
 #: ../../tempcache/components/forms/picture.html.twig:75
 #: ../../tempcache/components/dynamic_fields.html.twig:726
-#, fuzzy
-#| msgid "Clear filter"
 msgid "Choose a file"
-msgstr "Escafar lo filtre"
+msgstr "Chausissètz un fichier"
 
 #: ../../tempcache/pages/import.html.twig:273
 msgid "Upload file"
@@ -6574,7 +6583,7 @@ msgstr ""
 
 #: ../../tempcache/pages/import.html.twig:286
 msgid "Configure import model"
-msgstr ""
+msgstr "Configurar lo modèle d'importacion"
 
 #: ../../tempcache/pages/import.html.twig:313
 #: ../../tempcache/pages/import.html.twig:324
@@ -6583,11 +6592,11 @@ msgstr "Pas de fichièr seleccionat"
 
 #: ../../tempcache/pages/import.html.twig:313
 msgid "Please make sure to select one file to import."
-msgstr ""
+msgstr "Regardatz ben de chausir un fichier d'importar."
 
 #: ../../tempcache/pages/import.html.twig:324
 msgid "Please make sure to select one file to upload."
-msgstr ""
+msgstr "Regardatz de chausir au mens un fichier de mandar."
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:75
 msgid "Add payment type"
@@ -6600,12 +6609,12 @@ msgstr "Apelacion"
 #: ../../tempcache/pages/configuration_payment_types.html.twig:148
 #, php-format
 msgid "%s payment type"
-msgstr ""
+msgstr "Mòde de pagament %s"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:170
 #, php-format
 msgid "Edit '%s' payment type"
-msgstr ""
+msgstr "Modificar lo mòde de pagament « %s »"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:183
 #: ../../tempcache/pages/preferences.html.twig:186
@@ -6621,7 +6630,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_payment_types.html.twig:204
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr ""
+msgstr "Suprimir lo mòde de pagament « %s »"
 
 #: ../../tempcache/pages/reminder.html.twig:57
 msgid "Choose wich reminder(s) you want to send:"
@@ -6636,17 +6645,17 @@ msgstr ""
 #: ../../tempcache/pages/reminder.html.twig:127
 #, php-format
 msgid "%s members with an email address"
-msgstr ""
+msgstr "%s aderents qu'an l'adreiça electronica"
 
 #: ../../tempcache/pages/reminder.html.twig:96
 #: ../../tempcache/pages/reminder.html.twig:133
 #, php-format
 msgid "%s members without email address"
-msgstr ""
+msgstr "%s aderents sensa adreiça electronica"
 
 #: ../../tempcache/pages/reminder.html.twig:151
 msgid "Generate labels for members without email address"
-msgstr ""
+msgstr "Generar leis etiquetas per leis aderents sensa l'adreiça electronica"
 
 #: ../../tempcache/pages/reminder.html.twig:202
 #: ../../tempcache/pages/mailing_form.html.twig:303
@@ -6886,10 +6895,8 @@ msgstr "Lògo actual"
 #: ../../tempcache/pages/preferences.html.twig:1964
 #: ../../tempcache/components/forms/picture.html.twig:73
 #: ../../tempcache/components/dynamic_fields.html.twig:724
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose another file"
-msgstr "Cambiar la lenga"
+msgstr "Chausissètz un autre fichier"
 
 #: ../../tempcache/pages/preferences.html.twig:260
 #: ../../tempcache/pages/preferences.html.twig:1981
@@ -6935,11 +6942,11 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:436
 msgid "Telemetry date:"
-msgstr ""
+msgstr "Data de telemetria :"
 
 #: ../../tempcache/pages/preferences.html.twig:440
 msgid "Last telemetry sent date."
-msgstr ""
+msgstr "Data dau darrier mandadís de la telemetria."
 
 #: ../../tempcache/pages/preferences.html.twig:450
 msgid "send"
@@ -7022,7 +7029,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:731
 msgid "Default payment type:"
-msgstr "Pagament per defaut :"
+msgstr "Mòde de pagament per defaut :"
 
 #: ../../tempcache/pages/preferences.html.twig:770
 msgid "Public pages enabled?"
@@ -7139,7 +7146,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1081
 msgid "Can members create child?"
-msgstr ""
+msgstr "Leis aderents pòdon crear de parentèla ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1095
 msgid "Can group managers edit their groups?"
@@ -7166,6 +7173,8 @@ msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"Lei responsables de gropes an permession d'exportar la lista d'aderents ("
+"format CSV), lei cartas (pdf), lei fuelhs per signatura e lei pdf dei gropes"
 
 #: ../../tempcache/pages/preferences.html.twig:1187
 msgid "Sender name:"
@@ -7665,7 +7674,7 @@ msgstr ""
 
 #: ../../tempcache/pages/member_form.html.twig:197
 msgid "Attach member"
-msgstr ""
+msgstr "Restacar un membre"
 
 #: ../../tempcache/pages/member_form.html.twig:259
 #: ../../tempcache/pages/member_show.html.twig:307
@@ -7699,7 +7708,7 @@ msgstr ""
 
 #: ../../tempcache/pages/member_form.html.twig:650
 msgid "Managed groups selection"
-msgstr ""
+msgstr "Chausida dei grops administrats"
 
 #: ../../tempcache/pages/member_form.html.twig:670
 msgid "Manager for:"
@@ -7711,7 +7720,7 @@ msgstr ""
 
 #: ../../tempcache/pages/member_form.html.twig:734
 msgid "Click on a row to select a group"
-msgstr ""
+msgstr "Clicatz sus una linha per chausir un grope"
 
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:63
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:71
@@ -7765,7 +7774,7 @@ msgstr ""
 
 #: ../../tempcache/pages/member_show.html.twig:714
 msgid "You are not part of managers for the requested group."
-msgstr ""
+msgstr "Siatz pas dei responsables dau grope demandat."
 
 #: ../../tempcache/pages/directlink.html.twig:58
 #: ../../tempcache/pages/directlink.html.twig:62
@@ -7873,12 +7882,12 @@ msgstr ""
 #: ../../tempcache/pages/charts.html.twig:73
 #: ../../tempcache/pages/charts.html.twig:214
 msgid "Members by state of dues"
-msgstr ""
+msgstr "Aderents segon l'estatut de l'adesion"
 
 #: ../../tempcache/pages/charts.html.twig:83
 #: ../../tempcache/pages/charts.html.twig:279
 msgid "Contributions types repartition"
-msgstr ""
+msgstr "Reparticion per mena de contribucion"
 
 #: ../../tempcache/pages/charts.html.twig:93
 #: ../../tempcache/pages/charts.html.twig:344
@@ -7973,11 +7982,11 @@ msgstr ""
 
 #: ../../tempcache/pages/advanced_search.html.twig:567
 msgid "In all selected groups"
-msgstr ""
+msgstr "De totei lei gropes chausitz"
 
 #: ../../tempcache/pages/advanced_search.html.twig:577
 msgid "In any of selected groups"
-msgstr ""
+msgstr "De que grope chausit que siegue"
 
 #: ../../tempcache/pages/advanced_search.html.twig:626
 #: ../../tempcache/pages/advanced_search.html.twig:632
@@ -8126,19 +8135,23 @@ msgstr ""
 
 #: ../../tempcache/pages/desktop.html.twig:63
 msgid "Help us know about you!"
-msgstr ""
+msgstr "Ajudatz-nos de vos conóisser !"
 
 #: ../../tempcache/pages/desktop.html.twig:70
 msgid ""
 "Take a moment to share some information with us so we can know better "
 "Galette's uses."
 msgstr ""
+"Prenètz un moment per partejar amb nosautres quauqueis informacions que "
+"posquem mielhs conóisser lo biais d'emplegar Galeta."
 
 #: ../../tempcache/pages/desktop.html.twig:114
 msgid ""
 "The panel will be automatically hidden once you have registered and send "
 "telemetry data. Check the box if you want to hide it anyways."
 msgstr ""
+"Lo paneu s'amagarà automaticament un còp enregistrat e leis informacions de "
+"telemetria transmesas. Crosatz lo carrèu se lo volètz plegar tot d'un temps."
 
 #: ../../tempcache/pages/desktop.html.twig:124
 msgid "Hide this panel"
@@ -8195,17 +8208,19 @@ msgstr ""
 
 #: ../../tempcache/components/forms/company.html.twig:60
 msgid "Is company?"
-msgstr ""
+msgstr "Es una persona morala ?"
 
 #: ../../tempcache/components/forms/company.html.twig:60
 msgid "Is member a company?"
-msgstr ""
+msgstr "L'aderent es una persona morala ?"
 
 #: ../../tempcache/components/forms/company.html.twig:60
 msgid ""
 "Do you manage a non profit organization, or a company? If you do so, check "
 "the box, and then enter its name in the field that will appear."
 msgstr ""
+"Siatz responsable/a d'una associacion ò d'una entrepresa ? Si de òc, crosatz "
+"lo carrèu, e marcatz lo nom dins lo camp que se desplagarà."
 
 #: ../../tempcache/components/forms/captcha.html.twig:67
 msgid "(numbers only)"
@@ -8228,7 +8243,7 @@ msgstr ""
 
 #: ../../tempcache/components/forms/titles.html.twig:67
 msgid "Not supplied"
-msgstr ""
+msgstr "Non indicat"
 
 #: ../../tempcache/components/forms/picture.html.twig:40
 msgid "Picture:"
