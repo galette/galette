@@ -101,12 +101,7 @@ class MailingHistory extends History
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
                 }
 
-                $recipients = [];
-                if ($r['mailing_recipients'] != null) {
-                    //FIXME: error suppression with @ must be removed, see https://bugs.galette.eu/issues/1744
-                    $recipients = @unserialize($r['mailing_recipients']);
-                }
-                $r['mailing_recipients'] = $recipients;
+                $this->handleRecipients($r);
 
                 $attachments = 0;
                 if (file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK])) {
@@ -373,7 +368,7 @@ class MailingHistory extends History
                 'mailing_subject'           => $this->subject,
                 'mailing_body'              => $this->message,
                 'mailing_date'              => $this->date,
-                'mailing_recipients'        => serialize($_recipients),
+                'mailing_recipients'        => Galette::jsonEncode($_recipients),
                 'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
@@ -426,7 +421,7 @@ class MailingHistory extends History
                 'mailing_subject'           => $this->subject,
                 'mailing_body'              => $this->message,
                 'mailing_date'              => $this->date,
-                'mailing_recipients'        => serialize($_recipients),
+                'mailing_recipients'        => Galette::jsonEncode($_recipients),
                 'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
@@ -526,5 +521,33 @@ class MailingHistory extends History
     public function getCount(): int
     {
         return $this->count;
+    }
+
+    /**
+     * Handle mailing recipients
+     *
+     * @param ArrayObject<string, string> $row ResultSet row
+     * @return void
+     */
+    private function handleRecipients(ArrayObject &$row): void
+    {
+        if ($row['mailing_recipients'] == null) {
+            return;
+        }
+
+        $recipients = [];
+        try {
+            if (Galette::isSerialized($row['mailing_recipients'])) {
+                $recipients = unserialize($row['mailing_recipients']);
+            } else {
+                $recipients = Galette::jsonDecode($row['mailing_recipients']);
+            }
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
+                Analog::ERROR
+            );
+        }
+        $row['mailing_recipients'] = $recipients;
     }
 }

@@ -174,10 +174,14 @@ class Mailing extends GaletteMail
         global $zdb;
 
         try {
-            $orig_recipients = unserialize($rs->mailing_recipients);
+            if (Galette::isSerialized($rs->mailing_recipients)) {
+                $orig_recipients = unserialize($rs->mailing_recipients);
+            } else {
+                $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
+            }
         } catch (\Throwable $e) {
             Analog::log(
-                'Unable to unserialize recipients for mailing ' . $rs->mailing_id,
+                'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
                 Analog::ERROR
             );
             $orig_recipients = [];

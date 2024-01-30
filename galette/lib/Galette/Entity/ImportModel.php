@@ -23,6 +23,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Core\Db;
+use Galette\Core\Galette;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -84,7 +85,11 @@ class ImportModel
     private function loadFromRS(ArrayObject $r): void
     {
         $this->id = $r->model_id;
-        $this->fields = unserialize($r->model_fields);
+        if (Galette::isSerialized($r->model_fields)) {
+            $this->fields = unserialize($r->model_fields);
+        } else {
+            $this->fields = Galette::jsonDecode($r->model_fields);
+        }
         $this->creation_date = $r->model_creation_date;
     }
 
@@ -128,7 +133,7 @@ class ImportModel
         try {
             $values = array(
                 self::PK        => $this->id,
-                'model_fields'  => serialize($this->fields)
+                'model_fields'  => Galette::jsonEncode($this->fields)
             );
 
             if (!isset($this->id) || $this->id == '') {

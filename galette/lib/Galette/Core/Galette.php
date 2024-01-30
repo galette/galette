@@ -22,6 +22,7 @@
 namespace Galette\Core;
 
 use Galette\Entity\Adherent;
+use RuntimeException;
 
 /**
  * Galette application instance
@@ -796,7 +797,7 @@ class Galette
 
         $actions = [];
 
-        //TODO: add core detailled actions
+        //TODO: add core detailed actions
 
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
@@ -955,5 +956,53 @@ class Galette
     public static function isNightly(): bool
     {
         return GALETTE_NIGHTLY !== false;
+    }
+
+    /**
+     * Check if a string is serialized
+     *
+     * @param string $string String to check
+     *
+     * @return bool
+     */
+    public static function isSerialized(string $string): bool
+    {
+        return (@unserialize($string) !== false);
+    }
+
+    /**
+     * JSON decode with exception
+     *
+     * @param string $string JSON encoded string to decode
+     *
+     * @return array<string|int, mixed>
+     * @throws RuntimeException
+     */
+    public static function jsonDecode(string $string): array
+    {
+        $decoded = json_decode($string, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException('JSON decode error: ' . json_last_error_msg());
+        }
+
+        return $decoded;
+    }
+
+    /**
+     * JSON encode with exception
+     *
+     * @param array<string|int, mixed>|object $data Data to encode
+     *
+     * @return string
+     * @throws RuntimeException
+     */
+    public static function jsonEncode(array|object $data): string
+    {
+        $encoded = json_encode($data);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException('JSON encode error: ' . json_last_error_msg());
+        }
+
+        return $encoded;
     }
 }

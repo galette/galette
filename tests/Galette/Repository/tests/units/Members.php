@@ -1172,7 +1172,7 @@ class Members extends GaletteTestCase
             'mailing_subject'           => $this->seed,
             'mailing_body'              => 'a mailing',
             'mailing_date'              => '2015-01-01 00:00:00',
-            'mailing_recipients'        => serialize([]),
+            'mailing_recipients'        => \Galette\Core\Galette::jsonEncode([]),
             'mailing_sent'              => true
         );
         $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);

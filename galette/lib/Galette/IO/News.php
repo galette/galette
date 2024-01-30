@@ -108,21 +108,20 @@ class News
     /**
      * Creates/update the cache
      *
-     * @return boolean
+     * @return void
      */
-    private function makeCache(): bool
+    private function makeCache(): void
     {
         $this->parseFeed();
         $cfile = $this->getCacheFilename();
         $stream = fopen($cfile, 'w+');
         fwrite(
             $stream,
-            serialize(
+            Galette::jsonEncode(
                 $this->posts
             )
         );
         fclose($stream);
-        return false;
     }
 
     /**
@@ -132,13 +131,18 @@ class News
      */
     private function loadCache(): void
     {
-        $cfile = $this->getCacheFilename();
-        $data = unserialize(file_get_contents($cfile));
-
         $refresh_cache = false;
-        $this->posts = $data;
+        $cfile = $this->getCacheFilename();
+        $fcontents = file_get_contents($cfile);
+        if (Galette::isSerialized($fcontents)) {
+            //legacy cache format
+            $this->posts = unserialize($fcontents);
+        } else {
+            $this->posts = Galette::jsonDecode($fcontents);
+        }
+
         //check if posts were cached
-        if (!is_array($this->posts) || count($this->posts) == 0) {
+        if (count($this->posts) == 0) {
             $this->parseFeed();
             $refresh_cache = true;
         }

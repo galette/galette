@@ -22,6 +22,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Galette\Core\Galette;
 use Throwable;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -123,7 +124,16 @@ class SavedSearch
         $pk = self::PK;
         $this->id = $rs->$pk;
         $this->name = $rs->name;
-        $this->parameters = json_decode($rs->parameters, true);
+        try {
+            $this->parameters = Galette::jsonDecode($rs->parameters);
+        } catch (\RuntimeException $e) {
+            Analog::log(
+                'Unable to decode parameters for saved search #' . $this->id .
+                ' | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            $this->parameters = [];
+        }
         $this->author_id = $rs->id_adh;
         $this->creation_date = $rs->creation_date;
         $this->form = $rs->form;
