@@ -44,6 +44,7 @@ use Laminas\Db\ResultSet\ResultSet;
  * @property-read PHPMailer\PHPMailer\PHPMailer $_mail
  * @property-read array $errors
  * @property-read array $recipients
+ * @property-read array $unreachables
  * @property-read string|false $tmp_path
  * @property array $attachments
  * @property-read string $sender_name
