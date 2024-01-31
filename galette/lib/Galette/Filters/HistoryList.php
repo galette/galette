@@ -113,7 +113,7 @@ class HistoryList extends Pagination
     public function __get(string $name)
     {
         Analog::log(
-            '[HistoryList] Getting property `' . $name . '`',
+            '[' . static::class . '] Getting property `' . $name . '`',
             Analog::DEBUG
         );
 
@@ -148,7 +148,7 @@ class HistoryList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[HistoryList] Unable to get proprety `' . $name . '`',
+                    '[' . static::class . '] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -188,7 +188,7 @@ class HistoryList extends Pagination
             parent::__set($name, $value);
         } else {
             Analog::log(
-                '[HistoryList] Setting property `' . $name . '`',
+                '[' . static::class . '] Setting property `' . $name . '`',
                 Analog::DEBUG
             );
 
