@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-12-06 08:09+0100\n"
-"PO-Revision-Date: 2024-01-31 11:01+0000\n"
+"PO-Revision-Date: 2024-02-02 11:01+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -3387,11 +3387,11 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:281
 msgid "Treasurer"
-msgstr ""
+msgstr "Tesaurier generau"
 
 #: ../includes/i18n.inc.php:282
 msgid "Vice-treasurer"
-msgstr ""
+msgstr "Vici-tesaurier"
 
 #: ../includes/i18n.inc.php:283
 msgid "Secretary"
@@ -3459,11 +3459,11 @@ msgstr "espanhòl"
 
 #: ../includes/i18n.inc.php:299
 msgid "annual fee"
-msgstr ""
+msgstr "cotisacion annadiera"
 
 #: ../includes/i18n.inc.php:300
 msgid "annual fee (to be paid)"
-msgstr ""
+msgstr "cotisacion annadiera (de pagar)"
 
 #: ../includes/i18n.inc.php:301
 msgid "company fee"
@@ -3483,7 +3483,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:305
 msgid "reduced annual fee"
-msgstr ""
+msgstr "cotisacion annadiera reducha"
 
 #: ../includes/i18n.inc.php:306
 msgid "Identity"
@@ -4949,7 +4949,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_entitleds.html.twig:230
 #: ../../tempcache/pages/configuration_entitled_form.html.twig:138
 msgid "Extends membership?"
-msgstr ""
+msgstr "Adesion renovelabla ?"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:72
 #: ../../tempcache/elements/edit_entitleds.html.twig:124
