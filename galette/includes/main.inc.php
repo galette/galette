@@ -119,32 +119,8 @@ if ($needs_update) {
  */
 $authenticate = new Authenticate($container);
 
-/**
- * Show public pages middleware
- *
- * @param $request
- * @param $response
- * @param $next
- * @return mixed
- */
-$showPublicPages = function (Request $request, RequestHandler $handler) use ($container) {
-    $response = $handler->handle($request);
-    $login = $container->get('login');
-    $preferences = $container->get('preferences');
-
-    if (!$preferences->showPublicPages($login)) {
-        $this->get('flash')->addMessage('error', _T("Unauthorized"));
-
-        return $response
-            ->withStatus(403)
-            ->withHeader(
-                'Location',
-                $this->get(RouteParser::class)->urlFor('slash')
-            );
-    }
-
-    return $response;
-};
+//FIXME: remove in 1.1.0; routes/groups should call middleware directly
+$showPublicPages = new \Galette\Middleware\PublicPages($container);
 
 //Maintenance middleware
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
