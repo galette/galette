@@ -1,6 +1,15 @@
 Changes
 -------
 
+1.0.1 -> 1.0.2
+
+- Public pages access restriction (CVE-2024-24761)
+- Remove useless class from templates and fix social networks search dropdown
+- Ensure language is changed when login from cron; closes #1769
+- Make replacements icon in PDF Model more visible
+- Fix possible issue on group creation
+- Fix URL redirection
+
 1.0.0 -> 1.0.1
 
 - Title in members list causes an error
