@@ -67,7 +67,7 @@ class Logo extends TestCase
         $zdb = $this->zdb;
         $expected_path = realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.png');
 
-        $instance = new \Galette\Core\Logo($this->zdb);
+        $instance = new \Galette\Core\Logo();
         $this->assertNull($instance->getDestDir());
         $this->assertNull($instance->getFileName());
         $this->assertSame($expected_path, $instance->getPath());
