@@ -44,7 +44,7 @@
         <div class="four fields">
             <div class="field">
                 <label for="date_field">{{ _T("Show contributions by") }}</label>
-                <select name="date_field" id="date_field" class="ui search dropdown nochosen">
+                <select name="date_field" id="date_field" class="ui search dropdown">
                     <option value="{{ constant("Galette\\Filters\\ContributionsList::DATE_BEGIN") }}"{% if filters.date_field == constant('Galette\\Filters\\ContributionsList::DATE_BEGIN') %} selected="selected"{% endif %}>{{ _T("Begin") }}</option>
                     <option value="{{ constant("Galette\\Filters\\ContributionsList::DATE_END") }}"{% if filters.date_field == constant('Galette\\Filters\\ContributionsList::DATE_END') %} selected="selected"{% endif %}>{{ _T("End") }}</option>
                     <option value="{{ constant("Galette\\Filters\\ContributionsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ContributionsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Record") }}</option>

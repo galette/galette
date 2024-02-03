@@ -117,7 +117,7 @@
                             </div>
                         </div>
                         <label for="pref_postal_staff_member">{{ _T("Staff member") }}</label>
-                        <select name="pref_postal_staff_member" id="pref_postal_staff_member" class="ui search dropdown nochosen">
+                        <select name="pref_postal_staff_member" id="pref_postal_staff_member" class="ui search dropdown">
                             <option value="-1">{{ _T("-- Choose a staff member --") }}</option>
                         {% for staff in staff_members %}
                             <option value="{{ staff.id }}"{% if staff.id == pref.pref_postal_staff_member %} selected="selected"{% endif %}>{{ staff.name }} ({{ staff.sstatus }})</option>
@@ -169,7 +169,7 @@
                 <div class="column">
                     <div class="{% if required.pref_lang is defined and required.pref_lang == 1 %}required {% endif %}field">
                         <label for="pref_lang" >{{ _T("Default language:") }}</label>
-                        <select name="pref_lang" id="pref_lang" class="lang ui search dropdown nochosen"{% if required.pref_lang is defined and required.pref_lang == 1 %} required="required"{% endif %}>
+                        <select name="pref_lang" id="pref_lang" class="lang ui search dropdown"{% if required.pref_lang is defined and required.pref_lang == 1 %} required="required"{% endif %}>
         {% for langue in languages %}
                             <option value="{{ langue.getID() }}" {% if pref.pref_lang == langue.getID() %}selected="selected"{% endif %}>{{ langue.getName()|capitalize }}</option>
         {% endfor %}
@@ -177,7 +177,7 @@
                     </div>
                     {#<div class="field">
                         <label for="pref_theme">{{ _T("Default theme:") }}</label>
-                        <select name="pref_theme" id="pref_theme" class="ui search dropdown nochosen">
+                        <select name="pref_theme" id="pref_theme" class="ui search dropdown">
         {% for theme in themes %}
                             <option value="{{ theme }}" {% if pref.pref_theme == theme %}selected="selected"{% endif %}>{{ theme|capitalize }}</option>
         {% endfor %}
@@ -185,7 +185,7 @@
                     </div>#}
                     <div class="{% if required.pref_numrows is defined and required.pref_numrows == 1 %}required {% endif %}field">
                         <label for="pref_numrows">{{ _T("Lines / Page:") }}</label>
-                        <select name="pref_numrows" id="pref_numrows" class="ui search dropdown nochosen"{% if required.pref_numrows is defined and required.pref_numrows == 1 %} required="required"{% endif %}>
+                        <select name="pref_numrows" id="pref_numrows" class="ui search dropdown"{% if required.pref_numrows is defined and required.pref_numrows == 1 %} required="required"{% endif %}>
                             {% for key, value in pref_numrows_options %}
                                 <option value="{{ key }}"{% if key == pref.pref_numrows %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -193,7 +193,7 @@
                     </div>
                     <div class="field">
                         <label for="pref_redirect_on_create">{{ _T("After member creation:") }}</label>
-                        <select name="pref_redirect_on_create" id="pref_redirect_on_create" class="ui search dropdown nochosen">
+                        <select name="pref_redirect_on_create" id="pref_redirect_on_create" class="ui search dropdown">
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
@@ -204,14 +204,14 @@
                     </div>
                     <div class="{% if required.pref_log is defined and required.pref_log == 1 %}required {% endif %}field">
                         <label for="pref_log">{{ _T("Logging level:") }}</label>
-                        <select name="pref_log" id="pref_log" class="ui search dropdown nochosen"{% if required.pref_log is defined and required.pref_log == 1 %} required="required"{% endif %}>
+                        <select name="pref_log" id="pref_log" class="ui search dropdown"{% if required.pref_log is defined and required.pref_log == 1 %} required="required"{% endif %}>
                             <option value="{{ constant('Galette\\Core\\Preferences::LOG_DISABLED') }}" {% if pref.pref_log == constant('Galette\\Core\\Preferences::LOG_DISABLED') %}selected="selected"{% endif %}>{{ _T("Disabled") }}</option>
                             <option value="{{ constant('Galette\\Core\\Preferences::LOG_ENABLED') }}" {% if pref.pref_log == constant('Galette\\Core\\Preferences::LOG_ENABLED') %}selected="selected"{% endif %}>{{ _T("Enabled") }}</option>
                         </select>
                     </div>
                     <div class="field">
                         <label for="pref_filter_account">{{ _T("Default account filter:") }}</label>
-                        <select name="pref_filter_account" id="pref_filter_account" class="ui search dropdown nochosen">
+                        <select name="pref_filter_account" id="pref_filter_account" class="ui search dropdown">
                             {% for key, value in accounts_options %}
                                 <option value="{{ key }}"{% if key == pref.pref_filter_account %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -219,7 +219,7 @@
                     </div>
                     <div class="field">
                         <label for="pref_default_paymenttype">{{ _T("Default payment type:") }}</label>
-                        <select name="pref_default_paymenttype" id="pref_default_paymenttype" class="ui search dropdown nochosen">
+                        <select name="pref_default_paymenttype" id="pref_default_paymenttype" class="ui search dropdown">
                             {% for key, value in paymenttypes %}
                                 <option value="{{ key }}"{% if key == pref.pref_default_paymenttype %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -235,7 +235,7 @@
                     </div>
                     <div id="publicpages_visibility" class="field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
                         <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
-                        <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown nochosen">
+                        <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown">
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
@@ -250,7 +250,7 @@
                     </div>
                     <div id="pref_member_picture_ratio_field" class="inline field{% if pref.pref_force_picture_ratio != 1 %} displaynone{% endif %}">
                         <label for="pref_member_picture_ratio">{{ _T("Select a ratio") }}</label>
-                        <select name="pref_member_picture_ratio" id="pref_member_picture_ratio" class="ui dropdown nochosen">
+                        <select name="pref_member_picture_ratio" id="pref_member_picture_ratio" class="ui dropdown">
                             <option value="square_ratio"{% if pref.pref_member_picture_ratio == 'square_ratio' %} selected="selected"{% endif %}>{{ _T("Square (1:1)") }}</option>
                             <option value="portrait_ratio"{% if pref.pref_member_picture_ratio == 'portrait_ratio' %} selected="selected"{% endif %}>{{ _T("Portrait (3:4)") }}</option>
                             <option value="landscape_ratio"{% if pref.pref_member_picture_ratio == 'landscape_ratio' %} selected="selected"{% endif %}>{{ _T("Landscape (4:3)") }}</option>
@@ -302,7 +302,7 @@
                 <div class="column">
                     <div class="field{% if required.pref_statut is defined and required.pref_statut == 1 %} required{% endif %}">
                         <label for="pref_statut">{{ _T("Default membership status:") }}</label>
-                        <select name="pref_statut" id="pref_statut" class="ui search dropdown nochosen"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
+                        <select name="pref_statut" id="pref_statut" class="ui search dropdown"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
                             {% for key, value in statuts %}
                                 <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
@@ -721,7 +721,7 @@
                     </div>
                     <div class="field">
                         <label for="pref_card_address">{{ _T("Address type:") }}</label>
-                        <select name="pref_card_address" id="pref_card_address" class="ui search dropdown nochosen">
+                        <select name="pref_card_address" id="pref_card_address" class="ui search dropdown">
                             <option value="0" {% if pref.pref_card_address == 0 %}selected="selected"{% endif %}>{{ _T("Email") }}</option>
                             <option value="5" {% if pref.pref_card_address == 5 %}selected="selected"{% endif %}>{{ _T("Zip - Town") }}</option>
                             <option value="6" {% if pref.pref_card_address == 6 %}selected="selected"{% endif %}>{{ _T("Nickname") }}</option>
@@ -791,7 +791,7 @@
                 </div>
                 <div class="inline field">
                     <label for="pref_password_strength" title="{{ _T("Enforce password strength") }}">{{ _T("Password strength:") }}</label>
-                    <select name="pref_password_strength" id="pref_password_strength" class="ui dropdown nochosen">
+                    <select name="pref_password_strength" id="pref_password_strength" class="ui dropdown">
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_NONE') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_NONE') %} selected="selected"{% endif %}>{{ _T("None (default)") }}</option>
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_WEAK') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_WEAK') %} selected="selected"{% endif %}>{{ _T("Weak") }}</option>
                         <option value="{{ constant('Galette\\Core\\Preferences::PWD_MEDIUM') }}"{% if pref.pref_password_strength == constant('Galette\\Core\\Preferences::PWD_MEDIUM') %} selected="selected"{% endif %}>{{ _T("Medium") }}</option>
@@ -873,6 +873,8 @@
 
 {% block javascripts %}
         <script type="text/javascript">
+            {% include "elements/js/choose_social.js.twig" %}
+
             $(function(){
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') %}
                 $('#smtp_parameters').addClass('displaynone');

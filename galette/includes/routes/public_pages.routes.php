@@ -73,4 +73,4 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
                 ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
-})->add($showPublicPages);
+})->add(\Galette\Middleware\PublicPages::class);

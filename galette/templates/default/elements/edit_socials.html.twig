@@ -18,15 +18,19 @@
                 <label>{{ _T("Add new social network") }}</label>
                 <div class="combo-social fields">
                     <div class="field">
-                        <select name="social_new_type_1" id="social_new_type_1" class="socials_dropdown ui search dropdown nochosen">
-                            <option value="">{{ _T("Choose or enter your own...") }}</option>
+                        <div id="social_new_type_1" class="jsonly search-dropdown socials-dropdown ui input">
+                            <input id="social_new_type_input_1" type="hidden" name="social_new_type_1" value="">
+                            <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                            <div class="jsonly displaynone default text">{{ _T("Choose or enter your own...") }}</div>
+                            <div class="jsonly displaynone menu">
                             {% for social_type in osocials.getSystemTypes(false) %}
-                                <option value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</option>
+                                <div class="item" data-value="{{ social_type }}">{{ osocials.getSystemType(social_type) }}</div>
                             {% endfor %}
-                        </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="field">
-                        <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50"/>
+                        <input type="text" name="social_new_value_1" id="social_new_value_1" value="" size="50" class="value"/>
                     </div>
                 </div>
                 <a href="#" class="ui tiny green labeled icon button action addsocial">
@@ -34,48 +38,6 @@
                     {{ _T("Add") }}
                 </a>
             </div>
-            <script type="text/javascript">
-                var _dropdown = function(selector) {
-                    if ( !selector ) {
-                        selector = '.socials_dropdown';
-                    }
-
-                    $(selector).dropdown({
-                        allowAdditions: true
-                    });
-                }
-
-                var _rmFilter = function(elt) {
-                    if ( typeof elt == 'undefined') {
-                        elt = $('#social .stored');
-                    }
-                    elt.find('.delsocial').click(function(e){
-                        e.preventDefault();
-                        var _this = $(this);
-                        _this.parents('.field.stored').remove();
-                    });
-                }
-
-                $(function(){
-                    _rmFilter();
-                    _dropdown();
-
-                    $('a.addsocial').click(function(e) {
-                        e.preventDefault();
-
-                        var _newindex = $(this).parents('.addsocial').find('.combo-social:last select').attr('id').replace('social_new_type_', '');
-                        ++_newindex;
-                        $(this).parents('.addsocial').find ('.combo-social:last')
-                            .clone() // copy
-                            .insertAfter('#social .combo-social:last') // where
-                            .find('select').attr('id', 'social_new_type_' + _newindex).attr('name', 'social_new_type_' + _newindex)
-                            .parent().parent().parent().find('input').attr('id', 'social_new_value_' + _newindex).attr('name', 'social_new_value_' + _newindex)
-                        ;
-
-                        _dropdown();
-                    });
-                });
-            </script>
     {% endblock %}
 </div>
 {% else %}

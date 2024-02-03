@@ -32,12 +32,13 @@
 /*------------------------
      Search dropdown
 -------------------------*/
+.ui.form .fields .field .ui.input.search input,
+.ui.search.selection.dropdown > input.search {
+  width: 100%;
+}
 .ui.search.selection.paginated.dropdown {
     > .ui.mini.button {
         display: none;
-    }
-    > input.search {
-        width: 100%;
     }
     &.visible > .ui.mini.button {
         display: block;

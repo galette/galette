@@ -368,14 +368,18 @@ class GroupsController extends CrudController
             if (isset($post['managers'])) {
                 $managers_id = $post['managers'];
                 $managers = $m->getArrayList($managers_id);
-                $group->setManagers($managers);
+                if (is_array($managers)) {
+                    $group->setManagers($managers);
+                }
             }
 
             //handle group members
             if (isset($post['members'])) {
                 $members_id = $post['members'];
                 $members = $m->getArrayList($members_id);
-                $group->setMembers($members);
+                if (is_array($members)) {
+                    $group->setMembers($members);
+                }
             }
 
             $store = $group->store();

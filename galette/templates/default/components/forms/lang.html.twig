@@ -1,7 +1,7 @@
 {% extends "components/forms/select.html.twig" %}
 
 {% block element %}
-    <select name="pref_lang" id="pref_lang" class="ui dropdown nochosen lang"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required.pref_lang is defined and required.pref_lang == 1 %} required="required"{% endif %}>
+    <select name="pref_lang" id="pref_lang" class="ui dropdown lang"{% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}{% if required.pref_lang is defined and required.pref_lang == 1 %} required="required"{% endif %}>
         {% for langue in languages %}
             <option value="{{ langue.getID() }}"{% if member.language == langue.getID() %} selected="selected"{% endif %}>{{ langue.getName() }}</option>
         {% endfor %}

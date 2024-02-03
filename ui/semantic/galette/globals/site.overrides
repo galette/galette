@@ -10,6 +10,10 @@
   display: none !important;
 }
 
+.ui.corner.label .icon.btnlegend {
+    cursor: pointer;
+}
+
 /* Content using visually-hidden is read by screen readers */
 .visually-hidden {
   position: absolute !important;

@@ -129,22 +129,9 @@ abstract class Authentication
      * @param string      $name        Service name
      * @param Preferences $preferences Preferences instance
      *
-     * @return void
+     * @return bool
      */
-    public function logCron($name, Preferences $preferences)
-    {
-        //known cronable files
-        $ok = array('reminder');
-
-        if (in_array($name, $ok)) {
-            $this->logged = true;
-            $this->cron = true;
-            $this->login = 'cron';
-            $this->lang = $preferences->pref_lang;
-        } else {
-            trigger_error('Not authorized!', E_USER_ERROR);
-        }
-    }
+    abstract public function logCron(string $name, Preferences $preferences): bool;
 
     /**
      * Log out user and unset variables
