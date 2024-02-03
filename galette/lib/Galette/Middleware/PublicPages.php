@@ -26,11 +26,8 @@ use Galette\Core\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Analog\Analog;
 use DI\Container;
-use RKA\Session;
 use Slim\Flash\Messages;
-use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 
 /**
