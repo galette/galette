@@ -59,14 +59,14 @@ class Install
 
     protected int $_step;
     private ?string $_mode;
-    private ?string $_installed_version;
+    private ?string $_installed_version = null;
 
     private string $_db_type;
     private string $_db_host;
     private string $_db_port;
     private string $_db_name;
     private string $_db_user;
-    private string $_db_pass;
+    private ?string $_db_pass;
     private ?string $_db_prefix = null;
 
     private bool $_db_connected;
