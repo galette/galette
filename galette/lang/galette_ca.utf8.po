@@ -12,10 +12,10 @@
 # Queralt Garrigos <garrigosqueralt@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-08 21:54+0100\n"
-"PO-Revision-Date: 2023-11-26 09:04+0000\n"
+"POT-Creation-Date: 2024-02-08 22:36+0100\n"
+"PO-Revision-Date: 2024-02-08 22:41+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2.1-rc\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: ../lib/Galette/IO/CsvIn.php:220
 #, fuzzy, php-format
@@ -4804,7 +4804,7 @@ msgid "you wish to erase an older version of Galette without keeping your data"
 msgstr ""
 "voleu esborrar una versió antiga de Galette sense mantenir les vostres dades"
 
-#: ../install/steps/type.php:41
+#: ../install/steps/type.php:41 ../install/steps/db_select_version.php:42
 #: ../../tempcache/modals/plugin_initdb.html.twig:116
 #, fuzzy
 msgid "Update"
@@ -4829,8 +4829,8 @@ msgstr ""
 #: ../install/steps/check.php:152 ../install/steps/admin.php:43
 #: ../install/steps/telemetry.php:66 ../install/steps/galette.php:65
 #: ../install/steps/db_checks.php:239
-#: ../install/steps/db_select_version.php:122
-#: ../install/steps/db_select_version.php:133 ../install/steps/db.php:91
+#: ../install/steps/db_select_version.php:133
+#: ../install/steps/db_select_version.php:144 ../install/steps/db.php:91
 #: ../../tempcache/pages/plugins.html.twig:377
 #: ../../tempcache/modals/plugin_initdb.html.twig:338
 #, fuzzy
@@ -4839,8 +4839,8 @@ msgstr "Pas següent"
 
 #: ../install/steps/type.php:56 ../install/steps/db_install.php:80
 #: ../install/steps/galette.php:79 ../install/steps/db_checks.php:250
-#: ../install/steps/db_select_version.php:125
-#: ../install/steps/db_select_version.php:136 ../install/steps/db.php:94
+#: ../install/steps/db_select_version.php:136
+#: ../install/steps/db_select_version.php:147 ../install/steps/db.php:94
 #, fuzzy
 msgid "Back"
 msgstr "Enrere"
@@ -5214,23 +5214,34 @@ msgstr "La Galette s'ha actualitzat correctament!"
 msgid "Homepage"
 msgstr "Pàgina d'inici"
 
-#: ../install/steps/db_select_version.php:30
+#: ../install/steps/db_select_version.php:35
+#: ../install/steps/db_select_version.php:49
+msgid "It seems you already use latest Galette version!"
+msgstr "Sembla que ja utilitzeu l'última versió de Galette!"
+
+#: ../install/steps/db_select_version.php:38
+msgid "Are you sure you want to upgrade?"
+msgstr "Segur que voleu actualitzar?"
+
+#: ../install/steps/db_select_version.php:41
+#: ../../tempcache/pages/404.html.twig:80
+#: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
+#, fuzzy
+msgid "Home"
+msgstr "Inici"
+
+#: ../install/steps/db_select_version.php:53
 #, fuzzy
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
 "Seleccioneu la versió anterior de Galette a continuació i feu clic a Següent."
 
-#: ../install/steps/db_select_version.php:34
+#: ../install/steps/db_select_version.php:57
 #, fuzzy
 msgid "No update script found!"
 msgstr "No s'ha trobat cap script d'actualització!"
 
-#: ../install/steps/db_select_version.php:38
-#, fuzzy
-msgid "It seems you already use latest Galette version!"
-msgstr "Sembla que ja utilitzeu l'última versió de Galette!"
-
-#: ../install/steps/db_select_version.php:46
+#: ../install/steps/db_select_version.php:63
 #, fuzzy
 msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
@@ -5239,7 +5250,7 @@ msgstr ""
 "La versió anterior és més antiga de 0,7. <strong>Assegureu-vos de "
 "seleccionar la versió correcta </strong>."
 
-#: ../install/steps/db_select_version.php:50
+#: ../install/steps/db_select_version.php:67
 #, fuzzy
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
@@ -5248,31 +5259,23 @@ msgstr ""
 "La vostra versió anterior s'hauria de seleccionar i el <strong>es mostrarà "
 "en negreta</strong>."
 
-#: ../install/steps/db_select_version.php:57
-msgid ""
-"It seems you already use latest Galette version!<br/>Are you sure you want "
-"to upgrade?"
-msgstr ""
-"Sembla que ja utilitzeu l'última versió de Galette!<br>Segur que voleu "
-"actualitzar?"
-
-#: ../install/steps/db_select_version.php:61
+#: ../install/steps/db_select_version.php:72
 msgid "Your current Galette version is..."
 msgstr "La versió actual de Galette és..."
 
-#: ../install/steps/db_select_version.php:82
+#: ../install/steps/db_select_version.php:93
 #: ../../tempcache/modals/plugin_initdb.html.twig:182
 #, fuzzy
 msgid "older than %version"
 msgstr "més antic que el %version"
 
-#: ../install/steps/db_select_version.php:85
+#: ../install/steps/db_select_version.php:96
 #: ../../tempcache/modals/plugin_initdb.html.twig:189
 #, fuzzy
 msgid "comprised between"
 msgstr "format entre"
 
-#: ../install/steps/db_select_version.php:86
+#: ../install/steps/db_select_version.php:97
 #: ../../tempcache/pages/advanced_search.html.twig:289
 #: ../../tempcache/pages/advanced_search.html.twig:331
 #: ../../tempcache/pages/advanced_search.html.twig:375
@@ -5287,7 +5290,7 @@ msgstr "format entre"
 msgid "and"
 msgstr "i"
 
-#: ../install/steps/db_select_version.php:121
+#: ../install/steps/db_select_version.php:132
 #: ../../tempcache/pages/configuration_title_form.html.twig:94
 #: ../../tempcache/pages/status_form.html.twig:106
 #: ../../tempcache/pages/preferences.html.twig:2609
@@ -8845,12 +8848,6 @@ msgstr "Elimina"
 msgid "Sorry, the page you are looking for could not be found."
 msgstr "No s'ha trobat la pàgina que esteu cercant."
 
-#: ../../tempcache/pages/404.html.twig:80
-#: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
-#, fuzzy
-msgid "Home"
-msgstr "Inici"
-
 #: ../../tempcache/pages/configuration_payment_types.html.twig:75
 #, fuzzy
 msgid "Add payment type"
@@ -9889,6 +9886,13 @@ msgstr ""
 #, fuzzy
 msgid "An error occurred sending telemetry information :("
 msgstr "S'ha produït un error en enviar la informació de telemetria ("
+
+#~ msgid ""
+#~ "It seems you already use latest Galette version!<br/>Are you sure you "
+#~ "want to upgrade?"
+#~ msgstr ""
+#~ "Sembla que ja utilitzeu l'última versió de Galette!<br>Segur que voleu "
+#~ "actualitzar?"
 
 #~ msgid "An SQL error has occurred while storing search."
 #~ msgstr "S'ha produït un error SQL en emmagatzemar la cerca."

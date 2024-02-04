@@ -27,18 +27,35 @@ $raw_current = $zdb->getDbVersion(true);
 $last = '0.00';
 ?>
     <form action="installer.php" method="post" class="ui form">
+<?php
+if ($raw_current === GALETTE_DB_VERSION && !isset($_POST['force_select_version'])) {
+    ?>
+    <div class="ui orange message">
+        <div class="header">
+            <?php echo _T("It seems you already use latest Galette version!"); ?>
+        </div>
+        <p>
+            <?php echo _T("Are you sure you want to upgrade?"); ?>
+        </p>
+        <p class="center aligned">
+            <a  class="ui primary button" href="<?php echo GALETTE_BASE_PATH; ?>"><?php echo _T('Home'); ?></a>
+            <button class="ui button" type="submit" name="force_select_version"><?php echo _T('Update'); ?></button>
+        </p>
+    </div>
+    <?php
+} else {
+    if ($raw_current === GALETTE_DB_VERSION) {
+        ?>
+    <p class="ui orange message"><?php echo _T("It seems you already use latest Galette version!"); ?></p>
+        <?php
+    }
+?>
         <p class="ui blue message"><?php echo _T("Select your previous Galette version below, and then click next."); ?></p>
 <?php
 if (count($versions) == 0) {
     ?>
         <p class="ui red message"><?php echo _T("No update script found!"); ?></p>
 <?php
-    if ($raw_current === GALETTE_DB_VERSION) {
-        ?>
-            <p class="ui orange message"><?php echo _T("It seems you already use latest Galette version!"); ?></p>
-        <?php
-    }
-
 } else {
     if ($current !== false) {
         if ($current < 0.70) {
@@ -50,12 +67,6 @@ if (count($versions) == 0) {
             <p class="ui green message"><?php echo _T("Your previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
         <?php
         }
-    }
-
-    if ($raw_current === GALETTE_DB_VERSION) {
-        ?>
-            <p class="ui orange message"><?php echo _T("It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"); ?></p>
-        <?php
     }
     ?>
         <h2><?php echo _T("Your current Galette version is..."); ?></h2>
@@ -138,5 +149,6 @@ if (count($versions) == 0) {
         </div>
     </form>
 <?php
+}
 }
 ?>

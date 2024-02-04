@@ -8,10 +8,10 @@
 # Artem <artem@molotov.work>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-08 21:54+0100\n"
-"PO-Revision-Date: 2023-11-06 06:18+0000\n"
+"POT-Creation-Date: 2024-02-08 22:36+0100\n"
+"PO-Revision-Date: 2024-02-08 22:42+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.2-dev\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: ../lib/Galette/IO/CsvIn.php:220
 #, php-format
@@ -4182,7 +4182,7 @@ msgstr "ви встановлюєте Galette вперше"
 msgid "you wish to erase an older version of Galette without keeping your data"
 msgstr "ви хочете стерти стару версію Galette без збереження даних"
 
-#: ../install/steps/type.php:41
+#: ../install/steps/type.php:41 ../install/steps/db_select_version.php:42
 #: ../../tempcache/modals/plugin_initdb.html.twig:116
 msgid "Update"
 msgstr "Оновлення"
@@ -4202,8 +4202,8 @@ msgstr "Увага: не забудьте створити резервну ко
 #: ../install/steps/check.php:152 ../install/steps/admin.php:43
 #: ../install/steps/telemetry.php:66 ../install/steps/galette.php:65
 #: ../install/steps/db_checks.php:239
-#: ../install/steps/db_select_version.php:122
-#: ../install/steps/db_select_version.php:133 ../install/steps/db.php:91
+#: ../install/steps/db_select_version.php:133
+#: ../install/steps/db_select_version.php:144 ../install/steps/db.php:91
 #: ../../tempcache/pages/plugins.html.twig:377
 #: ../../tempcache/modals/plugin_initdb.html.twig:338
 msgid "Next step"
@@ -4211,8 +4211,8 @@ msgstr "Наступний крок"
 
 #: ../install/steps/type.php:56 ../install/steps/db_install.php:80
 #: ../install/steps/galette.php:79 ../install/steps/db_checks.php:250
-#: ../install/steps/db_select_version.php:125
-#: ../install/steps/db_select_version.php:136 ../install/steps/db.php:94
+#: ../install/steps/db_select_version.php:136
+#: ../install/steps/db_select_version.php:147 ../install/steps/db.php:94
 msgid "Back"
 msgstr "Назад"
 
@@ -4537,19 +4537,30 @@ msgstr "Galette успішно оновлено!"
 msgid "Homepage"
 msgstr "Домівка"
 
-#: ../install/steps/db_select_version.php:30
-msgid "Select your previous Galette version below, and then click next."
-msgstr "Виберіть попередню версію Galette нижче та натисніть кнопку \"Далі\"."
-
-#: ../install/steps/db_select_version.php:34
-msgid "No update script found!"
-msgstr "Скрипт оновлення не знайдено!"
-
-#: ../install/steps/db_select_version.php:38
+#: ../install/steps/db_select_version.php:35
+#: ../install/steps/db_select_version.php:49
 msgid "It seems you already use latest Galette version!"
 msgstr "Здається, ви вже використовуєте останню версію Galette!"
 
-#: ../install/steps/db_select_version.php:46
+#: ../install/steps/db_select_version.php:38
+msgid "Are you sure you want to upgrade?"
+msgstr "Ви дійсно бажаєте виконати оновлення?"
+
+#: ../install/steps/db_select_version.php:41
+#: ../../tempcache/pages/404.html.twig:80
+#: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
+msgid "Home"
+msgstr "Домівка"
+
+#: ../install/steps/db_select_version.php:53
+msgid "Select your previous Galette version below, and then click next."
+msgstr "Виберіть попередню версію Galette нижче та натисніть кнопку \"Далі\"."
+
+#: ../install/steps/db_select_version.php:57
+msgid "No update script found!"
+msgstr "Скрипт оновлення не знайдено!"
+
+#: ../install/steps/db_select_version.php:63
 msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
 "version</strong>."
@@ -4557,7 +4568,7 @@ msgstr ""
 "Попередня версія старіша за 0,7. <strong> Переконайтеся, що ви правильно "
 "підібрали версію</strong>."
 
-#: ../install/steps/db_select_version.php:50
+#: ../install/steps/db_select_version.php:67
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
 "strong>."
@@ -4565,29 +4576,21 @@ msgstr ""
 "Ваша попередня версія повинна бути вибрана та <strong>виділена жирним "
 "шрифтом</strong>."
 
-#: ../install/steps/db_select_version.php:57
-msgid ""
-"It seems you already use latest Galette version!<br/>Are you sure you want "
-"to upgrade?"
-msgstr ""
-"Здається, ви вже використовуєте останню версію Galette!<br>Ви дійсно бажаєте "
-"виконати оновлення?"
-
-#: ../install/steps/db_select_version.php:61
+#: ../install/steps/db_select_version.php:72
 msgid "Your current Galette version is..."
 msgstr "Ваша поточна версія Galette..."
 
-#: ../install/steps/db_select_version.php:82
+#: ../install/steps/db_select_version.php:93
 #: ../../tempcache/modals/plugin_initdb.html.twig:182
 msgid "older than %version"
 msgstr "старіша за %version"
 
-#: ../install/steps/db_select_version.php:85
+#: ../install/steps/db_select_version.php:96
 #: ../../tempcache/modals/plugin_initdb.html.twig:189
 msgid "comprised between"
 msgstr "що міститься між"
 
-#: ../install/steps/db_select_version.php:86
+#: ../install/steps/db_select_version.php:97
 #: ../../tempcache/pages/advanced_search.html.twig:289
 #: ../../tempcache/pages/advanced_search.html.twig:331
 #: ../../tempcache/pages/advanced_search.html.twig:375
@@ -4601,7 +4604,7 @@ msgstr "що міститься між"
 msgid "and"
 msgstr "і"
 
-#: ../install/steps/db_select_version.php:121
+#: ../install/steps/db_select_version.php:132
 #: ../../tempcache/pages/configuration_title_form.html.twig:94
 #: ../../tempcache/pages/status_form.html.twig:106
 #: ../../tempcache/pages/preferences.html.twig:2609
@@ -7669,11 +7672,6 @@ msgstr "Вилучити"
 msgid "Sorry, the page you are looking for could not be found."
 msgstr "Вибачте, сторінку, яку ви шукали, не вдалося знайти."
 
-#: ../../tempcache/pages/404.html.twig:80
-#: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
-msgid "Home"
-msgstr "Домівка"
-
 #: ../../tempcache/pages/configuration_payment_types.html.twig:75
 msgid "Add payment type"
 msgstr "Додати вид оплати"
@@ -8594,6 +8592,13 @@ msgstr ""
 #: ../../tempcache/modals/telemetry.html.twig:118
 msgid "An error occurred sending telemetry information :("
 msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
+
+#~ msgid ""
+#~ "It seems you already use latest Galette version!<br/>Are you sure you "
+#~ "want to upgrade?"
+#~ msgstr ""
+#~ "Здається, ви вже використовуєте останню версію Galette!<br>Ви дійсно "
+#~ "бажаєте виконати оновлення?"
 
 #~ msgid "An SQL error has occurred while storing search."
 #~ msgstr "Під час зберігання пошуку сталася помилка SQL."
