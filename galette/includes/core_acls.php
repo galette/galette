@@ -75,7 +75,8 @@ $core_acls = [
     // /Groups rules
 
     '/(.+)?text(.+)?/i'                 => 'staff',
-    '/(.+)?entitled(.+)?/i'             => 'staff',
+    '/(.+)?status(.+)?/i'               => 'staff',
+    '/(.+)?contributions?Types?(.+)?/i' => 'staff',
     '/(.+)?title(.+)?/i'                => 'staff',
     '/(.+)?reminder(.+)?/i'             => 'staff',
     '/(.+)?paymentType(.+)?/i'          => 'staff',

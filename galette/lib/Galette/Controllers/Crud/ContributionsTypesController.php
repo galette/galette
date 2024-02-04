@@ -30,12 +30,12 @@ use Galette\Repository\Members;
 use Analog\Analog;
 
 /**
- * Galette Entitleds (contributions types and status) controller
+ * Galette contributions types controller
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class EntitledsController extends CrudController
+class ContributionsTypesController extends CrudController
 {
     // CRUD - Create
 
@@ -58,13 +58,12 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?string  $class    Entitled class
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, string $class = null): Response
+    public function doAdd(Request $request, Response $response): Response
     {
-        return $this->store($request, $response, $class, null, 'add');
+        return $this->store($request, $response, null, 'add');
     }
 
     // /CRUD - Create
@@ -77,7 +76,6 @@ class EntitledsController extends CrudController
      * @param Response            $response PSR Response
      * @param string|null         $option   One of 'page' or 'order'
      * @param integer|string|null $value    Value of the option
-     * @param string|null         $class    Entitled class from url
      *
      * @return Response
      */
@@ -86,35 +84,15 @@ class EntitledsController extends CrudController
         Response $response,
         string $option = null,
         int|string $value = null,
-        string $class = null
     ): Response {
-        $className = null;
-        $entitled = null;
+        $ctypes = new ContributionsTypes($this->zdb);
+        $params['page_title'] = _T("Contributions types");
 
-        $params = [];
-        switch ($class) {
-            case 'status':
-                $className = 'Status';
-                $entitled = new Status($this->zdb);
-                $params['page_title'] = _T("User statuses");
-                $params['non_staff_priority'] = Members::NON_STAFF_MEMBERS;
-                break;
-            case 'contributions-types':
-                $className = 'ContributionsTypes';
-                $entitled = new ContributionsTypes($this->zdb);
-                $params['page_title'] = _T("Contributions types");
-                break;
-        }
-
-        $params['class'] = $className;
-        $params['url_class'] = $class;
-        $params['fields'] = $entitled::$fields;
-
-        $list = $entitled->getCompleteList();
+        $list = $ctypes->getCompleteList();
         $params['entries'] = $list;
 
-        if (count($entitled->getErrors()) > 0) {
-            foreach ($entitled->getErrors() as $error) {
+        if (count($ctypes->getErrors()) > 0) {
+            foreach ($ctypes->getErrors() as $error) {
                 $this->flash->addMessage(
                     'error_detected',
                     $error
@@ -125,14 +103,14 @@ class EntitledsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_entitleds.html.twig',
+            'pages/contributions_types_list.html.twig',
             $params
         );
         return $response;
     }
 
     /**
-     * Mailings filtering
+     * Contributions types filtering
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
@@ -153,36 +131,16 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Entitled id
-     * @param ?string  $class    Entitled class from url
+     * @param integer  $id       Contribution type id
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id, string $class = null): Response
+    public function edit(Request $request, Response $response, int $id): Response
     {
-        $className = null;
-        $entitled = null;
+        $ctype = new ContributionsTypes($this->zdb);
+        $params['page_title'] = _T("Edit contribution type");
 
-        $params = [];
-        switch ($class) {
-            case 'status':
-                $className = 'Status';
-                $entitled = new Status($this->zdb);
-                $params['page_title'] = _T("Edit status");
-                $params['non_staff_priority'] = Members::NON_STAFF_MEMBERS;
-                break;
-            case 'contributions-types':
-                $className = 'ContributionsTypes';
-                $entitled = new ContributionsTypes($this->zdb);
-                $params['page_title'] = _T("Edit contribution type");
-                break;
-        }
-
-        $params['class'] = $className;
-        $params['url_class'] = $class;
-        $params['fields'] = $entitled::$fields;
-
-        $entry = $entitled->get($id);
+        $entry = $ctype->get($id);
         $params['entry'] = $entry;
 
         $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
@@ -190,7 +148,7 @@ class EntitledsController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_entitled_form.html.twig',
+            'pages/contribution_type_form.html.twig',
             $params
         );
         return $response;
@@ -201,14 +159,13 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Entitled id
-     * @param ?string  $class    Entitled class from url
+     * @param integer  $id       Contribution type id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id, string $class = null): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
-        return $this->store($request, $response, $class, $id);
+        return $this->store($request, $response, $id);
     }
 
     /**
@@ -216,8 +173,7 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?string  $class    Entitled class from url
-     * @param ?integer $id       Entitled id
+     * @param ?integer $id       Contribution type id
      * @param string   $action   Action
      *
      * @return Response
@@ -225,7 +181,6 @@ class EntitledsController extends CrudController
     public function store(
         Request $request,
         Response $response,
-        string $class = null,
         int $id = null,
         string $action = 'edit'
     ): Response {
@@ -239,38 +194,28 @@ class EntitledsController extends CrudController
 
         $error_detected = [];
         $msg = null;
+        $ctype = new ContributionsTypes($this->zdb);
 
-        switch ($class) {
-            case 'status':
-                $entitled = new Status($this->zdb);
-                break;
-            case 'contributions-types':
-                $entitled = new ContributionsTypes($this->zdb);
-                break;
-            default:
-                throw new \RuntimeException('Unknown entitled class');
-        }
-
-        $label = trim($post[$entitled::$fields['libelle']]);
-        $field = (int)trim($post[$entitled::$fields['third']] ?? 0);
+        $label = trim($post['libelle_type_cotis']);
+        $field = (int)trim($post['cotis_extension'] ?? 0);
 
         if ($label != '') {
-            $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
+            $ret = ($action === 'add' ? $ctype->add($label, $field) : $ctype->update($id, $label, $field));
         } else {
             $ret = false;
-            $error_detected[] = _T('Missing required %type name!');
+            $error_detected[] = _T('Missing required contribution type name!');
         }
-        $redirect_uri = $this->routeparser->urlFor('entitleds', ['class' => $class]);
+        $redirect_uri = $this->routeparser->urlFor('contributionsTypes');
 
         if ($ret !== true) {
             $error_detected[] = $action === 'add' ?
-                _T("%type has not been added :(") : _T("%type #%id has not been updated");
+                _T("Contribution type has not been added :(") : _T("Contribution type #%id has not been updated");
             if ($action === 'edit') {
-                $redirect_uri = $this->routeparser->urlFor('editEntitled', ['id' => $id, 'class' => $class]);
+                $redirect_uri = $this->routeparser->urlFor('editContributionType', ['id' => (string)$id]);
             }
         } else {
             $msg = $action === 'add' ?
-                _T("%type has been successfully added!") : _T("%type #%id has been successfully updated!");
+                _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
         }
 
         if (count($error_detected) > 0) {
@@ -278,8 +223,8 @@ class EntitledsController extends CrudController
                 $this->flash->addMessage(
                     'error_detected',
                     str_replace(
-                        ['%type', '%id'],
-                        [$entitled->getI18nType(), $id],
+                        ['%id'],
+                        [$id],
                         $error
                     )
                 );
@@ -288,8 +233,8 @@ class EntitledsController extends CrudController
             $this->flash->addMessage(
                 'success_detected',
                 str_replace(
-                    ['%type', '%id'],
-                    [$entitled->getI18nType(), $id],
+                    ['%id'],
+                    [$id],
                     $msg
                 )
             );
@@ -313,7 +258,7 @@ class EntitledsController extends CrudController
      */
     public function redirectUri(array $args): string
     {
-        return $this->routeparser->urlFor('entitleds', ['class' => $args['class']]);
+        return $this->routeparser->urlFor('contributionsTypes');
     }
 
     /**
@@ -326,9 +271,8 @@ class EntitledsController extends CrudController
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
-            'doRemoveEntitled',
+            'doRemoveContributionType',
             [
-                'class' => $args['class'],
                 'id'    => $args['id']
             ]
         );
@@ -343,21 +287,13 @@ class EntitledsController extends CrudController
      */
     public function confirmRemoveTitle(array $args): string
     {
-        $class = null;
-        switch ($args['class']) {
-            case 'status':
-                $class = new Status($this->zdb);
-                break;
-            case 'contributions-types':
-                $class = new ContributionsTypes($this->zdb);
-                break;
-        }
-        $label = $class->getLabel((int)$args['id']);
+        $ctype = new ContributionsTypes($this->zdb);
+        $label = $ctype->getLabel((int)$args['id']);
 
         return str_replace(
-            ['%type', '%label'],
-            [$class->getI18nType(), $label],
-            _T("Remove %type '%label'")
+            ['%label'],
+            [$label],
+            _T("Remove contribution type '%label'")
         );
     }
 
@@ -371,23 +307,15 @@ class EntitledsController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        $class = null;
-        switch ($args['class']) {
-            case 'status':
-                $class = new Status($this->zdb);
-                break;
-            case 'contributions-types':
-                $class = new ContributionsTypes($this->zdb);
-                break;
-        }
+        $ctype = new ContributionsTypes($this->zdb);
 
-        $label = $class->getLabel((int)$args['id']);
+        $label = $ctype->getLabel((int)$args['id']);
         $ret = false;
-        if ($label !== $class::ID_NOT_EXITS) {
-            $ret = $class->delete((int)$args['id']);
+        if ($label !== $ctype::ID_NOT_EXITS) {
+            $ret = $ctype->delete((int)$args['id']);
 
             if (!$ret) {
-                foreach ($class->getErrors() as $error) {
+                foreach ($ctype->getErrors() as $error) {
                     $this->flash->addMessage(
                         'error_detected',
                         $error

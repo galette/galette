@@ -355,9 +355,8 @@ class Galette
                             [
                                 'label' => _T("Manage statuses"),
                                 'route' => [
-                                    'name' => 'entitleds',
-                                    'args' => ['class' => 'status'],
-                                    'aliases' => ['editEntitled'],
+                                    'name' => 'status',
+                                    'aliases' => ['editStatus'],
                                     'sub_select' => false
                                 ]
                             ],
@@ -365,8 +364,7 @@ class Galette
                                 'label' => _T("Contributions types"),
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
-                                    'name' => 'entitleds',
-                                    'args' => ['class' => 'contributions-types']
+                                    'name' => 'contributionsTypes',
                                 ]
                             ],
                             [

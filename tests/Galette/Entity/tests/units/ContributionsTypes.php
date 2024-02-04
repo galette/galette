@@ -25,11 +25,11 @@ use PHPUnit\Framework\TestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
- * Status tests
+ * Contributions types tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Status extends TestCase
+class ContributionsTypes extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private array $remove = [];
@@ -58,19 +58,19 @@ class Status extends TestCase
         if (TYPE_DB === 'mysql') {
             $this->assertSame([], $this->zdb->getWarnings());
         }
-        $this->deleteStatus();
+        $this->deleteTypes();
     }
 
     /**
-     * Delete status
+     * Delete contributions types
      *
      * @return void
      */
-    private function deleteStatus()
+    private function deleteTypes()
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\Status::TABLE);
-            $delete->where->in(\Galette\Entity\Status::PK, $this->remove);
+            $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
+            $delete->where->in(\Galette\Entity\ContributionsTypes::PK, $this->remove);
             $this->zdb->execute($delete);
         }
 
@@ -82,88 +82,88 @@ class Status extends TestCase
     }
 
     /**
-     * Test status
+     * Test contributions types
      *
      * @return void
      */
-    public function testStatus()
+    public function testContributionsTypes()
     {
         global $i18n; // globals :(
         $i18n = $this->i18n;
 
-        $status = new \Galette\Entity\Status($this->zdb);
+        $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
 
         $this->assertSame(
             -2,
-            $status->add('Active member', 81)
+            $ctype->add('annual fee', 0)
         );
 
         $this->assertTrue(
-            $status->add('Test status', 81)
+            $ctype->add('Test contribution type', 0)
         );
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
             array(
-                'text_orig'     => 'Test status'
+                'text_orig'     => 'Test contribution type'
             )
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
 
         $this->assertSame(
-            'Test status',
+            'Test contribution type',
             $result['text_orig']
         );
 
-        $this->remove[] = $status->id;
-        $id = $status->id;
+        $this->remove[] = $ctype->id;
+        $id = $ctype->id;
 
         $this->assertSame(
-            \Galette\Entity\Status::ID_NOT_EXITS,
-            $status->update(42, 'Active member', 81)
+            \Galette\Entity\ContributionsTypes::ID_NOT_EXITS,
+            $ctype->update(42, 'annual fee', 0)
         );
 
         $this->assertTrue(
-            $status->update($id, 'Tested status', 81)
+            $ctype->update($id, 'Tested contribution type', 1)
         );
 
         $this->assertSame(
-            'Tested status',
-            $status->getLabel($id)
+            'Tested contribution type',
+            $ctype->getLabel($id)
         );
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
             array(
-                'text_orig'     => 'Tested status'
+                'text_orig'     => 'Tested contribution type'
             )
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
 
         $this->assertSame(
-            'Tested status',
+            'Tested contribution type',
             $result['text_orig']
         );
 
         $this->assertSame(
-            \Galette\Entity\Status::ID_NOT_EXITS,
-            $status->delete(42)
+            \Galette\Entity\ContributionsTypes::ID_NOT_EXITS,
+            $ctype->delete(42)
         );
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You cannot delete default status!');
-        $status->delete($status::DEFAULT_STATUS);
+        /*$this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete default contribution type!');
+        $status->delete($status::DEFAULT_STATUS);*/
 
         $this->assertTrue(
-            $status->delete($id)
+            $ctype->delete($id)
         );
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
             array(
-                'text_orig'     => 'Tested status'
+                'text_orig'     => 'Tested contribution type'
             )
         );
         $results = $this->zdb->execute($select);
@@ -177,36 +177,36 @@ class Status extends TestCase
      */
     public function testGetList()
     {
-        $status = new \Galette\Entity\Status($this->zdb);
+        $ctypes = new \Galette\Entity\ContributionsTypes($this->zdb);
 
-        $list = $status->getList();
-        $this->assertCount(10, $list);
+        $list = $ctypes->getList();
+        $this->assertCount(7, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($status::TABLE . '_id_seq');
+            $select = $this->zdb->select($ctypes::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->assertGreaterThanOrEqual(10, $result->last_value, 'Incorrect status sequence');
+            $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect contributions types sequence');
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . PREFIX_DB . $status::TABLE . '_id_seq\', 1)',
+                'SELECT setval(\'' . PREFIX_DB . $ctypes::TABLE . '_id_seq\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
 
         //reinstall status
-        $status->installInit();
+        $ctypes->installInit();
 
-        $list = $status->getList();
-        $this->assertCount(10, $list);
+        $list = $ctypes->getList();
+        $this->assertCount(7, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($status::TABLE . '_id_seq');
+            $select = $this->zdb->select($ctypes::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->assertGreaterThanOrEqual(10, $result->last_value, 'Incorrect status sequence ' . $result->last_value);
+            $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect contributions types sequence ' . $result->last_value);
         }
     }
 }

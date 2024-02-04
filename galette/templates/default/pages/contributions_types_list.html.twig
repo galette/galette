@@ -18,25 +18,17 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-{% if class == 'Status' %}
-    <div class="ui icon info visible message">
-        <i class="info circle blue icon" aria-hidden="true"></i>
-        <div class="content">
-            {{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}
-        </div>
-    </div>
-{% endif %}
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ url_for('doAddContributionType') }}" method="post" class="tabbed ui form">
     <div class="ui basic fitted segment loader_selector">
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
                     <th class="id_row">#</th>
                     <th>{{ _T("Name") }}</th>
-{% if class == 'ContributionsTypes' %}
                     <th>{{ _T("Extends membership?") }}</th>
-{% elseif class == 'Status' %}
-                    <th>{{ _T("Priority") }}</th>
-{% endif %}
                     <th>{{ _T("Actions") }}</th>
                 </tr>
             </thead>
@@ -44,32 +36,23 @@
                 <tr>
                     <td data-scope="row">
                         <span class="visually-hidden">
-{% if class == 'Status' %}
-                            {{ _T("New status") }}
-{% else %}
                             {{ _T("New contribution type") }}
-{% endif %}
                         </span>
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
                         <div class="required field">
                             <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
-                            <input size="40" type="text" name="{{ fields.libelle }}" required="required"/>
+                            <input size="40" type="text" name="libelle_type_cotis" required="required"/>
                         </div>
                     </td>
-                    <td class="left" data-col-label="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
-{% if class == 'ContributionsTypes' %}
-                        <select name="{{ fields.third }}" class="ui dropdown">
+                    <td class="left" data-col-label="{{ _T("Extends membership?") }}">
+                        <select name="cotis_extension" class="ui dropdown">
                             <option value="0" selected="selected">{{ _T("No") }}</option>
                             <option value="1">{{ _T("Yes") }}</option>
                         </select>
-{% elseif class == 'Status' %}
-                        <input size="4" type="text" name="{{ fields.third }}" value="99" />
-{% endif %}
                     </td>
                     <td class="center actions_row">
                         <input type="hidden" name="new" value="1" />
-                        <input type="hidden" name="class" value="{{ class }}" />
                         <button type="submit" name="valid" class="ui labeled icon button">
                             <i class="plus green icon" aria-hidden="true"></i>
                             {{ _T("Add") }}
@@ -83,45 +66,31 @@
                     <td data-scope="row">
                         {{ eid }}
                         <span class="displaynone">
-                            <a href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}">
+                            <a href="{{ url_for('editContributionType', {'id': eid}) }}">
                                 {{ _T("%s field")|replace({'%s': entry.name|escape}) }}
                             </a>
                         </span>
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
-                        {% if class == 'Status' %}
-                            {% if entry.extra < 30 %}
-                                <span>
-                                    <i class="ui user tie icon tooltip" aria-hidden="true"></i>
-                                    <span class="ui special popup">{{ _T("Staff member") }}</span>
-                                </span>
-                            {% else %}
-                                <i class="ui icon">&nbsp;</i>
-                            {% endif %}
-                        {% endif %}
                         {{ entry.name|escape }}
                     </td>
-                    <td data-col-label="{% if class == 'ContributionsTypes' %}{{ _T("Extends membership?") }}{% else %}{{ _T("Priority") }}{% endif %}">
-    {% if class == 'ContributionsTypes' %}
-        {% if entry.extra == 1 %}
-                            {{ _T("Yes") }}
-        {% else %}
-                            {{ _T("No") }}
-        {% endif %}
-    {% elseif class == 'Status' %}
-                        {{ entry.extra }}
+                    <td data-col-label="{{ _T("Extends membership?") }}">
+    {% if entry.extra == 1 %}
+                        {{ _T("Yes") }}
+    {% else %}
+                        {{ _T("No") }}
     {% endif %}
                     </td>
                     <td class="center actions_row">
                         <a
-                            href="{{ url_for('editEntitled', {'class': url_class, 'action': 'edit', 'id': eid}) }}"
+                            href="{{ url_for('editContributionType', {'id': eid}) }}"
                             class="action single-edit"
                         >
                             <i class="ui edit icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                         </a>
                         <a
-                            href="{{ url_for('removeEntitled', {'class': url_class, 'id': eid}) }}"
+                            href="{{ url_for('removeContributionType', {'id': eid}) }}"
                             class="delete"
                         >
                             <i class="ui trash red icon tooltip" aria-hidden="true"></i>
@@ -133,3 +102,27 @@
             </tbody>
         </table>
     </div>
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            {% set modal_onapprove = "
+                $('.modal-form form #redirect_uri').val(window.location.href);
+                $('.modal-form form').submit();
+            " %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-edit",
+                modal_title_twig: _T("Edit contribution type")|e("js"),
+                modal_class: "mini",
+                modal_onapprove: modal_onapprove
+            } %}
+
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
+        });
+    </script>
+{% endblock %}
