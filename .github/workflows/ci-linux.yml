@@ -44,12 +44,12 @@ jobs:
           composer --version
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
       - name: "Restore dependencies cache"
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.composer/cache/
@@ -149,13 +149,13 @@ jobs:
 
       - name: Checkout
         if: env.skip != 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
       - name: "Restore dependencies cache"
         if: env.skip != 'true'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.composer/cache/
@@ -263,13 +263,13 @@ jobs:
 
       - name: Checkout
         if: env.skip != 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
       - name: "Restore dependencies cache"
         if: env.skip != 'true'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.composer/cache/
