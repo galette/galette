@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2023-12-06 08:09+0100\n"
-"PO-Revision-Date: 2024-01-17 14:06+0000\n"
+"PO-Revision-Date: 2024-02-06 10:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -601,15 +601,15 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:416
 msgid "Test message"
-msgstr ""
+msgstr "رسالة تجريبية"
 
 #: ../lib/Galette/Controllers/GaletteController.php:419
 msgid "Galette admin"
-msgstr ""
+msgstr "مدير Galette"
 
 #: ../lib/Galette/Controllers/GaletteController.php:422
 msgid "Test message."
-msgstr ""
+msgstr "رسالة تجريبية."
 
 #: ../lib/Galette/Controllers/GaletteController.php:431
 #, php-format
@@ -788,7 +788,7 @@ msgstr ""
 #: ../../tempcache/elements/logged_user.html.twig:336
 #: ../../tempcache/elements/logged_user.html.twig:354
 msgid "Log off"
-msgstr ""
+msgstr "الخروج"
 
 #: ../lib/Galette/Controllers/AuthController.php:193
 #, php-format
@@ -807,7 +807,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:261
 #: ../lib/Galette/Controllers/AuthController.php:462
 msgid "Password recovery"
-msgstr ""
+msgstr "استعادة كلمة السر"
 
 #: ../lib/Galette/Controllers/AuthController.php:293
 #: ../../tempcache/pages/mailing_form.html.twig:58
@@ -1081,7 +1081,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:305
 msgid "Checks"
-msgstr ""
+msgstr "الفحوصات"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:311
 #: ../../tempcache/modals/plugin_initdb.html.twig:386
@@ -1124,11 +1124,11 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:152 ../webroot/installer.php:379
 #: ../../tempcache/modals/plugin_initdb.html.twig:451
 msgid "End!"
-msgstr ""
+msgstr "النهاية!"
 
 #: ../lib/Galette/Core/Install.php:168 ../lib/Galette/Core/CheckModules.php:147
 msgid "Ok"
-msgstr ""
+msgstr "حسناً"
 
 #: ../lib/Galette/Core/Install.php:168 ../lib/Galette/Core/CheckModules.php:139
 msgid "Ko"
@@ -1275,7 +1275,7 @@ msgstr "عرض وتصفية جميع المساهمات بلدي"
 
 #: ../lib/Galette/Core/Galette.php:138 ../lib/Galette/Core/Galette.php:655
 msgid "My transactions"
-msgstr ""
+msgstr "معاملاتي"
 
 #: ../lib/Galette/Core/Galette.php:139 ../lib/Galette/Core/Galette.php:656
 msgid "View and filter all my transactions"
@@ -1283,7 +1283,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:146 ../lib/Galette/Core/Galette.php:638
 msgid "My information"
-msgstr ""
+msgstr "معلوماتي"
 
 #: ../lib/Galette/Core/Galette.php:147 ../lib/Galette/Core/Galette.php:639
 msgid "View my member card"
@@ -1559,12 +1559,12 @@ msgstr "اشتراكاتي"
 #: ../../tempcache/elements/group.html.twig:358
 #: ../../tempcache/pages/contributions_list.html.twig:56
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: ../lib/Galette/Core/Galette.php:889
 #: ../../tempcache/pages/members_list.html.twig:740
 msgid "Mail"
-msgstr ""
+msgstr "البريد"
 
 #: ../lib/Galette/Core/Galette.php:910
 #: ../../tempcache/elements/mailing_recipients.html.twig:106
@@ -1573,7 +1573,7 @@ msgstr "توليد الملصقات"
 
 #: ../lib/Galette/Core/Galette.php:915
 msgid "Generate Member Cards"
-msgstr ""
+msgstr "توليد بطاقات العضوية"
 
 #: ../lib/Galette/Core/Galette.php:920
 #: ../../tempcache/pages/contributions_list.html.twig:56
@@ -2358,7 +2358,7 @@ msgstr "وَصْل"
 
 #: ../lib/Galette/IO/PdfContribution.php:91
 msgid "invoice"
-msgstr ""
+msgstr "فاتورة"
 
 #: ../lib/Galette/Features/I18n.php:136
 #, php-format
@@ -2497,7 +2497,7 @@ msgstr "الرمز البريدي"
 
 #: ../lib/Galette/Features/Replacements.php:312
 msgid "Town"
-msgstr ""
+msgstr "المدينة"
 
 #: ../lib/Galette/Features/Replacements.php:316 ../includes/i18n.inc.php:326
 msgid "Country"
@@ -2797,7 +2797,7 @@ msgstr "المبلغ:"
 #: ../../tempcache/pages/transaction_form.html.twig:83
 #: ../../tempcache/pages/plugin_info.html.twig:81
 msgid "Description:"
-msgstr ""
+msgstr "الوصف :"
 
 #: ../lib/Galette/Entity/Transaction.php:131
 #: ../../tempcache/pages/transaction_form.html.twig:102
@@ -2979,7 +2979,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Social.php:362
 msgid "Mastodon"
-msgstr ""
+msgstr "ماستدون"
 
 #: ../lib/Galette/Entity/Social.php:363
 msgid "Twitter"
@@ -2987,23 +2987,23 @@ msgstr "Twitter"
 
 #: ../lib/Galette/Entity/Social.php:364
 msgid "Facebook"
-msgstr ""
+msgstr "فيسبوك"
 
 #: ../lib/Galette/Entity/Social.php:365
 msgid "LinkedIn"
-msgstr ""
+msgstr "لينكد إن"
 
 #: ../lib/Galette/Entity/Social.php:366
 msgid "Viadeo"
-msgstr ""
+msgstr "فياديو"
 
 #: ../lib/Galette/Entity/Social.php:367
 msgid "Jabber"
-msgstr ""
+msgstr "جابر"
 
 #: ../lib/Galette/Entity/Social.php:368
 msgid "ICQ"
-msgstr ""
+msgstr "آي سي كيو"
 
 #: ../lib/Galette/Entity/Social.php:369 ../webroot/installer.php:416
 #: ../../tempcache/elements/footer.html.twig:49
@@ -3012,7 +3012,7 @@ msgstr "موقع الويب"
 
 #: ../lib/Galette/Entity/Social.php:370
 msgid "Blog"
-msgstr ""
+msgstr "المدونة"
 
 #: ../lib/Galette/Entity/PdfModel.php:315
 #, php-format
@@ -3409,19 +3409,20 @@ msgstr "االرئيس"
 
 #: ../includes/i18n.inc.php:280
 msgid "Vice-president"
-msgstr ""
+msgstr "نائب الرئيس"
 
 #: ../includes/i18n.inc.php:281
 msgid "Treasurer"
-msgstr ""
+msgstr "الأمين"
 
 #: ../includes/i18n.inc.php:282
 msgid "Vice-treasurer"
-msgstr ""
+msgstr "نائب الأمين"
 
 #: ../includes/i18n.inc.php:283
+#, fuzzy
 msgid "Secretary"
-msgstr ""
+msgstr "سكرتير"
 
 #: ../includes/i18n.inc.php:284
 msgid "Vice-secretary"
@@ -3437,11 +3438,11 @@ msgstr "عضو مُحسِن"
 
 #: ../includes/i18n.inc.php:287
 msgid "Founder member"
-msgstr ""
+msgstr "عضو مؤسس"
 
 #: ../includes/i18n.inc.php:288
 msgid "Old-timer"
-msgstr ""
+msgstr "عضو قديم"
 
 #: ../includes/i18n.inc.php:289
 msgid "Legal entity"
@@ -3449,7 +3450,7 @@ msgstr "شص معنوي"
 
 #: ../includes/i18n.inc.php:290
 msgid "Non-member"
-msgstr ""
+msgstr "غير عضو"
 
 #: ../includes/i18n.inc.php:291
 msgid "Reduced annual contribution"
@@ -3473,15 +3474,15 @@ msgstr "الشراكة"
 
 #: ../includes/i18n.inc.php:296
 msgid "french"
-msgstr ""
+msgstr "الفرنسية"
 
 #: ../includes/i18n.inc.php:297
 msgid "english"
-msgstr ""
+msgstr "الإنجليزية"
 
 #: ../includes/i18n.inc.php:298
 msgid "spanish"
-msgstr ""
+msgstr "الإسبانية"
 
 #: ../includes/i18n.inc.php:299
 msgid "annual fee"
@@ -3525,15 +3526,15 @@ msgstr "معلومات الإتصال"
 
 #: ../includes/i18n.inc.php:309
 msgid "Mr."
-msgstr ""
+msgstr "السيد"
 
 #: ../includes/i18n.inc.php:310
 msgid "Mrs."
-msgstr ""
+msgstr "السيدة"
 
 #: ../includes/i18n.inc.php:311
 msgid "Miss"
-msgstr ""
+msgstr "الآنسة"
 
 #: ../includes/i18n.inc.php:312
 msgid "Identity:"
@@ -3616,7 +3617,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:333
 msgid "on"
-msgstr ""
+msgstr "في"
 
 #: ../includes/i18n.inc.php:334
 msgid "from"
@@ -4084,7 +4085,7 @@ msgstr ""
 #: ../install/steps/check.php:162
 #: ../../tempcache/modals/plugin_initdb.html.twig:332
 msgid "Retry"
-msgstr ""
+msgstr "إعادة المحاولة"
 
 #: ../install/steps/db_install.php:96
 #: ../install/steps/db_select_version.php:141
@@ -4092,7 +4093,7 @@ msgstr ""
 #: ../install/steps/db_checks.php:266 ../install/steps/galette.php:95
 #: ../install/steps/db.php:110 ../install/steps/type.php:72
 msgid "Back"
-msgstr ""
+msgstr "العودة"
 
 #: ../install/steps/db_select_version.php:46
 msgid "Select your previous Galette version below, and then click next."
@@ -4306,7 +4307,7 @@ msgstr ""
 
 #: ../install/steps/check.php:68
 msgid "Photos"
-msgstr ""
+msgstr "الصور"
 
 #: ../install/steps/check.php:69
 msgid "Cache"
@@ -4324,11 +4325,11 @@ msgstr ""
 
 #: ../install/steps/check.php:76
 msgid "Files"
-msgstr ""
+msgstr "الملفات"
 
 #: ../install/steps/check.php:88
 msgid "Welcome to the Galette Install!"
-msgstr ""
+msgstr "مرحباً بكم في تثبيت Galette!"
 
 #: ../install/steps/check.php:91
 msgid "Galette requirements are met :)"
@@ -4413,23 +4414,23 @@ msgstr ""
 
 #: ../install/steps/db.php:65
 msgid "Database type:"
-msgstr ""
+msgstr "نوع قاعدة البيانات:"
 
 #: ../install/steps/db.php:73
 msgid "Host:"
-msgstr ""
+msgstr "المضيف:"
 
 #: ../install/steps/db.php:77
 msgid "Port:"
-msgstr ""
+msgstr "المنفذ:"
 
 #: ../install/steps/db.php:81
 msgid "User:"
-msgstr ""
+msgstr "المستخدِم:"
 
 #: ../install/steps/db.php:89
 msgid "Database:"
-msgstr ""
+msgstr "اسم قاعدة البيانات:"
 
 #: ../install/steps/db.php:93
 msgid "Table prefix:"
@@ -4590,7 +4591,7 @@ msgstr ""
 #: ../../tempcache/modals/mass_add_contributions.html.twig:105
 #: ../../tempcache/modals/mass_change_members.html.twig:207
 msgid "Edit"
-msgstr ""
+msgstr "تعديل"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:52
 msgid "Headers"
@@ -4970,7 +4971,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_entitleds.html.twig:124
 #: ../../tempcache/elements/edit_entitleds.html.twig:232
 msgid "Priority"
-msgstr ""
+msgstr "الأولوية"
 
 #: ../../tempcache/elements/edit_entitleds.html.twig:91
 msgid "New status"
@@ -5004,7 +5005,7 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:205
 #: ../../tempcache/elements/list.html.twig:184
 msgid "Pages:"
-msgstr ""
+msgstr "الصفحات:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:231
 msgid "Selected members"
@@ -5046,11 +5047,11 @@ msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:51
 msgid "January"
-msgstr ""
+msgstr "جانفي"
 
 #: ../../tempcache/elements/js/calendar.js.twig:55
 msgid "February"
-msgstr ""
+msgstr "فيفري"
 
 #: ../../tempcache/elements/js/calendar.js.twig:59
 #, fuzzy
@@ -5060,7 +5061,7 @@ msgstr "بحث:"
 
 #: ../../tempcache/elements/js/calendar.js.twig:63
 msgid "April"
-msgstr ""
+msgstr "أفريل"
 
 #: ../../tempcache/elements/js/calendar.js.twig:67
 #: ../../tempcache/elements/js/calendar.js.twig:117
@@ -5071,15 +5072,15 @@ msgstr "رجل"
 
 #: ../../tempcache/elements/js/calendar.js.twig:71
 msgid "June"
-msgstr ""
+msgstr "جوان"
 
 #: ../../tempcache/elements/js/calendar.js.twig:75
 msgid "July"
-msgstr ""
+msgstr "جويلية"
 
 #: ../../tempcache/elements/js/calendar.js.twig:79
 msgid "August"
-msgstr ""
+msgstr "أوت"
 
 #: ../../tempcache/elements/js/calendar.js.twig:83
 #, fuzzy
@@ -5089,7 +5090,7 @@ msgstr "الأعضاء"
 
 #: ../../tempcache/elements/js/calendar.js.twig:87
 msgid "October"
-msgstr ""
+msgstr "أكتوبر"
 
 #: ../../tempcache/elements/js/calendar.js.twig:91
 #, fuzzy
@@ -5155,7 +5156,7 @@ msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:150
 msgid "Today"
-msgstr ""
+msgstr "اليوم"
 
 #: ../../tempcache/elements/js/calendar.js.twig:154
 #, fuzzy
@@ -5627,7 +5628,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:218
 msgid "Repeat:"
-msgstr ""
+msgstr "تكرار:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:226
 msgid "Number of values or zero if infinite."
@@ -5823,7 +5824,7 @@ msgstr ""
 
 #: ../../tempcache/pages/plugin_info.html.twig:89
 msgid "Version:"
-msgstr ""
+msgstr "الإصدار:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:105
 msgid "Author:"
@@ -6015,7 +6016,7 @@ msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:812
 msgid "Gift"
-msgstr ""
+msgstr "هدية"
 
 #: ../../tempcache/pages/admintools.html.twig:58
 msgid ""
@@ -6423,7 +6424,7 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:1148
 msgid "New"
-msgstr ""
+msgstr "جديد"
 
 #: ../../tempcache/pages/members_list.html.twig:1148
 msgid "Resume"
@@ -6506,11 +6507,11 @@ msgstr ""
 
 #: ../../tempcache/pages/groups_list.html.twig:124
 msgid "New group"
-msgstr ""
+msgstr "فريق جديد"
 
 #: ../../tempcache/pages/groups_list.html.twig:178
 msgid "Add a new group"
-msgstr ""
+msgstr "إضافة فريق جديد"
 
 #: ../../tempcache/pages/groups_list.html.twig:221
 msgid "An error occurred checking name uniqueness :("
@@ -6522,7 +6523,7 @@ msgstr ""
 
 #: ../../tempcache/pages/groups_list.html.twig:236
 msgid "Create"
-msgstr ""
+msgstr "إنشاء"
 
 #: ../../tempcache/pages/groups_list.html.twig:296
 msgid "Group members selection"
@@ -6581,7 +6582,7 @@ msgstr ""
 
 #: ../../tempcache/pages/import.html.twig:215
 msgid "Import"
-msgstr ""
+msgstr "استيراد"
 
 #: ../../tempcache/pages/import.html.twig:227
 msgid "No import file actually exists."
@@ -6653,7 +6654,7 @@ msgstr "تعديل نوع السداد '%s'"
 #: ../../tempcache/pages/preferences.html.twig:1852
 #, php-format
 msgid "Translate '%s'"
-msgstr ""
+msgstr "ترجمة ” %s “"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:204
 #, php-format
@@ -8194,7 +8195,7 @@ msgstr ""
 
 #: ../../tempcache/pages/desktop.html.twig:124
 msgid "Hide this panel"
-msgstr ""
+msgstr "اخفاء هذه اللوحة"
 
 #: ../../tempcache/pages/desktop.html.twig:142
 msgid "Activities"
@@ -8328,7 +8329,7 @@ msgstr "اللغة:"
 
 #: ../../tempcache/page.html.twig:211
 msgid "Page content"
-msgstr ""
+msgstr "محتوى الصفحة"
 
 #~ msgid "Delete saved search"
 #~ msgstr "حذف البحث المحفوظ"
