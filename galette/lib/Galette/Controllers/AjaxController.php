@@ -169,7 +169,7 @@ class AjaxController extends AbstractController
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong is towns suggestion: ' . $e->getMessage(),
+                'Something went wrong in towns suggestion: ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -209,7 +209,47 @@ class AjaxController extends AbstractController
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong is countries suggestion: ' . $e->getMessage(),
+                'Something went wrong in countries suggestion: ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+
+        return $this->withJson($response, $ret);
+    }
+
+    /**
+     * Ajax regions suggestion
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param string   $term     Search term
+     *
+     * @return Response
+     */
+    public function suggestRegions(Request $request, Response $response, string $term): Response
+    {
+        $ret = [];
+
+        try {
+            $select = $this->zdb->select(Adherent::TABLE);
+            $select->columns(['region_adh']);
+            $select->where->like('region_adh', '%' . html_entity_decode($term) . '%');
+            $select->limit(10);
+            $select->order(['region_adh ASC']);
+
+            $regions = $this->zdb->execute($select);
+
+            $ret['success'] = true;
+            $ret['results'] = [];
+            foreach ($regions as $region) {
+                $ret['results'][] = [
+                    'title' => $region->region_adh
+                ];
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Something went wrong in regions suggestion: ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

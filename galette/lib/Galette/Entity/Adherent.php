@@ -101,6 +101,7 @@ use Galette\Features\Dynamics;
  * @property Social $social Social networks/Contact
  * @property string $number Member number
  * @property-read bool $self_adh
+ * @property string $region
  */
 class Adherent
 {
@@ -171,6 +172,7 @@ class Adherent
     /** @var array<int,Social> */
     private array $_socials;
     private ?string $_number = null;
+    private ?string $_region = null;
 
     private string $_row_classes;
 

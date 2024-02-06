@@ -48,6 +48,11 @@ $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate) {
         [AjaxController::class, 'suggestCountries']
     )->setName('suggestCountry');
 
+    $app->post(
+        '/suggest/regions/{term}',
+        [AjaxController::class, 'suggestRegions']
+    )->setName('suggestRegion');
+
     $app->get(
         '/telemetry/infos',
         [AjaxController::class, 'telemetryInfos']

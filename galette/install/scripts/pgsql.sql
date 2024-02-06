@@ -204,6 +204,7 @@ CREATE TABLE galette_adherents (
     adresse_adh text DEFAULT '' NOT NULL,
     cp_adh character varying(10) DEFAULT '' NOT NULL,
     ville_adh character varying(200) DEFAULT '' NOT NULL,
+    region_adh character varying(200) DEFAULT '' NOT NULL,
     pays_adh character varying(200) DEFAULT NULL,
     tel_adh character varying(50),
     gsm_adh character varying(50),

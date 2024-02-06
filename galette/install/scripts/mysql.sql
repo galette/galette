@@ -17,6 +17,7 @@ CREATE TABLE galette_adherents (
   adresse_adh text NOT NULL,
   cp_adh varchar(10) NOT NULL default '',
   ville_adh varchar(200) NOT NULL default '',
+  region_adh varchar(200) NOT NULL default '',
   pays_adh varchar(200) default NULL,
   tel_adh varchar(50) default NULL,
   gsm_adh varchar(50) default NULL,

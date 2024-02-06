@@ -183,9 +183,9 @@ class ListsConfig extends TestCase
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
         //gsm
-        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]; //6 in FieldsConfig but 5 here.
+        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][6]; //5 in FieldsConfig but 6 here.
         $gsm['position'] = count($fields[1]);
-        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]); //6 in FieldsConfig but 5 here.
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][6]); //5 in FieldsConfig but 6 here.
         $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 

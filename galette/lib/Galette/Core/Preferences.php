@@ -44,7 +44,8 @@ use Galette\Repository\Members;
  * @property string $pref_adresse Address
  * @property string $pref_adresse2 Address continuation
  * @property string $pref_cp Association zipcode
- * @property string $pref_ville Association town
+ * @property string $pref_ville Association
+ * @property string $pref_region Region
  * @property string $pref_pays Country
  * @property integer $pref_postal_adress Postal adress to use, one of self::POSTAL_ADDRESS*
  * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
@@ -186,6 +187,7 @@ class Preferences
         'pref_adresse2'        =>    '',
         'pref_cp'        =>    '',
         'pref_ville'        =>    '',
+        'pref_region'        =>    '',
         'pref_pays'        =>    '',
         'pref_postal_adress'  => self::POSTAL_ADDRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',

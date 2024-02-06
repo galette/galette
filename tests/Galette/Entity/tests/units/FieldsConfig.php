@@ -156,7 +156,7 @@ class FieldsConfig extends TestCase
         $this->assertCount(3, $categorized);
         $this->assertCount(13, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
         $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]);
-        $this->assertCount(10, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
+        $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
     }
 
     /**
@@ -361,7 +361,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements[1]);
         $this->assertSame(3, $elements[1]->id);
-        $this->assertCount(8, $elements[1]->elements);
+        $this->assertCount(9, $elements[1]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements[2]);
         $this->assertSame(2, $elements[2]->id);
@@ -384,7 +384,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements[1]);
         $this->assertSame(3, $elements[1]->id);
-        $this->assertCount(8, $elements[1]->elements);
+        $this->assertCount(9, $elements[1]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements[2]);
         $this->assertSame(2, $elements[2]->id);
@@ -421,7 +421,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
-        $this->assertCount(8, $elements['fieldsets'][1]->elements);
+        $this->assertCount(9, $elements['fieldsets'][1]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][2]);
         $this->assertSame(2, $elements['fieldsets'][2]->id);
@@ -449,7 +449,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
-        $this->assertCount(8, $elements['fieldsets'][1]->elements);
+        $this->assertCount(9, $elements['fieldsets'][1]->elements);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->assertFalse($mail->required); //email is not required per default
@@ -484,7 +484,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
-        $this->assertCount(8, $elements['fieldsets'][1]->elements);
+        $this->assertCount(9, $elements['fieldsets'][1]->elements);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->assertTrue($mail->required); //email is required for self subscription

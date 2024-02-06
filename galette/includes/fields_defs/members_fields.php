@@ -125,12 +125,20 @@ $members_fields = array(
         'position' => 14,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
+    'region_adh' => array(
+        'label'    => _T("Region:"),
+        'propname' => 'region',
+        'required' => false,
+        'visible'  => FieldsConfig::USER_WRITE,
+        'position' => 15,
+        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
     'pays_adh' => array(
         'label'    => _T("Country:"),
         'propname' => 'country',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 15,
+        'position' => 16,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'tel_adh' => array(
@@ -138,7 +146,7 @@ $members_fields = array(
         'propname' => 'phone',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 16,
+        'position' => 17,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'gsm_adh' => array(
@@ -146,7 +154,7 @@ $members_fields = array(
         'propname' => 'gsm',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 17,
+        'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'email_adh' => array(
@@ -154,7 +162,7 @@ $members_fields = array(
         'propname' => 'email',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 18,
+        'position' => 19,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'info_adh' => array(
