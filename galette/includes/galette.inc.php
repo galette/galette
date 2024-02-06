@@ -93,7 +93,7 @@ if (!defined('GALETTE_HIDE_VERSION')) {
 }
 
 define('GALETTE_COMPAT_VERSION', '1.1.0');
-define('GALETTE_DB_VERSION', '0.960');
+define('GALETTE_DB_VERSION', '1.100');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }

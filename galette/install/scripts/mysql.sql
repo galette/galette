@@ -96,6 +96,7 @@ DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(255) NOT NULL default '',
+  amount double NULL,
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -351,6 +352,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.96);
+INSERT INTO galette_database(version) VALUES(1.10);
 
 SET FOREIGN_KEY_CHECKS=1;

@@ -95,12 +95,25 @@ class ContributionsTypes extends TestCase
 
         $this->assertSame(
             -2,
-            $ctype->add('annual fee', 0)
+            $ctype->add('annual fee', 10, false)
         );
 
         $this->assertTrue(
-            $ctype->add('Test contribution type', 0)
+            $ctype->add('Test contribution type', null, false)
         );
+
+        $this->remove[] = $ctype->id;
+        $id = $ctype->id;
+
+        $ctype_id = $ctype->getIdByLabel('Test contribution type');
+        $this->assertGreaterThan(0, $ctype_id);
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertInstanceOf(\ArrayObject::class, $test_ctype);
+
+        $this->assertSame('Test contribution type', $test_ctype['libelle_type_cotis']);
+        $this->assertNull($test_ctype['amount']);
+        $this->assertSame($this->zdb->isPostgres() ? false : 0, $test_ctype['cotis_extension']);
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -116,22 +129,26 @@ class ContributionsTypes extends TestCase
             $result['text_orig']
         );
 
-        $this->remove[] = $ctype->id;
-        $id = $ctype->id;
-
         $this->assertSame(
             \Galette\Entity\ContributionsTypes::ID_NOT_EXITS,
-            $ctype->update(42, 'annual fee', 0)
+            $ctype->update(42, 'annual fee', 10, false)
         );
 
         $this->assertTrue(
-            $ctype->update($id, 'Tested contribution type', 1)
+            $ctype->update($id, 'Tested contribution type', 42, true)
         );
 
         $this->assertSame(
             'Tested contribution type',
             $ctype->getLabel($id)
         );
+
+        $test_ctype = $ctype->get($id);
+        $this->assertInstanceOf(\ArrayObject::class, $test_ctype);
+
+        $this->assertSame('Tested contribution type', $test_ctype['libelle_type_cotis']);
+        $this->assertSame(42.0, (float)$test_ctype['amount']);
+        $this->assertSame($this->zdb->isPostgres() ? true : 1, $test_ctype['cotis_extension']);
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(

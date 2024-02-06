@@ -36,6 +36,7 @@ use Throwable;
  * @property integer $id
  * @property string $label
  * @property string $libelle
+ * @property ?float $amount
  * @property boolean $extension
  */
 
@@ -51,6 +52,7 @@ class ContributionsTypes
 
     private int $id;
     private string $label;
+    private ?float $amount;
     private bool $is_extension = false;
 
     public const ID_NOT_EXITS = -1;
@@ -133,6 +135,7 @@ class ContributionsTypes
     {
         $this->id = $r->{self::PK};
         $this->label = $r->libelle_type_cotis;
+        $this->amount = $r->amount;
         $this->is_extension = (bool)$r->cotis_extension;
     }
 
@@ -144,6 +147,16 @@ class ContributionsTypes
     public function isExtension(): bool
     {
         return $this->is_extension;
+    }
+
+    /**
+     * Get the amount
+     *
+     * @return float
+     */
+    public function getAmount(): float
+    {
+        return $this->amount;
     }
 
     /**
@@ -207,7 +220,7 @@ class ContributionsTypes
      *
      * @param boolean|null $extent Filter on (non) contributions types
      *
-     * @return array<int, string>
+     * @return array<int, array<string, mixed>>
      */
     public function getList(bool $extent = null): array
     {
@@ -215,7 +228,7 @@ class ContributionsTypes
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = array(self::PK, 'libelle_type_cotis');
+            $fields = array(self::PK, 'libelle_type_cotis', 'amount');
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order(self::PK);
@@ -229,7 +242,10 @@ class ContributionsTypes
             $results = $this->zdb->execute($select);
 
             foreach ($results as $r) {
-                $list[$r->{self::PK}] = _T($r->libelle_type_cotis);
+                $list[$r->{self::PK}] = [
+                    'label' => _T($r->libelle_type_cotis),
+                    'amount' => $r->amount
+                ];
             }
             return $list;
         } catch (Throwable $e) {
@@ -265,6 +281,7 @@ class ContributionsTypes
                 foreach ($results as $r) {
                     $list[$r->{self::PK}] = array(
                         'name'  => _T($r->libelle_type_cotis),
+                        'amount' => $r->amount,
                         'extra' => $r->cotis_extension
                     );
                 }
@@ -364,13 +381,13 @@ class ContributionsTypes
     /**
      * Add a new entry
      *
-     * @param string  $label The label
-     * @param integer $extra Extra values (priority for statuses,
-     *                       extension for contributions types, ...)
+     * @param string  $label     The label
+     * @param ?float  $amount    The amount
+     * @param boolean $extension Extends membership?
      *
      * @return bool|integer  -2 : label already exists
      */
-    public function add(string $label, int $extra): bool|int
+    public function add(string $label, ?float $amount, bool $extension): bool|int
     {
         // Avoid duplicates.
         $label = strip_tags($label);
@@ -388,7 +405,8 @@ class ContributionsTypes
             $this->zdb->connection->beginTransaction();
             $values = array(
                 'libelle_type_cotis' => $label,
-                'cotis_extension' => $extra
+                'amount' => $amount ?? new Expression('NULL'),
+                'cotis_extension' => $extension ? true : ($this->zdb->isPostgres() ? 'false' : 0)
             );
 
             $insert = $this->zdb->insert(self::TABLE);
@@ -425,14 +443,14 @@ class ContributionsTypes
     /**
      * Update in database.
      *
-     * @param integer $id    Entry ID
-     * @param string  $label The label
-     * @param integer $extra Extra values (priority for statuses,
-     *                       extension for contributions types, ...)
+     * @param integer $id        Entry ID
+     * @param string  $label     The label
+     * @param ?float  $amount    The amount
+     * @param boolean $extension Extends membership?
      *
      * @return self::ID_NOT_EXITS|boolean
      */
-    public function update(int $id, string $label, int $extra): int|bool
+    public function update(int $id, string $label, ?float $amount, bool $extension): int|bool
     {
         $label = strip_tags($label);
         $ret = $this->get($id);
@@ -446,7 +464,8 @@ class ContributionsTypes
             $this->zdb->connection->beginTransaction();
             $values = array(
                 'libelle_type_cotis' => $label,
-                'cotis_extension' => $extra
+                'amount' => $amount ?? new Expression('NULL'),
+                'cotis_extension' => $extension ? true : ($this->zdb->isPostgres() ? 'false' : 0)
             );
 
             $update = $this->zdb->update(self::TABLE);

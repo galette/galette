@@ -197,10 +197,14 @@ class ContributionsTypesController extends CrudController
         $ctype = new ContributionsTypes($this->zdb);
 
         $label = trim($post['libelle_type_cotis']);
-        $field = (int)trim($post['cotis_extension'] ?? 0);
+        $field = (bool)trim($post['cotis_extension'] ?? 0);
+        $amount = null;
+        if (isset($post['amount']) && $post['amount'] !== '') {
+            $amount = (float)$post['amount'];
+        }
 
         if ($label != '') {
-            $ret = ($action === 'add' ? $ctype->add($label, $field) : $ctype->update($id, $label, $field));
+            $ret = ($action === 'add' ? $ctype->add($label, $amount, $field) : $ctype->update($id, $label, $amount, $field));
         } else {
             $ret = false;
             $error_detected[] = _T('Missing required contribution type name!');

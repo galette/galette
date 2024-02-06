@@ -29,6 +29,10 @@
                 <label for="libelle_type_cotis">{{ _T("Name:") }}</label>
                 <input type="text" name="libelle_type_cotis" id="libelle_type_cotis" value="{{ entry.libelle_type_cotis }}" required="required" />
             </div>
+            <div class="field inline">
+                <label for="amount">{{ _T("Amount:") }}</label>
+                <input type="text" name="amount" id="amount" value="{{ entry.amount }}"/>
+            </div>
             <div class="ui toggle checkbox">
                 <input type="checkbox" name="cotis_extension" id="cotis_extension" value="1"{% if entry.cotis_extension == 1 %} checked="checked"{% endif %} />
                 <label for="cotis_extension">

@@ -28,6 +28,7 @@
                 <tr>
                     <th class="id_row">#</th>
                     <th>{{ _T("Name") }}</th>
+                    <th>{{ _T('Amount') }}</th>
                     <th>{{ _T("Extends membership?") }}</th>
                     <th>{{ _T("Actions") }}</th>
                 </tr>
@@ -43,6 +44,12 @@
                         <div class="required field">
                             <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
                             <input size="40" type="text" name="libelle_type_cotis" required="required"/>
+                        </div>
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Amount") }}">
+                        <div class="field">
+                            <label for="amount" class="visually-hidden">{{ _T("Amount") }}</label>
+                            <input size="5" type="text" name="amount"/>
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Extends membership?") }}">
@@ -73,6 +80,9 @@
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
                         {{ entry.name|escape }}
+                    </td>
+                    <td>
+                        {{ entry.amount }}
                     </td>
                     <td data-col-label="{{ _T("Extends membership?") }}">
     {% if entry.extra == 1 %}

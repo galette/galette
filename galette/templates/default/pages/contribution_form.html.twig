@@ -69,10 +69,10 @@
                                     {% endif %}
                                     <input id="id_type_cotis_input" type="hidden" name="id_type_cotis" value="{{ selectedid }}"{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required="required"{% endif %}>
                                     <i class="dropdown icon"></i>
-                                    <div class="text">{% for key, value in type_cotis_options %}{% if key == selectedid %}{{ value }}{% endif %}{% endfor %}</div>
+                                    <div class="text">{% for key, values in type_cotis_options %}{% if key == selectedid %}{{ values.label }}{% endif %}{% endfor %}</div>
                                     <div class="menu">
-                                    {% for key, value in type_cotis_options %}
-                                        <div class="item{% if key == selectedid %} active selected{% endif %}" data-value="{{ key }}">{{ value }}</div>
+                                    {% for key, values in type_cotis_options %}
+                                        <div class="item{% if key == selectedid %} active selected{% endif %}" data-value="{{ key }}">{{ values.label }}</div>
                                     {% endfor %}
                                     </div>
                                 </div>
@@ -292,9 +292,36 @@
     {% endif %}
 
     $(function() {
-    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
-        $('#transaction_related').hide();
+        {% if not contribution.id -%}
+        var _types_amounts = {
+            {%- for key, values in type_cotis_options -%}
+               {%- if values.amount > 0 -%}
+                    {{ key }}: {{ values.amount }},
+                {%- endif -%}
+            {%- endfor -%}
+        };
+        $('#id_type_cotis').dropdown({
+            onChange: function(value) {
+                //change to predefined amout if there is one, and if user has not entered data himself
+                if ($('#montant_cotis').data('userset') != true && _types_amounts[value]) {
+                    var _amount = _types_amounts[value];
+                    alert('Changed to ' + _amount);
+                }
+            }
+        });
         $('#montant_cotis').on('keyup', function() {
+            //keep trace of user entered data
+            if ($(this).val() == '') {
+                $(this).data('userset', false);
+            } else {
+                $(this).data('userset', true);
+            }
+        });
+        {%- endif %}
+
+        {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
+        $('#transaction_related').hide();
+        $('#montant_cotis').on('change', function() {
             var _amount = {{ contribution.transaction.getMissingAmount() }};
             var _current = $(this).val();
             if (_current < _amount) {
