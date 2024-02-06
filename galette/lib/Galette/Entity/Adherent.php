@@ -1087,7 +1087,7 @@ class Adherent
         //no parent if checkbox was unchecked
         if (
             !isset($values['attach'])
-            && empty($this->_id)
+            && !empty($this->_id)
             && isset($values['parent_id'])
         ) {
             unset($values['parent_id']);
