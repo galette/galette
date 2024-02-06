@@ -615,7 +615,7 @@ class Plugins
     }
 
     /**
-     * Set CRSF excluded routes
+     * Set CRSF excluded routes for one plugin
      *
      * @param array<string> $exclusions Array of regular expressions patterns to be excluded
      *
@@ -623,7 +623,7 @@ class Plugins
      */
     public function setCsrfExclusions(array $exclusions): self
     {
-        $this->csrf_exclusions = $exclusions;
+        $this->csrf_exclusions = array_merge($this->csrf_exclusions, $exclusions);
         return $this;
     }
 
