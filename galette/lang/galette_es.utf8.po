@@ -36,14 +36,14 @@
 # Nolan <nolanwelch@outlook.com>, 2022.
 # Dragos <dragos@duckly.com>, 2022.
 # Javier <javier.fserrador@gmail.com>, 2022.
-# gallegonovato <fran-carro@hotmail.es>, 2022, 2023.
+# gallegonovato <fran-carro@hotmail.es>, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-02-08 22:36+0100\n"
-"PO-Revision-Date: 2024-02-08 22:40+0100\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-02-08 21:49+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../lib/Galette/IO/CsvIn.php:220
 #, php-format
@@ -4546,7 +4546,7 @@ msgstr "¡Parece que utiliza la última versión de Galette!"
 
 #: ../install/steps/db_select_version.php:38
 msgid "Are you sure you want to upgrade?"
-msgstr "¿Está seguro que quiere modernizar?"
+msgstr "¿Estás seguro de que quieres actualizar?"
 
 #: ../install/steps/db_select_version.php:41
 #: ../../tempcache/pages/404.html.twig:80
