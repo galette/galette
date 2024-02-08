@@ -5,7 +5,7 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-02-08 21:54+0100\n"
-"PO-Revision-Date: 2023-11-21 12:53+0000\n"
+"PO-Revision-Date: 2024-02-08 21:06+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.2\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../lib/Galette/IO/CsvIn.php:220
 #, php-format
@@ -1780,10 +1780,8 @@ msgid "Blog"
 msgstr "Blog"
 
 #: ../lib/Galette/Entity/Social.php:352
-#, fuzzy
-#| msgid "Record"
 msgid "Discord"
-msgstr "Enregistrement"
+msgstr "Discord"
 
 #: ../lib/Galette/Controllers/TextController.php:68
 msgid "Automatic emails texts edition"
@@ -2529,40 +2527,28 @@ msgid "Edit status"
 msgstr "Édition d’un statut"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:215
-#, fuzzy
-#| msgid "Missing required %type name!"
 msgid "Missing required status name!"
-msgstr "Nom du champ %type manquant !"
+msgstr "Nom du statut manquant !"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:221
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Status has not been added :("
-msgstr "%type n’a pas été ajouté :("
+msgstr "Le statut n’a pas été ajouté :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:221
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Status #%id has not been updated"
-msgstr "%type #%id n’a pas été mis à jour"
+msgstr "Le statut #%id n’a pas été mis à jour"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:227
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Status has been successfully added!"
-msgstr "%type a été ajouté avec succès !"
+msgstr "Le statut a été ajouté avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:227
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Status #%id has been successfully updated!"
-msgstr "%type #%id a été mis à jour avec succès !"
+msgstr "Le statut #%id a été mis à jour avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:305
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove status '%label'"
-msgstr "Suppression %type « %label »"
+msgstr "Suppression du statut « %label »"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:82
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:86
@@ -2643,40 +2629,28 @@ msgid "Edit contribution type"
 msgstr "Édition d’un type de contribution"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:210
-#, fuzzy
-#| msgid "Missing required %type name!"
 msgid "Missing required contribution type name!"
-msgstr "Nom du champ %type manquant !"
+msgstr "Nom du type de contribution manquant !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:216
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Contribution type has not been added :("
-msgstr "%type n’a pas été ajouté :("
+msgstr "Le type de contribution n’a pas été ajouté :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:216
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Contribution type #%id has not been updated"
-msgstr "%type #%id n’a pas été mis à jour"
+msgstr "Le type de contribution #%id n’a pas été mis à jour"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:222
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution type has been successfully added!"
-msgstr "La contribution a été enregistrée avec succès"
+msgstr "Le type de contribution a été ajouté avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:222
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Contribution type #%id has been successfully updated!"
-msgstr "%type #%id a été mis à jour avec succès !"
+msgstr "Le type de contribution #%id a été mis à jour avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:300
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove contribution type '%label'"
-msgstr "Suppression %type « %label »"
+msgstr "Suppression du type de contribution « %label »"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:95
 msgid "Payment types management"
@@ -3026,10 +3000,8 @@ msgid "Your organisation logo"
 msgstr "Le logo de votre association"
 
 #: ../lib/Galette/Features/Replacements.php:206
-#, fuzzy
-#| msgid "Your organisation logo"
 msgid "Your organisation logo (print specific)"
-msgstr "Le logo de votre association"
+msgstr "Le logo de votre association (spécifique à l'impression)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 #: ../lib/Galette/Features/Replacements.php:211
@@ -3838,10 +3810,8 @@ msgstr "Ville :"
 
 #: ../includes/fields_defs/members_fields.php:129
 #: ../../tempcache/pages/preferences.html.twig:319
-#, fuzzy
-#| msgid "Version:"
 msgid "Region:"
-msgstr "Version :"
+msgstr "Région :"
 
 #: ../includes/fields_defs/members_fields.php:137
 #: ../../tempcache/pages/preferences.html.twig:329
