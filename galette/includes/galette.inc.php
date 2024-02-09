@@ -97,6 +97,9 @@ define('GALETTE_DB_VERSION', '1.100');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }
+if (!defined('GALETTE_DEBUG')) {
+    define('GALETTE_DEBUG', false);
+}
 
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(

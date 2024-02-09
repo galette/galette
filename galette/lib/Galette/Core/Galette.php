@@ -21,6 +21,7 @@
 
 namespace Galette\Core;
 
+use Analog\Analog;
 use Galette\Entity\Adherent;
 use RuntimeException;
 
@@ -933,7 +934,16 @@ class Galette
      */
     public static function isDebugEnabled(): bool
     {
-        return GALETTE_MODE === static::MODE_DEV;
+        if (GALETTE_MODE === static::MODE_DEV) {
+            //since 1.1.0, GALETTE_MODE with DEV value is deprecated.
+            Analog::log(
+                'Using GALETTE_MODE set to DEV is deprecated. Use GALETTE_DEBUG.',
+                Analog::WARNING
+            );
+            return true;
+        }
+        // @const bool GALETTE_DEBUG
+        return GALETTE_DEBUG === true;
     }
 
     /**

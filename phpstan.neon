@@ -13,6 +13,7 @@ parameters:
         - galette/includes/
     dynamicConstantNames:
         - GALETTE_NIGHTLY
+        - GALETTE_DEBUG
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:
