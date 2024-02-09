@@ -587,7 +587,7 @@ trait Replacements
             'contrib_bdate'     => $contrib->begin_date,
             'contrib_edate'     => $contrib->end_date,
             'contrib_id'        => $contrib->id,
-            'contrib_payment'   => $contrib->spayment_type,
+            'contrib_payment'   => $contrib->getPaymentType(),
             'contrib_info'      => $contrib->info
         ];
 

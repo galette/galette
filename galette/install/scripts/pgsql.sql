@@ -248,6 +248,7 @@ CREATE TABLE galette_transactions (
     trans_amount real DEFAULT '0',
     trans_desc character varying(255) NOT NULL DEFAULT '',
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    type_paiement_trans integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE NULL,
     PRIMARY KEY (trans_id)
 );
 

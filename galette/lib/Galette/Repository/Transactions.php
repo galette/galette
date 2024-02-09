@@ -122,7 +122,8 @@ class Transactions
                     'trans_id',
                     'trans_desc',
                     'id_adh',
-                    'trans_amount'
+                    'trans_amount',
+                    'type_paiement_trans'
                 );
             }
             $select->columns($fields)->join(

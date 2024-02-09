@@ -93,7 +93,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->raw_end_date);
         $this->assertEmpty($contrib->duration);
         $this->assertSame((int)$this->preferences->pref_default_paymenttype, $contrib->payment_type);
-        $this->assertSame('Check', $contrib->spayment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->model);
         $this->assertNull($contrib->member);
         $this->assertNull($contrib->type);
@@ -168,27 +168,21 @@ class Contribution extends GaletteTestCase
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CASH;
         $this->assertSame('Cash', $contrib->getPaymentType());
-        $this->assertSame('Cash', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CHECK;
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertSame('Check', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::OTHER;
         $this->assertSame('Other', $contrib->getPaymentType());
-        $this->assertSame('Other', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CREDITCARD;
         $this->assertSame('Credit card', $contrib->getPaymentType());
-        $this->assertSame('Credit card', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::TRANSFER;
         $this->assertSame('Transfer', $contrib->getPaymentType());
-        $this->assertSame('Transfer', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::PAYPAL;
         $this->assertSame('Paypal', $contrib->getPaymentType());
-        $this->assertSame('Paypal', $contrib->spayment_type);
     }
 
     /**

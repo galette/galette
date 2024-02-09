@@ -56,7 +56,6 @@ use Galette\Features\Dynamics;
  * @property Transaction|null $transaction
  * @property integer $extension
  * @property integer $duration
- * @property string $spayment_type
  * @property integer $model
  * @property array<string, array<string, string>> $fields
  */
@@ -1121,18 +1120,16 @@ class Contribution
     /**
      * Get payment type label
      *
-     * @param boolean $translated Whether to translate
-     *
      * @return string
      */
-    public function getPaymentType(bool $translated = false): string
+    public function getPaymentType(): string
     {
         if ($this->_payment_type === null) {
             return '-';
         }
 
-        $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
-        return $ptype->getName($translated);
+        $ptype = new PaymentType($this->zdb, $this->payment_type);
+        return $ptype->getName();
     }
 
     /**
@@ -1146,7 +1143,7 @@ class Contribution
     {
 
         $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date',
+        $virtuals = array('duration', 'model', 'raw_date',
             'raw_begin_date', 'raw_end_date'
         );
 
@@ -1219,8 +1216,6 @@ class Contribution
                     } else {
                         return '';
                     }
-                case 'spayment_type':
-                    return $this->getPaymentType(true);
                 case 'model':
                     if (!isset($this->_is_cotis)) {
                         return null;
@@ -1256,7 +1251,7 @@ class Contribution
     public function __isset(string $name): bool
     {
         $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'spayment_type', 'model', 'raw_date',
+        $virtuals = array('duration', 'model', 'raw_date',
             'raw_begin_date', 'raw_end_date'
         );
 

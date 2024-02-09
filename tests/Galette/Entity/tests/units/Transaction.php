@@ -131,12 +131,13 @@ class Transaction extends GaletteTestCase
         $this->assertSame((double)0, $this->transaction->getDispatchedAmount());
         $this->assertSame((double)0, $this->transaction->getMissingAmount());
         $this->assertSame('transaction-normal', $this->transaction->getRowClass());
-        $this->assertCount(5, $this->transaction->fields);
+        $this->assertCount(6, $this->transaction->fields);
         $this->assertArrayHasKey(\Galette\Entity\Transaction::PK, $this->transaction->fields);
         $this->assertArrayHasKey(\Galette\Entity\Adherent::PK, $this->transaction->fields);
         $this->assertArrayHasKey('trans_date', $this->transaction->fields);
         $this->assertArrayHasKey('trans_amount', $this->transaction->fields);
         $this->assertArrayHasKey('trans_desc', $this->transaction->fields);
+        $this->assertArrayHasKey('type_paiement_trans', $this->transaction->fields);
 
         $this->assertEquals(false, $this->transaction->unknown_property);
     }

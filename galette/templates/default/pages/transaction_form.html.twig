@@ -63,7 +63,20 @@
                             <label for="trans_amount">{{ _T("Amount:") }}</label>
                             <input type="text" name="trans_amount" id="trans_amount" value="{{ transaction.amount }}" maxlength="10"{% if required.trans_amount is defined and required.trans_amount == 1 %} required="required"{% endif %}/>
                         </div>
-    {% if transaction.id == null %}
+                        <div class="field inline{% if required.trans_payment_type is defined and required.trans_payment_type == 1 %} required{% endif %}">
+                            {# payment type #}
+                            {% set ptype = transaction.payment_type %}
+                            {% include 'components/forms/payment_types.html.twig' with {
+                                    'current': ptype,
+                                    'varname': 'type_paiement_trans',
+                                    'show_inline': true,
+                                    'empty': {
+                                        'label': _T("None"),
+                                        'value': '0'
+                                    }
+                            } %}
+                        </div>
+                        {% if transaction.id == null %}
                         <div class="field inline">
                             <label class="inline" title="{{ _T("Select a contribution type to create for dispatch transaction") }}">{{ _T("Dispatch type:") }}</label>
                             <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>

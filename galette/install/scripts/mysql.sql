@@ -73,8 +73,10 @@ CREATE TABLE galette_transactions (
   trans_amount decimal(15, 2) default '0',
   trans_desc varchar(255) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
+  type_paiement_trans int(10) unsigned NULL DEFAULT NULL,
   PRIMARY KEY (trans_id),
-  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_statuts;

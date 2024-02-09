@@ -23,6 +23,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Events\GaletteEvent;
+use Galette\Repository\PaymentTypes;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -42,6 +43,7 @@ use Galette\Features\Dynamics;
  * @property integer $amount
  * @property string $description
  * @property integer $member
+ * @property integer $payment_type
  */
 class Transaction
 {
@@ -55,6 +57,7 @@ class Transaction
     private float $_amount;
     private ?string $_description = null;
     private int $_member;
+    private ?int $_payment_type;
 
     /**
      * fields list and their translation
@@ -113,6 +116,10 @@ class Transaction
             Adherent::PK          => array(
                 'label'    => _T("Originator:"),
                 'propname' => 'member'
+            ),
+            'type_paiement_trans' => array(
+                'label'    => _T("Payment type:"),
+                'propname' => 'payment_type'
             )
         );
         if ($args === null || is_int($args)) {
@@ -269,6 +276,7 @@ class Transaction
         $this->_description = $r->trans_desc;
         $adhpk = Adherent::PK;
         $this->_member = (int)$r->$adhpk;
+        $this->_payment_type = $r->type_paiement_trans;
 
         $this->loadDynamicFields();
     }
@@ -285,6 +293,7 @@ class Transaction
      */
     public function check(array $values, array $required, array $disabled): bool|array
     {
+        global $preferences;
         $this->errors = array();
 
         $fields = array_keys($this->_fields);
@@ -346,6 +355,22 @@ class Transaction
                             $this->_description = strip_tags($value);
                             if (mb_strlen($value) > 150) {
                                 $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
+                            }
+                            break;
+                        case 'type_paiement_trans':
+                            if ($value == 0) {
+                                break;
+                            }
+                            $ptypes = new PaymentTypes(
+                                $this->zdb,
+                                $preferences,
+                                $this->login
+                            );
+                            $ptlist = $ptypes->getList();
+                            if (isset($ptlist[$value])) {
+                                $this->_payment_type = (int)$value;
+                            } else {
+                                $this->errors[] = _T("- Unknown payment type");
                             }
                             break;
                     }
@@ -540,6 +565,21 @@ class Transaction
             );
             throw $e;
         }
+    }
+
+    /**
+     * Get payment type label
+     *
+     * @return string
+     */
+    public function getPaymentType(): string
+    {
+        if ($this->_payment_type === null) {
+            return '-';
+        }
+
+        $ptype = new PaymentType($this->zdb, $this->payment_type);
+        return $ptype->getName();
     }
 
     /**
