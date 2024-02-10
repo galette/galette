@@ -102,10 +102,18 @@ $app->add($session);
 require GALETTE_ROOT . '/includes/dependencies.php';
 $app->add($app->getContainer()->get('csrf'));
 
+/**
+ * Authentication middleware
+ */
+$authenticate = new Authenticate($container);
+
+require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+
 if ($needs_update) {
     $app->add(
         new UpdateAndMaintenance(
             $container->get('i18n'),
+            $container->get(RouteParser::class),
             UpdateAndMaintenance::NEED_UPDATE
         )
     );
@@ -114,11 +122,6 @@ if ($needs_update) {
     die();
 }
 
-/**
- * Authentication middleware
- */
-$authenticate = new Authenticate($container);
-
 //FIXME: remove in 1.1.0; routes/groups should call middleware directly
 $showPublicPages = new \Galette\Middleware\PublicPages($container);
 
@@ -126,7 +129,8 @@ $showPublicPages = new \Galette\Middleware\PublicPages($container);
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
         new UpdateAndMaintenance(
-            $i18n,
+            $container->get('i18n'),
+            $container->get(RouteParser::class),
             UpdateAndMaintenance::MAINTENANCE
         )
     );
@@ -142,7 +146,6 @@ $app->add(Language::class);
 //Telemetry update middleware
 $app->add(Telemetry::class);
 
-require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
