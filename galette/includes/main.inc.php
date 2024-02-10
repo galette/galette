@@ -122,9 +122,6 @@ if ($needs_update) {
     die();
 }
 
-//FIXME: remove in 1.1.0; routes/groups should call middleware directly
-$showPublicPages = new \Galette\Middleware\PublicPages($container);
-
 //Maintenance middleware
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(

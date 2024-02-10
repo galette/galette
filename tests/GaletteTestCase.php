@@ -103,9 +103,6 @@ abstract class GaletteTestCase extends TestCase
         $galette_log_var = $this->logger_storage;
 
         $authenticate = new \Galette\Middleware\Authenticate($container);
-        $showPublicPages = function (\Slim\Psr7\Request $request, \Psr\Http\Server\RequestHandlerInterface $handler) {
-            return $handler->handle($request);
-        };
 
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
