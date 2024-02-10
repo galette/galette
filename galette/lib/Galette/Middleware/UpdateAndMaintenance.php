@@ -43,7 +43,7 @@ use Galette\Core\I18n;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Routing\RouteContext;
+use Slim\Routing\RouteParser;
 
 /**
  * Galette's Slim middleware for Update and Maintenance
@@ -75,14 +75,21 @@ class UpdateAndMaintenance
     protected $i18n;
 
     /**
+     * @var RouteParser
+     */
+    protected RouteParser $routeParser;
+
+    /**
      * Constructor
      *
-     * @param I18n         $i18n     I18n instance
-     * @param callable|int $callback Callable or local constant
+     * @param I18n         $i18n        I18n instance
+     * @param RouteParser  $routeParser Route parser
+     * @param callable|int $callback    Callable or local constant
      */
-    public function __construct(I18n $i18n, $callback = self::MAINTENANCE)
+    public function __construct(I18n $i18n, RouteParser $routeParser, callable|int $callback = self::MAINTENANCE)
     {
         $this->i18n = $i18n;
+        $this->routeParser = $routeParser;
 
         if ($callback === self::MAINTENANCE) {
             $this->callback = array($this, 'maintenancePage');
@@ -118,16 +125,14 @@ class UpdateAndMaintenance
     /**
      * Renders the page
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
-     * @param string                                   $contents HTML page contents
+     * @param Request $request  PSR7 request
+     * @param string  $contents HTML page contents
      *
      * @return string
      */
     private function renderPage(Request $request, $contents)
     {
-        $routeContext = RouteContext::fromRequest($request);
-        $routeParser = $routeContext->getRouteParser();
-        $path = $routeParser->urlFor('slash');
+        $path = $this->routeParser->urlFor('slash');
 
         //add ending / if missing
         if (
@@ -145,7 +150,6 @@ class UpdateAndMaintenance
     <head>
         <title>" . _T("Galette needs update!") . "</title>
         <meta charset=\"UTF-8\"/>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "../../assets/css/galette-main.bundle.min.css\"/>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "ui/semantic.min.css\"/>
         <link rel=\"shortcut icon\" href=\"" . $theme_path . "images/favicon.png\"/>
     </head>
@@ -168,7 +172,7 @@ class UpdateAndMaintenance
     /**
      * Displays maintenance page
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request PSR7 request
+     * @param Request $request PSR7 request
      *
      * @return string
      */
@@ -182,7 +186,7 @@ class UpdateAndMaintenance
     /**
      * Displays needs update page
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request PSR7 request
+     * @param Request $request PSR7 request
      *
      * @return string
      */
