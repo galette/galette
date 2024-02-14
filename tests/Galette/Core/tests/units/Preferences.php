@@ -36,6 +36,7 @@
 
 namespace Galette\Core\test\units;
 
+use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -563,14 +564,21 @@ class Preferences extends TestCase
      */
     public function testGetMailSignature()
     {
-        $this->assertSame("\r\n-- \r\nGalette\r\n\r\n", $this->preferences->getMailSignature());
+        $mail = new PHPMailer();
+        $this->assertSame("\r\n-- \r\nGalette", $this->preferences->getMailSignature($mail));
 
         $this->preferences->pref_website = 'https://galette.eu';
-        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu", $this->preferences->getMailSignature());
+        $this->assertSame(
+            "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
+            $this->preferences->getMailSignature($mail)
+        );
 
         //with legacy values
-        $this->preferences->pref_mailsign = "NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
-        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu", $this->preferences->getMailSignature());
+        $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{WEBSITE}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
+        $this->assertSame(
+            "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
+            $this->preferences->getMailSignature($mail)
+        );
 
         $social = new \Galette\Entity\Social($this->zdb);
         $this->assertTrue(
@@ -586,7 +594,10 @@ class Preferences extends TestCase
         );
 
         $this->preferences->pref_mail_sign = "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE} - {ASSO_SOCIAL_MASTODON}";
-        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette", $this->preferences->getMailSignature());
+        $this->assertSame(
+            "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette",
+            $this->preferences->getMailSignature($mail)
+        );
 
         $social = new \Galette\Entity\Social($this->zdb);
         $this->assertTrue(
@@ -600,7 +611,10 @@ class Preferences extends TestCase
             2,
             \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::MASTODON)
         );
-        $this->assertSame("\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return", $this->preferences->getMailSignature());
+        $this->assertSame(
+            "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return",
+            $this->preferences->getMailSignature($mail)
+        );
     }
 
     /**
