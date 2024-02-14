@@ -313,7 +313,7 @@ class PdfModel extends GaletteTestCase
         );
 
         $this->assertMatchesRegularExpression(
-            '/<td id="pdf_logo"><img src="@.+" width="129" height="60" \/><\/td>/',
+            '/<td id="pdf_logo"><img src="@.+" width="129" height="60" alt="" \/><\/td>/',
             $model->hheader
         );
 

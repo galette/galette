@@ -25,6 +25,7 @@ use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
+use PHPMailer\PHPMailer\PHPMailer;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -1215,9 +1216,11 @@ class Preferences
     /**
      * Get email signature
      *
+     * @param PHPMailer $mail PHPMailer instance
+     *
      * @return string
      */
-    public function getMailSignature(): string
+    public function getMailSignature(PHPMailer $mail): string
     {
         global $routeparser;
 
@@ -1232,6 +1235,7 @@ class Preferences
             $this->getMainPatterns() + $this->getSignaturePatterns()
         );
         $this
+            ->setMail($mail)
             ->setMain()
             ->setSocialReplacements();
 

@@ -36,6 +36,7 @@ use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
+use PHPMailer\PHPMailer\PHPMailer;
 use Slim\Routing\RouteParser;
 
 /**
@@ -52,6 +53,7 @@ trait Replacements
     private array $replaces = [];
     /** @var array<string,array<string,string>> */
     private array $dynamic_patterns = [];
+    private ?PHPMailer $mail = null;
 
     /**
      * @var Db
@@ -448,6 +450,19 @@ trait Replacements
     }
 
     /**
+     * Set mail instance
+     *
+     * @param PHPMailer $mail PHPMailer instance
+     *
+     * @return self
+     */
+    public function setMail(PHPMailer $mail): self
+    {
+        $this->mail = $mail;
+        return $this;
+    }
+
+    /**
      * Set main replacements
      *
      * @return self
@@ -464,19 +479,29 @@ trait Replacements
         }
 
         $logo = new Logo();
+        if ($this->mail !== null) {
+            $logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('logo');
+        } else {
+            $logo_content = '@' . base64_encode(file_get_contents($logo->getPath()));
+        }
         $logo_elt = sprintf(
-            '<img src="%1$s" width="%2$s" height="%3$s" />',
-            '@' . base64_encode(file_get_contents($logo->getPath())),
+            '<img src="%1$s" width="%2$s" height="%3$s" alt="" />',
+            $logo_content,
             $logo->getOptimalWidth(),
             $logo->getOptimalHeight()
         );
 
         $print_logo = new Logo();
+        if ($this->mail !== null) {
+            $print_logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('printLogo');
+        } else {
+            $print_logo_content = '@' . base64_encode(file_get_contents($print_logo->getPath()));
+        }
         $print_logo_elt = sprintf(
-            '<img src="%1$s" width="%2$s" height="%3$s" />',
-            '@' . base64_encode(file_get_contents($print_logo->getPath())),
-            $print_logo->getOptimalWidth(),
-            $print_logo->getOptimalHeight()
+            '<img src="%1$s" width="%2$s" height="%3$s" alt="" />',
+            $print_logo_content,
+            $logo->getOptimalWidth(),
+            $logo->getOptimalHeight()
         );
 
         $this->setReplacements(
@@ -902,7 +927,7 @@ trait Replacements
             $replaced
         );
 
-        return $replaced;
+        return trim($replaced);
     }
 
     /**
