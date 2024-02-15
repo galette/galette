@@ -25,7 +25,9 @@
 
 {% if not login.getCompactMenu() %}
     <div class="ui basic center aligned fitted segment">
+<a href="https://{{ preferences.pref_footer|raw }}">
         <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
+</a>
         <div class="ui block huge brand header">
             {{ preferences.pref_nom }}
             {% if preferences.pref_slogan %}<div class="sub tiny header">{{ __(preferences.pref_slogan) }}</div>{% endif %}
