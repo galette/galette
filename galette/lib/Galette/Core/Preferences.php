@@ -130,6 +130,7 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_exports
  * @property-read array $vpref_email_newadh list of mail senders
  * @property-read array $vpref_email list of mail senders
+ * @property boolean $pref_noindex
  */
 class Preferences
 {
@@ -274,7 +275,8 @@ class Preferences
         'pref_bool_groupsmanagers_edit_member' => false,
         'pref_bool_groupsmanagers_edit_groups' => false,
         'pref_bool_groupsmanagers_mailings' => false,
-        'pref_bool_groupsmanagers_exports' => true
+        'pref_bool_groupsmanagers_exports' => true,
+        'pref_noindex' => false
     );
 
     /** @var Social[] */

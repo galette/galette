@@ -183,6 +183,13 @@
                             - <a href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ pref.pref_registration_uuid }}" id="register" target="_blank" class="ui labeled icon button"><i class="pen alternate icon" aria-hidden="true"></i>{{ regtxt }}</a>
                         </span>
                     </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_noindex" id="pref_noindex" value="1"{% if pref.pref_noindex %} checked="checked"{% endif %}/>
+                            <label for="pref_noindex">{{ _T("Prevent search engines indexation") }}</label>
+                        </div>
+                    </div>
+
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}

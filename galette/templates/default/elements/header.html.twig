@@ -56,3 +56,7 @@
 {% if login.isDarkModeEnabled() and file_exists(darkcssfile) %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('getDarkCSS') }}">
 {% endif %}
+
+{% if preferences.pref_noindex %}
+    <meta name="robots" content="noindex, nofollow" />
+{% endif %}
