@@ -21,6 +21,8 @@
 
 namespace Galette\Util;
 
+use Galette\Core\Galette;
+use Galette\Features\Cacheable;
 use GuzzleHttp\Client;
 
 /**
@@ -30,11 +32,25 @@ use GuzzleHttp\Client;
  */
 class Release
 {
+    use Cacheable;
+
+    protected string $cache_filename = 'newrelease.cache';
+
     /** @var array<string, mixed> */
     private array $default_options = [
         'timeout' => 2.0,
     ];
     private ?string $latest = null;
+
+    /**
+     * Constructor
+     * @param bool $nocache Do not try to cache
+     */
+    public function __construct(bool $nocache = false)
+    {
+        //only if cache should be used
+        $this->handleCache($nocache);
+    }
 
     /**
      * Set ups Guzzle client
@@ -43,10 +59,9 @@ class Release
      */
     public function setupClient(): Client
     {
-        $this->client = new Client(
+        return new Client(
             $this->getDefaultOptions()
         );
-        return $this->client;
     }
 
     /**
@@ -75,9 +90,11 @@ class Release
     /**
      * Get the latest release
      *
+     *  @param bool $nocache Do not try to cache
+     *
      * @return ?string
      */
-    public function findLatestRelease(): ?string
+    public function findLatestRelease(bool $nocache = false): ?string
     {
         if (isset($this->latest)) {
             return $this->getLatestRelease();
@@ -148,5 +165,54 @@ class Release
     public function getReleasesURL(): string
     {
         return GALETTE_DOWNLOADS_URI;
+    }
+
+    /**
+     * Get data to cache
+     *
+     * @return string
+     */
+    protected function getDataTocache(): string
+    {
+        return $this->latest;
+    }
+
+    /**
+     * Called once cache has been loaded.
+     *
+     * @param mixed $content Content from cache
+     *
+     * @return bool
+     */
+    protected function cacheLoaded($content): bool
+    {
+        if ($content === null) {
+            return false;
+        }
+
+        $this->latest = $content;
+        return true;
+    }
+
+    /**
+     * Complete path to cache file
+     *
+     * @return string
+     */
+    protected function getCacheFilename(): string
+    {
+        return GALETTE_CACHE_DIR . $this->cache_filename;
+    }
+
+    /**
+     * Ensure data to cache are present
+     *
+     * @return void
+     */
+    protected function prepareForCache(): void
+    {
+        if (!isset($this->latest)) {
+            $this->latest = $this->findLatestRelease();
+        }
     }
 }

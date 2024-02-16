@@ -22,6 +22,7 @@
 namespace Galette\IO;
 
 use Galette\Core\Galette;
+use Galette\Features\Cacheable;
 use Throwable;
 use Analog\Analog;
 
@@ -32,10 +33,10 @@ use Analog\Analog;
  */
 class News
 {
-    private string $cache_filename = '%feed.cache';
+    use Cacheable;
+
+    protected string $cache_filename = '%feed.cache';
     private int $show = 10;
-    //number of hours until cache will be invalid
-    private int $cache_timeout = 24;
     private ?string $feed_url = null;
     /** @var array<int, array<string, string>> */
     private array $posts = [];
@@ -58,98 +59,47 @@ class News
 
         //only if cache should be used
         if ($nocache === false && !Galette::isDebugEnabled()) {
-            if (!$this->checkCache()) {
-                $this->makeCache();
-            } else {
-                $this->loadCache();
-            }
+            $this->handleCache($nocache);
         } else {
             $this->parseFeed();
         }
     }
 
     /**
-     * Check if cache is valid
+     * Get data to cache
      *
-     * @return boolean
+     * @return string
      */
-    private function checkCache(): bool
+    protected function getDataTocache(): string
     {
-        $cfile = $this->getCacheFilename();
-        if (file_exists($cfile)) {
-            try {
-                $dformat = 'Y-m-d H:i:s';
-                $mdate = \DateTime::createFromFormat(
-                    $dformat,
-                    date(
-                        $dformat,
-                        filemtime($cfile)
-                    )
-                );
-                $expire = $mdate->add(
-                    new \DateInterval('PT' . $this->cache_timeout . 'H')
-                );
-                $now = new \DateTime();
-                $has_expired = $now > $expire;
-                return !$has_expired;
-            } catch (Throwable $e) {
-                Analog::log(
-                    'Unable check cache expiry. Are you sure you have ' .
-                    'properly configured PHP timezone settings on your server?',
-                    Analog::WARNING
-                );
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Creates/update the cache
-     *
-     * @return void
-     */
-    private function makeCache(): void
-    {
-        $this->parseFeed();
-        $cfile = $this->getCacheFilename();
-        $stream = fopen($cfile, 'w+');
-        fwrite(
-            $stream,
-            Galette::jsonEncode(
-                $this->posts
-            )
+        return Galette::jsonEncode(
+            $this->posts
         );
-        fclose($stream);
     }
 
     /**
-     * Loads entries from cache
+     * Called once cache has been loaded.
      *
-     * @return void
+     * @param mixed $contents Content from cache
+     *
+     * @return bool
      */
-    private function loadCache(): void
+    protected function cacheLoaded($contents): bool
     {
-        $refresh_cache = false;
-        $cfile = $this->getCacheFilename();
-        $fcontents = file_get_contents($cfile);
-        if (Galette::isSerialized($fcontents)) {
+        if (Galette::isSerialized($contents)) {
             //legacy cache format
-            $this->posts = unserialize($fcontents);
+            $this->posts = unserialize($contents);
         } else {
-            $this->posts = Galette::jsonDecode($fcontents);
+            $this->posts = Galette::jsonDecode($contents);
         }
 
         //check if posts were cached
         if (count($this->posts) == 0) {
             $this->parseFeed();
-            $refresh_cache = true;
+            return false;
         }
 
-        if ($refresh_cache === true) {
-            $this->makeCache();
-        }
+        return true;
     }
 
     /**
@@ -157,7 +107,7 @@ class News
      *
      * @return string
      */
-    private function getCacheFilename(): string
+    protected function getCacheFilename(): string
     {
         return GALETTE_CACHE_DIR . str_replace(
             '%feed',
@@ -232,7 +182,6 @@ class News
         }
     }
 
-
     /**
      * Get posts
      *
@@ -290,5 +239,15 @@ class News
     protected function allowURLFOpen(): bool
     {
         return ini_get('allow_url_fopen');
+    }
+
+    /**
+     * Ensure data to cache are present
+     *
+     * @return void
+     */
+    protected function prepareForCache(): void
+    {
+        $this->parseFeed();
     }
 }

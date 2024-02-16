@@ -231,6 +231,7 @@ div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
     public function testFindLatestRelease(string $current, string $latest, bool $expected, string $page): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
+            ->setConstructorArgs([true])
             ->onlyMethods(array('setupClient', 'getCurrentRelease'))
             ->getMock();
 
