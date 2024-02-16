@@ -19,11 +19,13 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Analog\Analog;
 use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
 use Galette\Middleware\Telemetry;
 use Galette\Middleware\TrailingSlash;
 use Galette\Middleware\UpdateAndMaintenance;
+use Galette\Util\Release;
 use RKA\SessionMiddleware;
 use Slim\Routing\RouteContext;
 use Galette\Core\Galette;
@@ -142,6 +144,43 @@ $app->add(Language::class);
 
 //Telemetry update middleware
 $app->add(Telemetry::class);
+
+//check for new release
+if (
+    $container->get('login')->isSuperAdmin()
+    || $container->get('login')->isAdmin()
+    || $container->get('login')->isStaff()
+) {
+    try {
+        $release = new Release();
+        if ($release->checkNewRelease()) {
+            Analog::log(
+                sprintf(
+                    'A new Galette release is available: %s (current %s)',
+                    $release->getLatestRelease(),
+                    GALETTE_VERSION
+                ),
+                Analog::INFO
+            );
+            $container->get('flash')->addMessage(
+                'info',
+                [
+                    'title' => _T('A new Galette release is available.'),
+                    'message' => sprintf(
+                        _T('You currently use Galette %1$s, and %2$s is available.'),
+                        GALETTE_VERSION,
+                        $release->getLatestRelease()
+                    )
+                ]
+            );
+        }
+    } catch (\Throwable $e) {
+        Analog::log(
+            'Error looking for new release: ' . $e->getMessage(),
+            Analog::ERROR
+        );
+    }
+}
 
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/management.routes.php';

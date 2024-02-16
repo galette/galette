@@ -114,3 +114,7 @@ if (!defined('GALETTE_TELEMETRY_URI')) {
 if (!defined('GALETTE_TPL_THEME_DIR')) {
     define('GALETTE_TPL_THEME_DIR', GALETTE_ROOT . 'templates/default/');
 }
+
+if (!defined('GALETTE_DOWNLOADS_URI')) {
+    define('GALETTE_DOWNLOADS_URI', 'https://download.tuxfamily.org/galette/');
+}
