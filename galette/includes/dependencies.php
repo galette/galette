@@ -71,7 +71,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view = Twig::create(
         $templates,
         [
-            'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR),
+            'cache' => rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'templates',
             'debug' => \Galette\Core\Galette::isDebugEnabled(),
             'strict_variables' => \Galette\Core\Galette::isDebugEnabled()
         ]
