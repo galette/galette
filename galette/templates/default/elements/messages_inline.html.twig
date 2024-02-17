@@ -93,6 +93,40 @@
     </noscript>
 {% endif %}
 
+{# Let's see if there are info messages to show #}
+{% set info = flash.getMessage('info_detected') ?? []|merge(flash.getMessage('info') ?? []) %}
+{% if info_detected is defined and info_detected is iterable %}
+    {% for i in info_detected %}
+        {% set info = info|merge([i]) %}
+    {% endfor %}
+{% endif %}
+{% if info is iterable and info|length > 0 %}
+    <noscript>
+        <div class="ui info icon message">
+            <i class="info icon" aria-hidden="true"></i>
+            <div class="content">
+                {% if info|length > 1 %}
+                    <ul class="list">
+                        {% for i in info %}
+                            <li>{{ i|raw }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    {% for i in info %}
+                        {% set info_title = '' %}
+                        {% if i is iterable %}
+                            {% set info_title = i.title %}
+                            <p class="header">{{ info_title }}</p>
+                            {% set i = i.message %}
+                        {% endif %}
+                        <p>{{ i|raw }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </noscript>
+{% endif %}
+
 {# Renew telemetry #}
 {% if renew_telemetry is defined and renew_telemetry %}
     {% include "modals/telemetry.html.twig" with {part: "dialog"} %}

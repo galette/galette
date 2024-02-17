@@ -97,6 +97,17 @@ class AjaxController extends AbstractController
             ];
         }
 
+        $info = $this->flash->getMessage('info_detected') ?? [];
+        $info = array_merge($info, $this->flash->getMessage('info') ?? []);
+
+        if (count($info) > 0) {
+            $messages['info'] = [
+                'title' => '',
+                'icon' => 'info',
+                'messages' => $info
+            ];
+        }
+
         $success = $this->flash->getMessage('success_detected') ?? [];
         $success = array_merge($success, $this->flash->getMessage('succes') ?? []);
 
