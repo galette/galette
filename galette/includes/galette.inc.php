@@ -99,16 +99,11 @@ if (
     $profiler->start();
 }
 
-define('GALETTE_NIGHTLY', false);
-define('GALETTE_VERSION', 'v1.0.2');
-
 //Version to display
 if (!defined('GALETTE_HIDE_VERSION')) {
     define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
 }
 
-define('GALETTE_COMPAT_VERSION', '1.0.0');
-define('GALETTE_DB_VERSION', '0.960');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', \Galette\Core\Galette::MODE_PROD);
 }
