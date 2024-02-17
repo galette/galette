@@ -506,8 +506,25 @@
                                 $.ajax({
                                     url: '{{ url_for('ajaxMessages') }}',
                                     method: "GET",
-                                    success: function (message) {
-                                        $('#asso_name').after(message);
+                                    success: function (values) {
+                                        for (var type in values) {
+                                            var dtime = 0;
+                                            if (type == 'success') {
+                                                dtime = 'auto';
+                                            }
+                                            $('body')
+                                                .toast({
+                                                    displayTime: dtime,
+                                                    minDisplayTime: 5000,
+                                                    wordsPerMinute: 80,
+                                                    position: 'top right',
+                                                    title: values[type]['title'],
+                                                    message: values[type]['messages'].join('<br/>'),
+                                                    showIcon: values[type]['icon'],
+                                                    class: type
+                                                })
+                                            ;
+                                        }
                                     }
                                 });
                             }

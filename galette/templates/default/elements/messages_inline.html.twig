@@ -34,24 +34,25 @@
     {% endfor %}
 {% endif %}
 {% if errors is iterable and errors|length > 0 %}
-    <div class="ui error icon message with-transition">
-        <i class="times icon" aria-hidden="true"></i>
-        <i class="window close outline icon" aria-hidden="true"></i>
-        <div class="content">
-            <div class="header">{{ _T("- ERROR -") }}</div>
-            {% if errors|length > 1 %}
-                <ul class="list">
-                {% for error in errors %}
-                    <li>{{ error|raw }}</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                {% for error in errors %}
-                    <p>{{ error|raw }}</p>
-                {% endfor %}
-            {% endif %}
+    <noscript>
+        <div class="ui error icon message">
+            <i class="times icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("- ERROR -") }}</div>
+                {% if errors|length > 1 %}
+                    <ul class="list">
+                    {% for error in errors %}
+                        <li>{{ error|raw }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    {% for error in errors %}
+                        <p>{{ error|raw }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </noscript>
 {% endif %}
 
 {# Let's see if there are warning messages to show #}
@@ -62,24 +63,25 @@
     {% endfor %}
 {% endif %}
 {% if warnings is iterable and warnings|length > 0 %}
-    <div class="ui warning icon message with-transition">
-        <i class="exclamation triangle icon" aria-hidden="true"></i>
-        <i class="window close outline icon" aria-hidden="true"></i>
-        <div class="content">
-            <div class="header">{{ _T("- WARNING -") }}</div>
-            {% if warnings|length > 1 %}
-                <ul class="list">
-                {% for warning in warnings %}
-                    <li>{{ warning|raw }}</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                {% for warning in warnings %}
-                    <p>{{ warning|raw }}</p>
-                {% endfor %}
-            {% endif %}
+    <noscript>
+        <div class="ui warning icon message">
+            <i class="exclamation triangle icon" aria-hidden="true"></i>
+            <div class="content">
+                <div class="header">{{ _T("- WARNING -") }}</div>
+                {% if warnings|length > 1 %}
+                    <ul class="list">
+                    {% for warning in warnings %}
+                        <li>{{ warning|raw }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    {% for warning in warnings %}
+                        <p>{{ warning|raw }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </noscript>
 {% endif %}
 
 {# Let's see if there are success messages to show #}
