@@ -63,7 +63,7 @@ use Throwable;
 class AjaxController extends AbstractController
 {
     /**
-     * Messages
+     * Messages as JSON array
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
@@ -72,11 +72,43 @@ class AjaxController extends AbstractController
      */
     public function messages(Request $request, Response $response): Response
     {
-        $this->view->render(
-            $response,
-            'elements/ajax_messages.html.twig'
-        );
-        return $response;
+        $messages = [];
+
+        $errors = $this->flash->getMessage('loginfault') ?? [];
+        $errors = array_merge($errors, $this->flash->getMessage('error_detected') ?? []);
+        $errors = array_merge($errors, $this->flash->getMessage('error') ?? []);
+
+        if (count($errors) > 0) {
+            $messages['error'] = [
+                'title' => _T('- ERROR -'),
+                'icon' => 'times',
+                'messages' => $errors
+            ];
+        }
+
+        $warnings = $this->flash->getMessage('warning_detected') ?? [];
+        $warnings = array_merge($warnings, $this->flash->getMessage('warning') ?? []);
+
+        if (count($warnings) > 0) {
+            $messages['warning'] = [
+                'title' => _T('- WARNING -'),
+                'icon' => 'exclamation triangle',
+                'messages' => $warnings
+            ];
+        }
+
+        $success = $this->flash->getMessage('success_detected') ?? [];
+        $success = array_merge($success, $this->flash->getMessage('succes') ?? []);
+
+        if (count($success) > 0) {
+            $messages['success'] = [
+                'title' => '',
+                'icon' => 'check circle outline',
+                'messages' => $success
+            ];
+        }
+
+        return $this->withJson($response, $messages);
     }
 
     /**
