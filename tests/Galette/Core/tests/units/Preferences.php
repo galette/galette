@@ -657,4 +657,30 @@ class Preferences extends TestCase
             $legend['socials']['patterns']['asso_social_mynewtype']
         );
     }
+
+    /**
+     * Test website URL
+     *
+     * @return void
+     */
+    public function testWebsiteURL(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $post = array_merge($preferences, ['pref_website' => 'https://galette.eu']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_website' => 'galette.eu']);
+        $this->assertFalse(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertSame(['- Invalid website URL.'], $this->preferences->getErrors());
+    }
 }

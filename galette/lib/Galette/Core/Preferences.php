@@ -768,6 +768,11 @@ class Preferences
             case 'pref_footer':
                 $value = $this->cleanHtmlValue($value);
                 break;
+            case 'pref_website':
+                if (!isValidWebUrl($value)) {
+                    $this->errors[] = _T("- Invalid website URL.");
+                }
+                break;
         }
 
         return $value;
