@@ -29,3 +29,7 @@ define('GALETTE_PHP_MIN', '8.1');
 define('GALETTE_MYSQL_MIN', '5.7');
 define('GALETTE_MARIADB_MIN', '10.4');
 define('GALETTE_PGSQL_MIN', '11')  ;
+define('GALETTE_NIGHTLY', false);
+define('GALETTE_VERSION', 'v1.1.0-dev');
+define('GALETTE_COMPAT_VERSION', '1.1.0');
+define('GALETTE_DB_VERSION', '1.100');

@@ -1347,7 +1347,11 @@ class Preferences
     public function cleanHtmlValue(string $value): string
     {
         $config = \HTMLPurifier_Config::createDefault();
-        $config->set('Cache.SerializerPath', GALETTE_CACHE_DIR);
+        $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
+        if (!file_exists($cache_dir)) {
+            mkdir($cache_dir, 0755, true);
+        }
+        $config->set('Cache.SerializerPath', $cache_dir);
         $purifier = new \HTMLPurifier($config);
         return $purifier->purify($value);
     }
