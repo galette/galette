@@ -56,6 +56,35 @@ $('.message.with-transition')
     {% endfor %}
 {% endif %}
 
+{# Let's see if there are info messages to show #}
+{% set info = flash.getMessage('info_detected') ?? []|merge(flash.getMessage('info') ?? []) %}
+{% if info_detected is defined and info_detected is iterable %}
+    {% for i in info_detected %}
+        {% set info = info|merge([i]) %}
+    {% endfor %}
+{% endif %}
+{% if info is iterable and info|length > 0 %}
+    {% for i in info %}
+        {% set info_title = '' %}
+        {% if i is iterable %}
+            {% set info_title = i.title %}
+            {% set i = i.message %}
+        {% endif %}
+        $('body')
+          .toast({
+            displayTime: 'auto',
+            minDisplayTime: 5000,
+            wordsPerMinute: 80,
+            position: 'top right',
+            title: '{{ info_title|e('js') }}',
+            message: '{{ i|e('js') }}',
+            showIcon: 'info',
+            class: 'info'
+          })
+        ;
+    {% endfor %}
+{% endif %}
+
 {# Let's see if there are loginfault messages to show #}
 {% set loginfaults = flash.getMessage('loginfault') %}
 {% if loginfault_detected is defined and loginfault_detected is iterable %}
