@@ -68,7 +68,13 @@
                     <div class="menu">
                         <div class="item">
                             <div class="ui basic center aligned fitted segment">
+            {% if preferences.pref_website is not empty %}
+                                <a href="{{ preferences.pref_website }}" target="_blank">
+                                    <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon" title="{{ _T("Open '%s' in a new window")|replace({"%s": preferences.pref_website}) }}"/>
+                                </a>
+            {% else %}
                                 <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="icon"/>
+            {% endif %}
                                 <div class="ui block huge brand header">
                                     {{ preferences.pref_nom }}
                                     {% if preferences.pref_slogan %}<div class="sub tiny header">{{ __(preferences.pref_slogan) }}</div>{% endif %}
