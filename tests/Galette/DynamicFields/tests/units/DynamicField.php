@@ -374,6 +374,80 @@ class DynamicField extends TestCase
         $this->assertFalse($df->check($values));
         $this->assertSame(['Missing required field name!'], $df->getErrors());
         $this->assertFalse($df->store($values));
+
+        //no error since field type does not have width
+        $this->assertFalse($df->hasWidth());
+        $values = $orig_values;
+        $values['field_width'] = 'ten pixels';
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
+
+        $values = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic choice',
+            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
+            'field_required'    => false,
+            'field_repeat'      => null
+        ];
+        $orig_values = $values;
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
+        $this->assertTrue($df->hasWidth());
+        $this->assertTrue($df->hasHeight());
+
+        $values['field_width'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Width must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_width'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Width must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = $orig_values;
+        $values['field_height'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Height must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_height'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Height must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic choice',
+            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::LINE,
+            'field_required'    => false,
+            'field_repeat'      => null
+        ];
+        $orig_values = $values;
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
+        $this->assertTrue($df->hasSize());
+
+        $values['field_size'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_size'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = $orig_values;
+        $values['field_repeat'] = 'yes';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Repeat must be an integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_repeat'] = 2;
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
+        $this->assertTrue($df->store($values));
     }
 
     /**

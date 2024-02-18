@@ -454,7 +454,6 @@ class DynamicFieldsController extends CrudController
         try {
             $df->store($post);
             $error_detected = $df->getErrors();
-            $warning_detected = $df->getWarnings();
         } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             Analog::log(
@@ -465,7 +464,11 @@ class DynamicFieldsController extends CrudController
             if (Galette::isDebugEnabled()) {
                 throw $e;
             }
-            $error_detected[] = _T('An error occurred editing dynamic field :(');
+
+            $error_detected = $df->getErrors();
+            if (count($error_detected) == 0) {
+                $error_detected[] = _T('An error occurred editing dynamic field :(');
+            }
         }
 
         //flash messages
@@ -483,6 +486,7 @@ class DynamicFieldsController extends CrudController
             );
         }
 
+        $warning_detected = $df->getWarnings();
         if (count($warning_detected) > 0) {
             foreach ($warning_detected as $warning) {
                 $this->flash->addMessage(
