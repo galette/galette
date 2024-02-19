@@ -23,6 +23,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Util\Release;
 use RuntimeException;
 
 /**
@@ -69,6 +70,20 @@ class Galette
             $galette_version = $version . '-' . GALETTE_NIGHTLY;
         }
         return $galette_version;
+    }
+
+    /**
+     * Get Galette new release
+     *
+     * @return array<string, string|array<string,mixed>>
+     */
+    public static function getNewRelease(): array
+    {
+        $release = new Release();
+        return [
+            'new' => $release->checkNewRelease(),
+            'version' => $release->getLatestRelease()
+        ];
     }
 
     /**
