@@ -32,13 +32,11 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
 
 // check date settings
 $date_ok = false;
-if (!version_compare(PHP_VERSION, '5.2.0', '<')) {
-    try {
-        $test_date = new DateTime();
-        $date_ok = true;
-    } catch (Throwable $e) {
-        //do nothing
-    }
+try {
+    $test_date = new DateTime();
+    $date_ok = true;
+} catch (Throwable $e) {
+    //do nothing
 }
 
 // check PHP modules
