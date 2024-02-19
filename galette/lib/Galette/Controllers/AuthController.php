@@ -21,6 +21,7 @@
 
 namespace Galette\Controllers;
 
+use Analog\Analog;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Login;
@@ -28,6 +29,7 @@ use Galette\Core\Password;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
+use Galette\Util\Release;
 
 /**
  * Galette authentication controller
@@ -114,6 +116,43 @@ class AuthController extends AbstractController
         }
 
         if ($this->login->isLogged()) {
+            //check for new release
+            if (
+                $this->login->isSuperAdmin()
+                || $this->login->isAdmin()
+                || $this->login->isStaff()
+            ) {
+                try {
+                    $release = new Release();
+                    if ($release->checkNewRelease()) {
+                        Analog::log(
+                            sprintf(
+                                'A new Galette release is available: %s (current %s)',
+                                $release->getLatestRelease(),
+                                GALETTE_VERSION
+                            ),
+                            Analog::INFO
+                        );
+                        $this->flash->addMessage(
+                            'info',
+                            [
+                                'title' => _T('A new Galette release is available.'),
+                                'message' => sprintf(
+                                    _T('You currently use Galette %1$s, and %2$s is available.'),
+                                    GALETTE_VERSION,
+                                    $release->getLatestRelease()
+                                )
+                            ]
+                        );
+                    }
+                } catch (\Throwable $e) {
+                    Analog::log(
+                        'Error looking for new release: ' . $e->getMessage(),
+                        Analog::ERROR
+                    );
+                }
+            }
+
             if (!$checkpass->isValid($password)) {
                 //password is no longer valid with current rules, must be changed
                 $this->flash->addMessage(
