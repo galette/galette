@@ -102,8 +102,8 @@
                     modal_cancel_text: modal_cancel_text,
                 } %}
             },
-            {# FIXME: variables modal.js.twig know and that are not explicitely redefined are autmatically passed! #}
             error: function() {
+                {# Use "only" keyword to prevent known but not explicitiely defined variables to be passed #}
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("An error occurred :(")|e("js"),
                     modal_without_content: true,
@@ -111,7 +111,7 @@
                     modal_deny_only: true,
                     modal_cancel_text: _T("Close")|e("js"),
                     modal_classname: "redalert",
-                } %}
+                } only %}
             }
         });
     });
