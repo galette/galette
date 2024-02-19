@@ -235,7 +235,10 @@ class DynamicFieldsController extends CrudController
             'fields_list'       => $fields_list,
             'form_name'         => $form_name,
             'form_title'        => DynamicField::getFormTitle($form_name),
-            'page_title'        => _T("Dynamic fields configuration")
+            'page_title'        => _T("Dynamic fields configuration"),
+            'html_editor'       => true,
+            'html_editor_active' => $this->preferences->pref_editor_enabled
+
         ];
 
         $tpl = 'pages/configuration_dynamic_fields.html.twig';
@@ -429,7 +432,9 @@ class DynamicFieldsController extends CrudController
             'form_name'     => $form_name,
             'perm_names'    => DynamicField::getPermsNames(),
             'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
-            'df'            => $df
+            'df'            => $df,
+            'html_editor'   => true,
+            'html_editor_active' => $this->preferences->pref_editor_enabled
         ];
 
         // display page

@@ -96,7 +96,8 @@
                     modal_title_twig: _T("Edit field")|e("js"),
                     modal_class: "tiny",
                     modal_content_class: "scrolling",
-                    modal_onapprove: modal_onapprove
+                    modal_onapprove: modal_onapprove,
+                    modal_action_onshow: "activateHtmlEditor($('#field_information'));"
                 } %}
             }
             _editDynField();
