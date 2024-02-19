@@ -47,7 +47,9 @@ $('.message.with-transition')
             displayTime: 'auto',
             minDisplayTime: 5000,
             wordsPerMinute: 80,
-            position: 'top right',
+            showProgress: 'bottom',
+            closeIcon: true,
+            position: 'top attached',
             message: '{{ success|e('js') }}',
             showIcon: 'check circle outline',
             class: 'success'
@@ -75,7 +77,9 @@ $('.message.with-transition')
             displayTime: 'auto',
             minDisplayTime: 5000,
             wordsPerMinute: 80,
-            position: 'top right',
+            showProgress: 'bottom',
+            closeIcon: true,
+            position: 'top attached',
             title: '{{ info_title|e('js') }}',
             message: '{{ i|e('js') }}',
             showIcon: 'info',
@@ -105,9 +109,10 @@ $('.message.with-transition')
         $('body')
           .toast({
             displayTime: 0,
-            position: 'top right',
+            closeIcon: true,
+            position: 'top attached',
             message: '{{ error|e('js') }}',
-            showIcon: 'times',
+            showIcon: 'exclamation circle',
             class: 'error'
           })
         ;
@@ -126,7 +131,8 @@ $('.message.with-transition')
         $('body')
           .toast({
             displayTime: 0,
-            position: 'top right',
+            closeIcon: true,
+            position: 'top attached',
             message: '{{ warning|e('js') }}',
             showIcon: 'exclamation triangle',
             class: 'warning'

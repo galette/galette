@@ -59,7 +59,7 @@ class AjaxController extends AbstractController
         if (count($errors) > 0) {
             $messages['error'] = [
                 'title' => _T('- ERROR -'),
-                'icon' => 'times',
+                'icon' => 'exclamation circle',
                 'messages' => $errors
             ];
         }
