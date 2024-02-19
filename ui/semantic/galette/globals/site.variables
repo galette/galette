@@ -58,3 +58,6 @@
 
 @pluginsActiveBackground    : #d9f7d8;
 @pluginsInactiveBackground  : #ffead8;
+
+@infoColor: @blue;
+@warningColor: #e35a00;
