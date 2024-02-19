@@ -174,21 +174,8 @@
 
 {% block javascripts %}
     <script>
-        $('#field_information').summernote({
-            lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
-            height: 240,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'italic', 'strikethrough', 'clear']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link', 'picture']],
-                ['view', ['codeview', 'help']]
-            ],
-            styleTags: [
-                'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-            ]
+        $(function() {
+            activateHtmlEditor($('#field_information'));
         });
-        $('#field_information').summernote('focus');
-
     </script>
 {% endblock %}
