@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-02-20 07:53+0100\n"
-"PO-Revision-Date: 2024-02-08 22:37+0100\n"
+"PO-Revision-Date: 2024-02-20 06:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 msgid "Transaction"
@@ -816,13 +816,13 @@ msgstr "Vous devez fournir un identifiant et un mot de passe."
 #: ../../tempcache/elements/footer.html.twig:73
 #: ../../tempcache/elements/footer.html.twig:89
 msgid "A new Galette release is available."
-msgstr ""
+msgstr "Une nouvelle version de Galette est disponible."
 
 #: ../lib/Galette/Controllers/AuthController.php:141
 #: ../../tempcache/elements/footer.html.twig:75
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
-msgstr ""
+msgstr "Vous utilisez actuellement Galette %1$s, et %2$s est disponible."
 
 #: ../lib/Galette/Controllers/AuthController.php:160
 msgid "Your password is too weak! Please consider updating it."
@@ -1753,7 +1753,7 @@ msgstr "- Année invalide pour les cartes."
 
 #: ../lib/Galette/Core/Preferences.php:762
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- URL du site web invalide."
 
 #: ../lib/Galette/Core/Preferences.php:876
 msgid "%name association's %status"
@@ -7249,7 +7249,7 @@ msgstr "Non enregistré"
 
 #: ../../tempcache/pages/preferences.html.twig:517
 msgid "Prevent search engines indexation"
-msgstr ""
+msgstr "Empêche l'indexation par les moteurs de recherche"
 
 #: ../../tempcache/pages/preferences.html.twig:547
 msgid "Default language:"
