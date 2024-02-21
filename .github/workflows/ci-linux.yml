@@ -221,6 +221,7 @@ jobs:
           MYSQL_PASSWORD: g@l3tte
           MYSQL_ROOT_PASSWORD: g@l3tte
           MYSQL_DATABASE: galette_tests
+        command: if [[ -n $(command -v mariadb-admin) ]]; then mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci; fi
         # Open network ports for both mysql and pgsql
         ports:
           - 3306:3306
