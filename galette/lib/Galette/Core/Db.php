@@ -134,7 +134,7 @@ class Db
                 'database' => $_name_db
             );
             if ($_type_db === self::MYSQL && !defined('NON_UTF_DBCONNECT')) {
-                $this->options['charset'] = 'utf8';
+                $this->options['charset'] = 'utf8mb4';
             }
 
             $this->doConnection();
