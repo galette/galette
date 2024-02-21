@@ -198,14 +198,14 @@ jobs:
           - { php-version: "8.1", db-image: "mysql:5.7", coverage: none, always: false }
           - { php-version: "8.1", db-image: "mysql:8.1", coverage: none, always: false }
           - { php-version: "8.1", db-image: "mariadb:10.4", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mariadb:11", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "mariadb:11.2", coverage: none, always: false }
           - { php-version: "8.1", db-image: "postgres:11", coverage: none, always: false }
           - { php-version: "8.1", db-image: "postgres:16", coverage: none, always: false }
           #higher stable php version
           - { php-version: "8.3", db-image: "mysql:5.7", coverage: none, always: true }
           - { php-version: "8.3", db-image: "mysql:8.1", coverage: none, always: false }
           - { php-version: "8.3", db-image: "mariadb:10.4", coverage: none, always: true }
-          - { php-version: "8.3", db-image: "mariadb:11", coverage: none, always: false }
+          - { php-version: "8.3", db-image: "mariadb:11.2", coverage: none, always: false }
           - { php-version: "8.3", db-image: "postgres:11", coverage: none, always: true }
           - { php-version: "8.3", db-image: "postgres:16", coverage: 'xdebug', always: true }
       fail-fast: false
