@@ -187,18 +187,28 @@
         <script type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
         <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getID()|replace({'_': '-'}) }}.min.js"></script>
         <script type="text/javascript">
-            function activateHtmlEditor(elt) {
-                elt.summernote({
-                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
-                    disableDragAndDrop: true,
-                    height: 240,
-                    toolbar: [
+            function activateHtmlEditor(elt, basic) {
+                if (basic === true) {
+                    var _toolbar = [
+                        ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                        ['para', ['ul', 'ol']],
+                        ['insert', ['link']],
+                        ['view', ['codeview']]
+                    ];
+                } else {
+                    var _toolbar = [
                         ['style', ['style']],
                         ['font', ['bold', 'italic', 'strikethrough', 'clear']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['insert', ['link', 'picture']],
-                        ['view', ['codeview', 'help']]
-                    ],
+                        ['view', ['codeview']]
+                    ];
+                }
+                elt.summernote({
+                    lang: '{{ i18n.getID()|replace({'_': '-'}) }}',
+                    disableDragAndDrop: true,
+                    height: 240,
+                    toolbar: _toolbar,
                     styleTags: [
                         'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
                     ],
