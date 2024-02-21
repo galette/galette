@@ -25,7 +25,7 @@
                     {{ _T(fieldset.label) }}
                 </div>
                 <div class="active content field">
-                    <div class="ui three column stackable grid">
+                    <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
                     {% if masschange is not defined and not self_adh and fieldset.id == '1' %}
                         <div class="sixteen wide field column">
                             {% include "components/forms/picture.html.twig" %}

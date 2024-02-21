@@ -103,6 +103,7 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_publicpages
  * @property integer $pref_publicpages_visibility
  * @property boolean $pref_bool_selfsubscribe
+ * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
  * @property string $pref_new_contrib_script
  * @property boolean $pref_bool_wrap_mails
@@ -248,8 +249,10 @@ class Preferences
         'pref_theme'        =>    'default',
         'pref_bool_publicpages' => true,
         'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-        'pref_bool_selfsubscribe' => true,
         'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
+        /* Preferences for member/subscribe form */
+        'pref_bool_selfsubscribe' => true,
+        'pref_member_form_grid' => 'one',
         /* New contribution script */
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,

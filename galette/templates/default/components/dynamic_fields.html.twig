@@ -37,6 +37,9 @@
                     {{ field.getName()|escape }}
                 </label>
             {% endif %}
+            {% if field.getInformation() and field.hasInformationAbove() %}
+                <div class="exemple">{{ field.getInformation()|raw }}</div>
+            {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\Text' %}
                 <textarea name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
                     cols="{% if field.getWidth() > 0 %}{{ field.getWidth() }}{% else %}61{% endif %}"
@@ -73,6 +76,9 @@
                     {% endfor %}
                 </select>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
+                {% if preferences.pref_field_information_position == 'above' %}
+                    <div class="exemple">{{ _T("(yyyy-mm-dd format)") }}</div>
+                {% endif %}
                 <div id="dynamic_date_{{ field.getId() }}_rangestart" class="ui calendar">
                     <div class="ui fluid input left icon">
                         <i class="calendar icon" aria-hidden="true"></i>
@@ -86,7 +92,9 @@
                         />
                     </div>
                 </div>
-                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
+                {% if preferences.pref_field_information_position == 'below' %}
+                    <div class="exemple">{{ _T("(yyyy-mm-dd format)") }}</div>
+                {% endif %}
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
                 <div class="ui toggle checkbox">
                     <input type="checkbox" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" value="1"
@@ -136,6 +144,9 @@
                 </div>
                 {% endif %}
             {% endif %}
+            {% if field.getInformation() and not field.hasInformationAbove() %}
+                <div class="exemple">{{ field.getInformation()|raw }}</div>
+            {% endif %}
         {% endmacro %}
 
         <div class="ui styled fluid accordion field">
@@ -144,7 +155,7 @@
                 {{ _T("Additionnal fields:") }}
             </div>
             <div class="active content field">
-                <div class="ui three column stackable grid">
+                <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
                 {% set access_level = login.getAccessLevel() %}
                 {% for field in fields %}
                     {% set perm = field.getPerm() %}
@@ -170,9 +181,6 @@
                             {% for field_data in values %}
                                 <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
                                     {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
-                                    {% if field.getInformation() %}
-                                        <div class="exemple">{{ field.getInformation()|raw }}</div>
-                                    {% endif %}
                                 </div>
                             {% endfor %}
                             {% if values is not iterable or values|length == 0 %}

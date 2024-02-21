@@ -293,6 +293,14 @@
                             <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
                         </div>
                     </div>
+                    <div id="pref_member_form_grid_field" class="inline field">
+                        <label for="pref_member_form_grid">{{ _T("Number of columns on the member form") }}</label>
+                        <select name="pref_member_form_grid" id="pref_member_form_grid" class="ui dropdown">
+                            <option value="one"{% if pref.pref_member_form_grid == 'one' %} selected="selected"{% endif %}>1</option>
+                            <option value="two"{% if pref.pref_member_form_grid == 'two' %} selected="selected"{% endif %}>2</option>
+                            <option value="three"{% if pref.pref_member_form_grid == 'three' %} selected="selected"{% endif %}>3</option>
+                        </select>
+                    </div>
                     <div class="field">
                         <label for="pref_new_contrib_script">{{ _T("Post new contribution script URI") }}</label>
                         <div class="ui right corner labeled input">
