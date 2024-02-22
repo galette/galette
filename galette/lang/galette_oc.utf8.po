@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-02-20 07:53+0100\n"
-"PO-Revision-Date: 2024-02-06 10:01+0000\n"
+"PO-Revision-Date: 2024-02-22 21:18+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.4-dev\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 msgid "Transaction"
@@ -784,7 +784,7 @@ msgstr "Impossible de recuperar la lista dei grops."
 #: ../lib/Galette/Controllers/PdfController.php:525
 #: ../lib/Galette/Core/Install.php:1186 ../lib/Galette/Core/Galette.php:402
 msgid "PDF models"
-msgstr ""
+msgstr "Modèles PDF"
 
 #: ../lib/Galette/Controllers/PdfController.php:554
 msgid "Missing PDF model type!"
@@ -2627,7 +2627,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:405
 #: ../../tempcache/pages/advanced_search.html.twig:703
 msgid "Begin date"
-msgstr ""
+msgstr "Data de començament"
 
 #: ../lib/Galette/Features/Replacements.php:409
 #: ../../tempcache/pages/advanced_search.html.twig:747
@@ -3563,7 +3563,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:287
 msgid "partnership"
-msgstr ""
+msgstr "Partenariat"
 
 #: ../includes/i18n.inc.php:288
 msgid "reduced annual fee"
