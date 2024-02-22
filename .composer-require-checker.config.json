@@ -77,7 +77,9 @@
     "split_sql_file",
     "_T",
     "__",
-
+    "_Tn",
+    "_Tx",
+    "_Tnx",
 
     "// XHProf PECL extension",
     "XHProfRuns_Default",
