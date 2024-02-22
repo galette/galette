@@ -27,7 +27,9 @@
 {% endif %}
 
 {# Let's see if there are error messages to show #}
-{% set errors = flash.getMessage('error_detected') ?? []|merge(flash.getMessage('error') ?? [])|merge(loginfaults ?? []) %}
+{% set errors = flash.getMessage('error_detected') ?? [] %}
+{% set errors = errors|merge(flash.getMessage('error') ?? []) %}
+{% set errors = errors|merge(loginfaults ?? []) %}
 {% if error_detected is defined and error_detected is iterable %}
     {% for e in error_detected %}
         {% set errors = errors|merge([e]) %}
@@ -56,7 +58,8 @@
 {% endif %}
 
 {# Let's see if there are warning messages to show #}
-{% set warnings = flash.getMessage('warning_detected') ?? []|merge(flash.getMessage('warning') ?? []) %}
+{% set warnings = flash.getMessage('warning_detected') ?? [] %}
+{% set warnings = warnings|merge(flash.getMessage('warning') ?? []) %}
 {% if warning_detected is defined and warning_detected is iterable %}
     {% for w in warning_detected %}
         {% set warnings = warnings|merge([w]) %}
@@ -85,27 +88,28 @@
 {% endif %}
 
 {# Let's see if there are success messages to show #}
-{% set successs = flash.getMessage('success_detected') ?? []|merge(flash.getMessage('success') ?? []) %}
+{% set success = flash.getMessage('success_detected') ?? [] %}
+{% set success = success|merge(flash.getMessage('success') ?? []) %}
 {% if success_detected is defined and success_detected is iterable %}
-    {% for s in success_detected %}
-        {% set successs = successs|merge([s]) %}
+    {% for entry in success_detected %}
+        {% set success = success|merge([entry]) %}
     {% endfor %}
 {% endif %}
-{% if successs is iterable and successs|length > 0 %}
+{% if success is iterable and success|length > 0 %}
     <noscript>
         <div class="ui success icon message">
             <i class="check circle outline icon" aria-hidden="true"></i>
             <i class="window close outline icon" aria-hidden="true"></i>
             <div class="content">
-            {% if successs|length > 1 %}
+            {% if success|length > 1 %}
                 <ul class="list">
-                {% for success in successs %}
-                    <li>{{ success|raw }}</li>
+                {% for entry in success %}
+                    <li>{{ entry|raw }}</li>
                 {% endfor %}
                 </ul>
             {% else %}
-                {% for success in successs %}
-                    <p>{{ success|raw }}</p>
+                {% for entry in success %}
+                    <p>{{ entry|raw }}</p>
                 {% endfor %}
             {% endif %}
             </div>
@@ -114,7 +118,8 @@
 {% endif %}
 
 {# Let's see if there are info messages to show #}
-{% set info = flash.getMessage('info_detected') ?? []|merge(flash.getMessage('info') ?? []) %}
+{% set info = flash.getMessage('info_detected') ?? [] %}
+{% set info = info|merge(flash.getMessage('info') ?? []) %}
 {% if info_detected is defined and info_detected is iterable %}
     {% for i in info_detected %}
         {% set info = info|merge([i]) %}
@@ -132,14 +137,15 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    {% for i in info %}
+                    {% for entry in info %}
                         {% set info_title = '' %}
-                        {% if i is iterable %}
-                            {% set info_title = i.title %}
+                        {% set info_message = entry %}
+                        {% if entry is iterable %}
+                            {% set info_title = entry.title %}
                             <p class="header">{{ info_title }}</p>
-                            {% set i = i.message %}
+                            {% set info_message = entry.message %}
                         {% endif %}
-                        <p>{{ i|raw }}</p>
+                        <p>{{ entry|raw }}</p>
                     {% endfor %}
                 {% endif %}
             </div>
