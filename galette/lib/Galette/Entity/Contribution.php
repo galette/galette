@@ -24,6 +24,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateTime;
 use Galette\Events\GaletteEvent;
+use Galette\Features\HasEvent;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -62,6 +63,7 @@ use Galette\Features\Dynamics;
 class Contribution
 {
     use Dynamics;
+    use HasEvent;
 
     public const TABLE = 'cotisations';
     public const PK = 'id_cotis';
@@ -120,6 +122,12 @@ class Contribution
 
         global $preferences;
         $this->_payment_type = $preferences->pref_default_paymenttype;
+
+        $this
+            ->withAddEvent()
+            ->withEditEvent()
+            ->withoutDeleteEvent()
+            ->activateEvents();
 
         /*
          * Fields configuration. Each field is an array and must reflect:
@@ -665,7 +673,7 @@ class Contribution
                         _T("Contribution added"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
-                    $event = 'contribution.add';
+                    $event = $this->getAddEventName();
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
@@ -687,7 +695,7 @@ class Contribution
                     );
                 }
 
-                $event = 'contribution.edit';
+                $event = $this->getEditEventName();
             }
             //update deadline
             if ($this->isFee()) {
@@ -701,7 +709,7 @@ class Contribution
             $this->_orig_amount = $this->_amount;
 
             //send event at the end of process, once all has been stored
-            if ($event !== null) {
+            if ($event !== null && $this->areEventsEnabled()) {
                 $emitter->dispatch(new GaletteEvent($event, $this));
             }
 
@@ -1497,5 +1505,15 @@ class Contribution
         }
 
         return $this;
+    }
+
+    /**
+     * Get prefix for events
+     *
+     * @return string
+     */
+    protected function getEventsPrefix(): string
+    {
+        return 'contribution';
     }
 }

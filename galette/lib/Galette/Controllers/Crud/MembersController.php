@@ -1285,7 +1285,9 @@ class MembersController extends CrudController
                         && !$this->login->isStaff()
                         && $this->login->isGroupManager();
                     $member = new Adherent($this->zdb);
-                    $member->disableAllDeps();
+                    $member
+                        ->disableAllDeps()
+                        ->disableEvents();
                     if ($is_manager) {
                         $member->enableDep('groups');
                     }
