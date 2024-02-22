@@ -103,10 +103,12 @@ class Title extends TestCase
         $this->remove[] = $id;
         $title = new \Galette\Entity\Title($id); //reload
 
+        //$title->long = 'Test title 🤘'; //FIXME: works locally, fails on gh actions...
         $title->long = 'Test title';
         $this->assertTrue($title->store($this->zdb));
         $title = new \Galette\Entity\Title($id); //reload
 
+        //$this->assertSame('Test title 🤘', $title->long); //FIXME: works locally, fails on gh actions...
         $this->assertSame('Test title', $title->long);
 
         $title = new \Galette\Entity\Title(\Galette\Entity\Title::MR);

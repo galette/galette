@@ -1,4 +1,4 @@
--- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- CREATE DATABASE `galette` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 -- $Id$
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,7 +45,7 @@ CREATE TABLE galette_adherents (
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (parent_id) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_cotisations;
 CREATE TABLE galette_cotisations (
@@ -64,7 +64,7 @@ CREATE TABLE galette_cotisations (
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (trans_id) REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (type_paiement_cotis) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
@@ -77,7 +77,7 @@ CREATE TABLE galette_transactions (
   PRIMARY KEY (trans_id),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
@@ -85,7 +85,7 @@ CREATE TABLE galette_statuts (
   libelle_statut varchar(255) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY (id_statut)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_titles;
 CREATE TABLE galette_titles (
@@ -93,7 +93,7 @@ CREATE TABLE galette_titles (
   short_label varchar(10) NOT NULL default '',
   long_label varchar(100) default '',
   PRIMARY KEY (id_title)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
@@ -102,7 +102,7 @@ CREATE TABLE galette_types_cotisation (
   amount double NULL,
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_preferences;
 CREATE TABLE galette_preferences (
@@ -111,7 +111,7 @@ CREATE TABLE galette_preferences (
   val_pref varchar(255) NOT NULL default '',
   PRIMARY KEY (id_pref),
   UNIQUE (nom_pref)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
@@ -123,7 +123,7 @@ CREATE TABLE galette_logs (
   action_log text,
   sql_log text,
   PRIMARY KEY (id_log)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- Table for dynamic fields description;
 DROP TABLE IF EXISTS galette_field_types;
@@ -146,7 +146,7 @@ CREATE TABLE galette_field_types (
     field_information_above tinyint(1) NOT NULL default 0,
     PRIMARY KEY (field_id),
     INDEX (field_form)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- Table for dynamic fields data;
 DROP TABLE IF EXISTS galette_dynamic_fields;
@@ -158,7 +158,7 @@ CREATE TABLE galette_dynamic_fields (
     field_val text,
     PRIMARY KEY (item_id, field_id, field_form, val_index),
     FOREIGN KEY (field_id) REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE galette_pictures (
@@ -166,7 +166,7 @@ CREATE TABLE galette_pictures (
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
     PRIMARY KEY (id_adh)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
@@ -176,7 +176,7 @@ CREATE TABLE galette_l10n (
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(255) NOT NULL default '',
     PRIMARY KEY (text_orig, text_locale)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- new table for temporary passwords 2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
@@ -186,7 +186,7 @@ CREATE TABLE galette_tmppasswds (
     date_crea_tmp_passwd datetime NOT NULL,
     PRIMARY KEY (id_adh),
     FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
@@ -199,21 +199,21 @@ CREATE TABLE galette_texts (
   tcomment varchar(255) NOT NULL,
   PRIMARY KEY (tid),
   UNIQUE KEY `localizedtxt` (tref, tlang)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE galette_fields_categories (
   id_field_category int(2) NOT NULL AUTO_INCREMENT,
   table_name varchar(30) NOT NULL,
-  category varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  category varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   position int(2) NOT NULL,
   PRIMARY KEY (id_field_category)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
-  table_name varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  field_id varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  table_name varchar(30) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  field_id varchar(30) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   required tinyint(1) NOT NULL,
   visible tinyint(1) NOT NULL,
   position int(2) NOT NULL,
@@ -223,14 +223,14 @@ CREATE TABLE galette_fields_config (
   width_in_forms tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (table_name, field_id),
   FOREIGN KEY (id_field_category) REFERENCES galette_fields_categories (id_field_category) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Table for mailing history storage;
 DROP TABLE IF EXISTS galette_mailing_history;
 CREATE TABLE galette_mailing_history (
   mailing_id smallint(6) NOT NULL auto_increment,
   mailing_sender int(10) unsigned,
-  mailing_subject varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  mailing_subject varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   mailing_body text NOT NULL,
   mailing_date datetime NOT NULL,
   mailing_recipients text NOT NULL,
@@ -239,18 +239,18 @@ CREATE TABLE galette_mailing_history (
   mailing_sender_address varchar(255) DEFAULT NULL,
   PRIMARY KEY (mailing_id),
   FOREIGN KEY (mailing_sender) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- table for groups
 DROP TABLE IF EXISTS galette_groups;
 CREATE TABLE galette_groups (
   id_group int(10) NOT NULL AUTO_INCREMENT,
-  group_name varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  group_name varchar(250) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   creation_date datetime NOT NULL,
   parent_group int(10) DEFAULT NULL,
   PRIMARY KEY (id_group),
   FOREIGN KEY (parent_group) REFERENCES galette_groups (id_group) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- table for groups managers
 DROP TABLE IF EXISTS galette_groups_managers;
@@ -260,7 +260,7 @@ CREATE TABLE galette_groups_managers (
   PRIMARY KEY (id_group,id_adh),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- table for groups member
 DROP TABLE IF EXISTS galette_groups_members;
@@ -270,7 +270,7 @@ CREATE TABLE galette_groups_members (
   PRIMARY KEY (id_group,id_adh),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (id_group) REFERENCES galette_groups (id_group) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Table for reminders
 DROP TABLE IF EXISTS galette_reminders;
@@ -284,7 +284,7 @@ CREATE TABLE galette_reminders (
   reminder_comment text,
   PRIMARY KEY (reminder_id),
   FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Table for PDF models
 DROP TABLE IF EXISTS galette_pdfmodels;
@@ -300,7 +300,7 @@ CREATE TABLE galette_pdfmodels (
   model_subtitle varchar(250),
   model_parent int(10) unsigned DEFAULT NULL REFERENCES galette_pdfmodels (model_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (model_id)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- Table for import models
 DROP TABLE IF EXISTS galette_import_model;
@@ -309,7 +309,7 @@ CREATE TABLE galette_import_model (
   model_fields text,
   model_creation_date datetime NOT NULL,
   PRIMARY KEY (model_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Table for payment types
 DROP TABLE IF EXISTS galette_paymenttypes;
@@ -317,7 +317,7 @@ CREATE TABLE galette_paymenttypes (
   type_id int(10) unsigned NOT NULL auto_increment,
   type_name varchar(255) NOT NULL,
   PRIMARY KEY (type_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- table for saved searches
 DROP TABLE IF EXISTS galette_searches;
@@ -330,7 +330,7 @@ CREATE TABLE galette_searches (
   creation_date datetime NOT NULL,
   PRIMARY KEY (search_id),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- new table for temporary links
 DROP TABLE IF EXISTS galette_tmplinks;
@@ -340,7 +340,7 @@ CREATE TABLE galette_tmplinks (
   id int(10) unsigned,
   creation_date datetime NOT NULL,
   PRIMARY KEY (target, id)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- table for social networks
 DROP TABLE IF EXISTS galette_socials;
@@ -352,13 +352,13 @@ CREATE TABLE galette_socials (
   PRIMARY KEY (id_social),
   KEY (type),
   FOREIGN KEY (id_adh) REFERENCES  galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 INSERT INTO galette_database(version) VALUES(1.10);
 
 SET FOREIGN_KEY_CHECKS=1;
