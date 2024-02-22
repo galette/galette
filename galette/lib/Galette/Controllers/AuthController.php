@@ -136,6 +136,13 @@ class AuthController extends AbstractController
         }
 
         if ($this->login->isLogged()) {
+            if (defined('NON_UTF_DBCONNECT')) {
+                $this->flash->addMessage(
+                    'warning',
+                    'It appears you are using NON_UTF_DBCONNECT constant, it will be in next major release.'
+                );
+            }
+
             if (!$checkpass->isValid($password)) {
                 //password is no longer valid with current rules, must be changed
                 $this->flash->addMessage(
