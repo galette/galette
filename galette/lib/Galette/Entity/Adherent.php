@@ -363,6 +363,7 @@ class Adherent
         $this->_address = $r->adresse_adh;
         $this->_zipcode = $r->cp_adh;
         $this->_town = $r->ville_adh;
+        $this->_region = $r->region_adh;
         $this->_country = $r->pays_adh;
         $this->_phone = $r->tel_adh;
         $this->_gsm = $r->gsm_adh;
@@ -1554,7 +1555,8 @@ class Adherent
                 '_nickname' => 'pseudo_adh',
                 '_address'  => 'adresse_adh',
                 '_zipcode'  => 'cp_adh',
-                '_town'     => 'ville_adh'
+                '_town'     => 'ville_adh',
+                '_region'   => 'region_adh'
             ];
             foreach ($notnull as $prop => $field) {
                 if (!isset($this->$prop) || $this->$prop === null) {
@@ -1982,6 +1984,24 @@ class Adherent
         }
 
         return $town ?? '';
+    }
+
+    /**
+     * Get member region.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     *
+     * @return string
+     */
+    public function getRegion(): string
+    {
+        $address = $this->_address;
+        $region = $this->_region;
+        if (empty($address) && $this->hasParent()) {
+            $this->loadParent();
+            $region = $this->parent->region;
+        }
+
+        return $region ?? '';
     }
 
     /**
