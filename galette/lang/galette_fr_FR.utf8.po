@@ -1552,7 +1552,7 @@ msgid "Manage additional fields for various forms"
 msgstr "Gestion de champs additionnels pour différents formulaires"
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr "Traduction des étiquettes pour les champs additionnels"
 
 #: ../lib/Galette/Core/Galette.php:372

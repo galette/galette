@@ -1715,7 +1715,7 @@ msgstr "Gestiona els camps addicionals per a diversos formularis"
 
 #: ../lib/Galette/Core/Galette.php:366
 #, fuzzy
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr "Tradueix les etiquetes dels camps d'addició"
 
 #: ../lib/Galette/Core/Galette.php:372

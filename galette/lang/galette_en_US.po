@@ -1515,8 +1515,8 @@ msgid "Manage additional fields for various forms"
 msgstr "Manage additional fields for various forms"
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
-msgstr "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
+msgstr "Translate additional fields labels"
 
 #: ../lib/Galette/Core/Galette.php:372
 msgid "Manage statuses"

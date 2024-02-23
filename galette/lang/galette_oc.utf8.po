@@ -1532,7 +1532,7 @@ msgid "Manage additional fields for various forms"
 msgstr "Governar lei camps suplementaris per lei formularis"
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr "Traduccion deis etiquetas per lei camps suplementaris"
 
 #: ../lib/Galette/Core/Galette.php:372

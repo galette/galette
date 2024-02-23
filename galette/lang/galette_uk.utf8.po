@@ -1554,7 +1554,7 @@ msgid "Manage additional fields for various forms"
 msgstr "Управління додатковими полями для різних форм"
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr "Переклад додаткових міток полів"
 
 #: ../lib/Galette/Core/Galette.php:372
