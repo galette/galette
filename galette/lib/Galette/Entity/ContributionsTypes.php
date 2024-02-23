@@ -146,7 +146,7 @@ class ContributionsTypes
      */
     public function isExtension(): bool
     {
-        return $this->is_extension;
+        return $this->extension != 0;
     }
 
     /**
@@ -406,7 +406,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' =>  $extension  
+                'cotis_extension' =>  $extension
             );
 
             $insert = $this->zdb->insert(self::TABLE);
@@ -465,7 +465,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' => $extension  
+                'cotis_extension' => $extension
             );
 
             $update = $this->zdb->update(self::TABLE);
@@ -584,7 +584,7 @@ class ContributionsTypes
     public function __get(string $name)
     {
         $forbidden = array();
-        $virtuals = array('extension', 'isextension', 'libelle');
+        $virtuals = array('extension', 'libelle');
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)
@@ -593,8 +593,6 @@ class ContributionsTypes
             switch ($name) {
                 case 'libelle':
                     return _T($this->label);
-                case 'isextension':
-                    return $this->isExtension();
                 default:
                     return $this->$name;
             }
