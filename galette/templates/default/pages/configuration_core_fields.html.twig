@@ -39,7 +39,7 @@
             </div>
             <div class="content">
                 <div class="ui basic fitted segment">
-                    <div class="ui three column stackable grid core-fields-properties">
+                    <div class="ui {% if preferences.pref_member_form_grid != 'one' %}four{% else %}three{% endif %} column stackable grid core-fields-properties">
                         <div class="middle aligned row">
                             <div class="column">
                                 <span class="ui fluid label">{{ _T("Field name") }}</span>
@@ -50,6 +50,11 @@
                             <div class="column">
                                 <span class="ui fluid label">{{ _T("Permissions") }}</span>
                             </div>
+    {% if preferences.pref_member_form_grid != 'one' %}
+                            <div class="column">
+                                <span class="ui fluid label">{{ _T("Width in forms") }}</span>
+                            </div>
+    {% endif %}
                         </div>
                     </div>
                 </div>
@@ -59,7 +64,7 @@
         {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
             {% set fid = field.field_id %}
                     <li class="ui segment">
-                        <div class="ui three column stackable grid core-fields-listing">
+                        <div class="ui {% if preferences.pref_member_form_grid != 'one' %}four{% else %}three{% endif %} column stackable grid core-fields-listing">
                             <div class="middle aligned row">
                                 <div class="column">
                                     <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
@@ -90,6 +95,19 @@
                                         </select>
                                     </span>
                                 </div>
+            {% if preferences.pref_member_form_grid != 'one' %}
+                                <div class="column">
+                                    <span data-prop-label="{{ _T("Width in forms") }}" class="access" title="{{ _T("Change field's width with in forms") }}">
+                                        <select name="{{ fid }}_width_in_forms" id="{{ fid }}_width_in_forms" class="ui dropdown">
+                                            <option value="1"{% if field.width_in_forms == 1 %} selected="selected"{% endif %}>{{ _T("Default") }}</option>
+                                            <option value="2"{% if field.width_in_forms == 2 %} selected="selected"{% endif %}>{{ _T("Full") }}</option>
+                {% if preferences.pref_member_form_grid == 'three' %}
+                                            <option value="3"{% if field.width_in_forms == 3 %} selected="selected"{% endif %}>{{ _T("Half") }}</option>
+                {% endif %}
+                                        </select>
+                                    </span>
+                                </div>
+            {% endif %}
                             </div>
                         </div>
                     </li>

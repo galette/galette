@@ -8,4 +8,9 @@ ALTER TABLE galette_transactions ADD FOREIGN KEY (type_paiement_trans)
     REFERENCES galette_paymenttypes (type_id)
     ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- Add field_min_size to galette_field_types
-ALTER TABLE galette_field_types ADD field_min_size integer(10) NULL DEFAULT NULL
+ALTER TABLE galette_field_types ADD field_min_size integer(10) NULL DEFAULT NULL;
+-- Add display properties to core fields
+ALTER TABLE galette_fields_config ADD width_in_forms tinyint(1) NOT NULL DEFAULT 1;
+-- Add display properties to dynamic fields
+ALTER TABLE galette_field_types ADD field_width_in_forms tinyint(1) NOT NULL DEFAULT 1;
+ALTER TABLE galette_field_types ADD field_information_above tinyint(1) NOT NULL DEFAULT 0;

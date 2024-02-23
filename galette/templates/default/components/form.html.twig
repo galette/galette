@@ -37,7 +37,12 @@
                         </div>
                     {% endif %}
                     {% for entry in fieldset.elements %}
-                        <div class="field column">
+                        {% if entry.width_in_forms == 1 or (preferences.pref_member_form_grid == 'two' and entry.width_in_forms == 3) %}
+                          {% set columns = '' %}
+                        {% else %}
+                          {% set columns = (entry.width_in_forms == 3) ? 'eight wide ' : 'sixteen wide ' %}
+                        {% endif %}
+                        <div class="{{ columns }}field column">
                         {% set template = "text.html.twig" %}
                         {% set title = null %}
                         {% set tip = null %}

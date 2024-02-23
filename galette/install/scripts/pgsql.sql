@@ -47,7 +47,7 @@ CREATE SEQUENCE galette_logs_id_seq
     MAXVALUE 2147483647
     MINVALUE 1
     CACHE 1;
-    
+
 -- Sequence for dynamic fields description;
 DROP SEQUENCE IF EXISTS galette_field_types_id_seq;
 CREATE SEQUENCE galette_field_types_id_seq
@@ -306,6 +306,8 @@ CREATE TABLE galette_field_types (
   field_size integer DEFAULT NULL,
   field_repeat integer DEFAULT NULL,
   field_information text DEFAULT NULL,
+  field_width_in_forms integer DEFAULT '1' NOT NULL,
+  field_information_above boolean DEFAULT FALSE,
   PRIMARY KEY (field_id)
 );
 -- add index, field_form is used elsewhere
@@ -380,6 +382,7 @@ CREATE TABLE galette_fields_config (
   position integer NOT NULL,
   list_visible boolean NOT NULL,
   list_position integer NOT NULL,
+  width_in_forms integer DEFAULT '1' NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (table_name, field_id)
 );

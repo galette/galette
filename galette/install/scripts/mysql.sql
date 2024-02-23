@@ -142,6 +142,8 @@ CREATE TABLE galette_field_types (
     field_size int(10) default NULL,
     field_repeat int(10) default NULL,
     field_information TEXT default NULL,
+    field_width_in_forms tinyint(1) NOT NULL default 1,
+    field_information_above tinyint(1) NOT NULL default 0,
     PRIMARY KEY (field_id),
     INDEX (field_form)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -218,6 +220,7 @@ CREATE TABLE galette_fields_config (
   id_field_category int(2) NOT NULL,
   list_visible tinyint(1) NOT NULL,
   list_position int(2) NOT NULL,
+  width_in_forms tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (table_name, field_id),
   FOREIGN KEY (id_field_category) REFERENCES galette_fields_categories (id_field_category) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
