@@ -237,30 +237,39 @@ class Contribution
         $begin_date = new \DateTime($this->_begin_date);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            list($j, $m) = explode('/', $preferences->pref_beg_membership);
-            $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
-            while ($next_begin_date <= $begin_date) {
-                $next_begin_date->add(new \DateInterval('P1Y'));
-            }
+            if($this->_type->extension < 1){ // 0 = donate; -1= else duration (months)
 
-            if ($preferences->pref_membership_offermonths > 0) {
-                //count days until next membership begin date
-                $diff1 = (int)$now->diff($next_begin_date)->format('%a');
-
-                //count days between next membership begin date and offered months
-                $tdate = clone $next_begin_date;
-                $tdate->sub(new \DateInterval('P' . $preferences->pref_membership_offermonths . 'M'));
-                $diff2 = (int)$next_begin_date->diff($tdate)->format('%a');
-
-                //when number of days until next membership begin date is less than or equal to the offered months, it's free :)
-                if ($diff1 <= $diff2) {
+                list($j, $m) = explode('/', $preferences->pref_beg_membership);
+                $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+                while ($next_begin_date <= $begin_date) {
                     $next_begin_date->add(new \DateInterval('P1Y'));
                 }
-            }
 
-            // Caution : the end_date to retrieve is the day before the next_begin_date.
-            $end_date = clone $next_begin_date;
-            $end_date->sub(new \DateInterval('P1D'));
+                if ($preferences->pref_membership_offermonths > 0) {
+                    //count days until next membership begin date
+                    $diff1 = (int)$now->diff($next_begin_date)->format('%a');
+
+                    //count days between next membership begin date and offered months
+                    $tdate = clone $next_begin_date;
+                    $tdate->sub(new \DateInterval('P' . $preferences->pref_membership_offermonths . 'M'));
+                    $diff2 = (int)$next_begin_date->diff($tdate)->format('%a');
+
+                    //when number of days until next membership begin date is less than or equal to the offered months, it's free :)
+                    if ($diff1 <= $diff2) {
+                        $next_begin_date->add(new \DateInterval('P1Y'));
+                    }
+                }
+
+                // Caution : the end_date to retrieve is the day before the next_begin_date.
+                $end_date = clone $next_begin_date;
+                $end_date->sub(new \DateInterval('P1D'));
+            }
+            else
+            {   
+                $dext = new \DateInterval('P' . $this->_type->extension . 'M');
+                $end_date = $begin_date->add($dext);
+                $end_date->sub(new \DateInterval('P1D')); //-1 day
+            }
             $this->_end_date = $end_date->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
@@ -568,7 +577,7 @@ class Contribution
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
             )->where([Adherent::PK => $this->_member])
-                ->where(array('cotis_extension' => new Expression('true')))
+                ->where->notEqualTo('cotis_extension', 0)
                 ->where->nest->nest
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
                 ->lessThanOrEqualTo('date_debut_cotis', $this->_end_date)
@@ -869,9 +878,8 @@ class Contribution
                 array()
             )->where(
                 [Adherent::PK => $member_id]
-            )->where(
-                array('cotis_extension' => new Expression('true'))
-            );
+            )
+            ->where->notEqualTo('cotis_extension', 0);
 
             $results = $zdb->execute($select);
             $result = $results->current();
@@ -1484,10 +1492,10 @@ class Contribution
             //set type
             $this->_type = new ContributionsTypes($this->zdb, $type);
             //set is_cotis according to type
-            if ($this->_type->extension == 1) {
-                $this->_is_cotis = true;
-            } else {
+            if ($this->_type->extension == 0) {
                 $this->_is_cotis = false;
+            } else {
+                $this->_is_cotis = true;
             }
         } else {
             Analog::log(

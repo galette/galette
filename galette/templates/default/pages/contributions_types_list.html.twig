@@ -53,10 +53,15 @@
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Extends membership?") }}">
-                        <select name="cotis_extension" class="ui dropdown">
-                            <option value="0" selected="selected">{{ _T("No") }}</option>
-                            <option value="1">{{ _T("Yes") }}</option>
-                        </select>
+                        {% set cotisextensions = {  (0) : _T("No"), (-1) : _T("By default"), (1) :  '1 ' ~ _T("month")} %}
+                        {% for m in 2..11 %} {% set cotisextensions =   cotisextensions + { (m) : (m ~' ' ~ _T("months") ) }  %} {% endfor %}
+                        {% include "components/forms/select.html.twig" with {
+                            id: 'cotis_extension',
+                            value: 0,
+                            values: cotisextensions,
+                            required: false,
+                            tip: ''
+                        } %}               
                     </td>
                     <td class="center actions_row">
                         <input type="hidden" name="new" value="1" />
@@ -85,10 +90,14 @@
                         {{ entry.amount }}
                     </td>
                     <td data-col-label="{{ _T("Extends membership?") }}">
-    {% if entry.extra == 1 %}
-                        {{ _T("Yes") }}
-    {% else %}
+    {% if entry.extra == -1 %}
+                        {{ _T("By default") }}
+    {% elseif entry.extra == 0 %}
                         {{ _T("No") }}
+    {% elseif entry.extra == 1 %}                        
+                        1 {{ _T("month") }}
+    {% else %}
+                        {{ entry.extra }} {{ _T("months") }}
     {% endif %}
                     </td>
                     <td class="center actions_row">

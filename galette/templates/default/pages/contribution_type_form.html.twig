@@ -33,11 +33,17 @@
                 <label for="amount">{{ _T("Amount:") }}</label>
                 <input type="text" name="amount" id="amount" value="{{ entry.amount }}"/>
             </div>
-            <div class="ui toggle checkbox">
-                <input type="checkbox" name="cotis_extension" id="cotis_extension" value="1"{% if entry.cotis_extension == 1 %} checked="checked"{% endif %} />
-                <label for="cotis_extension">
-                    {{ _T("Extends membership?") }}
-                </label>
+            <div class="field inline">
+                    {% set cotisextensions = {  (0) : _T("No"), (-1) : _T("By default"), (1) :  '1 ' ~ _T("month")} %}
+                    {% for m in 2..11 %} {% set cotisextensions =   cotisextensions + { (m) : (m ~' ' ~ _T("months") ) }  %} {% endfor %}
+                    {% include "components/forms/select.html.twig" with {
+                    id: 'cotis_extension',
+                    value: entry.cotis_extension,
+                    values: cotisextensions,
+                    required: false,
+                    label : _T("Extends membership?"),
+                    tip: ''
+                } %}            
             </div>
         </div>
 

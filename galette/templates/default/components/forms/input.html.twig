@@ -30,6 +30,7 @@
         <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
     {% else %}
     {% block label %}
+        {% if label is defined %}
         <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
         {% if masschange ?? false %}
             {# Add a checkbox for fields to change on mass edition #}
@@ -37,6 +38,7 @@
         {% endif %}
             {{ label }}
         </label>
+        {% endif %}
     {% endblock %}
     {% endif %}
     {% if type is defined and type == 'password' %}

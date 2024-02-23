@@ -7,3 +7,6 @@ ALTER TABLE galette_transactions ADD type_paiement_trans int(10) unsigned NULL D
 ALTER TABLE galette_transactions ADD FOREIGN KEY (type_paiement_trans)
     REFERENCES galette_paymenttypes (type_id)
     ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE galette_types_cotisation CHANGE cotis_extension cotis_extension TINYINT NOT NULL DEFAULT '0';
+UPDATE galette_types_cotisation SET cotis_extension=-1 WHERE cotis_extension=1;

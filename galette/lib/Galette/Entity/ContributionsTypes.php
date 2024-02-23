@@ -37,7 +37,7 @@ use Throwable;
  * @property string $label
  * @property string $libelle
  * @property ?float $amount
- * @property boolean $extension
+ * @property int $extension
  */
 
 class ContributionsTypes
@@ -53,7 +53,7 @@ class ContributionsTypes
     private int $id;
     private string $label;
     private ?float $amount;
-    private bool $is_extension = false;
+    private int $extension = -1;
 
     public const ID_NOT_EXITS = -1;
 
@@ -136,7 +136,7 @@ class ContributionsTypes
         $this->id = $r->{self::PK};
         $this->label = $r->libelle_type_cotis;
         $this->amount = $r->amount;
-        $this->is_extension = (bool)$r->cotis_extension;
+        $this->extension = (int)$r->cotis_extension;
     }
 
     /**
@@ -234,9 +234,9 @@ class ContributionsTypes
             $select->order(self::PK);
 
             if ($extent === true) {
-                $select->where(array('cotis_extension' => new Expression('true')));
+                $select->where->notEqualTo('cotis_extension', 0);
             } elseif ($extent === false) {
-                $select->where(array('cotis_extension' => new Expression('false')));
+                $select->where->equalTo('cotis_extension', 0);
             }
 
             $results = $this->zdb->execute($select);
@@ -383,11 +383,11 @@ class ContributionsTypes
      *
      * @param string  $label     The label
      * @param ?float  $amount    The amount
-     * @param boolean $extension Extends membership?
+     * @param int $extension Extends membership in months (or -1 by default)?
      *
      * @return bool|integer  -2 : label already exists
      */
-    public function add(string $label, ?float $amount, bool $extension): bool|int
+    public function add(string $label, ?float $amount, int $extension): bool|int
     {
         // Avoid duplicates.
         $label = strip_tags($label);
@@ -406,7 +406,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' => $extension ? true : ($this->zdb->isPostgres() ? 'false' : 0)
+                'cotis_extension' =>  $extension  
             );
 
             $insert = $this->zdb->insert(self::TABLE);
@@ -446,11 +446,11 @@ class ContributionsTypes
      * @param integer $id        Entry ID
      * @param string  $label     The label
      * @param ?float  $amount    The amount
-     * @param boolean $extension Extends membership?
+     * @param int $extension Extends membership?
      *
      * @return self::ID_NOT_EXITS|boolean
      */
-    public function update(int $id, string $label, ?float $amount, bool $extension): int|bool
+    public function update(int $id, string $label, ?float $amount, int $extension): int|bool
     {
         $label = strip_tags($label);
         $ret = $this->get($id);
@@ -465,7 +465,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' => $extension ? true : ($this->zdb->isPostgres() ? 'false' : 0)
+                'cotis_extension' => $extension  
             );
 
             $update = $this->zdb->update(self::TABLE);
@@ -584,7 +584,7 @@ class ContributionsTypes
     public function __get(string $name)
     {
         $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $virtuals = array('extension', 'isextension', 'libelle');
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)
@@ -593,7 +593,7 @@ class ContributionsTypes
             switch ($name) {
                 case 'libelle':
                     return _T($this->label);
-                case 'extension':
+                case 'isextension':
                     return $this->isExtension();
                 default:
                     return $this->$name;
