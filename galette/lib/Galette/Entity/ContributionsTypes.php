@@ -381,9 +381,9 @@ class ContributionsTypes
     /**
      * Add a new entry
      *
-     * @param string  $label     The label
-     * @param ?float  $amount    The amount
-     * @param int $extension Extends membership in months (or -1 by default)?
+     * @param string $label     The label
+     * @param ?float $amount    The amount
+     * @param int    $extension Extends membership in months (or -1 by default)?
      *
      * @return bool|integer  -2 : label already exists
      */
@@ -446,7 +446,7 @@ class ContributionsTypes
      * @param integer $id        Entry ID
      * @param string  $label     The label
      * @param ?float  $amount    The amount
-     * @param int $extension Extends membership?
+     * @param int     $extension Extends membership?
      *
      * @return self::ID_NOT_EXITS|boolean
      */

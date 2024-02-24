@@ -237,8 +237,7 @@ class Contribution
         $begin_date = new \DateTime($this->_begin_date);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            if($this->_type->extension < 1){ // 0 = donate; -1= else duration (months)
-
+            if ($this->_type->extension < 1) { // 0 = donate; -1= else duration (months)
                 list($j, $m) = explode('/', $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
                 while ($next_begin_date <= $begin_date) {
@@ -263,9 +262,7 @@ class Contribution
                 // Caution : the end_date to retrieve is the day before the next_begin_date.
                 $end_date = clone $next_begin_date;
                 $end_date->sub(new \DateInterval('P1D'));
-            }
-            else
-            {   
+            } else {
                 $dext = new \DateInterval('P' . $this->_type->extension . 'M');
                 $end_date = $begin_date->add($dext);
                 $end_date->sub(new \DateInterval('P1D')); //-1 day
