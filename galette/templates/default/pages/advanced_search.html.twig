@@ -379,7 +379,7 @@
                                 <option value="">{{ _T('Type') }}</option>
 
                             {% for key, value in contributions_types %}
-                                    <option value="{{ key }}"{% if key == filters.contributions_types %} selected="selected"{% endif %}>{{ value }}</option>
+                                    <option value="{{ key }}"{% if key == filters.contributions_types %} selected="selected"{% endif %}>{{ value.label }}</option>
                             {% endfor %}
                             </select>
                         </div>
