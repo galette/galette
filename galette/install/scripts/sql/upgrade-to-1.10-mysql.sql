@@ -7,3 +7,5 @@ ALTER TABLE galette_transactions ADD type_paiement_trans int(10) unsigned NULL D
 ALTER TABLE galette_transactions ADD FOREIGN KEY (type_paiement_trans)
     REFERENCES galette_paymenttypes (type_id)
     ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Add field_min_size to galette_field_types
+ALTER TABLE galette_field_types ADD field_min_size integer(10) NULL DEFAULT NULL

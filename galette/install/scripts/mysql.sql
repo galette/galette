@@ -138,6 +138,7 @@ CREATE TABLE galette_field_types (
     field_pos int(10) NOT NULL default '0',
     field_width int(10) default NULL,
     field_height int(10) default NULL,
+    field_min_size int(10) default NULL,
     field_size int(10) default NULL,
     field_repeat int(10) default NULL,
     field_information TEXT default NULL,

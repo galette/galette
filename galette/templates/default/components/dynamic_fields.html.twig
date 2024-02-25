@@ -50,6 +50,7 @@
                 <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
                     {% if field.getWidth() > 0 %}size="{{ field.getWidth() }}"{% endif %}
                     {% if field.getSize() > 0 %}maxlength="{{ field.getSize() }}"{% endif %}
+                    {% if field.getMinSize() > 0 %}minlength="{{ field.getMinSize() }}"{% endif %}
                     value="{{ valuedata|raw }}"
                 {% if not masschange %}
                     {% if field.isRequired() %} required="required"{% endif %}

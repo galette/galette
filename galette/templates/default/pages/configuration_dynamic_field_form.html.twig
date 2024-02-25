@@ -63,6 +63,13 @@
                     <input type="text" name="field_height" id="field_height" value="{{ df.getHeight() }}" size="3"/>
                 </div>
     {% endif %}
+    {% if df.hasMinSize() %}
+                <div class="inline field">
+                    <label for="field_min_size">{{ _T("Min Size:") }}</label>
+                    <input type="text" name="field_min_size" id="field_min_size" value="{{ df.getMinSize() }}" size="3"/>
+                    <span class="exemple">{{ _T("Minimum number of characters.") }}</span>
+                </div>
+    {% endif %}
     {% if df.hasSize() %}
                 <div class="inline field">
                     <label for="field_size">{{ _T("Size:") }}</label>

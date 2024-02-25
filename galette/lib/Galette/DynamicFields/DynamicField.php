@@ -76,6 +76,7 @@ abstract class DynamicField
     protected bool $has_width = false;
     protected bool $has_height = false;
     protected bool $has_size = false;
+    protected bool $has_min_size = false;
     protected bool $multi_valued = false;
     protected bool $fixed_values = false;
     protected bool $has_permissions = true;
@@ -87,6 +88,7 @@ abstract class DynamicField
     protected ?int $width = null;
     protected ?int $height = null;
     protected ?int $repeat = null;
+    protected ?int $min_size = null;
     protected ?int $size = null;
     protected ?int $old_size = null;
     /** @var string|array<string>|false */
@@ -235,6 +237,7 @@ abstract class DynamicField
         $this->index = (int)$rs->field_index;
         $this->perm = (int)$rs->field_perm;
         $this->required = $rs->field_required == 1;
+        $this->min_size = $rs->field_min_size;
         $this->width = $rs->field_width;
         $this->height = $rs->field_height;
         $this->repeat = (int)$rs->field_repeat;
@@ -351,6 +354,16 @@ abstract class DynamicField
     }
 
     /**
+     * Does the field has min size?
+     *
+     * @return bool
+     */
+    public function hasMinSize(): bool
+    {
+        return $this->has_min_size;
+    }
+
+    /**
      * Does the field has a size?
      *
      * @return bool
@@ -458,6 +471,16 @@ abstract class DynamicField
     public function getRepeat(): ?int
     {
         return $this->repeat;
+    }
+
+    /**
+     * Get field min size
+     *
+     * @return integer|null
+     */
+    public function getMinSize(): ?int
+    {
+        return $this->min_size;
     }
 
     /**
@@ -650,6 +673,25 @@ abstract class DynamicField
             }
         }
 
+        if ($this->hasMinSize() && isset($values['field_min_size']) && trim($values['field_min_size']) != '') {
+            if (!is_numeric($values['field_min_size']) || $values['field_min_size'] <= 0) {
+                $this->errors[] = _T("- Min size must be a positive integer!");
+            } else {
+                $this->min_size = $values['field_min_size'];
+            }
+        }
+
+        if (
+            $this->hasMinSize()
+                && $this->min_size !== null
+            && $this->hasSize()
+                && $this->size !== null
+        ) {
+            if ($this->min_size > $this->size) {
+                $this->errors[] = _T("- Min size must be lower than size!");
+            }
+        }
+
         if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
             if (!is_numeric($values['field_repeat'])) {
                 $this->errors[] = _T("- Repeat must be an integer!");
@@ -720,6 +762,7 @@ abstract class DynamicField
                 'field_required'    => $this->required,
                 'field_width'       => ($this->width === null ? new Expression('NULL') : $this->width),
                 'field_height'      => ($this->height === null ? new Expression('NULL') : $this->height),
+                'field_min_size'    => ($this->min_size === null ? new Expression('NULL') : $this->min_size),
                 'field_size'        => ($this->size === null ? new Expression('NULL') : $this->size),
                 'field_repeat'      => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
                 'field_form'        => $this->form,
