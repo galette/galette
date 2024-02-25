@@ -68,6 +68,21 @@
     color: @hoveredTextColor;
 }
 
+/* -------------------------------------------------------------------
+      Sortable pointing inverted menu on Core fields Configuration
+-------------------------------------------------------------------- */
+
+#sortable_categories.ui.pointing.inverted.menu {
+  .item.sortable-chosen,
+  .item.moved {
+    background-color: @invertedActiveBackground;
+    color: @red !important;
+  }
+  .item.active.moved {
+    background-color: @yellow;
+  }
+}
+
 /*------------------
      Pagination
 -------------------*/
