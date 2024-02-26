@@ -65,6 +65,7 @@
                     {% if autofocus is defined %} autofocus{% endif %}
                     {% if size is defined %} size="{{ size }}"{% endif %}
                     {% if checked is defined and checked == true %} checked{% endif %}
+                    {% if placeholder is defined %} placeholder="{{ placeholder }}"{% endif %}
                 />
     {% endblock %}
     {% if search_id is defined %}
