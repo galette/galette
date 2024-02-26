@@ -27,101 +27,69 @@
         </div>
     </noscript>
     <form action="{{ url_for('storeListFields', {'table': table}) }}" method="post" id="config_fields_form" class="ui form">
-        <div id="members_tab" class="ui grid">
-            <div class="eight wide column">
-                <div class="ui top attached accordion-styled header">
-                    {{ _T("Fields in list") }}
-                </div>
-                <div class="jsonly disabled ui bottom attached accordion-styled segment">
-                    <div class="ui basic fitted segment">
-                        <div class="ui two column stackable grid core-lists-properties">
-                            <div class="middle aligned row">
-                                <div class="column">
-                                    <span class="ui fluid label">{{ _T("Field name") }}</span>
-                                </div>
-                                <div class="column">
-                                    <span class="ui fluid label">{{ _T("Permissions") }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul id="listed_fields" class="sortable-items">
-    {% for col, field in listed_fields %}
-            {% set fid = field.field_id %}
-                        <li class="{% if fid == 'id_adh' or fid == 'list_adh_name' %}nosort ui-state-disabled {% endif %}ui segment">
-                            <div class="ui two column stackable grid core-lists-listing">
-                                <div class="middle aligned row">
-                                    <div class="column">
-                                        <i class="arrows alternate icon" aria-hidden="true"></i>
-                                        <span data-prop-label="{{ _T("Field name") }}">
-                                            <input type="hidden" name="fields[]" value="{{ fid }}"/>
-                                            {{ field.label }}
-                                        </span>
-                                    </div>
-                                    <div class="column">
-                                        <span data-prop-label="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %}{{ _T("Group manager") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %}{{ _T("Read only") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %}{{ _T("Read/Write") }}{% endif %}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-    {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="eight wide column">
-                <div class="ui top attached accordion-styled header">
-                    {{ _T("Available fields") }}
-                </div>
-                <div class="jsonly disabled ui bottom attached accordion-styled segment">
-                    <div class="ui basic fitted segment">
-                        <div class="ui two column stackable grid core-lists-properties">
-                            <div class="middle aligned row">
-                                <div class="column">
-                                    <span class="ui fluid label">{{ _T("Field name") }}</span>
-                                </div>
-                                <div class="column">
-                                    <span class="ui fluid label">{{ _T("Permissions") }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul id="remaining_fields" class="sortable-items">
+        <div class="ui basic fitted segment loader_selector">
+            <table id="listed_fields_table" class="listing ui celled striped table">
+                <thead>
+                    <tr>
+                        <th class="id_row">#</th>
+                        <th>{{ _T("Field name") }}</th>
+                        <th>{{ _T("Permissions") }}</th>
+                        <th>{{ _T("Actions") }}</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td data-scope="row"></td>
+                        <td class="left" data-col-label="{{ _T("Available fields") }}" colspan="2">
+                            <div id="remaining_fields_dropdown" class="ui fluid search clearable selection dropdown">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">{{ _T("Available fields") }}</div>
+                                <div id="remaining_fields" class="menu sortable-items">
     {% for col, field in remaining_fields %}
-            {% set fid = field.field_id %}
-                        <li class="ui segment">
-                            <div class="ui two column stackable grid core-lists-listing">
-                                <div class="middle aligned row">
-                                    <div class="column">
-                                        <i class="arrows alternate icon" aria-hidden="true"></i>
-                                        <span data-prop-label="{{ _T("Field name") }}">
-                                            <input type="hidden" name="rfields[]" value="{{ fid }}"/>
-                                            {{ field.label }}
-                                        </span>
+        {% set fid = field.field_id %}
+        {% set permission = field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') ? _T("Inaccessible") : field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') ? _T("Administrator") : field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') ? _T("Staff member") : field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') ? _T("Group manager") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') ? _T("Read only") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') ? _T("Read/Write") %}
+                                    <div class="item" data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
+                                        <input type="hidden" name="rfields[]" value="{{ fid }}"/>
+                                        <span class="text">{{ field.label }}</span>
+                                        <span class="description">({{ permission }})</span>
                                     </div>
-                                    <div class="column">
-                                        <span data-prop-label="{{ _T("Permissions") }}" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %}{{ _T("Inaccessible") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %}{{ _T("Administrator") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %}{{ _T("Staff member") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %}{{ _T("Group manager") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %}{{ _T("Read only") }}{% endif %}
-                    {% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %}{{ _T("Read/Write") }}{% endif %}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
     {% endfor %}
-                    </ul>
-                </div>
-            </div>
+                                </div>
+                        </td>
+                        <td class="collapsing actions_row">
+                            <input type="hidden" name="new" value="1" />
+                            <a href="#" id="addfield" class="ui labeled icon button">
+                                <i class="plus green icon" aria-hidden="true"></i>
+                                {{ _T("Add") }}
+                            </a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody id="listed_fields" class="sortable-items">
+    {% for col, field in listed_fields %}
+        {% set fid = field.field_id %}
+        {% set permission = field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') ? _T("Inaccessible") : field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') ? _T("Administrator") : field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') ? _T("Staff member") : field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') ? _T("Group manager") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') ? _T("Read only") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') ? _T("Read/Write") %}
+                    <tr data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
+                        <td data-scope="row" class="collapsing">
+                            <i class="arrows alternate icon" aria-hidden="true"></i>
+                        </td>
+                        <td class="left" data-col-label="{{ _T("Field name") }}">
+                            <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                            {{ field.label }}
+                        </td>
+                        <td class="left" data-col-label="{{ _T("Permissions") }}">
+                            {{ permission }}
+                        </td>
+                        <td class="center actions_row">
+                            <a href="#" class="delete">
+                                <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': field.label}) }}</span>
+                            </a>
+                        </td>
+                    </tr>
+    {% endfor %}
+                </tbody>
+            </table>
         </div>
         <div class="ui basic center aligned segment">
             <button type="submit" class="ui labeled icon primary button action">
@@ -134,39 +102,92 @@
 
 {% block javascripts %}
     <script type="module">
-        var _initSortable = function(){
+        function _initSortable() {
             var _listed = document.getElementById('listed_fields');
-            var _remaining = document.getElementById('remaining_fields');
 
             new Sortable(_listed, {
                 group: 'lists',
                 animation: 150,
                 ghostClass: 'yellow',
-                onAdd: function (evt) {
-                    var _item = evt.item;
-                    _item.classList.add('yellow');
-                    _item.getElementsByTagName('input')[0].setAttribute('name', 'fields[]');
-                },
+                filter: '.delete',
                 onUpdate: function (evt) {
                     var _item = evt.item;
                     _item.classList.add('yellow');
-                }
-            });
-
-            new Sortable(_remaining, {
-                group: 'lists',
-                animation: 150,
-                ghostClass: 'yellow',
-                onAdd: function (evt) {
+                },
+                onFilter: function (evt) {
                     var _item = evt.item;
-                    _item.classList.add('yellow');
-                    _item.getElementsByTagName('input')[0].setAttribute('name', 'rfields[]');
+                    var _table = document.getElementById('listed_fields_table');
+                    var _remaining_fields = document.getElementById('remaining_fields');
+                    var _field_id = _item.dataset.fid;
+                    var _field_label = _item.dataset.label;
+                    var _field_permission = _item.dataset.permission;
+                    var _dropdown_item = '<div class="item" data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '">';
+                        _dropdown_item +='<input type="hidden" name="rfields[]" value="' + _field_id + '"/>';
+                        _dropdown_item +='<span class="text">' + _field_label + '</span>';
+                        _dropdown_item +='<span class="description">(' + _field_permission + ')</span>';
+                        _dropdown_item +='</div>';
+                    if (_item.parentNode.children.length > 1) {
+                        _item.parentNode.removeChild(_item);
+                        _table.classList.add('red');
+                        _remaining_fields.innerHTML += _dropdown_item;
+                    } else {
+                        $('.ui.toast').toast('close');
+                        $('body').toast({
+                            displayTime: 'auto',
+                            minDisplayTime: 5000,
+                            wordsPerMinute: 80,
+                            showProgress: 'bottom',
+                            closeIcon: true,
+                            position: 'top attached',
+                            message: '{{ _T("Deleting the last field is not possible. There must be at least one field in the list.") }}',
+                            showIcon: 'info',
+                            class: 'info'
+                        });
+                    }
                 }
             });
         }
 
+        function _handleAddToList(evt) {
+            evt.preventDefault();
+
+            var _listed_fields = document.getElementById('listed_fields');
+            var _remaining_fields = document.getElementById('remaining_fields');
+            var _selected_field = _remaining_fields.getElementsByClassName('selected');
+
+            if (_selected_field.length > 0) {
+                for (let i = 0; i < _selected_field.length; i++) {
+                    var _field_id = _selected_field[i].dataset.fid;
+                    var _field_label = _selected_field[i].dataset.label;
+                    var _field_permission = _selected_field[i].dataset.permission;
+                    var _table_item = '<tr class="yellow" data-fid="' + _field_id + '" data-label="' + _field_label + '" data-permission="' + _field_permission + '">';
+                        _table_item +='<td data-scope="row" class="collapsing"><i class="arrows alternate icon" aria-hidden="true"></i></td>';
+                        _table_item +='<td class="left" data-col-label="{{ _T("Field name") }}">';
+                        _table_item +='<input type="hidden" name="fields[]" value="' + _field_id + '"/>' + _field_label;
+                        _table_item +='</td>';
+                        _table_item +='<td class="left" data-col-label="{{ _T("Permissions") }}">' + _field_permission + '</td>';
+                        _table_item +='<td class="center actions_row"><a href="#" class="delete">';
+                        _table_item +='<i class="ui trash red icon tooltip" aria-hidden="true"></i>';
+                        _table_item +='<span class="ui special popup">{{ _T("Delete %s field")|replace({"%s": ' + _field_label + '}) }}</span>';
+                        _table_item +='</a></td>';
+                        _table_item +='</tr>';
+
+                    _selected_field[i].remove();
+                }
+
+                $('#remaining_fields_dropdown').dropdown('clear');
+                _listed_fields.innerHTML += _table_item;
+            }
+        }
+
+        function _addToList() {
+            var _add = document.getElementById('addfield');
+            _add.addEventListener('click', _handleAddToList, false);
+        }
+
         $(function() {
             _initSortable();
+            _addToList();
         });
     </script>
 {% endblock %}
