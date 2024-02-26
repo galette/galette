@@ -531,8 +531,7 @@
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") %} selected="selected"{% endif %}>{{ _T('before') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") %} selected="selected"{% endif %}>{{ _T('after') }}</option>
                                             </select>
-                                            <input type="text" name="free_text[]" value="{{ fs.search|date(_T('Y-m-d')) }}" class="modif_date" maxlength="10" size="10"/>
-                                            <span class="exemple">{{ _T('(yyyy-mm-dd format)') }}</span>
+                                            <input type="text" name="free_text[]" value="{{ fs.search|date(_T('Y-m-d')) }}" class="modif_date" maxlength="10" size="10" placeholder="{{ _T('(yyyy-mm-dd format)') }}"/>
     {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Boolean" or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN")) %}
                                             <select name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
