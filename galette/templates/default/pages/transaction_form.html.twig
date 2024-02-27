@@ -54,7 +54,7 @@
                             <div class="ui calendar" id="transaction-rangestart">
                                 <div class="ui input left icon">
                                     <i class="calendar icon" aria-hidden="true"></i>
-                                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date is defined and required.trans_date == 1 %} required="required"{% endif %} placeholder="{{ _T('(yyyy-mm-dd format)') }}" />
+                                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date is defined and required.trans_date == 1 %} required="required"{% endif %} placeholder="{{ _T('yyyy-mm-dd format') }}" />
                                 </div>
                             </div>
                         </div>

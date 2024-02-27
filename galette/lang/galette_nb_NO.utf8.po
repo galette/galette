@@ -4727,7 +4727,7 @@ msgstr ""
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
-msgid "(yyyy-mm-dd format)"
+msgid "yyyy-mm-dd format"
 msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142

@@ -5608,8 +5608,8 @@ msgstr "Tipus de full"
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
 #, fuzzy
-msgid "(yyyy-mm-dd format)"
-msgstr "(format yyyy-mm-dd)"
+msgid "yyyy-mm-dd format"
+msgstr "format yyyy-mm-dd"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142
 #, fuzzy

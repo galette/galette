@@ -80,7 +80,7 @@
                     <div class="ui fluid input left icon">
                         <i class="calendar icon" aria-hidden="true"></i>
                         <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
-                            value="{{ valuedata }}" class="dynamic_date modif_date" placeholder="{{ _T("(yyyy-mm-dd format)") }}"
+                            value="{{ valuedata }}" class="dynamic_date modif_date" placeholder="{{ _T("yyyy-mm-dd format") }}"
                             {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
                         {% if not masschange %}
                             {% if field.isRequired() %} required="required"{% endif %}

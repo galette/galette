@@ -4954,8 +4954,8 @@ msgstr "Blatt Typ"
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
-msgid "(yyyy-mm-dd format)"
-msgstr "(JJJJ-MM-TT Format)"
+msgid "yyyy-mm-dd format"
+msgstr "JJJJ-MM-TT Format"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142
 msgid "With photos?"
