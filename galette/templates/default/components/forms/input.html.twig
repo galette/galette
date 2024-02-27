@@ -67,6 +67,7 @@
                     {% if autofocus is defined %} autofocus{% endif %}
                     {% if size is defined %} size="{{ size }}"{% endif %}
                     {% if checked is defined and checked == true %} checked{% endif %}
+                    {% if placeholder is defined %} placeholder="{{ placeholder }}"{% endif %}
                 />
     {% endblock %}
     {% if search_id is defined %}
@@ -99,7 +100,9 @@
     </div>
     {% endif %}
     {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
-    {% if example is defined %}<span class="exemple">{{ example|raw }}</span>{% endif %}
+    {% if example is defined %}
+        <div class="exemple">{{ example|raw }}</div>
+    {% endif %}
 {% if notag is not defined %}
 </div>
 {% endif %}

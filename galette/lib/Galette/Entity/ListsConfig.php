@@ -74,6 +74,7 @@ class ListsConfig extends FieldsConfig
         $f = parent::buildField($rset);
         $f['list_position'] = (int)$rset->list_position;
         $f['list_visible'] = ($f['list_position'] >= 0);
+        $f['width_in_forms'] = (int)$rset->width_in_forms;
         return $f;
     }
 
@@ -276,7 +277,8 @@ class ListsConfig extends FieldsConfig
             $update->set(
                 array(
                     'list_visible'          => ':list_visible',
-                    'list_position'         => ':list_position'
+                    'list_position'         => ':list_position',
+                    'width_in_forms'        => ':width_in_forms'
                 )
             )->where(
                 array(
@@ -290,9 +292,10 @@ class ListsConfig extends FieldsConfig
 
             foreach ($this->listed_fields as $pos => $field) {
                 $params = array(
-                    'list_visible'  => $field['list_visible'],
-                    'list_position' => $pos,
-                    'field_id'      => $field['field_id']
+                    'list_visible'   => $field['list_visible'],
+                    'list_position'  => $pos,
+                    'field_id'       => $field['field_id'],
+                    'width_in_forms' => $field['width_in_forms']
                 );
                 $stmt->execute($params);
             }

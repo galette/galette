@@ -122,6 +122,13 @@ class AuthController extends AbstractController
                 || $this->login->isAdmin()
                 || $this->login->isStaff()
             ) {
+                if (defined('NON_UTF_DBCONNECT')) {
+                    $this->flash->addMessage(
+                        'warning',
+                        'It appears you are using NON_UTF_DBCONNECT constant, that has been removed in current release.'
+                    );
+                }
+
                 try {
                     $release = new Release();
                     if ($release->checkNewRelease()) {

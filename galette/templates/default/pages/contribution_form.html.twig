@@ -191,10 +191,9 @@
                                 <div class="ui calendar" id="contribution-rangestart">
                                     <div class="ui input left icon">
                                         <i class="calendar icon" aria-hidden="true"></i>
-                                        <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg is defined and required.date_enreg == 1 %} required="required"{% endif %}>
+                                        <input type="text" name="date_enreg" id="date_enreg" value="{{ contribution.date }}" maxlength="10"{% if required.date_enreg is defined and required.date_enreg == 1 %} required="required"{% endif %} placeholder="{{ _T('yyyy-mm-dd format') }}" />
                                     </div>
                                 </div>
-                                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                             </div>
                             <div class="field{% if required.date_debut_cotis is defined and required.date_debut_cotis == 1 %} required{% endif %}">
                                 <label for="date_debut_cotis">
@@ -207,10 +206,9 @@
                                 <div class="ui calendar" id="contribution-rangeend">
                                     <div class="ui input left icon">
                                         <i class="calendar icon" aria-hidden="true"></i>
-                                        <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %}/>
+                                        <input type="text" name="date_debut_cotis" id="date_debut_cotis" value="{{ contribution.begin_date }}" maxlength="10"{% if required.date_debut_cotis == 1 %} required="required"{% endif %} placeholder="{{ _T('yyyy-mm-dd format') }}" />
                                     </div>
                                 </div>
-                                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                             </div>
             {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
                             <div class="field{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required{% endif %}">
@@ -223,10 +221,9 @@
                                 <div class="ui calendar" id="membership-rangeend">
                                     <div class="ui input left icon">
                                         <i class="calendar icon" aria-hidden="true"></i>
-                                        <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %}/>
+                                        <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{{ contribution.end_date }}" maxlength="10"{% if required.date_fin_cotis is defined and required.date_fin_cotis == 1 %} required="required"{% endif %} placeholder="{{ _T('yyyy-mm-dd format') }}" />
                                     </div>
                                 </div>
-                                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                 {% endif %}
                             </div>
             {% endif %}

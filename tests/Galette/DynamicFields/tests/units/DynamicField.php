@@ -439,6 +439,30 @@ class DynamicField extends TestCase
         $this->assertFalse($df->store($values));
 
         $values = $orig_values;
+        $values['field_min_size'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Min size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_min_size'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Min size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = $orig_values;
+        $values['field_min_size'] = 10;
+        $values['field_size'] = 5;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Min size must be lower than size!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_size'] = 10;
+        $this->assertTrue($df->check($values));
+
+        $values['field_size'] = 15;
+        $this->assertTrue($df->check($values));
+
+        $values = $orig_values;
         $values['field_repeat'] = 'yes';
         $this->assertFalse($df->check($values));
         $this->assertSame(['- Repeat must be an integer!'], $df->getErrors());

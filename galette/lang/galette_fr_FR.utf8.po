@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-20 07:53+0100\n"
 "PO-Revision-Date: 2024-02-20 06:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
@@ -1552,7 +1552,7 @@ msgid "Manage additional fields for various forms"
 msgstr "Gestion de champs additionnels pour différents formulaires"
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr "Traduction des étiquettes pour les champs additionnels"
 
 #: ../lib/Galette/Core/Galette.php:372
@@ -4919,8 +4919,8 @@ msgstr "Type de liste"
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
-msgid "(yyyy-mm-dd format)"
-msgstr "(format jj/mm/aaaa)"
+msgid "yyyy-mm-dd format"
+msgstr "format jj/mm/aaaa"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142
 msgid "With photos?"

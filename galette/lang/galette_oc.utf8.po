@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-20 07:53+0100\n"
 "PO-Revision-Date: 2024-02-22 21:18+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
@@ -1532,7 +1532,7 @@ msgid "Manage additional fields for various forms"
 msgstr "Governar lei camps suplementaris per lei formularis"
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr "Traduccion deis etiquetas per lei camps suplementaris"
 
 #: ../lib/Galette/Core/Galette.php:372
@@ -4794,7 +4794,7 @@ msgstr ""
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
-msgid "(yyyy-mm-dd format)"
+msgid "yyyy-mm-dd format"
 msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142

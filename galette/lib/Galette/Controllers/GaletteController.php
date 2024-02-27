@@ -535,11 +535,12 @@ class GaletteController extends AbstractController
             }
 
             $res[$current_cat][] = array(
-                'field_id'  =>  $field,
-                'label'     =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
-                'category'  =>  $post[$field . '_category'],
-                'visible'   =>  $post[$field . '_visible'],
-                'required'  =>  $required
+                'field_id'      =>  $field,
+                'label'         =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
+                'category'      =>  $post[$field . '_category'],
+                'visible'       =>  $post[$field . '_visible'],
+                'required'      =>  $required,
+                'width_in_forms'  =>  $post[$field . '_width_in_forms']
             );
             $pos++;
         }

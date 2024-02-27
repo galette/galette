@@ -43,6 +43,7 @@ class Line extends DynamicField
         parent::__construct($zdb, $id);
         $this->has_data = true;
         $this->has_width = true;
+        $this->has_min_size = true;
         $this->has_size = true;
         $this->multi_valued = true;
     }

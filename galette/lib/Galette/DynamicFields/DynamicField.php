@@ -76,6 +76,7 @@ abstract class DynamicField
     protected bool $has_width = false;
     protected bool $has_height = false;
     protected bool $has_size = false;
+    protected bool $has_min_size = false;
     protected bool $multi_valued = false;
     protected bool $fixed_values = false;
     protected bool $has_permissions = true;
@@ -84,9 +85,12 @@ abstract class DynamicField
     protected ?int $index = null;
     protected ?int $perm = null;
     protected bool $required = false;
+    protected ?int $width_in_forms = 1;
+    protected bool $information_above = false;
     protected ?int $width = null;
     protected ?int $height = null;
     protected ?int $repeat = null;
+    protected ?int $min_size = null;
     protected ?int $size = null;
     protected ?int $old_size = null;
     /** @var string|array<string>|false */
@@ -235,12 +239,15 @@ abstract class DynamicField
         $this->index = (int)$rs->field_index;
         $this->perm = (int)$rs->field_perm;
         $this->required = $rs->field_required == 1;
+        $this->min_size = $rs->field_min_size;
+        $this->width_in_forms = (int)$rs->field_width_in_forms;
         $this->width = $rs->field_width;
         $this->height = $rs->field_height;
         $this->repeat = (int)$rs->field_repeat;
         $this->size = $rs->field_size;
         $this->form = $rs->field_form;
         $this->information = $rs->field_information;
+        $this->information_above = $rs->field_information_above == 1;
         if ($values && $this->hasFixedValues()) {
             $this->loadFixedValues();
         }
@@ -351,6 +358,16 @@ abstract class DynamicField
     }
 
     /**
+     * Does the field has min size?
+     *
+     * @return bool
+     */
+    public function hasMinSize(): bool
+    {
+        return $this->has_min_size;
+    }
+
+    /**
      * Does the field has a size?
      *
      * @return bool
@@ -421,6 +438,16 @@ abstract class DynamicField
     }
 
     /**
+     * Get field's width in forms
+     *
+     * @return integer|null
+     */
+    public function getWidthInForms(): ?int
+    {
+        return $this->width_in_forms;
+    }
+
+    /**
      * Get field width
      *
      * @return integer|null
@@ -461,6 +488,16 @@ abstract class DynamicField
     }
 
     /**
+     * Get field min size
+     *
+     * @return integer|null
+     */
+    public function getMinSize(): ?int
+    {
+        return $this->min_size;
+    }
+
+    /**
      * Get field size
      *
      * @return integer|null
@@ -488,6 +525,16 @@ abstract class DynamicField
     public function getInformation(): string
     {
         return $this->information ?? '';
+    }
+
+    /**
+     * Does the field information have to be displayed above input?
+     *
+     * @return bool
+     */
+    public function hasInformationAbove(): bool
+    {
+        return $this->information_above;
     }
 
     /**
@@ -622,6 +669,8 @@ abstract class DynamicField
 
         $this->required = $values['field_required'] ?? false;
 
+        $this->width_in_forms = $values['field_width_in_forms'] ?? 1;
+
         if (count($this->errors) === 0 && $this->isDuplicate()) {
             $this->errors[] = _T("- Field name already used.");
         }
@@ -650,6 +699,25 @@ abstract class DynamicField
             }
         }
 
+        if ($this->hasMinSize() && isset($values['field_min_size']) && trim($values['field_min_size']) != '') {
+            if (!is_numeric($values['field_min_size']) || $values['field_min_size'] <= 0) {
+                $this->errors[] = _T("- Min size must be a positive integer!");
+            } else {
+                $this->min_size = $values['field_min_size'];
+            }
+        }
+
+        if (
+            $this->hasMinSize()
+                && $this->min_size !== null
+            && $this->hasSize()
+                && $this->size !== null
+        ) {
+            if ($this->min_size > $this->size) {
+                $this->errors[] = _T("- Min size must be lower than size!");
+            }
+        }
+
         if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
             if (!is_numeric($values['field_repeat'])) {
                 $this->errors[] = _T("- Repeat must be an integer!");
@@ -662,6 +730,8 @@ abstract class DynamicField
             global $preferences;
             $this->information = $preferences->cleanHtmlValue($values['field_information']);
         }
+
+        $this->information_above = $values['field_information_above'] ?? false;
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
@@ -715,21 +785,29 @@ abstract class DynamicField
 
         try {
             $values = array(
-                'field_name'        => strip_tags($this->name),
-                'field_perm'        => $this->perm,
-                'field_required'    => $this->required,
-                'field_width'       => ($this->width === null ? new Expression('NULL') : $this->width),
-                'field_height'      => ($this->height === null ? new Expression('NULL') : $this->height),
-                'field_size'        => ($this->size === null ? new Expression('NULL') : $this->size),
-                'field_repeat'      => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
-                'field_form'        => $this->form,
-                'field_index'       => $this->index,
-                'field_information' => ($this->information === null ? new Expression('NULL') : $this->information)
+                'field_name'              => strip_tags($this->name),
+                'field_perm'              => $this->perm,
+                'field_required'          => $this->required,
+                'field_width_in_forms'    => $this->width_in_forms,
+                'field_width'             => ($this->width === null ? new Expression('NULL') : $this->width),
+                'field_height'            => ($this->height === null ? new Expression('NULL') : $this->height),
+                'field_min_size'          => ($this->min_size === null ? new Expression('NULL') : $this->min_size),
+                'field_size'              => ($this->size === null ? new Expression('NULL') : $this->size),
+                'field_repeat'            => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
+                'field_form'              => $this->form,
+                'field_index'             => $this->index,
+                'field_information'       => ($this->information === null ? new Expression('NULL') : $this->information),
+                'field_information_above' => $this->information_above,
             );
 
             if ($this->required === false) {
                 //Handle booleans for postgres ; bugs #18899 and #19354
                 $values['field_required'] = $this->zdb->isPostgres() ? 'false' : 0;
+            }
+
+            if ($this->information_above === false) {
+                //Handle booleans for postgres ; bugs #18899 and #19354
+                $values['field_information_above'] = $this->zdb->isPostgres() ? 'false' : 0;
             }
 
             if (!$isnew) {

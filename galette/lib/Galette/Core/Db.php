@@ -118,8 +118,8 @@ class Db
                 'password' => $_pwd_db,
                 'database' => $_name_db
             );
-            if ($_type_db === self::MYSQL && !defined('NON_UTF_DBCONNECT')) {
-                $this->options['charset'] = 'utf8';
+            if ($_type_db === self::MYSQL) {
+                $this->options['charset'] = 'utf8mb4';
             }
 
             $this->doConnection();

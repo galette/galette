@@ -208,14 +208,15 @@ class FieldsConfig
     {
         $rset = $this->prepareField($rset);
         $f = array(
-            'field_id'  => $rset->field_id,
-            'label'     => $this->defaults[$rset->field_id]['label'],
-            'category'  => (int)$rset->id_field_category,
-            'visible'   => (int)$rset->visible,
-            'required'  => (bool)$rset->required,
-            'propname'  => $this->defaults[$rset->field_id]['propname'],
-            'position'  => (int)$rset->position,
-            'disabled'  => false
+            'field_id'       => $rset->field_id,
+            'label'          => $this->defaults[$rset->field_id]['label'],
+            'category'       => (int)$rset->id_field_category,
+            'visible'        => (int)$rset->visible,
+            'required'       => (bool)$rset->required,
+            'propname'       => $this->defaults[$rset->field_id]['propname'],
+            'position'       => (int)$rset->position,
+            'disabled'       => false,
+            'width_in_forms' => (int)$rset->width_in_forms,
         );
         return $f;
     }
@@ -344,14 +345,15 @@ class FieldsConfig
                             Analog::INFO
                         );
                         $params[] = array(
-                            'field_id'      => $k,
-                            'table_name'    => $this->table,
-                            'required'      => $f['required'],
-                            'visible'       => $f['visible'],
-                            'position'      => $f['position'],
-                            'category'      => $f['category'],
-                            'list_visible'  => $f['list_visible'] ?? false,
-                            'list_position' => $f['list_position'] ?? null
+                            'field_id'       => $k,
+                            'table_name'     => $this->table,
+                            'required'       => $f['required'],
+                            'visible'        => $f['visible'],
+                            'position'       => $f['position'],
+                            'category'       => $f['category'],
+                            'list_visible'   => $f['list_visible'] ?? false,
+                            'list_position'  => $f['list_position'] ?? null,
+                            'width_in_forms' => $f['width_in_forms'] ?? 1
                         );
                     }
                 }
@@ -398,14 +400,15 @@ class FieldsConfig
             foreach ($fields as $f) {
                 //build default config for each field
                 $params[] = array(
-                    'field_id'      => $f,
-                    'table_name'    => $this->table,
-                    'required'      => $this->defaults[$f]['required'],
-                    'visible'       => $this->defaults[$f]['visible'],
-                    'position'      => (int)$this->defaults[$f]['position'],
-                    'category'      => $this->defaults[$f]['category'],
-                    'list_visible'  => $this->defaults[$f]['list_visible'] ?? false,
-                    'list_position' => $this->defaults[$f]['list_position'] ?? -1
+                    'field_id'       => $f,
+                    'table_name'     => $this->table,
+                    'required'       => $this->defaults[$f]['required'],
+                    'visible'        => $this->defaults[$f]['visible'],
+                    'position'       => (int)$this->defaults[$f]['position'],
+                    'category'       => $this->defaults[$f]['category'],
+                    'list_visible'   => $this->defaults[$f]['list_visible'] ?? false,
+                    'list_position'  => $this->defaults[$f]['list_position'] ?? -1,
+                    'width_in_forms' => $this->defaults[$f]['width_in_forms'] ?? 1
                 );
             }
             $this->insert($params);
@@ -737,7 +740,8 @@ class FieldsConfig
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
-                    FieldsCategories::PK    => ':' . FieldsCategories::PK
+                    FieldsCategories::PK    => ':' . FieldsCategories::PK,
+                    'width_in_forms'          => ':width_in_forms'
                 )
             )->where(
                 array(
@@ -762,7 +766,8 @@ class FieldsConfig
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
-                        'field_id'              => $field['field_id']
+                        'field_id'              => $field['field_id'],
+                        'width_in_forms'          => $field['width_in_forms']
                     );
 
                     $stmt->execute($params);
@@ -895,7 +900,8 @@ class FieldsConfig
                 FieldsCategories::PK    => ':category',
                 'position'              => ':position',
                 'list_visible'          => ':list_visible',
-                'list_position'         => ':list_position'
+                'list_position'         => ':list_position',
+                'width_in_forms'          => ':width_in_forms'
             )
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
@@ -919,7 +925,8 @@ class FieldsConfig
                     'category'              => $d['category'],
                     'position'              => $d['position'],
                     'list_visible'          => $list_visible,
-                    'list_position'         => $d['list_position'] ?? -1
+                    'list_position'         => $d['list_position'] ?? -1,
+                    'width_in_forms'        => $d['width_in_forms'] ?? 1
                 )
             );
         }

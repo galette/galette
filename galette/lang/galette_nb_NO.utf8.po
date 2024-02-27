@@ -1509,7 +1509,7 @@ msgid "Manage additional fields for various forms"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:366
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:372
@@ -4727,7 +4727,7 @@ msgstr ""
 #: ../../tempcache/components/forms/date.html.twig:55
 #: ../../tempcache/components/forms/date.html.twig:61
 #: ../../tempcache/components/dynamic_fields.html.twig:619
-msgid "(yyyy-mm-dd format)"
+msgid "yyyy-mm-dd format"
 msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:142

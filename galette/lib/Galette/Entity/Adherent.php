@@ -25,6 +25,7 @@ use ArrayObject;
 use DateTime;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
+use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Throwable;
 use Analog\Analog;
@@ -107,6 +108,7 @@ class Adherent
 {
     use Dynamics;
     use Socials;
+    use HasEvent;
 
     public const TABLE = 'adherents';
     public const PK = 'id_adh';
@@ -227,6 +229,12 @@ class Adherent
                 );
             }
         }
+
+        $this
+            ->withAddEvent()
+            ->withEditEvent()
+            ->withoutDeleteEvent()
+            ->activateEvents();
 
         if ($args == null || is_int($args)) {
             if (is_int($args) && $args > 0) {
@@ -1591,7 +1599,7 @@ class Adherent
                         );
                     }
 
-                    $event = 'member.add';
+                    $event = $this->getAddEventName();
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
@@ -1627,7 +1635,7 @@ class Adherent
                         $this->sname
                     );
                 }
-                $event = 'member.edit';
+                $event = $this->getEditEventName();
             }
 
             //dynamic fields
@@ -1635,7 +1643,7 @@ class Adherent
             $this->storeSocials($this->id);
 
             //send event at the end of process, once all has been stored
-            if ($event !== null) {
+            if ($event !== null && $this->areEventsEnabled()) {
                 $emitter->dispatch(new GaletteEvent($event, $this));
             }
             return true;
@@ -2319,5 +2327,15 @@ class Adherent
     public function getDueStatus(): int
     {
         return $this->_due_status;
+    }
+
+    /**
+     * Get prefix for events
+     *
+     * @return string
+     */
+    protected function getEventsPrefix(): string
+    {
+        return 'member';
     }
 }
