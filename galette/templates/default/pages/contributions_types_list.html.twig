@@ -56,8 +56,8 @@
                     </td>
                     <td class="left" data-col-label="{{ _T("Membership extension") }}">
                         {% set cotisextensions = {
-                            (-1): _T("Default"),
-                            (0): _T("No"),
+                            (constant("Galette\\Entity\\ContributionsTypes::TYPE_DEFAULT")): _T("Default"),
+                            (constant("Galette\\Entity\\ContributionsTypes::TYPE_DONATION")): _T("No"),
                             (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
                         } %}
                         {% for m in 2..11 %}
@@ -65,11 +65,9 @@
                         {% endfor %}
                         {% include "components/forms/select.html.twig" with {
                             id: 'cotis_extension',
-                            value: 0,
-                            values: cotisextensions,
-                            required: false,
-                            tip: ''
-                        } %}               
+                            value: constant("Galette\\Entity\\ContributionsTypes::TYPE_DEFAULT"),
+                            values: cotisextensions
+                        } %}
                     </td>
                     <td class="center actions_row">
                         <input type="hidden" name="new" value="1" />

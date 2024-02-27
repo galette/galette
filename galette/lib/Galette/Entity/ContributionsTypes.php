@@ -48,12 +48,15 @@ class ContributionsTypes
     public const TABLE = 'types_cotisation';
     public const PK = 'id_type_cotis';
 
+    public const TYPE_DEFAULT = -1;
+    public const TYPE_DONATION = 0;
+
     private Db $zdb;
 
     private int $id;
     private string $label;
     private ?float $amount;
-    private int $extension = -1;
+    private int $extension;
 
     public const ID_NOT_EXITS = -1;
 
@@ -80,6 +83,7 @@ class ContributionsTypes
     public function __construct(Db $zdb, int|ArrayObject $args = null)
     {
         $this->zdb = $zdb;
+        $this->extension = self::DEFAULT_TYPE;
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -146,7 +150,7 @@ class ContributionsTypes
      */
     public function isExtension(): bool
     {
-        return $this->extension != 0;
+        return $this->extension !== self::TYPE_DONATION;
     }
 
     /**
@@ -234,9 +238,9 @@ class ContributionsTypes
             $select->order(self::PK);
 
             if ($extent === true) {
-                $select->where->notEqualTo('cotis_extension', 0);
+                $select->where->notEqualTo('cotis_extension', self::TYPE_DONATION);
             } elseif ($extent === false) {
-                $select->where->equalTo('cotis_extension', 0);
+                $select->where->equalTo('cotis_extension', self::TYPE_DONATION);
             }
 
             $results = $this->zdb->execute($select);
@@ -406,7 +410,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' =>  $extension
+                'cotis_extension' => $extension
             );
 
             $insert = $this->zdb->insert(self::TABLE);
