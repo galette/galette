@@ -383,7 +383,7 @@ class ContributionsTypes
      *
      * @param string $label     The label
      * @param ?float $amount    The amount
-     * @param int    $extension Extends membership in months (or -1 by default)?
+     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return bool|integer  -2 : label already exists
      */
@@ -446,7 +446,7 @@ class ContributionsTypes
      * @param integer $id        Entry ID
      * @param string  $label     The label
      * @param ?float  $amount    The amount
-     * @param int     $extension Extends membership?
+     * @param int     $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return self::ID_NOT_EXITS|boolean
      */

@@ -20,6 +20,8 @@
 #}
 {% extends 'page.html.twig' %}
 
+{% import "macros.twig" as macros %}
+
 {% block content %}
     <form action="{{ url_for('doAddContributionType') }}" method="post" class="tabbed ui form">
     <div class="ui basic fitted segment loader_selector">
@@ -29,7 +31,7 @@
                     <th class="id_row">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T('Amount') }}</th>
-                    <th>{{ _T("Extends membership?") }}</th>
+                    <th>{{ _T("Membership extension") }}</th>
                     <th>{{ _T("Actions") }}</th>
                 </tr>
             </thead>
@@ -52,9 +54,15 @@
                             <input size="5" type="text" name="amount"/>
                         </div>
                     </td>
-                    <td class="left" data-col-label="{{ _T("Extends membership?") }}">
-                        {% set cotisextensions = {  (0) : _T("No"), (-1) : _T("By default"), (1) :  '1 ' ~ _T("month")} %}
-                        {% for m in 2..11 %} {% set cotisextensions =   cotisextensions + { (m) : (m ~' ' ~ _T("months") ) }  %} {% endfor %}
+                    <td class="left" data-col-label="{{ _T("Membership extension") }}">
+                        {% set cotisextensions = {
+                            (-1): _T("Default"),
+                            (0): _T("No"),
+                            (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+                        } %}
+                        {% for m in 2..11 %}
+                            {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+                        {% endfor %}
                         {% include "components/forms/select.html.twig" with {
                             id: 'cotis_extension',
                             value: 0,
@@ -89,15 +97,13 @@
                     <td>
                         {{ entry.amount }}
                     </td>
-                    <td data-col-label="{{ _T("Extends membership?") }}">
+                    <td data-col-label="{{ _T("Membership extension") }}">
     {% if entry.extra == -1 %}
                         {{ _T("By default") }}
     {% elseif entry.extra == 0 %}
                         {{ _T("No") }}
-    {% elseif entry.extra == 1 %}                        
-                        1 {{ _T("month") }}
     {% else %}
-                        {{ entry.extra }} {{ _T("months") }}
+                        {{ _Tn('%1$s month', '%1$s months', entry.extra)|format(entry.extra) }}
     {% endif %}
                     </td>
                     <td class="center actions_row">

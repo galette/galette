@@ -34,16 +34,22 @@
                 <input type="text" name="amount" id="amount" value="{{ entry.amount }}"/>
             </div>
             <div class="field inline">
-                    {% set cotisextensions = {  (0) : _T("No"), (-1) : _T("By default"), (1) :  '1 ' ~ _T("month")} %}
-                    {% for m in 2..11 %} {% set cotisextensions =   cotisextensions + { (m) : (m ~' ' ~ _T("months") ) }  %} {% endfor %}
+                    {% set cotisextensions = {
+                        (-1): _T("Default"),
+                        (0): _T("No"),
+                        (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+                    } %}
+                    {% for m in 2..11 %}
+                        {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+                    {% endfor %}
                     {% include "components/forms/select.html.twig" with {
-                    id: 'cotis_extension',
-                    value: entry.cotis_extension,
-                    values: cotisextensions,
-                    required: false,
-                    label : _T("Extends membership?"),
-                    tip: ''
-                } %}            
+                        id: 'cotis_extension',
+                        value: entry.cotis_extension,
+                        values: cotisextensions,
+                        required: false,
+                        label : _T("Membership extension"),
+                        tip: ''
+                    } %}
             </div>
         </div>
 
