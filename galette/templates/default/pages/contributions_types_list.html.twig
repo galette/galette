@@ -44,14 +44,14 @@
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
                         <div class="required field">
-                            <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
-                            <input size="40" type="text" name="libelle_type_cotis" required="required"/>
+                            <label for="libelle_type_cotis" class="visually-hidden">{{ _T("Name") }}</label>
+                            <input size="40" type="text" name="libelle_type_cotis" id="libelle_type_cotis" required="required"/>
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Amount") }}">
                         <div class="field">
                             <label for="amount" class="visually-hidden">{{ _T("Amount") }}</label>
-                            <input size="5" type="text" name="amount"/>
+                            <input size="5" type="text" name="amount" id="amount" />
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Membership extension") }}">
@@ -97,7 +97,7 @@
                     </td>
                     <td data-col-label="{{ _T("Membership extension") }}">
     {% if entry.extra == -1 %}
-                        {{ _T("By default") }}
+                        {{ _T("Default") }}
     {% elseif entry.extra == 0 %}
                         {{ _T("No") }}
     {% else %}
