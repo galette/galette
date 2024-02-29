@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-02-29 21:52+0100\n"
-"PO-Revision-Date: 2024-02-20 06:57+0000\n"
+"PO-Revision-Date: 2024-02-29 21:35+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -2035,38 +2035,28 @@ msgid "- Field name already used."
 msgstr "- Un champ de ce nom existe déjà."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:680
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Width must be a positive integer!"
-msgstr "- La durée doit être un entier positif !"
+msgstr "- La largeur doit être un entier positif !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:688
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Height must be a positive integer!"
-msgstr "- La durée doit être un entier positif !"
+msgstr "- La hauteur doit être un entier positif !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:696
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Size must be a positive integer!"
-msgstr "- La durée doit être un entier positif !"
+msgstr "- La taille doit être un entier positif !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:704
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Min size must be a positive integer!"
-msgstr "- La durée doit être un entier positif !"
+msgstr "- La taille mini doit être un entier positif !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:717
 msgid "- Min size must be lower than size!"
-msgstr ""
+msgstr "- La taille mini doit être inférieure à la taille !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:723
-#, fuzzy
-#| msgid "- The amount must be an integer!"
 msgid "- Repeat must be an integer!"
-msgstr "- Le montant doit être un nombre entier !"
+msgstr "- Répétition doit être un nombre entier !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:834
 msgid "An error occurred storing the field."
@@ -5136,10 +5126,8 @@ msgstr "Obligatoire"
 #: ../../tempcache/elements/edit_core_fields.html.twig:265
 #: ../../tempcache/elements/edit_core_fields.html.twig:269
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:317
-#, fuzzy
-#| msgid "Adhesion form"
 msgid "Width in forms"
-msgstr "Formulaire d’adhésion"
+msgstr "Largeur dans les formulaires"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:84
 #: ../../tempcache/elements/list.html.twig:386
@@ -5157,23 +5145,19 @@ msgstr "Actions"
 #: ../../tempcache/elements/edit_core_fields.html.twig:304
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:345
 msgid "Half"
-msgstr ""
+msgstr "Moitié"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:155
 #: ../../tempcache/elements/edit_core_fields.html.twig:293
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:334
-#, fuzzy
-#| msgid "Full date"
 msgid "Full"
-msgstr "Date complète"
+msgstr "Complète"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:161
 #: ../../tempcache/elements/edit_core_fields.html.twig:285
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:326
-#, fuzzy
-#| msgid "Default fields"
 msgid "Default"
-msgstr "Champs par défaut"
+msgstr "Défaut"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:181
 #: ../../tempcache/pages/contributions_types_list.html.twig:210
@@ -5743,7 +5727,7 @@ msgstr "Marquer le champ « %field » comme (non) obligatoire"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:271
 msgid "Change field's width with in forms"
-msgstr ""
+msgstr "Changer la largeur du champ dans les formulaires"
 
 #: ../../tempcache/elements/member_card.html.twig:59
 msgid "Picture"
@@ -5933,16 +5917,12 @@ msgid "Height:"
 msgstr "Hauteur :"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:186
-#, fuzzy
-#| msgid "Size:"
 msgid "Min Size:"
-msgstr "Taille :"
+msgstr "Taille mini :"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:194
-#, fuzzy
-#| msgid "Maximum number of characters."
 msgid "Minimum number of characters."
-msgstr "Nombre maximal de caractères."
+msgstr "Nombre minimal de caractères."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:206
 msgid "Size:"
@@ -5982,7 +5962,7 @@ msgstr "Informations additionnelles affichées avec le champ dynamique."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:289
 msgid "Display information above input"
-msgstr ""
+msgstr "Afficher les informations au dessus de la saisie"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:391
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:400
@@ -7430,7 +7410,7 @@ msgstr "Auto-enregistrement actif ?"
 
 #: ../../tempcache/pages/preferences.html.twig:914
 msgid "Number of columns on the member form"
-msgstr ""
+msgstr "Nombre de colonnes sur le formulaire adhérent"
 
 #: ../../tempcache/pages/preferences.html.twig:940
 msgid "Post new contribution script URI"
