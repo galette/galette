@@ -294,7 +294,7 @@ class GaletteMail
             );
         }
 
-        $signature = $this->preferences->getMailSignature();
+        $signature = $this->preferences->getMailSignature($this->mail);
         if ($signature != '') {
             if ($this->html) {
                 //we are sending html message

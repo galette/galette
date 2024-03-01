@@ -97,7 +97,7 @@ if (!defined('GALETTE_COMPILE_DIR')) {
     define('GALETTE_COMPILE_DIR', GALETTE_DATA_PATH . 'templates_c/');
 }
 if (!defined('GALETTE_CACHE_DIR')) {
-    define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/');
+    define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/' . GALETTE_VERSION . '/');
 }
 if (!defined('GALETTE_EXPORTS_PATH')) {
     define('GALETTE_EXPORTS_PATH', GALETTE_DATA_PATH . 'exports/');

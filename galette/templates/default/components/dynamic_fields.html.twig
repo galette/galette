@@ -150,7 +150,7 @@
                                 <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
                                     {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
                                     {% if field.getInformation() %}
-                                        <p class="exemple">{{ field.getInformation()|raw }}</p>
+                                        <div class="exemple">{{ field.getInformation()|raw }}</div>
                                     {% endif %}
                                 </div>
                             {% endfor %}

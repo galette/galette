@@ -47,6 +47,7 @@ define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 define('GALETTE_THEME', 'themes/default/');
 define('GALETTE_DATA_PATH', GALETTE_TESTS_PATH . '/tests-data/');
+define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/');
 if (is_dir(GALETTE_DATA_PATH)) {
     $files = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(

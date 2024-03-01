@@ -39,6 +39,7 @@ use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
+use PHPMailer\PHPMailer\PHPMailer;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -767,6 +768,11 @@ class Preferences
             case 'pref_footer':
                 $value = $this->cleanHtmlValue($value);
                 break;
+            case 'pref_website':
+                if (!isValidWebUrl($value)) {
+                    $this->errors[] = _T("- Invalid website URL.");
+                }
+                break;
         }
 
         return $value;
@@ -1228,9 +1234,11 @@ class Preferences
     /**
      * Get email signature
      *
+     * @param PHPMailer $mail PHPMailer instance
+     *
      * @return string
      */
-    public function getMailSignature(): string
+    public function getMailSignature(PHPMailer $mail): string
     {
         global $routeparser;
 
@@ -1245,6 +1253,7 @@ class Preferences
             $this->getMainPatterns() + $this->getSignaturePatterns()
         );
         $this
+            ->setMail($mail)
             ->setMain()
             ->setSocialReplacements();
 
@@ -1349,7 +1358,11 @@ class Preferences
     public function cleanHtmlValue(string $value): string
     {
         $config = \HTMLPurifier_Config::createDefault();
-        $config->set('Cache.SerializerPath', GALETTE_CACHE_DIR);
+        $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
+        if (!file_exists($cache_dir)) {
+            mkdir($cache_dir, 0755, true);
+        }
+        $config->set('Cache.SerializerPath', $cache_dir);
         $purifier = new \HTMLPurifier($config);
         return $purifier->purify($value);
     }

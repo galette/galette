@@ -337,6 +337,7 @@ class ContributionsController extends CrudController
         foreach ($members_ids as $member_id) {
             $post[Adherent::PK] = (int)$member_id;
             $contrib = new Contribution($this->zdb, $this->login);
+            $contrib->disableEvents();
 
             // regular fields
             $valid = $contrib->check($post, $contrib->getRequired(), $disabled);

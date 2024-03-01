@@ -52,6 +52,7 @@
  * - modal_approve_text: modal's approve button's text.
  * - modal_approve_icon: modal's approve button's icon.
  * - modal_cancel_text: modal's cancel button's text.
+ * - modal_action_onshow: additionnal code to execute on modal's onShow event.
  *
  * @see loader.js.twig
  * @see modal.js.twig
@@ -107,6 +108,7 @@
                 } %}
             },
             error: function() {
+                {# Use "only" keyword to prevent known but not explicitiely defined variables to be passed #}
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("An error occurred :(")|e("js"),
                     modal_without_content: true,
@@ -114,7 +116,7 @@
                     modal_deny_only: true,
                     modal_cancel_text: _T("Close")|e("js"),
                     modal_classname: "redalert",
-                } %}
+                } only %}
             }
         });
     });
@@ -127,4 +129,7 @@
             inline: false,
             addTouchEvents: false,
         });
+{% if modal_action_onshow is defined %}
+        {{ modal_action_onshow|raw }}
+{% endif %}
     }

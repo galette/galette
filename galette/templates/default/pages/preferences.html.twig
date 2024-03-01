@@ -944,15 +944,27 @@
                                     $.ajax({
                                         url: '{{ url_for('ajaxMessages') }}',
                                         method: "GET",
-                                        success: function(message) {
-                                            var message_inline = new DOMParser().parseFromString(message, 'text/html');
-                                            var message_content = message_inline.body.querySelectorAll('div.content');
-                                            $('body').toast({
-                                                position: 'bottom right',
-                                                message: message_content,
-                                                showIcon: 'check circle outline',
-                                                class: 'success'
-                                            });
+                                        success: function (values) {
+                                            for (var type in values) {
+                                                var dtime = 0;
+                                                if (type == 'success') {
+                                                    dtime = 'auto';
+                                                }
+                                                $('body')
+                                                    .toast({
+                                                        displayTime: dtime,
+                                                        minDisplayTime: 5000,
+                                                        wordsPerMinute: 80,
+                                                        showProgress: 'bottom',
+                                                        closeIcon: true,
+                                                        position: 'top attached',
+                                                        title: values[type]['title'],
+                                                        message: values[type]['messages'].join('<br/>'),
+                                                        showIcon: values[type]['icon'],
+                                                        class: type
+                                                    })
+                                                ;
+                                            }
                                         }
                                     });
                                 },
