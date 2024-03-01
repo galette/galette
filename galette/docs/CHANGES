@@ -1,6 +1,17 @@
 Changes
 -------
 
+1.0.2 -> 1.0.3
+
+* Logo in mail signature is not shown
+* Missing HTML editor for dynamic fields information field
+* Update and maintainance pages are no longer working
+* Do not throw events on mass edition
+* Make cache version dependent
+* Check preferences website is valid
+* Link to asso website from logo
+* Rework UI messages
+
 1.0.1 -> 1.0.2
 
 - Public pages access restriction (CVE-2024-24761)
