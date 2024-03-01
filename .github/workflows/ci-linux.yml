@@ -168,23 +168,9 @@ jobs:
         if: env.skip != 'true'
         run: bin/install_deps
 
-      - name: Init for PostgreSQL (update)
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-        run: |
-          PGPASSWORD=g@l3tte psql -d galette_fail_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
-        if: env.skip != 'true' && startsWith(matrix.db-image, 'postgres')
-
-      - name: Init for MariaDB (update)
-        run: |
-          mysql -e 'create database IF NOT EXISTS galette_fail_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
-          mysql -e 'use galette_fail_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
-        if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
-
       - name: Fail database tests
         if: env.skip != 'true'
-        run: FAIL=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteDbFails/
+        run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteDbFails/
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -297,7 +283,7 @@ jobs:
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
       - name: Update database tests
-        run: UPDATE=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteUpdate/
+        run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteUpdate/
         if: env.skip != 'true' && matrix.coverage != 'xdebug'
 
       - name: Init for PostgreSQL

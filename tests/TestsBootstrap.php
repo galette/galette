@@ -45,7 +45,8 @@ if (
     $db = 'pgsql';
 }
 
-$fail_env = getenv('FAIL');
+$testenv = getenv('TESTENV');
+$fail_env = $testenv === 'FAIL';
 if ($fail_env !== false) {
     $db .= '_fail';
 }
@@ -123,11 +124,11 @@ if (!defined('_CURRENT_THEME_PATH')) {
     );
 }
 
-$updateenv = getenv('UPDATE');
 if (
-    $updateenv !== 'UPDATE'
+    $testenv !== 'UPDATE'
+    && $testenv !== 'FAIL'
 ) {
-    //do not initialize Ttiles on update tests
+    //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
     $res = $titles->installInit($zdb);
 }
