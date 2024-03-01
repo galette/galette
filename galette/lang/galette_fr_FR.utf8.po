@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-02 00:16+0100\n"
-"PO-Revision-Date: 2024-02-29 21:35+0000\n"
+"PO-Revision-Date: 2024-03-01 23:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -346,12 +346,11 @@ msgid "Something went wront during mass edition!"
 msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1327
-#, fuzzy, php-format
-#| msgid "%count members has been changed successfully!"
+#, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%count adhérents ont été modifiés avec succès !"
-msgstr[1] "%count adhérents ont été modifiés avec succès !"
+msgstr[0] "%1$s adhérent a été modifié avec succès !"
+msgstr[1] "%1$s adhérents ont été modifiés avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1396
 msgid "Invalid captcha"
