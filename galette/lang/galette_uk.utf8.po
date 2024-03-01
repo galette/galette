@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-29 21:52+0100\n"
+"POT-Creation-Date: 2024-03-02 00:16+0100\n"
 "PO-Revision-Date: 2024-02-08 22:42+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -345,7 +345,7 @@ msgid "Nothing to do!"
 msgstr "Нічого немає!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1308
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1541
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1545
 msgid "An error occurred while storing the member."
 msgstr "Під час зберігання члена сталася помилка."
 
@@ -354,50 +354,54 @@ msgid "Something went wront during mass edition!"
 msgstr "Щось пішло не так під час масової правки!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1327
-#, php-format
-msgid "%count members has been changed successfully!"
-msgstr "%count членів успішно змінено!"
+#, fuzzy, php-format
+#| msgid "%count members has been changed successfully!"
+msgid "%1$s member has been changed successfully!"
+msgid_plural "%1$s members has been changed successfully!"
+msgstr[0] "%count членів успішно змінено!"
+msgstr[1] "%count членів успішно змінено!"
+msgstr[2] "%count членів успішно змінено!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1392
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1396
 msgid "Invalid captcha"
 msgstr "Тест на ботоподібність не пройдено"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1499
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1503
 msgid "Your account has been created!"
 msgstr "Ваш обліковий запис створено!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1504
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "An email has been sent to you, check your inbox."
 msgstr "Вам надіслано повідомлення на е-пошту, перевірте \"Вхідні\"."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1507
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1511
 msgid "New member has been successfully added."
 msgstr "Нового члена успішно додано."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1510
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1514
 msgid "Member account has been modified."
 msgstr "Обліковий запис члена змінено."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1522
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1526
 msgid "An error occurred adding member to its groups."
 msgstr "Не вдалося додати члена до своїх груп."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1536
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1540
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Не вдалося додати члена до своїх груп як управника."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1559
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1563
 #: ../lib/Galette/Controllers/GaletteController.php:301
 #: ../lib/Galette/Controllers/GaletteController.php:333
 msgid "Delete failed"
 msgstr "Не вдалося видалити"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1697
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1701
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Видалити члена %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1707
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1711
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Ви збираєтеся видалити %count членів."

@@ -27,7 +27,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-29 21:52+0100\n"
+"POT-Creation-Date: 2024-03-02 00:16+0100\n"
 "PO-Revision-Date: 2023-11-26 09:04+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -361,7 +361,7 @@ msgid "Nothing to do!"
 msgstr "Niente da fare!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1308
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1541
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1545
 msgid "An error occurred while storing the member."
 msgstr "Si è verificato un errore nell'estrazione di un membro."
 
@@ -370,52 +370,55 @@ msgid "Something went wront during mass edition!"
 msgstr "Qualcosa è andato storto nell'edizione massiva!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1327
-#, php-format
-msgid "%count members has been changed successfully!"
-msgstr "Membri %count sono stati cambiati con successo!"
+#, fuzzy, php-format
+#| msgid "%count members has been changed successfully!"
+msgid "%1$s member has been changed successfully!"
+msgid_plural "%1$s members has been changed successfully!"
+msgstr[0] "Membri %count sono stati cambiati con successo!"
+msgstr[1] "Membri %count sono stati cambiati con successo!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1392
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1396
 msgid "Invalid captcha"
 msgstr "Captcha invalido"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1499
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1503
 msgid "Your account has been created!"
 msgstr "Il tuo account è stato creato!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1504
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 "Ti è stata inviata un’e-mail, controlla la tua casella di posta elettronica."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1507
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1511
 msgid "New member has been successfully added."
 msgstr "Un nuovo membro è stato aggiunto con successo."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1510
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1514
 msgid "Member account has been modified."
 msgstr "L'account membro è stato modificato."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1522
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1526
 msgid "An error occurred adding member to its groups."
 msgstr "Si è verificato un errore nell'aggiungere un membro al gruppo."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1536
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1540
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Si è verificato un errore nell'aggiungere un membro al gruppo come manager."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1559
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1563
 #: ../lib/Galette/Controllers/GaletteController.php:301
 #: ../lib/Galette/Controllers/GaletteController.php:333
 msgid "Delete failed"
 msgstr "Rimozione fallita"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1697
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1701
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Rimuovi membro %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1707
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1711
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Stai per rimuovere %count membri."
