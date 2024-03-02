@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 00:16+0100\n"
+"POT-Creation-Date: 2024-03-02 08:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1911,8 +1911,8 @@ msgstr ""
 #: ../../tempcache/pages/members_list.html.twig:769
 #: ../../tempcache/pages/status_list.html.twig:159
 #: ../../tempcache/pages/preferences.html.twig:392
-#: ../../tempcache/pages/configuration_core_lists.html.twig:143
-#: ../../tempcache/pages/configuration_core_lists.html.twig:250
+#: ../../tempcache/pages/configuration_core_lists.html.twig:106
+#: ../../tempcache/pages/configuration_core_lists.html.twig:159
 msgid "Staff member"
 msgstr ""
 
@@ -1920,8 +1920,8 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:130
 #: ../../tempcache/elements/group_persons.html.twig:126
 #: ../../tempcache/elements/edit_core_fields.html.twig:161
-#: ../../tempcache/pages/configuration_core_lists.html.twig:138
-#: ../../tempcache/pages/configuration_core_lists.html.twig:245
+#: ../../tempcache/pages/configuration_core_lists.html.twig:106
+#: ../../tempcache/pages/configuration_core_lists.html.twig:159
 msgid "Administrator"
 msgstr ""
 
@@ -1931,8 +1931,8 @@ msgstr ""
 #: ../../tempcache/elements/edit_core_fields.html.twig:181
 #: ../../tempcache/pages/members_list.html.twig:626
 #: ../../tempcache/pages/members_list.html.twig:780
-#: ../../tempcache/pages/configuration_core_lists.html.twig:148
-#: ../../tempcache/pages/configuration_core_lists.html.twig:255
+#: ../../tempcache/pages/configuration_core_lists.html.twig:106
+#: ../../tempcache/pages/configuration_core_lists.html.twig:159
 #: ../../tempcache/pages/member_show.html.twig:551
 #: ../../tempcache/components/forms/groups.html.twig:149
 msgid "Group manager"
@@ -4862,6 +4862,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_payment_types.html.twig:97
 #: ../../tempcache/pages/status_list.html.twig:116
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:172
+#: ../../tempcache/pages/configuration_core_lists.html.twig:142
 #: ../../tempcache/components/dynamic_fields.html.twig:281
 msgid "Add"
 msgstr ""
@@ -4871,10 +4872,9 @@ msgstr ""
 #: ../../tempcache/elements/edit_core_fields.html.twig:48
 #: ../../tempcache/elements/edit_core_fields.html.twig:129
 #: ../../tempcache/elements/edit_core_fields.html.twig:133
-#: ../../tempcache/pages/configuration_core_lists.html.twig:84
-#: ../../tempcache/pages/configuration_core_lists.html.twig:126
-#: ../../tempcache/pages/configuration_core_lists.html.twig:195
-#: ../../tempcache/pages/configuration_core_lists.html.twig:233
+#: ../../tempcache/pages/configuration_core_lists.html.twig:74
+#: ../../tempcache/pages/configuration_core_lists.html.twig:186
+#: ../../tempcache/pages/configuration_core_lists.html.twig:305
 msgid "Permissions"
 msgstr ""
 
@@ -4917,6 +4917,7 @@ msgstr ""
 #: ../../tempcache/pages/import.html.twig:98
 #: ../../tempcache/pages/configuration_payment_types.html.twig:65
 #: ../../tempcache/pages/status_list.html.twig:78
+#: ../../tempcache/pages/configuration_core_lists.html.twig:78
 msgid "Actions"
 msgstr ""
 
@@ -4953,6 +4954,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:207
 #: ../../tempcache/pages/contributions_types_list.html.twig:223
 #: ../../tempcache/pages/status_list.html.twig:206
+#: ../../tempcache/pages/configuration_core_lists.html.twig:198
 #, php-format
 msgid "Delete '%s' field"
 msgstr ""
@@ -5218,7 +5220,7 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:361
 #: ../../tempcache/pages/configuration_title_form.html.twig:89
 #: ../../tempcache/pages/preferences.html.twig:2506
-#: ../../tempcache/pages/configuration_core_lists.html.twig:287
+#: ../../tempcache/pages/configuration_core_lists.html.twig:216
 #: ../../tempcache/pages/member_form.html.twig:93
 #: ../../tempcache/pages/member_form.html.twig:468
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:89
@@ -5463,27 +5465,25 @@ msgid "No manager attached"
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:135
-#: ../../tempcache/pages/configuration_core_lists.html.twig:128
-#: ../../tempcache/pages/configuration_core_lists.html.twig:235
 #, php-format
 msgid "Change '%field' permissions"
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:151
-#: ../../tempcache/pages/configuration_core_lists.html.twig:133
-#: ../../tempcache/pages/configuration_core_lists.html.twig:240
+#: ../../tempcache/pages/configuration_core_lists.html.twig:106
+#: ../../tempcache/pages/configuration_core_lists.html.twig:159
 msgid "Inaccessible"
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:191
-#: ../../tempcache/pages/configuration_core_lists.html.twig:153
-#: ../../tempcache/pages/configuration_core_lists.html.twig:260
+#: ../../tempcache/pages/configuration_core_lists.html.twig:106
+#: ../../tempcache/pages/configuration_core_lists.html.twig:159
 msgid "Read only"
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:201
-#: ../../tempcache/pages/configuration_core_lists.html.twig:158
-#: ../../tempcache/pages/configuration_core_lists.html.twig:265
+#: ../../tempcache/pages/configuration_core_lists.html.twig:106
+#: ../../tempcache/pages/configuration_core_lists.html.twig:159
 msgid "Read/Write"
 msgstr ""
 
@@ -5735,10 +5735,9 @@ msgid "New dynamic field"
 msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:411
-#: ../../tempcache/pages/configuration_core_lists.html.twig:78
-#: ../../tempcache/pages/configuration_core_lists.html.twig:111
-#: ../../tempcache/pages/configuration_core_lists.html.twig:189
-#: ../../tempcache/pages/configuration_core_lists.html.twig:218
+#: ../../tempcache/pages/configuration_core_lists.html.twig:70
+#: ../../tempcache/pages/configuration_core_lists.html.twig:173
+#: ../../tempcache/pages/configuration_core_lists.html.twig:299
 msgid "Field name"
 msgstr ""
 
@@ -7687,12 +7686,20 @@ msgstr ""
 msgid "No sent mailing has been stored in the database yet."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_core_lists.html.twig:68
-msgid "Fields in list"
+#: ../../tempcache/pages/configuration_core_lists.html.twig:87
+#: ../../tempcache/pages/configuration_core_lists.html.twig:93
+msgid "Available fields"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_core_lists.html.twig:179
-msgid "Available fields"
+#: ../../tempcache/pages/configuration_core_lists.html.twig:273
+msgid ""
+"Deleting the last field is not possible. There must be at least one field in "
+"the list."
+msgstr ""
+
+#: ../../tempcache/pages/configuration_core_lists.html.twig:311
+#, php-format
+msgid "Delete %s field"
 msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
