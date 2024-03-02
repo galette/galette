@@ -27,7 +27,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 08:11+0100\n"
+"POT-Creation-Date: 2024-03-02 08:18+0100\n"
 "PO-Revision-Date: 2023-11-26 09:04+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -5087,6 +5087,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:223
 #: ../../tempcache/pages/status_list.html.twig:206
 #: ../../tempcache/pages/configuration_core_lists.html.twig:198
+#: ../../tempcache/pages/configuration_core_lists.html.twig:311
 #, php-format
 msgid "Delete '%s' field"
 msgstr ""
@@ -7888,12 +7889,6 @@ msgid ""
 "the list."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_core_lists.html.twig:311
-#, fuzzy, php-format
-#| msgid "Delete failed"
-msgid "Delete %s field"
-msgstr "Rimozione fallita"
-
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
 #, fuzzy, php-format
 #| msgid "%count transaction"
@@ -8563,6 +8558,11 @@ msgstr "Lingua:"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr ""
+
+#, fuzzy, php-format
+#~| msgid "Delete failed"
+#~ msgid "Delete %s field"
+#~ msgstr "Rimozione fallita"
 
 #~ msgid "An SQL error has occurred while storing search."
 #~ msgstr "Si è verificato un errore SQL nella ricerca del file salvato."

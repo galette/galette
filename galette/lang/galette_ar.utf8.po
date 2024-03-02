@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 08:11+0100\n"
+"POT-Creation-Date: 2024-03-02 08:18+0100\n"
 "PO-Revision-Date: 2024-02-06 10:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -5021,6 +5021,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:223
 #: ../../tempcache/pages/status_list.html.twig:206
 #: ../../tempcache/pages/configuration_core_lists.html.twig:198
+#: ../../tempcache/pages/configuration_core_lists.html.twig:311
 #, php-format
 msgid "Delete '%s' field"
 msgstr ""
@@ -7826,12 +7827,6 @@ msgid ""
 "the list."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_core_lists.html.twig:311
-#, fuzzy, php-format
-#| msgid "Delete failed"
-msgid "Delete %s field"
-msgstr "فشل الحذف"
-
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
 #, php-format
 msgid "%count search"
@@ -8501,6 +8496,11 @@ msgstr "اللغة:"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr "محتوى الصفحة"
+
+#, fuzzy, php-format
+#~| msgid "Delete failed"
+#~ msgid "Delete %s field"
+#~ msgstr "فشل الحذف"
 
 #~ msgid "contribution type"
 #~ msgstr "نوع المساهمة"

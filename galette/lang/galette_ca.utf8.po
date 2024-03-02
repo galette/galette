@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 08:11+0100\n"
+"POT-Creation-Date: 2024-03-02 08:18+0100\n"
 "PO-Revision-Date: 2024-02-08 22:41+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -5890,6 +5890,7 @@ msgstr "Tradueix el camp «%s»"
 #: ../../tempcache/pages/contributions_types_list.html.twig:223
 #: ../../tempcache/pages/status_list.html.twig:206
 #: ../../tempcache/pages/configuration_core_lists.html.twig:198
+#: ../../tempcache/pages/configuration_core_lists.html.twig:311
 #, php-format
 msgid "Delete '%s' field"
 msgstr "Suprimeix el camp '%s'"
@@ -9206,12 +9207,6 @@ msgid ""
 "the list."
 msgstr ""
 
-#: ../../tempcache/pages/configuration_core_lists.html.twig:311
-#, fuzzy, php-format
-#| msgid "Delete '%s' field"
-msgid "Delete %s field"
-msgstr "Suprimeix el camp '%s'"
-
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
 #, php-format
 msgid "%count search"
@@ -10011,6 +10006,11 @@ msgstr "Llengua:"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy, php-format
+#~| msgid "Delete '%s' field"
+#~ msgid "Delete %s field"
+#~ msgstr "Suprimeix el camp '%s'"
 
 #, fuzzy
 #~ msgid "Fields in list"

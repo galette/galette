@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2024-03-02 08:11+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-02 08:18+0100\n"
 "PO-Revision-Date: 2024-03-02 07:18+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -5178,6 +5178,7 @@ msgstr "Traduire le champ « %s »"
 #: ../../tempcache/pages/contributions_types_list.html.twig:223
 #: ../../tempcache/pages/status_list.html.twig:206
 #: ../../tempcache/pages/configuration_core_lists.html.twig:198
+#: ../../tempcache/pages/configuration_core_lists.html.twig:311
 #, php-format
 msgid "Delete '%s' field"
 msgstr "Supprimer le champ « %s »"
@@ -8035,12 +8036,6 @@ msgstr ""
 "Il est impossible de supprimer le dernier champ. Il doit y avoir au moins un "
 "champ dans la liste."
 
-#: ../../tempcache/pages/configuration_core_lists.html.twig:311
-#, fuzzy, php-format
-#| msgid "Delete '%s' field"
-msgid "Delete %s field"
-msgstr "Supprimer le champ « %s »"
-
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
 #, php-format
 msgid "%count search"
@@ -8718,6 +8713,11 @@ msgstr "Menu des langues"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr "Contenu de la page"
+
+#, fuzzy, php-format
+#~| msgid "Delete '%s' field"
+#~ msgid "Delete %s field"
+#~ msgstr "Supprimer le champ « %s »"
 
 #~ msgid "Fields in list"
 #~ msgstr "Champs dans la liste"
