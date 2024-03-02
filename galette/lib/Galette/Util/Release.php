@@ -21,7 +21,7 @@
 
 namespace Galette\Util;
 
-use Galette\Core\Galette;
+use Analog\Analog;
 use Galette\Features\Cacheable;
 use GuzzleHttp\Client;
 
@@ -100,30 +100,38 @@ class Release
             return $this->getLatestRelease();
         }
 
-        $client = $this->setupClient();
-        $response = $client->request('GET', $this->getReleasesURL());
-        $contents = $response->getBody()->getContents();
+        try {
+            $client = $this->setupClient();
+            $response = $client->request('GET', $this->getReleasesURL());
+            $contents = $response->getBody()->getContents();
 
-        $releases = [];
-        preg_match_all(
-            '/href="(galette-.[^"]+\.tar\.bz2)"/',
-            $contents,
-            $releases
-        );
+            $releases = [];
+            preg_match_all(
+                '/href="(galette-.[^"]+\.tar\.bz2)"/',
+                $contents,
+                $releases
+            );
 
-        $latest = null;
-        foreach ($releases[1] as $release) {
-            $release = str_replace('galette-', '', $release);
-            $release = str_replace('.tar.bz2', '', $release);
-            if ($release === 'dev') {
-                continue;
+            $latest = null;
+            foreach ($releases[1] as $release) {
+                $release = str_replace('galette-', '', $release);
+                $release = str_replace('.tar.bz2', '', $release);
+                if ($release === 'dev') {
+                    continue;
+                }
+                if (version_compare($release, $latest ?? 0, '>')) {
+                    $latest = $release;
+                }
             }
-            if (version_compare($release, $latest ?? 0, '>')) {
-                $latest = $release;
-            }
+
+            return $latest;
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Error while trying to get latest release: ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return null;
         }
-
-        return $latest;
     }
 
     /**
