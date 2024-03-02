@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 08:11+0100\n"
-"PO-Revision-Date: 2024-03-02 08:11+0100\n"
+"POT-Creation-Date: 2024-03-02 08:18+0100\n"
+"PO-Revision-Date: 2024-03-02 08:18+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -5074,6 +5074,7 @@ msgstr "Translate '%s' field"
 #: ../../tempcache/pages/contributions_types_list.html.twig:223
 #: ../../tempcache/pages/status_list.html.twig:206
 #: ../../tempcache/pages/configuration_core_lists.html.twig:198
+#: ../../tempcache/pages/configuration_core_lists.html.twig:311
 #, php-format
 msgid "Delete '%s' field"
 msgstr "Delete '%s' field"
@@ -7898,11 +7899,6 @@ msgid ""
 msgstr ""
 "Deleting the last field is not possible. There must be at least one field in "
 "the list."
-
-#: ../../tempcache/pages/configuration_core_lists.html.twig:311
-#, php-format
-msgid "Delete %s field"
-msgstr "Delete %s field"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:54
 #, php-format

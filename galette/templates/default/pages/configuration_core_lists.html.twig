@@ -139,7 +139,7 @@
                             showProgress: 'bottom',
                             closeIcon: true,
                             position: 'top attached',
-                            message: '{{ _T("Deleting the last field is not possible. There must be at least one field in the list.") }}',
+                            message: '{{ _T("Deleting the last field is not possible. There must be at least one field in the list.")|e('js') }}',
                             showIcon: 'info',
                             class: 'info'
                         });
@@ -168,7 +168,7 @@
                         _table_item +='<td class="left" data-col-label="{{ _T("Permissions") }}">' + _field_permission + '</td>';
                         _table_item +='<td class="center actions_row"><a href="#" class="delete">';
                         _table_item +='<i class="ui trash red icon tooltip" aria-hidden="true"></i>';
-                        _table_item +='<span class="ui special popup">{{ _T("Delete %s field")|replace({"%s": ' + _field_label + '}) }}</span>';
+                        _table_item +='<span class="ui special popup">{{ _T("Delete '%s' field")|replace({"%s": ' + _field_label + '})|e('js') }}</span>';
                         _table_item +='</a></td>';
                         _table_item +='</tr>';
 
