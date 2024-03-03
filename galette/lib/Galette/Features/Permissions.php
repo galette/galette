@@ -36,6 +36,7 @@ use Laminas\Db\Sql\Expression;
 trait Permissions
 {
     protected ?int $permission = null;
+    protected bool $can_public = false;
 
     /* FIXME/ requires PHP 8.2
     public const NOBODY = 0;
@@ -57,17 +58,19 @@ trait Permissions
     {
         $list = [
             FieldsConfig::NOBODY => _T("Inaccessible"),
+        ];
+
+        if ($can_public) {
+            $list += [FieldsConfig::ALL => _T("Public")];
+        }
+
+        $list += [
             FieldsConfig::USER_READ => _T("User, read only"),
             FieldsConfig::USER_WRITE => _T("User, read/write"),
             FieldsConfig::MANAGER => _T("Group manager"),
             FieldsConfig::STAFF => _T("Staff member"),
             FieldsConfig::ADMIN => _T("Administrator"),
         ];
-
-        if ($can_public) {
-            $all = [FieldsConfig::ALL => _T("Public")];
-            $list = array_unshift($all);
-        }
 
         return $list;
     }
@@ -79,7 +82,7 @@ trait Permissions
      */
     public function getPermissionName(): string
     {
-        $perms = self::getPermissionsList();
+        $perms = self::getPermissionsList($this->can_public);
         return $perms[$this->getPermission()];
     }
 

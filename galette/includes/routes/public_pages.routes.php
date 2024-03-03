@@ -58,4 +58,9 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
                 ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
+
+    $app->get(
+        '/documents[/{option:page|order}/{value:\d+|\w+}]',
+        [Crud\DocumentsController::class, 'publicList']
+    )->setName('documentsPublicList');
 })->add(\Galette\Middleware\PublicPages::class);

@@ -86,4 +86,5 @@ $core_acls = [
     'pdfModels'                         => 'staff',
     'attendance_sheet_details'          => 'groupmanager',
     'attendance_sheet'                  => 'groupmanager',
+    '/(.+)?document(.+)?/i'             => 'staff'
 ];

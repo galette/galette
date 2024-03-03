@@ -25,7 +25,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Social;
 
 /**
- * Replacements feature
+ * Socials feature
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */

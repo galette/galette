@@ -354,6 +354,19 @@ CREATE TABLE galette_socials (
   FOREIGN KEY (id_adh) REFERENCES  galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
+-- table for documents
+DROP TABLE IF EXISTS galette_documents;
+CREATE TABLE galette_documents (
+  id_document int(10) unsigned NOT NULL auto_increment,
+  type varchar(250) NOT NULL,
+  visible tinyint(1) NOT NULL,
+  filename varchar(255) DEFAULT NULL,
+  comment text,
+  creation_date datetime NOT NULL,
+  PRIMARY KEY (id_document),
+  KEY (type)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (

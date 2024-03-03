@@ -6,6 +6,7 @@ use Twig\Cache\FilesystemCache;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
+use Twig\Extra\String\StringExtension;
 
 if ( !class_exists('\Twig\Loader\FilesystemLoader')) {
     require_once __DIR__ . '/../galette/vendor/autoload.php';
@@ -80,6 +81,8 @@ $twig = new Environment(
         'auto_reload' => true,
     ]
 );
+
+$twig->addExtension(new StringExtension());
 
 $twig_functions = [
     '__',

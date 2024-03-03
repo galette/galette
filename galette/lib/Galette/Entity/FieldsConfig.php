@@ -808,7 +808,7 @@ class FieldsConfig
 
     /**
      * Migrate old required fields configuration
-     * Only needeed for 0.7.4 upgrade
+     * Only needed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
      *
      * @return boolean

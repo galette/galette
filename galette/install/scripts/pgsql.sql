@@ -165,6 +165,15 @@ CREATE SEQUENCE galette_socials_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for documents
+DROP SEQUENCE IF EXISTS galette_documents_id_seq;
+CREATE SEQUENCE galette_documents_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_paymenttypes CASCADE;
@@ -498,6 +507,20 @@ CREATE TABLE galette_socials (
 );
 -- add index on table to look for type
 CREATE INDEX galette_socials_idx ON galette_socials (type);
+
+-- table for documents
+DROP TABLE IF EXISTS galette_documents CASCADE;
+CREATE TABLE galette_documents (
+  id_document integer DEFAULT nextval('galette_documents_id_seq'::text) NOT NULL,
+  type character varying(250) NOT NULL,
+  visible integer NOT NULL,
+  filename character varying(255) DEFAULT NULL,
+  comment text,
+  creation_date timestamp NOT NULL,
+  PRIMARY KEY (id_document)
+);
+-- add index on table to look for type
+CREATE INDEX galette_documents_idx ON galette_documents (type);
 
 -- table for database version
 DROP TABLE IF EXISTS galette_database CASCADE;

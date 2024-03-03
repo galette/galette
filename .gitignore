@@ -70,6 +70,11 @@ quick_gen_project_*
 !/galette/data/files/readme.txt
 !/galette/data/files/.htaccess
 
+# /galette/data/documents/
+/galette/data/documents/*
+!/galette/data/documents/readme.txt
+!/galette/data/documents/.htaccess
+
 # Test stuff
 tests/coverage/
 tests/mageekguy.atoum.phar

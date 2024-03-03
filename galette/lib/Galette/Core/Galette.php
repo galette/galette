@@ -315,6 +315,13 @@ class Galette
                             'route' => [
                                 'name' => 'charts'
                             ]
+                        ], [
+                            'label' => _T("Documents"),
+                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
+                            'route' => [
+                                'name' => 'documentsList',
+                                'aliases' => ['editDocument', 'addDocument']
+                            ]
                         ]
                     ]);
                 }//admin or staff
@@ -474,7 +481,7 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          */
-        global $preferences, $login, $plugins;
+        global $preferences, $login, $plugins, $zdb;
 
         $menus = [];
         if ($preferences->showPublicPages($login)) {
@@ -500,6 +507,20 @@ class Galette
                     ]
                 ]
             ];
+
+            //display documents menu if at least one document is present with current ACLs
+            $document = new \Galette\Entity\Document($zdb);
+            $documents = $document->getList();
+            if ($login->isSuperAdmin() || count($documents)) {
+                $menus['public']['items'][] = [
+                    'label' => _T("Documents"),
+                    'title' => _T("View documents related to your association"),
+                    'route' => [
+                        'name' => 'documentsPublicList'
+                    ],
+                    'icon' => 'file alternate'
+                ];
+            }
 
             foreach (array_keys($plugins->getModules()) as $module_id) {
                 //get plugins public menus entries
@@ -527,8 +548,9 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
+         * @var Db $zdb
          */
-        global $login, $plugins;
+        global $login, $plugins, $zdb;
 
         $dashboards = [];
 
@@ -598,6 +620,25 @@ class Galette
             );
         }
 
+        //display documents menu if at least one document is present with current ACLs
+        $document = new \Galette\Entity\Document($zdb);
+        $documents = $document->getList();
+        if ($login->isSuperAdmin() || count($documents)) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("Documents"),
+                        'title' => _T("View documents related to your association"),
+                        'route' => [
+                            'name' => 'documentsPublicList'
+                        ],
+                        'icon' => 'dividers'
+                    ]
+                ]
+            );
+        }
+
         if ($login->isAdmin()) {
             $dashboards = array_merge(
                 $dashboards,
@@ -652,8 +693,7 @@ class Galette
                             'args' => ['type' => 'transactions']
                         ],
                         'icon' => 'book'
-                    ],
-
+                    ]
                 ]
             );
         }

@@ -47,3 +47,16 @@ ALTER TABLE galette_types_cotisation CONVERT TO CHARACTER SET utf8mb4 COLLATE ut
 
 -- change dynamic fields permissions
 ALTER TABLE galette_field_types CHANGE field_perm field_perm INT(10) NOT NULL DEFAULT 1;
+
+-- table for documents
+DROP TABLE IF EXISTS galette_documents;
+CREATE TABLE galette_documents (
+  id_document int(10) unsigned NOT NULL auto_increment,
+  type varchar(250) NOT NULL,
+  visible tinyint(1) NOT NULL,
+  filename varchar(255) DEFAULT NULL,
+  comment text,
+  creation_date datetime NOT NULL,
+  PRIMARY KEY (id_document),
+  KEY (type)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
