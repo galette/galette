@@ -437,3 +437,48 @@ $app->get(
     '/{form_name:adh|contrib|trans}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
     [Crud\DynamicFieldsController::class, 'getDynamicFile']
 )->setName('getDynamicFile')->add($authenticate);
+
+$app->get(
+    '/documents[/{option:page|order}/{value}]',
+    [Crud\DocumentsController::class, 'list']
+)->setName('documentsList')->add($authenticate);
+
+$app->post(
+    '/documents/filter',
+    [Crud\DocumentsController::class, 'filter']
+)->setName('documentsFilter')->add($authenticate);
+
+$app->get(
+    '/document/remove/{id:\d+}',
+    [Crud\DocumentsController::class, 'confirmDelete']
+)->setName('removeDocument')->add($authenticate);
+
+$app->post(
+    '/document/remove/{id:\d+}',
+    [Crud\DocumentsController::class, 'delete']
+)->setName('doRemoveDocument')->add($authenticate);
+
+$app->get(
+    '/document/add',
+    [Crud\DocumentsController::class, 'add']
+)->setName('addDocument')->add($authenticate);
+
+$app->get(
+    '/document/edit/{id:\d+}',
+    [Crud\DocumentsController::class, 'edit']
+)->setName('editDocument')->add($authenticate);
+
+$app->post(
+    '/document/add',
+    [Crud\DocumentsController::class, 'doAdd']
+)->setName('doAddDocument')->add($authenticate);
+
+$app->post(
+    '/document/edit/{id:\d+}',
+    [Crud\DocumentsController::class, 'doEdit']
+)->setName('doEditDocument')->add($authenticate);
+
+$app->get(
+    '/document/get/{id:\d+}',
+    [Crud\DocumentsController::class, 'getDocument']
+)->setName('getDocumentFile');

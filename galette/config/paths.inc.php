@@ -98,6 +98,9 @@ if (!defined('GALETTE_IMPORTS_PATH')) {
 if (!defined('GALETTE_PHOTOS_PATH')) {
     define('GALETTE_PHOTOS_PATH', GALETTE_DATA_PATH . 'photos/');
 }
+if (!defined('GALETTE_DOCUMENTS_PATH')) {
+    define('GALETTE_DOCUMENTS_PATH', GALETTE_DATA_PATH . 'documents/');
+}
 if (!defined('GALETTE_ATTACHMENTS_PATH')) {
     define('GALETTE_ATTACHMENTS_PATH', GALETTE_DATA_PATH . 'attachments/');
 }

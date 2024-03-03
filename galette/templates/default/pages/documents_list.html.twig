@@ -1,0 +1,102 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'elements/list.html.twig' %}
+
+{% set form = {
+    'order': {
+        'name': "documentsList",
+    }
+} %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count document", "%count documents", nb)|replace({"%count": nb})
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline_actions %}
+    {% if not is_public and (login.isAdmin() or login.isStaff()) %}
+        <a
+            class="ui tiny labeled icon button"
+            href="{{ url_for("addDocument") }}"
+        >
+            <i class="ui user check green icon" aria-hidden="true"></i>
+            {{ _T("Add a document") }}
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#'},
+        {'label': _T('Type')},
+        {'label': _T('Visibility')},
+        {'label': _T("Filename")},
+        {'label': _T("Creation date")}
+    ] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% for document in documents %}
+        <tr class="" id="row_{{ document.id }}">
+            <td data-scope="row">
+                {% if preferences.pref_show_id %}
+                    {{ document.id }}
+                {% else %}
+                    {{ loop.index }}
+                {% endif %}
+            </td>
+            <td data-col-label="{{ _T("Type") }}">{{ document.getType() }}</td>
+            <td data-col-label="{{ _T("Visibility") }}">{{ document.getPermissionName() }}</td>
+            <td data-col-label="{{ _T("Filename") }}">
+                <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
+                    {{ document.getDocumentFilename() }}
+                </a>
+            </td>
+            <td data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
+            {% if mode != 'ajax' %}
+                <td class="actions_row center">
+                    {% if (login.isAdmin() or login.isStaff()) %}
+                        <a
+                                href="{{ url_for("editDocument", {"id": document.getID()}) }}"
+                                class="action"
+                        >
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Edit the document") }}</span>
+                        </a>
+                        <a
+                                href="{{ url_for("removeDocument", {"id": document.getID()}) }}"
+                                class="delete"
+                        >
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Delete the document") }}</span>
+                        </a>
+                    {% endif %}
+                </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No document") }}</td></tr>
+    {% endfor %}
+{% endblock %}

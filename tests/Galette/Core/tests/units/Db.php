@@ -570,7 +570,8 @@ class Db extends TestCase
             'galette_pdfmodels',
             'galette_preferences',
             'galette_searches',
-            'galette_tmplinks'
+            'galette_tmplinks',
+            'galette_documents'
         );
 
         $tables = $this->db->getTables();

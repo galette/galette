@@ -1,0 +1,100 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <form action="{% if document.getID() is null %}{{ url_for('doAddDocument') }}{% else %}{{ url_for('editDocument', {'id': document.getID()}) }}{% endif %}" method="post" class="ui form" enctype="multipart/form-data">
+    {% if mode != 'ajax' %}
+        <div class="ui segment" id="general">
+    {% endif %}
+            <div class="field ui items">
+                <label>{{ _T("File:") }}</label>
+    {% if document.getID() is not null %}
+                <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
+                    {{ document.getDocumentFilename() }}
+                    <i class="external alternate icon" aria-hidden="true"></i>
+                </a>
+    {% endif %}
+                <div class="extra ui basic fitted segment">
+                    <div class="ui file action input">
+                        <input id="document_new" type="file" name="document_file"/>
+                        <label for="document_new" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
+                            <i class="blue upload icon" aria-hidden="true"></i>
+                            {% if document.getId() != null %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="required field">
+                <label>{{ _T("Document type") }}</label>
+                <div id="document_type" class="jsonly search-dropdown documents-dropdown ui input">
+                    <input id="document_type_input" type="hidden" name="document_type" value="{{ document.getType() }}">
+                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                    <div class="jsonly displaynone default text">{{ _T("Choose or enter your own...") }}</div>
+                    <div class="jsonly displaynone menu">
+                        {% for doc_type in document.getSystemTypes(false) %}
+                            <div class="item" data-value="{{ doc_type }}">{{ document.getSystemType(doc_type) }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="required field">
+                <label>{{ _T("Permissions") }}</label>
+                    <select name="visible" id="visible" class="ui dropdown">
+                        {% for key, value in perm_names %}
+                            <option value="{{ key }}"{% if key == document.getPermission() %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+            </div>
+            <div class="field">
+                <label for="field_information">{{ _T("Comment") }}</label>
+                <textarea name="comment" id="comment" cols="20" rows="6">{{ document.getComment() }}</textarea>
+                <span class="tip">{{ _T("Extra information displayed along with document.") }}</span>
+            </div>
+        </div>
+    {% if mode != 'ajax' %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" />
+    {% endif %}
+            <input type="hidden" name="id" id="id" value="{{ document.id }}"/>
+            {% include 'components/forms/csrf.html.twig' %}
+    {% if mode != 'ajax' %}
+        </div>
+    {% endif %}
+     </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function() {
+            activateHtmlEditor($('#comment'), true);
+            $('.documents-dropdown').dropdown({
+                allowAdditions: true,
+                onNoResults: function(searchValue) {
+                    $(this).dropdown('set value', searchValue);
+                }
+            });
+        });
+    </script>
+{% endblock %}

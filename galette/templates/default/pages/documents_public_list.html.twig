@@ -1,0 +1,50 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'public_page.html.twig' %}
+
+{% block content %}
+    <form class="ui form">
+    {% for type, documents in typed_documents %}
+        <div class="galetteform fieldset-{{ loop.index }} ui styled fluid accordion field">
+            <div class="active title">
+                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
+                {{ _T(type) }}
+                <span class="ui small text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</span>
+            </div>
+            <div class="active content field">
+                <div class="ui relaxed divided list">
+        {% for document in documents %}
+                    <div class="item">
+                        <i class="large file middle aligned icon"></i>
+                        <div class="content">
+                            <a class="header" href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
+                                {{ document.getDocumentFilename() }}
+                            </a>
+                            <div class="description">{{ document.getCreationDate() }} - {{ document.getPermissionName() }}</div>
+                        </div>
+                    </div>
+        {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </form>
+{% endblock %}
