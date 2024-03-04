@@ -6,6 +6,7 @@ ALTER TABLE galette_adherents ADD region_adh character varying(200) DEFAULT '' N
 ALTER TABLE galette_transactions ADD type_paiement_trans integer NULL DEFAULT NULL;
 ALTER TABLE galette_transactions ADD CONSTRAINT type_paiement_trans_fkey
     FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes(type_id);
+
 -- Add field_min_size to galette_field_types
 ALTER TABLE galette_field_types ADD field_min_size integer NULL DEFAULT NULL;
 -- Add display properties to core fields
@@ -13,3 +14,8 @@ ALTER TABLE galette_fields_config ADD width_in_forms integer DEFAULT '1' NOT NUL
 -- Add display properties to dynamic fields
 ALTER TABLE galette_field_types ADD field_width_in_forms integer DEFAULT '1' NOT NULL;
 ALTER TABLE galette_field_types ADD field_information_above boolean DEFAULT FALSE;
+
+-- change membership extention
+ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension DROP DEFAULT;
+ALTER TABLE galette_types_cotisation ALTER cotis_extension TYPE integer USING CASE WHEN cotis_extension=false THEN 0 ELSE -1 END;
+ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension SET DEFAULT 0;

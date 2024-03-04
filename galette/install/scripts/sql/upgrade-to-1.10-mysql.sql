@@ -7,6 +7,7 @@ ALTER TABLE galette_transactions ADD type_paiement_trans int(10) unsigned NULL D
 ALTER TABLE galette_transactions ADD FOREIGN KEY (type_paiement_trans)
     REFERENCES galette_paymenttypes (type_id)
     ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 -- Add field_min_size to galette_field_types
 ALTER TABLE galette_field_types ADD field_min_size integer(10) NULL DEFAULT NULL;
 -- Add display properties to core fields
@@ -44,3 +45,7 @@ ALTER TABLE galette_tmplinks CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_un
 ALTER TABLE galette_tmppasswds CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 ALTER TABLE galette_transactions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 ALTER TABLE galette_types_cotisation CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+-- change membership extention
+ALTER TABLE galette_types_cotisation CHANGE cotis_extension cotis_extension TINYINT NOT NULL DEFAULT '0';
+UPDATE galette_types_cotisation SET cotis_extension=-1 WHERE cotis_extension=1;

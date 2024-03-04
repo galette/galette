@@ -237,7 +237,7 @@ CREATE TABLE galette_types_cotisation (
   id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
   libelle_type_cotis character varying(255) DEFAULT '' NOT NULL,
   amount real DEFAULT '0',
-  cotis_extension boolean DEFAULT FALSE,
+  cotis_extension integer DEFAULT 0,
   PRIMARY KEY (id_type_cotis)
 );
 
