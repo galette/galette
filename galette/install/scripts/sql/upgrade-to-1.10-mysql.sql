@@ -44,3 +44,6 @@ ALTER TABLE galette_tmplinks CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_un
 ALTER TABLE galette_tmppasswds CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 ALTER TABLE galette_transactions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 ALTER TABLE galette_types_cotisation CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+-- change dynamic fields permissions
+ALTER TABLE galette_field_types CHANGE field_perm field_perm INT(10) NOT NULL DEFAULT 1;

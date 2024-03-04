@@ -22,6 +22,7 @@
 namespace Galette\DynamicFields;
 
 use ArrayObject;
+use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -41,6 +42,7 @@ abstract class DynamicField
 {
     use Translatable;
     use I18n;
+    use Permissions;
 
     public const TABLE = 'field_types';
     public const PK = 'field_id';
@@ -63,12 +65,6 @@ abstract class DynamicField
     public const MOVE_UP = 'up';
     public const MOVE_DOWN = 'down';
 
-    public const PERM_USER_WRITE = 0;
-    public const PERM_ADMIN = 1;
-    public const PERM_STAFF = 2;
-    public const PERM_MANAGER = 3;
-    public const PERM_USER_READ = 4;
-
     public const DEFAULT_MAX_FILE_SIZE = 1024;
     public const VALUES_FIELD_LENGTH = 100;
 
@@ -83,7 +79,6 @@ abstract class DynamicField
 
     protected ?int $id = null;
     protected ?int $index = null;
-    protected ?int $perm = null;
     protected bool $required = false;
     protected ?int $width_in_forms = 1;
     protected bool $information_above = false;
@@ -237,7 +232,7 @@ abstract class DynamicField
         $this->id = (int)$rs->field_id;
         $this->name = $rs->field_name;
         $this->index = (int)$rs->field_index;
-        $this->perm = (int)$rs->field_perm;
+        $this->permission = (int)$rs->field_perm;
         $this->required = $rs->field_required == 1;
         $this->min_size = $rs->field_min_size;
         $this->width_in_forms = (int)$rs->field_width_in_forms;
@@ -418,16 +413,6 @@ abstract class DynamicField
     }
 
     /**
-     * Get field Permissions
-     *
-     * @return integer|null
-     */
-    public function getPerm(): ?int
-    {
-        return $this->perm;
-    }
-
-    /**
      * Is field required?
      *
      * @return bool
@@ -538,22 +523,6 @@ abstract class DynamicField
     }
 
     /**
-     * Retrieve permissions names for display
-     *
-     * @return array<int,string>
-     */
-    public static function getPermsNames(): array
-    {
-        return [
-            self::PERM_USER_WRITE => _T("User, read/write"),
-            self::PERM_STAFF      => _T("Staff member"),
-            self::PERM_ADMIN      => _T("Administrator"),
-            self::PERM_MANAGER    => _T("Group manager"),
-            self::PERM_USER_READ  => _T("User, read only")
-        ];
-    }
-
-    /**
      * Retrieve forms names
      *
      * @return array<string,string>
@@ -578,17 +547,6 @@ abstract class DynamicField
     {
         $names = self::getFormsNames();
         return $names[$form_name];
-    }
-
-    /**
-     * Get permission name
-     *
-     * @return string
-     */
-    public function getPermName(): string
-    {
-        $perms = self::getPermsNames();
-        return $perms[$this->getPerm()];
     }
 
     /**
@@ -648,8 +606,8 @@ abstract class DynamicField
         if (!isset($values['field_perm']) || $values['field_perm'] === '') {
             $this->errors[] = _T('Missing required field permissions!');
         } else {
-            if (in_array($values['field_perm'], array_keys(self::getPermsNames()))) {
-                $this->perm = $values['field_perm'];
+            if (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
+                $this->permission = $values['field_perm'];
             } else {
                 $this->errors[] = _T('Unknown permission!');
             }
@@ -786,7 +744,7 @@ abstract class DynamicField
         try {
             $values = array(
                 'field_name'              => strip_tags($this->name),
-                'field_perm'              => $this->perm,
+                'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
                 'field_width_in_forms'    => $this->width_in_forms,
                 'field_width'             => ($this->width === null ? new Expression('NULL') : $this->width),

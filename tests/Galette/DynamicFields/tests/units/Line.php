@@ -96,7 +96,7 @@ class Line extends TestCase
         $has_s = $this->line->hasSize();
         $this->assertTrue($has_s);
 
-        $perms = $this->line->getPerm();
+        $perms = $this->line->getPermission();
         $this->assertNull($perms);
 
         $width = $this->line->getWidth();

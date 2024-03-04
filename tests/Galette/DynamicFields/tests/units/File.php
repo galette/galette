@@ -96,7 +96,7 @@ class File extends TestCase
         $has_s = $this->file->hasSize();
         $this->assertTrue($has_s);
 
-        $perms = $this->file->getPerm();
+        $perms = $this->file->getPermission();
         $this->assertNull($perms);
 
         $width = $this->file->getWidth();

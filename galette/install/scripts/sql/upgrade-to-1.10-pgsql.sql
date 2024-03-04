@@ -13,3 +13,6 @@ ALTER TABLE galette_fields_config ADD width_in_forms integer DEFAULT '1' NOT NUL
 -- Add display properties to dynamic fields
 ALTER TABLE galette_field_types ADD field_width_in_forms integer DEFAULT '1' NOT NULL;
 ALTER TABLE galette_field_types ADD field_information_above boolean DEFAULT FALSE;
+
+-- change dynamic fields permissions
+ALTER TABLE galette_field_types ALTER COLUMN field_perm SET DEFAULT 1;

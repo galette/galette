@@ -38,7 +38,7 @@
                     <label for="field_perm">{{ _T("Permissions:") }}</label>
                     <select name="field_perm" id="field_perm" class="ui dropdown">
                         {% for key, value in perm_names %}
-                            <option value="{{ key }}"{% if key == df.getPerm() %} selected="selected"{% endif %}>{{ value }}</option>
+                            <option value="{{ key }}"{% if key == df.getPermission() %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -151,7 +151,7 @@
                     <select name="field_perm" id="field_perm" class="ui dropdown">
                         {% set perm = 0 %}
                         {% if df is defined %}
-                            {% set perm = df.getPerm() %}
+                            {% set perm = df.getPermission() %}
                         {% endif %}
                         {% for key, value in perm_names %}
                             <option value="{{ key }}"{% if key == perm %} selected="selected"{% endif %}>{{ value }}</option>

@@ -49,12 +49,9 @@
                     <td class="visibility_cell" data-col-label="{{ _T("Permissions") }}">
                         <span data-prop-label="{{ _T("Permissions") }}" class="visible" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
                             <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown">
-                                <option value="{{ constant('Galette\\Entity\\FieldsConfig::NOBODY') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') %} selected="selected"{% endif %}>{{ _T("Inaccessible") }}</option>
-                                <option value="{{ constant('Galette\\Entity\\FieldsConfig::ADMIN') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') %} selected="selected"{% endif %}>{{ _T("Administrator") }}</option>
-                                <option value="{{ constant('Galette\\Entity\\FieldsConfig::STAFF') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') %} selected="selected"{% endif %}>{{ _T("Staff member") }}</option>
-                                <option value="{{ constant('Galette\\Entity\\FieldsConfig::MANAGER') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') %} selected="selected"{% endif %}>{{ _T("Group manager") }}</option>
-                                <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_READ') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') %} selected="selected"{% endif %}>{{ _T("Read only") }}</option>
-                                <option value="{{ constant('Galette\\Entity\\FieldsConfig::USER_WRITE') }}"{% if field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') %} selected="selected"{% endif %}>{{ _T("Read/Write") }}</option>
+                                {% for key, value in perm_names %}
+                                    <option value="{{ key }}"{% if key == field.visible %} selected="selected"{% endif %}>{{ value }}</option>
+                                {% endfor %}
                             </select>
                         </span>
                     </td>

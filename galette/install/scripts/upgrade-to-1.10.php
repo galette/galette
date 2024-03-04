@@ -21,6 +21,7 @@
 namespace Galette\Updates;
 
 use Analog\Analog;
+use Galette\DynamicFields\DynamicField;
 use Galette\Entity\ContributionsTypes;
 use Galette\Updater\AbstractUpdater;
 use GalettePaypal\Paypal;
@@ -50,7 +51,37 @@ class UpgradeTo110 extends AbstractUpdater
      */
     protected function update(): bool
     {
-        //to satisfy inheritance
+        $this->zdb->connection->beginTransaction();
+
+        $results = $this->zdb->selectAll(DynamicField::TABLE);
+        $results = $results->toArray();
+
+        $mapping = [
+            0 => 1, //DynamicField::PERM_USER_WRITE / 0 => FieldsConfig::USER_WRITE / 1
+            2 => 3, //DynamicField::PERM_STAFF      / 2 => FieldsConfig::STAFF      / 3
+            1 => 2, //DynamicField::PERM_ADMIN      / 1 => FieldsConfig::ADMIN      / 2
+            3 => 4, //DynamicField::PERM_MANAGER    / 3 => FieldsConfig::MANAGER    / 4
+            4 => 5 //DynamicField::PERM_USER_READ   / 4 => FieldsConfig::USER_READ  / 5
+        ];
+
+        $stmt = null;
+        foreach ($results as $result) {
+            if ($stmt === null) {
+                $update = $this->zdb->update(DynamicField::TABLE);
+                $update->set(['field_perm' => ':perm']);
+                $update->where([DynamicField::PK => ':' . DynamicField::PK]);
+                $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
+            }
+
+            $stmt->execute(
+                array(
+                    'perm' => $mapping[$result['field_perm']],
+                    DynamicField::PK => $result[DynamicField::PK]
+                )
+            );
+        }
+
+        $this->zdb->connection->commit();
         return true;
     }
 
@@ -100,7 +131,6 @@ class UpgradeTo110 extends AbstractUpdater
                         )
                     );
                 }
-
             }
         }
         return true;

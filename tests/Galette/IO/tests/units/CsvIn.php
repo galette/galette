@@ -21,6 +21,7 @@
 
 namespace Galette\IO\test\units;
 
+use Galette\Entity\FieldsConfig;
 use PHPUnit\Framework\TestCase;
 use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
@@ -310,7 +311,7 @@ class CsvIn extends GaletteTestCase
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic text field',
-            'field_perm'        => DynamicField::PERM_USER_WRITE,
+            'field_perm'        => FieldsConfig::USER_WRITE,
             'field_type'        => DynamicField::TEXT,
             'field_required'    => 1,
             'field_repeat'      => 1
@@ -409,7 +410,7 @@ class CsvIn extends GaletteTestCase
         $cfield_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice field',
-            'field_perm'        => DynamicField::PERM_USER_WRITE,
+            'field_perm'        => FieldsConfig::USER_WRITE,
             'field_type'        => DynamicField::CHOICE,
             'field_required'    => 0,
             'field_repeat'      => 1,
@@ -476,7 +477,7 @@ class CsvIn extends GaletteTestCase
         $cfield_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic date field',
-            'field_perm'        => DynamicField::PERM_USER_WRITE,
+            'field_perm'        => FieldsConfig::USER_WRITE,
             'field_type'        => DynamicField::DATE,
             'field_required'    => 0,
             'field_repeat'      => 1

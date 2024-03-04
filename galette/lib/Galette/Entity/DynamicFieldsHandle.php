@@ -511,13 +511,13 @@ class DynamicFieldsHandle
         $access_level = $this->login->getAccessLevel();
 
         foreach ($this->dynamic_fields as $field) {
-            $perm = $field->getPerm();
+            $perm = $field->getPermission();
             if (
-                ($perm == DynamicField::PERM_MANAGER &&
+                ($perm == FieldsConfig::MANAGER &&
                     $access_level < Authentication::ACCESS_MANAGER) ||
-                ($perm == DynamicField::PERM_STAFF &&
+                ($perm == FieldsConfig::STAFF &&
                         $access_level < Authentication::ACCESS_STAFF) ||
-                ($perm == DynamicField::PERM_ADMIN &&
+                ($perm == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN)
             ) {
                 continue;

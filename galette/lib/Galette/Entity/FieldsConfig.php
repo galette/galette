@@ -22,6 +22,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -38,12 +39,15 @@ use Galette\Core\Authentication;
  */
 class FieldsConfig
 {
+    use Permissions;
+
     public const NOBODY = 0;
     public const USER_WRITE = 1;
     public const ADMIN = 2;
     public const STAFF = 3;
     public const MANAGER = 4;
     public const USER_READ = 5;
+    public const ALL = 10;
 
     public const TYPE_STR = 0;
     public const TYPE_HIDDEN = 1;

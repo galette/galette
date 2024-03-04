@@ -96,7 +96,7 @@ class Choice extends TestCase
         $has_s = $this->choice->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->choice->getPerm();
+        $perms = $this->choice->getPermission();
         $this->assertNull($perms);
 
         $width = $this->choice->getWidth();

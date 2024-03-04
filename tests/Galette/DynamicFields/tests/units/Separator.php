@@ -96,7 +96,7 @@ class Separator extends TestCase
         $has_s = $this->separator->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->separator->getPerm();
+        $perms = $this->separator->getPermission();
         $this->assertNull($perms);
 
         $width = $this->separator->getWidth();

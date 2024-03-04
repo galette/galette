@@ -152,7 +152,7 @@
                 <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
                 {% set access_level = login.getAccessLevel() %}
                 {% for field in fields %}
-                    {% set perm = field.getPerm() %}
+                    {% set perm = field.getPermission() %}
                     {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
                     <div class="sixteen wide column">
                         <div class="ui horizontal divider">{{ field.getName()|escape }}</div>

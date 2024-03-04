@@ -96,7 +96,7 @@ class Date extends TestCase
         $has_s = $this->date->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->date->getPerm();
+        $perms = $this->date->getPermission();
         $this->assertNull($perms);
 
         $width = $this->date->getWidth();

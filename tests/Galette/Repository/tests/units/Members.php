@@ -621,7 +621,7 @@ class Members extends GaletteTestCase
         $field_data = [
             'form_name'         => 'contrib',
             'field_name'        => 'Dynamic text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => 1,
             'field_repeat'      => 1
@@ -651,7 +651,7 @@ class Members extends GaletteTestCase
         $field_data = [
             'form_name'         => 'contrib',
             'field_name'        => 'Dynamic choice field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => 0,
             'field_repeat'      => 1,
@@ -679,7 +679,7 @@ class Members extends GaletteTestCase
         $field_data = [
             'form_name'         => 'contrib',
             'field_name'        => 'Dynamic date field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::DATE,
             'field_required'    => 0,
             'field_repeat'      => 1

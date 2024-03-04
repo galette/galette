@@ -496,4 +496,15 @@ class FieldsConfig extends TestCase
 
         $this->assertCount(2, $elements['hiddens']);
     }
+
+    /**
+     * Test permissions list
+     *
+     * @return void
+     */
+    public function testGetPermissionsList(): void
+    {
+        $list = \Galette\Entity\FieldsConfig::getPermissionsList();
+        $this->assertArrayNotHasKey(\Galette\Entity\FieldsConfig::ALL, $list);
+    }
 }

@@ -132,7 +132,7 @@ CREATE TABLE galette_field_types (
     field_form varchar(10) NOT NULL,
     field_index int(10) NOT NULL default '0',
     field_name varchar(255) NOT NULL default '',
-    field_perm int(10) NOT NULL default '0',
+    field_perm int(10) NOT NULL default 1,
     field_type int(10) NOT NULL default '0',
     field_required tinyint(1) NOT NULL default 0,
     field_pos int(10) NOT NULL default '0',

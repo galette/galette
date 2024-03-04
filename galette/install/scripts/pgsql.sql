@@ -296,7 +296,7 @@ CREATE TABLE galette_field_types (
   field_form character varying(10) NOT NULL,
   field_index integer DEFAULT '0' NOT NULL,
   field_name character varying(255) DEFAULT '' NOT NULL,
-  field_perm integer DEFAULT '0' NOT NULL,
+  field_perm integer DEFAULT 1 NOT NULL,
   field_type integer DEFAULT '0' NOT NULL,
   field_required boolean DEFAULT FALSE,
   field_pos integer DEFAULT '0' NOT NULL,

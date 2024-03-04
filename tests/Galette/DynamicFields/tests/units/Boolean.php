@@ -96,7 +96,7 @@ class Boolean extends TestCase
         $has_s = $this->bool->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->bool->getPerm();
+        $perms = $this->bool->getPermission();
         $this->assertNull($perms);
 
         $width = $this->bool->getWidth();

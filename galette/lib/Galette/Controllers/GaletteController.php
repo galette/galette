@@ -21,6 +21,7 @@
 
 namespace Galette\Controllers;
 
+use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
 use Slim\Psr7\Request;
@@ -491,7 +492,8 @@ class GaletteController extends AbstractController
             'time'                  => time(),
             'categories'            => FieldsCategories::getList($this->zdb),
             'categorized_fields'    => $fc->getCategorizedFields(),
-            'non_required'          => $fc->getNonRequired()
+            'non_required'          => $fc->getNonRequired(),
+            'perm_names'            => FieldsConfig::getPermissionsList()
         ];
 
         // display page

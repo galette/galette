@@ -96,7 +96,7 @@ class Text extends TestCase
         $has_s = $this->text->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->text->getPerm();
+        $perms = $this->text->getPermission();
         $this->assertNull($perms);
 
         $width = $this->text->getWidth();

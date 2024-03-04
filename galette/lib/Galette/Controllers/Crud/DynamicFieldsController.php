@@ -56,7 +56,7 @@ class DynamicFieldsController extends CrudController
             'page_title'        => _T("Add field"),
             'form_name'         => $form_name,
             'action'            => 'add',
-            'perm_names'        => DynamicField::getPermsNames(),
+            'perm_names'        => DynamicField::getPermissionsList(),
             'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'field_type_names'  => DynamicField::getFieldsTypesNames()
         ];
@@ -408,7 +408,7 @@ class DynamicFieldsController extends CrudController
             'page_title'    => _T("Edit field"),
             'action'        => 'edit',
             'form_name'     => $form_name,
-            'perm_names'    => DynamicField::getPermsNames(),
+            'perm_names'    => DynamicField::getPermissionsList(),
             'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'df'            => $df,
             'html_editor'   => true,

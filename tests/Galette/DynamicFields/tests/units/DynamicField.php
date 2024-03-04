@@ -78,7 +78,7 @@ class DynamicField extends TestCase
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => true,
             'field_repeat'      => 1
@@ -138,47 +138,39 @@ class DynamicField extends TestCase
      */
     public static function permsProvider(): array
     {
-        return [
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
-                'name' => "User, read/write"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_STAFF,
-                'name' => "Staff member"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_ADMIN,
-                'name' => "Administrator"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_MANAGER,
-                'name' => "Group manager"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_USER_READ,
-                'name' => "User, read only"
-            ]
-        ];
+        $list = \Galette\DynamicFields\DynamicField::getPermissionsList();
+        $perms = [];
+        foreach ($list as $perm => $name) {
+            $perms[] = [
+                'perm' => $perm,
+                'name' => $name
+            ];
+        }
+        return $perms;
     }
 
     /**
-     * Test getPermsNames
+     * Test getPermissionsList
      *
      * @return void
      */
-    public function testGetPermsNames()
+    public function testGetPermissionsList()
     {
         $expected = [];
         foreach (self::permsProvider() as $perm) {
             $expected[$perm['perm']] = $perm['name'];
         }
 
-        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getPermsNames());
+        $this->assertArrayNotHasKey(
+            \Galette\Entity\FieldsConfig::ALL,
+            \Galette\DynamicFields\DynamicField::getPermissionsList()
+        );
+
+        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getPermissionsList());
     }
 
     /**
-     * Tets getPermName
+     * Test getPermissionName
      *
      * @param integer $perm Permission
      * @param string  $name Name
@@ -187,7 +179,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetPermName(int $perm, string $name)
+    public function testGetPermissionName(int $perm, string $name)
     {
         $field_data = [
             'form_name'         => 'adh',
@@ -208,7 +200,7 @@ class DynamicField extends TestCase
             )
         );
         $this->assertTrue($stored);
-        $this->assertSame($name, $df->getPermName());
+        $this->assertSame($name, $df->getPermissionName());
     }
 
     /**
@@ -285,7 +277,7 @@ class DynamicField extends TestCase
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => false,
             'field_repeat'      => null,
@@ -323,7 +315,7 @@ class DynamicField extends TestCase
         $values = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => false,
             'field_repeat'      => null,
@@ -385,7 +377,7 @@ class DynamicField extends TestCase
         $values = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => false,
             'field_repeat'      => null
@@ -419,7 +411,7 @@ class DynamicField extends TestCase
         $values = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::LINE,
             'field_required'    => false,
             'field_repeat'      => null
@@ -484,7 +476,7 @@ class DynamicField extends TestCase
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'A first text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => true,
             'field_repeat'      => 1
@@ -575,7 +567,7 @@ class DynamicField extends TestCase
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => false,
             'field_repeat'      => null,
@@ -620,7 +612,7 @@ class DynamicField extends TestCase
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'A first text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_information' => '<p>This is an important information.</p><p>And here an xss...  <img src=img.png onerror=alert(1) /></p>'
         ];

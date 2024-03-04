@@ -47,7 +47,7 @@
                 <tr>
                     <td data-scope="id" class="collapsing">{{ field.getIndex() }}</td>
                     <td class="left" data-scope="row">{{ field.getName()|escape }}</td>
-                    <td class="left" data-col-label="{{ _T("Permissions") }}">{{ field.getPermName() }}</td>
+                    <td class="left" data-col-label="{{ _T("Permissions") }}">{{ field.getPermissionName() }}</td>
                     <td class="left" data-col-label="{{ _T("Type") }}">{{ field.getTypeName() }}</td>
                     <td data-col-label="{{ _T("Required") }}">
     {% if field.getType != 0 %}

@@ -27,6 +27,7 @@ use Galette\Core\Db;
 use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\DynamicFields\DynamicField;
+use Galette\Entity\FieldsConfig;
 
 /**
  * Dynamic field descriptors set
@@ -90,11 +91,11 @@ class DynamicFieldsSet
                 /** @var ArrayObject<string, int|string> $r */
                 $perm = $r['field_perm'];
                 if (
-                    ($perm == DynamicField::PERM_MANAGER &&
+                    ($perm == FieldsConfig::MANAGER &&
                         $access_level < Authentication::ACCESS_MANAGER) ||
-                    ($perm == DynamicField::PERM_STAFF &&
+                    ($perm == FieldsConfig::STAFF &&
                          $access_level < Authentication::ACCESS_STAFF) ||
-                    ($perm == DynamicField::PERM_ADMIN &&
+                    ($perm == FieldsConfig::ADMIN &&
                         $access_level < Authentication::ACCESS_ADMIN)
                 ) {
                     continue;
