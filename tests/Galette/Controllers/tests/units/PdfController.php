@@ -119,6 +119,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         $test_response = $controller->storeModels($request, $response);
         $this->assertSame(
@@ -157,6 +158,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test with non-logged-in user
         $test_response = $controller->membersCards($request, $response, $this->adh->id);
@@ -221,6 +223,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test logged-in as superadmin
         $this->logSuperAdmin();
@@ -263,6 +266,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test with non-logged-in user
         $test_response = $controller->membersLabels($request, $response, $this->adh->id);
@@ -334,6 +338,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test logged-in as superadmin
         $this->logSuperAdmin();
@@ -375,6 +380,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test with non-logged-in user
         $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
@@ -425,6 +431,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test no selection
         $test_response = null;
@@ -482,6 +489,7 @@ class PdfController extends GaletteTestCase
 
         $response = new \Slim\Psr7\Response();
         $controller = new \Galette\Controllers\PdfController($this->container);
+        $this->container->injectOn($controller);
 
         //test not logged
         $test_response = $controller->contribution($request, $response, $this->contrib->id);

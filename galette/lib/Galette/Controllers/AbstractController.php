@@ -21,11 +21,26 @@
 
 namespace Galette\Controllers;
 
+use Galette\Core\Db;
+use Galette\Core\History;
+use Galette\Core\I18n;
+use Galette\Core\L10n;
+use Galette\Core\Login;
+use Galette\Core\Logo;
+use Galette\Core\Plugins;
+use Galette\Core\Preferences;
+use Galette\Core\PrintLogo;
+use Galette\Entity\FieldsConfig;
+use Galette\Entity\ListsConfig;
 use Psr\Container\ContainerInterface;
+use RKA\Session;
+use Slim\Flash\Messages;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
+use DI\Attribute\Inject;
+use Slim\Views\Twig;
 
 /**
  * Galette abstract controller
@@ -40,94 +55,95 @@ abstract class AbstractController
      */
     private $container;
     /**
-     * @var \Galette\Core\Db
+     * @var Db
      */
     #[Inject]
-    protected $zdb;
+    protected Db $zdb;
     /**
-     * @var \Galette\Core\Login
+     * @var Login
      */
     #[Inject]
-    protected $login;
+    protected Login $login;
     /**
-     * @var \Galette\Core\Preferences
+     * @var Preferences
      */
     #[Inject]
-    protected $preferences;
+    protected Preferences $preferences;
     /**
-     * @var \Slim\Views\Twig
-     */
-    protected $view;
-    /**
-     * @var \Galette\Core\Logo
+     * @var Twig
      */
     #[Inject]
-    protected $logo;
+    protected Twig $view;
     /**
-     * @var \Galette\Core\PrintLogo
+     * @var Logo
      */
     #[Inject]
-    protected $print_logo;
+    protected Logo $logo;
     /**
-     * @var \Galette\Core\Plugins
+     * @var PrintLogo
      */
     #[Inject]
-    protected $plugins;
+    protected PrintLogo $print_logo;
     /**
-     * @var \Slim\Routing\RouteParser
+     * @var Plugins
      */
     #[Inject]
-    protected $routeparser;
+    protected Plugins $plugins;
     /**
-     * @var \Galette\Core\History
+     * @var RouteParser
      */
     #[Inject]
-    protected $history;
+    protected RouteParser $routeparser;
     /**
-     * @var \Galette\Core\I18n
+     * @var History
      */
     #[Inject]
-    protected $i18n;
+    protected History $history;
     /**
-     * @var \Galette\Core\L10n
+     * @var I18n
      */
     #[Inject]
-    protected $l10n;
+    protected I18n $i18n;
     /**
-     * @var \RKA\Session
+     * @var L10n
+     */
+    #[Inject]
+    protected L10n $l10n;
+    /**
+     * @var Session
      */
     #[Inject("session")]
-    protected $session;
+    protected Session $session;
     /**
-     * @var \Slim\Flash\Messages
+     * @var Messages
      */
     #[Inject]
-    protected $flash;
+    protected Messages $flash;
     /**
-     * @var \Galette\Entity\FieldsConfig
+     * @var FieldsConfig
      */
     #[Inject]
-    protected $fields_config;
+    protected FieldsConfig $fields_config;
     /**
-     * @var \Galette\Entity\ListsConfig
+     * @var ListsConfig
      */
     #[Inject]
-    protected $lists_config;
+    protected ListsConfig $lists_config;
     /**
      * @var array<string,mixed>
      */
     #[Inject("members_fields")]
-    protected $members_fields;
+    protected array $members_fields;
     /**
      * @var array<string,mixed>
      */
     #[Inject("members_form_fields")]
-    protected $members_form_fields;
+    protected array $members_form_fields;
     /**
      * @var array<string,mixed>
      */
     #[Inject("members_fields_cats")]
-    protected $members_fields_cats;
+    protected array $members_fields_cats;
 
     /**
      * Constructor
@@ -137,25 +153,6 @@ abstract class AbstractController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        //set various services we need
-        $this->zdb = $container->get('zdb');
-        $this->login = $container->get('login');
-        $this->preferences = $container->get('preferences');
-        $this->view = $container->get(\Slim\Views\Twig::class);
-        $this->logo = $container->get('logo');
-        $this->print_logo = $container->get('print_logo');
-        $this->routeparser = $container->get(RouteParser::class);
-        $this->history = $container->get('history');
-        $this->i18n = $container->get('i18n');
-        $this->l10n = $container->get('l10n');
-        $this->session = $container->get('session');
-        $this->flash = $container->get('flash');
-        $this->fields_config = $container->get('fields_config');
-        $this->lists_config = $container->get('lists_config');
-        $this->members_fields = $container->get('members_fields');
-        $this->members_form_fields = $container->get('members_form_fields');
-        $this->members_fields_cats = $container->get('members_fields_cats');
-        $this->plugins = $container->get('plugins');
     }
 
     /**

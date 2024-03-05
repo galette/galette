@@ -21,6 +21,8 @@
 
 namespace Galette\Core;
 
+use DI\Attribute\Inject;
+
 /**
  * Plugin controllers trait
  *

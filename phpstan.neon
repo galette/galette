@@ -18,7 +18,6 @@ parameters:
         - RKA\Session
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
-        - '/Attribute class .*\\Inject does not exist./'
         - '/Cannot access property .* on .*ArrayObject.*/'
         - '/Access to an undefined property ArrayObject.*/'
         - '/Parameter #3 \$right of class Laminas\\Db\\Sql\\Predicate\\Operator constructor expects bool\|float\|int\|string\|null, Laminas\\Db\\Sql\\Predicate\\Expression given./'

@@ -97,6 +97,7 @@
     "DI\\autowire",
     "DI\\Container",
     "DI\\ContainerBuilder",
+    "DI\\Attribute\\Inject",
 
     "// Not detected, do not know why.",
     "Psr\\Http\\Server\\RequestHandlerInterface"
