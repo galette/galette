@@ -83,6 +83,18 @@
   }
 }
 
+/* -----------------------------------------------
+      Wrapping pointing inverted tabbed menus
+------------------------------------------------ */
+.ui.wrapping.menu.tabbed .item:last-child,
+.ui.wrapping.menu.tabbed .item:last-of-type {
+  border-right-color: transparent !important;
+}
+.ui.wrapping.menu.tabbed .item::before {
+  right: 0;
+  left: auto;
+}
+
 /*------------------
      Pagination
 -------------------*/
