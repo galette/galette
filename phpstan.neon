@@ -15,6 +15,5 @@ parameters:
         - GALETTE_NIGHTLY
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
-        - '/Attribute class .*\\Inject does not exist./'
         - '/Cannot access property .* on .*ArrayObject.*/'
         - '/Access to an undefined property ArrayObject.*/'

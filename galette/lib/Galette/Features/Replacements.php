@@ -53,6 +53,7 @@ use Analog\Analog;
 use NumberFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
 use Slim\Routing\RouteParser;
+use DI\Attribute\Inject;
 
 /**
  * Replacements feature
