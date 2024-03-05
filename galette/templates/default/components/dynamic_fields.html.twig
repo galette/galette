@@ -161,7 +161,7 @@
                         <!-- File and repeatable fields not shown in mass changes form -->
                     {% else %}
                         {% set disabled = false %}
-                        {% if perm == constant('Galette\\DynamicFields\\DynamicField::PERM_USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
+                        {% if perm == constant('Galette\\Entity\\FieldsConfig::USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
                             {% set disabled = true %}
                         {% endif %}
                         {% set values = object.getDynamicFields().getValues(field.getId()) %}
