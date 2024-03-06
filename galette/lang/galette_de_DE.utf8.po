@@ -32,13 +32,14 @@
 # Moritz Walter Ott <moritzwott@gmail.com>, 2022.
 # klausellus-wallace <muetze.polka0e@icloud.com>, 2023.
 # CryptKid <CryptKiddie@chaospott.de>, 2023.
+# Dynnammo <baptiste.thivend@protonmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-02 08:18+0100\n"
-"PO-Revision-Date: 2024-02-08 22:38+0100\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-03-07 13:01+0000\n"
+"Last-Translator: Dynnammo <baptiste.thivend@protonmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -46,7 +47,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 msgid "Transaction"
@@ -98,10 +99,8 @@ msgid "Edit payment type"
 msgstr "Zahlungsart bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:189
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required payment type's name!"
-msgstr "Erforderlicher Feldname fehlt!"
+msgstr "Erforderlicher Bezahltyp fehlt!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:198
 #, php-format
