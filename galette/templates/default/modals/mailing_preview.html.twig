@@ -73,7 +73,7 @@
         </div>
         <div class="ui bottom attached accordion-styled segment">
     {% if mailing.html %}
-            {{ mailing.message }}
+            {{ mailing.message|raw }}
     {% else %}
             <pre>{{ mailing.wrapped_message|escape }}</pre>
     {% endif %}
