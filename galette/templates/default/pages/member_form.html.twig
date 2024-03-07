@@ -291,14 +291,20 @@
                         //remove actual groups
                         var _form = (_managed) ? 'managed' : 'user';
                         $('#' + _form + 'groups_form').empty();
-                        var _groups = new Array();
-                        var _groups_str = '<br/><strong>';
-                        if ( _managed ) {
-                            _groups_str += '{{ _T("Manager for:")|e('js') }}';
+                        var _existing_labels = $('#groups_field .labels').children().length;
+                        var _new_labels = 0;
+                        if ($('#groups_field .labels').length === 0) {
+                            var _labels_container = '<div class="ui large labels"></div>';
+                            $('#btngroups').before(_labels_container);
                         } else {
-                            _groups_str += '{{ _T("Member of:")|e('js') }}';
+                            if (_managed) {
+                                $('#groups_field .labels').find('.label.manager').remove();
+                            } else {
+                                $('#groups_field .labels').find('.label.member').remove();
+                            }
                         }
-                        _groups_str += '</strong> ';
+                        var _groups = new Array();
+                        var _groups_str = '';
 
                         $('li[id^="group_"]').each(function(){
                             //get group values
@@ -311,12 +317,24 @@
                                 _gid + '|' + _gname + '|' +
                                 '" name="' + _iname + '[]">'
                             );
-                            if ( _groups.length > 1 ) {
-                                _groups_str += ', ';
+                            if (_managed) {
+                                _groups_str += '<span class="ui orange basic label manager">';
+                                _groups_str += '<i class="ui shield icon tooltip" title="' + '{{ _T("Group manager")|e('js') }}' + '" aria-hidden="true"></i>';
+                            } else {
+                                _groups_str += '<span class="ui orange basic label member">';
+                                _groups_str += '<i class="ui tag icon tooltip" title="' + '{{ _T("Member of group")|e('js') }}' + '" aria-hidden="true"></i>';
                             }
                             _groups_str += _gname;
+                            _groups_str += '</span>';
+                            _new_labels += 1;
                         });
-                        $('#' + _form + 'groups').html(_groups_str);
+                        $('#groups_field .labels').append(_groups_str);
+                        var _modified = '<div class="ui yellow tiny message with-transition">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div>';
+                        if (_existing_labels != _new_labels) {
+                            $('#groups_field').find('.message').remove();
+                            $('#groups_field').append(_modified);
+                        }
+                        $('.message.with-transition').transition('flash');
                         $('.groups-selection').modal('hide');
                     });
 
