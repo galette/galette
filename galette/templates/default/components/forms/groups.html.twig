@@ -27,11 +27,12 @@
     <div class="ui large labels">
         {% for group in groups %}
             {% if member.isGroupMember(group.getName()) or member.isGroupManager(group.getName()) %}
-                <span class="ui label">
                 {% if member.isGroupMember(group.getName()) %}
+                <span class="ui label member">
                     <i class="ui tag icon tooltip" title="{{ _T("Member of group") }}" aria-hidden="true"></i>
                 {% endif %}
                 {% if member.isGroupManager(group.getName()) %}
+                <span class="ui label manager">
                     <i class="ui shield icon tooltip" title="{{ _T("Group manager") }}" aria-hidden="true"></i>
                 {% endif %}
                     {{ group.getName() }}
