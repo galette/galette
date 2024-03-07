@@ -13,6 +13,8 @@ parameters:
         - galette/includes/
     dynamicConstantNames:
         - GALETTE_NIGHTLY
+    universalObjectCratesClasses:
+        - RKA\Session
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Cannot access property .* on .*ArrayObject.*/'
