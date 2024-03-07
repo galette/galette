@@ -40,12 +40,16 @@ use Galette\IO\FileTrait;
  */
 class Picture implements FileInterface
 {
-    use FileTrait;
+    use FileTrait {
+        writeOnDisk as protected trait_writeOnDisk;
+        store as protected trait_store;
+        getMimeType as protected trait_getMimeType;
+    }
 
     //constants that will not be overridden
     public const SQL_ERROR = -10;
     public const SQL_BLOB_ERROR = -11;
-    //constants that can be overrided
+    //constants that can be overridden
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
     public const TABLE = 'pictures';
     public const PK = Adherent::PK;
@@ -66,6 +70,8 @@ class Picture implements FileInterface
     protected int $max_width = 200;
     protected int $max_height = 200;
     private StatementInterface $insert_stmt;
+    /** @var ?array<string, mixed> */
+    private ?array $cropping;
 
     /**
      * Default constructor.
@@ -74,7 +80,6 @@ class Picture implements FileInterface
      */
     public function __construct($id_adh = null)
     {
-
         $this->init(
             null,
             array('jpeg', 'jpg', 'png', 'gif', 'webp'),
@@ -414,116 +419,83 @@ class Picture implements FileInterface
      */
     public function store(array $file, bool $ajax = false, array $cropping = null): bool|int
     {
-        /** TODO: fix max size (by preferences ?) */
+        $this->cropping = $cropping;
+        return $this->trait_store($file, $ajax);
+    }
+
+    /**
+     * Build destination path
+     *
+     * @return string
+     */
+    protected function buildDestPath(): string
+    {
+        return $this->dest_dir . $this->id . '.' . $this->extension;
+    }
+
+    /**
+     * Get file mime type
+     *
+     * @param string $file File
+     *
+     * @return string
+     */
+    public static function getMimeType(string $file): string
+    {
+        $info = getimagesize($file);
+        if ($info !== false) {
+            return $info['mime'];
+        }
+
+        //fallback if file is not an image
+        return static::trait_getMimeType($file);
+    }
+
+    /**
+     * Write file on disk
+     *
+     * @param string $tmpfile Temporary file
+     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     *
+     * @return bool|int
+     */
+    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    {
         global $zdb;
 
-        $class = get_class($this);
-
-        $name = $file['name'];
-        $tmpfile = $file['tmp_name'];
-
-        //First, does the file have a valid name?
-        $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(" .
-            implode('|', $this->allowed_extensions) . ")$/i";
-        if (preg_match($reg, $name, $matches)) {
-            Analog::log(
-                '[' . $class . '] Filename and extension are OK, proceed.',
-                Analog::DEBUG
-            );
-            $extension = strtolower($matches[2]);
-            if ($extension == 'jpeg') {
-                //jpeg is an allowed extension,
-                //but we change it to jpg to reduce further tests :)
-                $extension = 'jpg';
-            }
-        } else {
-            $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
-            $m = preg_match($erreg, $name, $errmatches);
-
-            $err_msg = '[' . $class . '] ';
-            if ($m == 1) {
-                //ok, we got a good filename and an extension. Extension is bad :)
-                $err_msg .= 'Invalid extension for file ' . $name . '.';
-                $ret = self::INVALID_EXTENSION;
-            } else {
-                $err_msg = 'Invalid filename `' . $name . '` (Tip: ';
-                $err_msg .= preg_replace(
-                    '|%s|',
-                    htmlentities($this->getBadChars()),
-                    "file name should not contain any of: %s). "
-                );
-                $ret = self::INVALID_FILENAME;
-            }
-
-            Analog::log(
-                $err_msg,
-                Analog::ERROR
-            );
-            return $ret;
-        }
-
-        //Second, let's check file size
-        if ($file['size'] > ($this->maxlenght * 1024)) {
-            Analog::log(
-                '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
-                'Ko for maximum authorized ' . ($this->maxlenght * 1024) .
-                'Ko',
-                Analog::ERROR
-            );
-            return self::FILE_TOO_BIG;
-        } else {
-            Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
-        }
-
+        $this->setDestDir($this->store_path);
         $current = getimagesize($tmpfile);
-
-        if (!in_array($current['mime'], $this->allowed_mimes)) {
-            Analog::log(
-                '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
-                Analog::ERROR
-            );
-            return self::MIME_NOT_ALLOWED;
-        } else {
-            Analog::log(
-                '[' . $class . '] Mimetype is allowed, proceed',
-                Analog::DEBUG
-            );
-        }
 
         // Source image must have minimum dimensions to match the cropping process requirements
         // and ensure the final picture will fit the maximum allowed resizing dimensions.
-        if (isset($cropping['ratio']) && isset($cropping['focus'])) {
+        if (isset($this->cropping['ratio']) && isset($this->cropping['focus'])) {
             if ($current[0] < $this->mincropsize || $current[1] < $this->mincropsize) {
                 $min_current = min($current[0], $current[1]);
                 Analog::log(
-                    '[' . $class . '] Image is too small. The minimum image side size allowed is ' .
+                    '[' . get_class($this) . '] Image is too small. The minimum image side size allowed is ' .
                     $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
                     Analog::ERROR
                 );
                 return self::IMAGE_TOO_SMALL;
             } else {
-                Analog::log('[' . $class . '] Image dimensions are OK, proceed', Analog::DEBUG);
+                Analog::log('[' . get_class($this) . '] Image dimensions are OK, proceed', Analog::DEBUG);
             }
         }
-
         $this->delete();
 
-        $new_file = $this->store_path .
-            $this->id . '.' . $extension;
-        if ($ajax === true) {
-            rename($tmpfile, $new_file);
-        } else {
-            move_uploaded_file($tmpfile, $new_file);
+        $result = $this->trait_writeOnDisk($tmpfile, $ajax);
+        if ($result !== true) {
+            return $result;
         }
 
         // current[0] gives width ; current[1] gives height
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
-                Should'nt we want to stop the process here? */
-            $this->resizeImage($new_file, $extension, null, $cropping);
+            Should'nt we want to stop the process here? */
+            $this->resizeImage($this->buildDestPath(), $this->extension, null, $this->cropping);
         }
 
-        return $this->storeInDb($zdb, $this->db_id, $new_file, $extension);
+        return $this->storeInDb($zdb, $this->db_id, $this->buildDestPath(), $this->extension);
     }
 
     /**

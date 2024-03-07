@@ -31,7 +31,7 @@ use Analog\Analog;
 
 trait FileTrait
 {
-    //array keys contain litteral value of each forbidden character
+    //array keys contain literal value of each forbidden character
     //(to be used when showing an error).
     //Maybe is there a better way to handle this...
     /** @var array<string,string> */
@@ -51,6 +51,8 @@ trait FileTrait
     );
 
     protected ?string $name;
+    protected ?string $name_wo_ext;
+    protected ?string $extension;
     protected ?string $dest_dir;
     /** @var array<string> */
     protected $allowed_extensions = array();
@@ -249,6 +251,13 @@ trait FileTrait
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
             );
+            $this->name_wo_ext = $matches[1];
+            $this->extension = strtolower($matches[2]);
+            if ($this->extension == 'jpeg') {
+                //jpeg is an allowed extension,
+                //but we change it to jpg to reduce further tests :)
+                $this->extension = 'jpg';
+            }
         } else {
             $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $this->name, $errmatches);
@@ -306,11 +315,34 @@ trait FileTrait
             );
         }
 
-        $new_file = $this->dest_dir . $this->name;
+        return $this->writeOnDisk($tmpfile, $ajax);
+    }
+
+    /**
+     * Build destination path
+     *
+     * @return string
+     */
+    protected function buildDestPath(): string
+    {
+        return $this->dest_dir . $this->name;
+    }
+
+    /**
+     * Write file on disk
+     *
+     * @param string $tmpfile Temporary file
+     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     *
+     * @return bool|int
+     */
+    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    {
+        $new_file = $this->buildDestPath();
 
         if (file_exists($new_file)) {
             Analog::log(
-                '[' . $class . '] File `' . $new_file . '` already exists',
+                '[' . get_class($this) . '] File `' . $new_file . '` already exists',
                 Analog::ERROR
             );
             return self::NEW_FILE_EXISTS;

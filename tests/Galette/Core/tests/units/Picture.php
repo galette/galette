@@ -142,7 +142,7 @@ class Picture extends TestCase
      * Test mimetype guess
      * FileInfo not installed, back to mime_content_type call
      *
-     * Does not actually works :/
+     * Does not actually work :/
      *
      * @return void
      */
