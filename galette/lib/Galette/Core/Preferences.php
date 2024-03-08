@@ -50,6 +50,7 @@ use Galette\Repository\Members;
  * @property string $pref_pays Country
  * @property integer $pref_postal_adress Postal adress to use, one of self::POSTAL_ADDRESS*
  * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property boolean $pref_disable_members_socials
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
  * @property integer $pref_log History, one of self::LOG_*
@@ -194,6 +195,7 @@ class Preferences
         'pref_pays'        =>    '',
         'pref_postal_adress'  => self::POSTAL_ADDRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
+        'pref_disable_members_socials' => false,
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_log'        =>    self::LOG_ENABLED,
