@@ -566,7 +566,7 @@ class Adherent
                         $this->_due_status = Contribution::STATUS_UPTODATE;
                     }
                 // Expired
-                    // Expired
+                // Expired
                 } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
                     $this->_days_remaining = $date_diff->days;
                     //check if member is still active
