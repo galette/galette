@@ -874,7 +874,7 @@ class Adherent
      *
      * @return int count 0..x
      */
-    public function getCountDonations()
+    public function getCountDonations(): int
     {
         global $preferences; //$this->preferences n'est pas initialisée ? on retrouve la même ligne dans validate, canXXX()
 
