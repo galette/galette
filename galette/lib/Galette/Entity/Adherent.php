@@ -859,7 +859,7 @@ class Adherent
             }
         }
 
-        if (self::getCountDonations() > 0) {
+        if ($this->getCountDonations() > 0) {
             if ($never_contributed) {
                 $ret = _T("Never contributed, but a donation");
             } else {
