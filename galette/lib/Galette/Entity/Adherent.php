@@ -880,7 +880,6 @@ class Adherent
 
         $date_now = new \DateTime();
 
-        //Le membre a t-il fait des dons dans l'année en cours ?
         if ($preferences->pref_beg_membership != '') { //adhésion classique de date à date + 1 an
             list($j, $m) = explode('/', $preferences->pref_beg_membership);
             $sdate = new \DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
