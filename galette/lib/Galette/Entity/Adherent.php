@@ -22,6 +22,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateInterval;
 use DateTime;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
@@ -549,7 +550,7 @@ class Adherent
                 // To count the days remaining, the next begin date is required.
                 $due_date = new DateTime($this->due_date);
                 $next_begin_date = clone $due_date;
-                $next_begin_date->add(new \DateInterval('P1D'));
+                $next_begin_date->add(new DateInterval('P1D'));
                 $date_diff = $now->diff($next_begin_date);
                 $this->days_remaining = $date_diff->days;
                 // Active
@@ -796,7 +797,7 @@ class Adherent
         }
         $due_date = new DateTime($this->due_date);
         $next_begin_date = clone $due_date;
-        $next_begin_date->add(new \DateInterval('P1D'));
+        $next_begin_date->add(new DateInterval('P1D'));
         $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
@@ -857,7 +858,63 @@ class Adherent
                 $ret = _T("No longer member");
             }
         }
+
         return $ret;
+    }
+
+    /**
+     * Is member a sponsor for current period?
+     *
+     * @return bool
+     */
+    public function isSponsor(): bool
+    {
+        global $preferences;
+
+        $date_now = new DateTime();
+
+        //calculate begin date of period
+        if ($preferences->pref_beg_membership != '') { //classical membership date + 1 year
+            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            $sdate = new DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
+        } elseif ($preferences->pref_membership_ext != '') { //classical membership date + N months
+            $dext = new DateInterval('P' . $preferences->pref_membership_ext . 'M');
+            $sdate = $date_now->sub($dext);
+        } else {
+            throw new \RuntimeException(
+                'Unable to define sponsoring start date; none of pref_beg_membership nor pref_membership_ext are defined!'
+            );
+        }
+
+        //date_debut_cotis because member can ask for his donation ot be recorded for next year
+        $select = $this->zdb->select(Contribution::TABLE, 'c');
+        $select
+            ->columns(
+                array(
+                    'count' => new Expression('COUNT(*)')
+                )
+            )
+            ->join(
+                array(
+                    'ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
+                array()
+            )
+            ->where(
+                [
+                    'id_adh' => $this->id,
+                    'cotis_extension' => 0 //donations only
+                ]
+            )
+            ->where->greaterThanOrEqualTo(
+                'date_debut_cotis',
+                $sdate->format('Y-m-d')
+            );
+
+        $results = $this->zdb->execute($select);
+        $result = $results->current();
+
+        return (int)$result->count > 0;
     }
 
     /**

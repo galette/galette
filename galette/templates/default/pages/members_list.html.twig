@@ -400,6 +400,14 @@
                 {% set value = member.sdue_free %}
             {% elseif column.field_id == 'sexe_adh' %}
                 {% set value = member.sgender %}
+            {% elseif propname == 'contribstatus' %}
+                {%  if member.isSponsor() %}
+                    {% set value = '<i class="donate green icon tooltip" title="' ~ _T("Is a sponsor") ~ '"></i>' %}
+                {% else %}
+                    {% set value = '<i class="ui icon" aria-hidden="true"></i>' %}
+                {% endif %}
+                {% set value = value ~ member.contribstatus %}
+                {% set escaped = true %}
             {% endif %}
 
             {# If value has not been set, take the generic value #}

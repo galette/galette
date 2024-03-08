@@ -903,4 +903,62 @@ class Adherent extends GaletteTestCase
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
     }
+
+    /**
+     * Test isSponsor
+     *
+     * @return void
+     */
+    public function testIsSponsor(): void
+    {
+        $now = new \DateTime();
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
+
+        $this->getMemberOne();
+
+        $this->assertTrue($this->adh->isActive());
+        $this->assertFalse($this->adh->isSponsor());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_NEVER, $this->adh->getDueStatus());
+
+        //create a close to be expired contribution
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P30D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        //member is up-to-date, close to be expired - still not sponsor
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isActive());
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_IMPENDING, $this->adh->getDueStatus());
+        $this->assertFalse($this->adh->isSponsor());
+
+        //create a donation
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 5, //donation in money
+            'montant_cotis'         => '10',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isSponsor());
+    }
 }
