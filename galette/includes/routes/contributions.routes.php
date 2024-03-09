@@ -125,12 +125,12 @@ $app->get(
 )->setName('printContribution')->add($authenticate);
 
 $app->get(
-    '/document/{hash}',
+    '/document/download/{hash}',
     [GaletteController::class, 'documentLink']
 )->setName('directlink');
 
 $app->post(
-    '/document/{hash}',
+    '/document/download/{hash}',
     [PdfController::class, 'directlinkDocument']
 )->setName('get-directlink');
 
