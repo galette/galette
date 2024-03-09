@@ -175,7 +175,7 @@ trait FileTrait
      * @return void
      */
     protected function init(
-        string|null $dest,
+        string|null $dest = null,
         array $extensions = null,
         array $mimes = null,
         int $maxlenght = null,
