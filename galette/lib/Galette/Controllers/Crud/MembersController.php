@@ -1774,7 +1774,7 @@ class MembersController extends CrudController
         $navigate = array();
 
         if (isset($this->session->{$this->getFilterName()})) {
-            $filters = $this->session->{$this->getFilterName()};
+            $filters = clone $this->session->{$this->getFilterName()};
         } else {
             $filters = new MembersList();
         }

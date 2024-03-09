@@ -252,7 +252,7 @@ class MembersList extends Pagination
                     break;
                 default:
                     Analog::log(
-                        '[MembersList] Unable to set proprety `' . $name . '`',
+                        '[MembersList] Unable to set property `' . $name . '`',
                         Analog::WARNING
                     );
                     break;
