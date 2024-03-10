@@ -303,7 +303,7 @@ class Picture implements FileInterface
     }
 
     /**
-     * Get image file contents
+     * Get image file content
      *
      * @return mixed
      */

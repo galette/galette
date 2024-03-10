@@ -386,10 +386,17 @@ class DynamicFieldsController extends CrudController
                 _T("The file does not exists or cannot be read :(")
             );
 
+            $route_name = 'member';
+            if ($form_name == 'contrib') {
+                $route_name = 'contribution';
+            } elseif ($form_name == 'trans') {
+                $route_name = 'transaction';
+            }
+
             return $response
                 ->withHeader(
                     'Location',
-                    $this->routeparser->urlFor('member', ['id' => $id])
+                    $this->routeparser->urlFor($route_name, ['id' => (string)$id])
                 );
         }
     }
