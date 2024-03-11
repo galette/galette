@@ -38,6 +38,7 @@ use Galette\Entity\Group;
 
 abstract class Authentication
 {
+    public const ACCESS_PUBLIC = -1;
     public const ACCESS_USER = 0;
     public const ACCESS_MANAGER = 1;
     public const ACCESS_STAFF = 2;
@@ -356,8 +357,10 @@ abstract class Authentication
             return self::ACCESS_STAFF;
         } elseif ($this->isGroupManager()) {
             return self::ACCESS_MANAGER;
-        } else {
+        } elseif ($this->isLogged()) {
             return self::ACCESS_USER;
+        } else {
+            return self::ACCESS_PUBLIC;
         }
     }
 }
