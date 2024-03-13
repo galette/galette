@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-02 08:18+0100\n"
-"PO-Revision-Date: 2024-02-22 21:18+0000\n"
+"PO-Revision-Date: 2024-03-14 11:01+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -185,40 +185,28 @@ msgid "Edit contribution type"
 msgstr "Modificar la mena de contribucion"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:210
-#, fuzzy
-#| msgid "Missing required payment type's name!"
 msgid "Missing required contribution type name!"
-msgstr "Governar lo mòde de pagament"
+msgstr "Lo mòde de pagament manca !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:216
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Contribution type has not been added :("
-msgstr "La mena %type es pas estata ajustada :("
+msgstr "La mena %type es pas estat ajustada :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:216
-#, fuzzy
-#| msgid "Payment type '%s' has not been added!"
 msgid "Contribution type #%id has not been updated"
-msgstr "S'es pas pogut ajustar lo mòde de pagament «%s»!"
+msgstr "Lo mòde de pagament «%s» se deu actualizar !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:222
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Contribution type has been successfully added!"
-msgstr "%type es estat ajustat"
+msgstr "%type es estat ajustat !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:222
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Contribution type #%id has been successfully updated!"
-msgstr "%type es estat ajustat"
+msgstr "%type es estat ajustat !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:300
-#, fuzzy
-#| msgid "New contribution type"
 msgid "Remove contribution type '%label'"
-msgstr "Mena de contribucion nòva"
+msgstr "La contribucion de mena '%label' es estat escafada"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:56
 msgid "Add field"
@@ -328,7 +316,7 @@ msgstr "Modificacion en massa de %count membres"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1131
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1228
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "Lei modificacions son pas estat confiermadas !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1197
 #, php-format
@@ -337,7 +325,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1281
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Ren de faire !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1308
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1545
@@ -346,27 +334,26 @@ msgstr "Capitèt una error per l'enregistrament dau membre."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1320
 msgid "Something went wront during mass edition!"
-msgstr ""
+msgstr "A mau encapat per la modificacion de massa !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1327
-#, fuzzy, php-format
-#| msgid "New member has been successfully added."
+#, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "Lo membre novèu es estat ajustat."
-msgstr[1] "Lo membre novèu es estat ajustat."
+msgstr[0] "%1$s membre es estat ajustat."
+msgstr[1] "%1$s membres son estat ajustats."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1396
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Captcha invalide"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1503
 msgid "Your account has been created!"
-msgstr ""
+msgstr "S'es ben creat vòstre còmpte !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
+msgstr "Vos es estat mandat un corriel, regardatz vòstra boita de recepcion."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1511
 msgid "New member has been successfully added."
@@ -374,7 +361,7 @@ msgstr "Lo membre novèu es estat ajustat."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1514
 msgid "Member account has been modified."
-msgstr ""
+msgstr "Lo còmpte de l'aderent s'es ben modificat."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1526
 msgid "An error occurred adding member to its groups."
@@ -382,23 +369,23 @@ msgstr "Una error a capitat per ajustar lo membre au grop."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1540
 msgid "An error occurred adding member to its groups as manager."
-msgstr ""
+msgstr "A mau capitat per ajustar de gropes administrats per l'aderent."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1563
 #: ../lib/Galette/Controllers/GaletteController.php:301
 #: ../lib/Galette/Controllers/GaletteController.php:333
 msgid "Delete failed"
-msgstr ""
+msgstr "La supression a mau capitat"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1701
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "Escafar lo membre %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1711
 #, php-format
 msgid "You are about to remove %count members."
-msgstr ""
+msgstr "Siatz a mand d'escafar %count membres."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:90
 msgid "Titles management"
@@ -411,7 +398,7 @@ msgstr "Modificar lo títol"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:184
 msgid "Missing required title's short or long form!"
-msgstr ""
+msgstr "Lo títol sota la forma corta ò lònga manca !"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:193
 #, php-format
@@ -421,7 +408,7 @@ msgstr "S'es pas pogut ajustar lo títol «%s»!"
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:199
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "Lo títol '%s' es pas estat modificat !"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:209
 #, php-format
@@ -431,61 +418,51 @@ msgstr "Lo títol '%s' es estat ajustat."
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:215
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "La modificacion dau títol '%s' a ben capitat."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:280
 #, php-format
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Escafar lo títol %1$s"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:95
 msgid "User statuses"
-msgstr ""
+msgstr "Estatut de l'utilizator"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:148
 #: ../../tempcache/pages/status_list.html.twig:244
 msgid "Edit status"
-msgstr ""
+msgstr "Modificacion d'un estatut"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:215
-#, fuzzy
-#| msgid "Missing required payment type's name!"
 msgid "Missing required status name!"
-msgstr "Governar lo mòde de pagament"
+msgstr "Lo nom de l'estatut manca !"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:221
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Status has not been added :("
-msgstr "La mena %type es pas estata ajustada :("
+msgstr "L'estatut es pas estat ajustat :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:221
-#, fuzzy
-#| msgid "Title '%s' has not been added!"
 msgid "Status #%id has not been updated"
-msgstr "S'es pas pogut ajustar lo títol «%s»!"
+msgstr "L'estatut #%id es pas estat actualizat"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:227
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Status has been successfully added!"
-msgstr "%type es estat ajustat"
+msgstr "%type es estat ajustat !"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:227
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Status #%id has been successfully updated!"
-msgstr "%type es estat ajustat"
+msgstr "%type es estat ajustat !"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:305
 msgid "Remove status '%label'"
-msgstr ""
+msgstr "Supression de l'estatut « %label »"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:88
 #: ../../tempcache/pages/transaction_form.html.twig:232
 #: ../../tempcache/pages/contribution_form.html.twig:247
 msgid "Membership fee"
-msgstr ""
+msgstr "Cotisacion"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:90
 #: ../lib/Galette/Entity/Contribution.php:1124
@@ -493,7 +470,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:238
 #: ../../tempcache/pages/contribution_form.html.twig:251
 msgid "Donation"
-msgstr ""
+msgstr "Don"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:233
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:281
@@ -538,11 +515,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:948
 msgid "contributions"
-msgstr ""
+msgstr "contribucions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:948
 msgid "transactions"
-msgstr ""
+msgstr "transaccions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:952
 #, php-format
@@ -552,11 +529,11 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:953
 #: ../lib/Galette/IO/PdfContribution.php:62
 msgid "contribution"
-msgstr ""
+msgstr "contribucion"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:953
 msgid "transaction"
-msgstr ""
+msgstr "transaccion"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:102
 msgid "This search is already saved."
@@ -614,12 +591,12 @@ msgstr "Totei lei còmptes"
 #: ../lib/Galette/Controllers/GaletteController.php:237
 #: ../lib/Galette/Filters/MembersList.php:310
 msgid "Active accounts"
-msgstr ""
+msgstr "Còmptes actius"
 
 #: ../lib/Galette/Controllers/GaletteController.php:238
 #: ../lib/Galette/Filters/MembersList.php:311
 msgid "Inactive accounts"
-msgstr ""
+msgstr "Còmptes inactius"
 
 #: ../lib/Galette/Controllers/GaletteController.php:266
 msgid ""
@@ -639,7 +616,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:394
 msgid "Test message"
-msgstr ""
+msgstr "Messatge d'assai"
 
 #: ../lib/Galette/Controllers/GaletteController.php:397
 msgid "Galette admin"
@@ -647,12 +624,12 @@ msgstr "Administrator Galeta"
 
 #: ../lib/Galette/Controllers/GaletteController.php:400
 msgid "Test message."
-msgstr ""
+msgstr "Messatge d'assai."
 
 #: ../lib/Galette/Controllers/GaletteController.php:409
 #, php-format
 msgid "An email has been sent to %email"
-msgstr ""
+msgstr "Un corriel es estat mandat a %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:418
 #, php-format
@@ -661,7 +638,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:425
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Adreiça electronica invalida !"
 
 #: ../lib/Galette/Controllers/GaletteController.php:469
 #: ../lib/Galette/Core/Galette.php:313
@@ -670,7 +647,7 @@ msgstr "Tablèus grafics"
 
 #: ../lib/Galette/Controllers/GaletteController.php:490
 msgid "Fields configuration"
-msgstr ""
+msgstr "Configuracion dei camps"
 
 #: ../lib/Galette/Controllers/GaletteController.php:554
 msgid "Fields configuration has been successfully stored"
