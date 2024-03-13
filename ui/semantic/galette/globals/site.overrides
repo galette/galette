@@ -173,6 +173,10 @@ aside .ui.vertical.menu {
   max-width: 100%;
 }
 
+aside .ui.small.compact.fluid.menu .ui.item {
+  max-width: 14.688rem;
+}
+
 .loggedin .content {
   .ui.horizontal.segments.header {
     flex-direction: row-reverse;
