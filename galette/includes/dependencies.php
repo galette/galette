@@ -25,6 +25,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
+use Twig\Extra\String\StringExtension;
 
 $container = $app->getContainer();
 
@@ -65,6 +66,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
 
     //Twig extensions
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
+    $view->addExtension(new StringExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
     }

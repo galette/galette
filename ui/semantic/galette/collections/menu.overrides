@@ -29,22 +29,22 @@
       Vertical
   ---------------*/
 
-  .ui.vertical.menu {
+  .ui.vertical.menu:not(.tabular) {
     display: block;
     flex-direction: column;
     background: @verticalBackground;
     box-shadow: @verticalBoxShadow;
   }
-  .ui.vertical.menu {
+  .ui.vertical.menu:not(.tabular) {
     border: @border;
   }
-  .ui.vertical.menu div.item .ui.button {
+  .ui.vertical.menu:not(.tabular) div.item .ui.button {
     width: 100%;
     border: @border;
     margin: 0 0 .4rem 0;
     box-shadow: none;
   }
-  .ui.vertical.menu div.item .item.button::before {
+  .ui.vertical.menu:not(.tabular) div.item .item.button::before {
     content: none;
   }
   .ui.vertical.accordion.menu {

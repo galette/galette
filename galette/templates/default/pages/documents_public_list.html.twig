@@ -21,30 +21,48 @@
 {% extends 'public_page.html.twig' %}
 
 {% block content %}
-    <form class="ui form">
+    <div class="ui stackable grid">
+        <div class="four wide left attached column">
+            <div class="ui stackable vertical fluid tabular menu tabbed">
     {% for type, documents in typed_documents %}
-        <div class="galetteform fieldset-{{ loop.index }} ui styled fluid accordion field">
-            <div class="active title">
-                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
-                {{ _T(type) }}
-                <span class="ui small text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</span>
-            </div>
-            <div class="active content field">
-                <div class="ui relaxed divided list">
-        {% for document in documents %}
-                    <div class="item">
-                        <i class="large file middle aligned icon"></i>
-                        <div class="content">
-                            <a class="header" href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
-                                {{ document.getDocumentFilename() }}
-                            </a>
-                            <div class="description">{{ document.getCreationDate() }} - {{ document.getPermissionName() }}</div>
-                        </div>
-                    </div>
-        {% endfor %}
-                </div>
+                <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _T(type)|lower|spaceless|slug|e('html_attr') }}">
+                    {{ _T(type) }}
+                    <p class="ui small disabled text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</p>
+                </a>
+    {% endfor %}
             </div>
         </div>
+        <div class="twelve wide stretched right attached column">
+    {% for type, documents in typed_documents %}
+            <div class="ui seamless right attached tab segment{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _T(type)|lower|spaceless|slug|e('html_attr') }}">
+        {% for document in documents %}
+                <div class="ui relaxed divided list">
+                    <div class="item">
+                        <div class="ui tiny image">
+                            <i class="large file middle aligned icon"></i>
+                        </div>
+                        <div class="content">
+                            <a class="ui small header" href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
+                                {{ document.getDocumentFilename() }}
+                            </a>
+                            <div class="description">
+                                {% if document.getComment %}{{ document.getComment()|raw }}{% endif %}
+                            </div>
+                            <div class="extra">
+                                <div class="ui right floated meta">
+                                    <span class="date ui small text">
+                                        <i class="clock outline icon"></i>
+                                        {{ document.getCreationDate() }}
+                                    </span>
+                                    <div class="ui label">{{ document.getPermissionName() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+            </div>
     {% endfor %}
-    </form>
+        </div>
+    </div>
 {% endblock %}
