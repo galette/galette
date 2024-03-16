@@ -41,9 +41,9 @@ use Galette\Features\Dynamics;
  * @property integer $id
  * @property date $date
  * @property integer $amount
- * @property string $description
- * @property integer $member
- * @property integer $payment_type
+ * @property ?string $description
+ * @property ?integer $member
+ * @property ?integer $payment_type
  */
 class Transaction
 {
@@ -56,8 +56,8 @@ class Transaction
     private string $_date;
     private float $_amount;
     private ?string $_description = null;
-    private int $_member;
-    private ?int $_payment_type;
+    private ?int $_member = null;
+    private ?int $_payment_type = null;
 
     /**
      * fields list and their translation

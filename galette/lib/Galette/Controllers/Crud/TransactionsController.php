@@ -154,7 +154,7 @@ class TransactionsController extends ContributionsController
         $members = $m->getDropdownMembers(
             $this->zdb,
             $this->login,
-            $trans->member > 0 ? $trans->member : null
+            $trans->member
         );
 
         $params['members'] = [
