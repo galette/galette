@@ -284,7 +284,7 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
 
         $dashboards = \Galette\Core\Galette::getDashboards();
-        $this->assertCount(11, $dashboards);
+        $this->assertCount(12, $dashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
@@ -297,7 +297,7 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
 
         $dashboards = \Galette\Core\Galette::getDashboards();
-        $this->assertCount(9, $dashboards);
+        $this->assertCount(10, $dashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
@@ -310,7 +310,7 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
 
         $dashboards = \Galette\Core\Galette::getDashboards();
-        $this->assertCount(3, $dashboards);
+        $this->assertCount(4, $dashboards);
     }
 
     /**

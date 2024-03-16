@@ -673,6 +673,14 @@ class Galette
                         ],
                         'icon' => 'book'
                     ],
+                    [
+                        'label' => _T("Documents"),
+                        'title' => _T("View documents related to your association"),
+                        'route' => [
+                            'name' => 'documentsPublicList'
+                        ],
+                        'icon' => 'dividers'
+                    ]
 
                 ]
             );
