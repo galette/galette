@@ -514,6 +514,7 @@ class Galette
             if (count($documents) || $login->isAdmin() || $login->isStaff()) {
                 $menus['public']['items'][] = [
                     'label' => _T("Documents"),
+                    'title' => _T("View documents related to your association"),
                     'route' => [
                         'name' => 'documentsPublicList'
                     ],
@@ -547,8 +548,9 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
+         * @var Db $zdb
          */
-        global $login, $plugins;
+        global $login, $plugins, $zdb;
 
         $dashboards = [];
 
@@ -618,6 +620,25 @@ class Galette
             );
         }
 
+        //display documents menu if at least one document is present with current ACLs
+        $document = new \Galette\Entity\Document($zdb);
+        $documents = $document->getList();
+        if (count($documents) || $login->isAdmin() || $login->isStaff()) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("Documents"),
+                        'title' => _T("View documents related to your association"),
+                        'route' => [
+                            'name' => 'documentsPublicList'
+                        ],
+                        'icon' => 'dividers'
+                    ]
+                ]
+            );
+        }
+
         if ($login->isAdmin()) {
             $dashboards = array_merge(
                 $dashboards,
@@ -672,16 +693,7 @@ class Galette
                             'args' => ['type' => 'transactions']
                         ],
                         'icon' => 'book'
-                    ],
-                    [
-                        'label' => _T("Documents"),
-                        'title' => _T("View documents related to your association"),
-                        'route' => [
-                            'name' => 'documentsPublicList'
-                        ],
-                        'icon' => 'dividers'
                     ]
-
                 ]
             );
         }
