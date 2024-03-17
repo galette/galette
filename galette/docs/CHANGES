@@ -1,6 +1,24 @@
 Changes
 -------
 
+1.0.4 -> 1.1.0
+
+- Add print logo variable in PDF models
+- No longer use unsafe serialization for datbaase storage
+- More explicit upgrade warning when already on latest release
+- Prevent instance indexation from search engines bots
+- Clear old cache at upgrade
+- Change MySQL and MariaDB encoding
+- Add min size on dynamic fields
+- Add amounts on contributions types
+- Add region field
+- Check if new Galette version is available
+- Improve member form display
+- Add new specific constant to enable debug mode
+- Option to disable sociel networks on member form/view
+- Factorize permissions on core and dynamic fields
+- Manage administrative documents
+
 1.0.3 -> 1.0.4
 
 - Cannot access tabs definition on some resolutions
