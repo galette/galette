@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-17 19:30+0100\n"
-"PO-Revision-Date: 2024-03-02 07:18+0000\n"
+"PO-Revision-Date: 2024-03-17 18:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -2896,10 +2896,8 @@ msgid "Gender %gender does not exists!"
 msgstr "Le genre %gender n'existe pas !"
 
 #: ../lib/Galette/Entity/Adherent.php:1483
-#, fuzzy
-#| msgid "File %filename cannot be open!"
 msgid "A member cannot be its own parent!"
-msgstr "Le fichier %filename ne peut être ouvert !"
+msgstr "Un adhérent ne peut pas être son propre parent !"
 
 #: ../lib/Galette/Entity/Adherent.php:1597
 msgid "Self_subscription as a member: "
@@ -5762,10 +5760,8 @@ msgstr ""
 "les contacter par courrier postal."
 
 #: ../../tempcache/elements/edit_socials.html.twig:61
-#, fuzzy
-#| msgid "Number of columns on the member form"
 msgid "Disable social networks on member form"
-msgstr "Nombre de colonnes sur le formulaire adhérent"
+msgstr "Désactiver les réseaux sociaux sur la fiche adhérent"
 
 #: ../../tempcache/elements/edit_socials.html.twig:118
 #: ../../tempcache/elements/edit_socials.html.twig:123
