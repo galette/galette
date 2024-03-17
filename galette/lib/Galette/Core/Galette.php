@@ -511,7 +511,7 @@ class Galette
             //display documents menu if at least one document is present with current ACLs
             $document = new \Galette\Entity\Document($zdb);
             $documents = $document->getList();
-            if (count($documents) || $login->isAdmin() || $login->isStaff()) {
+            if ($login->isSuperAdmin() || count($documents)) {
                 $menus['public']['items'][] = [
                     'label' => _T("Documents"),
                     'title' => _T("View documents related to your association"),
@@ -623,7 +623,7 @@ class Galette
         //display documents menu if at least one document is present with current ACLs
         $document = new \Galette\Entity\Document($zdb);
         $documents = $document->getList();
-        if (count($documents) || $login->isAdmin() || $login->isStaff()) {
+        if ($login->isSuperAdmin() || count($documents)) {
             $dashboards = array_merge(
                 $dashboards,
                 [
