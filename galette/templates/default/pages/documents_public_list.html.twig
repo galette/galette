@@ -20,12 +20,16 @@
 #}
 {% extends 'public_page.html.twig' %}
 
+{% macro getSlug(value) -%}
+    {{ value|lower|spaceless|slug|e('html_attr') }}
+{%- endmacro %}
+
 {% block content %}
     <div class="ui stackable grid">
         <div class="four wide left attached column">
             <div class="ui stackable vertical fluid tabular menu tabbed">
     {% for type, documents in typed_documents %}
-                <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _T(type)|lower|spaceless|slug|e('html_attr') }}">
+                <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
                     {{ _T(type) }}
                     <p class="ui small disabled text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</p>
                 </a>
@@ -34,7 +38,7 @@
         </div>
         <div class="twelve wide stretched right attached column">
     {% for type, documents in typed_documents %}
-            <div class="ui seamless right attached tab segment{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _T(type)|lower|spaceless|slug|e('html_attr') }}">
+            <div class="ui seamless right attached tab segment{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _self.getSlug(type) }}">
         {% for document in documents %}
                 <div class="ui relaxed divided list">
                     <div class="item">
