@@ -47,7 +47,7 @@
                                 <div id="remaining_fields" class="menu sortable-items">
     {% for col, field in remaining_fields %}
         {% set fid = field.field_id %}
-        {% set permission = field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') ? _T("Inaccessible") : field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') ? _T("Administrator") : field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') ? _T("Staff member") : field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') ? _T("Group manager") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') ? _T("Read only") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') ? _T("Read/Write") %}
+        {% set permission = permissions[field.visible] %}
                                     <div class="item" data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
                                         <input type="hidden" name="rfields[]" value="{{ fid }}"/>
                                         <span class="text">{{ field.label }}</span>
@@ -68,7 +68,7 @@
                 <tbody id="listed_fields" class="sortable-items">
     {% for col, field in listed_fields %}
         {% set fid = field.field_id %}
-        {% set permission = field.visible == constant('Galette\\Entity\\FieldsConfig::NOBODY') ? _T("Inaccessible") : field.visible == constant('Galette\\Entity\\FieldsConfig::ADMIN') ? _T("Administrator") : field.visible == constant('Galette\\Entity\\FieldsConfig::STAFF') ? _T("Staff member") : field.visible == constant('Galette\\Entity\\FieldsConfig::MANAGER') ? _T("Group manager") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_READ') ? _T("Read only") : field.visible == constant('Galette\\Entity\\FieldsConfig::USER_WRITE') ? _T("Read/Write") %}
+        {% set permission = permissions[field.visible] %}
                     <tr data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
                         <td data-scope="row" class="collapsing">
                             <i class="arrows alternate icon" aria-hidden="true"></i>

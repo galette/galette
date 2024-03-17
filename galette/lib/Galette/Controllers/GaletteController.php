@@ -587,7 +587,8 @@ class GaletteController extends AbstractController
             'table'         => $table,
             'time'          => time(),
             'listed_fields' => $lc->getListedFields(),
-            'remaining_fields'  => $lc->getRemainingFields()
+            'remaining_fields'  => $lc->getRemainingFields(),
+            'permissions' => $lc::getPermissionsList()
         ];
 
         // display page

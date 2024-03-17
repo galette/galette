@@ -57,8 +57,8 @@ trait Permissions
     {
         $list = [
             FieldsConfig::NOBODY => _T("Inaccessible"),
-            FieldsConfig::USER_READ => _T("Read only"),
-            FieldsConfig::USER_WRITE => _T("Read/Write"),
+            FieldsConfig::USER_READ => _T("User, read only"),
+            FieldsConfig::USER_WRITE => _T("User, read/write"),
             FieldsConfig::MANAGER => _T("Group manager"),
             FieldsConfig::STAFF => _T("Staff member"),
             FieldsConfig::ADMIN => _T("Administrator"),
