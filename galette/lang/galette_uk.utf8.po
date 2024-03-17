@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 08:18+0100\n"
+"POT-Creation-Date: 2024-03-17 19:30+0100\n"
 "PO-Revision-Date: 2024-02-08 22:42+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -234,7 +234,7 @@ msgid "An error occurred adding dynamic field :("
 msgstr "Сталася помилка додавання динамічного поля :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:485
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:492
 msgid "Dynamic field has been successfully stored!"
 msgstr "Динамічне поле успішно збережено!"
 
@@ -255,34 +255,34 @@ msgstr "У Вас нема дозволу на запитувану URL-адре
 msgid "The file does not exists or cannot be read :("
 msgstr "Файл не існує або його неможливо прочитати :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:399
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:406
 msgid "Unable to retrieve field information."
 msgstr "Не вдалося отримати відомості про поле."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:408
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:415
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:207
 msgid "Edit field"
 msgstr "Правити поле"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:470
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:477
 msgid "An error occurred editing dynamic field :("
 msgstr "Під час правки динамічного поля сталася помилка :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:571
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:573
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:578
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:580
 msgid "Requested field does not exists!"
 msgstr "Запитане поле не існує!"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:577
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:584
 #, php-format
 msgid "Remove dynamic field %1$s"
 msgstr "Вилучити динамічне поле %1$s"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:622
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:629
 msgid "Field has been successfully moved"
 msgstr "Поле успішно переміщено"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:627
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:634
 msgid "An error occurred moving field :("
 msgstr "Сталася помилка переміщення поля :("
 
@@ -391,8 +391,8 @@ msgid "An error occurred adding member to its groups as manager."
 msgstr "Не вдалося додати члена до своїх груп як управника."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1563
-#: ../lib/Galette/Controllers/GaletteController.php:301
-#: ../lib/Galette/Controllers/GaletteController.php:333
+#: ../lib/Galette/Controllers/GaletteController.php:302
+#: ../lib/Galette/Controllers/GaletteController.php:334
 msgid "Delete failed"
 msgstr "Не вдалося видалити"
 
@@ -599,39 +599,39 @@ msgstr "Збережений пошук завантажено"
 msgid "An SQL error has occurred while loading search."
 msgstr "Під час завантаження пошуку сталася помилка SQL."
 
-#: ../lib/Galette/Controllers/GaletteController.php:86
+#: ../lib/Galette/Controllers/GaletteController.php:87
 #: ../../tempcache/elements/footer.html.twig:113
 msgid "System information"
 msgstr "Системи відомостей"
 
-#: ../lib/Galette/Controllers/GaletteController.php:106
+#: ../lib/Galette/Controllers/GaletteController.php:107
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:71
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:86
 msgid "Dashboard"
 msgstr "Дошка даних"
 
-#: ../lib/Galette/Controllers/GaletteController.php:221
+#: ../lib/Galette/Controllers/GaletteController.php:222
 #: ../lib/Galette/Core/Install.php:1162 ../lib/Galette/Core/Galette.php:328
 #: ../lib/Galette/Core/Galette.php:606
 msgid "Settings"
 msgstr "Налаштування"
 
-#: ../lib/Galette/Controllers/GaletteController.php:236
+#: ../lib/Galette/Controllers/GaletteController.php:237
 #: ../lib/Galette/Filters/MembersList.php:309
 msgid "All accounts"
 msgstr "Усі облікові записи"
 
-#: ../lib/Galette/Controllers/GaletteController.php:237
+#: ../lib/Galette/Controllers/GaletteController.php:238
 #: ../lib/Galette/Filters/MembersList.php:310
 msgid "Active accounts"
 msgstr "Діяльні облікові записи"
 
-#: ../lib/Galette/Controllers/GaletteController.php:238
+#: ../lib/Galette/Controllers/GaletteController.php:239
 #: ../lib/Galette/Filters/MembersList.php:311
 msgid "Inactive accounts"
 msgstr "Бездіяльні облікові записи"
 
-#: ../lib/Galette/Controllers/GaletteController.php:266
+#: ../lib/Galette/Controllers/GaletteController.php:267
 msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
@@ -639,11 +639,11 @@ msgstr ""
 "Під час зберігання налаштувань сталася помилка SQL. Повторіть спробу і, якщо "
 "проблема не зникне, зв’яжіться з управником."
 
-#: ../lib/Galette/Controllers/GaletteController.php:270
+#: ../lib/Galette/Controllers/GaletteController.php:271
 msgid "Preferences has been saved."
 msgstr "Налаштування збережено."
 
-#: ../lib/Galette/Controllers/GaletteController.php:387
+#: ../lib/Galette/Controllers/GaletteController.php:388
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
@@ -651,83 +651,83 @@ msgstr ""
 "Ви попросили Galette надіслати перевірочне повідомлення на е-пошту, але її "
 "вимкнено в налаштуваннях."
 
-#: ../lib/Galette/Controllers/GaletteController.php:394
+#: ../lib/Galette/Controllers/GaletteController.php:395
 msgid "Test message"
 msgstr "Перевірочне повідомлення"
 
-#: ../lib/Galette/Controllers/GaletteController.php:397
+#: ../lib/Galette/Controllers/GaletteController.php:398
 msgid "Galette admin"
 msgstr "Адміністратор Galette"
 
-#: ../lib/Galette/Controllers/GaletteController.php:400
+#: ../lib/Galette/Controllers/GaletteController.php:401
 msgid "Test message."
 msgstr "Перевірочне повідомлення."
 
-#: ../lib/Galette/Controllers/GaletteController.php:409
+#: ../lib/Galette/Controllers/GaletteController.php:410
 #, php-format
 msgid "An email has been sent to %email"
 msgstr "Електронний лист надіслано на %email"
 
-#: ../lib/Galette/Controllers/GaletteController.php:418
+#: ../lib/Galette/Controllers/GaletteController.php:419
 #, php-format
 msgid "No email sent to %email"
 msgstr "На %email повідомлення не надіслано"
 
-#: ../lib/Galette/Controllers/GaletteController.php:425
+#: ../lib/Galette/Controllers/GaletteController.php:426
 msgid "Invalid email adress!"
 msgstr "Недійсна е-пошта!"
 
-#: ../lib/Galette/Controllers/GaletteController.php:469
+#: ../lib/Galette/Controllers/GaletteController.php:470
 #: ../lib/Galette/Core/Galette.php:313
 msgid "Charts"
 msgstr "Діаграми"
 
-#: ../lib/Galette/Controllers/GaletteController.php:490
+#: ../lib/Galette/Controllers/GaletteController.php:491
 msgid "Fields configuration"
 msgstr "Конфігурація полів"
 
-#: ../lib/Galette/Controllers/GaletteController.php:554
+#: ../lib/Galette/Controllers/GaletteController.php:556
 msgid "Fields configuration has been successfully stored"
 msgstr "Конфігурацію полів успішно збережено"
 
-#: ../lib/Galette/Controllers/GaletteController.php:559
+#: ../lib/Galette/Controllers/GaletteController.php:561
 msgid "An error occurred while storing fields configuration :("
 msgstr "Під час зберігання конфігурації полів сталася помилка :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:584
+#: ../lib/Galette/Controllers/GaletteController.php:586
 msgid "Lists configuration"
 msgstr "Конфігурація списків"
 
-#: ../lib/Galette/Controllers/GaletteController.php:622
+#: ../lib/Galette/Controllers/GaletteController.php:625
 msgid "List configuration has been successfully stored"
 msgstr "Конфігурацію списків успішно збережено"
 
-#: ../lib/Galette/Controllers/GaletteController.php:627
+#: ../lib/Galette/Controllers/GaletteController.php:630
 msgid "An error occurred while storing list configuration :("
 msgstr "Під час зберігання конфігурації списків сталася помилка :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:661
+#: ../lib/Galette/Controllers/GaletteController.php:664
 #: ../lib/Galette/Core/Galette.php:256 ../lib/Galette/Core/Galette.php:590
 msgid "Reminders"
 msgstr "Нагадування"
 
-#: ../lib/Galette/Controllers/GaletteController.php:702
+#: ../lib/Galette/Controllers/GaletteController.php:705
 msgid "No reminder to send for now."
 msgstr "Нагадувань про надсилання поки що немає."
 
-#: ../lib/Galette/Controllers/GaletteController.php:739
+#: ../lib/Galette/Controllers/GaletteController.php:742
 msgid "There are no member to proceed."
 msgstr "Немає члена для продовження."
 
-#: ../lib/Galette/Controllers/GaletteController.php:746
+#: ../lib/Galette/Controllers/GaletteController.php:749
 msgid "Reminder has not been sent:"
 msgstr "Нагадування не надіслано:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:753
+#: ../lib/Galette/Controllers/GaletteController.php:756
 msgid "Sent reminders:"
 msgstr "Надіслані нагадування:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:829
+#: ../lib/Galette/Controllers/GaletteController.php:832
 msgid "Download document"
 msgstr "Завантажити документ"
 
@@ -821,8 +821,8 @@ msgstr "Недійсне посилання!"
 
 #: ../lib/Galette/Controllers/AuthController.php:68
 #: ../lib/Galette/Controllers/AuthController.php:172
-#: ../lib/Galette/Features/Replacements.php:315
-#: ../lib/Galette/Features/Replacements.php:355
+#: ../lib/Galette/Features/Replacements.php:316
+#: ../lib/Galette/Features/Replacements.php:356
 #: ../../tempcache/elements/navigation/public_pages.html.twig:96
 #: ../../tempcache/pages/index.html.twig:99
 msgid "Login"
@@ -860,8 +860,8 @@ msgstr "Автентифікація не вдалася"
 #: ../../tempcache/elements/logged_user.html.twig:119
 #: ../../tempcache/elements/logged_user.html.twig:194
 #: ../../tempcache/elements/logged_user.html.twig:212
-#: ../../tempcache/elements/logged_user.html.twig:361
-#: ../../tempcache/elements/logged_user.html.twig:379
+#: ../../tempcache/elements/logged_user.html.twig:363
+#: ../../tempcache/elements/logged_user.html.twig:381
 msgid "Log off"
 msgstr "Вийти"
 
@@ -1342,7 +1342,7 @@ msgstr "Остання сторінка (%i)"
 msgid "All"
 msgstr "Усе"
 
-#: ../lib/Galette/Core/Authentication.php:283
+#: ../lib/Galette/Core/Authentication.php:284
 #, php-format
 msgid "Logged in as:<br/>%login"
 msgstr "Вхід виконано як: <br>%login"
@@ -1388,7 +1388,7 @@ msgid "Add new child member in database"
 msgstr "Додати нового дочірнього члена в базу даних"
 
 #: ../lib/Galette/Core/Galette.php:164 ../lib/Galette/Core/Galette.php:540
-#: ../lib/Galette/DynamicFields/DynamicField.php:564
+#: ../lib/Galette/DynamicFields/DynamicField.php:533
 #: ../../tempcache/elements/group.html.twig:95
 msgid "Members"
 msgstr "Члени"
@@ -1415,7 +1415,7 @@ msgid "Add new member in database"
 msgstr "Додати нового члена в базу даних"
 
 #: ../lib/Galette/Core/Galette.php:211 ../lib/Galette/Core/Galette.php:572
-#: ../lib/Galette/DynamicFields/DynamicField.php:565
+#: ../lib/Galette/DynamicFields/DynamicField.php:534
 #: ../../tempcache/pages/members_list.html.twig:561
 msgid "Contributions"
 msgstr "Внески"
@@ -1614,7 +1614,7 @@ msgid "Public pages"
 msgstr "Загальнодоступні сторінки"
 
 #: ../lib/Galette/Core/Galette.php:581
-#: ../lib/Galette/DynamicFields/DynamicField.php:566
+#: ../lib/Galette/DynamicFields/DynamicField.php:535
 msgid "Transactions"
 msgstr "Перекази"
 
@@ -1668,39 +1668,39 @@ msgstr "Утворити картки члена"
 msgid "Export as CSV"
 msgstr "Експорт у форматі CSV"
 
-#: ../lib/Galette/Core/Preferences.php:528
+#: ../lib/Galette/Core/Preferences.php:530
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Ви повинні вказати ім'я відправника для е-пошт!"
 
-#: ../lib/Galette/Core/Preferences.php:534
+#: ../lib/Galette/Core/Preferences.php:536
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
 "для надсилання електронних листів!"
 
-#: ../lib/Galette/Core/Preferences.php:541
+#: ../lib/Galette/Core/Preferences.php:543
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Ви повинні вказати SMTP-сервер, який хочете використовувати!"
 
-#: ../lib/Galette/Core/Preferences.php:553
+#: ../lib/Galette/Core/Preferences.php:555
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- Ви повинні вказати логін для SMTP-автентифікації."
 
-#: ../lib/Galette/Core/Preferences.php:559
+#: ../lib/Galette/Core/Preferences.php:561
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- Ви повинні вказати пароль для SMTP-автентифікації."
 
-#: ../lib/Galette/Core/Preferences.php:571
+#: ../lib/Galette/Core/Preferences.php:573
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr "- Типове розширення членства та початок членства взаємозаперечні."
 
-#: ../lib/Galette/Core/Preferences.php:580
+#: ../lib/Galette/Core/Preferences.php:582
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Пропонування місяців сумісне лише з початком членства."
 
-#: ../lib/Galette/Core/Preferences.php:589
+#: ../lib/Galette/Core/Preferences.php:591
 #: ../lib/Galette/Entity/Adherent.php:1209
 #: ../lib/Galette/Entity/Transaction.php:389
 #: ../lib/Galette/Entity/Contribution.php:520
@@ -1708,91 +1708,91 @@ msgstr "- Пропонування місяців сумісне лише з п�
 msgid "- Mandatory field %field empty."
 msgstr "- Обов’язкове поле %field порожнє."
 
-#: ../lib/Galette/Core/Preferences.php:597 ../webroot/installer.php:191
+#: ../lib/Galette/Core/Preferences.php:599 ../webroot/installer.php:191
 msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
 
-#: ../lib/Galette/Core/Preferences.php:610
+#: ../lib/Galette/Core/Preferences.php:612
 msgid "You have to select a staff member"
 msgstr "Ви повинні вибрати співробітника"
 
-#: ../lib/Galette/Core/Preferences.php:664
+#: ../lib/Galette/Core/Preferences.php:666
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Неприпустима адреса е-пошти: %s"
 
-#: ../lib/Galette/Core/Preferences.php:678
+#: ../lib/Galette/Core/Preferences.php:680
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- Ім'я користувача повинно складатися щонайменше з 4 знаків!"
 
-#: ../lib/Galette/Core/Preferences.php:682
+#: ../lib/Galette/Core/Preferences.php:684
 msgid "- This username is already used by another member !"
 msgstr "- Це ім’я користувача вже використовується іншим членом!"
 
-#: ../lib/Galette/Core/Preferences.php:702
+#: ../lib/Galette/Core/Preferences.php:704
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Числа та міри мають бути цілими числами!"
 
-#: ../lib/Galette/Core/Preferences.php:736
+#: ../lib/Galette/Core/Preferences.php:738
 msgid "- Invalid number of months of membership extension."
 msgstr "- Неприпустима кількість місяців продовження членства."
 
-#: ../lib/Galette/Core/Preferences.php:742
+#: ../lib/Galette/Core/Preferences.php:744
 msgid "- Invalid format of beginning of membership."
 msgstr "- Неприпустимий формат початку членства."
 
-#: ../lib/Galette/Core/Preferences.php:746
+#: ../lib/Galette/Core/Preferences.php:748
 msgid "- Invalid date for beginning of membership."
 msgstr "- Неприпустима дата початку членства."
 
-#: ../lib/Galette/Core/Preferences.php:752
+#: ../lib/Galette/Core/Preferences.php:754
 msgid "- Invalid number of offered months."
 msgstr "- Неприпустима кількість запропонованих місяців."
 
-#: ../lib/Galette/Core/Preferences.php:757
+#: ../lib/Galette/Core/Preferences.php:759
 msgid "- Invalid year for cards."
 msgstr "- Неприпустимий рік для карток."
 
-#: ../lib/Galette/Core/Preferences.php:765
+#: ../lib/Galette/Core/Preferences.php:767
 msgid "- Invalid website URL."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:879
+#: ../lib/Galette/Core/Preferences.php:881
 msgid "%name association's %status"
 msgstr "%name - %status товариства"
 
-#: ../lib/Galette/Core/Preferences.php:1115
+#: ../lib/Galette/Core/Preferences.php:1117
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1134
-#: ../lib/Galette/Core/Preferences.php:1150 ../lib/Galette/IO/Csv.php:97
+#: ../lib/Galette/Core/Preferences.php:1136
+#: ../lib/Galette/Core/Preferences.php:1152 ../lib/Galette/IO/Csv.php:97
 #: ../lib/Galette/Entity/Texts.php:193
 #: ../../tempcache/pages/history.html.twig:323
 #: ../../tempcache/pages/mailings_list.html.twig:296
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1136
+#: ../lib/Galette/Core/Preferences.php:1138
 msgid "Never"
 msgstr "Ніколи"
 
-#: ../lib/Galette/Core/Preferences.php:1174
+#: ../lib/Galette/Core/Preferences.php:1176
 msgid "Current cards configuration may exceed page width!"
 msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
 
-#: ../lib/Galette/Core/Preferences.php:1185
+#: ../lib/Galette/Core/Preferences.php:1187
 msgid "Current cards configuration may exceed page height!"
 msgstr "Поточна конфігурація карток може перевищувати висоту сторінки!"
 
-#: ../lib/Galette/Core/Preferences.php:1211
-#: ../lib/Galette/Features/Replacements.php:808
+#: ../lib/Galette/Core/Preferences.php:1213
+#: ../lib/Galette/Features/Replacements.php:809
 msgid "Main information"
 msgstr "Контактні відомості"
 
-#: ../lib/Galette/Core/Preferences.php:1218
+#: ../lib/Galette/Core/Preferences.php:1220
 #: ../../tempcache/elements/display_socials.html.twig:45
-#: ../../tempcache/elements/edit_socials.html.twig:56
+#: ../../tempcache/elements/edit_socials.html.twig:76
 #: ../../tempcache/pages/preferences.html.twig:69
 msgid "Social networks"
 msgstr "Соціальні мережі"
@@ -1835,7 +1835,7 @@ msgstr "Модуль не існує!"
 msgid "File not found!"
 msgstr "Файл не знайдено!"
 
-#: ../lib/Galette/Core/Picture.php:1000
+#: ../lib/Galette/Core/Picture.php:972
 msgid "An SQL error has occurred."
 msgstr "Сталася помилка SQL."
 
@@ -1865,7 +1865,7 @@ msgstr ""
 #: ../lib/Galette/IO/ContributionsCsv.php:113
 #: ../lib/Galette/IO/ContributionsCsv.php:125
 #: ../lib/Galette/IO/ContributionsCsv.php:137
-#: ../lib/Galette/Features/Replacements.php:517
+#: ../lib/Galette/Features/Replacements.php:518
 #: ../lib/Galette/Features/Dynamics.php:160
 #: ../lib/Galette/Features/Dynamics.php:173
 #: ../lib/Galette/Features/Dynamics.php:179
@@ -1875,7 +1875,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1287
 #: ../lib/Galette/Entity/Adherent.php:1321
 #: ../lib/Galette/Entity/Adherent.php:1327
-#: ../lib/Galette/Entity/Adherent.php:1820
+#: ../lib/Galette/Entity/Adherent.php:1826
 #: ../lib/Galette/Entity/Transaction.php:319
 #: ../lib/Galette/Entity/Transaction.php:332
 #: ../lib/Galette/Entity/Transaction.php:338
@@ -1908,7 +1908,7 @@ msgstr ""
 #: ../lib/Galette/Filters/AdvancedMembersList.php:337
 #: ../lib/Galette/Filters/AdvancedMembersList.php:455
 #: ../lib/Galette/Filters/AdvancedMembersList.php:601
-#: ../../tempcache/pages/member_form.html.twig:891
+#: ../../tempcache/pages/member_form.html.twig:912
 #: ../../tempcache/pages/advanced_search.html.twig:1385
 msgid "Y-m-d"
 msgstr "d.m.Y"
@@ -1962,144 +1962,101 @@ msgstr "Світлину не збережено!"
 msgid "Photo has not been copied!"
 msgstr "Світлину не скопійовано!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:548
-msgid "User, read/write"
-msgstr "Користувач, читання/запис"
-
-#: ../lib/Galette/DynamicFields/DynamicField.php:549
-#: ../../tempcache/elements/ajax_members.html.twig:141
-#: ../../tempcache/elements/group_persons.html.twig:137
-#: ../../tempcache/elements/edit_core_fields.html.twig:171
-#: ../../tempcache/pages/members_list.html.twig:619
-#: ../../tempcache/pages/members_list.html.twig:769
-#: ../../tempcache/pages/status_list.html.twig:159
-#: ../../tempcache/pages/preferences.html.twig:392
-#: ../../tempcache/pages/configuration_core_lists.html.twig:106
-#: ../../tempcache/pages/configuration_core_lists.html.twig:159
-msgid "Staff member"
-msgstr "Співробітник"
-
-#: ../lib/Galette/DynamicFields/DynamicField.php:550
-#: ../../tempcache/elements/ajax_members.html.twig:130
-#: ../../tempcache/elements/group_persons.html.twig:126
-#: ../../tempcache/elements/edit_core_fields.html.twig:161
-#: ../../tempcache/pages/configuration_core_lists.html.twig:106
-#: ../../tempcache/pages/configuration_core_lists.html.twig:159
-msgid "Administrator"
-msgstr "Адміністратор"
-
-#: ../lib/Galette/DynamicFields/DynamicField.php:551
-#: ../../tempcache/elements/ajax_members.html.twig:152
-#: ../../tempcache/elements/group_persons.html.twig:148
-#: ../../tempcache/elements/edit_core_fields.html.twig:181
-#: ../../tempcache/pages/members_list.html.twig:626
-#: ../../tempcache/pages/members_list.html.twig:780
-#: ../../tempcache/pages/configuration_core_lists.html.twig:106
-#: ../../tempcache/pages/configuration_core_lists.html.twig:159
-#: ../../tempcache/pages/member_show.html.twig:551
-#: ../../tempcache/components/forms/groups.html.twig:149
-msgid "Group manager"
-msgstr "Менеджер групи"
-
-#: ../lib/Galette/DynamicFields/DynamicField.php:552
-msgid "User, read only"
-msgstr "Користувач, лише для читання"
-
-#: ../lib/Galette/DynamicFields/DynamicField.php:640
+#: ../lib/Galette/DynamicFields/DynamicField.php:598
 msgid "Missing required field name!"
 msgstr "Відсутня назва обов'язкового поля!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:649
+#: ../lib/Galette/DynamicFields/DynamicField.php:607
 msgid "Missing required field permissions!"
 msgstr "Відсутні обов'язкові дозволи для поля!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:654
+#: ../lib/Galette/DynamicFields/DynamicField.php:612
 msgid "Unknown permission!"
 msgstr "Невідомий дозвіл!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:660
+#: ../lib/Galette/DynamicFields/DynamicField.php:618
 msgid "Missing required form!"
 msgstr "Відсутня обов'язкова форма!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:665
+#: ../lib/Galette/DynamicFields/DynamicField.php:623
 msgid "Unknown form!"
 msgstr "Невідома форма!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:675
+#: ../lib/Galette/DynamicFields/DynamicField.php:633
 msgid "- Field name already used."
 msgstr "-Ім'я поля вже використовується."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:680
+#: ../lib/Galette/DynamicFields/DynamicField.php:638
 #, fuzzy
 #| msgid "- The duration must be a positive integer!"
 msgid "- Width must be a positive integer!"
 msgstr "- Тривалість має бути додатним цілим числом!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:688
+#: ../lib/Galette/DynamicFields/DynamicField.php:646
 #, fuzzy
 #| msgid "- The duration must be a positive integer!"
 msgid "- Height must be a positive integer!"
 msgstr "- Тривалість має бути додатним цілим числом!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:696
+#: ../lib/Galette/DynamicFields/DynamicField.php:654
 #, fuzzy
 #| msgid "- The duration must be a positive integer!"
 msgid "- Size must be a positive integer!"
 msgstr "- Тривалість має бути додатним цілим числом!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:704
+#: ../lib/Galette/DynamicFields/DynamicField.php:662
 #, fuzzy
 #| msgid "- The duration must be a positive integer!"
 msgid "- Min size must be a positive integer!"
 msgstr "- Тривалість має бути додатним цілим числом!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:717
+#: ../lib/Galette/DynamicFields/DynamicField.php:675
 msgid "- Min size must be lower than size!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:723
+#: ../lib/Galette/DynamicFields/DynamicField.php:681
 #, fuzzy
 #| msgid "- The amount must be an integer!"
 msgid "- Repeat must be an integer!"
 msgstr "- Сума має бути цілим числом!"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:834
+#: ../lib/Galette/DynamicFields/DynamicField.php:792
 msgid "An error occurred storing the field."
 msgstr "Під час зберігання поля сталася помилка."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:855
+#: ../lib/Galette/DynamicFields/DynamicField.php:813
 msgid "An error occurred creating field values table"
 msgstr "Під час створення таблиці значень полів сталася помилка"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:889
+#: ../lib/Galette/DynamicFields/DynamicField.php:847
 msgid "An error occurred storing dynamic field values :("
 msgstr "Під час зберігання значень динамічних полів сталася помилка :("
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1102
+#: ../lib/Galette/DynamicFields/DynamicField.php:1060
 msgid "separator"
 msgstr "роздільник"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1103
+#: ../lib/Galette/DynamicFields/DynamicField.php:1061
 msgid "free text"
 msgstr "вільний текст"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1104
+#: ../lib/Galette/DynamicFields/DynamicField.php:1062
 msgid "single line"
 msgstr "один рядок"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1105
+#: ../lib/Galette/DynamicFields/DynamicField.php:1063
 msgid "choice"
 msgstr "вибір"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1106
+#: ../lib/Galette/DynamicFields/DynamicField.php:1064
 msgid "date"
 msgstr "дата"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1107
+#: ../lib/Galette/DynamicFields/DynamicField.php:1065
 msgid "boolean"
 msgstr "логічний"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1108
+#: ../lib/Galette/DynamicFields/DynamicField.php:1066
 msgid "file"
 msgstr "файл"
 
@@ -2132,7 +2089,7 @@ msgstr "Менеджери:"
 
 #: ../lib/Galette/IO/PdfGroups.php:157
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:163
-#: ../lib/Galette/Features/Replacements.php:247
+#: ../lib/Galette/Features/Replacements.php:248
 #: ../lib/Galette/Entity/PdfModel.php:444
 #: ../lib/Galette/Filters/MembersList.php:274
 #: ../includes/fields_defs/members_fields.php:315
@@ -2167,8 +2124,8 @@ msgid "Name"
 msgstr "Ім'я"
 
 #: ../lib/Galette/IO/PdfGroups.php:158
-#: ../lib/Galette/Features/Replacements.php:311
-#: ../lib/Galette/Features/Replacements.php:359
+#: ../lib/Galette/Features/Replacements.php:312
+#: ../lib/Galette/Features/Replacements.php:360
 #: ../../tempcache/elements/member_card.html.twig:147
 #: ../../tempcache/pages/preferences.html.twig:2089
 #: ../../tempcache/pages/members_public_list.html.twig:86
@@ -2177,14 +2134,14 @@ msgid "Email"
 msgstr "Е-пошта"
 
 #: ../lib/Galette/IO/PdfGroups.php:159
-#: ../lib/Galette/Features/Replacements.php:303
+#: ../lib/Galette/Features/Replacements.php:304
 #: ../lib/Galette/Entity/ListsConfig.php:199
 #: ../../tempcache/elements/member_card.html.twig:107
 msgid "Phone"
 msgstr "Телефон"
 
 #: ../lib/Galette/IO/PdfGroups.php:160
-#: ../lib/Galette/Features/Replacements.php:307
+#: ../lib/Galette/Features/Replacements.php:308
 msgid "GSM"
 msgstr "GSM"
 
@@ -2193,8 +2150,8 @@ msgid "filtered_memberslist"
 msgstr "filtered_memberslist"
 
 #: ../lib/Galette/IO/MembersCsv.php:207
-#: ../lib/Galette/Features/Replacements.php:628
-#: ../lib/Galette/Entity/Adherent.php:1780
+#: ../lib/Galette/Features/Replacements.php:629
+#: ../lib/Galette/Entity/Adherent.php:1786
 #: ../../tempcache/modals/mass_change_members.html.twig:163
 #: ../../tempcache/elements/ajax_members.html.twig:100
 #: ../../tempcache/elements/group_persons.html.twig:98
@@ -2205,8 +2162,8 @@ msgid "Man"
 msgstr "Чоловік"
 
 #: ../lib/Galette/IO/MembersCsv.php:210
-#: ../lib/Galette/Features/Replacements.php:630
-#: ../lib/Galette/Entity/Adherent.php:1782
+#: ../lib/Galette/Features/Replacements.php:631
+#: ../lib/Galette/Entity/Adherent.php:1788
 #: ../../tempcache/modals/mass_change_members.html.twig:154
 #: ../../tempcache/elements/ajax_members.html.twig:111
 #: ../../tempcache/elements/group_persons.html.twig:109
@@ -2217,8 +2174,8 @@ msgid "Woman"
 msgstr "Жінка"
 
 #: ../lib/Galette/IO/MembersCsv.php:213
-#: ../lib/Galette/Features/Replacements.php:632
-#: ../lib/Galette/Entity/Adherent.php:1784
+#: ../lib/Galette/Features/Replacements.php:633
+#: ../lib/Galette/Entity/Adherent.php:1790
 #: ../../tempcache/modals/mass_change_members.html.twig:145
 #: ../../tempcache/pages/advanced_search.html.twig:1149
 #: ../../tempcache/pages/advanced_search.html.twig:1668
@@ -2228,16 +2185,16 @@ msgstr "Невстановлено"
 
 #: ../lib/Galette/IO/MembersCsv.php:221 ../lib/Galette/IO/MembersCsv.php:225
 #: ../lib/Galette/IO/MembersCsv.php:229 ../lib/Galette/IO/MembersCsv.php:233
-#: ../lib/Galette/Features/Replacements.php:753
-#: ../lib/Galette/Entity/Adherent.php:1746
-#: ../lib/Galette/Entity/Adherent.php:1748
-#: ../lib/Galette/Entity/Adherent.php:1750
+#: ../lib/Galette/Features/Replacements.php:754
 #: ../lib/Galette/Entity/Adherent.php:1752
+#: ../lib/Galette/Entity/Adherent.php:1754
+#: ../lib/Galette/Entity/Adherent.php:1756
+#: ../lib/Galette/Entity/Adherent.php:1758
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:127
 #: ../../tempcache/elements/js/messages.js.twig:326
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:135
 #: ../../tempcache/elements/messages_inline.html.twig:419
-#: ../../tempcache/elements/edit_core_fields.html.twig:224
+#: ../../tempcache/elements/edit_core_fields.html.twig:185
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:141
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:306
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:522
@@ -2252,16 +2209,16 @@ msgstr "Так"
 
 #: ../lib/Galette/IO/MembersCsv.php:221 ../lib/Galette/IO/MembersCsv.php:225
 #: ../lib/Galette/IO/MembersCsv.php:229 ../lib/Galette/IO/MembersCsv.php:233
-#: ../lib/Galette/Features/Replacements.php:753
-#: ../lib/Galette/Entity/Adherent.php:1746
-#: ../lib/Galette/Entity/Adherent.php:1748
-#: ../lib/Galette/Entity/Adherent.php:1750
+#: ../lib/Galette/Features/Replacements.php:754
 #: ../lib/Galette/Entity/Adherent.php:1752
+#: ../lib/Galette/Entity/Adherent.php:1754
+#: ../lib/Galette/Entity/Adherent.php:1756
+#: ../lib/Galette/Entity/Adherent.php:1758
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:129
 #: ../../tempcache/elements/js/messages.js.twig:344
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:141
 #: ../../tempcache/elements/messages_inline.html.twig:423
-#: ../../tempcache/elements/edit_core_fields.html.twig:243
+#: ../../tempcache/elements/edit_core_fields.html.twig:204
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:133
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:298
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:514
@@ -2404,80 +2361,80 @@ msgstr "Картки члена"
 msgid "Cards"
 msgstr "Картки"
 
-#: ../lib/Galette/IO/FileTrait.php:465
+#: ../lib/Galette/IO/FileTrait.php:497
 msgid "An error occurred."
 msgstr "Сталася помилка."
 
-#: ../lib/Galette/IO/FileTrait.php:469
+#: ../lib/Galette/IO/FileTrait.php:501
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
 "Назва файлу неприпустима, воно не повинно містити спеціальні знаки чи "
 "пробіли."
 
-#: ../lib/Galette/IO/FileTrait.php:475
+#: ../lib/Galette/IO/FileTrait.php:507
 #, php-format
 msgid "File extension is not allowed, only %s files are."
 msgstr "Розширення файлів не дозволено, є лише %s файлів."
 
-#: ../lib/Galette/IO/FileTrait.php:482 ../lib/Galette/Features/Dynamics.php:279
+#: ../lib/Galette/IO/FileTrait.php:514 ../lib/Galette/Features/Dynamics.php:279
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr "Файл завеликий. Найбільш допустимий розмір - %dKo"
 
-#: ../lib/Galette/IO/FileTrait.php:487
+#: ../lib/Galette/IO/FileTrait.php:519
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
 msgstr ""
 
-#: ../lib/Galette/IO/FileTrait.php:493
+#: ../lib/Galette/IO/FileTrait.php:525
 msgid "Mime-Type not allowed"
 msgstr "Mime-Type не дозволено"
 
-#: ../lib/Galette/IO/FileTrait.php:496
+#: ../lib/Galette/IO/FileTrait.php:528
 msgid "A file with that name already exists!"
 msgstr "Файл із такою назвою вже існує!"
 
-#: ../lib/Galette/IO/FileTrait.php:499
+#: ../lib/Galette/IO/FileTrait.php:531
 msgid "File does not comply with requirements."
 msgstr "Файл не відповідає вимогам."
 
-#: ../lib/Galette/IO/FileTrait.php:502
+#: ../lib/Galette/IO/FileTrait.php:534
 msgid "Unable to write file or temporary file"
 msgstr "Не вдається записати файл або тимчасовий файл"
 
-#: ../lib/Galette/IO/FileTrait.php:532
+#: ../lib/Galette/IO/FileTrait.php:564
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr "Завантажений файл перевищує обмеження upload_max_filesize у php.ini"
 
-#: ../lib/Galette/IO/FileTrait.php:534
+#: ../lib/Galette/IO/FileTrait.php:566
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 "Завантажений файл перевищує обмеження MAX_FILE_SIZE, указане у формі HTML"
 
-#: ../lib/Galette/IO/FileTrait.php:536
+#: ../lib/Galette/IO/FileTrait.php:568
 msgid "The uploaded file was only partially uploaded"
 msgstr "Вивантажений файл було вивантажено лише частково"
 
-#: ../lib/Galette/IO/FileTrait.php:538
+#: ../lib/Galette/IO/FileTrait.php:570
 msgid "No file was uploaded"
 msgstr "Файл не вивантажено"
 
-#: ../lib/Galette/IO/FileTrait.php:540
+#: ../lib/Galette/IO/FileTrait.php:572
 msgid "Missing a temporary folder"
 msgstr "Відсутній тимчасовий каталог"
 
-#: ../lib/Galette/IO/FileTrait.php:542
+#: ../lib/Galette/IO/FileTrait.php:574
 msgid "Failed to write file to disk"
 msgstr "Не вдалося записати файл на диск"
 
-#: ../lib/Galette/IO/FileTrait.php:544
+#: ../lib/Galette/IO/FileTrait.php:576
 msgid "File upload stopped by extension"
 msgstr "Завантаження файлу зупинено розширенням"
 
-#: ../lib/Galette/IO/FileTrait.php:546
+#: ../lib/Galette/IO/FileTrait.php:578
 msgid "Unknown upload error"
 msgstr "Невідома помилка вивантаження"
 
@@ -2492,6 +2449,50 @@ msgstr "квитанція"
 #: ../lib/Galette/IO/PdfContribution.php:68
 msgid "invoice"
 msgstr "рахунок-фактура"
+
+#: ../lib/Galette/Features/Permissions.php:59
+msgid "Inaccessible"
+msgstr "Недоступно"
+
+#: ../lib/Galette/Features/Permissions.php:60
+msgid "User, read only"
+msgstr "Користувач, лише для читання"
+
+#: ../lib/Galette/Features/Permissions.php:61
+msgid "User, read/write"
+msgstr "Користувач, читання/запис"
+
+#: ../lib/Galette/Features/Permissions.php:62
+#: ../../tempcache/elements/ajax_members.html.twig:152
+#: ../../tempcache/elements/group_persons.html.twig:148
+#: ../../tempcache/pages/members_list.html.twig:626
+#: ../../tempcache/pages/members_list.html.twig:780
+#: ../../tempcache/pages/member_form.html.twig:698
+#: ../../tempcache/pages/member_show.html.twig:551
+#: ../../tempcache/components/forms/groups.html.twig:151
+msgid "Group manager"
+msgstr "Менеджер групи"
+
+#: ../lib/Galette/Features/Permissions.php:63
+#: ../../tempcache/elements/ajax_members.html.twig:141
+#: ../../tempcache/elements/group_persons.html.twig:137
+#: ../../tempcache/pages/members_list.html.twig:619
+#: ../../tempcache/pages/members_list.html.twig:769
+#: ../../tempcache/pages/status_list.html.twig:159
+#: ../../tempcache/pages/preferences.html.twig:392
+msgid "Staff member"
+msgstr "Співробітник"
+
+#: ../lib/Galette/Features/Permissions.php:64
+#: ../../tempcache/elements/ajax_members.html.twig:130
+#: ../../tempcache/elements/group_persons.html.twig:126
+msgid "Administrator"
+msgstr "Адміністратор"
+
+#: ../lib/Galette/Features/Permissions.php:68
+#: ../lib/Galette/Entity/ListsConfig.php:202
+msgid "Public"
+msgstr "Прилюдно"
 
 #: ../lib/Galette/Features/I18n.php:115
 #, php-format
@@ -2508,90 +2509,90 @@ msgstr "Не вдалося оновити динамічний переклад
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr "Неможливо видалити старий динамічний переклад для поля %field :("
 
-#: ../lib/Galette/Features/Replacements.php:112
+#: ../lib/Galette/Features/Replacements.php:113
 #, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Мітка для динамічного поля \"%s\""
 
-#: ../lib/Galette/Features/Replacements.php:115
+#: ../lib/Galette/Features/Replacements.php:116
 #, php-format
 msgid "Form entry for dynamic field \"%s\""
 msgstr "Запис форми для динамічного поля \"%s\""
 
-#: ../lib/Galette/Features/Replacements.php:121
+#: ../lib/Galette/Features/Replacements.php:122
 #, php-format
 msgid "Value for dynamic field \"%s\""
 msgstr "Значення для динамічного поля \"%s\""
 
-#: ../lib/Galette/Features/Replacements.php:184
+#: ../lib/Galette/Features/Replacements.php:185
 msgid "Your organisation name"
 msgstr "Назва вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:188
+#: ../lib/Galette/Features/Replacements.php:189
 msgid "Your organisation slogan"
 msgstr "Слоган вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:192
-#: ../lib/Galette/Features/Replacements.php:196
+#: ../lib/Galette/Features/Replacements.php:193
+#: ../lib/Galette/Features/Replacements.php:197
 msgid "Your organisation address"
 msgstr "Адреса вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:196
-#: ../lib/Galette/Features/Replacements.php:287
+#: ../lib/Galette/Features/Replacements.php:197
+#: ../lib/Galette/Features/Replacements.php:288
 msgid "with break lines"
 msgstr "з лініями розриву"
 
-#: ../lib/Galette/Features/Replacements.php:200
+#: ../lib/Galette/Features/Replacements.php:201
 msgid "Your organisation website"
 msgstr "Вебсайт вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:204
+#: ../lib/Galette/Features/Replacements.php:205
 msgid "Your organisation logo"
 msgstr "Логотип Вашої організації"
 
-#: ../lib/Galette/Features/Replacements.php:208
+#: ../lib/Galette/Features/Replacements.php:209
 #, fuzzy
 #| msgid "Your organisation logo"
 msgid "Your organisation logo (print specific)"
 msgstr "Логотип Вашої організації"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Features/Replacements.php:213
+#: ../lib/Galette/Features/Replacements.php:214
 msgid "Current date (Y-m-d)"
 msgstr "Поточна дата (Y-m-d)"
 
-#: ../lib/Galette/Features/Replacements.php:217
+#: ../lib/Galette/Features/Replacements.php:218
 msgid "Galette's login URI"
 msgstr "URI логіну Galette"
 
-#: ../lib/Galette/Features/Replacements.php:235
+#: ../lib/Galette/Features/Replacements.php:236
 #: ../lib/Galette/Entity/PdfModel.php:453
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:110
 #: ../../tempcache/elements/edit_pdf_models.html.twig:50
 msgid "Title"
 msgstr "Заголовок"
 
-#: ../lib/Galette/Features/Replacements.php:239
+#: ../lib/Galette/Features/Replacements.php:240
 msgid "Member's ID"
 msgstr "ID члена"
 
-#: ../lib/Galette/Features/Replacements.php:243
+#: ../lib/Galette/Features/Replacements.php:244
 #: ../lib/Galette/Filters/MembersList.php:275
 #: ../../tempcache/pages/preferences.html.twig:2121
 msgid "Member number"
 msgstr "Номер члена"
 
-#: ../lib/Galette/Features/Replacements.php:251
-#: ../lib/Galette/Features/Replacements.php:347
+#: ../lib/Galette/Features/Replacements.php:252
+#: ../lib/Galette/Features/Replacements.php:348
 msgid "Last name"
 msgstr "Прізвище"
 
-#: ../lib/Galette/Features/Replacements.php:255
-#: ../lib/Galette/Features/Replacements.php:351 ../includes/i18n.inc.php:312
+#: ../lib/Galette/Features/Replacements.php:256
+#: ../lib/Galette/Features/Replacements.php:352 ../includes/i18n.inc.php:312
 msgid "First name"
 msgstr "Ім'я"
 
-#: ../lib/Galette/Features/Replacements.php:259
+#: ../lib/Galette/Features/Replacements.php:260
 #: ../../tempcache/elements/group_persons.html.twig:50
 #: ../../tempcache/pages/preferences.html.twig:2105
 #: ../../tempcache/pages/members_public_list.html.twig:78
@@ -2599,74 +2600,74 @@ msgstr "Ім'я"
 msgid "Nickname"
 msgstr "Позивний"
 
-#: ../lib/Galette/Features/Replacements.php:263
+#: ../lib/Galette/Features/Replacements.php:264
 msgid "Gender"
 msgstr "Стать"
 
-#: ../lib/Galette/Features/Replacements.php:267
+#: ../lib/Galette/Features/Replacements.php:268
 #: ../../tempcache/pages/advanced_search.html.twig:266
 msgid "Birth date"
 msgstr "День народження"
 
-#: ../lib/Galette/Features/Replacements.php:271
+#: ../lib/Galette/Features/Replacements.php:272
 msgid "Birth place"
 msgstr "Місце народження"
 
-#: ../lib/Galette/Features/Replacements.php:275
+#: ../lib/Galette/Features/Replacements.php:276
 #: ../../tempcache/pages/preferences.html.twig:2113
 msgid "Profession"
 msgstr "Професія"
 
-#: ../lib/Galette/Features/Replacements.php:279
-#: ../lib/Galette/Features/Replacements.php:343
+#: ../lib/Galette/Features/Replacements.php:280
+#: ../lib/Galette/Features/Replacements.php:344
 #: ../lib/Galette/Filters/MembersList.php:276
 msgid "Company name"
 msgstr "Назва компанії"
 
-#: ../lib/Galette/Features/Replacements.php:283
-#: ../lib/Galette/Features/Replacements.php:287
+#: ../lib/Galette/Features/Replacements.php:284
+#: ../lib/Galette/Features/Replacements.php:288
 #: ../lib/Galette/Filters/MembersList.php:277
 #: ../../tempcache/pages/mailing_form.html.twig:124
 msgid "Address"
 msgstr "Адреса"
 
-#: ../lib/Galette/Features/Replacements.php:291
+#: ../lib/Galette/Features/Replacements.php:292
 msgid "Zipcode"
 msgstr "ZIP-код"
 
-#: ../lib/Galette/Features/Replacements.php:295
+#: ../lib/Galette/Features/Replacements.php:296
 msgid "Town"
 msgstr "Місто"
 
-#: ../lib/Galette/Features/Replacements.php:299 ../includes/i18n.inc.php:309
+#: ../lib/Galette/Features/Replacements.php:300 ../includes/i18n.inc.php:309
 msgid "Country"
 msgstr "Країна"
 
-#: ../lib/Galette/Features/Replacements.php:319
+#: ../lib/Galette/Features/Replacements.php:320
 msgid "Member's main group"
 msgstr "Основна група члена"
 
-#: ../lib/Galette/Features/Replacements.php:323
+#: ../lib/Galette/Features/Replacements.php:324
 msgid "Member's groups (as list)"
 msgstr "Групи членів (як список)"
 
-#: ../lib/Galette/Features/Replacements.php:327
+#: ../lib/Galette/Features/Replacements.php:328
 msgid "Member state of dues"
 msgstr "Члени за станом внесків"
 
-#: ../lib/Galette/Features/Replacements.php:331
+#: ../lib/Galette/Features/Replacements.php:332
 msgid "Membership remaining days"
 msgstr "Днів членства залишилося"
 
-#: ../lib/Galette/Features/Replacements.php:335
+#: ../lib/Galette/Features/Replacements.php:336
 msgid "Membership expired since"
 msgstr "Членство закінчилось з"
 
-#: ../lib/Galette/Features/Replacements.php:381
+#: ../lib/Galette/Features/Replacements.php:382
 msgid "Contribution label"
 msgstr "Мітка внеску"
 
-#: ../lib/Galette/Features/Replacements.php:385
+#: ../lib/Galette/Features/Replacements.php:386
 #: ../../tempcache/pages/transaction_form.html.twig:289
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:668
@@ -2680,38 +2681,38 @@ msgstr "Мітка внеску"
 msgid "Amount"
 msgstr "Сума"
 
-#: ../lib/Galette/Features/Replacements.php:389
+#: ../lib/Galette/Features/Replacements.php:390
 msgid "Amount (in letters)"
 msgstr "Кількість (як числівник)"
 
-#: ../lib/Galette/Features/Replacements.php:393
+#: ../lib/Galette/Features/Replacements.php:394
 msgid "Full date"
 msgstr "Повна дата"
 
-#: ../lib/Galette/Features/Replacements.php:397
+#: ../lib/Galette/Features/Replacements.php:398
 msgid "Contribution year"
 msgstr "Рік внеску"
 
-#: ../lib/Galette/Features/Replacements.php:401
+#: ../lib/Galette/Features/Replacements.php:402
 msgid "Comment"
 msgstr "Коментар"
 
-#: ../lib/Galette/Features/Replacements.php:405
+#: ../lib/Galette/Features/Replacements.php:406
 #: ../../tempcache/pages/advanced_search.html.twig:703
 msgid "Begin date"
 msgstr "Дата початку"
 
-#: ../lib/Galette/Features/Replacements.php:409
+#: ../lib/Galette/Features/Replacements.php:410
 #: ../../tempcache/pages/advanced_search.html.twig:747
 msgid "End date"
 msgstr "Дата завершення"
 
-#: ../lib/Galette/Features/Replacements.php:413
+#: ../lib/Galette/Features/Replacements.php:414
 #: ../lib/Galette/Entity/Contribution.php:144
 msgid "Contribution id"
 msgstr "ID внеску"
 
-#: ../lib/Galette/Features/Replacements.php:417
+#: ../lib/Galette/Features/Replacements.php:418
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:674
 #: ../../tempcache/pages/transactions_list.html.twig:294
@@ -2721,15 +2722,15 @@ msgstr "ID внеску"
 msgid "Payment type"
 msgstr "Вид оплати"
 
-#: ../lib/Galette/Features/Replacements.php:421
+#: ../lib/Galette/Features/Replacements.php:422
 #: ../lib/Galette/Entity/Contribution.php:1092
 #: ../lib/Galette/Entity/Texts.php:611
 #: ../lib/Galette/Entity/PdfContribution.php:65
 msgid "Contribution information"
 msgstr "Відомості про внесок"
 
-#: ../lib/Galette/Features/Replacements.php:636
 #: ../lib/Galette/Features/Replacements.php:637
+#: ../lib/Galette/Features/Replacements.php:638
 #: ../../tempcache/elements/group.html.twig:202
 #: ../../tempcache/elements/group.html.twig:245
 #: ../../tempcache/pages/transaction_form.html.twig:210
@@ -2737,7 +2738,7 @@ msgstr "Відомості про внесок"
 msgid "None"
 msgstr "Немає"
 
-#: ../lib/Galette/Features/Replacements.php:813
+#: ../lib/Galette/Features/Replacements.php:814
 msgid "Member information"
 msgstr "Відомості про члена"
 
@@ -2765,10 +2766,6 @@ msgstr "Є адміністратором"
 #: ../lib/Galette/Entity/ListsConfig.php:196
 msgid "Modified"
 msgstr "Змінено"
-
-#: ../lib/Galette/Entity/ListsConfig.php:202
-msgid "Public"
-msgstr "Прилюдно"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
@@ -2894,40 +2891,46 @@ msgstr "Під час перевірки наявності стану стал�
 msgid "Gender %gender does not exists!"
 msgstr "Статі %gender не існує!"
 
-#: ../lib/Galette/Entity/Adherent.php:1591
+#: ../lib/Galette/Entity/Adherent.php:1483
+#, fuzzy
+#| msgid "File %filename cannot be open!"
+msgid "A member cannot be its own parent!"
+msgstr "Не вдалося відкрити файл %filename!"
+
+#: ../lib/Galette/Entity/Adherent.php:1597
 msgid "Self_subscription as a member: "
 msgstr "Self_subscription як член:"
 
-#: ../lib/Galette/Entity/Adherent.php:1597
+#: ../lib/Galette/Entity/Adherent.php:1603
 msgid "Member card added"
 msgstr "Картку члена додано"
 
-#: ../lib/Galette/Entity/Adherent.php:1604
+#: ../lib/Galette/Entity/Adherent.php:1610
 msgid "Fail to add new member."
 msgstr "Не вдалося додати нового члена."
 
-#: ../lib/Galette/Entity/Adherent.php:1634
+#: ../lib/Galette/Entity/Adherent.php:1640
 msgid "Member card updated"
 msgstr "Картку члена оновлено"
 
-#: ../lib/Galette/Entity/Adherent.php:1754
+#: ../lib/Galette/Entity/Adherent.php:1760
 #: ../../tempcache/components/forms/account.html.twig:64
 msgid "Active"
 msgstr "Діяльний"
 
-#: ../lib/Galette/Entity/Adherent.php:1754
+#: ../lib/Galette/Entity/Adherent.php:1760
 #: ../../tempcache/pages/contributions_list.html.twig:231
 #: ../../tempcache/pages/transactions_list.html.twig:180
 #: ../../tempcache/components/forms/account.html.twig:72
 msgid "Inactive"
 msgstr "Незадіяний"
 
-#: ../lib/Galette/Entity/Adherent.php:2056
-#: ../../tempcache/pages/member_form.html.twig:905
+#: ../lib/Galette/Entity/Adherent.php:2062
+#: ../../tempcache/pages/member_form.html.twig:926
 msgid " (%age years old)"
 msgstr " (вік: %age)"
 
-#: ../lib/Galette/Entity/Adherent.php:2134
+#: ../lib/Galette/Entity/Adherent.php:2140
 msgid "Duplicated from %name (%id)"
 msgstr "Повторюється з %name (%id)"
 
@@ -5050,7 +5053,7 @@ msgid "Switch locale to '%locale'"
 msgstr "Змінити мову на \"%locale\""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:48
-#: ../../tempcache/elements/edit_socials.html.twig:162
+#: ../../tempcache/elements/edit_socials.html.twig:182
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:540
 #: ../../tempcache/pages/configuration_titles.html.twig:113
 #: ../../tempcache/pages/contributions_types_list.html.twig:132
@@ -5088,8 +5091,8 @@ msgstr "Тип"
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:71
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:119
 #: ../../tempcache/elements/edit_core_fields.html.twig:52
-#: ../../tempcache/elements/edit_core_fields.html.twig:208
-#: ../../tempcache/elements/edit_core_fields.html.twig:212
+#: ../../tempcache/elements/edit_core_fields.html.twig:169
+#: ../../tempcache/elements/edit_core_fields.html.twig:173
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:505
 msgid "Required"
 msgstr "Потрібно"
@@ -5097,8 +5100,8 @@ msgstr "Потрібно"
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:78
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:141
 #: ../../tempcache/elements/edit_core_fields.html.twig:59
-#: ../../tempcache/elements/edit_core_fields.html.twig:265
-#: ../../tempcache/elements/edit_core_fields.html.twig:269
+#: ../../tempcache/elements/edit_core_fields.html.twig:226
+#: ../../tempcache/elements/edit_core_fields.html.twig:230
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:317
 #, fuzzy
 #| msgid "Adhesion form"
@@ -5119,13 +5122,13 @@ msgid "Actions"
 msgstr "Дії"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:148
-#: ../../tempcache/elements/edit_core_fields.html.twig:304
+#: ../../tempcache/elements/edit_core_fields.html.twig:265
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:345
 msgid "Half"
 msgstr ""
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:155
-#: ../../tempcache/elements/edit_core_fields.html.twig:293
+#: ../../tempcache/elements/edit_core_fields.html.twig:254
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:334
 #, fuzzy
 #| msgid "Full date"
@@ -5133,7 +5136,7 @@ msgid "Full"
 msgstr "Повна дата"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:161
-#: ../../tempcache/elements/edit_core_fields.html.twig:285
+#: ../../tempcache/elements/edit_core_fields.html.twig:246
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:326
 #, fuzzy
 #| msgid "Default fields"
@@ -5189,7 +5192,7 @@ msgid "Menu"
 msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:69
-#: ../../tempcache/elements/logged_user.html.twig:265
+#: ../../tempcache/elements/logged_user.html.twig:267
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:170
 #: ../../tempcache/public_page.html.twig:134 ../../tempcache/page.html.twig:125
 #, php-format
@@ -5218,8 +5221,8 @@ msgstr "Підписатися"
 #: ../../tempcache/elements/logged_user.html.twig:82
 #: ../../tempcache/elements/logged_user.html.twig:156
 #: ../../tempcache/elements/logged_user.html.twig:166
-#: ../../tempcache/elements/logged_user.html.twig:322
-#: ../../tempcache/elements/logged_user.html.twig:333
+#: ../../tempcache/elements/logged_user.html.twig:324
+#: ../../tempcache/elements/logged_user.html.twig:335
 #, fuzzy
 #| msgid "Disabled"
 msgid "Disable dark mode"
@@ -5230,8 +5233,8 @@ msgstr "Вимкнено"
 #: ../../tempcache/elements/logged_user.html.twig:84
 #: ../../tempcache/elements/logged_user.html.twig:158
 #: ../../tempcache/elements/logged_user.html.twig:168
-#: ../../tempcache/elements/logged_user.html.twig:324
-#: ../../tempcache/elements/logged_user.html.twig:335
+#: ../../tempcache/elements/logged_user.html.twig:326
+#: ../../tempcache/elements/logged_user.html.twig:337
 #, fuzzy
 #| msgid "Table name"
 msgid "Enable dark mode"
@@ -5240,15 +5243,15 @@ msgstr "Назва таблиці"
 #: ../../tempcache/elements/logged_user.html.twig:117
 #: ../../tempcache/elements/logged_user.html.twig:192
 #: ../../tempcache/elements/logged_user.html.twig:210
-#: ../../tempcache/elements/logged_user.html.twig:359
-#: ../../tempcache/elements/logged_user.html.twig:377
+#: ../../tempcache/elements/logged_user.html.twig:361
+#: ../../tempcache/elements/logged_user.html.twig:379
 #, fuzzy
 #| msgid "Unable to impersonate as %id"
 msgid "Unimpersonate"
 msgstr "Не вдається видати себе за %id"
 
 #: ../../tempcache/elements/logged_user.html.twig:133
-#: ../../tempcache/elements/logged_user.html.twig:233
+#: ../../tempcache/elements/logged_user.html.twig:235
 #, fuzzy
 #| msgid "Username"
 msgid "User menu"
@@ -5714,35 +5717,17 @@ msgstr "Менеджера не долучено"
 msgid "Change '%field' permissions"
 msgstr "Змінення дозволів \"%field\""
 
-#: ../../tempcache/elements/edit_core_fields.html.twig:151
-#: ../../tempcache/pages/configuration_core_lists.html.twig:106
-#: ../../tempcache/pages/configuration_core_lists.html.twig:159
-msgid "Inaccessible"
-msgstr "Недоступно"
-
-#: ../../tempcache/elements/edit_core_fields.html.twig:191
-#: ../../tempcache/pages/configuration_core_lists.html.twig:106
-#: ../../tempcache/pages/configuration_core_lists.html.twig:159
-msgid "Read only"
-msgstr "Лише читання"
-
-#: ../../tempcache/elements/edit_core_fields.html.twig:201
-#: ../../tempcache/pages/configuration_core_lists.html.twig:106
-#: ../../tempcache/pages/configuration_core_lists.html.twig:159
-msgid "Read/Write"
-msgstr "Читання й записування"
-
-#: ../../tempcache/elements/edit_core_fields.html.twig:215
+#: ../../tempcache/elements/edit_core_fields.html.twig:176
 #, php-format
 msgid "Field '%field' cannot be set as required."
 msgstr "Поле \"%field\" неможливо встановити як потрібно."
 
-#: ../../tempcache/elements/edit_core_fields.html.twig:217
+#: ../../tempcache/elements/edit_core_fields.html.twig:178
 #, php-format
 msgid "Mark '%field' as (not) required"
 msgstr "Позначити \"%field\" як (не) обов'язковий"
 
-#: ../../tempcache/elements/edit_core_fields.html.twig:271
+#: ../../tempcache/elements/edit_core_fields.html.twig:232
 msgid "Change field's width with in forms"
 msgstr ""
 
@@ -5788,16 +5773,20 @@ msgstr ""
 "Деякі вибрані члени не мають адрес е-пошти. Однак ви можете створити "
 "конвертові мітки, щоб зв'язатися з ними поштою."
 
-#: ../../tempcache/elements/edit_socials.html.twig:98
-#: ../../tempcache/elements/edit_socials.html.twig:103
+#: ../../tempcache/elements/edit_socials.html.twig:61
+msgid "Disable social networks on member form"
+msgstr ""
+
+#: ../../tempcache/elements/edit_socials.html.twig:118
+#: ../../tempcache/elements/edit_socials.html.twig:123
 msgid "Remove %type"
 msgstr "Вилучити вид %type"
 
-#: ../../tempcache/elements/edit_socials.html.twig:122
+#: ../../tempcache/elements/edit_socials.html.twig:142
 msgid "Add new social network"
 msgstr "Додати нову соцмережу"
 
-#: ../../tempcache/elements/edit_socials.html.twig:131
+#: ../../tempcache/elements/edit_socials.html.twig:151
 msgid "Choose or enter your own..."
 msgstr "Виберіть або введіть свій..."
 
@@ -6824,6 +6813,7 @@ msgid "Group managers selection"
 msgstr "Вибір менеджерів групи"
 
 #: ../../tempcache/pages/groups_list.html.twig:346
+#: ../../tempcache/pages/member_form.html.twig:714
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
@@ -8130,15 +8120,14 @@ msgstr "Вибір груп"
 msgid "Managed groups selection"
 msgstr "Вибір груп, що управляються"
 
-#: ../../tempcache/pages/member_form.html.twig:673
-msgid "Manager for:"
-msgstr "Менеджер:"
+#: ../../tempcache/pages/member_form.html.twig:704
+#: ../../tempcache/pages/member_show.html.twig:542
+#: ../../tempcache/pages/advanced_search.html.twig:166
+#: ../../tempcache/components/forms/groups.html.twig:140
+msgid "Member of group"
+msgstr "Член групи"
 
-#: ../../tempcache/pages/member_form.html.twig:678
-msgid "Member of:"
-msgstr "Член:"
-
-#: ../../tempcache/pages/member_form.html.twig:737
+#: ../../tempcache/pages/member_form.html.twig:758
 #, fuzzy
 #| msgid "In any of selected groups"
 msgid "Click on a row to select a group"
@@ -8186,12 +8175,6 @@ msgstr "Родина"
 #: ../../tempcache/components/forms/groups.html.twig:40
 msgid "Groups:"
 msgstr "Групи:"
-
-#: ../../tempcache/pages/member_show.html.twig:542
-#: ../../tempcache/pages/advanced_search.html.twig:166
-#: ../../tempcache/components/forms/groups.html.twig:140
-msgid "Member of group"
-msgstr "Член групи"
 
 #: ../../tempcache/pages/member_show.html.twig:714
 msgid "Not managed group"
@@ -8630,11 +8613,11 @@ msgstr "(принаймні %i знаків)"
 msgid "Password confirmation:"
 msgstr "Підтвердження паролю:"
 
-#: ../../tempcache/components/forms/groups.html.twig:178
+#: ../../tempcache/components/forms/groups.html.twig:180
 msgid "Manage user's groups"
 msgstr "Управління гуртами користувачів"
 
-#: ../../tempcache/components/forms/groups.html.twig:191
+#: ../../tempcache/components/forms/groups.html.twig:193
 msgid "Manage user's managed groups"
 msgstr "Управління групами, що управляються користувачами"
 
@@ -8726,6 +8709,18 @@ msgstr "Мова:"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#~ msgid "Read only"
+#~ msgstr "Лише читання"
+
+#~ msgid "Read/Write"
+#~ msgstr "Читання й записування"
+
+#~ msgid "Manager for:"
+#~ msgstr "Менеджер:"
+
+#~ msgid "Member of:"
+#~ msgstr "Член:"
 
 #, fuzzy, php-format
 #~| msgid "Delete '%s' field"
