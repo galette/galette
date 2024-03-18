@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-17 19:30+0100\n"
-"PO-Revision-Date: 2024-03-14 11:01+0000\n"
+"PO-Revision-Date: 2024-03-19 09:02+0000\n"
 "Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -51,7 +51,7 @@ msgstr "La contribucion se liguèt correctament a la transaccion correnta"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:370
 msgid "Unable to detach contribution from transaction"
-msgstr "Se poguèt pas separar la contrinucion de la transaccion"
+msgstr "Se poguèt pas separar la contribucion de la transaccion"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:375
 msgid "Contribution has been successfully detached from current transaction"
@@ -103,7 +103,7 @@ msgstr "Manca lo nom dau grope !"
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:184
 #: ../lib/Galette/Core/Galette.php:548
 msgid "Groups"
-msgstr "Grops"
+msgstr "Gropes"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:375
 msgid "Group `%groupname` has been successfully saved."
@@ -321,7 +321,7 @@ msgstr "Lei modificacions son pas estat confiermadas !"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1197
 #, php-format
 msgid "Review mass change %count members"
-msgstr ""
+msgstr "Revisar lo cambi massiu de %count membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1281
 msgid "Nothing to do!"
@@ -361,7 +361,7 @@ msgstr "Lo membre novèu es estat ajustat."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1514
 msgid "Member account has been modified."
-msgstr "Lo còmpte de l'aderent s'es ben modificat."
+msgstr "La modificacion dau còmpte dau membre a ben capitat."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1526
 msgid "An error occurred adding member to its groups."
@@ -476,7 +476,7 @@ msgstr "Don"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:281
 #, php-format
 msgid "Mass add contribution on %count members"
-msgstr ""
+msgstr "Ajustament de contribucions en massa de %count membres"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:512
 msgid "Contributions management"
@@ -492,17 +492,17 @@ msgstr "- Mòde de pagament inconegut !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:704
 msgid "No contribution was selected, please check at least one."
-msgstr ""
+msgstr "Vos fau seleccionar au mens una contribucion."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:740
 #: ../lib/Galette/Controllers/PdfController.php:424
 #: ../lib/Galette/Controllers/PdfController.php:693
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "Impossible de cargar la contribucion #%id !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:838
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "L'enregistrament de la contribucion a ben capitat"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:842
 msgid "An error occurred while storing the contribution."
@@ -511,7 +511,7 @@ msgstr "Capitèt una error per l'enregistrament de l'escotisson."
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:946
 #, php-format
 msgid "Remove %1$s %2$s"
-msgstr ""
+msgstr "Levar %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:948
 msgid "contributions"
@@ -524,7 +524,7 @@ msgstr "transaccions"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:952
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "Levar %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:953
 #: ../lib/Galette/IO/PdfContribution.php:62
@@ -564,12 +564,12 @@ msgstr "Recèrca cargada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:345
 msgid "An SQL error has occurred while loading search."
-msgstr ""
+msgstr "Una error SQL a capitat per lo cargament de la recèrca."
 
 #: ../lib/Galette/Controllers/GaletteController.php:87
 #: ../../tempcache/elements/footer.html.twig:113
 msgid "System information"
-msgstr ""
+msgstr "Informacions dau sistèma"
 
 #: ../lib/Galette/Controllers/GaletteController.php:107
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:71
@@ -613,6 +613,8 @@ msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 msgstr ""
+"Avètz demandat a Galeta de mandar un corriel d'assai, mai lo mandadís de "
+"corriels es desactivat dins lei preferéncias."
 
 #: ../lib/Galette/Controllers/GaletteController.php:395
 msgid "Test message"
@@ -634,7 +636,7 @@ msgstr "Un corriel es estat mandat a %email"
 #: ../lib/Galette/Controllers/GaletteController.php:419
 #, php-format
 msgid "No email sent to %email"
-msgstr ""
+msgstr "Ges de corrier electronic mandat a %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:426
 msgid "Invalid email adress!"
@@ -676,23 +678,23 @@ msgstr "Remembre"
 
 #: ../lib/Galette/Controllers/GaletteController.php:705
 msgid "No reminder to send for now."
-msgstr ""
+msgstr "Ges de rampèu de mandar per ara."
 
 #: ../lib/Galette/Controllers/GaletteController.php:742
 msgid "There are no member to proceed."
-msgstr ""
+msgstr "I a ges de membre de tractar."
 
 #: ../lib/Galette/Controllers/GaletteController.php:749
 msgid "Reminder has not been sent:"
-msgstr ""
+msgstr "Lo rampèu es pas estat mandat :"
 
 #: ../lib/Galette/Controllers/GaletteController.php:756
 msgid "Sent reminders:"
-msgstr ""
+msgstr "Rampèus mandats :"
 
 #: ../lib/Galette/Controllers/GaletteController.php:832
 msgid "Download document"
-msgstr ""
+msgstr "Teledescargar lo document"
 
 #: ../lib/Galette/Controllers/AjaxController.php:61
 #: ../webroot/installer.php:269
@@ -703,15 +705,15 @@ msgstr "- ERROR -"
 #: ../lib/Galette/Controllers/AjaxController.php:72
 #: ../../tempcache/elements/messages_inline.html.twig:171
 msgid "- WARNING -"
-msgstr ""
+msgstr "- AVíS -"
 
 #: ../lib/Galette/Controllers/AjaxController.php:124
 msgid "Required argument not present!"
-msgstr ""
+msgstr "Argument demandat non present !"
 
 #: ../lib/Galette/Controllers/AjaxController.php:168
 msgid "Member photo has been changed."
-msgstr ""
+msgstr "La foto dau membre es estat modificada."
 
 #: ../lib/Galette/Controllers/AjaxController.php:341
 msgid "Telemetry information has been sent. Thank you!"
@@ -719,21 +721,21 @@ msgstr "Leis informacions de telemetria son estat mandadas. Granmercé !"
 
 #: ../lib/Galette/Controllers/AjaxController.php:367
 msgid "Thank you for registering!"
-msgstr ""
+msgstr "Grandmercé per l'enregistrament !"
 
 #: ../lib/Galette/Controllers/CrudController.php:261
 #: ../lib/Galette/Controllers/HistoryController.php:169
 #: ../lib/Galette/Controllers/CsvController.php:474
 msgid "Removal has not been confirmed!"
-msgstr ""
+msgstr "La supression es pas estat confirmada !"
 
 #: ../lib/Galette/Controllers/CrudController.php:270
 msgid "Successfully deleted!"
-msgstr ""
+msgstr "La supression a ben capitat !"
 
 #: ../lib/Galette/Controllers/CrudController.php:282
 msgid "An error occurred trying to delete :("
-msgstr ""
+msgstr "Una error a capitat au moment de la supression :("
 
 #: ../lib/Galette/Controllers/PdfController.php:162
 #: ../lib/Galette/Controllers/PdfController.php:234
@@ -743,23 +745,23 @@ msgstr "Impossible de recuperar la lista dei membres."
 
 #: ../lib/Galette/Controllers/PdfController.php:321
 msgid "Attendance sheet configuration"
-msgstr ""
+msgstr "Configuracion de la lista de preséncia"
 
 #: ../lib/Galette/Controllers/PdfController.php:357
 #: ../lib/Galette/Controllers/PdfController.php:376
 msgid "No member selected to generate attendance sheet"
-msgstr ""
+msgstr "Ges de membre seleccionat per generar la lista de preséncia"
 
 #: ../lib/Galette/Controllers/PdfController.php:384
 #: ../lib/Galette/Core/Galette.php:898
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:120
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:104
 msgid "Attendance sheet"
-msgstr ""
+msgstr "Lista de preséncia"
 
 #: ../lib/Galette/Controllers/PdfController.php:467
 msgid "Unable to get groups list."
-msgstr "Impossible de recuperar la lista dei grops."
+msgstr "Impossible de recuperar la lista dei gropes."
 
 #: ../lib/Galette/Controllers/PdfController.php:525
 #: ../lib/Galette/Core/Install.php:1186 ../lib/Galette/Core/Galette.php:402
@@ -768,19 +770,19 @@ msgstr "Modèles PDF"
 
 #: ../lib/Galette/Controllers/PdfController.php:554
 msgid "Missing PDF model type!"
-msgstr ""
+msgstr "Modèle PDF mancant !"
 
 #: ../lib/Galette/Controllers/PdfController.php:589
 msgid "Model has been successfully stored!"
-msgstr ""
+msgstr "L'enregistrament dau modèle a ben capitat !"
 
 #: ../lib/Galette/Controllers/PdfController.php:592
 msgid "Model has not been stored :("
-msgstr ""
+msgstr "Lo modèle es pas estat enregistrat :("
 
 #: ../lib/Galette/Controllers/PdfController.php:634
 msgid "Invalid link!"
-msgstr ""
+msgstr "Ligam invalide !"
 
 #: ../lib/Galette/Controllers/AuthController.php:68
 #: ../lib/Galette/Controllers/AuthController.php:172
@@ -809,7 +811,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:167
 msgid "Your password is too weak! Please consider updating it."
-msgstr ""
+msgstr "Lo senhau es tròp feble ! Vos o fau melhorar."
 
 #: ../lib/Galette/Controllers/AuthController.php:175
 msgid "Login failed."
@@ -826,7 +828,7 @@ msgstr "L'autentificacion a fralhit"
 #: ../../tempcache/elements/logged_user.html.twig:363
 #: ../../tempcache/elements/logged_user.html.twig:381
 msgid "Log off"
-msgstr ""
+msgstr "Desconnexion"
 
 #: ../lib/Galette/Controllers/AuthController.php:217
 #, php-format
@@ -835,7 +837,7 @@ msgstr "Connectat (simulacion) per %login"
 
 #: ../lib/Galette/Controllers/AuthController.php:229
 msgid "Unable to impersonate as %id"
-msgstr ""
+msgstr "Impossible d'accedir per %id"
 
 #: ../lib/Galette/Controllers/AuthController.php:255
 #: ../lib/Galette/Controllers/AuthController.php:260
@@ -845,7 +847,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:285
 #: ../lib/Galette/Controllers/AuthController.php:486
 msgid "Password recovery"
-msgstr ""
+msgstr "Recuperacion dau senhau"
 
 #: ../lib/Galette/Controllers/AuthController.php:317
 #: ../../tempcache/pages/mailing_form.html.twig:58
@@ -857,7 +859,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:376
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "Corriel mandat a '%s' per recuperar lo senhau."
 
 #: ../lib/Galette/Controllers/AuthController.php:380
 msgid ""
@@ -869,12 +871,12 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:382
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Un corriel es estat mandat au membre."
 
 #: ../lib/Galette/Controllers/AuthController.php:393
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
+msgstr "A capitat una dificultat per mandar lo senhau au còmpte '%s'"
 
 #: ../lib/Galette/Controllers/AuthController.php:407
 #: ../lib/Galette/Events/MemberListener.php:198
@@ -904,6 +906,7 @@ msgstr "L'idendificant %s existís pas"
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
+"Aquest ligam vau plus. Vos fau demanar de recuperar lo senhau tornar mai."
 
 #: ../lib/Galette/Controllers/AuthController.php:516
 #: ../webroot/installer.php:139 ../webroot/installer.php:183
@@ -913,11 +916,11 @@ msgstr "Ges de senhau"
 #: ../lib/Galette/Controllers/AuthController.php:519
 #: ../lib/Galette/Entity/Adherent.php:1422
 msgid "- The passwords don't match!"
-msgstr ""
+msgstr "- Lei senhaus correspòndon pas !"
 
 #: ../lib/Galette/Controllers/AuthController.php:525
 msgid "Your password is too weak!"
-msgstr ""
+msgstr "Lo senhau es tròp feble !"
 
 #: ../lib/Galette/Controllers/AuthController.php:534
 msgid "An error occurred while updating your password."
@@ -926,11 +929,11 @@ msgstr "Una error capitèt per l'actualizacion dau senhau."
 #: ../lib/Galette/Controllers/AuthController.php:540
 #, php-format
 msgid "Password changed for member '%s'."
-msgstr ""
+msgstr "Senhau cambiat per lo membre '%s'."
 
 #: ../lib/Galette/Controllers/AuthController.php:548
 msgid "Your password has been changed!"
-msgstr ""
+msgstr "Vòstre senhau es estat cambiat !"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:51
 msgid "Administration tools"
@@ -1144,7 +1147,7 @@ msgstr "Accès e permissions per la basa de donadas"
 
 #: ../lib/Galette/Core/Install.php:114
 msgid "Previous version selection"
-msgstr ""
+msgstr "Seleccion de la version anteriora"
 
 #: ../lib/Galette/Core/Install.php:117
 msgid "Datapase upgrade"
@@ -1306,10 +1309,8 @@ msgid "Delete mailing entries"
 msgstr "Escafar leis intradas mandadas"
 
 #: ../lib/Galette/Core/Galette.php:121
-#, fuzzy
-#| msgid "Account:"
 msgid "My Account"
-msgstr "Compte :"
+msgstr "Mon còmpte"
 
 #: ../lib/Galette/Core/Galette.php:125 ../lib/Galette/Core/Galette.php:639
 msgid "My contributions"
@@ -1317,31 +1318,31 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:126 ../lib/Galette/Core/Galette.php:640
 msgid "View and filter all my contributions"
-msgstr ""
+msgstr "Consultar e filtrar totei mei contribucions"
 
 #: ../lib/Galette/Core/Galette.php:133 ../lib/Galette/Core/Galette.php:648
 msgid "My transactions"
-msgstr ""
+msgstr "Mei transaccions"
 
 #: ../lib/Galette/Core/Galette.php:134 ../lib/Galette/Core/Galette.php:649
 msgid "View and filter all my transactions"
-msgstr ""
+msgstr "Consultar e filtrar totei mei transaccions"
 
 #: ../lib/Galette/Core/Galette.php:141 ../lib/Galette/Core/Galette.php:631
 msgid "My information"
-msgstr ""
+msgstr "Meis informacions"
 
 #: ../lib/Galette/Core/Galette.php:142 ../lib/Galette/Core/Galette.php:632
 msgid "View my member card"
-msgstr ""
+msgstr "Veire ma ficha de membre"
 
 #: ../lib/Galette/Core/Galette.php:153
 msgid "Add a child member"
-msgstr ""
+msgstr "Ajustar un membre ligat (enfant)"
 
 #: ../lib/Galette/Core/Galette.php:154
 msgid "Add new child member in database"
-msgstr ""
+msgstr "Ajustar un membre-enfant novèu a la basa"
 
 #: ../lib/Galette/Core/Galette.php:164 ../lib/Galette/Core/Galette.php:540
 #: ../lib/Galette/DynamicFields/DynamicField.php:533
@@ -1355,11 +1356,11 @@ msgstr "Lista dei membres"
 
 #: ../lib/Galette/Core/Galette.php:173 ../lib/Galette/Core/Galette.php:541
 msgid "View, search into and filter member's list"
-msgstr ""
+msgstr "Consultar, recercar dedins e filtrar la lista dei membres"
 
 #: ../lib/Galette/Core/Galette.php:181
 msgid "Perform advanced search into members list"
-msgstr ""
+msgstr "Menar una recèrca avançada dins la lista dei membres"
 
 #: ../lib/Galette/Core/Galette.php:201
 #: ../../tempcache/pages/members_list.html.twig:102
@@ -1378,30 +1379,30 @@ msgstr "Contribucions"
 
 #: ../lib/Galette/Core/Galette.php:215
 msgid "List of contributions"
-msgstr ""
+msgstr "Lista dei contribucions"
 
 #: ../lib/Galette/Core/Galette.php:216 ../lib/Galette/Core/Galette.php:573
 msgid "View and filter contributions"
-msgstr ""
+msgstr "Consultar e filtrar lei contribucions"
 
 #: ../lib/Galette/Core/Galette.php:224
 msgid "List of transactions"
-msgstr ""
+msgstr "Lista dei transaccions"
 
 #: ../lib/Galette/Core/Galette.php:225 ../lib/Galette/Core/Galette.php:582
 msgid "View and filter transactions"
-msgstr ""
+msgstr "Consultar e filtrar lei transaccions"
 
 #: ../lib/Galette/Core/Galette.php:233
 #: ../../tempcache/pages/contributions_list.html.twig:262
 #: ../../tempcache/pages/contributions_list.html.twig:365
 #: ../../tempcache/pages/member_show.html.twig:192
 msgid "Add a membership fee"
-msgstr ""
+msgstr "Ajustar una cotisacion"
 
 #: ../lib/Galette/Core/Galette.php:234
 msgid "Add new membership fee in database"
-msgstr ""
+msgstr "Ajustar una cotisacion a la basa"
 
 #: ../lib/Galette/Core/Galette.php:241
 #: ../../tempcache/pages/contributions_list.html.twig:276
@@ -1434,11 +1435,11 @@ msgstr "Administracion"
 
 #: ../lib/Galette/Core/Galette.php:272
 msgid "Manage groups"
-msgstr "Governar lei grops"
+msgstr "Governar lei gropes"
 
 #: ../lib/Galette/Core/Galette.php:273 ../lib/Galette/Core/Galette.php:549
 msgid "View and manage groups"
-msgstr "Veire e governar lei grops"
+msgstr "Veire e governar lei gropes"
 
 #: ../lib/Galette/Core/Galette.php:285
 msgid "View application's logs"
@@ -1574,11 +1575,11 @@ msgstr "Transaccions"
 
 #: ../lib/Galette/Core/Galette.php:699 ../lib/Galette/Core/Galette.php:704
 msgid "%membername: edit information"
-msgstr ""
+msgstr "%membername : modificar leis informacions"
 
 #: ../lib/Galette/Core/Galette.php:720 ../lib/Galette/Core/Galette.php:725
 msgid "%membername: contributions"
-msgstr ""
+msgstr "%membername : contribucions"
 
 #: ../lib/Galette/Core/Galette.php:741 ../lib/Galette/Core/Galette.php:746
 msgid "%membername: remove from database"
@@ -1591,11 +1592,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Galette.php:856
 msgid "Mass change"
-msgstr ""
+msgstr "Modificacion en massa"
 
 #: ../lib/Galette/Core/Galette.php:861
 msgid "Mass add contributions"
-msgstr "Mei contribucions"
+msgstr "Ajustament en massa de contribucions"
 
 #: ../lib/Galette/Core/Galette.php:866
 #: ../../tempcache/elements/group.html.twig:374
@@ -1611,11 +1612,11 @@ msgstr "Corriel"
 #: ../lib/Galette/Core/Galette.php:903
 #: ../../tempcache/elements/mailing_recipients.html.twig:106
 msgid "Generate labels"
-msgstr ""
+msgstr "Generar d'etiquetas"
 
 #: ../lib/Galette/Core/Galette.php:908
 msgid "Generate Member Cards"
-msgstr ""
+msgstr "Generar lei Cartas de Membres"
 
 #: ../lib/Galette/Core/Galette.php:913
 #: ../../tempcache/pages/contributions_list.html.twig:56
@@ -1797,7 +1798,7 @@ msgstr ""
 
 #: ../lib/Galette/Repository/Members.php:385
 msgid "Delete members cards, transactions and dues"
-msgstr ""
+msgstr "Supression de fichas de membre, transaccions e cotisacions"
 
 #: ../lib/Galette/Repository/Members.php:402
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
@@ -1883,7 +1884,7 @@ msgstr ""
 
 #: ../lib/Galette/Util/Password.php:101
 msgid "Do not use any of your personal information as password!"
-msgstr ""
+msgstr "Coquin ! Vos servetz jamai d'informacions personalas per senhau !"
 
 #: ../lib/Galette/Util/Password.php:142
 msgid "Does not contains lowercase letters"
@@ -2017,11 +2018,11 @@ msgstr "Pagina pas trobada"
 
 #: ../lib/Galette/IO/PdfGroups.php:50
 msgid "groups_list"
-msgstr "lista de grop"
+msgstr "lista de grope"
 
 #: ../lib/Galette/IO/PdfGroups.php:64 ../lib/Galette/IO/PdfGroups.php:85
 msgid "Members by groups"
-msgstr ""
+msgstr "Membres per gropes"
 
 #: ../lib/Galette/IO/PdfGroups.php:87
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:119
@@ -2180,7 +2181,7 @@ msgstr "Non"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:83
 msgid "attendance_sheet"
-msgstr ""
+msgstr "lista_preséncia"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:145
 msgid "MMMM, EEEE d y"
@@ -2300,7 +2301,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersCards.php:86
 msgid "Member's Cards"
-msgstr ""
+msgstr "Cartas de Membres"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:88
 #: ../../tempcache/pages/preferences.html.twig:109
@@ -2414,7 +2415,7 @@ msgstr ""
 #: ../../tempcache/pages/member_show.html.twig:551
 #: ../../tempcache/components/forms/groups.html.twig:151
 msgid "Group manager"
-msgstr "Gestionari de grops"
+msgstr "Gestionari de gropes"
 
 #: ../lib/Galette/Features/Permissions.php:63
 #: ../../tempcache/elements/ajax_members.html.twig:141
@@ -2586,11 +2587,11 @@ msgstr "País"
 
 #: ../lib/Galette/Features/Replacements.php:320
 msgid "Member's main group"
-msgstr ""
+msgstr "Grope principau dau membre"
 
 #: ../lib/Galette/Features/Replacements.php:324
 msgid "Member's groups (as list)"
-msgstr ""
+msgstr "Gropes dau membre (lista)"
 
 #: ../lib/Galette/Features/Replacements.php:328
 msgid "Member state of dues"
@@ -2598,11 +2599,11 @@ msgstr "Estatut de l'adesion"
 
 #: ../lib/Galette/Features/Replacements.php:332
 msgid "Membership remaining days"
-msgstr ""
+msgstr "Jorns d'adesion que demòran"
 
 #: ../lib/Galette/Features/Replacements.php:336
 msgid "Membership expired since"
-msgstr ""
+msgstr "Adesion acabada despuei"
 
 #: ../lib/Galette/Features/Replacements.php:382
 msgid "Contribution label"
@@ -2668,7 +2669,7 @@ msgstr "Mòde de pagament"
 #: ../lib/Galette/Entity/Texts.php:611
 #: ../lib/Galette/Entity/PdfContribution.php:65
 msgid "Contribution information"
-msgstr ""
+msgstr "Informacions sus la contribucion"
 
 #: ../lib/Galette/Features/Replacements.php:637
 #: ../lib/Galette/Features/Replacements.php:638
@@ -2681,7 +2682,7 @@ msgstr "Degun"
 
 #: ../lib/Galette/Features/Replacements.php:814
 msgid "Member information"
-msgstr "Informacions generalas"
+msgstr "Informacions dau membre"
 
 #: ../lib/Galette/Features/Dynamics.php:141
 #, php-format
@@ -2714,23 +2715,24 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:257
 msgid "Sent reminder email for late membership"
-msgstr ""
+msgstr "Corriel de rampèu mandat per adesion en retard"
 
 #: ../lib/Galette/Entity/Reminder.php:259
 msgid "Sent reminder email for impending membership"
-msgstr ""
+msgstr "Corriel de rampèu mandat : l'escasença de l'adesion apròcha"
 
 #: ../lib/Galette/Entity/Reminder.php:265
 msgid "A problem happened while sending late membership email"
-msgstr ""
+msgstr "Lo corriel per l'adesion en retard a mau capitat"
 
 #: ../lib/Galette/Entity/Reminder.php:267
 msgid "A problem happened while sending impending membership email"
-msgstr ""
+msgstr "Lo corriel per l'escasença pròcha de l'adesion a mau capitat"
 
 #: ../lib/Galette/Entity/Reminder.php:277
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
+"Impossible de madar lo rampèu %membership (manca l'adreiça electronica)."
 
 #: ../lib/Galette/Entity/Reminder.php:290
 msgid "%name (#%id - %days days)"
@@ -2837,7 +2839,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1603
 msgid "Member card added"
-msgstr "Carta de membre ajustada"
+msgstr "Ficha de membre ajustada"
 
 #: ../lib/Galette/Entity/Adherent.php:1610
 msgid "Fail to add new member."
@@ -2845,7 +2847,7 @@ msgstr "L'enregistrament dau membre novèu a pas capitat."
 
 #: ../lib/Galette/Entity/Adherent.php:1640
 msgid "Member card updated"
-msgstr ""
+msgstr "Ficha de membre actualizada"
 
 #: ../lib/Galette/Entity/Adherent.php:1760
 #: ../../tempcache/components/forms/account.html.twig:64
@@ -2917,6 +2919,8 @@ msgstr "- Mòde de pagament inconegut"
 #: ../lib/Galette/Entity/Contribution.php:531
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
+"- La soma de totei lei contribucions passa lo montant de la transaccion "
+"correspondenta."
 
 #: ../lib/Galette/Entity/Transaction.php:456
 msgid "Transaction added"
@@ -2928,7 +2932,7 @@ msgstr "La transaccion novèla a pas capitat."
 
 #: ../lib/Galette/Entity/Transaction.php:475
 msgid "Transaction updated"
-msgstr ""
+msgstr "Transaccion actualizada"
 
 #: ../lib/Galette/Entity/ContributionsTypes.php:317
 #: ../lib/Galette/Entity/Status.php:281
@@ -2983,12 +2987,12 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:173
 #: ../../tempcache/pages/contribution_form.html.twig:518
 msgid "Start date of membership:"
-msgstr ""
+msgstr "Data de començament de l'adesion :"
 
 #: ../lib/Galette/Entity/Contribution.php:177
 #: ../../tempcache/pages/contribution_form.html.twig:578
 msgid "End date of membership:"
-msgstr ""
+msgstr "Data de fin de l'adesion :"
 
 #: ../lib/Galette/Entity/Contribution.php:181
 msgid "Transaction ID"
@@ -3026,7 +3030,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1122
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:97
 msgid "Membership"
-msgstr ""
+msgstr "Cotisacions"
 
 #: ../lib/Galette/Entity/Title.php:169
 msgid "You cannot delete Mr. or Mrs. titles!"
@@ -3046,7 +3050,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Texts.php:116
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Ligam dirècte per teledescargar la ficha de membre"
 
 #: ../lib/Galette/Entity/Texts.php:121
 msgid "Direct link for invoice/receipt download"
@@ -3178,7 +3182,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:366
 msgid "Group has been detached from its parent"
-msgstr ""
+msgstr "Lo grope es estat destacat de son parent"
 
 #: ../lib/Galette/Entity/Group.php:403
 #: ../../tempcache/pages/groups_list.html.twig:211
@@ -3187,15 +3191,15 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:429
 msgid "Group added"
-msgstr "Grop ajustat"
+msgstr "Grope ajustat"
 
 #: ../lib/Galette/Entity/Group.php:434
 msgid "Fail to add new group."
-msgstr "L'ajustament dau grop novèu a pas capitat."
+msgstr "L'ajustament dau grope novèu a pas capitat."
 
 #: ../lib/Galette/Entity/Group.php:453
 msgid "Group updated"
-msgstr ""
+msgstr "Grope actualizat"
 
 #: ../lib/Galette/Entity/Group.php:706
 #, php-format
@@ -3299,17 +3303,18 @@ msgstr ""
 #: ../lib/Galette/Events/MemberListener.php:229
 #, php-format
 msgid "Account modification email sent to '%s'."
-msgstr ""
+msgstr "Corrier electronic de modificacion de còmpte mandat a '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:237
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
+"A capitat una dificultat per mandar lo corrier electronic per lo còmpte '%s'"
 
 #: ../lib/Galette/Events/MemberListener.php:297
 #, php-format
 msgid "New account email sent to admin for '%s'."
-msgstr "Avís de còmpte novèu mandat a l'administrator per «%s»."
+msgstr "Avís de còmpte novèu mandat a l'administrator per '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:298
 msgid "Account modification email sent to admin."
@@ -3318,7 +3323,7 @@ msgstr "Avís de modificacion de còmpte mandat a l'administrator."
 #: ../lib/Galette/Events/MemberListener.php:310
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
-msgstr "A mau capitat per avisar l'administrator a prepaus dau còmpte «%s»."
+msgstr "A mau capitat per avisar l'administrator a prepaus dau còmpte '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:311
 msgid "A problem happened while sending account email to admin"
@@ -3443,7 +3448,7 @@ msgstr "Installacion de Galette"
 #: ../webroot/installer.php:316
 #: ../../tempcache/modals/plugin_initdb.html.twig:417
 msgid "Version selection"
-msgstr ""
+msgstr "Seleccion de la version"
 
 #: ../webroot/installer.php:322
 #: ../../tempcache/modals/plugin_initdb.html.twig:436
@@ -3593,7 +3598,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:291
 msgid "Contact information"
-msgstr ""
+msgstr "Informacions de contacte"
 
 #: ../includes/i18n.inc.php:292
 msgid "Mr."
@@ -3609,7 +3614,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:295
 msgid "Identity:"
-msgstr ""
+msgstr "Identitat :"
 
 #: ../includes/i18n.inc.php:296
 msgid "Galette-related data:"
@@ -3617,7 +3622,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:297
 msgid "Contact information:"
-msgstr ""
+msgstr "Informacions de contacte :"
 
 #: ../includes/i18n.inc.php:298
 msgid "Society"
@@ -3680,7 +3685,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:314
 msgid "Required membership:"
-msgstr ""
+msgstr "Adesion demandada :"
 
 #: ../includes/i18n.inc.php:315
 msgid ""
@@ -3833,7 +3838,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:227
 msgid "Account:"
-msgstr "Compte :"
+msgstr "Còmpte :"
 
 #: ../includes/fields_defs/members_fields.php:235
 msgid "Galette Admin:"
@@ -3845,7 +3850,7 @@ msgstr "Dispensat d'escotisson :"
 
 #: ../includes/fields_defs/members_fields.php:251
 msgid "Be visible in the members list:"
-msgstr ""
+msgstr "Èstre visible dins la lista dei membres :"
 
 #: ../includes/fields_defs/members_fields.php:259
 msgid "Due date:"
@@ -4003,7 +4008,7 @@ msgstr "Inscripcion en linha (mandat a l'administrator)"
 
 #: ../includes/fields_defs/texts_fields.php:73
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vòstre còmpte es estat modificat"
 
 #: ../includes/fields_defs/texts_fields.php:74
 msgid ""
@@ -4020,11 +4025,11 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:76
 msgid "Informs user that his account has been modified"
-msgstr ""
+msgstr "Avertís l'utilizator que lo còmpte es estat modificat"
 
 #: ../includes/fields_defs/texts_fields.php:81
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[{ASSO_NAME}] Vòstra adesion vèn a escasença"
 
 #: ../includes/fields_defs/texts_fields.php:82
 msgid ""
@@ -4032,6 +4037,8 @@ msgid ""
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Adieu,{NEWLINE}L'adesion a {ASSO_NAME} vèn a escasença dins {DAYS_REMAINING} "
+"jorns.{NEWLINE}A lèu !{NEWLINE}(aquest corriel es mandat automaticament)"
 
 #: ../includes/fields_defs/texts_fields.php:84
 #: ../../tempcache/pages/reminder.html.twig:79
@@ -4040,13 +4047,15 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:89
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] L'adesion es acabada"
 
 #: ../includes/fields_defs/texts_fields.php:90
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Adieu,{NEWLINE}L'adesion a {ASSO_NAME} es acabada despuei {DAYS_EXPIRED} "
+"jorns.{NEWLINE}A lèu !{NEWLINE}(aquest corriel es automatic)"
 
 #: ../includes/fields_defs/texts_fields.php:92
 msgid "Late due date"
@@ -4083,13 +4092,15 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:113
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ficha {NAME_ADH} es estada modificada"
 
 #: ../includes/fields_defs/texts_fields.php:114
 msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Adieu-siatz !{NEWLINE}{NAME_ADH} a modificat sa ficha.{NEWLINE}A lèu "
+"!{NEWLINE}(aquest corriel es automatic)"
 
 #: ../includes/fields_defs/texts_fields.php:116
 msgid "Informs admin a member edit his information"
@@ -4097,7 +4108,7 @@ msgstr "Avisa l'administrator qu'un membre a modificat sa ficha"
 
 #: ../includes/fields_defs/texts_fields.php:121
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
-msgstr ""
+msgstr "[{ASSO_NAME}] Lo còmpte {NAME_ADH} es inactiu"
 
 #: ../includes/fields_defs/texts_fields.php:122
 msgid ""
@@ -4764,7 +4775,7 @@ msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:90
 msgid "Some details about your attendance sheet..."
-msgstr ""
+msgstr "Quauquei precisions a prepaus de la lista de preséncia…"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:92
 #, php-format
@@ -5057,7 +5068,7 @@ msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:54
 msgid "Go to Galette's dashboard"
-msgstr ""
+msgstr "Anar au tablèu de bòrd de Galeta"
 
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:49
 msgid "Go back to Galette homepage"
@@ -5172,11 +5183,11 @@ msgstr ""
 #: ../../tempcache/elements/ajax_groups.html.twig:136
 #: ../../tempcache/pages/groups_list.html.twig:148
 msgid "no group"
-msgstr ""
+msgstr "ges de grope"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:152
 msgid "Selected groups"
-msgstr ""
+msgstr "Gropes seleccionats"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:167
 msgid "No groups has been selected yet."
@@ -5501,7 +5512,7 @@ msgstr "Administrators"
 
 #: ../../tempcache/elements/group.html.twig:166
 msgid "Parent group:"
-msgstr ""
+msgstr "Grope parent :"
 
 #: ../../tempcache/elements/group.html.twig:275
 msgid "Manage managers"
@@ -5513,11 +5524,11 @@ msgstr "Governar lei membres"
 
 #: ../../tempcache/elements/group.html.twig:354
 msgid "Current group (and attached people) as PDF"
-msgstr ""
+msgstr "PDF dau grope corrent (e mai lei personas restacadas)"
 
 #: ../../tempcache/elements/group.html.twig:359
 msgid "Group PDF"
-msgstr ""
+msgstr "PDF dau grope"
 
 #: ../../tempcache/elements/scripts.html.twig:386
 msgid "Deactivate HTML editor"
@@ -5633,6 +5644,9 @@ msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
 msgstr ""
+"D'unei membres seleccionats an pas d'adreiça electronica, avètz, pasmens, la "
+"possibilitat de produrre d'etiquetas per envolopa e lei contactar per "
+"corrier postau."
 
 #: ../../tempcache/elements/edit_socials.html.twig:61
 msgid "Disable social networks on member form"
@@ -5653,7 +5667,7 @@ msgstr ""
 
 #: ../../tempcache/macros.twig:437
 msgid "For the selection:"
-msgstr ""
+msgstr "Per la seleccion :"
 
 #: ../../tempcache/pages/contribution_type_form.html.twig:90
 #: ../../tempcache/pages/contributions_types_list.html.twig:69
@@ -5813,7 +5827,7 @@ msgstr "Valors :"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:266
 msgid "Choice list (one entry per line)."
-msgstr ""
+msgstr "Lista de chausida (una intrada per linha)."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:275
 msgid "Information:"
@@ -5846,7 +5860,7 @@ msgstr "Visibilitat"
 
 #: ../../tempcache/pages/transaction_form.html.twig:63
 msgid "Transaction details"
-msgstr ""
+msgstr "Detalh de la transaccion"
 
 #: ../../tempcache/pages/transaction_form.html.twig:119
 #: ../../tempcache/pages/contribution_form.html.twig:124
@@ -5885,7 +5899,7 @@ msgstr ""
 
 #: ../../tempcache/pages/transaction_form.html.twig:252
 msgid "Attached contributions"
-msgstr ""
+msgstr "Contribucions estacadas"
 
 #: ../../tempcache/pages/transaction_form.html.twig:264
 #: ../../tempcache/pages/contributions_list.html.twig:87
@@ -5929,14 +5943,14 @@ msgstr ""
 #: ../../tempcache/pages/contribution_form.html.twig:331
 #: ../../tempcache/pages/contribution_form.html.twig:338
 msgid "Create a new fee that will be attached to the current transaction"
-msgstr ""
+msgstr "Crear un cotisacion novèla que se restacarà a la transaccion correnta"
 
 #: ../../tempcache/pages/transaction_form.html.twig:382
 #: ../../tempcache/pages/transaction_form.html.twig:389
 #: ../../tempcache/pages/contribution_form.html.twig:351
 #: ../../tempcache/pages/contribution_form.html.twig:358
 msgid "Create a new donation that will be attached to the current transaction"
-msgstr ""
+msgstr "Crear un don novèu que se restacarà a la transaccion correnta"
 
 #: ../../tempcache/pages/transaction_form.html.twig:397
 #: ../../tempcache/pages/transaction_form.html.twig:404
@@ -5944,10 +5958,11 @@ msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 msgstr ""
+"Seleccionar una contribucion existenta e l'estacar a la transaccion correnta"
 
 #: ../../tempcache/pages/transaction_form.html.twig:482
 msgid "Detach contribution from this transaction"
-msgstr ""
+msgstr "Destacar la contribucion d'aquesta transaccion"
 
 #: ../../tempcache/pages/transaction_form.html.twig:502
 #: ../../tempcache/pages/contributions_list.html.twig:753
@@ -5981,17 +5996,18 @@ msgstr ""
 
 #: ../../tempcache/pages/transaction_form.html.twig:630
 msgid "Contributions selection"
-msgstr ""
+msgstr "Seleccion dei contribucions"
 
 #: ../../tempcache/pages/transaction_form.html.twig:673
 #: ../../tempcache/pages/transaction_form.html.twig:704
 #: ../../tempcache/pages/transaction_form.html.twig:735
 msgid "An error occurred displaying contributions :("
-msgstr ""
+msgstr "La mòstra dei contribucions a mau capitat :("
 
 #: ../../tempcache/pages/transaction_form.html.twig:752
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
+"Clicatz sus una linha de contribucion per l'estacar a la transaccion correnta"
 
 #: ../../tempcache/pages/plugin_info.html.twig:62
 msgid "By %name"
@@ -6042,10 +6058,12 @@ msgid ""
 "Please make sure to select at least one contribution from the list to "
 "perform this action."
 msgstr ""
+"Regardatz de chausir au mens una contribucion dins la lista avans de "
+"començar."
 
 #: ../../tempcache/pages/contributions_list.html.twig:76
 msgid "Show contributions by"
-msgstr ""
+msgstr "Mostrar lei contribuccions per"
 
 #: ../../tempcache/pages/contributions_list.html.twig:107
 msgid "Record"
@@ -6101,14 +6119,12 @@ msgid "Clear filter"
 msgstr "Escafar lo filtre"
 
 #: ../../tempcache/pages/contributions_list.html.twig:208
-#, fuzzy
-#| msgid "Show only '%name' contributions"
 msgid "Show all your contributions"
-msgstr "Veire solament lei contribucions de '%name'"
+msgstr "Veire totei vòstrei contribucions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:214
 msgid "Show all members contributions"
-msgstr ""
+msgstr "Veire lei contribuccions de totei lei membres"
 
 #: ../../tempcache/pages/contributions_list.html.twig:248
 #: ../../tempcache/pages/transactions_list.html.twig:194
@@ -6125,7 +6141,7 @@ msgstr[1] "contribucions de %count"
 #: ../../tempcache/pages/contributions_list.html.twig:437
 #, php-format
 msgid "Found contributions total %f"
-msgstr ""
+msgstr "Totau dei contribuccions trobadas : %f"
 
 #: ../../tempcache/pages/contributions_list.html.twig:526
 #: ../../tempcache/pages/contributions_list.html.twig:555
@@ -6136,7 +6152,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:565
 #, php-format
 msgid "Transaction: %s"
-msgstr ""
+msgstr "Transaccion : %s"
 
 #: ../../tempcache/pages/contributions_list.html.twig:634
 msgid "Show only '%name' contributions"
@@ -6413,7 +6429,7 @@ msgstr ""
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
-msgstr ""
+msgstr "Regardatz de chausir au mens un membre dins la lista avans de començar."
 
 #: ../../tempcache/pages/members_list.html.twig:75
 #: ../../tempcache/pages/members_public_list.html.twig:63
@@ -6503,23 +6519,23 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:489
 msgid "Reading the list"
-msgstr ""
+msgstr "Legir la lista"
 
 #: ../../tempcache/pages/members_list.html.twig:501
 msgid "Active account"
-msgstr ""
+msgstr "Còmpte actiu"
 
 #: ../../tempcache/pages/members_list.html.twig:509
 msgid "Inactive account"
-msgstr ""
+msgstr "Còmpte desactivat"
 
 #: ../../tempcache/pages/members_list.html.twig:516
 msgid "Membership in order"
-msgstr ""
+msgstr "Adesion en règla"
 
 #: ../../tempcache/pages/members_list.html.twig:521
 msgid "Membership will expire soon (&lt;30d)"
-msgstr ""
+msgstr "Adesion a escasença de (&lt;30j)"
 
 #: ../../tempcache/pages/members_list.html.twig:533
 msgid "Lateness in fee"
@@ -6589,7 +6605,7 @@ msgstr "Reprendre"
 
 #: ../../tempcache/pages/members_list.html.twig:1205
 msgid "An error occurred displaying attendance sheet details interface :("
-msgstr ""
+msgstr "Mostrar lei precisions de la lista de preséncia a mau capitat :("
 
 #: ../../tempcache/pages/members_list.html.twig:1428
 #, fuzzy
@@ -6621,19 +6637,19 @@ msgstr ""
 
 #: ../../tempcache/pages/groups_list.html.twig:104
 msgid "Export all groups and their members as PDF"
-msgstr ""
+msgstr "Expòrt de l'ensems dei gropes amb sei membres en PDF"
 
 #: ../../tempcache/pages/groups_list.html.twig:109
 msgid "All groups PDF"
-msgstr ""
+msgstr "PDF de l'ensems dei gropes"
 
 #: ../../tempcache/pages/groups_list.html.twig:124
 msgid "New group"
-msgstr "Grop nòu"
+msgstr "Grope nòu"
 
 #: ../../tempcache/pages/groups_list.html.twig:178
 msgid "Add a new group"
-msgstr "Ajustar un grop novèu"
+msgstr "Ajustar un grope novèu"
 
 #: ../../tempcache/pages/groups_list.html.twig:221
 msgid "An error occurred checking name uniqueness :("
@@ -6641,7 +6657,7 @@ msgstr ""
 
 #: ../../tempcache/pages/groups_list.html.twig:228
 msgid "Please provide a group name"
-msgstr ""
+msgstr "Vos fau donar un nom au grope"
 
 #: ../../tempcache/pages/groups_list.html.twig:236
 msgid "Create"
@@ -6649,7 +6665,7 @@ msgstr "Crear"
 
 #: ../../tempcache/pages/groups_list.html.twig:296
 msgid "Group members selection"
-msgstr ""
+msgstr "Seleccion dei membres dau grope"
 
 #: ../../tempcache/pages/groups_list.html.twig:301
 msgid "Group managers selection"
@@ -6660,6 +6676,8 @@ msgstr "Chausir lei responsables dau grope"
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
+"Avètz modificat d'elements de la lista. Oblidètz pas d'enregistrar lei "
+"modificacions."
 
 #: ../../tempcache/pages/groups_list.html.twig:402
 #: ../../tempcache/pages/mailing_form.html.twig:662
@@ -6850,7 +6868,7 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:73
 msgid "Select contributor and membership fee type"
-msgstr ""
+msgstr "Seleccionatz lo contributor e la mena de cotisacion"
 
 #: ../../tempcache/pages/contribution_form.html.twig:79
 msgid "Select contributor and donation type"
@@ -6858,11 +6876,11 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:90
 msgid "Transaction related"
-msgstr ""
+msgstr "Ligat a una transaccion"
 
 #: ../../tempcache/pages/contribution_form.html.twig:268
 msgid "Related transaction information"
-msgstr ""
+msgstr "Informacions sus la transaccion ligada"
 
 #: ../../tempcache/pages/contribution_form.html.twig:292
 msgid "Not dispatched amount"
@@ -6870,11 +6888,11 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:314
 msgid "View transaction"
-msgstr ""
+msgstr "Veire la transaccion"
 
 #: ../../tempcache/pages/contribution_form.html.twig:417
 msgid "Details of membership fee"
-msgstr ""
+msgstr "Menut de la cotisacion"
 
 #: ../../tempcache/pages/contribution_form.html.twig:423
 msgid "Details of donation"
@@ -6902,7 +6920,7 @@ msgstr ""
 
 #: ../../tempcache/pages/mailing_form.html.twig:75
 msgid "Mailing information"
-msgstr ""
+msgstr "Informacions sus lo mandadís"
 
 #: ../../tempcache/pages/mailing_form.html.twig:83
 #: ../../tempcache/pages/mailings_list.html.twig:119
@@ -6931,7 +6949,7 @@ msgstr ""
 
 #: ../../tempcache/pages/mailing_form.html.twig:150
 msgid "Go back to members list"
-msgstr ""
+msgstr "Tornar a la lista dei membres"
 
 #: ../../tempcache/pages/mailing_form.html.twig:159
 msgid "Manage selected members"
@@ -7001,7 +7019,7 @@ msgstr ""
 
 #: ../../tempcache/pages/mailing_form.html.twig:596
 msgid "Members selection"
-msgstr ""
+msgstr "Seleccion de membres"
 
 #: ../../tempcache/pages/mailing_form.html.twig:716
 msgid "Are you sure you want to remove this attachment?"
@@ -7134,7 +7152,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:481
 msgid "Update your information"
-msgstr ""
+msgstr "Actualizar leis informacions"
 
 #: ../../tempcache/pages/preferences.html.twig:493
 msgid "Not registered"
@@ -7165,7 +7183,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:642
 #: ../../tempcache/pages/member_form.html.twig:345
 msgid "create a new transaction"
-msgstr ""
+msgstr "crear una transaccion novèla"
 
 #: ../../tempcache/pages/preferences.html.twig:652
 #: ../../tempcache/pages/member_form.html.twig:355
@@ -7180,7 +7198,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:672
 #: ../../tempcache/pages/member_form.html.twig:375
 msgid "go to members list"
-msgstr ""
+msgstr "anar a la lista dei membres"
 
 #: ../../tempcache/pages/preferences.html.twig:682
 #: ../../tempcache/pages/member_form.html.twig:385
@@ -7201,7 +7219,7 @@ msgstr "Activat"
 
 #: ../../tempcache/pages/preferences.html.twig:727
 msgid "Default account filter:"
-msgstr ""
+msgstr "Filtre de còmpte per defaut :"
 
 #: ../../tempcache/pages/preferences.html.twig:756
 msgid "Default payment type:"
@@ -7289,7 +7307,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1025
 msgid "Default membership status:"
-msgstr ""
+msgstr "Estatut d'adesion per defaut :"
 
 #: ../../tempcache/pages/preferences.html.twig:1059
 msgid "Default membership extension:"
@@ -7353,8 +7371,9 @@ msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
-"Lei responsables de gropes an permession d'exportar la lista dei membres "
-"(format CSV), lei cartas (pdf), lei fuelhs per signatura e lei pdf dei gropes"
+"Lei responsables de gropes an permession d'exportar la lista dei membres ("
+"format CSV), lei cartas (pdf), lei listas de preséncia e lei listas pdf dei "
+"gropes"
 
 #: ../../tempcache/pages/preferences.html.twig:1238
 msgid "Sender name:"
@@ -7395,6 +7414,8 @@ msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
 msgstr ""
+"Manda un corrier electronic a cada còp qu'un membre s'enregistra ò modifica "
+"sa ficha"
 
 #: ../../tempcache/pages/preferences.html.twig:1326
 msgid "Wrap emails text?"
@@ -7416,6 +7437,8 @@ msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
+"Manda un corrier electronic a cada còp qu'un membre s'enregistra en linha ò "
+"modifica son còmpte. Aiçò se pòt desactivar per cas."
 
 #: ../../tempcache/pages/preferences.html.twig:1362
 msgid "Activate HTML editor?"
@@ -7606,7 +7629,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2055
 msgid "Allow members to print card ?"
-msgstr ""
+msgstr "Permetre ai membres d'estampar sa carta ?"
 
 #: ../../tempcache/pages/preferences.html.twig:2069
 msgid "Show title ?"
@@ -7641,14 +7664,16 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:2258
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
+"Un longor minimala dau senhau se reclama per tot còmpte. Lo nombre minimau "
+"es 6."
 
 #: ../../tempcache/pages/preferences.html.twig:2277
 msgid "Enable password blacklists"
-msgstr ""
+msgstr "Activar la lista negra dei senhaus"
 
 #: ../../tempcache/pages/preferences.html.twig:2279
 msgid "Enable blacklists:"
-msgstr ""
+msgstr "Activar la lista negra :"
 
 #: ../../tempcache/pages/preferences.html.twig:2284
 msgid ""
@@ -7866,15 +7891,17 @@ msgstr ""
 
 #: ../../tempcache/pages/member_form.html.twig:427
 msgid "Notify member his account has been modified"
-msgstr ""
+msgstr "Informar lo membre que son còmpte es estat modificat"
 
 #: ../../tempcache/pages/member_form.html.twig:433
 msgid "Notify member his account has been created"
-msgstr ""
+msgstr "Informar lo membre que son còmpte es estat creat"
 
 #: ../../tempcache/pages/member_form.html.twig:446
 msgid "Member will be notified by email his account has been modified."
 msgstr ""
+"Lo membre serà notificat per corrier electronic son còmpte siguèsse "
+"modificat."
 
 #: ../../tempcache/pages/member_form.html.twig:452
 msgid ""
@@ -7887,18 +7914,18 @@ msgstr ""
 
 #: ../../tempcache/pages/member_form.html.twig:648
 msgid "Groups selection"
-msgstr ""
+msgstr "Seleccion dei gropes"
 
 #: ../../tempcache/pages/member_form.html.twig:653
 msgid "Managed groups selection"
-msgstr "Chausida dei grops administrats"
+msgstr "Chausir lei gropes administrats"
 
 #: ../../tempcache/pages/member_form.html.twig:704
 #: ../../tempcache/pages/member_show.html.twig:542
 #: ../../tempcache/pages/advanced_search.html.twig:166
 #: ../../tempcache/components/forms/groups.html.twig:140
 msgid "Member of group"
-msgstr ""
+msgstr "Membre dau grope"
 
 #: ../../tempcache/pages/member_form.html.twig:758
 msgid "Click on a row to select a group"
@@ -7921,15 +7948,15 @@ msgstr "Senhal nòu"
 
 #: ../../tempcache/pages/member_show.html.twig:139
 msgid "Generate Member Card"
-msgstr ""
+msgstr "Generar la Carta de membre"
 
 #: ../../tempcache/pages/member_show.html.twig:171
 msgid "View contributions"
-msgstr ""
+msgstr "Veire lei contribuccions"
 
 #: ../../tempcache/pages/member_show.html.twig:221
 msgid "Create a new member with %name information."
-msgstr ""
+msgstr "Crear un membre novèu amb leis informacions de %name."
 
 #: ../../tempcache/pages/member_show.html.twig:228
 msgid "Duplicate"
@@ -7942,11 +7969,11 @@ msgstr "Familha"
 #: ../../tempcache/pages/member_show.html.twig:513
 #: ../../tempcache/components/forms/groups.html.twig:40
 msgid "Groups:"
-msgstr ""
+msgstr "Gropes :"
 
 #: ../../tempcache/pages/member_show.html.twig:714
 msgid "Not managed group"
-msgstr ""
+msgstr "Grope non administrat"
 
 #: ../../tempcache/pages/member_show.html.twig:714
 msgid "You are not part of managers for the requested group."
@@ -7981,17 +8008,15 @@ msgstr "Modificar mon senhal"
 
 #: ../../tempcache/pages/transactions_list.html.twig:70
 msgid "Show transactions since"
-msgstr ""
+msgstr "Mostrar lei transaccions partent de"
 
 #: ../../tempcache/pages/transactions_list.html.twig:157
-#, fuzzy
-#| msgid "Show only '%name' transactions"
 msgid "Show all your transactions"
-msgstr "Veire solament lei contribucions de '%name'"
+msgstr "Veire totei vòstrei transaccions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:163
 msgid "Show all members transactions"
-msgstr ""
+msgstr "Veire lei transaccions de totei lei membres"
 
 #: ../../tempcache/pages/transactions_list.html.twig:228
 #, php-format
@@ -8006,7 +8031,7 @@ msgstr ""
 
 #: ../../tempcache/pages/transactions_list.html.twig:362
 msgid "Transaction %id"
-msgstr ""
+msgstr "Transaccion %id"
 
 #: ../../tempcache/pages/transactions_list.html.twig:391
 msgid "Show only '%name' transactions"
@@ -8014,23 +8039,23 @@ msgstr "Veire solament lei contribucions de '%name'"
 
 #: ../../tempcache/pages/transactions_list.html.twig:450
 msgid "Edit transaction #%id"
-msgstr ""
+msgstr "Modificar la transaccion #%id"
 
 #: ../../tempcache/pages/transactions_list.html.twig:463
 msgid "Remove transaction #%id"
-msgstr ""
+msgstr "Levar la transaccion #%id"
 
 #: ../../tempcache/pages/transactions_list.html.twig:483
 msgid "no transaction"
-msgstr ""
+msgstr "ges de transaccion"
 
 #: ../../tempcache/pages/transactions_list.html.twig:510
 msgid "Completely dispatched transaction"
-msgstr ""
+msgstr "Transaccion ventilada completament"
 
 #: ../../tempcache/pages/transactions_list.html.twig:517
 msgid "Uncomplete dispatched transaction"
-msgstr ""
+msgstr "La transaccion es pas ventilada en plen"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:57
 msgid "Choose label to translate"
@@ -8072,13 +8097,11 @@ msgstr ""
 
 #: ../../tempcache/pages/charts.html.twig:103
 msgid "Contributions over time"
-msgstr ""
+msgstr "Contribuccions per edat"
 
 #: ../../tempcache/pages/charts.html.twig:405
-#, fuzzy
-#| msgid "Manage contributions types"
 msgid "Total contributions for the month"
-msgstr "Governar lei sòrtas de contribucions"
+msgstr "Totau dei contribucions dau mes"
 
 #: ../../tempcache/pages/members_public_list.html.twig:114
 #: ../../tempcache/pages/members_public_gallery.html.twig:79
@@ -8109,11 +8132,11 @@ msgstr "Recercar simplament"
 
 #: ../../tempcache/pages/advanced_search.html.twig:108
 msgid "Membership status"
-msgstr ""
+msgstr "Estatut de l'adesion"
 
 #: ../../tempcache/pages/advanced_search.html.twig:137
 msgid "Account activity"
-msgstr "Activitat del compte"
+msgstr "Activitat dau còmpte"
 
 #: ../../tempcache/pages/advanced_search.html.twig:200
 msgid "With email:"
@@ -8144,7 +8167,7 @@ msgstr ""
 
 #: ../../tempcache/pages/advanced_search.html.twig:536
 msgid "Advanced groups search"
-msgstr "Recèrca avançada sus lei grops"
+msgstr "Recèrca avançada sus lei gropes"
 
 #: ../../tempcache/pages/advanced_search.html.twig:538
 #: ../../tempcache/pages/advanced_search.html.twig:1053
@@ -8154,11 +8177,11 @@ msgstr "Experimentau"
 #: ../../tempcache/pages/advanced_search.html.twig:546
 #: ../../tempcache/pages/advanced_search.html.twig:552
 msgid "Add new group search criteria"
-msgstr ""
+msgstr "Ajustar un critèri de recèrca de grope"
 
 #: ../../tempcache/pages/advanced_search.html.twig:567
 msgid "In all selected groups"
-msgstr "De totei lei gropes chausitz"
+msgstr "De totei lei gropes chausits"
 
 #: ../../tempcache/pages/advanced_search.html.twig:577
 msgid "In any of selected groups"
@@ -8173,7 +8196,7 @@ msgstr ""
 
 #: ../../tempcache/pages/advanced_search.html.twig:653
 msgid "Within contributions"
-msgstr ""
+msgstr "Dins lei contribucions"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1051
 msgid "Free search"
