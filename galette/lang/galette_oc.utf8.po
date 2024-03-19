@@ -1,13 +1,14 @@
 # Quentin PAGÈS <quentinantonin@free.fr>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
 # Pèire Bréchet <charrar@free.fr>, 2022, 2024.
+# Pèire Bréchet <oxytanistzero@tutanota.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-17 19:30+0100\n"
-"PO-Revision-Date: 2024-03-19 09:02+0000\n"
-"Last-Translator: Pèire Bréchet <charrar@free.fr>\n"
+"PO-Revision-Date: 2024-03-20 13:01+0000\n"
+"Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
 "Language: oc\n"
@@ -1292,7 +1293,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:283
 msgid "Last page (%i)"
-msgstr ""
+msgstr "Darriera pagina (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:298
 #: ../../tempcache/elements/list.html.twig:269
@@ -1314,7 +1315,7 @@ msgstr "Mon còmpte"
 
 #: ../lib/Galette/Core/Galette.php:125 ../lib/Galette/Core/Galette.php:639
 msgid "My contributions"
-msgstr ""
+msgstr "Mei contribucions"
 
 #: ../lib/Galette/Core/Galette.php:126 ../lib/Galette/Core/Galette.php:640
 msgid "View and filter all my contributions"
@@ -1413,7 +1414,7 @@ msgstr "Ajustar un don"
 
 #: ../lib/Galette/Core/Galette.php:242
 msgid "Add new donation in database"
-msgstr ""
+msgstr "Ajustar un don novèu a la basa"
 
 #: ../lib/Galette/Core/Galette.php:249
 #: ../../tempcache/pages/transactions_list.html.twig:204
@@ -1427,7 +1428,7 @@ msgstr "Ajustar una transaccion novèla dins la basa de donadas"
 
 #: ../lib/Galette/Core/Galette.php:257 ../lib/Galette/Core/Galette.php:591
 msgid "Send reminders to late members"
-msgstr ""
+msgstr "Mandar un corriel per rampelar lei tardiers"
 
 #: ../lib/Galette/Core/Galette.php:268
 msgid "Management"
@@ -1482,10 +1483,12 @@ msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
 msgstr ""
+"Definir lei preferéncias de l’aplicacion (adreiça, site, fichas de membre, "
+"paramètres,…)"
 
 #: ../lib/Galette/Core/Galette.php:336 ../lib/Galette/Core/Galette.php:615
 msgid "Information about available plugins"
-msgstr ""
+msgstr "Informacion a prepaus deis ajustons disponibles"
 
 #: ../lib/Galette/Core/Galette.php:342
 msgid "Core lists"
@@ -1493,7 +1496,7 @@ msgstr "Listas dau còr"
 
 #: ../lib/Galette/Core/Galette.php:343
 msgid "Customize lists fields and order"
-msgstr ""
+msgstr "Personalizar la lista dei camps e l’òrdre"
 
 #: ../lib/Galette/Core/Galette.php:350
 msgid "Core fields"
@@ -1503,6 +1506,8 @@ msgstr "Camps dau còr"
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
+"Personalizar l’òrdre dei camps, definir quaus son obligatòris, e en cu seràn "
+"visibles"
 
 #: ../lib/Galette/Core/Galette.php:357
 msgid "Dynamic fields"
@@ -1526,7 +1531,7 @@ msgstr "Governar lei sòrtas de contribucions"
 
 #: ../lib/Galette/Core/Galette.php:387
 msgid "Emails content"
-msgstr ""
+msgstr "Contengut dei messatges electronics"
 
 #: ../lib/Galette/Core/Galette.php:388
 msgid "Manage emails texts and subjects"
@@ -1583,12 +1588,12 @@ msgstr "%membername : contribucions"
 
 #: ../lib/Galette/Core/Galette.php:741 ../lib/Galette/Core/Galette.php:746
 msgid "%membername: remove from database"
-msgstr ""
+msgstr "%membername: levar de la basa"
 
 #: ../lib/Galette/Core/Galette.php:765 ../lib/Galette/Core/Galette.php:770
 #: ../../tempcache/elements/group_persons.html.twig:182
 msgid "Log in in as %membername"
-msgstr ""
+msgstr "Se connectar per %membername"
 
 #: ../lib/Galette/Core/Galette.php:856
 msgid "Mass change"
@@ -1625,15 +1630,17 @@ msgstr "Teledescargar en CSV"
 
 #: ../lib/Galette/Core/Preferences.php:530
 msgid "- You must indicate a sender name for emails!"
-msgstr ""
+msgstr "- Vos fau definir l’expeditor dau messatge electronic !"
 
 #: ../lib/Galette/Core/Preferences.php:536
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
+"- Vos fau indicar l’adreiça qu’emplegarà Galeta per mandar lei messatges "
+"electronics !"
 
 #: ../lib/Galette/Core/Preferences.php:543
 msgid "- You must indicate the SMTP server you want to use!"
-msgstr ""
+msgstr "- Vos fau indicar lo servidor SMTP d’emplegar !"
 
 #: ../lib/Galette/Core/Preferences.php:555
 msgid "- You must provide a login for SMTP authentication."
@@ -1641,17 +1648,21 @@ msgstr "- Vos fau donar un identificant per l'autentificacion SMTP."
 
 #: ../lib/Galette/Core/Preferences.php:561
 msgid "- You must provide a password for SMTP authentication."
-msgstr ""
+msgstr "- Per l’identificacion SMTP, fornir un senhau es necessari."
 
 #: ../lib/Galette/Core/Preferences.php:573
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr ""
+"- Vos fau definir la durada que vau l’adesion ò donar una data de "
+"començament de l’exercici, mai pas lei dos."
 
 #: ../lib/Galette/Core/Preferences.php:582
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
+"- L’ofèrta de mes es compatibla ren qu’amb una data de començament de "
+"l’exercici."
 
 #: ../lib/Galette/Core/Preferences.php:591
 #: ../lib/Galette/Entity/Adherent.php:1209
@@ -1659,15 +1670,15 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:520
 #, php-format
 msgid "- Mandatory field %field empty."
-msgstr ""
+msgstr "- Lo camp obligatòri %field es vuege."
 
 #: ../lib/Galette/Core/Preferences.php:599 ../webroot/installer.php:191
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Lei senhaus fornits correspòndon pas"
 
 #: ../lib/Galette/Core/Preferences.php:612
 msgid "You have to select a staff member"
-msgstr ""
+msgstr "Avètz de seleccionar un membre dau burèu"
 
 #: ../lib/Galette/Core/Preferences.php:666
 #, php-format
@@ -1676,19 +1687,19 @@ msgstr "Adreiça electronica non valida: %s"
 
 #: ../lib/Galette/Core/Preferences.php:680
 msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
+msgstr "- L’IDentificant deu comptar aumens 4 caractèrs !"
 
 #: ../lib/Galette/Core/Preferences.php:684
 msgid "- This username is already used by another member !"
-msgstr ""
+msgstr "- Aquest IDentificant es ja atribuït a un autre membre !"
 
 #: ../lib/Galette/Core/Preferences.php:704
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
+msgstr "- Lei nombres e mesuras se devon definir per d’entiers !"
 
 #: ../lib/Galette/Core/Preferences.php:738
 msgid "- Invalid number of months of membership extension."
-msgstr ""
+msgstr "- Lo nombre de mes definit per l’extension de l’adesion es invalide."
 
 #: ../lib/Galette/Core/Preferences.php:744
 msgid "- Invalid format of beginning of membership."
@@ -1888,93 +1899,87 @@ msgstr "Coquin ! Vos servetz jamai d'informacions personalas per senhau !"
 
 #: ../lib/Galette/Util/Password.php:142
 msgid "Does not contains lowercase letters"
-msgstr ""
+msgstr "Conten ges de letras minusculas"
 
 #: ../lib/Galette/Util/Password.php:146
 msgid "Does not contains uppercase letters"
-msgstr ""
+msgstr "Conten ges de letra majuscula"
 
 #: ../lib/Galette/Util/Password.php:149
 msgid "Does not contains letters"
-msgstr ""
+msgstr "Conten ges de letra"
 
 #: ../lib/Galette/Util/Password.php:155
 msgid "Does not contains numbers"
-msgstr ""
+msgstr "Conten ges de nombre"
 
 #: ../lib/Galette/Util/Password.php:161
 msgid "Does not contains special characters"
-msgstr ""
+msgstr "Conten ges de caractèr particular"
 
 #: ../lib/Galette/Util/FakeData.php:84
 msgid "Photo has not been stored!"
-msgstr ""
+msgstr "La fòto es pas estat enregistrada !"
 
 #: ../lib/Galette/Util/FakeData.php:91
 msgid "Photo has not been copied!"
-msgstr ""
+msgstr "La fòto es pas estat copiada !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:598
 msgid "Missing required field name!"
-msgstr ""
+msgstr "Lo nom dau camp manca !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:607
 msgid "Missing required field permissions!"
-msgstr ""
+msgstr "Lei permessions dau camp mancan !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:612
 msgid "Unknown permission!"
-msgstr ""
+msgstr "Permession inconeguda !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:618
 msgid "Missing required form!"
-msgstr ""
+msgstr "Lo formulari demandat manca !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:623
 msgid "Unknown form!"
-msgstr ""
+msgstr "Formulari inconegut !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:633
 msgid "- Field name already used."
-msgstr ""
+msgstr "- Un camp d’aquest nom existís ja."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:638
-#, fuzzy
-#| msgid "- Birthdate must be set in the past!"
 msgid "- Width must be a positive integer!"
-msgstr "- La data de naissença se deu dins lo passat, pecaire !"
+msgstr "- L’ample deu èstre un entier positiu !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:646
-#, fuzzy
-#| msgid "- Birthdate must be set in the past!"
 msgid "- Height must be a positive integer!"
-msgstr "- La data de naissença se deu dins lo passat, pecaire !"
+msgstr "- L’autor deu èstre un entier positiu !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:654
-#, fuzzy
-#| msgid "- Birthdate must be set in the past!"
 msgid "- Size must be a positive integer!"
-msgstr "- La data de naissença se deu dins lo passat, pecaire !"
+msgstr "- La mesura deu èstre un entier positiu !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:662
 msgid "- Min size must be a positive integer!"
-msgstr ""
+msgstr "- La mesura minimala deu èstre un entier positiu !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:675
 msgid "- Min size must be lower than size!"
-msgstr ""
+msgstr "- La mesura minimala deu pas passar la maximala !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:681
 msgid "- Repeat must be an integer!"
-msgstr ""
+msgstr "- Repeticion deu èstre un nombre entier !"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:792
 msgid "An error occurred storing the field."
-msgstr ""
+msgstr "Una error a capitat per enregistrar lo camp."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:813
 msgid "An error occurred creating field values table"
-msgstr ""
+msgstr "Una error a capitat per crear la taula de valor dei camps"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:847
 msgid "An error occurred storing dynamic field values :("
@@ -2275,11 +2280,11 @@ msgstr "L'adreiça de corrier electronic %address es ja utilizada ! (%extra)"
 
 #: ../lib/Galette/IO/CsvIn.php:380
 msgid "Lang %lang does not exists!"
-msgstr ""
+msgstr "La lenga %lang se tròba pas !"
 
 #: ../lib/Galette/IO/CsvIn.php:433
 msgid "File is empty!"
-msgstr ""
+msgstr "Lo fichier es vuege !"
 
 #: ../lib/Galette/IO/CsvIn.php:520 ../lib/Galette/IO/CsvIn.php:531
 msgid "An error occurred storing member at row %row (%name):"
@@ -2293,11 +2298,11 @@ msgstr "Capitèt una error per importar lei membres"
 #: ../lib/Galette/IO/Pdf.php:75 ../lib/Galette/IO/Pdf.php:195
 #, php-format
 msgid "Association %s"
-msgstr ""
+msgstr "Associacion %s"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:75
 msgid "cards"
-msgstr ""
+msgstr "cartas"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:86
 msgid "Member's Cards"
@@ -2306,7 +2311,7 @@ msgstr "Cartas de Membres"
 #: ../lib/Galette/IO/PdfMembersCards.php:88
 #: ../../tempcache/pages/preferences.html.twig:109
 msgid "Cards"
-msgstr ""
+msgstr "Cartas"
 
 #: ../lib/Galette/IO/FileTrait.php:497
 msgid "An error occurred."
@@ -2316,37 +2321,39 @@ msgstr "Una error capitèt."
 msgid ""
 "File name is invalid, it should not contain any special character or space."
 msgstr ""
+"Lo nom dau fichier es invalide que deu contenir ni caractèr espaciau, nimai "
+"espaci."
 
 #: ../lib/Galette/IO/FileTrait.php:507
 #, php-format
 msgid "File extension is not allowed, only %s files are."
-msgstr ""
+msgstr "L’extension de fichier es pas permesa, %s solament o son."
 
 #: ../lib/Galette/IO/FileTrait.php:514 ../lib/Galette/Features/Dynamics.php:279
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
-msgstr ""
+msgstr "Lo fichier es tròp gròs. Lo mai permés es de %dKo"
 
 #: ../lib/Galette/IO/FileTrait.php:519
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr ""
+msgstr "L’imatge es tròp pichon. La mesura minimala permesa es de %spx"
 
 #: ../lib/Galette/IO/FileTrait.php:525
 msgid "Mime-Type not allowed"
-msgstr ""
+msgstr "Tipe MIME non acceptat"
 
 #: ../lib/Galette/IO/FileTrait.php:528
 msgid "A file with that name already exists!"
-msgstr ""
+msgstr "Ja un fichier pòrta aquest nom !"
 
 #: ../lib/Galette/IO/FileTrait.php:531
 msgid "File does not comply with requirements."
-msgstr ""
+msgstr "Lo fichier respècta pas lei preliminars."
 
 #: ../lib/Galette/IO/FileTrait.php:534
 msgid "Unable to write file or temporary file"
-msgstr ""
+msgstr "Impossible d’escriure lo fichier nimai lo fichier temporari"
 
 #: ../lib/Galette/IO/FileTrait.php:564
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
@@ -2356,7 +2363,7 @@ msgstr ""
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
-msgstr ""
+msgstr "Lo fichier mandat passa la mesura maximala permesa per lo formulari"
 
 #: ../lib/Galette/IO/FileTrait.php:568
 msgid "The uploaded file was only partially uploaded"
@@ -2364,11 +2371,11 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:570
 msgid "No file was uploaded"
-msgstr ""
+msgstr "Ges de fichier mandat"
 
 #: ../lib/Galette/IO/FileTrait.php:572
 msgid "Missing a temporary folder"
-msgstr ""
+msgstr "Lo dorsier temporari manca"
 
 #: ../lib/Galette/IO/FileTrait.php:574
 msgid "Failed to write file to disk"
@@ -2376,7 +2383,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:576
 msgid "File upload stopped by extension"
-msgstr ""
+msgstr "Lo mandadís dau fichier es estat blocat"
 
 #: ../lib/Galette/IO/FileTrait.php:578
 msgid "Unknown upload error"
@@ -2384,11 +2391,11 @@ msgstr "Error de mandadís inconeguda"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:64
 msgid "adherent_form"
-msgstr ""
+msgstr "formulari_adesion"
 
 #: ../lib/Galette/IO/PdfContribution.php:66
 msgid "receipt"
-msgstr ""
+msgstr "recebut"
 
 #: ../lib/Galette/IO/PdfContribution.php:68
 msgid "invoice"
@@ -2396,7 +2403,7 @@ msgstr "factura"
 
 #: ../lib/Galette/Features/Permissions.php:59
 msgid "Inaccessible"
-msgstr ""
+msgstr "Inaccessible"
 
 #: ../lib/Galette/Features/Permissions.php:60
 msgid "User, read only"
@@ -2404,7 +2411,7 @@ msgstr "Utilizaire, lectura sola"
 
 #: ../lib/Galette/Features/Permissions.php:61
 msgid "User, read/write"
-msgstr ""
+msgstr "Utilizator, lectura/escritura"
 
 #: ../lib/Galette/Features/Permissions.php:62
 #: ../../tempcache/elements/ajax_members.html.twig:152
@@ -2425,7 +2432,7 @@ msgstr "Gestionari de gropes"
 #: ../../tempcache/pages/status_list.html.twig:159
 #: ../../tempcache/pages/preferences.html.twig:392
 msgid "Staff member"
-msgstr ""
+msgstr "Membre dau burèu"
 
 #: ../lib/Galette/Features/Permissions.php:64
 #: ../../tempcache/elements/ajax_members.html.twig:130
@@ -2441,67 +2448,67 @@ msgstr "Public"
 #: ../lib/Galette/Features/I18n.php:115
 #, php-format
 msgid "Unable to add dynamic translation for %field :("
-msgstr ""
+msgstr "Impossible d’ajustar la traduccion dinamica per %field :("
 
 #: ../lib/Galette/Features/I18n.php:181
 #, php-format
 msgid "Unable to update dynamic translation for %field :("
-msgstr ""
+msgstr "Impossible d’actualizar la traduccion dinamica per %field :("
 
 #: ../lib/Galette/Features/I18n.php:216
 #, php-format
 msgid "Unable to remove old dynamic translation for %field :("
-msgstr ""
+msgstr "Impossible de levar l’anciana traduccion dinamica per %field :("
 
 #: ../lib/Galette/Features/Replacements.php:113
 #, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr ""
+msgstr "Etiqueta per lo camp dinamic \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:116
 #, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr ""
+msgstr "Intrada de formulari per lo camp dinamic \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:122
 #, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr ""
+msgstr "Valor dau camp dinamic \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:185
 msgid "Your organisation name"
-msgstr ""
+msgstr "Nom de vòstra associacion"
 
 #: ../lib/Galette/Features/Replacements.php:189
 msgid "Your organisation slogan"
-msgstr ""
+msgstr "La devisa de vòstra organisacion"
 
 #: ../lib/Galette/Features/Replacements.php:193
 #: ../lib/Galette/Features/Replacements.php:197
 msgid "Your organisation address"
-msgstr ""
+msgstr "Adreiça de vòstra associacion"
 
 #: ../lib/Galette/Features/Replacements.php:197
 #: ../lib/Galette/Features/Replacements.php:288
 msgid "with break lines"
-msgstr ""
+msgstr "amb retorns a la linha"
 
 #: ../lib/Galette/Features/Replacements.php:201
 msgid "Your organisation website"
-msgstr ""
+msgstr "Site web de vòstra associacion"
 
 #: ../lib/Galette/Features/Replacements.php:205
 msgid "Your organisation logo"
-msgstr ""
+msgstr "Lògo de vòstra associacion"
 
 #: ../lib/Galette/Features/Replacements.php:209
 msgid "Your organisation logo (print specific)"
-msgstr ""
+msgstr "Lo lògo de vòstra associacion particular per estampar"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 #: ../lib/Galette/Features/Replacements.php:214
 msgid "Current date (Y-m-d)"
-msgstr ""
+msgstr "Data correnta (j/m/a)"
 
 #: ../lib/Galette/Features/Replacements.php:218
 msgid "Galette's login URI"
@@ -2516,7 +2523,7 @@ msgstr "Títol"
 
 #: ../lib/Galette/Features/Replacements.php:240
 msgid "Member's ID"
-msgstr ""
+msgstr "ID dau membre"
 
 #: ../lib/Galette/Features/Replacements.php:244
 #: ../lib/Galette/Filters/MembersList.php:275
@@ -2575,11 +2582,11 @@ msgstr "Adreiça"
 
 #: ../lib/Galette/Features/Replacements.php:292
 msgid "Zipcode"
-msgstr ""
+msgstr "Còde postau"
 
 #: ../lib/Galette/Features/Replacements.php:296
 msgid "Town"
-msgstr ""
+msgstr "Vila"
 
 #: ../lib/Galette/Features/Replacements.php:300 ../includes/i18n.inc.php:309
 msgid "Country"
@@ -2607,7 +2614,7 @@ msgstr "Adesion acabada despuei"
 
 #: ../lib/Galette/Features/Replacements.php:382
 msgid "Contribution label"
-msgstr ""
+msgstr "Designacion de la contribucion"
 
 #: ../lib/Galette/Features/Replacements.php:386
 #: ../../tempcache/pages/transaction_form.html.twig:289
@@ -2625,7 +2632,7 @@ msgstr "Montant"
 
 #: ../lib/Galette/Features/Replacements.php:390
 msgid "Amount (in letters)"
-msgstr ""
+msgstr "Montant (en letras)"
 
 #: ../lib/Galette/Features/Replacements.php:394
 msgid "Full date"
@@ -2633,11 +2640,11 @@ msgstr "Data"
 
 #: ../lib/Galette/Features/Replacements.php:398
 msgid "Contribution year"
-msgstr ""
+msgstr "An de la contribucion"
 
 #: ../lib/Galette/Features/Replacements.php:402
 msgid "Comment"
-msgstr ""
+msgstr "Comentari"
 
 #: ../lib/Galette/Features/Replacements.php:406
 #: ../../tempcache/pages/advanced_search.html.twig:703
@@ -2652,7 +2659,7 @@ msgstr "Data de fin"
 #: ../lib/Galette/Features/Replacements.php:414
 #: ../lib/Galette/Entity/Contribution.php:144
 msgid "Contribution id"
-msgstr ""
+msgstr "ID de la contribucion"
 
 #: ../lib/Galette/Features/Replacements.php:418
 #: ../../tempcache/pages/contributions_list.html.twig:408
@@ -2687,7 +2694,7 @@ msgstr "Informacions dau membre"
 #: ../lib/Galette/Features/Dynamics.php:141
 #, php-format
 msgid "Missing required field %field"
-msgstr ""
+msgstr "Lo camp obligatòri %field manca"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -2699,7 +2706,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1330
 #, php-format
 msgid "- Wrong date format (%1$s) for %2$s!"
-msgstr ""
+msgstr "- Forma de la data incorrècta (%1$s) per %2$s !"
 
 #: ../lib/Galette/Entity/ListsConfig.php:193
 msgid "Is admin"
@@ -2711,7 +2718,7 @@ msgstr "Modificat"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
-msgstr ""
+msgstr "%name &lt;%mail&gt; (%days jorns)"
 
 #: ../lib/Galette/Entity/Reminder.php:257
 msgid "Sent reminder email for late membership"
@@ -2736,7 +2743,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:290
 msgid "%name (#%id - %days days)"
-msgstr ""
+msgstr "%name (#%id - %days jorns)"
 
 #: ../lib/Galette/Entity/Adherent.php:802
 msgid "Freed of dues"
@@ -2755,21 +2762,21 @@ msgstr "A jamai cotisat"
 
 #: ../lib/Galette/Entity/Adherent.php:826
 msgid "Last day!"
-msgstr ""
+msgstr "Darrier jorn !"
 
 #: ../lib/Galette/Entity/Adherent.php:828
 msgid "Late since today!"
-msgstr ""
+msgstr "Un jorn de retard !"
 
 #: ../lib/Galette/Entity/Adherent.php:840
 #, php-format
 msgid "%days days remaining (ending on %date)"
-msgstr ""
+msgstr "%days jorns demòran (s’acaba lo %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:854
 #, php-format
 msgid "Late of %days days (since %date)"
-msgstr ""
+msgstr "En retard de %days jorns (despuei lo %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:857
 msgid "No longer member"
@@ -2786,7 +2793,7 @@ msgstr "- La data de naissença se deu dins lo passat, pecaire !"
 
 #: ../lib/Galette/Entity/Adherent.php:1312
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr ""
+msgstr "- L’edat dei membres deu pas passar lei 200 ans (actualament, %years) !"
 
 #: ../lib/Galette/Entity/Adherent.php:1345
 msgid "- Non-valid E-Mail address!"
