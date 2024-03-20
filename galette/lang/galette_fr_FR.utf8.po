@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-03-20 18:45+0100\n"
-"PO-Revision-Date: 2024-03-17 18:40+0000\n"
+"PO-Revision-Date: 2024-03-20 18:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -548,45 +548,33 @@ msgid "transaction"
 msgstr "transaction"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:64
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add document"
-msgstr "Ajouter une pièce jointe"
+msgstr "Ajouter un document"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:120
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:406
-#, fuzzy
-#| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred adding document :("
-msgstr "Une erreur est survenue lors de l'ajout du champ dynamique :("
+msgstr "Une erreur est survenue lors de l'ajout du document :("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:134
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:420
-#, fuzzy
-#| msgid "Model has been successfully stored!"
 msgid "Document has been successfully stored!"
-msgstr "Le modèle a été enregistré avec succès !"
+msgstr "Le document a été enregistré avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:195
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:230
-#, fuzzy
-#| msgid "Documentation"
 msgid "Documents list"
-msgstr "Documentation"
+msgstr "Liste des documents"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:350
 #: ../../tempcache/pages/documents_list.html.twig:203
-#, fuzzy
-#| msgid "Get my document"
 msgid "Edit document"
-msgstr "Obtenir mon document"
+msgstr "Modifier document"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:492
 #: ../../tempcache/pages/documents_list.html.twig:216
-#, fuzzy
-#| msgid "Get my document"
 msgid "Delete document"
-msgstr "Obtenir mon document"
+msgstr "Supprimer document"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:102
 msgid "This search is already saved."
@@ -1555,16 +1543,16 @@ msgstr "Graphiques divers"
 
 #: ../lib/Galette/Core/Galette.php:319 ../lib/Galette/Core/Galette.php:516
 #: ../lib/Galette/Core/Galette.php:631
-#, fuzzy
-#| msgid "Documentation"
 msgid "Documents"
-msgstr "Documentation"
+msgstr "Documents"
 
 #: ../lib/Galette/Core/Galette.php:320
 msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
+"Ajouter des documents relatifs à votre association à partager (status, "
+"règlement intérieur, ...)"
 
 #: ../lib/Galette/Core/Galette.php:331 ../install/steps/check.php:53
 msgid "Configuration"
@@ -1667,7 +1655,7 @@ msgstr "Pages publiques"
 
 #: ../lib/Galette/Core/Galette.php:517 ../lib/Galette/Core/Galette.php:632
 msgid "View documents related to your association"
-msgstr ""
+msgstr "Voir les documents relatifs à votre association"
 
 #: ../lib/Galette/Core/Galette.php:603
 #: ../lib/Galette/DynamicFields/DynamicField.php:535
@@ -3161,14 +3149,12 @@ msgid "Membership"
 msgstr "Cotisations"
 
 #: ../lib/Galette/Entity/Document.php:464
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association status"
-msgstr "Association %s"
+msgstr "Status de l'association"
 
 #: ../lib/Galette/Entity/Document.php:465
 msgid "Rules of procedure"
-msgstr ""
+msgstr "Règlement intérieur"
 
 #: ../lib/Galette/Entity/Document.php:466
 #: ../../tempcache/elements/edit_pdf_models.html.twig:189
@@ -3178,11 +3164,11 @@ msgstr "Formulaire d’adhésion"
 
 #: ../lib/Galette/Entity/Document.php:467
 msgid "Meeting minutes"
-msgstr ""
+msgstr "Comptes rendus de réunion"
 
 #: ../lib/Galette/Entity/Document.php:468
 msgid "Votes results"
-msgstr ""
+msgstr "Résultats des votes"
 
 #: ../lib/Galette/Entity/Title.php:169
 msgid "You cannot delete Mr. or Mrs. titles!"
@@ -6061,13 +6047,11 @@ msgstr "Visibilité"
 
 #: ../../tempcache/pages/documents_public_list.html.twig:86
 #: ../../tempcache/pages/documents_list.html.twig:57
-#, fuzzy, php-format
-#| msgid "%count entry"
-#| msgid_plural "%count entries"
+#, php-format
 msgid "%count document"
 msgid_plural "%count documents"
-msgstr[0] "%count entrée"
-msgstr[1] "%count entrées"
+msgstr[0] "%count document"
+msgstr[1] "%count documents"
 
 #: ../../tempcache/pages/transaction_form.html.twig:63
 msgid "Transaction details"
@@ -6909,17 +6893,13 @@ msgid "Click on a row to select a member"
 msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
 
 #: ../../tempcache/pages/documents_list.html.twig:84
-#, fuzzy
-#| msgid "Add a donation"
 msgid "Add a document"
-msgstr "Ajouter un don"
+msgstr "Ajouter un document"
 
 #: ../../tempcache/pages/documents_list.html.twig:97
 #: ../../tempcache/pages/documents_list.html.twig:166
-#, fuzzy
-#| msgid "file_name"
 msgid "Filename"
-msgstr "nom_fichier"
+msgstr "Nom du fichier"
 
 #: ../../tempcache/pages/documents_list.html.twig:97
 #: ../../tempcache/pages/documents_list.html.twig:180
@@ -6931,10 +6911,8 @@ msgid "Creation date"
 msgstr "Date de création"
 
 #: ../../tempcache/pages/documents_list.html.twig:247
-#, fuzzy
-#| msgid "Download document"
 msgid "No document"
-msgstr "Télécharger le document"
+msgstr "Aucun document"
 
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
@@ -8605,16 +8583,12 @@ msgid "Trace"
 msgstr "Trace"
 
 #: ../../tempcache/pages/document_form.html.twig:111
-#, fuzzy
-#| msgid "Payment type"
 msgid "Document type"
-msgstr "Type de paiement"
+msgstr "Type de document"
 
 #: ../../tempcache/pages/document_form.html.twig:184
-#, fuzzy
-#| msgid "Extra information displayed along with dynamic field."
 msgid "Extra information displayed along with document."
-msgstr "Informations additionnelles affichées avec le champ dynamique."
+msgstr "Informations additionnelles affichées avec le document."
 
 #: ../../tempcache/pages/export.html.twig:56
 msgid ""
