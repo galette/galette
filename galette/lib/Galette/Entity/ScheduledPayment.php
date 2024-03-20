@@ -22,6 +22,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Laminas\Db\Sql\Expression;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
@@ -29,32 +30,18 @@ use Galette\Features\I18n;
 use Galette\Features\Translatable;
 
 /**
- * Payment type
+ * Scheduled payment
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
- *
- * @property integer $id
- * @property string $name
  */
 
-class PaymentType
+class ScheduledPayment
 {
-    use Translatable;
-    use I18n;
-
-    public const TABLE = 'paymenttypes';
-    public const PK = 'type_id';
+    public const TABLE = 'payments_schedules';
+    public const PK = 'id_schedule';
 
     private Db $zdb;
     private int $id;
-
-    public const SCHEDULED = 7;
-    public const OTHER = 6;
-    public const CASH = 1;
-    public const CREDITCARD = 2;
-    public const CHECK = 3;
-    public const TRANSFER = 4;
-    public const PAYPAL = 5;
 
     /**
      * Main constructor
@@ -73,7 +60,7 @@ class PaymentType
     }
 
     /**
-     * Load a payment type from its identifier
+     * Load a scheduled payment from its identifier
      *
      * @param integer $id Identifier
      *
@@ -86,13 +73,12 @@ class PaymentType
             $select->limit(1)->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
-            $res = $results->current();
+            $rs = $results->current();
 
-            $this->id = $id;
-            $this->name = $res->type_name;
+            $this->loadFromRs($rs);
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading payment type #' . $id . "Message:\n" .
+                'An error occurred loading scheduled payment #' . $id . "Message:\n" .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -101,7 +87,7 @@ class PaymentType
     }
 
     /**
-     * Load payment type from a db ResultSet
+     * Load scheduled payment from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
      *
@@ -111,17 +97,18 @@ class PaymentType
     {
         $pk = self::PK;
         $this->id = $rs->$pk;
-        $this->name = $rs->type_name;
+        //$this->name = $rs->type_name;
     }
 
     /**
-     * Store payment type in database
+     * Store scheduled payment in database
      *
      * @return boolean
      */
     public function store(): bool
     {
-        $data = array(
+        return false;
+        /*$data = array(
             'type_name' => $this->name
         );
         try {
@@ -155,17 +142,17 @@ class PaymentType
                 Analog::ERROR
             );
             throw $e;
-        }
+        }*/
     }
 
     /**
-     * Remove current title
+     * Remove current
      *
      * @return boolean
      */
     public function remove(): bool
     {
-        $id = (int)$this->id;
+        /*$id = $this->id;
         if ($this->isSystemType()) {
             throw new \RuntimeException(_T("You cannot delete system payment types!"));
         }
@@ -187,7 +174,7 @@ class PaymentType
                 Analog::ERROR
             );
             throw $e;
-        }
+        }*/
     }
 
     /**
@@ -197,7 +184,7 @@ class PaymentType
      *
      * @return mixed
      */
-    public function __get(string $name)
+    /*public function __get(string $name)
     {
         switch ($name) {
             case 'id':
@@ -210,7 +197,7 @@ class PaymentType
                 );
                 break;
         }
-    }
+    }*/
 
     /**
      * Isset
@@ -220,7 +207,7 @@ class PaymentType
      *
      * @return bool
      */
-    public function __isset(string $name): bool
+    /*public function __isset(string $name): bool
     {
         switch ($name) {
             case 'id':
@@ -229,7 +216,7 @@ class PaymentType
         }
 
         return false;
-    }
+    }*/
 
     /**
      * Setter
@@ -239,7 +226,7 @@ class PaymentType
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    /*public function __set(string $name, $value): void
     {
         switch ($name) {
             case 'name':
@@ -260,59 +247,56 @@ class PaymentType
                 );
                 break;
         }
+    }*/
+
+    /**
+     * Get identifier
+     *
+     * @return ?int
+     */
+    public function getId(): ?int
+    {
+        return $this->id ?? null;
     }
 
     /**
-     * Get system payment types
+     * Is a contribution handled from a scheduled payment?
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param int $id_cotis Contribution identifier
      *
-     * @return array<int,string>
+     * @return bool
+     * @throws Throwable
      */
-    public function getSystemTypes(bool $translated = true): array
+    public function isContributionHandled(int $id_cotis): bool
     {
-        if ($translated) {
-            $systypes = [
-                self::OTHER         => _T("Other"),
-                self::CASH          => _T("Cash"),
-                self::CREDITCARD    => _T("Credit card"),
-                self::CHECK         => _T("Check"),
-                self::TRANSFER      => _T("Transfer"),
-                self::PAYPAL        => _T("Paypal"),
-                self::SCHEDULED     => _T("Payment schedule")
-            ];
-        } else {
-            $systypes = [
-                self::OTHER         => "Other",
-                self::CASH          => "Cash",
-                self::CREDITCARD    => "Credit card",
-                self::CHECK         => "Check",
-                self::TRANSFER      => "Transfer",
-                self::PAYPAL        => "Paypal",
-                self::SCHEDULED     => "Payment schedule"
-            ];
-        }
-        return $systypes;
+        $select = $this->zdb->select(self::TABLE);
+        $select->limit(1)->where([Contribution::PK => $id_cotis]);
+
+        $results = $this->zdb->execute($select);
+        return ($results->count() > 0);
     }
 
     /**
-     * Is current payment a system one
+     * Get allocated amount
      *
-     * @return boolean
+     * @param int $id_cotis Contribution identifier
      *
+     * @return float
+     * @throws Throwable
      */
-    public function isSystemType(): bool
+    public function getAllocation(int $id_cotis): float
     {
-        return isset($this->getSystemTypes()[$this->id]);
+        $select = $this->zdb->select(self::TABLE);
+        $select->columns(['allocation' => new Expression('SUM(amount)')]);
+        $select->where([Contribution::PK => $id_cotis]);
+
+        $results = $this->zdb->execute($select);
+        $result = $results->current();
+        return $result->allocation;
     }
 
-    /**
-     * Simple text representation
-     *
-     * @return string
-     */
-    public function __toString(): string
+    public function isFullyAllocated(Contribution $contrib): bool
     {
-        return $this->getName();
+        return !($this->getAllocation($contrib->id) < $contrib->amount);
     }
 }

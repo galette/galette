@@ -470,6 +470,11 @@ class Contribution
                     case 'type_paiement_cotis':
                         if ($value != '') {
                             $this->payment_type = (int)$value;
+                            if ($this->hasSchedule()) {
+                                $this->errors[] = _T("- A payment schedule is attached to current contribution");
+                            } else {
+                                $this->payment_type = (int)$value;
+                            }
                         }
                         break;
                     case 'info_cotis':
@@ -1392,6 +1397,24 @@ class Contribution
     protected function getEventsPrefix(): string
     {
         return 'contribution';
+    }
+
+    public function hasSchedule(): bool
+    {
+        $schedule = new ScheduledPayment($this->zdb);
+        return $schedule->isContributionHandled($this->id);
+    }
+
+    /**
+     * Is schedule fully allocated
+     *
+     * @return bool
+     * @throws Throwable
+     */
+    public function isScheduleFullyAllocated(): bool
+    {
+        $schedule = new ScheduledPayment($this->zdb);
+        return $schedule->isFullyAllocated($this);
     }
 
     /**
