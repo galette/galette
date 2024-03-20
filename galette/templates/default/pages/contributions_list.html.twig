@@ -94,7 +94,6 @@
                 {% include "components/forms/payment_types.html.twig" with {
                     current: filters.payment_type_filter,
                     varname: "payment_type_filter",
-                    show_inline: "",
                     classname: "",
                     empty: {'value': -1, 'label': _T("Select")}
                 } %}
@@ -231,7 +230,7 @@
 {% block footer %}
     {% if nb != 0 %}
         <tr>
-            <th class="right" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% else %}9{% endif %}">
+            <th class="right aligned" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% else %}9{% endif %}">
                 {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
             </th>
         </tr>

@@ -37,25 +37,33 @@ class PaymentTypes extends Repository
     /**
      * Get payments types
      *
+     * @param boolean $schedulable Types that can be used in schedules only
+     *
      * @return array<int, PaymentType>
      */
-    public static function getAll(): array
+    public static function getAll(bool $schedulable = true): array
     {
         global $zdb, $preferences, $login;
         $ptypes = new self($zdb, $preferences, $login);
-        return $ptypes->getList();
+        return $ptypes->getList($schedulable);
     }
 
     /**
      * Get list
      *
+     * @param boolean $schedulable Types that can be used in schedules only
+     *
      * @return array<int, PaymentType>|ResultSet
      */
-    public function getList(): array|ResultSet
+    public function getList(bool $schedulable = true): array|ResultSet
     {
         try {
             $select = $this->zdb->select(PaymentType::TABLE, 'a');
             $select->order(PaymentType::PK);
+
+            if ($schedulable === false) {
+                $select->where->notEqualTo('a.' . PaymentType::PK, PaymentType::SCHEDULED);
+            }
 
             $types = array();
             $results = $this->zdb->execute($select);

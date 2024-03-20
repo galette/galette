@@ -18,17 +18,21 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-{% if show_inline is not defined %}
-<div class="field">
-{% else %}
-<div class="inline field">
-{% endif %}
+<div class="{% if show_inline is defined %}inline {% endif %}field{% if required is defined and required == true %} required{% endif %}">
     <label for="{{ varname }}">{% if label is defined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}</label>
-    <select name="{{ varname }}" id="{{ varname }}" class="ui search dropdown">
+    <select
+        name="{{ varname }}"
+        id="{{ varname }}"
+        {% if required is defined and required == true %} required="required"{% endif %}
+        {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
+        class="ui search dropdown"
+    >
 {% if empty is defined %}
         <option value="{{ empty.value }}">{{ empty.label }}</option>
 {% endif %}
-{% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll') %}
+{% if ptypes is not defined %}
+    {% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll') %}
+{% endif %}
 {% for ptype in ptypes %}
         <option value="{{ ptype.id }}"{% if current == ptype.id %} selected="selected"{% endif %}>{{ ptype.getName() }}</option>
 {% endfor %}

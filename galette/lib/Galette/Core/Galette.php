@@ -131,6 +131,13 @@ class Galette
                             ]
                         ],
                         [
+                            'label' => _T('My scheduled payments'),
+                            'title' => _T('View and filter all my scheduled payments'),
+                            'route' => [
+                                'name' => 'myScheduledPayments'
+                            ]
+                        ],
+                        [
                             'label' => _T('My transactions'),
                             'title' => _T('View and filter all my transactions'),
                             'route' => [
@@ -219,6 +226,14 @@ class Galette
                                 'name' => 'contributions',
                                 'args' => ['type' => 'contributions'],
                                 'aliases' => ['editContribution']
+                            ]
+                        ],
+                        [
+                            'label' => _T("List of scheduled payments"),
+                            'title' => _T("View and filter scheduled payments"),
+                            'route' => [
+                                'name' => 'scheduledPayments',
+                                'aliases' => ['addScheduledPayment', 'editScheduledPayment']
                             ]
                         ],
                         [

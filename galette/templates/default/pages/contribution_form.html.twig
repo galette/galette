@@ -38,10 +38,15 @@
                         {{ _T("Transaction related") }}
                     </span>
     {% endif %}
+    {% if contribution.hasSchedule() %}
+                    <span class="ui teal horizontal label">
+                        {{ _T("Has scheduled payments") }}
+                    </span>
+    {% endif %}
                 </div>
                 <div class="active content">
                     <div class="ui mobile reversed stackable grid">
-                        <div class="{% if contribution.isTransactionPart() %}five wide {% endif %}column">
+                        <div class="{% if contribution.isTransactionPart() %}six wide {% endif %}column">
     {% if not require_mass %}
                             <div class="inline field">
                                 <label for="id_adh">{{ _T("Contributor:") }}</label>
@@ -77,79 +82,124 @@
                                     </div>
                                 </div>
                             </div>
-    {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
-                            <div class="inline field">
-                                <label>{{ _T("Dispatch type:") }}</label>
-                                <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
-                                <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}" checked="checked"/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
-                                <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
-                            </div>
-    {% endif %}
                         </div>
-    {% if contribution.isTransactionPart() %}
-                        <div class="eleven wide column">
-        {% set mid = contribution.transaction.member %}
-                            <div class="ui tiny header">{{ _T("Related transaction information") }}</div>
-                            <table id="transaction_detail" class="listing ui very compact yellow table">
-                                <thead>
-                                    <tr>
-                                        <th class="listing">#</th>
-                                        <th class="listing">{{ _T("Description") }}</th>
-                                        <th class="listing">{{ _T("Date") }}</th>
-                                        <th class="listing">{{ _T("Member") }}</th>
-                                        <th class="listing">{{ _T("Amount") }}</th>
-                                        <th class="listing">{{ _T("Not dispatched amount") }}</th>
-                                    </tr>
-                                </thead>
-    {% if contribution.id and contribution.isTransactionPart() %}
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="6">
-                                            <div class="ui basic fitted right aligned segment">
-                                                <a
-                                                    href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
-                                                    class="ui icon blue compact button tooltip"
-                                                >
-                                                    <i class="eye icon tooltip" aria-hidden="true"></i>
-                                                    <span class="ui special popup">{{ _T("View transaction") }}</span>
-                                                </a>
-        {% if contribution.transaction.getMissingAmount() > 0 %}
-                                                <a
-                                                    href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
-                                                    class="ui icon green compact button tooltip"
-                                                    title="{{ _T("Create a new fee that will be attached to the current transaction") }}"
-                                                >
-                                                    <i class="plus tiny icon" aria-hidden="true"></i>
-                                                    <i class="user check icon" aria-hidden="true"></i>
-                                                    <span class="visually-hidden">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
-                                                </a>
-                                                <a
-                                                    href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ contribution.transaction.id }}"
-                                                    class="ui icon green compact button tooltip"
-                                                    title="{{ _T("Create a new donation that will be attached to the current transaction") }}"
-                                                >
-                                                    <i class="plus tiny icon" aria-hidden="true"></i>
-                                                    <i class="gift icon" aria-hidden="true"></i>
-                                                    <span class="visually-hidden">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
-                                                </a>
-        {% endif %}
+    {% if contribution.isTransactionPart() or contribution.hasSchedule() %}
+                        <div class="ten wide column">
+        {% if contribution.isTransactionPart() %}
+                            <div class="ui yellow segment">
+                                <div class="ui tiny header">
+                                    <a
+                                        href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                                        class="ui mini icon blue compact button tooltip"
+                                    >
+                                        <i class="eye icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("View transaction") }}</span>
+                                    </a>
+                                    {{ _T("Related transaction information") }}
+                                </div>
+                                <div class="content">
+                                    <div class="ui relaxed horizontal list">
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Date") }}</div>
+                                                {{ contribution.transaction.date }}
                                             </div>
-
-                                        </td>
-                                    </tr>
-                                </tfoot>
-    {% endif %}
-                                <tbody>
-                                    <tr>
-                                        <td>{{ contribution.transaction.id }}</td>
-                                        <td>{{ contribution.transaction.description }}</td>
-                                        <td>{{ contribution.transaction.date }}</td>
-                                        <td>{{ memberName({'id': mid}) }}</td>
-                                        <td class="right">{{ contribution.transaction.amount }}</td>
-                                        <td class="right">{{ contribution.transaction.getMissingAmount() }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </div>
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Member") }}</div>
+                                                {{ memberName({'id': contribution.transaction.member}) }}
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Amount") }}</div>
+                                                {{ contribution.transaction.amount }}
+                                            </div>
+                                        </div>
+            {% if contribution.transaction.getMissingAmount() > 0 %}
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Not dispatched amount") }}</div>
+                                                {{ contribution.transaction.getMissingAmount() }}
+                {% if contribution.id != '' %}
+                                                    <a
+                                                        href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ contribution.transaction.id }}"
+                                                        class="ui mini icon green compact button tooltip"
+                                                        title="{{ _T("Create a new fee that will be attached to the current transaction") }}"
+                                                    >
+                                                        <i class="plus tiny icon" aria-hidden="true"></i>
+                                                        <i class="user check icon" aria-hidden="true"></i>
+                                                        <span class="visually-hidden">{{ _T("Create a new fee that will be attached to the current transaction") }}</span>
+                                                    </a>
+                                                    <a
+                                                        href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_DONATION')}) }}?trans_id={{ contribution.transaction.id }}"
+                                                        class="ui mini icon green compact button tooltip"
+                                                        title="{{ _T("Create a new donation that will be attached to the current transaction") }}"
+                                                    >
+                                                        <i class="plus tiny icon" aria-hidden="true"></i>
+                                                        <i class="gift icon" aria-hidden="true"></i>
+                                                        <span class="visually-hidden">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
+                                                    </a>
+                {% endif %}
+                                            </div>
+                                        </div>
+            {% endif %}
+                                    </div>
+            {% if contribution.id == '' %}
+                                    <div class="inline field">
+                                        <label>{{ _T("Dispatch type:") }}</label>
+                                        <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
+                                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %}/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
+                                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %}/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                                    </div>
+            {% endif %}
+                                </div>
+                            </div>
+        {% endif %}
+        {% if contribution.hasSchedule() %}
+            {% set scheduled_amount = scheduled.getAllocation(contribution.id) %}
+                            <div class="ui yellow segment">
+                                <div class="ui tiny header">
+                                    <a
+                                        href="#"
+                                        class="ui mini icon blue compact button tooltip"
+                                        id="scheduledslist"
+                                    >
+                                        <i class="eye icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("View scheduled payments") }}</span>
+                                    </a>
+                                    {{ _T("Scheduled payments") }}
+                                </div>
+            {% if not contribution.isScheduleFullyAllocated() %}
+                                <div class="content">
+                                    <div class="ui relaxed horizontal list">
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Amount") }}</div>
+                                                {{ scheduled_amount }}
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Not dispatched amount") }}</div>
+                                                {{ contribution.amount - scheduled_amount }}
+                                                <a
+                                                    href="{{ url_for("addScheduledPayment", {"id_cotis": contribution.id}) }}"
+                                                    class="ui mini icon green compact button tooltip"
+                                                    title="{{ _T("Create a new scheduled payment") }}"
+                                                >
+                                                    <i class="plus tiny icon" aria-hidden="true"></i>
+                                                    <i class="money bill wave icon" aria-hidden="true"></i>
+                                                    <span class="visually-hidden">{{ _T("Create a new scheduled payment") }}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            {% endif %}
+                            </div>
+        {% endif %}
                         </div>
     {% endif %}
                     </div>
@@ -179,7 +229,8 @@
                             {% endif %}
                             {% include 'components/forms/payment_types.html.twig' with {
                                     'current': ptype,
-                                    'varname': 'type_paiement_cotis'
+                                    'varname': 'type_paiement_cotis',
+                                    'disabled': contribution.hasSchedule()
                             } %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
@@ -292,7 +343,7 @@
     {% endif %}
 
     $(function() {
-        {% if not contribution.id -%}
+    {% if not contribution.id -%}
         var _types_amounts = {
             {%- for key, values in type_cotis_options -%}
                {%- if values.amount > 0 -%}
@@ -339,6 +390,163 @@
                 $('#transaction_related').hide();
             }
         });
+    {% endif %}
+
+    {% if contribution.hasSchedule() %}
+            {# Contributions popup #}
+            var _btnuser_mapping = function(){
+                $('#scheduledslist').click(function(){
+                    $.ajax({
+                        url: '{{ url_for("scheduledPayments") }}',
+                        type: "GET",
+                        data: {
+                            ajax: true,
+                            id_cotis: '{{ contribution.id }}'
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '#scheduledslist',
+                            loader: 'button'
+                        } %},
+                        success: function(res){
+                            _contribs_dialog(res, '{{ contribution.id }}');
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying scheduled payments :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                });
+            }
+            _btnuser_mapping();
+
+            var _contribs_dialog = function(res, id_cotis){
+                {% include "elements/js/modal.js.twig" with {
+                    modal_title_twig: _T("Scheduled payments")|e("js"),
+                    modal_content: "res",
+                    modal_class: "scheduledpayments fullscreen",
+                    modal_content_class: "scrolling",
+                    modal_deny_only: true,
+                    modal_cancel_text: _T("Close")|e('js')
+                } %}
+                _contribs_ajax_mapper(res, id_cotis);
+            }
+
+            var _contribs_ajax_mapper = function(res, id_cotis){
+                /*$('.scheduledpayments .filter.icon').remove();
+                $('.scheduledpayments .infoline .button').remove();
+                $('.scheduledpayments .contribution_row input[type=checkbox]').hide();
+
+                //Initialize Fomantic components
+                $('.scheduledpayments .dropdown').dropdown();
+                {% include "elements/js/calendar.js.twig" %}
+
+                //Deactivate contributions list links
+                $('.scheduledpayments tbody a').click(function(){
+                    //for links in body (members links), we de nothing
+                    return false;
+                });
+
+                //Use JS to send forms
+                $('.scheduledpayments form').on('submit', function(){
+                    var _form = $(this);
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: "POST",
+                        data: _form.serialize(),
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '.scheduledpayments'
+                        } %},
+                        success: function(res){
+                            $('#main-container').remove();
+                            $('.scheduledpayments .content').append(res);
+                            _contribs_ajax_mapper(res, max_amount);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        }
+                    });
+                    return false;
+                });
+
+                _bindDropdownsAutosubmit();*/
+
+                //Bind pagination and ordering links
+                /*$('.scheduledpayments .pagination a, .scheduledpayments thead a').click(function() {
+                    $.ajax({
+                        url: this.href,
+                        type: "GET",
+                        data: {
+                            ajax: true,
+                            max_amount: max_amount
+                        },
+                        {% include "elements/js/loader.js.twig" with {
+                            selector: '.scheduledpayments'
+                        } %},
+                        success: function(res){
+                            $('#main-container').remove();
+                            $('.scheduledpayments .content').append(res);
+                            _contribs_ajax_mapper(res, max_amount);
+                        },
+                        error: function() {
+                            {% include "elements/js/modal.js.twig" with {
+                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                modal_without_content: true,
+                                modal_class: "mini",
+                                modal_deny_only: true,
+                                modal_cancel_text: _T("Close")|e("js"),
+                                modal_classname: "redalert",
+                            } %}
+                        },
+                    });
+                    return false;
+                });*/
+
+                //Bind reset filters button
+                /*$('#clear_filter').click(function(event) {
+                    var _this = $(this);
+                    _this.closest('form').submit(function(event) {
+                        var _form = $(this);
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: {
+                                clear_filter: true
+                            },
+                            {% include "elements/js/loader.js.twig" with {
+                                selector: '.scheduledpayments'
+                            } %},
+                            success: function(res){
+                                $('#main-container').remove();
+                                $('.scheduledpayments .content').append(res);
+                                _contribs_ajax_mapper(res, max_amount);
+                            },
+                            error: function() {
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
+                            }
+                        });
+                    });
+                });*/
+            }
     {% endif %}
     });
 </script>

@@ -367,6 +367,22 @@ CREATE TABLE galette_documents (
   KEY (type)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
+-- table for payments schedules
+DROP TABLE IF EXISTS galette_payments_schedules;
+CREATE TABLE galette_payments_schedules (
+  id_schedule int(10) unsigned NOT NULL auto_increment,
+  id_cotis int(10) unsigned NOT NULL,
+  id_paymenttype int(10) unsigned NOT NULL,
+  creation_date datetime NOT NULL,
+  scheduled_date datetime NOT NULL,
+  amount decimal(15, 2) NOT NULL,
+  paid tinyint(1) DEFAULT FALSE,
+  comment text,
+  PRIMARY KEY (id_schedule),
+  FOREIGN KEY (id_cotis) REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (

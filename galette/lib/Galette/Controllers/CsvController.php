@@ -22,7 +22,9 @@
 namespace Galette\Controllers;
 
 use Galette\Filters\ContributionsList;
+use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
+use Galette\IO\ScheduledPaymentsCsv;
 use Laminas\Db\ResultSet\ResultSet;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -724,6 +726,39 @@ class CsvController extends AbstractController
             $type
         );
         $csv->exportContributions($filters);
+
+        $filepath = $csv->getPath();
+        $filename = $csv->getFileName();
+
+        return $this->sendResponse($response, $filepath, $filename);
+    }
+
+    /**
+     * Scheduled payments CSV exports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function scheduledPaymentsExport(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $get = $request->getQueryParams();
+
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_scheduled_payments';
+
+        if (isset($this->session->$session_var)) {
+            $filters = $this->session->$session_var;
+        } else {
+            $filters = new ScheduledPaymentsList();
+        }
+
+        $csv = new ScheduledPaymentsCsv(
+            $this->zdb,
+            $this->login
+        );
+        $csv->exportScheduledPayments($filters);
 
         $filepath = $csv->getPath();
         $filename = $csv->getFileName();

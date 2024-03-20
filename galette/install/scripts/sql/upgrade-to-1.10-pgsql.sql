@@ -47,3 +47,33 @@ ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis SET NOT NULL;
 ALTER TABLE galette_transactions ALTER COLUMN trans_amount TYPE decimal(15,2);
 ALTER TABLE galette_transactions ALTER COLUMN trans_amount DROP DEFAULT;
 ALTER TABLE galette_transactions ALTER COLUMN trans_amount SET NOT NULL;
+
+-- sequence for payments schedules
+DROP SEQUENCE IF EXISTS galette_payments_schedules_id_seq;
+CREATE SEQUENCE galette_payments_schedules_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+-- table for payments schedules
+DROP TABLE IF EXISTS galette_payments_schedules CASCADE;
+CREATE TABLE galette_payments_schedules (
+  id_schedule integer DEFAULT nextval('galette_payments_schedules_id_seq'::text) NOT NULL,
+  id_cotis integer REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
+  id_paymenttype integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  creation_date date NOT NULL,
+  scheduled_date date NOT NULL,
+  amount decimal(15,2) NOT NULL,
+  paid boolean DEFAULT FALSE,
+  comment text,
+  PRIMARY KEY (id_schedule)
+);
+-- change fields types and default values
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis TYPE decimal(15,2);
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis DROP DEFAULT;
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis SET NOT NULL;
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount TYPE decimal(15,2);
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount DROP DEFAULT;
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount SET NOT NULL;

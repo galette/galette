@@ -182,7 +182,7 @@ class Contribution
                 $this->retrieveEndDate();
             }
             if (isset($args['payment_type'])) {
-                $this->payment_type = $args['payment_type'];
+                $this->setPaymentType((int)$args['payment_type']);
             }
         } elseif (is_object($args)) {
             $this->loadFromRS($args);
@@ -469,7 +469,7 @@ class Contribution
                         break;
                     case 'type_paiement_cotis':
                         if ($value != '') {
-                            $this->payment_type = (int)$value;
+                            $this->setPaymentType((int)$value);
                         }
                         break;
                     case 'info_cotis':
@@ -1395,6 +1395,30 @@ class Contribution
     }
 
     /**
+     * Does contribution have attached scheduled payment?
+     *
+     * @return bool
+     * @throws Throwable
+     */
+    public function hasSchedule(): bool
+    {
+        $schedule = new ScheduledPayment($this->zdb);
+        return $schedule->isContributionHandled($this->id ?? 0);
+    }
+
+    /**
+     * Is schedule fully allocated
+     *
+     * @return bool
+     * @throws Throwable
+     */
+    public function isScheduleFullyAllocated(): bool
+    {
+        $schedule = new ScheduledPayment($this->zdb);
+        return $schedule->isFullyAllocated($this);
+    }
+
+    /**
      * Set (and check) payment type
      *
      * @param int $value Payment type to set
@@ -1415,7 +1439,11 @@ class Contribution
             $this->ptypes_list = $ptypes->getList();
         }
         if (isset($this->ptypes_list[$value])) {
-            $this->payment_type = $value;
+            if (isset($this->id) && $this->payment_type != $value && $this->hasSchedule()) {
+                $this->errors[] = _T("Cannot change payment type if there is an attached scheduled payment");
+            } else {
+                $this->payment_type = $value;
+            }
         } else {
             Analog::log(
                 'Unknown payment type ' . $value,

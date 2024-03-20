@@ -97,7 +97,7 @@
                                     {% endif %}
                                 </th>
                             {% endfor %}
-                            {% if mode != 'ajax' and no_action is not defined or no_action == false %}
+                            {% if mode != 'ajax' and (no_action is not defined or no_action == false) %}
                                 <th class="actions_row">{{ _T('Actions') }}</th>
                             {% endif %}
                         {% endblock %}

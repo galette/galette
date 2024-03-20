@@ -64,6 +64,16 @@ trait EntityHelper
     abstract protected function setFields(): self;
 
     /**
+     * Get fields
+     *
+     * @return array<string, array<string, string>>
+     */
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+    /**
      * Global isset method
      * Required for twig to access properties via __get
      *

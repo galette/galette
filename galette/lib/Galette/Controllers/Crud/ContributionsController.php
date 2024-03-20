@@ -21,6 +21,8 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Entity\PaymentType;
+use Galette\Entity\ScheduledPayment;
 use Galette\Features\BatchList;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
@@ -106,6 +108,10 @@ class ContributionsController extends CrudController
 
         // contribution types
         $params['type_cotis_options'] = $contributions_types;
+
+        if ($contrib->id != '') {
+            $params['scheduled'] = new ScheduledPayment($this->zdb, $contrib->id);
+        }
 
         // members
         $m = new Members();
@@ -853,14 +859,22 @@ class ContributionsController extends CrudController
         if (count($error_detected) == 0) {
             $this->session->contribution = null;
             if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
-                //new contribution
+                //if part of a transaction, and transaction is not fully allocated, create a new contribution
                 $redirect_url = $this->routeparser->urlFor(
                     'addContribution',
                     [
-                        'type'      => $post['contrib_type'] ?? $type
+                        'type' => $post['contrib_type'] ?? $type
                     ]
                 ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
                 '&' . Adherent::PK . '=' . $contrib->member;
+            } elseif ($contrib->payment_type === PaymentType::SCHEDULED/* && !$contrib->isScheduleFullyAllocated() */) {
+                //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
+                $redirect_url = $this->routeparser->urlFor(
+                    'addScheduledPayment',
+                    [
+                        Contribution::PK => $contrib->id
+                    ]
+                );
             } else {
                 //contributions list for member
                 $redirect_url = $this->routeparser->urlFor(

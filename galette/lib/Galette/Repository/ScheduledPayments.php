@@ -21,7 +21,8 @@
 
 namespace Galette\Repository;
 
-use ArrayObject;
+use Galette\Entity\ScheduledPayment;
+use Galette\Filters\ScheduledPaymentsList;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
@@ -31,22 +32,19 @@ use Galette\Core\Login;
 use Galette\Core\History;
 use Galette\Entity\Contribution;
 use Galette\Entity\Adherent;
-use Galette\Entity\Transaction;
-use Galette\Entity\ContributionsTypes;
-use Galette\Filters\ContributionsList;
 use Laminas\Db\Sql\Select;
 
 /**
- * Contributions class for galette
+ * Scheduled payments class for galette
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Contributions
+class ScheduledPayments
 {
-    public const TABLE = Contribution::TABLE;
-    public const PK = Contribution::PK;
+    public const TABLE = ScheduledPayment::TABLE;
+    public const PK = ScheduledPayment::PK;
 
-    private ContributionsList $filters;
+    private ScheduledPaymentsList $filters;
     private int $count = 0;
 
     private Db $zdb;
@@ -58,54 +56,55 @@ class Contributions
     /**
      * Default constructor
      *
-     * @param Db                 $zdb     Database
-     * @param Login              $login   Login
-     * @param ?ContributionsList $filters Filtering
+     * @param Db                     $zdb     Database
+     * @param Login                  $login   Login
+     * @param ?ScheduledPaymentsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?ContributionsList $filters = null)
+    public function __construct(Db $zdb, Login $login, ?ScheduledPaymentsList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
 
         if ($filters === null) {
-            $this->filters = new ContributionsList();
+            $this->filters = new ScheduledPaymentsList();
         } else {
             $this->filters = $filters;
         }
     }
 
     /**
-     * Get contributions list for a specific transaction
+     * Get scheduled payments list for a specific contribution
      *
-     * @param int $trans_id Transaction identifier
+     * @param int $contrib_id Contribution identifier
      *
-     * @return Contribution[]
+     * @return ScheduledPayment[]
      */
-    public function getListFromTransaction(int $trans_id): array
+    public function getListFromContribution(int $contrib_id): array
     {
-        $this->filters->from_transaction = $trans_id;
+        $this->filters->from_contribution = $contrib_id;
+        /** @phpstan-ignore-next-line */
         return $this->getList(true);
     }
 
     /**
-     * Get contributions list for a specific transaction
+     * Get scheduled payments list for a specific contribution
      *
-     * @param array<int>     $ids        an array of members id that has been selected
-     * @param bool           $as_contrib return the results as an array of
-     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
-     *                                   an array. If null, all fields will be returned
+     * @param array<int>     $ids       an array of members id that has been selected
+     * @param bool           $as_object return the results as an array of
+     * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
+     *                                  an array. If null, all fields will be returned
      *
      * @return array<int, Contribution>|false
      */
-    public function getArrayList(array $ids, bool $as_contrib = false, ?array $fields = null): array|false
+    public function getArrayList(array $ids, bool $as_object = false, ?array $fields = null): array|false
     {
         if (count($ids) < 1) {
-            Analog::log('No contribution selected.', Analog::INFO);
+            Analog::log('No scheduled payment selected.', Analog::INFO);
             return false;
         }
 
         $this->current_selection = $ids;
-        $list = $this->getList($as_contrib, $fields);
+        $list = $this->getList($as_object, $fields);
         $array_list = [];
         foreach ($list as $entry) {
             $array_list[] = $entry;
@@ -114,35 +113,35 @@ class Contributions
     }
 
     /**
-     * Get contributions list
+     * Get scheduled payments list
      *
-     * @param bool           $as_contrib return the results as an array of
-     *                                   Contribution object.
-     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
-     *                                   an array. If null, all fields will be returned
+     * @param bool           $as_object return the results as an array of
+     *                                  ScheduledPayment object.
+     * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
+     *                                  an array. If null, all fields will be returned
      *
      * @return array<int, Contribution>|ResultSet
      */
-    public function getList(bool $as_contrib = false, ?array $fields = null): array|ResultSet
+    public function getList(bool $as_object = true, ?array $fields = null): array|ResultSet
     {
         try {
             $select = $this->buildSelect($fields);
 
             $this->filters->setLimits($select);
 
-            $contributions = array();
+            $scheduleds = array();
             $results = $this->zdb->execute($select);
-            if ($as_contrib) {
+            if ($as_object) {
                 foreach ($results as $row) {
-                    $contributions[] = new Contribution($this->zdb, $this->login, $row);
+                    $scheduleds[] = new ScheduledPayment($this->zdb, $row);
                 }
             } else {
-                $contributions = $results;
+                $scheduleds = $results;
             }
-            return $contributions;
+            return $scheduleds;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list contributions | ' . $e->getMessage(),
+                'Cannot list scheduled payments | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -164,12 +163,18 @@ class Contributions
                 $fieldsList = $fields;
             }
 
-            $select = $this->zdb->select(self::TABLE, 'a');
+            $select = $this->zdb->select(self::TABLE, 's');
             $select->columns($fieldsList);
 
             $select->join(
-                array('p' => PREFIX_DB . Adherent::TABLE),
-                'a.' . Adherent::PK . '= p.' . Adherent::PK,
+                array('c' => PREFIX_DB . Contribution::TABLE),
+                's.' . Contribution::PK . '= c.' . Contribution::PK,
+                array()
+            );
+
+            $select->join(
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                'c.' . Adherent::PK . '= a.' . Adherent::PK,
                 array()
             );
 
@@ -183,7 +188,7 @@ class Contributions
             return $select;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
+                'Cannot build SELECT clause for scheduled payments | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -191,7 +196,7 @@ class Contributions
     }
 
     /**
-     * Count contributions from the query
+     * Count scheduled payments from the query
      *
      * @param Select $select Original select
      *
@@ -202,7 +207,6 @@ class Contributions
         try {
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
-            $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
                 array(
@@ -218,7 +222,7 @@ class Contributions
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot count contributions | ' . $e->getMessage(),
+                'Cannot count scheduled payments | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -226,7 +230,7 @@ class Contributions
     }
 
     /**
-     * Calculate sum of all selected contributions
+     * Calculate sum of all selected scheduled payments
      *
      * @param Select $select Original select
      *
@@ -237,22 +241,21 @@ class Contributions
         try {
             $sumSelect = clone $select;
             $sumSelect->reset($sumSelect::COLUMNS);
-            $sumSelect->reset($sumSelect::JOINS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
                 array(
-                    'contribsum' => new Expression('SUM(montant_cotis)')
+                    'scheduledsum' => new Expression('SUM(amount)')
                 )
             );
 
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
-            if ($result->contribsum) {
-                $this->sum = round($result->contribsum, 2);
+            if ($result->scheduledsum) {
+                $this->sum = round($result->scheduledsum, 2);
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot calculate contributions sum | ' . $e->getMessage(),
+                'Cannot calculate scheduled payments sum | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -269,35 +272,27 @@ class Contributions
         $order = array();
 
         switch ($this->filters->orderby) {
-            case ContributionsList::ORDERBY_ID:
+            case ScheduledPaymentsList::ORDERBY_ID:
+                $order[] = ScheduledPayment::PK . ' ' . $this->filters->ordered;
+                break;
+            case ScheduledPaymentsList::ORDERBY_MEMBER:
+                $order[] = 'a.nom_adh ' . $this->filters->getDirection();
+                $order[] = 'a.prenom_adh ' . $this->filters->getDirection();
+                break;
+            case ScheduledPaymentsList::ORDERBY_DATE:
+                $order[] = 'creation_date ' . $this->filters->ordered;
+                break;
+            case ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE:
+                $order[] = 'scheduled_date ' . $this->filters->ordered;
+                break;
+            case ScheduledPaymentsList::ORDERBY_CONTRIBUTION:
                 $order[] = Contribution::PK . ' ' . $this->filters->ordered;
                 break;
-            case ContributionsList::ORDERBY_DATE:
-                $order[] = 'date_enreg ' . $this->filters->ordered;
+            case ScheduledPaymentsList::ORDERBY_AMOUNT:
+                $order[] = 'amount ' . $this->filters->ordered;
                 break;
-            case ContributionsList::ORDERBY_BEGIN_DATE:
-                $order[] = 'date_debut_cotis ' . $this->filters->ordered;
-                break;
-            case ContributionsList::ORDERBY_END_DATE:
-                $order[] = 'date_fin_cotis ' . $this->filters->ordered;
-                break;
-            case ContributionsList::ORDERBY_MEMBER:
-                $order[] = 'nom_adh ' . $this->filters->ordered;
-                $order[] = 'prenom_adh ' . $this->filters->ordered;
-                break;
-            case ContributionsList::ORDERBY_TYPE:
-                $order[] = ContributionsTypes::PK;
-                break;
-            case ContributionsList::ORDERBY_AMOUNT:
-                $order[] = 'montant_cotis ' . $this->filters->ordered;
-                break;
-            /*
-            Hum... I really do not know how to sort a query with a value that
-            is calculated code side :/
-            case ContributionsList::ORDERBY_DURATION:
-                break;*/
-            case ContributionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
+            case ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE:
+                $order[] = 'id_paymenttype ' . $this->filters->ordered;
                 break;
             default:
                 $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
@@ -316,23 +311,18 @@ class Contributions
      */
     private function buildWhereClause(Select $select): void
     {
-        $field = 'date_debut_cotis';
-
         switch ($this->filters->date_field) {
-            case ContributionsList::DATE_RECORD:
-                $field = 'date_enreg';
+            case ScheduledPaymentsList::DATE_RECORD:
+                $field = 'creation_date';
                 break;
-            case ContributionsList::DATE_END:
-                $field = 'date_fin_cotis';
-                break;
-            case ContributionsList::DATE_BEGIN:
+            case ScheduledPaymentsList::DATE_SCHEDULED:
             default:
-                $field = 'date_debut_cotis';
+                $field = 'scheduled_date';
                 break;
         }
 
         if (isset($this->current_selection)) {
-            $select->where->in('a.' . self::PK, $this->current_selection);
+            $select->where->in('s.' . self::PK, $this->current_selection);
         }
 
         try {
@@ -354,82 +344,24 @@ class Contributions
 
             if ($this->filters->payment_type_filter !== null) {
                 $select->where->equalTo(
-                    'type_paiement_cotis',
+                    'id_paymenttype',
                     $this->filters->payment_type_filter
                 );
             }
 
-            if ($this->filters->from_transaction !== false) {
+            if ($this->filters->from_contribution !== false) {
                 $select->where->equalTo(
-                    Transaction::PK,
-                    $this->filters->from_transaction
+                    'c.' . Contribution::PK,
+                    $this->filters->from_contribution
                 );
             }
 
-            if ($this->filters->max_amount !== null) {
-                $select->where(
-                    '(montant_cotis <= ' . $this->filters->max_amount .
-                    ' OR montant_cotis IS NULL)'
-                );
-            }
-
-            $member_clause = null;
-            if ($this->filters->filtre_cotis_adh != null) {
-                $member_clause = [$this->filters->filtre_cotis_adh];
-                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
-                    $member = new Adherent(
-                        $this->zdb,
-                        (int)$this->filters->filtre_cotis_adh,
-                        [
-                            'picture' => false,
-                            'groups' => false,
-                            'dues' => false,
-                            'parent' => true
-                        ]
-                    );
-                    if (
-                        !$member->hasParent() ||
-                        $member->parent->id != $this->login->id
-                    ) {
-                        Analog::log(
-                            'Trying to display contributions for member #' . $member->id .
-                            ' without appropriate ACLs',
-                            Analog::WARNING
-                        );
-                        $this->filters->filtre_cotis_adh = $this->login->id;
-                        $member_clause = [$this->login->id];
-                    }
-                }
-            } elseif ($this->filters->filtre_cotis_children !== false) {
-                $member_clause = [$this->login->id];
-                $member = new Adherent(
-                    $this->zdb,
-                    (int)$this->filters->filtre_cotis_children,
-                    [
-                        'picture'   => false,
-                        'groups'    => false,
-                        'dues'      => false,
-                        'children'  => true
-                    ]
-                );
-                foreach ($member->children as $child) {
-                    $member_clause[] = $child->id;
-                }
-            } elseif (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                //non staff members can only view their own contributions
-                $member_clause = $this->login->id;
-            }
-
-            if ($member_clause !== null) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->where(
                     array(
-                        'a.' . Adherent::PK => $member_clause
+                        'a.' . Adherent::PK => $this->login->id
                     )
                 );
-            }
-
-            if ($this->filters->filtre_transactions === true) {
-                $select->where('a.trans_id IS NULL');
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -461,9 +393,9 @@ class Contributions
     }
 
     /**
-     * Remove specified contributions
+     * Remove specified scheduled payments
      *
-     * @param integer|array<int> $ids         Contributions identifiers to delete
+     * @param integer|array<int> $ids         Scheduled payments identifiers to delete
      * @param History            $hist        History
      * @param boolean            $transaction True to begin a database transaction
      *
@@ -484,10 +416,10 @@ class Contributions
             }
             $select = $this->zdb->select(self::TABLE);
             $select->where->in(self::PK, $list);
-            $contributions = $this->zdb->execute($select);
-            foreach ($contributions as $contribution) {
-                $c = new Contribution($this->zdb, $this->login, $contribution);
-                $res = $c->remove(false);
+            $scheduleds = $this->zdb->execute($select);
+            foreach ($scheduleds as $scheduled) {
+                $c = new ScheduledPayment($this->zdb, $scheduled);
+                $res = $c->remove();
                 if ($res === false) {
                     throw new \Exception();
                 }
@@ -499,7 +431,7 @@ class Contributions
                 str_replace(
                     '%list',
                     print_r($list, true),
-                    _T("Contributions deleted (%list)")
+                    _T("Scheduled payments deleted (%list)")
                 )
             );
             return true;
@@ -508,7 +440,7 @@ class Contributions
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove contributions | ' .
+                'An error occurred trying to remove scheduled payments | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );

@@ -48,6 +48,7 @@ class PaymentType
     private Db $zdb;
     private int $id;
 
+    public const SCHEDULED = 7;
     public const OTHER = 6;
     public const CASH = 1;
     public const CREDITCARD = 2;
@@ -76,9 +77,9 @@ class PaymentType
      *
      * @param integer $id Identifier
      *
-     * @return void
+     * @return bool
      */
-    private function load(int $id): void
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -89,6 +90,7 @@ class PaymentType
 
             $this->id = $id;
             $this->name = $res->type_name;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading payment type #' . $id . "Message:\n" .
@@ -277,7 +279,8 @@ class PaymentType
                 self::CREDITCARD    => _T("Credit card"),
                 self::CHECK         => _T("Check"),
                 self::TRANSFER      => _T("Transfer"),
-                self::PAYPAL        => _T("Paypal")
+                self::PAYPAL        => _T("Paypal"),
+                self::SCHEDULED     => _T("Payment schedule")
             ];
         } else {
             $systypes = [
@@ -286,7 +289,8 @@ class PaymentType
                 self::CREDITCARD    => "Credit card",
                 self::CHECK         => "Check",
                 self::TRANSFER      => "Transfer",
-                self::PAYPAL        => "Paypal"
+                self::PAYPAL        => "Paypal",
+                self::SCHEDULED     => "Payment schedule"
             ];
         }
         return $systypes;

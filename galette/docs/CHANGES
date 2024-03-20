@@ -24,6 +24,8 @@ Changes
 - Fix color for staff members on member cards
 - Display first staff members on public lists
 - Identify sponsors in members list
+- Add scheduled payments feature
+- Dispatch contribution into scheduled payments
 
 1.0.3 -> 1.0.4
 

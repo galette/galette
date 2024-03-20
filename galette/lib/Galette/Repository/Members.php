@@ -948,7 +948,7 @@ class Members
                 break;
         }
 
-        //anyways, we want to order by firstname, lastname
+        //anyway, we want to order by firstname, lastname
         if ($this->canOrderBy('nom_adh', $fields)) {
             $order[] = 'nom_adh ' . $this->filters->getDirection();
         }

@@ -206,7 +206,7 @@ class GaletteController extends AbstractController
             $this->preferences,
             $this->login
         );
-        $ptlist = $ptypes->getList();
+        $ptlist = $ptypes->getList(false);
 
         $m = new Members();
         $s = new Status($this->zdb);
