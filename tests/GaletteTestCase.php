@@ -713,7 +713,7 @@ abstract class GaletteTestCase extends TestCase
     {
         $ct = new \Galette\Entity\ContributionsTypes($this->zdb);
         if (count($ct->getCompleteList()) === 0) {
-            //status are not yet instanciated.
+            //contributions types are not yet instanciated.
             $res = $ct->installInit();
             $this->assertTrue($res);
         }

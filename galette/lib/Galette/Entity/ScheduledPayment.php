@@ -22,6 +22,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateTime;
 use Laminas\Db\Sql\Expression;
 use Throwable;
 use Galette\Core\Db;
@@ -42,6 +43,15 @@ class ScheduledPayment
 
     private Db $zdb;
     private int $id;
+    private int $id_contribution;
+    private Contribution $contribution;
+    private int $id_payment_type;
+    private PaymentType $payment_type;
+    private DateTime $creation_date;
+    private DateTime $scheduled_date;
+    private float $amount;
+    private bool $is_paid;
+    private string $comment;
 
     /**
      * Main constructor
@@ -152,6 +162,7 @@ class ScheduledPayment
      */
     public function remove(): bool
     {
+        return false;
         /*$id = $this->id;
         if ($this->isSystemType()) {
             throw new \RuntimeException(_T("You cannot delete system payment types!"));
@@ -178,78 +189,6 @@ class ScheduledPayment
     }
 
     /**
-     * Getter
-     *
-     * @param string $name Property name
-     *
-     * @return mixed
-     */
-    /*public function __get(string $name)
-    {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return $this->$name;
-            default:
-                Analog::log(
-                    'Unable to get Title property ' . $name,
-                    Analog::WARNING
-                );
-                break;
-        }
-    }*/
-
-    /**
-     * Isset
-     * Required for twig to access properties via __get
-     *
-     * @param string $name Property name
-     *
-     * @return bool
-     */
-    /*public function __isset(string $name): bool
-    {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return true;
-        }
-
-        return false;
-    }*/
-
-    /**
-     * Setter
-     *
-     * @param string $name  Property name
-     * @param mixed  $value Property value
-     *
-     * @return void
-     */
-    /*public function __set(string $name, $value): void
-    {
-        switch ($name) {
-            case 'name':
-                if (trim($value) === '') {
-                    Analog::log(
-                        'Name cannot be empty',
-                        Analog::WARNING
-                    );
-                } else {
-                    $this->old_name = $this->name;
-                    $this->name     = $value;
-                }
-                break;
-            default:
-                Analog::log(
-                    'Unable to set property ' . $name,
-                    Analog::WARNING
-                );
-                break;
-        }
-    }*/
-
-    /**
      * Get identifier
      *
      * @return ?int
@@ -257,6 +196,180 @@ class ScheduledPayment
     public function getId(): ?int
     {
         return $this->id ?? null;
+    }
+
+    /**
+     * Get contribution
+     *
+     * @return Contribution
+     */
+    public function getContribution(): Contribution
+    {
+        return $this->contribution;
+    }
+
+    /**
+     * Set contribution
+     *
+     * @param int|Contribution $contribution Contribution instance or id
+     *
+     * @return self
+     */
+    public function setContribution(int|Contribution $contribution): self
+    {
+        if (is_int($contribution)) {
+            global $login;
+            $contribution = new Contribution($this->zdb, $login, $contribution);
+        }
+        $this->contribution = $contribution;
+        return $this;
+    }
+
+    /**
+     * Get payment type
+     *
+     * @return PaymentType
+     */
+    public function getPaymentType(): PaymentType
+    {
+        return $this->payment_type;
+    }
+
+    /**
+     * Set payment type
+     *
+     * @param int|PaymentType $payment_type Payment type instance or id
+     *
+     * @return self
+     */
+    public function setPaymentType(int|PaymentType $payment_type): self
+    {
+        if (is_int($payment_type)) {
+            $payment_type = new PaymentType($this->zdb, $payment_type);
+        }
+        $this->payment_type = $payment_type;
+        return $this;
+    }
+
+    /**
+     * Get creation date
+     *
+     * @return DateTime
+     */
+    public function getCreationDate(): DateTime
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * Set creation date
+     *
+     * @param string|DateTime $creation_date Creation date
+     *
+     * @return self
+     */
+    public function setCreationDate(string|DateTime $creation_date): self
+    {
+        if (is_string($creation_date)) {
+            $creation_date = new DateTime($creation_date);
+        }
+        $this->creation_date = $creation_date;
+        return $this;
+    }
+
+    /**
+     * Get scheduled date
+     *
+     * @return DateTime
+     */
+    public function getScheduledDate(): DateTime
+    {
+        return $this->scheduled_date;
+    }
+
+    /**
+     * Set scheduled date
+     *
+     * @param string|DateTime $scheduled_date Scheduled date
+     *
+     * @return self
+     */
+    public function setScheduledDate(string|DateTime $scheduled_date): self
+    {
+        if (is_string($scheduled_date)) {
+            $scheduled_date = new DateTime($scheduled_date);
+        }
+        $this->scheduled_date = $scheduled_date;
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return float
+     */
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param float $amount Amount
+     *
+     * @return self
+     */
+    public function setAmount(float $amount): self
+    {
+        $this->amount = $amount;
+        return $this;
+    }
+
+    /**
+     * Is payment done?
+     *
+     * @return string
+     */
+    public function isPaid(): bool
+    {
+        return $this->is_paid;
+    }
+
+    /**
+     * Set paid
+     *
+     * @param bool $is_paid Paid status
+     *
+     * @return self
+     */
+    public function setPaid(bool $is_paid = true): self
+    {
+        $this->is_paid = $is_paid;
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment Comment
+     *
+     * @return self
+     */
+    public function setComment(string $comment): self
+    {
+        $this->comment = $comment;
+        return $this;
     }
 
     /**
@@ -305,5 +418,15 @@ class ScheduledPayment
     public function isFullyAllocated(Contribution $contrib): bool
     {
         return !($this->getAllocation($contrib->id) < $contrib->amount);
+    }
+
+    /**
+     * Get not fully allocated scheduled payments
+     *
+     * @return Contribution[]
+     */
+    public function getNotFullyAllocated(): array
+    {
+        return [];
     }
 }
