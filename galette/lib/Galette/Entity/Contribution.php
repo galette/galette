@@ -470,7 +470,7 @@ class Contribution
                     case 'type_paiement_cotis':
                         if ($value != '') {
                             $this->payment_type = (int)$value;
-                            if ($this->hasSchedule()) {
+                            if ($this->id !== null && $this->hasSchedule()) {
                                 $this->errors[] = _T("- A payment schedule is attached to current contribution");
                             } else {
                                 $this->payment_type = (int)$value;
