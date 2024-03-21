@@ -1399,6 +1399,12 @@ class Contribution
         return 'contribution';
     }
 
+    /**
+     * Does contribution have attached scheduled payment?
+     *
+     * @return bool
+     * @throws Throwable
+     */
     public function hasSchedule(): bool
     {
         $schedule = new ScheduledPayment($this->zdb);

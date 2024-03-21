@@ -295,6 +295,13 @@ class ScheduledPayment
         return $result->allocation;
     }
 
+    /**
+     * Is scheduled payment fully allocated?
+     *
+     * @param Contribution $contrib Contribution
+     *
+     * @return bool
+     */
     public function isFullyAllocated(Contribution $contrib): bool
     {
         return !($this->getAllocation($contrib->id) < $contrib->amount);
