@@ -87,7 +87,7 @@ class PaymentTypes extends GaletteTestCase
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
 
         $list = $types->getList();
-        $this->assertCount(6, $list);
+        $this->assertCount(7, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
@@ -101,7 +101,7 @@ class PaymentTypes extends GaletteTestCase
         $types->installInit();
 
         $list = $types->getList();
-        $this->assertCount(6, $list);
+        $this->assertCount(7, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
