@@ -44,8 +44,6 @@ class Links extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initStatus();
-        $this->initContributionsTypes();
 
         $this->links = new \Galette\Core\Links($this->zdb, false);
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);

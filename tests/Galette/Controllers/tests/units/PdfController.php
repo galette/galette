@@ -44,10 +44,6 @@ class PdfController extends GaletteTestCase
     {
         parent::setUp();
 
-        $this->initModels();
-        $this->initStatus();
-        $this->initContributionsTypes();
-
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
             $this->preferences,

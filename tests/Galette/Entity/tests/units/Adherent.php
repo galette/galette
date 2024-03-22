@@ -75,8 +75,6 @@ class Adherent extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initStatus();
-        $this->initTitles();
 
         $this->default_deps = [
             'picture'   => true,

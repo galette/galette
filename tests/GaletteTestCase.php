@@ -102,6 +102,12 @@ abstract class GaletteTestCase extends TestCase
         $container = $this->container;
         $galette_log_var = $this->logger_storage;
 
+        $this->initPaymentTypes();
+        $this->initStatus();
+        $this->initContributionsTypes();
+        $this->initModels();
+        $this->initTitles();
+
         $authenticate = new \Galette\Middleware\Authenticate($container);
 
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
@@ -709,6 +715,21 @@ abstract class GaletteTestCase extends TestCase
         if (count($ct->getCompleteList()) === 0) {
             //status are not yet instanciated.
             $res = $ct->installInit();
+            $this->assertTrue($res);
+        }
+    }
+
+    /**
+     * Initialize default payment types in database
+     *
+     * @return void
+     */
+    protected function initPaymentTypes(): void
+    {
+        $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
+        if (count($types->getList()) === 0) {
+            //payment types are not yet instanciated.
+            $res = $types->installInit(false);
             $this->assertTrue($res);
         }
     }

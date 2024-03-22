@@ -71,7 +71,6 @@ class Transactions extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
