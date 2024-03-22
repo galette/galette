@@ -470,11 +470,6 @@ class Contribution
                     case 'type_paiement_cotis':
                         if ($value != '') {
                             $this->payment_type = (int)$value;
-                            if ($this->id !== null && $this->hasSchedule()) {
-                                $this->errors[] = _T("- A payment schedule is attached to current contribution");
-                            } else {
-                                $this->payment_type = (int)$value;
-                            }
                         }
                         break;
                     case 'info_cotis':
@@ -1444,7 +1439,11 @@ class Contribution
             $this->ptypes_list = $ptypes->getList();
         }
         if (isset($this->ptypes_list[$value])) {
-            $this->payment_type = $value;
+            if ($this->id !== null && $this->hasSchedule()) {
+                $this->errors[] = _T("Cannot change payment type if there is an attached scheduled payment");
+            } else {
+                $this->payment_type = $value;
+            }
         } else {
             Analog::log(
                 'Unknown payment type ' . $value,

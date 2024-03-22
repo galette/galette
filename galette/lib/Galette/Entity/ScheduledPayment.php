@@ -72,9 +72,9 @@ class ScheduledPayment
      *
      * @param integer $id Identifier
      *
-     * @return void
+     * @return bool
      */
-    private function load(int $id): void
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -83,7 +83,11 @@ class ScheduledPayment
             $results = $this->zdb->execute($select);
             $rs = $results->current();
 
+            if (!$rs) {
+                return false;
+            }
             $this->loadFromRs($rs);
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading scheduled payment #' . $id . "Message:\n" .
@@ -131,26 +135,36 @@ class ScheduledPayment
 
         if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
             $this->errors[] = _T('Contribution is required');
+        } else {
+            $contribution = new Contribution($this->zdb, $login);
+            if (!$contribution->load($data[Contribution::PK])) {
+                $this->errors[] = _T('Unable to load contribution');
+            } else {
+                if (isset($data['amount'])) {
+                    //Amount is not required (will defaults to contribution amount)
+                    if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
+                        $this->errors[] = _T('Amount must be a positive number');
+                    } elseif ($data['amount'] > $contribution->amount) {
+                        $this->errors[] = _T('Amount cannot be greater than contribution amount');
+                    }
+                }
+                if ($contribution->payment_type !== PaymentType::SCHEDULED) {
+                    $this->errors[] = _T('Payment type for contribution must be set to scheduled');
+                }
+            }
         }
 
         if (!isset($data['id_paymenttype']) || !is_numeric($data['id_paymenttype'])) {
             $this->errors[] = _T('Payment type is required');
+        } else {
+            //no schedule inception allowed!
+            if ($data['id_paymenttype'] === PaymentType::SCHEDULED) {
+                $this->errors[] = _T('Cannot schedule a scheduled payment!');
+            }
         }
 
         if (!isset($data['scheduled_date'])) {
             $this->errors[] = _T('Scheduled date is required');
-        }
-
-        $contribution = new Contribution($this->zdb, $login);
-        if (!$contribution->load($data[Contribution::PK])) {
-            $this->errors[] = _T('Unable to load contribution');
-        } elseif (isset($data['amount'])) {
-            //Amount is not required (will defaults to contribution amount)
-            if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
-                $this->errors[] = _T('Amount must be a positive number');
-            } elseif ($data['amount'] > $contribution->amount) {
-                $this->errors[] = _T('Amount cannot be greater than contribution amount');
-            }
         }
 
         if (count($this->errors) > 0) {
@@ -219,30 +233,24 @@ class ScheduledPayment
      */
     public function remove(): bool
     {
-        return false;
-        /*$id = $this->id;
-        if ($this->isSystemType()) {
-            throw new \RuntimeException(_T("You cannot delete system payment types!"));
-        }
+        $id = $this->id;
 
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
             $this->zdb->execute($delete);
-            $this->deleteTranslation($this->name);
             Analog::log(
-                'Payment type #' . $id . ' (' . $this->name
-                . ') deleted successfully.',
+                'Scheduled Payment #' . $id .  ' deleted successfully.',
                 Analog::INFO
             );
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to delete payment type ' . $id . ' | ' . $e->getMessage(),
+                'Unable to delete scheduled payment ' . $id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
-        }*/
+        }
     }
 
     /**

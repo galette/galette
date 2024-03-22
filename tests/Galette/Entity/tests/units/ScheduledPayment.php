@@ -96,6 +96,7 @@ class ScheduledPayment extends GaletteTestCase
         //create contribution for member
         $this->createContribution();
 
+        $this->assertFalse($this->contrib->hasSchedule());
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
 
         $data = [
@@ -105,6 +106,8 @@ class ScheduledPayment extends GaletteTestCase
             'amount' => 10.0,
             'comment' => 'FAKER' . $this->seed
         ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
 
         $check = $scheduledPayment->check($data);
         if (count($scheduledPayment->getErrors())) {
@@ -114,6 +117,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertTrue($scheduledPayment->store());
 
         $pid = $scheduledPayment->getId();
+        $this->assertTrue($this->contrib->hasSchedule());
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb, $pid);
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
@@ -130,7 +134,174 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testUpdate(): void
     {
-        //todo
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+
+        //no amount, will take contribution amount
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'comment' => 'FAKER' . $this->seed
+        ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $pid = $scheduledPayment->getId();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb, $pid);
+        $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
+        $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
+        $this->assertSame($data['scheduled_date']->format('Y-m-d'), $scheduledPayment->getScheduledDate()->format('Y-m-d'));
+        $this->assertSame($this->contrib->amount, $scheduledPayment->getAmount());
+        $this->assertSame($data['comment'], $scheduledPayment->getComment());
+
+        $data['amount'] = 20.0;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb, $pid);
+        $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
+        $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
+        $this->assertSame($data['scheduled_date']->format('Y-m-d'), $scheduledPayment->getScheduledDate()->format('Y-m-d'));
+        $this->assertSame($data['amount'], $scheduledPayment->getAmount());
+        $this->assertSame($data['comment'], $scheduledPayment->getComment());
+    }
+
+    /**
+     * Test update
+     *
+     * @return void
+     */
+    public function testCheck(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+
+        $data = [];
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Contribution is required',
+                'Payment type is required',
+                'Scheduled date is required'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $data = [
+            'scheduled_date' => new \DateTime()
+        ];
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Contribution is required',
+                'Payment type is required'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $data += [
+            'id_paymenttype' => \Galette\Entity\PaymentType::CREDITCARD
+        ];
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Contribution is required'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $data += [
+            \Galette\Entity\Contribution::PK => $this->contrib->id
+        ];
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Payment type for contribution must be set to scheduled'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+
+        $data += [
+            'amount' => -1
+        ];
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Amount must be a positive number'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $data['amount'] = 0;
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Amount must be a positive number'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $data['amount'] = 200.0;
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Amount cannot be greater than contribution amount'
+            ],
+            $scheduledPayment->getErrors()
+        );
+
+        $data['amount'] = 10.0;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+
+        $data['id_paymenttype'] = \Galette\Entity\PaymentType::SCHEDULED;
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(
+            [
+                'Cannot schedule a scheduled payment!'
+            ],
+            $scheduledPayment->getErrors()
+        );
     }
 
     /**
@@ -140,7 +311,34 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testDelete(): void
     {
-        //todo
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        //no amount, will take contribution amount
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'comment' => 'FAKER' . $this->seed
+        ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $pid = $scheduledPayment->getId();
+
+        $this->assertTrue($scheduledPayment->load($pid));
+        $this->assertTrue($scheduledPayment->remove());
+        $this->assertFalse($scheduledPayment->load($pid));
     }
 
     /**
@@ -150,7 +348,44 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testContributionRestriction(): void
     {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+
+        //no amount, will take contribution amount
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'comment' => 'FAKER' . $this->seed
+        ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        $this->assertSame([], $this->contrib->getErrors());
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
         //test it's not possible to change payment type if there is a scheduled payment
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::CASH;
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Existing errors prevents storing contribution: Array
+(
+    [0] => Cannot change payment type if there is an attached scheduled payment
+)
+');
+        $this->assertFalse($this->contrib->store());
+        $this->assertSame(
+            ['Cannot change payment type if there is an attached scheduled payment'],
+            $this->contrib->getErrors()
+        );
     }
 
     /**
