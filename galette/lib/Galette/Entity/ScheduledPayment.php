@@ -132,11 +132,11 @@ class ScheduledPayment
         global $login;
 
         $this->errors = [];
+        $contribution = new Contribution($this->zdb, $login);
 
         if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
             $this->errors[] = _T('Contribution is required');
         } else {
-            $contribution = new Contribution($this->zdb, $login);
             if (!$contribution->load($data[Contribution::PK])) {
                 $this->errors[] = _T('Unable to load contribution');
             } else {
