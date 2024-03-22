@@ -116,6 +116,13 @@ class ScheduledPayment
         $this->comment = $rs->comment;
     }
 
+    /**
+     * Check data
+     *
+     * @param array<string,mixed> $data Data
+     *
+     * @return boolean
+     */
     public function check(array $data): bool
     {
         global $login;
@@ -340,6 +347,14 @@ class ScheduledPayment
         return $this->creation_date;
     }
 
+    /**
+     * Build a date from a string
+     *
+     * @param string $field Field translated name, to display when errored
+     * @param string $date  Date string
+     *
+     * @return ?DateTime
+     */
     protected function buildDate(string $field, string $date): ?DateTime
     {
         try {
