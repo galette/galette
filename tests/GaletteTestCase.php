@@ -729,7 +729,7 @@ abstract class GaletteTestCase extends TestCase
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         if (count($types->getList()) === 0) {
             //payment types are not yet instanciated.
-            $res = $types->installInit(false);
+            $res = $types->installInit();
             $this->assertTrue($res);
         }
     }
@@ -742,7 +742,7 @@ abstract class GaletteTestCase extends TestCase
     protected function initTitles(): void
     {
         $titles = new \Galette\Repository\Titles($this->zdb);
-        if (count($titles->getList($this->zdb)) === 0) {
+        if (count($titles->getList()) === 0) {
             $res = $titles->installInit();
             $this->assertTrue($res);
         }
