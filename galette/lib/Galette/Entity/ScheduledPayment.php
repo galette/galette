@@ -43,9 +43,7 @@ class ScheduledPayment
 
     private Db $zdb;
     private int $id;
-    private int $id_contribution;
     private Contribution $contribution;
-    private int $id_payment_type;
     private PaymentType $payment_type;
     private DateTime $creation_date;
     private DateTime $scheduled_date;
@@ -329,7 +327,7 @@ class ScheduledPayment
     /**
      * Is payment done?
      *
-     * @return string
+     * @return bool
      */
     public function isPaid(): bool
     {
