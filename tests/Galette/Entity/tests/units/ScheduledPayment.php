@@ -34,18 +34,6 @@ class ScheduledPayment extends GaletteTestCase
     protected int $seed = 20240321210526;
 
     /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->initPaymentTypes();
-        $this->initContributionsTypes();
-    }
-
-    /**
      * Tear down tests
      *
      * @return void
