@@ -27,8 +27,6 @@ use Laminas\Db\Sql\Expression;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
-use Galette\Features\I18n;
-use Galette\Features\Translatable;
 
 /**
  * Scheduled payment
@@ -49,7 +47,9 @@ class ScheduledPayment
     private DateTime $scheduled_date;
     private float $amount;
     private bool $is_paid;
-    private string $comment;
+    private ?string $comment;
+    /** @var string[] */
+    private array $errors = [];
 
     /**
      * Main constructor
@@ -103,9 +103,63 @@ class ScheduledPayment
      */
     private function loadFromRs(ArrayObject $rs): void
     {
+        global $login;
+
         $pk = self::PK;
         $this->id = $rs->$pk;
-        //$this->name = $rs->type_name;
+        $this->contribution = new Contribution($this->zdb, $login, $rs->{Contribution::PK});
+        $this->payment_type = new PaymentType($this->zdb, $rs->id_paymenttype);
+        $this->creation_date = new DateTime($rs->creation_date);
+        $this->scheduled_date = new DateTime($rs->scheduled_date);
+        $this->amount = $rs->amount;
+        $this->is_paid = (bool)$rs->paid;
+        $this->comment = $rs->comment;
+    }
+
+    public function check(array $data): bool
+    {
+        global $login;
+
+        $this->errors = [];
+
+        if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
+            $this->errors[] = _T('Contribution is required');
+        }
+
+        if (!isset($data['id_paymenttype']) || !is_numeric($data['id_paymenttype'])) {
+            $this->errors[] = _T('Payment type is required');
+        }
+
+        if (!isset($data['scheduled_date'])) {
+            $this->errors[] = _T('Scheduled date is required');
+        }
+
+        $contribution = new Contribution($this->zdb, $login);
+        if (!$contribution->load($data[Contribution::PK])) {
+            $this->errors[] = _T('Unable to load contribution');
+        } elseif (isset($data['amount'])) {
+            //Amount is not required (will defaults to contribution amount)
+            if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
+                $this->errors[] = _T('Amount must be a positive number');
+            } elseif ($data['amount'] > $contribution->amount) {
+                $this->errors[] = _T('Amount cannot be greater than contribution amount');
+            }
+        }
+
+        if (count($this->errors) > 0) {
+            return false;
+        }
+
+        $this
+            ->setContribution($data[Contribution::PK])
+            ->setPaymentType($data['id_paymenttype'])
+            ->setCreationDate($data['creation_date'] ?? new DateTime())
+            ->setScheduledDate($data['scheduled_date'])
+            ->setAmount($data['amount'] ?? $contribution->amount)
+            ->setPaid($data['is_paid'] ?? false)
+            ->setComment($data['comment'] ?? null);
+
+        return count($this->errors) === 0;
     }
 
     /**
@@ -115,21 +169,21 @@ class ScheduledPayment
      */
     public function store(): bool
     {
-        return false;
-        /*$data = array(
-            'type_name' => $this->name
+        $data = array(
+            Contribution::PK => $this->contribution->id,
+            'id_paymenttype' => $this->payment_type->id,
+            'scheduled_date' => $this->scheduled_date->format(__("Y-m-d")),
+            'amount' => $this->amount,
+            'paid' => ($this->is_paid ? true : ($this->zdb->isPostgres() ? 'false' : 0)),
+            'comment' => $this->comment
         );
         try {
             if (isset($this->id) && $this->id > 0) {
-                if ($this->old_name !== null) {
-                    $this->deleteTranslation($this->old_name);
-                    $this->addTranslation($this->name);
-                }
-
                 $update = $this->zdb->update(self::TABLE);
                 $update->set($data)->where([self::PK => $this->id]);
                 $this->zdb->execute($update);
             } else {
+                $data['creation_date'] = $this->creation_date->format(__("Y-m-d"));
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
                 $add = $this->zdb->execute($insert);
@@ -139,18 +193,16 @@ class ScheduledPayment
                 }
 
                 $this->id = $this->zdb->getLastGeneratedValue($this);
-
-                $this->addTranslation($this->name);
             }
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing payment type: ' . $e->getMessage() .
+                'An error occurred storing shceduled payment: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
-        }*/
+        }
     }
 
     /**
@@ -217,9 +269,23 @@ class ScheduledPayment
     {
         if (is_int($contribution)) {
             global $login;
-            $contribution = new Contribution($this->zdb, $login, $contribution);
+            try {
+                $contrib = new Contribution($this->zdb, $login);
+                if ($contrib->load($contribution)) {
+                    $this->contribution = $contrib;
+                } else {
+                    throw new \RuntimeException('Cannot load contribution #' . $contribution);
+                }
+            } catch (Throwable $e) {
+                Analog::log(
+                    'Unable to load contribution #' . $contribution . ' | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+                $this->errors[] = _T('Unable to load contribution');
+            }
+        } else {
+            $this->contribution = $contribution;
         }
-        $this->contribution = $contribution;
         return $this;
     }
 
@@ -243,9 +309,24 @@ class ScheduledPayment
     public function setPaymentType(int|PaymentType $payment_type): self
     {
         if (is_int($payment_type)) {
-            $payment_type = new PaymentType($this->zdb, $payment_type);
+            try {
+                $ptype = new PaymentType($this->zdb);
+                if ($ptype->load($payment_type)) {
+                    $this->payment_type = $ptype;
+                } else {
+                    throw new \RuntimeException('Cannot load payment type #' . $payment_type);
+                }
+            } catch (Throwable $e) {
+                Analog::log(
+                    'Unable to load payment type #' . $payment_type . ' | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+                $this->errors[] = _T('Unable to load payment type');
+            }
+        } else {
+            $this->payment_type = $payment_type;
         }
-        $this->payment_type = $payment_type;
+
         return $this;
     }
 
@@ -259,6 +340,31 @@ class ScheduledPayment
         return $this->creation_date;
     }
 
+    protected function buildDate(string $field, string $date): ?DateTime
+    {
+        try {
+            $d = \DateTime::createFromFormat(__("Y-m-d"), $date);
+            if ($d === false) {
+                throw new \Exception('Incorrect format');
+            }
+            return $d;
+        } catch (Throwable $e) {
+            Analog::log(
+                'Wrong date format for creation_date. ' .
+                ', value: ' . $date . ', expected fmt: ' .
+                __("Y-m-d") . ' | ' . $e->getMessage(),
+                Analog::INFO
+            );
+            $this->errors[] = sprintf(
+                //TRANS: %1$s is the date format, %2$s is the field name
+                _T('- Wrong date format (%1$s) for %2$s!'),
+                __("Y-m-d"),
+                $field
+            );
+        }
+        return null;
+    }
+
     /**
      * Set creation date
      *
@@ -269,9 +375,11 @@ class ScheduledPayment
     public function setCreationDate(string|DateTime $creation_date): self
     {
         if (is_string($creation_date)) {
-            $creation_date = new DateTime($creation_date);
+            $this->creation_date = $this->buildDate(_T('Creation date'), $creation_date) ?? new DateTime();
+        } else {
+            $this->creation_date = $creation_date;
         }
-        $this->creation_date = $creation_date;
+
         return $this;
     }
 
@@ -295,9 +403,14 @@ class ScheduledPayment
     public function setScheduledDate(string|DateTime $scheduled_date): self
     {
         if (is_string($scheduled_date)) {
-            $scheduled_date = new DateTime($scheduled_date);
+            $date = $this->buildDate(_T('Scheduled date'), $scheduled_date);
+            if ($date !== null) {
+                $this->scheduled_date = $date;
+            }
+        } else {
+            $this->scheduled_date = $scheduled_date;
         }
-        $this->scheduled_date = $scheduled_date;
+
         return $this;
     }
 
@@ -360,11 +473,11 @@ class ScheduledPayment
     /**
      * Set comment
      *
-     * @param string $comment Comment
+     * @param ?string $comment Comment
      *
      * @return self
      */
-    public function setComment(string $comment): self
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
         return $this;
@@ -426,5 +539,15 @@ class ScheduledPayment
     public function getNotFullyAllocated(): array
     {
         return [];
+    }
+
+    /**
+     * Get errors
+     *
+     * @return string[]
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 }

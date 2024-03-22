@@ -91,17 +91,36 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testAdd(): void
     {
+        $this->logSuperAdmin();
         $this->getMemberOne();
         //create contribution for member
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $scheduledPayment
-            ->setContribution($this->contrib)
-            ->setPaymentType(\Galette\Entity\PaymentType::CASH)
-            ->setScheduledDate(new \DateTime())
-            ->setAmount(10.0)
-            ->setComment('FAKER' . $this->seed);
+
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'amount' => 10.0,
+            'comment' => 'FAKER' . $this->seed
+        ];
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $pid = $scheduledPayment->getId();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb, $pid);
+        $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
+        $this->assertSame($data['id_paymenttype'], $scheduledPayment->getPaymentType()->id);
+        $this->assertSame($data['scheduled_date']->format('Y-m-d'), $scheduledPayment->getScheduledDate()->format('Y-m-d'));
+        $this->assertSame($data['amount'], $scheduledPayment->getAmount());
+        $this->assertSame($data['comment'], $scheduledPayment->getComment());
     }
 
     /**

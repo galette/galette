@@ -77,9 +77,9 @@ class PaymentType
      *
      * @param integer $id Identifier
      *
-     * @return void
+     * @return bool
      */
-    private function load(int $id): void
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -90,6 +90,7 @@ class PaymentType
 
             $this->id = $id;
             $this->name = $res->type_name;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading payment type #' . $id . "Message:\n" .
