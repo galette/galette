@@ -86,6 +86,7 @@ class ScheduledPayment extends GaletteTestCase
 
         $this->assertFalse($this->contrib->hasSchedule());
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $this->assertFalse($scheduledPayment->isContributionHandled($this->contrib->id));
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -106,6 +107,7 @@ class ScheduledPayment extends GaletteTestCase
 
         $pid = $scheduledPayment->getId();
         $this->assertTrue($this->contrib->hasSchedule());
+        $this->assertTrue($scheduledPayment->isContributionHandled($this->contrib->id));
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb, $pid);
         $this->assertSame($data[\Galette\Entity\Contribution::PK], $scheduledPayment->getContribution()->id);
@@ -269,7 +271,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertFalse($check);
         $this->assertSame(
             [
-                'Amount cannot be greater than contribution amount'
+                'Amount cannot be greater than non allocated amount'
             ],
             $scheduledPayment->getErrors()
         );
@@ -383,7 +385,80 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testGetNotFullyAllocated(): void
     {
-        //retrieve contributions with schedule as payment type and that are not allocated, or not fully allocated
+        // retrieve contributions with schedule as payment type and that are not allocated, or not fully allocated
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+
+        $nonfulls = $scheduledPayment->getNotFullyAllocated();
+        $this->assertCount(0, $nonfulls); //no contributiopn with SCHEDULED payment type
+
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        $this->assertSame([], $this->contrib->getErrors());
+
+        $nonfulls = $scheduledPayment->getNotFullyAllocated();
+        $this->assertCount(1, $nonfulls);
+        $test = array_pop($nonfulls);
+        $this->assertSame(
+            [
+                \Galette\Entity\Contribution::PK => $this->contrib->id,
+                'montant_cotis' => '92.00',
+                'allocated' => null,
+            ],
+            $test
+        );
+
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'comment' => 'FAKER' . $this->seed,
+            'amount' => 10.0
+        ];
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $data['amount'] = 24.5;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $nonfulls = $scheduledPayment->getNotFullyAllocated();
+        $this->assertCount(1, $nonfulls);
+        $test = array_pop($nonfulls);
+        $this->assertSame(
+            [
+                \Galette\Entity\Contribution::PK => $this->contrib->id,
+                'montant_cotis' => '92.00',
+                'allocated' => 34.5,
+            ],
+            $test
+        );
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $data['amount'] = 92 - 34.5;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $nonfulls = $scheduledPayment->getNotFullyAllocated();
+        $this->assertCount(0, $nonfulls);
     }
 
     /**
@@ -393,7 +468,41 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testGetAllocation(): void
     {
-        //todo
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'comment' => 'FAKER' . $this->seed,
+            'amount' => 10.0
+        ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        $this->assertSame([], $this->contrib->getErrors());
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $data['amount'] = 25.0;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $this->assertSame(35.0, $scheduledPayment->getAllocation($this->contrib->id));
     }
 
     /**
@@ -403,6 +512,59 @@ class ScheduledPayment extends GaletteTestCase
      */
     public function testIsFullyAllocated(): void
     {
-        //todo
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => new \DateTime(),
+            'comment' => 'FAKER' . $this->seed,
+            'amount' => 10.0
+        ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        $this->assertSame([], $this->contrib->getErrors());
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $data['amount'] = 25.0;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $this->assertSame(35.0, $scheduledPayment->getAllocation($this->contrib->id));
+        $this->assertFalse($scheduledPayment->isFullyAllocated($this->contrib));
+
+        //contribution amount is 92
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $data['amount'] = 92 - 35 +1;
+        $check = $scheduledPayment->check($data);
+        $this->assertFalse($check);
+        $this->assertSame(['Amount cannot be greater than non allocated amount'], $scheduledPayment->getErrors());
+
+        $data['amount'] = 92 - 35;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+
+        $this->assertSame(92.0, $scheduledPayment->getAllocation($this->contrib->id));
+        $this->assertTrue($scheduledPayment->isFullyAllocated($this->contrib));
     }
 }

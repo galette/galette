@@ -24,6 +24,9 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateTime;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\IsNull;
+use Laminas\Db\Sql\Predicate\Operator;
+use Laminas\Db\Sql\Predicate\PredicateSet;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
@@ -144,8 +147,14 @@ class ScheduledPayment
                     //Amount is not required (will defaults to contribution amount)
                     if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
                         $this->errors[] = _T('Amount must be a positive number');
-                    } elseif ($data['amount'] > $contribution->amount) {
-                        $this->errors[] = _T('Amount cannot be greater than contribution amount');
+                    } else {
+                        $not_allocated = $contribution->amount - $this->getAllocation($contribution->id);
+                        if (isset($this->id)) {
+                            $not_allocated += $this->amount;
+                        }
+                        if ($data['amount'] > $not_allocated) {
+                            $this->errors[] = _T('Amount cannot be greater than non allocated amount');
+                        }
                     }
                 }
                 if ($contribution->payment_type !== PaymentType::SCHEDULED) {
@@ -539,7 +548,7 @@ class ScheduledPayment
 
         $results = $this->zdb->execute($select);
         $result = $results->current();
-        return $result->allocation;
+        return $result->allocation ?? 0;
     }
 
     /**
@@ -561,7 +570,37 @@ class ScheduledPayment
      */
     public function getNotFullyAllocated(): array
     {
-        return [];
+        $select = $this->zdb->select(Contribution::TABLE, 'c');
+        $select->columns([Contribution::PK, 'montant_cotis']);
+        $select->quantifier('DISTINCT');
+
+        $select->join(
+            array('s' => PREFIX_DB . self::TABLE),
+            //$on,
+            'c.' . Contribution::PK . '=s.' . Contribution::PK,
+            array('allocated' => new Expression('SUM(s.amount)')),
+            $select::JOIN_LEFT
+        );
+
+        $select->group('c.' . Contribution::PK);
+        $select->where(['c.type_paiement_cotis' => PaymentType::SCHEDULED]);
+        $select->having([
+            new PredicateSet(
+                array(
+                    new Operator(
+                        new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),
+                        '<',
+                        new \Laminas\Db\Sql\Predicate\Expression('c.montant_cotis')
+                    ),
+                    new IsNull(new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),)
+                ),
+                PredicateSet::OP_OR
+            )
+        ]);
+
+        $results = $this->zdb->execute($select);
+
+        return $results->toArray();
     }
 
     /**
