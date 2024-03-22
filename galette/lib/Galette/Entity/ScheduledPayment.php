@@ -588,11 +588,13 @@ class ScheduledPayment
             new PredicateSet(
                 array(
                     new Operator(
+                        /** @phpstan-ignore-next-line  */
                         new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),
                         '<',
                         new \Laminas\Db\Sql\Predicate\Expression('c.montant_cotis')
                     ),
-                    new IsNull(new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),)
+                    /** @phpstan-ignore-next-line  */
+                    new IsNull(new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'))
                 ),
                 PredicateSet::OP_OR
             )

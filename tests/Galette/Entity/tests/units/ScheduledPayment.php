@@ -551,7 +551,7 @@ class ScheduledPayment extends GaletteTestCase
 
         //contribution amount is 92
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $data['amount'] = 92 - 35 +1;
+        $data['amount'] = 92 - 35 + 1;
         $check = $scheduledPayment->check($data);
         $this->assertFalse($check);
         $this->assertSame(['Amount cannot be greater than non allocated amount'], $scheduledPayment->getErrors());
