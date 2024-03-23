@@ -30,7 +30,6 @@ use Galette\GaletteTestCase;
  */
 class ScheduledPayment extends GaletteTestCase
 {
-    private array $remove = [];
     protected int $seed = 20240321210526;
 
     /**
