@@ -245,7 +245,7 @@ DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
   libelle_type_cotis character varying(255) DEFAULT '' NOT NULL,
-  amount real DEFAULT '0',
+  amount decimal(15,2) NULL DEFAULT NULL,
   cotis_extension boolean DEFAULT FALSE,
   PRIMARY KEY (id_type_cotis)
 );
@@ -254,7 +254,7 @@ DROP TABLE IF EXISTS galette_transactions CASCADE;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
-    trans_amount real DEFAULT '0',
+    trans_amount decimal(15,2) NOT NULL,
     trans_desc character varying(255) NOT NULL DEFAULT '',
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     type_paiement_trans integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE NULL,
@@ -266,7 +266,7 @@ CREATE TABLE galette_cotisations (
     id_cotis integer DEFAULT nextval('galette_cotisations_id_seq'::text)  NOT NULL,
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     id_type_cotis integer REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
-    montant_cotis real DEFAULT '0',
+    montant_cotis decimal(15,2) NOT NULL,
     type_paiement_cotis integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL,
     info_cotis text,
     date_enreg date DEFAULT '19010101' NOT NULL,

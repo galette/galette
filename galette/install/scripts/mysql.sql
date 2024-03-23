@@ -52,7 +52,7 @@ CREATE TABLE galette_cotisations (
   id_cotis int(10) unsigned NOT NULL auto_increment,
   id_adh int(10) unsigned NOT NULL default '0',
   id_type_cotis int(10) unsigned NOT NULL default '0',
-  montant_cotis decimal(15, 2) unsigned default '0',
+  montant_cotis decimal(15, 2) NOT NULL,
   type_paiement_cotis int(10) unsigned NOT NULL,
   info_cotis text,
   date_enreg date NOT NULL default '1901-01-01',
@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS galette_transactions;
 CREATE TABLE galette_transactions (
   trans_id int(10) unsigned NOT NULL auto_increment,
   trans_date date NOT NULL default '1901-01-01',
-  trans_amount decimal(15, 2) default '0',
+  trans_amount decimal(15, 2) NOT NULL,
   trans_desc varchar(255) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
   type_paiement_trans int(10) unsigned NULL DEFAULT NULL,
@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(255) NOT NULL default '',
-  amount double NULL,
+  amount decimal(15,2) NULL DEFAULT NULL,
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;

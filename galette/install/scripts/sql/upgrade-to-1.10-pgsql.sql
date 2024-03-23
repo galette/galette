@@ -1,5 +1,5 @@
 -- Add amount to payment types
-ALTER TABLE galette_types_cotisation ADD amount real DEFAULT '0';
+ALTER TABLE galette_types_cotisation ADD amount decimal(15,2) NULL DEFAULT NULL;
 -- Add region to members
 ALTER TABLE galette_adherents ADD region_adh character varying(200) DEFAULT '' NOT NULL;
 -- Add payment type to transactions
@@ -39,3 +39,11 @@ CREATE TABLE galette_documents (
 );
 -- add index on table to look for type
 CREATE INDEX galette_documents_idx ON galette_documents (type);
+
+-- change fields types and default values
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis TYPE decimal(15,2);
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis DROP DEFAULT;
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis SET NOT NULL;
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount TYPE decimal(15,2);
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount DROP DEFAULT;
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount SET NOT NULL;

@@ -1,5 +1,5 @@
 -- Add amount to payment types
-ALTER TABLE galette_types_cotisation ADD amount double NULL;
+ALTER TABLE galette_types_cotisation ADD amount decimal(15,2) NULL DEFAULT NULL;
 -- Add region to members
 ALTER TABLE galette_adherents ADD region_adh varchar(200) NOT NULL DEFAULT '';
 -- Add payment type to transactions
@@ -60,3 +60,8 @@ CREATE TABLE galette_documents (
   PRIMARY KEY (id_document),
   KEY (type)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+
+-- change fields types and default values
+ALTER TABLE galette_cotisations CHANGE montant_cotis montant_cotis decimal(15,2) NOT NULL;
+ALTER TABLE galette_transactions CHANGE trans_amount trans_amount decimal(15,2) NOT NULL;

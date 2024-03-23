@@ -257,7 +257,7 @@ class Contribution extends GaletteTestCase
         $data = [
             'id_adh' => $this->adh->id,
             'id_type_cotis' => 4, //donation
-            'montant_cotis' => '',
+            'montant_cotis' => 0,
             'type_paiement_cotis' => 4,
             'info_cotis' => 'FAKER' . $this->seed,
             'date_enreg' => $begin_date->format('Y-m-d'),
@@ -794,7 +794,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1, 'adh' => $this->adh->id, 'payment_type' => 1]);
         $this->assertSame($ny_begin_date->format('Y-m-d'), $contrib->begin_date);
 
-        $check = $contrib->check(['type_paiement_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
+        $check = $contrib->check(['type_paiement_cotis' => 1, 'montant_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
         if (is_array($check)) {
             var_dump($check);
         }
