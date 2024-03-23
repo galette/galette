@@ -375,7 +375,7 @@ CREATE TABLE galette_payments_schedules (
   id_paymenttype int(10) unsigned NOT NULL,
   creation_date datetime NOT NULL,
   scheduled_date datetime NOT NULL,
-  amount double NOT NULL,
+  amount decimal(15, 2) NOT NULL,
   paid tinyint(1) DEFAULT FALSE,
   comment text,
   PRIMARY KEY (id_schedule),

@@ -443,7 +443,7 @@ class ScheduledPayment extends GaletteTestCase
             [
                 \Galette\Entity\Contribution::PK => $this->contrib->id,
                 'montant_cotis' => '92.00',
-                'allocated' => 34.5,
+                'allocated' => '34.50',
             ],
             $test
         );

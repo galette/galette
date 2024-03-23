@@ -65,8 +65,15 @@ CREATE TABLE galette_payments_schedules (
   id_paymenttype integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE,
   creation_date date NOT NULL,
   scheduled_date date NOT NULL,
-  amount real NOT NULL,
+  amount decimal(15,2) NOT NULL,
   paid boolean DEFAULT FALSE,
   comment text,
   PRIMARY KEY (id_schedule)
 );
+-- change fields types and default values
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis TYPE decimal(15,2);
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis DROP DEFAULT;
+ALTER TABLE galette_cotisations ALTER COLUMN montant_cotis SET NOT NULL;
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount TYPE decimal(15,2);
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount DROP DEFAULT;
+ALTER TABLE galette_transactions ALTER COLUMN trans_amount SET NOT NULL;
