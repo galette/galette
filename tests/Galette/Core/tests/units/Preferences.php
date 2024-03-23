@@ -604,7 +604,7 @@ class Preferences extends TestCase
     {
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
-        $this->assertCount(9, $legend['main']['patterns']);
+        $this->assertCount(10, $legend['main']['patterns']);
         $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [
