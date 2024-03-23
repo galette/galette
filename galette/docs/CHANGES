@@ -30,6 +30,7 @@ Changes
 - Fix redirection when dynamic file does not exists
 - Menu horizontal scroll when name is too long
 - Should not select a member as its own parent
+- Add preferences footer in replacements
 
 1.0.2 -> 1.0.3
 
