@@ -1457,8 +1457,14 @@ class Adherent
                 }
                 break;
             case 'parent_id':
-                $this->$prop = ($value instanceof Adherent) ? (int)$value->id : (int)$value;
-                $this->loadParent();
+                $pid = ($value instanceof Adherent) ? (int)$value->id : (int)$value;
+                if ($pid === $this->id) {
+                    $this->errors[] = _T("A member cannot be its own parent!");
+                    $this->$prop = null;
+                } else {
+                    $this->$prop = $pid;
+                    $this->loadParent();
+                }
                 break;
         }
     }

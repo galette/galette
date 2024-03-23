@@ -2,7 +2,7 @@
 
 {% block content %}
         <form action="{{ url_for('store-preferences') }}" method="post" enctype="multipart/form-data" class="ui form">
-        <div class="ui stackable pointing inverted menu tabbed">
+        <div class="ui stackable pointing inverted wrapping centered fluid menu tabbed">
             <a href="{{ url_for('preferences') }}?tab=general" class="item{{ tab == 'general' ? ' active' }}" data-tab="general">{{ _T("General") }}</a>
             <a href="{{ url_for('preferences') }}?tab=social" class="item{{ tab == 'social' ? ' active' }}" data-tab="social">{{ _T("Social networks") }}</a>
             <a href="{{ url_for('preferences') }}?tab=parameters" class="item{{ tab == 'parameters' ? ' active' }}" data-tab="parameters">{{ _T("Parameters") }}</a>

@@ -211,6 +211,7 @@ class Mailing extends GaletteMail
         $this->setRecipients($_recipients);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
+        $this->html = $this->message != strip_tags($this->message) ? true : false;
         if ($rs->mailing_sender_name !== null || $rs->mailing_sender_address !== null) {
             $this->setSender(
                 $rs->mailing_sender_name,

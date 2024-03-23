@@ -1,16 +1,29 @@
 Changes
 -------
 
+1.0.3 -> 1.0.4
+
+- Cannot access tabs definition on some resolutions
+- HTML Email preview shows source
+- Fix scrolling in emailing preview's modal
+- Few fixes on dependency injection usage
+- Number of show member automatically set to "all"
+- Groups modification not visually added on member form
+- Fix redirection when dynamic file does not exists
+- Menu horizontal scroll when name is too long
+- Should not select a member as its own parent
+- Add preferences footer in replacements
+
 1.0.2 -> 1.0.3
 
-* Logo in mail signature is not shown
-* Missing HTML editor for dynamic fields information field
-* Update and maintainance pages are no longer working
-* Do not throw events on mass edition
-* Make cache version dependent
-* Check preferences website is valid
-* Link to asso website from logo
-* Rework UI messages
+- Logo in mail signature is not shown
+- Missing HTML editor for dynamic fields information field
+- Update and maintainance pages are no longer working
+- Do not throw events on mass edition
+- Make cache version dependent
+- Check preferences website is valid
+- Link to asso website from logo
+- Rework UI messages
 
 1.0.1 -> 1.0.2
 

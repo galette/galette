@@ -57,7 +57,9 @@
                     </div>
                 </div>
             </nav>
-            {% include "elements/modes.html.twig" %}
+            <div class="ui basic compact fitted segment">
+                {% include "elements/modes.html.twig" %}
+            </div>
         {% else %}
             {% set component_classes = "ui vertical centered tiny icon fluid menu" %}
             <nav id="logoutmenu" class="{{ component_classes }}" aria-label="{{ _T('User menu') }}">

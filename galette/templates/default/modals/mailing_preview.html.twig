@@ -51,9 +51,9 @@
         <div class="ui top attached accordion-styled header">
             {{ _T("Mail body") }}
         </div>
-        <div class="ui bottom attached accordion-styled segment">
+        <div class="ui bottom attached accordion-styled{% if mode == 'ajax' %} scrolling{% endif %} segment">
     {% if mailing.html %}
-            {{ mailing.message }}
+            {{ mailing.message|raw }}
     {% else %}
             <pre>{{ mailing.wrapped_message|escape }}</pre>
     {% endif %}

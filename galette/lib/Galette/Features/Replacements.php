@@ -53,6 +53,7 @@ use Analog\Analog;
 use NumberFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
 use Slim\Routing\RouteParser;
+use DI\Attribute\Inject;
 
 /**
  * Replacements feature
@@ -235,6 +236,10 @@ trait Replacements
             'login_uri'             => [
                 'title'     => _T("Galette's login URI"),
                 'pattern'   => '/{LOGIN_URI}/'
+            ],
+            'asso_footer' => [
+                'title'     => trim(trim(_T("Footer text:"), ':')),
+                'pattern'   => '/{ASSO_FOOTER}/'
             ]
         ];
     }
@@ -521,6 +526,7 @@ trait Replacements
                 //TRANS: see https://www.php.net/manual/datetime.format.php
                 'date_now'           => date(_T('Y-m-d')),
                 'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
+                'asso_footer'        => $this->preferences->pref_footer
             )
         );
 

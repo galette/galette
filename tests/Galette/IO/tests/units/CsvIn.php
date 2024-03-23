@@ -140,6 +140,7 @@ class CsvIn extends GaletteTestCase
 
         //get csv model file to add data in
         $controller = new \Galette\Controllers\CsvController($this->container);
+        $this->container->injectOn($controller);
 
         $rfactory = new \Slim\Psr7\Factory\RequestFactory();
         $request = $rfactory->createRequest('GET', 'http://localhost/models/csv');
