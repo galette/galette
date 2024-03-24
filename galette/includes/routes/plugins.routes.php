@@ -42,7 +42,9 @@ $app->group(
                     'jpeg'  => 'image/jpg',
                     'gif'   => 'image/gif',
                     'svg'   => 'image/svg+xml',
-                    'map'   => 'application/json'
+                    'map'   => 'application/json',
+                    'woff'  => 'application/font-woff',
+                    'woff2' => 'application/font-woff2'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
                     $file = $container->get('plugins')->getFile(
