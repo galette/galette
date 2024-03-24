@@ -39,6 +39,7 @@ class Release
     /** @var array<string, mixed> */
     private array $default_options = [
         'timeout' => 2.0,
+        'verify' => false
     ];
     private ?string $latest = null;
 
@@ -83,6 +84,10 @@ class Release
     {
         if (!isset($this->latest)) {
             $this->latest = $this->findLatestRelease();
+        }
+        if ($this->latest === null) {
+            //disable caching, no version has been found
+            $this->nocache = true;
         }
         return $this->latest;
     }

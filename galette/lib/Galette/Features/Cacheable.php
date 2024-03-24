@@ -35,6 +35,7 @@ trait Cacheable
 {
     //number of hours until cache will be invalid
     protected int $cache_timeout = 24;
+    protected bool $nocache = false;
 
     /**
      * Handle cache
@@ -45,6 +46,7 @@ trait Cacheable
      */
     protected function handleCache(bool $nocache = false): void
     {
+        $this->nocache = $nocache;
         if ($nocache === false && !Galette::isDebugEnabled()) {
             if (!$this->checkCache()) {
                 $this->makeCache();
@@ -112,6 +114,10 @@ trait Cacheable
      */
     protected function makeCache(): void
     {
+        if ($this->nocache === true) {
+            //for some reason, we do not want to use cache
+            return;
+        }
         $this->prepareForCache();
         $cfile = $this->getCacheFilename();
         $cdir = dirname($cfile);
