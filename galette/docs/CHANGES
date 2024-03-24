@@ -18,6 +18,7 @@ Changes
 - Option to disable sociel networks on member form/view
 - Factorize permissions on core and dynamic fields
 - Manage administrative documents
+- Allow plugins to provide tjheir own fonts
 
 1.0.3 -> 1.0.4
 
