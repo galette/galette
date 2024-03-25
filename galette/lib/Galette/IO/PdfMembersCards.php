@@ -25,6 +25,8 @@ use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\Status;
+use Galette\Repository\Members;
 
 /**
  * Member card PDF
@@ -174,7 +176,13 @@ class PdfMembersCards extends Pdf
      */
     public function drawCards(array $members): void
     {
+        global $zdb;
+
         $nb_card = 0;
+
+        $status = new Status($zdb);
+        $status_list = $status->getCompleteList();
+
         foreach ($members as $member) {
             // Detect page breaks
             if ($nb_card % ($this->nbcol * $this->nbrow) == 0) {
@@ -209,20 +217,17 @@ class PdfMembersCards extends Pdf
                     break;
             }
 
-            // Select strip color according to status
-            switch ($member->status) {
-                case 1:
-                case 2:
-                case 3:
-                case 10:
-                    $fcol = $this->bcol;
-                    break;
-                case 5:
-                case 6:
-                    $fcol = $this->hcol;
-                    break;
-                default:
-                    $fcol = $this->scol;
+            // Select strip color
+            $fcol = ['R' => 0, 'G' => 0, 'B' => 0];
+            if ($status_list[$member->status]['extra'] <= Members::NON_STAFF_MEMBERS) {
+                $fcol = $this->bcol;
+            } elseif (
+                $member->status == 5 /*Benefactor member*/
+                || $member->status === 6 /*Founder member*/
+            ) {
+                $fcol = $this->hcol;
+            } elseif ($member->isActive()) {
+                $fcol = $this->scol;
             }
 
             $nom_adh_ext = '';
