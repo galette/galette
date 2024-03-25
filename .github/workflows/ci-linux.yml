@@ -164,7 +164,7 @@ jobs:
         if: env.skip != 'true' && matrix.coverage == 'xdebug'
 
       - name: Upload code coverage (codecov)
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'xdebug'
