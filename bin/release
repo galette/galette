@@ -23,6 +23,8 @@ assume_yes = False
 nightly = False
 ssh_key = False
 nightly_version = None
+tag_commit = None
+repo = None
 
 def print_err(msg):
     """
@@ -96,15 +98,18 @@ def get_latest_version():
     """
     Look for latest version
     """
+    global tag_commit
+
     last = None
     for tagref in tagrefs:
         tag = tagref.tag
         if tag != None and valid_version(tag.tag):
             #last minor version is always the last one :)
-            if last == None or tag.tag > last:
-                last = tag.tag
+            if last == None or tag.tag > last.tag:
+                last = tag
 
-    return last
+    tag_commit = last.hexsha
+    return last.tag
 
 def is_existing_version(ver):
     """
@@ -116,6 +121,18 @@ def is_existing_version(ver):
             if tag.tag == ver:
                 return True
     return False
+
+def is_version_bumped(ver):
+    """
+    Check if version has been bumped in Galette configuration file
+    """
+    global repo, tag_commit
+
+    versions_file = repo.git.execute(["git", "show", f"{tag_commit}:{os.path.join('galette', 'config', 'versions.inc.php')}"])
+    file_version = re.search("^define\\('GALETTE_VERSION', 'v(?P<version>.+)'\\)", versions_file, re.MULTILINE)
+    if file_version.group('version') != ver:
+        print_err('Trying to release %s, but bumped version is %s!' % (ver, file_version.group('version')))
+        exit(1)
 
 def ask_user_confirm(msg):
     """
@@ -492,7 +509,7 @@ def main():
     """
     Main method
     """
-    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key
+    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key, repo
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -597,10 +614,12 @@ def main():
             else:
                 build = True
                 buildver = args.version
+                is_version_bumped(buildver)
     elif args.propose:
         propose_version()
     else:
         buildver = get_latest_version()
+        is_version_bumped(buildver)
         if force:
             build = True
         else:
