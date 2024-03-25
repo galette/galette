@@ -59,11 +59,13 @@ class Release extends TestCase
     public function testNewRelease(string $current, string $latest, bool $expected): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
-            ->onlyMethods(array('getCurrentRelease', 'getLatestRelease'))
+            ->setConstructorArgs([true])
+            ->onlyMethods(array('getCurrentRelease', 'getLatestRelease', 'findLatestRelease'))
             ->getMock();
 
         $release->method('getCurrentRelease')->willReturn($current);
         $release->method('getLatestRelease')->willReturn($latest);
+        $release->method('findLatestRelease')->willReturn($latest);
 
         $this->assertSame($expected, $release->checkNewRelease());
     }

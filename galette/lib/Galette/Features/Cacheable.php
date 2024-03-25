@@ -46,7 +46,6 @@ trait Cacheable
      */
     protected function handleCache(bool $nocache = false): void
     {
-        $this->nocache = $nocache;
         if ($nocache === false && !Galette::isDebugEnabled()) {
             if (!$this->checkCache()) {
                 $this->makeCache();
