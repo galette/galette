@@ -566,6 +566,7 @@ class Adherent
                         $this->_due_status = Contribution::STATUS_UPTODATE;
                     }
                 // Expired
+                // Expired
                 } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
                     $this->_days_remaining = $date_diff->days;
                     //check if member is still active
@@ -820,14 +821,14 @@ class Adherent
             } else {
                 $ret = _T("Never contributed");
             }
-        // Last active or first expired day
+            // Last active or first expired day
         } elseif ($this->_days_remaining === 0) {
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
-        // Active
+            // Active
         } elseif ($date_diff->invert == 0 && $this->_days_remaining > 0) {
             $patterns = array('/%days/', '/%date/');
             $replace = array(
@@ -839,7 +840,7 @@ class Adherent
                 $replace,
                 _T("%days days remaining (ending on %date)")
             );
-        // Expired
+            // Expired
         } elseif ($date_diff->invert == 1 && $this->_days_remaining > 0) {
             $patterns = array('/%days/', '/%date/');
             $replace = array(
@@ -857,7 +858,57 @@ class Adherent
                 $ret = _T("No longer member");
             }
         }
+
+        if ($this->getCountDonations() > 0) {
+            if ($never_contributed) {
+                $ret = _T("Never contributed, but a donation");
+            } else {
+                $ret .= ' - '._T("Donator");
+            }
+        }
         return $ret;
+    }
+
+    /**
+     * Get donation count in the current year
+     *
+     * @return int count 0..x
+     */
+    public function getCountDonations(): int
+    {
+        global $preferences; //$this->preferences n'est pas initialisée ? on retrouve la même ligne dans validate, canXXX()
+
+        $date_now = new \DateTime();
+
+        if ($preferences->pref_beg_membership != '') { //adhésion classique de date à date + 1 an
+            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            $sdate = new \DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
+
+        } elseif ($preferences->pref_membership_ext != '') { //adhésion classique de date à date + N mois
+            $dext = new \DateInterval('P' . $preferences->pref_membership_ext . 'M');
+            $sdate = $date_now->sub($dext);   // now - X months
+        }
+
+        //date_debut_cotis car l'adhérent peut demander un enregistrement de son don pour l'année suivante (en fin d'année)
+        $select = $this->zdb->select(Contribution::TABLE, 'c');
+        $select->columns(
+            array(
+                'count' => new \Laminas\Db\Sql\Expression('COUNT(*)')
+                )
+        )
+        ->join(
+            array(
+                'ct' => PREFIX_DB . ContributionsTypes::TABLE),
+            'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
+            array()
+        )
+        ->where(['id_adh' => $this->_id])
+        ->where->greaterThanOrEqualTo('date_debut_cotis', $sdate->format('Y-m-d'))
+        ->where->equalTo('cotis_extension', 0); //uniquement les dons
+
+        $results = $this->zdb->execute($select);
+        $result = $results->current();
+        return (int) $result->count;
     }
 
     /**
@@ -1764,6 +1815,7 @@ class Adherent
                     } else {
                         return null;
                     }
+                    // no break
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->_status);
@@ -1789,6 +1841,7 @@ class Adherent
                         default:
                             return _T('Unspecified');
                     }
+                    // no break
                 case 'contribstatus':
                     return $this->getDues();
             }
@@ -1814,6 +1867,7 @@ class Adherent
                 } else {
                     return null;
                 }
+                // no break
             case 'address':
                 return $this->$rname ?? '';
             case 'birthdate':
