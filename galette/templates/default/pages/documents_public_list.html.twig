@@ -25,48 +25,56 @@
 {%- endmacro %}
 
 {% block content %}
-    <div class="ui stackable grid">
-        <div class="four wide left attached column">
-            <div class="ui stackable vertical fluid tabular menu tabbed">
-    {% for type, documents in typed_documents %}
-                <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
-                    {{ _T(type) }}
-                    <p class="ui small disabled text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</p>
-                </a>
-    {% endfor %}
+    {% if typed_documents|length == 0 %}
+        <div class="ui small message">
+            <div class="content">
+                <em>{{ _T("No document to show") }}</em>
             </div>
         </div>
-        <div class="twelve wide stretched right attached column">
-    {% for type, documents in typed_documents %}
-            <div class="ui seamless right attached tab segment{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _self.getSlug(type) }}">
-        {% for document in documents %}
-                <div class="ui relaxed divided list">
-                    <div class="item">
-                        <div class="ui tiny image">
-                            <i class="large file middle aligned icon"></i>
-                        </div>
-                        <div class="content">
-                            <a class="ui small header" href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
-                                {{ document.getDocumentFilename() }}
-                            </a>
-                            <div class="description">
-                                {% if document.getComment %}{{ document.getComment()|raw }}{% endif %}
+    {% else %}
+        <div class="ui stackable grid">
+            <div class="four wide left attached column">
+                <div class="ui stackable vertical fluid tabular menu tabbed">
+        {% for type, documents in typed_documents %}
+                    <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
+                        {{ _T(type) }}
+                        <p class="ui small disabled text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</p>
+                    </a>
+        {% endfor %}
+                </div>
+            </div>
+            <div class="twelve wide stretched right attached column">
+        {% for type, documents in typed_documents %}
+                <div class="ui seamless right attached tab segment{% if loop.index == 1 %} active{% endif %}" data-tab="{{ _self.getSlug(type) }}">
+            {% for document in documents %}
+                    <div class="ui relaxed divided list">
+                        <div class="item">
+                            <div class="ui tiny image">
+                                <i class="large file middle aligned icon"></i>
                             </div>
-                            <div class="extra">
-                                <div class="ui right floated meta">
-                                    <span class="date ui small text">
-                                        <i class="clock outline icon"></i>
-                                        {{ document.getCreationDate() }}
-                                    </span>
-                                    <div class="ui label">{{ document.getPermissionName() }}</div>
+                            <div class="content">
+                                <a class="ui small header" href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
+                                    {{ document.getDocumentFilename() }}
+                                </a>
+                                <div class="description">
+                                    {% if document.getComment %}{{ document.getComment()|raw }}{% endif %}
+                                </div>
+                                <div class="extra">
+                                    <div class="ui right floated meta">
+                                        <span class="date ui small text">
+                                            <i class="clock outline icon"></i>
+                                            {{ document.getCreationDate() }}
+                                        </span>
+                                        <div class="ui label">{{ document.getPermissionName() }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+            {% endfor %}
                 </div>
         {% endfor %}
             </div>
-    {% endfor %}
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
