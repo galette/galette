@@ -34,6 +34,7 @@ use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
 use Galette\Features\Dynamics;
+use Galette\Features\EntityHelper;
 
 /**
  * Contribution class for galette
@@ -64,6 +65,10 @@ class Contribution
 {
     use Dynamics;
     use HasEvent;
+    use EntityHelper {
+        getFieldLabel as protected trait_getFieldLabel;
+        __isset as protected trait___isset;
+    }
 
     public const TABLE = 'cotisations';
     public const PK = 'id_cotis';
@@ -93,18 +98,26 @@ class Contribution
     private bool $_is_cotis;
     private ?int $_extension = null;
 
-    //fields list and their translation
-    /** @var array<string, array<string, string>>  */
-    private array $_fields;
-
     /** @var Db */
     private Db $zdb;
     /** @var Login */
     private Login $login;
     /** @var array<string> */
-    private array $errors = [];
+    protected array $errors = [];
 
     private bool $sendmail = false;
+
+    /** @var string[] */
+    protected array $forbidden_fields = ['is_cotis'];
+
+    /** @var string[] */
+    protected array $virtual_fields = [
+        'duration',
+        'model',
+        'raw_date',
+        'raw_begin_date',
+        'raw_end_date',
+    ];
 
     /**
      * Default constructor
@@ -124,22 +137,65 @@ class Contribution
         $this->_payment_type = $preferences->pref_default_paymenttype;
 
         $this
+            ->setFields()
             ->withAddEvent()
             ->withEditEvent()
             ->withoutDeleteEvent()
             ->activateEvents();
 
-        /*
-         * Fields configuration. Each field is an array and must reflect:
-         * array(
-         *   (string)label,
-         *   (string) property name
-         * )
-         *
-         * I'd prefer a static private variable for this...
-         * But call to the _T function does not seem to be allowed there :/
-         */
-        $this->_fields = array(
+
+        if (is_int($args)) {
+            $this->load($args);
+        } elseif (is_array($args)) {
+            $this->_date = date("Y-m-d");
+            if (isset($args['adh']) && $args['adh'] != '') {
+                $this->_member = (int)$args['adh'];
+            }
+            if (isset($args['trans'])) {
+                $this->_transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
+                if (!isset($this->_member)) {
+                    $this->_member = $this->_transaction->member;
+                }
+                $this->_amount = $this->_transaction->getMissingAmount();
+            }
+            $this->setContributionType((int)$args['type']);
+            //calculate begin date for membership fee
+            $this->_begin_date = $this->_date;
+            if ($this->_is_cotis) {
+                $due_date = self::getDueDate($this->zdb, $this->_member);
+                if ($due_date != '') {
+                    $now = new \DateTime();
+                    $due_date = new \DateTime($due_date);
+                    if ($due_date < $now) {
+                        // Member didn't renew on time
+                        $this->_begin_date = $now->format('Y-m-d');
+                    } else {
+                        // Caution : the next_begin_date is the day after the due_date.
+                        $next_begin_date = clone $due_date;
+                        $next_begin_date->add(new \DateInterval('P1D'));
+                        $this->_begin_date = $next_begin_date->format('Y-m-d');
+                    }
+                }
+                $this->retrieveEndDate();
+            }
+            if (isset($args['payment_type'])) {
+                $this->_payment_type = $args['payment_type'];
+            }
+        } elseif (is_object($args)) {
+            $this->loadFromRS($args);
+        }
+
+        $this->loadDynamicFields();
+    }
+
+    /**
+     * Set fields, must populate $this->fields
+     *
+     * @return self
+     */
+    protected function setFields(): self
+    {
+        $this->fields = array(
             'id_cotis'            => array(
                 'label'    => _T('Contribution id'), //not a field in the form
                 'propname' => 'id'
@@ -188,49 +244,10 @@ class Contribution
                 'propname' => 'extension'
             )
         );
-        if (is_int($args)) {
-            $this->load($args);
-        } elseif (is_array($args)) {
-            $this->_date = date("Y-m-d");
-            if (isset($args['adh']) && $args['adh'] != '') {
-                $this->_member = (int)$args['adh'];
-            }
-            if (isset($args['trans'])) {
-                $this->_transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
-                if (!isset($this->_member)) {
-                    $this->_member = $this->_transaction->member;
-                }
-                $this->_amount = $this->_transaction->getMissingAmount();
-            }
-            $this->setContributionType((int)$args['type']);
-            //calculate begin date for membership fee
-            $this->_begin_date = $this->_date;
-            if ($this->_is_cotis) {
-                $due_date = self::getDueDate($this->zdb, $this->_member);
-                if ($due_date != '') {
-                    $now = new \DateTime();
-                    $due_date = new \DateTime($due_date);
-                    if ($due_date < $now) {
-                        // Member didn't renew on time
-                        $this->_begin_date = $now->format('Y-m-d');
-                    } else {
-                        // Caution : the next_begin_date is the day after the due_date.
-                        $next_begin_date = clone $due_date;
-                        $next_begin_date->add(new \DateInterval('P1D'));
-                        $this->_begin_date = $next_begin_date->format('Y-m-d');
-                    }
-                }
-                $this->retrieveEndDate();
-            }
-            if (isset($args['payment_type'])) {
-                $this->_payment_type = $args['payment_type'];
-            }
-        } elseif (is_object($args)) {
-            $this->loadFromRS($args);
-        }
 
-        $this->loadDynamicFields();
+        return $this;
     }
+
 
     /**
      * Sets end contribution date
@@ -401,11 +418,11 @@ class Contribution
         global $preferences;
         $this->errors = array();
 
-        $fields = array_keys($this->_fields);
+        $fields = array_keys($this->fields);
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = '_' . $this->_fields[$key]['propname'];
+            $prop = '_' . $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = trim($values[$key]);
@@ -425,30 +442,7 @@ class Contribution
                     case 'date_debut_cotis':
                     case 'date_fin_cotis':
                         if ($value != '') {
-                            try {
-                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                                if ($d === false) {
-                                    //try with non localized date
-                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                    if ($d === false) {
-                                        throw new \Exception('Incorrect format');
-                                    }
-                                }
-                                $this->$prop = $d->format('Y-m-d');
-                            } catch (Throwable $e) {
-                                Analog::log(
-                                    'Wrong date format. field: ' . $key .
-                                    ', value: ' . $value . ', expected fmt: ' .
-                                    __("Y-m-d") . ' | ' . $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                $this->errors[] = sprintf(
-                                    //TRANS: %1$s is the date format, %2$s is the field name
-                                    _T('- Wrong date format (%1$s) for %2$s!'),
-                                    __("Y-m-d"),
-                                    $this->_fields[$key]['label']
-                                );
-                            }
+                            $this->setDate($key, $value);
                         }
                         break;
                     case Adherent::PK:
@@ -507,7 +501,7 @@ class Contribution
         // missing required fields?
         foreach ($required as $key => $val) {
             if ($val === 1) {
-                $prop = '_' . $this->_fields[$key]['propname'];
+                $prop = '_' . $this->fields[$key]['propname'];
                 if (
                     !isset($disabled[$key])
                     && (!isset($this->$prop)
@@ -637,7 +631,7 @@ class Contribution
             $values = array();
             $fields = self::getDbFields($this->zdb);
             foreach ($fields as $field) {
-                $prop = '_' . $this->_fields[$field]['propname'];
+                $prop = '_' . $this->fields[$field]['propname'];
                 if (!isset($this->$prop)) {
                     continue;
                 }
@@ -808,20 +802,16 @@ class Contribution
      * Get field label
      *
      * @param string $field Field name
+     * @param string $entry Array entry to use (defaults to "label")
      *
      * @return string
      */
-    public function getFieldLabel(string $field): string
+    public function getFieldLabel(string $field, string $entry = 'label'): string
     {
-        $label = $this->_fields[$field]['label'];
         if ($field == 'date_debut_cotis' && !empty($this->_is_cotis) && $this->isFee()) {
-            $label = $this->_fields[$field]['cotlabel'];
+            $entry = 'cotlabel';
         }
-        //replace "&nbsp;"
-        $label = str_replace('&nbsp;', ' ', $label);
-        //remove trailing ':' and then trim
-        $label = trim(trim($label, ':'));
-        return $label;
+        return $this->trait_getFieldLabel($field, $entry);
     }
 
     /**
@@ -1149,15 +1139,9 @@ class Contribution
      */
     public function __get(string $name)
     {
-
-        $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'model', 'raw_date',
-            'raw_begin_date', 'raw_end_date'
-        );
-
         $rname = '_' . $name;
 
-        if (in_array($name, $forbidden)) {
+        if (in_array($name, $this->forbidden_fields)) {
             Analog::log(
                 "Call to __get for '$name' is forbidden!",
                 Analog::WARNING
@@ -1171,46 +1155,19 @@ class Contribution
             }
         } elseif (
             property_exists($this, $rname)
-            || in_array($name, $virtuals)
+            || property_exists($this, $name)
+            || in_array($name, $this->virtual_fields)
         ) {
             switch ($name) {
                 case 'raw_date':
                 case 'raw_begin_date':
                 case 'raw_end_date':
                     $rname = '_' . substr($name, 4);
-                    if ($this->$rname !== null && $this->$rname != '') {
-                        try {
-                            $d = new \DateTime($this->$rname);
-                            return $d;
-                        } catch (Throwable $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$rname . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            throw $e;
-                        }
-                    }
-                    break;
+                    return $this->getDate($rname, false);
                 case 'date':
                 case 'begin_date':
                 case 'end_date':
-                    if ($this->$rname !== null && $this->$rname != '') {
-                        try {
-                            $d = new \DateTime($this->$rname);
-                            return $d->format(__("Y-m-d"));
-                        } catch (Throwable $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$rname . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            return $this->$rname;
-                        }
-                    }
-                    break;
+                    return $this->getDate($rname);
                 case 'duration':
                     if (isset($this->_is_cotis)) {
                         // Caution : the end_date stored is actually the due date.
@@ -1230,6 +1187,8 @@ class Contribution
                     }
                     return ($this->isFee()) ?
                         PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
+                case 'fields':
+                    return $this->fields;
                 default:
                     if (property_exists($this, $rname)) {
                         if (isset($this->$rname)) {
@@ -1258,26 +1217,7 @@ class Contribution
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('is_cotis');
-        $virtuals = array('duration', 'model', 'raw_date',
-            'raw_begin_date', 'raw_end_date'
-        );
-
-        $rname = '_' . $name;
-
-        if (in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'is_cotis':
-                    return true;
-            }
-        } elseif (
-            property_exists($this, $rname)
-            || in_array($name, $virtuals)
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->trait___isset('_' . $name) || $this->trait___isset($name);
     }
 
 
@@ -1312,26 +1252,7 @@ class Contribution
                     $this->setContributionType($value);
                     break;
                 case 'begin_date':
-                    try {
-                        $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                        if ($d === false) {
-                            throw new \Exception('Incorrect format');
-                        }
-                        $this->_begin_date = $d->format('Y-m-d');
-                    } catch (Throwable $e) {
-                        Analog::log(
-                            'Wrong date format. field: ' . $name .
-                            ', value: ' . $value . ', expected fmt: ' .
-                            __("Y-m-d") . ' | ' . $e->getMessage(),
-                            Analog::INFO
-                        );
-                        $this->errors[] = sprintf(
-                            //TRANS: %1$s is the date format, %2$s is the field name
-                            _T('- Wrong date format (%1$s) for %2$s!'),
-                            __("Y-m-d"),
-                            $this->_fields['date_debut_cotis']['label']
-                        );
-                    }
+                    $this->setDate($rname, $value);
                     break;
                 case 'amount':
                     if (is_numeric($value) && $value > 0) {

@@ -32,6 +32,7 @@ use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Features\Dynamics;
+use Galette\Features\EntityHelper;
 
 /**
  * Transaction class for galette
@@ -39,7 +40,7 @@ use Galette\Features\Dynamics;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $id
- * @property date $date
+ * @property string $date
  * @property integer $amount
  * @property ?string $description
  * @property ?integer $member
@@ -48,6 +49,7 @@ use Galette\Features\Dynamics;
 class Transaction
 {
     use Dynamics;
+    use EntityHelper;
 
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
@@ -59,18 +61,13 @@ class Transaction
     private ?int $_member = null;
     private ?int $_payment_type = null;
 
-    /**
-     * fields list and their translation
-     *
-     * @var array<string, array<string, string>>
-     */
-    private array $_fields;
-
     private Db $zdb;
     private Login $login;
 
     /** @var array<string> */
-    private array $errors;
+    protected array $errors;
+    /** @var string[] */
+    protected array $forbidden_fields = [];
 
     /**
      * Default constructor
@@ -85,18 +82,30 @@ class Transaction
     {
         $this->zdb = $zdb;
         $this->login = $login;
+        $this->setFields();
 
-        /*
-         * Fields configuration. Each field is an array and must reflect:
-         * array(
-         *   (string)label,
-         *   (string) propname
-         * )
-         *
-         * I'd prefer a static private variable for this...
-         * But call to the _T function does not seem to be allowed there :/
-         */
-        $this->_fields = array(
+        if ($args === null || is_int($args)) {
+            $this->_date = date("Y-m-d");
+
+            if (is_int($args) && $args > 0) {
+                $this->load($args);
+            }
+        } elseif ($args instanceof ArrayObject) {
+            $this->loadFromRS($args);
+        }
+
+        $this->loadDynamicFields();
+    }
+
+
+    /**
+     * Set fields, must populate $this->fields
+     *
+     * @return self
+     */
+    protected function setFields(): self
+    {
+        $this->fields = array(
             self::PK            => array(
                 'label'    => null, //not a field in the form
                 'propname' => 'id'
@@ -122,17 +131,7 @@ class Transaction
                 'propname' => 'payment_type'
             )
         );
-        if ($args === null || is_int($args)) {
-            $this->_date = date("Y-m-d");
-
-            if (is_int($args) && $args > 0) {
-                $this->load($args);
-            }
-        } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRS($args);
-        }
-
-        $this->loadDynamicFields();
+        return $this;
     }
 
     /**
@@ -296,11 +295,11 @@ class Transaction
         global $preferences;
         $this->errors = array();
 
-        $fields = array_keys($this->_fields);
+        $fields = array_keys($this->fields);
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = '_' . $this->_fields[$key]['propname'];
+            $prop = '_' . $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = trim($values[$key]);
@@ -315,30 +314,7 @@ class Transaction
                     switch ($key) {
                         // dates
                         case 'trans_date':
-                            try {
-                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                                if ($d === false) {
-                                    //try with non localized date
-                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                    if ($d === false) {
-                                        throw new \Exception('Incorrect format');
-                                    }
-                                }
-                                $this->$prop = $d->format('Y-m-d');
-                            } catch (Throwable $e) {
-                                Analog::log(
-                                    'Wrong date format. field: ' . $key .
-                                    ', value: ' . $value . ', expected fmt: ' .
-                                    __("Y-m-d") . ' | ' . $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                $this->errors[] = sprintf(
-                                    //TRANS: %1$s is the date format, %2$s is the field name
-                                    _T('- Wrong date format (%1$s) for %2$s!'),
-                                    __("Y-m-d"),
-                                    $this->getFieldLabel($key)
-                                );
-                            }
+                            $this->setDate($key, $value);
                             break;
                         case Adherent::PK:
                             $this->_member = (int)$value;
@@ -381,7 +357,7 @@ class Transaction
         // missing required fields?
         foreach ($required as $key => $val) {
             if ($val === 1) {
-                $prop = '_' . $this->_fields[$key]['propname'];
+                $prop = '_' . $this->fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $this->errors[] = str_replace(
                         '%field',
@@ -436,7 +412,7 @@ class Transaction
             $fields = $this->getDbFields($this->zdb);
             /** FIXME: quote? */
             foreach ($fields as $field) {
-                $prop = '_' . $this->_fields[$field]['propname'];
+                $prop = '_' . $this->fields[$field]['propname'];
                 if (isset($this->$prop)) {
                     $values[$field] = $this->$prop;
                 }
@@ -619,27 +595,11 @@ class Transaction
      */
     public function __get(string $name)
     {
-        $forbidden = array();
-
         $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
+        if (!in_array($name, $this->forbidden_fields) && (property_exists($this, $rname) || property_exists($this, $name))) {
             switch ($name) {
                 case 'date':
-                    if ($this->$rname != '') {
-                        try {
-                            $d = new \DateTime($this->$rname);
-                            return $d->format(__("Y-m-d"));
-                        } catch (Throwable $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$rname . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            return $this->$rname;
-                        }
-                    }
-                    break;
+                    return $this->getDate($rname);
                 case 'id':
                     if (isset($this->$rname) && $this->$rname !== null) {
                         return (int)$this->$rname;
@@ -650,6 +610,8 @@ class Transaction
                         return (double)$this->$rname;
                     }
                     return null;
+                case 'fields':
+                    return $this->fields;
                 default:
                     return $this->$rname;
             }
@@ -663,43 +625,6 @@ class Transaction
             );
             return false;
         }
-    }
-
-    /**
-     * Global isset method
-     * Required for twig to access properties via __get
-     *
-     * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
-     */
-    public function __isset(string $name): bool
-    {
-        $forbidden = array();
-
-        $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get field label
-     *
-     * @param string $field Field name
-     *
-     * @return string
-     */
-    public function getFieldLabel(string $field): string
-    {
-        $label = $this->_fields[$field]['label'];
-        //replace "&nbsp;"
-        $label = str_replace('&nbsp;', ' ', $label);
-        //remove trailing ':' and then trim
-        $label = trim(trim($label, ':'));
-        return $label;
     }
 
     /**
